@@ -218,25 +218,25 @@ The router allows you to mount a hook to your web service by mapping its
 Using specs allows you to automatically generate your API documentation while
  still being able to use third party middlewares.
 
-### WhookRouter constructor(config:Object)
+### Router constructor(config:Object)
 
 Creates a new Whook router with the given configuration.
 
-### WhookRouter.prototype.service(name:String, service:Object)
+### Router.prototype.service(name:String, service:Object)
 
 Register a service to be attached to `$.services`.
 
-### WhookRouter.prototype.source(name:String, source:Function)
+### Router.prototype.source(name:String, source:Function)
 
 Register a new source for `$.req` mapping. The `source` function signature
  `function(query) { return value; }`.
 
-### WhookRouter.prototype.dest(name:String, dest:Function)
+### Router.prototype.dest(name:String, dest:Function)
 
 Register a new destination for `$.res` mapping. The `dest` function signature
  `function(path, value) { }`.
 
-### WhookRouter.prototype.callback()
+### Router.prototype.callback()
 
 Callbacks to mount the router to an HTTP server. Note you can mount a router to
  several servers.
