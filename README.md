@@ -297,7 +297,7 @@ var v1Router = router.add({
 });
 
 
-// Sample of a GET /users/:id route declaration
+// Sample of a GET /api/v1/users/:id route declaration
 v1Router.add({
   methods: ['GET']
   nodes: [
@@ -312,7 +312,7 @@ v1Router.add({
       description: 'The id of the user you wish to access to.'
     }
   }
-}, UserController);
+}, UserHook);
 ```
 
 ## The Specs format
