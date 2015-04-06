@@ -20,8 +20,8 @@ The wrapping logic is described using specs allowing strong checking of
  your API's IOs and its automatic documentation generation no matter how many
  modules are used to complete a single API endpoint.
 
-Since module do not operate on real requests/responses, your API isn't
- necessarily influenced by them.
+Since hooks do not operate on real requests/responses, your API isn't
+ necessarily influenced by them (until you don't use their default specs).
 
 The Whook router is a smart tree based on your API uri nodes leading to
  efficient routing.
@@ -29,15 +29,15 @@ The Whook router is a smart tree based on your API uri nodes leading to
 Whook embed a few main concepts:
 - [hooks](#the-hook-interface) are sort of middlewares/controllers but with
  finest settings and working with abstracted request/responses.
-- [context](#the-context-object) is customized object given to hooks by the router (often
- named `$`. It is a bridge beetween request/response properties (headers, query
- parameters, uri, methods etc...) and hooks.
-- [specs](#the-specs-format) are rules defining how the router should deal with hooks
- inputs and outputs.
-- [services](#services) are any object you may find useful to work with in your
- hooks.
-- finally, the [router](#the-router-api) is responsible of applying routes to hooks
- according to their specs.
+- [context](#the-context-object) is a customi object given to hooks by the
+ router (often named `$`). It is a proxy beetween request/response properties
+ (headers, query parameters, uri, methods etc...) and hooks.
+- [specs](#the-specs-format) are rules defining how the router should deal with
+ hooks inputs and outputs.
+- [services](#services) are objects/functions you may find useful to work with
+ in your hooks.
+- finally, the [router](#the-router-api) is responsible of applying routes to
+ hooks according to their specs.
 
 
 ## The hook interface
