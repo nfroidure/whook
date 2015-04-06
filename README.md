@@ -6,6 +6,10 @@ This project is intended to borrow everything good in every NodeJS framework
  since i couldn't manage to find some fulfilling my needs. It's in an early
  stage, nothing is definitive, please challenge this API!
 
+**There is also not a single line of code currently. I'm till in the API design
+ process. Feel free to add issues, give advice and even enters the early dev
+ team.**
+
 ## Principles: The wireable REST framework
 
 Hooks are working with abstract requests/responses while the routes are wrapping
