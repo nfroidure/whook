@@ -29,8 +29,8 @@ The Whook router is a smart tree based on your API uri nodes leading to
 Whook embed a few main concepts:
 - [hooks](#the-hook-interface) are sort of middlewares/controllers but with
  finest settings and working with abstracted request/responses.
-- [context](#the-context-object) is a customi object given to hooks by the
- router (often named `$`). It is a proxy beetween request/response properties
+- [context](#the-context-object) is a custom object given to hooks by the
+ router (often named `$`). It is a proxy between request/response properties
  (headers, query parameters, uri, methods etc...) and hooks.
 - [specs](#the-specs-format) are rules defining how the router should deal with
  hooks inputs and outputs.
@@ -74,22 +74,22 @@ router.hook(MyHook.specs, MyHook);
 
 ### Hook.prototype.init($:Object, next:Function)
 
-Called to initialize the hook with the parsed params from request headers,
+Called to initialize the hook with the parsed parameters from request headers,
  the query string, the uri and the router configuration. Any values can be
  registered through the `$` object given in argument. Mainly used to
  apply changes to `$.req` with default values.
 
-The `next` callback optionnaly accepts an error.
+The `next` callback optionally accepts an error.
 
 ### Hook.prototype.pre($:Object, next:Function)
 Called just before starting to send the response (last chance to set values in
  `$.res`). The request content is available as a stream in the context object
  (`$.reqStream`), you may decide to consume it or not depending on your needs.
 
-The `next` callback optionnaly accepts an error.
+The `next` callback optionally accepts an error.
 
 ### Hook.prototype.preError($:Object, next:Function)
-Called just before starting to send the response if any error happened earlyer.
+Called just before starting to send the response if any error happened earlier.
  Allows you to change the response metadata according to that error.
 
 ### Hook.prototype.process($:Object)
@@ -99,7 +99,7 @@ Last chance to consume `$.reqStream`. Set output as a stream to `$.resStream`.
 
 ### Hook.prototype.piped($:Object)
 
-Called when the whole pipeline is finaly piped to the response. Last chance to
+Called when the whole pipeline is finally piped to the response. Last chance to
  pipe `$.resStream` to another destination. Applying changes to `$.res` has no
  effect.
 
@@ -108,7 +108,7 @@ Called when the whole pipeline is finaly piped to the response. Last chance to
 Called after the response was sent (ie, the response stream ended). Useful to
  create web hooks, log things or anything else.
 
-The `next` callback optionnaly accepts an error.
+The `next` callback optionally accepts an error.
 
 ### Hook.prototype.postError($:Object, next:Function)
 
@@ -213,7 +213,7 @@ DownloadWhook.prototype.pre = function($) {
 ## The Router API
 
 The router allows you to mount a hook to your web service by mapping its
- params with your API.
+ parameters with your API.
 
 Using specs allows you to automatically generate your API documentation while
  still being able to use third party middlewares.
@@ -366,7 +366,7 @@ Destinations can be one of the native destinations (headers, status, shares) or
 
 ### specs.services
 
-Asimple key:value object mapping services names:
+A simple key:value object mapping services names:
 ```js
 {
   connection: 'db',
