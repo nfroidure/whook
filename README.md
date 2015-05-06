@@ -2,15 +2,60 @@
 
 > Build strong and efficient REST web services.
 
-This project is intended to borrow everything good in every NodeJS framework
- since i couldn't manage to find some fulfilling my needs. It's in an early
- stage, nothing is definitive, please challenge this API!
+**Early call for advice:** Since i want to be sure that this architecture
+ doesn't only fit my own needs, here is just a description of what this project
+ **could** be. Your input is very welcome.
 
-**There is also not a single line of code currently. I'm till in the API design
- process. Feel free to add issues, give advice and even enters the early dev
- team.**
+This project is intended to borrow everything good in every NodeJS framework
+ with some additions i'd like to have as a REST web services developper.
+
+I'm till in the API design process. Feel free to add issues, give advice and
+ even enters the early dev team if you think this ideas worth a concrete
+ implementation.
 
 ## Principles: The wireable REST framework
+
+The Whook goal is to tighly couple route definitions with the other parts of
+ a REST API definition (query parameters, request/response headers, status
+ codes ...).
+
+For that matters  Whook
+As a result, a Hook (the Wook logical modules) only process generic requests in
+ input and output generic responses:
+
+```js
+jsonHook.pre = function($, next()) {
+  if('application/json' === $.in.contentType) {
+    try {
+      $.out.content = JSON.stringify($.in.body);
+      next();
+    } catch(err) {
+      next(err);
+    }
+  }
+};
+```
+
+On the other hand, the Whook router requires you to define your API and the
+ bindings with the various hooks you are using.
+
+```js
+myRouter.add({
+  in: {
+    contentType: {
+      source: 'req-headers:Content-Type'
+    },
+    body: {
+      source: 'tmp:body'
+    }
+  },
+  out: {
+    content: {
+      dest: 'res-body'
+    }
+  }
+}, jsonHook);
+```
 
 Hooks are working with abstract requests/responses while the routes are wrapping
  real requests/responses resulting in a flexible and easily testable
@@ -27,17 +72,18 @@ The Whook router is a smart tree based on your API uri nodes leading to
  efficient routing.
 
 Whook embed a few main concepts:
+- the [router](#the-router-api) is responsible of selecting wich hooks has to
+ be run to complete the request and bring a response. It also manage the context
+ in wich a hook should be run according to the specs your provide.
 - [hooks](#the-hook-interface) are sort of middlewares/controllers but with
- finest settings and working with abstracted request/responses.
-- [context](#the-context-object) is a customi object given to hooks by the
+ finest settings and working with abstracted request/responses/services.
+- the [context](#the-context-object) is a custom object given to hooks by the
  router (often named `$`). It is a proxy beetween request/response properties
  (headers, query parameters, uri, methods etc...) and hooks.
 - [specs](#the-specs-format) are rules defining how the router should deal with
- hooks inputs and outputs.
+ hooks input and output.
 - [services](#services) are objects/functions you may find useful to work with
- in your hooks.
-- finally, the [router](#the-router-api) is responsible of applying routes to
- hooks according to their specs.
+ in your hooks and injected per the router into them according to your specs.
 
 
 ## The hook interface
@@ -88,7 +134,7 @@ Called just before starting to send the response (last chance to set values in
 
 The `next` callback optionnaly accepts an error.
 
-### Hook.prototype.preError($:Object, next:Function)
+### Hook.prototype.preError(err:Error, $:Object, next:Function)
 Called just before starting to send the response if any error happened earlyer.
  Allows you to change the response metadata according to that error.
 
@@ -110,7 +156,7 @@ Called after the response was sent (ie, the response stream ended). Useful to
 
 The `next` callback optionnaly accepts an error.
 
-### Hook.prototype.postError($:Object, next:Function)
+### Hook.prototype.postError(err:Error, $:Object, next:Function)
 
 Called when something went wrong **after** the response was sent. You no longer
  can warn the API client.
@@ -278,7 +324,7 @@ router.add({
       type: String,
       required: true,
       description: 'Application domain name.'
-    } 
+    }
   }
 });
 
@@ -304,9 +350,9 @@ v1Router.add({
     'users',
     /^(a-f0-9){24}$/
   ],
-  request: {
+  in: {
     id: {
-      source: 'uri:1',
+      source: 'qs:id',
       type: ObjectId,
       required: true,
       description: 'The id of the user you wish to access to.'
@@ -317,46 +363,60 @@ v1Router.add({
 
 ## The Specs format
 
+Specs are injected in the router for each whook mount. Specs allow to build
+ the context object passed to whooks according to your wills.
+
 ### specs.methods
 
-An array of methods supported by the hook.
+An array of methods supported by the whook.
 
 ### specs.nodes
 
-URI nodes at which the router mount the hook.
+URI nodes at which the router mount the whook.
 
-### specs.req
+### specs.in
 
-An object describing how to build hooks input based on rules given for each
- object keys. Rules looks like this:
+An object describing how to build hooks input based on the given rules. Rules looks like this:
 
 ```js
 {
-  prop: { // the property in wich the value will be set (here: $.req.prop)
-    source: 'source:query', // the source in wich to lookup and the associated query 
-    type: String, // the type of the value (provide a cast constructor)
-    required: true, // True if the value must exist
-    default: '', // Default value for the property
-    description: 'Text describing prop!' // a useful description
+  $schema: 'http://json-schema.org/draft-04/schema#', see // http://json-schema.org/
+  title: 'Input',
+  type: 'object',
+  properties: {
+    prop: { // the property in wich the value will be set (here: $.in.prop)
+      source: 'qs:download', // the source in wich to lookup and the associated query
+      type: 'boolean', // the type of the value (see http://json-schema.org/latest/json-schema-core.html#anchor8)
+      default: false, // Default value for the property
+      description: 'Text describing prop!' // a useful description
+    }
   }
 }
 ```
 
+
 Sources can be one of the default sources (config, shares, qs, headers) or any
  other source declared with `Router.source()`.
 
-### specs.res
+### specs.out
 
-An object describing what to do with the `$.res` contents. Rules look like this:
+An object describing what to do with the `$.out` contents. Rules look like this:
 
 ```js
 {
-  prop: { // the property from wich the value will be read (here: $.res.prop)
-    dest: 'dest:path', // the destination of the value and the associated path 
-    type: String, // the type of the value (provide a cast constructor)
-    required: true, // True if the value must exist
-    default: '', // Default value for the property
-    description: 'Text describing prop!' // a useful description
+  $schema: 'http://json-schema.org/draft-04/schema#', see // http://json-schema.org/
+  title: 'Output',
+  type: 'object',
+  properties: {
+    prop: { // the property from wich the value will be read (here: $.in.prop)
+      dest: 'dest:path', // the destination of the value and the associated path
+      type: 'boolean', // the type of the value (see http://json-schema.org/latest/json-schema-core.html#anchor8)
+      default: false, // Default value for the property
+      type: 'string', // the type of the value (provide a cast constructor)
+      required: true, // True if the value must exist
+      default: '', // Default value for the property
+      description: 'Text describing prop!' // a useful description
+    }
   }
 }
 ```
@@ -366,48 +426,55 @@ Destinations can be one of the native destinations (headers, status, shares) or
 
 ### specs.services
 
-Asimple key:value object mapping services names:
+Asimple key:value object mapping for services names:
 ```js
 {
-  connection: 'db',
-  logger: 'winston'
+  connection: 'db', // map the 'db' service to the 'connection' for this Whook
+  logger: 'winston' // map the 'winston' service to the 'logger' for this Whook
 }
 ```
 
 ## The context object
 
-The context object (alias `$`) contains, pure primitive data. It should always
+The context object (alias `$`) is built specifically for each Whook instance
+ (and consequently for each client request) from specs given at mount on the
+ router.
+
+
+Its `in` and `out` properties are pure primitive data. It should always
  be serializable with JSON. While Whook won't impeach you to add logic in, it is
  strongly discouraged. If you need cross hooks logic, use composition instead.
+ If you need cross hooks data access use services.
 
 Here are the different properties you may find in a context object.
 
-## $.req
+## $.in
 
-Contains values mapped from real requests according to the specs given to the
- router. Changing their values has no effect elsewhere than in the current hook.
+Contains values mapped from real requests according to the `in` specs given to
+ the router. Changing their values has no effect elsewhere than in the current
+ hook.
 
 Debug:
-- set the 'whook.req.notfound' to know when a value isn't found.
-- set the 'whook.req.verbose' flag to get infos on what's going on with request
+- set the 'whook.in.notfound' to know when a value isn't found.
+- set the 'whook.in.verbose' flag to get infos on what's going on with request
  specs matching.
 
-## $.res
+## $.out
 
 Empty object from which values will be mapped to real responses according to the
  specs given to the router. The last hook has the last word.
- 
+
 Debug:
-- set the 'whook.res.overrides' flag to get warnings when a response value is overriden.
-- set the 'whook.res.unused' flag to know when a hook value is not used.
+- set the 'whook.out.overrides' flag to get warnings when a response value is overriden.
+- set the 'whook.out.unused' flag to know when a hook value is not used.
 
 ## $.services
 
 Services registered in the router you may need to use (typically, loggers,
- databases, external web service, mailers etc...). Their name will be the one
+ databases, external web services, mailers etc...). Their name will be the one
  defined in the `Router.service()` registration or, eventually, the one mapped
  from specs.
 
 Debug:
-- set the 'whook.service' flag to be warn when specified service is not found.
+- set the 'whook.services.notfound' flag to be warn when specified service is not found.
 

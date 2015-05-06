@@ -2,9 +2,12 @@
   "name": "whook",
   "version": "0.0.0",
   "description": "Build strong and efficient REST web services.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "npm run compile",
+    "test": "mocha src/**/*.mocha.js",
+    "compile": "babel src --out-dir=dist",
+    "prepublish": "npm run compile"
   },
   "keywords": [
     "REST",
@@ -22,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/nfroidure/whook/issues"
   },
-  "homepage": "https://github.com/nfroidure/whook"
+  "homepage": "https://github.com/nfroidure/whook",
+  "devDependencies": {
+    "babel": "^5.2.15",
+    "mocha": "^2.2.4",
+    "neatequal": "^1.0.0"
+  }
 }
