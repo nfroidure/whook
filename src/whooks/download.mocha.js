@@ -11,7 +11,7 @@ describe('DownloadWhook', function() {
   });
 
   describe('init()', function() {
-    it('should work', function() {
+    it('should be implemented', function() {
       (new DownloadWhook()).init();
     });
   });

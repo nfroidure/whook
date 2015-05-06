@@ -77,13 +77,13 @@ Whook embed a few main concepts:
  in wich a hook should be run according to the specs your provide.
 - [hooks](#the-hook-interface) are sort of middlewares/controllers but with
  finest settings and working with abstracted request/responses/services.
-- the [context](#the-context-object) is a custom object given to hooks by the
- router (often named `$`). It is a proxy beetween request/response properties
- (headers, query parameters, uri, methods etc...) and hooks.
+- [context](#the-context-object) is a custom object given to whooks by the
+ router (often named `$`). It is a lazy proxy between request/response
+ properties (headers, query parameters, uri, methods etc...) and whooks.
 - [specs](#the-specs-format) are rules defining how the router should deal with
  hooks input and output.
-- [services](#services) are objects/functions you may find useful to work with
- in your hooks and injected per the router into them according to your specs.
+- [services](#services) are resources you want hooks to be able to work with.
+ They are injected per the router into them according to given specs.
 
 
 ## The hook interface
@@ -120,19 +120,19 @@ router.hook(MyHook.specs, MyHook);
 
 ### Hook.prototype.init($:Object, next:Function)
 
-Called to initialize the hook with the parsed params from request headers,
+Called to initialize the hook with the parsed parameters from request headers,
  the query string, the uri and the router configuration. Any values can be
  registered through the `$` object given in argument. Mainly used to
  apply changes to `$.req` with default values.
 
-The `next` callback optionnaly accepts an error.
+The `next` callback optionally accepts an error.
 
 ### Hook.prototype.pre($:Object, next:Function)
 Called just before starting to send the response (last chance to set values in
  `$.res`). The request content is available as a stream in the context object
  (`$.reqStream`), you may decide to consume it or not depending on your needs.
 
-The `next` callback optionnaly accepts an error.
+The `next` callback optionally accepts an error.
 
 ### Hook.prototype.preError(err:Error, $:Object, next:Function)
 Called just before starting to send the response if any error happened earlyer.
@@ -145,7 +145,7 @@ Last chance to consume `$.reqStream`. Set output as a stream to `$.resStream`.
 
 ### Hook.prototype.piped($:Object)
 
-Called when the whole pipeline is finaly piped to the response. Last chance to
+Called when the whole pipeline is finally piped to the response. Last chance to
  pipe `$.resStream` to another destination. Applying changes to `$.res` has no
  effect.
 
@@ -154,7 +154,7 @@ Called when the whole pipeline is finaly piped to the response. Last chance to
 Called after the response was sent (ie, the response stream ended). Useful to
  create web hooks, log things or anything else.
 
-The `next` callback optionnaly accepts an error.
+The `next` callback optionally accepts an error.
 
 ### Hook.prototype.postError(err:Error, $:Object, next:Function)
 
@@ -163,103 +163,23 @@ Called when something went wrong **after** the response was sent. You no longer
 
 ### Sample hooks
 
-#### Time Hook
+This repository will probably not contain hooks (except the Hooks base class).
+ But in order to illustrate how it could look like, some sample hooks are
+ currently embedded:
 
-A hook that give you the current time of the server.
-
-```js
-var stringToStream = require('string-to-stream');
-
-function TimeHook() {}
-
-// Default wrap specs
-TimeHook.specs = {
-  methods: ['GET'], // Apply to GET requests only
-  nodes: ['time'], // Hook wil be mounted to /time API endpoint
-  req: {
-    format: {
-      source: 'qs:format', // value will be picked in query parameters (?format)
-      type: String,
-      default: 'timestamp',
-      enum: ['timestamp', 'iso'],
-      description: 'Whether the download header should be added or not.'
-    }
-  },
-  res: {
-    status: {
-      type: Number,
-      required: true,
-      destination: 'status',
-    },
-    contentType: {
-      type: String,
-      required: true,
-      destination: 'headers:Content-Type',
-    }
-  }
-};
-
-// Logic applyed to response/request abstract data before sending response content
-TimeHook.prototype.pre = function($) {
-  $.res.contentType = 'text/plain';
-});
-
-// Logic applyed to response/request abstract data before sending response content
-TimeHook.prototype.process = function($) {
-  $.resStream = stringToStream(
-    (new Date())['iso' === $.req.format ? 'toISOString' : 'getTime']()
-  );
-});
-
-```
-
-
-#### Download Hook
-
-A Hook adding download flags to specify that a browser should download the
- request content and prompt users to save it on their disk.
-
-```js
-function DownloadWhook() {}
-
-// Default wrap specs
-DownloadWhook.specs = {
-  methods: ['GET'],
-  req: {
-    download: {
-      source: 'qs:download',
-      type: Boolean,
-      default: false,
-      description: 'Whether the download header should be added or not.'
-    },
-    filename: {
-      source: 'shares:filename', // get filename from shared context
-      type: String,
-      default: '',
-      description: 'The filename under wich the download should be saved.'
-    }
-  },
-  res: {
-    contentDisposition: {
-      destination: 'headers:Content-Disposition',
-      type: String
-    }
-  }
-};
-
-// Logic applyed to the response depending on the request
-DownloadWhook.prototype.pre = function($) {
-  if($.req.download) {
-    $.res.contentDisposition = 'attachment' +
-      ($.req.filename ? '; filename="' + $.req.filename + '"');
-  }
-});
-```
+- **TimeHook:** A hook that give you the current time of the server -
+ [source](https://github.com/nfroidure/whook/blob/master/whooks/time.js) -
+ [tests](https://github.com/nfroidure/whook/blob/master/whooks/time.mocha.js)
+- **DownloadHook:** A Hook adding download flags to specify that a browser
+  should download the request content and prompt users to save it on their
+  disk. -
+ [source](https://github.com/nfroidure/whook/blob/master/whooks/download.js) -
+ [tests](https://github.com/nfroidure/whook/blob/master/whooks/download.mocha.js)
 
 ## The Router API
 
 The router allows you to mount a hook to your web service by mapping its
- params with your API.
+ parameters with your API.
 
 Using specs allows you to automatically generate your API documentation while
  still being able to use third party middlewares.
@@ -426,13 +346,18 @@ Destinations can be one of the native destinations (headers, status, shares) or
 
 ### specs.services
 
-Asimple key:value object mapping for services names:
+A simple service declaration of injected services with a simple key:value object
+ mapping:
 ```js
 {
-  connection: 'db', // map the 'db' service to the 'connection' for this Whook
-  logger: 'winston' // map the 'winston' service to the 'logger' for this Whook
+  log: '' //  inject 'log' for this Whook
+  connection: 'db', // inject the 'db' service as 'connection' for this Whook
 }
 ```
+
+**Warning:** Services are not mixins! If you want to share code between Whooks,
+ use the module system. Services are only intended to provide access to
+ resources.
 
 ## The context object
 

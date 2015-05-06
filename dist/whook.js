@@ -28,7 +28,7 @@ var Whook = (function () {
     }
   }, {
     key: 'process',
-    value: function process($, next) {}
+    value: function process($) {}
   }, {
     key: 'piped',
     value: function piped($) {}

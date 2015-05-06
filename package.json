@@ -29,6 +29,10 @@
   "devDependencies": {
     "babel": "^5.2.15",
     "mocha": "^2.2.4",
-    "neatequal": "^1.0.0"
+    "neatequal": "^1.0.0",
+    "streamtest": "^1.2.0"
+  },
+  "dependencies": {
+    "string-to-stream": "^1.0.1"
   }
 }

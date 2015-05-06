@@ -14,7 +14,7 @@ class Whook {
     preError(err, $, next) {
       next(err);
     }
-    process($, next) {
+    process($) {
     }
     piped($) {
     }

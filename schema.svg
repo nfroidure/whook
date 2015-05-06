@@ -13,7 +13,7 @@
    height="344.40625"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="schema.svg">
   <defs
      id="defs4">
@@ -54,7 +54,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="250.14435"
+     inkscape:cx="251.57292"
      inkscape:cy="151.50132"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -64,9 +64,9 @@
      fit-margin-right="20"
      fit-margin-bottom="20"
      inkscape:window-width="1600"
-     inkscape:window-height="822"
+     inkscape:window-height="805"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="29"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -102,7 +102,7 @@
          sodipodi:role="line"
          id="tspan5113"
          x="496.83105"
-         y="185.21933">Hook</tspan></text>
+         y="185.21933">Whook</tspan></text>
     <g
        id="g5202"
        transform="translate(11.820066,-17.278957)">
@@ -425,7 +425,7 @@
          sodipodi:role="line"
          id="tspan3064"
          x="496.83105"
-         y="61.21933">Hook</tspan></text>
+         y="61.21933">Whook</tspan></text>
     <path
        transform="translate(484.85714,-14.285714)"
        inkscape:transform-center-y="1.7857143"
@@ -493,6 +493,6 @@
          y="307.21933"
          x="496.83105"
          id="tspan3882"
-         sodipodi:role="line">Hook</tspan></text>
+         sodipodi:role="line">Whook</tspan></text>
   </g>
 </svg>
