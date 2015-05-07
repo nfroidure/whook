@@ -5,7 +5,6 @@ import querystring from 'querystring';
 import miniquery from 'miniquery';
 
 export default class QueryString extends Source {
-  // Run at service attachment
   constructor(req) {
     super('qs');
     this.req = req;

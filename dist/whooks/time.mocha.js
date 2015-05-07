@@ -1,5 +1,7 @@
 'use strict';
 
+require('babel/register');
+
 var assert = require('assert');
 var neatequal = require('neatequal');
 var StreamTest = require('streamtest');

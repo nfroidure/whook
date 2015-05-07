@@ -1,10 +1,12 @@
 'use strict';
 
+require('babel/register');
+
 var assert = require('assert');
 var neatequal = require('neatequal');
 
 describe('DownloadWhook', function () {
-  var DownloadWhook = require('./../../dist/whooks/download');
+  var DownloadWhook = require('./download');
 
   describe('constructor()', function () {
     it('should work', function () {

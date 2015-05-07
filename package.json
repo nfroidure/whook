@@ -4,7 +4,6 @@
   "description": "Build strong and efficient REST web services.",
   "main": "dist/index.js",
   "scripts": {
-    "pretest": "npm run compile",
     "test": "mocha src/**/*.mocha.js",
     "compile": "babel src --out-dir=dist",
     "prepublish": "npm run compile"
@@ -30,6 +29,7 @@
     "babel": "^5.2.15",
     "mocha": "^2.2.4",
     "neatequal": "^1.0.0",
+    "sinon": "^1.14.1",
     "streamtest": "^1.2.0"
   },
   "dependencies": {
