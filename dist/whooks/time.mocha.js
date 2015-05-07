@@ -41,7 +41,7 @@ describe('TimeWhook', function () {
     StreamTest.versions.forEach(function (version) {
       describe('for ' + version + ' streams', function () {
 
-        it('should return a stream outputting the current time', function () {
+        it('should return a stream outputting the current time', function (done) {
           var $ = {
             'in': {},
             out: {},
@@ -65,7 +65,7 @@ describe('TimeWhook', function () {
           }));
         });
 
-        it('should log when a log service is available', function () {
+        it('should log when a log service is available', function (done) {
           var args;
           var $ = {
             'in': {
@@ -87,7 +87,7 @@ describe('TimeWhook', function () {
             if (err) {
               done(err);
             }
-            assert.equal(text, 'Thu Jan 01 1970 04:42:51 GMT+0100 (CET)');
+            assert.equal(text, '1970-01-01T03:42:51.337Z');
             done();
           }));
         });

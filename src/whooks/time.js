@@ -54,7 +54,7 @@ class TimeHook extends Whook {
   process({in: {format}, services: {time}}) {
     var curTime = time();
     return stringToStream(
-      (new Date(time()))['iso' === format ? 'toISOString' : 'getTime']()
+      (new Date(time()))['iso' === format ? 'toISOString' : 'getTime']().toString()
     );
   }
 }

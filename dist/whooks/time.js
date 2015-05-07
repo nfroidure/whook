@@ -42,7 +42,7 @@ var TimeHook = (function (_Whook) {
       var time = _ref2.services.time;
 
       var curTime = time();
-      return stringToStream(new Date(time())['iso' === format ? 'toISOString' : 'getTime']());
+      return stringToStream(new Date(time())['iso' === format ? 'toISOString' : 'getTime']().toString());
     }
   }], [{
     key: 'specs',

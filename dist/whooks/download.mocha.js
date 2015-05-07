@@ -24,7 +24,8 @@ describe('DownloadWhook', function () {
         'in': {
           download: false
         },
-        out: {}
+        out: {},
+        services: {}
       };
       var whook = new DownloadWhook();
       whook.init();
@@ -38,7 +39,8 @@ describe('DownloadWhook', function () {
         'in': {
           download: true
         },
-        out: {}
+        out: {},
+        services: {}
       };
       var whook = new DownloadWhook();
       whook.init();
@@ -55,7 +57,8 @@ describe('DownloadWhook', function () {
           download: true,
           filename: 'duke.jpg'
         },
-        out: {}
+        out: {},
+        services: {}
       };
       var whook = new DownloadWhook();
       whook.init();
