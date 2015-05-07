@@ -1,8 +1,8 @@
 'use strict';
 
-var Whook = require('../whook');
+import Whook from '../whook';
 
-class DownloadWhook extends Whook {
+export default class DownloadWhook extends Whook {
   static specs() {
     return {
       methods: ['GET'],
@@ -54,5 +54,3 @@ class DownloadWhook extends Whook {
     next();
   }
 }
-
-module.exports = DownloadWhook;

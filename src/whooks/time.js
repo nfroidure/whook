@@ -1,9 +1,9 @@
 'use strict';
 
-var stringToStream = require('string-to-stream');
-var Whook = require('../whook');
+import stringToStream from 'string-to-stream';
+import Whook from '../whook';
 
-class TimeHook extends Whook {
+export default class TimeHook extends Whook {
   static specs() {
     return {
       methods: ['GET'], // Apply to GET requests only
@@ -58,5 +58,3 @@ class TimeHook extends Whook {
     );
   }
 }
-
-module.exports = TimeHook;

@@ -33,6 +33,7 @@
     "streamtest": "^1.2.0"
   },
   "dependencies": {
+    "miniquery": "^1.0.0",
     "string-to-stream": "^1.0.1"
   }
 }

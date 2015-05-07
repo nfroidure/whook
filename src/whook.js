@@ -1,4 +1,6 @@
-class Whook {
+'use strict';
+
+export default class Whook {
     static specs() {
       throw new Error('E_NOT_IMPLEMENTED');
     }
@@ -14,9 +16,9 @@ class Whook {
     preError(err, $, next) {
       next(err);
     }
-    process($) {
+    process(inputStream) {
     }
-    piped($) {
+    piped(outputStream) {
     }
     post($, next) {
       next();
@@ -25,5 +27,3 @@ class Whook {
       next(err);
     }
 }
-
-module.exports = Whook;

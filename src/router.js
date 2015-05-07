@@ -1,5 +1,6 @@
+'use strict';
 
-class Router {
+export default class Router {
     constructor(config, parent) {
       this.config = config;
       this.services = new Map();
