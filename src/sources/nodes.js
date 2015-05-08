@@ -3,8 +3,8 @@
 import Source from '../source';
 
 export default class QueryString extends Source {
-  constructor(req) {
-    super('nodes');
+  constructor(req, name = 'nodes') {
+    super(name);
     this.req = req;
     this.nodes = null;
   }

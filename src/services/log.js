@@ -4,8 +4,8 @@ import Service from '../service';
 
 // A simple log service
 export default class extends Service {
-  constructor() {
-    super('logger')
+  constructor(name = 'logger') {
+    super(name)
   }
   log() {
     console.log.apply(console, arguments);

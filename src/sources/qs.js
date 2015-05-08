@@ -5,8 +5,8 @@ import querystring from 'querystring';
 import miniquery from 'miniquery';
 
 export default class QueryString extends Source {
-  constructor(req) {
-    super('qs');
+  constructor(req, name = 'qs') {
+    super(name);
     this.req = req;
     this.parsedQuery = null;
   }

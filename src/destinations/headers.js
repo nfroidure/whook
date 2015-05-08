@@ -3,8 +3,8 @@
 import Destination from '../destination';
 
 export default class Headers extends Destination {
-  constructor(res) {
-    super('headers');
+  constructor(res, name = 'headers') {
+    super(name);
     this.headers = new Set();
   }
   set(name, value) {
