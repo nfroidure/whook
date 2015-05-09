@@ -4,7 +4,7 @@
   "description": "Build strong and efficient REST web services.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha src/**/*.mocha.js",
+    "test": "mocha --compilers js:babel/register src/**/*.mocha.js",
     "compile": "babel src --out-dir=dist",
     "prepublish": "npm run compile"
   },
