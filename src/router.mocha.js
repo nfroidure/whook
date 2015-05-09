@@ -1,7 +1,5 @@
-require("babel/register");
-
-var assert = require('assert');
-var neatequal = require('neatequal');
+import assert from 'assert';
+import neatequal from 'neatequal';
 
 describe('Router', function() {
   var Router = require('./router')['default'];
@@ -41,12 +39,12 @@ describe('Router', function() {
         });
 
 
-      assert.deepEqual(router.tree, { plop: { test: {} } });
-      assert.deepEqual(router.tree[WHOOK_SYMBOL], [{
+      assert.deepEqual(router.whooksTree, { plop: { test: {} } });
+      assert.deepEqual(router.whooksTree[WHOOK_SYMBOL], [{
         spec: { nodes: [] },
         whook: { name: 'Whook #1' }
       }]);
-      assert.deepEqual(router.tree.plop[WHOOK_SYMBOL], [{
+      assert.deepEqual(router.whooksTree.plop[WHOOK_SYMBOL], [{
         spec: { nodes: ['plop'] },
         whook: { name: 'Whook #2' }
       }, {

@@ -1,8 +1,6 @@
-require("babel/register");
-
-var assert = require('assert');
-var neatequal = require('neatequal');
-var StreamTest = require('streamtest');
+import assert from 'assert';
+import neatequal from 'neatequal';
+import StreamTest from 'streamtest';
 
 describe('TimeWhook', function() {
   var TimeWhook = require('./../../dist/whooks/time');

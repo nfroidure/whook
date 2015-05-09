@@ -1,8 +1,6 @@
-require("babel/register");
-
-var assert = require('assert');
-var neatequal = require('neatequal');
-var sinon = require('sinon');
+import assert from 'assert';
+import neatequal from 'neatequal';
+import sinon from 'sinon';
 
 describe('HeadersDestination', function() {
   var HeadersDestination = require('./headers');

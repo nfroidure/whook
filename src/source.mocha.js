@@ -1,5 +1,5 @@
-var assert = require('assert');
-var neatequal = require('neatequal');
+import assert from 'assert';
+import neatequal from 'neatequal';
 
 describe('Source', function() {
   var Source = require('./source');

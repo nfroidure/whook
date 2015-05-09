@@ -1,7 +1,5 @@
-require("babel/register");
-
-var assert = require('assert');
-var neatequal = require('neatequal');
+import assert from 'assert';
+import neatequal from 'neatequal';
 
 describe('NodesSource', function() {
   var NodesSource = require('./nodes');

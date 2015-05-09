@@ -1,6 +1,6 @@
-var assert = require('assert');
-var neatequal = require('neatequal');
-var sinon = require('sinon');
+import assert from 'assert';
+import neatequal from 'neatequal';
+import sinon from 'sinon';
 
 describe('Destination', function() {
   var Destination = require('./destination');
