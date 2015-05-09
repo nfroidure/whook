@@ -1,5 +1,3 @@
-require("babel/register");
-
 var assert = require('assert');
 var neatequal = require('neatequal');
 

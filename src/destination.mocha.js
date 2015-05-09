@@ -1,7 +1,6 @@
-require("babel/register");
-
 var assert = require('assert');
 var neatequal = require('neatequal');
+var sinon = require('sinon');
 
 describe('Destination', function() {
   var Destination = require('./destination');

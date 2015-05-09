@@ -8,11 +8,4 @@ export default class Source {
   get(query) {
     throw new Error('E_NOT_IMPLEMENTED');
   }
-  static instantiateSourcesFromReq(sources, names, req) {
-    return names.map((name) => new (this.sources.get(name))(name, req))
-      .reduce((sourcesMap, source) => {
-        destinationsMap[source.name] = source;
-        return sourcesMap;
-      }, {});
-  }
 }
