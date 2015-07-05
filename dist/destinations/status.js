@@ -14,43 +14,43 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-var _source = require('../source');
+var _yerror = require('yerror');
 
-var _source2 = _interopRequireDefault(_source);
+var _yerror2 = _interopRequireDefault(_yerror);
 
-var _querystring = require('querystring');
+var _destination = require('../destination');
 
-var _querystring2 = _interopRequireDefault(_querystring);
+var _destination2 = _interopRequireDefault(_destination);
 
-var _miniquery = require('miniquery');
+var Headers = (function (_Destination) {
+  function Headers(res) {
+    var name = arguments[1] === undefined ? 'status' : arguments[1];
 
-var _miniquery2 = _interopRequireDefault(_miniquery);
+    _classCallCheck(this, Headers);
 
-var QueryString = (function (_Source) {
-  function QueryString(req) {
-    var name = arguments[1] === undefined ? 'qs' : arguments[1];
-
-    _classCallCheck(this, QueryString);
-
-    _get(Object.getPrototypeOf(QueryString.prototype), 'constructor', this).call(this, req, name);
-    this._parsedQuery = null;
+    _get(Object.getPrototypeOf(Headers.prototype), 'constructor', this).call(this, res, name);
+    this._status = 500;
   }
 
-  _inherits(QueryString, _Source);
+  _inherits(Headers, _Destination);
 
-  _createClass(QueryString, [{
-    key: 'get',
-    value: function get(query) {
-      if (!this._parsedQuery) {
-        var index = this._req.url.indexOf('?');
-        this._parsedQuery = -1 !== index ? _querystring2['default'].parse(this._req.url.substring(index + 1)) : {};
+  _createClass(Headers, [{
+    key: 'set',
+    value: function set(name, value) {
+      if ('number' !== typeof value) {
+        throw new _yerror2['default']('E_BAD_STATUS', typeof value, value);
       }
-      return (0, _miniquery2['default'])(query, [this._parsedQuery]);
+      this._status = value;
+    }
+  }, {
+    key: 'finish',
+    value: function finish(res) {
+      this._res.statusCode = this._status;
     }
   }]);
 
-  return QueryString;
-})(_source2['default']);
+  return Headers;
+})(_destination2['default']);
 
-exports['default'] = QueryString;
+exports['default'] = Headers;
 module.exports = exports['default'];

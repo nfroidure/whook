@@ -1,13 +1,21 @@
 'use strict';
 
-require('babel/register');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var assert = require('assert');
-var neatequal = require('neatequal');
-var StreamTest = require('streamtest');
+var _assert = require('assert');
+
+var _assert2 = _interopRequireDefault(_assert);
+
+var _neatequal = require('neatequal');
+
+var _neatequal2 = _interopRequireDefault(_neatequal);
+
+var _streamtest = require('streamtest');
+
+var _streamtest2 = _interopRequireDefault(_streamtest);
 
 describe('TimeWhook', function () {
-  var TimeWhook = require('./../../dist/whooks/time');
+  var TimeWhook = require('./time');
 
   describe('constructor()', function () {
     it('should work', function () {
@@ -31,8 +39,9 @@ describe('TimeWhook', function () {
       var whook = new TimeWhook();
       whook.init();
       whook.pre($, function () {
-        neatequal($.out, {
-          contentType: 'text/plain'
+        (0, _neatequal2['default'])($.out, {
+          contentType: 'text/plain',
+          statusCode: 200
         });
       });
     });
@@ -40,7 +49,7 @@ describe('TimeWhook', function () {
 
   describe('process()', function () {
 
-    StreamTest.versions.forEach(function (version) {
+    _streamtest2['default'].versions.forEach(function (version) {
       describe('for ' + version + ' streams', function () {
 
         it('should return a stream outputting the current time', function (done) {
@@ -57,17 +66,20 @@ describe('TimeWhook', function () {
             }
           };
           var whook = new TimeWhook();
-          whook.init();
-          whook.process($).pipe(StreamTest[version].toText(function (err, text) {
+          var req = new whook.init();
+          whook.process($, _streamtest2['default'][version].fromChunks([])).pipe(_streamtest2['default'][version].toText(function (err, text) {
             if (err) {
               done(err);
             }
-            assert.equal(text, '13371337');
+            _assert2['default'].equal(text, '13371337');
+            (0, _neatequal2['default'])($.out, {
+              contentLength: text.length
+            });
             done();
           }));
         });
 
-        it('should log when a log service is available', function (done) {
+        it.only('should log when a log service is available', function (done) {
           var args;
           var $ = {
             'in': {
@@ -85,11 +97,14 @@ describe('TimeWhook', function () {
           };
           var whook = new TimeWhook();
           whook.init();
-          whook.process($).pipe(StreamTest[version].toText(function (err, text) {
+          whook.process($, _streamtest2['default'][version].fromChunks([])).pipe(_streamtest2['default'][version].toText(function (err, text) {
             if (err) {
               done(err);
             }
-            assert.equal(text, '1970-01-01T03:42:51.337Z');
+            _assert2['default'].equal(text, '1970-01-01T03:42:51.337Z');
+            (0, _neatequal2['default'])($.out, {
+              contentLength: text.length
+            });
             done();
           }));
         });

@@ -13,7 +13,10 @@ I'm till in the API design process. Feel free to add issues, give advice and
  even enters the early dev team if you think this ideas worth a concrete
  implementation.
 
-## Principles: The wireable REST framework
+## Principles: The pluggable REST framework
+
+Creating REST APIs with WHook is mainly about building your API by plugin
+ logic in it.
 
 The Whook goal is to tighly couple route definitions with the other parts of
  a REST API definition (query parameters, request/response headers, status

@@ -4,7 +4,7 @@
   "description": "Build strong and efficient REST web services.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register src/**/*.mocha.js src/*.mocha.js",
+    "test": "mocha --compilers js:babel/register src/**/*.mocha.js src/*.mocha.js tests/*.mocha.js",
     "compile": "babel src --out-dir=dist",
     "prepublish": "npm run compile"
   },
@@ -26,14 +26,16 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "devDependencies": {
-    "babel": "^5.2.15",
-    "mocha": "^2.2.4",
+    "babel": "^5.6.7",
+    "mocha": "^2.2.5",
     "neatequal": "^1.0.0",
-    "sinon": "^1.14.1",
-    "streamtest": "^1.2.0"
+    "sinon": "^1.15.3",
+    "streamtest": "^1.2.1",
+    "supertest": "^1.0.1"
   },
   "dependencies": {
-    "miniquery": "^1.0.0",
-    "string-to-stream": "^1.0.1"
+    "debug": "^2.2.0",
+    "miniquery": "^1.1.0",
+    "yerror": "^1.0.1"
   }
 }

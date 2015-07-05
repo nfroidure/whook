@@ -1,6 +1,6 @@
 'use strict';
 
-import stringToStream from 'string-to-stream';
+import Stream from 'stream';
 import Whook from '../whook';
 
 export default class TimeHook extends Whook {
@@ -27,7 +27,7 @@ export default class TimeHook extends Whook {
         title: 'TimeHook output specs',
         type: 'object',
         properties: {
-          status: {
+          statusCode: {
             type: 'number',
             required: true,
             destination: 'status',
@@ -36,25 +36,42 @@ export default class TimeHook extends Whook {
             type: 'string',
             required: true,
             destination: 'headers:Content-Type',
+          },
+          contentLength: {
+            type: 'number',
+            required: true,
+            destination: 'headers:Content-Length',
           }
         }
       },
       services: {
-        log: ''
+        log: '',
+        time: ''
       }
     };
   }
   init() {}
   // Logic applyed to response/request abstract data before sending response content
   pre({out}, next) {
+    out.statusCode = 200;
     out.contentType = 'text/plain';
     next();
   }
-  // Logic applyed to response/request abstract data before sending response content
-  process({in: {format}, services: {time}}) {
-    var curTime = time();
-    return stringToStream(
-      (new Date(time()))['iso' === format ? 'toISOString' : 'getTime']().toString()
-    );
+  // Logic applyed to response/request abstract data when sending response content
+  process({in: {format}, out: out, services: {time}}, inStream) {
+      var curTime = (new Date(time()))[
+        'iso' === format ?
+        'toISOString' : 'getTime'
+      ]().toString();
+    var outStream = new Stream.PassThrough();
+    out.contentLength = curTime.length;
+    inStream.on('data', function(chunk) {
+        outStream.emit('error', new YError('E_UNEXPECTED_CONTENT'));
+    });
+    inStream.on('end', () => {
+      outStream.write(curTime);
+      outStream.end();
+    });
+    return outStream;
   }
 }

@@ -1,10 +1,18 @@
 'use strict';
 
-require('babel/register');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var assert = require('assert');
-var neatequal = require('neatequal');
-var sinon = require('sinon');
+var _assert = require('assert');
+
+var _assert2 = _interopRequireDefault(_assert);
+
+var _neatequal = require('neatequal');
+
+var _neatequal2 = _interopRequireDefault(_neatequal);
+
+var _sinon = require('sinon');
+
+var _sinon2 = _interopRequireDefault(_sinon);
 
 describe('HeadersDestination', function () {
   var HeadersDestination = require('./headers');
@@ -31,19 +39,19 @@ describe('HeadersDestination', function () {
         }
       };
       var headersSet = {};
-      var stub = sinon.stub(res, 'setHeader');
+      var stub = _sinon2['default'].stub(res, 'setHeader');
 
-      var hService = new HeadersDestination();
+      var hService = new HeadersDestination(res);
       hService.set('Content-Type', 'text/plain');
       hService.set('Content-Length', 15);
-      hService.finish(res);
+      hService.finish();
 
-      neatequal(res, {
+      (0, _neatequal2['default'])(res, {
         'Content-Type': 'text/plain',
         'Content-Length': 15
       });
 
-      assert.equal(stub.callCount, 2);
+      _assert2['default'].equal(stub.callCount, 2);
     });
   });
 });

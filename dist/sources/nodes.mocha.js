@@ -1,9 +1,14 @@
 'use strict';
 
-require('babel/register');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var assert = require('assert');
-var neatequal = require('neatequal');
+var _assert = require('assert');
+
+var _assert2 = _interopRequireDefault(_assert);
+
+var _neatequal = require('neatequal');
+
+var _neatequal2 = _interopRequireDefault(_neatequal);
 
 describe('NodesSource', function () {
   var NodesSource = require('./nodes');
@@ -24,8 +29,8 @@ describe('NodesSource', function () {
         url: '/download/plop.avi'
       });
 
-      assert.deepEqual(nodesSource.get('0'), 'download');
-      assert.deepEqual(nodesSource.get('1'), 'plop.avi');
+      _assert2['default'].deepEqual(nodesSource.get('0'), 'download');
+      _assert2['default'].deepEqual(nodesSource.get('1'), 'plop.avi');
     });
   });
 });

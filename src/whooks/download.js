@@ -5,6 +5,7 @@ import Whook from '../whook';
 export default class DownloadWhook extends Whook {
   static specs() {
     return {
+      nodes: [],
       methods: ['GET'],
       in: {
         $schema: 'http://json-schema.org/draft-04/schema#',
@@ -18,7 +19,7 @@ export default class DownloadWhook extends Whook {
             description: 'Whether the download header should be added or not.'
           },
           filename: {
-            source: 'context:filename',
+            source: 'qs:filename',
             type: 'string',
             default: '',
             description: 'The filename under wich the download should be saved.'

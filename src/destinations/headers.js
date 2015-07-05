@@ -4,18 +4,18 @@ import Destination from '../destination';
 
 export default class Headers extends Destination {
   constructor(res, name = 'headers') {
-    super(name);
-    this.headers = new Set();
+    super(res, name);
+    this._headers = new Set();
   }
   set(name, value) {
-    this.headers.add({
+    this._headers.add({
       name,
       value
     });
   }
   finish(res) {
-    this.headers.forEach(function(header) {
-      res.setHeader(header.name, header.value);
-    });
+    for(let header of this._headers) {
+      this._res.setHeader(header.name, header.value);
+    }
   }
 }

@@ -15,9 +15,10 @@ export default class Whook {
     }
     preError(err, $, next) {
       next(err);
-    }
-    process(inputStream) {
-    }
+    }/*
+    process($, inputStream) {
+      return inputStream;
+    }*/
     piped(outputStream) {
     }
     post($, next) {

@@ -8,14 +8,18 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-'use strict';
-
 var Source = (function () {
-  function Source(name, req) {
+  function Source(req, name) {
     _classCallCheck(this, Source);
 
+    if ('object' !== typeof req) {
+      throw new Error('E_BAD_SOURCE_REQUEST');
+    }
+    if ('string' !== typeof name) {
+      throw new Error('E_BAD_SOURCE_NAME');
+    }
+    this._req = req;
     this.name = name;
-    this.req = req;
   }
 
   _createClass(Source, [{

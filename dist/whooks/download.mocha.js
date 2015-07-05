@@ -1,9 +1,14 @@
 'use strict';
 
-require('babel/register');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var assert = require('assert');
-var neatequal = require('neatequal');
+var _assert = require('assert');
+
+var _assert2 = _interopRequireDefault(_assert);
+
+var _neatequal = require('neatequal');
+
+var _neatequal2 = _interopRequireDefault(_neatequal);
 
 describe('DownloadWhook', function () {
   var DownloadWhook = require('./download');
@@ -32,7 +37,7 @@ describe('DownloadWhook', function () {
       var whook = new DownloadWhook();
       whook.init();
       whook.pre($, function () {
-        neatequal($.out, {});
+        (0, _neatequal2['default'])($.out, {});
       });
     });
 
@@ -47,7 +52,7 @@ describe('DownloadWhook', function () {
       var whook = new DownloadWhook();
       whook.init();
       whook.pre($, function () {
-        neatequal($.out, {
+        (0, _neatequal2['default'])($.out, {
           contentDisposition: 'attachment'
         });
       });
@@ -65,7 +70,7 @@ describe('DownloadWhook', function () {
       var whook = new DownloadWhook();
       whook.init();
       whook.pre($, function () {
-        neatequal($.out, {
+        (0, _neatequal2['default'])($.out, {
           contentDisposition: 'attachment; filename="duke.jpg"'
         });
       });
@@ -88,10 +93,10 @@ describe('DownloadWhook', function () {
       var whook = new DownloadWhook();
       whook.init();
       whook.pre($, function () {
-        neatequal($.out, {
+        (0, _neatequal2['default'])($.out, {
           contentDisposition: 'attachment; filename="duke.jpg"'
         });
-        neatequal(args, ['download', 'out.contentDisposition set to:', 'attachment; filename="duke.jpg"']);
+        (0, _neatequal2['default'])(args, ['download', 'out.contentDisposition set to:', 'attachment; filename="duke.jpg"']);
       });
     });
   });

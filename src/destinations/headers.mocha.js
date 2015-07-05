@@ -31,10 +31,10 @@ describe('HeadersDestination', function() {
       var headersSet = {};
       var stub = sinon.stub(res, 'setHeader');
 
-      var hService = new HeadersDestination();
-      hService.set('Content-Type', 'text/plain')
-      hService.set('Content-Length', 15)
-      hService.finish(res);
+      var hService = new HeadersDestination(res);
+      hService.set('Content-Type', 'text/plain');
+      hService.set('Content-Length', 15);
+      hService.finish();
 
       neatequal(res, {
         'Content-Type': 'text/plain',

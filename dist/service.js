@@ -6,8 +6,6 @@ Object.defineProperty(exports, '__esModule', {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-'use strict';
-
 var Service =
 // Run at service attachment
 function Service(name) {

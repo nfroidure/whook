@@ -1,43 +1,62 @@
-import {mapAndInstanciate} from './utils';
+import {getInvolvedPlugs, instanciatePlugs, mapPlugs} from './utils';
 import sinon from 'sinon';
 import assert from 'assert';
 
 describe('utils', function() {
 
-  describe('mapAndInstanciate()', function() {
+  describe('instanciatePlugs()', function() {
     var Destination =  require('./destination');
 
     class Dest1 extends Destination {
-      get() { return 'dest1get'; }
+      get() { return 'dest1get: ' + this._res.test; }
     }
     class Dest2 extends Destination {
-      get() { return 'dest2get'; }
+      get() { return 'dest2get: ' + this._res.test; }
     }
 
     it('should return instantiated destinations for the given res', function() {
       var destinationsClasses = new Map();
       destinationsClasses.set('dest1', Dest1);
       destinationsClasses.set('dest2', Dest2);
-      var destinationsMap = {
-        dest1: '',
-        dest2: 'dest2renamed'
+      var res = {
+        test: 'Hola!'
       };
-      var res = {};
 
-      var dest2Stub = sinon.stub();
-
-
-      var destinationsInstances = mapAndInstanciate(
+      var destinationsInstancesMap = instanciatePlugs(
         destinationsClasses,
-        destinationsMap,
         res
       );
 
-      assert(destinationsInstances.dest1);
-      assert.equal(destinationsInstances.dest1.get(), 'dest1get');
-      assert(!destinationsInstances.dest2);
-      assert(destinationsInstances.dest2renamed);
-      assert.equal(destinationsInstances.dest2renamed.get(), 'dest2get');
+      assert(destinationsInstancesMap.has('dest1'));
+      assert.equal(destinationsInstancesMap.get('dest1').get(), 'dest1get: Hola!');
+      assert(destinationsInstancesMap.has('dest2'));
+      assert.equal(destinationsInstancesMap.get('dest2').get(), 'dest2get: Hola!');
+    });
+
+  });
+
+  describe('mapPlugs()', function() {
+    var plug1 = {test: 'plug1'};
+    var plug2 = {test: 'plug2'};
+
+    it('should return a new map of plugs', function() {
+      var namesMapping = {
+        plug1: '',
+        plug2: 'plug2renamed'
+      };
+      var plugs = new Map();
+      plugs.set('plug1', plug1);
+      plugs.set('plug2', plug2);
+
+      var newMap = mapPlugs(
+        plugs,
+        namesMapping
+      );
+
+      assert(newMap.plug1);
+      assert.equal(newMap.plug1.test, 'plug1');
+      assert(!newMap.plug2);
+      assert(newMap.plug2renamed.test, 'plug2');
     });
 
   });

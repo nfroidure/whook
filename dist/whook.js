@@ -8,8 +8,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-'use strict';
-
 var Whook = (function () {
   function Whook(name) {
     _classCallCheck(this, Whook);
@@ -33,10 +31,11 @@ var Whook = (function () {
       next(err);
     }
   }, {
-    key: 'process',
-    value: function process(inputStream) {}
-  }, {
     key: 'piped',
+    /*
+    process($, inputStream) {
+     return inputStream;
+    }*/
     value: function piped(outputStream) {}
   }, {
     key: 'post',
