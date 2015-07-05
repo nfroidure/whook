@@ -31,16 +31,18 @@ export default class TimeHook extends Whook {
             type: 'number',
             required: true,
             destination: 'status',
+            enum: [200]
           },
           contentType: {
             type: 'string',
             required: true,
             destination: 'headers:Content-Type',
+            enum: ['text/plain']
           },
           contentLength: {
             type: 'number',
             required: true,
-            destination: 'headers:Content-Length',
+            destination: 'headers:Content-Length'
           }
         }
       },
