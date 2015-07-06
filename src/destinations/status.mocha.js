@@ -16,8 +16,29 @@ describe('StatusDestination', function() {
     it('should work', function() {
       new StatusDestination()
         .set('', 200);
-
     });
+
+    it('should fail with a non-number statusCode', function() {
+      assert.throws(function() {
+        new StatusDestination()
+          .set('', '200');
+      });
+    });
+
+    it('should fail with a too low statusCode', function() {
+      assert.throws(function() {
+        new StatusDestination()
+          .set('', 99);
+      });
+    });
+
+    it('should fail with a too high statusCode', function() {
+      assert.throws(function() {
+        new StatusDestination()
+          .set('', 700);
+      });
+    });
+
   });
 
   describe('finish()', function() {

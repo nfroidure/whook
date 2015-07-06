@@ -78,6 +78,8 @@ export default class Router {
   }
   _handle(req, res) {
     log('Handling a new request.');
+    // Erase default statusCode
+    res.statusCode = -1;
     // Get the whooks to complete the incoming message
     var involvedWhookMounts = this._prepareWhooksChain(req);
     log('Found ' + involvedWhookMounts.length + ' whooks for her.');
@@ -131,34 +133,19 @@ export default class Router {
       .then(() => {
         var incomingStream = new Stream.PassThrough();
         var pipeline = incomingStream;
-        pipeline.on('error', function(err) {
-            log('Pipeline stream errored.', err);
-            reject(err);
-          }).on('end', function() {
-            log('Pipeline stream successfully ended.');
-          });
         return new Promise((resolve, reject) => {
           // create the pipeline
-          involvedWhookMounts.forEach((whookMount, index) => {
-            if(whookMount.whook.process) {
-              pipeline = whookMount.whook.process(contexts[index], pipeline);
-              if(!pipeline) {
-                throw new YError('E_BAD_PROCESS_RETURN', whookMount.whook.name, pipeline);
-              }
-              pipeline.on('error', function(err) {
-                log('Whook stream "' + whookMount.whook.name + '" errored.', err);
-                reject(err);
-              }).on('end', function() {
-                log('Whook stream "' + whookMount.whook.name + '" successfully ended.');
-              });
-            }
-          });
+          pipeline = this._prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline);
           // flush destination headers
           involvedWhookMounts.forEach((whookMount, index) => {
             this._applyWhookOutput(whookMount, destinationsMap, contexts[index]);
           });
           for(var [name, destination] of destinationsMap) {
             destination.finish();
+          }
+          if(-1 === res.statusCode) {
+            log('No status code were set, fallbacking to 404!');
+            res.statusCode = 404;
           }
           // run piped step
           this._runNextWhookMount(
@@ -174,6 +161,9 @@ export default class Router {
                 log('Request stream successfully ended.');
               })
               .pipe(incomingStream);
+            if(incomingStream === pipeline) {
+              log('Request stream unprocessed.')
+            }
             pipeline.pipe(res)
               .on('error', (err) => {
                 log('Response stream errored.', err);
@@ -258,6 +248,29 @@ export default class Router {
         })
       );
     });
+  }
+  _prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline) {
+    pipeline.on('error', function(err) {
+      log('Pipeline stream errored.', err);
+      reject(err);
+    }).on('end', function() {
+      log('Pipeline stream successfully ended.');
+    });
+    involvedWhookMounts.forEach((whookMount, index) => {
+      if(whookMount.whook.process) {
+        pipeline = whookMount.whook.process(contexts[index], pipeline);
+        if(!pipeline) {
+          throw new YError('E_BAD_PROCESS_RETURN', whookMount.whook.name, pipeline);
+        }
+        pipeline.on('error', function(err) {
+          log('Whook stream "' + whookMount.whook.name + '" errored.', err);
+          reject(err);
+        }).on('end', function() {
+          log('Whook stream "' + whookMount.whook.name + '" successfully ended.');
+        });
+      }
+    });
+    return pipeline;
   }
   _runNextWhookMount(involvedWhookMounts, step, index, contexts, err) {
     if(!involvedWhookMounts[index]) {

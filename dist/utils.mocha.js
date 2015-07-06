@@ -22,51 +22,6 @@ var _assert2 = _interopRequireDefault(_assert);
 
 describe('utils', function () {
 
-  describe('getInvolvedPlugs()', function () {
-
-    it('should return plugs for the given whookMounts', function () {
-      destinationsClasses.set('header', { test: 'header' });
-      destinationsClasses.set('status', { test: 'status' });
-      destinationsClasses.set('what', { test: 'what' });
-      destinationsClasses.set('else', { test: 'else' });
-
-      var destinationsInstancesMap = (0, _utils.getInvolvedPlugs)(destinationsClasses, [{
-        specs: {
-          out: {
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            title: 'Output',
-            type: 'object',
-            properties: {
-              contentDisposition: {
-                destination: 'headers:Content-Disposition',
-                type: 'string'
-              }
-            }
-          }
-        }
-      }, {
-        specs: {
-          out: {
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            title: 'Output',
-            type: 'object',
-            properties: {
-              contentDisposition: {
-                destination: 'status',
-                type: 'number'
-              }
-            }
-          }
-        }
-      }]);
-
-      (0, _assert2['default'])(destinationsInstancesMap.has('dest1'));
-      _assert2['default'].equal(destinationsInstancesMap.get('dest1').get(), 'dest1get: Hola!');
-      (0, _assert2['default'])(destinationsInstancesMap.has('dest2'));
-      _assert2['default'].equal(destinationsInstancesMap.get('dest2').get(), 'dest2get: Hola!');
-    });
-  });
-
   describe('instanciatePlugs()', function () {
     var Destination = require('./destination');
 

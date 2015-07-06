@@ -34,7 +34,31 @@ var _default = (function (_Service) {
   _createClass(_class, [{
     key: 'log',
     value: function log() {
-      console.log.apply(console, arguments);
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var type = args.unshift();
+      if ('function' === this[type]) {
+        console[type].apply(console, args);
+      } else {
+        console.log.apply(console, arguments);
+      }
+    }
+  }, {
+    key: 'info',
+    value: function info() {
+      console.info.apply(console, arguments);
+    }
+  }, {
+    key: 'debug',
+    value: function debug() {
+      console.debug.apply(console, arguments);
+    }
+  }, {
+    key: 'error',
+    value: function error() {
+      console.error.apply(console, arguments);
     }
   }]);
 

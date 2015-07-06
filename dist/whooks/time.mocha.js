@@ -66,10 +66,10 @@ describe('TimeWhook', function () {
             }
           };
           var whook = new TimeWhook();
-          var req = new whook.init();
+          whook.init();
           whook.process($, _streamtest2['default'][version].fromChunks([])).pipe(_streamtest2['default'][version].toText(function (err, text) {
             if (err) {
-              done(err);
+              return done(err);
             }
             _assert2['default'].equal(text, '13371337');
             (0, _neatequal2['default'])($.out, {
@@ -79,7 +79,7 @@ describe('TimeWhook', function () {
           }));
         });
 
-        it.only('should log when a log service is available', function (done) {
+        it('should log when a log service is available', function (done) {
           var args;
           var $ = {
             'in': {

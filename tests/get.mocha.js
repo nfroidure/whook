@@ -33,6 +33,18 @@ describe('Server integration', function() {
 
   describe('for GET requests', function() {
 
+    it.only('should 404 for unexisting routes', function(done) {
+      request(router.callback())
+      .get('/idonotexist')
+      .expect(404)
+      .end(function(err, res) {
+        if(err) {
+          return done(err);
+        }
+        done();
+      });
+    });
+
     it('should work as expected when download whook is feed', function(done) {
       request(router.callback())
       .get('/time?download=true&filename=plop.csv')

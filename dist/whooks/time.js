@@ -57,8 +57,10 @@ var TimeHook = (function (_Whook) {
       var curTime = new Date(time())['iso' === format ? 'toISOString' : 'getTime']().toString();
       var outStream = new _stream2['default'].PassThrough();
       out.contentLength = curTime.length;
+      inStream.on('data', function (chunk) {
+        outStream.emit('error', new YError('E_UNEXPECTED_CONTENT'));
+      });
       inStream.on('end', function () {
-        console.log('Plop');
         outStream.write(curTime);
         outStream.end();
       });
@@ -92,12 +94,14 @@ var TimeHook = (function (_Whook) {
             statusCode: {
               type: 'number',
               required: true,
-              destination: 'status'
+              destination: 'status',
+              'enum': [200]
             },
             contentType: {
               type: 'string',
               required: true,
-              destination: 'headers:Content-Type'
+              destination: 'headers:Content-Type',
+              'enum': ['text/plain']
             },
             contentLength: {
               type: 'number',

@@ -212,27 +212,20 @@ var Router = (function () {
           // run piped step
           _this2._runNextWhookMount(involvedWhookMounts, 'piped', 0, contexts).then(function () {
             // pipe
-            req.pipe(res); /*
-                           .on('error', (err) => {
-                           log('Request stream errored.', err);
-                           reject(err);
-                           })
-                           .on('end', () => {
-                           log('Request stream successfully ended.');
-                           })
-                           .pipe(incomingStream)
-                           .pipe(res)
-                           .on('error', (err) => {
-                           log('Response stream errored.', err);
-                           reject(err);
-                           })
-                           .on('end', function() {
-                           log('Response stream successfully ended.', contexts);
-                           })
-                           .on('finish', function() {
-                           log('Response stream successfully finished.', contexts);
-                           })
-                           .on('ended', resolve);*/
+            req.on('error', function (err) {
+              log('Request stream errored.', err);
+              reject(err);
+            }).on('end', function () {
+              log('Request stream successfully ended.');
+            }).pipe(incomingStream);
+            pipeline.pipe(res).on('error', function (err) {
+              log('Response stream errored.', err);
+              reject(err);
+            }).on('end', function () {
+              log('Response stream successfully ended.', contexts);
+            }).on('finish', function () {
+              log('Response stream successfully finished.', contexts);
+            }).on('ended', resolve);
           });
         });
       })
