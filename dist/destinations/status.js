@@ -29,7 +29,7 @@ var Headers = (function (_Destination) {
     _classCallCheck(this, Headers);
 
     _get(Object.getPrototypeOf(Headers.prototype), 'constructor', this).call(this, res, name);
-    this._status = 500;
+    this._status = 0;
   }
 
   _inherits(Headers, _Destination);
@@ -37,7 +37,7 @@ var Headers = (function (_Destination) {
   _createClass(Headers, [{
     key: 'set',
     value: function set(name, value) {
-      if ('number' !== typeof value) {
+      if ('number' !== typeof value || value < 100 || value > 699) {
         throw new _yerror2['default']('E_BAD_STATUS', typeof value, value);
       }
       this._status = value;
@@ -45,7 +45,7 @@ var Headers = (function (_Destination) {
   }, {
     key: 'finish',
     value: function finish(res) {
-      this._res.statusCode = this._status;
+      this._res.statusCode = this._status || 404;
     }
   }]);
 

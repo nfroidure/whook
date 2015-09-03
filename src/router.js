@@ -162,7 +162,7 @@ export default class Router {
               })
               .pipe(incomingStream);
             if(incomingStream === pipeline) {
-              log('Request stream unprocessed.')
+              log('Request stream unprocessed.');
             }
             pipeline.pipe(res)
               .on('error', (err) => {

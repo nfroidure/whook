@@ -33,7 +33,7 @@ describe('Server integration', function() {
 
   describe('for GET requests', function() {
 
-    it.only('should 404 for unexisting routes', function(done) {
+    it('should 404 for unexisting routes', function(done) {
       request(router.callback())
       .get('/idonotexist')
       .expect(404)
