@@ -2,16 +2,15 @@
 
 > Build strong and efficient REST web services.
 
-**Early call for advice:** Since i want to be sure that this architecture
- doesn't only fit my own needs, here is just a description of what this project
- **could** be. Your input is very welcome.
-
 This project is intended to borrow everything good in every NodeJS framework
  with some additions i'd like to have as a REST web services developper.
 
 I'm till in the API design process. Feel free to add issues, give advice and
  even enters the early dev team if you think this ideas worth a production
  level implementation.
+
+The first stable version will be [1.0.0](https://github.com/nfroidure/whook/milestones/1.0.0),
+use prior versions a your own risk ;).
 
 ## Usage
 
@@ -33,7 +32,9 @@ server.listen(1337);
 ## Principles: The pluggable REST framework
 
 Creating REST APIs with Whook is mainly about building your API by plugin
- logic in it.
+ logic in it. Whook allows you to do it well with
+ [a negligible performance trade-off](https://github.com/nfroidure/whook-perf)
+ comparing to frameworks like ExpressJS or Koa.
 
 The Whook goal is to tighly couple route definitions with the other parts of
  a REST API definition (query parameters, request/response headers, status
