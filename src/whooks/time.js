@@ -61,11 +61,11 @@ export default class TimeHook extends Whook {
   }
   // Logic applyed to response/request abstract data when sending response content
   process({in: {format}, out: out, services: {time}}, inStream) {
-      var curTime = (new Date(time()))[
+      let curTime = (new Date(time.now()))[
         'iso' === format ?
         'toISOString' : 'getTime'
       ]().toString();
-    var outStream = new Stream.PassThrough();
+    let outStream = new Stream.PassThrough();
     out.contentLength = curTime.length;
     inStream.on('data', function(chunk) {
         outStream.emit('error', new YError('E_UNEXPECTED_CONTENT'));

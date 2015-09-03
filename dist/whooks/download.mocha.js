@@ -77,7 +77,7 @@ describe('DownloadWhook', function () {
     });
 
     it('should log when a log service is available', function () {
-      var args;
+      var args = undefined;
       var $ = {
         'in': {
           download: true,

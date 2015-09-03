@@ -11,12 +11,12 @@ import YError from 'yerror';
 import debug from 'debug';
 import Stream from 'stream';
 
-var log = debug('whook.router');
+let log = debug('whook.router');
 
 export const WHOOK_SYMBOL = Symbol('WhooksSymbol');
 
 function _buildTreeNode() {
-  var node = {};
+  let node = {};
   Object.defineProperty(node, WHOOK_SYMBOL, {
     enumerable: false,
     writable: false,
@@ -56,7 +56,7 @@ export default class Router {
     return this;
   }
   add(specs, whook) {
-    var whookMount = {specs, whook};
+    let whookMount = {specs, whook};
     this._checkMounted();
     this._whookMounts.push(whookMount);
     this._whooksCache.set(whookMount, {
@@ -81,10 +81,10 @@ export default class Router {
     // Erase default statusCode
     res.statusCode = -1;
     // Get the whooks to complete the incoming message
-    var involvedWhookMounts = this._prepareWhooksChain(req);
+    let involvedWhookMounts = this._prepareWhooksChain(req);
     log('Found ' + involvedWhookMounts.length + ' whooks for her.');
     // Instantiate plugs (destinations, sources)
-    var sourcesMap = instanciatePlugs(
+    let sourcesMap = instanciatePlugs(
       involvedWhookMounts.reduce((sourceNames, whook) => {
         this._whooksCache.get(whook).sourceNames.forEach((name) => {
           if(-1 === sourceNames.indexOf(name)) {
@@ -99,7 +99,7 @@ export default class Router {
       req
     );
     log(sourcesMap.size + ' sources prepared.');
-    var destinationsMap = instanciatePlugs(
+    let destinationsMap = instanciatePlugs(
       involvedWhookMounts.reduce((destinationNames, whook) => {
         this._whooksCache.get(whook).destinationNames.forEach((name) => {
           if(-1 === destinationNames.indexOf(name)) {
@@ -115,7 +115,7 @@ export default class Router {
     );
     log(destinationsMap.size + ' destinations prepared.');
     // Prepare contexts
-    var contexts = this._prepareContexts(
+    let contexts = this._prepareContexts(
       involvedWhookMounts,
       sourcesMap,
       destinationsMap,
@@ -131,8 +131,8 @@ export default class Router {
       })
     // process streams
       .then(() => {
-        var incomingStream = new Stream.PassThrough();
-        var pipeline = incomingStream;
+        let incomingStream = new Stream.PassThrough();
+        let pipeline = incomingStream;
         return new Promise((resolve, reject) => {
           // create the pipeline
           pipeline = this._prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline);
@@ -195,9 +195,9 @@ export default class Router {
     }
   }
   _prepareContexts(involvedWhookMounts, sourcesMap, destinationsMap, services) {
-    var contexts = [];
+    let contexts = [];
     involvedWhookMounts.forEach((whookMount, index) => {
-      var context = {
+      let context = {
         in: {},
         out: {},
         services: mapPlugs(this.services, whookMount.specs.services)
@@ -212,9 +212,9 @@ export default class Router {
       Object.keys(whookMount.specs.in.properties) :
       []
     ).forEach(function(propertyName) {
-      var property = whookMount.specs.in.properties[propertyName];
-      var [source, query] = property.source.split(':');
-      var result = sourcesMap.get(source).get(query);
+      let property = whookMount.specs.in.properties[propertyName];
+      let [source, query] = property.source.split(':');
+      let result = sourcesMap.get(source).get(query);
       if(result.length) {
         $.in[propertyName] = result[0];
       } else {
@@ -227,15 +227,15 @@ export default class Router {
       Object.keys(whookMount.specs.out.properties) :
       []
     ).forEach(function(propertyName) {
-      var property = whookMount.specs.out.properties[propertyName];
-      var [destination, query] = property.destination.split(':');
+      let property = whookMount.specs.out.properties[propertyName];
+      let [destination, query] = property.destination.split(':');
       if('undefined' !== typeof $.out[propertyName]) {
         destinationsMap.get(destination).set(query, $.out[propertyName]);
       }
     });
   }
   _prepareWhooksChain(req) {
-    var nodes = req.url.split('?')[0].split('/').slice(1);
+    let nodes = req.url.split('?')[0].split('/').slice(1);
     return this._whookMounts.filter(function(whookMount) {
       return 0 === whookMount.specs.nodes.length || (
         nodes.length >= whookMount.specs.nodes.length &&

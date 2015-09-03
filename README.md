@@ -10,24 +10,40 @@ This project is intended to borrow everything good in every NodeJS framework
  with some additions i'd like to have as a REST web services developper.
 
 I'm till in the API design process. Feel free to add issues, give advice and
- even enters the early dev team if you think this ideas worth a concrete
- implementation.
+ even enters the early dev team if you think this ideas worth a production
+ level implementation.
+
+## Usage
+
+```js
+import whook from 'whook';
+import TimeWhook from 'whook/dist/whooks/time';
+import http from 'http';
+
+let router = whook();
+let server;
+
+// Return current timestamp for GET /time requests
+router.add(TimeWhook.specs(), new TimeWhook('time'));
+
+server = http.createServer(router.callback());
+server.listen(1337);
+```
 
 ## Principles: The pluggable REST framework
 
-Creating REST APIs with WHook is mainly about building your API by plugin
+Creating REST APIs with Whook is mainly about building your API by plugin
  logic in it.
 
 The Whook goal is to tighly couple route definitions with the other parts of
  a REST API definition (query parameters, request/response headers, status
  codes ...).
 
-For that matters  Whook
 As a result, a Hook (the Wook logical modules) only process generic requests in
  input and output generic responses:
 
 ```js
-jsonHook.pre = function($, next()) {
+jsonHook.pre = function($, next) {
   if('application/json' === $.in.contentType) {
     try {
       $.out.content = JSON.stringify($.in.body);
@@ -40,24 +56,46 @@ jsonHook.pre = function($, next()) {
 ```
 
 On the other hand, the Whook router requires you to define your API and the
- bindings with the various hooks you are using.
+ bindings with the various hooks you are using. This is done with the help of
+ specs:
 
 ```js
-myRouter.add({
-  in: {
-    contentType: {
-      source: 'req-headers:Content-Type'
-    },
-    body: {
-      source: 'tmp:body'
+// Adding a hook to handle JSON
+router.add({
+  in: { // What goes in your hook
+    $schema: 'http://json-schema.org/draft-04/schema#',
+    title: 'Input',
+    type: 'object',
+    properties: {
+      contentType: {
+        source: 'headers:Content-Type',
+        type: 'string',
+        default: false,
+        description: 'Whether the request body content type.'
+      },
+      body: {
+        source: 'mem:body',
+        type: 'object',
+        required: true,
+        description: 'The request body as an object.'
+      }
     }
   },
-  out: {
-    content: {
-      dest: 'res-body'
+  out: { // What your hook output
+    $schema: 'http://json-schema.org/draft-04/schema#',
+    title: 'Output',
+    type: 'object',
+    properties: {
+      contentDisposition: {
+        destination: 'headers:Content-Disposition',
+        type: 'string'
+      }
     }
+  },
+  services: { // Services your hook may need
+    log: ''
   }
-}, jsonHook);
+}, jsonHook); // The hook logic
 ```
 
 Hooks are working with abstract requests/responses while the routes are wrapping
@@ -65,21 +103,25 @@ Hooks are working with abstract requests/responses while the routes are wrapping
  architecture.
 
 The wrapping logic is described using specs allowing strong checking of
- your API's IOs and its automatic documentation generation no matter how many
- modules are used to complete a single API endpoint.
+ your API's IOs (with the help of JSON Schema) and its automatic documentation
+ generation no matter how many modules are used to complete a single API endpoint.
 
 Since hooks do not operate on real requests/responses, your API isn't
- necessarily influenced by them (until you don't use their default specs).
+ necessarily influenced by them. But if it suits you well, you can use the whook
+ default specs, in this case, your route definition becomes tinyer:
+ ```js
+ router.add(JSONHook.specs(), new JSONHook());
+ ```
 
 The Whook router is a smart tree based on your API uri nodes leading to
  efficient routing.
 
 Whook embed a few main concepts:
-- the [router](#the-router-api) is responsible of selecting wich hooks has to
- be run to complete the request and bring a response. It also manage the context
- in wich a hook should be run according to the specs your provide.
+- the [router](#the-router-api) is responsible of selecting which hooks has to
+ be run to complete the request and bring a response. It also manages the context
+ in which a hook should be run according to the specs you provide.
 - [hooks](#the-hook-interface) are sort of middlewares/controllers but with
- finest settings and working with abstracted request/responses/services.
+ finest settings and working with abstracted requests/responses/services.
 - [context](#the-context-object) is a custom object given to whooks by the
  router (often named `$`). It is a lazy proxy between request/response
  properties (headers, query parameters, uri, methods etc...) and whooks.
@@ -110,15 +152,16 @@ Hooks code is based on a simple assumption: "You don't want to know a
 
 A hook need to be a concrete class. Do anything you want there.
 
-### Hook.specs
+### Hook.specs()
 
-Default specs may be exposed as a static property. It is useful to declare
+Default specs may be exposed as a static method. It is useful to declare
  default specs a user could take as is to declare routes quickly:
 ```js
-var router = new Router();
-var MyHook = require('myhook');
+import myhook from 'myhook';
+import whook from 'whook';
 
-router.hook(MyHook.specs, MyHook);
+let router = whook();
+router.add(MyHook.specs(), MyHook);
 ```
 
 ### Hook.prototype.init($:Object, next:Function)
@@ -211,8 +254,11 @@ Callbacks to mount the router to an HTTP server. Note you can mount a router to
  several servers.
 
 ```js
-var router = new Router();
-var http = require('http');
+import http from 'http';
+import Router from 'whook/src/router';
+
+let router = new Router();
+
 http.createServer(router.callback()).listen(3000);
 http.createServer(router.callback()).listen(3001);
 ```
@@ -224,65 +270,6 @@ You can that way mount the router to an existing Express/Connect server.
 Mount the route driven by `hook` according to the given `specs` and
  returns `childRouter` to allows you to create sub routes. If methods were
  declared, then you can only use a subset of those methods.
-
-```js
-// Creating the router
-var router = new Router({
-  domain: 'api.example.com',
-  ip: '0.0.0.0',
-  port: 80
-});
-
-// Adding global configuration
-router.add({
-  methods: ['OPTIONS', 'GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  req: {
-    method: {
-      source: 'method',
-      type: String,
-      required: true,
-    },
-    domain: {
-      source: 'config',
-      type: String,
-      required: true,
-      description: 'Application domain name.'
-    }
-  }
-});
-
-// Creating the v1 endpoint
-var v1Router = router.add({
-  nodes: ['api', 'v1']
-  req: {
-    version: {
-      name: 'version',
-      source: 'nodes:1', // Takes the second node value
-      type: String,
-      required: true,
-      description: 'API version.'
-    }
-  }
-});
-
-
-// Sample of a GET /api/v1/users/:id route declaration
-v1Router.add({
-  methods: ['GET']
-  nodes: [
-    'users',
-    /^(a-f0-9){24}$/
-  ],
-  in: {
-    id: {
-      source: 'qs:id',
-      type: ObjectId,
-      required: true,
-      description: 'The id of the user you wish to access to.'
-    }
-  }
-}, UserHook);
-```
 
 ## The Specs format
 
@@ -364,7 +351,7 @@ A simple service declaration of injected services with a simple key:value object
 
 ## The context object
 
-The context object (alias `$`) is built specifically for each Whook instance
+The context object (alias `$`) is built specifically for each Hook instance
  (and consequently for each client request) from specs given at mount on the
  router.
 
@@ -405,4 +392,3 @@ Services registered in the router you may need to use (typically, loggers,
 
 Debug:
 - set the 'whook.services.notfound' flag to be warn when specified service is not found.
-

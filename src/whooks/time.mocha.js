@@ -3,7 +3,7 @@ import neatequal from 'neatequal';
 import StreamTest from 'streamtest';
 
 describe('TimeWhook', function() {
-  var TimeWhook = require('./time');
+  let TimeWhook = require('./time');
 
   describe('constructor()', function() {
     it('should work', function() {
@@ -20,11 +20,11 @@ describe('TimeWhook', function() {
   describe('pre()', function() {
 
     it('should set the contentType', function() {
-      var $ = {
+      let $ = {
         in: {},
         out: {}
       };
-      var whook = new TimeWhook();
+      let whook = new TimeWhook();
       whook.init();
       whook.pre($, function() {
         neatequal($.out, {
@@ -42,19 +42,21 @@ describe('TimeWhook', function() {
       describe('for ' + version + ' streams', function() {
 
         it('should return a stream outputting the current time', function(done) {
-          var $ = {
+          let $ = {
             in: {},
             out: {},
             services: {
-              time: function() {
-                return 13371337;
+              time: {
+                now: function() {
+                  return 13371337;
+                }
               },
               log: function() {
                 args = [].slice.call(arguments, 0);
               }
             }
           };
-          var whook = new TimeWhook();
+          let whook = new TimeWhook();
           whook.init();
           whook.process($, StreamTest[version].fromChunks([]))
             .pipe(StreamTest[version].toText(function(err, text) {
@@ -70,22 +72,24 @@ describe('TimeWhook', function() {
         });
 
         it('should log when a log service is available', function(done) {
-          var args;
-          var $ = {
+          let args;
+          let $ = {
             in: {
               format: 'iso'
             },
             out: {},
             services: {
-              time: function() {
-                return 13371337;
+              time: {
+                now: function() {
+                  return 13371337;
+                }
               },
               log: function() {
                 args = [].slice.call(arguments, 0);
               }
             }
           };
-          var whook = new TimeWhook();
+          let whook = new TimeWhook();
           whook.init();
           whook.process($, StreamTest[version].fromChunks([]))
             .pipe(StreamTest[version].toText(function(err, text) {

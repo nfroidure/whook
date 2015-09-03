@@ -12,14 +12,17 @@ import NodesSource from '../src/sources/nodes';
 import QueryStringSource from '../src/sources/qs';
 
 describe('Server integration', function() {
-  var router = new Router();
-  var logs;
+  let router = new Router();
+  let logs;
+
   router.source('nodes', NodesSource);
   router.source('qs', QueryStringSource);
   router.destination('status', StatusDestination);
   router.destination('headers', HeadersDestination);
-  router.service('time', function() {
-    return 13371337;
+  router.service('time', {
+    now: function() {
+      return 13371337;
+    }
   });
   router.service('log', function() {
     logs.push([].slice.call(arguments, 0));

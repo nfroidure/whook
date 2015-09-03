@@ -2,8 +2,8 @@ import assert from 'assert';
 import neatequal from 'neatequal';
 
 describe('Router', function() {
-  var Router = require('./router')['default'];
-  var WHOOK_SYMBOL = require('./router')['WHOOK_SYMBOL'];
+  let Router = require('./router')['default'];
+  let WHOOK_SYMBOL = require('./router')['WHOOK_SYMBOL'];
 
 
   describe('constructor()', function() {
@@ -15,8 +15,8 @@ describe('Router', function() {
   describe('service()', function() {
 
     it('should register a new service', function() {
-      var testService = {test: 'test'};
-      var router = new Router();
+      let testService = {test: 'test'};
+      let router = new Router();
       router.service('test', testService);
 
       assert.equal(router.services.get('test'), testService);
@@ -27,8 +27,8 @@ describe('Router', function() {
   describe('source()', function() {
 
     it('should register a new source', function() {
-      var testSource = {test: 'test'};
-      var router = new Router();
+      let testSource = {test: 'test'};
+      let router = new Router();
       router.source('test', testSource);
 
       assert.equal(router.sources.get('test'), testSource);
@@ -39,8 +39,8 @@ describe('Router', function() {
   describe('destination()', function() {
 
     it('should register a new destination', function() {
-      var testDestination = {test: 'test'};
-      var router = new Router();
+      let testDestination = {test: 'test'};
+      let router = new Router();
       router.destination('test', testDestination);
 
       assert.equal(router.destinations.get('test'), testDestination);
@@ -52,7 +52,7 @@ describe('Router', function() {
 
     it('should build a list of whookMounts', function() {
 
-      var router = new Router()
+      let router = new Router()
         .add({
           nodes: []
         }, {
@@ -95,8 +95,8 @@ describe('Router', function() {
   describe('_runWhook()', function() {
 
     it('should work', function(done) {
-      var logs = [];
-      var router = new Router();
+      let logs = [];
+      let router = new Router();
       router._runWhook({
         pre: ($) => {
           $.services.log('sync');
@@ -118,8 +118,8 @@ describe('Router', function() {
   describe('_runNextWhookMount()', function() {
 
     it('should work', function(done) {
-      var logs = [];
-      var router = new Router();
+      let logs = [];
+      let router = new Router();
       router.add({
         nodes: []
       }, {
@@ -139,7 +139,7 @@ describe('Router', function() {
           });
         }
       });
-      var services = {
+      let services = {
         log: (content) => { logs.push(content); }
       };
       router._runNextWhookMount(router._whookMounts, 'pre', 0, [{
@@ -157,8 +157,8 @@ describe('Router', function() {
   describe('_prepareWhooksChain()', function() {
 
     it('should return involved hooks', function() {
-      var router = new Router();
-      var whookMounts = [{
+      let router = new Router();
+      let whookMounts = [{
         specs: { nodes: [] },
         whook: { name: 'Whook #1' }
       }, {

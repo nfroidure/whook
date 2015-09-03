@@ -5,7 +5,7 @@
  * @return {Map}                       A map og plugs instances
  */
 export const instanciatePlugs = function instanciatePlugs(plugClassesMap, ...args) {
-  var plugInstancesMap = new Map();
+  let plugInstancesMap = new Map();
   for(let [name, plugClass] of plugClassesMap) {
     plugInstancesMap.set(
       name,
@@ -23,7 +23,7 @@ export const instanciatePlugs = function instanciatePlugs(plugClassesMap, ...arg
  */
 export const getInvolvedPlugsNameFromSpecs =
   function getInvolvedPlugsNameFromSpecs(specs, type) {
-    var specProperty = 'source' == type ? 'in' : 'out';
+    let specProperty = 'source' == type ? 'in' : 'out';
     return (
       specs[specProperty] && specs[specProperty].properties ?
       Object.keys(specs[specProperty].properties).map(function(key) {
@@ -31,7 +31,7 @@ export const getInvolvedPlugsNameFromSpecs =
       }) :
       []
     ).reduce(function(plugNames, property) {
-      var plugName = property[type].split(':')[0];
+      let plugName = property[type].split(':')[0];
       if(-1 === plugNames.indexOf(plugName)) {
         plugNames.push(plugName);
       }
@@ -40,9 +40,9 @@ export const getInvolvedPlugsNameFromSpecs =
   };
 
 export const getPlugsMapping = function getPlugsMapping(whooksMounts) {
-  var sourcesMapping = {};
-  var destinationsMapping = {};
-  var servicesMapping = {};
+  let sourcesMapping = {};
+  let destinationsMapping = {};
+  let servicesMapping = {};
 
   whooksMounts.forEach(function({specs: {services, sources, destinations}}) {
     services && Object.keys(services).forEach(function(key) {

@@ -2,7 +2,7 @@ import assert from 'assert';
 import neatequal from 'neatequal';
 
 describe('NodesSource', function() {
-  var NodesSource = require('./nodes');
+  let NodesSource = require('./nodes');
 
   describe('constructor()', function() {
     it('should work', function() {
@@ -16,7 +16,7 @@ describe('NodesSource', function() {
 
     it('should return the right node at the right index', function() {
 
-      var nodesSource = new NodesSource({
+      let nodesSource = new NodesSource({
         url: '/download/plop.avi'
       });
 

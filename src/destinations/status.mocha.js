@@ -3,7 +3,7 @@ import neatequal from 'neatequal';
 import sinon from 'sinon';
 
 describe('StatusDestination', function() {
-  var StatusDestination = require('./status');
+  let StatusDestination = require('./status');
 
   describe('constructor()', function() {
     it('should work', function() {
@@ -44,12 +44,12 @@ describe('StatusDestination', function() {
   describe('finish()', function() {
 
     it('should set status code to the response', function() {
-      var res = {
+      let res = {
         statusCode: 500
       };
-      var headersSet = {};
+      let headersSet = {};
 
-      var hService = new StatusDestination(res);
+      let hService = new StatusDestination(res);
       hService.set('', 200);
       hService.finish();
 

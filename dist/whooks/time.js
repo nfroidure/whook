@@ -54,7 +54,7 @@ var TimeHook = (function (_Whook) {
       var out = _ref2.out;
       var time = _ref2.services.time;
 
-      var curTime = new Date(time())['iso' === format ? 'toISOString' : 'getTime']().toString();
+      var curTime = new Date(time.now())['iso' === format ? 'toISOString' : 'getTime']().toString();
       var outStream = new _stream2['default'].PassThrough();
       out.contentLength = curTime.length;
       inStream.on('data', function (chunk) {

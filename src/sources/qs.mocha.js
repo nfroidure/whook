@@ -2,7 +2,7 @@ import assert from 'assert';
 import neatequal from 'neatequal';
 
 describe('QSSource', function() {
-  var QSSource = require('./qs');
+  let QSSource = require('./qs');
 
   describe('constructor()', function() {
     it('should work', function() {

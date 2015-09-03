@@ -2,7 +2,7 @@ import assert from 'assert';
 import neatequal from 'neatequal';
 
 describe('DownloadWhook', function() {
-  var DownloadWhook = require('./download');
+  let DownloadWhook = require('./download');
 
   describe('constructor()', function() {
     it('should work', function() {
@@ -18,14 +18,14 @@ describe('DownloadWhook', function() {
 
   describe('pre()', function() {
     it('should do nothing when download is false', function() {
-      var $ = {
+      let $ = {
         in: {
           download: false
         },
         out: {},
         services: {}
       };
-      var whook = new DownloadWhook();
+      let whook = new DownloadWhook();
       whook.init();
       whook.pre($, function() {
         neatequal($.out, {});
@@ -33,14 +33,14 @@ describe('DownloadWhook', function() {
     });
 
     it('should set contentDisposition when download is true', function() {
-      var $ = {
+      let $ = {
         in: {
           download: true
         },
         out: {},
         services: {}
       };
-      var whook = new DownloadWhook();
+      let whook = new DownloadWhook();
       whook.init();
       whook.pre($, function() {
         neatequal($.out, {
@@ -50,7 +50,7 @@ describe('DownloadWhook', function() {
     });
 
     it('should set contentDisposition when download is true and filename has a value', function() {
-      var $ = {
+      let $ = {
         in: {
           download: true,
           filename: 'duke.jpg'
@@ -58,7 +58,7 @@ describe('DownloadWhook', function() {
         out: {},
         services: {}
       };
-      var whook = new DownloadWhook();
+      let whook = new DownloadWhook();
       whook.init();
       whook.pre($, function() {
         neatequal($.out, {
@@ -68,8 +68,8 @@ describe('DownloadWhook', function() {
     });
 
     it('should log when a log service is available', function() {
-      var args;
-      var $ = {
+      let args;
+      let $ = {
         in: {
           download: true,
           filename: 'duke.jpg'
@@ -81,7 +81,7 @@ describe('DownloadWhook', function() {
           }
         }
       };
-      var whook = new DownloadWhook();
+      let whook = new DownloadWhook();
       whook.init();
       whook.pre($, function() {
         neatequal($.out, {

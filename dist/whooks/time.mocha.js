@@ -57,8 +57,10 @@ describe('TimeWhook', function () {
             'in': {},
             out: {},
             services: {
-              time: function time() {
-                return 13371337;
+              time: {
+                now: function now() {
+                  return 13371337;
+                }
               },
               log: function log() {
                 args = [].slice.call(arguments, 0);
@@ -80,15 +82,17 @@ describe('TimeWhook', function () {
         });
 
         it('should log when a log service is available', function (done) {
-          var args;
+          var args = undefined;
           var $ = {
             'in': {
               format: 'iso'
             },
             out: {},
             services: {
-              time: function time() {
-                return 13371337;
+              time: {
+                now: function now() {
+                  return 13371337;
+                }
               },
               log: function log() {
                 args = [].slice.call(arguments, 0);

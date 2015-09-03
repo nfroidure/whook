@@ -20,6 +20,7 @@ describe('Destination', function () {
   describe('constructor()', function () {
     it('should set the destination name', function () {
       var destination = new Destination({}, 'name');
+
       _assert2['default'].equal(destination.name, 'name');
     });
   });
@@ -28,6 +29,7 @@ describe('Destination', function () {
 
     it('should throw an error', function () {
       var destination = new Destination({}, 'name');
+
       _assert2['default'].throws(destination.get, 'E_NOT_IMPLEMENTED');
     });
   });
