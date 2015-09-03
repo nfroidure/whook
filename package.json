@@ -1,6 +1,6 @@
 {
   "name": "whook",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Build strong and efficient REST web services.",
   "main": "dist/index.js",
   "scripts": {
