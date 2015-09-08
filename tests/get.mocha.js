@@ -10,19 +10,19 @@ import StatusDestination from '../src/destinations/status';
 import HeadersDestination from '../src/destinations/headers';
 import NodesSource from '../src/sources/nodes';
 import QueryStringSource from '../src/sources/qs';
+import initTimeMock from 'sf-time-mock';
 
 describe('Server integration', function() {
   let router = new Router();
   let logs;
+  let timeStub = initTimeMock();
 
   router.source('nodes', NodesSource);
   router.source('qs', QueryStringSource);
   router.destination('status', StatusDestination);
   router.destination('headers', HeadersDestination);
   router.service('time', {
-    now: function() {
-      return 13371337;
-    }
+    now: timeStub,
   });
   router.service('log', function() {
     logs.push([].slice.call(arguments, 0));
@@ -32,6 +32,7 @@ describe('Server integration', function() {
 
   beforeEach(function() {
     logs = [];
+    timeStub.setTime(1267833600000);
   });
 
   describe('for GET requests', function() {
@@ -52,13 +53,13 @@ describe('Server integration', function() {
       request(router.callback())
       .get('/time?download=true&filename=plop.csv')
       .expect('Content-Type', 'text/plain')
-      .expect('Content-Length', '8')
+      .expect('Content-Length', '13')
       .expect(200)
       .end(function(err, res) {
         if(err) {
           return done(err);
         }
-        assert.equal(res.text, '13371337');
+        assert.equal(res.text, '1267833600000');
         done();
       });
     });
@@ -67,13 +68,13 @@ describe('Server integration', function() {
       request(router.callback())
       .get('/time')
       .expect('Content-Type', 'text/plain')
-      .expect('Content-Length', '8')
+      .expect('Content-Length', '13')
       .expect(200)
       .end(function(err, res) {
         if(err) {
           return done(err);
         }
-        assert.equal(res.text, '13371337');
+        assert.equal(res.text, '1267833600000');
         done();
       });
     });

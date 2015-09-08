@@ -1,9 +1,15 @@
 import assert from 'assert';
 import neatequal from 'neatequal';
 import StreamTest from 'streamtest';
+import initTimeMock from 'sf-time-mock';
 
 describe('TimeWhook', function() {
   let TimeWhook = require('./time');
+  let timeStub = initTimeMock();
+
+  beforeEach(function() {
+    timeStub.setTime(1267833600000);
+  });
 
   describe('constructor()', function() {
     it('should work', function() {
@@ -47,9 +53,7 @@ describe('TimeWhook', function() {
             out: {},
             services: {
               time: {
-                now: function() {
-                  return 13371337;
-                }
+                now: timeStub,
               },
               log: function() {
                 args = [].slice.call(arguments, 0);
@@ -63,7 +67,7 @@ describe('TimeWhook', function() {
               if(err) {
                 return done(err);
               }
-              assert.equal(text, '13371337');
+              assert.equal(text, '1267833600000');
               neatequal($.out, {
                 contentLength: text.length
               });
@@ -80,9 +84,7 @@ describe('TimeWhook', function() {
             out: {},
             services: {
               time: {
-                now: function() {
-                  return 13371337;
-                }
+                now: timeStub
               },
               log: function() {
                 args = [].slice.call(arguments, 0);
@@ -96,7 +98,7 @@ describe('TimeWhook', function() {
               if(err) {
                 done(err);
               }
-              assert.equal(text, '1970-01-01T03:42:51.337Z');
+              assert.equal(text, '2010-03-06T00:00:00.000Z');
               neatequal($.out, {
                 contentLength: text.length
               });
