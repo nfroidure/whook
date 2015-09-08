@@ -1,0 +1,48 @@
+{
+  "extends": "eslint-config-simplifield",
+  "env": {
+  "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "require": false,
+    "describe": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "before": false,
+    "after": false,
+    "it": false,
+    "sinon": false,
+    "module": false
+  },
+  "rules": {
+    "strict": [2, "global"]
+  },
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "binaryLiterals": true,
+    "blockBindings": true,
+    "classes": true,
+    "defaultParams": true,
+    "destructuring": true,
+    "forOf": true,
+    "generators": true,
+    "modules": true,
+    "objectLiteralComputedProperties": true,
+    "objectLiteralDuplicateProperties": false,
+    "objectLiteralShorthandMethods": true,
+    "objectLiteralShorthandProperties": true,
+    "octalLiterals": true,
+    "regexUFlag": true,
+    "regexYFlag": true,
+    "restParams": true,
+    "spread": true,
+    "superInFunctions": true,
+    "templateStrings": true,
+    "unicodeCodePointEscapes": true,
+    "globalReturn": true,
+    "jsx": false,
+    "experimentalObjectRestSpread": true
+  }
+}

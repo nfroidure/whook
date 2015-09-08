@@ -7,8 +7,9 @@
     "test": "mocha --compilers js:babel/register src/**/*.mocha.js src/*.mocha.js tests/*.mocha.js",
     "compile": "babel src --out-dir=dist",
     "prepublish": "npm run compile",
-    "coveralls": "node --harmony ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel/register src/*.mocha.js tests/*.mocha.js -R spec -t 5000 && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "cover": "./node_modules/istanbul/lib/cli.js cover --report html ./node_modules/mocha/bin/_mocha -- --compilers js:babel/register src/*.mocha.js tests/*.mocha.js -R spec -t 5000",
+    "coveralls": "node --harmony ./node_modules/istanbul/lib/cli.js cover _mocha --report lcovonly -- --compilers js:babel/register src/*.mocha.js tests/*.mocha.js -R spec -t 5000 && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "cover": "istanbul cover --report html _mocha -- --compilers js:babel/register src/*.mocha.js tests/*.mocha.js -R spec -t 5000",
+    "lint": "eslint src/*.js src/**/*.js tests/*.js",
     "cli": "env NPM_RUN_CLI=1"
   },
   "keywords": [
@@ -31,6 +32,8 @@
   "devDependencies": {
     "babel": "^5.6.7",
     "coveralls": "^2.11.2",
+    "eslint": "^1.3.1",
+    "eslint-config-simplifield": "^1.1.0",
     "istanbul": "^0.3.16",
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "^0.0.2",
