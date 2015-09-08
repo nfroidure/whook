@@ -215,13 +215,13 @@ This repository will probably not contain hooks (except the Hooks base class).
  currently embedded:
 
 - **TimeHook:** A hook that give you the current time of the server -
- [source](https://github.com/nfroidure/whook/blob/master/whooks/time.js) -
- [tests](https://github.com/nfroidure/whook/blob/master/whooks/time.mocha.js)
+ [source](https://github.com/nfroidure/whook/blob/master/src/whooks/time.js) -
+ [tests](https://github.com/nfroidure/whook/blob/master/src/whooks/time.mocha.js)
 - **DownloadHook:** A Hook adding download flags to specify that a browser
   should download the request content and prompt users to save it on their
   disk. -
- [source](https://github.com/nfroidure/whook/blob/master/whooks/download.js) -
- [tests](https://github.com/nfroidure/whook/blob/master/whooks/download.mocha.js)
+ [source](https://github.com/nfroidure/whook/blob/master/src/whooks/download.js) -
+ [tests](https://github.com/nfroidure/whook/blob/master/src/whooks/download.mocha.js)
 
 ## The Router API
 
