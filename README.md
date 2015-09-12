@@ -241,12 +241,12 @@ Register a service to be attached to `$.services`.
 
 ### Router.prototype.source(name:String, source:Function)
 
-Register a new source for `$.req` mapping. The `source` function signature
+Register a new source for `$.req` mapping. The `source` () => signature
  `function(query) { return value; }`.
 
 ### Router.prototype.dest(name:String, dest:Function)
 
-Register a new destination for `$.res` mapping. The `dest` function signature
+Register a new destination for `$.res` mapping. The `dest` () => signature
  `function(path, value) { }`.
 
 ### Router.prototype.callback()

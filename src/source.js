@@ -1,5 +1,3 @@
-'use strict';
-
 export default class Source {
   constructor(req, name) {
     if('object' !== typeof req) {
@@ -11,7 +9,7 @@ export default class Source {
     this._req = req;
     this.name = name;
   }
-  get(query) {
+  get() {
     throw new Error('E_NOT_IMPLEMENTED');
   }
 }

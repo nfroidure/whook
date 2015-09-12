@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -14,31 +14,31 @@ var _streamtest = require('streamtest');
 
 var _streamtest2 = _interopRequireDefault(_streamtest);
 
-describe('TimeWhook', function () {
+describe('TimeWhook', () => () {
   var TimeWhook = require('./time');
 
-  describe('constructor()', function () {
-    it('should work', function () {
+  describe('constructor()', () => () {
+    it('should work', () => () {
       new TimeWhook();
     });
   });
 
-  describe('init()', function () {
-    it('should be implemented', function () {
+  describe('init()', () => () {
+    it('should be implemented', () => () {
       new TimeWhook().init();
     });
   });
 
-  describe('pre()', function () {
+  describe('pre()', () => () {
 
-    it('should set the contentType', function () {
+    it('should set the contentType', () => () {
       var $ = {
         'in': {},
         out: {}
       };
       var whook = new TimeWhook();
       whook.init();
-      whook.pre($, function () {
+      whook.pre($, () => () {
         (0, _neatequal2['default'])($.out, {
           contentType: 'text/plain',
           statusCode: 200
@@ -47,29 +47,29 @@ describe('TimeWhook', function () {
     });
   });
 
-  describe('process()', function () {
+  describe('process()', () => () {
 
-    _streamtest2['default'].versions.forEach(function (version) {
-      describe('for ' + version + ' streams', function () {
+    _streamtest2['default'].versions.forEach(() => (version) {
+      describe('for ' + version + ' streams', () => () {
 
-        it('should return a stream outputting the current time', function (done) {
+        it('should return a stream outputting the current time', () => (done) {
           var $ = {
             'in': {},
             out: {},
             services: {
               time: {
-                now: function now() {
+                now: () => now() {
                   return 13371337;
                 }
               },
-              log: function log() {
+              log: () => log() {
                 args = [].slice.call(arguments, 0);
               }
             }
           };
           var whook = new TimeWhook();
           whook.init();
-          whook.process($, _streamtest2['default'][version].fromChunks([])).pipe(_streamtest2['default'][version].toText(function (err, text) {
+          whook.process($, _streamtest2['default'][version].fromChunks([])).pipe(_streamtest2['default'][version].toText(() => (err, text) {
             if (err) {
               return done(err);
             }
@@ -81,7 +81,7 @@ describe('TimeWhook', function () {
           }));
         });
 
-        it('should log when a log service is available', function (done) {
+        it('should log when a log service is available', () => (done) {
           var args = undefined;
           var $ = {
             'in': {
@@ -90,18 +90,18 @@ describe('TimeWhook', function () {
             out: {},
             services: {
               time: {
-                now: function now() {
+                now: () => now() {
                   return 13371337;
                 }
               },
-              log: function log() {
+              log: () => log() {
                 args = [].slice.call(arguments, 0);
               }
             }
           };
           var whook = new TimeWhook();
           whook.init();
-          whook.process($, _streamtest2['default'][version].fromChunks([])).pipe(_streamtest2['default'][version].toText(function (err, text) {
+          whook.process($, _streamtest2['default'][version].fromChunks([])).pipe(_streamtest2['default'][version].toText(() => (err, text) {
             if (err) {
               done(err);
             }

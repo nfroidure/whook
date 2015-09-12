@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -10,19 +10,19 @@ var _neatequal = require('neatequal');
 
 var _neatequal2 = _interopRequireDefault(_neatequal);
 
-describe('Source', function () {
+describe('Source', () => () {
   var Source = require('./source');
 
-  describe('constructor()', function () {
-    it('should set the source name', function () {
+  describe('constructor()', () => () {
+    it('should set the source name', () => () {
       var source = new Source({}, 'name');
       _assert2['default'].equal(source.name, 'name');
     });
   });
 
-  describe('query()', function () {
+  describe('query()', () => () {
 
-    it('should throw an error', function () {
+    it('should throw an error', () => () {
       var source = new Source({}, 'name');
       _assert2['default'].throws(source.set, 'E_NOT_IMPLEMENTED');
     });

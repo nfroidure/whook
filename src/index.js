@@ -1,5 +1,3 @@
-'use strict';
-
 import Router from './router';
 import NodesSource from './sources/nodes';
 import QueryStringSource from './sources/qs';

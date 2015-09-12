@@ -1,5 +1,3 @@
-'use strict';
-
 import Source from '../source';
 
 export default class QueryString extends Source {
@@ -10,10 +8,11 @@ export default class QueryString extends Source {
   get(query) {
     if(!this.nodes) {
       let index = this._req.url.indexOf('?');
+
       this.nodes = (-1 !== index ?
         this._req.url.substr(0, index - 1) :
         this._req.url
-      ).split('/').filter(function(a) {
+      ).split('/').filter((a) => {
         return a;
       });
     }

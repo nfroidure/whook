@@ -6,10 +6,11 @@
  */
 export const instanciatePlugs = function instanciatePlugs(plugClassesMap, ...args) {
   let plugInstancesMap = new Map();
-  for(let [name, plugClass] of plugClassesMap) {
+
+  for(let [name, PlugClass] of plugClassesMap) {
     plugInstancesMap.set(
       name,
-      new plugClass(...args.concat([name]))
+      new PlugClass(...args.concat([name]))
     );
   }
   return plugInstancesMap;
@@ -23,15 +24,17 @@ export const instanciatePlugs = function instanciatePlugs(plugClassesMap, ...arg
  */
 export const getInvolvedPlugsNameFromSpecs =
   function getInvolvedPlugsNameFromSpecs(specs, type) {
-    let specProperty = 'source' == type ? 'in' : 'out';
+    let specProperty = 'source' === type ? 'in' : 'out';
+
     return (
       specs[specProperty] && specs[specProperty].properties ?
-      Object.keys(specs[specProperty].properties).map(function(key) {
+      Object.keys(specs[specProperty].properties).map((key) => {
         return specs[specProperty].properties[key];
       }) :
       []
-    ).reduce(function(plugNames, property) {
+    ).reduce((plugNames, property) => {
       let plugName = property[type].split(':')[0];
+
       if(-1 === plugNames.indexOf(plugName)) {
         plugNames.push(plugName);
       }
@@ -44,17 +47,17 @@ export const getPlugsMapping = function getPlugsMapping(whooksMounts) {
   let destinationsMapping = {};
   let servicesMapping = {};
 
-  whooksMounts.forEach(function({specs: {services, sources, destinations}}) {
-    services && Object.keys(services).forEach(function(key) {
+  whooksMounts.forEach(({ specs: { services, sources, destinations } }) => {
+    services && Object.keys(services).forEach((key) => {
       if('undefined' !== typeof servicesMapping[key]) {
         // debug('Service key redefinition!')
       }
       servicesMapping[key] = specs.services[key];
     });
-    sources && Object.keys(sources).forEach(function(key) {
+    sources && Object.keys(sources).forEach((key) => {
       ;
     });
-    destinations && Object.keys(destinations).forEach(function(key) {
+    destinations && Object.keys(destinations).forEach((key) => {
       ;
     });
   });

@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -14,20 +14,20 @@ var _sinon = require('sinon');
 
 var _sinon2 = _interopRequireDefault(_sinon);
 
-describe('Destination', function () {
+describe('Destination', () => () {
   var Destination = require('./destination');
 
-  describe('constructor()', function () {
-    it('should set the destination name', function () {
+  describe('constructor()', () => () {
+    it('should set the destination name', () => () {
       var destination = new Destination({}, 'name');
 
       _assert2['default'].equal(destination.name, 'name');
     });
   });
 
-  describe('query()', function () {
+  describe('query()', () => () {
 
-    it('should throw an error', function () {
+    it('should throw an error', () => () {
       var destination = new Destination({}, 'name');
 
       _assert2['default'].throws(destination.get, 'E_NOT_IMPLEMENTED');

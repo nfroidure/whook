@@ -1,37 +1,36 @@
 import assert from 'assert';
-import neatequal from 'neatequal';
 
-describe('QSSource', function() {
+describe('QSSource', () => {
   let QSSource = require('./qs');
 
-  describe('constructor()', function() {
-    it('should work', function() {
+  describe('constructor()', () => {
+    it('should work', () => {
       new QSSource({
-        url: '/download'
+        url: '/download',
       });
     });
   });
 
-  describe('query()', function() {
+  describe('query()', () => {
 
-    it('should return empty array when there are no query params', function() {
+    it('should return empty array when there are no query params', () => {
 
       assert.deepEqual(new QSSource({
-        url: '/download'
+        url: '/download',
       }).get('foo.bar'), []);
     });
 
-    it('should return empty array when there are no query params', function() {
+    it('should return empty array when there are no query params', () => {
 
       assert.deepEqual(new QSSource({
-        url: '/download?foobar=Plop'
+        url: '/download?foobar=Plop',
       }).get('foobar'), ['Plop']);
     });
 
-    it('should return empty array when there are no query params', function() {
+    it('should return empty array when there are no query params', () => {
 
       assert.deepEqual(new QSSource({
-        url: '/download?foobar=Plop&foobar=Plop2'
+        url: '/download?foobar=Plop&foobar=Plop2',
       }).get('foobar.#'), ['Plop', 'Plop2']);
     });
 

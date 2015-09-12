@@ -1,14 +1,15 @@
-'use strict';
+/* eslint no-console:[0] */
 
 import Service from '../service';
 
 // A simple log service
 export default class extends Service {
   constructor(name = 'logger') {
-    super(name)
+    super(name);
   }
   log(...args) {
     let type = args.unshift();
+
     if('function' === this[type]) {
       console[type].apply(console, args);
     } else {

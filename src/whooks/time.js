@@ -1,6 +1,5 @@
-'use strict';
-
 import Stream from 'stream';
+import YError from 'yerror';
 import Whook from '../whook';
 
 export default class TimeHook extends Whook {
@@ -18,9 +17,9 @@ export default class TimeHook extends Whook {
             type: 'string',
             default: 'timestamp',
             enum: ['timestamp', 'iso'],
-            description: 'The output format of the provided time.'
-          }
-        }
+            description: 'The output format of the provided time.',
+          },
+        },
       },
       out: {
         $schema: 'http://json-schema.org/draft-04/schema#',
@@ -31,44 +30,44 @@ export default class TimeHook extends Whook {
             type: 'number',
             required: true,
             destination: 'status',
-            enum: [200]
+            enum: [200],
           },
           contentType: {
             type: 'string',
             required: true,
             destination: 'headers:Content-Type',
-            enum: ['text/plain']
+            enum: ['text/plain'],
           },
           contentLength: {
             type: 'number',
             required: true,
-            destination: 'headers:Content-Length'
-          }
-        }
+            destination: 'headers:Content-Length',
+          },
+        },
       },
-      services: {
-        log: '',
-        time: ''
-      }
+      services: {
+        time: '',
+      },
     };
   }
   init() {}
   // Logic applyed to response/request abstract data before sending response content
-  pre({out}, next) {
+  pre({ out }, next) {
     out.statusCode = 200;
     out.contentType = 'text/plain';
     next();
   }
   // Logic applyed to response/request abstract data when sending response content
-  process({in: {format}, out: out, services: {time}}, inStream) {
-      let curTime = (new Date(time.now()))[
-        'iso' === format ?
-        'toISOString' : 'getTime'
-      ]().toString();
+  process({ in: { format }, out: out, services: { time } }, inStream) {
+    let curTime = (new Date(time.now()))[
+      'iso' === format ?
+      'toISOString' : 'getTime'
+    ]().toString();
     let outStream = new Stream.PassThrough();
+
     out.contentLength = curTime.length;
-    inStream.on('data', function(chunk) {
-        outStream.emit('error', new YError('E_UNEXPECTED_CONTENT'));
+    inStream.on('data', () => {
+      outStream.emit('error', new YError('E_UNEXPECTED_CONTENT'));
     });
     inStream.on('end', () => {
       outStream.write(curTime);

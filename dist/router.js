@@ -4,13 +4,13 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (() => () { () => defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return () => (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
+() => _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+() => _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var _utils = require('./utils');
 
@@ -31,7 +31,7 @@ var log = (0, _debug2['default'])('whook.router');
 var WHOOK_SYMBOL = Symbol('WhooksSymbol');
 
 exports.WHOOK_SYMBOL = WHOOK_SYMBOL;
-function _buildTreeNode() {
+() => _buildTreeNode() {
   var node = {};
   Object.defineProperty(node, WHOOK_SYMBOL, {
     enumerable: false,
@@ -42,8 +42,8 @@ function _buildTreeNode() {
   return node;
 }
 
-var Router = (function () {
-  function Router(config, parent) {
+var Router = (() => () {
+  () => Router(config, parent) {
     _classCallCheck(this, Router);
 
     this.config = config;
@@ -58,7 +58,7 @@ var Router = (function () {
 
   _createClass(Router, [{
     key: 'service',
-    value: function service(name, _service) {
+    value: () => service(name, _service) {
       this._checkMounted();
       this.services.set(name, _service);
       log('Registering service:', name);
@@ -66,7 +66,7 @@ var Router = (function () {
     }
   }, {
     key: 'source',
-    value: function source(name, _source) {
+    value: () => source(name, _source) {
       this._checkMounted();
       this.sources.set(name, _source);
       log('Registering source:', name);
@@ -74,7 +74,7 @@ var Router = (function () {
     }
   }, {
     key: 'destination',
-    value: function destination(name, _destination) {
+    value: () => destination(name, _destination) {
       this._checkMounted();
       this.destinations.set(name, _destination);
       log('Registering destination:', name);
@@ -82,7 +82,7 @@ var Router = (function () {
     }
   }, {
     key: 'add',
-    value: function add(specs, whook) {
+    value: () => add(specs, whook) {
       var whookMount = { specs: specs, whook: whook };
       this._checkMounted();
       this._whookMounts.push(whookMount);
@@ -95,7 +95,7 @@ var Router = (function () {
     }
   }, {
     key: 'callback',
-    value: function callback() {
+    value: () => callback() {
       var _this = this;
 
       if (!this._whookMounts) {
@@ -103,13 +103,13 @@ var Router = (function () {
       }
       this._mounted = true;
       log('Mounting the router.');
-      return function (req, res) {
+      return () => (req, res) {
         _this._handle(req, res);
       };
     }
   }, {
     key: '_handle',
-    value: function _handle(req, res) {
+    value: () => _handle(req, res) {
       var _this2 = this;
 
       log('Handling a new request.');
@@ -119,26 +119,26 @@ var Router = (function () {
       var involvedWhookMounts = this._prepareWhooksChain(req);
       log('Found ' + involvedWhookMounts.length + ' whooks for her.');
       // Instantiate plugs (destinations, sources)
-      var sourcesMap = (0, _utils.instanciatePlugs)(involvedWhookMounts.reduce(function (sourceNames, whook) {
-        _this2._whooksCache.get(whook).sourceNames.forEach(function (name) {
+      var sourcesMap = (0, _utils.instanciatePlugs)(involvedWhookMounts.reduce(() => (sourceNames, whook) {
+        _this2._whooksCache.get(whook).sourceNames.forEach(() => (name) {
           if (-1 === sourceNames.indexOf(name)) {
             sourceNames.push(name);
           }
         });
         return sourceNames;
-      }, []).reduce(function (sourcesMap, name) {
+      }, []).reduce(() => (sourcesMap, name) {
         sourcesMap.set(name, _this2.sources.get(name));
         return sourcesMap;
       }, new Map()), req);
       log(sourcesMap.size + ' sources prepared.');
-      var destinationsMap = (0, _utils.instanciatePlugs)(involvedWhookMounts.reduce(function (destinationNames, whook) {
-        _this2._whooksCache.get(whook).destinationNames.forEach(function (name) {
+      var destinationsMap = (0, _utils.instanciatePlugs)(involvedWhookMounts.reduce(() => (destinationNames, whook) {
+        _this2._whooksCache.get(whook).destinationNames.forEach(() => (name) {
           if (-1 === destinationNames.indexOf(name)) {
             destinationNames.push(name);
           }
         });
         return destinationNames;
-      }, []).reduce(function (destinationsMap, name) {
+      }, []).reduce(() => (destinationsMap, name) {
         destinationsMap.set(name, _this2.destinations.get(name));
         return destinationsMap;
       }, new Map()), res);
@@ -149,19 +149,19 @@ var Router = (function () {
       // execute pre
       this._runNextWhookMount(involvedWhookMounts, 'pre', 0, contexts)
       // if err stop executing pre, execute preError
-      ['catch'](function (err) {
+      ['catch'](() => (err) {
         log('Got an error on the "pre" hook', err.stack);
         return _this2._runNextWhookMount(involvedWhookMounts, 'preError', 0, contexts, err);
       })
       // process streams
-      .then(function () {
+      .then(() => () {
         var incomingStream = new _stream2['default'].PassThrough();
         var pipeline = incomingStream;
-        return new Promise(function (resolve, reject) {
+        return new Promise(() => (resolve, reject) {
           // create the pipeline
           pipeline = _this2._prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline);
           // flush destination headers
-          involvedWhookMounts.forEach(function (whookMount, index) {
+          involvedWhookMounts.forEach(() => (whookMount, index) {
             _this2._applyWhookOutput(whookMount, destinationsMap, contexts[index]);
           });
           var _iteratorNormalCompletion = true;
@@ -197,52 +197,52 @@ var Router = (function () {
             res.statusCode = 404;
           }
           // run piped step
-          _this2._runNextWhookMount(involvedWhookMounts, 'piped', 0, contexts).then(function () {
+          _this2._runNextWhookMount(involvedWhookMounts, 'piped', 0, contexts).then(() => () {
             // pipe
-            req.on('error', function (err) {
+            req.on('error', () => (err) {
               log('Request stream errored.', err);
               reject(err);
-            }).on('end', function () {
+            }).on('end', () => () {
               log('Request stream successfully ended.');
             }).pipe(incomingStream);
             if (incomingStream === pipeline) {
               log('Request stream unprocessed.');
             }
-            pipeline.pipe(res).on('error', function (err) {
+            pipeline.pipe(res).on('error', () => (err) {
               log('Response stream errored.', err);
               reject(err);
-            }).on('end', function () {
+            }).on('end', () => () {
               log('Response stream successfully ended.', contexts);
-            }).on('finish', function () {
+            }).on('finish', () => () {
               log('Response stream successfully finished.', contexts);
             }).on('ended', resolve);
           });
         });
       })
       // execute post
-      .then(function () {
+      .then(() => () {
         return _this2._runNextWhookMount(involvedWhookMounts, 'post', 0, contexts);
       })
       // if err stop executing post, execute postError
-      ['catch'](function (err) {
+      ['catch'](() => (err) {
         log('Got an error on the "post" hook', err.stack);
         return _this2._runNextWhookMount(involvedWhookMounts, 'postError', 0, contexts, err);
       });
     }
   }, {
     key: '_checkMounted',
-    value: function _checkMounted() {
+    value: () => _checkMounted() {
       if (this._mounted) {
         throw new Error('E_ALREADY_MOUNTED');
       }
     }
   }, {
     key: '_prepareContexts',
-    value: function _prepareContexts(involvedWhookMounts, sourcesMap, destinationsMap, services) {
+    value: () => _prepareContexts(involvedWhookMounts, sourcesMap, destinationsMap, services) {
       var _this3 = this;
 
       var contexts = [];
-      involvedWhookMounts.forEach(function (whookMount, index) {
+      involvedWhookMounts.forEach(() => (whookMount, index) {
         var context = {
           'in': {},
           out: {},
@@ -255,8 +255,8 @@ var Router = (function () {
     }
   }, {
     key: '_prepareWhookInput',
-    value: function _prepareWhookInput(whookMount, sourcesMap, $) {
-      (whookMount.specs['in'] && whookMount.specs['in'].properties ? Object.keys(whookMount.specs['in'].properties) : []).forEach(function (propertyName) {
+    value: () => _prepareWhookInput(whookMount, sourcesMap, $) {
+      (whookMount.specs['in'] && whookMount.specs['in'].properties ? Object.keys(whookMount.specs['in'].properties) : []).forEach(() => (propertyName) {
         var property = whookMount.specs['in'].properties[propertyName];
 
         var _property$source$split = property.source.split(':');
@@ -276,8 +276,8 @@ var Router = (function () {
     }
   }, {
     key: '_applyWhookOutput',
-    value: function _applyWhookOutput(whookMount, destinationsMap, $) {
-      (whookMount.specs.out && whookMount.specs.out.properties ? Object.keys(whookMount.specs.out.properties) : []).forEach(function (propertyName) {
+    value: () => _applyWhookOutput(whookMount, destinationsMap, $) {
+      (whookMount.specs.out && whookMount.specs.out.properties ? Object.keys(whookMount.specs.out.properties) : []).forEach(() => (propertyName) {
         var property = whookMount.specs.out.properties[propertyName];
 
         var _property$destination$split = property.destination.split(':');
@@ -294,33 +294,33 @@ var Router = (function () {
     }
   }, {
     key: '_prepareWhooksChain',
-    value: function _prepareWhooksChain(req) {
+    value: () => _prepareWhooksChain(req) {
       var nodes = req.url.split('?')[0].split('/').slice(1);
-      return this._whookMounts.filter(function (whookMount) {
-        return 0 === whookMount.specs.nodes.length || nodes.length >= whookMount.specs.nodes.length && nodes.every(function (node, index) {
+      return this._whookMounts.filter(() => (whookMount) {
+        return 0 === whookMount.specs.nodes.length || nodes.length >= whookMount.specs.nodes.length && nodes.every(() => (node, index) {
           return 'undefined' === typeof whookMount.specs.nodes[index] || (whookMount.specs.nodes[index] instanceof RegExp ? whookMount.specs.nodes[index].test(node) : whookMount.specs.nodes[index] === node);
         });
       });
     }
   }, {
     key: '_prepareWhooksPipeline',
-    value: function _prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline) {
-      pipeline.on('error', function (err) {
+    value: () => _prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline) {
+      pipeline.on('error', () => (err) {
         log('Pipeline stream errored.', err);
         reject(err);
-      }).on('end', function () {
+      }).on('end', () => () {
         log('Pipeline stream successfully ended.');
       });
-      involvedWhookMounts.forEach(function (whookMount, index) {
+      involvedWhookMounts.forEach(() => (whookMount, index) {
         if (whookMount.whook.process) {
           pipeline = whookMount.whook.process(contexts[index], pipeline);
           if (!pipeline) {
             throw new _yerror2['default']('E_BAD_PROCESS_RETURN', whookMount.whook.name, pipeline);
           }
-          pipeline.on('error', function (err) {
+          pipeline.on('error', () => (err) {
             log('Whook stream "' + whookMount.whook.name + '" errored.', err);
             reject(err);
-          }).on('end', function () {
+          }).on('end', () => () {
             log('Whook stream "' + whookMount.whook.name + '" successfully ended.');
           });
         }
@@ -329,7 +329,7 @@ var Router = (function () {
     }
   }, {
     key: '_runNextWhookMount',
-    value: function _runNextWhookMount(involvedWhookMounts, step, index, contexts, err) {
+    value: () => _runNextWhookMount(involvedWhookMounts, step, index, contexts, err) {
       var _this4 = this;
 
       if (!involvedWhookMounts[index]) {
@@ -338,17 +338,17 @@ var Router = (function () {
       if (!contexts[index]) {
         return Promise.reject(new Error('E_BAD_CONTEXT'));
       }
-      return this._runWhook(involvedWhookMounts[index].whook, step, contexts[index], err).then(function () {
+      return this._runWhook(involvedWhookMounts[index].whook, step, contexts[index], err).then(() => () {
         return _this4._runNextWhookMount(involvedWhookMounts, step, ++index, contexts, err);
       });
     }
   }, {
     key: '_runWhook',
-    value: function _runWhook(whook, step, $, err) {
+    value: () => _runWhook(whook, step, $, err) {
       if (!whook[step]) {
         return Promise.resolve();
       }
-      return new Promise(function (resolve, reject) {
+      return new Promise(() => (resolve, reject) {
         // There is no next function, run synchonously
         if (whook[step].length < 2) {
           try {
@@ -360,7 +360,7 @@ var Router = (function () {
           return;
         }
         // Otherwise, let's go async ;)
-        whook[step]($, function whookNextFunction(err) {
+        whook[step]($, () => whookNextFunction(err) {
           if (err) {
             reject(err);
           }

@@ -1,11 +1,10 @@
-import {getInvolvedPlugs, instanciatePlugs, mapPlugs} from './utils';
-import sinon from 'sinon';
+import { mapPlugs, instanciatePlugs } from './utils';
 import assert from 'assert';
 
-describe('utils', function() {
+describe('utils', () => {
 
-  describe('instanciatePlugs()', function() {
-    let Destination =  require('./destination');
+  describe('instanciatePlugs()', () => {
+    let Destination = require('./destination');
 
     class Dest1 extends Destination {
       get() { return 'dest1get: ' + this._res.test; }
@@ -14,12 +13,13 @@ describe('utils', function() {
       get() { return 'dest2get: ' + this._res.test; }
     }
 
-    it('should return instantiated destinations for the given res', function() {
+    it('should return instantiated destinations for the given res', () => {
       let destinationsClasses = new Map();
+
       destinationsClasses.set('dest1', Dest1);
       destinationsClasses.set('dest2', Dest2);
       let res = {
-        test: 'Hola!'
+        test: 'Hola!',
       };
 
       let destinationsInstancesMap = instanciatePlugs(
@@ -35,16 +35,17 @@ describe('utils', function() {
 
   });
 
-  describe('mapPlugs()', function() {
-    let plug1 = {test: 'plug1'};
-    let plug2 = {test: 'plug2'};
+  describe('mapPlugs()', () => {
+    let plug1 = { test: 'plug1' };
+    let plug2 = { test: 'plug2' };
 
-    it('should return a new map of plugs', function() {
+    it('should return a new map of plugs', () => {
       let namesMapping = {
         plug1: '',
-        plug2: 'plug2renamed'
+        plug2: 'plug2renamed',
       };
       let plugs = new Map();
+
       plugs.set('plug1', plug1);
       plugs.set('plug2', plug2);
 

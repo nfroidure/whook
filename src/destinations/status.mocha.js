@@ -1,39 +1,38 @@
 import assert from 'assert';
 import neatequal from 'neatequal';
-import sinon from 'sinon';
 
-describe('StatusDestination', function() {
+describe('StatusDestination', () => {
   let StatusDestination = require('./status');
 
-  describe('constructor()', function() {
-    it('should work', function() {
+  describe('constructor()', () => {
+    it('should work', () => {
       new StatusDestination();
     });
   });
 
-  describe('set()', function() {
+  describe('set()', () => {
 
-    it('should work', function() {
+    it('should work', () => {
       new StatusDestination()
         .set('', 200);
     });
 
-    it('should fail with a non-number statusCode', function() {
-      assert.throws(function() {
+    it('should fail with a non-number statusCode', () => {
+      assert.throws(() => {
         new StatusDestination()
           .set('', '200');
       });
     });
 
-    it('should fail with a too low statusCode', function() {
-      assert.throws(function() {
+    it('should fail with a too low statusCode', () => {
+      assert.throws(() => {
         new StatusDestination()
           .set('', 99);
       });
     });
 
-    it('should fail with a too high statusCode', function() {
-      assert.throws(function() {
+    it('should fail with a too high statusCode', () => {
+      assert.throws(() => {
         new StatusDestination()
           .set('', 700);
       });
@@ -41,20 +40,20 @@ describe('StatusDestination', function() {
 
   });
 
-  describe('finish()', function() {
+  describe('finish()', () => {
 
-    it('should set status code to the response', function() {
+    it('should set status code to the response', () => {
       let res = {
-        statusCode: 500
+        statusCode: 500,
       };
-      let headersSet = {};
 
       let hService = new StatusDestination(res);
+
       hService.set('', 200);
       hService.finish();
 
       neatequal(res, {
-        statusCode: 200
+        statusCode: 200,
       });
 
     });

@@ -1,5 +1,3 @@
-'use strict';
-
 export default class Whook {
     static specs() {
       throw new Error('E_NOT_IMPLEMENTED');
@@ -7,7 +5,7 @@ export default class Whook {
     constructor(name) {
       this.name = name;
     }
-    init($, next) {
+    init() {
       throw new Error('E_NOT_IMPLEMENTED');
     }
     pre($, next) {
@@ -19,7 +17,7 @@ export default class Whook {
     process($, inputStream) {
       return inputStream;
     }*/
-    piped(outputStream) {
+    piped() {
     }
     post($, next) {
       next();

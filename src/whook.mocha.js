@@ -1,21 +1,24 @@
 import assert from 'assert';
-import neatequal from 'neatequal';
 
-describe('Whook', function() {
+describe('Whook', () => {
   let Whook = require('./whook');
 
-  describe('constructor()', function() {
-    it('should set the whook name', function() {
+  describe('constructor()', () => {
+    it('should set the whook name', () => {
       let whook = new Whook('name');
+
       assert.equal(whook.name, 'name');
     });
   });
 
-  describe('specs()', function() {
+  describe('specs()', () => {
 
-    it('should throw an error', function() {
+    it('should throw an error', () => {
       let whook = new Whook('name');
-      assert.throws(whook.specs, 'E_NOT_IMPLEMENTED');
+
+      assert.throws(() => {
+        whook.specs();
+      }, 'E_NOT_IMPLEMENTED');
     });
 
   });

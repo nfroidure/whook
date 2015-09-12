@@ -1,5 +1,3 @@
-'use strict';
-
 import Source from '../source';
 import querystring from 'querystring';
 import miniquery from 'miniquery';
@@ -12,6 +10,7 @@ export default class QueryString extends Source {
   get(query) {
     if(!this._parsedQuery) {
       let index = this._req.url.indexOf('?');
+
       this._parsedQuery = -1 !== index ?
         querystring.parse(this._req.url.substring(index + 1)) :
         {};

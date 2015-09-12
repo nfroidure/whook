@@ -1,7 +1,5 @@
 import assert from 'assert';
-import neatequal from 'neatequal';
 import request from 'supertest';
-import streamtest from 'streamtest';
 
 import Router from '../src/router';
 import DownloadWhook from '../src/whooks/download';
@@ -12,7 +10,7 @@ import NodesSource from '../src/sources/nodes';
 import QueryStringSource from '../src/sources/qs';
 import initTimeMock from 'sf-time-mock';
 
-describe('Server integration', function() {
+describe('Server integration', () => {
   let router = new Router();
   let logs;
   let timeStub = initTimeMock();
@@ -24,24 +22,24 @@ describe('Server integration', function() {
   router.service('time', {
     now: timeStub,
   });
-  router.service('log', function() {
-    logs.push([].slice.call(arguments, 0));
+  router.service('log', (..._args) => {
+    logs.push(_args);
   });
   router.add(DownloadWhook.specs(), new DownloadWhook('download'));
   router.add(TimeWhook.specs(), new TimeWhook('time'));
 
-  beforeEach(function() {
+  beforeEach(() => {
     logs = [];
     timeStub.setTime(1267833600000);
   });
 
-  describe('for GET requests', function() {
+  describe('for GET requests', () => {
 
-    it('should 404 for unexisting routes', function(done) {
+    it('should 404 for unexisting routes', (done) => {
       request(router.callback())
       .get('/idonotexist')
       .expect(404)
-      .end(function(err, res) {
+      .end((err) => {
         if(err) {
           return done(err);
         }
@@ -49,13 +47,13 @@ describe('Server integration', function() {
       });
     });
 
-    it('should work as expected when download whook is feed', function(done) {
+    it('should work as expected when download whook is feed', (done) => {
       request(router.callback())
       .get('/time?download=true&filename=plop.csv')
       .expect('Content-Type', 'text/plain')
       .expect('Content-Length', '13')
       .expect(200)
-      .end(function(err, res) {
+      .end((err, res) => {
         if(err) {
           return done(err);
         }
@@ -64,13 +62,13 @@ describe('Server integration', function() {
       });
     });
 
-    it('should work as expected when download whook isn\'t feed', function(done) {
+    it('should work as expected when download whook isn\'t feed', (done) => {
       request(router.callback())
       .get('/time')
       .expect('Content-Type', 'text/plain')
       .expect('Content-Length', '13')
       .expect(200)
-      .end(function(err, res) {
+      .end((err, res) => {
         if(err) {
           return done(err);
         }

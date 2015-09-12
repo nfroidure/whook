@@ -1,5 +1,3 @@
-'use strict';
-
 import Destination from '../destination';
 
 export default class Headers extends Destination {
@@ -10,10 +8,10 @@ export default class Headers extends Destination {
   set(name, value) {
     this._headers.add({
       name,
-      value
+      value,
     });
   }
-  finish(res) {
+  finish() {
     for(let header of this._headers) {
       this._res.setHeader(header.name, header.value);
     }

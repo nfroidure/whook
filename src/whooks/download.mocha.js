@@ -1,96 +1,99 @@
-import assert from 'assert';
 import neatequal from 'neatequal';
 
-describe('DownloadWhook', function() {
+describe('DownloadWhook', () => {
   let DownloadWhook = require('./download');
 
-  describe('constructor()', function() {
-    it('should work', function() {
+  describe('constructor()', () => {
+    it('should work', () => {
       new DownloadWhook();
     });
   });
 
-  describe('init()', function() {
-    it('should be implemented', function() {
+  describe('init()', () => {
+    it('should be implemented', () => {
       (new DownloadWhook()).init();
     });
   });
 
-  describe('pre()', function() {
-    it('should do nothing when download is false', function() {
+  describe('pre()', () => {
+    it('should do nothing when download is false', () => {
       let $ = {
         in: {
-          download: false
+          download: false,
         },
         out: {},
-        services: {}
+        services: {},
       };
       let whook = new DownloadWhook();
+
       whook.init();
-      whook.pre($, function() {
+      whook.pre($, () => {
         neatequal($.out, {});
       });
     });
 
-    it('should set contentDisposition when download is true', function() {
-      let $ = {
-        in: {
-          download: true
-        },
-        out: {},
-        services: {}
-      };
-      let whook = new DownloadWhook();
-      whook.init();
-      whook.pre($, function() {
-        neatequal($.out, {
-          contentDisposition: 'attachment'
-        });
-      });
-    });
-
-    it('should set contentDisposition when download is true and filename has a value', function() {
+    it('should set contentDisposition when download is true', () => {
       let $ = {
         in: {
           download: true,
-          filename: 'duke.jpg'
         },
         out: {},
-        services: {}
+        services: {},
       };
       let whook = new DownloadWhook();
+
       whook.init();
-      whook.pre($, function() {
+      whook.pre($, () => {
         neatequal($.out, {
-          contentDisposition: 'attachment; filename="duke.jpg"'
+          contentDisposition: 'attachment',
         });
       });
     });
 
-    it('should log when a log service is available', function() {
+    it('should set contentDisposition when download is true and filename has a value', () => {
+      let $ = {
+        in: {
+          download: true,
+          filename: 'duke.jpg',
+        },
+        out: {},
+        services: {},
+      };
+      let whook = new DownloadWhook();
+
+      whook.init();
+      whook.pre($, () => {
+        neatequal($.out, {
+          contentDisposition: 'attachment; filename="duke.jpg"',
+        });
+      });
+    });
+
+    it('should log when a log service is available', () => {
       let args;
       let $ = {
         in: {
           download: true,
-          filename: 'duke.jpg'
+          filename: 'duke.jpg',
         },
         out: {},
         services: {
-          log: function() {
-            args = [].slice.call(arguments, 0);
-          }
-        }
+          log: (..._args) => {
+            args = _args;
+          },
+        },
       };
       let whook = new DownloadWhook();
+
       whook.init();
-      whook.pre($, function() {
+      whook.pre($, () => {
         neatequal($.out, {
-          contentDisposition: 'attachment; filename="duke.jpg"'
+          contentDisposition: 'attachment; filename="duke.jpg"',
         });
         neatequal(args, [
           'download',
           'out.contentDisposition set to:',
-          'attachment; filename="duke.jpg"'
+          'attachment; filename="duke.jpg"',
         ]);
       });
     });

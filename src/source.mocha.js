@@ -1,21 +1,24 @@
 import assert from 'assert';
-import neatequal from 'neatequal';
 
-describe('Source', function() {
+describe('Source', () => {
   let Source = require('./source');
 
-  describe('constructor()', function() {
-    it('should set the source name', function() {
+  describe('constructor()', () => {
+    it('should set the source name', () => {
       let source = new Source({}, 'name');
+
       assert.equal(source.name, 'name');
     });
   });
 
-  describe('query()', function() {
+  describe('query()', () => {
 
-    it('should throw an error', function() {
+    it('should throw an error', () => {
       let source = new Source({}, 'name');
-      assert.throws(source.set, 'E_NOT_IMPLEMENTED');
+
+      assert.throws(() => {
+        source.set();
+      }, 'E_NOT_IMPLEMENTED');
     });
 
   });

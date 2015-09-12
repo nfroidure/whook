@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -10,34 +10,34 @@ var _neatequal = require('neatequal');
 
 var _neatequal2 = _interopRequireDefault(_neatequal);
 
-describe('QSSource', function () {
+describe('QSSource', () => () {
   var QSSource = require('./qs');
 
-  describe('constructor()', function () {
-    it('should work', function () {
+  describe('constructor()', () => () {
+    it('should work', () => () {
       new QSSource({
         url: '/download'
       });
     });
   });
 
-  describe('query()', function () {
+  describe('query()', () => () {
 
-    it('should return empty array when there are no query params', function () {
+    it('should return empty array when there are no query params', () => () {
 
       _assert2['default'].deepEqual(new QSSource({
         url: '/download'
       }).get('foo.bar'), []);
     });
 
-    it('should return empty array when there are no query params', function () {
+    it('should return empty array when there are no query params', () => () {
 
       _assert2['default'].deepEqual(new QSSource({
         url: '/download?foobar=Plop'
       }).get('foobar'), ['Plop']);
     });
 
-    it('should return empty array when there are no query params', function () {
+    it('should return empty array when there are no query params', () => () {
 
       _assert2['default'].deepEqual(new QSSource({
         url: '/download?foobar=Plop&foobar=Plop2'

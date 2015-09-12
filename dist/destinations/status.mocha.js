@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -14,43 +14,43 @@ var _sinon = require('sinon');
 
 var _sinon2 = _interopRequireDefault(_sinon);
 
-describe('StatusDestination', function () {
+describe('StatusDestination', () => () {
   var StatusDestination = require('./status');
 
-  describe('constructor()', function () {
-    it('should work', function () {
+  describe('constructor()', () => () {
+    it('should work', () => () {
       new StatusDestination();
     });
   });
 
-  describe('set()', function () {
+  describe('set()', () => () {
 
-    it('should work', function () {
+    it('should work', () => () {
       new StatusDestination().set('', 200);
     });
 
-    it('should fail with a non-number statusCode', function () {
-      _assert2['default'].throws(function () {
+    it('should fail with a non-number statusCode', () => () {
+      _assert2['default'].throws(() => () {
         new StatusDestination().set('', '200');
       });
     });
 
-    it('should fail with a too low statusCode', function () {
-      _assert2['default'].throws(function () {
+    it('should fail with a too low statusCode', () => () {
+      _assert2['default'].throws(() => () {
         new StatusDestination().set('', 99);
       });
     });
 
-    it('should fail with a too high statusCode', function () {
-      _assert2['default'].throws(function () {
+    it('should fail with a too high statusCode', () => () {
+      _assert2['default'].throws(() => () {
         new StatusDestination().set('', 700);
       });
     });
   });
 
-  describe('finish()', function () {
+  describe('finish()', () => () {
 
-    it('should set status code to the response', function () {
+    it('should set status code to the response', () => () {
       var res = {
         statusCode: 500
       };

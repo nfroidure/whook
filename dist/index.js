@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = initWhook;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _router = require('./router');
 
@@ -35,7 +35,7 @@ var _servicesLog = require('./services/log');
 
 var _servicesLog2 = _interopRequireDefault(_servicesLog);
 
-function initWhook() {
+() => initWhook() {
   var router = new _router2['default']();
 
   router.source('nodes', _sourcesNodes2['default']);

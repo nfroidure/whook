@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -10,20 +10,20 @@ var _neatequal = require('neatequal');
 
 var _neatequal2 = _interopRequireDefault(_neatequal);
 
-describe('NodesSource', function () {
+describe('NodesSource', () => () {
   var NodesSource = require('./nodes');
 
-  describe('constructor()', function () {
-    it('should work', function () {
+  describe('constructor()', () => () {
+    it('should work', () => () {
       new NodesSource({
         url: '/download'
       });
     });
   });
 
-  describe('query()', function () {
+  describe('query()', () => () {
 
-    it('should return the right node at the right index', function () {
+    it('should return the right node at the right index', () => () {
 
       var nodesSource = new NodesSource({
         url: '/download/plop.avi'

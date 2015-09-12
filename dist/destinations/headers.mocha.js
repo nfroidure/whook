@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -14,27 +14,27 @@ var _sinon = require('sinon');
 
 var _sinon2 = _interopRequireDefault(_sinon);
 
-describe('HeadersDestination', function () {
+describe('HeadersDestination', () => () {
   var HeadersDestination = require('./headers');
 
-  describe('constructor()', function () {
-    it('should work', function () {
+  describe('constructor()', () => () {
+    it('should work', () => () {
       new HeadersDestination();
     });
   });
 
-  describe('set()', function () {
+  describe('set()', () => () {
 
-    it('should work', function () {
+    it('should work', () => () {
       new HeadersDestination().set('Content-Type', 'text/plain');
     });
   });
 
-  describe('finish()', function () {
+  describe('finish()', () => () {
 
-    it('should set headers to the response', function () {
+    it('should set headers to the response', () => () {
       var res = {
-        setHeader: function setHeader(key, value) {
+        setHeader: () => setHeader(key, value) {
           headersSet[key] = value;
         }
       };

@@ -1,6 +1,6 @@
 'use strict';
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -10,23 +10,23 @@ var _neatequal = require('neatequal');
 
 var _neatequal2 = _interopRequireDefault(_neatequal);
 
-describe('DownloadWhook', function () {
+describe('DownloadWhook', () => () {
   var DownloadWhook = require('./download');
 
-  describe('constructor()', function () {
-    it('should work', function () {
+  describe('constructor()', () => () {
+    it('should work', () => () {
       new DownloadWhook();
     });
   });
 
-  describe('init()', function () {
-    it('should be implemented', function () {
+  describe('init()', () => () {
+    it('should be implemented', () => () {
       new DownloadWhook().init();
     });
   });
 
-  describe('pre()', function () {
-    it('should do nothing when download is false', function () {
+  describe('pre()', () => () {
+    it('should do nothing when download is false', () => () {
       var $ = {
         'in': {
           download: false
@@ -36,12 +36,12 @@ describe('DownloadWhook', function () {
       };
       var whook = new DownloadWhook();
       whook.init();
-      whook.pre($, function () {
+      whook.pre($, () => () {
         (0, _neatequal2['default'])($.out, {});
       });
     });
 
-    it('should set contentDisposition when download is true', function () {
+    it('should set contentDisposition when download is true', () => () {
       var $ = {
         'in': {
           download: true
@@ -51,14 +51,14 @@ describe('DownloadWhook', function () {
       };
       var whook = new DownloadWhook();
       whook.init();
-      whook.pre($, function () {
+      whook.pre($, () => () {
         (0, _neatequal2['default'])($.out, {
           contentDisposition: 'attachment'
         });
       });
     });
 
-    it('should set contentDisposition when download is true and filename has a value', function () {
+    it('should set contentDisposition when download is true and filename has a value', () => () {
       var $ = {
         'in': {
           download: true,
@@ -69,14 +69,14 @@ describe('DownloadWhook', function () {
       };
       var whook = new DownloadWhook();
       whook.init();
-      whook.pre($, function () {
+      whook.pre($, () => () {
         (0, _neatequal2['default'])($.out, {
           contentDisposition: 'attachment; filename="duke.jpg"'
         });
       });
     });
 
-    it('should log when a log service is available', function () {
+    it('should log when a log service is available', () => () {
       var args = undefined;
       var $ = {
         'in': {
@@ -85,14 +85,14 @@ describe('DownloadWhook', function () {
         },
         out: {},
         services: {
-          log: function log() {
+          log: () => log() {
             args = [].slice.call(arguments, 0);
           }
         }
       };
       var whook = new DownloadWhook();
       whook.init();
-      whook.pre($, function () {
+      whook.pre($, () => () {
         (0, _neatequal2['default'])($.out, {
           contentDisposition: 'attachment; filename="duke.jpg"'
         });
