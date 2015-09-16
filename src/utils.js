@@ -6,7 +6,6 @@
  */
 export const instanciatePlugs = function instanciatePlugs(plugClassesMap, ...args) {
   let plugInstancesMap = new Map();
-
   for(let [name, PlugClass] of plugClassesMap) {
     plugInstancesMap.set(
       name,

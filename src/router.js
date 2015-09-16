@@ -92,6 +92,7 @@ export default class Router {
     // Instantiate plugs (destinations, sources)
     sourcesMap = instanciatePlugs(
       involvedWhookMounts.reduce((sourceNames, whook) => {
+        log('Looking for ' + whook + ' in the cache.');
         this._whooksCache.get(whook).sourceNames.forEach((name) => {
           if(-1 === sourceNames.indexOf(name)) {
             sourceNames.push(name);
@@ -99,7 +100,11 @@ export default class Router {
         });
         return sourceNames;
       }, []).reduce((sourcesMap, name) => {
-        sourcesMap.set(name, this.sources.get(name));
+        var source = this.sources.get(name);
+        if(!source) {
+          throw new YError('E_UNKNOW_SOURCE', name); // Maybe check this in router.add ?
+        }
+        sourcesMap.set(name, source);
         return sourcesMap;
       }, new Map()),
       req
@@ -115,7 +120,11 @@ export default class Router {
         });
         return destinationNames;
       }, []).reduce((destinationsMap, name) => {
-        destinationsMap.set(name, this.destinations.get(name));
+        var destination = this.destinations.get(name);
+        if(!destination) {
+          throw new YError('E_UNKNOW_DESTINATION', name); // Maybe check this in router.add ?
+        }
+        destinationsMap.set(name, destination);
         return destinationsMap;
       }, new Map()),
       res

@@ -9,6 +9,16 @@ describe('Source', () => {
 
       assert.equal(source.name, 'name');
     });
+    it('should throw an error if a bad req is given', () => {
+      assert.throws(() => {
+        new Source('hey', 'name');
+      }, /E_BAD_SOURCE_REQUEST/);
+    });
+    it('should throw an error if a bad name is given', () => {
+      assert.throws(() => {
+        new Source({}, {});
+      }, /E_BAD_SOURCE_NAME/);
+    });
   });
 
   describe('query()', () => {
