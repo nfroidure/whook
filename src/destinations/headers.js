@@ -1,6 +1,6 @@
 import Destination from '../destination';
 
-export default class Headers extends Destination {
+export default class HeadersDestination extends Destination {
   constructor(res, name = 'headers') {
     super(res, name);
     this._headers = new Set();

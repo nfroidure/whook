@@ -7,14 +7,14 @@ describe('HeadersDestination', () => {
 
   describe('constructor()', () => {
     it('should work', () => {
-      new HeadersDestination();
+      new HeadersDestination({});
     });
   });
 
   describe('set()', () => {
 
     it('should work', () => {
-      new HeadersDestination()
+      new HeadersDestination({})
         .set('Content-Type', 'text/plain');
 
     });

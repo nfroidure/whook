@@ -6,14 +6,14 @@ describe('StatusDestination', () => {
 
   describe('constructor()', () => {
     it('should work', () => {
-      new StatusDestination();
+      new StatusDestination({});
     });
   });
 
   describe('set()', () => {
 
     it('should work', () => {
-      new StatusDestination()
+      new StatusDestination({})
         .set('', 200);
     });
 

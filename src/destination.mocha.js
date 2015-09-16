@@ -9,6 +9,16 @@ describe('Destination', () => {
 
       assert.equal(destination.name, 'name');
     });
+    it('should throw an error if a bad res is given', () => {
+      assert.throws(() => {
+        new Destination('hey', 'name');
+      }, /E_BAD_DESTINATION_RESPONSE/);
+    });
+    it('should throw an error if a bad name is given', () => {
+      assert.throws(() => {
+        new Destination({}, {});
+      }, /E_BAD_DESTINATION_NAME/);
+    });
   });
 
   describe('query()', () => {
@@ -17,8 +27,8 @@ describe('Destination', () => {
       let destination = new Destination({}, 'name');
 
       assert.throws(() => {
-        destination.get();
-      }, 'E_NOT_IMPLEMENTED');
+        destination.set();
+      }, /E_NOT_IMPLEMENTED/);
     });
 
   });

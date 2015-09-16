@@ -27,8 +27,8 @@ describe('Source', () => {
       let source = new Source({}, 'name');
 
       assert.throws(() => {
-        source.set();
-      }, 'E_NOT_IMPLEMENTED');
+        source.get();
+      }, /E_NOT_IMPLEMENTED/);
     });
 
   });
