@@ -61,6 +61,7 @@ export default class Router {
       sourceNames: getInvolvedPlugsNameFromSpecs(specs, 'source'),
       destinationNames: getInvolvedPlugsNameFromSpecs(specs, 'destination'),
     });
+    whook.init(specs);
     log('Registering a whook:', whook.constructor.name);
     return this;
   }
@@ -154,7 +155,7 @@ export default class Router {
         return new Promise((resolve, reject) => {
           // create the pipeline
           pipeline = this._prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline);
-          // flush destination headers
+          // flush destinations
           involvedWhookMounts.forEach((whookMount, index) => {
             this._applyWhookOutput(whookMount, destinationsMap, contexts[index]);
           });

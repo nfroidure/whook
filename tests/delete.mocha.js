@@ -18,14 +18,14 @@ describe('Server integration', () => {
     logs.push(_args);
   });
   router.add(EchoWhook.specs({
-    statusCode: 201,
+    statusCode: 204,
   }), new EchoWhook('echo'));
 
   beforeEach(() => {
     logs = [];
   });
 
-  describe('for PUT requests', () => {
+  describe('for DELETE requests', () => {
 
     it('should 404 for unexisting routes', (done) => {
       request(router.callback())
@@ -46,17 +46,16 @@ describe('Server integration', () => {
     it('should work as expected', (done) => {
       request(router.callback())
       .put('/echo')
-      .send('1267833600000')
       .set('Content-Type', 'text/plain')
-      .set('Content-Length', '13')
+      .set('Content-Length', '0')
       .expect('Content-Type', 'text/plain')
-      .expect('Content-Length', '13')
-      .expect(201)
+      .expect('Content-Length', '0')
+      .expect(204)
       .end((err, res) => {
         if(err) {
           return done(err);
         }
-        assert.equal(res.text, '1267833600000');
+        assert.equal(res.text, '');
         done();
       });
     });

@@ -3,7 +3,7 @@ import YError from 'yerror';
 import Whook from '../whook';
 
 export default class EchoHook extends Whook {
-  static specs() {
+  static specs({ statusCode=200 } = {}) {
     return {
       methods: ['POST'],
       nodes: ['echo'],
@@ -33,7 +33,7 @@ export default class EchoHook extends Whook {
             type: 'number',
             required: true,
             destination: 'status',
-            enum: [200],
+            enum: [statusCode],
           },
           contentType: {
             type: 'string',
@@ -48,10 +48,12 @@ export default class EchoHook extends Whook {
       services: {},
     };
   }
-  init() {}
+  init(specs) {
+    this._statusCode = specs.out.properties.statusCode.enum[0];
+  }
   // Logic applyed to response/request abstract data before sending response content
   pre({ in: { contentType, contentLength }, out: out }, next) {
-    out.statusCode = 200;
+    out.statusCode = this._statusCode;
     out.contentType = contentType;
     out.contentLength = contentLength;
     next();

@@ -17,19 +17,17 @@ describe('Server integration', () => {
   router.service('log', (..._args) => {
     logs.push(_args);
   });
-  router.add(EchoWhook.specs({
-    statusCode: 201,
-  }), new EchoWhook('echo'));
+  router.add(EchoWhook.specs(), new EchoWhook('echo'));
 
   beforeEach(() => {
     logs = [];
   });
 
-  describe('for PUT requests', () => {
+  describe('for POST requests', () => {
 
     it('should 404 for unexisting routes', (done) => {
       request(router.callback())
-      .put('/kikoolol')
+      .post('/kikoolol')
       .send({
         plop: 'wadup',
       })
@@ -45,13 +43,13 @@ describe('Server integration', () => {
 
     it('should work as expected', (done) => {
       request(router.callback())
-      .put('/echo')
+      .post('/echo')
       .send('1267833600000')
       .set('Content-Type', 'text/plain')
       .set('Content-Length', '13')
       .expect('Content-Type', 'text/plain')
       .expect('Content-Length', '13')
-      .expect(201)
+      .expect(200)
       .end((err, res) => {
         if(err) {
           return done(err);

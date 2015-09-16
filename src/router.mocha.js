@@ -53,43 +53,46 @@ describe('Router', () => {
   describe('add()', () => {
 
     it('should build a list of whookMounts', () => {
-
-      let router = new Router()
-        .add({
+      let whooksMounts = [{
+        specs: {
           nodes: [],
-        }, {
+        },
+        whook: {
           name: 'Whook #1',
-        })
-        .add({
+          init: function() {},
+        }
+      }, {
+        specs: {
           nodes: ['plop'],
-        }, {
+        },
+        whook: {
           name: 'Whook #2',
-        })
-        .add({
+          init: function() {},
+        }
+      }, {
+        specs: {
           nodes: ['plop', 'test'],
-        }, {
+        },
+        whook: {
           name: 'Whook #3',
-        })
-        .add({
+          init: function() {},
+        }
+      }, {
+        specs: {
           nodes: ['plop'],
-        }, {
+        },
+        whook: {
           name: 'Whook #4',
-        });
+          init: function() {},
+        }
+      }];
+      let router = new Router()
+        .add(whooksMounts[0].specs, whooksMounts[0].whook)
+        .add(whooksMounts[1].specs, whooksMounts[1].whook)
+        .add(whooksMounts[2].specs, whooksMounts[2].whook)
+        .add(whooksMounts[3].specs, whooksMounts[3].whook);
 
-
-      assert.deepEqual(router._whookMounts, [{
-        specs: { nodes: [] },
-        whook: { name: 'Whook #1' },
-      }, {
-        specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #2' },
-      }, {
-        specs: { nodes: ['plop', 'test'] },
-        whook: { name: 'Whook #3' },
-      }, {
-        specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #4' },
-      }]);
+      assert.deepEqual(router._whookMounts, whooksMounts);
     });
 
   });
@@ -131,6 +134,7 @@ describe('Router', () => {
         nodes: [],
       }, {
         name: 'syncwhook',
+        init: () => {},
         pre: ($) => {
           $.services.log('syncwhook');
         },
@@ -139,6 +143,7 @@ describe('Router', () => {
         nodes: [],
       }, {
         name: 'asyncwhook',
+        init: () => {},
         pre: ($, next) => {
           $.services.log('asyncwhook');
           setImmediate(() => {
@@ -164,25 +169,46 @@ describe('Router', () => {
       let router = new Router();
       let whookMounts = [{
         specs: { nodes: [] },
-        whook: { name: 'Whook #1' },
+        whook: {
+          name: 'Whook #1',
+          init: () => {},
+        },
       }, {
         specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #2' },
+        whook: {
+          name: 'Whook #2',
+          init: () => {},
+        },
       }, {
         specs: { nodes: ['plop', 'test'] },
-        whook: { name: 'Whook #3' },
+        whook: {
+          name: 'Whook #3',
+          init: () => {},
+        },
       }, {
         specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #4' },
+        whook: {
+          name: 'Whook #4',
+          init: () => {},
+        },
       }, {
         specs: { nodes: ['plop', /^[a-f0-9]{24}$/] },
-        whook: { name: 'Whook #5' },
+        whook: {
+          name: 'Whook #5',
+          init: () => {},
+        },
       }, {
         specs: { nodes: ['plop', /^[a-f0-9]{24}$/, 'kikoolol'] },
-        whook: { name: 'Whook #6' },
+        whook: {
+          name: 'Whook #6',
+          init: () => {},
+        },
       }, {
         specs: { nodes: ['plop', /^[0-9]+$/, 'kikoolol'] },
-        whook: { name: 'Whook #6' },
+        whook: {
+          name: 'Whook #6',
+          init: () => {},
+        },
       }];
 
       whookMounts.forEach((whookMount) => {

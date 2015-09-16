@@ -5,18 +5,16 @@ export default class Whook {
     constructor(name) {
       this.name = name;
     }
-    init() {
-      throw new Error('E_NOT_IMPLEMENTED');
-    }
+    init() {}
     pre($, next) {
       next();
     }
     preError(err, $, next) {
       next(err);
-    }/*
+    }
     process($, inputStream) {
       return inputStream;
-    }*/
+    }
     piped() {
     }
     post($, next) {

@@ -14,11 +14,9 @@ describe('Whook', () => {
   describe('specs()', () => {
 
     it('should throw an error', () => {
-      let whook = new Whook('name');
-
       assert.throws(() => {
-        whook.specs();
-      }, 'E_NOT_IMPLEMENTED');
+        Whook.specs();
+      }, /E_NOT_IMPLEMENTED/);
     });
 
   });
