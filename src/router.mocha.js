@@ -1,9 +1,8 @@
 import assert from 'assert';
 import neatequal from 'neatequal';
+import Router from './router';
 
 describe('Router', () => {
-  let Router = require('./router').default;
-
 
   describe('constructor()', () => {
     it('should work', () => {
@@ -163,7 +162,7 @@ describe('Router', () => {
 
   });
 
-  describe('_prepareWhooksChain()', () => {
+  describe('_getInvolvedWhooksMount()', () => {
 
     it('should return involved hooks', () => {
       let router = new Router();
@@ -215,19 +214,19 @@ describe('Router', () => {
         router.add(whookMount.specs, whookMount.whook);
       });
       assert.deepEqual(
-        router._prepareWhooksChain({ url: '/' }), [
+        router._getInvolvedWhooksMount({ url: '/' }), [
           whookMounts[0],
         ]
       );
       assert.deepEqual(
-        router._prepareWhooksChain({ url: '/plop' }), [
+        router._getInvolvedWhooksMount({ url: '/plop' }), [
           whookMounts[0],
           whookMounts[1],
           whookMounts[3],
         ]
       );
       assert.deepEqual(
-        router._prepareWhooksChain({ url: '/plop/test' }), [
+        router._getInvolvedWhooksMount({ url: '/plop/test' }), [
           whookMounts[0],
           whookMounts[1],
           whookMounts[2],
@@ -235,7 +234,7 @@ describe('Router', () => {
         ]
       );
       neatequal(
-        router._prepareWhooksChain({ url: '/plop/abbacacaabbacacaabbacaca/kikoolol' }), [
+        router._getInvolvedWhooksMount({ url: '/plop/abbacacaabbacacaabbacaca/kikoolol' }), [
           whookMounts[0],
           whookMounts[1],
           whookMounts[3],

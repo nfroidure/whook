@@ -1,36 +1,40 @@
 'use strict';
 
-() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
 var _assert2 = _interopRequireDefault(_assert);
 
-var _neatequal = require('neatequal');
-
-var _neatequal2 = _interopRequireDefault(_neatequal);
-
-var _sinon = require('sinon');
-
-var _sinon2 = _interopRequireDefault(_sinon);
-
-describe('Destination', () => () {
+describe('Destination', function () {
   var Destination = require('./destination');
 
-  describe('constructor()', () => () {
-    it('should set the destination name', () => () {
+  describe('constructor()', function () {
+    it('should set the destination name', function () {
       var destination = new Destination({}, 'name');
 
       _assert2['default'].equal(destination.name, 'name');
     });
+    it('should throw an error if a bad res is given', function () {
+      _assert2['default'].throws(function () {
+        new Destination('hey', 'name');
+      }, /E_BAD_DESTINATION_RESPONSE/);
+    });
+    it('should throw an error if a bad name is given', function () {
+      _assert2['default'].throws(function () {
+        new Destination({}, {});
+      }, /E_BAD_DESTINATION_NAME/);
+    });
   });
 
-  describe('query()', () => () {
+  describe('query()', function () {
 
-    it('should throw an error', () => () {
+    it('should throw an error', function () {
       var destination = new Destination({}, 'name');
 
-      _assert2['default'].throws(destination.get, 'E_NOT_IMPLEMENTED');
+      _assert2['default'].throws(function () {
+        destination.set();
+      }, /E_NOT_IMPLEMENTED/);
     });
   });
 });

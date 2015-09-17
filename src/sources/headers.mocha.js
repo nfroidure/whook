@@ -18,8 +18,14 @@ describe('HeadersSource', () => {
         headers: {
           'content-type': 'text/plain',
         },
-      }).get('Content-Type', 'text/plain'),
+      }).get('Content-Type'),
       ['text/plain']);
+      assert.deepEqual(new HeadersSource({
+        headers: {
+          'content-length': '1024',
+        },
+      }).get('Content-Length'),
+      [1024]);
 
     });
   });

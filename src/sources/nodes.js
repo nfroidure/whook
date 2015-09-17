@@ -1,4 +1,7 @@
 import Source from '../source';
+import debug from 'debug';
+
+let log = debug('whook.sources.nodes');
 
 export default class QueryString extends Source {
   constructor(req, name = 'nodes') {
@@ -6,6 +9,8 @@ export default class QueryString extends Source {
     this.nodes = null;
   }
   get(query) {
+    let value;
+
     if(!this.nodes) {
       let index = this._req.url.indexOf('?');
 
@@ -16,6 +21,10 @@ export default class QueryString extends Source {
         return a;
       });
     }
-    return this.nodes[Number(query)];
+    value = this.nodes[Number(query)];
+
+    log('Get', query, value);
+
+    return value;
   }
 }

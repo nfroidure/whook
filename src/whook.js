@@ -6,8 +6,7 @@ export default class Whook {
       this.name = name;
     }
     init() {}
-    pre($, next) {
-      next();
+    pre($) {
     }
     preError(err, $, next) {
       next(err);

@@ -12,15 +12,15 @@ export default class DownloadWhook extends Whook {
         properties: {
           download: {
             source: 'qs:download',
+            description: 'Whether the download header should be added.',
             type: 'boolean',
             default: false,
-            description: 'Whether the download header should be added or not.',
           },
           filename: {
             source: 'qs:filename',
+            description: 'The filename under which the download should be saved.',
             type: 'string',
             default: '',
-            description: 'The filename under wich the download should be saved.',
           },
         },
       },

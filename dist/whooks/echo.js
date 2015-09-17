@@ -6,7 +6,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -26,104 +26,98 @@ var _whook = require('../whook');
 
 var _whook2 = _interopRequireDefault(_whook);
 
-var TimeHook = (function (_Whook) {
-  _inherits(TimeHook, _Whook);
+var EchoHook = (function (_Whook) {
+  _inherits(EchoHook, _Whook);
 
-  function TimeHook() {
-    _classCallCheck(this, TimeHook);
+  function EchoHook() {
+    _classCallCheck(this, EchoHook);
 
-    _get(Object.getPrototypeOf(TimeHook.prototype), 'constructor', this).apply(this, arguments);
+    _get(Object.getPrototypeOf(EchoHook.prototype), 'constructor', this).apply(this, arguments);
   }
 
-  _createClass(TimeHook, [{
+  _createClass(EchoHook, [{
     key: 'init',
-    value: function init() {}
+    value: function init(specs) {
+      this._statusCode = specs.out.properties.statusCode['enum'][0];
+    }
 
     // Logic applyed to response/request abstract data before sending response content
   }, {
     key: 'pre',
     value: function pre(_ref, next) {
+      var _ref$in = _ref['in'];
+      var contentType = _ref$in.contentType;
+      var contentLength = _ref$in.contentLength;
       var out = _ref.out;
 
-      out.statusCode = 200;
-      out.contentType = 'text/plain';
+      out.statusCode = this._statusCode;
+      out.contentType = contentType;
+      out.contentLength = contentLength;
       next();
     }
 
     // Logic applyed to response/request abstract data when sending response content
   }, {
     key: 'process',
-    value: function process(_ref2, inStream) {
-      var format = _ref2['in'].format;
-      var out = _ref2.out;
-      var time = _ref2.services.time;
-
-      var curTime = new Date(time.now())['iso' === format ? 'toISOString' : 'getTime']().toString();
-      var outStream = new _stream2['default'].PassThrough();
-
-      out.contentLength = curTime.length;
-      inStream.on('data', function () {
-        outStream.emit('error', new _yerror2['default']('E_UNEXPECTED_CONTENT'));
-      });
-      inStream.on('end', function () {
-        outStream.write(curTime);
-        outStream.end();
-      });
-      return outStream;
+    value: function process($, inStream) {
+      return inStream;
     }
   }], [{
     key: 'specs',
     value: function specs() {
+      var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      var _ref2$statusCode = _ref2.statusCode;
+      var statusCode = _ref2$statusCode === undefined ? 200 : _ref2$statusCode;
+
       return {
-        methods: ['GET'], // Apply to GET requests only
-        nodes: ['time'], // Hook will be mounted to /time API endpoint
+        methods: ['POST'],
+        nodes: ['echo'],
         'in': {
           $schema: 'http://json-schema.org/draft-04/schema#',
-          title: 'TimeHook input specs',
+          title: 'EchoHook input specs',
           type: 'object',
           properties: {
-            format: {
-              source: 'qs:format', // value will be picked in query parameters (?format)
+            contentType: {
+              source: 'headers:Content-Type',
               type: 'string',
-              'default': 'timestamp',
-              'enum': ['timestamp', 'iso'],
-              description: 'The output format of the provided time.'
+              description: 'The type of the content to echo.'
+            },
+            contentLength: {
+              source: 'headers:Content-Length',
+              type: 'number',
+              description: 'The length of the content to echo.'
             }
           }
         },
         out: {
           $schema: 'http://json-schema.org/draft-04/schema#',
-          title: 'TimeHook output specs',
+          title: 'EchoHook output specs',
           type: 'object',
           properties: {
             statusCode: {
               type: 'number',
               required: true,
               destination: 'status',
-              'enum': [200]
+              'enum': [statusCode]
             },
             contentType: {
               type: 'string',
-              required: true,
-              destination: 'headers:Content-Type',
-              'enum': ['text/plain']
+              destination: 'headers:Content-Type'
             },
             contentLength: {
               type: 'number',
-              required: true,
               destination: 'headers:Content-Length'
             }
           }
         },
-        services: {
-          time: ''
-        }
+        services: {}
       };
     }
   }]);
 
-  return TimeHook;
+  return EchoHook;
 })(_whook2['default']);
 
-exports['default'] = TimeHook;
+exports['default'] = EchoHook;
 module.exports = exports['default'];

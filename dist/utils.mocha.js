@@ -1,42 +1,38 @@
 'use strict';
 
-var _createClass = (() => () { () => defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return () => (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = () => get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-() => _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-() => _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _utils = require('./utils');
-
-var _sinon = require('sinon');
-
-var _sinon2 = _interopRequireDefault(_sinon);
 
 var _assert = require('assert');
 
 var _assert2 = _interopRequireDefault(_assert);
 
-describe('utils', () => () {
+describe('utils', function () {
 
-  describe('instanciatePlugs()', () => () {
+  describe('instanciatePlugs()', function () {
     var Destination = require('./destination');
 
-    var Dest1 = (() => (_Destination) {
-      () => Dest1() {
+    var Dest1 = (function (_Destination) {
+      _inherits(Dest1, _Destination);
+
+      function Dest1() {
         _classCallCheck(this, Dest1);
 
         _get(Object.getPrototypeOf(Dest1.prototype), 'constructor', this).apply(this, arguments);
       }
 
-      _inherits(Dest1, _Destination);
-
       _createClass(Dest1, [{
         key: 'get',
-        value: () => get() {
+        value: function get() {
           return 'dest1get: ' + this._res.test;
         }
       }]);
@@ -44,18 +40,18 @@ describe('utils', () => () {
       return Dest1;
     })(Destination);
 
-    var Dest2 = (() => (_Destination2) {
-      () => Dest2() {
+    var Dest2 = (function (_Destination2) {
+      _inherits(Dest2, _Destination2);
+
+      function Dest2() {
         _classCallCheck(this, Dest2);
 
         _get(Object.getPrototypeOf(Dest2.prototype), 'constructor', this).apply(this, arguments);
       }
 
-      _inherits(Dest2, _Destination2);
-
       _createClass(Dest2, [{
         key: 'get',
-        value: () => get() {
+        value: function get() {
           return 'dest2get: ' + this._res.test;
         }
       }]);
@@ -63,8 +59,9 @@ describe('utils', () => () {
       return Dest2;
     })(Destination);
 
-    it('should return instantiated destinations for the given res', () => () {
+    it('should return instantiated destinations for the given res', function () {
       var destinationsClasses = new Map();
+
       destinationsClasses.set('dest1', Dest1);
       destinationsClasses.set('dest2', Dest2);
       var res = {
@@ -80,16 +77,17 @@ describe('utils', () => () {
     });
   });
 
-  describe('mapPlugs()', () => () {
+  describe('mapPlugs()', function () {
     var plug1 = { test: 'plug1' };
     var plug2 = { test: 'plug2' };
 
-    it('should return a new map of plugs', () => () {
+    it('should return a new map of plugs', function () {
       var namesMapping = {
         plug1: '',
         plug2: 'plug2renamed'
       };
       var plugs = new Map();
+
       plugs.set('plug1', plug1);
       plugs.set('plug2', plug2);
 

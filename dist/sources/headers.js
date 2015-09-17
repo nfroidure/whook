@@ -22,42 +22,40 @@ var _debug = require('debug');
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var log = (0, _debug2['default'])('whook.sources.nodes');
+var log = (0, _debug2['default'])('whook.sources.headers');
 
-var QueryString = (function (_Source) {
-  _inherits(QueryString, _Source);
+// TODO: Cast all headers
+// see https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
+var HEADERS_CASTS = {
+  'content-length': Number,
+  'max-forwards': Number
+};
 
-  function QueryString(req) {
-    var name = arguments.length <= 1 || arguments[1] === undefined ? 'nodes' : arguments[1];
+var HeadersSource = (function (_Source) {
+  _inherits(HeadersSource, _Source);
 
-    _classCallCheck(this, QueryString);
+  function HeadersSource(req) {
+    var name = arguments.length <= 1 || arguments[1] === undefined ? 'headers' : arguments[1];
 
-    _get(Object.getPrototypeOf(QueryString.prototype), 'constructor', this).call(this, req, name);
-    this.nodes = null;
+    _classCallCheck(this, HeadersSource);
+
+    _get(Object.getPrototypeOf(HeadersSource.prototype), 'constructor', this).call(this, req, name);
   }
 
-  _createClass(QueryString, [{
+  _createClass(HeadersSource, [{
     key: 'get',
-    value: function get(query) {
-      var value = undefined;
+    value: function get(name) {
+      var key = name.toLowerCase();
+      var values = [HEADERS_CASTS[key] ? HEADERS_CASTS[key](this._req.headers[key]) : this._req.headers[key]];
 
-      if (!this.nodes) {
-        var index = this._req.url.indexOf('?');
+      log('Get', name, values);
 
-        this.nodes = (-1 !== index ? this._req.url.substr(0, index - 1) : this._req.url).split('/').filter(function (a) {
-          return a;
-        });
-      }
-      value = this.nodes[Number(query)];
-
-      log('Get', query, value);
-
-      return value;
+      return values;
     }
   }]);
 
-  return QueryString;
+  return HeadersSource;
 })(_source2['default']);
 
-exports['default'] = QueryString;
+exports['default'] = HeadersSource;
 module.exports = exports['default'];

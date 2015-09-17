@@ -6,22 +6,10 @@ import {
 import YError from 'yerror';
 import debug from 'debug';
 import Stream from 'stream';
+import Ajv from 'ajv';
 
 let log = debug('whook.router');
-
-export const WHOOK_SYMBOL = Symbol('WhooksSymbol');
-
-function _buildTreeNode() {
-  let node = {};
-
-  Object.defineProperty(node, WHOOK_SYMBOL, {
-    enumerable: false,
-    writable: false,
-    configurable: false,
-    value: [],
-  });
-  return node;
-}
+let ajv = new Ajv();
 
 export default class Router {
   constructor(config) {
@@ -29,7 +17,6 @@ export default class Router {
     this.services = new Map();
     this.sources = new Map();
     this.destinations = new Map();
-    this.whooksTree = _buildTreeNode();
     this._whookMounts = [];
     this._whooksCache = new Map();
     this._mounted = false;
@@ -55,14 +42,16 @@ export default class Router {
   add(specs, whook) {
     let whookMount = { specs, whook };
 
+    log('Registering a whook:', whook.constructor.name);
     this._checkMounted();
     this._whookMounts.push(whookMount);
     this._whooksCache.set(whookMount, {
+      inValidate: ajv.compile(specs.in || {}),
+      outValidate: ajv.compile(specs.in || {}),
       sourceNames: getInvolvedPlugsNameFromSpecs(specs, 'source'),
       destinationNames: getInvolvedPlugsNameFromSpecs(specs, 'destination'),
     });
     whook.init(specs);
-    log('Registering a whook:', whook.constructor.name);
     return this;
   }
   callback() {
@@ -87,50 +76,17 @@ export default class Router {
     res.statusCode = -1;
 
     // Get the whooks to complete the incoming message
-    involvedWhookMounts = this._prepareWhooksChain(req);
-    log('Found ' + involvedWhookMounts.length + ' whooks for her.');
+    involvedWhookMounts = this._getInvolvedWhooksMount(req);
 
     // Instantiate plugs (destinations, sources)
     sourcesMap = instanciatePlugs(
-      involvedWhookMounts.reduce((sourceNames, whook) => {
-        log('Looking for ' + whook + ' in the cache.');
-        this._whooksCache.get(whook).sourceNames.forEach((name) => {
-          if(-1 === sourceNames.indexOf(name)) {
-            sourceNames.push(name);
-          }
-        });
-        return sourceNames;
-      }, []).reduce((sourcesMap, name) => {
-        var source = this.sources.get(name);
-        if(!source) {
-          throw new YError('E_UNKNOW_SOURCE', name); // Maybe check this in router.add ?
-        }
-        sourcesMap.set(name, source);
-        return sourcesMap;
-      }, new Map()),
+      this._getPlugsMapFromWhookMounts(involvedWhookMounts, 'source'),
       req
     );
-    log(sourcesMap.size + ' sources prepared.');
-
     destinationsMap = instanciatePlugs(
-      involvedWhookMounts.reduce((destinationNames, whook) => {
-        this._whooksCache.get(whook).destinationNames.forEach((name) => {
-          if(-1 === destinationNames.indexOf(name)) {
-            destinationNames.push(name);
-          }
-        });
-        return destinationNames;
-      }, []).reduce((destinationsMap, name) => {
-        var destination = this.destinations.get(name);
-        if(!destination) {
-          throw new YError('E_UNKNOW_DESTINATION', name); // Maybe check this in router.add ?
-        }
-        destinationsMap.set(name, destination);
-        return destinationsMap;
-      }, new Map()),
+      this._getPlugsMapFromWhookMounts(involvedWhookMounts, 'destination'),
       res
     );
-    log(destinationsMap.size + ' destinations prepared.');
 
     // Prepare contexts
     contexts = this._prepareContexts(
@@ -140,9 +96,14 @@ export default class Router {
       this.services
     );
     log('Context objects successfully prepared.', contexts);
-    // execute pre
-    this._runNextWhookMount(involvedWhookMounts, 'pre', 0, contexts)
-    // if err stop executing pre, execute preError
+
+    // Check input
+    this._validateWhooksInput(involvedWhookMounts, contexts)
+      // execute pre when no error
+      .then(this._runNextWhookMount.bind(this, involvedWhookMounts, 'pre', 0, contexts))
+      // Check output
+      .then(this._validateWhooksOutput(involvedWhookMounts, contexts))
+      // if err stop/avoid executing pre, execute preError
       .catch((err) => {
         log('Got an error on the "pre" hook', err.stack);
         return this._runNextWhookMount(involvedWhookMounts, 'preError', 0, contexts, err);
@@ -213,6 +174,29 @@ export default class Router {
       throw new Error('E_ALREADY_MOUNTED');
     }
   }
+  _getPlugsMapFromWhookMounts(whookMounts, plugType) {
+    var plugsMap = whookMounts.reduce((plugNames, whookMount) => {
+      log('Looking for "' + whookMount.whook.name + '" whook mount in the cache.');
+      this._whooksCache.get(whookMount)[plugType + 'Names'].forEach((name) => {
+        if(-1 === plugNames.indexOf(name)) {
+          plugNames.push(name);
+        }
+      });
+      return plugNames;
+    }, []).reduce((plugsMap, name) => {
+      var plug = this[plugType + 's'].get(name);
+
+      if(!plug) {
+        // Maybe check this in router.add ?
+        throw new YError('E_UNKNOW_' + plugType.toUpperCase(), name);
+      }
+      plugsMap.set(name, plug);
+      return plugsMap;
+    }, new Map());
+
+    log(plugsMap.size + ' ' + plugType + 's prepared.');
+    return plugsMap;
+  }
   _prepareContexts(involvedWhookMounts, sourcesMap) {
     let contexts = [];
 
@@ -235,14 +219,30 @@ export default class Router {
     ).forEach((propertyName) => {
       let property = whookMount.specs.in.properties[propertyName];
       let [source, query] = property.source.split(':');
-      let result = sourcesMap.get(source).get(query);
+      let results = sourcesMap.get(source).get(query);
 
-      if(result.length) {
-        $.in[propertyName] = result[0];
-      } else {
-        $.in[propertyName] = '';
+      if(results.length) {
+        $.in[propertyName] = results[0];
+      } else if('undefined' !== typeof property.default) {
+        $.in[propertyName] = property.default;
       }
     });
+  }
+  _validateWhooksInput(whookMounts, contexts) {
+    var errors = whookMounts.reduce((errors, whookMount, i) => {
+      var validate = this._whooksCache.get(whookMount).inValidate;
+
+      if(!validate(contexts[i].in || {})) {
+        errors = errors.concat(validate.errors);
+      }
+      return errors;
+    }, []);
+
+    if(errors.length) {
+      log('Found errors in input.', errors);
+      return Promise.reject(new YError('E_BAD_INPUT', errors));
+    }
+    return Promise.resolve();
   }
   _applyWhookOutput(whookMount, destinationsMap, $) {
     (whookMount.specs.out && whookMount.specs.out.properties ?
@@ -257,10 +257,25 @@ export default class Router {
       }
     });
   }
-  _prepareWhooksChain(req) {
-    let nodes = req.url.split('?')[0].split('/').slice(1);
+  _validateWhooksOutput(whookMounts, contexts) {
+    var errors = whookMounts.reduce((errors, whookMount, i) => {
+      var validate = this._whooksCache.get(whookMount).outValidate;
 
-    return this._whookMounts.filter((whookMount) => {
+      if(!validate(contexts[i].out || {})) {
+        errors = errors.concat(validate.errors);
+      }
+      return errors;
+    }, []);
+
+    if(errors.length) {
+      log('Found errors in output.', errors);
+      return Promise.reject(new YError('E_BAD_INPUT', errors));
+    }
+    return Promise.resolve();
+  }
+  _getInvolvedWhooksMount(req) {
+    let nodes = req.url.split('?')[0].split('/').slice(1);
+    let involvedWhookMounts = this._whookMounts.filter((whookMount) => {
       return 0 === whookMount.specs.nodes.length || (
         nodes.length >= whookMount.specs.nodes.length &&
         nodes.every((node, index) => {
@@ -272,6 +287,10 @@ export default class Router {
         })
       );
     });
+
+    log('Found ' + involvedWhookMounts.length + ' whooks for her.');
+
+    return involvedWhookMounts;
   }
   _prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline, reject) {
     pipeline.on('error', (err) => {
@@ -301,7 +320,7 @@ export default class Router {
       return Promise.resolve();
     }
     if(!contexts[index]) {
-      return Promise.reject(new Error('E_BAD_CONTEXT'));
+      return Promise.reject(new YError('E_BAD_CONTEXT', index));
     }
     return this._runWhook(involvedWhookMounts[index].whook, step, contexts[index], err)
       .then(() => {

@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-() => _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Service =
 // Run at service attachment
-() => Service(name) {
+function Service(name) {
   _classCallCheck(this, Service);
 
   this.name = name;
 };
 
-exports['default'] = Service;
-module.exports = exports['default'];
+exports["default"] = Service;
+module.exports = exports["default"];

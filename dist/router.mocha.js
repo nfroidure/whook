@@ -1,6 +1,6 @@
 'use strict';
 
-() => _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _assert = require('assert');
 
@@ -10,119 +10,136 @@ var _neatequal = require('neatequal');
 
 var _neatequal2 = _interopRequireDefault(_neatequal);
 
-describe('Router', () => () {
-  var Router = require('./router')['default'];
-  var WHOOK_SYMBOL = require('./router')['WHOOK_SYMBOL'];
+var _router = require('./router');
 
-  describe('constructor()', () => () {
-    it('should work', () => () {
-      new Router();
+var _router2 = _interopRequireDefault(_router);
+
+describe('Router', function () {
+
+  describe('constructor()', function () {
+    it('should work', function () {
+      new _router2['default']();
     });
   });
 
-  describe('service()', () => () {
+  describe('service()', function () {
 
-    it('should register a new service', () => () {
+    it('should register a new service', function () {
       var testService = { test: 'test' };
-      var router = new Router();
+      var router = new _router2['default']();
+
       router.service('test', testService);
 
       _assert2['default'].equal(router.services.get('test'), testService);
     });
   });
 
-  describe('source()', () => () {
+  describe('source()', function () {
 
-    it('should register a new source', () => () {
+    it('should register a new source', function () {
       var testSource = { test: 'test' };
-      var router = new Router();
+      var router = new _router2['default']();
+
       router.source('test', testSource);
 
       _assert2['default'].equal(router.sources.get('test'), testSource);
     });
   });
 
-  describe('destination()', () => () {
+  describe('destination()', function () {
 
-    it('should register a new destination', () => () {
+    it('should register a new destination', function () {
       var testDestination = { test: 'test' };
-      var router = new Router();
+      var router = new _router2['default']();
+
       router.destination('test', testDestination);
 
       _assert2['default'].equal(router.destinations.get('test'), testDestination);
     });
   });
 
-  describe('add()', () => () {
+  describe('add()', function () {
 
-    it('should build a list of whookMounts', () => () {
+    it('should build a list of whookMounts', function () {
+      var whooksMounts = [{
+        specs: {
+          nodes: []
+        },
+        whook: {
+          name: 'Whook #1',
+          init: function init() {}
+        }
+      }, {
+        specs: {
+          nodes: ['plop']
+        },
+        whook: {
+          name: 'Whook #2',
+          init: function init() {}
+        }
+      }, {
+        specs: {
+          nodes: ['plop', 'test']
+        },
+        whook: {
+          name: 'Whook #3',
+          init: function init() {}
+        }
+      }, {
+        specs: {
+          nodes: ['plop']
+        },
+        whook: {
+          name: 'Whook #4',
+          init: function init() {}
+        }
+      }];
+      var router = new _router2['default']().add(whooksMounts[0].specs, whooksMounts[0].whook).add(whooksMounts[1].specs, whooksMounts[1].whook).add(whooksMounts[2].specs, whooksMounts[2].whook).add(whooksMounts[3].specs, whooksMounts[3].whook);
 
-      var router = new Router().add({
-        nodes: []
-      }, {
-        name: 'Whook #1'
-      }).add({
-        nodes: ['plop']
-      }, {
-        name: 'Whook #2'
-      }).add({
-        nodes: ['plop', 'test']
-      }, {
-        name: 'Whook #3'
-      }).add({
-        nodes: ['plop']
-      }, {
-        name: 'Whook #4'
-      });
-
-      _assert2['default'].deepEqual(router._whookMounts, [{
-        specs: { nodes: [] },
-        whook: { name: 'Whook #1' }
-      }, {
-        specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #2' }
-      }, {
-        specs: { nodes: ['plop', 'test'] },
-        whook: { name: 'Whook #3' }
-      }, {
-        specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #4' }
-      }]);
+      _assert2['default'].deepEqual(router._whookMounts, whooksMounts);
     });
   });
 
-  describe('_runWhook()', () => () {
+  describe('_runWhook()', function () {
 
-    it('should work', () => (done) {
+    it('should work', function (done) {
       var logs = [];
-      var router = new Router();
+      var router = new _router2['default']();
+
       router._runWhook({
-        pre: () => pre($) {
+        pre: function pre($) {
           $.services.log('sync');
         }
       }, 'pre', {
         services: {
-          log: () => log(content) {
+          log: function log(content) {
             logs.push(content);
           }
         }
-      }).then(() => () {
+      }).then(function () {
         _assert2['default'].deepEqual(logs, ['sync']);
         done();
       })['catch'](done);
     });
   });
 
-  describe('_runNextWhookMount()', () => () {
+  describe('_runNextWhookMount()', function () {
 
-    it('should work', () => (done) {
+    it('should work', function (done) {
       var logs = [];
-      var router = new Router();
+      var router = new _router2['default']();
+      var services = {
+        log: function log(content) {
+          logs.push(content);
+        }
+      };
+
       router.add({
         nodes: []
       }, {
         name: 'syncwhook',
-        pre: () => pre($) {
+        init: function init() {},
+        pre: function pre($) {
           $.services.log('syncwhook');
         }
       });
@@ -130,62 +147,80 @@ describe('Router', () => () {
         nodes: []
       }, {
         name: 'asyncwhook',
-        pre: () => pre($, next) {
+        init: function init() {},
+        pre: function pre($, next) {
           $.services.log('asyncwhook');
-          setImmediate(() => () {
+          setImmediate(function () {
             next();
           });
         }
       });
-      var services = {
-        log: () => log(content) {
-          logs.push(content);
-        }
-      };
       router._runNextWhookMount(router._whookMounts, 'pre', 0, [{
         services: services
       }, {
         services: services
-      }]).then(() => () {
+      }]).then(function () {
         _assert2['default'].deepEqual(logs, ['syncwhook', 'asyncwhook']);
         done();
       })['catch'](done);
     });
   });
 
-  describe('_prepareWhooksChain()', () => () {
+  describe('_getInvolvedWhooksMount()', function () {
 
-    it('should return involved hooks', () => () {
-      var router = new Router();
+    it('should return involved hooks', function () {
+      var router = new _router2['default']();
       var whookMounts = [{
         specs: { nodes: [] },
-        whook: { name: 'Whook #1' }
+        whook: {
+          name: 'Whook #1',
+          init: function init() {}
+        }
       }, {
         specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #2' }
+        whook: {
+          name: 'Whook #2',
+          init: function init() {}
+        }
       }, {
         specs: { nodes: ['plop', 'test'] },
-        whook: { name: 'Whook #3' }
+        whook: {
+          name: 'Whook #3',
+          init: function init() {}
+        }
       }, {
         specs: { nodes: ['plop'] },
-        whook: { name: 'Whook #4' }
+        whook: {
+          name: 'Whook #4',
+          init: function init() {}
+        }
       }, {
         specs: { nodes: ['plop', /^[a-f0-9]{24}$/] },
-        whook: { name: 'Whook #5' }
+        whook: {
+          name: 'Whook #5',
+          init: function init() {}
+        }
       }, {
         specs: { nodes: ['plop', /^[a-f0-9]{24}$/, 'kikoolol'] },
-        whook: { name: 'Whook #6' }
+        whook: {
+          name: 'Whook #6',
+          init: function init() {}
+        }
       }, {
         specs: { nodes: ['plop', /^[0-9]+$/, 'kikoolol'] },
-        whook: { name: 'Whook #6' }
+        whook: {
+          name: 'Whook #6',
+          init: function init() {}
+        }
       }];
-      whookMounts.forEach(() => (whookMount) {
+
+      whookMounts.forEach(function (whookMount) {
         router.add(whookMount.specs, whookMount.whook);
       });
-      _assert2['default'].deepEqual(router._prepareWhooksChain({ url: '/' }), [whookMounts[0]]);
-      _assert2['default'].deepEqual(router._prepareWhooksChain({ url: '/plop' }), [whookMounts[0], whookMounts[1], whookMounts[3]]);
-      _assert2['default'].deepEqual(router._prepareWhooksChain({ url: '/plop/test' }), [whookMounts[0], whookMounts[1], whookMounts[2], whookMounts[3]]);
-      (0, _neatequal2['default'])(router._prepareWhooksChain({ url: '/plop/abbacacaabbacacaabbacaca/kikoolol' }), [whookMounts[0], whookMounts[1], whookMounts[3], whookMounts[4], whookMounts[5]]);
+      _assert2['default'].deepEqual(router._getInvolvedWhooksMount({ url: '/' }), [whookMounts[0]]);
+      _assert2['default'].deepEqual(router._getInvolvedWhooksMount({ url: '/plop' }), [whookMounts[0], whookMounts[1], whookMounts[3]]);
+      _assert2['default'].deepEqual(router._getInvolvedWhooksMount({ url: '/plop/test' }), [whookMounts[0], whookMounts[1], whookMounts[2], whookMounts[3]]);
+      (0, _neatequal2['default'])(router._getInvolvedWhooksMount({ url: '/plop/abbacacaabbacacaabbacaca/kikoolol' }), [whookMounts[0], whookMounts[1], whookMounts[3], whookMounts[4], whookMounts[5]]);
     });
   });
 });

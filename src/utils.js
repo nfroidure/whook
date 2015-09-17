@@ -41,29 +41,6 @@ export const getInvolvedPlugsNameFromSpecs =
     }, []);
   };
 
-export const getPlugsMapping = function getPlugsMapping(whooksMounts) {
-  let sourcesMapping = {};
-  let destinationsMapping = {};
-  let servicesMapping = {};
-
-  whooksMounts.forEach(({ specs: { services, sources, destinations } }) => {
-    services && Object.keys(services).forEach((key) => {
-      if('undefined' !== typeof servicesMapping[key]) {
-        // debug('Service key redefinition!')
-      }
-      servicesMapping[key] = specs.services[key];
-    });
-    sources && Object.keys(sources).forEach((key) => {
-      ;
-    });
-    destinations && Object.keys(destinations).forEach((key) => {
-      ;
-    });
-  });
-
-  return [sourcesMapping, destinationsMapping, servicesMapping];
-};
-
 export const mapPlugs = function mapPlugs(plugs, namesMapping) {
   return Object.keys(namesMapping).reduce((plugsMap, name) => {
     plugsMap[namesMapping[name] || name] = plugs.get(name);
