@@ -6,20 +6,17 @@ export default class Whook {
       this.name = name;
     }
     init() {}
-    pre($) {
+    pre() {
     }
-    preError(err, $, next) {
-      next(err);
+    preError() {
     }
     process($, inputStream) {
       return inputStream;
     }
     piped() {
     }
-    post($, next) {
-      next();
+    post() {
     }
-    postError(err, $, next) {
-      next(err);
+    postError() {
     }
 }

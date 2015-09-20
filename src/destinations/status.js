@@ -17,7 +17,10 @@ export default class Headers extends Destination {
     log('Set', value);
   }
   finish() {
-    this._res.statusCode = this._status || 404;
+    // Fallback to 500 since a whook using status should have set it
+    // even when erroring. It should never happen, so let's consider this as
+    // a server error.
+    this._res.statusCode = this._status || 500;
     log('Finish', this._res.statusCode);
   }
 }

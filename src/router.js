@@ -266,6 +266,7 @@ export default class Router {
       }
       return errors;
     }, []);
+    log('Validating outputs:', contexts);
 
     if(errors.length) {
       log('Found errors in output.', errors);
@@ -300,18 +301,25 @@ export default class Router {
       log('Pipeline stream successfully ended.');
     });
     involvedWhookMounts.forEach((whookMount, index) => {
-      if(whookMount.whook.process) {
-        pipeline = whookMount.whook.process(contexts[index], pipeline);
-        if(!pipeline) {
-          throw new YError('E_BAD_PROCESS_RETURN', whookMount.whook.name, pipeline);
-        }
-        pipeline.on('error', (err) => {
-          log('Whook stream "' + whookMount.whook.name + '" errored.', err);
-          reject(err);
-        }).on('end', () => {
-          log('Whook stream "' + whookMount.whook.name + '" successfully ended.');
-        });
+      var newPipeline;
+
+      if(!whookMount.whook.process) {
+        return;
       }
+      newPipeline = whookMount.whook.process(contexts[index], pipeline);
+      if(!newPipeline) {
+        log('Process returned no stream:', whookMount.whook.name);
+        newPipeline = new Stream.PassThrough();
+        setImmediate(newPipeline.end.bind(newPipeline));
+        return;
+      }
+      pipeline = newPipeline;
+      pipeline.on('error', (err) => {
+        log('Whook stream "' + whookMount.whook.name + '" errored.', err);
+        reject(err);
+      }).on('end', () => {
+        log('Whook stream "' + whookMount.whook.name + '" successfully ended.');
+      });
     });
     return pipeline;
   }
@@ -333,7 +341,7 @@ export default class Router {
     }
     return new Promise(function whookPromiseFunction(resolve, reject) {
       // There is no next function, run synchonously
-      if(2 > whook[step].length) {
+      if((err ? 3 : 2) > whook[step].length) {
         try {
           whook[step]($, err);
           resolve();
@@ -348,7 +356,7 @@ export default class Router {
           reject(err);
         }
         resolve();
-      });
+      }, err);
     });
   }
 }

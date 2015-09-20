@@ -61,6 +61,21 @@ describe('Server integration', () => {
       });
     });
 
+    it('should fail with bad input', (done) => {
+      request(router.callback())
+      .put('/echo')
+      .send('1267833600000')
+      .set('Content-Type', 'image/png')
+      .expect(400)
+      .end((err, res) => {
+        if(err) {
+          return done(err);
+        }
+        assert.equal(res.text, '1267833600000');
+        done();
+      });
+    });
+
   });
 
 });
