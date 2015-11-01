@@ -36,19 +36,26 @@ Creating REST APIs with Whook is mainly about building your API by plugin
  [a negligible performance trade-off](https://github.com/nfroidure/whook-perf)
  comparing to frameworks like ExpressJS or Koa.
 
-The Whook goal is to tighly couple route definitions with the other parts of
- a REST API definition (query parameters, request/response headers, status
- codes ...).
+The Whook goal are:
+- to **tighly couple route definitions with your REST API interface*** (query
+  parameters, request/response headers, status code...).
+- let **middlewares/controllers handling logic only**.
+- isolate external storages/global states into injected services à la AngularJS.
 
-As a result, a Hook (the Wook logical modules) only process generic requests in
- input and output generic responses:
+As a result, a Hook (the Whook logical modules) only process generic requests in
+ input and output generic responses, performing logical operations only:
 
 ```js
-jsonHook.pre = function($, next) {
+jsonHook.ackInput = function($, inputStream, next) {
   if('application/json' === $.in.contentType) {
     try {
-      $.out.content = JSON.stringify($.in.body);
-      next();
+      inputStream.pipe(streamToBuffer(function(err, buf) {
+        try {
+          next(null, JSON.stringify(buf.toString($.in.contentEncoding)));
+        } catch(err) {
+          next(err);
+        }
+      }));
     } catch(err) {
       next(err);
     }
@@ -147,7 +154,7 @@ You can also create you own abstraction for your own needs. Finally, you may
 
 Hooks code is based on a simple assumption: "You don't want to know a
  thing about requests/responses format". You just want some input and provide
- output.
+ output, making hooks more reusable than middlewares.
 
 ### Hook constructor()
 
@@ -165,52 +172,42 @@ let router = whook();
 router.add(MyHook.specs(), MyHook);
 ```
 
-### Hook.prototype.init($:Object, next:Function)
+### Hook.prototype.ackInput($:Object, inputContent:(Stream|Object|String), next:Function)
+Called when a mounted hooks specs matches the requested path. When implemented,
+ it is intended to acknowledge the current request and set the output response
+ accordingly.
 
-Called to initialize the hook with the parsed parameters from request headers,
- the query string, the uri and the router configuration. Any values can be
- registered through the `$` object given in argument. Mainly used to
- apply changes to `$.req` with default values.
+It takes the context object in argument followed by the request content as a
+ stream, you may decide to consume it or not depending on your needs. The
+ request content may have been turned to an Object or a String by a previously
+ run Hook.
 
-The `next` callback optionally accepts an error.
+The `next` callback optionally accepts an error. When not defined in the args
+ list, the method is run synchronously.
 
-### Hook.prototype.pre($:Object, next:Function)
-Called just before starting to send the response (last chance to set values in
- `$.res`). The request content is available as a stream in the context object
- (`$.reqStream`), you may decide to consume it or not depending on your needs.
+### Hook.prototype.ackInputError($:Object, err:Error, next:Function)
+Called just before starting to send the response if any error happened earlier.
+ Allows you to change the response meta data according to that error.
 
-The `next` callback optionally accepts an error.
+The `next` callback optionally accepts an error. When not defined in the args
+ list, the method is run synchronously.
 
-### Hook.prototype.preError(err:Error, $:Object, next:Function)
-Called just before starting to send the response if any error happened earlyer.
- Allows you to change the response metadata according to that error.
+Throwing a new error or calling next with an error will execute the next
+ hook. Not doing so will prevent executing the next Hook `ackInputError`
+ method.
 
-### Hook.prototype.process($:Object)
+### Hook.prototype.processOutput($:Object, outputContent:Stream, next:Function)
+Called to output the response content. `outputContent` is a writable stream. You
+ may just pass it back to the next Hook, write in it or event pipe it to a
+ passthrough stream and return it.
 
-Last chance to consume `$.reqStream`. Set output as a stream to `$.resStream`.
- Applying changes to `$.res` has no effect anymore.
-
-### Hook.prototype.piped($:Object)
-
-Called when the whole pipeline is finally piped to the response. Last chance to
- pipe `$.resStream` to another destination. Applying changes to `$.res` has no
- effect.
-
-### Hook.prototype.post($:Object, next:Function)
-
-Called after the response was sent (ie, the response stream ended). Useful to
- create web hooks, log things or anything else.
-
-The `next` callback optionally accepts an error.
-
-### Hook.prototype.postError(err:Error, $:Object, next:Function)
-
+### Hook.prototype.processOutput($:Object, err:Error, next:Function)
 Called when something went wrong **after** the response was sent. You no longer
- can warn the API client.
+ can warn the API client. It is mainly useful for logging or debugging.
 
 ### Sample hooks
 
-This repository will probably not contain hooks (except the Hooks base class).
+This repository will probably not contain hooks (except the `Hook` base class).
  But in order to illustrate how it could look like, some sample hooks are
  currently embedded:
 
@@ -220,6 +217,9 @@ This repository will probably not contain hooks (except the Hooks base class).
 - **DownloadHook:** A Hook adding download flags to specify that a browser
   should download the request content and prompt users to save it on their
   disk. -
+ [source](https://github.com/nfroidure/whook/blob/master/src/whooks/download.js) -
+ [tests](https://github.com/nfroidure/whook/blob/master/src/whooks/download.mocha.js)
+- **TimeHook:** A Hook returning the current server time. -
  [source](https://github.com/nfroidure/whook/blob/master/src/whooks/download.js) -
  [tests](https://github.com/nfroidure/whook/blob/master/src/whooks/download.mocha.js)
 
@@ -341,21 +341,20 @@ A simple service declaration of injected services with a simple key:value object
  mapping:
 ```js
 {
-  log: '' //  inject 'log' for this Whook
-  connection: 'db', // inject the 'db' service as 'connection' for this Whook
+  log: '' //  inject 'log' for this Hook
+  connection: 'db', // inject the 'db' service as 'connection' for this Hook
 }
 ```
 
-**Warning:** Services are not mixins! If you want to share code between Whooks,
+**Warning:** Services are not mixins! If you want to share code between Hooks,
  use the module system. Services are only intended to provide access to
- resources.
+ global states or external resources.
 
 ## The context object
 
 The context object (alias `$`) is built specifically for each Hook instance
  (and consequently for each client request) from specs given at mount on the
  router.
-
 
 Its `in` and `out` properties are pure primitive data. It should always
  be serializable with JSON. While Whook won't impeach you to add logic in, it is
@@ -370,19 +369,16 @@ Contains values mapped from real requests according to the `in` specs given to
  the router. Changing their values has no effect elsewhere than in the current
  hook.
 
-Debug:
-- set the 'whook.in.notfound' to know when a value isn't found.
-- set the 'whook.in.verbose' flag to get infos on what's going on with request
- specs matching.
+Set the [debug](https://github.com/visionmedia/debug) flag to 'whook.sources.*'
+ to see which value get picked up for which hook.
 
 ## $.out
 
 Empty object from which values will be mapped to real responses according to the
  specs given to the router. The last hook has the last word.
 
-Debug:
-- set the 'whook.out.overrides' flag to get warnings when a response value is overriden.
-- set the 'whook.out.unused' flag to know when a hook value is not used.
+Set the [debug](https://github.com/visionmedia/debug) flag to
+ 'whook.destinations.*' to see which value is written per which hook.
 
 ## $.services
 
@@ -391,5 +387,5 @@ Services registered in the router you may need to use (typically, loggers,
  defined in the `Router.service()` registration or, eventually, the one mapped
  from specs.
 
-Debug:
-- set the 'whook.services.notfound' flag to be warn when specified service is not found.
+ Set the [debug](https://github.com/visionmedia/debug) flag to
+  'whook.services.*' get infos on services uses.
