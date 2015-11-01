@@ -44,7 +44,7 @@ export default class DownloadWhook extends Whook {
     super('download');
   }
   init() {}
-  pre({ in: { download, filename }, out, services: { log } }, next) {
+  ackInput({ in: { download, filename }, out, services: { log } }, inputStream) {
     if(download) {
       out.contentDisposition = 'attachment' +
         (filename ? '; filename="' + filename + '"' : '');
@@ -52,6 +52,5 @@ export default class DownloadWhook extends Whook {
         log(this.name, 'out.contentDisposition set to:', out.contentDisposition);
       }
     }
-    next();
   }
 }

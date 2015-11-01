@@ -1,6 +1,7 @@
-import Stream from 'stream';
-import YError from 'yerror';
 import Whook from '../whook';
+import debug from 'debug';
+
+let log = debug('whook.whooks.time');
 
 export default class TimeHook extends Whook {
   static specs() {
@@ -47,32 +48,25 @@ export default class TimeHook extends Whook {
       },
       services: {
         time: '',
+        temp: '',
       },
     };
   }
   init() {}
-  // Logic applyed to response/request abstract data before sending response content
-  pre({ out }, next) {
-    out.statusCode = 200;
-    out.contentType = 'text/plain';
-    next();
-  }
-  // Logic applyed to response/request abstract data when sending response content
-  process({ in: { format }, out: out, services: { time } }, inStream) {
-    let curTime = (new Date(time.now()))[
+  ackInput({ in: { format }, out, services: { time, temp } }) {
+    let timeValue = (new Date(time.now()))[
       'iso' === format ?
       'toISOString' : 'getTime'
     ]().toString();
-    let outStream = new Stream.PassThrough();
 
-    out.contentLength = curTime.length;
-    inStream.on('data', () => {
-      outStream.emit('error', new YError('E_UNEXPECTED_CONTENT'));
-    });
-    inStream.on('end', () => {
-      outStream.write(curTime);
-      outStream.end();
-    });
-    return outStream;
+    log('Got the time:', timeValue);
+    out.statusCode = 200;
+    out.contentType = 'text/plain';
+    out.contentLength = timeValue.length;
+    temp.set('time', timeValue);
+  }
+  processOutput({ in: { format }, out, services: { temp } }, outStream) {
+    outStream.write(temp.get('time'));
+    outStream.end();
   }
 }

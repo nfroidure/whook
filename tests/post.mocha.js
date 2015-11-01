@@ -10,12 +10,17 @@ import HeadersDestination from '../src/destinations/headers';
 describe('Server integration', () => {
   let router = new Router();
   let logs;
+  let tempValue;
 
   router.destination('status', StatusDestination);
   router.destination('headers', HeadersDestination);
   router.source('headers', HeadersSource);
   router.service('log', (..._args) => {
     logs.push(_args);
+  });
+  router.service('temp', {
+    set: (key, val) => { tempValue = val; },
+    get: () => { return tempValue; },
   });
   router.add(EchoWhook.specs(), new EchoWhook('echo'));
 

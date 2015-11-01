@@ -13,6 +13,7 @@ import initTimeMock from 'sf-time-mock';
 describe('Server integration', () => {
   let router = new Router();
   let logs;
+  let tempValue;
   let timeStub = initTimeMock();
 
   router.source('nodes', NodesSource);
@@ -21,6 +22,10 @@ describe('Server integration', () => {
   router.destination('headers', HeadersDestination);
   router.service('time', {
     now: timeStub,
+  });
+  router.service('temp', {
+    set: (key, val) => { tempValue = val; },
+    get: () => { return tempValue; },
   });
   router.service('log', (..._args) => {
     logs.push(_args);

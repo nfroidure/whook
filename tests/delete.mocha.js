@@ -1,4 +1,3 @@
-import assert from 'assert';
 import request from 'supertest';
 
 import Router from '../src/router';
@@ -29,7 +28,7 @@ describe('Server integration', () => {
 
     it('should 404 for unexisting routes', (done) => {
       request(router.callback())
-      .put('/kikoolol')
+      .delete('/kikoolol')
       .send({
         plop: 'wadup',
       })
@@ -39,23 +38,6 @@ describe('Server integration', () => {
         if(err) {
           return done(err);
         }
-        done();
-      });
-    });
-
-    it('should work as expected', (done) => {
-      request(router.callback())
-      .put('/echo')
-      .set('Content-Type', 'text/plain')
-      .set('Content-Length', '0')
-      .expect('Content-Type', 'text/plain')
-      .expect('Content-Length', '0')
-      .expect(204)
-      .end((err, res) => {
-        if(err) {
-          return done(err);
-        }
-        assert.equal(res.text, '');
         done();
       });
     });

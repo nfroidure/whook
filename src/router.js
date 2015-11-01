@@ -5,7 +5,6 @@ import {
 } from './utils';
 import YError from 'yerror';
 import debug from 'debug';
-import Stream from 'stream';
 import Ajv from 'ajv';
 
 let log = debug('whook.router');
@@ -99,75 +98,58 @@ export default class Router {
 
     // Check input
     this._validateWhooksInput(involvedWhookMounts, contexts)
-      // execute pre when no error
-      .then(this._runNextWhookMount.bind(this, involvedWhookMounts, 'pre', 0, contexts))
-      // Check output
-      .then(this._validateWhooksOutput(involvedWhookMounts, contexts))
-      // if err stop/avoid executing pre, execute preError
-      .catch((err) => {
-        log('Got an error on the "pre" hook', err.stack);
-        return this._runNextWhookMount(involvedWhookMounts, 'preError', 0, contexts, err);
-      })
-    // process streams
-      .then(() => {
-        let incomingStream = new Stream.PassThrough();
-        let pipeline = incomingStream;
-
-        return new Promise((resolve, reject) => {
-          // create the pipeline
-          pipeline = this._prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline);
-          // flush destinations
-          involvedWhookMounts.forEach((whookMount, index) => {
-            this._applyWhookOutput(whookMount, destinationsMap, contexts[index]);
-          });
-          for(let [name, destination] of destinationsMap) {
-            destination.finish();
-          }
-          if(-1 === res.statusCode) {
-            log('No status code were set, fallbacking to 404!');
-            res.statusCode = 404;
-          }
-          // run piped step
-          this._runNextWhookMount(
-            involvedWhookMounts, 'piped', 0, contexts
-          ).then(() => {
-            // pipe
-            req
-              .on('error', (err) => {
-                log('Request stream errored.', err);
-                reject(err);
-              })
-              .on('end', () => {
-                log('Request stream successfully ended.');
-              })
-              .pipe(incomingStream);
-            if(incomingStream === pipeline) {
-              log('Request stream unprocessed.');
-            }
-            pipeline.pipe(res)
-              .on('error', (err) => {
-                log('Response stream errored.', err);
-                reject(err);
-              })
-              .on('end', () => {
-                log('Response stream successfully ended.', contexts);
-              })
-              .on('finish', () => {
-                log('Response stream successfully finished.', contexts);
-              })
-              .on('ended', resolve);
-          });
-        });
-      })
-    // execute post
-      .then(() => {
-        return this._runNextWhookMount(involvedWhookMounts, 'post', 0, contexts);
-      })
-    // if err stop executing post, execute postError
-      .catch((err) => {
-        log('Got an error on the "post" hook', err.stack);
-        return this._runNextWhookMount(involvedWhookMounts, 'postError', 0, contexts, err);
+    // Execute ackInput when no error
+    .then(this._runNextWhookMount.bind(
+      this, involvedWhookMounts, 'ackInput', 0, contexts, req
+    ))
+    // Check output
+    .then(this._validateWhooksOutput(involvedWhookMounts, contexts))
+    // If err stop/avoid executing ackInput and execute ackInputError
+    .catch((err) => {
+      log('Got an error on the "ackInput" hook', err.stack);
+      return this._runNextErrorWhookMount(
+        involvedWhookMounts, 'ackInputError', 0, contexts, err
+      );
+    })
+    .then((inputStream) => {
+      // If no ack were done, default to 404
+      if(-1 === res.statusCode) {
+        log('No status code were set, fallbacking to 404!');
+        res.statusCode = 404;
+      }
+      if(inputStream) {
+        log('It looks like the input stream were not consumed!');
+      }
+      // Flush destinations
+      involvedWhookMounts.forEach((whookMount, index) => {
+        this._applyWhookOutput(whookMount, destinationsMap, contexts[index]);
       });
+      for(let [name, destination] of destinationsMap) {
+        destination.finish();
+      }
+      log('Destinations flushed!');
+    })
+    // Build the representation of the resource
+    .then(() => {
+      log('Building the resource representation.');
+      return this._runNextWhookMount(
+        involvedWhookMounts, 'processOutput', 0, contexts, res
+      );
+    })
+    // If err stop executing processOutput, execute processOutputError
+    .catch((err) => {
+      log('Got an error in the "processOutput" step)', err.stack);
+      return this._runNextErrorWhookMount(
+        involvedWhookMounts, 'processOutputError', 0, contexts, err
+      );
+    })
+    .then(() => {
+      if(!res.finished) {
+        log('It looks like the output stream were not completed, ending it.');
+        res.end();
+      }
+      log('Transfert completed!');
+    });
   }
   _checkMounted() {
     if(this._mounted) {
@@ -266,6 +248,7 @@ export default class Router {
       }
       return errors;
     }, []);
+
     log('Validating outputs:', contexts);
 
     if(errors.length) {
@@ -293,70 +276,60 @@ export default class Router {
 
     return involvedWhookMounts;
   }
-  _prepareWhooksPipeline(involvedWhookMounts, contexts, pipeline, reject) {
-    pipeline.on('error', (err) => {
-      log('Pipeline stream errored.', err);
-      reject(err);
-    }).on('end', () => {
-      log('Pipeline stream successfully ended.');
-    });
-    involvedWhookMounts.forEach((whookMount, index) => {
-      var newPipeline;
-
-      if(!whookMount.whook.process) {
-        return;
-      }
-      newPipeline = whookMount.whook.process(contexts[index], pipeline);
-      if(!newPipeline) {
-        log('Process returned no stream:', whookMount.whook.name);
-        newPipeline = new Stream.PassThrough();
-        setImmediate(newPipeline.end.bind(newPipeline));
-        return;
-      }
-      pipeline = newPipeline;
-      pipeline.on('error', (err) => {
-        log('Whook stream "' + whookMount.whook.name + '" errored.', err);
-        reject(err);
-      }).on('end', () => {
-        log('Whook stream "' + whookMount.whook.name + '" successfully ended.');
-      });
-    });
-    return pipeline;
-  }
-  _runNextWhookMount(involvedWhookMounts, step, index, contexts, err) {
+  _runNextWhookMount(involvedWhookMounts, step, index, contexts, value) {
     if(!involvedWhookMounts[index]) {
-      return Promise.resolve();
+      log('No more whook to run for the step "' + step + '".');
+      return Promise.resolve(value);
+    }
+    if(!contexts[index]) {
+      return Promise.reject(new YError('E_BAD_CONTEXT', index));
+    }
+    return this._runWhook(involvedWhookMounts[index].whook, step, contexts[index], value)
+      .then((value) => {
+        log('Running next whook for the step "' + step + '".');
+        return this._runNextWhookMount(involvedWhookMounts, step, ++index, contexts, value);
+      });
+  }
+  _runNextErrorWhookMount(involvedWhookMounts, step, index, contexts, err) {
+    if(!involvedWhookMounts[index]) {
+      return Promise.reject(err);
     }
     if(!contexts[index]) {
       return Promise.reject(new YError('E_BAD_CONTEXT', index));
     }
     return this._runWhook(involvedWhookMounts[index].whook, step, contexts[index], err)
-      .then(() => {
-        return this._runNextWhookMount(involvedWhookMounts, step, ++index, contexts, err);
+      .catch((err) => {
+        return this._runNextErrorWhookMount(involvedWhookMounts, step, ++index, contexts, err);
       });
   }
-  _runWhook(whook, step, $, err) {
+  _runWhook(whook, step, $, value) {
     if(!whook[step]) {
-      return Promise.resolve();
+      log('Nothing to run for the whook "' + whook.name + '" at step "' + step + '".');
+      return step.endsWith('Error') ?
+        Promise.reject(value) :
+        Promise.resolve(value);
     }
     return new Promise(function whookPromiseFunction(resolve, reject) {
-      // There is no next function, run synchonously
-      if((err ? 3 : 2) > whook[step].length) {
+      if(3 > whook[step].length) {
+        log('Running whook "' + whook.name + '" at step "' + step + '" synchronously.');
         try {
-          whook[step]($, err);
-          resolve();
+          resolve(whook[step]($, value));
         } catch(err) {
           reject(err);
         }
         return;
       }
-      // Otherwise, let's go async ;)
-      whook[step]($, function whookNextFunction(err) {
-        if(err) {
-          reject(err);
-        }
-        resolve();
-      }, err);
+      log('Running whook "' + whook.name + '" at step "' + step + '" asynchronously.');
+      try {
+        whook[step]($, value, function whookNextFunction(err, value) {
+          if(err) {
+            reject(err);
+          }
+          resolve(value);
+        }, value);
+      } catch(err) {
+        reject(err);
+      }
     });
   }
 }

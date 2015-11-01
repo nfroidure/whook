@@ -3,25 +3,20 @@
 import assert from 'assert';
 import neatequal from 'neatequal';
 import StreamTest from 'streamtest';
-import initTimeMock from 'sf-time-mock';
+import Stream from 'stream';
 
 describe('TimeWhook', () => {
-  let TimeWhook = require('./time');
-  let timeStub = initTimeMock();
-
-  beforeEach(() => {
-    timeStub.setTime(1267833600000);
-  });
+  let EchoWhook = require('./echo');
 
   describe('constructor()', () => {
     it('should work', () => {
-      new TimeWhook();
+      new EchoWhook();
     });
   });
 
   describe('init()', () => {
     it('should be implemented', () => {
-      (new TimeWhook()).init();
+      (new EchoWhook()).init(EchoWhook.specs());
     });
   });
 
@@ -29,79 +24,68 @@ describe('TimeWhook', () => {
 
     it('should set the contentType', () => {
       let $ = {
-        in: {},
+        in: {
+          contentType: 'text/plain',
+          contentLength: 10,
+        },
         out: {},
+        services: {
+          temp: {
+            set: () => { },
+          },
+        },
       };
-      let whook = new TimeWhook();
+      let whook = new EchoWhook();
 
-      whook.init();
-      whook.pre($, () => {
+      whook.init(EchoWhook.specs());
+      whook.ackInput($, {}, () => {
         neatequal($.out, {
           contentType: 'text/plain',
+          contentLength: 10,
           statusCode: 200,
         });
       });
     });
   });
 
-  describe('process()', () => {
+  describe('processOutput()', () => {
 
 
     StreamTest.versions.forEach((version) => {
       describe('for ' + version + ' streams', () => {
 
         it('should return a stream outputting the current time', (done) => {
+          let statusCode = 201;
           let $ = {
             in: {},
-            out: {},
+            out: {
+              statusCode: statusCode,
+            },
             services: {
-              time: {
-                now: timeStub,
+              temp: {
+                get: (key) => {
+                  if('content' !== key) {
+                    throw new Error('E_BAD_KEY');
+                  }
+                  return StreamTest[version].fromChunks(['a', 'b', 'c']);
+                },
               },
             },
           };
-          let whook = new TimeWhook();
+          let whook = new EchoWhook();
+          let outStream = new Stream.PassThrough();
 
-          whook.init();
-          whook.process($, StreamTest[version].fromChunks([]))
-            .pipe(StreamTest[version].toText((err, text) => {
-              if(err) {
-                return done(err);
-              }
-              assert.equal(text, '1267833600000');
-              neatequal($.out, {
-                contentLength: text.length,
-              });
-              done();
-            }));
-        });
-
-        it('should log when a log service is available', (done) => {
-          let $ = {
-            in: {
-              format: 'iso',
-            },
-            out: {},
-            services: {
-              time: {
-                now: timeStub,
-              },
-            },
-          };
-          let whook = new TimeWhook();
-
-          whook.init();
-          whook.process($, StreamTest[version].fromChunks([]))
-            .pipe(StreamTest[version].toText((err, text) => {
-              if(err) {
-                return done(err);
-              }
-              assert.equal(text, '2010-03-06T00:00:00.000Z');
-              neatequal($.out, {
-                contentLength: text.length,
-              });
-              done();
-            }));
+          whook.init(EchoWhook.specs({
+            statusCode: statusCode,
+          }));
+          assert(!whook.processOutput($, outStream, () => {}));
+          outStream.pipe(StreamTest[version].toText((err, text) => {
+            if(err) {
+              return done(err);
+            }
+            assert.equal(text, 'abc');
+            done();
+          }));
         });
 
       });

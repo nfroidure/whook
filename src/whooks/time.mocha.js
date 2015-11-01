@@ -3,6 +3,7 @@
 import assert from 'assert';
 import neatequal from 'neatequal';
 import StreamTest from 'streamtest';
+import Stream from 'stream';
 import initTimeMock from 'sf-time-mock';
 
 describe('TimeWhook', () => {
@@ -25,26 +26,35 @@ describe('TimeWhook', () => {
     });
   });
 
-  describe('pre()', () => {
+  describe('ackInput()', () => {
 
-    it('should set the contentType', () => {
+    it('should set the contentType/Length', () => {
       let $ = {
         in: {},
         out: {},
+        services: {
+          time: {
+            now: timeStub,
+          },
+          temp: {
+            set: () => { },
+          },
+        },
       };
       let whook = new TimeWhook();
 
       whook.init();
-      whook.pre($, () => {
+      whook.ackInput($, () => {
         neatequal($.out, {
           contentType: 'text/plain',
+          contentLength: 13,
           statusCode: 200,
         });
       });
     });
   });
 
-  describe('process()', () => {
+  describe('processOutput()', () => {
 
 
     StreamTest.versions.forEach((version) => {
@@ -55,23 +65,21 @@ describe('TimeWhook', () => {
             in: {},
             out: {},
             services: {
-              time: {
-                now: timeStub,
+              temp: {
+                get: () => { return '1267833600000'; },
               },
             },
           };
           let whook = new TimeWhook();
+          let outStream = new Stream.PassThrough();
 
           whook.init();
-          whook.process($, StreamTest[version].fromChunks([]))
-            .pipe(StreamTest[version].toText((err, text) => {
+          assert(!whook.processOutput($, outStream));
+          outStream.pipe(StreamTest[version].toText((err, text) => {
               if(err) {
                 return done(err);
               }
               assert.equal(text, '1267833600000');
-              neatequal($.out, {
-                contentLength: text.length,
-              });
               done();
             }));
         });
@@ -83,23 +91,21 @@ describe('TimeWhook', () => {
             },
             out: {},
             services: {
-              time: {
-                now: timeStub,
+              temp: {
+                get: () => { return '2010-03-06T00:00:00.000Z'; },
               },
             },
           };
           let whook = new TimeWhook();
+          let outStream = new Stream.PassThrough();
 
           whook.init();
-          whook.process($, StreamTest[version].fromChunks([]))
-            .pipe(StreamTest[version].toText((err, text) => {
+          assert(!whook.processOutput($, outStream));
+          outStream.pipe(StreamTest[version].toText((err, text) => {
               if(err) {
                 return done(err);
               }
               assert.equal(text, '2010-03-06T00:00:00.000Z');
-              neatequal($.out, {
-                contentLength: text.length,
-              });
               done();
             }));
         });

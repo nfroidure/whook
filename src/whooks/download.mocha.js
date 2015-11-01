@@ -15,7 +15,7 @@ describe('DownloadWhook', () => {
     });
   });
 
-  describe('pre()', () => {
+  describe('ackInput()', () => {
     it('should do nothing when download is false', () => {
       let $ = {
         in: {
@@ -27,7 +27,7 @@ describe('DownloadWhook', () => {
       let whook = new DownloadWhook();
 
       whook.init();
-      whook.pre($, () => {
+      whook.ackInput($, () => {
         neatequal($.out, {});
       });
     });
@@ -43,7 +43,7 @@ describe('DownloadWhook', () => {
       let whook = new DownloadWhook();
 
       whook.init();
-      whook.pre($, () => {
+      whook.ackInput($, () => {
         neatequal($.out, {
           contentDisposition: 'attachment',
         });
@@ -62,7 +62,7 @@ describe('DownloadWhook', () => {
       let whook = new DownloadWhook();
 
       whook.init();
-      whook.pre($, () => {
+      whook.ackInput($, () => {
         neatequal($.out, {
           contentDisposition: 'attachment; filename="duke.jpg"',
         });
@@ -86,7 +86,7 @@ describe('DownloadWhook', () => {
       let whook = new DownloadWhook();
 
       whook.init();
-      whook.pre($, () => {
+      whook.ackInput($, () => {
         neatequal($.out, {
           contentDisposition: 'attachment; filename="duke.jpg"',
         });

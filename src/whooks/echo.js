@@ -1,4 +1,7 @@
 import Whook from '../whook';
+import debug from 'debug';
+
+let log = debug('whook.whooks.echo');
 
 export default class EchoHook extends Whook {
   static specs({ statusCode = 200 } = {}) {
@@ -45,30 +48,42 @@ export default class EchoHook extends Whook {
           },
         },
       },
-      services: {},
+      services: {
+        temp: '',
+      },
     };
   }
   init(specs) {
     this._statusCode = specs.out.properties.statusCode.enum[0];
   }
-  // Logic applyed to response/request abstract data before sending response content
-  pre({ in: { contentType, contentLength }, out: out }, next) {
+  ackInput({ in: { contentType, contentLength }, out: out, services: { temp } },
+    inputStream, next) {
     out.statusCode = this._statusCode;
     out.contentType = contentType;
     out.contentLength = contentLength;
+    temp.set('content', inputStream);
     next();
   }
-  // Logic applyed to response/request abstract data before sending response content
-  preError({ in: { contentType, contentLength }, out: out }, next, err) {
+  ackInputError({ in: { contentType, contentLength }, out: out }, err) {
     if('E_BAD_INPUT' === err.code) {
       out.statusCode = 400;
+      return;
     }
-    next();
+    throw err;
   }
-  // Logic applyed to response/request abstract data when sending response content
-  process({ out }, inStream) {
-    if(this._statusCode === out.statusCode) {
-      return inStream;
+  processOutput({ out, services: { temp } }, outputStream, next) {
+    if(this._statusCode !== out.statusCode) {
+      log(
+        'Unexpected status, leaving the output stream as is.',
+        this._statusCode,
+        out.statusCode
+      );
+      return next(null, outputStream);
     }
+    temp.get('content')
+      .once('error', next)
+      .pipe(outputStream)
+      .once('end', next)
+      .once('error', next);
   }
 }

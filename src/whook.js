@@ -1,22 +1,23 @@
+/**
+ * @module whook/whook
+ */
+import YError from 'yerror';
+
+
 export default class Whook {
     static specs() {
-      throw new Error('E_NOT_IMPLEMENTED');
+      throw new YError('E_NOT_IMPLEMENTED');
     }
     constructor(name) {
       this.name = name;
     }
     init() {}
-    pre() {
-    }
-    preError() {
-    }
-    process($, inputStream) {
+    ackInput($, inputStream) {
       return inputStream;
     }
-    piped() {
+    ackInputError() {}
+    processOutput($, outputStream) {
+      return outputStream;
     }
-    post() {
-    }
-    postError() {
-    }
+    processOutputError() {}
 }

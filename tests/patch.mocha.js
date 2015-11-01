@@ -10,12 +10,17 @@ import HeadersDestination from '../src/destinations/headers';
 describe('Server integration', () => {
   let router = new Router();
   let logs;
+  let tempValue;
 
   router.destination('status', StatusDestination);
   router.destination('headers', HeadersDestination);
   router.source('headers', HeadersSource);
   router.service('log', (..._args) => {
     logs.push(_args);
+  });
+  router.service('temp', {
+    set: (key, val) => { tempValue = val; },
+    get: () => { return tempValue; },
   });
   router.add(EchoWhook.specs({
     statusCode: 201,
@@ -25,11 +30,11 @@ describe('Server integration', () => {
     logs = [];
   });
 
-  describe('for PUT requests', () => {
+  describe('for PATCH requests', () => {
 
     it('should 404 for unexisting routes', (done) => {
       request(router.callback())
-      .put('/kikoolol')
+      .patch('/kikoolol')
       .send({
         plop: 'wadup',
       })
@@ -45,7 +50,7 @@ describe('Server integration', () => {
 
     it('should work as expected', (done) => {
       request(router.callback())
-      .put('/echo')
+      .patch('/echo')
       .send('1267833600000')
       .set('Content-Type', 'text/plain')
       .set('Content-Length', '13')
