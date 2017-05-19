@@ -2,6 +2,9 @@
 
 > Build strong and efficient REST web services.
 
+** DO NOT USE THIS PROJECT: ** It is not a suitable way to create web services and it
+ is kinda abandonnated. It is simply not the good approach ;).
+
 This project is intended to borrow everything good in every NodeJS framework
  with some additions i'd like to have as a REST web services developper.
 
