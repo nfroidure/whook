@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`runServer should work 1`] = `
+Object {
+  "autoloaderCalls": Array [
+    Array [
+      "PROCESS_NAME",
+    ],
+    Array [
+      "SIGNALS",
+    ],
+    Array [
+      "BUFFER_LIMIT",
+    ],
+    Array [
+      "PARSERS",
+    ],
+    Array [
+      "STRINGIFYERS",
+    ],
+    Array [
+      "DECODERS",
+    ],
+    Array [
+      "ENCODERS",
+    ],
+    Array [
+      "QUERY_PARSER",
+    ],
+    Array [
+      "TIMEOUT",
+    ],
+    Array [
+      "TRANSACTIONS",
+    ],
+    Array [
+      "uniqueId",
+    ],
+  ],
+  "debugCalls": Array [
+    Array [
+      "Logging service initialized.",
+    ],
+    Array [
+      "Time service initialized.",
+    ],
+    Array [
+      "Delay service initialized.",
+    ],
+    Array [
+      "Running in \\"test\\" environment.",
+    ],
+    Array [
+      "Process service initialized.",
+    ],
+    Array [
+      "HTTP Transaction initialized.",
+    ],
+    Array [
+      "HTTP Router initialized.",
+    ],
+    Array [
+      "Closing HTTP server.",
+    ],
+    Array [
+      "HTTP server closed",
+    ],
+    Array [
+      "Cancelling pending timeouts:",
+      0,
+    ],
+  ],
+  "logErrorCalls": Array [],
+  "logInfoCalls": Array [
+    Array [
+      "HTTP Server listening at \\"http://localhost:8888\\".",
+    ],
+    Array [
+      "On air 🚀🌕",
+    ],
+  ],
+}
+`;
