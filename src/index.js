@@ -19,8 +19,17 @@ import initAutoload from './services/_autoload';
 import initENV from './services/ENV';
 
 /* Architecture Note #1: Server initialization
- * Whook exposes a `runServer` function to programmatically spawn
- *  its server.
+Whook exposes a `runServer` function to programmatically spawn
+ its server.
+*/
+/**
+ * Runs the Whook server
+ * @param {Array<String>} injectedNames
+ * Root dependencies names to instanciate and return
+ * @param {Knifecycle} $
+ * The Knifecycle instance to use for the server run
+ * @returns Object
+ * A promise of the injected services
  */
 export async function runServer(injectedNames = [], $) {
   /* Architecture Note #1.1: Root injections
@@ -38,33 +47,40 @@ export async function runServer(injectedNames = [], $) {
 }
 
 /* Architecture Note #2: Server environment
- * The Whook `prepareServer` function aims to provide the complete
- *  server environment without effectively running it. It allows
- *  to use that environment for CLI or build purposes. It also
- *  provides a chance to override some services/constants
- *  before actually running the server.
+The Whook `prepareServer` function aims to provide the complete
+ server environment without effectively running it. It allows
+ to use that environment for CLI or build purposes. It also
+ provides a chance to override some services/constants
+ before actually running the server.
+ */
+/**
+ *
+ * @param {Knifecycle} $
+ * The Knifecycle instance to set the various services
+ * @returns Promise<Knifecycle>
+ * A promise of the Knifecycle instance
  */
 export async function prepareServer($ = new Knifecycle()) {
   /* Architecture Note #2.1: `PWD` env var
-   * The Whook server heavily rely on the process working directory
-   *  to dynamically load contents. We are making it available to
-   *  the DI system as a constant.
+  The Whook server heavily rely on the process working directory
+   to dynamically load contents. We are making it available to
+   the DI system as a constant.
    */
   const PWD = process.cwd();
   $.register(constant('PWD', PWD));
 
   /* Architecture Note #2.2: `NODE_ENV` env var
-   * Whook has different behaviors depending on the `NODE_ENV` value
-   *  consider setting it to production before shipping.
+  Whook has different behaviors depending on the `NODE_ENV` value
+   consider setting it to production before shipping.
    */
   const NODE_ENV = process.env.NODE_ENV || 'development';
   $.register(constant('NODE_ENV', NODE_ENV));
 
   /* Architecture Note #2.3: Logging
-   * Whook's default logger write to the NodeJS default console
-   *  except for debugging messages where it use the `debug`
-   *  module so that you can set the `DEBUG` environment
-   *  variable to `whook` and get debug messages in output.
+  Whook's default logger write to the NodeJS default console
+   except for debugging messages where it use the `debug`
+   module so that you can set the `DEBUG` environment
+   variable to `whook` and get debug messages in output.
    */
   $.register(constant('debug', debug('whook')));
   $.register(
@@ -80,10 +96,10 @@ export async function prepareServer($ = new Knifecycle()) {
   $.register(constant('exit', process.exit));
 
   /* Architecture Note #2.4: Initializers
-   * Whook's embed a few default initializers proxied from
-   *  `common-services`, `swagger-http-router` or it own
-   *  `src/services` folder. It can be wrapped or overriden
-   *  at will.
+  Whook's embed a few default initializers proxied from
+   `common-services`, `swagger-http-router` or it own
+   `src/services` folder. It can be wrapped or overriden
+   at will.
    */
   [
     initLogService,

@@ -38,7 +38,7 @@
     "prettier": "prettier --write 'src/**/*.js'",
     "preversion": "npm t && npm run lint && npm run metapak -- -s && npm run compile",
     "start": "node bin/server.js",
-    "test": "echo \"WARNING: No tests specified\" && npm run jest",
+    "test": "npm run jest",
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "keywords": [

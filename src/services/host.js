@@ -3,9 +3,9 @@ import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 
 /* Architecture Note #1: IP detection
- * If no `HOST` configuration is specified, this service detects
- *  the machine host automagically.
- */
+If no `HOST` configuration is specified, this service detects
+ the machine host automagically.
+*/
 
 export default initializer(
   {

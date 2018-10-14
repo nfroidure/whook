@@ -7,10 +7,10 @@ import {
 import path from 'path';
 
 /* Architecture Note #4: `$autoload` service
- * The default Whook autoloader provides a simple way to
- *  load the constants, services and handlers of a Whook
- *  project.
- */
+The default Whook autoloader provides a simple way to
+ load the constants, services and handlers of a Whook
+ project.
+*/
 export default initializer(
   {
     name: '$autoload',
@@ -37,13 +37,13 @@ async function initAutoload({
   log = noop,
 }) {
   /* Architecture Note #4.1: Configuration auto loading
-   * Loading the configuration files is done according to the `NODE_ENV`
-   *  environment variable. It basically requires a configuration hash
-   *  where the keys are Knifecycle constants.
-   *
-   * Let's load the configuration files as a convenient way
-   *  to create constants on the fly
-   */
+  Loading the configuration files is done according to the `NODE_ENV`
+   environment variable. It basically requires a configuration hash
+   where the keys are Knifecycle constants.
+
+  Let's load the configuration files as a convenient way
+   to create constants on the fly
+  */
   const configPath = path.join(PWD, 'config', NODE_ENV, 'config');
 
   log('debug', `Loading configuration from ${configPath}.`);
@@ -55,10 +55,10 @@ async function initAutoload({
   let API;
 
   /* Architecture Note #4.2: Wrappers auto loading
-   * We cannot inject the `WRAPPERS` in the auto loader when
-   *  it is dynamically loaded so doing during the auto loader
-   *  initialization if needed.
-   */
+  We cannot inject the `WRAPPERS` in the auto loader when
+   it is dynamically loaded so doing during the auto loader
+   initialization if needed.
+  */
   if (null == WRAPPERS) {
     try {
       const { initializer: wrapperInitializer } = await $autoload('WRAPPERS');
@@ -72,10 +72,10 @@ async function initAutoload({
   const wrapHandler = WRAPPERS.length ? compose(...WRAPPERS) : noop;
 
   /* Architecture Note #4.3: API auto loading
-   * We cannot inject the `API` in the auto loader since
-   *  it is dynamically loaded so doing during the auto loader
-   *  initialization.
-   */
+  We cannot inject the `API` in the auto loader since
+   it is dynamically loaded so doing during the auto loader
+   initialization.
+  */
   const { initializer: apiInitializer } = await $autoload('API');
   API = await apiInitializer({ CONFIG: CONFIGS.CONFIG, PWD, log });
   return $autoload;
@@ -99,9 +99,9 @@ async function initAutoload({
     }
 
     /* Architecture Note #4.4: Constants
-     * First of all the autoloader looks for constants in the
-     *  previously loaded configuration.
-     */
+    First of all the autoloader looks for constants in the
+     previously loaded configuration.
+    */
     if (CONFIGS[resolvedName]) {
       return {
         name: resolvedName,
@@ -111,9 +111,9 @@ async function initAutoload({
     }
 
     /* Architecture Note #4.5: Handlers map
-     * Here, we build the handlers map by injecting every handler required
-     *  by the API.
-     */
+    Here, we build the handlers map by injecting every handler required
+     by the API.
+    */
     if ('HANDLERS' === resolvedName) {
       const handlerNames = [
         ...new Set(
@@ -141,9 +141,9 @@ async function initAutoload({
     }
 
     /* Architecture Note #4.6: Service/handler loading
-     * Finally, we either require the handler/service module if
-     *  none of the previous strategies applyed.
-     */
+    Finally, we either require the handler/service module if
+     none of the previous strategies applyed.
+    */
     const resolvedInitializer = await require(modulePath).default;
 
     log(

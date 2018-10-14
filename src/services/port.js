@@ -3,9 +3,9 @@ import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 
 /* Architecture Note #1: Port detection
- * If no `PORT` configuration is specified, this service detects
- *  a free port automagically.
- */
+ If no `PORT` configuration is specified, this service detects
+  a free port automagically.
+*/
 
 export default initializer(
   {
