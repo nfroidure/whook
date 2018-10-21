@@ -13,8 +13,8 @@ import {
   initHTTPServer,
   initErrorHandler,
 } from 'swagger-http-router';
-import initPort from './services/port';
-import initHost from './services/host';
+import initPORT from './services/PORT';
+import initHOST from './services/HOST';
 import initAutoload from './services/_autoload';
 import initENV from './services/ENV';
 
@@ -111,8 +111,8 @@ export async function prepareServer($ = new Knifecycle()) {
     initHTTPTransaction,
     initHTTPServer,
     initErrorHandler,
-    initPort,
-    initHost,
+    initPORT,
+    initHOST,
     initENV,
     initAutoload,
   ].forEach($.register.bind($));

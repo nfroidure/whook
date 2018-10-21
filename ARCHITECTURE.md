@@ -21,7 +21,7 @@ Whook exposes a `runServer` function to programmatically spawn
 If no `PORT` configuration is specified, this service detects
   a free port automagically.
 
-[See in context](./src/services/port.js#L5-L8)
+[See in context](./src/services/PORT.js#L5-L8)
 
 
 
@@ -30,7 +30,7 @@ If no `PORT` configuration is specified, this service detects
 If no `HOST` configuration is specified, this service detects
  the machine host automagically.
 
-[See in context](./src/services/host.js#L5-L8)
+[See in context](./src/services/HOST.js#L5-L8)
 
 
 
@@ -100,11 +100,12 @@ Whook's embed a few default initializers proxied from
 ## Environment service
 
 The `ENV` service add a layer of configuration over just using
- node's `process.env` value. Only `PWD` and `NODE_ENV` are
- guaranteed to be the exact same than the values in the process
- environment.
+ node's `process.env` value. Beware that `PWD` and `NODE_ENV` are
+ guaranteed to be the exact same than the injected constants.
+ It is up to you to decide upstream if you set them via the
+ `process.env.NODE_ENV` and `process.cwd()` values or not.
 
-[See in context](./src/services/ENV.js#L7-L12)
+[See in context](./src/services/ENV.js#L7-L13)
 
 
 
@@ -115,7 +116,7 @@ Per default, Whook takes the process environment as is
  AWS Lambda or Google Cloud Functions one can isolate
  the process env when building.
 
-[See in context](./src/services/ENV.js#L24-L29)
+[See in context](./src/services/ENV.js#L25-L30)
 
 
 
@@ -125,7 +126,7 @@ You may need to keep some secrets out of your Git
  history. Whook uses `dotenv` to provide your such
  ability.
 
-[See in context](./src/services/ENV.js#L35-L39)
+[See in context](./src/services/ENV.js#L36-L40)
 
 
 

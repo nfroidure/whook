@@ -47,13 +47,10 @@ describe('runServer', () => {
         },
       }),
     );
-    $.register(
-      constant('ENV', {
-        PORT: 8888,
-        HOST: 'localhost',
-        NODE_ENV: 'test',
-      }),
-    );
+    $.register(constant('ENV', {}));
+    $.register(constant('NODE_ENV', 'test'));
+    $.register(constant('PORT', 8888));
+    $.register(constant('HOST', 'localhost'));
     $.register(constant('WRAPPERS', []));
     $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEBUG_NODE_ENVS', []));

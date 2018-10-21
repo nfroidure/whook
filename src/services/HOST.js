@@ -11,11 +11,11 @@ export default initializer(
   {
     name: 'HOST',
     type: 'service',
-    inject: ['?log'],
+    inject: ['?ENV', '?log'],
     options: { singleton: true },
   },
-  async ({ log = noop }) => {
-    const host = await internalIp.v4();
+  async ({ ENV = {}, log = noop }) => {
+    const host = ENV.host || (await internalIp.v4());
 
     log('info', `Using detected host ${host}`);
 

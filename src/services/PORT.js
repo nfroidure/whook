@@ -11,7 +11,7 @@ export default initializer(
   {
     name: 'PORT',
     type: 'service',
-    inject: ['?log'],
+    inject: ['ENV', '?log'],
     options: { singleton: true },
   },
   async ({ log = noop }) => {

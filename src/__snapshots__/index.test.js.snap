@@ -4,6 +4,18 @@ exports[`runServer should work 1`] = `
 Object {
   "autoloaderCalls": Array [
     Array [
+      "MAX_HEADERS_COUNT",
+    ],
+    Array [
+      "KEEP_ALIVE_TIMEOUT",
+    ],
+    Array [
+      "MAX_CONNECTIONS",
+    ],
+    Array [
+      "TIMEOUT",
+    ],
+    Array [
       "PROCESS_NAME",
     ],
     Array [
@@ -26,9 +38,6 @@ Object {
     ],
     Array [
       "QUERY_PARSER",
-    ],
-    Array [
-      "TIMEOUT",
     ],
     Array [
       "TRANSACTIONS",

@@ -6,9 +6,10 @@ import { noop } from '../libs/utils';
 
 /* Architecture Note #3: Environment service
 The `ENV` service add a layer of configuration over just using
- node's `process.env` value. Only `PWD` and `NODE_ENV` are
- guaranteed to be the exact same than the values in the process
- environment.
+ node's `process.env` value. Beware that `PWD` and `NODE_ENV` are
+ guaranteed to be the exact same than the injected constants.
+ It is up to you to decide upstream if you set them via the
+ `process.env.NODE_ENV` and `process.cwd()` values or not.
 */
 export default initializer(
   {
