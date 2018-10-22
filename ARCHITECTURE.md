@@ -18,8 +18,8 @@ Whook exposes a `runServer` function to programmatically spawn
 
 ## Port detection
 
-If no `PORT` configuration is specified, this service detects
-  a free port automagically.
+If no `PORT` configuration is specified in dependencies nor in ENV,
+ this service detects a free port automagically.
 
 [See in context](./src/services/PORT.js#L5-L8)
 
@@ -27,8 +27,8 @@ If no `PORT` configuration is specified, this service detects
 
 ## IP detection
 
-If no `HOST` configuration is specified, this service detects
- the machine host automagically.
+If no `HOST` configuration is specified in dependencies nor in ENV,
+ this service detects the machine host automagically.
 
 [See in context](./src/services/HOST.js#L5-L8)
 
@@ -116,7 +116,7 @@ Per default, Whook takes the process environment as is
  AWS Lambda or Google Cloud Functions one can isolate
  the process env when building.
 
-[See in context](./src/services/ENV.js#L25-L30)
+[See in context](./src/services/ENV.js#L44-L49)
 
 
 
@@ -126,7 +126,7 @@ You may need to keep some secrets out of your Git
  history. Whook uses `dotenv` to provide your such
  ability.
 
-[See in context](./src/services/ENV.js#L36-L40)
+[See in context](./src/services/ENV.js#L55-L59)
 
 
 
@@ -150,7 +150,7 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.js#L39-L46)
+[See in context](./src/services/_autoload.js#L58-L65)
 
 
 
@@ -160,7 +160,7 @@ We cannot inject the `WRAPPERS` in the auto loader when
  it is dynamically loaded so doing during the auto loader
  initialization if needed.
 
-[See in context](./src/services/_autoload.js#L57-L61)
+[See in context](./src/services/_autoload.js#L76-L80)
 
 
 
@@ -170,7 +170,7 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing during the auto loader
  initialization.
 
-[See in context](./src/services/_autoload.js#L74-L78)
+[See in context](./src/services/_autoload.js#L93-L97)
 
 
 
@@ -179,7 +179,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded configuration.
 
-[See in context](./src/services/_autoload.js#L101-L104)
+[See in context](./src/services/_autoload.js#L128-L131)
 
 
 
@@ -188,7 +188,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map by injecting every handler required
  by the API.
 
-[See in context](./src/services/_autoload.js#L113-L116)
+[See in context](./src/services/_autoload.js#L140-L143)
 
 
 
@@ -197,5 +197,5 @@ Here, we build the handlers map by injecting every handler required
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.js#L143-L146)
+[See in context](./src/services/_autoload.js#L170-L173)
 

@@ -16,8 +16,8 @@ export default initializer(
     name: '$autoload',
     type: 'service',
     inject: [
-      'PWD',
       'NODE_ENV',
+      'PWD',
       '?SERVICE_NAME_MAP',
       '?INITIALIZER_PATH_MAP',
       '?WRAPPERS',
@@ -28,9 +28,28 @@ export default initializer(
   initAutoload,
 );
 
+/**
+ * Initialize the Whook default DI autoloader
+ * @param  {Object}   services
+ * The services `$autoload` depends on
+ * @param  {Object}   services.NODE_ENV
+ * The injected NODE_ENV value
+ * @param  {Object}   services.PWD
+ * The process current working directory
+ * @param  {Object}   [services.SERVICE_NAME_MAP={}]
+ * An optional object to map services names to other names
+ * @param  {Object}   [services.INITIALIZER_PATH_MAP={}]
+ * An optional object to map non-autoloadable initializers
+ * @param  {Array}   [services.WRAPPERS]
+ * An optional list of wrappers to inject
+ * @param  {Object}   [log=noop]
+ * An optional logging service
+ * @return {Promise<Function>}
+ * A promise of the autoload function.
+ */
 async function initAutoload({
-  PWD,
   NODE_ENV,
+  PWD,
   SERVICE_NAME_MAP = {},
   INITIALIZER_PATH_MAP = {},
   WRAPPERS,
@@ -80,6 +99,14 @@ async function initAutoload({
   API = await apiInitializer({ CONFIG: CONFIGS.CONFIG, PWD, log });
   return $autoload;
 
+  /**
+   * Autoload an initializer from its name
+   * @param  {String}  The dependency name
+   * @return {Promise<Object>}
+   * A promise resolving whith the actual autoloader definition.
+   *  An Object containing the `path`, `name` and the `initializer`
+   *  in its properties.
+   */
   async function $autoload(injectedName) {
     const resolvedName = SERVICE_NAME_MAP[injectedName] || injectedName;
     const isHandler = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/.test(
