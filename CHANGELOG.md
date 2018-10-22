@@ -1,3 +1,13 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/nfroidure/whook/compare/v3.0.0...v3.1.0) (2018-10-22)
+
+
+### Features
+
+* **PORT/HOST services:** Allow to pickup PORT/HOST from ENV ([8ffce98](https://github.com/nfroidure/whook/commit/8ffce98))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/nfroidure/whook/compare/v2.0.0...v3.0.0) (2018-10-21)
 
