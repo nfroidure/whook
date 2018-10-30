@@ -179,7 +179,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded configuration.
 
-[See in context](./src/services/_autoload.js#L128-L131)
+[See in context](./src/services/_autoload.js#L134-L137)
 
 
 
@@ -188,7 +188,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map by injecting every handler required
  by the API.
 
-[See in context](./src/services/_autoload.js#L140-L143)
+[See in context](./src/services/_autoload.js#L146-L149)
 
 
 
@@ -197,5 +197,5 @@ Here, we build the handlers map by injecting every handler required
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.js#L170-L173)
+[See in context](./src/services/_autoload.js#L176-L179)
 

@@ -1,5 +1,5 @@
-import { noop, compose } from '../libs/utils';
-import { initializer, constant } from 'knifecycle';
+import { noop, compose } from 'whook/dist/libs/utils';
+import { initializer, constant, name } from 'knifecycle';
 import {
   flattenSwagger,
   getSwaggerOperations,
@@ -112,9 +112,15 @@ async function initAutoload({
     const isHandler = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/.test(
       resolvedName,
     );
+    const isWrappedHandler = resolvedName.endsWith('Wrapped');
     const modulePath =
       INITIALIZER_PATH_MAP[resolvedName] ||
-      path.join(PWD, 'src', isHandler ? 'handlers' : 'services', resolvedName);
+      path.join(
+        PWD,
+        'src',
+        isHandler ? 'handlers' : 'services',
+        isWrappedHandler ? resolvedName.replace(/Wrapped$/, '') : resolvedName,
+      );
 
     // Here only to be able to statically build dependencies
     if (API && 'API' === resolvedName) {
@@ -148,7 +154,7 @@ async function initAutoload({
             operation => operation.operationId,
           ),
         ),
-      ];
+      ].map(handlerName => `${handlerName}>${handlerName}Wrapped`);
 
       return {
         name: resolvedName,
@@ -181,11 +187,13 @@ async function initAutoload({
     );
 
     return {
-      name: resolvedName,
+      name: isWrappedHandler
+        ? resolvedName.replace(/Wrapped$/, '')
+        : resolvedName,
       path: modulePath,
       initializer:
-        isHandler && WRAPPERS.length
-          ? wrapHandler(resolvedInitializer)
+        isWrappedHandler && WRAPPERS.length
+          ? name(resolvedName, wrapHandler(resolvedInitializer))
           : resolvedInitializer,
     };
   }
