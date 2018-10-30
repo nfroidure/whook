@@ -1,4 +1,4 @@
-import { noop, compose } from 'whook/dist/libs/utils';
+import { noop, compose } from '../libs/utils';
 import { initializer, constant, name } from 'knifecycle';
 import {
   flattenSwagger,
