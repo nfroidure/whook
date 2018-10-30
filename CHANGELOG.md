@@ -1,3 +1,13 @@
+<a name="3.1.2"></a>
+## [3.1.2](https://github.com/nfroidure/whook/compare/v3.1.1...v3.1.2) (2018-10-30)
+
+
+### Bug Fixes
+
+* **$autoload:** Remove forgotten debug changes ([84c9bc2](https://github.com/nfroidure/whook/commit/84c9bc2))
+
+
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/nfroidure/whook/compare/v3.1.0...v3.1.1) (2018-10-30)
 
