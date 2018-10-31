@@ -187,14 +187,16 @@ async function initAutoload({
     );
 
     return {
-      name: isWrappedHandler
-        ? resolvedName.replace(/Wrapped$/, '')
-        : resolvedName,
+      name: resolvedName,
       path: modulePath,
-      initializer:
-        isWrappedHandler && WRAPPERS.length
-          ? name(resolvedName, wrapHandler(resolvedInitializer))
-          : resolvedInitializer,
+      initializer: isWrappedHandler
+        ? name(
+            resolvedName,
+            WRAPPERS.length
+              ? wrapHandler(resolvedInitializer)
+              : resolvedInitializer,
+          )
+        : resolvedInitializer,
     };
   }
 }
