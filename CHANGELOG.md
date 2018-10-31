@@ -1,3 +1,13 @@
+<a name="3.1.3"></a>
+## [3.1.3](https://github.com/nfroidure/whook/compare/v3.1.2...v3.1.3) (2018-10-31)
+
+
+### Bug Fixes
+
+* **$autoload:** Fix wrapped handlers names ([647c166](https://github.com/nfroidure/whook/commit/647c166))
+
+
+
 <a name="3.1.2"></a>
 ## [3.1.2](https://github.com/nfroidure/whook/compare/v3.1.1...v3.1.2) (2018-10-30)
 
