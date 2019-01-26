@@ -1,0 +1,135 @@
+{
+  "name": "whook-cors",
+  "version": "0.0.0",
+  "description": "A wrapper to provide CORS support to a Whook server",
+  "main": "dist/index.js",
+  "metapak": {
+    "configs": [
+      "main",
+      "readme",
+      "eslint",
+      "babel",
+      "jest",
+      "jsdocs"
+    ],
+    "data": {
+      "childPackage": true,
+      "files": "'src/**/*.js'",
+      "ignore": [
+        "dist"
+      ],
+      "bundleFiles": [
+        "dist/**/*.js"
+      ]
+    }
+  },
+  "author": {
+    "name": "Nicolas Froidure",
+    "email": "nicolas.froidure@insertafter.com",
+    "url": "http://insertafter.com/en/index.html"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nfroidure/whook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nfroidure/whook/issues"
+  },
+  "homepage": "https://github.com/nfroidure/whook",
+  "dependencies": {
+    "knifecycle": "^5.1.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "babel-core": "^7.0.0-0",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-knifecycle": "^1.0.2",
+    "eslint": "^5.12.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^23.6.0",
+    "jsdoc-to-markdown": "^4.0.1",
+    "metapak": "^3.1.0",
+    "metapak-nfroidure": "9.4.0",
+    "prettier": "^1.16.0"
+  },
+  "contributors": [],
+  "engines": {
+    "node": ">=8.12.0"
+  },
+  "files": [
+    "dist/**/*.js",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "modules": true
+    },
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": "error"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "proseWrap": "always"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "8.12.0"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-object-rest-spread"
+    ]
+  },
+  "jest": {
+    "coverageReporters": [
+      "lcov"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "roots": [
+      "<rootDir>/src"
+    ]
+  },
+  "scripts": {
+    "cli": "env NODE_ENV=${NODE_ENV:-cli}",
+    "compile": "babel src --out-dir=dist",
+    "cover": "npm run jest -- --coverage",
+    "doc": "echo \"# API\" > API.md; jsdoc2md 'src/**/*.js' >> API.md && git add API.md",
+    "jest": "NODE_ENV=test jest",
+    "lint": "eslint 'src/**/*.js'",
+    "metapak": "metapak",
+    "prettier": "prettier --write 'src/**/*.js'",
+    "preversion": " && npm run compile",
+    "test": "npm run jest"
+  }
+}

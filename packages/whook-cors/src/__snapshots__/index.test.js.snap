@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`wrapHandlerWithCORS should work 1`] = `
+Object {
+  "response": Object {
+    "headers": Object {},
+    "status": 200,
+  },
+}
+`;
