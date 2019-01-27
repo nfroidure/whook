@@ -55,7 +55,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "ecstatic": "^3.3.0",
-    "knifecycle": "^5.1.6",
+    "knifecycle": "^5.2.0",
     "swagger-ui-dist": "^3.20.6"
   },
   "devDependencies": {
@@ -118,7 +118,8 @@
       ]
     ],
     "plugins": [
-      "@babel/plugin-proposal-object-rest-spread"
+      "@babel/plugin-proposal-object-rest-spread",
+      "babel-plugin-knifecycle"
     ]
   },
   "prettier": {

@@ -18,7 +18,7 @@ describe('initHOST', () => {
 
     expect({
       HOST,
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       internalIpV4Calls: internalIp.v4.mock.calls,
     }).toMatchSnapshot();
   });
@@ -34,7 +34,7 @@ describe('initHOST', () => {
 
     expect(HOST);
     expect({
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       internalIpV4Calls: internalIp.v4.mock.calls,
     }).toMatchSnapshot();
   });
@@ -50,7 +50,7 @@ describe('initHOST', () => {
 
     expect(HOST);
     expect({
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       internalIpV4Calls: internalIp.v4.mock.calls,
     }).toMatchSnapshot();
   });

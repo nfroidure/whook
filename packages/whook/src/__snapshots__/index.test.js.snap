@@ -79,13 +79,14 @@ Object {
       0,
     ],
   ],
-  "logErrorCalls": Array [],
+  "logErrorCalls": Array [
+    Array [
+      "On air 🚀🌕",
+    ],
+  ],
   "logInfoCalls": Array [
     Array [
       "HTTP Server listening at \\"http://localhost:8888\\".",
-    ],
-    Array [
-      "On air 🚀🌕",
     ],
   ],
 }

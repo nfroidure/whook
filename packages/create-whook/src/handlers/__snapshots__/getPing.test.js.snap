@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getPing should work 1`] = `
+Object {
+  "response": Object {
+    "body": Object {
+      "pong": "pong",
+    },
+    "headers": Object {
+      "X-Node-ENV": "test",
+    },
+    "status": 200,
+  },
+}
+`;

@@ -1,0 +1,45 @@
+import Knifecycle from 'knifecycle';
+import {
+  runServer as runBaseServer,
+  prepareServer as prepareBaseServer,
+  prepareEnvironment as prepareBaseEnvironment,
+} from 'whook';
+import { initHTTPRouter } from 'swagger-http-router';
+import wrapHTTPRouterWithSwaggerUI from 'whook-swagger-ui';
+
+// Per convention a Whook server main file must export
+//  the following 3 functions to be composable:
+
+// The `runServer` function is intended to run the server
+// and may be proxied as is except in some e2e test cases
+export async function runServer(
+  innerPrepareEnvironment = prepareEnvironment,
+  innerPrepareServer = prepareServer,
+  injectedNames = [],
+) {
+  return runBaseServer(
+    innerPrepareEnvironment,
+    innerPrepareServer,
+    injectedNames,
+  );
+}
+
+// The `prepareServer` function is intended to prepare the server
+export async function prepareServer(injectedNames = [], $ = new Knifecycle()) {
+  // Add here any logic bounded to the server only
+  // For example, here we add a Swagger UI page for
+  // development purpose
+  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
+
+  return await prepareBaseServer(injectedNames, $);
+}
+
+// The `prepareEnvironment` one is intended to prepare the server environment
+export async function prepareEnvironment($ = new Knifecycle()) {
+  $ = await prepareBaseEnvironment($);
+
+  // Add here any service/handler required to bootstrap
+  // the server env
+
+  return $;
+}

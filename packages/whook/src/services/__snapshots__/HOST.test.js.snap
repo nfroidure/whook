@@ -7,8 +7,12 @@ Object {
   ],
   "logCalls": Array [
     Array [
-      "info",
-      "Could not detect any host. Fallbacking to localhost",
+      "debug",
+      "🏭 - Initializing the HOST service.",
+    ],
+    Array [
+      "warning",
+      "🚫 - Could not detect any host. Fallbacking to localhost.",
     ],
   ],
 }
@@ -21,8 +25,12 @@ Object {
   ],
   "logCalls": Array [
     Array [
-      "info",
-      "Using detected host 192.168.1.10",
+      "debug",
+      "🏭 - Initializing the HOST service.",
+    ],
+    Array [
+      "warning",
+      "✔ - Using detected host 192.168.1.10",
     ],
   ],
 }
@@ -34,8 +42,12 @@ Object {
   "internalIpV4Calls": Array [],
   "logCalls": Array [
     Array [
-      "info",
-      "Using ENV host 192.168.1.11",
+      "debug",
+      "🏭 - Initializing the HOST service.",
+    ],
+    Array [
+      "warning",
+      "♻️ - Using ENV host 192.168.1.11",
     ],
   ],
 }

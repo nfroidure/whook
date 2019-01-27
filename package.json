@@ -26,7 +26,7 @@
     "lerna": "lerna",
     "lint": "lerna run lint",
     "metapak": "metapak",
-    "postinstall": "lerna bootstrap --hoist && lerna link && npm run compile",
+    "postinstall": "lerna bootstrap --hoist && npm run compile && lerna link",
     "postmetapak": "lerna run metapak",
     "precz": "npm t && npm run lint && npm run metapak -- -s",
     "prettier": "prettier --write 'src/**/*.js'",

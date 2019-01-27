@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`command should work 1`] = `
+Object {
+  "injectorCalls": Array [
+    Array [
+      Array [
+        "handlerCommand",
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "commandFunction ran",
+    ],
+  ],
+}
+`;
+
+exports[`command should work with no command 1`] = `
+Object {
+  "injectorCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "info",
+      "No command given in argument.",
+    ],
+  ],
+}
+`;
