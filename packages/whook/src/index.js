@@ -54,7 +54,7 @@ The Whook `prepareServer` function aims to provide the complete
  before actually running the server.
  */
 /**
- *
+ * Prepare the Whook server environment
  * @param {Knifecycle} $
  * The Knifecycle instance to set the various services
  * @returns Promise<Knifecycle>
