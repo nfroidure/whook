@@ -71,8 +71,54 @@ describe('augmentAPIWithCORS()', () => {
         schemes: ['http'],
         paths: {
           '/ping': {
+            options: {
+              operationId: 'optionsPing',
+              summary: 'Provides ping options.',
+              responses: {
+                '200': {
+                  description: 'Ping options',
+                },
+              },
+            },
+            get: {
+              operationId: 'getPing',
+              summary: "Checks API's availability.",
+              responses: {
+                '200': {
+                  description: 'Pong',
+                },
+              },
+            },
+          },
+          '/users/{userid}': {
             head: {
               operationId: 'ping',
+              summary: "Checks API's availability.",
+              parameters: [
+                {
+                  in: 'path',
+                  name: 'userId',
+                  type: 'number',
+                },
+                {
+                  in: 'query',
+                  name: 'full',
+                  type: 'boolean',
+                },
+              ],
+              responses: {
+                '200': {
+                  description: 'The user',
+                },
+              },
+            },
+          },
+          '/crons/tokens': {
+            post: {
+              operationId: 'ping',
+              'x-whook': {
+                type: 'cron',
+              },
               summary: "Checks API's availability.",
               responses: {
                 '200': {

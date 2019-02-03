@@ -10,9 +10,23 @@ Object {
     "version": "1.0.0",
   },
   "paths": Object {
-    "/ping": Object {
-      "head": Object {
+    "/crons/tokens": Object {
+      "post": Object {
         "operationId": "ping",
+        "responses": Object {
+          "200": Object {
+            "description": "Pong",
+          },
+        },
+        "summary": "Checks API's availability.",
+        "x-whook": Object {
+          "type": "cron",
+        },
+      },
+    },
+    "/ping": Object {
+      "get": Object {
+        "operationId": "getPing",
         "responses": Object {
           "200": Object {
             "description": "Pong",
@@ -21,9 +35,52 @@ Object {
         "summary": "Checks API's availability.",
       },
       "options": Object {
+        "operationId": "optionsPing",
+        "responses": Object {
+          "200": Object {
+            "description": "Ping options",
+          },
+        },
+        "summary": "Provides ping options.",
+      },
+    },
+    "/users/{userid}": Object {
+      "head": Object {
+        "operationId": "ping",
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "userId",
+            "type": "number",
+          },
+          Object {
+            "in": "query",
+            "name": "full",
+            "type": "boolean",
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "The user",
+          },
+        },
+        "summary": "Checks API's availability.",
+      },
+      "options": Object {
         "consumes": Array [],
         "operationId": "optionsWithCORS",
-        "parameters": Array [],
+        "parameters": Array [
+          Object {
+            "in": "path",
+            "name": "userId",
+            "type": "number",
+          },
+          Object {
+            "in": "query",
+            "name": "full",
+            "type": "boolean",
+          },
+        ],
         "produces": Array [],
         "responses": Object {
           "200": Object {
