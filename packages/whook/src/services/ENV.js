@@ -36,7 +36,14 @@ export default initializer(
  * @return {Promise<Object>}
  * A promise of an object containing the actual env vars.
  */
-async function initENV({ NODE_ENV, PWD, BASE_ENV = {}, log = noop }) {
+async function initENV({
+  NODE_ENV,
+  PWD,
+  BASE_ENV = {},
+  PROCESS_ENV = process.env,
+  log = noop,
+  readFile = _readFile,
+}) {
   let ENV = { ...BASE_ENV };
 
   log('info', `Loading the environment service.`);
@@ -48,7 +55,7 @@ async function initENV({ NODE_ENV, PWD, BASE_ENV = {}, log = noop }) {
    the process env when building.
   */
   if (!process.env.ISOLATED_ENV) {
-    ENV = { ...ENV, ...process.env };
+    ENV = { ...ENV, ...PROCESS_ENV };
     log('info', `Using local env.`);
   }
 
@@ -59,16 +66,9 @@ async function initENV({ NODE_ENV, PWD, BASE_ENV = {}, log = noop }) {
   */
   try {
     const envPath = path.join(PWD, `.env.${NODE_ENV}`);
-    const buf = await new Promise((resolve, reject) => {
-      fs.readFile(envPath, (err, data) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(data);
-      });
-    });
+    const buf = await readFile(envPath);
     const FILE_ENV = dotenv.parse(buf);
+
     log('info', `Using .env file at ${envPath}.`);
 
     ENV = { ...ENV, ...FILE_ENV };
@@ -82,4 +82,16 @@ async function initENV({ NODE_ENV, PWD, BASE_ENV = {}, log = noop }) {
     PWD,
     NODE_ENV,
   };
+}
+
+async function _readFile(path) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, (err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(data);
+    });
+  });
 }

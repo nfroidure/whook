@@ -1,4 +1,4 @@
-import internalIp from 'internal-ip';
+import _internalIp from 'internal-ip';
 import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 
@@ -29,7 +29,7 @@ export default initializer(
  * @return {Promise<String>}
  * A promise of a containing the actual host.
  */
-async function initHOST({ ENV = {}, log = noop }) {
+async function initHOST({ ENV = {}, log = noop, internalIp = _internalIp }) {
   if ('undefined' !== typeof ENV.HOST) {
     log('info', `Using ENV host ${ENV.HOST}`);
     return ENV.HOST;

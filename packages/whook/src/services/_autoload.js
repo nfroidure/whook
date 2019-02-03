@@ -54,6 +54,7 @@ async function initAutoload({
   INITIALIZER_PATH_MAP = {},
   WRAPPERS,
   log = noop,
+  require = global.require,
 }) {
   /* Architecture Note #4.1: Configuration auto loading
   Loading the configuration files is done according to the `NODE_ENV`

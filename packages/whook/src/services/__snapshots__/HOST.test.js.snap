@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initHOST should fallback to localhost 1`] = `
+Object {
+  "internalIpV4Calls": Array [
+    Array [],
+  ],
+  "logCalls": Array [
+    Array [
+      "info",
+      "Could not detect any host. Fallbacking to localhost",
+    ],
+  ],
+}
+`;
+
+exports[`initHOST should find a HOST by itself if no env HOST 1`] = `
+Object {
+  "internalIpV4Calls": Array [
+    Array [],
+  ],
+  "logCalls": Array [
+    Array [
+      "info",
+      "Using detected host 192.168.1.10",
+    ],
+  ],
+}
+`;
+
+exports[`initHOST should use the env HOST first 1`] = `
+Object {
+  "HOST": "192.168.1.11",
+  "internalIpV4Calls": Array [],
+  "logCalls": Array [
+    Array [
+      "info",
+      "Using ENV host 192.168.1.11",
+    ],
+  ],
+}
+`;

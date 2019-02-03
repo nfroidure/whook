@@ -110,7 +110,8 @@
   },
   "jest": {
     "coverageReporters": [
-      "lcov"
+      "lcov",
+      "html"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"

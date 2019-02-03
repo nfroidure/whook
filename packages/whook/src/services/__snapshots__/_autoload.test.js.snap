@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`$autoload should work for API 1`] = `
+Object {
+  "logCalls": Array [],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/config/development/config",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/API",
+    ],
+  ],
+  "result": Object {
+    "initializer": [Function],
+    "name": "API",
+    "path": "internal://API",
+  },
+}
+`;
+
+exports[`$autoload should work for a config constant 1`] = `
+Object {
+  "logCalls": Array [],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/config/development/config",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/API",
+    ],
+  ],
+  "result": Object {
+    "initializer": [Function],
+    "name": "CONFIG",
+    "path": "internal://CONFIG",
+  },
+}
+`;
+
+exports[`$autoload should work for handlers 1`] = `
+Object {
+  "logCalls": Array [],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/config/development/config",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/API",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPing",
+    ],
+  ],
+  "result": Object {
+    "initializer": [Function],
+    "name": "getPing",
+    "path": "/home/whoami/my-whook-project/src/handlers/getPing",
+  },
+}
+`;
+
+exports[`$autoload should work for handlers hash 1`] = `
+Object {
+  "HANDLERS": Object {
+    "getPing": [Function],
+  },
+  "logCalls": Array [],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/config/development/config",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/API",
+    ],
+  ],
+  "result": Object {
+    "initializer": [Function],
+    "name": "HANDLERS",
+    "path": "internal://HANDLERS",
+  },
+}
+`;
+
+exports[`$autoload should work for wrapped handlers 1`] = `
+Object {
+  "logCalls": Array [],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/config/development/config",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/WRAPPERS",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/API",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPing",
+    ],
+  ],
+  "result": Object {
+    "initializer": [Function],
+    "name": "getPing",
+    "path": "/home/whoami/my-whook-project/src/handlers/getPing",
+  },
+}
+`;
+
+exports[`$autoload should work with no wrappers 1`] = `
+Object {
+  "logCalls": Array [],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/config/development/config",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/WRAPPERS",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/services/API",
+    ],
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPing",
+    ],
+  ],
+  "result": Object {
+    "initializer": [Function],
+    "name": "getPing",
+    "path": "/home/whoami/my-whook-project/src/handlers/getPing",
+  },
+}
+`;
