@@ -20,6 +20,8 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "compile": "lerna run compile",
+    "cover": "lerna run cover",
+    "coveralls": "npm run cover && cat ./packages/*/coverage/lcov.info | coveralls && rm -rf .packages/*/coverage",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
     "lerna": "lerna",
     "lint": "lerna run lint",
@@ -58,9 +60,9 @@
     "commitizen": "^3.0.5",
     "conventional-changelog-cli": "^2.0.11",
     "cz-conventional-changelog": "^2.1.0",
-    "lerna": "^3.10.7",
-    "metapak": "^3.1.0",
-    "metapak-nfroidure": "9.4.0"
+    "lerna": "^3.10.8",
+    "metapak": "^3.1.5",
+    "metapak-nfroidure": "9.5.0"
   },
   "contributors": [],
   "engines": {
@@ -83,5 +85,8 @@
       "cz-conventional-changelog",
       "conventional-changelog-cli"
     ]
+  },
+  "dependencies": {
+    "coveralls": "^3.0.2"
   }
 }

@@ -1,15 +1,88 @@
-import { wrapHandlerWithCORS, optionsWithCORS } from '.';
+import { wrapHandlerWithCORS, optionsWithCORS, augmentAPIWithCORS } from '.';
+import { handler } from 'knifecycle';
 
 describe('wrapHandlerWithCORS', () => {
+  const CORS = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': [
+      'Accept',
+      'Accept-Encoding',
+      'Accept-Language',
+      'Referrer',
+      'Content-Type',
+      'Content-Encoding',
+      'Authorization',
+      'Keep-Alive',
+      'User-Agent',
+    ].join(','),
+    Vary: 'Origin',
+  };
+
   it('should work', async () => {
     const wrappedOptionsWithCORS = wrapHandlerWithCORS(optionsWithCORS);
-    const handler = await wrappedOptionsWithCORS({
-      CORS: {},
+    const wrappedHandler = await wrappedOptionsWithCORS({
+      CORS,
     });
-    const response = await handler();
+    const response = await wrappedHandler();
 
     expect({
       response,
     }).toMatchSnapshot();
+  });
+
+  it('should add CORS to errors', async () => {
+    const wrappedGetError = wrapHandlerWithCORS(
+      handler(
+        async function getError() {
+          throw new Error();
+        },
+        'getError',
+        [],
+      ),
+    );
+    const wrappedHandler = await wrappedGetError({
+      CORS,
+    });
+
+    try {
+      await wrappedHandler();
+      throw new Error('E_UNEXPECTED_SUCCESS');
+    } catch (err) {
+      expect({
+        headers: err.headers,
+      }).toMatchSnapshot();
+    }
+  });
+});
+
+describe('augmentAPIWithCORS()', () => {
+  it('should work', async () => {
+    expect(
+      await augmentAPIWithCORS({
+        host: 'localhost:1337',
+        swagger: '2.0',
+        info: {
+          version: '1.0.0',
+          title: 'Sample Swagger',
+          description: 'A sample Swagger file for testing purpose.',
+        },
+        basePath: '/v1',
+        schemes: ['http'],
+        paths: {
+          '/ping': {
+            head: {
+              operationId: 'ping',
+              summary: "Checks API's availability.",
+              responses: {
+                '200': {
+                  description: 'Pong',
+                },
+              },
+            },
+          },
+        },
+      }),
+    ).toMatchSnapshot();
   });
 });

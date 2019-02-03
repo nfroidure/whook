@@ -39,10 +39,10 @@ async function handleWithCORS({ CORS }, handler, parameters, operation) {
 }
 
 /**
- * Augment a Swagger API to also serve OPTIONS methods with
+ * Augment an OpenAPI to also serve OPTIONS methods with
  *  the CORS added.
- * @param {Object} API The Swager API
- * @returns {Promise<Object>} The augmented API object
+ * @param {Object} API The OpenAPI object
+ * @returns {Promise<Object>} The augmented  OpenAPI object
  */
 export async function augmentAPIWithCORS(API) {
   const operations = await getSwaggerOperations(await flattenSwagger(API));
@@ -52,8 +52,6 @@ export async function augmentAPIWithCORS(API) {
     const whookConfig = {
       type: 'http',
       ...(operation['x-whook'] || {}),
-      memx: 1,
-      tx: 1,
       suffix: 'CORS',
       sourceOperationId: operation.operationId,
     };
@@ -90,10 +88,9 @@ export async function augmentAPIWithCORS(API) {
 }
 
 /**
- * Augment a Swagger API to also serve OPTIONS methods with
- *  the CORS added.
- * @param {Object} API The Swager API
- * @returns {Promise<Object>} The augmented API object
+ * A simple Whook handler that just returns a 200 OK
+ *  HTTP response
+ * @returns {Promise<Object>} The HTTP response object
  */
 export const optionsWithCORS = handler(async function optionsWithCORS() {
   return {

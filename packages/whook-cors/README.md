@@ -44,6 +44,15 @@ Swagger/OpenAPI UI for development purpose.
 [//]: # (::contents:end)
 
 # API
+## Constants
+
+<dl>
+<dt><a href="#optionsWithCORS">optionsWithCORS</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>A simple Whook handler that just returns a 200 OK
+ HTTP response</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -51,15 +60,19 @@ Swagger/OpenAPI UI for development purpose.
 <dd><p>Wrap an handler initializer to append CORS to response.</p>
 </dd>
 <dt><a href="#augmentAPIWithCORS">augmentAPIWithCORS(API)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Augment a Swagger API to also serve OPTIONS methods with
- the CORS added.</p>
-</dd>
-<dt><a href="#optionsWithCORS">optionsWithCORS(API)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Augment a Swagger API to also serve OPTIONS methods with
+<dd><p>Augment an OpenAPI to also serve OPTIONS methods with
  the CORS added.</p>
 </dd>
 </dl>
 
+<a name="optionsWithCORS"></a>
+
+## optionsWithCORS ⇒ <code>Promise.&lt;Object&gt;</code>
+A simple Whook handler that just returns a 200 OK
+ HTTP response
+
+**Kind**: global constant  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - The HTTP response object  
 <a name="wrapHandlerWithCORS"></a>
 
 ## wrapHandlerWithCORS(initHandler) ⇒ <code>function</code>
@@ -75,28 +88,15 @@ Wrap an handler initializer to append CORS to response.
 <a name="augmentAPIWithCORS"></a>
 
 ## augmentAPIWithCORS(API) ⇒ <code>Promise.&lt;Object&gt;</code>
-Augment a Swagger API to also serve OPTIONS methods with
+Augment an OpenAPI to also serve OPTIONS methods with
  the CORS added.
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - The augmented API object  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - The augmented  OpenAPI object  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| API | <code>Object</code> | The Swager API |
-
-<a name="optionsWithCORS"></a>
-
-## optionsWithCORS(API) ⇒ <code>Promise.&lt;Object&gt;</code>
-Augment a Swagger API to also serve OPTIONS methods with
- the CORS added.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - The augmented API object  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| API | <code>Object</code> | The Swager API |
+| API | <code>Object</code> | The OpenAPI object |
 
 
 # Authors

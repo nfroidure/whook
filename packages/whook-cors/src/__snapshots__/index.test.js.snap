@@ -1,9 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`augmentAPIWithCORS() should work 1`] = `
+Object {
+  "basePath": "/v1",
+  "host": "localhost:1337",
+  "info": Object {
+    "description": "A sample Swagger file for testing purpose.",
+    "title": "Sample Swagger",
+    "version": "1.0.0",
+  },
+  "paths": Object {
+    "/ping": Object {
+      "head": Object {
+        "operationId": "ping",
+        "responses": Object {
+          "200": Object {
+            "description": "Pong",
+          },
+        },
+        "summary": "Checks API's availability.",
+      },
+      "options": Object {
+        "consumes": Array [],
+        "operationId": "optionsWithCORS",
+        "parameters": Array [],
+        "produces": Array [],
+        "responses": Object {
+          "200": Object {
+            "description": "CORS sent.",
+          },
+        },
+        "summary": "Enable OPTIONS for CORS",
+        "x-whook": Object {
+          "sourceOperationId": "ping",
+          "suffix": "CORS",
+          "type": "http",
+        },
+      },
+    },
+  },
+  "schemes": Array [
+    "http",
+  ],
+  "swagger": "2.0",
+}
+`;
+
+exports[`wrapHandlerWithCORS should add CORS to errors 1`] = `
+Object {
+  "headers": Object {
+    "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Origin": "*",
+    "Vary": "Origin",
+  },
+}
+`;
+
 exports[`wrapHandlerWithCORS should work 1`] = `
 Object {
   "response": Object {
-    "headers": Object {},
+    "headers": Object {
+      "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+      "Access-Control-Allow-Origin": "*",
+      "Vary": "Origin",
+    },
     "status": 200,
   },
 }

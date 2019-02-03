@@ -31,7 +31,6 @@
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "compile": "babel src --out-dir=dist",
     "cover": "npm run jest -- --coverage",
-    "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
     "doc": "echo \"# API\" > API.md; jsdoc2md 'src/**/*.js' >> API.md && git add API.md",
     "jest": "NODE_ENV=test jest",
@@ -67,29 +66,28 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
+    "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
-    "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.0.1",
     "caporal": "^0.10.0",
-    "eslint": "^5.12.1",
+    "eslint": "^5.13.0",
     "eslint-plugin-prettier": "^3.0.1",
-    "jest": "^23.6.0",
+    "jest": "^24.0.0",
     "jsarch": "^2.0.1",
     "jsdoc-to-markdown": "^4.0.1",
-    "metapak": "^3.1.0",
+    "metapak": "^3.1.5",
     "metapak-nfroidure": "9.4.0",
-    "prettier": "^1.16.0"
+    "prettier": "^1.16.3"
   },
   "dependencies": {
-    "common-services": "^5.0.1",
+    "common-services": "^5.0.3",
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
     "internal-ip": "^3.0.1",
-    "knifecycle": "^5.1.5",
+    "knifecycle": "^5.1.6",
     "portfinder": "^1.0.20",
-    "swagger-http-router": "^4.2.0"
+    "swagger-http-router": "^4.2.1"
   },
   "contributors": [],
   "engines": {
