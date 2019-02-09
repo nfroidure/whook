@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`$autoload should delegate to whook $autoloader 1`] = `
+Object {
+  "baseAutoloaderCalls": Array [
+    Array [
+      "anotherService",
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🤖 - Wrapping the whook autoloader.",
+    ],
+  ],
+  "path": "mocked://service",
+  "requireCalls": Array [],
+  "result": undefined,
+}
+`;
+
+exports[`$autoload should warn with bad commands 1`] = `
+Object {
+  "baseAutoloaderCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🤖 - Wrapping the whook autoloader.",
+    ],
+    Array [
+      "warning",
+      "The handler seems to have no default export.",
+    ],
+  ],
+  "path": "command://handlerCommand",
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/handler",
+    ],
+  ],
+  "result": undefined,
+}
+`;
+
+exports[`$autoload should work with bad commands 1`] = `
+Object {
+  "baseAutoloaderCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🤖 - Wrapping the whook autoloader.",
+    ],
+    Array [
+      "debug",
+      "Command \\"handler\\" not found in: /home/whoiam/projects/my-whook-project/src/commands/handler",
+    ],
+    Array [
+      "debug",
+      "Command \\"handler\\" not found in: ../commands/handler",
+    ],
+    Array [
+      "warning",
+      "Command \\"handler\\" not found.",
+    ],
+  ],
+  "path": "command://handlerCommand",
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/handler",
+    ],
+    Array [
+      "../commands/handler",
+    ],
+  ],
+  "result": undefined,
+}
+`;
+
+exports[`$autoload should work with project commands 1`] = `
+Object {
+  "baseAutoloaderCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🤖 - Wrapping the whook autoloader.",
+    ],
+    Array [
+      "warning",
+      "Command called!",
+    ],
+  ],
+  "path": "command://handlerCommand",
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/handler",
+    ],
+  ],
+  "result": undefined,
+}
+`;
+
+exports[`$autoload should work with whook-cli commands 1`] = `
+Object {
+  "baseAutoloaderCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🤖 - Wrapping the whook autoloader.",
+    ],
+    Array [
+      "debug",
+      "Command \\"handler\\" not found in: /home/whoiam/projects/my-whook-project/src/commands/handler",
+    ],
+    Array [
+      "warning",
+      "Command called!",
+    ],
+  ],
+  "path": "command://handlerCommand",
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/handler",
+    ],
+    Array [
+      "../commands/handler",
+    ],
+  ],
+  "result": undefined,
+}
+`;

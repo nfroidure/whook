@@ -22,7 +22,7 @@ Object {
   "injectorCalls": Array [],
   "logCalls": Array [
     Array [
-      "info",
+      "warning",
       "No command given in argument.",
     ],
   ],

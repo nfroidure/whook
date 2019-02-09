@@ -5,7 +5,9 @@ import { definition as getTimeDefinition } from '../handlers/getTime';
 
 export default name('API', autoService(initAPI));
 
-async function initAPI({ CONFIG }) {
+async function initAPI({ CONFIG, log }) {
+  log('debug', '🦄 - Initializing the API service!');
+
   const API = {
     host: CONFIG.host,
     basePath: CONFIG.basePath,

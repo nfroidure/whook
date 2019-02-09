@@ -6,6 +6,6 @@ export default options({ singleton: true }, autoService(initArgs));
 async function initArgs({ ARGS, log }) {
   const args = minimist(ARGS);
 
-  log('warning', '🛠 - Parsed args:', args);
+  log('debug', '🛠 - Parsed args:', args);
   return args;
 }

@@ -2,10 +2,12 @@ import path from 'path';
 import initAutoloader from 'whook/dist/services/_autoload';
 import { wrapInitializer, alsoInject, service } from 'knifecycle';
 
+const _require = require;
+
 export default alsoInject(
   ['PWD', 'log'],
-  wrapInitializer(async ({ PWD, log }, $autoload) => {
-    log('debug', '🤖 - Wrapping the autoloader.');
+  wrapInitializer(async ({ PWD, log, require = _require }, $autoload) => {
+    log('debug', '🤖 - Wrapping the whook autoloader.');
 
     return async serviceName => {
       if (serviceName.endsWith('Command')) {
@@ -22,13 +24,18 @@ export default alsoInject(
           log('stack', err.stack);
         }
 
-        const modulePath = path.join(__dirname, '..', 'commands', commandName);
+        if (!commandModule) {
+          const modulePath = path.join('..', 'commands', commandName);
 
-        try {
-          commandModule = require(modulePath);
-        } catch (err) {
-          log('debug', `Command "${commandName}" not found in: ${modulePath}`);
-          log('stack', err.stack);
+          try {
+            commandModule = require(modulePath);
+          } catch (err) {
+            log(
+              'debug',
+              `Command "${commandName}" not found in: ${modulePath}`,
+            );
+            log('stack', err.stack);
+          }
         }
 
         let commandInitializer;
@@ -36,7 +43,7 @@ export default alsoInject(
         if (!commandModule) {
           commandInitializer = service(
             async () => async () => {
-              log('info', `Command "${commandName}" not found.`);
+              log('warning', `Command "${commandName}" not found.`);
             },
             serviceName,
           );
@@ -46,7 +53,7 @@ export default alsoInject(
           commandInitializer = service(
             async () => async () => {
               log(
-                'info',
+                'warning',
                 `The ${commandName} seems to have no default export.`,
               );
             },

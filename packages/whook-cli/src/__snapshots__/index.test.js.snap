@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`whook-cli should exit when erroring 1`] = `
+Object {
+  "autoloaderCalls": Array [
+    Array [
+      "handlerCommand",
+    ],
+    Array [
+      "handlerCommand",
+    ],
+  ],
+  "cwdCalls": Array [
+    Array [],
+  ],
+  "errorCalls": Array [
+    Array [
+      "💀 - Cannot launch the process:",
+    ],
+  ],
+  "exitCalls": Array [
+    Array [
+      1,
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🛠 - Parsed args:",
+      Object {
+        "_": Array [
+          "handler",
+        ],
+        "name": "getPing",
+      },
+    ],
+    Array [
+      "debug",
+      "Environment initialized 🚀🌕",
+    ],
+  ],
+}
+`;
+
+exports[`whook-cli should run commands 1`] = `
+Object {
+  "autoloaderCalls": Array [
+    Array [
+      "handlerCommand",
+    ],
+  ],
+  "cwdCalls": Array [
+    Array [],
+  ],
+  "exitCalls": Array [
+    Array [],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🛠 - Parsed args:",
+      Object {
+        "_": Array [
+          "handler",
+        ],
+        "name": "getPing",
+      },
+    ],
+    Array [
+      "debug",
+      "Environment initialized 🚀🌕",
+    ],
+    Array [
+      "warning",
+      "Command ran!",
+    ],
+  ],
+}
+`;

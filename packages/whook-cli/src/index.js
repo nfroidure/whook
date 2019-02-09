@@ -3,9 +3,9 @@ import initArgs from './services/args';
 import initCommand from './services/command';
 import initAutoloader from './services/_autoload';
 
-export default async function run({ prepareServer }) {
+export default async function run({ prepareEnvironment }) {
   try {
-    const $ = await prepareServer();
+    const $ = await prepareEnvironment();
 
     $.register(constant('PWD', process.cwd()));
     $.register(constant('ARGS', process.argv.slice(2)));

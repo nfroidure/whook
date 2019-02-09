@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`API should work 1`] = `
+Object {
+  "API": Object {
+    "basePath": "/v1",
+    "host": undefined,
+    "info": Object {
+      "description": "Create a basic Whook server",
+      "title": "create-whook",
+      "version": "0.0.0",
+    },
+    "paths": Object {
+      "/ping": Object {
+        "get": Object {
+          "consumes": Array [],
+          "operationId": "getPing",
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "200": Object {
+              "description": "Pong",
+              "schema": Object {
+                "properties": Object {
+                  "additionalProperties": false,
+                  "pong": Object {
+                    "enum": Array [
+                      "pong",
+                    ],
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+          "summary": "Checks API's availability.",
+          "tags": Array [
+            "system",
+          ],
+        },
+      },
+      "/time": Object {
+        "get": Object {
+          "consumes": Array [],
+          "operationId": "getTime",
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "200": Object {
+              "description": "Server current date",
+              "schema": Object {
+                "properties": Object {
+                  "additionalProperties": false,
+                  "currentDate": Object {
+                    "format": "date-time",
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+          "summary": "Get API internal clock date.",
+          "tags": Array [
+            "system",
+          ],
+        },
+      },
+    },
+    "schemes": Array [
+      "http",
+    ],
+    "securityDefinitions": Object {
+      "basicAuth": Object {
+        "type": "basic",
+      },
+    },
+    "swagger": "2.0",
+  },
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🦄 - Initializing the API service!",
+    ],
+  ],
+}
+`;
