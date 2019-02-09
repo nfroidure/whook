@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initArgs should parse args 1`] = `
+Object {
+  "args": Object {
+    "_": Array [
+      "handler",
+    ],
+    "name": "getPing",
+    "parameters": "{}",
+  },
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🛠 - Parsed args:",
+      Object {
+        "_": Array [
+          "handler",
+        ],
+        "name": "getPing",
+        "parameters": "{}",
+      },
+    ],
+  ],
+}
+`;

@@ -4,8 +4,12 @@ exports[`initPORT should find a port by itself if no env port 1`] = `
 Object {
   "logCalls": Array [
     Array [
-      "info",
-      "Found a free port \${PORT}",
+      "debug",
+      "🏭 - Initializing the PORT service.",
+    ],
+    Array [
+      "warning",
+      "✔ - Found a free port \${PORT}",
     ],
   ],
 }
@@ -15,8 +19,12 @@ exports[`initPORT should use the env port first 1`] = `
 Object {
   "logCalls": Array [
     Array [
-      "info",
-      "Using ENV port 1337",
+      "debug",
+      "🏭 - Initializing the PORT service.",
+    ],
+    Array [
+      "warning",
+      "♻️ - Using ENV port 1337",
     ],
   ],
   "port": 1337,

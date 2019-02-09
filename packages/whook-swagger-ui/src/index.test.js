@@ -1,6 +1,6 @@
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
-import { runServer, prepareServer } from 'whook';
+import { prepareServer, prepareEnvironment } from 'whook';
 import { initHTTPRouter } from 'swagger-http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
 
@@ -24,7 +24,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   });
 
   beforeEach(async () => {
-    $ = await prepareServer();
+    $ = await prepareEnvironment();
 
     $.register(
       initializer(
@@ -88,7 +88,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(
       constant('CONFIG', {
-        localURL: `http://localhost:${PORT}`,
         basePath: '/v1',
       }),
     );
@@ -97,7 +96,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $destroy } = await runServer(
+    const { $destroy } = await prepareServer(
       ['$destroy', 'httpServer', 'process'],
       $,
     );
@@ -137,7 +136,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $destroy } = await runServer(
+    const { $destroy } = await prepareServer(
       ['$destroy', 'httpServer', 'process'],
       $,
     );
@@ -179,7 +178,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2012-01-15T00:00:00Z').getTime());
 
-    const { $destroy } = await runServer(
+    const { $destroy } = await prepareServer(
       ['$destroy', 'httpServer', 'process'],
       $,
     );

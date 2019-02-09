@@ -76,13 +76,14 @@ Object {
       0,
     ],
   ],
-  "logErrorCalls": Array [],
+  "logErrorCalls": Array [
+    Array [
+      "On air 🚀🌕",
+    ],
+  ],
   "logInfoCalls": Array [
     Array [
       "HTTP Server listening at \\"http://localhost:8889\\".",
-    ],
-    Array [
-      "On air 🚀🌕",
     ],
   ],
 }
@@ -235,16 +236,17 @@ Object {
     "last-modified": undefined,
     "server": "ecstatic-3.3.0",
   },
-  "logErrorCalls": Array [],
+  "logErrorCalls": Array [
+    Array [
+      "On air 🚀🌕",
+    ],
+  ],
   "logInfoCalls": Array [
     Array [
       "Serving the API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI",
     ],
     Array [
       "HTTP Server listening at \\"http://localhost:8890\\".",
-    ],
-    Array [
-      "On air 🚀🌕",
     ],
   ],
   "status": 200,
@@ -346,6 +348,9 @@ Object {
   },
   "logErrorCalls": Array [
     Array [
+      "On air 🚀🌕",
+    ],
+    Array [
       "Undocumented response:",
       200,
       Object {
@@ -373,9 +378,6 @@ Object {
     ],
     Array [
       "HTTP Server listening at \\"http://localhost:8888\\".",
-    ],
-    Array [
-      "On air 🚀🌕",
     ],
     Array [
       Object {

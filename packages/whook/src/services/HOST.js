@@ -2,7 +2,7 @@ import _internalIp from 'internal-ip';
 import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 
-/* Architecture Note #1: IP detection
+/* Architecture Note #6: IP detection
 If no `HOST` configuration is specified in dependencies nor in ENV,
  this service detects the machine host automagically.
 */
@@ -30,18 +30,20 @@ export default initializer(
  * A promise of a containing the actual host.
  */
 async function initHOST({ ENV = {}, log = noop, internalIp = _internalIp }) {
+  log('debug', `🏭 - Initializing the HOST service.`);
+
   if ('undefined' !== typeof ENV.HOST) {
-    log('info', `Using ENV host ${ENV.HOST}`);
+    log('warning', `♻️ - Using ENV host ${ENV.HOST}`);
     return ENV.HOST;
   }
   const host = await internalIp.v4();
 
   if (!host) {
-    log('info', `Could not detect any host. Fallbacking to localhost`);
+    log('warning', `🚫 - Could not detect any host. Fallbacking to localhost.`);
     return 'localhost';
   }
 
-  log('info', `Using detected host ${host}`);
+  log('warning', `✔ - Using detected host ${host}`);
 
   return host;
 }

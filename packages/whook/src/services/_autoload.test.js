@@ -35,7 +35,7 @@ describe('$autoload', () => {
 
     expect({
       result,
-      logCalls: log.mock.calls.filter(args => 'debug' !== args[0]),
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -65,7 +65,7 @@ describe('$autoload', () => {
 
     expect({
       result,
-      logCalls: log.mock.calls.filter(args => 'debug' !== args[0]),
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -125,7 +125,7 @@ describe('$autoload', () => {
     expect({
       result,
       HANDLERS: await result.initializer({ getPing: () => {} }),
-      logCalls: log.mock.calls.filter(args => 'debug' !== args[0]),
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -158,7 +158,7 @@ describe('$autoload', () => {
 
     expect({
       result,
-      logCalls: log.mock.calls.filter(args => 'debug' !== args[0]),
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -193,7 +193,7 @@ describe('$autoload', () => {
 
     expect({
       result,
-      logCalls: log.mock.calls.filter(args => 'debug' !== args[0]),
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -231,7 +231,7 @@ describe('$autoload', () => {
 
     expect({
       result,
-      logCalls: log.mock.calls.filter(args => 'debug' !== args[0]),
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });

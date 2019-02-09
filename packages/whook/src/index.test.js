@@ -1,5 +1,9 @@
 import { constant, initializer } from 'knifecycle';
-import { runServer, prepareServer } from './index';
+import {
+  runServer,
+  prepareServer,
+  prepareEnvironment as basePrepareEnvironment,
+} from './index';
 
 describe('runServer', () => {
   it('should work', async () => {
@@ -9,66 +13,71 @@ describe('runServer', () => {
     };
     const debug = jest.fn();
     const $autoload = jest.fn(async () => ({}.undef));
-    const $ = await prepareServer();
 
-    $.register(
-      initializer(
-        {
-          name: '$autoload',
-          type: 'service',
-          options: { singleton: true },
-        },
-        async () => $autoload,
-      ),
-    );
-    $.register(
-      constant('API', {
-        host: 'localhost:1337',
-        swagger: '2.0',
-        info: {
-          version: '1.0.0',
-          title: 'Sample Swagger',
-          description: 'A sample Swagger file for testing purpose.',
-        },
-        basePath: '/v1',
-        schemes: ['http'],
-        paths: {
-          '/ping': {
-            head: {
-              operationId: 'getPing',
-              summary: "Checks API's availability.",
-              responses: {
-                '200': {
-                  description: 'Pong',
+    async function prepareEnvironment() {
+      const $ = await basePrepareEnvironment();
+
+      $.register(
+        initializer(
+          {
+            name: '$autoload',
+            type: 'service',
+            options: { singleton: true },
+          },
+          async () => $autoload,
+        ),
+      );
+      $.register(
+        constant('API', {
+          host: 'localhost:1337',
+          swagger: '2.0',
+          info: {
+            version: '1.0.0',
+            title: 'Sample Swagger',
+            description: 'A sample Swagger file for testing purpose.',
+          },
+          basePath: '/v1',
+          schemes: ['http'],
+          paths: {
+            '/ping': {
+              head: {
+                operationId: 'getPing',
+                summary: "Checks API's availability.",
+                responses: {
+                  '200': {
+                    description: 'Pong',
+                  },
                 },
               },
             },
           },
-        },
-      }),
-    );
-    $.register(constant('ENV', {}));
-    $.register(constant('NODE_ENV', 'test'));
-    $.register(constant('PORT', 8888));
-    $.register(constant('HOST', 'localhost'));
-    $.register(constant('WRAPPERS', []));
-    $.register(constant('NODE_ENV', 'test'));
-    $.register(constant('DEBUG_NODE_ENVS', []));
-    $.register(constant('NODE_ENVS', ['test']));
-    $.register(
-      constant('HANDLERS', {
-        getPing: jest.fn(() => ({ status: 200 })),
-      }),
-    );
-    $.register(constant('logger', logger));
-    $.register(constant('debug', debug));
+        }),
+      );
+      $.register(constant('ENV', {}));
+      $.register(constant('NODE_ENV', 'test'));
+      $.register(constant('PORT', 8888));
+      $.register(constant('HOST', 'localhost'));
+      $.register(constant('WRAPPERS', []));
+      $.register(constant('NODE_ENV', 'test'));
+      $.register(constant('DEBUG_NODE_ENVS', []));
+      $.register(constant('NODE_ENVS', ['test']));
+      $.register(
+        constant('HANDLERS', {
+          getPing: jest.fn(() => ({ status: 200 })),
+        }),
+      );
+      $.register(constant('logger', logger));
+      $.register(constant('debug', debug));
 
+      return $;
+    }
     process.env.ISOLATED_ENV = 1;
 
-    const { $destroy } = await runServer(
-      ['$destroy', 'httpServer', 'process'],
-      $,
-    );
+    const { $destroy } = await runServer(prepareEnvironment, prepareServer, [
+      '$destroy',
+      'httpServer',
+      'process',
+    ]);
 
     await $destroy();
 

@@ -10,13 +10,17 @@ import ecstatic from 'ecstatic';
  */
 export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
   return wrapInitializer(
-    async ({ DEBUG_NODE_ENVS, NODE_ENV, CONFIG, log = noop }, httpRouter) => {
+    async (
+      { DEBUG_NODE_ENVS, NODE_ENV, CONFIG, HOST, PORT, log = noop },
+      httpRouter,
+    ) => {
       if (!DEBUG_NODE_ENVS.includes(NODE_ENV)) {
         return httpRouter;
       }
 
-      const swaggerUIURL = `${CONFIG.localURL}/docs`;
-      const publicSwaggerURL = `${CONFIG.localURL}${CONFIG.basePath}/openAPI`;
+      const localURL = `http://${HOST}:${PORT}`;
+      const swaggerUIURL = `${localURL}/docs`;
+      const publicSwaggerURL = `${localURL}${CONFIG.basePath}/openAPI`;
       const staticRouter = ecstatic({
         root: swaggerDist.absolutePath(),
         showdir: false,
@@ -43,7 +47,7 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
       }
     },
     alsoInject(
-      ['DEBUG_NODE_ENVS', 'NODE_ENV', 'CONFIG', '?log'],
+      ['DEBUG_NODE_ENVS', 'NODE_ENV', 'CONFIG', 'HOST', 'PORT', '?log'],
       initHTTPRouter,
     ),
   );

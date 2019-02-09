@@ -2,7 +2,7 @@ import portfinder from 'portfinder';
 import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 
-/* Architecture Note #1: Port detection
+/* Architecture Note #7: Port detection
 If no `PORT` configuration is specified in dependencies nor in ENV,
  this service detects a free port automagically.
 */
@@ -11,7 +11,7 @@ export default initializer(
   {
     name: 'PORT',
     type: 'service',
-    inject: ['ENV?', '?log'],
+    inject: ['?ENV', '?log'],
     options: { singleton: true },
   },
   initPORT,
@@ -30,13 +30,20 @@ export default initializer(
  * A promise of a number representing the actual port.
  */
 async function initPORT({ ENV = {}, log = noop }) {
+  log('debug', `🏭 - Initializing the PORT service.`);
+
   if ('undefined' !== typeof ENV.PORT) {
-    log('info', `Using ENV port ${ENV.PORT}`);
+    log('warning', `♻️ - Using ENV port ${ENV.PORT}`);
     return ENV.PORT;
   }
   const port = await portfinder.getPortPromise();
 
-  log('info', `Found a free port ${port}`);
+  if (!port) {
+    log('warning', `🚫 - Could not detect any free port.`);
+    return 8080;
+  }
+
+  log('warning', `✔ - Found a free port ${port}`);
 
   return port;
 }

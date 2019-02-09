@@ -15,7 +15,7 @@ describe('initPORT', () => {
 
     expect({
       port,
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
     }).toMatchSnapshot();
   });
 
@@ -26,9 +26,11 @@ describe('initPORT', () => {
 
     expect(port);
     expect({
-      logCalls: log.mock.calls.map(([arg1, arg2, ...args]) => {
-        return [arg1, arg2.replace(/port (\d+)/, 'port ${PORT}'), ...args];
-      }),
+      logCalls: log.mock.calls
+        .filter(args => 'stack' !== args[0])
+        .map(([arg1, arg2, ...args]) => {
+          return [arg1, arg2.replace(/port (\d+)/, 'port ${PORT}'), ...args];
+        }),
     }).toMatchSnapshot();
   });
 });

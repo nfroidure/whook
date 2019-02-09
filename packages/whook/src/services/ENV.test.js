@@ -30,7 +30,7 @@ DB_HOST = 'localhost'
 
     expect({
       ENV,
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       readFileCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });
@@ -50,7 +50,7 @@ DB_HOST = 'localhost'
 
     expect({
       ENV,
-      logCalls: log.mock.calls.filter(args => 'debug' !== args[0]),
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       readFileCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });

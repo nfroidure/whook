@@ -18,9 +18,37 @@ import initHOST from './services/HOST';
 import initAutoload from './services/_autoload';
 import initENV from './services/ENV';
 
-/* Architecture Note #1: Server initialization
+/* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
  its server.
+*/
+export async function runServer(
+  prepareEnvironment,
+  prepareServer,
+  injectedNames = [],
+) {
+  try {
+    const { ENV, log, $destroy, ...services } = await prepareServer(
+      [...new Set([...injectedNames, 'ENV', 'log', '$destroy'])],
+      await prepareEnvironment(),
+    );
+
+    if (ENV.DRY_RUN) {
+      log('warning', '🌵 - Dry run, shutting down now!');
+      return $destroy();
+    }
+
+    return { ENV, log, $destroy, ...services };
+  } catch (err) {
+    // eslint-disable-next-line
+    console.error('💀 - Cannot launch the process:', err.stack);
+    process.exit(1);
+  }
+}
+
+/* Architecture Note #2: Server preparation
+Whook exposes a `prepareServer` function to create its server
+ configuration.
 */
 /**
  * Runs the Whook server
@@ -31,27 +59,27 @@ Whook exposes a `runServer` function to programmatically spawn
  * @returns Object
  * A promise of the injected services
  */
-export async function runServer(injectedNames = [], $) {
-  /* Architecture Note #1.1: Root injections
+export async function prepareServer(injectedNames = [], $) {
+  /* Architecture Note #2.1: Root injections
    * We need to inject `httpServer` and `process` to bring life to our
    *  server. We also inject `log` for logging purpose and custom other
    *  injected name that were required upfront.
    */
   const { log, ...services } = await $.run([
-    ...new Set(injectedNames.concat(['log', 'httpServer', 'process'])),
+    ...new Set([...injectedNames, 'log', 'httpServer', 'process']),
   ]);
 
-  log('info', 'On air 🚀🌕');
+  log('warning', 'On air 🚀🌕');
 
   return { log, ...services };
 }
 
-/* Architecture Note #2: Server environment
-The Whook `prepareServer` function aims to provide the complete
- server environment without effectively running it. It allows
+/* Architecture Note #3: Server environment
+The Whook `prepareEnvironment` function aims to provide the complete
+ server environment without effectively planning its run. It allows
  to use that environment for CLI or build purposes. It also
  provides a chance to override some services/constants
- before actually running the server.
+ before actually preparing the server.
  */
 /**
  * Prepare the Whook server environment
@@ -60,8 +88,8 @@ The Whook `prepareServer` function aims to provide the complete
  * @returns Promise<Knifecycle>
  * A promise of the Knifecycle instance
  */
-export async function prepareServer($ = new Knifecycle()) {
-  /* Architecture Note #2.1: `PWD` env var
+export async function prepareEnvironment($ = new Knifecycle()) {
+  /* Architecture Note #3.1: `PWD` env var
   The Whook server heavily rely on the process working directory
    to dynamically load contents. We are making it available to
    the DI system as a constant.
@@ -69,14 +97,14 @@ export async function prepareServer($ = new Knifecycle()) {
   const PWD = process.cwd();
   $.register(constant('PWD', PWD));
 
-  /* Architecture Note #2.2: `NODE_ENV` env var
+  /* Architecture Note #3.2: `NODE_ENV` env var
   Whook has different behaviors depending on the `NODE_ENV` value
    consider setting it to production before shipping.
    */
   const NODE_ENV = process.env.NODE_ENV || 'development';
   $.register(constant('NODE_ENV', NODE_ENV));
 
-  /* Architecture Note #2.3: Logging
+  /* Architecture Note #3.3: Logging
   Whook's default logger write to the NodeJS default console
    except for debugging messages where it use the `debug`
    module so that you can set the `DEBUG` environment
@@ -95,7 +123,7 @@ export async function prepareServer($ = new Knifecycle()) {
   );
   $.register(constant('exit', process.exit));
 
-  /* Architecture Note #2.4: Initializers
+  /* Architecture Note #3.4: Initializers
   Whook's embed a few default initializers proxied from
    `common-services`, `swagger-http-router` or it own
    `src/services` folder. It can be wrapped or overriden
@@ -119,5 +147,3 @@ export async function prepareServer($ = new Knifecycle()) {
 
   return $;
 }
-
-export default runServer;

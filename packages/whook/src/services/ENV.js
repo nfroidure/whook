@@ -4,7 +4,7 @@ import path from 'path';
 import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 
-/* Architecture Note #3: Environment service
+/* Architecture Note #4: Environment service
 The `ENV` service add a layer of configuration over just using
  node's `process.env` value. Beware that `PWD` and `NODE_ENV` are
  guaranteed to be the exact same than the injected constants.
@@ -46,9 +46,9 @@ async function initENV({
 }) {
   let ENV = { ...BASE_ENV };
 
-  log('info', `Loading the environment service.`);
+  log('debug', `♻️ - Loading the environment service.`);
 
-  /* Architecture Note #3.1: Environment isolation
+  /* Architecture Note #4.1: Environment isolation
   Per default, Whook takes the process environment as is
    but since it could lead to leaks when building for
    AWS Lambda or Google Cloud Functions one can isolate
@@ -56,10 +56,12 @@ async function initENV({
   */
   if (!process.env.ISOLATED_ENV) {
     ENV = { ...ENV, ...PROCESS_ENV };
-    log('info', `Using local env.`);
+    log('warning', `🖥 - Using local env.`);
+  } else {
+    log('warning', `🖥 - Using an isolated env.`);
   }
 
-  /* Architecture Note #3.2: `.env.NODE_ENV` files
+  /* Architecture Note #4.2: `.env.NODE_ENV` files
   You may need to keep some secrets out of your Git
    history. Whook uses `dotenv` to provide your such
    ability.
@@ -69,12 +71,12 @@ async function initENV({
     const buf = await readFile(envPath);
     const FILE_ENV = dotenv.parse(buf);
 
-    log('info', `Using .env file at ${envPath}.`);
+    log('warning', `💾 - Using .env file at ${envPath}.`);
 
     ENV = { ...ENV, ...FILE_ENV };
   } catch (err) {
-    log('info', `Could not load ".env.${NODE_ENV}" file.`);
-    log('debug', `Got the following error:`, err.stack);
+    log('debug', `🚫 - Could not load ".env.${NODE_ENV}" file.`);
+    log('stack', err.stack);
   }
 
   return {
