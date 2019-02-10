@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOpenAPI should show every endpoints when authenticated 1`] = `
+Object {
+  "response": Object {
+    "body": Object {
+      "info": Object {
+        "version": "<already_tested>",
+      },
+      "paths": Object {
+        "/time": Object {
+          "get": Object {
+            "tags": Array [
+              "public",
+            ],
+            "x-whook": Object {
+              "memx": 2,
+              "tx": 18,
+            },
+          },
+          "put": Object {
+            "tags": Array [],
+            "x-whook": Object {
+              "private": true,
+            },
+          },
+        },
+      },
+      "swagger": "2.0",
+    },
+    "status": 200,
+  },
+}
+`;
+
+exports[`getOpenAPI should work 1`] = `
+Object {
+  "response": Object {
+    "body": Object {
+      "info": Object {
+        "version": "<already_tested>",
+      },
+      "paths": Object {
+        "/time": Object {
+          "get": Object {
+            "tags": Array [
+              "public",
+            ],
+            "x-whook": undefined,
+          },
+        },
+      },
+      "swagger": "2.0",
+    },
+    "status": 200,
+  },
+}
+`;

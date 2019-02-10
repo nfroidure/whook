@@ -54,6 +54,7 @@ export async function augmentAPIWithCORS(API) {
       ...(operation['x-whook'] || {}),
       suffix: 'CORS',
       sourceOperationId: operation.operationId,
+      private: true,
     };
 
     if (whookConfig.type !== 'http') {
@@ -69,6 +70,7 @@ export async function augmentAPIWithCORS(API) {
     newAPI.paths[operation.path].options = {
       operationId: 'optionsWithCORS',
       summary: 'Enable OPTIONS for CORS',
+      tags: ['CORS'],
       'x-whook': {
         ...whookConfig,
       },

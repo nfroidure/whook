@@ -1,5 +1,6 @@
 import { name, autoService } from 'knifecycle';
 
+import { definition as getOpenAPIDefinition } from '../handlers/getOpenAPI';
 import { definition as getPingDefinition } from '../handlers/getPing';
 import { definition as getTimeDefinition } from '../handlers/getTime';
 import { definition as putEchoDefinition } from '../handlers/putEcho';
@@ -28,6 +29,9 @@ async function initAPI({ CONFIG, log }) {
       description: CONFIG.description,
     },
     paths: {
+      [getOpenAPIDefinition.path]: {
+        [getOpenAPIDefinition.method]: getOpenAPIDefinition.operation,
+      },
       [getPingDefinition.path]: {
         [getPingDefinition.method]: getPingDefinition.operation,
       },
