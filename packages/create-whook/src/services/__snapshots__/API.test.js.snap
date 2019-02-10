@@ -23,7 +23,11 @@ Object {
             },
           },
           "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
           "x-whook": Object {
+            "private": true,
             "sourceOperationId": "putEcho",
             "suffix": "CORS",
             "type": "http",
@@ -82,6 +86,51 @@ Object {
           ],
         },
       },
+      "/openAPI": Object {
+        "get": Object {
+          "consumes": Array [],
+          "operationId": "getOpenAPI",
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "200": Object {
+              "description": "Provides the private Open API documentation",
+              "schema": Object {
+                "type": "object",
+              },
+            },
+          },
+          "summary": "Get API documentation.",
+          "tags": Array [
+            "system",
+          ],
+          "x-whook": Object {
+            "private": false,
+          },
+        },
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
+          "x-whook": Object {
+            "private": true,
+            "sourceOperationId": "getOpenAPI",
+            "suffix": "CORS",
+            "type": "http",
+          },
+        },
+      },
       "/ping": Object {
         "get": Object {
           "consumes": Array [],
@@ -122,7 +171,11 @@ Object {
             },
           },
           "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
           "x-whook": Object {
+            "private": true,
             "sourceOperationId": "getPing",
             "suffix": "CORS",
             "type": "http",
@@ -167,7 +220,11 @@ Object {
             },
           },
           "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
           "x-whook": Object {
+            "private": true,
             "sourceOperationId": "getTime",
             "suffix": "CORS",
             "type": "http",
