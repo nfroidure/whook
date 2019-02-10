@@ -10,18 +10,23 @@
 ## Server run
 
 Whook exposes a `runServer` function to programmatically spawn
- its server.
+ its server. It is intended to be reusable and injectable so
+ that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.js#L21-L24)
+[See in context](./src/index.js#L23-L27)
 
 
 
 ## Server preparation
 
 Whook exposes a `prepareServer` function to create its server
- configuration.
+ configuration. It takes eventually additional injections that
+ would be required at a higher level and a
+ [Knifecycle](https://github.com/nfroidure/knifecycle)
+ containing the bootstrapped environment and allowing
+ to complete and run the server.
 
-[See in context](./src/index.js#L48-L51)
+[See in context](./src/index.js#L52-L59)
 
 
 
@@ -31,7 +36,7 @@ Whook exposes a `prepareServer` function to create its server
  *  server. We also inject `log` for logging purpose and custom other
  *  injected name that were required upfront.
 
-[See in context](./src/index.js#L62-L66)
+[See in context](./src/index.js#L70-L74)
 
 
 
@@ -43,7 +48,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server.
 
-[See in context](./src/index.js#L76-L82)
+[See in context](./src/index.js#L84-L90)
 
 
 
@@ -53,7 +58,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.js#L91-L95)
+[See in context](./src/index.js#L99-L103)
 
 
 
@@ -62,7 +67,16 @@ The Whook server heavily rely on the process working directory
 Whook has different behaviors depending on the `NODE_ENV` value
  consider setting it to production before shipping.
 
-[See in context](./src/index.js#L99-L102)
+[See in context](./src/index.js#L107-L110)
+
+
+
+### `WHOOK_PLUGINS` and `PROJECT_SRC`
+
+Whook need to know where to look up for things like
+ commands / handlers etc...
+
+[See in context](./src/index.js#L114-L117)
 
 
 
@@ -73,7 +87,7 @@ Whook's default logger write to the NodeJS default console
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
-[See in context](./src/index.js#L106-L111)
+[See in context](./src/index.js#L120-L125)
 
 
 
@@ -82,9 +96,9 @@ Whook's default logger write to the NodeJS default console
 Whook's embed a few default initializers proxied from
  `common-services`, `swagger-http-router` or it own
  `src/services` folder. It can be wrapped or overriden
- at will.
+ at will later in project's main file.
 
-[See in context](./src/index.js#L125-L130)
+[See in context](./src/index.js#L139-L144)
 
 
 
@@ -107,7 +121,7 @@ Per default, Whook takes the process environment as is
  AWS Lambda or Google Cloud Functions one can isolate
  the process env when building.
 
-[See in context](./src/services/ENV.js#L51-L56)
+[See in context](./src/services/ENV.js#L52-L57)
 
 
 
@@ -117,13 +131,12 @@ You may need to keep some secrets out of your Git
  history. Whook uses `dotenv` to provide your such
  ability.
 
-[See in context](./src/services/ENV.js#L64-L68)
+[See in context](./src/services/ENV.js#L65-L69)
 
 
 
-## `
+## `$autoload` service
 
-$autoload` service
 The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project.
@@ -141,27 +154,27 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.js#L62-L69)
+[See in context](./src/services/_autoload.js#L111-L118)
 
 
 
-### Wrappers auto loading
+### Wrappers auto loading support
 
 We cannot inject the `WRAPPERS` in the auto loader when
- it is dynamically loaded so doing during the auto loader
- initialization if needed.
+ it is dynamically loaded so giving a second chance here
+ for `WRAPPERS` to be set.
 
-[See in context](./src/services/_autoload.js#L80-L84)
+[See in context](./src/services/_autoload.js#L81-L85)
 
 
 
 ### API auto loading
 
 We cannot inject the `API` in the auto loader since
- it is dynamically loaded so doing during the auto loader
- initialization.
+  it is dynamically loaded so doing during the auto loader
+  initialization.
 
-[See in context](./src/services/_autoload.js#L98-L102)
+[See in context](./src/services/_autoload.js#L68-L72)
 
 
 
@@ -170,7 +183,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded configuration.
 
-[See in context](./src/services/_autoload.js#L139-L142)
+[See in context](./src/services/_autoload.js#L123-L126)
 
 
 
@@ -179,7 +192,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map by injecting every handler required
  by the API.
 
-[See in context](./src/services/_autoload.js#L151-L154)
+[See in context](./src/services/_autoload.js#L147-L150)
 
 
 
@@ -188,7 +201,7 @@ Here, we build the handlers map by injecting every handler required
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.js#L181-L184)
+[See in context](./src/services/_autoload.js#L177-L180)
 
 
 
@@ -207,4 +220,14 @@ If no `PORT` configuration is specified in dependencies nor in ENV,
  this service detects a free port automagically.
 
 [See in context](./src/services/PORT.js#L5-L8)
+
+
+
+## Project dir
+
+Whook needs to know the directory of the project under
+ which he is running. It then uses this service to
+ automatically detect it.
+
+[See in context](./src/services/PROJECT_DIR.js#L5-L10)
 

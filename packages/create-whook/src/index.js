@@ -1,4 +1,4 @@
-import Knifecycle from 'knifecycle';
+import Knifecycle, { constant } from 'knifecycle';
 import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
@@ -37,6 +37,11 @@ export async function prepareServer(injectedNames = [], $ = new Knifecycle()) {
 // The `prepareEnvironment` one is intended to prepare the server environment
 export async function prepareEnvironment($ = new Knifecycle()) {
   $ = await prepareBaseEnvironment($);
+
+  // You have to declare the project main file directory
+  // to allow autoloading features to work with it either
+  // in development and production (files built in `dist/`)
+  $.register(constant('PROJECT_SRC', __dirname));
 
   // Add here any service/handler required to bootstrap
   // the server env

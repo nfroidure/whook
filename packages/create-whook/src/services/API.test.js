@@ -1,5 +1,5 @@
 import initAPI from './API';
-import FULL_CONFIG from '../../config/development/config';
+import FULL_CONFIG from '../config/test/config';
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;

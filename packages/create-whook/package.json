@@ -34,8 +34,9 @@
     "prettier": "prettier --write 'src/**/*.js'",
     "preversion": "npm run compile",
     "test": "npm run jest",
-    "whook": "NODE_ENV=${NODE_ENV:-development} babel-node node_modules/.bin/whook",
-    "dev": "NODE_ENV=${NODE_ENV:-development} babel-node bin/dev",
+    "whook": "NODE_ENV=${NODE_ENV:-development} whook",
+    "dev": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node bin/dev",
+    "debug": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node --inspect bin/dev",
     "start": "NODE_ENV=${NODE_ENV:-development} node bin/start"
   },
   "author": {
@@ -58,7 +59,8 @@
     "swagger-http-router": "^4.2.1",
     "whook": "^3.1.3",
     "whook-cli": "^0.0.0",
-    "whook-swagger-ui": "^0.0.0"
+    "whook-swagger-ui": "^0.0.0",
+    "whook-cors": "^0.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -74,7 +76,7 @@
     "jest": "^24.0.0",
     "jsdoc-to-markdown": "^4.0.1",
     "metapak": "^3.1.5",
-    "metapak-nfroidure": "9.5.0",
+    "metapak-nfroidure": "9.5.1",
     "prettier": "^1.16.3"
   },
   "contributors": [],

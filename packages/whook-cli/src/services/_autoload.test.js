@@ -19,7 +19,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       require: requireMock,
       log,
-      PWD: '/home/whoiam/projects/my-whook-project',
+      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      WHOOK_PLUGINS: ['whook'],
     });
     const { path, initializer } = await $autoload('handlerCommand');
     const command = await initializer();
@@ -46,7 +47,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       require: requireMock,
       log,
-      PWD: '/home/whoiam/projects/my-whook-project',
+      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      WHOOK_PLUGINS: ['whook'],
     });
     const { path, initializer } = await $autoload('handlerCommand');
     const command = await initializer();
@@ -76,7 +78,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       require: requireMock,
       log,
-      PWD: '/home/whoiam/projects/my-whook-project',
+      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      WHOOK_PLUGINS: ['whook'],
     });
     const { path, initializer } = await $autoload('handlerCommand');
     const command = await initializer();
@@ -110,7 +113,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       require: requireMock,
       log,
-      PWD: '/home/whoiam/projects/my-whook-project',
+      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      WHOOK_PLUGINS: ['whook'],
     });
     const { path, initializer } = await $autoload('handlerCommand');
     const command = await initializer();
@@ -134,7 +138,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       require: requireMock,
       log,
-      PWD: '/home/whoiam/projects/my-whook-project',
+      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      WHOOK_PLUGINS: ['whook'],
     });
     const { path, initializer } = await $autoload('anotherService');
     const command = await initializer();

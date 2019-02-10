@@ -1,4 +1,4 @@
-import packageConf from '../../package';
+import packageConf from '../../../package';
 
 const DEBUG_NODE_ENVS = ['development', 'preproduction', 'test'];
 const NODE_ENVS = [...DEBUG_NODE_ENVS, 'production'];

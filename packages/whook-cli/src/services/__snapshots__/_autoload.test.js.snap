@@ -56,7 +56,7 @@ Object {
     ],
     Array [
       "debug",
-      "Command \\"handler\\" not found in: ../commands/handler",
+      "Command \\"handler\\" not found in: whook/commands/handler",
     ],
     Array [
       "warning",
@@ -69,7 +69,7 @@ Object {
       "/home/whoiam/projects/my-whook-project/src/commands/handler",
     ],
     Array [
-      "../commands/handler",
+      "whook/commands/handler",
     ],
   ],
   "result": undefined,
@@ -122,7 +122,7 @@ Object {
       "/home/whoiam/projects/my-whook-project/src/commands/handler",
     ],
     Array [
-      "../commands/handler",
+      "whook/commands/handler",
     ],
   ],
   "result": undefined,

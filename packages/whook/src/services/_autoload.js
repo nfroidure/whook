@@ -1,4 +1,4 @@
-import { noop, compose } from '../libs/utils';
+import { identity, noop, compose } from '../libs/utils';
 import { initializer, constant, name } from 'knifecycle';
 import {
   flattenSwagger,
@@ -20,6 +20,8 @@ export default initializer(
     inject: [
       'NODE_ENV',
       'PWD',
+      'PROJECT_SRC',
+      '$injector',
       '?SERVICE_NAME_MAP',
       '?INITIALIZER_PATH_MAP',
       '?WRAPPERS',
@@ -34,74 +36,65 @@ export default initializer(
  * Initialize the Whook default DI autoloader
  * @param  {Object}   services
  * The services `$autoload` depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value
- * @param  {Object}   services.PWD
- * The process current working directory
+ * @param  {Object}   services.PROJECT_SRC
+ * The project source directory
+ * @param  {Object}   services.$injector
+ * An injector for internal dynamic services loading
  * @param  {Object}   [services.SERVICE_NAME_MAP={}]
  * An optional object to map services names to other names
  * @param  {Object}   [services.INITIALIZER_PATH_MAP={}]
  * An optional object to map non-autoloadable initializers
  * @param  {Array}   [services.WRAPPERS]
  * An optional list of wrappers to inject
+ * @param  {Array}   [services.CONFIGS]
+ * Optional CONFIGS object to inject
  * @param  {Object}   [log=noop]
  * An optional logging service
  * @return {Promise<Function>}
  * A promise of the autoload function.
  */
 async function initAutoload({
-  NODE_ENV,
-  PWD,
+  PROJECT_SRC,
+  $injector,
   SERVICE_NAME_MAP = {},
   INITIALIZER_PATH_MAP = {},
   WRAPPERS,
+  CONFIGS,
   log = noop,
   require = _require,
 }) {
   log('debug', '🤖 - Initializing the `$autoload` service.');
-  /* Architecture Note #5.1: Configuration auto loading
-  Loading the configuration files is done according to the `NODE_ENV`
-   environment variable. It basically requires a configuration hash
-   where the keys are Knifecycle constants.
-
-  Let's load the configuration files as a convenient way
-   to create constants on the fly
-  */
-  const configPath = path.join(PWD, 'config', NODE_ENV, 'config');
-
-  log('warning', `⚡️ - Loading configuration from ${configPath}.`);
-
-  const CONFIGS = require(configPath).default;
-
-  // The following let has to be declared before the next line since
-  // it is a recurring call that use the API variable
-  let API;
-
-  /* Architecture Note #5.2: Wrappers auto loading
-  We cannot inject the `WRAPPERS` in the auto loader when
-   it is dynamically loaded so doing during the auto loader
-   initialization if needed.
-  */
-  if (null == WRAPPERS) {
-    try {
-      const { initializer: wrapperInitializer } = await $autoload('WRAPPERS');
-
-      WRAPPERS = await wrapperInitializer({});
-    } catch (err) {
-      log('debug', '🚫 - Could not find any API wrapper...');
-      log('stack', err.stack);
-      WRAPPERS = [];
-    }
-  }
-  const wrapHandler = WRAPPERS.length ? compose(...WRAPPERS) : noop;
 
   /* Architecture Note #5.3: API auto loading
   We cannot inject the `API` in the auto loader since
-   it is dynamically loaded so doing during the auto loader
-   initialization.
+    it is dynamically loaded so doing during the auto loader
+    initialization.
   */
-  const { initializer: apiInitializer } = await $autoload('API');
-  API = await apiInitializer({ CONFIG: CONFIGS.CONFIG, PWD, log });
+  let API;
+  const getAPI = (() => {
+    return async () => {
+      API = API || (await $injector(['API'])).API;
+      return API;
+    };
+  })();
+
+  /* Architecture Note #5.2: Wrappers auto loading support
+  We cannot inject the `WRAPPERS` in the auto loader when
+   it is dynamically loaded so giving a second chance here
+   for `WRAPPERS` to be set.
+  */
+  const doWrapHandler = (WRAPPERS => {
+    let wrapHandler;
+
+    return async handlerInitializer => {
+      WRAPPERS = WRAPPERS || (await $injector(['WRAPPERS'])).WRAPPERS || [];
+      wrapHandler =
+        wrapHandler || (WRAPPERS.length ? compose(...WRAPPERS) : identity);
+
+      return wrapHandler(handlerInitializer);
+    };
+  })(WRAPPERS);
+
   return $autoload;
 
   /**
@@ -114,6 +107,31 @@ async function initAutoload({
    */
   async function $autoload(injectedName) {
     const resolvedName = SERVICE_NAME_MAP[injectedName] || injectedName;
+
+    /* Architecture Note #5.1: Configuration auto loading
+    Loading the configuration files is done according to the `NODE_ENV`
+     environment variable. It basically requires a configuration hash
+     where the keys are Knifecycle constants.
+
+    Let's load the configuration files as a convenient way
+     to create constants on the fly
+    */
+    if ('CONFIGS' !== resolvedName) {
+      CONFIGS = CONFIGS || (await $injector(['CONFIGS'])).CONFIGS;
+    }
+
+    /* Architecture Note #5.4: Constants
+    First of all the autoloader looks for constants in the
+     previously loaded configuration.
+    */
+    if (CONFIGS && CONFIGS[resolvedName]) {
+      return {
+        name: resolvedName,
+        path: 'internal://' + resolvedName,
+        initializer: constant(resolvedName, CONFIGS[resolvedName]),
+      };
+    }
+
     const isHandler = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/.test(
       resolvedName,
     );
@@ -121,32 +139,10 @@ async function initAutoload({
     const modulePath =
       INITIALIZER_PATH_MAP[resolvedName] ||
       path.join(
-        PWD,
-        'src',
+        PROJECT_SRC,
         isHandler ? 'handlers' : 'services',
         isWrappedHandler ? resolvedName.replace(/Wrapped$/, '') : resolvedName,
       );
-
-    // Here only to be able to statically build dependencies
-    if (API && 'API' === resolvedName) {
-      return {
-        name: resolvedName,
-        path: 'internal://' + resolvedName,
-        initializer: constant(resolvedName, API),
-      };
-    }
-
-    /* Architecture Note #5.4: Constants
-    First of all the autoloader looks for constants in the
-     previously loaded configuration.
-    */
-    if (CONFIGS[resolvedName]) {
-      return {
-        name: resolvedName,
-        path: 'internal://' + resolvedName,
-        initializer: constant(resolvedName, CONFIGS[resolvedName]),
-      };
-    }
 
     /* Architecture Note #5.5: Handlers map
     Here, we build the handlers map by injecting every handler required
@@ -155,9 +151,9 @@ async function initAutoload({
     if ('HANDLERS' === resolvedName) {
       const handlerNames = [
         ...new Set(
-          (await getSwaggerOperations(await flattenSwagger(API))).map(
-            operation => operation.operationId,
-          ),
+          (await getSwaggerOperations(
+            await flattenSwagger(await getAPI()),
+          )).map(operation => operation.operationId),
         ),
       ].map(handlerName => `${handlerName}>${handlerName}Wrapped`);
 
@@ -195,12 +191,7 @@ async function initAutoload({
       name: resolvedName,
       path: modulePath,
       initializer: isWrappedHandler
-        ? name(
-            resolvedName,
-            WRAPPERS.length
-              ? wrapHandler(resolvedInitializer)
-              : resolvedInitializer,
-          )
+        ? name(resolvedName, await doWrapHandler(resolvedInitializer))
         : resolvedInitializer,
     };
   }

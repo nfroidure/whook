@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 const path = require('path');
 const run = require('../dist/index').default;
 const { prepareEnvironment } = require(path.join(

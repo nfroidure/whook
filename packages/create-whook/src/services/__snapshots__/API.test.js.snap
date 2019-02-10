@@ -40,6 +40,23 @@ Object {
             "system",
           ],
         },
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "x-whook": Object {
+            "sourceOperationId": "getPing",
+            "suffix": "CORS",
+            "type": "http",
+          },
+        },
       },
       "/time": Object {
         "get": Object {
@@ -67,6 +84,23 @@ Object {
           "tags": Array [
             "system",
           ],
+        },
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "x-whook": Object {
+            "sourceOperationId": "getTime",
+            "suffix": "CORS",
+            "type": "http",
+          },
         },
       },
     },

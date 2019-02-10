@@ -2,9 +2,12 @@ import { name, autoService } from 'knifecycle';
 
 import { definition as getPingDefinition } from '../handlers/getPing';
 import { definition as getTimeDefinition } from '../handlers/getTime';
+import { augmentAPIWithCORS } from 'whook-cors';
 
 export default name('API', autoService(initAPI));
 
+// The API service is where you put your handlers
+// altogether to form the final API
 async function initAPI({ CONFIG, log }) {
   log('debug', '🦄 - Initializing the API service!');
 
@@ -33,5 +36,7 @@ async function initAPI({ CONFIG, log }) {
     },
   };
 
-  return API;
+  // You can apply transformations to your API like
+  // here for CORS support (OPTIONS method handling)
+  return augmentAPIWithCORS(API);
 }

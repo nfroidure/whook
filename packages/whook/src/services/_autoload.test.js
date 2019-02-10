@@ -3,14 +3,16 @@ import { service } from 'knifecycle';
 
 describe('$autoload', () => {
   const log = jest.fn();
+  const $injector = jest.fn();
   const require = jest.fn();
 
   beforeEach(() => {
     log.mockReset();
+    $injector.mockReset();
     require.mockReset();
   });
 
-  it('should work for a config constant', async () => {
+  it('should work for configs', async () => {
     require.mockReturnValueOnce({
       default: {
         CONFIG: {
@@ -18,13 +20,42 @@ describe('$autoload', () => {
         },
       },
     });
-    require.mockReturnValueOnce({
-      default: service(async () => ({ info: {} }), 'API'),
+
+    const $autoload = await initAutoload({
+      NODE_ENV: 'development',
+      PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
+      SERVICE_NAME_MAP: {},
+      INITIALIZER_PATH_MAP: {},
+      WRAPPERS: [],
+      require,
+      log,
+    });
+    const result = await $autoload('CONFIGS');
+
+    expect({
+      result,
+      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
+      requireCalls: require.mock.calls,
+    }).toMatchSnapshot();
+  });
+
+  it('should work for a config constant', async () => {
+    $injector.mockResolvedValueOnce({
+      CONFIGS: {
+        CONFIG: {
+          testConfig: 'test',
+        },
+      },
     });
 
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -36,25 +67,28 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work for API', async () => {
-    require.mockReturnValueOnce({
-      default: {
+    $injector.mockResolvedValueOnce({
+      CONFIGS: {
         CONFIG: {
           testConfig: 'test',
         },
       },
     });
-    require.mockReturnValueOnce({
+    require.mockImplementationOnce(() => ({
       default: service(async () => ({ info: {} }), 'API'),
-    });
+    }));
 
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -66,46 +100,44 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work for handlers hash', async () => {
-    require.mockReturnValueOnce({
-      default: {
+    $injector.mockResolvedValueOnce({
+      CONFIGS: {
         CONFIG: {
           testConfig: 'test',
         },
       },
     });
-    require.mockReturnValueOnce({
-      default: service(
-        async () => ({
-          host: 'localhost:1337',
-          swagger: '2.0',
-          info: {
-            version: '1.0.0',
-            title: 'Sample Swagger',
-            description: 'A sample Swagger file for testing purpose.',
-          },
-          basePath: '/v1',
-          schemes: ['http'],
-          paths: {
-            '/ping': {
-              get: {
-                operationId: 'getPing',
-                summary: "Checks API's availability.",
-                responses: {
-                  '200': {
-                    description: 'Pong',
-                  },
+    $injector.mockResolvedValueOnce({
+      API: {
+        host: 'localhost:1337',
+        swagger: '2.0',
+        info: {
+          version: '1.0.0',
+          title: 'Sample Swagger',
+          description: 'A sample Swagger file for testing purpose.',
+        },
+        basePath: '/v1',
+        schemes: ['http'],
+        paths: {
+          '/ping': {
+            get: {
+              operationId: 'getPing',
+              summary: "Checks API's availability.",
+              responses: {
+                '200': {
+                  description: 'Pong',
                 },
               },
             },
           },
-        }),
-        'API',
-      ),
+        },
+      },
     });
     require.mockReturnValueOnce({
       default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -114,6 +146,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -126,20 +160,21 @@ describe('$autoload', () => {
       result,
       HANDLERS: await result.initializer({ getPing: () => {} }),
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work for handlers', async () => {
-    require.mockReturnValueOnce({
-      default: {
+    $injector.mockResolvedValueOnce({
+      CONFIGS: {
         CONFIG: {
           testConfig: 'test',
         },
       },
     });
-    require.mockReturnValueOnce({
-      default: service(async () => ({ info: {} }), 'API'),
+    $injector.mockResolvedValueOnce({
+      API: { info: {} },
     });
     require.mockReturnValueOnce({
       default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -148,6 +183,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -159,24 +196,22 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work with no wrappers', async () => {
-    require.mockImplementationOnce(() => ({
-      default: {
+    $injector.mockResolvedValueOnce({
+      CONFIGS: {
         CONFIG: {
           testConfig: 'test',
         },
       },
-    }));
-    require.mockImplementationOnce(() => {
-      throw new Error('E_ERROR');
     });
-    require.mockImplementationOnce(() => ({
-      default: service(async () => ({ info: {} }), 'API'),
-    }));
+    $injector.mockResolvedValueOnce({
+      API: { info: {} },
+    });
     require.mockImplementationOnce(() => ({
       default: service(async () => async () => ({ status: 200 }), 'getPing'),
     }));
@@ -184,6 +219,8 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       require,
@@ -194,26 +231,24 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work for wrapped handlers', async () => {
-    require.mockReturnValueOnce({
-      default: {
+    $injector.mockResolvedValueOnce({
+      CONFIGS: {
         CONFIG: {
           testConfig: 'test',
         },
       },
     });
-    require.mockReturnValueOnce({
-      default: service(
-        async () => [async initHandler => initHandler],
-        'WRAPPERS',
-      ),
+    $injector.mockResolvedValueOnce({
+      WRAPPERS: [],
     });
-    require.mockReturnValueOnce({
-      default: service(async () => ({ info: {} }), 'API'),
+    $injector.mockResolvedValueOnce({
+      API: { info: {} },
     });
     require.mockReturnValueOnce({
       default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -222,16 +257,19 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       require,
       log,
     });
-    const result = await $autoload('getPing');
+    const result = await $autoload('getPingWrapped');
 
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
