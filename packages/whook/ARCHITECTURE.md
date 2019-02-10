@@ -13,7 +13,7 @@ Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.js#L21-L25)
+[See in context](./src/index.js#L23-L27)
 
 
 
@@ -26,7 +26,7 @@ Whook exposes a `prepareServer` function to create its server
  containing the bootstrapped environment and allowing
  to complete and run the server.
 
-[See in context](./src/index.js#L50-L57)
+[See in context](./src/index.js#L52-L59)
 
 
 
@@ -36,7 +36,7 @@ Whook exposes a `prepareServer` function to create its server
  *  server. We also inject `log` for logging purpose and custom other
  *  injected name that were required upfront.
 
-[See in context](./src/index.js#L68-L72)
+[See in context](./src/index.js#L70-L74)
 
 
 
@@ -48,7 +48,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server.
 
-[See in context](./src/index.js#L82-L88)
+[See in context](./src/index.js#L84-L90)
 
 
 
@@ -58,7 +58,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.js#L97-L101)
+[See in context](./src/index.js#L99-L103)
 
 
 
@@ -67,7 +67,7 @@ The Whook server heavily rely on the process working directory
 Whook has different behaviors depending on the `NODE_ENV` value
  consider setting it to production before shipping.
 
-[See in context](./src/index.js#L105-L108)
+[See in context](./src/index.js#L107-L110)
 
 
 
@@ -76,7 +76,7 @@ Whook has different behaviors depending on the `NODE_ENV` value
 Whook need to know where to look up for things like
  commands / handlers etc...
 
-[See in context](./src/index.js#L112-L115)
+[See in context](./src/index.js#L114-L117)
 
 
 
@@ -87,7 +87,7 @@ Whook's default logger write to the NodeJS default console
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
-[See in context](./src/index.js#L118-L123)
+[See in context](./src/index.js#L120-L125)
 
 
 
@@ -98,7 +98,7 @@ Whook's embed a few default initializers proxied from
  `src/services` folder. It can be wrapped or overriden
  at will later in project's main file.
 
-[See in context](./src/index.js#L137-L142)
+[See in context](./src/index.js#L139-L144)
 
 
 
@@ -121,7 +121,7 @@ Per default, Whook takes the process environment as is
  AWS Lambda or Google Cloud Functions one can isolate
  the process env when building.
 
-[See in context](./src/services/ENV.js#L51-L56)
+[See in context](./src/services/ENV.js#L52-L57)
 
 
 
@@ -131,7 +131,7 @@ You may need to keep some secrets out of your Git
  history. Whook uses `dotenv` to provide your such
  ability.
 
-[See in context](./src/services/ENV.js#L64-L68)
+[See in context](./src/services/ENV.js#L65-L69)
 
 
 
@@ -154,27 +154,27 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.js#L66-L73)
+[See in context](./src/services/_autoload.js#L111-L118)
 
 
 
-### Wrappers auto loading
+### Wrappers auto loading support
 
 We cannot inject the `WRAPPERS` in the auto loader when
- it is dynamically loaded so doing during the auto loader
- initialization if needed.
+ it is dynamically loaded so giving a second chance here
+ for `WRAPPERS` to be set.
 
-[See in context](./src/services/_autoload.js#L84-L88)
+[See in context](./src/services/_autoload.js#L81-L85)
 
 
 
 ### API auto loading
 
 We cannot inject the `API` in the auto loader since
- it is dynamically loaded so doing during the auto loader
- initialization.
+  it is dynamically loaded so doing during the auto loader
+  initialization.
 
-[See in context](./src/services/_autoload.js#L102-L106)
+[See in context](./src/services/_autoload.js#L68-L72)
 
 
 
@@ -183,7 +183,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded configuration.
 
-[See in context](./src/services/_autoload.js#L142-L145)
+[See in context](./src/services/_autoload.js#L123-L126)
 
 
 
@@ -192,7 +192,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map by injecting every handler required
  by the API.
 
-[See in context](./src/services/_autoload.js#L154-L157)
+[See in context](./src/services/_autoload.js#L147-L150)
 
 
 
@@ -201,7 +201,7 @@ Here, we build the handlers map by injecting every handler required
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.js#L184-L187)
+[See in context](./src/services/_autoload.js#L177-L180)
 
 
 

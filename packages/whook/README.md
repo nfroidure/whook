@@ -69,6 +69,9 @@ But atm, I only need it for my projects so leaving this as is
 <dt><a href="#prepareEnvironment">prepareEnvironment($)</a> ⇒</dt>
 <dd><p>Prepare the Whook server environment</p>
 </dd>
+<dt><a href="#initCONFIGS">initCONFIGS(services, [log])</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
+<dd><p>Initialize the CONFIGS serviceaccording to the NODE_ENV</p>
+</dd>
 <dt><a href="#initENV">initENV(services, [log])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Initialize the ENV service using process env plus dotenv files</p>
 </dd>
@@ -111,6 +114,21 @@ A promise of the Knifecycle instance
 | Param | Type | Description |
 | --- | --- | --- |
 | $ | <code>Knifecycle</code> | The Knifecycle instance to set the various services |
+
+<a name="initCONFIGS"></a>
+
+## initCONFIGS(services, [log]) ⇒ <code>Promise.&lt;String&gt;</code>
+Initialize the CONFIGS serviceaccording to the NODE_ENV
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise of a containing the actual host.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services CONFIGS depends on |
+| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
+| services.PROJECT_SRC | <code>Object</code> |  | The project source directory |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="initENV"></a>
 

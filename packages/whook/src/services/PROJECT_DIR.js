@@ -1,5 +1,5 @@
 import pkgDir from 'pkg-dir';
-import { name, autoService } from 'knifecycle';
+import { name, options, autoService } from 'knifecycle';
 import YError from 'yerror';
 
 /* Architecture Note #8: Project dir
@@ -9,7 +9,10 @@ Whook needs to know the directory of the project under
  automatically detect it.
 */
 
-export default name('PROJECT_DIR', autoService(initProjectDir));
+export default options(
+  { singleton: true },
+  name('PROJECT_DIR', autoService(initProjectDir)),
+);
 
 /**
  * Auto detect the Whook PROJECT_DIR

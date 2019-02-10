@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initCONFIGS should fail with non-existing file 1`] = `
+Object {
+  "errorCode": "/home/whoami/my-whook-project/src/config/development/config",
+  "errorParams": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🏭 - Initializing the CONFIGS service.",
+    ],
+    Array [
+      "warning",
+      "⚡ - Loading configurations from /home/whoami/my-whook-project/src/config/development/config.",
+    ],
+    Array [
+      "warning",
+      "☢ - Could not load configuration file: /home/whoami/my-whook-project/src/config/development/config.",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/config/development/config",
+    ],
+  ],
+}
+`;
+
+exports[`initCONFIGS should work with existing configs 1`] = `
+Object {
+  "CONFIGS": Object {
+    "CONFIG": Object {
+      "testConfig": "test",
+    },
+  },
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🏭 - Initializing the CONFIGS service.",
+    ],
+    Array [
+      "warning",
+      "⚡ - Loading configurations from /home/whoami/my-whook-project/src/config/development/config.",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/config/development/config",
+    ],
+  ],
+}
+`;

@@ -17,6 +17,7 @@ export default initializer(
     name: 'ENV',
     type: 'service',
     inject: ['NODE_ENV', 'PWD', '?BASE_ENV', '?log'],
+    options: { singleton: true },
   },
   initENV,
 );

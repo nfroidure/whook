@@ -17,6 +17,8 @@ import initPORT from './services/PORT';
 import initHOST from './services/HOST';
 import initAutoload from './services/_autoload';
 import initENV from './services/ENV';
+import initCONFIGS from './services/CONFIGS';
+import initProjectDir from './services/PROJECT_DIR';
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
@@ -153,7 +155,9 @@ export async function prepareEnvironment($ = new Knifecycle()) {
     initPORT,
     initHOST,
     initENV,
+    initCONFIGS,
     initAutoload,
+    initProjectDir,
   ].forEach($.register.bind($));
 
   return $;
