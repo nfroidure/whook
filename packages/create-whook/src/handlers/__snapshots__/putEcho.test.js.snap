@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`putEcho should work 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "warning",
+      "📢 - Echoing \\"Repeat this!\\"",
+    ],
+  ],
+  "response": Object {
+    "body": Object {
+      "echo": "Repeat this!",
+    },
+    "status": 200,
+  },
+}
+`;

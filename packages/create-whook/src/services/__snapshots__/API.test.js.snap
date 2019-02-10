@@ -11,6 +11,77 @@ Object {
       "version": "0.0.0",
     },
     "paths": Object {
+      "/echo": Object {
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "x-whook": Object {
+            "sourceOperationId": "putEcho",
+            "suffix": "CORS",
+            "type": "http",
+          },
+        },
+        "put": Object {
+          "consumes": Array [
+            "application/json",
+          ],
+          "operationId": "putEcho",
+          "parameters": Array [
+            Object {
+              "description": "The input sentence",
+              "example": Object {
+                "echo": "Repeat this!",
+              },
+              "in": "body",
+              "name": "body",
+              "schema": Object {
+                "properties": Object {
+                  "additionalProperties": false,
+                  "echo": Object {
+                    "type": "string",
+                  },
+                },
+                "required": Array [
+                  "echo",
+                ],
+                "type": "object",
+              },
+            },
+          ],
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "200": Object {
+              "description": "The actual echo",
+              "schema": Object {
+                "properties": Object {
+                  "additionalProperties": false,
+                  "echo": Object {
+                    "type": "string",
+                  },
+                },
+                "required": Array [
+                  "echo",
+                ],
+                "type": "object",
+              },
+            },
+          },
+          "summary": "Echoes what it takes.",
+          "tags": Array [
+            "system",
+          ],
+        },
+      },
       "/ping": Object {
         "get": Object {
           "consumes": Array [],

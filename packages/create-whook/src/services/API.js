@@ -2,6 +2,7 @@ import { name, autoService } from 'knifecycle';
 
 import { definition as getPingDefinition } from '../handlers/getPing';
 import { definition as getTimeDefinition } from '../handlers/getTime';
+import { definition as putEchoDefinition } from '../handlers/putEcho';
 import { augmentAPIWithCORS } from 'whook-cors';
 
 export default name('API', autoService(initAPI));
@@ -32,6 +33,9 @@ async function initAPI({ CONFIG, log }) {
       },
       [getTimeDefinition.path]: {
         [getTimeDefinition.method]: getTimeDefinition.operation,
+      },
+      [putEchoDefinition.path]: {
+        [putEchoDefinition.method]: putEchoDefinition.operation,
       },
     },
   };

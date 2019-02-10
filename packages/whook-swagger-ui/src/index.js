@@ -29,7 +29,7 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
 
       log(
         'info',
-        `Serving the API docs: ${swaggerUIURL}?url=${encodeURIComponent(
+        `💁 - Serving the API docs: ${swaggerUIURL}?url=${encodeURIComponent(
           publicSwaggerURL,
         )}`,
       );
