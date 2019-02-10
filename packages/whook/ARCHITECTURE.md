@@ -10,18 +10,23 @@
 ## Server run
 
 Whook exposes a `runServer` function to programmatically spawn
- its server.
+ its server. It is intended to be reusable and injectable so
+ that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.js#L21-L24)
+[See in context](./src/index.js#L21-L25)
 
 
 
 ## Server preparation
 
 Whook exposes a `prepareServer` function to create its server
- configuration.
+ configuration. It takes eventually additional injections that
+ would be required at a higher level and a
+ [Knifecycle](https://github.com/nfroidure/knifecycle)
+ containing the bootstrapped environment and allowing
+ to complete and run the server.
 
-[See in context](./src/index.js#L48-L51)
+[See in context](./src/index.js#L50-L57)
 
 
 
@@ -31,7 +36,7 @@ Whook exposes a `prepareServer` function to create its server
  *  server. We also inject `log` for logging purpose and custom other
  *  injected name that were required upfront.
 
-[See in context](./src/index.js#L62-L66)
+[See in context](./src/index.js#L68-L72)
 
 
 
@@ -43,7 +48,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server.
 
-[See in context](./src/index.js#L76-L82)
+[See in context](./src/index.js#L82-L88)
 
 
 
@@ -53,7 +58,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.js#L91-L95)
+[See in context](./src/index.js#L97-L101)
 
 
 
@@ -62,7 +67,16 @@ The Whook server heavily rely on the process working directory
 Whook has different behaviors depending on the `NODE_ENV` value
  consider setting it to production before shipping.
 
-[See in context](./src/index.js#L99-L102)
+[See in context](./src/index.js#L105-L108)
+
+
+
+### `WHOOK_SRC` env var
+
+Whook need to know its main directories to be consistent
+ between builds and development environments.
+
+[See in context](./src/index.js#L112-L115)
 
 
 
@@ -73,7 +87,7 @@ Whook's default logger write to the NodeJS default console
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
-[See in context](./src/index.js#L106-L111)
+[See in context](./src/index.js#L118-L123)
 
 
 
@@ -82,9 +96,9 @@ Whook's default logger write to the NodeJS default console
 Whook's embed a few default initializers proxied from
  `common-services`, `swagger-http-router` or it own
  `src/services` folder. It can be wrapped or overriden
- at will.
+ at will later in project's main file.
 
-[See in context](./src/index.js#L125-L130)
+[See in context](./src/index.js#L137-L142)
 
 
 

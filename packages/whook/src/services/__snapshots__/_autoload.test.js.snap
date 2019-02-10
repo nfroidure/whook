@@ -9,7 +9,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡️ - Loading configuration from /home/whoami/my-whook-project/config/development/config.",
+      "⚡️ - Loading configuration from /home/whoami/my-whook-project/src/config/development/config.",
     ],
     Array [
       "debug",
@@ -18,7 +18,7 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/API",
@@ -41,7 +41,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡️ - Loading configuration from /home/whoami/my-whook-project/config/development/config.",
+      "⚡️ - Loading configuration from /home/whoami/my-whook-project/src/config/development/config.",
     ],
     Array [
       "debug",
@@ -50,7 +50,7 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/API",
@@ -73,7 +73,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡️ - Loading configuration from /home/whoami/my-whook-project/config/development/config.",
+      "⚡️ - Loading configuration from /home/whoami/my-whook-project/src/config/development/config.",
     ],
     Array [
       "debug",
@@ -86,7 +86,7 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/API",
@@ -115,7 +115,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡️ - Loading configuration from /home/whoami/my-whook-project/config/development/config.",
+      "⚡️ - Loading configuration from /home/whoami/my-whook-project/src/config/development/config.",
     ],
     Array [
       "debug",
@@ -124,7 +124,7 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/API",
@@ -147,7 +147,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡️ - Loading configuration from /home/whoami/my-whook-project/config/development/config.",
+      "⚡️ - Loading configuration from /home/whoami/my-whook-project/src/config/development/config.",
     ],
     Array [
       "debug",
@@ -164,7 +164,7 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/WRAPPERS",
@@ -193,7 +193,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡️ - Loading configuration from /home/whoami/my-whook-project/config/development/config.",
+      "⚡️ - Loading configuration from /home/whoami/my-whook-project/src/config/development/config.",
     ],
     Array [
       "debug",
@@ -210,7 +210,7 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/WRAPPERS",

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initProjectDir should find a port by itself if no env port 1`] = `
+Object {
+  "errorCode": "E_NO_PROJECT_DIR",
+  "errorParams": Array [
+    "/home/whoiam/documents",
+  ],
+  "logCalls": Array [
+    Array [
+      "error",
+      "🚫 - Could not detect the whook project dir.",
+    ],
+  ],
+  "pkgDirCalls": Array [
+    Array [
+      "/home/whoiam/documents",
+    ],
+  ],
+}
+`;
+
+exports[`initProjectDir should use the env port first 1`] = `
+Object {
+  "PROJECT_DIR": "/home/whoiam/projects/my-whook/project",
+  "logCalls": Array [
+    Array [
+      "warning",
+      "✔ - Found the project dir:",
+      "/home/whoiam/projects/my-whook/project",
+    ],
+  ],
+  "pkgDirCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook/project/src/lol",
+    ],
+  ],
+}
+`;

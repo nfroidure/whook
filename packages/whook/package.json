@@ -87,6 +87,7 @@
     "dotenv": "^6.2.0",
     "internal-ip": "^3.0.1",
     "knifecycle": "^5.2.0",
+    "pkg-dir": "^3.0.0",
     "portfinder": "^1.0.20",
     "swagger-http-router": "^4.2.1"
   },

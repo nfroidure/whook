@@ -20,7 +20,8 @@ import initENV from './services/ENV';
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
- its server.
+ its server. It is intended to be reusable and injectable so
+ that projects can override the whole `whook` default behavior.
 */
 export async function runServer(
   prepareEnvironment,
@@ -48,7 +49,11 @@ export async function runServer(
 
 /* Architecture Note #2: Server preparation
 Whook exposes a `prepareServer` function to create its server
- configuration.
+ configuration. It takes eventually additional injections that
+ would be required at a higher level and a
+ [Knifecycle](https://github.com/nfroidure/knifecycle)
+ containing the bootstrapped environment and allowing
+ to complete and run the server.
 */
 /**
  * Runs the Whook server
@@ -104,7 +109,13 @@ export async function prepareEnvironment($ = new Knifecycle()) {
   const NODE_ENV = process.env.NODE_ENV || 'development';
   $.register(constant('NODE_ENV', NODE_ENV));
 
-  /* Architecture Note #3.3: Logging
+  /* Architecture Note #3.3: `WHOOK_PLUGINS` and `PROJECT_SRC`
+  Whook need to know where to look up for things like
+   commands / handlers etc...
+   */
+  $.register(constant('WHOOK_PLUGINS', ['whook']));
+
+  /* Architecture Note #3.4: Logging
   Whook's default logger write to the NodeJS default console
    except for debugging messages where it use the `debug`
    module so that you can set the `DEBUG` environment
@@ -123,11 +134,11 @@ export async function prepareEnvironment($ = new Knifecycle()) {
   );
   $.register(constant('exit', process.exit));
 
-  /* Architecture Note #3.4: Initializers
+  /* Architecture Note #3.5: Initializers
   Whook's embed a few default initializers proxied from
    `common-services`, `swagger-http-router` or it own
    `src/services` folder. It can be wrapped or overriden
-   at will.
+   at will later in project's main file.
    */
   [
     initLogService,

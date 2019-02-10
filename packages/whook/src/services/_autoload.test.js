@@ -25,6 +25,7 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -55,6 +56,7 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -114,6 +116,7 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -148,6 +151,7 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -184,6 +188,7 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       require,
@@ -222,6 +227,7 @@ describe('$autoload', () => {
     const $autoload = await initAutoload({
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
+      PROJECT_SRC: '/home/whoami/my-whook-project/src',
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       require,

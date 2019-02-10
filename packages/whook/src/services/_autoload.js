@@ -20,6 +20,7 @@ export default initializer(
     inject: [
       'NODE_ENV',
       'PWD',
+      'PROJECT_SRC',
       '?SERVICE_NAME_MAP',
       '?INITIALIZER_PATH_MAP',
       '?WRAPPERS',
@@ -52,6 +53,7 @@ export default initializer(
 async function initAutoload({
   NODE_ENV,
   PWD,
+  PROJECT_SRC,
   SERVICE_NAME_MAP = {},
   INITIALIZER_PATH_MAP = {},
   WRAPPERS,
@@ -67,7 +69,7 @@ async function initAutoload({
   Let's load the configuration files as a convenient way
    to create constants on the fly
   */
-  const configPath = path.join(PWD, 'config', NODE_ENV, 'config');
+  const configPath = path.join(PROJECT_SRC, 'config', NODE_ENV, 'config');
 
   log('warning', `⚡️ - Loading configuration from ${configPath}.`);
 
@@ -101,7 +103,7 @@ async function initAutoload({
    initialization.
   */
   const { initializer: apiInitializer } = await $autoload('API');
-  API = await apiInitializer({ CONFIG: CONFIGS.CONFIG, PWD, log });
+  API = await apiInitializer({ ...CONFIGS, PROJECT_SRC, PWD, log });
   return $autoload;
 
   /**
@@ -121,8 +123,7 @@ async function initAutoload({
     const modulePath =
       INITIALIZER_PATH_MAP[resolvedName] ||
       path.join(
-        PWD,
-        'src',
+        PROJECT_SRC,
         isHandler ? 'handlers' : 'services',
         isWrappedHandler ? resolvedName.replace(/Wrapped$/, '') : resolvedName,
       );
