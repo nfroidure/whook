@@ -9,9 +9,6 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-cors/blob/master/LICENSE)
 [![NPM version](https://badge.fury.io/js/whook-cors.svg)](https://npmjs.org/package/whook-cors)
-[![Dependency Status](https://david-dm.org/nfroidure/whook-cors.svg)](https://david-dm.org/nfroidure/whook-cors)
-[![devDependency Status](https://david-dm.org/nfroidure/whook-cors/dev-status.svg)](https://david-dm.org/nfroidure/whook-cors#info=devDependencies)
-[![Package Quality](http://npm.packagequality.com/shield/whook-cors.svg)](http://packagequality.com/#?package=whook-cors)
 
 
 [//]: # (::contents:start)

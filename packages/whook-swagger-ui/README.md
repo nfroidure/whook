@@ -9,9 +9,6 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-swagger-ui/blob/master/LICENSE)
 [![NPM version](https://badge.fury.io/js/whook-swagger-ui.svg)](https://npmjs.org/package/whook-swagger-ui)
-[![Dependency Status](https://david-dm.org/nfroidure/whook-swagger-ui.svg)](https://david-dm.org/nfroidure/whook-swagger-ui)
-[![devDependency Status](https://david-dm.org/nfroidure/whook-swagger-ui/dev-status.svg)](https://david-dm.org/nfroidure/whook-swagger-ui#info=devDependencies)
-[![Package Quality](http://npm.packagequality.com/shield/whook-swagger-ui.svg)](http://packagequality.com/#?package=whook-swagger-ui)
 
 
 [//]: # (::contents:start)

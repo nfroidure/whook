@@ -78,7 +78,7 @@
     "jsarch": "^2.0.1",
     "jsdoc-to-markdown": "^4.0.1",
     "metapak": "^3.1.5",
-    "metapak-nfroidure": "9.5.0",
+    "metapak-nfroidure": "9.5.1",
     "prettier": "^1.16.3"
   },
   "dependencies": {

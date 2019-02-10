@@ -9,9 +9,6 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-cli/blob/master/LICENSE)
 [![NPM version](https://badge.fury.io/js/whook-cli.svg)](https://npmjs.org/package/whook-cli)
-[![Dependency Status](https://david-dm.org/nfroidure/whook-cli.svg)](https://david-dm.org/nfroidure/whook-cli)
-[![devDependency Status](https://david-dm.org/nfroidure/whook-cli/dev-status.svg)](https://david-dm.org/nfroidure/whook-cli#info=devDependencies)
-[![Package Quality](http://npm.packagequality.com/shield/whook-cli.svg)](http://packagequality.com/#?package=whook-cli)
 
 
 [//]: # (::contents:start)

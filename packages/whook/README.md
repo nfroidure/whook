@@ -9,9 +9,6 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/LICENSE)
 [![NPM version](https://badge.fury.io/js/whook.svg)](https://npmjs.org/package/whook)
-[![Dependency Status](https://david-dm.org/nfroidure/whook.svg)](https://david-dm.org/nfroidure/whook)
-[![devDependency Status](https://david-dm.org/nfroidure/whook/dev-status.svg)](https://david-dm.org/nfroidure/whook#info=devDependencies)
-[![Package Quality](http://npm.packagequality.com/shield/whook.svg)](http://packagequality.com/#?package=whook)
 
 
 [//]: # (::contents:start)
