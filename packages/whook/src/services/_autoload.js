@@ -1,4 +1,4 @@
-import { noop, compose } from '../libs/utils';
+import { identity, noop, compose } from '../libs/utils';
 import { initializer, constant, name } from 'knifecycle';
 import {
   flattenSwagger,
@@ -21,6 +21,7 @@ export default initializer(
       'NODE_ENV',
       'PWD',
       'PROJECT_SRC',
+      '$injector',
       '?SERVICE_NAME_MAP',
       '?INITIALIZER_PATH_MAP',
       '?WRAPPERS',
@@ -41,6 +42,8 @@ export default initializer(
  * The process current working directory
  * @param  {Object}   services.PROJECT_SRC
  * The project source directory
+ * @param  {Object}   services.$injector
+ * An injector for internal dynamic services loading
  * @param  {Object}   [services.SERVICE_NAME_MAP={}]
  * An optional object to map services names to other names
  * @param  {Object}   [services.INITIALIZER_PATH_MAP={}]
@@ -56,6 +59,7 @@ async function initAutoload({
   NODE_ENV,
   PWD,
   PROJECT_SRC,
+  $injector,
   SERVICE_NAME_MAP = {},
   INITIALIZER_PATH_MAP = {},
   WRAPPERS,
@@ -81,23 +85,22 @@ async function initAutoload({
   // it is a recurring call that use the API variable
   let API;
 
-  /* Architecture Note #5.2: Wrappers auto loading
+  /* Architecture Note #5.2: Wrappers auto loading support
   We cannot inject the `WRAPPERS` in the auto loader when
-   it is dynamically loaded so doing during the auto loader
-   initialization if needed.
+   it is dynamically loaded so giving a second chance here
+   for `WRAPPERS` to be set.
   */
-  if (null == WRAPPERS) {
-    try {
-      const { initializer: wrapperInitializer } = await $autoload('WRAPPERS');
+  const doWrapHandler = (WRAPPERS => {
+    let wrapHandler;
 
-      WRAPPERS = await wrapperInitializer({});
-    } catch (err) {
-      log('debug', '🚫 - Could not find any API wrapper...');
-      log('stack', err.stack);
-      WRAPPERS = [];
-    }
-  }
-  const wrapHandler = WRAPPERS.length ? compose(...WRAPPERS) : noop;
+    return async handlerInitializer => {
+      WRAPPERS = WRAPPERS || (await $injector(['WRAPPERS'])).WRAPPERS || [];
+      wrapHandler =
+        wrapHandler || (WRAPPERS.length ? compose(...WRAPPERS) : identity);
+
+      return wrapHandler(handlerInitializer);
+    };
+  })(WRAPPERS);
 
   /* Architecture Note #5.3: API auto loading
   We cannot inject the `API` in the auto loader since
@@ -198,12 +201,7 @@ async function initAutoload({
       name: resolvedName,
       path: modulePath,
       initializer: isWrappedHandler
-        ? name(
-            resolvedName,
-            WRAPPERS.length
-              ? wrapHandler(resolvedInitializer)
-              : resolvedInitializer,
-          )
+        ? name(resolvedName, await doWrapHandler(resolvedInitializer))
         : resolvedInitializer,
     };
   }

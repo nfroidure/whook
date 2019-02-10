@@ -3,10 +3,12 @@ import { service } from 'knifecycle';
 
 describe('$autoload', () => {
   const log = jest.fn();
+  const $injector = jest.fn();
   const require = jest.fn();
 
   beforeEach(() => {
     log.mockReset();
+    $injector.mockReset();
     require.mockReset();
   });
 
@@ -26,6 +28,7 @@ describe('$autoload', () => {
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
       PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -37,6 +40,7 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -57,6 +61,7 @@ describe('$autoload', () => {
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
       PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -68,6 +73,7 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -117,6 +123,7 @@ describe('$autoload', () => {
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
       PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -129,6 +136,7 @@ describe('$autoload', () => {
       result,
       HANDLERS: await result.initializer({ getPing: () => {} }),
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -152,6 +160,7 @@ describe('$autoload', () => {
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
       PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       WRAPPERS: [],
@@ -163,6 +172,7 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -175,9 +185,6 @@ describe('$autoload', () => {
         },
       },
     }));
-    require.mockImplementationOnce(() => {
-      throw new Error('E_ERROR');
-    });
     require.mockImplementationOnce(() => ({
       default: service(async () => ({ info: {} }), 'API'),
     }));
@@ -189,6 +196,7 @@ describe('$autoload', () => {
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
       PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       require,
@@ -199,6 +207,7 @@ describe('$autoload', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });
@@ -211,11 +220,8 @@ describe('$autoload', () => {
         },
       },
     });
-    require.mockReturnValueOnce({
-      default: service(
-        async () => [async initHandler => initHandler],
-        'WRAPPERS',
-      ),
+    $injector.mockResolvedValueOnce({
+      WRAPPERS: [],
     });
     require.mockReturnValueOnce({
       default: service(async () => ({ info: {} }), 'API'),
@@ -228,16 +234,18 @@ describe('$autoload', () => {
       NODE_ENV: 'development',
       PWD: '/home/whoami/my-whook-project',
       PROJECT_SRC: '/home/whoami/my-whook-project/src',
+      $injector,
       SERVICE_NAME_MAP: {},
       INITIALIZER_PATH_MAP: {},
       require,
       log,
     });
-    const result = await $autoload('getPing');
+    const result = await $autoload('getPingWrapped');
 
     expect({
       result,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      injectorCalls: $injector.mock.calls,
       requireCalls: require.mock.calls,
     }).toMatchSnapshot();
   });

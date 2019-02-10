@@ -2,6 +2,7 @@
 
 exports[`$autoload should work for API 1`] = `
 Object {
+  "injectorCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
@@ -34,6 +35,7 @@ Object {
 
 exports[`$autoload should work for a config constant 1`] = `
 Object {
+  "injectorCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
@@ -66,6 +68,7 @@ Object {
 
 exports[`$autoload should work for handlers 1`] = `
 Object {
+  "injectorCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
@@ -108,6 +111,7 @@ Object {
   "HANDLERS": Object {
     "getPing": [Function],
   },
+  "injectorCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
@@ -140,6 +144,13 @@ Object {
 
 exports[`$autoload should work for wrapped handlers 1`] = `
 Object {
+  "injectorCalls": Array [
+    Array [
+      Array [
+        "WRAPPERS",
+      ],
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -151,23 +162,16 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Loading WRAPPERS initializer from /home/whoami/my-whook-project/src/services/WRAPPERS.",
-    ],
-    Array [
-      "debug",
       "💿 - Loading API initializer from /home/whoami/my-whook-project/src/services/API.",
     ],
     Array [
       "debug",
-      "💿 - Loading getPing initializer from /home/whoami/my-whook-project/src/handlers/getPing.",
+      "💿 - Loading getPingWrapped initializer from /home/whoami/my-whook-project/src/handlers/getPing.",
     ],
   ],
   "requireCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/config/development/config",
-    ],
-    Array [
-      "/home/whoami/my-whook-project/src/services/WRAPPERS",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/API",
@@ -178,7 +182,7 @@ Object {
   ],
   "result": Object {
     "initializer": [Function],
-    "name": "getPing",
+    "name": "getPingWrapped",
     "path": "/home/whoami/my-whook-project/src/handlers/getPing",
   },
 }
@@ -186,6 +190,7 @@ Object {
 
 exports[`$autoload should work with no wrappers 1`] = `
 Object {
+  "injectorCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
@@ -194,10 +199,6 @@ Object {
     Array [
       "warning",
       "⚡️ - Loading configuration from /home/whoami/my-whook-project/src/config/development/config.",
-    ],
-    Array [
-      "debug",
-      "🚫 - Could not find any API wrapper...",
     ],
     Array [
       "debug",
@@ -211,9 +212,6 @@ Object {
   "requireCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/config/development/config",
-    ],
-    Array [
-      "/home/whoami/my-whook-project/src/services/WRAPPERS",
     ],
     Array [
       "/home/whoami/my-whook-project/src/services/API",
