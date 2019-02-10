@@ -71,10 +71,10 @@ Whook has different behaviors depending on the `NODE_ENV` value
 
 
 
-### `WHOOK_SRC` env var
+### `WHOOK_PLUGINS` and `PROJECT_SRC`
 
-Whook need to know its main directories to be consistent
- between builds and development environments.
+Whook need to know where to look up for things like
+ commands / handlers etc...
 
 [See in context](./src/index.js#L112-L115)
 
@@ -135,9 +135,8 @@ You may need to keep some secrets out of your Git
 
 
 
-## `
+## `$autoload` service
 
-$autoload` service
 The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project.
@@ -155,7 +154,7 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.js#L62-L69)
+[See in context](./src/services/_autoload.js#L66-L73)
 
 
 
@@ -165,7 +164,7 @@ We cannot inject the `WRAPPERS` in the auto loader when
  it is dynamically loaded so doing during the auto loader
  initialization if needed.
 
-[See in context](./src/services/_autoload.js#L80-L84)
+[See in context](./src/services/_autoload.js#L84-L88)
 
 
 
@@ -175,7 +174,7 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing during the auto loader
  initialization.
 
-[See in context](./src/services/_autoload.js#L98-L102)
+[See in context](./src/services/_autoload.js#L102-L106)
 
 
 
@@ -184,7 +183,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded configuration.
 
-[See in context](./src/services/_autoload.js#L139-L142)
+[See in context](./src/services/_autoload.js#L142-L145)
 
 
 
@@ -193,7 +192,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map by injecting every handler required
  by the API.
 
-[See in context](./src/services/_autoload.js#L151-L154)
+[See in context](./src/services/_autoload.js#L154-L157)
 
 
 
@@ -202,7 +201,7 @@ Here, we build the handlers map by injecting every handler required
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.js#L181-L184)
+[See in context](./src/services/_autoload.js#L184-L187)
 
 
 
@@ -221,4 +220,14 @@ If no `PORT` configuration is specified in dependencies nor in ENV,
  this service detects a free port automagically.
 
 [See in context](./src/services/PORT.js#L5-L8)
+
+
+
+## Project dir
+
+Whook needs to know the directory of the project under
+ which he is running. It then uses this service to
+ automatically detect it.
+
+[See in context](./src/services/PROJECT_DIR.js#L5-L10)
 

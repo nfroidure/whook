@@ -39,6 +39,8 @@ export default initializer(
  * The injected NODE_ENV value
  * @param  {Object}   services.PWD
  * The process current working directory
+ * @param  {Object}   services.PROJECT_SRC
+ * The project source directory
  * @param  {Object}   [services.SERVICE_NAME_MAP={}]
  * An optional object to map services names to other names
  * @param  {Object}   [services.INITIALIZER_PATH_MAP={}]
