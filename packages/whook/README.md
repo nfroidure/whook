@@ -13,9 +13,6 @@
 
 [//]: # (::contents:start)
 
-# whook
-> Build strong and efficient REST web services.
-
 `whook` allows you to create REST web services by providing
  its ingredients and the recipe to make it work altogether.
 

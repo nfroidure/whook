@@ -13,15 +13,7 @@
 
 [//]: # (::contents:start)
 
-
-[//]: # (::contents:end)
-
-# Authors
-- [Nicolas Froidure](http://insertafter.com/en/index.html)
-
-# License
-[MIT](https://github.com/nfroidure/whook-cli/blob/master/LICENSE)
-
+This is the Whook server CLI tool.
 
 [//]: # (::contents:end)
 
