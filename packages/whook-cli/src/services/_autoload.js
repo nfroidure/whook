@@ -5,9 +5,12 @@ import { wrapInitializer, alsoInject, service } from 'knifecycle';
 const _require = require;
 
 export default alsoInject(
-  ['PROJECT_SRC', 'log'],
+  ['PROJECT_SRC', 'WHOOK_PLUGINS', 'log'],
   wrapInitializer(
-    async ({ PROJECT_SRC, log, require = _require }, $autoload) => {
+    async (
+      { PROJECT_SRC, WHOOK_PLUGINS, log, require = _require },
+      $autoload,
+    ) => {
       log('debug', '🤖 - Wrapping the whook autoloader.');
 
       return async serviceName => {
@@ -15,23 +18,13 @@ export default alsoInject(
           const commandName = serviceName.replace(/Command$/, '');
 
           let commandModule;
-          const projectPath = path.join(PROJECT_SRC, 'commands', commandName);
 
-          try {
-            commandModule = require(projectPath);
-          } catch (err) {
-            log(
-              'debug',
-              `Command "${commandName}" not found in: ${projectPath}`,
-            );
-            log('stack', err.stack);
-          }
-
-          if (!commandModule) {
-            const modulePath = path.join('..', 'commands', commandName);
+          [PROJECT_SRC, ...WHOOK_PLUGINS].some(basePath => {
+            const modulePath = path.join(basePath, 'commands', commandName);
 
             try {
               commandModule = require(modulePath);
+              return true;
             } catch (err) {
               log(
                 'debug',
@@ -39,8 +32,7 @@ export default alsoInject(
               );
               log('stack', err.stack);
             }
-          }
-
+          });
           let commandInitializer;
 
           if (!commandModule) {
