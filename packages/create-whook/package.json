@@ -35,7 +35,8 @@
     "preversion": "npm run compile",
     "test": "npm run jest",
     "whook": "NODE_ENV=${NODE_ENV:-development} whook",
-    "dev": "NODE_ENV=${NODE_ENV:-development} babel-node bin/dev",
+    "dev": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node bin/dev",
+    "debug": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node --inspect bin/dev",
     "start": "NODE_ENV=${NODE_ENV:-development} node bin/start"
   },
   "author": {
