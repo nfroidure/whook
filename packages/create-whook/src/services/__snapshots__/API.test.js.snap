@@ -11,6 +11,113 @@ Object {
       "version": "0.0.0",
     },
     "paths": Object {
+      "/delay": Object {
+        "get": Object {
+          "consumes": Array [],
+          "operationId": "getDelay",
+          "parameters": Array [
+            Object {
+              "description": "Duration in milliseconds",
+              "in": "query",
+              "name": "duration",
+              "required": true,
+              "type": "number",
+            },
+          ],
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "204": Object {
+              "description": "Delay expired",
+            },
+          },
+          "summary": "Answer after a given delay.",
+          "tags": Array [
+            "system",
+          ],
+        },
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [
+            Object {
+              "description": "Duration in milliseconds",
+              "in": "query",
+              "name": "duration",
+              "required": true,
+              "type": "number",
+            },
+          ],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
+          "x-whook": Object {
+            "private": true,
+            "sourceOperationId": "getDelay",
+            "suffix": "CORS",
+            "type": "http",
+          },
+        },
+      },
+      "/diag": Object {
+        "get": Object {
+          "consumes": Array [],
+          "operationId": "getDiagnostic",
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "200": Object {
+              "description": "Diagnostic",
+              "schema": Object {
+                "properties": Object {
+                  "additionalProperties": false,
+                  "pong": Object {
+                    "enum": Array [
+                      "pong",
+                    ],
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+          "summary": "Checks API's health.",
+          "tags": Array [
+            "system",
+          ],
+        },
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
+          "x-whook": Object {
+            "private": true,
+            "sourceOperationId": "getDiagnostic",
+            "suffix": "CORS",
+            "type": "http",
+          },
+        },
+      },
       "/echo": Object {
         "options": Object {
           "consumes": Array [],

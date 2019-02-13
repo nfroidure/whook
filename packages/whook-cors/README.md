@@ -13,9 +13,6 @@
 
 [//]: # (::contents:start)
 
-
-[//]: # (::contents:end)
-
 To see how to add CORS support to your application, have a look
  at the `create-whook` project, it will be well documented here
  as soon as possible.

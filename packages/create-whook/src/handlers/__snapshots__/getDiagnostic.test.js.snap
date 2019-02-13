@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getDiagnostic should work 1`] = `
+Object {
+  "response": Object {
+    "body": Object {
+      "transactions": Object {},
+    },
+    "status": 200,
+  },
+}
+`;

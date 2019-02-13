@@ -2,6 +2,8 @@ import { name, autoService } from 'knifecycle';
 
 import { definition as getOpenAPIDefinition } from '../handlers/getOpenAPI';
 import { definition as getPingDefinition } from '../handlers/getPing';
+import { definition as getDelayDefinition } from '../handlers/getDelay';
+import { definition as getDiagnosticDefinition } from '../handlers/getDiagnostic';
 import { definition as getTimeDefinition } from '../handlers/getTime';
 import { definition as putEchoDefinition } from '../handlers/putEcho';
 import { augmentAPIWithCORS } from 'whook-cors';
@@ -34,6 +36,12 @@ async function initAPI({ CONFIG, log }) {
       },
       [getPingDefinition.path]: {
         [getPingDefinition.method]: getPingDefinition.operation,
+      },
+      [getDelayDefinition.path]: {
+        [getDelayDefinition.method]: getDelayDefinition.operation,
+      },
+      [getDiagnosticDefinition.path]: {
+        [getDiagnosticDefinition.method]: getDiagnosticDefinition.operation,
       },
       [getTimeDefinition.path]: {
         [getTimeDefinition.method]: getTimeDefinition.operation,
