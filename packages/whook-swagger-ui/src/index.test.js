@@ -112,6 +112,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         ...headers,
         // Erasing the Date header that may be added by Axios :/
         date: {}.undef,
+        etag: {}.undef,
+        'last-modified': {}.undef,
+        server: {}.undef,
       },
       data,
 
@@ -154,6 +157,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         date: {}.undef,
         etag: {}.undef,
         'last-modified': {}.undef,
+        server: {}.undef,
       },
       data,
 
