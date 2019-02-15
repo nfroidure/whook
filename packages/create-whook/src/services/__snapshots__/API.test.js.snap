@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`API should always have the same amount of public endpoints 1`] = `
+Array [
+  "get /delay",
+  "get /diag",
+  "get /openAPI",
+  "get /ping",
+  "get /time",
+  "put /echo",
+]
+`;
+
 exports[`API should work 1`] = `
 Object {
   "API": Object {
@@ -71,6 +82,18 @@ Object {
         "get": Object {
           "consumes": Array [],
           "operationId": "getDiagnostic",
+          "parameters": Array [
+            Object {
+              "in": "header",
+              "name": "authorization",
+              "type": "string",
+            },
+            Object {
+              "in": "query",
+              "name": "access_token",
+              "type": "string",
+            },
+          ],
           "produces": Array [
             "application/json",
           ],
@@ -78,18 +101,15 @@ Object {
             "200": Object {
               "description": "Diagnostic",
               "schema": Object {
-                "properties": Object {
-                  "additionalProperties": false,
-                  "pong": Object {
-                    "enum": Array [
-                      "pong",
-                    ],
-                    "type": "string",
-                  },
-                },
+                "additionalProperties": true,
                 "type": "object",
               },
             },
+          },
+          "security": Object {
+            "bearerAuth": Array [
+              "admin",
+            ],
           },
           "summary": "Checks API's health.",
           "tags": Array [
@@ -99,7 +119,13 @@ Object {
         "options": Object {
           "consumes": Array [],
           "operationId": "optionsWithCORS",
-          "parameters": Array [],
+          "parameters": Array [
+            Object {
+              "in": "query",
+              "name": "access_token",
+              "type": "string",
+            },
+          ],
           "produces": Array [],
           "responses": Object {
             "200": Object {
@@ -154,8 +180,8 @@ Object {
               "in": "body",
               "name": "body",
               "schema": Object {
+                "additionalProperties": false,
                 "properties": Object {
-                  "additionalProperties": false,
                   "echo": Object {
                     "type": "string",
                   },
@@ -174,8 +200,8 @@ Object {
             "200": Object {
               "description": "The actual echo",
               "schema": Object {
+                "additionalProperties": false,
                 "properties": Object {
-                  "additionalProperties": false,
                   "echo": Object {
                     "type": "string",
                   },
@@ -249,8 +275,8 @@ Object {
             "200": Object {
               "description": "Pong",
               "schema": Object {
+                "additionalProperties": false,
                 "properties": Object {
-                  "additionalProperties": false,
                   "pong": Object {
                     "enum": Array [
                       "pong",
@@ -343,8 +369,10 @@ Object {
       "http",
     ],
     "securityDefinitions": Object {
-      "basicAuth": Object {
-        "type": "basic",
+      "bearerAuth": Object {
+        "in": "query",
+        "name": "access_token",
+        "type": "apiKey",
       },
     },
     "swagger": "2.0",

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NECHANISMS should also include fake on debugging 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🔧 - Initializing auth mechanisms",
+    ],
+    Array [
+      "warning",
+      "⚠️ - Using fake auth mechanism!",
+    ],
+  ],
+}
+`;
+
+exports[`NECHANISMS should only include bearer 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🔧 - Initializing auth mechanisms",
+    ],
+  ],
+}
+`;

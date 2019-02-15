@@ -14,8 +14,8 @@ export const definition = {
         description: 'Pong',
         schema: {
           type: 'object',
+          additionalProperties: false,
           properties: {
-            additionalProperties: false,
             pong: {
               type: 'string',
               enum: ['pong'],

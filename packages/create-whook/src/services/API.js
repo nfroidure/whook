@@ -12,16 +12,20 @@ export default name('API', autoService(initAPI));
 
 // The API service is where you put your handlers
 // altogether to form the final API
-async function initAPI({ CONFIG, log }) {
+async function initAPI({ DEBUG_NODE_ENVS, NODE_ENV, CONFIG, log }) {
   log('debug', '🦄 - Initializing the API service!');
+
+  const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
 
   const API = {
     host: CONFIG.host,
     basePath: CONFIG.basePath,
     schemes: CONFIG.schemes,
     securityDefinitions: {
-      basicAuth: {
-        type: 'basic',
+      bearerAuth: {
+        type: 'apiKey',
+        in: 'query',
+        name: 'access_token',
       },
     },
     swagger: '2.0',
@@ -30,26 +34,38 @@ async function initAPI({ CONFIG, log }) {
       title: CONFIG.name,
       description: CONFIG.description,
     },
-    paths: {
-      [getOpenAPIDefinition.path]: {
-        [getOpenAPIDefinition.method]: getOpenAPIDefinition.operation,
-      },
-      [getPingDefinition.path]: {
-        [getPingDefinition.method]: getPingDefinition.operation,
-      },
-      [getDelayDefinition.path]: {
-        [getDelayDefinition.method]: getDelayDefinition.operation,
-      },
-      [getDiagnosticDefinition.path]: {
-        [getDiagnosticDefinition.method]: getDiagnosticDefinition.operation,
-      },
-      [getTimeDefinition.path]: {
-        [getTimeDefinition.method]: getTimeDefinition.operation,
-      },
-      [putEchoDefinition.path]: {
-        [putEchoDefinition.method]: putEchoDefinition.operation,
-      },
-    },
+    paths: [
+      getOpenAPIDefinition,
+      getPingDefinition,
+      getDelayDefinition,
+      getDiagnosticDefinition,
+      getTimeDefinition,
+      putEchoDefinition,
+    ]
+      .map(definition =>
+        debugging && definition.operation.security
+          ? {
+              ...definition,
+              operation: {
+                ...definition.operation,
+                security: {
+                  ...definition.security,
+                  fakeAuth: ['admin'],
+                },
+              },
+            }
+          : definition,
+      )
+      .reduce(
+        (paths, definition) => ({
+          ...paths,
+          [definition.path]: {
+            ...(paths[definition.path] || {}),
+            [definition.method]: definition.operation,
+          },
+        }),
+        {},
+      ),
   };
 
   // You can apply transformations to your API like

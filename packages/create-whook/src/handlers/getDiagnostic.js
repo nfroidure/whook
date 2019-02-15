@@ -6,21 +6,30 @@ export const definition = {
   operation: {
     operationId: 'getDiagnostic',
     summary: "Checks API's health.",
+    security: {
+      bearerAuth: ['admin'],
+    },
     tags: ['system'],
     consumes: [],
     produces: ['application/json'],
+    parameters: [
+      {
+        in: 'header',
+        name: 'authorization',
+        type: 'string',
+      },
+      {
+        in: 'query',
+        name: 'access_token',
+        type: 'string',
+      },
+    ],
     responses: {
       200: {
         description: 'Diagnostic',
         schema: {
           type: 'object',
-          properties: {
-            additionalProperties: false,
-            pong: {
-              type: 'string',
-              enum: ['pong'],
-            },
-          },
+          additionalProperties: true,
         },
       },
     },
