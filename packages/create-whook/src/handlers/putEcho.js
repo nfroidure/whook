@@ -3,8 +3,8 @@ import { autoHandler } from 'knifecycle';
 const echoSchema = {
   type: 'object',
   required: ['echo'],
+  additionalProperties: false,
   properties: {
-    additionalProperties: false,
     echo: {
       type: 'string',
     },

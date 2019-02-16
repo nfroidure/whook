@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`API should always have the same amount of public endpoints 1`] = `
+Array [
+  "get /delay",
+  "get /diag",
+  "get /openAPI",
+  "get /ping",
+  "get /time",
+  "put /echo",
+]
+`;
+
 exports[`API should work 1`] = `
 Object {
   "API": Object {
@@ -11,6 +22,128 @@ Object {
       "version": "0.0.0",
     },
     "paths": Object {
+      "/delay": Object {
+        "get": Object {
+          "consumes": Array [],
+          "operationId": "getDelay",
+          "parameters": Array [
+            Object {
+              "description": "Duration in milliseconds",
+              "in": "query",
+              "name": "duration",
+              "required": true,
+              "type": "number",
+            },
+          ],
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "204": Object {
+              "description": "Delay expired",
+            },
+          },
+          "summary": "Answer after a given delay.",
+          "tags": Array [
+            "system",
+          ],
+        },
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [
+            Object {
+              "description": "Duration in milliseconds",
+              "in": "query",
+              "name": "duration",
+              "required": true,
+              "type": "number",
+            },
+          ],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
+          "x-whook": Object {
+            "private": true,
+            "sourceOperationId": "getDelay",
+            "suffix": "CORS",
+            "type": "http",
+          },
+        },
+      },
+      "/diag": Object {
+        "get": Object {
+          "consumes": Array [],
+          "operationId": "getDiagnostic",
+          "parameters": Array [
+            Object {
+              "in": "header",
+              "name": "authorization",
+              "type": "string",
+            },
+            Object {
+              "in": "query",
+              "name": "access_token",
+              "type": "string",
+            },
+          ],
+          "produces": Array [
+            "application/json",
+          ],
+          "responses": Object {
+            "200": Object {
+              "description": "Diagnostic",
+              "schema": Object {
+                "additionalProperties": true,
+                "type": "object",
+              },
+            },
+          },
+          "security": Object {
+            "bearerAuth": Array [
+              "admin",
+            ],
+          },
+          "summary": "Checks API's health.",
+          "tags": Array [
+            "system",
+          ],
+        },
+        "options": Object {
+          "consumes": Array [],
+          "operationId": "optionsWithCORS",
+          "parameters": Array [
+            Object {
+              "in": "query",
+              "name": "access_token",
+              "type": "string",
+            },
+          ],
+          "produces": Array [],
+          "responses": Object {
+            "200": Object {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": Array [
+            "CORS",
+          ],
+          "x-whook": Object {
+            "private": true,
+            "sourceOperationId": "getDiagnostic",
+            "suffix": "CORS",
+            "type": "http",
+          },
+        },
+      },
       "/echo": Object {
         "options": Object {
           "consumes": Array [],
@@ -47,8 +180,8 @@ Object {
               "in": "body",
               "name": "body",
               "schema": Object {
+                "additionalProperties": false,
                 "properties": Object {
-                  "additionalProperties": false,
                   "echo": Object {
                     "type": "string",
                   },
@@ -67,8 +200,8 @@ Object {
             "200": Object {
               "description": "The actual echo",
               "schema": Object {
+                "additionalProperties": false,
                 "properties": Object {
-                  "additionalProperties": false,
                   "echo": Object {
                     "type": "string",
                   },
@@ -142,8 +275,8 @@ Object {
             "200": Object {
               "description": "Pong",
               "schema": Object {
+                "additionalProperties": false,
                 "properties": Object {
-                  "additionalProperties": false,
                   "pong": Object {
                     "enum": Array [
                       "pong",
@@ -236,8 +369,10 @@ Object {
       "http",
     ],
     "securityDefinitions": Object {
-      "basicAuth": Object {
-        "type": "basic",
+      "bearerAuth": Object {
+        "in": "query",
+        "name": "access_token",
+        "type": "apiKey",
       },
     },
     "swagger": "2.0",

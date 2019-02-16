@@ -4,16 +4,16 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook-cors
-> A wrapper to provide CORS support to a Whook server
+# whook-authorization
+> A wrapper to provide authorization support to a Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-cors/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook-cors.svg)](https://npmjs.org/package/whook-cors)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-authorization/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/whook-authorization.svg)](https://npmjs.org/package/whook-authorization)
 
 
 [//]: # (::contents:start)
 
-To see how to add CORS support to your application, have a look
+To see how to add authorization support to your application, have a look
  at the `create-whook` project, it will be well documented here
  as soon as possible.
 
@@ -79,4 +79,4 @@ Augment an OpenAPI to also serve OPTIONS methods with
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook-cors/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook-authorization/blob/master/LICENSE)

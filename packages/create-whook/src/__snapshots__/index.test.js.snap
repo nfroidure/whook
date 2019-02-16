@@ -1,0 +1,433 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`runServer should authenticate users 1`] = `
+Object {
+  "data": Object {
+    "transactions": Object {
+      "2": Object {
+        "errored": false,
+        "id": "2",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "accept-encoding": "gzip, deflate",
+          "accept-language": "en",
+          "authorization": "Fake 1-admin",
+          "connection": "close",
+          "host": "localhost:9999",
+          "origin": "http://localhost",
+          "referer": "http://localhost/",
+          "user-agent": "Mozilla/5.0 (linux) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0",
+        },
+        "startInBytes": 331,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "url": "/v1/diag",
+      },
+    },
+  },
+  "debugCalls": Array [
+    Array [
+      "Created a delay:",
+      30000,
+    ],
+    Array [
+      "Cleared a delay",
+    ],
+    Array [
+      "Created a delay:",
+      30000,
+    ],
+    Array [
+      "Cleared a delay",
+    ],
+  ],
+  "headers": Object {
+    "content-type": "application/json",
+    "date": undefined,
+  },
+  "logErrorCalls": Array [],
+  "logInfoCalls": Array [
+    Array [
+      Object {
+        "endInBytes": 284,
+        "endOutBytes": 377,
+        "endTime": 1390694400000,
+        "errored": false,
+        "id": "1",
+        "ip": "127.0.0.1",
+        "method": "OPTIONS",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "access-control-request-headers": "authorization",
+          "access-control-request-method": "GET",
+          "connection": "close",
+          "content-length": "0",
+          "host": "localhost:9999",
+          "origin": "http://localhost",
+          "user-agent": "Mozilla/5.0 (linux) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+        },
+        "startInBytes": 284,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 200,
+        "url": "/v1/diag",
+      },
+    ],
+    Array [
+      Object {
+        "endInBytes": 331,
+        "endOutBytes": 1001,
+        "endTime": 1390694400000,
+        "errored": false,
+        "id": "2",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "accept-encoding": "gzip, deflate",
+          "accept-language": "en",
+          "authorization": "Fake 1-admin",
+          "connection": "close",
+          "host": "localhost:9999",
+          "origin": "http://localhost",
+          "referer": "http://localhost/",
+          "user-agent": "Mozilla/5.0 (linux) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+          "X-Authenticated": "{\\"hash\\":\\"1-admin\\",\\"userId\\":1,\\"scopes\\":[\\"admin\\"]}",
+          "content-type": "application/json",
+        },
+        "startInBytes": 331,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 200,
+        "url": "/v1/diag",
+      },
+    ],
+  ],
+  "status": 200,
+}
+`;
+
+exports[`runServer should fail with bad fake tokens 1`] = `
+Object {
+  "debugCalls": Array [
+    Array [
+      "Created a delay:",
+      30000,
+    ],
+    Array [
+      "Cleared a delay",
+    ],
+    Array [
+      "Created a delay:",
+      30000,
+    ],
+    Array [
+      "Cleared a delay",
+    ],
+  ],
+  "errorCode": undefined,
+  "errorParams": undefined,
+  "httpCode": undefined,
+  "logErrorCalls": Array [
+    Array [
+      "Undocumented response:",
+      400,
+      Object {
+        "consumes": Array [],
+        "method": "get",
+        "operationId": "getDiagnostic",
+        "parameters": Array [
+          Object {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+          },
+          Object {
+            "in": "query",
+            "name": "access_token",
+            "type": "string",
+          },
+        ],
+        "path": "/diag",
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "Diagnostic",
+            "schema": Object {
+              "additionalProperties": true,
+              "type": "object",
+            },
+          },
+        },
+        "security": Object {
+          "fakeAuth": Array [
+            "admin",
+          ],
+        },
+        "summary": "Checks API's health.",
+        "tags": Array [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "logInfoCalls": Array [
+    Array [
+      Object {
+        "endInBytes": 284,
+        "endOutBytes": 377,
+        "endTime": 1390694400000,
+        "errored": false,
+        "id": "3",
+        "ip": "127.0.0.1",
+        "method": "OPTIONS",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "access-control-request-headers": "authorization",
+          "access-control-request-method": "GET",
+          "connection": "close",
+          "content-length": "0",
+          "host": "localhost:9999",
+          "origin": "http://localhost",
+          "user-agent": "Mozilla/5.0 (linux) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+        },
+        "startInBytes": 284,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 200,
+        "url": "/v1/diag",
+      },
+    ],
+    Array [
+      Object {
+        "endInBytes": 331,
+        "endOutBytes": 510,
+        "endTime": 1390694400000,
+        "errored": true,
+        "id": "4",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "accept-encoding": "gzip, deflate",
+          "accept-language": "en",
+          "authorization": "Fake e-admin",
+          "connection": "close",
+          "host": "localhost:9999",
+          "origin": "http://localhost",
+          "referer": "http://localhost/",
+          "user-agent": "Mozilla/5.0 (linux) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+          "cache-control": "private",
+          "content-type": "application/json",
+        },
+        "startInBytes": 331,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 400,
+        "url": "/v1/diag",
+      },
+    ],
+  ],
+}
+`;
+
+exports[`runServer should ping 1`] = `
+Object {
+  "data": Object {
+    "pong": "pong",
+  },
+  "debugCalls": Array [
+    Array [
+      "Created a delay:",
+      30000,
+    ],
+    Array [
+      "Cleared a delay",
+    ],
+  ],
+  "headers": Object {
+    "content-type": "application/json",
+    "date": undefined,
+  },
+  "logErrorCalls": Array [],
+  "logInfoCalls": Array [
+    Array [
+      Object {
+        "endInBytes": 302,
+        "endOutBytes": 447,
+        "endTime": 1390694400000,
+        "errored": false,
+        "id": "0",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "accept-encoding": "gzip, deflate",
+          "accept-language": "en",
+          "connection": "close",
+          "host": "localhost:9999",
+          "origin": "http://localhost",
+          "referer": "http://localhost/",
+          "user-agent": "Mozilla/5.0 (linux) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+          "X-Node-ENV": "test",
+          "content-type": "application/json",
+        },
+        "startInBytes": 302,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 200,
+        "url": "/v1/ping",
+      },
+    ],
+  ],
+  "status": 200,
+}
+`;
+
+exports[`runServer should work 1`] = `
+Object {
+  "debugCalls": Array [
+    Array [
+      "Logging service initialized.",
+    ],
+    Array [
+      "Delay service initialized.",
+    ],
+    Array [
+      "🤖 - Initializing the \`$autoload\` service.",
+    ],
+    Array [
+      "🏭 - Initializing the CONFIGS service.",
+    ],
+    Array [
+      "💿 - Loading API initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/API.",
+    ],
+    Array [
+      "Running in \\"test\\" environment.",
+    ],
+    Array [
+      "Process service initialized.",
+    ],
+    Array [
+      "HTTP Transaction initialized.",
+    ],
+    Array [
+      "🦄 - Initializing the API service!",
+    ],
+    Array [
+      "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getOpenAPI.",
+    ],
+    Array [
+      "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/optionsWithCORS.",
+    ],
+    Array [
+      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getPing.",
+    ],
+    Array [
+      "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getDelay.",
+    ],
+    Array [
+      "💿 - Loading getDiagnosticWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getDiagnostic.",
+    ],
+    Array [
+      "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getTime.",
+    ],
+    Array [
+      "💿 - Loading putEchoWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/putEcho.",
+    ],
+    Array [
+      "💿 - Loading WRAPPERS initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/WRAPPERS.",
+    ],
+    Array [
+      "💿 - Loading MECHANISMS initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/MECHANISMS.",
+    ],
+    Array [
+      "💿 - Loading authentication initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/authentication.",
+    ],
+    Array [
+      "🔧 - Initializing auth mechanisms",
+    ],
+    Array [
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "HTTP Router initialized.",
+    ],
+  ],
+  "logErrorCalls": Array [
+    Array [
+      "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/create-whook/src/config/test/config.",
+    ],
+    Array [
+      "⚠️ - Using fake auth mechanism!",
+    ],
+    Array [
+      "On air 🚀🌕",
+    ],
+  ],
+  "logInfoCalls": Array [
+    Array [
+      "💁 - Serving the API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv1%2FopenAPI",
+    ],
+    Array [
+      "HTTP Server listening at \\"http://localhost:9999\\".",
+    ],
+  ],
+}
+`;

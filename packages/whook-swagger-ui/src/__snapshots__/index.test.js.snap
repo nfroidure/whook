@@ -234,7 +234,7 @@ Object {
     "date": undefined,
     "etag": undefined,
     "last-modified": undefined,
-    "server": "ecstatic-3.3.0",
+    "server": undefined,
   },
   "logErrorCalls": Array [
     Array [
@@ -343,6 +343,9 @@ Object {
     "connection": "close",
     "content-type": "application/json",
     "date": undefined,
+    "etag": undefined,
+    "last-modified": undefined,
+    "server": undefined,
     "transaction-id": "0",
     "transfer-encoding": "chunked",
   },

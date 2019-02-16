@@ -43,6 +43,10 @@ export async function prepareEnvironment($ = new Knifecycle()) {
   // in development and production (files built in `dist/`)
   $.register(constant('PROJECT_SRC', __dirname));
 
+  // Place hold for the diagnostic endpoint to returns current
+  // transactions
+  $.register(constant('TRANSACTIONS', {}));
+
   // Add here any service/handler required to bootstrap
   // the server env
 
