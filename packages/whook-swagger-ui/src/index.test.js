@@ -5,7 +5,35 @@ import { initHTTPRouter } from 'swagger-http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
+  const HOST = 'localhost';
   const PORT = 8888;
+  const API = {
+    host: `${HOST}:${PORT}`,
+    swagger: '2.0',
+    info: {
+      version: '1.0.0',
+      title: 'Sample Swagger',
+      description: 'A sample Swagger file for testing purpose.',
+    },
+    basePath: '/v1',
+
+    schemes: ['http'],
+    paths: {
+      '/ping': {
+        get: {
+          operationId: 'getPing',
+          summary: "Checks API's availability.",
+          consumes: ['application/json'],
+          produces: ['application/json'],
+          responses: {
+            '200': {
+              description: 'Pong',
+            },
+          },
+        },
+      },
+    },
+  };
   const logger = {
     info: jest.fn(),
     error: jest.fn(),
@@ -36,37 +64,10 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         async () => $autoload,
       ),
     );
-    $.register(
-      constant('API', {
-        host: `localhost:${PORT}`,
-        swagger: '2.0',
-        info: {
-          version: '1.0.0',
-          title: 'Sample Swagger',
-          description: 'A sample Swagger file for testing purpose.',
-        },
-        basePath: '/v1',
-        schemes: ['http'],
-        paths: {
-          '/ping': {
-            get: {
-              operationId: 'getPing',
-              summary: "Checks API's availability.",
-              consumes: ['application/json'],
-              produces: ['application/json'],
-              responses: {
-                '200': {
-                  description: 'Pong',
-                },
-              },
-            },
-          },
-        },
-      }),
-    );
+    $.register(constant('API', API));
     $.register(constant('ENV', {}));
     $.register(constant('NODE_ENV', 'test'));
-    $.register(constant('HOST', 'localhost'));
+    $.register(constant('HOST', HOST));
     $.register(constant('WRAPPERS', []));
     $.register(
       constant('HANDLERS', {
@@ -86,11 +87,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   it('should work', async () => {
     $.register(constant('PORT', PORT));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
-    $.register(
-      constant('CONFIG', {
-        basePath: '/v1',
-      }),
-    );
+    $.register(constant('CONFIG', {}));
     $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEBUG_NODE_ENVS', ['test']));
 
@@ -101,7 +98,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       $,
     );
     const { status, headers, data } = await axios.get(
-      `http://localhost:${PORT}/v1/ping`,
+      `http://${HOST}:${PORT}${API.basePath}/ping`,
     );
 
     await $destroy();
@@ -130,8 +127,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(
       constant('CONFIG', {
-        localURL: `http://localhost:${PORT + 2}`,
-        basePath: '/v1',
+        localURL: `http://${HOST}:${PORT + 2}`,
       }),
     );
     $.register(constant('NODE_ENV', 'test'));
@@ -144,7 +140,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       $,
     );
     const { status, headers, data } = await axios.get(
-      `http://localhost:${PORT + 2}/docs`,
+      `http://${HOST}:${PORT + 2}/docs`,
     );
 
     await $destroy();
@@ -173,8 +169,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(
       constant('CONFIG', {
-        localURL: `http://localhost:${PORT + 1}`,
-        basePath: '/v1',
+        localURL: `http://${HOST}:${PORT + 1}`,
       }),
     );
     $.register(constant('NODE_ENV', 'test'));

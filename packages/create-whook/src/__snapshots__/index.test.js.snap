@@ -24,7 +24,7 @@ Object {
         "startInBytes": 331,
         "startOutBytes": 0,
         "startTime": 1390694400000,
-        "url": "/v1/diag",
+        "url": "/v3/diag",
       },
     },
   },
@@ -79,7 +79,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v1/diag",
+        "url": "/v3/diag",
       },
     ],
     Array [
@@ -115,7 +115,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v1/diag",
+        "url": "/v3/diag",
       },
     ],
   ],
@@ -125,6 +125,12 @@ Object {
 
 exports[`runServer should fail with bad fake tokens 1`] = `
 Object {
+  "data": Object {
+    "error": Object {
+      "code": "E_INVALID_FAKE_TOKEN",
+      "guruMeditation": "4",
+    },
+  },
   "debugCalls": Array [
     Array [
       "Created a delay:",
@@ -141,9 +147,11 @@ Object {
       "Cleared a delay",
     ],
   ],
-  "errorCode": undefined,
-  "errorParams": undefined,
-  "httpCode": undefined,
+  "headers": Object {
+    "cache-control": "private",
+    "content-type": "application/json",
+    "date": undefined,
+  },
   "logErrorCalls": Array [
     Array [
       "Undocumented response:",
@@ -182,7 +190,7 @@ Object {
             "admin",
           ],
         },
-        "summary": "Checks API's health.",
+        "summary": "Returns current API's transactions.",
         "tags": Array [
           "system",
         ],
@@ -219,7 +227,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v1/diag",
+        "url": "/v3/diag",
       },
     ],
     Array [
@@ -255,10 +263,11 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 400,
-        "url": "/v1/diag",
+        "url": "/v3/diag",
       },
     ],
   ],
+  "status": 400,
 }
 `;
 
@@ -314,7 +323,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v1/ping",
+        "url": "/v3/ping",
       },
     ],
   ],
@@ -423,7 +432,7 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      "💁 - Serving the API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv1%2FopenAPI",
+      "💁 - Serving the API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv3%2FopenAPI",
     ],
     Array [
       "HTTP Server listening at \\"http://localhost:9999\\".",

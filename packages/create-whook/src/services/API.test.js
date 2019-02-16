@@ -19,6 +19,7 @@ describe('API', () => {
       CONFIG,
       NODE_ENV,
       DEBUG_NODE_ENVS,
+      API_VERSION: '1.1.0',
     });
 
     expect({
@@ -33,6 +34,7 @@ describe('API', () => {
       CONFIG,
       NODE_ENV,
       DEBUG_NODE_ENVS,
+      API_VERSION: '1.1.0',
     });
     const operations = await getSwaggerOperations(await flattenSwagger(API));
 

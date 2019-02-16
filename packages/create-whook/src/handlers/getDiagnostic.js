@@ -5,7 +5,7 @@ export const definition = {
   method: 'get',
   operation: {
     operationId: 'getDiagnostic',
-    summary: "Checks API's health.",
+    summary: "Returns current API's transactions.",
     security: {
       bearerAuth: ['admin'],
     },

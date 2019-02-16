@@ -5,10 +5,9 @@ const NODE_ENVS = [...DEBUG_NODE_ENVS, 'production'];
 
 const CONFIG = {
   BASE_ENV: {},
+  API_VERSION: packageConf.version,
   CONFIG: {
-    basePath: '/v1',
     schemes: ['http'],
-    version: packageConf.version,
     name: packageConf.name,
     description: packageConf.description || '',
   },

@@ -1,3 +1,4 @@
+import packageConf from '../../../package';
 import { constant } from 'knifecycle';
 import {
   runServer,
@@ -20,6 +21,7 @@ describe('runServer', () => {
   async function prepareEnvironment() {
     const $ = await basePrepareEnvironment();
 
+    $.register(constant('API_VERSION', packageConf.version));
     $.register(constant('ENV', {}));
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
@@ -34,15 +36,17 @@ describe('runServer', () => {
   }
   process.env.ISOLATED_ENV = 1;
 
+  let API;
   let $destroy;
 
   beforeAll(async () => {
-    const { $destroy: _destroy } = await runServer(
+    const { API: _API, $destroy: _destroy } = await runServer(
       prepareEnvironment,
       prepareServer,
-      ['$destroy', 'httpServer', 'process'],
+      ['API', '$destroy', 'httpServer', 'process'],
     );
 
+    API = _API;
     $destroy = _destroy;
   }, 15000);
 
@@ -67,9 +71,10 @@ describe('runServer', () => {
 
   it('should ping', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
+
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT}/v1/ping`,
+      url: `http://${HOST}:${PORT}${API.basePath}/ping`,
     });
 
     expect({
@@ -88,9 +93,10 @@ describe('runServer', () => {
 
   it('should authenticate users', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
+
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT}/v1/diag`,
+      url: `http://${HOST}:${PORT}${API.basePath}/diag`,
       headers: {
         authorization: `Fake 1-admin`,
       },
@@ -112,20 +118,27 @@ describe('runServer', () => {
 
   it('should fail with bad fake tokens', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
+
     try {
       await axios({
         method: 'get',
-        url: `http://${HOST}:${PORT}/v1/diag`,
+        url: `http://${HOST}:${PORT}${API.basePath}/diag`,
         headers: {
           authorization: `Fake e-admin`,
         },
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
+      const { status, headers, data } = err.response;
+
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
+        status,
+        headers: {
+          ...headers,
+          // Erasing the Date header that may be added by Axios :/
+          date: {}.undef,
+        },
+        data,
         debugCalls: debug.mock.calls.map(filterPaths),
         logInfoCalls: logger.info.mock.calls.map(filterPaths),
         logErrorCalls: logger.error.mock.calls

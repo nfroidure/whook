@@ -12,14 +12,20 @@ export default name('API', autoService(initAPI));
 
 // The API service is where you put your handlers
 // altogether to form the final API
-async function initAPI({ DEBUG_NODE_ENVS, NODE_ENV, CONFIG, log }) {
+async function initAPI({
+  DEBUG_NODE_ENVS,
+  NODE_ENV,
+  CONFIG,
+  API_VERSION,
+  log,
+}) {
   log('debug', '🦄 - Initializing the API service!');
 
   const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
 
   const API = {
     host: CONFIG.host,
-    basePath: CONFIG.basePath,
+    basePath: CONFIG.basePath || `/v${API_VERSION.split('.')[0]}`,
     schemes: CONFIG.schemes,
     securityDefinitions: {
       bearerAuth: {
@@ -30,7 +36,7 @@ async function initAPI({ DEBUG_NODE_ENVS, NODE_ENV, CONFIG, log }) {
     },
     swagger: '2.0',
     info: {
-      version: CONFIG.version,
+      version: API_VERSION,
       title: CONFIG.name,
       description: CONFIG.description,
     },

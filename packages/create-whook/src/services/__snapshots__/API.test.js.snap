@@ -19,7 +19,7 @@ Object {
     "info": Object {
       "description": "Create a basic Whook server",
       "title": "create-whook",
-      "version": "0.0.0",
+      "version": "1.1.0",
     },
     "paths": Object {
       "/delay": Object {
@@ -111,7 +111,7 @@ Object {
               "admin",
             ],
           },
-          "summary": "Checks API's health.",
+          "summary": "Returns current API's transactions.",
           "tags": Array [
             "system",
           ],
