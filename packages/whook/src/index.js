@@ -7,12 +7,9 @@ import {
   initDelayService,
   initProcessService,
 } from 'common-services';
-import {
-  initHTTPRouter,
-  initHTTPTransaction,
-  initHTTPServer,
-  initErrorHandler,
-} from 'swagger-http-router';
+import { initHTTPRouter, initErrorHandler } from 'swagger-http-router';
+import initHTTPTransaction from 'whook-http-transaction';
+import initHTTPServer from 'whook-http-server';
 import initPORT from './services/PORT';
 import initHOST from './services/HOST';
 import initAutoload from './services/_autoload';

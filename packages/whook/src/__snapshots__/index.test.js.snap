@@ -10,10 +10,10 @@ Object {
       "KEEP_ALIVE_TIMEOUT",
     ],
     Array [
-      "MAX_CONNECTIONS",
+      "TIMEOUT",
     ],
     Array [
-      "TIMEOUT",
+      "MAX_CONNECTIONS",
     ],
     Array [
       "PROCESS_NAME",
@@ -63,16 +63,16 @@ Object {
       "Process service initialized.",
     ],
     Array [
-      "HTTP Transaction initialized.",
+      "💱 - HTTP Transaction initialized.",
     ],
     Array [
       "HTTP Router initialized.",
     ],
     Array [
-      "Closing HTTP server.",
+      "✅ - Closing HTTP server.",
     ],
     Array [
-      "HTTP server closed",
+      "✔️ - HTTP server closed!",
     ],
     Array [
       "Cancelling pending timeouts:",
@@ -86,7 +86,7 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      "HTTP Server listening at \\"http://localhost:8888\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
     ],
   ],
 }
