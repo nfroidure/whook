@@ -10,7 +10,8 @@
       "eslint",
       "babel",
       "jest",
-      "jsdocs"
+      "jsdocs",
+      "jsarch"
     ],
     "data": {
       "childPackage": true,
@@ -54,6 +55,7 @@
     "eslint": "^5.13.0",
     "eslint-plugin-prettier": "^3.0.1",
     "jest": "^24.0.0",
+    "jsarch": "^2.0.1",
     "jsdoc-to-markdown": "^4.0.1",
     "metapak": "^3.1.5",
     "metapak-nfroidure": "9.5.1",
@@ -127,6 +129,7 @@
     ]
   },
   "scripts": {
+    "architecture": "jsarch 'src/**/*.js' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "compile": "babel src --out-dir=dist",
     "cover": "npm run jest -- --coverage",

@@ -12,7 +12,7 @@ function createIncrementor(n = 0) {
   };
 }
 
-/* Architecture Note #3: HTTP Transactions
+/* Architecture Note #1: HTTP Transactions
 
 The `httpTransaction` service creates a new transaction
  for every single HTTP request incoming. It helps
@@ -96,10 +96,10 @@ async function initHTTPTransaction({
    * The normalized request and the HTTP
    * transaction created in an array.
    */
-  function httpTransaction(req, res) {
+  async function httpTransaction(req, res) {
     let initializationPromise;
 
-    /* Architecture Note #3.1: New Transaction
+    /* Architecture Note #1.1: New Transaction
     The idea is to maintain a hash of each pending
      transaction. To do so, we create a transaction
      object that contains useful informations about
@@ -111,64 +111,62 @@ async function initHTTPTransaction({
      request header. This allows to trace
      transactions end to end with that unique id.
     */
-    return Promise.resolve().then(() => {
-      const request = {
-        url: req.url,
-        method: req.method.toLowerCase(),
-        headers: req.headers,
-        body: req,
-      };
-      /**
+    const request = {
+      url: req.url,
+      method: req.method.toLowerCase(),
+      headers: req.headers,
+      body: req,
+    };
+    /**
       @typedef HTTPTransaction
     */
-      const transaction = {
-        protocol: req.connection.encrypted ? 'https' : 'http',
-        ip:
-          (req.headers['x-forwarded-for'] || '').split(',')[0] ||
-          req.connection.remoteAddress,
-        startInBytes: req.socket.bytesRead,
-        startOutBytes: req.socket.bytesWritten,
-        startTime: time(),
-        url: req.url,
-        method: req.method,
-        reqHeaders: req.headers,
-        errored: false,
-      };
-      const delayPromise = delay.create(TIMEOUT);
-      /**
-       * Id of the transaction
-       * @memberof HTTPTransaction
-       * @name id
-       */
-      let id = req.headers['transaction-id'] || uniqueId();
+    const transaction = {
+      protocol: req.connection.encrypted ? 'https' : 'http',
+      ip:
+        (req.headers['x-forwarded-for'] || '').split(',')[0] ||
+        req.connection.remoteAddress,
+      startInBytes: req.socket.bytesRead,
+      startOutBytes: req.socket.bytesWritten,
+      startTime: time(),
+      url: req.url,
+      method: req.method,
+      reqHeaders: req.headers,
+      errored: false,
+    };
+    const delayPromise = delay.create(TIMEOUT);
+    /**
+     * Id of the transaction
+     * @memberof HTTPTransaction
+     * @name id
+     */
+    let id = req.headers['transaction-id'] || uniqueId();
 
-      // Handle bad client transaction ids
-      if (TRANSACTIONS[id]) {
-        initializationPromise = Promise.reject(
-          new HTTPError(400, 'E_TRANSACTION_ID_NOT_UNIQUE', id),
-        );
-        id = uniqueId();
-      } else {
-        initializationPromise = Promise.resolve();
-      }
+    // Handle bad client transaction ids
+    if (TRANSACTIONS[id]) {
+      initializationPromise = Promise.reject(
+        new HTTPError(400, 'E_TRANSACTION_ID_NOT_UNIQUE', id),
+      );
+      id = uniqueId();
+    } else {
+      initializationPromise = Promise.resolve();
+    }
 
-      transaction.id = id;
-      TRANSACTIONS[id] = transaction;
+    transaction.id = id;
+    TRANSACTIONS[id] = transaction;
 
-      return [
-        request,
-        {
-          id,
-          start: startTransaction.bind(
-            null,
-            { id, req, res, delayPromise },
-            initializationPromise,
-          ),
-          catch: catchTransaction.bind(null, { id, req, res }),
-          end: endTransaction.bind(null, { id, req, res, delayPromise }),
-        },
-      ];
-    });
+    return [
+      request,
+      {
+        id,
+        start: startTransaction.bind(
+          null,
+          { id, req, res, delayPromise },
+          initializationPromise,
+        ),
+        catch: catchTransaction.bind(null, { id, req, res }),
+        end: endTransaction.bind(null, { id, req, res, delayPromise }),
+      },
+    ];
   }
 
   /**
@@ -180,20 +178,20 @@ async function initHTTPTransaction({
    * @return {Promise<Object>}
    * A promise to be resolved with the signed token.
    */
-  function startTransaction(
+  async function startTransaction(
     { id, delayPromise },
     initializationPromise,
     buildResponse,
   ) {
-    /* Architecture Note #3.2: Transaction start
+    /* Architecture Note #1.2: Transaction start
     Once initiated, the transaction can be started. It
      basically spawns a promise that will be resolved
      to the actual response or rejected if the timeout
      is reached.
     */
     return Promise.race([
-      initializationPromise.then(() => buildResponse()),
-      delayPromise.then(() => {
+      initializationPromise.then(async () => buildResponse()),
+      delayPromise.then(async () => {
         throw new HTTPError(504, 'E_TRANSACTION_TIMEOUT', TIMEOUT, id);
       }),
     ]);
@@ -208,8 +206,8 @@ async function initHTTPTransaction({
    * @return {Promise}
    * A promise to be resolved with the signed token.
    */
-  function catchTransaction({ id, req }, err) {
-    /* Architecture Note #3.3: Transaction errors
+  async function catchTransaction({ id, req }, err) {
+    /* Architecture Note #1.3: Transaction errors
     Here we are simply casting and logging errors.
      It is important for debugging but also for
      ending the transaction properly if an error
@@ -244,8 +242,8 @@ async function initHTTPTransaction({
    * @return {Promise<Object>}
    * A promise to be resolved with the signed token.
    */
-  function endTransaction({ id, req, res, delayPromise }, response) {
-    /* Architecture Note #3.4: Transaction end
+  async function endTransaction({ id, req, res, delayPromise }, response) {
+    /* Architecture Note #1.4: Transaction end
     We end the transaction by writing the final status
      and headers and piping the response body if any.
 
@@ -260,45 +258,44 @@ async function initHTTPTransaction({
      Once terminated, the transaction is removed
       from the `TRANSACTIONS` hash.
     */
-    return new Promise((resolve, reject) => {
-      res.on('error', reject);
-      res.on('finish', resolve);
-      res.writeHead(
-        response.status,
-        statuses[response.status],
-        Object.assign({}, response.headers, { 'Transaction-Id': id }),
-      );
-      if (response.body && response.body.pipe) {
-        response.body.pipe(res);
-      } else {
-        res.end();
-      }
-    })
-      .catch(err => {
-        TRANSACTIONS[id].errored = true;
-        log('error', 'An error occured', {
-          guruMeditation: id,
-          request:
-            TRANSACTIONS[id].protocol +
-            '://' +
-            (req.headers.host || 'localhost') +
-            TRANSACTIONS[id].url,
-          method: req.method,
-          stack: err.stack || err,
-        });
-      })
-      .then(() => {
-        TRANSACTIONS[id].endTime = time();
-        TRANSACTIONS[id].endInBytes = req.socket.bytesRead;
-        TRANSACTIONS[id].endOutBytes = req.socket.bytesWritten;
-        TRANSACTIONS[id].statusCode = response.status;
-        TRANSACTIONS[id].resHeaders = response.headers || {};
-
-        log('info', TRANSACTIONS[id]);
-
-        delete TRANSACTIONS[id];
-
-        return delay.clear(delayPromise);
+    try {
+      await new Promise((resolve, reject) => {
+        res.on('error', reject);
+        res.on('finish', resolve);
+        res.writeHead(
+          response.status,
+          statuses[response.status],
+          Object.assign({}, response.headers, { 'Transaction-Id': id }),
+        );
+        if (response.body && response.body.pipe) {
+          response.body.pipe(res);
+        } else {
+          res.end();
+        }
       });
+    } catch (err) {
+      TRANSACTIONS[id].errored = true;
+      log('error', 'An error occured', {
+        guruMeditation: id,
+        request:
+          TRANSACTIONS[id].protocol +
+          '://' +
+          (req.headers.host || 'localhost') +
+          TRANSACTIONS[id].url,
+        method: req.method,
+        stack: err.stack || err,
+      });
+    }
+    TRANSACTIONS[id].endTime = time();
+    TRANSACTIONS[id].endInBytes = req.socket.bytesRead;
+    TRANSACTIONS[id].endOutBytes = req.socket.bytesWritten;
+    TRANSACTIONS[id].statusCode = response.status;
+    TRANSACTIONS[id].resHeaders = response.headers || {};
+
+    log('info', TRANSACTIONS[id]);
+
+    delete TRANSACTIONS[id];
+
+    return delay.clear(delayPromise);
   }
 }

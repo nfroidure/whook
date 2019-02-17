@@ -33,9 +33,6 @@ Whook is built over Knifecyle which is great for adding or easily override/wrap
  a lot of its core component. It brings instrumentation and testability to
  your code bases.
 
-Whook also rely on `swagger-http-router` which is a the heart of its routing
- system.
-
 ## Work in progress
 
 I'd like to end up with a quick start guide looking like that:

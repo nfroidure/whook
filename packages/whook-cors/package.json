@@ -38,7 +38,8 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "knifecycle": "^5.2.0"
+    "knifecycle": "^5.2.0",
+    "whook-http-router": "^0.0.0"
   },
   "peerDependencies": {
     "whook": "^3.1.3"

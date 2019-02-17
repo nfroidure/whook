@@ -1,7 +1,7 @@
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import { prepareServer, prepareEnvironment } from 'whook';
-import { initHTTPRouter } from 'swagger-http-router';
+import initHTTPRouter from 'whook-http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {

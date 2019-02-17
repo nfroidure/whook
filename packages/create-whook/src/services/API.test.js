@@ -1,9 +1,9 @@
 import initAPI from './API';
 import FULL_CONFIG from '../config/test/config';
 import {
-  getSwaggerOperations,
   flattenSwagger,
-} from 'swagger-http-router/dist/utils';
+  getSwaggerOperations,
+} from 'whook-http-router/dist/utils';
 
 describe('API', () => {
   const { CONFIG, NODE_ENV, DEBUG_NODE_ENVS } = FULL_CONFIG;

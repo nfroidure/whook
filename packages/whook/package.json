@@ -89,9 +89,9 @@
     "knifecycle": "^5.2.0",
     "pkg-dir": "^3.0.0",
     "portfinder": "^1.0.20",
-    "swagger-http-router": "^4.2.1",
     "whook-http-transaction": "^0.0.0",
-    "whook-http-server": "^0.0.0"
+    "whook-http-server": "^0.0.0",
+    "whook-http-router": "^0.0.0"
   },
   "contributors": [],
   "engines": {

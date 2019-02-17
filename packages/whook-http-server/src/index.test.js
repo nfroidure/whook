@@ -62,7 +62,7 @@ describe('initHTTPServer', () => {
     try {
       httpServer.service.emit('error', new YError('E_ERROR'));
 
-      await httpServer.errorPromise;
+      await httpServer.fatalErrorPromise;
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       await httpServer.dispose();

@@ -62,7 +62,7 @@ async function initHTTPServer({
       resolve(httpServer);
     });
   });
-  const errorPromise = new Promise((_, reject) => {
+  const fatalErrorPromise = new Promise((_, reject) => {
     httpServer.once('error', err =>
       reject(YError.wrap(err, 'E_HTTP_SERVER_ERROR')),
     );
@@ -86,9 +86,9 @@ async function initHTTPServer({
     });
   }
 
-  return Promise.race([listenPromise, errorPromise]).then(() => ({
+  return Promise.race([listenPromise, fatalErrorPromise]).then(() => ({
     service: httpServer,
-    errorPromise,
+    fatalErrorPromise,
     dispose: () =>
       new Promise((resolve, reject) => {
         log('debug', '✅ - Closing HTTP server.');

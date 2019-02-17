@@ -4,7 +4,7 @@ import {
   prepareServer as prepareBaseServer,
   prepareEnvironment as prepareBaseEnvironment,
 } from 'whook';
-import { initHTTPRouter } from 'swagger-http-router';
+import initHTTPRouter from 'whook-http-router';
 import wrapHTTPRouterWithSwaggerUI from 'whook-swagger-ui';
 
 // Per convention a Whook server main file must export

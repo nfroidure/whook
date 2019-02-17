@@ -27,14 +27,14 @@ Instantiate the httpTransaction service
 | services | <code>Object</code> |  | The services to inject |
 | [services.TIMEOUT] | <code>Number</code> | <code>30000</code> | A number indicating how many ms the transaction  should take to complete before being cancelled. |
 | [services.TRANSACTIONS] | <code>Object</code> | <code>{}</code> | A hash of every current transactions |
-| services.time | <code>function</code> |  | A timing function |
+| [services.time] | <code>function</code> |  | A timing function |
 | services.delay | <code>Object</code> |  | A delaying service |
 | [services.log] | <code>function</code> |  | A logging function |
 | [services.uniqueId] | <code>function</code> |  | A function returning unique identifiers |
 
 **Example**  
 ```js
-import { initHTTPTransaction } from 'swagger-http-router';
+import initHTTPTransaction from 'whook-http-transaction';
 
 const httpTransaction = await initHTTPTransaction({
   log: console.log.bind(console),

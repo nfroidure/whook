@@ -416,7 +416,7 @@ Object {
       "🔐 - Initializing the authentication wrapper.",
     ],
     Array [
-      "HTTP Router initialized.",
+      "🚦 - HTTP Router initialized.",
     ],
   ],
   "logErrorCalls": Array [
