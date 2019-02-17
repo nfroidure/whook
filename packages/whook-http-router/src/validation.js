@@ -2,7 +2,7 @@ import camelCase from 'camel-case';
 import YError from 'yerror';
 import HTTPError from 'yhttperror';
 
-/* Architecture Note #2.1: Validators
+/* Architecture Note #1.1: Validators
 For performance reasons, the validators are
  created once for all at startup from the
  API definition.

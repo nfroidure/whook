@@ -37,7 +37,7 @@ function identity(x) {
   return x;
 }
 
-/* Architecture Note #2: HTTP Router
+/* Architecture Note #1: HTTP Router
 The `httpRouter` service is responsible for handling
  the request, validating it and wiring the handlers
  response to the actual HTTP response.

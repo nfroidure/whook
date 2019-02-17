@@ -33,24 +33,6 @@ Whook is built over Knifecyle which is great for adding or easily override/wrap
  a lot of its core component. It brings instrumentation and testability to
  your code bases.
 
-## Work in progress
-
-I'd like to end up with a quick start guide looking like that:
-```sh
-# Initialize the project
-mkdir simple_server && cd simple_server;
-npm init whook simple_server;
-npm install;
-
-# Check install with a dry run of the server
-DRY_RUN=1 npm run start
-```
-
-But atm, I only need it for my projects so leaving this as is
- in the meanwhile. If you're still motivated to use it, you
- should take a look to this project's
- [architecture notes](./ARCHITECTURE.md).
-
 [//]: # (::contents:end)
 
 # API

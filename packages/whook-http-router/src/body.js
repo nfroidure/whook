@@ -2,7 +2,7 @@ import HTTPError from 'yhttperror';
 import firstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
 
-/* Architecture Note #2.1: Request body
+/* Architecture Note #1.1: Request body
 According to the Swagger/OpenAPI specification
 there are two kinds of requests:
 - **validated contents:** it implies to
