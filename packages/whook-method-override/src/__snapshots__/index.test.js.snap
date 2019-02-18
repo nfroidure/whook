@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`wrapHTTPTransactionWithMethodOverride should let normal methods pass 1`] = `
+Object {
+  "data": "",
+  "getPingCalls": Array [
+    Array [
+      Object {},
+      Object {
+        "method": "get",
+        "operationId": "getPing",
+        "path": "/ping",
+        "responses": Object {
+          "200": Object {
+            "description": "Pong",
+          },
+        },
+        "summary": "Checks API's availability.",
+      },
+    ],
+  ],
+  "headers": Object {
+    "connection": "close",
+    "date": undefined,
+    "transaction-id": "1",
+    "transfer-encoding": "chunked",
+  },
+  "status": 200,
+}
+`;
+
+exports[`wrapHTTPTransactionWithMethodOverride should override methods 1`] = `
+Object {
+  "data": "",
+  "getPingCalls": Array [
+    Array [
+      Object {},
+      Object {
+        "method": "get",
+        "operationId": "getPing",
+        "path": "/ping",
+        "responses": Object {
+          "200": Object {
+            "description": "Pong",
+          },
+        },
+        "summary": "Checks API's availability.",
+      },
+    ],
+  ],
+  "headers": Object {
+    "connection": "close",
+    "date": undefined,
+    "transaction-id": "0",
+    "transfer-encoding": "chunked",
+  },
+  "status": 200,
+}
+`;

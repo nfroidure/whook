@@ -7,12 +7,10 @@ import {
   initDelayService,
   initProcessService,
 } from 'common-services';
-import {
-  initHTTPRouter,
-  initHTTPTransaction,
-  initHTTPServer,
-  initErrorHandler,
-} from 'swagger-http-router';
+import initHTTPRouter from 'whook-http-router';
+import initErrorHandler from 'whook-http-router/dist/errorHandler';
+import initHTTPTransaction from 'whook-http-transaction';
+import initHTTPServer from 'whook-http-server';
 import initPORT from './services/PORT';
 import initHOST from './services/HOST';
 import initAutoload from './services/_autoload';
@@ -138,9 +136,9 @@ export async function prepareEnvironment($ = new Knifecycle()) {
 
   /* Architecture Note #3.5: Initializers
   Whook's embed a few default initializers proxied from
-   `common-services`, `swagger-http-router` or it own
-   `src/services` folder. It can be wrapped or overriden
-   at will later in project's main file.
+   `common-services`, `whook-http-router` or its own
+   `src/services` folder. It can be wrapped or overriden,
+   at will, later in project's main file.
    */
   [
     initLogService,

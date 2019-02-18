@@ -356,7 +356,7 @@ Object {
       "Process service initialized.",
     ],
     Array [
-      "HTTP Transaction initialized.",
+      "💱 - HTTP Transaction initialized.",
     ],
     Array [
       "🦄 - Initializing the API service!",
@@ -416,7 +416,7 @@ Object {
       "🔐 - Initializing the authentication wrapper.",
     ],
     Array [
-      "HTTP Router initialized.",
+      "🚦 - HTTP Router initialized.",
     ],
   ],
   "logErrorCalls": Array [
@@ -435,7 +435,7 @@ Object {
       "💁 - Serving the API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv3%2FopenAPI",
     ],
     Array [
-      "HTTP Server listening at \\"http://localhost:9999\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
     ],
   ],
 }

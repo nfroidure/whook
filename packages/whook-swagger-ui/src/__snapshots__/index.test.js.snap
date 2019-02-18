@@ -10,10 +10,10 @@ Object {
       "KEEP_ALIVE_TIMEOUT",
     ],
     Array [
-      "MAX_CONNECTIONS",
+      "TIMEOUT",
     ],
     Array [
-      "TIMEOUT",
+      "MAX_CONNECTIONS",
     ],
     Array [
       "PROCESS_NAME",
@@ -60,16 +60,16 @@ Object {
       "Process service initialized.",
     ],
     Array [
-      "HTTP Transaction initialized.",
+      "💱 - HTTP Transaction initialized.",
     ],
     Array [
-      "HTTP Router initialized.",
+      "🚦 - HTTP Router initialized.",
     ],
     Array [
-      "Closing HTTP server.",
+      "✅ - Closing HTTP server.",
     ],
     Array [
-      "HTTP server closed",
+      "✔️ - HTTP server closed!",
     ],
     Array [
       "Cancelling pending timeouts:",
@@ -83,7 +83,7 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      "HTTP Server listening at \\"http://localhost:8889\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:8889\\".",
     ],
   ],
 }
@@ -99,10 +99,10 @@ Object {
       "KEEP_ALIVE_TIMEOUT",
     ],
     Array [
-      "MAX_CONNECTIONS",
+      "TIMEOUT",
     ],
     Array [
-      "TIMEOUT",
+      "MAX_CONNECTIONS",
     ],
     Array [
       "PROCESS_NAME",
@@ -210,16 +210,16 @@ Object {
       "Process service initialized.",
     ],
     Array [
-      "HTTP Transaction initialized.",
+      "💱 - HTTP Transaction initialized.",
     ],
     Array [
-      "HTTP Router initialized.",
+      "🚦 - HTTP Router initialized.",
     ],
     Array [
-      "Closing HTTP server.",
+      "✅ - Closing HTTP server.",
     ],
     Array [
-      "HTTP server closed",
+      "✔️ - HTTP server closed!",
     ],
     Array [
       "Cancelling pending timeouts:",
@@ -246,7 +246,7 @@ Object {
       "💁 - Serving the API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI",
     ],
     Array [
-      "HTTP Server listening at \\"http://localhost:8890\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:8890\\".",
     ],
   ],
   "status": 200,
@@ -263,10 +263,10 @@ Object {
       "KEEP_ALIVE_TIMEOUT",
     ],
     Array [
-      "MAX_CONNECTIONS",
+      "TIMEOUT",
     ],
     Array [
-      "TIMEOUT",
+      "MAX_CONNECTIONS",
     ],
     Array [
       "PROCESS_NAME",
@@ -316,10 +316,10 @@ Object {
       "Process service initialized.",
     ],
     Array [
-      "HTTP Transaction initialized.",
+      "💱 - HTTP Transaction initialized.",
     ],
     Array [
-      "HTTP Router initialized.",
+      "🚦 - HTTP Router initialized.",
     ],
     Array [
       "Created a delay:",
@@ -329,10 +329,10 @@ Object {
       "Cleared a delay",
     ],
     Array [
-      "Closing HTTP server.",
+      "✅ - Closing HTTP server.",
     ],
     Array [
-      "HTTP server closed",
+      "✔️ - HTTP server closed!",
     ],
     Array [
       "Cancelling pending timeouts:",
@@ -380,7 +380,7 @@ Object {
       "💁 - Serving the API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI",
     ],
     Array [
-      "HTTP Server listening at \\"http://localhost:8888\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
     ],
     Array [
       Object {

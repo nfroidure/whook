@@ -23,7 +23,7 @@ import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
 } from 'whook';
-import { initHTTPRouter } from 'swagger-http-router';
+import initHTTPRouter from 'whook-http-router';
 import wrapHTTPRouterWithSwaggerUI from 'whook-swagger-ui';
 
 // It is important to do this in the runServer function since it really
