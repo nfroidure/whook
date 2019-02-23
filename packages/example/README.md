@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# create-whook
+# whook-example
 > A basic Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/create-whook/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/create-whook.svg)](https://npmjs.org/package/create-whook)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-example/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/whook-example.svg)](https://npmjs.org/package/whook-example)
 
 
 [//]: # (::contents:start)
@@ -22,4 +22,4 @@ This is a basic `whook` server demonstrating the various usages of
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/create-whook/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook-example/blob/master/LICENSE)

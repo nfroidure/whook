@@ -1,5 +1,5 @@
 {
-  "name": "create-whook",
+  "name": "whook-example",
   "version": "0.0.0",
   "description": "A basic Whook server",
   "main": "dist/index.js",
@@ -9,8 +9,7 @@
       "readme",
       "eslint",
       "babel",
-      "jest",
-      "jsdocs"
+      "jest"
     ],
     "data": {
       "childPackage": true,
@@ -31,7 +30,6 @@
     "cover": "npm run jest -- --coverage",
     "debug": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node --inspect bin/dev",
     "dev": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node bin/dev",
-    "doc": "echo \"# API\" > API.md; jsdoc2md 'src/**/*.js' >> API.md && git add API.md",
     "jest": "NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.js'",
     "metapak": "metapak",
