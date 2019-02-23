@@ -1,4 +1,5 @@
 import initPutEcho, { definition } from './putEcho';
+import YError from 'yerror';
 
 describe('putEcho', () => {
   const log = jest.fn();
@@ -15,5 +16,24 @@ describe('putEcho', () => {
       response,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
     }).toMatchSnapshot();
+  });
+
+  it('should fail when crossing the red line ;)', async () => {
+    const putEcho = await initPutEcho({
+      log,
+    });
+
+    try {
+      await putEcho({
+        body: 'Big up to Lord Voldemort!',
+      });
+      throw new YError('E_UNECPECTED_SUCCES');
+    } catch (err) {
+      expect({
+        errorCode: err.code,
+        errorParams: err.params,
+        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      }).toMatchSnapshot();
+    }
   });
 });

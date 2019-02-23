@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`putEcho should fail when crossing the red line ;) 1`] = `
+Object {
+  "errorCode": undefined,
+  "errorParams": undefined,
+  "logCalls": Array [
+    Array [
+      "warning",
+      "📢 - Echoing \\"Repeat this!\\"",
+    ],
+  ],
+}
+`;
+
 exports[`putEcho should work 1`] = `
 Object {
   "logCalls": Array [

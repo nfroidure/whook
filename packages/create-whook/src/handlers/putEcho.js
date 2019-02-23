@@ -1,4 +1,5 @@
 import { autoHandler } from 'knifecycle';
+import YHTTPError from 'yhttperror';
 
 const echoSchema = {
   type: 'object',
@@ -43,7 +44,12 @@ export const definition = {
 export default autoHandler(putEcho);
 
 async function putEcho({ log }, { body }) {
+  if (body.echo.includes('Voldemort')) {
+    throw new YHTTPError(400, 'E_MUST_NOT_BE_NAMED', body.echo);
+  }
+
   log('warning', `📢 - Echoing "${body.echo}"`);
+
   return {
     status: 200,
     body,

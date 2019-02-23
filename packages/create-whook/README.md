@@ -5,7 +5,7 @@
 [//]: # (be overridden.)
 [//]: # ( )
 # create-whook
-> Create a basic Whook server
+> A basic Whook server
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/create-whook/blob/master/LICENSE)
 [![NPM version](https://badge.fury.io/js/create-whook.svg)](https://npmjs.org/package/create-whook)
@@ -13,7 +13,8 @@
 
 [//]: # (::contents:start)
 
-This module creates a basic `whook` server working out of the box.
+This is a basic `whook` server demonstrating the various usages of
+ the Whook framework to build REST APIs.
 
 [//]: # (::contents:end)
 
