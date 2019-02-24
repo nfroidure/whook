@@ -6,6 +6,8 @@ import { wrapInitializer, alsoInject, service } from 'knifecycle';
 const _require = require;
 const _resolve = require.resolve;
 
+const DEFAULT_WHOOK_CLI_SRC = path.join(__dirname, '..');
+
 export default alsoInject(
   ['PROJECT_SRC', 'WHOOK_PLUGINS', 'log'],
   wrapInitializer(
@@ -13,6 +15,7 @@ export default alsoInject(
       {
         PROJECT_SRC,
         WHOOK_PLUGINS,
+        WHOOK_CLI_SRC = DEFAULT_WHOOK_CLI_SRC,
         log,
         require = _require,
         resolve = _resolve,
@@ -38,22 +41,20 @@ export default alsoInject(
 
           let commandModule;
 
-          [PROJECT_SRC, ...pluginsPaths, path.join(__dirname, '..')].some(
-            basePath => {
-              const finalPath = path.join(basePath, 'commands', commandName);
+          [PROJECT_SRC, ...pluginsPaths, WHOOK_CLI_SRC].some(basePath => {
+            const finalPath = path.join(basePath, 'commands', commandName);
 
-              try {
-                commandModule = require(finalPath);
-                return true;
-              } catch (err) {
-                log(
-                  'debug',
-                  `Command "${commandName}" not found in: ${finalPath}`,
-                );
-                log('stack', err.stack);
-              }
-            },
-          );
+            try {
+              commandModule = require(finalPath);
+              return true;
+            } catch (err) {
+              log(
+                'debug',
+                `Command "${commandName}" not found in: ${finalPath}`,
+              );
+              log('stack', err.stack);
+            }
+          });
           let commandInitializer;
 
           if (!commandModule) {

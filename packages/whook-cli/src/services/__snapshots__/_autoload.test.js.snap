@@ -86,7 +86,7 @@ Object {
       "/var/lib/node/node_modules/@whook/whook/src/commands/handler",
     ],
     Array [
-      "/home/nfroidure/nfroidure/whook/packages/whook-cli/src/commands/handler",
+      "/var/lib/node/node_modules/@whook/cli/src/commands/handler",
     ],
   ],
   "resolveCalls": Array [

@@ -1,4 +1,5 @@
 describe('$autoload', () => {
+  const WHOOK_CLI_SRC = '/var/lib/node/node_modules/@whook/cli/src';
   const log = jest.fn();
   const requireMock = jest.fn();
   const resolveMock = jest.fn();
@@ -22,6 +23,7 @@ describe('$autoload', () => {
 
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
+      WHOOK_CLI_SRC,
       require: requireMock,
       resolve: resolveMock,
       log,
@@ -55,6 +57,7 @@ describe('$autoload', () => {
 
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
+      WHOOK_CLI_SRC,
       require: requireMock,
       resolve: resolveMock,
       log,
@@ -91,6 +94,7 @@ describe('$autoload', () => {
 
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
+      WHOOK_CLI_SRC,
       require: requireMock,
       resolve: resolveMock,
       log,
@@ -131,6 +135,7 @@ describe('$autoload', () => {
 
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
+      WHOOK_CLI_SRC,
       require: requireMock,
       resolve: resolveMock,
       log,
@@ -158,6 +163,7 @@ describe('$autoload', () => {
 
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
+      WHOOK_CLI_SRC,
       require: requireMock,
       resolve: resolveMock,
       log,
