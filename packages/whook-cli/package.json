@@ -22,7 +22,8 @@
         "dist"
       ],
       "bundleFiles": [
-        "dist/**/*.js"
+        "dist/**/*.js",
+        "bin/**/*.js"
       ]
     }
   },
@@ -78,6 +79,7 @@
   },
   "files": [
     "dist/**/*.js",
+    "bin/**/*.js",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"

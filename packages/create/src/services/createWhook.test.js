@@ -1,10 +1,22 @@
 import initCreateWhook from './createWhook';
 import YError from 'yerror';
-import packageJSON from '@whook/example/package';
+import _packageJSON from '@whook/example/package';
 
 describe('initCreateWhook', () => {
   const CWD = '/home/whoiam/projects/';
   const SOURCE_DIR = '/var/lib/node/node_modules/whook-example';
+  const packageJSON = {
+    ..._packageJSON,
+    dependencies: {
+      ..._packageJSON.dependencies,
+      '@whook/authorization': '<current_version>',
+      '@whook/cli': '<current_version>',
+      '@whook/cors': '<current_version>',
+      '@whook/http-router': '<current_version>',
+      '@whook/swagger-ui': '<current_version>',
+      '@whook/whook': '<current_version>',
+    },
+  };
   const author = {
     name: 'Wayne Campbell',
     email: 'wayne@warner.com',
