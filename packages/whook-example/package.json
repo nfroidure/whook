@@ -1,6 +1,6 @@
 {
   "name": "@whook/example",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "A basic Whook server",
   "main": "dist/index.js",
   "metapak": {

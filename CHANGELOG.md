@@ -1,3 +1,12 @@
+## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.0-alpha.1...v3.1.3) (2019-02-24)
+
+
+### Bug Fixes
+
+* **@whook/create:** Fix scripts syntax ([5f6bd53](https://github.com/nfroidure/whook/commit/5f6bd53))
+
+
+
 ## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.0-alpha.0...v3.1.3) (2019-02-24)
 
 
