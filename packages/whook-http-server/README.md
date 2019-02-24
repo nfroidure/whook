@@ -47,7 +47,7 @@ Initialize an HTTP server
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the server depends on |
 | services.ENV | <code>Object</code> |  | The process environment variables |
-| services.ENV.DESTROY_SOCKETS | <code>String</code> |  | Wether the server sockets whould be destroyed or if the  server should wait while sockets are kept alive |
+| services.ENV.DESTROY_SOCKETS | <code>String</code> |  | Whether the server sockets whould be destroyed or if the  server should wait while sockets are kept alive |
 | services.HOST | <code>String</code> |  | The server host |
 | services.PORT | <code>Number</code> |  | The server port |
 | services.MAX_HEADERS_COUNT | <code>Number</code> |  | The https://nodejs.org/api/http.html#http_server_maxheaderscount |

@@ -17,6 +17,8 @@ This is the Whook server CLI tool.
 
 [//]: # (::contents:end)
 
+# API
+
 # Authors
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 

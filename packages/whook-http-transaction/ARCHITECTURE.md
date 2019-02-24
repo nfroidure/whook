@@ -22,7 +22,7 @@ It is also a convenient abstraction of the actual
  `X-HTTP-Method-Override` header.
 
 You can simply do this by wrapping this service. See
- [`whook-method-override`](../whook-method-override/README.md)
+ [`@whook/method-override`](../whook-method-override/README.md)
  for a working example.
 
 [See in context](./src/index.js#L15-L32)

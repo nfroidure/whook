@@ -1,6 +1,6 @@
 {
   "name": "@whook/example",
-  "version": "0.0.0",
+  "version": "3.1.3",
   "description": "A basic Whook server",
   "main": "dist/index.js",
   "metapak": {
@@ -58,11 +58,11 @@
     "http-auth-utils": "^2.1.0",
     "knifecycle": "^5.2.0",
     "@whook/whook": "^3.1.3",
-    "@whook/authorization": "^0.0.0",
-    "@whook/cli": "^0.0.0",
-    "@whook/cors": "^0.0.0",
-    "@whook/http-router": "^0.0.0",
-    "@whook/swagger-ui": "^0.0.0",
+    "@whook/authorization": "^3.1.3",
+    "@whook/cli": "^3.1.3",
+    "@whook/cors": "^3.1.3",
+    "@whook/http-router": "^3.1.3",
+    "@whook/swagger-ui": "^3.1.3",
     "yerror": "^4.0.1",
     "yhttperror": "^4.0.0"
   },
