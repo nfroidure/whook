@@ -7,7 +7,7 @@
 # @whook/http-transaction
 > Isolated HTTP Transactions for the Whook framework
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/http-transaction/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-http-transaction/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/http-transaction.svg)](https://npmjs.org/package/@whook/http-transaction)
 
 

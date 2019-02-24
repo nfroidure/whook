@@ -6,6 +6,7 @@ import {
 } from '@whook/http-router/dist/utils';
 import path from 'path';
 
+// Needed to avoid messing up babel builds 🤷
 const _require = require;
 
 /* Architecture Note #5: `$autoload` service

@@ -7,15 +7,15 @@
 # @whook/method-override
 > A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/method-override/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-method-override/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/method-override.svg)](https://npmjs.org/package/@whook/method-override)
 
 
 [//]: # (::contents:start)
 
 To see how to add authorization support to your application, have a look
- at the `create-whook` project, it will be well documented here
- as soon as possible.
+ at the [`@whook/example`](https://github.com/nfroidure/whook/whook-example/)
+ project, it will be well documented here as soon as possible.
 
 [//]: # (::contents:end)
 

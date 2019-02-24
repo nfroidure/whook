@@ -7,7 +7,7 @@
 # @whook/http-server
 > The Whook base HTTP server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/http-server/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-http-server/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/http-server.svg)](https://npmjs.org/package/@whook/http-server)
 
 

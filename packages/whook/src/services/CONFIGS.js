@@ -3,6 +3,7 @@ import { noop } from '../libs/utils';
 import path from 'path';
 import YError from 'yerror';
 
+// Needed to avoid messing up babel builds 🤷
 const _require = require;
 
 export default initializer(

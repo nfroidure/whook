@@ -7,14 +7,44 @@
 # @whook/example
 > A basic Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/example/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-example/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/example.svg)](https://npmjs.org/package/@whook/example)
 
 
 [//]: # (::contents:start)
 
-This is a basic `whook` server demonstrating the various usages of
- the Whook framework to build REST APIs.
+This is a basic [`whook`]([`whook`](https://github.com/nfroidure/@whook))
+ server demonstrating the various usages of the Whook framework to build
+ REST APIs.
+
+## Usage
+
+```
+npm it
+npm start
+```
+
+## Dev
+
+Start the dev server:
+```
+npm run dev
+```
+
+Execute a handler in isolation:
+```
+npm run whook -- handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
+```
+
+Debug `whook` internals:
+```
+DEBUG=whook npm run dev
+```
+
+Debug `knifecycle` internals (dependency injections issues):
+```
+DEBUG=metapak npm run dev
+```
 
 [//]: # (::contents:end)
 

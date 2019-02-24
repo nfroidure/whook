@@ -113,7 +113,7 @@ export async function prepareEnvironment($ = new Knifecycle()) {
   Whook need to know where to look up for things like
    commands / handlers etc...
    */
-  $.register(constant('WHOOK_PLUGINS', ['whook']));
+  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
 
   /* Architecture Note #3.4: Logging
   Whook's default logger write to the NodeJS default console

@@ -17,7 +17,7 @@ import initAuthor from './services/author';
 import initProject from './services/project';
 import initCreateWhook from './services/createWhook';
 
-// Required for babel builds to be set here
+// Needed to avoid messing up babel builds 🤷
 const _require = require;
 
 export async function runCreateWhook() {

@@ -7,7 +7,7 @@
 # @whook/http-router
 > The Whook base HTTP router
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/http-router/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-http-router/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/http-router.svg)](https://npmjs.org/package/@whook/http-router)
 
 

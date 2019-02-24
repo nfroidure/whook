@@ -7,16 +7,27 @@
 # @whook/create
 > Kickstart a new Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/create/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-create/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/create.svg)](https://npmjs.org/package/@whook/create)
 
 
 [//]: # (::contents:start)
 
-This module creates a basic `whook` server working out of the box.
+This module creates a basic [`whook`](https://github.com/nfroidure/@whook)
+ server working out of the box.
+
+
+## Usage
 
 ```
 npm init @whook
+```
+
+## Dev
+
+To test the create script:
+```
+npm run cli -- babel-node bin/create
 ```
 
 [//]: # (::contents:end)

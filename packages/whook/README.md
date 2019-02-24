@@ -7,7 +7,7 @@
 # @whook/whook
 > Build strong and efficient REST web services.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/whook/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-whook/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/whook.svg)](https://npmjs.org/package/@whook/whook)
 
 

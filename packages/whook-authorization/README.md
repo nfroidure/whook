@@ -7,15 +7,15 @@
 # @whook/authorization
 > A wrapper to provide authorization support to a Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/authorization/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-authorization/LICENSE)
 [![NPM version](https://badge.fury.io/js/@whook/authorization.svg)](https://npmjs.org/package/@whook/authorization)
 
 
 [//]: # (::contents:start)
 
 To see how to add authorization support to your application, have a look
- at the `create-whook` project, it will be well documented here
- as soon as possible.
+ at the [`@whook/example`](https://github.com/nfroidure/whook/whook-example/)
+ project, it will be well documented here as soon as possible.
 
 [//]: # (::contents:end)
 

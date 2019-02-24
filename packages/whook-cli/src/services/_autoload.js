@@ -2,13 +2,21 @@ import path from 'path';
 import initAutoloader from '@whook/whook/dist/services/_autoload';
 import { wrapInitializer, alsoInject, service } from 'knifecycle';
 
+// Needed to avoid messing up babel builds 🤷
 const _require = require;
+const _resolve = require.resolve;
 
 export default alsoInject(
   ['PROJECT_SRC', 'WHOOK_PLUGINS', 'log'],
   wrapInitializer(
     async (
-      { PROJECT_SRC, WHOOK_PLUGINS, log, require = _require },
+      {
+        PROJECT_SRC,
+        WHOOK_PLUGINS,
+        log,
+        require = _require,
+        resolve = _resolve,
+      },
       $autoload,
     ) => {
       log('debug', '🤖 - Wrapping the whook autoloader.');
@@ -16,23 +24,36 @@ export default alsoInject(
       return async serviceName => {
         if (serviceName.endsWith('Command')) {
           const commandName = serviceName.replace(/Command$/, '');
+          const pluginsPaths = WHOOK_PLUGINS.map(pluginName => {
+            // Here we resolve the main path to finally
+            // get the `main` exported file's directory
+            // which is assumed to contain the commands
+            // folder of the plugin
+            const modulePath = path.dirname(resolve(pluginName));
+
+            log('debug', `Plugin "${pluginName}" resolved to: ${modulePath}`);
+
+            return modulePath;
+          });
 
           let commandModule;
 
-          [PROJECT_SRC, ...WHOOK_PLUGINS].some(basePath => {
-            const modulePath = path.join(basePath, 'commands', commandName);
+          [PROJECT_SRC, ...pluginsPaths, path.join(__dirname, '..')].some(
+            basePath => {
+              const finalPath = path.join(basePath, 'commands', commandName);
 
-            try {
-              commandModule = require(modulePath);
-              return true;
-            } catch (err) {
-              log(
-                'debug',
-                `Command "${commandName}" not found in: ${modulePath}`,
-              );
-              log('stack', err.stack);
-            }
-          });
+              try {
+                commandModule = require(finalPath);
+                return true;
+              } catch (err) {
+                log(
+                  'debug',
+                  `Command "${commandName}" not found in: ${finalPath}`,
+                );
+                log('stack', err.stack);
+              }
+            },
+          );
           let commandInitializer;
 
           if (!commandModule) {
