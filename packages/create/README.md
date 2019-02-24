@@ -4,16 +4,20 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# create-whook
-> Create a basic Whook server
+# @whook/create
+> Kickstart a new Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/create-whook/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/create-whook.svg)](https://npmjs.org/package/create-whook)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/create/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/create.svg)](https://npmjs.org/package/@whook/create)
 
 
 [//]: # (::contents:start)
 
 This module creates a basic `whook` server working out of the box.
+
+```
+npm init @whook my-whook-server
+```
 
 [//]: # (::contents:end)
 
@@ -21,4 +25,4 @@ This module creates a basic `whook` server working out of the box.
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/create-whook/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/create/blob/master/LICENSE)

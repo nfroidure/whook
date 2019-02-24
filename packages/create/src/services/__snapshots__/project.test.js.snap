@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initProject should fail with access problems 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/home/whoiam/projects/yolo",
+    ],
+  ],
+  "errorCode": "E_PROJECT_DIR",
+  "errorParams": Array [
+    "/home/whoiam/projects/yolo",
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "default": "new-whook-project",
+          "message": "What's this new project name",
+          "name": "projectName",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "default": "/home/whoiam/projects/super-project",
+          "message": "Provide the project's directory",
+          "name": "projectDirectory",
+        },
+      ],
+    ],
+  ],
+  "lockReleaseCalls": Array [
+    Array [
+      "cli:input",
+    ],
+    Array [
+      "cli:input",
+    ],
+  ],
+  "lockTakeCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🏁 - Initializing project...",
+    ],
+    Array [
+      "error",
+      "Cannot create the project's directory:",
+      "/home/whoiam/projects/yolo",
+    ],
+  ],
+}
+`;
+
+exports[`initProject should work 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/home/whoiam/projects/yolo",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "default": "new-whook-project",
+          "message": "What's this new project name",
+          "name": "projectName",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "default": "/home/whoiam/projects/super-project",
+          "message": "Provide the project's directory",
+          "name": "projectDirectory",
+        },
+      ],
+    ],
+  ],
+  "lockReleaseCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "lockTakeCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🏁 - Initializing project...",
+    ],
+  ],
+  "project": Object {
+    "directory": "/home/whoiam/projects/yolo",
+    "name": "super-project",
+  },
+}
+`;

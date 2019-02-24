@@ -17,8 +17,8 @@ Object {
     "basePath": "/v1",
     "host": undefined,
     "info": Object {
-      "description": "Create a basic Whook server",
-      "title": "create-whook",
+      "description": "A basic Whook server",
+      "title": "whook-example",
       "version": "1.1.0",
     },
     "paths": Object {

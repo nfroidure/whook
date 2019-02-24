@@ -347,7 +347,7 @@ Object {
       "🏭 - Initializing the CONFIGS service.",
     ],
     Array [
-      "💿 - Loading API initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/API.",
+      "💿 - Loading API initializer from /home/whoiam/projects/whook/packages/example/src/services/API.",
     ],
     Array [
       "Running in \\"test\\" environment.",
@@ -362,34 +362,34 @@ Object {
       "🦄 - Initializing the API service!",
     ],
     Array [
-      "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getOpenAPI.",
+      "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/example/src/handlers/getOpenAPI.",
     ],
     Array [
-      "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/optionsWithCORS.",
+      "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/example/src/handlers/optionsWithCORS.",
     ],
     Array [
-      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getPing.",
+      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/packages/example/src/handlers/getPing.",
     ],
     Array [
-      "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getDelay.",
+      "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/example/src/handlers/getDelay.",
     ],
     Array [
-      "💿 - Loading getDiagnosticWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getDiagnostic.",
+      "💿 - Loading getDiagnosticWrapped initializer from /home/whoiam/projects/whook/packages/example/src/handlers/getDiagnostic.",
     ],
     Array [
-      "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/getTime.",
+      "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/example/src/handlers/getTime.",
     ],
     Array [
-      "💿 - Loading putEchoWrapped initializer from /home/whoiam/projects/whook/packages/create-whook/src/handlers/putEcho.",
+      "💿 - Loading putEchoWrapped initializer from /home/whoiam/projects/whook/packages/example/src/handlers/putEcho.",
     ],
     Array [
-      "💿 - Loading WRAPPERS initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/WRAPPERS.",
+      "💿 - Loading WRAPPERS initializer from /home/whoiam/projects/whook/packages/example/src/services/WRAPPERS.",
     ],
     Array [
-      "💿 - Loading MECHANISMS initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/MECHANISMS.",
+      "💿 - Loading MECHANISMS initializer from /home/whoiam/projects/whook/packages/example/src/services/MECHANISMS.",
     ],
     Array [
-      "💿 - Loading authentication initializer from /home/whoiam/projects/whook/packages/create-whook/src/services/authentication.",
+      "💿 - Loading authentication initializer from /home/whoiam/projects/whook/packages/example/src/services/authentication.",
     ],
     Array [
       "🔧 - Initializing auth mechanisms",
@@ -421,7 +421,7 @@ Object {
   ],
   "logErrorCalls": Array [
     Array [
-      "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/create-whook/src/config/test/config.",
+      "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/example/src/config/test/config.",
     ],
     Array [
       "⚠️ - Using fake auth mechanism!",
