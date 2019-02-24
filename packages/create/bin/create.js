@@ -1,3 +1,3 @@
-import { runCreateWhook } from '../src/index';
+import { runCreateWhook } from '../dist/index';
 
 runCreateWhook();
