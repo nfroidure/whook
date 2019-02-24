@@ -1,3 +1,12 @@
+## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.0-alpha.0...v3.1.3) (2019-02-24)
+
+
+### Bug Fixes
+
+* **@whook/cli:** Fix the script field ([00e7f02](https://github.com/nfroidure/whook/commit/00e7f02))
+
+
+
 <a name="3.1.3"></a>
 ## [3.1.3](https://github.com/nfroidure/whook/compare/v3.1.2...v3.1.3) (2018-10-31)
 

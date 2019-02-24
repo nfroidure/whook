@@ -1,6 +1,6 @@
 {
   "name": "@whook/cli",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-4.0.0-alpha.1.0",
   "description": "The Whook server CLI",
   "main": "dist/index.js",
   "bin": {
