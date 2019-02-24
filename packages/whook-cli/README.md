@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook-cli
+# @whook/cli
 > The Whook server CLI
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-cli/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook-cli.svg)](https://npmjs.org/package/whook-cli)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/cli/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/cli.svg)](https://npmjs.org/package/@whook/cli)
 
 
 [//]: # (::contents:start)
@@ -21,4 +21,4 @@ This is the Whook server CLI tool.
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook-cli/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/cli/blob/master/LICENSE)

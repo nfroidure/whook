@@ -3,7 +3,7 @@ import FULL_CONFIG from '../config/test/config';
 import {
   flattenSwagger,
   getSwaggerOperations,
-} from 'whook-http-router/dist/utils';
+} from '@whook/http-router/dist/utils';
 
 describe('API', () => {
   const { CONFIG, NODE_ENV, DEBUG_NODE_ENVS } = FULL_CONFIG;

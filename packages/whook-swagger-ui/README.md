@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook-swagger-ui
+# @whook/swagger-ui
 > An `httpRouter` wrapper to provider SwaggerUI for local dev
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-swagger-ui/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook-swagger-ui.svg)](https://npmjs.org/package/whook-swagger-ui)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/swagger-ui/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/swagger-ui.svg)](https://npmjs.org/package/@whook/swagger-ui)
 
 
 [//]: # (::contents:start)
@@ -22,9 +22,9 @@ import Knifecycle from 'knifecycle';
 import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
-} from 'whook';
-import initHTTPRouter from 'whook-http-router';
-import wrapHTTPRouterWithSwaggerUI from 'whook-swagger-ui';
+} from '@whook/whook';
+import initHTTPRouter from '@whook/http-router';
+import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 
 // It is important to do this in the runServer function since it really
 //  make sense only when actually running the server
@@ -61,4 +61,4 @@ Swagger/OpenAPI UI for development purpose.
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook-swagger-ui/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/swagger-ui/blob/master/LICENSE)

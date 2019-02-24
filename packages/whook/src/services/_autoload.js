@@ -3,7 +3,7 @@ import { initializer, constant, name } from 'knifecycle';
 import {
   flattenSwagger,
   getSwaggerOperations,
-} from 'whook-http-router/dist/utils';
+} from '@whook/http-router/dist/utils';
 import path from 'path';
 
 const _require = require;

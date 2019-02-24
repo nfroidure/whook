@@ -1,5 +1,5 @@
 {
-  "name": "whook-http-router",
+  "name": "@whook/http-router",
   "version": "0.0.0",
   "description": "The Whook base HTTP router",
   "main": "dist/index.js",

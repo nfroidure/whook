@@ -1,5 +1,5 @@
 import path from 'path';
-import initAutoloader from 'whook/dist/services/_autoload';
+import initAutoloader from '@whook/whook/dist/services/_autoload';
 import { wrapInitializer, alsoInject, service } from 'knifecycle';
 
 const _require = require;

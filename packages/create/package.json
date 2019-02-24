@@ -61,7 +61,7 @@
     "fs-extra": "^7.0.1",
     "inquirer": "^6.2.2",
     "knifecycle": "^5.2.0",
-    "whook-example": "^0.0.0",
+    "@whook/example": "^0.0.0",
     "yerror": "^4.0.1"
   },
   "devDependencies": {

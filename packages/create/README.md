@@ -16,7 +16,7 @@
 This module creates a basic `whook` server working out of the box.
 
 ```
-npm init @whook my-whook-server
+npm init @whook
 ```
 
 [//]: # (::contents:end)

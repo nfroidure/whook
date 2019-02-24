@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook-http-router
+# @whook/http-router
 > The Whook base HTTP router
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-http-router/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook-http-router.svg)](https://npmjs.org/package/whook-http-router)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/http-router/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/http-router.svg)](https://npmjs.org/package/@whook/http-router)
 
 
 [//]: # (::contents:start)
@@ -138,4 +138,4 @@ getSwaggerOperations(API)
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook-http-router/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/http-router/blob/master/LICENSE)

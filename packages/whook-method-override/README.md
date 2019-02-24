@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook-method-override
+# @whook/method-override
 > A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-method-override/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook-method-override.svg)](https://npmjs.org/package/whook-method-override)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/method-override/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/method-override.svg)](https://npmjs.org/package/@whook/method-override)
 
 
 [//]: # (::contents:start)
@@ -25,4 +25,4 @@ To see how to add authorization support to your application, have a look
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook-method-override/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/method-override/blob/master/LICENSE)

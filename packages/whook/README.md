@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook
+# @whook/whook
 > Build strong and efficient REST web services.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook.svg)](https://npmjs.org/package/whook)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/whook/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/whook.svg)](https://npmjs.org/package/@whook/whook)
 
 
 [//]: # (::contents:start)
@@ -171,4 +171,4 @@ Auto detect the Whook PROJECT_DIR
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/whook/blob/master/LICENSE)

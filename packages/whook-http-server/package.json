@@ -1,5 +1,5 @@
 {
-  "name": "whook-http-server",
+  "name": "@whook/http-server",
   "version": "0.0.0",
   "description": "The Whook base HTTP server",
   "main": "dist/index.js",

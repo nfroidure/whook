@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import { getSwaggerOperations } from 'whook-http-router/dist/utils';
+import { getSwaggerOperations } from '@whook/http-router/dist/utils';
 
 export default autoHandler(getOpenAPI);
 

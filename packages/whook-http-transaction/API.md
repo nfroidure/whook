@@ -34,7 +34,7 @@ Instantiate the httpTransaction service
 
 **Example**  
 ```js
-import initHTTPTransaction from 'whook-http-transaction';
+import initHTTPTransaction from '@whook/http-transaction';
 
 const httpTransaction = await initHTTPTransaction({
   log: console.log.bind(console),

@@ -1,10 +1,10 @@
 import wrapHTTPTransactionWithMethodOverride from '.';
-import initHTTPTransaction from 'whook-http-transaction';
+import initHTTPTransaction from '@whook/http-transaction';
 import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
-} from 'whook';
+} from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 

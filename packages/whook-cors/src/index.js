@@ -1,7 +1,7 @@
 import {
   flattenSwagger,
   getSwaggerOperations,
-} from 'whook-http-router/dist/utils';
+} from '@whook/http-router/dist/utils';
 import { reuseSpecialProps, alsoInject, handler } from 'knifecycle';
 
 /**

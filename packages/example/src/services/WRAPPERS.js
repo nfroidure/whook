@@ -1,6 +1,6 @@
 import { service } from 'knifecycle';
-import { wrapHandlerWithCORS } from 'whook-cors';
-import { wrapHandlerWithAuthorization } from 'whook-authorization';
+import { wrapHandlerWithCORS } from '@whook/cors';
+import { wrapHandlerWithAuthorization } from '@whook/authorization';
 
 export default service(initWrappers, 'WRAPPERS');
 

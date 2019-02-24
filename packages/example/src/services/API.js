@@ -6,7 +6,7 @@ import { definition as getDelayDefinition } from '../handlers/getDelay';
 import { definition as getDiagnosticDefinition } from '../handlers/getDiagnostic';
 import { definition as getTimeDefinition } from '../handlers/getTime';
 import { definition as putEchoDefinition } from '../handlers/putEcho';
-import { augmentAPIWithCORS } from 'whook-cors';
+import { augmentAPIWithCORS } from '@whook/cors';
 
 export default name('API', autoService(initAPI));
 

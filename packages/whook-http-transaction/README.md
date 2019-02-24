@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook-http-transaction
+# @whook/http-transaction
 > Isolated HTTP Transactions for the Whook framework
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-http-transaction/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook-http-transaction.svg)](https://npmjs.org/package/whook-http-transaction)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/http-transaction/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/http-transaction.svg)](https://npmjs.org/package/@whook/http-transaction)
 
 
 [//]: # (::contents:start)
@@ -56,7 +56,7 @@ Instantiate the httpTransaction service
 
 **Example**  
 ```js
-import initHTTPTransaction from 'whook-http-transaction';
+import initHTTPTransaction from '@whook/http-transaction';
 
 const httpTransaction = await initHTTPTransaction({
   log: console.log.bind(console),
@@ -135,4 +135,4 @@ End the transaction
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook-http-transaction/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/http-transaction/blob/master/LICENSE)

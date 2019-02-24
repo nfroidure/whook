@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# whook-cors
+# @whook/cors
 > A wrapper to provide CORS support to a Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-cors/blob/master/LICENSE)
-[![NPM version](https://badge.fury.io/js/whook-cors.svg)](https://npmjs.org/package/whook-cors)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/@whook/cors/blob/master/LICENSE)
+[![NPM version](https://badge.fury.io/js/@whook/cors.svg)](https://npmjs.org/package/@whook/cors)
 
 
 [//]: # (::contents:start)
@@ -79,4 +79,4 @@ Augment an OpenAPI to also serve OPTIONS methods with
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook-cors/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/@whook/cors/blob/master/LICENSE)

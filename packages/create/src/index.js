@@ -34,7 +34,7 @@ export async function runCreateWhook() {
     $.register(
       constant(
         'SOURCE_DIR',
-        path.resolve(path.dirname(require.resolve('whook-example')), '..'),
+        path.resolve(path.dirname(require.resolve('@whook/example')), '..'),
       ),
     );
     $.register(constant('debug', debug('whook')));
