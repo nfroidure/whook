@@ -1,6 +1,6 @@
 {
   "name": "@whook/whook",
-  "version": "3.1.3",
+  "version": "4.0.0-alpha.0",
   "description": "Build strong and efficient REST web services.",
   "metapak": {
     "configs": [
@@ -83,16 +83,16 @@
     "prettier": "^1.16.3"
   },
   "dependencies": {
+    "@whook/http-router": "^4.0.0-alpha.0",
+    "@whook/http-server": "^4.0.0-alpha.0",
+    "@whook/http-transaction": "^4.0.0-alpha.0",
     "common-services": "^5.0.3",
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
     "internal-ip": "^3.0.1",
     "knifecycle": "^5.3.0",
     "pkg-dir": "^3.0.0",
-    "portfinder": "^1.0.20",
-    "@whook/http-transaction": "^3.1.3",
-    "@whook/http-server": "^3.1.3",
-    "@whook/http-router": "^3.1.3"
+    "portfinder": "^1.0.20"
   },
   "contributors": [],
   "engines": {
