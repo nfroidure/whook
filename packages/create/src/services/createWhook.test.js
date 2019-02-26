@@ -30,6 +30,11 @@ describe('initCreateWhook', () => {
   const copy = jest.fn();
   const require = jest.fn();
   const axios = jest.fn();
+  const ora = jest.fn();
+  const oraInstance = {
+    start: jest.fn(),
+    stopAndPersist: jest.fn(),
+  };
   const log = jest.fn();
 
   beforeEach(() => {
@@ -39,6 +44,11 @@ describe('initCreateWhook', () => {
     exec.mockReset();
     copy.mockReset();
     log.mockReset();
+    ora.mockReset();
+    ora.mockReturnValue(oraInstance);
+    oraInstance.start.mockReset();
+    oraInstance.start.mockReturnValue(oraInstance);
+    oraInstance.stopAndPersist.mockReset();
   });
 
   it('should work', async () => {
@@ -70,6 +80,9 @@ describe('initCreateWhook', () => {
     exec.mockImplementationOnce((_, _2, cb) =>
       cb(null, 'Initialized an empty git repository!'),
     );
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
+    );
 
     const createWhook = await initCreateWhook({
       CWD,
@@ -81,6 +94,7 @@ describe('initCreateWhook', () => {
       copy,
       require,
       axios,
+      ora,
       log,
     });
 
@@ -91,6 +105,9 @@ describe('initCreateWhook', () => {
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       execCalls: exec.mock.calls,
+      oraCalls: ora.mock.calls,
+      oraStartCalls: oraInstance.start.mock.calls,
+      oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls,
     }).toMatchSnapshot();
   });
@@ -120,6 +137,9 @@ describe('initCreateWhook', () => {
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
+    );
 
     const createWhook = await initCreateWhook({
       CWD,
@@ -131,6 +151,7 @@ describe('initCreateWhook', () => {
       copy,
       require,
       axios,
+      ora,
       log,
     });
 
@@ -141,6 +162,9 @@ describe('initCreateWhook', () => {
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       execCalls: exec.mock.calls,
+      oraCalls: ora.mock.calls,
+      oraStartCalls: oraInstance.start.mock.calls,
+      oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
     }).toMatchSnapshot();
   });
@@ -155,6 +179,9 @@ describe('initCreateWhook', () => {
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
+    );
 
     const createWhook = await initCreateWhook({
       CWD,
@@ -166,6 +193,7 @@ describe('initCreateWhook', () => {
       copy,
       require,
       axios,
+      ora,
       log,
     });
 
@@ -176,6 +204,9 @@ describe('initCreateWhook', () => {
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       execCalls: exec.mock.calls,
+      oraCalls: ora.mock.calls,
+      oraStartCalls: oraInstance.start.mock.calls,
+      oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
     }).toMatchSnapshot();
   });
@@ -190,6 +221,9 @@ describe('initCreateWhook', () => {
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) => cb(null, ''));
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
+    );
 
     try {
       const createWhook = await initCreateWhook({
@@ -215,6 +249,9 @@ describe('initCreateWhook', () => {
         copyCalls: copy.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         execCalls: exec.mock.calls,
+        oraCalls: ora.mock.calls,
+        oraStartCalls: oraInstance.start.mock.calls,
+        oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
       }).toMatchSnapshot();
     }

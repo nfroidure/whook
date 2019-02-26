@@ -28,6 +28,9 @@ Object {
       "🏁️ - Starting Whook project's creation!",
     ],
   ],
+  "oraCalls": Array [],
+  "oraStartCalls": Array [],
+  "oraStopAndPersistCalls": Array [],
   "requireCalls": Array [
     Array [
       "/var/lib/node/node_modules/whook-example/package",
@@ -69,6 +72,13 @@ Object {
       },
       [Function],
     ],
+    Array [
+      "npm i",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
   ],
   "logCalls": Array [
     Array [
@@ -85,15 +95,33 @@ Object {
     ],
     Array [
       "info",
-      "➕ - Run \`cd yolo && npm it\` to finish setup!",
+      "➕ - Run \`cd yolo to enter the project.",
     ],
     Array [
       "info",
-      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation!",
+      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
     Array [
       "info",
       "➕ - And finally run \`npm run dev\` to start dev!",
+    ],
+  ],
+  "oraCalls": Array [
+    Array [
+      Object {
+        "text": "Installing dependencies...",
+      },
+    ],
+  ],
+  "oraStartCalls": Array [
+    Array [],
+  ],
+  "oraStopAndPersistCalls": Array [
+    Array [
+      Object {
+        "symbol": "✔️",
+        "text": "Installed dependencies",
+      },
     ],
   ],
   "requireCalls": Array [
@@ -132,6 +160,13 @@ Object {
   "execCalls": Array [
     Array [
       "git init",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+    Array [
+      "npm i",
       Object {
         "cwd": "/home/whoiam/projects/yolo",
       },
@@ -225,15 +260,33 @@ Object {
     ],
     Array [
       "info",
-      "➕ - Run \`cd yolo && npm it\` to finish setup!",
+      "➕ - Run \`cd yolo to enter the project.",
     ],
     Array [
       "info",
-      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation!",
+      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
     Array [
       "info",
       "➕ - And finally run \`npm run dev\` to start dev!",
+    ],
+  ],
+  "oraCalls": Array [
+    Array [
+      Object {
+        "text": "Installing dependencies...",
+      },
+    ],
+  ],
+  "oraStartCalls": Array [
+    Array [],
+  ],
+  "oraStopAndPersistCalls": Array [
+    Array [
+      Object {
+        "symbol": "✔️",
+        "text": "Installed dependencies",
+      },
     ],
   ],
   "requireCalls": Array [
@@ -268,6 +321,13 @@ Object {
   "execCalls": Array [
     Array [
       "git init",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+    Array [
+      "npm i",
       Object {
         "cwd": "/home/whoiam/projects/yolo",
       },
@@ -352,15 +412,33 @@ Object {
     ],
     Array [
       "info",
-      "➕ - Run \`cd yolo && npm it\` to finish setup!",
+      "➕ - Run \`cd yolo to enter the project.",
     ],
     Array [
       "info",
-      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation!",
+      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
     Array [
       "info",
       "➕ - And finally run \`npm run dev\` to start dev!",
+    ],
+  ],
+  "oraCalls": Array [
+    Array [
+      Object {
+        "text": "Installing dependencies...",
+      },
+    ],
+  ],
+  "oraStartCalls": Array [
+    Array [],
+  ],
+  "oraStopAndPersistCalls": Array [
+    Array [
+      Object {
+        "symbol": "✔️",
+        "text": "Installed dependencies",
+      },
     ],
   ],
   "requireCalls": Array [
