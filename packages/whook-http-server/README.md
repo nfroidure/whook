@@ -8,7 +8,7 @@
 > The Whook base HTTP server
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-http-server/LICENSE)
-[![NPM version](https://badge.fury.io/js/@whook/http-server.svg)](https://npmjs.org/package/@whook/http-server)
+[![NPM version](https://badge.fury.io/js/%40whook%2Fhttp-server.svg)](https://npmjs.org/package/@whook/http-server)
 
 
 [//]: # (::contents:start)

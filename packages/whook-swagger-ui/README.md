@@ -8,7 +8,7 @@
 > An `httpRouter` wrapper to provider SwaggerUI for local dev
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-swagger-ui/LICENSE)
-[![NPM version](https://badge.fury.io/js/@whook/swagger-ui.svg)](https://npmjs.org/package/@whook/swagger-ui)
+[![NPM version](https://badge.fury.io/js/%40whook%2Fswagger-ui.svg)](https://npmjs.org/package/@whook/swagger-ui)
 
 
 [//]: # (::contents:start)

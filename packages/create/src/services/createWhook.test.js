@@ -29,9 +29,11 @@ describe('initCreateWhook', () => {
   const exec = jest.fn();
   const copy = jest.fn();
   const require = jest.fn();
+  const axios = jest.fn();
   const log = jest.fn();
 
   beforeEach(() => {
+    axios.mockReset();
     require.mockReset();
     writeFile.mockReset();
     exec.mockReset();
@@ -59,6 +61,10 @@ describe('initCreateWhook', () => {
         ),
       ),
     );
+    axios.mockResolvedValueOnce({
+      data: 'node_modules',
+    });
+    writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) =>
@@ -74,6 +80,7 @@ describe('initCreateWhook', () => {
       exec,
       copy,
       require,
+      axios,
       log,
     });
 
@@ -88,9 +95,28 @@ describe('initCreateWhook', () => {
     }).toMatchSnapshot();
   });
 
-  it('should handle git initialization problems', async () => {
+  it('should handle network issues', async () => {
     require.mockReturnValueOnce(packageJSON);
-    copy.mockResolvedValueOnce(new YError('E_ACCESS'));
+    copy.mockImplementationOnce((_, _2, { filter }) =>
+      Promise.all(
+        [
+          'package.json',
+          'package-lock.json',
+          'LICENSE',
+          'dist/index.js',
+          'src/index.js',
+          'coverage/index.html',
+          'node_modules/whook/index.js',
+        ].map(fileName =>
+          filter(
+            `${SOURCE_DIR}/${fileName}`,
+            `${project.directory}/${fileName}`,
+          ),
+        ),
+      ),
+    );
+    axios.mockRejectedValueOnce(new YError('E_NETWORK'));
+    writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
@@ -104,6 +130,42 @@ describe('initCreateWhook', () => {
       exec,
       copy,
       require,
+      axios,
+      log,
+    });
+
+    await createWhook();
+
+    expect({
+      requireCalls: require.mock.calls,
+      copyCalls: copy.mock.calls,
+      writeFileCalls: writeFile.mock.calls,
+      execCalls: exec.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
+    }).toMatchSnapshot();
+  });
+
+  it('should handle git initialization problems', async () => {
+    require.mockReturnValueOnce(packageJSON);
+    copy.mockResolvedValueOnce(new YError('E_ACCESS'));
+    axios.mockResolvedValueOnce({
+      data: 'node_modules',
+    });
+    writeFile.mockResolvedValueOnce();
+    writeFile.mockResolvedValueOnce();
+    writeFile.mockResolvedValueOnce();
+    exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
+
+    const createWhook = await initCreateWhook({
+      CWD,
+      SOURCE_DIR,
+      author,
+      project,
+      writeFile,
+      exec,
+      copy,
+      require,
+      axios,
       log,
     });
 
@@ -121,6 +183,10 @@ describe('initCreateWhook', () => {
   it('should fail with access problems', async () => {
     require.mockReturnValueOnce(packageJSON);
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
+    axios.mockResolvedValueOnce({
+      data: 'node_modules',
+    });
+    writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) => cb(null, ''));
@@ -134,6 +200,7 @@ describe('initCreateWhook', () => {
         exec,
         copy,
         require,
+        axios,
         log,
       });
 

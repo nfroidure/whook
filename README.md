@@ -27,25 +27,39 @@ By using the OpenAPI standard and the dependency injection
  pattern, Whook provides a convenient, highly modular and easily
  testable back end framework.
 
-# Usage
+It is the final outcome of my experience
+ [building REST APIs with NodeJS](https://insertafter.com/en/blog/http_rest_apis_with_nodejs.html).
 
-**Work in progress**
+# Quickstart
 
-I'd like to end up with a quick start guide looking like that:
+To start a new Whook project:
+
 ```sh
 # Initialize the project
-mkdir simple_server && cd simple_server;
-npm init whook simple_server;
-npm install;
+npm init @whook;
+cd my_project_name;
+npm i;
 
 # Check install with a dry run of the server
 DRY_RUN=1 npm run start
+
+# Run tests
+npm t
 ```
 
-But atm, I only need it for my projects so leaving this as is
- in the meanwhile. If you're still motivated to use it, you
- should be prepared to face issues. That said, I'll help as
- much as I can if you have any question.
+
+**Work in progress:** Despite I use it in production already,
+ the Whook's API may change.
+
+Using it right now, will imply making changes when the next
+ major realease will happen. If you would like to get involved
+ in its early development. Feel free to add issues / comments
+ or to improve the code.
+
+# Usage
+
+The documentation and a tutorial are still to be written but
+ the code is easy to read so let's dive in in the meanwhile.
 
 # Principles
 This projects aims to make creating well documented and highly
@@ -90,7 +104,7 @@ You may add global wrappers to change every handlers input/output on the
 
 # Contributing
 
-Clone this project repository and run:
+Clone this project's repository and run:
 
 ```sh
 npm i
@@ -98,7 +112,10 @@ npm i
 
 The repository is based on LernaJS that allows to host several NPM
  packages in a single repository. That said, to keep it simple
- it only proxies the packages commands. 
+ it only proxies the packages commands.
+
+Install those [VSCode extensions](https://insertafter.com/en/blog/my_vscode_configuration.html)
+ to get a smooth developer experience.
 
 [//]: # (::contents:end)
 

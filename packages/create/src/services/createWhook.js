@@ -1,6 +1,9 @@
 import { autoService } from 'knifecycle';
 import path from 'path';
+import _axios from 'axios';
 import YError from 'yerror';
+
+const GIT_IGNORE_URL = 'https://www.gitignore.io/api/osx,node,linux';
 
 export default autoService(async function initCreateWhook({
   CWD,
@@ -11,9 +14,12 @@ export default autoService(async function initCreateWhook({
   exec,
   copy,
   require,
+  axios = _axios,
   log,
 }) {
   return async function createWhook() {
+    log('info', "🏁️ - Starting Whook project's creation!");
+
     const basePackageJSON = require(path.join(SOURCE_DIR, 'package'));
 
     const finalPackageJSON = {
@@ -78,6 +84,21 @@ export default autoService(async function initCreateWhook({
         path.join(project.directory, 'LICENSE'),
         `Copyright ${author.name}, all rights reserved.`,
       ),
+      axios({
+        method: 'get',
+        url: GIT_IGNORE_URL,
+      })
+        .then(response =>
+          writeFile(path.join(project.directory, '.gitignore'), response.data),
+        )
+        .catch(err => {
+          log(
+            'error',
+            '⚠️ - Could not retrieve the `.gitignore` file contents from: ',
+            GIT_IGNORE_URL,
+          );
+          log('stack', err.stack);
+        }),
       new Promise((resolve, reject) =>
         exec(
           'git init',
