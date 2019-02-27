@@ -54,6 +54,10 @@ Object {
       "debug",
       "🔐 - Initializing the authentication wrapper.",
     ],
+    Array [
+      "debug",
+      "🔐 - No authorization found, locking access!",
+    ],
   ],
 }
 `;
@@ -264,6 +268,10 @@ Object {
     Array [
       "debug",
       "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "debug",
+      "🔓 - Public endpoint detected, letting the call pass through!",
     ],
   ],
   "response": Object {

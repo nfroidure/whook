@@ -15,19 +15,23 @@ describe('runServer', () => {
   };
   const debug = jest.fn();
   const time = jest.fn();
+  const exit = jest.fn();
   const PORT = 9999;
   const HOST = 'localhost';
+  const BASE_PATH = '/v4';
 
   async function prepareEnvironment() {
     const $ = await basePrepareEnvironment();
 
     $.register(constant('API_VERSION', packageConf.version));
+    $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('ENV', {}));
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
     $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEBUG_NODE_ENVS', ['test']));
     $.register(constant('NODE_ENVS', ['test']));
+    $.register(constant('exit', exit));
     $.register(constant('time', time));
     $.register(constant('logger', logger));
     $.register(constant('debug', debug));
@@ -36,23 +40,21 @@ describe('runServer', () => {
   }
   process.env.ISOLATED_ENV = 1;
 
-  let API;
   let $destroy;
 
   beforeAll(async () => {
-    const { API: _API, $destroy: _destroy } = await runServer(
+    const { $destroy: _destroy } = await runServer(
       prepareEnvironment,
       prepareServer,
-      ['API', '$destroy', 'httpServer', 'process'],
+      ['$destroy', 'httpServer', 'process'],
     );
 
-    API = _API;
     $destroy = _destroy;
-  }, 15000);
+  }, 5000);
 
   afterAll(async () => {
     await $destroy();
-  }, 15000);
+  }, 1000);
 
   afterEach(() => {
     time.mockReset();
@@ -74,7 +76,7 @@ describe('runServer', () => {
 
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT}${API.basePath}/ping`,
+      url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
     });
 
     expect({
@@ -96,7 +98,7 @@ describe('runServer', () => {
 
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT}${API.basePath}/diag`,
+      url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
       headers: {
         authorization: `Fake 1-admin`,
       },
@@ -122,7 +124,7 @@ describe('runServer', () => {
     try {
       await axios({
         method: 'get',
-        url: `http://${HOST}:${PORT}${API.basePath}/diag`,
+        url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
         headers: {
           authorization: `Fake e-admin`,
         },

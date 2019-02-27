@@ -21,11 +21,17 @@ export async function getBody(
   inputStream,
   bodySpec,
 ) {
-  const bodyParameter = (operation.parameters || []).find(
-    parameter => 'body' === parameter.in,
-  );
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
-  const bodyIsParseable = !(bodyParameter && bodyParameter.schema);
+  const bodyIsParseable = !(
+    operation.requestBody &&
+    operation.requestBody.content &&
+    operation.requestBody.content[bodySpec.contentType] &&
+    operation.requestBody.content[bodySpec.contentType].schema &&
+    (operation.requestBody.content[bodySpec.contentType].schema.type !==
+      'string' ||
+      operation.requestBody.content[bodySpec.contentType].schema.format !==
+        'binary')
+  );
 
   if (bodyIsEmpty) {
     return Promise.resolve();
@@ -89,70 +95,17 @@ export async function getBody(
   });
 }
 
-export async function sendBody(
-  { DEBUG_NODE_ENVS, ENV, API, ENCODERS, STRINGIFYERS, log, ajv },
-  operation,
-  response,
-) {
-  const schema =
-    (operation &&
-      operation.responses &&
-      operation.responses[response.status] &&
-      operation.responses[response.status].schema) ||
-    // Here we are diverging from the Swagger specs
-    // since global responses object aren't intended
-    // to set global responses but for routes that
-    // does not exists or that has not been resolved
-    // by the router at the time an error were throwed
-    // we simply cannot rely on the `operation`'s value.
-    // See: https://github.com/OAI/OpenAPI-Specification/issues/563
-    (API.responses &&
-      API.responses[response.status] &&
-      API.responses[response.status].schema);
-
+export async function sendBody({ ENCODERS, STRINGIFYERS }, response) {
   if (!response.body) {
-    if (schema) {
-      log(
-        'warning',
-        `Declared a schema in the ${operation.id} response but found no body.`,
-      );
-    }
     return response;
   }
 
   if (response.body instanceof Stream) {
-    if (schema) {
-      log(
-        'warning',
-        `Declared a schema in the ${
-          operation.id
-        } response but returned a streamed body.`,
-      );
-    }
     return response;
   }
 
   const Encoder = ENCODERS['utf-8'];
   const stream = new Encoder();
-
-  if (schema) {
-    if (DEBUG_NODE_ENVS.includes(ENV.NODE_ENV)) {
-      const validator = ajv.compile(schema);
-
-      // The JSON transforms are here to simulate a real payload
-      // transmission (it removes undefined properties for instance)
-      if (!validator(JSON.parse(JSON.stringify(response.body)))) {
-        log('warning', 'Invalid response:', validator.errors);
-      }
-    }
-  } else {
-    // When there is no schema specified for a given
-    // response, it means that either the response was
-    // not documented or that the request failed before
-    // the router could determine which operation were
-    // executed.
-    log('warning', 'Undocumented response:', response.status, operation);
-  }
 
   stream.write(STRINGIFYERS[response.headers['content-type']](response.body));
 

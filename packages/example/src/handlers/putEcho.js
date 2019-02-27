@@ -19,23 +19,25 @@ export const definition = {
     operationId: 'putEcho',
     summary: 'Echoes what it takes.',
     tags: ['system'],
-    consumes: ['application/json'],
-    produces: ['application/json'],
-    parameters: [
-      {
-        in: 'body',
-        name: 'body',
-        description: 'The input sentence',
-        schema: echoSchema,
-        example: {
-          echo: 'Repeat this!',
+    requestBody: {
+      description: 'The input sentence',
+      content: {
+        'application/json': {
+          schema: echoSchema,
+          example: {
+            echo: 'Repeat this!',
+          },
         },
       },
-    ],
+    },
     responses: {
       200: {
         description: 'The actual echo',
-        schema: echoSchema,
+        content: {
+          'application/json': {
+            schema: echoSchema,
+          },
+        },
       },
     },
   },

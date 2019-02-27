@@ -4,9 +4,12 @@ import {
   flattenSwagger,
   getSwaggerOperations,
 } from '@whook/http-router/dist/utils';
+import OpenAPISchemaValidator from 'openapi-schema-validator';
 
 describe('API', () => {
   const { CONFIG, NODE_ENV, DEBUG_NODE_ENVS } = FULL_CONFIG;
+  const HOST = 'localhost';
+  const PORT = '1337';
   const log = jest.fn();
 
   beforeEach(() => {
@@ -17,6 +20,8 @@ describe('API', () => {
     const API = await initAPI({
       log,
       CONFIG,
+      HOST,
+      PORT,
       NODE_ENV,
       DEBUG_NODE_ENVS,
       API_VERSION: '1.1.0',
@@ -32,6 +37,8 @@ describe('API', () => {
     const API = await initAPI({
       log,
       CONFIG,
+      HOST,
+      PORT,
       NODE_ENV,
       DEBUG_NODE_ENVS,
       API_VERSION: '1.1.0',
@@ -46,5 +53,21 @@ describe('API', () => {
         .map(({ method, path }) => `${method} ${path}`)
         .sort(),
     ).toMatchSnapshot();
+  });
+
+  it('should produce a valid OpenAPI file', async () => {
+    const API = await initAPI({
+      log,
+      CONFIG,
+      HOST,
+      PORT,
+      NODE_ENV,
+      DEBUG_NODE_ENVS,
+      API_VERSION: '1.1.0',
+    });
+
+    const result = new OpenAPISchemaValidator({ version: 3 }).validate(API);
+
+    expect({ result }).toMatchSnapshot();
   });
 });

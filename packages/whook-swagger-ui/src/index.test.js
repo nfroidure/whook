@@ -7,27 +7,36 @@ import wrapHTTPRouterWithSwaggerUI from '.';
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
   const PORT = 8888;
+  const BASE_PATH = '/v1';
   const API = {
-    host: `${HOST}:${PORT}`,
-    swagger: '2.0',
+    openapi: '3.0.2',
     info: {
       version: '1.0.0',
       title: 'Sample Swagger',
       description: 'A sample Swagger file for testing purpose.',
     },
-    basePath: '/v1',
-
-    schemes: ['http'],
     paths: {
       '/ping': {
         get: {
           operationId: 'getPing',
           summary: "Checks API's availability.",
-          consumes: ['application/json'],
-          produces: ['application/json'],
           responses: {
             '200': {
               description: 'Pong',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    additionalProperties: false,
+                    properties: {
+                      pong: {
+                        type: 'string',
+                        enum: ['pong'],
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -64,6 +73,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         async () => $autoload,
       ),
     );
+    $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
     $.register(constant('ENV', {}));
     $.register(constant('NODE_ENV', 'test'));
@@ -98,7 +108,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       $,
     );
     const { status, headers, data } = await axios.get(
-      `http://${HOST}:${PORT}${API.basePath}/ping`,
+      `http://${HOST}:${PORT}${BASE_PATH}/ping`,
     );
 
     await $destroy();

@@ -74,8 +74,6 @@ export async function augmentAPIWithCORS(API) {
       'x-whook': {
         ...whookConfig,
       },
-      consumes: [],
-      produces: [],
       parameters: (operation.parameters || []).filter(
         parameter => 'path' === parameter.in || 'query' === parameter.in,
       ),

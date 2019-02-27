@@ -9,7 +9,8 @@ describe('putEcho', () => {
       log,
     });
     const response = await putEcho({
-      body: definition.operation.parameters[0].example,
+      body:
+        definition.operation.requestBody.content['application/json'].example,
     });
 
     expect({
@@ -27,7 +28,7 @@ describe('putEcho', () => {
       await putEcho({
         body: 'Big up to Lord Voldemort!',
       });
-      throw new YError('E_UNECPECTED_SUCCES');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         errorCode: err.code,

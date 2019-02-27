@@ -122,7 +122,6 @@ describe('$autoload', () => {
           title: 'Sample Swagger',
           description: 'A sample Swagger file for testing purpose.',
         },
-        basePath: '/v1',
         schemes: ['http'],
         paths: {
           '/ping': {

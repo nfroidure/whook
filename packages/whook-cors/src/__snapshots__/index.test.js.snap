@@ -2,13 +2,12 @@
 
 exports[`augmentAPIWithCORS() should work 1`] = `
 Object {
-  "basePath": "/v1",
-  "host": "localhost:1337",
   "info": Object {
     "description": "A sample Swagger file for testing purpose.",
     "title": "Sample Swagger",
     "version": "1.0.0",
   },
+  "openapi": "3.0.2",
   "paths": Object {
     "/crons/tokens": Object {
       "post": Object {
@@ -67,7 +66,6 @@ Object {
         "summary": "Checks API's availability.",
       },
       "options": Object {
-        "consumes": Array [],
         "operationId": "optionsWithCORS",
         "parameters": Array [
           Object {
@@ -81,7 +79,6 @@ Object {
             "type": "boolean",
           },
         ],
-        "produces": Array [],
         "responses": Object {
           "200": Object {
             "description": "CORS sent.",
@@ -100,10 +97,6 @@ Object {
       },
     },
   },
-  "schemes": Array [
-    "http",
-  ],
-  "swagger": "2.0",
 }
 `;
 

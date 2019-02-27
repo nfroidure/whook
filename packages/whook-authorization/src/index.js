@@ -45,7 +45,7 @@ async function initHandlerWithAuthorization(
 }
 
 async function handleWithAuthorization(
-  { MECHANISMS, DEFAULT_MECHANISM, authentication },
+  { MECHANISMS, DEFAULT_MECHANISM, authentication, log },
   handler,
   parameters,
   operation,
@@ -53,7 +53,7 @@ async function handleWithAuthorization(
   let response;
 
   // Since the operation embed the security rules
-  // we need ensure we got it here since, if for
+  // we need to ensure we got it here since, if for
   // any reason, the operation is not transmitted
   // then security will not be checked
   // and the API will have a big security hole.
@@ -63,6 +63,10 @@ async function handleWithAuthorization(
   }
 
   if ('undefined' === typeof operation.security) {
+    log(
+      'debug',
+      '🔓 - Public endpoint detected, letting the call pass through!',
+    );
     response = await handler(parameters, operation);
   } else {
     const authorization = parameters.access_token
@@ -71,15 +75,17 @@ async function handleWithAuthorization(
     let parsedAuthorization;
 
     if (!authorization) {
+      log('debug', '🔐 - No authorization found, locking access!');
       throw new HTTPError(401, 'E_UNAUTHORIZED');
     }
 
     try {
       parsedAuthorization = parseAuthorizationHeader(
         authorization,
-        MECHANISMS.filter(
-          mechanism =>
-            operation.security[`${mechanism.type.toLowerCase()}Auth`],
+        MECHANISMS.filter(mechanism =>
+          operation.security.find(
+            security => security[`${mechanism.type.toLowerCase()}Auth`],
+          ),
         ),
       );
     } catch (err) {
@@ -97,8 +103,10 @@ async function handleWithAuthorization(
       throw HTTPError.cast(err, 400);
     }
 
-    const requiredScopes =
-      operation.security[`${parsedAuthorization.type.toLowerCase()}Auth`];
+    const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
+    const requiredScopes = (operation.security.find(
+      security => security[authName],
+    ) || { [authName]: [] })[authName];
 
     // If security exists, we need at least one scope
     if (!(requiredScopes && requiredScopes.length)) {

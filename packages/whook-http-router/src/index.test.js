@@ -5,6 +5,7 @@ import HTTPError from 'yhttperror';
 import YError from 'yerror';
 import initHTTPRouter from './index';
 import initErrorHandler from './errorHandler';
+import OpenAPISchemaValidator from 'openapi-schema-validator';
 
 function waitResponse(response, raw) {
   return new Promise((resolve, reject) => {
@@ -74,24 +75,52 @@ function prepareTransaction(result) {
 }
 
 describe('initHTTPRouter', () => {
+  const BASE_PATH = '/v1';
   const API = {
-    host: 'localhost:1337',
-    swagger: '2.0',
+    openapi: '3.0.2',
     info: {
       version: '1.0.0',
       title: 'Sample Swagger',
       description: 'A sample Swagger file for testing purpose.',
     },
-    basePath: '/v1',
-    schemes: ['http'],
+    servers: [
+      {
+        url: `http://{host}:{port}{basePath}`,
+        variables: {
+          host: {
+            default: 'localhost:1337',
+          },
+          basePath: {
+            default: '/v1',
+          },
+        },
+      },
+    ],
     paths: {
       '/ping': {
         head: {
           operationId: 'ping',
           summary: "Checks API's availability.",
           responses: {
+            default: {
+              $ref: '#/components/responses/UnexpectedError',
+            },
             '200': {
               description: 'Pong',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    additionalProperties: false,
+                    properties: {
+                      pong: {
+                        type: 'string',
+                        enum: ['pong'],
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -104,12 +133,13 @@ describe('initHTTPRouter', () => {
             {
               in: 'path',
               name: 'userId',
-              type: 'number',
-              pattern: '^[0-9]+$',
               required: true,
+              schema: {
+                type: 'number',
+                pattern: '^[0-9]+$',
+              },
             },
           ],
-          produces: ['image/jpeg'],
           responses: {
             '200': {
               description: 'User avatar exists.',
@@ -126,15 +156,27 @@ describe('initHTTPRouter', () => {
             {
               in: 'path',
               name: 'userId',
-              type: 'number',
-              pattern: '^[0-9]+$',
               required: true,
+              schema: {
+                type: 'number',
+                pattern: '^[0-9]+$',
+              },
             },
           ],
-          produces: ['image/jpeg'],
           responses: {
+            default: {
+              $ref: '#/components/responses/UnexpectedError',
+            },
             '200': {
               description: 'User avatar found.',
+              content: {
+                'image/jpeg': {
+                  schema: {
+                    type: 'string',
+                    format: 'binary',
+                  },
+                },
+              },
             },
             '404': {
               description: 'User avatar not found',
@@ -148,22 +190,43 @@ describe('initHTTPRouter', () => {
             {
               in: 'path',
               name: 'userId',
-              type: 'number',
-              pattern: '^[0-9]+$',
               required: true,
+              schema: {
+                type: 'number',
+                pattern: '^[0-9]+$',
+              },
             },
             {
               in: 'header',
               name: 'content-type',
-              type: 'string',
               required: true,
+              schema: {
+                type: 'string',
+              },
             },
           ],
-          produces: ['image/jpeg'],
-          consumes: ['image/jpeg', 'image/png'],
+          requestBody: {
+            description: 'The input sentence',
+            content: {
+              'image/jpeg': {
+                schema: { type: 'string', format: 'binary' },
+              },
+              'image/png': {
+                schema: { type: 'string', format: 'binary' },
+              },
+            },
+          },
           responses: {
+            default: {
+              $ref: '#/components/responses/UnexpectedError',
+            },
             '200': {
               description: 'User avatar set.',
+              content: {
+                'image/jpeg': {
+                  schema: { type: 'string', format: 'binary' },
+                },
+              },
             },
             '404': {
               description: 'User not found',
@@ -177,14 +240,17 @@ describe('initHTTPRouter', () => {
             {
               in: 'path',
               name: 'userId',
-              type: 'number',
-              pattern: '^[0-9]+$',
               required: true,
+              schema: {
+                type: 'number',
+                pattern: '^[0-9]+$',
+              },
             },
           ],
-          consumes: [],
-          produces: [],
           responses: {
+            default: {
+              $ref: '#/components/responses/UnexpectedError',
+            },
             '410': {
               description: 'User avatar is gone.',
             },
@@ -195,46 +261,65 @@ describe('initHTTPRouter', () => {
         get: {
           operationId: 'getUser',
           summary: 'Retrieve a user.',
-          produces: ['application/json', 'text/plain'],
           parameters: [
             {
               in: 'path',
               name: 'userId',
-              type: 'number',
-              pattern: '^[0-9]+$',
               required: true,
+              schema: {
+                type: 'number',
+                pattern: '^[0-9]+$',
+              },
             },
             {
               in: 'query',
               name: 'extended',
-              type: 'boolean',
               required: true,
+              schema: {
+                type: 'boolean',
+              },
             },
             {
               in: 'query',
               name: 'archived',
-              type: 'boolean',
+              schema: {
+                type: 'boolean',
+              },
             },
           ],
           responses: {
+            default: {
+              $ref: '#/components/responses/UnexpectedError',
+            },
             '200': {
               description: 'User found',
-              schema: {
-                type: 'object',
-                properties: {
-                  id: {
-                    type: 'number',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      id: {
+                        type: 'number',
+                      },
+                      name: {
+                        type: 'string',
+                      },
+                    },
                   },
-                  name: {
-                    type: 'string',
-                  },
+                },
+                'text/plain': {
+                  schema: { type: 'string' },
                 },
               },
             },
             '404': {
               description: 'User not found',
-              schema: {
-                $ref: '#/definitions/Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Error',
+                  },
+                },
               },
             },
           },
@@ -242,82 +327,121 @@ describe('initHTTPRouter', () => {
         put: {
           operationId: 'putUser',
           summary: 'Upsert a user.',
-          produces: ['application/json'],
-          consumes: ['application/json', 'application/vnd.github+json'],
+          requestBody: {
+            description: 'The input user',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/User',
+                },
+              },
+              'application/vnd.github+json': {
+                schema: {
+                  $ref: '#/components/schemas/User',
+                },
+              },
+            },
+          },
           parameters: [
             {
               in: 'path',
               name: 'userId',
-              type: 'number',
-              pattern: '^[0-9]+$',
-              required: true,
-            },
-            {
-              in: 'body',
-              name: 'body',
               required: true,
               schema: {
-                $ref: '#/definitions/User',
+                type: 'number',
+                pattern: '^[0-9]+$',
               },
             },
             {
               in: 'header',
               name: 'Authorization',
-              type: 'string',
               required: true,
+              schema: {
+                type: 'string',
+              },
             },
             {
               in: 'header',
               name: 'Content-Type',
-              type: 'string',
               required: true,
+              schema: {
+                type: 'string',
+              },
             },
           ],
           responses: {
+            default: {
+              $ref: '#/components/responses/UnexpectedError',
+            },
             '200': {
               description: 'User updated',
-              schema: {
-                type: 'object',
-                properties: {
-                  id: {
-                    type: 'number',
-                  },
-                  name: {
-                    type: 'string',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      id: {
+                        type: 'number',
+                      },
+                      name: {
+                        type: 'string',
+                      },
+                    },
                   },
                 },
               },
             },
             '400': {
-              description: 'Bad request',
-              schema: {
-                $ref: '#/definitions/Error',
-              },
+              $ref: '#/components/responses/BadRequest',
             },
           },
         },
       },
     },
-    definitions: {
-      Error: {
-        type: 'object',
-        properties: {
-          transactionId: {
-            type: 'string',
+    components: {
+      responses: {
+        BadRequest: {
+          description: 'Bad request',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error',
+              },
+            },
           },
-          code: {
-            type: 'string',
-            pattern: '^E_[a-zA-Z0-9_]+$',
+        },
+        UnexpectedError: {
+          description: 'Unexpected error',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Error',
+              },
+            },
           },
         },
       },
-      User: {
-        type: 'object',
-        additionalProperties: false,
-        required: ['name'],
-        properties: {
-          name: {
-            type: 'string',
+      schemas: {
+        Error: {
+          type: 'object',
+          properties: {
+            transactionId: {
+              type: 'string',
+            },
+            code: {
+              type: 'string',
+              pattern: '^E_[a-zA-Z0-9_]+$',
+            },
+          },
+        },
+        User: {
+          type: 'object',
+          additionalProperties: false,
+          required: ['name'],
+          properties: {
+            name: {
+              type: 'string',
+            },
           },
         },
       },
@@ -330,12 +454,21 @@ describe('initHTTPRouter', () => {
     log.mockReset();
   });
 
+  test('should test a valid swagger file', async () => {
+    const result = new OpenAPISchemaValidator({ version: 3 }).validate(API);
+
+    assert.deepEqual(result, {
+      errors: [],
+    });
+  });
+
   test('should work', async () => {
     let { httpTransaction, HANDLERS } = prepareTransaction();
     const errorHandler = await initErrorHandler({});
     const httpRouter = await initHTTPRouter({
       HANDLERS,
       API,
+      BASE_PATH,
       log,
       httpTransaction,
       errorHandler,
@@ -349,6 +482,34 @@ describe('initHTTPRouter', () => {
   });
 
   describe('should fail', () => {
+    test('when the API parsing fails', async () => {
+      try {
+        let { httpTransaction, HANDLERS } = prepareTransaction();
+        const errorHandler = await initErrorHandler({});
+
+        await initHTTPRouter({
+          HANDLERS,
+          API: {
+            info: API.info,
+            host: 'localhost',
+            paths: {
+              '/lol': {
+                get: {},
+              },
+            },
+          },
+          log,
+          BASE_PATH,
+          httpTransaction,
+          errorHandler,
+        });
+
+        throw new YError('E_UNEXPECTED_SUCCESS');
+      } catch (err) {
+        assert.equal(err.code, 'E_BAD_OPEN_API');
+      }
+    });
+
     test('when operation id is lacking', async () => {
       try {
         let { httpTransaction, HANDLERS } = prepareTransaction();
@@ -357,11 +518,9 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           HANDLERS,
           API: {
-            host: API.host,
-            swagger: API.swagger,
+            openapi: API.openapi,
+            servers: API.servers,
             info: API.info,
-            basePath: API.basePath,
-            schemes: API.schemes,
             paths: {
               '/lol': {
                 get: {},
@@ -369,6 +528,7 @@ describe('initHTTPRouter', () => {
             },
           },
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -387,11 +547,9 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           HANDLERS,
           API: {
-            host: API.host,
-            swagger: API.swagger,
+            openapi: API.openapi,
+            servers: API.servers,
             info: API.info,
-            basePath: API.basePath,
-            schemes: API.schemes,
             paths: {
               lol: {
                 get: {},
@@ -399,6 +557,7 @@ describe('initHTTPRouter', () => {
             },
           },
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -418,11 +577,9 @@ describe('initHTTPRouter', () => {
             lol: handler,
           },
           API: {
-            host: API.host,
-            swagger: API.swagger,
+            openapi: API.openapi,
+            servers: API.servers,
             info: API.info,
-            basePath: API.basePath,
-            schemes: API.schemes,
             paths: {
               '/{lol}': {
                 get: {
@@ -432,6 +589,7 @@ describe('initHTTPRouter', () => {
             },
           },
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -450,6 +608,7 @@ describe('initHTTPRouter', () => {
           HANDLERS: {},
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -467,11 +626,9 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           HANDLERS,
           API: {
-            host: API.host,
-            swagger: API.swagger,
+            openapi: API.openapi,
+            servers: API.servers,
             info: API.info,
-            basePath: API.basePath,
-            schemes: API.schemes,
             paths: {
               '/lol': {
                 get: {
@@ -487,6 +644,7 @@ describe('initHTTPRouter', () => {
             },
           },
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -504,11 +662,9 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           HANDLERS,
           API: {
-            host: API.host,
-            swagger: API.swagger,
+            openapi: API.openapi,
+            servers: API.servers,
             info: API.info,
-            basePath: API.basePath,
-            schemes: API.schemes,
             paths: {
               '/lol': {
                 get: {
@@ -524,12 +680,14 @@ describe('initHTTPRouter', () => {
             },
           },
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_BAD_PARAMETER_IN');
+        assert.equal(err.code, 'E_UNSUPPORTED_PARAMETER_DEFINITION');
+        assert.deepEqual(err.params, ['ping', 'in', {}.undef]);
       }
     });
   });
@@ -556,6 +714,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -613,6 +772,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -671,6 +831,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -735,6 +896,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -794,6 +956,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -862,6 +1025,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -926,6 +1090,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -984,6 +1149,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1040,6 +1206,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1095,6 +1262,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1137,108 +1305,111 @@ describe('initHTTPRouter', () => {
         });
       });
 
-      describe('should fail', () => {});
-      test('should fail without a required parameter', async () => {
-        let {
-          httpTransaction,
-          httpTransactionStart,
-          httpTransactionCatch,
-          httpTransactionEnd,
-          handler,
-          HANDLERS,
-        } = prepareTransaction();
+      describe('should fail', () => {
+        test('without a required parameter', async () => {
+          let {
+            httpTransaction,
+            httpTransactionStart,
+            httpTransactionCatch,
+            httpTransactionEnd,
+            handler,
+            HANDLERS,
+          } = prepareTransaction();
 
-        const errorHandler = await initErrorHandler({});
-        const httpRouter = await initHTTPRouter({
-          HANDLERS,
-          API,
-          log,
-          httpTransaction,
-          errorHandler,
-        });
+          const errorHandler = await initErrorHandler({});
+          const httpRouter = await initHTTPRouter({
+            HANDLERS,
+            API,
+            log,
+            BASE_PATH,
+            httpTransaction,
+            errorHandler,
+          });
 
-        const req = {
-          method: 'GET',
-          url: '/v1/users/1',
-          headers: {},
-        };
+          const req = {
+            method: 'GET',
+            url: '/v1/users/1',
+            headers: {},
+          };
 
-        log.mockReset();
+          log.mockReset();
 
-        await httpRouter.service(req, res);
+          await httpRouter.service(req, res);
 
-        expect(handler).not.toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toBeCalled();
+          expect(httpTransaction).toBeCalled();
+          expect(httpTransactionStart).toBeCalled();
+          expect(httpTransactionCatch).toBeCalled();
+          expect(httpTransactionEnd).toBeCalled();
 
-        const response = await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
-        );
-        expect(response).toEqual({
-          status: 400,
-          headers: {
-            'content-type': 'application/json',
-            'cache-control': 'private',
-          },
-          body: {
-            error: {
-              code: 'E_REQUIRED_PARAMETER',
+          const response = await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          );
+          expect(response).toEqual({
+            status: 400,
+            headers: {
+              'content-type': 'application/json',
+              'cache-control': 'private',
             },
-          },
-        });
-      });
-
-      test('should fail with a bad parameter', async () => {
-        let {
-          httpTransaction,
-          httpTransactionStart,
-          httpTransactionCatch,
-          httpTransactionEnd,
-          handler,
-          HANDLERS,
-        } = prepareTransaction();
-
-        const errorHandler = await initErrorHandler({});
-        const httpRouter = await initHTTPRouter({
-          HANDLERS,
-          API,
-          log,
-          httpTransaction,
-          errorHandler,
-        });
-        const req = {
-          method: 'GET',
-          url: '/v1/users/1?extended=lol',
-          headers: {},
-        };
-
-        log.mockReset();
-
-        await httpRouter.service(req, res);
-
-        expect(handler).not.toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
-
-        const response = await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
-        );
-
-        expect(response).toEqual({
-          status: 400,
-          headers: {
-            'content-type': 'application/json',
-            'cache-control': 'private',
-          },
-          body: {
-            error: {
-              code: 'E_BAD_BOOLEAN',
+            body: {
+              error: {
+                code: 'E_REQUIRED_PARAMETER',
+              },
             },
-          },
+          });
+        });
+
+        test('with a bad parameter', async () => {
+          let {
+            httpTransaction,
+            httpTransactionStart,
+            httpTransactionCatch,
+            httpTransactionEnd,
+            handler,
+            HANDLERS,
+          } = prepareTransaction();
+
+          const errorHandler = await initErrorHandler({});
+          const httpRouter = await initHTTPRouter({
+            HANDLERS,
+            API,
+            log,
+            BASE_PATH,
+            httpTransaction,
+            errorHandler,
+          });
+          const req = {
+            method: 'GET',
+            url: '/v1/users/1?extended=lol',
+            headers: {},
+          };
+
+          log.mockReset();
+
+          await httpRouter.service(req, res);
+
+          expect(handler).not.toBeCalled();
+          expect(httpTransaction).toBeCalled();
+          expect(httpTransactionStart).toBeCalled();
+          expect(httpTransactionCatch).toBeCalled();
+          expect(httpTransactionEnd).toBeCalled();
+
+          const response = await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          );
+
+          expect(response).toEqual({
+            status: 400,
+            headers: {
+              'content-type': 'application/json',
+              'cache-control': 'private',
+            },
+            body: {
+              error: {
+                code: 'E_BAD_BOOLEAN',
+              },
+            },
+          });
         });
       });
 
@@ -1259,6 +1430,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -1319,6 +1491,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -1376,6 +1549,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -1439,6 +1613,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1510,6 +1685,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1569,6 +1745,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1637,6 +1814,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1690,6 +1868,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1743,6 +1922,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1757,6 +1937,7 @@ describe('initHTTPRouter', () => {
           req.url = '/v1/users/1';
           req.headers = {
             'content-type': 'application/json',
+            authorization: 'Bearer yolo',
             'content-length': '22',
           };
 
@@ -1782,7 +1963,7 @@ describe('initHTTPRouter', () => {
             },
             body: {
               error: {
-                code: 'E_BAD_PARAMETER',
+                code: 'E_BAD_REQUEST_BODY',
               },
             },
           });
@@ -1802,6 +1983,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1861,6 +2043,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1920,6 +2103,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -1979,6 +2163,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -2037,6 +2222,7 @@ describe('initHTTPRouter', () => {
             API,
             BUFFER_LIMIT: 20,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -2097,6 +2283,7 @@ describe('initHTTPRouter', () => {
             API,
             BUFFER_LIMIT: 20,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -2161,6 +2348,7 @@ describe('initHTTPRouter', () => {
             HANDLERS,
             API,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -2220,6 +2408,7 @@ describe('initHTTPRouter', () => {
             API,
             BUFFER_LIMIT: 20,
             log,
+            BASE_PATH,
             httpTransaction,
             errorHandler,
           });
@@ -2280,6 +2469,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });
@@ -2328,6 +2518,7 @@ describe('initHTTPRouter', () => {
           HANDLERS,
           API,
           log,
+          BASE_PATH,
           httpTransaction,
           errorHandler,
         });

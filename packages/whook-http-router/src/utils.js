@@ -1,4 +1,5 @@
 import SwaggerParser from 'swagger-parser';
+import YError from 'yerror';
 
 /**
  * Flatten the inputed Swagger file
@@ -8,12 +9,18 @@ import SwaggerParser from 'swagger-parser';
  * @return {Object}
  * The flattened Swagger definition
  */
-export function flattenSwagger(API) {
-  const parser = new SwaggerParser();
+export async function flattenSwagger(API) {
+  try {
+    const parser = new SwaggerParser();
 
-  // Currently the Swagger parser changes the API in place
-  //  this is why we're deep cloning it here
-  return parser.dereference(JSON.parse(JSON.stringify(API)));
+    // Currently the Swagger parser changes the API in place
+    //  this is why we're deep cloning it here
+    const result = await parser.dereference(JSON.parse(JSON.stringify(API)));
+
+    return result;
+  } catch (err) {
+    throw YError.wrap(err, 'E_BAD_OPEN_API');
+  }
 }
 
 /**
