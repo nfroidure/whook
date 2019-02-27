@@ -82,7 +82,8 @@
     "jsdoc-to-markdown": "^4.0.1",
     "metapak": "^3.1.5",
     "metapak-nfroidure": "9.6.1",
-    "prettier": "^1.16.3"
+    "prettier": "^1.16.3",
+    "openapi-schema-validator": "^3.0.3"
   },
   "contributors": [],
   "engines": {

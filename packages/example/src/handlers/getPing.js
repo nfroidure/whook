@@ -7,18 +7,20 @@ export const definition = {
     operationId: 'getPing',
     summary: "Checks API's availability.",
     tags: ['system'],
-    consumes: [],
-    produces: ['application/json'],
     responses: {
       200: {
         description: 'Pong',
-        schema: {
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            pong: {
-              type: 'string',
-              enum: ['pong'],
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                pong: {
+                  type: 'string',
+                  enum: ['pong'],
+                },
+              },
             },
           },
         },

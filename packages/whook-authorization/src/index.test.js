@@ -25,21 +25,27 @@ describe('wrapHandlerWithAuthorization', () => {
   };
   const NOOP_AUTHENTICATED_OPERATION = {
     ...NOOP_OPERATION,
-    security: {
-      bearerAuth: ['user', 'admin'],
-    },
+    security: [
+      {
+        bearerAuth: ['user', 'admin'],
+      },
+    ],
   };
   const NOOP_RESTRICTED_OPERATION = {
     ...NOOP_OPERATION,
-    security: {
-      bearerAuth: ['user', 'admin'],
-    },
+    security: [
+      {
+        bearerAuth: ['user', 'admin'],
+      },
+    ],
   };
   const BAD_OPERATION = {
     ...NOOP_OPERATION,
-    security: {
-      bearerAuth: [],
-    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   };
 
   beforeEach(() => {

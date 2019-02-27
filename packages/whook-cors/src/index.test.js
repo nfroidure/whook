@@ -60,15 +60,12 @@ describe('augmentAPIWithCORS()', () => {
   it('should work', async () => {
     expect(
       await augmentAPIWithCORS({
-        host: 'localhost:1337',
-        swagger: '2.0',
+        openapi: '3.0.2',
         info: {
           version: '1.0.0',
           title: 'Sample Swagger',
           description: 'A sample Swagger file for testing purpose.',
         },
-        basePath: '/v1',
-        schemes: ['http'],
         paths: {
           '/ping': {
             options: {

@@ -11,13 +11,15 @@ export const definition = {
     summary: 'Get API documentation.',
     tags: ['system'],
     'x-whook': { private: false },
-    consumes: [],
-    produces: ['application/json'],
     responses: {
       '200': {
         description: 'Provides the private Open API documentation',
-        schema: {
-          type: 'object',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
         },
       },
     },

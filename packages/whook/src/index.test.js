@@ -9,6 +9,7 @@ describe('runServer', () => {
   it('should work', async () => {
     const PORT = 8888;
     const HOST = 'localhost';
+    const BASE_PATH = '/v1';
     const API = {
       host: 'localhost:1337',
       swagger: '2.0',
@@ -17,7 +18,6 @@ describe('runServer', () => {
         title: 'Sample Swagger',
         description: 'A sample Swagger file for testing purpose.',
       },
-      basePath: '/v1',
       schemes: ['http'],
       paths: {
         '/ping': {
@@ -53,6 +53,7 @@ describe('runServer', () => {
           async () => $autoload,
         ),
       );
+      $.register(constant('BASE_PATH', BASE_PATH));
       $.register(constant('API', API));
       $.register(constant('ENV', {}));
       $.register(constant('NODE_ENV', 'test'));

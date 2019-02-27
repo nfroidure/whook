@@ -3,6 +3,40 @@ import { parse as parseContentType } from 'content-type';
 import preferredCharsets from 'negotiator/lib/charset';
 import preferredMediaType from 'negotiator/lib/encoding';
 
+export function extractConsumableMediaTypes(operation) {
+  if (!operation.requestBody) {
+    return [];
+  }
+
+  // Per spec contents, the `content` property should always
+  // be present so not checking before using it
+  // https://swagger.io/specification/#requestBodyObject
+  return Object.keys(operation.requestBody.content);
+}
+
+export function extractProduceableMediaTypes(operation) {
+  if (!operation.responses) {
+    return [];
+  }
+
+  return [
+    ...new Set(
+      Object.keys(operation.responses).reduce(
+        (produceableMediaTypes, status) => {
+          const response = operation.responses[status];
+
+          if (!response.content) {
+            return produceableMediaTypes;
+          }
+
+          return [...produceableMediaTypes, ...Object.keys(response.content)];
+        },
+        [],
+      ),
+    ),
+  ];
+}
+
 export function extractBodySpec(
   request,
   consumableMediaTypes,

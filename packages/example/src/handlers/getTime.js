@@ -7,16 +7,18 @@ export const definition = {
     operationId: 'getTime',
     summary: 'Get API internal clock date.',
     tags: ['system'],
-    consumes: [],
-    produces: ['application/json'],
     responses: {
       200: {
         description: 'Server current date',
-        schema: {
-          type: 'object',
-          properties: {
-            additionalProperties: false,
-            currentDate: { type: 'string', format: 'date-time' },
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                currentDate: { type: 'string', format: 'date-time' },
+              },
+            },
           },
         },
       },

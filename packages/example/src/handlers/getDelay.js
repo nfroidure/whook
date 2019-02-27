@@ -10,14 +10,14 @@ export const definition = {
     parameters: [
       {
         in: 'query',
-        type: 'number',
         name: 'duration',
         required: true,
         description: 'Duration in milliseconds',
+        schema: {
+          type: 'number',
+        },
       },
     ],
-    consumes: [],
-    produces: ['application/json'],
     responses: {
       204: {
         description: 'Delay expired',

@@ -24,7 +24,7 @@ Object {
         "startInBytes": 331,
         "startOutBytes": 0,
         "startTime": 1390694400000,
-        "url": "/v3/diag",
+        "url": "/v4/diag",
       },
     },
   },
@@ -32,6 +32,9 @@ Object {
     Array [
       "Created a delay:",
       30000,
+    ],
+    Array [
+      "🔓 - Public endpoint detected, letting the call pass through!",
     ],
     Array [
       "Cleared a delay",
@@ -79,7 +82,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v3/diag",
+        "url": "/v4/diag",
       },
     ],
     Array [
@@ -115,7 +118,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v3/diag",
+        "url": "/v4/diag",
       },
     ],
   ],
@@ -137,6 +140,9 @@ Object {
       30000,
     ],
     Array [
+      "🔓 - Public endpoint detected, letting the call pass through!",
+    ],
+    Array [
       "Cleared a delay",
     ],
     Array [
@@ -152,51 +158,7 @@ Object {
     "content-type": "application/json",
     "date": undefined,
   },
-  "logErrorCalls": Array [
-    Array [
-      "Undocumented response:",
-      400,
-      Object {
-        "consumes": Array [],
-        "method": "get",
-        "operationId": "getDiagnostic",
-        "parameters": Array [
-          Object {
-            "in": "header",
-            "name": "authorization",
-            "type": "string",
-          },
-          Object {
-            "in": "query",
-            "name": "access_token",
-            "type": "string",
-          },
-        ],
-        "path": "/diag",
-        "produces": Array [
-          "application/json",
-        ],
-        "responses": Object {
-          "200": Object {
-            "description": "Diagnostic",
-            "schema": Object {
-              "additionalProperties": true,
-              "type": "object",
-            },
-          },
-        },
-        "security": Object {
-          "fakeAuth": Array [
-            "admin",
-          ],
-        },
-        "summary": "Returns current API's transactions.",
-        "tags": Array [
-          "system",
-        ],
-      },
-    ],
-  ],
+  "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
       Object {
@@ -227,7 +189,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v3/diag",
+        "url": "/v4/diag",
       },
     ],
     Array [
@@ -263,7 +225,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 400,
-        "url": "/v3/diag",
+        "url": "/v4/diag",
       },
     ],
   ],
@@ -280,6 +242,9 @@ Object {
     Array [
       "Created a delay:",
       30000,
+    ],
+    Array [
+      "🔓 - Public endpoint detected, letting the call pass through!",
     ],
     Array [
       "Cleared a delay",
@@ -323,7 +288,7 @@ Object {
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
-        "url": "/v3/ping",
+        "url": "/v4/ping",
       },
     ],
   ],
@@ -432,7 +397,7 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      "💁 - Serving the API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv3%2FopenAPI",
+      "💁 - Serving the API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv4%2FopenAPI",
     ],
     Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",

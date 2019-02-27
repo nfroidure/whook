@@ -353,27 +353,6 @@ Object {
     Array [
       "On air 🚀🌕",
     ],
-    Array [
-      "Undocumented response:",
-      200,
-      Object {
-        "consumes": Array [
-          "application/json",
-        ],
-        "method": "get",
-        "operationId": "getPing",
-        "path": "/ping",
-        "produces": Array [
-          "application/json",
-        ],
-        "responses": Object {
-          "200": Object {
-            "description": "Pong",
-          },
-        },
-        "summary": "Checks API's availability.",
-      },
-    ],
   ],
   "logInfoCalls": Array [
     Array [

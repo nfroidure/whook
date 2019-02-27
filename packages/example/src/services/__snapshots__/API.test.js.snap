@@ -11,20 +11,35 @@ Array [
 ]
 `;
 
+exports[`API should produce a valid OpenAPI file 1`] = `
+Object {
+  "result": Object {
+    "errors": Array [],
+  },
+}
+`;
+
 exports[`API should work 1`] = `
 Object {
   "API": Object {
-    "basePath": "/v1",
-    "host": undefined,
+    "components": Object {
+      "securitySchemes": Object {
+        "bearerAuth": Object {
+          "description": "Bearer authentication with a user API token",
+          "scheme": "bearer",
+          "type": "http",
+        },
+      },
+    },
     "info": Object {
       "description": "A basic Whook server",
       "title": "@whook/example",
       "version": "1.1.0",
     },
+    "openapi": "3.0.2",
     "paths": Object {
       "/delay": Object {
         "get": Object {
-          "consumes": Array [],
           "operationId": "getDelay",
           "parameters": Array [
             Object {
@@ -32,11 +47,10 @@ Object {
               "in": "query",
               "name": "duration",
               "required": true,
-              "type": "number",
+              "schema": Object {
+                "type": "number",
+              },
             },
-          ],
-          "produces": Array [
-            "application/json",
           ],
           "responses": Object {
             "204": Object {
@@ -49,7 +63,6 @@ Object {
           ],
         },
         "options": Object {
-          "consumes": Array [],
           "operationId": "optionsWithCORS",
           "parameters": Array [
             Object {
@@ -57,10 +70,11 @@ Object {
               "in": "query",
               "name": "duration",
               "required": true,
-              "type": "number",
+              "schema": Object {
+                "type": "number",
+              },
             },
           ],
-          "produces": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",
@@ -80,53 +94,59 @@ Object {
       },
       "/diag": Object {
         "get": Object {
-          "consumes": Array [],
           "operationId": "getDiagnostic",
           "parameters": Array [
             Object {
               "in": "header",
               "name": "authorization",
-              "type": "string",
+              "schema": Object {
+                "type": "string",
+              },
             },
             Object {
               "in": "query",
               "name": "access_token",
-              "type": "string",
+              "schema": Object {
+                "type": "string",
+              },
             },
-          ],
-          "produces": Array [
-            "application/json",
           ],
           "responses": Object {
             "200": Object {
-              "description": "Diagnostic",
-              "schema": Object {
-                "additionalProperties": true,
-                "type": "object",
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "additionalProperties": true,
+                    "type": "object",
+                  },
+                },
               },
+              "description": "Diagnostic",
             },
           },
-          "security": Object {
-            "bearerAuth": Array [
-              "admin",
-            ],
-          },
+          "security": Array [
+            Object {
+              "bearerAuth": Array [
+                "admin",
+              ],
+            },
+          ],
           "summary": "Returns current API's transactions.",
           "tags": Array [
             "system",
           ],
         },
         "options": Object {
-          "consumes": Array [],
           "operationId": "optionsWithCORS",
           "parameters": Array [
             Object {
               "in": "query",
               "name": "access_token",
-              "type": "string",
+              "schema": Object {
+                "type": "string",
+              },
             },
           ],
-          "produces": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",
@@ -146,10 +166,8 @@ Object {
       },
       "/echo": Object {
         "options": Object {
-          "consumes": Array [],
           "operationId": "optionsWithCORS",
           "parameters": Array [],
-          "produces": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",
@@ -167,50 +185,48 @@ Object {
           },
         },
         "put": Object {
-          "consumes": Array [
-            "application/json",
-          ],
           "operationId": "putEcho",
-          "parameters": Array [
-            Object {
-              "description": "The input sentence",
-              "example": Object {
-                "echo": "Repeat this!",
-              },
-              "in": "body",
-              "name": "body",
-              "schema": Object {
-                "additionalProperties": false,
-                "properties": Object {
-                  "echo": Object {
-                    "type": "string",
-                  },
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "example": Object {
+                  "echo": "Repeat this!",
                 },
-                "required": Array [
-                  "echo",
-                ],
-                "type": "object",
+                "schema": Object {
+                  "additionalProperties": false,
+                  "properties": Object {
+                    "echo": Object {
+                      "type": "string",
+                    },
+                  },
+                  "required": Array [
+                    "echo",
+                  ],
+                  "type": "object",
+                },
               },
             },
-          ],
-          "produces": Array [
-            "application/json",
-          ],
+            "description": "The input sentence",
+          },
           "responses": Object {
             "200": Object {
-              "description": "The actual echo",
-              "schema": Object {
-                "additionalProperties": false,
-                "properties": Object {
-                  "echo": Object {
-                    "type": "string",
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "additionalProperties": false,
+                    "properties": Object {
+                      "echo": Object {
+                        "type": "string",
+                      },
+                    },
+                    "required": Array [
+                      "echo",
+                    ],
+                    "type": "object",
                   },
                 },
-                "required": Array [
-                  "echo",
-                ],
-                "type": "object",
               },
+              "description": "The actual echo",
             },
           },
           "summary": "Echoes what it takes.",
@@ -221,17 +237,17 @@ Object {
       },
       "/openAPI": Object {
         "get": Object {
-          "consumes": Array [],
           "operationId": "getOpenAPI",
-          "produces": Array [
-            "application/json",
-          ],
           "responses": Object {
             "200": Object {
-              "description": "Provides the private Open API documentation",
-              "schema": Object {
-                "type": "object",
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "type": "object",
+                  },
+                },
               },
+              "description": "Provides the private Open API documentation",
             },
           },
           "summary": "Get API documentation.",
@@ -243,10 +259,8 @@ Object {
           },
         },
         "options": Object {
-          "consumes": Array [],
           "operationId": "optionsWithCORS",
           "parameters": Array [],
-          "produces": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",
@@ -266,26 +280,26 @@ Object {
       },
       "/ping": Object {
         "get": Object {
-          "consumes": Array [],
           "operationId": "getPing",
-          "produces": Array [
-            "application/json",
-          ],
           "responses": Object {
             "200": Object {
-              "description": "Pong",
-              "schema": Object {
-                "additionalProperties": false,
-                "properties": Object {
-                  "pong": Object {
-                    "enum": Array [
-                      "pong",
-                    ],
-                    "type": "string",
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "additionalProperties": false,
+                    "properties": Object {
+                      "pong": Object {
+                        "enum": Array [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
                   },
                 },
-                "type": "object",
               },
+              "description": "Pong",
             },
           },
           "summary": "Checks API's availability.",
@@ -294,10 +308,8 @@ Object {
           ],
         },
         "options": Object {
-          "consumes": Array [],
           "operationId": "optionsWithCORS",
           "parameters": Array [],
-          "produces": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",
@@ -317,24 +329,24 @@ Object {
       },
       "/time": Object {
         "get": Object {
-          "consumes": Array [],
           "operationId": "getTime",
-          "produces": Array [
-            "application/json",
-          ],
           "responses": Object {
             "200": Object {
-              "description": "Server current date",
-              "schema": Object {
-                "properties": Object {
-                  "additionalProperties": false,
-                  "currentDate": Object {
-                    "format": "date-time",
-                    "type": "string",
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "additionalProperties": false,
+                    "properties": Object {
+                      "currentDate": Object {
+                        "format": "date-time",
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
                   },
                 },
-                "type": "object",
               },
+              "description": "Server current date",
             },
           },
           "summary": "Get API internal clock date.",
@@ -343,10 +355,8 @@ Object {
           ],
         },
         "options": Object {
-          "consumes": Array [],
           "operationId": "optionsWithCORS",
           "parameters": Array [],
-          "produces": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",
@@ -365,17 +375,11 @@ Object {
         },
       },
     },
-    "schemes": Array [
-      "http",
-    ],
-    "securityDefinitions": Object {
-      "bearerAuth": Object {
-        "in": "query",
-        "name": "access_token",
-        "type": "apiKey",
+    "servers": Array [
+      Object {
+        "url": "http://localhostundefined",
       },
-    },
-    "swagger": "2.0",
+    ],
   },
   "logCalls": Array [
     Array [

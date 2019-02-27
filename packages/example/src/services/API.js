@@ -16,6 +16,9 @@ async function initAPI({
   DEBUG_NODE_ENVS,
   NODE_ENV,
   CONFIG,
+  HOST,
+  PORT,
+  BASE_PATH,
   API_VERSION,
   log,
 }) {
@@ -24,21 +27,37 @@ async function initAPI({
   const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
 
   const API = {
-    host: CONFIG.host,
-    basePath: CONFIG.basePath || `/v${API_VERSION.split('.')[0]}`,
-    schemes: CONFIG.schemes,
-    securityDefinitions: {
-      bearerAuth: {
-        type: 'apiKey',
-        in: 'query',
-        name: 'access_token',
-      },
-    },
-    swagger: '2.0',
+    openapi: '3.0.2',
     info: {
       version: API_VERSION,
       title: CONFIG.name,
       description: CONFIG.description,
+    },
+    servers: [
+      {
+        url: `http://${CONFIG.host || HOST}${
+          debugging ? `:${PORT}` : ''
+        }${BASE_PATH}`,
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          description: 'Bearer authentication with a user API token',
+          type: 'http',
+          scheme: 'bearer',
+        },
+        ...(debugging
+          ? {
+              fakeAuth: {
+                description: 'A fake authentication for development purpose.',
+                type: 'apiKey',
+                in: 'header',
+                name: 'Authorization',
+              },
+            }
+          : {}),
+      },
     },
     paths: [
       getOpenAPIDefinition,
@@ -54,10 +73,10 @@ async function initAPI({
               ...definition,
               operation: {
                 ...definition.operation,
-                security: {
-                  ...definition.security,
-                  fakeAuth: ['admin'],
-                },
+                security: [
+                  ...definition.operation.security,
+                  { fakeAuth: ['admin'] },
+                ],
               },
             }
           : definition,

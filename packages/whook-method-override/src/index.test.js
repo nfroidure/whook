@@ -9,18 +9,16 @@ import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
+  const BASE_PATH = '/v1';
   const PORT = 6666;
   const HOST = 'localhost';
   const API = {
-    host: 'localhost:1337',
-    swagger: '2.0',
+    openapi: '3.0.2',
     info: {
       version: '1.0.0',
       title: 'Sample Swagger',
       description: 'A sample Swagger file for testing purpose.',
     },
-    basePath: '/v1',
-    schemes: ['http'],
     paths: {
       '/ping': {
         get: {
@@ -58,6 +56,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
         async () => $autoload,
       ),
     );
+    $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
     $.register(constant('ENV', {}));
     $.register(constant('NODE_ENV', 'test'));
@@ -108,7 +107,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
 
     const { status, headers, data } = await axios({
       method: 'post',
-      url: `http://${HOST}:${PORT}${API.basePath}/ping`,
+      url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: {
         'X-HTTP-Method-Override': 'get',
       },
@@ -132,7 +131,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
 
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT}${API.basePath}/ping`,
+      url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
     }).catch(err => err.response);
 
     expect({

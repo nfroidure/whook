@@ -8,9 +8,10 @@ import Ajv from 'ajv';
 import strictQs from 'strict-qs';
 import { flattenSwagger, getSwaggerOperations } from './utils';
 import {
-  prepareValidators,
+  prepareParametersValidators,
   applyValidators,
   filterHeaders,
+  prepareBodyValidator,
 } from './validation';
 import {
   extractBodySpec,
@@ -18,6 +19,8 @@ import {
   checkResponseCharset,
   checkResponseMediaType,
   executeHandler,
+  extractProduceableMediaTypes,
+  extractConsumableMediaTypes,
 } from './lib';
 import { getBody, sendBody } from './body';
 
@@ -58,6 +61,7 @@ export default initializer(
       '?DEBUG_NODE_ENVS',
       '?BUFFER_LIMIT',
       'HANDLERS',
+      'BASE_PATH',
       'API',
       '?PARSERS',
       '?STRINGIFYERS',
@@ -79,6 +83,8 @@ export default initializer(
  * The services the server depends on
  * @param  {Object}   services.API
  * The Swagger definition of the API
+ * @param  {Object}   services.CONFIG
+ * The configuration object
  * @param  {Object}   services.HANDLERS
  * The handlers for the operations decribe
  *  by the Swagger API definition
@@ -110,12 +116,13 @@ export default initializer(
  * @return {Promise}
  * A promise of a function to handle HTTP requests.
  */
-function initHTTPRouter({
+async function initHTTPRouter({
   ENV = {},
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   HANDLERS,
   API,
+  BASE_PATH,
   PARSERS = DEFAULT_PARSERS,
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   DECODERS = DEFAULT_DECODERS,
@@ -136,184 +143,196 @@ function initHTTPRouter({
     charsets: produceableCharsets,
   };
 
-  return flattenSwagger(API)
-    .then(_createRouters.bind(null, { HANDLERS, ajv }))
-    .then(routers => {
-      let handleFatalError;
-      const fatalErrorPromise = new Promise((resolve, reject) => {
-        handleFatalError = reject;
-      });
+  const routers = await _createRouters({ API, HANDLERS, BASE_PATH, ajv, log });
 
-      log('debug', '🚦 - HTTP Router initialized.');
+  let handleFatalError;
+  const fatalErrorPromise = new Promise((resolve, reject) => {
+    handleFatalError = reject;
+  });
 
-      return {
-        service: httpRouter,
-        fatalErrorPromise,
-      };
+  log('debug', '🚦 - HTTP Router initialized.');
 
-      /**
-       * Handle an HTTP incoming message
-       * @param  {HTTPRequest}  req
-       * A raw NodeJS HTTP incoming message
-       * @param  {HTTPResponse} res
-       * A raw NodeJS HTTP response
-       * @return {Promise}
-       * A promise resolving when the operation
-       *  completes
-       */
-      function httpRouter(req, res) {
-        let operation;
-        let responseSpec = defaultResponseSpec;
+  return {
+    service: httpRouter,
+    fatalErrorPromise,
+  };
 
-        return httpTransaction(req, res)
-          .then(([request, transaction]) =>
-            transaction
-              .start(async () => {
-                const method = request.method;
-                const path = request.url.split(SEARCH_SEPARATOR)[0];
-                const search = request.url.substr(path.length);
-                const parts = path.split('/').filter(a => a);
-                let [result, pathParameters] = routers[method]
-                  ? routers[method].find(parts)
-                  : [];
+  /**
+   * Handle an HTTP incoming message
+   * @param  {HTTPRequest}  req
+   * A raw NodeJS HTTP incoming message
+   * @param  {HTTPResponse} res
+   * A raw NodeJS HTTP response
+   * @return {Promise}
+   * A promise resolving when the operation
+   *  completes
+   */
+  async function httpRouter(req, res) {
+    try {
+      let operation;
+      let responseSpec = defaultResponseSpec;
 
-                // Second chance for HEAD calls
-                if (!result && 'head' === method) {
-                  [result, pathParameters] = routers.get
-                    ? routers.get.find(parts)
-                    : [];
-                }
+      const [request, transaction] = await httpTransaction(req, res);
 
-                const { handler, operation: _operation_, validators } =
-                  result || {};
+      await transaction
+        .start(async () => {
+          const method = request.method;
+          const path = request.url.split(SEARCH_SEPARATOR)[0];
+          const search = request.url.substr(path.length);
+          const parts = path.split('/').filter(a => a);
+          let [result, pathParameters] = routers[method]
+            ? routers[method].find(parts)
+            : [];
 
-                if (!handler) {
-                  log('debug', 'No handler found for: ', method, parts);
-                  throw new HTTPError(404, 'E_NOT_FOUND', method, parts);
-                }
+          // Second chance for HEAD calls
+          if (!result && 'head' === method) {
+            [result, pathParameters] = routers.get
+              ? routers.get.find(parts)
+              : [];
+          }
 
-                operation = _operation_;
+          const {
+            handler,
+            operation: _operation_,
+            validators,
+            bodyValidator,
+            consumableMediaTypes,
+            produceableMediaTypes,
+          } = result || {};
 
-                const consumableMediaTypes =
-                  operation.consumes || API.consumes || [];
-                const produceableMediaTypes =
-                  (operation && operation.produces) || API.produces || [];
-                const bodySpec = extractBodySpec(
-                  request,
-                  consumableMediaTypes,
-                  consumableCharsets,
-                );
-                let parameters;
+          if (!handler) {
+            log('debug', 'No handler found for: ', method, parts);
+            throw new HTTPError(404, 'E_NOT_FOUND', method, parts);
+          }
 
-                responseSpec = extractResponseSpec(
-                  operation,
-                  request,
-                  produceableMediaTypes,
-                  produceableCharsets,
-                );
+          operation = _operation_;
 
-                try {
-                  const body = await getBody(
-                    {
-                      DECODERS,
-                      PARSERS,
-                      bufferLimit,
-                    },
-                    operation,
-                    request.body,
-                    bodySpec,
-                  );
-                  parameters = {
-                    ...(body ? { body } : {}),
-                    ...pathParameters,
-                    ...QUERY_PARSER(operation.parameters, search),
-                    ...filterHeaders(operation.parameters, request.headers),
-                  };
+          const bodySpec = extractBodySpec(
+            request,
+            consumableMediaTypes,
+            consumableCharsets,
+          );
+          let parameters;
 
-                  applyValidators(operation, validators, parameters);
-                } catch (err) {
-                  throw HTTPError.cast(err, 400);
-                }
+          responseSpec = extractResponseSpec(
+            operation,
+            request,
+            produceableMediaTypes,
+            produceableCharsets,
+          );
 
-                const response = await executeHandler(
-                  operation,
-                  handler,
-                  parameters,
-                );
+          try {
+            const body = await getBody(
+              {
+                DECODERS,
+                PARSERS,
+                bufferLimit,
+              },
+              operation,
+              request.body,
+              bodySpec,
+            );
+            // TODO: Update strictQS to handle OpenAPI 3
+            const retroCompatibleQueryParameters = (operation.parameters || [])
+              .filter(p => p.in === 'query')
+              .map(p => ({ ...p, ...p.schema }));
 
-                if (response.body) {
-                  response.headers['content-type'] =
-                    response.headers['content-type'] ||
-                    responseSpec.contentTypes[0];
-                }
+            parameters = {
+              ...pathParameters,
+              ...QUERY_PARSER(retroCompatibleQueryParameters, search),
+              ...filterHeaders(operation.parameters, request.headers),
+            };
 
-                // Check the stringifyer only when a schema is
-                // specified
-                const responseHasSchema =
-                  operation.responses &&
-                  operation.responses[response.status] &&
-                  operation.responses[response.status].schema;
+            applyValidators(operation, validators, parameters);
 
-                if (
-                  responseHasSchema &&
-                  !STRINGIFYERS[response.headers['content-type']]
-                ) {
-                  throw new HTTPError(
-                    500,
-                    'E_STRINGIFYER_LACK',
-                    response.headers['content-type'],
-                  );
-                }
-                if (response.body) {
-                  checkResponseCharset(
-                    request,
-                    responseSpec,
-                    produceableCharsets,
-                  );
-                  checkResponseMediaType(
-                    request,
-                    responseSpec,
-                    produceableMediaTypes,
-                  );
-                }
+            bodyValidator(operation, request.headers['content-type'], body);
 
-                return response;
-              })
-              .catch(transaction.catch)
-              .catch(errorHandler.bind(null, transaction.id, responseSpec))
-              .then(async response => {
-                if (response.body && 'head' === request.method) {
-                  log(
-                    'warning',
-                    'Body stripped:',
-                    response.body instanceof Stream ? 'Stream' : response.body,
-                  );
-                  response = {
-                    ...response,
-                    body: {}.undef,
-                  };
-                }
+            parameters = {
+              ...parameters,
+              ...('undefined' !== typeof body ? { body } : {}),
+            };
+          } catch (err) {
+            throw HTTPError.cast(err, 400);
+          }
 
-                await transaction.end(
-                  await sendBody(
-                    {
-                      DEBUG_NODE_ENVS,
-                      ENV,
-                      API,
-                      ENCODERS,
-                      STRINGIFYERS,
-                      log,
-                      ajv,
-                    },
-                    operation,
-                    response,
-                  ),
-                );
-              }),
-          )
-          .catch(handleFatalError);
-      }
-    });
+          const response = await executeHandler(operation, handler, parameters);
+
+          if (response.body) {
+            response.headers['content-type'] =
+              response.headers['content-type'] || responseSpec.contentTypes[0];
+          }
+
+          // Check the stringifyer only when a schema is
+          // specified and it is not a binary one
+          const responseHasSchema =
+            operation.responses &&
+            operation.responses[response.status] &&
+            operation.responses[response.status].content &&
+            operation.responses[response.status].content[
+              response.headers['content-type']
+            ] &&
+            operation.responses[response.status].content[
+              response.headers['content-type']
+            ].schema &&
+            (operation.responses[response.status].content[
+              response.headers['content-type']
+            ].schema.type !== 'string' ||
+              operation.responses[response.status].content[
+                response.headers['content-type']
+              ].schema.format !== 'binary');
+
+          if (
+            responseHasSchema &&
+            !STRINGIFYERS[response.headers['content-type']]
+          ) {
+            throw new HTTPError(
+              500,
+              'E_STRINGIFYER_LACK',
+              response.headers['content-type'],
+            );
+          }
+          if (response.body) {
+            checkResponseCharset(request, responseSpec, produceableCharsets);
+            checkResponseMediaType(
+              request,
+              responseSpec,
+              produceableMediaTypes,
+            );
+          }
+
+          return response;
+        })
+        .catch(transaction.catch)
+        .catch(errorHandler.bind(null, transaction.id, responseSpec))
+        .then(async response => {
+          if (response.body && 'head' === request.method) {
+            log(
+              'warning',
+              'Body stripped:',
+              response.body instanceof Stream ? 'Stream' : response.body,
+            );
+            response = {
+              ...response,
+              body: {}.undef,
+            };
+          }
+
+          await transaction.end(
+            await sendBody(
+              {
+                ENCODERS,
+                STRINGIFYERS,
+              },
+              response,
+            ),
+          );
+        });
+    } catch (err) {
+      log('error', '☢️ - Unrecovable router error...');
+      log('stack', err.stack);
+      handleFatalError(err);
+    }
+  }
 }
 
 function _explodePath(path, parameters) {
@@ -338,31 +357,55 @@ function _explodePath(path, parameters) {
     });
 }
 
-function _createRouters({ HANDLERS, ajv }, API) {
+async function _createRouters({ API, HANDLERS, BASE_PATH, ajv, log }) {
   const routers = {};
+  const operations = await getSwaggerOperations(await flattenSwagger(API));
 
-  return Promise.all(
-    getSwaggerOperations(API).map(operation => {
-      const { path, method, operationId, parameters } = operation;
+  operations.forEach(operation => {
+    const { path, method, operationId, parameters } = operation;
 
-      if (!path.startsWith('/')) {
-        throw new YError('E_BAD_PATH', path);
-      }
-      if (!operationId) {
-        throw new YError('E_NO_OPERATION_ID', path, method);
-      }
+    if (!path.startsWith('/')) {
+      throw new YError('E_BAD_PATH', path);
+    }
+    if (!operationId) {
+      throw new YError('E_NO_OPERATION_ID', path, method);
+    }
 
-      if (!HANDLERS[operationId]) {
-        throw new YError('E_NO_HANDLER', operationId);
-      }
+    if (!HANDLERS[operationId]) {
+      throw new YError('E_NO_HANDLER', operationId);
+    }
 
-      return Promise.resolve(HANDLERS[operationId]).then(handler => {
-        routers[method] = routers[method] || new Siso();
-        routers[method].register(
-          _explodePath((API.basePath || '') + path, parameters),
-          { handler, operation, validators: prepareValidators(ajv, operation) },
-        );
+    const consumableMediaTypes = extractConsumableMediaTypes(operation);
+    const produceableMediaTypes = extractProduceableMediaTypes(operation);
+    const handler = HANDLERS[operationId];
+
+    // TODO: create a new major version of Siso to handle OpenAPI
+    // path params mode widely
+    const pathParameters = (parameters || [])
+      .filter(p => 'path' === p.in)
+      .map(p => {
+        if (p.style) {
+          log('warning', '⚠️ - Only a style subset is supported currently!');
+        }
+        return {
+          ...p,
+          ...p.schema,
+        };
       });
-    }),
-  ).then(() => routers);
+
+    routers[method] = routers[method] || new Siso();
+    routers[method].register(
+      _explodePath((BASE_PATH || '') + path, pathParameters),
+      {
+        handler,
+        consumableMediaTypes,
+        produceableMediaTypes,
+        operation,
+        validators: prepareParametersValidators(ajv, operation),
+        bodyValidator: prepareBodyValidator(ajv, operation),
+      },
+    );
+  });
+
+  return routers;
 }
