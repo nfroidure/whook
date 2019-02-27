@@ -1,6 +1,10 @@
 import { autoService } from 'knifecycle';
 import path from 'path';
+import _axios from 'axios';
+import _ora from 'ora';
 import YError from 'yerror';
+
+const GIT_IGNORE_URL = 'https://www.gitignore.io/api/osx,node,linux';
 
 export default autoService(async function initCreateWhook({
   CWD,
@@ -11,9 +15,13 @@ export default autoService(async function initCreateWhook({
   exec,
   copy,
   require,
+  axios = _axios,
+  ora = _ora,
   log,
 }) {
   return async function createWhook() {
+    log('info', "🏁️ - Starting Whook project's creation!");
+
     const basePackageJSON = require(path.join(SOURCE_DIR, 'package'));
 
     const finalPackageJSON = {
@@ -78,6 +86,21 @@ export default autoService(async function initCreateWhook({
         path.join(project.directory, 'LICENSE'),
         `Copyright ${author.name}, all rights reserved.`,
       ),
+      axios({
+        method: 'get',
+        url: GIT_IGNORE_URL,
+      })
+        .then(response =>
+          writeFile(path.join(project.directory, '.gitignore'), response.data),
+        )
+        .catch(err => {
+          log(
+            'error',
+            '⚠️ - Could not retrieve the `.gitignore` file contents from: ',
+            GIT_IGNORE_URL,
+          );
+          log('stack', err.stack);
+        }),
       new Promise((resolve, reject) =>
         exec(
           'git init',
@@ -100,16 +123,50 @@ export default autoService(async function initCreateWhook({
     ]);
 
     log('info', '✔️ - Project created!');
+
+    const spinner = ora({
+      text: 'Installing dependencies...',
+    }).start();
+
+    try {
+      await new Promise((resolve, reject) =>
+        exec(
+          'npm i',
+          {
+            cwd: project.directory,
+          },
+          (err, stdout, stderr) => {
+            if (err) {
+              log('stack', stderr);
+              reject(YError.wrap(err));
+              return;
+            }
+            resolve(stdout.trim());
+          },
+        ),
+      );
+      spinner.stopAndPersist({
+        symbol: '✔️',
+        text: 'Installed dependencies',
+      });
+    } catch (err) {
+      spinner.stopAndPersist({
+        symbol: '❌',
+        text: 'Failed to install dependencies',
+      });
+      log('stack', err.stack);
+    }
+
     log(
       'info',
       `➕ - Run \`cd ${path.relative(
         CWD,
         project.directory,
-      )} && npm it\` to finish setup!`,
+      )} to enter the project.`,
     );
     log(
       'info',
-      `➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation!`,
+      `➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.`,
     );
     log('info', `➕ - And finally run \`npm run dev\` to start dev!`);
   };

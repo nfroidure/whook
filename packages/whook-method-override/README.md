@@ -8,7 +8,7 @@
 > A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-method-override/LICENSE)
-[![NPM version](https://badge.fury.io/js/@whook/method-override.svg)](https://npmjs.org/package/@whook/method-override)
+[![NPM version](https://badge.fury.io/js/%40whook%2Fmethod-override.svg)](https://npmjs.org/package/@whook/method-override)
 
 
 [//]: # (::contents:start)

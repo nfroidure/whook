@@ -29,14 +29,26 @@ describe('initCreateWhook', () => {
   const exec = jest.fn();
   const copy = jest.fn();
   const require = jest.fn();
+  const axios = jest.fn();
+  const ora = jest.fn();
+  const oraInstance = {
+    start: jest.fn(),
+    stopAndPersist: jest.fn(),
+  };
   const log = jest.fn();
 
   beforeEach(() => {
+    axios.mockReset();
     require.mockReset();
     writeFile.mockReset();
     exec.mockReset();
     copy.mockReset();
     log.mockReset();
+    ora.mockReset();
+    ora.mockReturnValue(oraInstance);
+    oraInstance.start.mockReset();
+    oraInstance.start.mockReturnValue(oraInstance);
+    oraInstance.stopAndPersist.mockReset();
   });
 
   it('should work', async () => {
@@ -59,10 +71,17 @@ describe('initCreateWhook', () => {
         ),
       ),
     );
+    axios.mockResolvedValueOnce({
+      data: 'node_modules',
+    });
+    writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) =>
       cb(null, 'Initialized an empty git repository!'),
+    );
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
     );
 
     const createWhook = await initCreateWhook({
@@ -74,6 +93,8 @@ describe('initCreateWhook', () => {
       exec,
       copy,
       require,
+      axios,
+      ora,
       log,
     });
 
@@ -84,16 +105,41 @@ describe('initCreateWhook', () => {
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       execCalls: exec.mock.calls,
+      oraCalls: ora.mock.calls,
+      oraStartCalls: oraInstance.start.mock.calls,
+      oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls,
     }).toMatchSnapshot();
   });
 
-  it('should handle git initialization problems', async () => {
+  it('should handle network issues', async () => {
     require.mockReturnValueOnce(packageJSON);
-    copy.mockResolvedValueOnce(new YError('E_ACCESS'));
+    copy.mockImplementationOnce((_, _2, { filter }) =>
+      Promise.all(
+        [
+          'package.json',
+          'package-lock.json',
+          'LICENSE',
+          'dist/index.js',
+          'src/index.js',
+          'coverage/index.html',
+          'node_modules/whook/index.js',
+        ].map(fileName =>
+          filter(
+            `${SOURCE_DIR}/${fileName}`,
+            `${project.directory}/${fileName}`,
+          ),
+        ),
+      ),
+    );
+    axios.mockRejectedValueOnce(new YError('E_NETWORK'));
+    writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
+    );
 
     const createWhook = await initCreateWhook({
       CWD,
@@ -104,6 +150,8 @@ describe('initCreateWhook', () => {
       exec,
       copy,
       require,
+      axios,
+      ora,
       log,
     });
 
@@ -114,6 +162,51 @@ describe('initCreateWhook', () => {
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       execCalls: exec.mock.calls,
+      oraCalls: ora.mock.calls,
+      oraStartCalls: oraInstance.start.mock.calls,
+      oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
+    }).toMatchSnapshot();
+  });
+
+  it('should handle git initialization problems', async () => {
+    require.mockReturnValueOnce(packageJSON);
+    copy.mockResolvedValueOnce(new YError('E_ACCESS'));
+    axios.mockResolvedValueOnce({
+      data: 'node_modules',
+    });
+    writeFile.mockResolvedValueOnce();
+    writeFile.mockResolvedValueOnce();
+    writeFile.mockResolvedValueOnce();
+    exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
+    );
+
+    const createWhook = await initCreateWhook({
+      CWD,
+      SOURCE_DIR,
+      author,
+      project,
+      writeFile,
+      exec,
+      copy,
+      require,
+      axios,
+      ora,
+      log,
+    });
+
+    await createWhook();
+
+    expect({
+      requireCalls: require.mock.calls,
+      copyCalls: copy.mock.calls,
+      writeFileCalls: writeFile.mock.calls,
+      execCalls: exec.mock.calls,
+      oraCalls: ora.mock.calls,
+      oraStartCalls: oraInstance.start.mock.calls,
+      oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
     }).toMatchSnapshot();
   });
@@ -121,9 +214,16 @@ describe('initCreateWhook', () => {
   it('should fail with access problems', async () => {
     require.mockReturnValueOnce(packageJSON);
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
+    axios.mockResolvedValueOnce({
+      data: 'node_modules',
+    });
+    writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     writeFile.mockResolvedValueOnce();
     exec.mockImplementationOnce((_, _2, cb) => cb(null, ''));
+    exec.mockImplementationOnce((_, _2, cb) =>
+      cb(null, 'Installed dependencies!'),
+    );
 
     try {
       const createWhook = await initCreateWhook({
@@ -134,6 +234,7 @@ describe('initCreateWhook', () => {
         exec,
         copy,
         require,
+        axios,
         log,
       });
 
@@ -148,6 +249,9 @@ describe('initCreateWhook', () => {
         copyCalls: copy.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         execCalls: exec.mock.calls,
+        oraCalls: ora.mock.calls,
+        oraStartCalls: oraInstance.start.mock.calls,
+        oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
       }).toMatchSnapshot();
     }
