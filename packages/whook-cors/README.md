@@ -14,7 +14,7 @@
 [//]: # (::contents:start)
 
 To see how to add CORS support to your application, have a look
- at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/example)
+ at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
  project, it will be well documented here as soon as possible.
 
 [//]: # (::contents:end)
@@ -79,4 +79,4 @@ Augment an OpenAPI to also serve OPTIONS methods with
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/cors/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-cors/LICENSE)

@@ -48,4 +48,4 @@ export const prepareServer = prepareBaseServer;
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/swagger-ui/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-swagger-ui/LICENSE)

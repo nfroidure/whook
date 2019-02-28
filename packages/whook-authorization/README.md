@@ -14,7 +14,7 @@
 [//]: # (::contents:start)
 
 To see how to add authorization support to your application, have a look
- at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/example)
+ at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
  project, it will be well documented here as soon as possible.
 
 [//]: # (::contents:end)
@@ -37,4 +37,4 @@ Wrap an handler initializer to check client's authorizations.
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/authorization/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-authorization/LICENSE)

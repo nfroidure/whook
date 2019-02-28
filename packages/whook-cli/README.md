@@ -17,7 +17,7 @@ This is the Whook server CLI tool. To create new commands, you simply
  have to create new files in the `src/commands` folder of your Whook
  project.
 
-See the [Whook example server commands](https://github.com/nfroidure/whook/tree/master/packages/example/src/commands)
+See the [Whook example server commands](https://github.com/nfroidure/whook/tree/master/packages/whook-example/src/commands)
  for simple examples.
 
 [//]: # (::contents:end)
@@ -28,4 +28,4 @@ See the [Whook example server commands](https://github.com/nfroidure/whook/tree/
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/cli/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-cli/LICENSE)

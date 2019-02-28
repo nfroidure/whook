@@ -138,4 +138,4 @@ getOpenAPIOperations(API)
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/http-router/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-http-router/LICENSE)
