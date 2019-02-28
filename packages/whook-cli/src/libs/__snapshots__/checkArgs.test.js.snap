@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checkArgs should report named args errors 1`] = `
+Object {
+  "args": Object {
+    "parameters": "{}",
+  },
+  "errorCode": "E_BAD_ARGS",
+  "errorParams": Array [
+    Array [
+      Object {
+        "dataPath": "",
+        "keyword": "required",
+        "message": "should have required property 'name'",
+        "params": Object {
+          "missingProperty": "name",
+        },
+        "schemaPath": "#/required",
+      },
+    ],
+  ],
+}
+`;
+
+exports[`checkArgs should work with named args 1`] = `
+Object {
+  "args": Object {
+    "name": "getPing",
+    "parameters": "{}",
+  },
+}
+`;
+
+exports[`checkArgs should work with no args 1`] = `
+Object {
+  "args": Object {},
+}
+`;
