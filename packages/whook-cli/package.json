@@ -1,6 +1,6 @@
 {
   "name": "@whook/cli",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "description": "The Whook server CLI",
   "main": "dist/index.js",
   "bin": {
@@ -54,7 +54,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^4.0.0-alpha.3",
+    "@whook/whook": "^4.0.0-alpha.4",
     "knifecycle": "^5.3.0",
     "miniquery": "^1.1.2"
   },
@@ -64,6 +64,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
+    "ajv": "^6.9.2",
     "babel-eslint": "^10.0.1",
     "babel-plugin-knifecycle": "^1.0.3",
     "eslint": "^5.13.0",
@@ -72,8 +73,7 @@
     "jsdoc-to-markdown": "^4.0.1",
     "metapak": "^3.1.5",
     "metapak-nfroidure": "9.6.2",
-    "prettier": "^1.16.3",
-    "ajv": "^6.9.2"
+    "prettier": "^1.16.3"
   },
   "contributors": [],
   "engines": {
