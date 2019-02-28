@@ -20,6 +20,14 @@ This is the Whook server CLI tool. To create new commands, you simply
 See the [Whook example server commands](https://github.com/nfroidure/whook/tree/master/packages/whook-example/src/commands)
  for simple examples.
 
+## Dev
+
+To test the CLI script:
+```
+npm run compile
+node bin/whook
+```
+
 [//]: # (::contents:end)
 
 # API

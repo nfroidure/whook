@@ -10,6 +10,18 @@ async function initCommand({ args, log, $injector }) {
   }
 
   const serviceName = args._[0] + 'Command';
+  const command = (await $injector([serviceName]))[serviceName];
 
-  return (await $injector([serviceName]))[serviceName];
+  return async () => {
+    try {
+      await command();
+    } catch (err) {
+      if (err.code === 'E_BAD_ARGS') {
+        log('error', 'Error parsing arguments: ', err.params[0][0].message);
+        log('stack', err.stack);
+        return;
+      }
+      throw err;
+    }
+  };
 }

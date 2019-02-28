@@ -1,7 +1,8 @@
 import { extra, autoService } from 'knifecycle';
 import YError from 'yerror';
+import { checkArgs } from '../libs/checkArgs';
 
-const definition = {
+export const definition = {
   description: 'Runs the given server handler for testing purpose',
   example: `whook handler --name getPing --parameters '{}'`,
   arguments: {
@@ -23,15 +24,10 @@ const definition = {
 export default extra(definition, autoService(initHandlerCommand));
 
 async function initHandlerCommand({ $injector, log, args }) {
-  const handlerName = args.name;
-
-  if (!handlerName) {
-    return async () => {
-      log('info', `No handler given in argument.`);
-    };
-  }
-
   return async () => {
+    checkArgs(definition.arguments, args);
+
+    const handlerName = args.name;
     let handlerParameters;
 
     try {
