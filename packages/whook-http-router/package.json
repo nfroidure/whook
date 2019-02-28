@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-router",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.3",
   "description": "The Whook base HTTP router",
   "main": "dist/index.js",
   "metapak": {

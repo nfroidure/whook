@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-transaction",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.3",
   "description": "Isolated HTTP Transactions for the Whook framework",
   "main": "dist/index.js",
   "metapak": {

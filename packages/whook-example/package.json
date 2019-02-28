@@ -1,6 +1,6 @@
 {
   "name": "@whook/example",
-  "version": "4.0.0-alpha.2",
+  "version": "4.0.0-alpha.3",
   "description": "A basic Whook server",
   "main": "dist/index.js",
   "metapak": {
@@ -54,12 +54,12 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^4.0.0-alpha.0",
-    "@whook/cli": "^4.0.0-alpha.1",
-    "@whook/cors": "^4.0.0-alpha.0",
-    "@whook/http-router": "^4.0.0-alpha.0",
-    "@whook/swagger-ui": "^4.0.0-alpha.0",
-    "@whook/whook": "^4.0.0-alpha.0",
+    "@whook/authorization": "^4.0.0-alpha.3",
+    "@whook/cli": "^4.0.0-alpha.3",
+    "@whook/cors": "^4.0.0-alpha.3",
+    "@whook/http-router": "^4.0.0-alpha.3",
+    "@whook/swagger-ui": "^4.0.0-alpha.3",
+    "@whook/whook": "^4.0.0-alpha.3",
     "ecstatic": "^3.3.0",
     "http-auth-utils": "^2.1.0",
     "knifecycle": "^5.2.0",
@@ -82,8 +82,8 @@
     "jsdoc-to-markdown": "^4.0.1",
     "metapak": "^3.1.5",
     "metapak-nfroidure": "9.6.2",
-    "prettier": "^1.16.3",
-    "openapi-schema-validator": "^3.0.3"
+    "openapi-schema-validator": "^3.0.3",
+    "prettier": "^1.16.3"
   },
   "contributors": [],
   "engines": {
