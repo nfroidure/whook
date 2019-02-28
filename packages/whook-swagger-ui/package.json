@@ -1,6 +1,6 @@
 {
   "name": "@whook/swagger-ui",
-  "version": "4.0.0-alpha.3",
+  "version": "4.0.0-alpha.4",
   "description": "A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev",
   "main": "dist/index.js",
   "metapak": {
@@ -64,8 +64,8 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
-    "@whook/http-router": "^4.0.0-alpha.3",
-    "@whook/whook": "^4.0.0-alpha.3",
+    "@whook/http-router": "^4.0.0-alpha.4",
+    "@whook/whook": "^4.0.0-alpha.4",
     "babel-eslint": "^10.0.1",
     "babel-plugin-knifecycle": "^1.0.3",
     "eslint": "^5.13.0",
