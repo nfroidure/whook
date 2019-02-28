@@ -9,12 +9,12 @@ HTTP router</p>
 <dt><a href="#initHTTPRouter">initHTTPRouter(services)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Initialize an HTTP router</p>
 </dd>
-<dt><a href="#flattenSwagger">flattenSwagger(API)</a> ⇒ <code>Object</code></dt>
-<dd><p>Flatten the inputed Swagger file
+<dt><a href="#flattenOpenAPI">flattenOpenAPI(API)</a> ⇒ <code>Object</code></dt>
+<dd><p>Flatten the inputed OpenAPI file
  object</p>
 </dd>
-<dt><a href="#getSwaggerOperations">getSwaggerOperations(API)</a> ⇒ <code>Array</code></dt>
-<dd><p>Return a Swagger operation in a more
+<dt><a href="#getOpenAPIOperations">getOpenAPIOperations(API)</a> ⇒ <code>Array</code></dt>
+<dd><p>Return a OpenAPI operation in a more
  convenient way to iterate onto its
  operations</p>
 </dd>
@@ -63,8 +63,8 @@ Initialize an HTTP router
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the server depends on |
-| services.API | <code>Object</code> |  | The Swagger definition of the API |
-| services.HANDLERS | <code>Object</code> |  | The handlers for the operations decribe  by the Swagger API definition |
+| services.API | <code>Object</code> |  | The OpenAPI definition of the API |
+| services.HANDLERS | <code>Object</code> |  | The handlers for the operations decribe  by the OpenAPI API definition |
 | [services.ENV] | <code>Object</code> |  | The services the server depends on |
 | [services.DEBUG_NODE_ENVS] | <code>Array</code> |  | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
 | [services.BUFFER_LIMIT] | <code>String</code> |  | The maximum bufferisation before parsing the  request body |
@@ -76,36 +76,36 @@ Initialize an HTTP router
 | [services.log] | <code>function</code> | <code>noop</code> | A logging function |
 | services.httpTransaction | <code>function</code> |  | A function to create a new HTTP transaction |
 
-<a name="flattenSwagger"></a>
+<a name="flattenOpenAPI"></a>
 
-## flattenSwagger(API) ⇒ <code>Object</code>
-Flatten the inputed Swagger file
+## flattenOpenAPI(API) ⇒ <code>Object</code>
+Flatten the inputed OpenAPI file
  object
 
 **Kind**: global function  
-**Returns**: <code>Object</code> - The flattened Swagger definition  
+**Returns**: <code>Object</code> - The flattened OpenAPI definition  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| API | <code>Object</code> | An Object containing a parser Swagger JSON |
+| API | <code>Object</code> | An Object containing a parser OpenAPI JSON |
 
-<a name="getSwaggerOperations"></a>
+<a name="getOpenAPIOperations"></a>
 
-## getSwaggerOperations(API) ⇒ <code>Array</code>
-Return a Swagger operation in a more
+## getOpenAPIOperations(API) ⇒ <code>Array</code>
+Return a OpenAPI operation in a more
  convenient way to iterate onto its
  operations
 
 **Kind**: global function  
-**Returns**: <code>Array</code> - An array of all the Swagger operations  
+**Returns**: <code>Array</code> - An array of all the OpenAPI operations  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| API | <code>Object</code> | The flattened Swagger defition |
+| API | <code>Object</code> | The flattened OpenAPI defition |
 
 **Example**  
 ```js
-getSwaggerOperations(API)
+getOpenAPIOperations(API)
 .map((operation) => {
    const { path, method, operationId, parameters } = operation;
 

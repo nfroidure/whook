@@ -47,7 +47,8 @@
     "HTTP",
     "server",
     "web",
-    "services"
+    "services",
+    "OpenAPI"
   ],
   "author": {
     "name": "Nicolas Froidure",

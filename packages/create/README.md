@@ -13,7 +13,7 @@
 
 [//]: # (::contents:start)
 
-This module creates a basic [`whook`](https://github.com/nfroidure/@whook)
+This module creates a basic [`whook`](https://github.com/nfroidure/whook)
  server working out of the box.
 
 

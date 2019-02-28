@@ -14,7 +14,7 @@
 [//]: # (::contents:start)
 
 To see how to add CORS support to your application, have a look
- at the [`@whook/example`](https://github.com/nfroidure/whook/whook-example/)
+ at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/example)
  project, it will be well documented here as soon as possible.
 
 [//]: # (::contents:end)

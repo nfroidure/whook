@@ -3,7 +3,7 @@ import firstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
 
 /* Architecture Note #1.1: Request body
-According to the Swagger/OpenAPI specification
+According to the OpenAPI specification
 there are two kinds of requests:
 - **validated contents:** it implies to
  buffer their content and parse them to

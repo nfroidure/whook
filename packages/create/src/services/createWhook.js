@@ -178,7 +178,7 @@ ${author.name}
       `➕ - Run \`cd ${path.relative(
         CWD,
         project.directory,
-      )} to enter the project.`,
+      )}\` to enter the project.`,
     );
     log(
       'info',

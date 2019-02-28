@@ -6,7 +6,7 @@ import YError from 'yerror';
 import Siso from 'siso';
 import Ajv from 'ajv';
 import strictQs from 'strict-qs';
-import { flattenSwagger, getSwaggerOperations } from './utils';
+import { flattenOpenAPI, getOpenAPIOperations } from './utils';
 import {
   prepareParametersValidators,
   applyValidators,
@@ -82,12 +82,12 @@ export default initializer(
  * @param  {Object}   services
  * The services the server depends on
  * @param  {Object}   services.API
- * The Swagger definition of the API
+ * The OpenAPI definition of the API
  * @param  {Object}   services.CONFIG
  * The configuration object
  * @param  {Object}   services.HANDLERS
  * The handlers for the operations decribe
- *  by the Swagger API definition
+ *  by the OpenAPI API definition
  * @param  {Object}   [services.ENV]
  * The services the server depends on
  * @param  {Array}   [services.DEBUG_NODE_ENVS]
@@ -359,7 +359,7 @@ function _explodePath(path, parameters) {
 
 async function _createRouters({ API, HANDLERS, BASE_PATH, ajv, log }) {
   const routers = {};
-  const operations = await getSwaggerOperations(await flattenSwagger(API));
+  const operations = await getOpenAPIOperations(await flattenOpenAPI(API));
 
   operations.forEach(operation => {
     const { path, method, operationId, parameters } = operation;

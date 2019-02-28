@@ -1,7 +1,7 @@
 {
   "name": "@whook/swagger-ui",
   "version": "3.1.3",
-  "description": "An `httpRouter` wrapper to provider SwaggerUI for local dev",
+  "description": "A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev",
   "main": "dist/index.js",
   "metapak": {
     "configs": [

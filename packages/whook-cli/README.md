@@ -13,7 +13,12 @@
 
 [//]: # (::contents:start)
 
-This is the Whook server CLI tool.
+This is the Whook server CLI tool. To create new commands, you simply
+ have to create new files in the `src/commands` folder of your Whook
+ project.
+
+See the [Whook example server commands](https://github.com/nfroidure/whook/tree/master/packages/example/src/commands)
+ for simple examples.
 
 [//]: # (::contents:end)
 

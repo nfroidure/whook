@@ -3,8 +3,8 @@
 exports[`augmentAPIWithCORS() should work 1`] = `
 Object {
   "info": Object {
-    "description": "A sample Swagger file for testing purpose.",
-    "title": "Sample Swagger",
+    "description": "A sample OpenAPI file for testing purpose.",
+    "title": "Sample OpenAPI",
     "version": "1.0.0",
   },
   "openapi": "3.0.2",

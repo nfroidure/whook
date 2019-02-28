@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import { getSwaggerOperations } from '@whook/http-router/dist/utils';
+import { getOpenAPIOperations } from '@whook/http-router/dist/utils';
 
 export default autoHandler(getOpenAPI);
 
@@ -35,7 +35,7 @@ async function getOpenAPI({ API }, { userId }) {
     };
   }
 
-  const operations = await getSwaggerOperations(API);
+  const operations = await getOpenAPIOperations(API);
   const CLEANED_API = {
     ...API,
     paths: operations.reduce((paths, operation) => {

@@ -27,9 +27,6 @@ By using the OpenAPI standard and the dependency injection
  pattern, Whook provides a convenient, highly modular and easily
  testable back end framework.
 
-It is the final outcome of my experience
- [building REST APIs with NodeJS](https://insertafter.com/en/blog/http_rest_apis_with_nodejs.html).
-
 # Quickstart
 
 To start a new Whook project:
@@ -38,7 +35,6 @@ To start a new Whook project:
 # Initialize the project
 npm init @whook;
 cd my_project_name;
-npm i;
 
 # Check install with a dry run of the server
 DRY_RUN=1 npm run start
@@ -53,7 +49,7 @@ npm t
 
 Using it right now, will imply making changes when the next
  major realease will happen. If you would like to get involved
- in its early development. Feel free to add issues / comments
+ in its early development, feel free to add issues / comments
  or to improve the code.
 
 # Usage
@@ -63,7 +59,8 @@ The documentation and a tutorial are still to be written but
 
 # Principles
 This projects aims to make creating well documented and highly
- customizable REST APIs a breeze.
+ customizable REST APIs a breeze. It is the final outcome of my experience
+ [building REST APIs with NodeJS](https://insertafter.com/en/blog/http_rest_apis_with_nodejs.html).
 
 By relying on the [OpenAPI format](https://www.openapis.org/)
  to declare a new endpoint, this project forces documentation before code.

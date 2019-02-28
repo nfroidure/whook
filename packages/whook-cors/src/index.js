@@ -1,6 +1,6 @@
 import {
-  flattenSwagger,
-  getSwaggerOperations,
+  flattenOpenAPI,
+  getOpenAPIOperations,
 } from '@whook/http-router/dist/utils';
 import { reuseSpecialProps, alsoInject, handler } from 'knifecycle';
 
@@ -45,7 +45,7 @@ async function handleWithCORS({ CORS }, handler, parameters, operation) {
  * @returns {Promise<Object>} The augmented  OpenAPI object
  */
 export async function augmentAPIWithCORS(API) {
-  const operations = await getSwaggerOperations(await flattenSwagger(API));
+  const operations = await getOpenAPIOperations(await flattenOpenAPI(API));
 
   return operations.reduce((newAPI, operation) => {
     const existingOperation = newAPI.paths[operation.path].options;
