@@ -155,6 +155,9 @@ function filterPaths(strs) {
   return strs.map(str =>
     'string' !== typeof str
       ? str
-      : str.replace(/ (\/[^/]+){1,}\/whook/g, ' /home/whoiam/projects/whook'),
+      : str.replace(
+          / (\/[^/]+){1,}\/whook\//g,
+          ' /home/whoiam/projects/whook/',
+        ),
   );
 }

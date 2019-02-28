@@ -1,8 +1,8 @@
 import { identity, noop, compose } from '../libs/utils';
 import { initializer, constant, name } from 'knifecycle';
 import {
-  flattenSwagger,
-  getSwaggerOperations,
+  flattenOpenAPI,
+  getOpenAPIOperations,
 } from '@whook/http-router/dist/utils';
 import path from 'path';
 
@@ -152,8 +152,8 @@ async function initAutoload({
     if ('HANDLERS' === resolvedName) {
       const handlerNames = [
         ...new Set(
-          (await getSwaggerOperations(
-            await flattenSwagger(await getAPI()),
+          (await getOpenAPIOperations(
+            await flattenOpenAPI(await getAPI()),
           )).map(operation => operation.operationId),
         ),
       ].map(handlerName => `${handlerName}>${handlerName}Wrapped`);

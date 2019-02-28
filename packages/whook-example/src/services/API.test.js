@@ -1,8 +1,8 @@
 import initAPI from './API';
 import FULL_CONFIG from '../config/test/config';
 import {
-  flattenSwagger,
-  getSwaggerOperations,
+  flattenOpenAPI,
+  getOpenAPIOperations,
 } from '@whook/http-router/dist/utils';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 
@@ -43,7 +43,7 @@ describe('API', () => {
       DEBUG_NODE_ENVS,
       API_VERSION: '1.1.0',
     });
-    const operations = await getSwaggerOperations(await flattenSwagger(API));
+    const operations = await getOpenAPIOperations(await flattenOpenAPI(API));
 
     expect(
       operations

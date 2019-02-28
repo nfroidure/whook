@@ -171,4 +171,4 @@ Auto detect the Whook PROJECT_DIR
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/whook/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-whook/LICENSE)

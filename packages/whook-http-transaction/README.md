@@ -14,9 +14,15 @@
 [//]: # (::contents:start)
 
 Whook takes a very unusual direction when it comes to dealing with
- HTTP transactions. It makes requests and responses serializable.
+ HTTP transactions. It makes requests and responses serializable to:
+- only work with functions that take request and return responses
+- have [easily unit testable](https://github.com/nfroidure/whook/blob/e7470fed860a8e1644b15625c9db4dd8198b70a6/packages/whook-example/src/handlers/putEcho.test.js)
+ handlers.
 
-This service is intended to build those objects from Node HTTP ones.
+This service is intended to build those objects from Node HTTP ones
+ before passing them to the handlers. It also keeps track of running
+ queries and ensure it is well handled by the server before releasing
+ it.
 
 [//]: # (::contents:end)
 
@@ -135,4 +141,4 @@ End the transaction
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/http-transaction/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-http-transaction/LICENSE)

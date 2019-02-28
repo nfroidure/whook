@@ -1,6 +1,6 @@
 import initCreateWhook from './createWhook';
 import YError from 'yerror';
-import _packageJSON from '@whook/example/package';
+import _packageJSON from '@whook/example/package.json';
 
 describe('initCreateWhook', () => {
   const CWD = '/home/whoiam/projects/';

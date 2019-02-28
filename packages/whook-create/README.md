@@ -13,7 +13,7 @@
 
 [//]: # (::contents:start)
 
-This module creates a basic [`whook`](https://github.com/nfroidure/@whook)
+This module creates a basic [`whook`](https://github.com/nfroidure/whook)
  server working out of the box.
 
 
@@ -37,4 +37,4 @@ npm run cli -- babel-node bin/create
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/create/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-create/LICENSE)

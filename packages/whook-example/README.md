@@ -13,24 +13,25 @@
 
 [//]: # (::contents:start)
 
-This is a basic [`whook`]([`whook`](https://github.com/nfroidure/@whook))
+This is a basic [Whook](https://github.com/nfroidure/whook)
  server demonstrating the various usages of the Whook framework to build
  REST APIs.
 
 ## Usage
-
+To run the server in production:
 ```
 npm it
-npm start
+NODE_ENV=production npm start
 ```
 
 ## Dev
 
-Start the dev server:
+Start the server in development mode:
 ```
 npm run dev
 ```
 
+# Debug
 Execute a handler in isolation:
 ```
 npm run whook -- handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
@@ -52,4 +53,4 @@ DEBUG=metapak npm run dev
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/@whook/example/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-example/LICENSE)

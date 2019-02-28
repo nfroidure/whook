@@ -16,8 +16,8 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     openapi: '3.0.2',
     info: {
       version: '1.0.0',
-      title: 'Sample Swagger',
-      description: 'A sample Swagger file for testing purpose.',
+      title: 'Sample OpenAPI',
+      description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
       '/ping': {
