@@ -5,6 +5,7 @@ import _ora from 'ora';
 import YError from 'yerror';
 
 const GIT_IGNORE_URL = 'https://www.gitignore.io/api/osx,node,linux';
+const README_REGEXP = /^(?:[^]*)\[\/\/\]: # \(::contents:start\)\r?\n\r?\n([^]*)\r?\n\r?\n\[\/\/\]: # \(::contents:end\)(?:[^]*)$/gm;
 
 export default autoService(async function initCreateWhook({
   CWD,
@@ -12,6 +13,7 @@ export default autoService(async function initCreateWhook({
   author,
   project,
   writeFile,
+  readFile,
   exec,
   copy,
   require,
@@ -60,6 +62,7 @@ export default autoService(async function initCreateWhook({
               path.join(SOURCE_DIR, 'package.json'),
               path.join(SOURCE_DIR, 'package-lock.json'),
               path.join(SOURCE_DIR, 'LICENSE'),
+              path.join(SOURCE_DIR, 'README.md'),
             ].includes(src)
           ) {
             log(
@@ -78,6 +81,19 @@ export default autoService(async function initCreateWhook({
           return true;
         },
       }),
+      readFile(path.join(SOURCE_DIR, 'README.md')).then(data =>
+        writeFile(
+          path.join(project.directory, 'README.md'),
+          `# ${project.name}
+
+${data.toString().replace(README_REGEXP, '$1')}
+
+## Author
+${author.name}
+
+`,
+        ),
+      ),
       writeFile(
         path.join(project.directory, 'package.json'),
         JSON.stringify(finalPackageJSON),

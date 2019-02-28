@@ -26,6 +26,7 @@ describe('initCreateWhook', () => {
     directory: '/home/whoiam/projects/yolo',
   };
   const writeFile = jest.fn();
+  const readFile = jest.fn();
   const exec = jest.fn();
   const copy = jest.fn();
   const require = jest.fn();
@@ -41,6 +42,7 @@ describe('initCreateWhook', () => {
     axios.mockReset();
     require.mockReset();
     writeFile.mockReset();
+    readFile.mockReset();
     exec.mockReset();
     copy.mockReset();
     log.mockReset();
@@ -49,6 +51,22 @@ describe('initCreateWhook', () => {
     oraInstance.start.mockReset();
     oraInstance.start.mockReturnValue(oraInstance);
     oraInstance.stopAndPersist.mockReset();
+    readFile.mockResolvedValue(
+      Buffer.from(`
+# test
+> yolo
+
+[//]: # (::contents:start)
+
+YOLO
+
+[//]: # (::contents:end)
+
+# Authors
+Mr Bean
+
+    `),
+    );
   });
 
   it('should work', async () => {
@@ -90,6 +108,7 @@ describe('initCreateWhook', () => {
       author,
       project,
       writeFile,
+      readFile,
       exec,
       copy,
       require,
@@ -104,6 +123,7 @@ describe('initCreateWhook', () => {
       requireCalls: require.mock.calls,
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
+      readFileCalls: readFile.mock.calls,
       execCalls: exec.mock.calls,
       oraCalls: ora.mock.calls,
       oraStartCalls: oraInstance.start.mock.calls,
@@ -147,6 +167,7 @@ describe('initCreateWhook', () => {
       author,
       project,
       writeFile,
+      readFile,
       exec,
       copy,
       require,
@@ -161,6 +182,7 @@ describe('initCreateWhook', () => {
       requireCalls: require.mock.calls,
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
+      readFileCalls: readFile.mock.calls,
       execCalls: exec.mock.calls,
       oraCalls: ora.mock.calls,
       oraStartCalls: oraInstance.start.mock.calls,
@@ -189,6 +211,7 @@ describe('initCreateWhook', () => {
       author,
       project,
       writeFile,
+      readFile,
       exec,
       copy,
       require,
@@ -203,6 +226,7 @@ describe('initCreateWhook', () => {
       requireCalls: require.mock.calls,
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
+      readFileCalls: readFile.mock.calls,
       execCalls: exec.mock.calls,
       oraCalls: ora.mock.calls,
       oraStartCalls: oraInstance.start.mock.calls,
@@ -231,6 +255,7 @@ describe('initCreateWhook', () => {
         author,
         project,
         writeFile,
+        readFile,
         exec,
         copy,
         require,
@@ -248,6 +273,7 @@ describe('initCreateWhook', () => {
         requireCalls: require.mock.calls,
         copyCalls: copy.mock.calls,
         writeFileCalls: writeFile.mock.calls,
+        readFileCalls: readFile.mock.calls,
         execCalls: exec.mock.calls,
         oraCalls: ora.mock.calls,
         oraStartCalls: oraInstance.start.mock.calls,

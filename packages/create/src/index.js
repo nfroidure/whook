@@ -2,6 +2,7 @@ import Knifecycle, { constant } from 'knifecycle';
 import { exec as _exec } from 'child_process';
 import {
   writeFile as _writeFile,
+  readFile as _readFile,
   copy as _copy,
   ensureDir as _ensureDir,
 } from 'fs-extra';
@@ -29,6 +30,7 @@ export async function runCreateWhook() {
     $.register(constant('inquirer', inquirer));
     $.register(constant('exec', _exec));
     $.register(constant('writeFile', _writeFile));
+    $.register(constant('readFile', _readFile));
     $.register(constant('copy', _copy));
     $.register(constant('ensureDir', _ensureDir));
     $.register(

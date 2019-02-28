@@ -31,6 +31,11 @@ Object {
   "oraCalls": Array [],
   "oraStartCalls": Array [],
   "oraStopAndPersistCalls": Array [],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
   "requireCalls": Array [
     Array [
       "/var/lib/node/node_modules/whook-example/package",
@@ -44,6 +49,17 @@ Object {
     Array [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
     ],
     Array [
       "/home/whoiam/projects/yolo/.gitignore",
@@ -124,6 +140,11 @@ Object {
       },
     ],
   ],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
   "requireCalls": Array [
     Array [
       "/var/lib/node/node_modules/whook-example/package",
@@ -137,6 +158,17 @@ Object {
     Array [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
     ],
     Array [
       "/home/whoiam/projects/yolo/.gitignore",
@@ -289,6 +321,11 @@ Object {
       },
     ],
   ],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
   "requireCalls": Array [
     Array [
       "/var/lib/node/node_modules/whook-example/package",
@@ -302,6 +339,17 @@ Object {
     Array [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
     ],
   ],
 }
@@ -441,6 +489,11 @@ Object {
       },
     ],
   ],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
   "requireCalls": Array [
     Array [
       "/var/lib/node/node_modules/whook-example/package",
@@ -454,6 +507,17 @@ Object {
     Array [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
     ],
     Array [
       "/home/whoiam/projects/yolo/.gitignore",
