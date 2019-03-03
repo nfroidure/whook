@@ -2,8 +2,10 @@
 
 exports[`initCONFIGS should fail with non-existing file 1`] = `
 Object {
-  "errorCode": "/home/whoami/my-whook-project/src/config/development/config",
-  "errorParams": Array [],
+  "errorCode": "E_NO_CONFIG",
+  "errorParams": Array [
+    "/home/whoami/my-whook-project/src/config/development/config",
+  ],
   "logCalls": Array [
     Array [
       "debug",

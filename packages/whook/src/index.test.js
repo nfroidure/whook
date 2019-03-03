@@ -4,6 +4,7 @@ import {
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
 } from './index';
+import YError from 'yerror';
 
 describe('runServer', () => {
   it('should work', async () => {
@@ -36,7 +37,9 @@ describe('runServer', () => {
       error: jest.fn(),
     };
     const debug = jest.fn();
-    const $autoload = jest.fn(async () => ({}.undef));
+    const $autoload = jest.fn(async serviceName => {
+      throw new YError('E_UNECESSARY_AUTOLOAD', serviceName);
+    });
 
     async function prepareEnvironment() {
       const $ = await basePrepareEnvironment();

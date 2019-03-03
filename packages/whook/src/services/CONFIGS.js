@@ -45,6 +45,7 @@ async function initCONFIGS({
     return require(configPath).default;
   } catch (err) {
     log('warning', `☢ - Could not load configuration file: ${configPath}.`);
-    throw YError.wrap('E_NO_CONFIG', configPath);
+    log('stack', err.stack);
+    throw YError.wrap(err, 'E_NO_CONFIG', configPath);
   }
 }

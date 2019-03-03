@@ -3,6 +3,7 @@ import axios from 'axios';
 import { prepareServer, prepareEnvironment } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
+import YError from 'yerror';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
@@ -49,7 +50,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   };
   const debug = jest.fn();
   const time = jest.fn();
-  const $autoload = jest.fn(async () => ({}.undef));
+  const $autoload = jest.fn(async serviceName => {
+    throw new YError('E_UNECESSARY_AUTOLOAD', serviceName);
+  });
   let $;
 
   beforeEach(() => {
