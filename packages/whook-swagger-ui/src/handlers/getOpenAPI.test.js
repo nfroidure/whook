@@ -42,7 +42,7 @@ describe('getOpenAPI', () => {
       API,
     });
     const response = await getOpenAPI({
-      userId: 1,
+      authenticated: true,
     });
 
     expect({

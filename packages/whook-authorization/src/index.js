@@ -67,7 +67,7 @@ async function handleWithAuthorization(
       'debug',
       '🔓 - Public endpoint detected, letting the call pass through!',
     );
-    response = await handler(parameters, operation);
+    response = await handler({ parameters, authenticated: false }, operation);
   } else {
     const authorization = parameters.access_token
       ? `${DEFAULT_MECHANISM} ${parameters.access_token}`

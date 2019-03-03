@@ -1,6 +1,7 @@
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import swaggerDist from 'swagger-ui-dist';
 import ecstatic from 'ecstatic';
+import { definition as getOpenAPIDefinition } from './handlers/getOpenAPI';
 
 /**
  * Wraps the `httpRouter` initializer to also serve the
@@ -11,7 +12,15 @@ import ecstatic from 'ecstatic';
 export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
   return wrapInitializer(
     async (
-      { DEBUG_NODE_ENVS, NODE_ENV, BASE_PATH, HOST, PORT, log = noop },
+      {
+        DEBUG_NODE_ENVS,
+        NODE_ENV,
+        DEV_ACCESS_TOKEN,
+        BASE_PATH,
+        HOST,
+        PORT,
+        log = noop,
+      },
       httpRouter,
     ) => {
       if (!DEBUG_NODE_ENVS.includes(NODE_ENV)) {
@@ -20,7 +29,9 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
 
       const localURL = `http://${HOST}:${PORT}`;
       const swaggerUIURL = `${localURL}/docs`;
-      const publicSwaggerURL = `${localURL}${BASE_PATH || ''}/openAPI`;
+      const publicSwaggerURL = `${localURL}${BASE_PATH || ''}${
+        getOpenAPIDefinition.path
+      }`;
       const staticRouter = ecstatic({
         root: swaggerDist.absolutePath(),
         showdir: false,
@@ -29,10 +40,21 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
 
       log(
         'info',
-        `💁 - Serving the API docs: ${swaggerUIURL}?url=${encodeURIComponent(
+        `💁 - Serving the public API docs: ${swaggerUIURL}?url=${encodeURIComponent(
           publicSwaggerURL,
         )}`,
       );
+
+      if (DEV_ACCESS_TOKEN) {
+        log(
+          'info',
+          `💁 - Serving the private API docs: ${swaggerUIURL}?url=${encodeURIComponent(
+            publicSwaggerURL +
+              '?access_token=' +
+              encodeURIComponent(DEV_ACCESS_TOKEN),
+          )}`,
+        );
+      }
 
       return {
         ...httpRouter,
@@ -47,7 +69,15 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
       }
     },
     alsoInject(
-      ['DEBUG_NODE_ENVS', 'NODE_ENV', 'BASE_PATH', 'HOST', 'PORT', '?log'],
+      [
+        'DEBUG_NODE_ENVS',
+        'NODE_ENV',
+        '?DEV_ACCESS_TOKEN',
+        'BASE_PATH',
+        'HOST',
+        'PORT',
+        '?log',
+      ],
       initHTTPRouter,
     ),
   );

@@ -80,6 +80,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(constant('API', API));
     $.register(constant('ENV', {}));
     $.register(constant('NODE_ENV', 'test'));
+    $.register(constant('DEV_ACCESS_TOKEN', 'oudelali'));
     $.register(constant('HOST', HOST));
     $.register(constant('WRAPPERS', []));
     $.register(

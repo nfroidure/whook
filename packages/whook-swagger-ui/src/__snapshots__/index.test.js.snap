@@ -243,7 +243,10 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      "💁 - Serving the API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI",
+      "💁 - Serving the public API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI",
+    ],
+    Array [
+      "💁 - Serving the private API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
     ],
     Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:8890\\".",
@@ -356,7 +359,10 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      "💁 - Serving the API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI",
+      "💁 - Serving the public API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI",
+    ],
+    Array [
+      "💁 - Serving the private API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
     ],
     Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
