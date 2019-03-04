@@ -19,14 +19,14 @@ This module creates a basic [`whook`](https://github.com/nfroidure/whook)
 
 ## Usage
 
-```
+```sh
 npm init @whook
 ```
 
 ## Dev
 
 To test the create script:
-```
+```sh
 npm run compile
 npm run cli -- babel-node bin/create
 ```

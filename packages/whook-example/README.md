@@ -19,7 +19,7 @@ This is a basic [Whook](https://github.com/nfroidure/whook)
 
 ## Usage
 To run the server in production:
-```
+```sh
 npm it
 NODE_ENV=production npm start
 ```
@@ -27,23 +27,23 @@ NODE_ENV=production npm start
 ## Dev
 
 Start the server in development mode:
-```
+```sh
 npm run dev
 ```
 
 # Debug
 Execute a handler in isolation:
-```
+```sh
 npm run whook -- handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
 ```
 
 Debug `whook` internals:
-```
+```sh
 DEBUG=whook npm run dev
 ```
 
 Debug `knifecycle` internals (dependency injections issues):
-```
+```sh
 DEBUG=metapak npm run dev
 ```
 

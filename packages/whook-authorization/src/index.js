@@ -69,9 +69,10 @@ async function handleWithAuthorization(
     );
     response = await handler({ parameters, authenticated: false }, operation);
   } else {
-    const authorization = parameters.access_token
-      ? `${DEFAULT_MECHANISM} ${parameters.access_token}`
-      : parameters.authorization;
+    const authorization =
+      parameters.access_token && DEFAULT_MECHANISM
+        ? `${DEFAULT_MECHANISM} ${parameters.access_token}`
+        : parameters.authorization;
     let parsedAuthorization;
 
     if (!authorization) {

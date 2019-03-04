@@ -199,7 +199,7 @@ describe('wrapHandlerWithAuthorization', () => {
       await wrappedHandler({
         access_token: 'yolo',
       });
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,
@@ -233,7 +233,7 @@ describe('wrapHandlerWithAuthorization', () => {
         },
         NOOP_RESTRICTED_OPERATION,
       );
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,
@@ -262,7 +262,7 @@ describe('wrapHandlerWithAuthorization', () => {
         },
         BAD_OPERATION,
       );
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,
@@ -295,7 +295,7 @@ describe('wrapHandlerWithAuthorization', () => {
         },
         NOOP_RESTRICTED_OPERATION,
       );
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,
@@ -329,7 +329,7 @@ describe('wrapHandlerWithAuthorization', () => {
         },
         NOOP_RESTRICTED_OPERATION,
       );
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,
@@ -342,6 +342,10 @@ describe('wrapHandlerWithAuthorization', () => {
   });
 
   it('should fail with not supported auth', async () => {
+    authentication.check.mockRejectedValue(
+      new YError('E_UNEXPECTED_TOKEN_CHECK'),
+    );
+
     const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
@@ -358,7 +362,7 @@ describe('wrapHandlerWithAuthorization', () => {
         },
         NOOP_RESTRICTED_OPERATION,
       );
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,
@@ -371,6 +375,10 @@ describe('wrapHandlerWithAuthorization', () => {
   });
 
   it('should fail with no authorization at all for secured endpoints', async () => {
+    authentication.check.mockRejectedValue(
+      new YError('E_UNEXPECTED_TOKEN_CHECK'),
+    );
+
     const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
@@ -382,7 +390,41 @@ describe('wrapHandlerWithAuthorization', () => {
 
     try {
       await wrappedHandler({}, NOOP_RESTRICTED_OPERATION);
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
+    } catch (err) {
+      expect({
+        httpCode: err.httpCode,
+        errorCode: err.code,
+        errorParams: err.params,
+        authenticationChecks: authentication.check.mock.calls,
+        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      }).toMatchSnapshot();
+    }
+  });
+
+  it('should fail with access_token disabled', async () => {
+    authentication.check.mockRejectedValue(
+      new YError('E_UNEXPECTED_TOKEN_CHECK'),
+    );
+
+    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
+      noopHandler,
+    );
+    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      DEFAULT_MECHANISM: '',
+      authentication,
+      log,
+    });
+
+    try {
+      await wrappedHandler(
+        {
+          access_token: 'yolo',
+        },
+        NOOP_RESTRICTED_OPERATION,
+      );
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,
@@ -395,6 +437,10 @@ describe('wrapHandlerWithAuthorization', () => {
   });
 
   it('should proxy authentication errors', async () => {
+    authentication.check.mockRejectedValue(
+      new YError('E_UNEXPECTED_TOKEN_CHECK'),
+    );
+
     authentication.check.mockRejectedValue(new YError('E_UNAUTHORIZED'));
 
     const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
@@ -413,7 +459,7 @@ describe('wrapHandlerWithAuthorization', () => {
         },
         NOOP_RESTRICTED_OPERATION,
       );
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         httpCode: err.httpCode,

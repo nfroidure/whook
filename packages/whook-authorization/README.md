@@ -13,9 +13,68 @@
 
 [//]: # (::contents:start)
 
-To see how to add authorization support to your application, have a look
- at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
- project, it will be well documented here as soon as possible.
+This wrapper ties authentication with only two kinds of input:
+- the `authorization` header which allows several mechanisms to be used
+ including custom ones (this module is using
+ [`http-auth-utils`](https://www.npmjs.com/package/http-auth-utils)
+ under the hood). This is the recommended way to authenticate with
+ a server.
+- the `access_token` defined by the
+ [RFC6750](https://tools.ietf.org/html/rfc6750#page-6) that allows
+ providing the token via query parameters for convenience (mostly
+ for development purpose). Note that you can disable it by setting
+ the `DEFAULT_MECHANISM` constant to an empty string.
+
+Note that the form-encoded body parameter defined by the bearer
+ authentication RFC is volontarily not supported since nowadays
+ everyone uses JSON and there is no situations where one could
+ not set the token in headers.
+
+To use this wrapper, you'll have to create an `authentication`
+ service. Here is a simple unique token based implementation:
+ ```js
+ import { autoService } from 'knifecycle';
+import YError from 'yerror';
+
+export default autoService(initAuthentication);
+
+async function initAuthentication({ TOKEN }) {
+  const authentication = {
+    // The authentication service must have a check
+    // method which take the type of authentication
+    // used by the client and its parsed payload
+    check: async (type, data) => {
+      if (type === 'bearer') {
+        if (data.hash === TOKEN) {
+          // When successful, the authentication check
+          // must return an object with at least a `scopes`
+          // property containing an array of the actual
+          // scopes the authentication check resolved to
+          return {
+            userId: 1,
+            scopes: ['admin'],
+          };
+        }
+        throw new YError('E_BAD_BEARER_TOKEN', type, data.hash);
+      }
+      // Of course, the service must check the auth type
+      // and fail if not supported to avoid security issues
+      throw new YError('E_UNEXPECTED_AUTH_TYPE', type);
+    },
+  };
+
+  return authentication;
+}
+```
+
+The properties added next to the `scopes` one will be passed to
+ the wrapped handlers and an `authenticated` property will also
+ be added in order for handlers to know if the client were
+ authneticated.
+
+To see a usage of this wrapper, you may have a look at the
+ [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
+ project.
 
 [//]: # (::contents:end)
 

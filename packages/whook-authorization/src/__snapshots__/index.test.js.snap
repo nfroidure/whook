@@ -25,6 +25,25 @@ Object {
 }
 `;
 
+exports[`wrapHandlerWithAuthorization should fail with access_token disabled 1`] = `
+Object {
+  "authenticationChecks": Array [],
+  "errorCode": "E_UNAUTHORIZED",
+  "errorParams": Array [],
+  "httpCode": 401,
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🔐 - Initializing the authentication wrapper.",
+    ],
+    Array [
+      "debug",
+      "🔐 - No authorization found, locking access!",
+    ],
+  ],
+}
+`;
+
 exports[`wrapHandlerWithAuthorization should fail with bad operation definition provided 1`] = `
 Object {
   "authenticationChecks": Array [],
