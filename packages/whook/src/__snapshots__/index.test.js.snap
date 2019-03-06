@@ -81,13 +81,12 @@ Object {
   ],
   "logErrorCalls": Array [
     Array [
+      "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
+    ],
+    Array [
       "On air 🚀🌕",
     ],
   ],
-  "logInfoCalls": Array [
-    Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
-    ],
-  ],
+  "logInfoCalls": Array [],
 }
 `;

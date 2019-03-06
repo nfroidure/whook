@@ -44,7 +44,7 @@ Object {
   "httpRouterCalls": Array [],
   "logCalls": Array [
     Array [
-      "info",
+      "warning",
       "🎙️ - HTTP Server listening at \\"http://localhost:7777\\".",
     ],
     Array [

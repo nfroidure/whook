@@ -392,15 +392,15 @@ Object {
       "⚠️ - Using fake auth mechanism!",
     ],
     Array [
+      "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
+    ],
+    Array [
       "On air 🚀🌕",
     ],
   ],
   "logInfoCalls": Array [
     Array [
       "💁 - Serving the public API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv4%2FopenAPI",
-    ],
-    Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
     ],
   ],
 }

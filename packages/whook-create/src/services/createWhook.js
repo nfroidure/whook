@@ -22,7 +22,7 @@ export default autoService(async function initCreateWhook({
   log,
 }) {
   return async function createWhook() {
-    log('info', "🏁️ - Starting Whook project's creation!");
+    log('warning', "🏁️ - Starting Whook project's creation!");
 
     const basePackageJSON = require(path.join(SOURCE_DIR, 'package'));
 
@@ -138,7 +138,7 @@ ${author.name}
       }),
     ]);
 
-    log('info', '✔️ - Project created!');
+    log('warning', '✔️ - Project created!');
 
     const spinner = ora({
       text: 'Installing dependencies...',
@@ -174,16 +174,16 @@ ${author.name}
     }
 
     log(
-      'info',
+      'warning',
       `➕ - Run \`cd ${path.relative(
         CWD,
         project.directory,
       )}\` to enter the project.`,
     );
     log(
-      'info',
+      'warning',
       `➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.`,
     );
-    log('info', `➕ - And finally run \`npm run dev\` to start dev!`);
+    log('warning', `➕ - And finally run \`npm run dev\` to start dev!`);
   };
 });
