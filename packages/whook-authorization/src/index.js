@@ -2,6 +2,7 @@ import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import HTTPError from 'yhttperror';
 import {
   parseAuthorizationHeader,
+  buildWWWAuthenticateHeader,
   BEARER as BEARER_MECHANISM,
 } from 'http-auth-utils';
 
@@ -75,103 +76,126 @@ async function handleWithAuthorization(
         : parameters.authorization;
     let parsedAuthorization;
 
-    if (!authorization) {
-      log('debug', '🔐 - No authorization found, locking access!');
-      throw new HTTPError(401, 'E_UNAUTHORIZED');
-    }
+    const usableMechanisms = MECHANISMS.filter(mechanism =>
+      operation.security.find(
+        security => security[`${mechanism.type.toLowerCase()}Auth`],
+      ),
+    );
 
     try {
-      parsedAuthorization = parseAuthorizationHeader(
-        authorization,
-        MECHANISMS.filter(mechanism =>
-          operation.security.find(
-            security => security[`${mechanism.type.toLowerCase()}Auth`],
-          ),
-        ),
-      );
-    } catch (err) {
-      // This code should be simplified by solving this issue
-      // https://github.com/nfroidure/http-auth-utils/issues/2
+      if (!authorization) {
+        log('debug', '🔐 - No authorization found, locking access!');
+        throw new HTTPError(401, 'E_UNAUTHORIZED');
+      }
+
+      try {
+        parsedAuthorization = parseAuthorizationHeader(
+          authorization,
+          usableMechanisms,
+        );
+      } catch (err) {
+        // This code should be simplified by solving this issue
+        // https://github.com/nfroidure/http-auth-utils/issues/2
+        if (
+          err.code === 'E_UNKNOWN_AUTH_MECHANISM' &&
+          MECHANISMS.some(
+            mechanism =>
+              authorization.substr(0, mechanism.type.length) === mechanism.type,
+          )
+        ) {
+          throw HTTPError.wrap(err, 400, 'E_UNALLOWED_AUTH_MECHANISM');
+        }
+        throw HTTPError.cast(err, 400);
+      }
+
+      const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
+      const requiredScopes = (operation.security.find(
+        security => security[authName],
+      ) || { [authName]: [] })[authName];
+
+      // If security exists, we need at least one scope
+      if (!(requiredScopes && requiredScopes.length)) {
+        throw new HTTPError(
+          500,
+          'E_MISCONFIGURATION',
+          parsedAuthorization.type,
+          requiredScopes,
+        );
+      }
+
+      let authorizationContent;
+
+      try {
+        authorizationContent = await authentication.check(
+          parsedAuthorization.type.toLowerCase(),
+          parsedAuthorization.data,
+        );
+      } catch (err) {
+        throw HTTPError.cast(err, 401);
+      }
+
+      // Check user id if present in parameters
       if (
-        err.code === 'E_UNKNOWN_AUTH_MECHANISM' &&
-        MECHANISMS.some(
-          mechanism =>
-            authorization.substr(0, mechanism.type.length) === mechanism.type,
+        'undefined' !== typeof parameters.userId &&
+        authorizationContent.userId !== parameters.userId
+      ) {
+        throw new HTTPError(
+          403,
+          'E_UNAUTHORIZED',
+          authorizationContent.userId,
+          parameters.userId,
+        );
+      }
+
+      // Check scopes
+      if (
+        !requiredScopes.some(requiredScope =>
+          authorizationContent.scopes.includes(requiredScope),
         )
       ) {
-        throw HTTPError.wrap(err, 400, 'E_UNALLOWED_AUTH_MECHANISM');
+        throw new HTTPError(
+          403,
+          'E_UNAUTHORIZED',
+          authorizationContent.scopes,
+          requiredScopes,
+        );
       }
-      throw HTTPError.cast(err, 400);
-    }
 
-    const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
-    const requiredScopes = (operation.security.find(
-      security => security[authName],
-    ) || { [authName]: [] })[authName];
-
-    // If security exists, we need at least one scope
-    if (!(requiredScopes && requiredScopes.length)) {
-      throw new HTTPError(
-        500,
-        'E_MISCONFIGURATION',
-        parsedAuthorization.type,
-        requiredScopes,
+      response = await handler(
+        {
+          ...parameters,
+          ...authorizationContent,
+          authenticated: true,
+        },
+        operation,
       );
-    }
-
-    let authorizationContent;
-
-    try {
-      authorizationContent = await authentication.check(
-        parsedAuthorization.type.toLowerCase(),
-        parsedAuthorization.data,
-      );
+      response = {
+        ...response,
+        headers: {
+          ...(response.headers || {}),
+          'X-Authenticated': JSON.stringify(authorizationContent),
+        },
+      };
     } catch (err) {
-      throw HTTPError.cast(err, 401);
-    }
+      if ('undefined' === typeof operation.security) {
+        throw err;
+      }
 
-    // Check user id if present in parameters
-    if (
-      'undefined' !== typeof parameters.userId &&
-      authorizationContent.userId !== parameters.userId
-    ) {
-      throw new HTTPError(
-        403,
-        'E_UNAUTHORIZED',
-        authorizationContent.userId,
-        parameters.userId,
-      );
-    }
+      if (err.httpCode !== 401) {
+        throw err;
+      }
 
-    // Check scopes
-    if (
-      !requiredScopes.some(requiredScope =>
-        authorizationContent.scopes.includes(requiredScope),
-      )
-    ) {
-      throw new HTTPError(
-        403,
-        'E_UNAUTHORIZED',
-        authorizationContent.scopes,
-        requiredScopes,
-      );
-    }
+      const firstMechanism = usableMechanisms[0];
 
-    response = await handler(
-      {
-        ...parameters,
-        ...authorizationContent,
-        authenticated: true,
-      },
-      operation,
-    );
-    response = {
-      ...response,
-      headers: {
-        ...(response.headers || {}),
-        'X-Authenticated': JSON.stringify(authorizationContent),
-      },
-    };
+      err.headers = {
+        ...(err.headers || {}),
+        'www-authenticate': buildWWWAuthenticateHeader(firstMechanism, {
+          realm: 'Auth',
+        }),
+      };
+
+      throw err;
+    }
   }
   return response;
 }

@@ -11,6 +11,7 @@ Object {
     ],
   ],
   "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": undefined,
   "errorParams": Array [
     1,
     3,
@@ -29,6 +30,9 @@ exports[`wrapHandlerWithAuthorization should fail with access_token disabled 1`]
 Object {
   "authenticationChecks": Array [],
   "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": Object {
+    "www-authenticate": "Bearer realm=\\"Auth\\"",
+  },
   "errorParams": Array [],
   "httpCode": 401,
   "logCalls": Array [
@@ -48,6 +52,7 @@ exports[`wrapHandlerWithAuthorization should fail with bad operation definition 
 Object {
   "authenticationChecks": Array [],
   "errorCode": "E_MISCONFIGURATION",
+  "errorHeaders": undefined,
   "errorParams": Array [
     "Bearer",
     Array [],
@@ -66,6 +71,9 @@ exports[`wrapHandlerWithAuthorization should fail with no authorization at all f
 Object {
   "authenticationChecks": Array [],
   "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": Object {
+    "www-authenticate": "Bearer realm=\\"Auth\\"",
+  },
   "errorParams": Array [],
   "httpCode": 401,
   "logCalls": Array [
@@ -85,6 +93,7 @@ exports[`wrapHandlerWithAuthorization should fail with no operation definition p
 Object {
   "authenticationChecks": Array [],
   "errorCode": "E_OPERATION_REQUIRED",
+  "errorHeaders": undefined,
   "errorParams": Array [],
   "httpCode": 500,
   "logCalls": Array [
@@ -100,6 +109,7 @@ exports[`wrapHandlerWithAuthorization should fail with not supported auth 1`] = 
 Object {
   "authenticationChecks": Array [],
   "errorCode": "E_UNKNOWN_AUTH_MECHANISM",
+  "errorHeaders": undefined,
   "errorParams": Array [
     "Whatever yolo",
   ],
@@ -117,6 +127,7 @@ exports[`wrapHandlerWithAuthorization should fail with unallowed mechanisms 1`] 
 Object {
   "authenticationChecks": Array [],
   "errorCode": "E_UNALLOWED_AUTH_MECHANISM",
+  "errorHeaders": undefined,
   "errorParams": Array [
     "Basic yolo",
   ],
@@ -141,6 +152,7 @@ Object {
     ],
   ],
   "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": undefined,
   "errorParams": Array [
     Array [],
     Array [
@@ -169,6 +181,9 @@ Object {
     ],
   ],
   "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": Object {
+    "www-authenticate": "Bearer realm=\\"Auth\\"",
+  },
   "errorParams": Array [],
   "httpCode": 401,
   "logCalls": Array [

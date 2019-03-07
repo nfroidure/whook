@@ -205,6 +205,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -239,6 +240,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -268,6 +270,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -301,6 +304,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -335,6 +339,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -368,6 +373,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -396,6 +402,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -430,6 +437,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -465,6 +473,7 @@ describe('wrapHandlerWithAuthorization', () => {
         httpCode: err.httpCode,
         errorCode: err.code,
         errorParams: err.params,
+        errorHeaders: err.headers,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
