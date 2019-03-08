@@ -1,6 +1,6 @@
 {
   "name": "@whook/example",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.5",
   "description": "A basic Whook server",
   "main": "dist/index.js",
   "metapak": {
@@ -54,12 +54,12 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^4.0.0-alpha.4",
-    "@whook/cli": "^4.0.0-alpha.4",
-    "@whook/cors": "^4.0.0-alpha.4",
-    "@whook/http-router": "^4.0.0-alpha.4",
-    "@whook/swagger-ui": "^4.0.0-alpha.4",
-    "@whook/whook": "^4.0.0-alpha.4",
+    "@whook/authorization": "^4.0.0-alpha.5",
+    "@whook/cli": "^4.0.0-alpha.5",
+    "@whook/cors": "^4.0.0-alpha.5",
+    "@whook/http-router": "^4.0.0-alpha.5",
+    "@whook/swagger-ui": "^4.0.0-alpha.5",
+    "@whook/whook": "^4.0.0-alpha.5",
     "ecstatic": "^3.3.0",
     "http-auth-utils": "^2.1.0",
     "knifecycle": "^5.3.0",
