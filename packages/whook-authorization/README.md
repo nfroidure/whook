@@ -15,15 +15,15 @@
 
 This wrapper ties authentication with only two kinds of input:
 - the `authorization` header which allows several mechanisms to be used
- including custom ones (this module is using
- [`http-auth-utils`](https://www.npmjs.com/package/http-auth-utils)
- under the hood). This is the recommended way to authenticate with
- a server.
+  including custom ones (this module is using
+  [`http-auth-utils`](https://www.npmjs.com/package/http-auth-utils)
+  under the hood). This is the recommended way to authenticate with
+  a server.
 - the `access_token` defined by the
- [RFC6750](https://tools.ietf.org/html/rfc6750#page-6) that allows
- providing the token via query parameters for convenience (mostly
- for development purpose). Note that you can disable it by setting
- the `DEFAULT_MECHANISM` constant to an empty string.
+  [RFC6750](https://tools.ietf.org/html/rfc6750#page-6) that allows
+  providing the token via query parameters for convenience (mostly
+  for development purpose). Note that you can disable it by setting
+  the `DEFAULT_MECHANISM` constant to an empty string.
 
 Note that the form-encoded body parameter defined by the bearer
  authentication RFC is volontarily not supported since nowadays
