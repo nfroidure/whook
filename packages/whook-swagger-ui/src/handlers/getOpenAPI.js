@@ -26,9 +26,8 @@ export const definition = {
   },
 };
 
-async function getOpenAPI({ API }, { userId }) {
-  const authenticatedRequest = !!userId;
-  if (authenticatedRequest) {
+async function getOpenAPI({ API }, { authenticated = false }) {
+  if (authenticated) {
     return {
       status: 200,
       body: API,

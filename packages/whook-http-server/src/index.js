@@ -58,7 +58,7 @@ async function initHTTPServer({
   const httpServer = http.createServer(httpRouter);
   const listenPromise = new Promise(resolve => {
     httpServer.listen(PORT, HOST, () => {
-      log('info', `🎙️ - HTTP Server listening at "http://${HOST}:${PORT}".`);
+      log('warning', `🎙️ - HTTP Server listening at "http://${HOST}:${PORT}".`);
       resolve(httpServer);
     });
   });

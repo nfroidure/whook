@@ -33,7 +33,7 @@ describe('API', () => {
     }).toMatchSnapshot();
   });
 
-  it('should always have the same amount of public endpoints', async () => {
+  it('should always use declared security definition', async () => {
     const API = await initAPI({
       log,
       CONFIG,
@@ -43,16 +43,22 @@ describe('API', () => {
       DEBUG_NODE_ENVS,
       API_VERSION: '1.1.0',
     });
-    const operations = await getOpenAPIOperations(await flattenOpenAPI(API));
+    const securitySchemes = API.components.securitySchemes;
+    const operations = await getOpenAPIOperations(API);
 
     expect(
       operations
-        .filter(
-          operation => !operation['x-whook'] || !operation['x-whook'].private,
+        .filter(operation => operation.security && operation.security.length)
+        .filter(operation =>
+          operation.security.some(operationSecurity =>
+            Object.keys(operationSecurity).some(
+              operationSecurityName => !securitySchemes[operationSecurityName],
+            ),
+          ),
         )
         .map(({ method, path }) => `${method} ${path}`)
         .sort(),
-    ).toMatchSnapshot();
+    ).toEqual([]);
   });
 
   it('should produce a valid OpenAPI file', async () => {
@@ -69,5 +75,82 @@ describe('API', () => {
     const result = new OpenAPISchemaValidator({ version: 3 }).validate(API);
 
     expect({ result }).toMatchSnapshot();
+  });
+
+  describe('should always have the same amount of', () => {
+    let operations;
+
+    beforeAll(async () => {
+      const API = await initAPI({
+        log,
+        CONFIG,
+        HOST,
+        PORT,
+        NODE_ENV,
+        DEBUG_NODE_ENVS,
+        API_VERSION: '1.1.0',
+      });
+
+      operations = await getOpenAPIOperations(await flattenOpenAPI(API));
+    });
+
+    it('endpoints', async () => {
+      expect(
+        operations
+          .filter(
+            operation => !operation['x-whook'] || !operation['x-whook'].private,
+          )
+          .map(({ method, path }) => `${method} ${path}`)
+          .sort(),
+      ).toMatchSnapshot();
+    });
+
+    it('publicly documented endpoints', async () => {
+      expect(
+        operations
+          .filter(
+            operation => !operation['x-whook'] || !operation['x-whook'].private,
+          )
+          .map(({ method, path }) => `${method} ${path}`)
+          .sort(),
+      ).toMatchSnapshot();
+    });
+
+    it('non authenticated endpoints', async () => {
+      expect(
+        operations
+          .filter(
+            operation => !operation.security || operation.security.length === 0,
+          )
+          .map(({ method, path }) => `${method} ${path}`)
+          .sort(),
+      ).toMatchSnapshot();
+    });
+
+    it('basic authenticated endpoints', async () => {
+      expect(
+        operations
+          .filter(
+            operation =>
+              operation.security &&
+              operation.security.some(security => security.basicAuth),
+          )
+          .map(({ method, path }) => `${method} ${path}`)
+          .sort(),
+      ).toMatchSnapshot();
+    });
+
+    it('bearer authenticated endpoints', async () => {
+      expect(
+        operations
+          .filter(
+            operation =>
+              operation.security &&
+              operation.security.some(security => security.bearerAuth),
+          )
+          .map(({ method, path }) => `${method} ${path}`)
+          .sort(),
+      ).toMatchSnapshot();
+    });
   });
 });

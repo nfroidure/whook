@@ -24,7 +24,7 @@ Object {
   ],
   "logCalls": Array [
     Array [
-      "info",
+      "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
   ],
@@ -98,7 +98,7 @@ Object {
   ],
   "logCalls": Array [
     Array [
-      "info",
+      "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
     Array [
@@ -106,19 +106,19 @@ Object {
       "⚠️ - Could not initialize the git project!",
     ],
     Array [
-      "info",
+      "warning",
       "✔️ - Project created!",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - Run \`cd yolo\` to enter the project.",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - And finally run \`npm run dev\` to start dev!",
     ],
   ],
@@ -207,7 +207,7 @@ Object {
   ],
   "logCalls": Array [
     Array [
-      "info",
+      "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
     Array [
@@ -287,19 +287,19 @@ Object {
       "https://www.gitignore.io/api/osx,node,linux",
     ],
     Array [
-      "info",
+      "warning",
       "✔️ - Project created!",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - Run \`cd yolo\` to enter the project.",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - And finally run \`npm run dev\` to start dev!",
     ],
   ],
@@ -384,7 +384,7 @@ Object {
   ],
   "logCalls": Array [
     Array [
-      "info",
+      "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
     Array [
@@ -455,19 +455,19 @@ Object {
       ")",
     ],
     Array [
-      "info",
+      "warning",
       "✔️ - Project created!",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - Run \`cd yolo\` to enter the project.",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
     Array [
-      "info",
+      "warning",
       "➕ - And finally run \`npm run dev\` to start dev!",
     ],
   ],

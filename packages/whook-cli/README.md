@@ -23,7 +23,7 @@ See the [Whook example server commands](https://github.com/nfroidure/whook/tree/
 ## Dev
 
 To test the CLI script:
-```
+```sh
 npm run compile
 node bin/whook
 ```

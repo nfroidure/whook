@@ -1,6 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`API should always have the same amount of public endpoints 1`] = `
+exports[`API should always have the same amount of basic authenticated endpoints 1`] = `Array []`;
+
+exports[`API should always have the same amount of bearer authenticated endpoints 1`] = `
+Array [
+  "get /diag",
+]
+`;
+
+exports[`API should always have the same amount of endpoints 1`] = `
+Array [
+  "get /delay",
+  "get /diag",
+  "get /openAPI",
+  "get /ping",
+  "get /time",
+  "put /echo",
+]
+`;
+
+exports[`API should always have the same amount of non authenticated endpoints 1`] = `
+Array [
+  "get /delay",
+  "get /openAPI",
+  "get /ping",
+  "get /time",
+  "options /delay",
+  "options /diag",
+  "options /echo",
+  "options /openAPI",
+  "options /ping",
+  "options /time",
+  "put /echo",
+]
+`;
+
+exports[`API should always have the same amount of publicly documented endpoints 1`] = `
 Array [
   "get /delay",
   "get /diag",
@@ -238,6 +273,22 @@ Object {
       "/openAPI": Object {
         "get": Object {
           "operationId": "getOpenAPI",
+          "parameters": Array [
+            Object {
+              "in": "header",
+              "name": "authorization",
+              "schema": Object {
+                "type": "string",
+              },
+            },
+            Object {
+              "in": "query",
+              "name": "access_token",
+              "schema": Object {
+                "type": "string",
+              },
+            },
+          ],
           "responses": Object {
             "200": Object {
               "content": Object {
@@ -260,7 +311,15 @@ Object {
         },
         "options": Object {
           "operationId": "optionsWithCORS",
-          "parameters": Array [],
+          "parameters": Array [
+            Object {
+              "in": "query",
+              "name": "access_token",
+              "schema": Object {
+                "type": "string",
+              },
+            },
+          ],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",

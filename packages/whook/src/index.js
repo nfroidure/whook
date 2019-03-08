@@ -117,7 +117,7 @@ export async function prepareEnvironment($ = new Knifecycle()) {
 
   /* Architecture Note #3.4: Logging
   Whook's default logger write to the NodeJS default console
-   except for debugging messages where it use the `debug`
+   except for debugging messages where it uses the `debug`
    module so that you can set the `DEBUG` environment
    variable to `whook` and get debug messages in output.
    */
@@ -129,7 +129,7 @@ export async function prepareEnvironment($ = new Knifecycle()) {
       // eslint-disable-next-line
       info: console.info.bind(console),
       // eslint-disable-next-line
-      warning: console.log.bind(console),
+      warning: console.error.bind(console),
     }),
   );
   $.register(constant('exit', process.exit));

@@ -39,7 +39,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "knifecycle": "^5.3.0",
-    "http-auth-utils": "^2.1.0"
+    "http-auth-utils": "^2.2.0"
   },
   "peerDependencies": {
     "@whook/whook": "^3.1.3"
