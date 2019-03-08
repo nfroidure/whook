@@ -1,6 +1,6 @@
 {
   "name": "@whook/authorization",
-  "version": "4.0.0-alpha.4",
+  "version": "4.0.0-alpha.5",
   "description": "A wrapper to provide authorization support to a Whook server",
   "main": "dist/index.js",
   "metapak": {
