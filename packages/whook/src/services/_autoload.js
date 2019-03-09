@@ -5,27 +5,29 @@ import {
   getOpenAPIOperations,
 } from '@whook/http-router/dist/utils';
 import path from 'path';
+import YError from 'yerror';
 
 // Needed to avoid messing up babel builds 🤷
 const _require = require;
+const _resolve = require.resolve;
 
 /* Architecture Note #5: `$autoload` service
 The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
- project.
+ project automatically from the installed whook plugins.
 */
 export default initializer(
   {
     name: '$autoload',
     type: 'service',
     inject: [
-      'NODE_ENV',
-      'PWD',
       'PROJECT_SRC',
+      'WHOOK_PLUGINS',
       '$injector',
       '?SERVICE_NAME_MAP',
       '?INITIALIZER_PATH_MAP',
       '?WRAPPERS',
+      '?CONFIGS',
       '?log',
     ],
     options: { singleton: true },
@@ -39,6 +41,8 @@ export default initializer(
  * The services `$autoload` depends on
  * @param  {Object}   services.PROJECT_SRC
  * The project source directory
+ * @param  {Object}   services.WHOOK_PLUGINS
+ * The plugins to load services from
  * @param  {Object}   services.$injector
  * An injector for internal dynamic services loading
  * @param  {Object}   [services.SERVICE_NAME_MAP={}]
@@ -56,6 +60,7 @@ export default initializer(
  */
 async function initAutoload({
   PROJECT_SRC,
+  WHOOK_PLUGINS = [],
   $injector,
   SERVICE_NAME_MAP = {},
   INITIALIZER_PATH_MAP = {},
@@ -63,13 +68,21 @@ async function initAutoload({
   CONFIGS,
   log = noop,
   require = _require,
+  resolve = _resolve,
 }) {
   log('debug', '🤖 - Initializing the `$autoload` service.');
 
+  const PLUGINS_PATHS = await resolveWhookPlugins({
+    WHOOK_PLUGINS,
+    PROJECT_SRC,
+    resolve,
+    log,
+  });
+
   /* Architecture Note #5.3: API auto loading
   We cannot inject the `API` in the auto loader since
-    it is dynamically loaded so doing during the auto loader
-    initialization.
+   it is dynamically loaded so doing this during the auto
+   loader initialization.
   */
   let API;
   const getAPI = (() => {
@@ -123,7 +136,7 @@ async function initAutoload({
 
     /* Architecture Note #5.4: Constants
     First of all the autoloader looks for constants in the
-     previously loaded configuration.
+     previously loaded `CONFIGS` configurations hash.
     */
     if (CONFIGS && CONFIGS[resolvedName]) {
       return {
@@ -137,17 +150,10 @@ async function initAutoload({
       resolvedName,
     );
     const isWrappedHandler = resolvedName.endsWith('Wrapped');
-    const modulePath =
-      INITIALIZER_PATH_MAP[resolvedName] ||
-      path.join(
-        PROJECT_SRC,
-        isHandler ? 'handlers' : 'services',
-        isWrappedHandler ? resolvedName.replace(/Wrapped$/, '') : resolvedName,
-      );
 
     /* Architecture Note #5.5: Handlers map
-    Here, we build the handlers map by injecting every handler required
-     by the API.
+    Here, we build the handlers map needed by the router by injecting every
+     handler required by the API.
     */
     if ('HANDLERS' === resolvedName) {
       const handlerNames = [
@@ -179,6 +185,45 @@ async function initAutoload({
     Finally, we either require the handler/service module if
      none of the previous strategies applyed.
     */
+    const modulePath =
+      INITIALIZER_PATH_MAP[resolvedName] ||
+      [PROJECT_SRC, ...PLUGINS_PATHS].reduce((finalModulePath, basePath) => {
+        if (finalModulePath) {
+          return finalModulePath;
+        }
+
+        const finalPath = path.join(
+          basePath,
+          isHandler ? 'handlers' : 'services',
+          isWrappedHandler
+            ? resolvedName.replace(/Wrapped$/, '')
+            : resolvedName,
+        );
+
+        try {
+          return resolve(finalPath);
+        } catch (err) {
+          log(
+            'debug',
+            `💿 - Service "${resolvedName}" not found in: ${finalPath}`,
+          );
+          return null;
+        }
+      }, null);
+
+    if (INITIALIZER_PATH_MAP[resolvedName]) {
+      log(
+        'debug',
+        '📖 - Using INITIALIZER_PATH_MAP to resolve the ${resolvedName} module path.',
+      );
+    }
+
+    if (!modulePath) {
+      throw new YError('E_SERVICE_NOT_FOUND', resolvedName);
+    }
+
+    log('debug', `🚫 - Service "${resolvedName}" found in: ${modulePath}`);
+
     const resolvedInitializer = await require(modulePath).default;
 
     log(
@@ -196,4 +241,34 @@ async function initAutoload({
         : resolvedInitializer,
     };
   }
+}
+
+/* Architecture Note #5.7: Plugins resolution
+The autoloader searches for services in the project's path
+ and also via the `WHOOK_PLUGINS` array allowing one to
+ use services/handlers from an installed whook plugin.
+*/
+export async function resolveWhookPlugins({
+  WHOOK_PLUGINS,
+  PROJECT_SRC,
+  resolve,
+  log,
+}) {
+  return WHOOK_PLUGINS.map(pluginName => {
+    try {
+      // It is important to resolve from the projects
+      // root directory since this is were modules are
+      // installed
+      // see https://nodejs.org/api/modules.html#modules_require_resolve_request_options
+      const modulePath = path.dirname(
+        resolve(pluginName, { paths: [PROJECT_SRC] }),
+      );
+
+      log('debug', `Plugin "${pluginName}" resolved to: ${modulePath}`);
+
+      return modulePath;
+    } catch (err) {
+      throw YError.wrap(err, 'E_BAD_WHOOK_PLUGIN', pluginName);
+    }
+  });
 }

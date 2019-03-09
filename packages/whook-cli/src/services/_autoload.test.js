@@ -1,3 +1,5 @@
+import { resolveWhookPlugins } from '@whook/whook/dist/services/_autoload';
+
 describe('$autoload', () => {
   const WHOOK_CLI_SRC = '/var/lib/node/node_modules/@whook/cli/src';
   const log = jest.fn();
@@ -14,7 +16,11 @@ describe('$autoload', () => {
 
   it('should warn with bad commands', async () => {
     jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      return async () => $baseAutoload;
+      const _default = async () => $baseAutoload;
+
+      _default.default = _default;
+      _default.resolveWhookPlugins = resolveWhookPlugins;
+      return _default;
     });
     resolveMock.mockReturnValueOnce(
       '/var/lib/node/node_modules/@whook/whook/src/index.js',
@@ -46,7 +52,11 @@ describe('$autoload', () => {
 
   it('should work with project commands', async () => {
     jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      return async () => $baseAutoload;
+      const _default = async () => $baseAutoload;
+
+      _default.default = _default;
+      _default.resolveWhookPlugins = resolveWhookPlugins;
+      return _default;
     });
     resolveMock.mockReturnValueOnce(
       '/var/lib/node/node_modules/@whook/whook/src/index.js',
@@ -80,7 +90,11 @@ describe('$autoload', () => {
 
   it('should work with whook-cli commands', async () => {
     jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      return async () => $baseAutoload;
+      const _default = async () => $baseAutoload;
+
+      _default.default = _default;
+      _default.resolveWhookPlugins = resolveWhookPlugins;
+      return _default;
     });
     resolveMock.mockReturnValueOnce(
       '/var/lib/node/node_modules/@whook/whook/src/index.js',
@@ -117,7 +131,11 @@ describe('$autoload', () => {
 
   it('should work with bad commands', async () => {
     jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      return async () => $baseAutoload;
+      const _default = async () => $baseAutoload;
+
+      _default.default = _default;
+      _default.resolveWhookPlugins = resolveWhookPlugins;
+      return _default;
     });
     resolveMock.mockReturnValueOnce(
       '/var/lib/node/node_modules/@whook/whook/src/index.js',
@@ -158,8 +176,15 @@ describe('$autoload', () => {
 
   it('should delegate to whook $autoloader', async () => {
     jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      return async () => $baseAutoload;
+      const _default = async () => $baseAutoload;
+
+      _default.default = _default;
+      _default.resolveWhookPlugins = resolveWhookPlugins;
+      return _default;
     });
+    resolveMock.mockReturnValueOnce(
+      '/var/lib/node/node_modules/@whook/whook/src/index.js',
+    );
 
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({

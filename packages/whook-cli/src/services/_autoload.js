@@ -1,12 +1,11 @@
 import path from 'path';
 import initAutoloader from '@whook/whook/dist/services/_autoload';
+import { resolveWhookPlugins } from '@whook/whook/dist/services/_autoload';
 import { wrapInitializer, alsoInject, service } from 'knifecycle';
 
 // Needed to avoid messing up babel builds 🤷
 const _require = require;
 const _resolve = require.resolve;
-
-const DEFAULT_WHOOK_CLI_SRC = path.join(__dirname, '..');
 
 export default alsoInject(
   ['PROJECT_SRC', 'WHOOK_PLUGINS', 'log'],
@@ -15,7 +14,6 @@ export default alsoInject(
       {
         PROJECT_SRC,
         WHOOK_PLUGINS,
-        WHOOK_CLI_SRC = DEFAULT_WHOOK_CLI_SRC,
         log,
         require = _require,
         resolve = _resolve,
@@ -24,24 +22,20 @@ export default alsoInject(
     ) => {
       log('debug', '🤖 - Wrapping the whook autoloader.');
 
+      const PLUGINS_PATHS = await resolveWhookPlugins({
+        WHOOK_PLUGINS,
+        PROJECT_SRC,
+        resolve,
+        log,
+      });
+
       return async serviceName => {
         if (serviceName.endsWith('Command')) {
           const commandName = serviceName.replace(/Command$/, '');
-          const pluginsPaths = WHOOK_PLUGINS.map(pluginName => {
-            // Here we resolve the main path to finally
-            // get the `main` exported file's directory
-            // which is assumed to contain the commands
-            // folder of the plugin
-            const modulePath = path.dirname(resolve(pluginName));
-
-            log('debug', `Plugin "${pluginName}" resolved to: ${modulePath}`);
-
-            return modulePath;
-          });
 
           let commandModule;
 
-          [PROJECT_SRC, ...pluginsPaths, WHOOK_CLI_SRC].some(basePath => {
+          [PROJECT_SRC, ...PLUGINS_PATHS].some(basePath => {
             const finalPath = path.join(basePath, 'commands', commandName);
 
             try {
