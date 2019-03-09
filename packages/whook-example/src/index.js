@@ -48,7 +48,7 @@ export async function prepareEnvironment($ = new Knifecycle()) {
   $.register(constant('TRANSACTIONS', {}));
 
   // Setup your own whook plugins or avoid whook default by leaving it empty
-  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
+  $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
 
   // Add here any service/handler required to bootstrap
   // the server env

@@ -1,4 +1,4 @@
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { SPECIAL_PROPS, reuseSpecialProps, alsoInject } from 'knifecycle';
 import HTTPError from 'yhttperror';
 import {
   parseAuthorizationHeader,
@@ -31,7 +31,12 @@ async function initHandlerWithAuthorization(
     ...otherServices
   },
 ) {
-  log('debug', '🔐 - Initializing the authentication wrapper.');
+  log(
+    'debug',
+    `🔐 - Initializing the authorization wrapper for "${
+      initHandler[SPECIAL_PROPS.NAME]
+    }".`,
+  );
 
   const services = {
     MECHANISMS,

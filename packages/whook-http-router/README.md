@@ -85,6 +85,7 @@ Initialize an HTTP router
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the server depends on |
 | services.API | <code>Object</code> |  | The OpenAPI definition of the API |
+| services.CONFIG | <code>Object</code> |  | The configuration object |
 | services.HANDLERS | <code>Object</code> |  | The handlers for the operations decribe  by the OpenAPI API definition |
 | [services.ENV] | <code>Object</code> |  | The services the server depends on |
 | [services.DEBUG_NODE_ENVS] | <code>Array</code> |  | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
@@ -96,6 +97,20 @@ Initialize an HTTP router
 | [services.QUERY_PARSER] | <code>Object</code> |  | A query parser with the `strict-qs` signature |
 | [services.log] | <code>function</code> | <code>noop</code> | A logging function |
 | services.httpTransaction | <code>function</code> |  | A function to create a new HTTP transaction |
+
+<a name="initHTTPRouter..httpRouter"></a>
+
+### initHTTPRouter~httpRouter(req, res) ⇒ <code>Promise</code>
+Handle an HTTP incoming message
+
+**Kind**: inner method of [<code>initHTTPRouter</code>](#initHTTPRouter)  
+**Returns**: <code>Promise</code> - A promise resolving when the operation
+ completes  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| req | <code>HTTPRequest</code> | A raw NodeJS HTTP incoming message |
+| res | <code>HTTPResponse</code> | A raw NodeJS HTTP response |
 
 <a name="flattenOpenAPI"></a>
 

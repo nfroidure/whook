@@ -20,7 +20,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
 }
@@ -38,7 +38,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
     Array [
       "debug",
@@ -61,7 +61,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
 }
@@ -79,7 +79,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
     Array [
       "debug",
@@ -99,7 +99,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
 }
@@ -117,7 +117,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
 }
@@ -135,7 +135,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
 }
@@ -164,7 +164,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
 }
@@ -189,7 +189,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
 }
@@ -208,7 +208,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
   "response": Object {
@@ -233,7 +233,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
   "response": Object {
@@ -258,7 +258,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
   "response": Object {
@@ -283,7 +283,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
   "response": Object {
@@ -301,7 +301,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🔐 - Initializing the authentication wrapper.",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
     Array [
       "debug",

@@ -83,7 +83,7 @@ Whook need to know where to look up for things like
 ### Logging
 
 Whook's default logger write to the NodeJS default console
- except for debugging messages where it use the `debug`
+ except for debugging messages where it uses the `debug`
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
@@ -139,9 +139,9 @@ You may need to keep some secrets out of your Git
 
 The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
- project.
+ project automatically from the installed whook plugins.
 
-[See in context](./src/services/_autoload.js#L12-L16)
+[See in context](./src/services/_autoload.js#L14-L18)
 
 
 
@@ -154,7 +154,7 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.js#L112-L119)
+[See in context](./src/services/_autoload.js#L124-L131)
 
 
 
@@ -164,35 +164,35 @@ We cannot inject the `WRAPPERS` in the auto loader when
  it is dynamically loaded so giving a second chance here
  for `WRAPPERS` to be set.
 
-[See in context](./src/services/_autoload.js#L82-L86)
+[See in context](./src/services/_autoload.js#L94-L98)
 
 
 
 ### API auto loading
 
 We cannot inject the `API` in the auto loader since
-  it is dynamically loaded so doing during the auto loader
-  initialization.
+ it is dynamically loaded so doing this during the auto
+ loader initialization.
 
-[See in context](./src/services/_autoload.js#L69-L73)
+[See in context](./src/services/_autoload.js#L81-L85)
 
 
 
 ### Constants
 
 First of all the autoloader looks for constants in the
- previously loaded configuration.
+ previously loaded `CONFIGS` configurations hash.
 
-[See in context](./src/services/_autoload.js#L124-L127)
+[See in context](./src/services/_autoload.js#L136-L139)
 
 
 
 ### Handlers map
 
-Here, we build the handlers map by injecting every handler required
- by the API.
+Here, we build the handlers map needed by the router by injecting every
+ handler required by the API.
 
-[See in context](./src/services/_autoload.js#L148-L151)
+[See in context](./src/services/_autoload.js#L153-L156)
 
 
 
@@ -201,7 +201,17 @@ Here, we build the handlers map by injecting every handler required
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.js#L178-L181)
+[See in context](./src/services/_autoload.js#L183-L186)
+
+
+
+### Plugins resolution
+
+The autoloader searches for services in the project's path
+ and also via the `WHOOK_PLUGINS` array allowing one to
+ use services/handlers from an installed whook plugin.
+
+[See in context](./src/services/_autoload.js#L245-L249)
 
 
 
