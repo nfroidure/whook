@@ -1,7 +1,7 @@
 import { name, autoService } from 'knifecycle';
 
 import { definition as getOpenAPIDefinition } from '../handlers/getOpenAPI';
-import { definition as getPingDefinition } from '../handlers/getPing';
+import { definition as getPingDefinition } from '@whook/whook/dist/handlers/getPing';
 import { definition as getDelayDefinition } from '../handlers/getDelay';
 import { definition as getDiagnosticDefinition } from '../handlers/getDiagnostic';
 import { definition as getTimeDefinition } from '../handlers/getTime';
