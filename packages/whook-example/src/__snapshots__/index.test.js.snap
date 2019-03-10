@@ -468,7 +468,13 @@ Object {
       "🚫 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.js",
     ],
     Array [
-      "🚫 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.js",
+      "💿 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing",
+    ],
+    Array [
+      "💿 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing",
+    ],
+    Array [
+      "🚫 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/dist/handlers/getPing.js",
     ],
     Array [
       "🚫 - Service \\"getDelayWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.js",
@@ -489,7 +495,7 @@ Object {
       "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.js.",
     ],
     Array [
-      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.js.",
+      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/dist/handlers/getPing.js.",
     ],
     Array [
       "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.js.",
