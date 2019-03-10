@@ -3,7 +3,7 @@ import { readArgs } from '../libs/args';
 import YError from 'yerror';
 import miniquery from 'miniquery';
 
-const definition = {
+export const definition = {
   description: 'A simple program that returns the queryed config value',
   example: `whook config --name MYSQL --query 'auth.username' --default root`,
   arguments: {

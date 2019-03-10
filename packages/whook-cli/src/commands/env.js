@@ -2,7 +2,7 @@ import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args';
 import YError from 'yerror';
 
-const definition = {
+export const definition = {
   description: 'A command printing env values',
   example: `whook env --name NODE_ENV --default "default value"`,
   arguments: {

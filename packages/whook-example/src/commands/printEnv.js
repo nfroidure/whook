@@ -1,7 +1,7 @@
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli/dist/libs/args';
 
-const definition = {
+export const definition = {
   description: 'A command printing every env values',
   example: `whook printEnv --name NODE_ENV`,
   arguments: {
