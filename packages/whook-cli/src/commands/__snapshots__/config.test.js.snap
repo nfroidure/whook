@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`configCommand should fail with no result 1`] = `
+Object {
+  "errorCode": "E_NO_RESULT",
+  "errorParams": Array [
+    "MYSQL",
+    "nothing_here",
+  ],
+  "logCalls": Array [
+    Array [
+      "error",
+      "Could not find any results for nothing_here",
+    ],
+  ],
+}
+`;
+
+exports[`configCommand should fail with unexisting config name 1`] = `
+Object {
+  "errorCode": "E_NO_CONFIG",
+  "errorParams": Array [
+    "DOES_NOT_EXIST",
+  ],
+  "logCalls": Array [
+    Array [
+      "error",
+      "No config found for DOES_NOT_EXIST",
+    ],
+  ],
+}
+`;
+
+exports[`configCommand should work with an unexisting config but a default value 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "error",
+      "No config found for DOES_NOT_EXIST",
+    ],
+    Array [
+      "info",
+      "undefined",
+    ],
+  ],
+  "result": undefined,
+}
+`;
+
+exports[`configCommand should work with no query at all 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "info",
+      "{\\"auth\\":{\\"username\\":\\"root\\"},\\"version\\":\\"2.1.1\\"}",
+    ],
+  ],
+  "result": undefined,
+}
+`;
+
+exports[`configCommand should work with no result but a default value 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "error",
+      "Could not find any results for nothing_here",
+    ],
+    Array [
+      "info",
+      "\\"v8\\"",
+    ],
+  ],
+  "result": undefined,
+}
+`;
+
+exports[`configCommand should work with one value 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "info",
+      "\\"root\\"",
+    ],
+  ],
+  "result": undefined,
+}
+`;
+
+exports[`configCommand should work with several values 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "info",
+      "\\"root\\"",
+    ],
+  ],
+  "result": undefined,
+}
+`;

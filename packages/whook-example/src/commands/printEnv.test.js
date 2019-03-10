@@ -1,6 +1,6 @@
-import initEnvCommand from './env';
+import initPrintEnvCommand from './printEnv';
 
-describe('envCommand', () => {
+describe('printEnvCommand', () => {
   const log = jest.fn();
 
   beforeEach(() => {
@@ -8,15 +8,15 @@ describe('envCommand', () => {
   });
 
   it('should work', async () => {
-    const envCommand = await initEnvCommand({
+    const printEnvCommand = await initPrintEnvCommand({
       log,
       ENV: { NODE_ENV: 'test' },
       args: {
         _: ['env'],
-        name: 'NODE_ENV',
+        keysOnly: true,
       },
     });
-    const result = await envCommand();
+    const result = await printEnvCommand();
 
     expect({
       result,

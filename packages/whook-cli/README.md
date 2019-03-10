@@ -17,8 +17,12 @@ This is the Whook server CLI tool. To create new commands, you simply
  have to create new files in the `src/commands` folder of your Whook
  project.
 
+By setting `@whook/cli` in the `WHOOK_PLUGINS` constant, you will
+ benefit of the commands
+ [embedded in this plugin](https://github.com/nfroidure/whook/tree/master/packages/whook-cli/src/commands).
+
 See the [Whook example server commands](https://github.com/nfroidure/whook/tree/master/packages/whook-example/src/commands)
- for simple examples.
+ for simple examples on creating your own commands in a `whook` project.
 
 ## Dev
 
