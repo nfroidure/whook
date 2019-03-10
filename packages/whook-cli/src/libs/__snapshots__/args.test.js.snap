@@ -1,8 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`checkArgs should report named args errors 1`] = `
+exports[`readArgs should report named args errors 1`] = `
 Object {
   "args": Object {
+    "_": Array [
+      "whook",
+    ],
     "parameters": "{}",
   },
   "errorCode": "E_BAD_ARGS",
@@ -22,17 +25,35 @@ Object {
 }
 `;
 
-exports[`checkArgs should work with named args 1`] = `
+exports[`readArgs should work with listed args 1`] = `
 Object {
   "args": Object {
+    "_": Array [
+      "whook",
+      "hey",
+    ],
+  },
+}
+`;
+
+exports[`readArgs should work with named args 1`] = `
+Object {
+  "args": Object {
+    "_": Array [
+      "whook",
+    ],
     "name": "getPing",
     "parameters": "{}",
   },
 }
 `;
 
-exports[`checkArgs should work with no args 1`] = `
+exports[`readArgs should work with no args 1`] = `
 Object {
-  "args": Object {},
+  "args": Object {
+    "_": Array [
+      "whook",
+    ],
+  },
 }
 `;

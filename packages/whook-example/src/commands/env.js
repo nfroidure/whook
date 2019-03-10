@@ -1,15 +1,16 @@
 import { extra, autoService } from 'knifecycle';
-import { checkArgs } from '@whook/cli/dist/libs/checkArgs';
+import { readArgs } from '@whook/cli/dist/libs/args';
 
 const definition = {
   description: 'A command printing env values for sample purpose',
-  example: `whook env --property NODE_ENV`,
+  example: `whook env --name NODE_ENV`,
   arguments: {
     type: 'object',
-    required: ['property'],
+    additionalProperties: false,
+    required: ['name'],
     properties: {
       name: {
-        description: 'Property to pickup in env',
+        description: 'Environment variable name to pick-up',
         type: 'string',
       },
     },
@@ -20,7 +21,8 @@ export default extra(definition, autoService(initEnvCommand));
 
 async function initEnvCommand({ ENV, log, args }) {
   return async () => {
-    checkArgs(definition.arguments, args);
-    log('info', `${JSON.stringify(ENV[args.property])}`);
+    const { name } = readArgs(definition.arguments, args);
+
+    log('info', `${JSON.stringify(ENV[name])}`);
   };
 }

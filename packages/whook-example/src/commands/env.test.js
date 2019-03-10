@@ -12,7 +12,8 @@ describe('envCommand', () => {
       log,
       ENV: { NODE_ENV: 'test' },
       args: {
-        property: 'NODE_ENV',
+        _: ['env'],
+        name: 'NODE_ENV',
       },
     });
     const result = await envCommand();

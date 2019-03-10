@@ -1,12 +1,14 @@
-import { checkArgs } from './checkArgs';
+import { readArgs } from './args';
 import { definition as handlerCommandDefinition } from '../commands/handler';
 import YError from 'yerror';
 
-describe('checkArgs', () => {
+describe('readArgs', () => {
   it('should work with no args', () => {
-    const args = {};
+    const args = {
+      _: ['whook'],
+    };
 
-    checkArgs(
+    readArgs(
       {
         type: 'object',
       },
@@ -20,11 +22,36 @@ describe('checkArgs', () => {
 
   it('should work with named args', () => {
     const args = {
+      _: ['whook'],
       name: 'getPing',
       parameters: '{}',
     };
 
-    checkArgs(handlerCommandDefinition.arguments, args);
+    readArgs(handlerCommandDefinition.arguments, args);
+
+    expect({
+      args,
+    }).toMatchSnapshot();
+  });
+
+  it('should work with listed args', () => {
+    const args = {
+      _: ['whook', 'hey'],
+    };
+
+    readArgs(
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          _: {
+            type: 'array',
+            maxItems: Infinity,
+          },
+        },
+      },
+      args,
+    );
 
     expect({
       args,
@@ -33,11 +60,12 @@ describe('checkArgs', () => {
 
   it('should report named args errors', () => {
     const args = {
+      _: ['whook'],
       parameters: '{}',
     };
 
     try {
-      checkArgs(handlerCommandDefinition.arguments, args);
+      readArgs(handlerCommandDefinition.arguments, args);
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
