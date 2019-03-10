@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handlerCommand should fail with a failing handler 1`] = `
+Object {
+  "errorCode": "E_UNEXPECTED_SUCCESS",
+  "errorParams": Array [],
+  "injectorCalls": Array [
+    Array [
+      Array [
+        "putEcho",
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "handler",
+      "putEcho",
+    ],
+    Array [
+      "debug",
+      "parameters",
+      Object {
+        "body": Object {
+          "echo": "YOLO!",
+        },
+      },
+    ],
+    Array [
+      "error",
+      "Got an error while running the handler.",
+    ],
+  ],
+}
+`;
+
+exports[`handlerCommand should fail with non JSON parameters 1`] = `
+Object {
+  "errorCode": "E_BAD_PARAMETERS",
+  "errorParams": Array [
+    "{\\"body: {\\"echo\\": \\"YOLO!\\"} }",
+    "Unexpected token e in JSON at position 10",
+  ],
+  "injectorCalls": Array [],
+  "logCalls": Array [],
+}
+`;
+
+exports[`handlerCommand should work with all parameters 1`] = `
+Object {
+  "injectorCalls": Array [
+    Array [
+      Array [
+        "putEcho",
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "handler",
+      "putEcho",
+    ],
+    Array [
+      "debug",
+      "parameters",
+      Object {
+        "body": Object {
+          "echo": "YOLO!",
+        },
+      },
+    ],
+    Array [
+      "info",
+      "{
+  \\"status\\": 200,
+  \\"body\\": {
+    \\"echo\\": \\"YOLO!\\"
+  }
+}",
+    ],
+  ],
+}
+`;
+
+exports[`handlerCommand should work with handler only 1`] = `
+Object {
+  "injectorCalls": Array [
+    Array [
+      Array [
+        "getPing",
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "handler",
+      "getPing",
+    ],
+    Array [
+      "debug",
+      "parameters",
+      Object {},
+    ],
+    Array [
+      "info",
+      "{
+  \\"status\\": 200
+}",
+    ],
+  ],
+}
+`;
