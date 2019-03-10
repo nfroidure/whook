@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lsCommand should work with no plugin 1`] = `
+Object {
+  "logCalls": Array [],
+  "readDirCalls": Array [],
+  "requireCalls": Array [],
+  "result": undefined,
+}
+`;
+
+exports[`lsCommand should work with some plugins 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "debug",
+      "✅ - No commands folder found at path \${pluginPath}",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"@whook/cli\\": 2 commands",
+    ],
+    Array [
+      "info",
+      "- ls: Print available commands",
+    ],
+    Array [
+      "info",
+      "- env: A command printing env values",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"@whook/whook\\": none",
+    ],
+  ],
+  "readDirCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/commands",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/lol/dist/commands",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/commands/ls",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/commands/env",
+    ],
+  ],
+}
+`;
+
+exports[`lsCommand should work with some plugins and a verbose output 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "debug",
+      "✅ - No commands folder found at path \${pluginPath}",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"@whook/cli\\": 2 commands
+",
+    ],
+    Array [
+      "info",
+      "- ls: Print available commands
+$ whook ls
+",
+    ],
+    Array [
+      "info",
+      "- env: A command printing env values
+$ whook env --name NODE_ENV --default \\"default value\\"
+",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"@whook/whook\\": none
+",
+    ],
+  ],
+  "readDirCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/commands",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/lol/dist/commands",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/commands/ls",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/commands/env",
+    ],
+  ],
+}
+`;

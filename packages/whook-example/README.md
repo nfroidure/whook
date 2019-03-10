@@ -31,6 +31,11 @@ Start the server in development mode:
 npm run dev
 ```
 
+List available commands:
+```sh
+npx whook ls
+```
+
 # Debug
 Execute a handler in isolation:
 ```sh

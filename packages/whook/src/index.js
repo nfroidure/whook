@@ -11,12 +11,13 @@ import initHTTPRouter from '@whook/http-router';
 import initErrorHandler from '@whook/http-router/dist/errorHandler';
 import initHTTPTransaction from '@whook/http-transaction';
 import initHTTPServer from '@whook/http-server';
-import initPORT from './services/PORT';
-import initHOST from './services/HOST';
+import initPort from './services/PORT';
+import initHost from './services/HOST';
 import initAutoload from './services/_autoload';
-import initENV from './services/ENV';
-import initCONFIGS from './services/CONFIGS';
+import initEnv from './services/ENV';
+import initConfigs from './services/CONFIGS';
 import initProjectDir from './services/PROJECT_DIR';
+import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS';
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
@@ -150,10 +151,11 @@ export async function prepareEnvironment($ = new Knifecycle()) {
     initHTTPTransaction,
     initHTTPServer,
     initErrorHandler,
-    initPORT,
-    initHOST,
-    initENV,
-    initCONFIGS,
+    initPort,
+    initHost,
+    initEnv,
+    initConfigs,
+    initWhookPluginsPaths,
     initAutoload,
     initProjectDir,
   ].forEach($.register.bind($));

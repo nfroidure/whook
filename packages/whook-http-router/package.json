@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
+    "ajv": "^6.9.2",
     "bytes": "^3.1.0",
     "camel-case": "^3.0.0",
     "content-type": "^1.0.4",
@@ -47,7 +48,6 @@
     "negotiator": "^0.6.1",
     "qs": "^6.6.0",
     "siso": "^3.1.1",
-    "ajv": "^6.9.2",
     "strict-qs": "^4.1.0",
     "swagger-parser": "^6.0.5",
     "yerror": "^4.0.1",

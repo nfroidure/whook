@@ -14,7 +14,7 @@ export default initializer(
     inject: ['?ENV', '?log'],
     options: { singleton: true },
   },
-  initHOST,
+  initHost,
 );
 
 /**
@@ -29,7 +29,7 @@ export default initializer(
  * @return {Promise<String>}
  * A promise of a containing the actual host.
  */
-async function initHOST({ ENV = {}, log = noop, internalIp = _internalIp }) {
+async function initHost({ ENV = {}, log = noop, internalIp = _internalIp }) {
   log('debug', `🏭 - Initializing the HOST service.`);
 
   if ('undefined' !== typeof ENV.HOST) {

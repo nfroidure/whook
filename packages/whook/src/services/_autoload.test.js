@@ -31,7 +31,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -62,7 +62,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -99,7 +99,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -159,7 +159,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -200,7 +200,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -243,7 +243,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {
           getPing: 'getPingMock',
@@ -285,7 +285,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {
@@ -318,12 +318,6 @@ describe('$autoload', () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
-      resolve.mockImplementationOnce(
-        () => '/var/lib/node/node_modules/@whook/cli',
-      );
-      resolve.mockImplementationOnce(
-        () => '/var/lib/node/node_modules/@whook/lol',
-      );
       resolve.mockImplementationOnce(() => {
         throw new YError('E_BAD_MODULE');
       });
@@ -336,7 +330,10 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: ['@whook/cli', '@whook/lol'],
+        WHOOK_PLUGINS_PATHS: [
+          '/var/lib/node/node_modules/@whook/cli/dist',
+          '/var/lib/node/node_modules/@whook/lol/dist',
+        ],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -376,7 +373,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -418,7 +415,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -460,7 +457,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -498,7 +495,7 @@ describe('$autoload', () => {
 
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: [],
+        WHOOK_PLUGINS_PATHS: [],
         $injector,
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
@@ -510,47 +507,6 @@ describe('$autoload', () => {
 
       try {
         await $autoload('getPing');
-        throw new YError('E_UNEXPECTED_SUCCESS');
-      } catch (err) {
-        expect({
-          errorCode: err.code,
-          errorParams: err.params,
-          logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
-          injectorCalls: $injector.mock.calls,
-          requireCalls: require.mock.calls,
-          resolveCalls: resolve.mock.calls,
-        }).toMatchSnapshot();
-      }
-    });
-
-    it('with unexisting plugin', async () => {
-      $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
-        API: { info: {} },
-      });
-      resolve.mockImplementationOnce(() => {
-        throw new YError('E_NO_MODULE');
-      });
-
-      try {
-        await initAutoload({
-          PROJECT_SRC: '/home/whoami/my-whook-project/src',
-          WHOOK_PLUGINS: ['@whook/unreal'],
-          $injector,
-          SERVICE_NAME_MAP: {},
-          INITIALIZER_PATH_MAP: {},
-          WRAPPERS: [],
-          log,
-          require,
-          resolve,
-        });
-
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({

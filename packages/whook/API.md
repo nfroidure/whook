@@ -14,16 +14,19 @@
 <dt><a href="#initENV">initENV(services, [log])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Initialize the ENV service using process env plus dotenv files</p>
 </dd>
-<dt><a href="#initHOST">initHOST(services, [log])</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
+<dt><a href="#initHost">initHost(services, [log])</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
 <dd><p>Initialize the HOST service from ENV or auto-detection if
  none specified in ENV</p>
 </dd>
-<dt><a href="#initPORT">initPORT(services, [log])</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
+<dt><a href="#initPort">initPort(services, [log])</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
 <dd><p>Initialize the PORT service from ENV or auto-detection if
  none specified in ENV</p>
 </dd>
 <dt><a href="#initProjectDir">initProjectDir(services, [log])</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
 <dd><p>Auto detect the Whook PROJECT_DIR</p>
+</dd>
+<dt><a href="#initWhookPluginsPaths">initWhookPluginsPaths(services, [log])</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
+<dd><p>Auto detect the Whook WHOOK_PLUGINS_PATHS</p>
 </dd>
 </dl>
 
@@ -85,9 +88,9 @@ Initialize the ENV service using process env plus dotenv files
 | [services.BASE_ENV] | <code>Object</code> | <code>{}</code> | An optional base environment |
 | [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initHOST"></a>
+<a name="initHost"></a>
 
-## initHOST(services, [log]) ⇒ <code>Promise.&lt;String&gt;</code>
+## initHost(services, [log]) ⇒ <code>Promise.&lt;String&gt;</code>
 Initialize the HOST service from ENV or auto-detection if
  none specified in ENV
 
@@ -100,9 +103,9 @@ Initialize the HOST service from ENV or auto-detection if
 | [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
 | [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initPORT"></a>
+<a name="initPort"></a>
 
-## initPORT(services, [log]) ⇒ <code>Promise.&lt;Number&gt;</code>
+## initPort(services, [log]) ⇒ <code>Promise.&lt;Number&gt;</code>
 Initialize the PORT service from ENV or auto-detection if
  none specified in ENV
 
@@ -127,5 +130,20 @@ Auto detect the Whook PROJECT_DIR
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services PROJECT_DIR depends on |
 | services.PWD | <code>Object</code> |  | The process working directory |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWhookPluginsPaths"></a>
+
+## initWhookPluginsPaths(services, [log]) ⇒ <code>Promise.&lt;string&gt;</code>
+Auto detect the Whook WHOOK_PLUGINS_PATHS
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a number representing the actual port.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services WHOOK_PLUGINS_PATHS depends on |
+| services.WHOOK_PLUGINS | <code>Array.&lt;String&gt;</code> |  | The active whook plugins list |
+| services.PROJECT_SRC | <code>String</code> |  | The project source directory |
 | [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 

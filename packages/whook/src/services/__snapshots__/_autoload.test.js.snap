@@ -32,33 +32,6 @@ Object {
 }
 `;
 
-exports[`$autoload should fail with unexisting plugin 1`] = `
-Object {
-  "errorCode": "E_BAD_WHOOK_PLUGIN",
-  "errorParams": Array [
-    "@whook/unreal",
-  ],
-  "injectorCalls": Array [],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-  ],
-  "requireCalls": Array [],
-  "resolveCalls": Array [
-    Array [
-      "@whook/unreal",
-      Object {
-        "paths": Array [
-          "/home/whoami/my-whook-project/src",
-        ],
-      },
-    ],
-  ],
-}
-`;
-
 exports[`$autoload should work for API 1`] = `
 Object {
   "injectorCalls": Array [
@@ -254,14 +227,6 @@ Object {
     ],
     Array [
       "debug",
-      "Plugin \\"@whook/cli\\" resolved to: /var/lib/node/node_modules/@whook",
-    ],
-    Array [
-      "debug",
-      "Plugin \\"@whook/lol\\" resolved to: /var/lib/node/node_modules/@whook",
-    ],
-    Array [
-      "debug",
       "💿 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
     ],
     Array [
@@ -280,26 +245,10 @@ Object {
   ],
   "resolveCalls": Array [
     Array [
-      "@whook/cli",
-      Object {
-        "paths": Array [
-          "/home/whoami/my-whook-project/src",
-        ],
-      },
-    ],
-    Array [
-      "@whook/lol",
-      Object {
-        "paths": Array [
-          "/home/whoami/my-whook-project/src",
-        ],
-      },
-    ],
-    Array [
       "/home/whoami/my-whook-project/src/handlers/getPing",
     ],
     Array [
-      "/var/lib/node/node_modules/@whook/handlers/getPing",
+      "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing",
     ],
   ],
   "result": Object {

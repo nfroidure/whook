@@ -14,7 +14,7 @@ export default initializer(
     inject: ['?ENV', '?log'],
     options: { singleton: true },
   },
-  initPORT,
+  initPort,
 );
 
 /**
@@ -29,7 +29,7 @@ export default initializer(
  * @return {Promise<Number>}
  * A promise of a number representing the actual port.
  */
-async function initPORT({ ENV = {}, log = noop }) {
+async function initPort({ ENV = {}, log = noop }) {
   log('debug', `🏭 - Initializing the PORT service.`);
 
   if ('undefined' !== typeof ENV.PORT) {
