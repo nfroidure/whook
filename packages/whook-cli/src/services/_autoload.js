@@ -1,33 +1,18 @@
 import path from 'path';
 import initAutoloader from '@whook/whook/dist/services/_autoload';
-import { resolveWhookPlugins } from '@whook/whook/dist/services/_autoload';
 import { wrapInitializer, alsoInject, service } from 'knifecycle';
 
 // Needed to avoid messing up babel builds 🤷
 const _require = require;
-const _resolve = require.resolve;
 
 export default alsoInject(
-  ['PROJECT_SRC', 'WHOOK_PLUGINS', 'log'],
+  ['PROJECT_SRC', 'WHOOK_PLUGINS_PATHS', 'log'],
   wrapInitializer(
     async (
-      {
-        PROJECT_SRC,
-        WHOOK_PLUGINS,
-        log,
-        require = _require,
-        resolve = _resolve,
-      },
+      { PROJECT_SRC, WHOOK_PLUGINS_PATHS, log, require = _require },
       $autoload,
     ) => {
       log('debug', '🤖 - Wrapping the whook autoloader.');
-
-      const PLUGINS_PATHS = await resolveWhookPlugins({
-        WHOOK_PLUGINS,
-        PROJECT_SRC,
-        resolve,
-        log,
-      });
 
       return async serviceName => {
         if (serviceName.endsWith('Command')) {
@@ -35,7 +20,7 @@ export default alsoInject(
 
           let commandModule;
 
-          [PROJECT_SRC, ...PLUGINS_PATHS].some(basePath => {
+          [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].some(basePath => {
             const finalPath = path.join(basePath, 'commands', commandName);
 
             try {

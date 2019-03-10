@@ -12,23 +12,9 @@ Object {
       "debug",
       "🤖 - Wrapping the whook autoloader.",
     ],
-    Array [
-      "debug",
-      "Plugin \\"@whook/whook\\" resolved to: /var/lib/node/node_modules/@whook/whook/src",
-    ],
   ],
   "path": "mocked://service",
   "requireCalls": Array [],
-  "resolveCalls": Array [
-    Array [
-      "@whook/whook",
-      Object {
-        "paths": Array [
-          "/home/whoiam/projects/my-whook-project/src",
-        ],
-      },
-    ],
-  ],
   "result": undefined,
 }
 `;
@@ -42,10 +28,6 @@ Object {
       "🤖 - Wrapping the whook autoloader.",
     ],
     Array [
-      "debug",
-      "Plugin \\"@whook/whook\\" resolved to: /var/lib/node/node_modules/@whook/whook/src",
-    ],
-    Array [
       "warning",
       "The handler seems to have no default export.",
     ],
@@ -54,16 +36,6 @@ Object {
   "requireCalls": Array [
     Array [
       "/home/whoiam/projects/my-whook-project/src/commands/handler",
-    ],
-  ],
-  "resolveCalls": Array [
-    Array [
-      "@whook/whook",
-      Object {
-        "paths": Array [
-          "/home/whoiam/projects/my-whook-project/src",
-        ],
-      },
     ],
   ],
   "result": undefined,
@@ -77,10 +49,6 @@ Object {
     Array [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "debug",
-      "Plugin \\"@whook/whook\\" resolved to: /var/lib/node/node_modules/@whook/whook/src",
     ],
     Array [
       "debug",
@@ -104,16 +72,6 @@ Object {
       "/var/lib/node/node_modules/@whook/whook/src/commands/handler",
     ],
   ],
-  "resolveCalls": Array [
-    Array [
-      "@whook/whook",
-      Object {
-        "paths": Array [
-          "/home/whoiam/projects/my-whook-project/src",
-        ],
-      },
-    ],
-  ],
   "result": undefined,
 }
 `;
@@ -127,10 +85,6 @@ Object {
       "🤖 - Wrapping the whook autoloader.",
     ],
     Array [
-      "debug",
-      "Plugin \\"@whook/whook\\" resolved to: /var/lib/node/node_modules/@whook/whook/src",
-    ],
-    Array [
       "warning",
       "Command called!",
     ],
@@ -139,16 +93,6 @@ Object {
   "requireCalls": Array [
     Array [
       "/home/whoiam/projects/my-whook-project/src/commands/handler",
-    ],
-  ],
-  "resolveCalls": Array [
-    Array [
-      "@whook/whook",
-      Object {
-        "paths": Array [
-          "/home/whoiam/projects/my-whook-project/src",
-        ],
-      },
     ],
   ],
   "result": undefined,
@@ -162,10 +106,6 @@ Object {
     Array [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "debug",
-      "Plugin \\"@whook/whook\\" resolved to: /var/lib/node/node_modules/@whook/whook/src",
     ],
     Array [
       "debug",
@@ -183,16 +123,6 @@ Object {
     ],
     Array [
       "/var/lib/node/node_modules/@whook/whook/src/commands/handler",
-    ],
-  ],
-  "resolveCalls": Array [
-    Array [
-      "@whook/whook",
-      Object {
-        "paths": Array [
-          "/home/whoiam/projects/my-whook-project/src",
-        ],
-      },
     ],
   ],
   "result": undefined,

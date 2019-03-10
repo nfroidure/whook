@@ -306,16 +306,16 @@ Object {
       "Delay service initialized.",
     ],
     Array [
+      "➰ - Plugin \\"@whook/cli\\" resolved to: /home/whoiam/projects/whook/packages/whook-cli/dist",
+    ],
+    Array [
+      "➰ - Plugin \\"@whook/whook\\" resolved to: /home/whoiam/projects/whook/dist",
+    ],
+    Array [
       "🏭 - Initializing the CONFIGS service.",
     ],
     Array [
       "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    Array [
-      "Plugin \\"@whook/cli\\" resolved to: /home/whoiam/projects/whook/packages/whook-cli/dist",
-    ],
-    Array [
-      "Plugin \\"@whook/whook\\" resolved to: /home/whoiam/projects/whook/dist",
     ],
     Array [
       "💿 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT",

@@ -22,7 +22,7 @@ export default initializer(
     type: 'service',
     inject: [
       'PROJECT_SRC',
-      'WHOOK_PLUGINS',
+      'WHOOK_PLUGINS_PATHS',
       '$injector',
       '?SERVICE_NAME_MAP',
       '?INITIALIZER_PATH_MAP',
@@ -60,7 +60,7 @@ export default initializer(
  */
 async function initAutoload({
   PROJECT_SRC,
-  WHOOK_PLUGINS = [],
+  WHOOK_PLUGINS_PATHS = [],
   $injector,
   SERVICE_NAME_MAP = {},
   INITIALIZER_PATH_MAP = {},
@@ -71,13 +71,6 @@ async function initAutoload({
   resolve = _resolve,
 }) {
   log('debug', '🤖 - Initializing the `$autoload` service.');
-
-  const PLUGINS_PATHS = await resolveWhookPlugins({
-    WHOOK_PLUGINS,
-    PROJECT_SRC,
-    resolve,
-    log,
-  });
 
   /* Architecture Note #5.3: API auto loading
   We cannot inject the `API` in the auto loader since
@@ -187,29 +180,32 @@ async function initAutoload({
     */
     const modulePath =
       INITIALIZER_PATH_MAP[resolvedName] ||
-      [PROJECT_SRC, ...PLUGINS_PATHS].reduce((finalModulePath, basePath) => {
-        if (finalModulePath) {
-          return finalModulePath;
-        }
+      [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].reduce(
+        (finalModulePath, basePath) => {
+          if (finalModulePath) {
+            return finalModulePath;
+          }
 
-        const finalPath = path.join(
-          basePath,
-          isHandler ? 'handlers' : 'services',
-          isWrappedHandler
-            ? resolvedName.replace(/Wrapped$/, '')
-            : resolvedName,
-        );
-
-        try {
-          return resolve(finalPath);
-        } catch (err) {
-          log(
-            'debug',
-            `💿 - Service "${resolvedName}" not found in: ${finalPath}`,
+          const finalPath = path.join(
+            basePath,
+            isHandler ? 'handlers' : 'services',
+            isWrappedHandler
+              ? resolvedName.replace(/Wrapped$/, '')
+              : resolvedName,
           );
-          return null;
-        }
-      }, null);
+
+          try {
+            return resolve(finalPath);
+          } catch (err) {
+            log(
+              'debug',
+              `💿 - Service "${resolvedName}" not found in: ${finalPath}`,
+            );
+            return null;
+          }
+        },
+        null,
+      );
 
     if (INITIALIZER_PATH_MAP[resolvedName]) {
       log(
@@ -241,34 +237,4 @@ async function initAutoload({
         : resolvedInitializer,
     };
   }
-}
-
-/* Architecture Note #5.7: Plugins resolution
-The autoloader searches for services in the project's path
- and also via the `WHOOK_PLUGINS` array allowing one to
- use services/handlers from an installed whook plugin.
-*/
-export async function resolveWhookPlugins({
-  WHOOK_PLUGINS,
-  PROJECT_SRC,
-  resolve,
-  log,
-}) {
-  return WHOOK_PLUGINS.map(pluginName => {
-    try {
-      // It is important to resolve from the projects
-      // root directory since this is were modules are
-      // installed
-      // see https://nodejs.org/api/modules.html#modules_require_resolve_request_options
-      const modulePath = path.dirname(
-        resolve(pluginName, { paths: [PROJECT_SRC] }),
-      );
-
-      log('debug', `Plugin "${pluginName}" resolved to: ${modulePath}`);
-
-      return modulePath;
-    } catch (err) {
-      throw YError.wrap(err, 'E_BAD_WHOOK_PLUGIN', pluginName);
-    }
-  });
 }
