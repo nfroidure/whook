@@ -48,7 +48,7 @@ npm t
  the Whook's API may change.
 
 Using it right now, will imply making changes when the next
- major realease will happen. If you would like to get involved
+ major release will happen. If you would like to get involved
  in its early development, feel free to add issues / comments
  or to improve the code.
 
