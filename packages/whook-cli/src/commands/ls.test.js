@@ -16,6 +16,10 @@ describe('lsCommand', () => {
   describe('should work', () => {
     it('with no plugin', async () => {
       const lsCommand = await initLsCommand({
+        CONFIG: {
+          name: 'My Super project!',
+        },
+        PROJECT_SRC: '/home/whoiam/whook-project/dist',
         WHOOK_PLUGINS: [],
         WHOOK_PLUGINS_PATHS: [],
         readDir,
@@ -49,6 +53,8 @@ describe('lsCommand', () => {
       });
 
       const lsCommand = await initLsCommand({
+        CONFIG: {},
+        PROJECT_SRC: '/home/whoiam/whook-project/dist',
         WHOOK_PLUGINS: ['@whook/cli', '@whook/whook'],
         WHOOK_PLUGINS_PATHS: [
           '/var/lib/node/node_modules/@whook/cli/dist',
@@ -84,6 +90,10 @@ describe('lsCommand', () => {
       });
 
       const lsCommand = await initLsCommand({
+        CONFIG: {
+          name: 'My Super project!',
+        },
+        PROJECT_SRC: '/home/whoiam/whook-project/dist',
         WHOOK_PLUGINS: ['@whook/cli', '@whook/whook'],
         WHOOK_PLUGINS_PATHS: [
           '/var/lib/node/node_modules/@whook/cli/dist',
