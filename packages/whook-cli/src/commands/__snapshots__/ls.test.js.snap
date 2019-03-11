@@ -2,8 +2,23 @@
 
 exports[`lsCommand should work with no plugin 1`] = `
 Object {
-  "logCalls": Array [],
-  "readDirCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "✅ - No commands folder found at path /home/whoiam/whook-project/dist",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"My Super project!\\": none",
+    ],
+  ],
+  "readDirCalls": Array [
+    Array [
+      "/home/whoiam/whook-project/dist/commands",
+    ],
+  ],
   "requireCalls": Array [],
   "result": undefined,
 }
@@ -14,13 +29,17 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "✅ - No commands folder found at path \${pluginPath}",
+      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/lol/dist",
+    ],
+    Array [
+      "debug",
+      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/cli/dist",
     ],
     Array [
       "info",
       "
 
-# Provided by \\"@whook/cli\\": 2 commands",
+# Provided by \\"project\\": 2 commands",
     ],
     Array [
       "info",
@@ -34,10 +53,19 @@ Object {
       "info",
       "
 
+# Provided by \\"@whook/cli\\": none",
+    ],
+    Array [
+      "info",
+      "
+
 # Provided by \\"@whook/whook\\": none",
     ],
   ],
   "readDirCalls": Array [
+    Array [
+      "/home/whoiam/whook-project/dist/commands",
+    ],
     Array [
       "/var/lib/node/node_modules/@whook/cli/dist/commands",
     ],
@@ -47,10 +75,10 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/var/lib/node/node_modules/@whook/cli/dist/commands/ls",
+      "/home/whoiam/whook-project/dist/commands/ls",
     ],
     Array [
-      "/var/lib/node/node_modules/@whook/cli/dist/commands/env",
+      "/home/whoiam/whook-project/dist/commands/env",
     ],
   ],
 }
@@ -61,13 +89,17 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "✅ - No commands folder found at path \${pluginPath}",
+      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/lol/dist",
+    ],
+    Array [
+      "debug",
+      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/cli/dist",
     ],
     Array [
       "info",
       "
 
-# Provided by \\"@whook/cli\\": 2 commands
+# Provided by \\"My Super project!\\": 2 commands
 ",
     ],
     Array [
@@ -86,11 +118,21 @@ $ whook env --name NODE_ENV --default \\"default value\\"
       "info",
       "
 
+# Provided by \\"@whook/cli\\": none
+",
+    ],
+    Array [
+      "info",
+      "
+
 # Provided by \\"@whook/whook\\": none
 ",
     ],
   ],
   "readDirCalls": Array [
+    Array [
+      "/home/whoiam/whook-project/dist/commands",
+    ],
     Array [
       "/var/lib/node/node_modules/@whook/cli/dist/commands",
     ],
@@ -100,10 +142,10 @@ $ whook env --name NODE_ENV --default \\"default value\\"
   ],
   "requireCalls": Array [
     Array [
-      "/var/lib/node/node_modules/@whook/cli/dist/commands/ls",
+      "/home/whoiam/whook-project/dist/commands/ls",
     ],
     Array [
-      "/var/lib/node/node_modules/@whook/cli/dist/commands/env",
+      "/home/whoiam/whook-project/dist/commands/env",
     ],
   ],
 }

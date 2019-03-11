@@ -25,6 +25,8 @@ export const definition = {
 export default extra(definition, autoService(initLsCommand));
 
 async function initLsCommand({
+  CONFIG,
+  PROJECT_SRC,
   WHOOK_PLUGINS,
   WHOOK_PLUGINS_PATHS,
   readDir = _readDir,
@@ -35,11 +37,13 @@ async function initLsCommand({
 }) {
   return async () => {
     const { verbose } = readArgs(definition.arguments, args);
+    const commandsSources = [CONFIG.name || 'project', ...WHOOK_PLUGINS];
+    const commandsPaths = [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS];
     const pluginsDefinitions = await Promise.all(
-      WHOOK_PLUGINS_PATHS.map(async (pluginPath, i) => {
+      commandsPaths.map(async (pluginPath, i) => {
         try {
           return {
-            plugin: WHOOK_PLUGINS[i],
+            plugin: commandsSources[i],
             commands: (await readDir(path.join(pluginPath, 'commands')))
               .filter(
                 file =>
@@ -53,10 +57,10 @@ async function initLsCommand({
               })),
           };
         } catch (err) {
-          log('debug', '✅ - No commands folder found at path ${pluginPath}');
+          log('debug', `✅ - No commands folder found at path ${pluginPath}`);
           log('stack', err.stack);
           return {
-            plugin: WHOOK_PLUGINS[i],
+            plugin: commandsSources[i],
             commands: [],
           };
         }
