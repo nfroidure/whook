@@ -2,65 +2,21 @@
 
 exports[`runServer should work 1`] = `
 Object {
-  "autoloaderCalls": Array [
-    Array [
-      "MAX_HEADERS_COUNT",
-    ],
-    Array [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    Array [
-      "TIMEOUT",
-    ],
-    Array [
-      "MAX_CONNECTIONS",
-    ],
-    Array [
-      "PROCESS_NAME",
-    ],
-    Array [
-      "SIGNALS",
-    ],
-    Array [
-      "BUFFER_LIMIT",
-    ],
-    Array [
-      "PARSERS",
-    ],
-    Array [
-      "STRINGIFYERS",
-    ],
-    Array [
-      "DECODERS",
-    ],
-    Array [
-      "ENCODERS",
-    ],
-    Array [
-      "QUERY_PARSER",
-    ],
-    Array [
-      "TRANSACTIONS",
-    ],
-    Array [
-      "uniqueId",
-    ],
-  ],
   "debugCalls": Array [
     Array [
       "Logging service initialized.",
-    ],
-    Array [
-      "Time service initialized.",
-    ],
-    Array [
-      "Delay service initialized.",
     ],
     Array [
       "Running in \\"test\\" environment.",
     ],
     Array [
       "Process service initialized.",
+    ],
+    Array [
+      "Time service initialized.",
+    ],
+    Array [
+      "Delay service initialized.",
     ],
     Array [
       "💱 - HTTP Transaction initialized.",

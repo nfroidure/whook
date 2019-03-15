@@ -13,7 +13,6 @@ import initHTTPTransaction from '@whook/http-transaction';
 import initHTTPServer from '@whook/http-server';
 import initPort from './services/PORT';
 import initHost from './services/HOST';
-import initAutoload from './services/_autoload';
 import initEnv from './services/ENV';
 import initConfigs from './services/CONFIGS';
 import initProjectDir from './services/PROJECT_DIR';
@@ -156,7 +155,6 @@ export async function prepareEnvironment($ = new Knifecycle()) {
     initEnv,
     initConfigs,
     initWhookPluginsPaths,
-    initAutoload,
     initProjectDir,
   ].forEach($.register.bind($));
 

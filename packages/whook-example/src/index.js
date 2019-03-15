@@ -6,6 +6,7 @@ import {
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
+import initAutoload from '@whook/whook/dist/services/_autoload';
 
 // Per convention a Whook server main file must export
 //  the following 3 functions to be composable:
@@ -38,6 +39,16 @@ export async function prepareServer(injectedNames = [], $ = new Knifecycle()) {
 export async function prepareEnvironment($ = new Knifecycle()) {
   $ = await prepareBaseEnvironment($);
 
+  // You can register any service/handler required to bootstrap
+  // the server env here manually see Knifecycle for more infos
+  // https://github.com/nfroidure/knifecycle
+
+  // OR, like in this example, use the Whook `$autoload` service
+  // that looks for handlers, configs and services for you in their
+  // respective folders. Of course, you can also write your own
+  // autoloader
+  $.register(initAutoload);
+
   // You have to declare the project main file directory
   // to allow autoloading features to work with it either
   // in development and production (files built in `dist/`)
@@ -49,9 +60,6 @@ export async function prepareEnvironment($ = new Knifecycle()) {
 
   // Setup your own whook plugins or avoid whook default by leaving it empty
   $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
-
-  // Add here any service/handler required to bootstrap
-  // the server env
 
   return $;
 }
