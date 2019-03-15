@@ -51,7 +51,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   const debug = jest.fn();
   const time = jest.fn();
   const $autoload = jest.fn(async serviceName => {
-    throw new YError('E_UNECESSARY_AUTOLOAD', serviceName);
+    throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
   });
   let $;
 

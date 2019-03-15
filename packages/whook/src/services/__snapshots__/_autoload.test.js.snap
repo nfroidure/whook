@@ -2,7 +2,7 @@
 
 exports[`$autoload should fail with unexisting handlers 1`] = `
 Object {
-  "errorCode": "E_SERVICE_NOT_FOUND",
+  "errorCode": "E_UNMATCHED_DEPENDENCY",
   "errorParams": Array [
     "getPing",
   ],

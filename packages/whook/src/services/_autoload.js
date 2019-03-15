@@ -242,7 +242,7 @@ async function initAutoload({
     }
 
     if (!modulePath) {
-      throw new YError('E_SERVICE_NOT_FOUND', resolvedName);
+      throw new YError('E_UNMATCHED_DEPENDENCY', resolvedName);
     }
 
     log('debug', `🚫 - Service "${resolvedName}" found in: ${modulePath}`);
