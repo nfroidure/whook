@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "knifecycle": "^5.3.0"
+    "knifecycle": "^6.0.0"
   },
   "peerDependencies": {
     "@whook/whook": "^3.1.3"

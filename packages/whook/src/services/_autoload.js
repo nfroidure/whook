@@ -62,7 +62,7 @@ async function initAutoload({
   PROJECT_SRC,
   WHOOK_PLUGINS_PATHS = [],
   $injector,
-  SERVICE_NAME_MAP = {},
+  SERVICE_NAME_MAP,
   INITIALIZER_PATH_MAP = {},
   WRAPPERS,
   CONFIGS,
@@ -102,6 +102,18 @@ async function initAutoload({
     };
   })(WRAPPERS);
 
+  const mapInjectedName = async injectedName => {
+    if ('SERVICE_NAME_MAP' === injectedName) {
+      return injectedName;
+    }
+    if (!SERVICE_NAME_MAP) {
+      SERVICE_NAME_MAP = (await $injector(['SERVICE_NAME_MAP']))
+        .SERVICE_NAME_MAP;
+    }
+
+    return SERVICE_NAME_MAP[injectedName] || injectedName;
+  };
+
   return $autoload;
 
   /**
@@ -113,7 +125,18 @@ async function initAutoload({
    *  in its properties.
    */
   async function $autoload(injectedName) {
-    const resolvedName = SERVICE_NAME_MAP[injectedName] || injectedName;
+    /* Architecture Note #5.7: Service name mapping
+    In order to be able to substituate easily a service per another
+     one can specify a mapping between a service and its substitution.
+    */
+    const resolvedName = await mapInjectedName(injectedName);
+
+    if (resolvedName !== injectedName) {
+      log(
+        'debug',
+        `📖 - Using SERVICE_NAME_MAP to route "${injectedName}" to "${resolvedName}".`,
+      );
+    }
 
     /* Architecture Note #5.1: Configuration auto loading
     Loading the configuration files is done according to the `NODE_ENV`
@@ -207,15 +230,19 @@ async function initAutoload({
         null,
       );
 
+    /* Architecture Note #5.8: Initializer path mapping
+    In order to be able to load a service from a given path map
+     one can directly specify a path to use for its resolution.
+    */
     if (INITIALIZER_PATH_MAP[resolvedName]) {
       log(
         'debug',
-        '📖 - Using INITIALIZER_PATH_MAP to resolve the ${resolvedName} module path.',
+        `📖 - Using INITIALIZER_PATH_MAP to resolve the "${resolvedName}" module path.`,
       );
     }
 
     if (!modulePath) {
-      throw new YError('E_SERVICE_NOT_FOUND', resolvedName);
+      throw new YError('E_UNMATCHED_DEPENDENCY', resolvedName);
     }
 
     log('debug', `🚫 - Service "${resolvedName}" found in: ${modulePath}`);

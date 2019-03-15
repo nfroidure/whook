@@ -14,6 +14,7 @@ const CONFIG = {
   },
   NODE_ENVS,
   DEBUG_NODE_ENVS: process.env.DEBUG ? NODE_ENVS : DEBUG_NODE_ENVS,
+  SERVICE_NAME_MAP: {},
   TOKEN: 'oudelali',
   CORS: {
     'Access-Control-Allow-Origin': '*',

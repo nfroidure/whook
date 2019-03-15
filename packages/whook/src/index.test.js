@@ -1,10 +1,9 @@
-import { constant, initializer } from 'knifecycle';
+import { constant } from 'knifecycle';
 import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
 } from './index';
-import YError from 'yerror';
 
 describe('runServer', () => {
   it('should work', async () => {
@@ -37,23 +36,10 @@ describe('runServer', () => {
       error: jest.fn(),
     };
     const debug = jest.fn();
-    const $autoload = jest.fn(async serviceName => {
-      throw new YError('E_UNECESSARY_AUTOLOAD', serviceName);
-    });
 
     async function prepareEnvironment() {
       const $ = await basePrepareEnvironment();
 
-      $.register(
-        initializer(
-          {
-            name: '$autoload',
-            type: 'service',
-            options: { singleton: true },
-          },
-          async () => $autoload,
-        ),
-      );
       $.register(constant('BASE_PATH', BASE_PATH));
       $.register(constant('API', API));
       $.register(constant('ENV', {}));
@@ -87,7 +73,6 @@ describe('runServer', () => {
       debugCalls: debug.mock.calls,
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,
-      autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();
   });
 });

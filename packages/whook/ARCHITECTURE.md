@@ -13,7 +13,7 @@ Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.js#L22-L26)
+[See in context](./src/index.js#L21-L25)
 
 
 
@@ -26,7 +26,7 @@ Whook exposes a `prepareServer` function to create its server
  containing the bootstrapped environment and allowing
  to complete and run the server.
 
-[See in context](./src/index.js#L51-L58)
+[See in context](./src/index.js#L50-L57)
 
 
 
@@ -36,7 +36,7 @@ Whook exposes a `prepareServer` function to create its server
  *  server. We also inject `log` for logging purpose and custom other
  *  injected name that were required upfront.
 
-[See in context](./src/index.js#L69-L73)
+[See in context](./src/index.js#L68-L72)
 
 
 
@@ -48,7 +48,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server.
 
-[See in context](./src/index.js#L83-L89)
+[See in context](./src/index.js#L82-L88)
 
 
 
@@ -58,7 +58,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.js#L98-L102)
+[See in context](./src/index.js#L97-L101)
 
 
 
@@ -67,7 +67,7 @@ The Whook server heavily rely on the process working directory
 Whook has different behaviors depending on the `NODE_ENV` value
  consider setting it to production before shipping.
 
-[See in context](./src/index.js#L106-L109)
+[See in context](./src/index.js#L105-L108)
 
 
 
@@ -76,7 +76,7 @@ Whook has different behaviors depending on the `NODE_ENV` value
 Whook need to know where to look up for things like
  commands / handlers etc...
 
-[See in context](./src/index.js#L113-L116)
+[See in context](./src/index.js#L112-L115)
 
 
 
@@ -87,7 +87,7 @@ Whook's default logger write to the NodeJS default console
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
-[See in context](./src/index.js#L119-L124)
+[See in context](./src/index.js#L118-L123)
 
 
 
@@ -98,7 +98,7 @@ Whook's embed a few default initializers proxied from
  `src/services` folder. It can be wrapped or overriden,
  at will, later in project's main file.
 
-[See in context](./src/index.js#L138-L143)
+[See in context](./src/index.js#L137-L142)
 
 
 
@@ -154,7 +154,7 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.js#L118-L125)
+[See in context](./src/services/_autoload.js#L141-L148)
 
 
 
@@ -183,7 +183,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded `CONFIGS` configurations hash.
 
-[See in context](./src/services/_autoload.js#L130-L133)
+[See in context](./src/services/_autoload.js#L153-L156)
 
 
 
@@ -192,7 +192,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.js#L147-L150)
+[See in context](./src/services/_autoload.js#L170-L173)
 
 
 
@@ -201,7 +201,25 @@ Here, we build the handlers map needed by the router by injecting every
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.js#L177-L180)
+[See in context](./src/services/_autoload.js#L200-L203)
+
+
+
+### Service name mapping
+
+In order to be able to substituate easily a service per another
+ one can specify a mapping between a service and its substitution.
+
+[See in context](./src/services/_autoload.js#L128-L131)
+
+
+
+### Initializer path mapping
+
+In order to be able to load a service from a given path map
+ one can directly specify a path to use for its resolution.
+
+[See in context](./src/services/_autoload.js#L233-L236)
 
 
 

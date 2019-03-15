@@ -7,6 +7,7 @@ import {
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
+import YError from 'yerror';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
   const BASE_PATH = '/v1';
@@ -76,7 +77,9 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     return $;
   }
 
-  $autoload.mockRejectedValue(new Error('E_LACKING_MOCK'));
+  $autoload.mockImplementation(async serviceName => {
+    throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
+  });
   process.env.ISOLATED_ENV = 1;
 
   beforeAll(async () => {
