@@ -119,6 +119,42 @@ describe('$autoload', () => {
       }).toMatchSnapshot();
     });
 
+    it('for SERVICE_NAME_MAP', async () => {
+      $injector.mockResolvedValueOnce({
+        CONFIGS: {
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
+      });
+      resolve.mockReturnValueOnce(
+        '/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js',
+      );
+      require.mockImplementationOnce(() => ({
+        default: service(async () => ({ info: {} }), 'SERVICE_NAME_MAP'),
+      }));
+
+      const $autoload = await initAutoload({
+        PROJECT_SRC: '/home/whoami/my-whook-project/src',
+        WHOOK_PLUGINS_PATHS: [],
+        $injector,
+        INITIALIZER_PATH_MAP: {},
+        WRAPPERS: [],
+        log,
+        require,
+        resolve,
+      });
+      const result = await $autoload('SERVICE_NAME_MAP');
+
+      expect({
+        result,
+        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        injectorCalls: $injector.mock.calls,
+        requireCalls: require.mock.calls,
+        resolveCalls: resolve.mock.calls,
+      }).toMatchSnapshot();
+    });
+
     it('for handlers hash', async () => {
       $injector.mockResolvedValueOnce({
         CONFIGS: {
@@ -248,6 +284,53 @@ describe('$autoload', () => {
         SERVICE_NAME_MAP: {
           getPing: 'getPingMock',
         },
+        INITIALIZER_PATH_MAP: {},
+        WRAPPERS: [],
+        log,
+        require,
+        resolve,
+      });
+      const result = await $autoload('getPing');
+
+      expect({
+        result,
+        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        injectorCalls: $injector.mock.calls,
+        requireCalls: require.mock.calls,
+        resolveCalls: resolve.mock.calls,
+      }).toMatchSnapshot();
+    });
+
+    it('for name mapped handlers with dynamic SERVICE_NAME_MAP', async () => {
+      $injector.mockResolvedValueOnce({
+        SERVICE_NAME_MAP: {
+          getPing: 'getPingMock',
+        },
+      });
+      $injector.mockResolvedValueOnce({
+        CONFIGS: {
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
+      });
+      $injector.mockResolvedValueOnce({
+        API: { info: {} },
+      });
+      resolve.mockReturnValueOnce(
+        '/home/whoami/my-whook-project/src/handlers/getPingMock.js',
+      );
+      require.mockReturnValueOnce({
+        default: service(
+          async () => async () => ({ status: 200 }),
+          'getPingMock',
+        ),
+      });
+
+      const $autoload = await initAutoload({
+        PROJECT_SRC: '/home/whoami/my-whook-project/src',
+        WHOOK_PLUGINS_PATHS: [],
+        $injector,
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
