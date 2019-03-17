@@ -33,9 +33,9 @@ async function initEnvCommand({ ENV, log, args }) {
 
     if (
       'undefined' === typeof ENV[name] &&
-      'undefined' === typeof args.default
+      'undefined' === typeof defaultValue
     ) {
-      throw new YError('E_NO_ENV_VALUE', args.name);
+      throw new YError('E_NO_ENV_VALUE', name);
     }
 
     log('info', `${ENV[name] || defaultValue}`);

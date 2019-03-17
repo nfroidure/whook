@@ -8,7 +8,7 @@ export const definition = {
   arguments: {
     type: 'object',
     additionalProperties: false,
-    required: ['name'],
+    required: ['name', 'parameters'],
     properties: {
       name: {
         description: 'Handler to invoke',
@@ -17,6 +17,7 @@ export const definition = {
       parameters: {
         description: 'Parameters to invoke the handler with',
         type: 'string',
+        default: '{}',
       },
     },
   },
@@ -26,26 +27,27 @@ export default extra(definition, autoService(initHandlerCommand));
 
 async function initHandlerCommand({ $injector, log, args }) {
   return async () => {
-    readArgs(definition.arguments, args);
-
-    const handlerName = args.name;
-    let handlerParameters;
+    const { name: handlerName, parameters: handlerParameters } = readArgs(
+      definition.arguments,
+      args,
+    );
+    let parsedParameters;
 
     try {
-      handlerParameters = JSON.parse(args.parameters || '{}');
+      parsedParameters = JSON.parse(handlerParameters || '{}');
     } catch (err) {
-      throw YError.wrap(err, 'E_BAD_PARAMETERS', args.parameters);
+      throw YError.wrap(err, 'E_BAD_PARAMETERS', handlerParameters);
     }
 
     log('debug', 'handler', handlerName);
-    log('debug', 'parameters', handlerParameters);
+    log('debug', 'parameters', parsedParameters);
 
     // Maybe infer and check command definition from handler definition
     // with ajv or else
 
     try {
       const handler = (await $injector([handlerName]))[handlerName];
-      const response = await handler(handlerParameters);
+      const response = await handler(parsedParameters);
 
       log('info', JSON.stringify(response, null, 2));
       return response;

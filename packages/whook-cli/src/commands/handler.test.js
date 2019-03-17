@@ -19,7 +19,7 @@ describe('handlerCommand', () => {
         }),
       });
 
-      const envCommand = await initHandlerCommand({
+      const handlerCommand = await initHandlerCommand({
         log,
         $injector,
         args: {
@@ -29,7 +29,7 @@ describe('handlerCommand', () => {
         },
       });
 
-      await envCommand();
+      await handlerCommand();
 
       expect({
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
@@ -45,7 +45,7 @@ describe('handlerCommand', () => {
         }),
       });
 
-      const envCommand = await initHandlerCommand({
+      const handlerCommand = await initHandlerCommand({
         log,
         $injector,
         args: {
@@ -54,7 +54,7 @@ describe('handlerCommand', () => {
         },
       });
 
-      await envCommand();
+      await handlerCommand();
 
       expect({
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
@@ -72,7 +72,7 @@ describe('handlerCommand', () => {
         }),
       });
 
-      const envCommand = await initHandlerCommand({
+      const handlerCommand = await initHandlerCommand({
         log,
         $injector,
         args: {
@@ -83,7 +83,7 @@ describe('handlerCommand', () => {
       });
 
       try {
-        await envCommand();
+        await handlerCommand();
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
@@ -102,7 +102,7 @@ describe('handlerCommand', () => {
         },
       });
 
-      const envCommand = await initHandlerCommand({
+      const handlerCommand = await initHandlerCommand({
         log,
         $injector,
         args: {
@@ -113,7 +113,7 @@ describe('handlerCommand', () => {
       });
 
       try {
-        await envCommand();
+        await handlerCommand();
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({

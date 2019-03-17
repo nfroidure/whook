@@ -3,7 +3,12 @@ import YError from 'yerror';
 
 // TODO: Add ajv human readable error builder
 export function readArgs(schema, args) {
-  const ajv = new Ajv({ coerceTypes: true });
+  const ajv = new Ajv({
+    coerceTypes: true,
+    useDefaults: true,
+    strictDefaults: true,
+    strictKeywords: true,
+  });
   const validator = ajv.compile(schema);
 
   const {
