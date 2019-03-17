@@ -4,9 +4,8 @@ exports[`initArgs should parse args 1`] = `
 Object {
   "args": Object {
     "_": Array [
-      "handler",
+      "getPing",
     ],
-    "name": "getPing",
     "parameters": "{}",
   },
   "logCalls": Array [
@@ -15,9 +14,8 @@ Object {
       "🛠 - Parsed args:",
       Object {
         "_": Array [
-          "handler",
+          "getPing",
         ],
-        "name": "getPing",
         "parameters": "{}",
       },
     ],

@@ -8,7 +8,7 @@ export default async function run({ prepareEnvironment }) {
     const $ = await prepareEnvironment();
 
     $.register(constant('PWD', process.cwd()));
-    $.register(constant('ARGS', process.argv.slice(2)));
+    $.register(constant('ARGS', process.argv));
     $.register(initArgs);
     $.register(initCommand);
     $.register(initAutoloader);
