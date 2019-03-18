@@ -261,6 +261,8 @@ async function initAutoload({
       path: modulePath,
       initializer: isWrappedHandler
         ? name(resolvedName, await doWrapHandler(resolvedInitializer))
+        : injectedName !== resolvedName
+        ? name(injectedName, resolvedInitializer)
         : resolvedInitializer,
     };
   }
