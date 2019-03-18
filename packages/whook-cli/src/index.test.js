@@ -31,10 +31,16 @@ describe('whook-cli', () => {
     $autoload.mockResolvedValueOnce({
       initializer: service(
         async ({ log }) => async () => log('warning', 'Command ran!'),
-        'handlerCommand',
+        'commandHandler',
         ['log'],
       ),
-      path: 'mocked://service',
+      path: 'mocked://command',
+    });
+    $autoload.mockResolvedValueOnce({
+      initializer: constant('COMMAND_DEFINITION', {
+        arguments: { properties: {} },
+      }),
+      path: 'mocked://definition',
     });
     processCWD.mockReturnValueOnce('/home/whoiam/projects/my-cool-project');
 
@@ -75,12 +81,13 @@ describe('whook-cli', () => {
       );
     });
 
+    $autoload.mockResolvedValueOnce({});
     $autoload.mockResolvedValueOnce({
       initializer: service(
         async () => async () => {
           throw new Error('E_ERROR');
         },
-        'handlerCommand',
+        'commandHandler',
         ['log'],
       ),
       path: 'mocked://service',

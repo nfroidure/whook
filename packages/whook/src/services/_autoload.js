@@ -222,7 +222,7 @@ async function initAutoload({
           } catch (err) {
             log(
               'debug',
-              `💿 - Service "${resolvedName}" not found in: ${finalPath}`,
+              `🚫 - Service "${resolvedName}" not found in: ${finalPath}`,
             );
             return null;
           }
@@ -245,7 +245,7 @@ async function initAutoload({
       throw new YError('E_UNMATCHED_DEPENDENCY', resolvedName);
     }
 
-    log('debug', `🚫 - Service "${resolvedName}" found in: ${modulePath}`);
+    log('debug', `💿 - Service "${resolvedName}" found in: ${modulePath}`);
 
     const resolvedInitializer = await require(modulePath).default;
 
@@ -261,6 +261,8 @@ async function initAutoload({
       path: modulePath,
       initializer: isWrappedHandler
         ? name(resolvedName, await doWrapHandler(resolvedInitializer))
+        : injectedName !== resolvedName
+        ? name(injectedName, resolvedInitializer)
         : resolvedInitializer,
     };
   }

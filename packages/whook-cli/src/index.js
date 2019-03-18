@@ -1,5 +1,6 @@
 import { constant } from 'knifecycle';
 import initArgs from './services/args';
+import initPromptArgs from './services/promptArgs';
 import initCommand from './services/command';
 import initAutoloader from './services/_autoload';
 
@@ -8,8 +9,9 @@ export default async function run({ prepareEnvironment }) {
     const $ = await prepareEnvironment();
 
     $.register(constant('PWD', process.cwd()));
-    $.register(constant('ARGS', process.argv.slice(2)));
+    $.register(constant('ARGS', process.argv));
     $.register(initArgs);
+    $.register(initPromptArgs);
     $.register(initCommand);
     $.register(initAutoloader);
 

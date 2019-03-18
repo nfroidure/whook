@@ -31,12 +31,12 @@ async function initLsCommand({
   WHOOK_PLUGINS_PATHS,
   readDir = _readDir,
   log,
-  args,
+  promptArgs,
   EOL = os.EOL,
   require = _require,
 }) {
   return async () => {
-    const { verbose } = readArgs(definition.arguments, args);
+    const { verbose } = readArgs(definition.arguments, await promptArgs());
     const commandsSources = [CONFIG.name || 'project', ...WHOOK_PLUGINS];
     const commandsPaths = [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS];
     const pluginsDefinitions = await Promise.all(

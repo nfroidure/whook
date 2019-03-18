@@ -24,18 +24,18 @@ export const definition = {
 
 export default extra(definition, autoService(initEnvCommand));
 
-async function initEnvCommand({ ENV, log, args }) {
+async function initEnvCommand({ ENV, promptArgs, log }) {
   return async () => {
     const { name, default: defaultValue } = readArgs(
       definition.arguments,
-      args,
+      await promptArgs(),
     );
 
     if (
       'undefined' === typeof ENV[name] &&
-      'undefined' === typeof args.default
+      'undefined' === typeof defaultValue
     ) {
-      throw new YError('E_NO_ENV_VALUE', args.name);
+      throw new YError('E_NO_ENV_VALUE', name);
     }
 
     log('info', `${ENV[name] || defaultValue}`);

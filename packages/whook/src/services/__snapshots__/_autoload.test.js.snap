@@ -20,7 +20,7 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
+      "🚫 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
     ],
   ],
   "requireCalls": Array [],
@@ -48,7 +48,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"API\\" found in: /home/whoami/my-whook-project/src/services/API.js",
+      "💿 - Service \\"API\\" found in: /home/whoami/my-whook-project/src/services/API.js",
     ],
     Array [
       "debug",
@@ -89,7 +89,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"SERVICE_NAME_MAP\\" found in: /home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js",
+      "💿 - Service \\"SERVICE_NAME_MAP\\" found in: /home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js",
     ],
     Array [
       "debug",
@@ -149,7 +149,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"CONFIGS\\" found in: /home/whoami/my-whook-project/src/services/CONFIGS.js",
+      "💿 - Service \\"CONFIGS\\" found in: /home/whoami/my-whook-project/src/services/CONFIGS.js",
     ],
     Array [
       "debug",
@@ -194,7 +194,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPing\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
     Array [
       "debug",
@@ -268,11 +268,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
+      "🚫 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPing\\" found in: /var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in: /var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js",
     ],
     Array [
       "debug",
@@ -320,7 +320,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPingMock\\" found in: /home/whoami/my-whook-project/src/handlers/getPingMock.js",
+      "💿 - Service \\"getPingMock\\" found in: /home/whoami/my-whook-project/src/handlers/getPingMock.js",
     ],
     Array [
       "debug",
@@ -370,7 +370,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPingMock\\" found in: /home/whoami/my-whook-project/src/handlers/getPingMock.js",
+      "💿 - Service \\"getPingMock\\" found in: /home/whoami/my-whook-project/src/handlers/getPingMock.js",
     ],
     Array [
       "debug",
@@ -415,7 +415,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPing\\" found in: /home/whoami/my-other-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in: /home/whoami/my-other-project/src/handlers/getPing.js",
     ],
     Array [
       "debug",
@@ -457,7 +457,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPingWrapped\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPingWrapped\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
     Array [
       "debug",
@@ -503,7 +503,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPingWrapped\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPingWrapped\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
     Array [
       "debug",
@@ -544,7 +544,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPing\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
     Array [
       "debug",

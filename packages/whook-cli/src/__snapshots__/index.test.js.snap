@@ -4,10 +4,10 @@ exports[`whook-cli should exit when erroring 1`] = `
 Object {
   "autoloaderCalls": Array [
     Array [
-      "handlerCommand",
+      "commandHandler",
     ],
     Array [
-      "handlerCommand",
+      "commandHandler",
     ],
   ],
   "cwdCalls": Array [
@@ -23,22 +23,7 @@ Object {
       1,
     ],
   ],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🛠 - Parsed args:",
-      Object {
-        "_": Array [
-          "handler",
-        ],
-        "name": "getPing",
-      },
-    ],
-    Array [
-      "debug",
-      "Environment initialized 🚀🌕",
-    ],
-  ],
+  "logCalls": Array [],
 }
 `;
 
@@ -46,7 +31,7 @@ exports[`whook-cli should run commands 1`] = `
 Object {
   "autoloaderCalls": Array [
     Array [
-      "handlerCommand",
+      "commandHandler",
     ],
   ],
   "cwdCalls": Array [
@@ -56,16 +41,6 @@ Object {
     Array [],
   ],
   "logCalls": Array [
-    Array [
-      "debug",
-      "🛠 - Parsed args:",
-      Object {
-        "_": Array [
-          "handler",
-        ],
-        "name": "getPing",
-      },
-    ],
     Array [
       "debug",
       "Environment initialized 🚀🌕",

@@ -3,11 +3,13 @@ import initEnvCommand, { definition as initEnvCommandDefinition } from './env';
 import YError from 'yerror';
 
 describe('lsCommand', () => {
+  const promptArgs = jest.fn();
   const log = jest.fn();
   const readDir = jest.fn();
   const _require = jest.fn();
 
   beforeEach(() => {
+    promptArgs.mockReset();
     log.mockReset();
     readDir.mockReset();
     _require.mockReset();
@@ -15,6 +17,10 @@ describe('lsCommand', () => {
 
   describe('should work', () => {
     it('with no plugin', async () => {
+      promptArgs.mockResolvedValueOnce({
+        _: ['ls'],
+      });
+
       const lsCommand = await initLsCommand({
         CONFIG: {
           name: 'My Super project!',
@@ -22,18 +28,17 @@ describe('lsCommand', () => {
         PROJECT_SRC: '/home/whoiam/whook-project/dist',
         WHOOK_PLUGINS: [],
         WHOOK_PLUGINS_PATHS: [],
+        promptArgs,
         readDir,
         log,
         EOL: '\n',
         require: _require,
-        args: {
-          _: ['ls'],
-        },
       });
       const result = await lsCommand();
 
       expect({
         result,
+        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
         readDirCalls: readDir.mock.calls,
         requireCalls: _require.mock.calls,
@@ -51,6 +56,9 @@ describe('lsCommand', () => {
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
+      promptArgs.mockResolvedValueOnce({
+        _: ['ls'],
+      });
 
       const lsCommand = await initLsCommand({
         CONFIG: {},
@@ -60,17 +68,16 @@ describe('lsCommand', () => {
           '/var/lib/node/node_modules/@whook/cli/dist',
           '/var/lib/node/node_modules/@whook/lol/dist',
         ],
+        promptArgs,
         readDir,
         log,
         EOL: '\n',
         require: _require,
-        args: {
-          _: ['ls'],
-        },
       });
       await lsCommand();
 
       expect({
+        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
         readDirCalls: readDir.mock.calls,
         requireCalls: _require.mock.calls,
@@ -88,6 +95,10 @@ describe('lsCommand', () => {
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
+      promptArgs.mockResolvedValueOnce({
+        _: ['ls'],
+        verbose: true,
+      });
 
       const lsCommand = await initLsCommand({
         CONFIG: {
@@ -99,18 +110,16 @@ describe('lsCommand', () => {
           '/var/lib/node/node_modules/@whook/cli/dist',
           '/var/lib/node/node_modules/@whook/lol/dist',
         ],
+        promptArgs,
         readDir,
         log,
         EOL: '\n',
         require: _require,
-        args: {
-          _: ['ls'],
-          verbose: true,
-        },
       });
       await lsCommand();
 
       expect({
+        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
         readDirCalls: readDir.mock.calls,
         requireCalls: _require.mock.calls,

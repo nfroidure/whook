@@ -3,9 +3,11 @@ import YError from 'yerror';
 
 describe('handlerCommand', () => {
   const log = jest.fn();
+  const promptArgs = jest.fn();
   const $injector = jest.fn();
 
   beforeEach(() => {
+    promptArgs.mockReset();
     log.mockReset();
     $injector.mockReset();
   });
@@ -18,20 +20,22 @@ describe('handlerCommand', () => {
           body,
         }),
       });
-
-      const envCommand = await initHandlerCommand({
-        log,
-        $injector,
-        args: {
-          _: ['handler'],
-          name: 'putEcho',
-          parameters: '{"body": {"echo": "YOLO!"} }',
-        },
+      promptArgs.mockResolvedValueOnce({
+        _: ['handler'],
+        name: 'putEcho',
+        parameters: '{"body": {"echo": "YOLO!"} }',
       });
 
-      await envCommand();
+      const handlerCommand = await initHandlerCommand({
+        promptArgs,
+        log,
+        $injector,
+      });
+
+      await handlerCommand();
 
       expect({
+        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
         injectorCalls: $injector.mock.calls,
       }).toMatchSnapshot();
@@ -44,19 +48,21 @@ describe('handlerCommand', () => {
           body,
         }),
       });
-
-      const envCommand = await initHandlerCommand({
-        log,
-        $injector,
-        args: {
-          _: ['handler'],
-          name: 'getPing',
-        },
+      promptArgs.mockResolvedValueOnce({
+        _: ['handler'],
+        name: 'getPing',
       });
 
-      await envCommand();
+      const handlerCommand = await initHandlerCommand({
+        promptArgs,
+        log,
+        $injector,
+      });
+
+      await handlerCommand();
 
       expect({
+        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
         injectorCalls: $injector.mock.calls,
       }).toMatchSnapshot();
@@ -71,24 +77,26 @@ describe('handlerCommand', () => {
           body,
         }),
       });
+      promptArgs.mockResolvedValueOnce({
+        _: ['handler'],
+        name: 'putEcho',
+        parameters: '{"body: {"echo": "YOLO!"} }',
+      });
 
-      const envCommand = await initHandlerCommand({
+      const handlerCommand = await initHandlerCommand({
+        promptArgs,
         log,
         $injector,
-        args: {
-          _: ['handler'],
-          name: 'putEcho',
-          parameters: '{"body: {"echo": "YOLO!"} }',
-        },
       });
 
       try {
-        await envCommand();
+        await handlerCommand();
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
           errorCode: err.code,
           errorParams: err.params,
+          promptArgsCalls: promptArgs.mock.calls,
           logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
           injectorCalls: $injector.mock.calls,
         }).toMatchSnapshot();
@@ -101,24 +109,26 @@ describe('handlerCommand', () => {
           throw new YError('E_HANDLER_ERROR');
         },
       });
+      promptArgs.mockResolvedValueOnce({
+        _: ['handler'],
+        name: 'putEcho',
+        parameters: '{"body": {"echo": "YOLO!"} }',
+      });
 
-      const envCommand = await initHandlerCommand({
+      const handlerCommand = await initHandlerCommand({
+        promptArgs,
         log,
         $injector,
-        args: {
-          _: ['handler'],
-          name: 'putEcho',
-          parameters: '{"body": {"echo": "YOLO!"} }',
-        },
       });
 
       try {
-        await envCommand();
+        await handlerCommand();
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
           errorCode: err.code,
           errorParams: err.params,
+          promptArgsCalls: promptArgs.mock.calls,
           logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
           injectorCalls: $injector.mock.calls,
         }).toMatchSnapshot();

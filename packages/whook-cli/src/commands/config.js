@@ -8,7 +8,7 @@ export const definition = {
   example: `whook config --name MYSQL --query 'auth.username' --default root`,
   arguments: {
     type: 'object',
-    additionalProperies: false,
+    additionalProperties: false,
     required: ['name'],
     properties: {
       name: {
@@ -29,40 +29,41 @@ export const definition = {
 
 export default extra(definition, autoService(initConfigCommand));
 
-async function initConfigCommand({ CONFIGS, log, args }) {
+async function initConfigCommand({ CONFIGS, log, promptArgs }) {
   return async () => {
-    readArgs(definition.arguments, args);
+    const { name, query, default: defaultValue } = readArgs(
+      definition.arguments,
+      await promptArgs(),
+    );
 
-    if ('undefined' === typeof CONFIGS[args.name]) {
-      log('error', `No config found for ${args.name}`);
-      if ('undefined' === typeof args.default) {
-        throw new YError('E_NO_CONFIG', args.name);
+    if ('undefined' === typeof CONFIGS[name]) {
+      log('error', `No config found for ${name}`);
+      if ('undefined' === typeof defaultValue) {
+        throw new YError('E_NO_CONFIG', name);
       }
     }
 
-    const results = args.query
-      ? miniquery(args.query, [CONFIGS[args.name]])
-      : [CONFIGS[args.name]];
+    const results = query ? miniquery(query, [CONFIGS[name]]) : [CONFIGS[name]];
 
     if (!results.length) {
-      log('error', `Could not find any results for ${args.query}`);
-      if ('undefined' === typeof args.default) {
-        throw new YError('E_NO_RESULT', args.name, args.query);
+      log('error', `Could not find any results for ${query}`);
+      if ('undefined' === typeof defaultValue) {
+        throw new YError('E_NO_RESULT', name, query);
       }
     }
 
     if (results.length > 1) {
       log(
         'error',
-        `Got ${results.length} results for the "${
-          args.query
-        }" query, picking-up the first one.`,
+        `Got ${
+          results.length
+        } results for the "${query}" query, picking-up the first one.`,
       );
     }
 
     log(
       'info',
-      `${JSON.stringify(results.length ? results[0] : args.default)}`,
+      `${JSON.stringify(results.length ? results[0] : defaultValue)}`,
     );
   };
 }
