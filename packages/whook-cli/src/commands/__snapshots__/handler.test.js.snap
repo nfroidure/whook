@@ -31,6 +31,9 @@ Object {
       "Got an error while running the handler.",
     ],
   ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
 }
 `;
 
@@ -43,6 +46,9 @@ Object {
   ],
   "injectorCalls": Array [],
   "logCalls": Array [],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
 }
 `;
 
@@ -80,6 +86,9 @@ Object {
 }",
     ],
   ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
 }
 `;
 
@@ -109,6 +118,9 @@ Object {
   \\"status\\": 200
 }",
     ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
   ],
 }
 `;

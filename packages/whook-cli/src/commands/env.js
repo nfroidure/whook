@@ -24,11 +24,11 @@ export const definition = {
 
 export default extra(definition, autoService(initEnvCommand));
 
-async function initEnvCommand({ ENV, log, args }) {
+async function initEnvCommand({ ENV, promptArgs, log }) {
   return async () => {
     const { name, default: defaultValue } = readArgs(
       definition.arguments,
-      args,
+      await promptArgs(),
     );
 
     if (

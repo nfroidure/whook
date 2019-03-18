@@ -29,11 +29,11 @@ export const definition = {
 
 export default extra(definition, autoService(initConfigCommand));
 
-async function initConfigCommand({ CONFIGS, log, args }) {
+async function initConfigCommand({ CONFIGS, log, promptArgs }) {
   return async () => {
     const { name, query, default: defaultValue } = readArgs(
       definition.arguments,
-      args,
+      await promptArgs(),
     );
 
     if ('undefined' === typeof CONFIGS[name]) {

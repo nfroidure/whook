@@ -13,6 +13,9 @@ Object {
       "Could not find any results for nothing_here",
     ],
   ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
 }
 `;
 
@@ -27,6 +30,9 @@ Object {
       "error",
       "No config found for DOES_NOT_EXIST",
     ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
   ],
 }
 `;
@@ -43,6 +49,9 @@ Object {
       "undefined",
     ],
   ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
   "result": undefined,
 }
 `;
@@ -54,6 +63,9 @@ Object {
       "info",
       "{\\"auth\\":{\\"username\\":\\"root\\"},\\"version\\":\\"2.1.1\\"}",
     ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
   ],
   "result": undefined,
 }
@@ -71,6 +83,9 @@ Object {
       "\\"v8\\"",
     ],
   ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
   "result": undefined,
 }
 `;
@@ -83,6 +98,9 @@ Object {
       "\\"root\\"",
     ],
   ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
   "result": undefined,
 }
 `;
@@ -94,6 +112,9 @@ Object {
       "info",
       "\\"root\\"",
     ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
   ],
   "result": undefined,
 }

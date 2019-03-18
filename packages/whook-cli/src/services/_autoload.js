@@ -1,65 +1,82 @@
 import path from 'path';
 import initAutoloader from '@whook/whook/dist/services/_autoload';
-import { wrapInitializer, alsoInject, service } from 'knifecycle';
+import {
+  wrapInitializer,
+  alsoInject,
+  service,
+  constant,
+  name,
+} from 'knifecycle';
+import YError from 'yerror';
 
 // Needed to avoid messing up babel builds 🤷
 const _require = require;
 
 export default alsoInject(
-  ['PROJECT_SRC', 'WHOOK_PLUGINS_PATHS', 'log'],
+  ['args', 'PROJECT_SRC', 'WHOOK_PLUGINS_PATHS', 'log'],
   wrapInitializer(
     async (
-      { PROJECT_SRC, WHOOK_PLUGINS_PATHS, log, require = _require },
+      { PROJECT_SRC, WHOOK_PLUGINS_PATHS, args, log, require = _require },
       $autoload,
     ) => {
       log('debug', '🤖 - Wrapping the whook autoloader.');
 
-      return async serviceName => {
-        if (serviceName.endsWith('Command')) {
-          const commandName = serviceName.replace(/Command$/, '');
+      const commandName = args._[0];
+      let commandModule;
 
-          let commandModule;
-
-          [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].some(basePath => {
-            const finalPath = path.join(basePath, 'commands', commandName);
-
-            try {
-              commandModule = require(finalPath);
-              return true;
-            } catch (err) {
-              log(
-                'debug',
-                `Command "${commandName}" not found in: ${finalPath}`,
-              );
-              log('stack', err.stack);
-            }
-          });
-          let commandInitializer;
-
-          if (!commandModule) {
-            commandInitializer = service(
-              async () => async () => {
-                log('warning', `Command "${commandName}" not found.`);
-              },
-              serviceName,
-            );
-          } else if (commandModule.default) {
-            commandInitializer = commandModule.default;
-          } else {
-            commandInitializer = service(
-              async () => async () => {
-                log(
-                  'warning',
-                  `The ${commandName} seems to have no default export.`,
-                );
-              },
-              serviceName,
-            );
+      if (!commandName) {
+        commandModule = {
+          default: service(
+            async () => async () => {
+              log('warning', `No command given in argument.`);
+            },
+            'commandHandler',
+          ),
+          definition: {},
+        };
+      } else {
+        [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].some(basePath => {
+          const finalPath = path.join(basePath, 'commands', commandName);
+          try {
+            commandModule = require(finalPath);
+            return true;
+          } catch (err) {
+            log('debug', `Command "${commandName}" not found in: ${finalPath}`);
+            log('stack', err.stack);
           }
+        });
+      }
 
+      if (!commandModule) {
+        commandModule = {
+          default: service(
+            async () => async () => {
+              log('warning', `Command "${commandName}" not found.`);
+            },
+            'commandHandler',
+          ),
+          definition: {},
+        };
+      }
+
+      if (!commandModule.default) {
+        throw new YError('E_NO_COMMAND_HANDLER', commandName);
+      }
+      if (!commandModule.definition) {
+        throw new YError('E_NO_COMMAND_DEFINITION', commandName);
+      }
+
+      return async serviceName => {
+        if (serviceName === 'COMMAND_DEFINITION') {
           return {
-            initializer: commandInitializer,
-            path: `command://${serviceName}`,
+            initializer: constant(serviceName, commandModule.definition),
+            path: `definition://${commandName}`,
+          };
+        }
+        if (serviceName === 'commandHandler') {
+          return {
+            initializer: name('commandHandler', commandModule.default),
+            path: `command://${commandName}`,
           };
         }
 

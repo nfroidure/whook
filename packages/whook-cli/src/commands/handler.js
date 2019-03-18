@@ -25,11 +25,11 @@ export const definition = {
 
 export default extra(definition, autoService(initHandlerCommand));
 
-async function initHandlerCommand({ $injector, log, args }) {
+async function initHandlerCommand({ $injector, log, promptArgs }) {
   return async () => {
     const { name: handlerName, parameters: handlerParameters } = readArgs(
       definition.arguments,
-      args,
+      await promptArgs(),
     );
     let parsedParameters;
 

@@ -2,55 +2,65 @@ import initEnvCommand from './env';
 import YError from 'yerror';
 
 describe('envCommand', () => {
+  const promptArgs = jest.fn();
   const log = jest.fn();
 
   beforeEach(() => {
     log.mockReset();
+    promptArgs.mockReset();
   });
 
   it('should work', async () => {
+    promptArgs.mockResolvedValueOnce({
+      _: ['env'],
+      name: 'NODE_ENV',
+    });
+
     const envCommand = await initEnvCommand({
       log,
       ENV: { NODE_ENV: 'test' },
-      args: {
-        _: ['env'],
-        name: 'NODE_ENV',
-      },
+      promptArgs,
     });
     const result = await envCommand();
 
     expect({
       result,
+      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
     }).toMatchSnapshot();
   });
 
   it('should work with a default value', async () => {
+    promptArgs.mockResolvedValueOnce({
+      _: ['env'],
+      name: 'NODE_ENV',
+      default: 'lol',
+    });
+
     const envCommand = await initEnvCommand({
       log,
       ENV: {},
-      args: {
-        _: ['env'],
-        name: 'NODE_ENV',
-        default: 'lol',
-      },
+      promptArgs,
     });
     const result = await envCommand();
 
     expect({
       result,
+      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
     }).toMatchSnapshot();
   });
 
   it('should fail with no value', async () => {
+    promptArgs.mockResolvedValueOnce({
+      _: ['env'],
+      name: 'NODE_ENV',
+    });
+
     const envCommand = await initEnvCommand({
       log,
       ENV: {},
-      args: {
-        _: ['env'],
-        name: 'NODE_ENV',
-      },
+      promptArgs,
     });
 
     try {
@@ -60,6 +70,7 @@ describe('envCommand', () => {
       expect({
         errorCode: err.code,
         errorParams: err.params,
+        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
     }
