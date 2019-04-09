@@ -35,9 +35,15 @@ async function getOpenAPI({ API }, { authenticated = false }) {
   }
 
   const operations = await getOpenAPIOperations(API);
+  const tagIsPresent = {};
+
   const CLEANED_API = {
     ...API,
     paths: operations.reduce((paths, operation) => {
+      if (operation.tags)
+        operation.tags.forEach(tag => {
+          tagIsPresent[tag] = true;
+        });
       if (operation['x-whook'] && operation['x-whook'].private) {
         return paths;
       }
@@ -52,6 +58,7 @@ async function getOpenAPI({ API }, { authenticated = false }) {
 
       return paths;
     }, {}),
+    tags: API.tags ? API.tags.filter(tag => tagIsPresent[tag.name]) : [],
   };
 
   return {

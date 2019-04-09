@@ -10,11 +10,12 @@ describe('getOpenAPI', () => {
           'x-whook': { memx: 2, tx: 18 },
         },
         put: {
-          tags: [],
+          tags: ['private'],
           'x-whook': { private: true },
         },
       },
     },
+    tags: [{ name: 'public' }, { name: 'private' }],
   };
 
   it('should work', async () => {
