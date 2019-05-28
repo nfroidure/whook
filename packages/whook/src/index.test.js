@@ -70,7 +70,7 @@ describe('runServer', () => {
     await $destroy();
 
     expect({
-      debugCalls: debug.mock.calls,
+      debugCalls: debug.mock.calls.sort((a, b) => (a[0] > b[0] ? 1 : 0)),
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,
     }).toMatchSnapshot();

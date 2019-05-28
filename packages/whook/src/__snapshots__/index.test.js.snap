@@ -4,25 +4,23 @@ exports[`runServer should work 1`] = `
 Object {
   "debugCalls": Array [
     Array [
-      "Logging service initialized.",
-    ],
-    Array [
-      "Running in \\"test\\" environment.",
-    ],
-    Array [
-      "Process service initialized.",
-    ],
-    Array [
-      "Time service initialized.",
+      "Cancelling pending timeouts:",
+      0,
     ],
     Array [
       "Delay service initialized.",
     ],
     Array [
-      "💱 - HTTP Transaction initialized.",
+      "Logging service initialized.",
     ],
     Array [
-      "🚦 - HTTP Router initialized.",
+      "Process service initialized.",
+    ],
+    Array [
+      "Running in \\"test\\" environment.",
+    ],
+    Array [
+      "Time service initialized.",
     ],
     Array [
       "✅ - Closing HTTP server.",
@@ -31,8 +29,10 @@ Object {
       "✔️ - HTTP server closed!",
     ],
     Array [
-      "Cancelling pending timeouts:",
-      0,
+      "💱 - HTTP Transaction initialized.",
+    ],
+    Array [
+      "🚦 - HTTP Router initialized.",
     ],
   ],
   "logErrorCalls": Array [
