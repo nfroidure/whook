@@ -48,7 +48,16 @@ export async function augmentAPIWithCORS(API) {
   const operations = await getOpenAPIOperations(await flattenOpenAPI(API));
 
   return operations.reduce((newAPI, operation) => {
+    if ('options' === operation.method) {
+      return newAPI;
+    }
+
     const existingOperation = newAPI.paths[operation.path].options;
+
+    if (existingOperation) {
+      return newAPI;
+    }
+
     const whookConfig = {
       type: 'http',
       ...(operation['x-whook'] || {}),
@@ -60,12 +69,6 @@ export async function augmentAPIWithCORS(API) {
     if (whookConfig.type !== 'http') {
       return newAPI;
     }
-    if ('options' === operation.method) {
-      return newAPI;
-    }
-    if (existingOperation) {
-      return newAPI;
-    }
 
     newAPI.paths[operation.path].options = {
       operationId: 'optionsWithCORS',
@@ -74,9 +77,14 @@ export async function augmentAPIWithCORS(API) {
       'x-whook': {
         ...whookConfig,
       },
-      parameters: (operation.parameters || []).filter(
-        parameter => 'path' === parameter.in || 'query' === parameter.in,
-      ),
+      parameters: (operation.parameters || [])
+        .filter(
+          parameter => 'path' === parameter.in || 'query' === parameter.in,
+        )
+        .map(parameter => ({
+          ...parameter,
+          required: 'path' === parameter.in,
+        })),
       responses: {
         200: {
           description: 'CORS sent.',

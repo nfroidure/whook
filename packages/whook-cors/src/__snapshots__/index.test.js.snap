@@ -45,16 +45,24 @@ Object {
     },
     "/users/{userid}": Object {
       "head": Object {
-        "operationId": "ping",
+        "operationId": "getUser",
         "parameters": Array [
           Object {
             "in": "path",
             "name": "userId",
+            "required": true,
             "type": "number",
           },
           Object {
             "in": "query",
             "name": "full",
+            "required": true,
+            "type": "boolean",
+          },
+          Object {
+            "in": "query",
+            "name": "retry",
+            "required": false,
             "type": "boolean",
           },
         ],
@@ -63,7 +71,7 @@ Object {
             "description": "The user",
           },
         },
-        "summary": "Checks API's availability.",
+        "summary": "Return a user.",
       },
       "options": Object {
         "operationId": "optionsWithCORS",
@@ -71,11 +79,19 @@ Object {
           Object {
             "in": "path",
             "name": "userId",
+            "required": true,
             "type": "number",
           },
           Object {
             "in": "query",
             "name": "full",
+            "required": false,
+            "type": "boolean",
+          },
+          Object {
+            "in": "query",
+            "name": "retry",
+            "required": false,
             "type": "boolean",
           },
         ],
@@ -90,7 +106,7 @@ Object {
         ],
         "x-whook": Object {
           "private": true,
-          "sourceOperationId": "ping",
+          "sourceOperationId": "getUser",
           "suffix": "CORS",
           "type": "http",
         },

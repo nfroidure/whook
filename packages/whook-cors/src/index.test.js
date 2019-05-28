@@ -89,18 +89,26 @@ describe('augmentAPIWithCORS()', () => {
           },
           '/users/{userid}': {
             head: {
-              operationId: 'ping',
-              summary: "Checks API's availability.",
+              operationId: 'getUser',
+              summary: 'Return a user.',
               parameters: [
                 {
                   in: 'path',
                   name: 'userId',
                   type: 'number',
+                  required: true,
                 },
                 {
                   in: 'query',
                   name: 'full',
                   type: 'boolean',
+                  required: true,
+                },
+                {
+                  in: 'query',
+                  name: 'retry',
+                  type: 'boolean',
+                  required: false,
                 },
               ],
               responses: {
