@@ -1,8 +1,8 @@
-import {
-  flattenOpenAPI,
-  getOpenAPIOperations,
-} from '@whook/http-router/dist/utils';
+import { flattenOpenAPI } from '@whook/http-router/dist/utils';
 import { reuseSpecialProps, alsoInject, handler } from 'knifecycle';
+
+// Ensures the deterministic canonical operation
+const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
 
 /**
  * Wrap an handler initializer to append CORS to response.
@@ -45,24 +45,26 @@ async function handleWithCORS({ CORS }, handler, parameters, operation) {
  * @returns {Promise<Object>} The augmented  OpenAPI object
  */
 export async function augmentAPIWithCORS(API) {
-  const operations = await getOpenAPIOperations(await flattenOpenAPI(API));
+  const flattenedAPI = await flattenOpenAPI(API);
 
-  return operations.reduce((newAPI, operation) => {
-    if ('options' === operation.method) {
-      return newAPI;
-    }
-
-    const existingOperation = newAPI.paths[operation.path].options;
+  return Object.keys(flattenedAPI.paths).reduce((newAPI, path) => {
+    const existingOperation = newAPI.paths[path].options;
 
     if (existingOperation) {
       return newAPI;
     }
 
+    const canonicalOperationMethod = [
+      ...new Set([...METHOD_CORS_PRIORITY]),
+      ...Object.keys(newAPI.paths[path]),
+    ].find(method => newAPI.paths[path][method]);
+    const canonicalOperation = newAPI.paths[path][canonicalOperationMethod];
+
     const whookConfig = {
       type: 'http',
-      ...(operation['x-whook'] || {}),
+      ...(canonicalOperation['x-whook'] || {}),
       suffix: 'CORS',
-      sourceOperationId: operation.operationId,
+      sourceOperationId: canonicalOperation.operationId,
       private: true,
     };
 
@@ -70,14 +72,14 @@ export async function augmentAPIWithCORS(API) {
       return newAPI;
     }
 
-    newAPI.paths[operation.path].options = {
+    newAPI.paths[path].options = {
       operationId: 'optionsWithCORS',
       summary: 'Enable OPTIONS for CORS',
       tags: ['CORS'],
       'x-whook': {
         ...whookConfig,
       },
-      parameters: (operation.parameters || [])
+      parameters: (canonicalOperation.parameters || [])
         .filter(
           parameter => 'path' === parameter.in || 'query' === parameter.in,
         )
@@ -91,8 +93,9 @@ export async function augmentAPIWithCORS(API) {
         },
       },
     };
+
     return newAPI;
-  }, API);
+  }, flattenedAPI);
 }
 
 /**
