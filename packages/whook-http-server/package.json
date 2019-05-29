@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-server",
-  "version": "4.0.0-alpha.9",
+  "version": "4.0.0-alpha.10",
   "description": "The Whook base HTTP server",
   "main": "dist/index.js",
   "metapak": {
