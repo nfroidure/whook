@@ -229,7 +229,7 @@ Object {
     "cache-control": "max-age=3600",
     "connection": "close",
     "content-length": "1424",
-    "content-type": "text/html; charset=UTF-8",
+    "content-type": "text/html",
     "date": undefined,
     "etag": undefined,
     "last-modified": undefined,

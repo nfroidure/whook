@@ -1,5 +1,5 @@
 import HTTPError from 'yhttperror';
-import firstChunkStream from 'first-chunk-stream';
+import FirstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
 
 /* Architecture Note #1.1: Request body
@@ -52,7 +52,7 @@ export async function getBody(
       reject(HTTPError.wrap(err, 400, 'E_REQUEST_FAILURE'));
     });
     inputStream.pipe(new Decoder()).pipe(
-      firstChunkStream(
+      new FirstChunkStream(
         {
           chunkLength: bufferLimit + 1,
         },

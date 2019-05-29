@@ -54,9 +54,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "ecstatic": "^3.3.1",
+    "ecstatic": "^4.1.2",
     "knifecycle": "^6.0.0",
-    "swagger-ui-dist": "^3.20.9"
+    "swagger-ui-dist": "^3.22.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

@@ -104,7 +104,7 @@ Object {
               "description": "Duration in milliseconds",
               "in": "query",
               "name": "duration",
-              "required": true,
+              "required": false,
               "schema": Object {
                 "type": "number",
               },
@@ -177,6 +177,7 @@ Object {
             Object {
               "in": "query",
               "name": "access_token",
+              "required": false,
               "schema": Object {
                 "type": "string",
               },
@@ -315,6 +316,7 @@ Object {
             Object {
               "in": "query",
               "name": "access_token",
+              "required": false,
               "schema": Object {
                 "type": "string",
               },
