@@ -13,9 +13,7 @@ async function initCommand({ commandHandler, log }) {
           if (err.params[0][0].params.missingProperty) {
             log(
               'error',
-              `Argument "${
-                err.params[0][0].params.missingProperty
-              }" is required.`,
+              `Argument "${err.params[0][0].params.missingProperty}" is required.`,
             );
             return;
           }
@@ -28,9 +26,7 @@ async function initCommand({ commandHandler, log }) {
           if (err.params[0][0].params.additionalProperty) {
             log(
               'error',
-              `Argument "${
-                err.params[0][0].params.additionalProperty
-              }" not allowed.`,
+              `Argument "${err.params[0][0].params.additionalProperty}" not allowed.`,
             );
             return;
           }

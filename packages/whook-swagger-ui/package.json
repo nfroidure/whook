@@ -53,10 +53,10 @@
     "@whook/whook": "^3.1.3"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "ecstatic": "^4.1.2",
     "knifecycle": "^6.0.0",
-    "swagger-ui-dist": "^3.22.2"
+    "swagger-ui-dist": "^3.23.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -70,7 +70,7 @@
     "eslint-plugin-prettier": "^3.0.1",
     "jest": "^24.0.0",
     "jsdoc-to-markdown": "^4.0.1",
-    "metapak": "^3.1.5",
+    "metapak": "^3.1.6",
     "metapak-nfroidure": "9.6.2",
     "prettier": "^1.16.3",
     "@whook/http-router": "^3.1.3",

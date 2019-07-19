@@ -9,6 +9,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/LICENSE)
 [![Build status](https://secure.travis-ci.org/nfroidure/whook.svg)](https://travis-ci.org/nfroidure/whook)
+[![Coverage Status](https://coveralls.io/repos/nfroidure/whook/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/whook?branch=master)
 
 
 [//]: # (::contents:start)

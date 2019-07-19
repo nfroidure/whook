@@ -72,13 +72,12 @@
     "@babel/register": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-knifecycle": "^1.0.3",
-    "caporal": "^0.10.0",
     "eslint": "^5.13.0",
     "eslint-plugin-prettier": "^3.0.1",
     "jest": "^24.0.0",
     "jsarch": "^2.0.1",
     "jsdoc-to-markdown": "^4.0.1",
-    "metapak": "^3.1.5",
+    "metapak": "^3.1.6",
     "metapak-nfroidure": "9.6.2",
     "prettier": "^1.16.3"
   },
@@ -92,7 +91,7 @@
     "internal-ip": "^4.3.0",
     "knifecycle": "^6.0.0",
     "pkg-dir": "^4.2.0",
-    "portfinder": "^1.0.20"
+    "portfinder": "^1.0.21"
   },
   "contributors": [],
   "engines": {

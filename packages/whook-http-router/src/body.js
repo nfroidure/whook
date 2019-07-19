@@ -54,23 +54,18 @@ export async function getBody(
     inputStream.pipe(new Decoder()).pipe(
       new FirstChunkStream(
         {
-          chunkLength: bufferLimit + 1,
+          chunkSize: bufferLimit + 1,
         },
-        (err, chunk, enc, cb) => {
-          if (err) {
-            reject(HTTPError.wrap(err, 400, 'E_REQUEST_FAILURE'));
-            cb();
-            return;
-          }
+        async chunk => {
           if (bufferLimit >= chunk.length) {
             resolve(chunk);
-            cb();
-            return;
+            return chunk;
           }
+
           reject(
             new HTTPError(400, 'E_REQUEST_CONTENT_TOO_LARGE', chunk.length),
           );
-          cb();
+          return FirstChunkStream.stop;
         },
       ),
     );

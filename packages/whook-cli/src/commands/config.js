@@ -55,9 +55,7 @@ async function initConfigCommand({ CONFIGS, log, promptArgs }) {
     if (results.length > 1) {
       log(
         'error',
-        `Got ${
-          results.length
-        } results for the "${query}" query, picking-up the first one.`,
+        `Got ${results.length} results for the "${query}" query, picking-up the first one.`,
       );
     }
 
