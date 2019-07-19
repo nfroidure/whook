@@ -105,7 +105,7 @@ You may add global wrappers to change every handlers input/output on the
 Clone this project's repository and run:
 
 ```sh
-npm i
+npm it
 ```
 
 The repository is based on LernaJS that allows to host several NPM
@@ -114,6 +114,12 @@ The repository is based on LernaJS that allows to host several NPM
 
 Install those [VSCode extensions](https://insertafter.com/en/blog/my_vscode_configuration.html)
  to get a smooth developer experience.
+
+# Publishing
+
+```sh
+NODE_ENV=cli npm run lerna  -- publish
+```
 
 [//]: # (::contents:end)
 

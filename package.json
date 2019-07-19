@@ -31,7 +31,6 @@
     "precz": "npm t && npm run lint && npm run metapak -- -s",
     "prettier": "prettier --write 'src/**/*.js'",
     "preversion": "npm t && npm run lint && npm run metapak -- -s && npm run compile",
-    "start": "node bin/server.js",
     "test": "lerna run test",
     "version": "npm run changelog"
   },
