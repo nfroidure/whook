@@ -19,7 +19,9 @@ Object {
             },
           },
           "put": Object {
-            "tags": Array [],
+            "tags": Array [
+              "private",
+            ],
             "x-whook": Object {
               "private": true,
             },
@@ -27,6 +29,14 @@ Object {
         },
       },
       "swagger": "2.0",
+      "tags": Array [
+        Object {
+          "name": "public",
+        },
+        Object {
+          "name": "private",
+        },
+      ],
     },
     "status": 200,
   },
@@ -51,6 +61,14 @@ Object {
         },
       },
       "swagger": "2.0",
+      "tags": Array [
+        Object {
+          "name": "public",
+        },
+        Object {
+          "name": "private",
+        },
+      ],
     },
     "status": 200,
   },
