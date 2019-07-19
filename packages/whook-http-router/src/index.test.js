@@ -1627,7 +1627,7 @@ describe('initHTTPRouter', () => {
           req.method = 'PUT';
           req.url = '/v1/users/1';
           req.headers = {
-            'content-type': 'application/json',
+            'content-type': 'application/json;charset=UTF-8',
             'content-length': '22',
             authorization: 'Bearer x',
           };
@@ -1661,7 +1661,7 @@ describe('initHTTPRouter', () => {
               name: 'John Doe',
             },
             authorization: 'Bearer x',
-            contentType: 'application/json',
+            contentType: 'application/json;charset=UTF-8',
           });
         });
 

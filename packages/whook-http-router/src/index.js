@@ -245,7 +245,7 @@ async function initHTTPRouter({
 
             applyValidators(operation, validators, parameters);
 
-            bodyValidator(operation, request.headers['content-type'], body);
+            bodyValidator(operation, bodySpec.contentType, body);
 
             parameters = {
               ...parameters,
