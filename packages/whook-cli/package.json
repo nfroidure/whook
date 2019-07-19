@@ -1,6 +1,6 @@
 {
   "name": "@whook/cli",
-  "version": "4.0.0-alpha.10",
+  "version": "4.0.0-alpha.11",
   "description": "The Whook server CLI",
   "main": "dist/index.js",
   "bin": {
@@ -54,11 +54,11 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^4.0.0-alpha.10",
+    "@whook/whook": "^4.0.0-alpha.11",
     "ajv": "^6.10.2",
+    "inquirer": "^6.5.0",
     "knifecycle": "^6.0.0",
     "miniquery": "^1.1.2",
-    "inquirer": "^6.5.0",
     "yargs-parser": "^13.1.1"
   },
   "devDependencies": {
