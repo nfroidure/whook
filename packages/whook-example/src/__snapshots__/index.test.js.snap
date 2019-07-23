@@ -409,7 +409,7 @@ Object {
       "🚫 - Could not load \\".env.test\\" file.",
     ],
     Array [
-      "Error: ENOENT: no such file or directory, open '/home/nfroidure/nfroidure/whook/packages/whook-example/.env.test'",
+      "Error: ENOENT: no such file or directory, open '/home/whoiam/projects/whook/packages/whook-example/.env.test'",
     ],
     Array [
       "🈁 - Generated the BASE_URL constant:",

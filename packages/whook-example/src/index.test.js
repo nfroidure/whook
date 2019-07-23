@@ -160,8 +160,8 @@ function filterPaths(strs) {
     'string' !== typeof str
       ? str
       : str.replace(
-          / (\/[^/]+){1,}\/whook\//g,
-          ' /home/whoiam/projects/whook/',
+          /('| )(\/[^/]+){1,}\/whook\//g,
+          '$1/home/whoiam/projects/whook/',
         ),
   );
 }
