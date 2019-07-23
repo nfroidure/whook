@@ -229,6 +229,9 @@ Object {
       "Delay service initialized.",
     ],
     Array [
+      "♻️ - Loading the environment service.",
+    ],
+    Array [
       "➰ - Plugin \\"@whook/cli\\" resolved to: /home/whoiam/projects/whook/packages/whook-cli/dist",
     ],
     Array [
@@ -373,6 +376,18 @@ Object {
       "💿 - Loading API initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/API.js.",
     ],
     Array [
+      "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL",
+    ],
+    Array [
+      "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/BASE_URL",
+    ],
+    Array [
+      "💿 - Service \\"BASE_URL\\" found in: /home/whoiam/projects/whook/dist/services/BASE_URL.js",
+    ],
+    Array [
+      "💿 - Loading BASE_URL initializer from /home/whoiam/projects/whook/dist/services/BASE_URL.js.",
+    ],
+    Array [
       "Running in \\"test\\" environment.",
     ],
     Array [
@@ -380,6 +395,25 @@ Object {
     ],
     Array [
       "💱 - HTTP Transaction initialized.",
+    ],
+    Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL",
+    ],
+    Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROTOCOL",
+    ],
+    Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/dist/services/PROTOCOL",
+    ],
+    Array [
+      "🚫 - Could not load \\".env.test\\" file.",
+    ],
+    Array [
+      "Error: ENOENT: no such file or directory, open '/home/nfroidure/nfroidure/whook/packages/whook-example/.env.test'",
+    ],
+    Array [
+      "🈁 - Generated the BASE_URL constant:",
+      "http://localhost:9999",
     ],
     Array [
       "🦄 - Initializing the API service!",
@@ -488,6 +522,9 @@ Object {
     ],
   ],
   "logErrorCalls": Array [
+    Array [
+      "🖥 - Using an isolated env.",
+    ],
     Array [
       "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/whook-example/src/config/test/config.",
     ],

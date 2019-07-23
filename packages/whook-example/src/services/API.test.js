@@ -8,8 +8,7 @@ import OpenAPISchemaValidator from 'openapi-schema-validator';
 
 describe('API', () => {
   const { CONFIG, NODE_ENV, DEBUG_NODE_ENVS } = FULL_CONFIG;
-  const HOST = 'localhost';
-  const PORT = '1337';
+  const BASE_URL = 'http://localhost:1337';
   const log = jest.fn();
 
   beforeEach(() => {
@@ -19,9 +18,9 @@ describe('API', () => {
   it('should work', async () => {
     const API = await initAPI({
       log,
+      ENV: {},
       CONFIG,
-      HOST,
-      PORT,
+      BASE_URL,
       NODE_ENV,
       DEBUG_NODE_ENVS,
       API_VERSION: '1.1.0',
@@ -36,9 +35,9 @@ describe('API', () => {
   it('should always use declared security definition', async () => {
     const API = await initAPI({
       log,
+      ENV: {},
       CONFIG,
-      HOST,
-      PORT,
+      BASE_URL,
       NODE_ENV,
       DEBUG_NODE_ENVS,
       API_VERSION: '1.1.0',
@@ -64,9 +63,9 @@ describe('API', () => {
   it('should produce a valid OpenAPI file', async () => {
     const API = await initAPI({
       log,
+      ENV: {},
       CONFIG,
-      HOST,
-      PORT,
+      BASE_URL,
       NODE_ENV,
       DEBUG_NODE_ENVS,
       API_VERSION: '1.1.0',
@@ -83,9 +82,9 @@ describe('API', () => {
     beforeAll(async () => {
       const API = await initAPI({
         log,
+        ENV: {},
         CONFIG,
-        HOST,
-        PORT,
+        BASE_URL,
         NODE_ENV,
         DEBUG_NODE_ENVS,
         API_VERSION: '1.1.0',

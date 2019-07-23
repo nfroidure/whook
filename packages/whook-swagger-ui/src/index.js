@@ -12,18 +12,10 @@ import { definition as getOpenAPIDefinition } from './handlers/getOpenAPI';
 export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
   return wrapInitializer(
     async (
-      {
-        DEBUG_NODE_ENVS,
-        NODE_ENV,
-        DEV_ACCESS_TOKEN,
-        BASE_PATH,
-        HOST,
-        PORT,
-        log = noop,
-      },
+      { ENV, DEV_ACCESS_TOKEN, BASE_PATH, HOST, PORT, log = noop },
       httpRouter,
     ) => {
-      if (!DEBUG_NODE_ENVS.includes(NODE_ENV)) {
+      if (!ENV.DEV_MODE) {
         return httpRouter;
       }
 
@@ -69,15 +61,7 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
       }
     },
     alsoInject(
-      [
-        'DEBUG_NODE_ENVS',
-        'NODE_ENV',
-        '?DEV_ACCESS_TOKEN',
-        'BASE_PATH',
-        'HOST',
-        'PORT',
-        '?log',
-      ],
+      ['ENV', '?DEV_ACCESS_TOKEN', 'BASE_PATH', 'HOST', 'PORT', '?log'],
       initHTTPRouter,
     ),
   );

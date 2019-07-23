@@ -78,7 +78,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     );
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
-    $.register(constant('ENV', {}));
     $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEV_ACCESS_TOKEN', 'oudelali'));
     $.register(constant('HOST', HOST));
@@ -104,6 +103,11 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(constant('CONFIG', {}));
     $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEBUG_NODE_ENVS', ['test']));
+    $.register(
+      constant('ENV', {
+        DEV_MODE: '1',
+      }),
+    );
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
@@ -146,6 +150,11 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     );
     $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEBUG_NODE_ENVS', ['test']));
+    $.register(
+      constant('ENV', {
+        DEV_MODE: '1',
+      }),
+    );
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
@@ -188,6 +197,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     );
     $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEBUG_NODE_ENVS', []));
+    $.register(constant('ENV', {}));
 
     time.mockReturnValue(new Date('2012-01-15T00:00:00Z').getTime());
 

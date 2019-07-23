@@ -25,11 +25,15 @@ describe('runServer', () => {
 
     $.register(constant('API_VERSION', packageConf.version));
     $.register(constant('BASE_PATH', BASE_PATH));
-    $.register(constant('ENV', {}));
+    $.register(
+      constant('BASE_ENV', {
+        DEV_MODE: '1',
+      }),
+    );
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
     $.register(constant('NODE_ENV', 'test'));
-    $.register(constant('DEBUG_NODE_ENVS', ['test']));
+    $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(constant('NODE_ENVS', ['test']));
     $.register(constant('exit', exit));
     $.register(constant('time', time));

@@ -201,7 +201,7 @@ async function initHTTPRouter({
           } = result || {};
 
           if (!handler) {
-            log('debug', 'No handler found for: ', method, parts);
+            log('debug', '❌ - No handler found for: ', method, parts);
             throw new HTTPError(404, 'E_NOT_FOUND', method, parts);
           }
 

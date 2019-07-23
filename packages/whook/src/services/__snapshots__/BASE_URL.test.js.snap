@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initBaseURL should work with a base URL in config 1`] = `
+Object {
+  "BASE_URL": "https://example.com",
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generated the BASE_URL constant:",
+      "https://example.com",
+    ],
+  ],
+}
+`;
+
+exports[`initBaseURL should work with a base URL in config but in development mode 1`] = `
+Object {
+  "BASE_URL": "http://localhost:1337",
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generated the BASE_URL constant:",
+      "http://localhost:1337",
+    ],
+  ],
+}
+`;
+
+exports[`initBaseURL should work with all dependencies 1`] = `
+Object {
+  "BASE_URL": "https://localhost:1337",
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generated the BASE_URL constant:",
+      "https://localhost:1337",
+    ],
+  ],
+}
+`;
+
+exports[`initBaseURL should work with required dependencies only 1`] = `
+Object {
+  "BASE_URL": "http://localhost:1337",
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generated the BASE_URL constant:",
+      "http://localhost:1337",
+    ],
+  ],
+}
+`;

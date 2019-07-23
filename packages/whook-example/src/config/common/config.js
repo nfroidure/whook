@@ -1,7 +1,7 @@
 import packageConf from '../../../package';
 
-const DEBUG_NODE_ENVS = ['development', 'preproduction', 'test'];
-const NODE_ENVS = [...DEBUG_NODE_ENVS, 'production'];
+const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
+const NODE_ENVS = [...DEBUG_NODE_ENVS, 'uat', 'production'];
 
 const CONFIG = {
   BASE_ENV: {},

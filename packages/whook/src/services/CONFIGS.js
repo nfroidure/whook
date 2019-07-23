@@ -17,7 +17,7 @@ export default initializer(
 );
 
 /**
- * Initialize the CONFIGS serviceaccording to the NODE_ENV
+ * Initialize the CONFIGS service according to the NODE_ENV
  * @param  {Object}   services
  * The services CONFIGS depends on
  * @param  {Object}   services.NODE_ENV
@@ -26,8 +26,8 @@ export default initializer(
  * The project source directory
  * @param  {Object}   [log=noop]
  * An optional logging service
- * @return {Promise<String>}
- * A promise of a containing the actual host.
+ * @return {Promise<Object>}
+ * A promise of a an object the actual configuration properties.
  */
 async function initCONFIGS({
   PROJECT_SRC,

@@ -10,8 +10,7 @@ describe('NECHANISMS', () => {
 
   it('should only include bearer', async () => {
     const MECHANISMS = await initMechanisms({
-      NODE_ENV: 'production',
-      DEBUG_NODE_ENVS: ['test', 'development'],
+      ENV: {},
       log,
     });
 
@@ -24,8 +23,7 @@ describe('NECHANISMS', () => {
 
   it('should also include fake on debugging', async () => {
     const MECHANISMS = await initMechanisms({
-      NODE_ENV: 'development',
-      DEBUG_NODE_ENVS: ['test', 'development'],
+      ENV: { DEV_MODE: '1' },
       log,
     });
 

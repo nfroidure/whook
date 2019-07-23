@@ -13,18 +13,14 @@ export default name('API', autoService(initAPI));
 // The API service is where you put your handlers
 // altogether to form the final API
 async function initAPI({
-  DEBUG_NODE_ENVS,
-  NODE_ENV,
+  ENV,
   CONFIG,
-  HOST,
-  PORT,
-  BASE_PATH,
+  BASE_URL,
+  BASE_PATH = '',
   API_VERSION,
   log,
 }) {
   log('debug', '🦄 - Initializing the API service!');
-
-  const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
 
   const API = {
     openapi: '3.0.2',
@@ -35,9 +31,7 @@ async function initAPI({
     },
     servers: [
       {
-        url: `http://${CONFIG.host || HOST}${
-          debugging ? `:${PORT}` : ''
-        }${BASE_PATH}`,
+        url: `${BASE_URL}${BASE_PATH}`,
       },
     ],
     components: {
@@ -47,7 +41,7 @@ async function initAPI({
           type: 'http',
           scheme: 'bearer',
         },
-        ...(debugging
+        ...(ENV.DEV_MODE
           ? {
               fakeAuth: {
                 description: 'A fake authentication for development purpose.',
@@ -68,7 +62,7 @@ async function initAPI({
       putEchoDefinition,
     ]
       .map(definition =>
-        debugging && definition.operation.security
+        ENV.DEV_MODE && definition.operation.security
           ? {
               ...definition,
               operation: {

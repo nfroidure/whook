@@ -438,7 +438,7 @@ Object {
     },
     "servers": Array [
       Object {
-        "url": "http://localhostundefined",
+        "url": "http://localhost:1337",
       },
     ],
   },

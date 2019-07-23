@@ -28,10 +28,10 @@ export const FAKE_MECHANISM = {
 
 export default name('MECHANISMS', autoService(initMechanisms));
 
-async function initMechanisms({ DEBUG_NODE_ENVS, NODE_ENV, log }) {
+async function initMechanisms({ ENV, log }) {
   log('debug', '🔧 - Initializing auth mechanisms');
 
-  const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
+  const debugging = !!ENV.DEV_MODE;
   const MECHANISMS = [BEARER_MECHANISM, ...(debugging ? [FAKE_MECHANISM] : [])];
 
   if (debugging) {
