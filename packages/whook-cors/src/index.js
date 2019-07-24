@@ -1,4 +1,5 @@
 import { flattenOpenAPI } from '@whook/http-router/dist/utils';
+import { extractOperationSecurityParameters } from '@whook/http-router/dist/validation';
 import { reuseSpecialProps, alsoInject, handler } from 'knifecycle';
 
 // Ensures the deterministic canonical operation
@@ -80,6 +81,7 @@ export async function augmentAPIWithCORS(API) {
         ...whookConfig,
       },
       parameters: (canonicalOperation.parameters || [])
+        .concat(extractOperationSecurityParameters(API, canonicalOperation))
         .filter(
           parameter => 'path' === parameter.in || 'query' === parameter.in,
         )

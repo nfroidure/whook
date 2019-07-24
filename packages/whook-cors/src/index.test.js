@@ -66,6 +66,13 @@ describe('augmentAPIWithCORS()', () => {
           title: 'Sample OpenAPI',
           description: 'A sample OpenAPI file for testing purpose.',
         },
+        components: {
+          securitySchemes: {
+            oAuth2: {
+              type: 'oauth2',
+            },
+          },
+        },
         paths: {
           '/ping': {
             options: {
@@ -91,6 +98,11 @@ describe('augmentAPIWithCORS()', () => {
             head: {
               operationId: 'getUser',
               summary: 'Return a user.',
+              security: [
+                {
+                  oAuth2: ['user'],
+                },
+              ],
               parameters: [
                 {
                   in: 'path',

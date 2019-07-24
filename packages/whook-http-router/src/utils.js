@@ -54,3 +54,28 @@ export function getOpenAPIOperations(API) {
     [],
   );
 }
+
+export function pickupOperationSecuritySchemes(openAPI, operation) {
+  const securitySchemes =
+    (openAPI.components && openAPI.components.securitySchemes) || {};
+
+  return (operation.security || openAPI.security || []).reduce(
+    (operationSecuritySchemes, security) => {
+      const schemeKey = Object.keys(security)[0];
+
+      if (!schemeKey) {
+        return operationSecuritySchemes;
+      }
+
+      if (!securitySchemes[schemeKey]) {
+        throw new YError('E_UNDECLARED_SECURITY_SCHEME', schemeKey);
+      }
+
+      return {
+        ...operationSecuritySchemes,
+        [schemeKey]: securitySchemes[schemeKey],
+      };
+    },
+    {},
+  );
+}

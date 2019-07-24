@@ -12,6 +12,7 @@ import {
   applyValidators,
   filterHeaders,
   prepareBodyValidator,
+  extractOperationSecurityParameters,
 } from './validation';
 import {
   extractBodySpec,
@@ -359,7 +360,8 @@ function _explodePath(path, parameters) {
 
 async function _createRouters({ API, HANDLERS, BASE_PATH, ajv, log }) {
   const routers = {};
-  const operations = await getOpenAPIOperations(await flattenOpenAPI(API));
+  const flattenedAPI = await flattenOpenAPI(API);
+  const operations = await getOpenAPIOperations(flattenedAPI);
 
   operations.forEach(operation => {
     const { path, method, operationId, parameters } = operation;
@@ -392,6 +394,9 @@ async function _createRouters({ API, HANDLERS, BASE_PATH, ajv, log }) {
           ...p.schema,
         };
       });
+    const ammendedParameters = (parameters || []).concat(
+      extractOperationSecurityParameters(flattenedAPI, operation),
+    );
 
     routers[method] = routers[method] || new Siso();
     routers[method].register(
@@ -400,8 +405,15 @@ async function _createRouters({ API, HANDLERS, BASE_PATH, ajv, log }) {
         handler,
         consumableMediaTypes,
         produceableMediaTypes,
-        operation,
-        validators: prepareParametersValidators(ajv, operation),
+        operation: {
+          ...operation,
+          parameters: ammendedParameters,
+        },
+        validators: prepareParametersValidators(
+          ajv,
+          operation.operationId,
+          ammendedParameters,
+        ),
         bodyValidator: prepareBodyValidator(ajv, operation),
       },
     );

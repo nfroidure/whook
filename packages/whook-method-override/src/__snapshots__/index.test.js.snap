@@ -9,6 +9,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "getPing",
+        "parameters": Array [],
         "path": "/ping",
         "responses": Object {
           "200": Object {
@@ -38,6 +39,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "getPing",
+        "parameters": Array [],
         "path": "/ping",
         "responses": Object {
           "200": Object {

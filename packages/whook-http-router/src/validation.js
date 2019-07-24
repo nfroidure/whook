@@ -2,6 +2,7 @@ import camelCase from 'camel-case';
 import YError from 'yerror';
 import HTTPError from 'yhttperror';
 import Stream from 'stream';
+import { pickupOperationSecuritySchemes } from './utils';
 
 /* Architecture Note #1.1: Validators
 For performance reasons, the validators are
@@ -102,16 +103,120 @@ function _rejectAnyRequestBody(operation, value) {
   }
 }
 
-export function prepareParametersValidators(ajv, operation) {
-  return (operation.parameters || []).reduce((validators, parameter) => {
+// Supporting only mainstream schemes
+// https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+const SUPPORTED_HTTP_SCHEMES = ['basic', 'bearer', 'digest'];
+
+export function extractOperationSecurityParameters(openAPI, operation) {
+  const operationSecuritySchemes = pickupOperationSecuritySchemes(
+    openAPI,
+    operation,
+  );
+  const securitySchemes = Object.keys(operationSecuritySchemes).map(
+    schemeKey => operationSecuritySchemes[schemeKey],
+  );
+
+  return extractParametersFromSecuritySchemes(securitySchemes);
+}
+
+export function extractParametersFromSecuritySchemes(securitySchemes) {
+  const hasOAuth = securitySchemes.some(securityScheme =>
+    ['oauth2', 'openIdConnect'].includes(securityScheme.type),
+  );
+  const httpSchemes = [
+    ...new Set([
+      ...securitySchemes
+        .filter(securityScheme => securityScheme.type === 'http')
+        .map(securityScheme => {
+          if (!SUPPORTED_HTTP_SCHEMES.includes(securityScheme.scheme)) {
+            throw new YError(
+              'E_UNSUPPORTED_HTTP_SCHEME',
+              securityScheme.scheme,
+            );
+          }
+          return securityScheme.scheme;
+        }),
+      ...(hasOAuth ? ['bearer'] : []),
+    ]),
+  ];
+  let hasAuthorizationApiKey = false;
+  let hasAccessTokenApiKey = false;
+
+  return securitySchemes
+    .filter(securityScheme => securityScheme.type === 'apiKey')
+    .map(securityScheme => {
+      if (securityScheme.in === 'cookie') {
+        throw new YError(
+          'E_UNSUPPORTED_API_KEY_SOURCE',
+          'cookie',
+          securityScheme.name,
+        );
+      }
+      // This overlaps with OAuth/HTTP schemes
+      if (
+        securityScheme.in === 'header' &&
+        securityScheme.name.toLowerCase() === 'authorization'
+      ) {
+        hasAuthorizationApiKey = true;
+      }
+      // This overlaps with OAuth schemes
+      if (
+        securityScheme.in === 'query' &&
+        securityScheme.name === 'access_token'
+      ) {
+        hasAccessTokenApiKey = true;
+      }
+
+      return {
+        in: securityScheme.in,
+        name:
+          securityScheme.in === 'header'
+            ? securityScheme.name.toLowerCase()
+            : securityScheme.name,
+        schema: {
+          type: 'string',
+        },
+      };
+    })
+    .concat(
+      httpSchemes.length && !hasAuthorizationApiKey
+        ? [
+            {
+              in: 'header',
+              name: 'authorization',
+              schema: {
+                type: 'string',
+                pattern: `(${httpSchemes.join('|')}) .*`,
+              },
+            },
+          ]
+        : [],
+    )
+    .concat(
+      hasOAuth && !hasAccessTokenApiKey
+        ? [
+            {
+              in: 'query',
+              name: 'access_token',
+              schema: {
+                type: 'string',
+              },
+            },
+          ]
+        : [],
+    );
+}
+
+export function prepareParametersValidators(ajv, operationId, parameters) {
+  return parameters.reduce((validators, parameter) => {
     if ('string' !== typeof parameter.name) {
-      throw new YError('E_BAD_PARAMETER_NAME', operation.operationId);
+      throw new YError('E_BAD_PARAMETER_NAME', operationId);
     }
 
     if (parameter.content) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
-        operation.operationId,
+        operationId,
         'content',
       );
     }
@@ -119,7 +224,7 @@ export function prepareParametersValidators(ajv, operation) {
     if (parameter.style && 'simple' !== parameter.style) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
-        operation.operationId,
+        operationId,
         'style',
         parameter.style,
       );
@@ -128,7 +233,7 @@ export function prepareParametersValidators(ajv, operation) {
     if (!['query', 'header', 'path'].includes(parameter.in)) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
-        operation.operationId,
+        operationId,
         'in',
         parameter.in,
       );

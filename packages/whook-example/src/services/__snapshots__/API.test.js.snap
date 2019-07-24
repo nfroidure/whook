@@ -5,6 +5,7 @@ exports[`API should always have the same amount of basic authenticated endpoints
 exports[`API should always have the same amount of bearer authenticated endpoints 1`] = `
 Array [
   "get /diag",
+  "get /openAPI",
 ]
 `;
 
@@ -22,7 +23,6 @@ Array [
 exports[`API should always have the same amount of non authenticated endpoints 1`] = `
 Array [
   "get /delay",
-  "get /openAPI",
   "get /ping",
   "get /time",
   "options /delay",
@@ -32,6 +32,12 @@ Array [
   "options /ping",
   "options /time",
   "put /echo",
+]
+`;
+
+exports[`API should always have the same amount of optionally authenticated endpoints 1`] = `
+Array [
+  "get /openAPI",
 ]
 `;
 
@@ -130,22 +136,7 @@ Object {
       "/diag": Object {
         "get": Object {
           "operationId": "getDiagnostic",
-          "parameters": Array [
-            Object {
-              "in": "header",
-              "name": "authorization",
-              "schema": Object {
-                "type": "string",
-              },
-            },
-            Object {
-              "in": "query",
-              "name": "access_token",
-              "schema": Object {
-                "type": "string",
-              },
-            },
-          ],
+          "parameters": Array [],
           "responses": Object {
             "200": Object {
               "content": Object {
@@ -173,16 +164,7 @@ Object {
         },
         "options": Object {
           "operationId": "optionsWithCORS",
-          "parameters": Array [
-            Object {
-              "in": "query",
-              "name": "access_token",
-              "required": false,
-              "schema": Object {
-                "type": "string",
-              },
-            },
-          ],
+          "parameters": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",
@@ -274,22 +256,7 @@ Object {
       "/openAPI": Object {
         "get": Object {
           "operationId": "getOpenAPI",
-          "parameters": Array [
-            Object {
-              "in": "header",
-              "name": "authorization",
-              "schema": Object {
-                "type": "string",
-              },
-            },
-            Object {
-              "in": "query",
-              "name": "access_token",
-              "schema": Object {
-                "type": "string",
-              },
-            },
-          ],
+          "parameters": Array [],
           "responses": Object {
             "200": Object {
               "content": Object {
@@ -302,6 +269,14 @@ Object {
               "description": "Provides the private Open API documentation",
             },
           },
+          "security": Array [
+            Object {},
+            Object {
+              "bearerAuth": Array [
+                "admin",
+              ],
+            },
+          ],
           "summary": "Get API documentation.",
           "tags": Array [
             "system",
@@ -312,16 +287,7 @@ Object {
         },
         "options": Object {
           "operationId": "optionsWithCORS",
-          "parameters": Array [
-            Object {
-              "in": "query",
-              "name": "access_token",
-              "required": false,
-              "schema": Object {
-                "type": "string",
-              },
-            },
-          ],
+          "parameters": Array [],
           "responses": Object {
             "200": Object {
               "description": "CORS sent.",

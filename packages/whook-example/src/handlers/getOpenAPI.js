@@ -9,23 +9,13 @@ export const definition = {
   ...baseGetOpenAPIDefinition,
   operation: {
     ...baseGetOpenAPIDefinition.operation,
-    parameters: [
-      ...(baseGetOpenAPIDefinition.operation.parameters || []),
+    security: [
+      {},
       {
-        in: 'header',
-        name: 'authorization',
-        schema: {
-          type: 'string',
-        },
-      },
-      {
-        in: 'query',
-        name: 'access_token',
-        schema: {
-          type: 'string',
-        },
+        bearerAuth: ['admin'],
       },
     ],
+    parameters: [...(baseGetOpenAPIDefinition.operation.parameters || [])],
   },
 };
 export default getOpenAPI;

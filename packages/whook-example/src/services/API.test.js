@@ -126,6 +126,21 @@ describe('API', () => {
       ).toMatchSnapshot();
     });
 
+    it('optionally authenticated endpoints', async () => {
+      expect(
+        operations
+          .filter(
+            operation =>
+              operation.security &&
+              operation.security.some(
+                security => Object.keys(security).length === 0,
+              ),
+          )
+          .map(({ method, path }) => `${method} ${path}`)
+          .sort(),
+      ).toMatchSnapshot();
+    });
+
     it('basic authenticated endpoints', async () => {
       expect(
         operations

@@ -12,22 +12,7 @@ export const definition = {
       },
     ],
     tags: ['system'],
-    parameters: [
-      {
-        in: 'header',
-        name: 'authorization',
-        schema: {
-          type: 'string',
-        },
-      },
-      {
-        in: 'query',
-        name: 'access_token',
-        schema: {
-          type: 'string',
-        },
-      },
-    ],
+    parameters: [],
     responses: {
       200: {
         description: 'Diagnostic',

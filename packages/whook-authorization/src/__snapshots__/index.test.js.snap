@@ -295,6 +295,25 @@ Object {
 }
 `;
 
+exports[`wrapHandlerWithAuthorization with authenticated but not restricted endpoints should work with no authentication at all 1`] = `
+Object {
+  "authenticationChecks": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+    ],
+    Array [
+      "debug",
+      "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
+    ],
+  ],
+  "response": Object {
+    "status": 200,
+  },
+}
+`;
+
 exports[`wrapHandlerWithAuthorization with unauthenticated endpoints should work 1`] = `
 Object {
   "authenticationChecks": Array [],

@@ -2,6 +2,13 @@
 
 exports[`augmentAPIWithCORS() should work 1`] = `
 Object {
+  "components": Object {
+    "securitySchemes": Object {
+      "oAuth2": Object {
+        "type": "oauth2",
+      },
+    },
+  },
   "info": Object {
     "description": "A sample OpenAPI file for testing purpose.",
     "title": "Sample OpenAPI",
@@ -71,6 +78,13 @@ Object {
             "description": "The user",
           },
         },
+        "security": Array [
+          Object {
+            "oAuth2": Array [
+              "user",
+            ],
+          },
+        ],
         "summary": "Return a user.",
       },
       "options": Object {
@@ -93,6 +107,14 @@ Object {
             "name": "retry",
             "required": false,
             "type": "boolean",
+          },
+          Object {
+            "in": "query",
+            "name": "access_token",
+            "required": false,
+            "schema": Object {
+              "type": "string",
+            },
           },
         ],
         "responses": Object {

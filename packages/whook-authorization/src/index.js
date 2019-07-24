@@ -68,17 +68,26 @@ async function handleWithAuthorization(
     throw new HTTPError(500, 'E_OPERATION_REQUIRED');
   }
 
-  if ('undefined' === typeof operation.security) {
+  const noAuth =
+    'undefined' === typeof operation.security ||
+    operation.security.length === 0;
+  const optionalAuth = (operation.security || []).some(
+    security => Object.keys(security).length === 0,
+  );
+  const authorization =
+    parameters.access_token && DEFAULT_MECHANISM
+      ? `${DEFAULT_MECHANISM} ${parameters.access_token}`
+      : parameters.authorization;
+
+  if (noAuth || (optionalAuth && !authorization)) {
     log(
       'debug',
-      '🔓 - Public endpoint detected, letting the call pass through!',
+      noAuth
+        ? '🔓 - Public endpoint detected, letting the call pass through!'
+        : '🔓 - Optionally authenticated enpoint detected, letting the call pass through!',
     );
     response = await handler({ parameters, authenticated: false }, operation);
   } else {
-    const authorization =
-      parameters.access_token && DEFAULT_MECHANISM
-        ? `${DEFAULT_MECHANISM} ${parameters.access_token}`
-        : parameters.authorization;
     let parsedAuthorization;
 
     const usableMechanisms = MECHANISMS.filter(mechanism =>
@@ -92,7 +101,6 @@ async function handleWithAuthorization(
         log('debug', '🔐 - No authorization found, locking access!');
         throw new HTTPError(401, 'E_UNAUTHORIZED');
       }
-
       try {
         parsedAuthorization = parseAuthorizationHeader(
           authorization,

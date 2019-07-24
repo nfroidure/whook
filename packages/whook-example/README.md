@@ -49,7 +49,7 @@ DEBUG=whook npm run dev
 
 Debug `knifecycle` internals (dependency injections issues):
 ```sh
-DEBUG=metapak npm run dev
+DEBUG=knifecycle npm run dev
 ```
 
 [//]: # (::contents:end)

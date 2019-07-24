@@ -26,6 +26,7 @@ describe('wrapHandlerWithAuthorization', () => {
   const NOOP_AUTHENTICATED_OPERATION = {
     ...NOOP_OPERATION,
     security: [
+      {},
       {
         bearerAuth: ['user', 'admin'],
       },
@@ -120,6 +121,28 @@ describe('wrapHandlerWithAuthorization', () => {
         },
         NOOP_AUTHENTICATED_OPERATION,
       );
+
+      expect({
+        response,
+        authenticationChecks: authentication.check.mock.calls,
+        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      }).toMatchSnapshot();
+    });
+
+    it('should work with no authentication at all', async () => {
+      authentication.check.mockResolvedValue({
+        userId: 1,
+        scopes: ['user', 'admin'],
+      });
+      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
+        noopHandler,
+      );
+      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+        authentication,
+        log,
+      });
+      const response = await wrappedHandler({}, NOOP_AUTHENTICATED_OPERATION);
 
       expect({
         response,
