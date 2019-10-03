@@ -86,7 +86,10 @@ async function handleWithAuthorization(
         ? '🔓 - Public endpoint detected, letting the call pass through!'
         : '🔓 - Optionally authenticated enpoint detected, letting the call pass through!',
     );
-    response = await handler({ parameters, authenticated: false }, operation);
+    response = await handler(
+      { ...parameters, authenticated: false },
+      operation,
+    );
   } else {
     let parsedAuthorization;
 

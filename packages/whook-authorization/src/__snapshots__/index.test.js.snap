@@ -23,6 +23,7 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -45,6 +46,7 @@ Object {
       "🔐 - No authorization found, locking access!",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -64,6 +66,7 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -86,6 +89,7 @@ Object {
       "🔐 - No authorization found, locking access!",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -102,6 +106,7 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -120,6 +125,7 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -138,6 +144,7 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -167,6 +174,7 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -192,6 +200,7 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [],
 }
 `;
 
@@ -209,6 +218,86 @@ Object {
     Array [
       "debug",
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+    ],
+  ],
+  "noopMockCalls": Array [
+    Array [
+      Object {
+        "DEFAULT_MECHANISM": "Bearer",
+        "MECHANISMS": Array [
+          Object {
+            "buildAuthorizationRest": [Function],
+            "buildWWWAuthenticateRest": [Function],
+            "parseAuthorizationRest": [Function],
+            "parseWWWAuthenticateRest": [Function],
+            "type": "Bearer",
+          },
+        ],
+        "authentication": Object {
+          "check": [MockFunction] {
+            "calls": Array [
+              Array [
+                "bearer",
+                Object {
+                  "hash": "yolo",
+                },
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Promise {},
+              },
+            ],
+          },
+        },
+        "log": [MockFunction] {
+          "calls": Array [
+            Array [
+              "debug",
+              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+      },
+      Object {
+        "aParameter": 1,
+        "access_token": "yolo",
+        "authenticated": true,
+        "scopes": Array [
+          "user",
+          "admin",
+        ],
+        "userId": 1,
+      },
+      Object {
+        "consumes": Array [],
+        "operationId": "noopHandler",
+        "produces": Array [],
+        "responses": Object {
+          "200": Object {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": Array [
+          Object {
+            "bearerAuth": Array [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": Array [
+          "system",
+        ],
+      },
     ],
   ],
   "response": Object {
@@ -236,6 +325,86 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [
+    Array [
+      Object {
+        "DEFAULT_MECHANISM": "Bearer",
+        "MECHANISMS": Array [
+          Object {
+            "buildAuthorizationRest": [Function],
+            "buildWWWAuthenticateRest": [Function],
+            "parseAuthorizationRest": [Function],
+            "parseWWWAuthenticateRest": [Function],
+            "type": "Bearer",
+          },
+        ],
+        "authentication": Object {
+          "check": [MockFunction] {
+            "calls": Array [
+              Array [
+                "bearer",
+                Object {
+                  "hash": "yolo",
+                },
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Promise {},
+              },
+            ],
+          },
+        },
+        "log": [MockFunction] {
+          "calls": Array [
+            Array [
+              "debug",
+              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+      },
+      Object {
+        "aParameter": 1,
+        "authenticated": true,
+        "authorization": "Bearer yolo",
+        "scopes": Array [
+          "user",
+          "admin",
+        ],
+        "userId": 1,
+      },
+      Object {
+        "consumes": Array [],
+        "operationId": "noopHandler",
+        "produces": Array [],
+        "responses": Object {
+          "200": Object {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": Array [
+          Object {
+            "bearerAuth": Array [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": Array [
+          "system",
+        ],
+      },
+    ],
+  ],
   "response": Object {
     "headers": Object {
       "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
@@ -259,6 +428,87 @@ Object {
     Array [
       "debug",
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+    ],
+  ],
+  "noopMockCalls": Array [
+    Array [
+      Object {
+        "DEFAULT_MECHANISM": "Bearer",
+        "MECHANISMS": Array [
+          Object {
+            "buildAuthorizationRest": [Function],
+            "buildWWWAuthenticateRest": [Function],
+            "parseAuthorizationRest": [Function],
+            "parseWWWAuthenticateRest": [Function],
+            "type": "Bearer",
+          },
+        ],
+        "authentication": Object {
+          "check": [MockFunction] {
+            "calls": Array [
+              Array [
+                "bearer",
+                Object {
+                  "hash": "yolo",
+                },
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Promise {},
+              },
+            ],
+          },
+        },
+        "log": [MockFunction] {
+          "calls": Array [
+            Array [
+              "debug",
+              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+      },
+      Object {
+        "aParameter": 1,
+        "access_token": "yolo",
+        "authenticated": true,
+        "scopes": Array [
+          "user",
+          "admin",
+        ],
+        "userId": 1,
+      },
+      Object {
+        "consumes": Array [],
+        "operationId": "noopHandler",
+        "produces": Array [],
+        "responses": Object {
+          "200": Object {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": Array [
+          Object {},
+          Object {
+            "bearerAuth": Array [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": Array [
+          "system",
+        ],
+      },
     ],
   ],
   "response": Object {
@@ -286,6 +536,87 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
     ],
   ],
+  "noopMockCalls": Array [
+    Array [
+      Object {
+        "DEFAULT_MECHANISM": "Bearer",
+        "MECHANISMS": Array [
+          Object {
+            "buildAuthorizationRest": [Function],
+            "buildWWWAuthenticateRest": [Function],
+            "parseAuthorizationRest": [Function],
+            "parseWWWAuthenticateRest": [Function],
+            "type": "Bearer",
+          },
+        ],
+        "authentication": Object {
+          "check": [MockFunction] {
+            "calls": Array [
+              Array [
+                "bearer",
+                Object {
+                  "hash": "yolo",
+                },
+              ],
+            ],
+            "results": Array [
+              Object {
+                "type": "return",
+                "value": Promise {},
+              },
+            ],
+          },
+        },
+        "log": [MockFunction] {
+          "calls": Array [
+            Array [
+              "debug",
+              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+      },
+      Object {
+        "aParameter": 1,
+        "authenticated": true,
+        "authorization": "Bearer yolo",
+        "scopes": Array [
+          "user",
+          "admin",
+        ],
+        "userId": 1,
+      },
+      Object {
+        "consumes": Array [],
+        "operationId": "noopHandler",
+        "produces": Array [],
+        "responses": Object {
+          "200": Object {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": Array [
+          Object {},
+          Object {
+            "bearerAuth": Array [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": Array [
+          "system",
+        ],
+      },
+    ],
+  ],
   "response": Object {
     "headers": Object {
       "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
@@ -308,6 +639,74 @@ Object {
       "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
     ],
   ],
+  "noopMockCalls": Array [
+    Array [
+      Object {
+        "DEFAULT_MECHANISM": "Bearer",
+        "MECHANISMS": Array [
+          Object {
+            "buildAuthorizationRest": [Function],
+            "buildWWWAuthenticateRest": [Function],
+            "parseAuthorizationRest": [Function],
+            "parseWWWAuthenticateRest": [Function],
+            "type": "Bearer",
+          },
+        ],
+        "authentication": Object {
+          "check": [MockFunction],
+        },
+        "log": [MockFunction] {
+          "calls": Array [
+            Array [
+              "debug",
+              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+            ],
+            Array [
+              "debug",
+              "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+      },
+      Object {
+        "aParameter": 1,
+        "authenticated": false,
+      },
+      Object {
+        "consumes": Array [],
+        "operationId": "noopHandler",
+        "produces": Array [],
+        "responses": Object {
+          "200": Object {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": Array [
+          Object {},
+          Object {
+            "bearerAuth": Array [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": Array [
+          "system",
+        ],
+      },
+    ],
+  ],
   "response": Object {
     "status": 200,
   },
@@ -325,6 +724,65 @@ Object {
     Array [
       "debug",
       "🔓 - Public endpoint detected, letting the call pass through!",
+    ],
+  ],
+  "noopMockCalls": Array [
+    Array [
+      Object {
+        "DEFAULT_MECHANISM": "Bearer",
+        "MECHANISMS": Array [
+          Object {
+            "buildAuthorizationRest": [Function],
+            "buildWWWAuthenticateRest": [Function],
+            "parseAuthorizationRest": [Function],
+            "parseWWWAuthenticateRest": [Function],
+            "type": "Bearer",
+          },
+        ],
+        "authentication": Object {
+          "check": [MockFunction],
+        },
+        "log": [MockFunction] {
+          "calls": Array [
+            Array [
+              "debug",
+              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+            ],
+            Array [
+              "debug",
+              "🔓 - Public endpoint detected, letting the call pass through!",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+      },
+      Object {
+        "aParameter": 1,
+        "authenticated": false,
+      },
+      Object {
+        "consumes": Array [],
+        "operationId": "noopHandler",
+        "produces": Array [],
+        "responses": Object {
+          "200": Object {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "summary": "Does nothing.",
+        "tags": Array [
+          "system",
+        ],
+      },
     ],
   ],
   "response": Object {

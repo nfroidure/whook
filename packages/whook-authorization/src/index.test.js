@@ -11,6 +11,7 @@ describe('wrapHandlerWithAuthorization', () => {
   const authentication = {
     check: jest.fn(),
   };
+  const noopMock = jest.fn(() => ({ status: 200 }));
   const NOOP_OPERATION = {
     operationId: 'noopHandler',
     summary: 'Does nothing.',
@@ -50,13 +51,14 @@ describe('wrapHandlerWithAuthorization', () => {
   };
 
   beforeEach(() => {
+    noopMock.mockClear();
     log.mockReset();
     authentication.check.mockReset();
   });
 
   describe('with unauthenticated endpoints', () => {
     it('should work', async () => {
-      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const noopHandler = handler(noopMock, 'getNoop');
       const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
         noopHandler,
       );
@@ -64,10 +66,11 @@ describe('wrapHandlerWithAuthorization', () => {
         authentication,
         log,
       });
-      const response = await wrappedHandler({}, NOOP_OPERATION);
+      const response = await wrappedHandler({ aParameter: 1 }, NOOP_OPERATION);
 
       expect({
         response,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -80,7 +83,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scopes: ['user', 'admin'],
       });
-      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const noopHandler = handler(noopMock, 'getNoop');
       const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
         noopHandler,
       );
@@ -91,12 +94,14 @@ describe('wrapHandlerWithAuthorization', () => {
       const response = await wrappedHandler(
         {
           authorization: 'Bearer yolo',
+          aParameter: 1,
         },
         NOOP_AUTHENTICATED_OPERATION,
       );
 
       expect({
         response,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -107,7 +112,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scopes: ['user', 'admin'],
       });
-      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const noopHandler = handler(noopMock, 'getNoop');
       const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
         noopHandler,
       );
@@ -118,12 +123,14 @@ describe('wrapHandlerWithAuthorization', () => {
       const response = await wrappedHandler(
         {
           access_token: 'yolo',
+          aParameter: 1,
         },
         NOOP_AUTHENTICATED_OPERATION,
       );
 
       expect({
         response,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -134,7 +141,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scopes: ['user', 'admin'],
       });
-      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const noopHandler = handler(noopMock, 'getNoop');
       const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
         noopHandler,
       );
@@ -142,10 +149,14 @@ describe('wrapHandlerWithAuthorization', () => {
         authentication,
         log,
       });
-      const response = await wrappedHandler({}, NOOP_AUTHENTICATED_OPERATION);
+      const response = await wrappedHandler(
+        { aParameter: 1 },
+        NOOP_AUTHENTICATED_OPERATION,
+      );
 
       expect({
         response,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -158,7 +169,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scopes: ['user', 'admin'],
       });
-      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const noopHandler = handler(noopMock, 'getNoop');
       const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
         noopHandler,
       );
@@ -169,12 +180,14 @@ describe('wrapHandlerWithAuthorization', () => {
       const response = await wrappedHandler(
         {
           authorization: 'Bearer yolo',
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
 
       expect({
         response,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -185,7 +198,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scopes: ['user', 'admin'],
       });
-      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const noopHandler = handler(noopMock, 'getNoop');
       const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
         noopHandler,
       );
@@ -196,12 +209,14 @@ describe('wrapHandlerWithAuthorization', () => {
       const response = await wrappedHandler(
         {
           access_token: 'yolo',
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
 
       expect({
         response,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -209,7 +224,7 @@ describe('wrapHandlerWithAuthorization', () => {
   });
 
   it('should fail with no operation definition provided', async () => {
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -229,6 +244,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -240,7 +256,7 @@ describe('wrapHandlerWithAuthorization', () => {
       userId: 1,
       scopes: ['user', 'admin'],
     });
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -254,6 +270,7 @@ describe('wrapHandlerWithAuthorization', () => {
         {
           access_token: 'yolo',
           userId: 3,
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
@@ -264,6 +281,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -271,7 +289,7 @@ describe('wrapHandlerWithAuthorization', () => {
   });
 
   it('should fail with bad operation definition provided', async () => {
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -284,6 +302,7 @@ describe('wrapHandlerWithAuthorization', () => {
       await wrappedHandler(
         {
           access_token: 'yolo',
+          aParameter: 1,
         },
         BAD_OPERATION,
       );
@@ -294,6 +313,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -305,7 +325,7 @@ describe('wrapHandlerWithAuthorization', () => {
       userId: 1,
       scopes: [],
     });
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -318,6 +338,7 @@ describe('wrapHandlerWithAuthorization', () => {
       await wrappedHandler(
         {
           authorization: 'Bearer yolo',
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
@@ -328,6 +349,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -339,7 +361,7 @@ describe('wrapHandlerWithAuthorization', () => {
       userId: 1,
       scopes: [],
     });
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -353,6 +375,7 @@ describe('wrapHandlerWithAuthorization', () => {
       await wrappedHandler(
         {
           authorization: 'Basic yolo',
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
@@ -363,6 +386,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -374,7 +398,7 @@ describe('wrapHandlerWithAuthorization', () => {
       new YError('E_UNEXPECTED_TOKEN_CHECK'),
     );
 
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -387,6 +411,7 @@ describe('wrapHandlerWithAuthorization', () => {
       await wrappedHandler(
         {
           authorization: 'Whatever yolo',
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
@@ -397,6 +422,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -408,7 +434,7 @@ describe('wrapHandlerWithAuthorization', () => {
       new YError('E_UNEXPECTED_TOKEN_CHECK'),
     );
 
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -418,7 +444,7 @@ describe('wrapHandlerWithAuthorization', () => {
     });
 
     try {
-      await wrappedHandler({}, NOOP_RESTRICTED_OPERATION);
+      await wrappedHandler({ aParameter: 1 }, NOOP_RESTRICTED_OPERATION);
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
@@ -426,6 +452,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -437,7 +464,7 @@ describe('wrapHandlerWithAuthorization', () => {
       new YError('E_UNEXPECTED_TOKEN_CHECK'),
     );
 
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -451,6 +478,7 @@ describe('wrapHandlerWithAuthorization', () => {
       await wrappedHandler(
         {
           access_token: 'yolo',
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
@@ -461,6 +489,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
@@ -474,7 +503,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     authentication.check.mockRejectedValue(new YError('E_UNAUTHORIZED'));
 
-    const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+    const noopHandler = handler(noopMock, 'getNoop');
     const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
       noopHandler,
     );
@@ -487,6 +516,7 @@ describe('wrapHandlerWithAuthorization', () => {
       await wrappedHandler(
         {
           authorization: 'Bearer yolo',
+          aParameter: 1,
         },
         NOOP_RESTRICTED_OPERATION,
       );
@@ -497,6 +527,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorCode: err.code,
         errorParams: err.params,
         errorHeaders: err.headers,
+        noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
