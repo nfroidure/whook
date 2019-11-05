@@ -293,12 +293,12 @@ async function initHTTPRouter({
             );
           }
           if (response.body) {
-            checkResponseCharset(request, responseSpec, produceableCharsets);
             checkResponseMediaType(
               request,
               responseSpec,
               produceableMediaTypes,
             );
+            checkResponseCharset(request, responseSpec, produceableCharsets);
           }
 
           return response;
@@ -377,8 +377,6 @@ async function _createRouters({ API, HANDLERS, BASE_PATH, ajv, log }) {
       throw new YError('E_NO_HANDLER', operationId);
     }
 
-    const consumableMediaTypes = extractConsumableMediaTypes(operation);
-    const produceableMediaTypes = extractProduceableMediaTypes(operation);
     const handler = HANDLERS[operationId];
 
     // TODO: create a new major version of Siso to handle OpenAPI
@@ -394,30 +392,39 @@ async function _createRouters({ API, HANDLERS, BASE_PATH, ajv, log }) {
           ...p.schema,
         };
       });
-    const ammendedParameters = (parameters || []).concat(
-      extractOperationSecurityParameters(flattenedAPI, operation),
+    const ammendedParameters = extractOperationSecurityParameters(
+      flattenedAPI,
+      operation,
     );
 
     routers[method] = routers[method] || new Siso();
     routers[method].register(
       _explodePath((BASE_PATH || '') + path, pathParameters),
-      {
-        handler,
-        consumableMediaTypes,
-        produceableMediaTypes,
-        operation: {
-          ...operation,
-          parameters: ammendedParameters,
-        },
-        validators: prepareParametersValidators(
-          ajv,
-          operation.operationId,
-          ammendedParameters,
-        ),
-        bodyValidator: prepareBodyValidator(ajv, operation),
-      },
+      _prepareRoute({ ajv }, operation, handler, ammendedParameters),
     );
   });
 
   return routers;
+}
+
+function _prepareRoute({ ajv }, operation, handler, ammendedParameters = []) {
+  const consumableMediaTypes = extractConsumableMediaTypes(operation);
+  const produceableMediaTypes = extractProduceableMediaTypes(operation);
+  const parameters = (operation.parameters || []).concat(ammendedParameters);
+
+  return {
+    handler,
+    consumableMediaTypes,
+    produceableMediaTypes,
+    operation: {
+      ...operation,
+      parameters,
+    },
+    validators: prepareParametersValidators(
+      ajv,
+      operation.operationId,
+      parameters,
+    ),
+    bodyValidator: prepareBodyValidator(ajv, operation),
+  };
 }

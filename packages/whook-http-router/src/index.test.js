@@ -2207,7 +2207,7 @@ describe('initHTTPRouter', () => {
           });
         });
 
-        test('with too large contents', async () => {
+        test('with too large contents declared', async () => {
           let {
             httpTransaction,
             httpTransactionStart,
@@ -2238,6 +2238,67 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'application/json',
             'content-length': '21',
+          };
+
+          log.mockReset();
+
+          await httpRouter.service(req, res);
+
+          expect(handler).not.toBeCalled();
+          expect(httpTransaction).toBeCalled();
+          expect(httpTransactionStart).toBeCalled();
+          expect(httpTransactionCatch).toBeCalled();
+          expect(httpTransactionEnd).toBeCalled();
+
+          const response = await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          );
+
+          expect(response).toEqual({
+            status: 400,
+            headers: {
+              'content-type': 'application/json',
+              'cache-control': 'private',
+            },
+            body: {
+              error: {
+                code: 'E_REQUEST_CONTENT_TOO_LARGE',
+              },
+            },
+          });
+        });
+
+        test('with too large contents not declared', async () => {
+          let {
+            httpTransaction,
+            httpTransactionStart,
+            httpTransactionCatch,
+            httpTransactionEnd,
+            handler,
+            HANDLERS,
+          } = prepareTransaction();
+          const errorHandler = await initErrorHandler({});
+          const httpRouter = await initHTTPRouter({
+            HANDLERS,
+            API,
+            BUFFER_LIMIT: 20,
+            log,
+            BASE_PATH,
+            httpTransaction,
+            errorHandler,
+          });
+          const req = StreamTest.v2.fromChunks([
+            '{ ',
+            '"nam',
+            'e": "John',
+            ' Doe" }',
+          ]);
+
+          req.method = 'PUT';
+          req.url = '/v1/users/1';
+          req.headers = {
+            'content-type': 'application/json',
+            'content-length': '10',
           };
 
           log.mockReset();

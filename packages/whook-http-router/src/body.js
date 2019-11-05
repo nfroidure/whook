@@ -22,7 +22,7 @@ export async function getBody(
   bodySpec,
 ) {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
-  const bodyIsParseable = !(
+  const bodyIsParseable =
     operation.requestBody &&
     operation.requestBody.content &&
     operation.requestBody.content[bodySpec.contentType] &&
@@ -30,14 +30,13 @@ export async function getBody(
     (operation.requestBody.content[bodySpec.contentType].schema.type !==
       'string' ||
       operation.requestBody.content[bodySpec.contentType].schema.format !==
-        'binary')
-  );
+        'binary');
 
   if (bodyIsEmpty) {
     return Promise.resolve();
   }
 
-  if (bodyIsParseable) {
+  if (!bodyIsParseable) {
     return Promise.resolve(inputStream);
   }
   if (!PARSERS[bodySpec.contentType]) {
@@ -45,7 +44,16 @@ export async function getBody(
       new HTTPError(500, 'E_PARSER_LACK', bodySpec.contentType),
     );
   }
-  return new Promise((resolve, reject) => {
+
+  if (bodySpec.contentLength > bufferLimit) {
+    throw new HTTPError(
+      400,
+      'E_REQUEST_CONTENT_TOO_LARGE',
+      bodySpec.contentLength,
+    );
+  }
+
+  const body = await new Promise((resolve, reject) => {
     const Decoder = DECODERS[bodySpec.charset];
 
     inputStream.on('error', err => {
@@ -69,25 +77,28 @@ export async function getBody(
         },
       ),
     );
-  }).then(body => {
-    if (body.length !== bodySpec.contentLength) {
-      throw new HTTPError(
-        400,
-        'E_BAD_BODY_LENGTH',
-        body.length,
-        bodySpec.contentLength,
-      );
-    }
-    return new Promise((resolve, reject) => {
+  });
+
+  if (body.length !== bodySpec.contentLength) {
+    throw new HTTPError(
+      400,
+      'E_BAD_BODY_LENGTH',
+      body.length,
+      bodySpec.contentLength,
+    );
+  }
+
+  try {
+    return await new Promise((resolve, reject) => {
       try {
         resolve(PARSERS[bodySpec.contentType](body.toString(), bodySpec));
       } catch (err) {
         reject(err);
       }
-    }).catch(err => {
-      throw HTTPError.wrap(err, 400, 'E_BAD_BODY');
     });
-  });
+  } catch (err) {
+    throw HTTPError.wrap(err, 400, 'E_BAD_BODY');
+  }
 }
 
 export async function sendBody({ ENCODERS, STRINGIFYERS }, response) {
