@@ -7,6 +7,8 @@ import {
 import path from 'path';
 import YError from 'yerror';
 
+export const HANDLER_REG_EXP = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
+
 // Needed to avoid messing up babel builds 🤷
 const _require = require;
 const _resolve = require.resolve;
@@ -162,9 +164,7 @@ async function initAutoload({
       };
     }
 
-    const isHandler = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/.test(
-      resolvedName,
-    );
+    const isHandler = HANDLER_REG_EXP.test(resolvedName);
     const isWrappedHandler = resolvedName.endsWith('Wrapped');
 
     /* Architecture Note #5.5: Handlers map

@@ -17,6 +17,7 @@ import initEnv from './services/ENV';
 import initConfigs from './services/CONFIGS';
 import initProjectDir from './services/PROJECT_DIR';
 import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS';
+import { HANDLER_REG_EXP } from './services/_autoload';
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
@@ -29,13 +30,51 @@ export async function runServer(
   injectedNames = [],
 ) {
   try {
-    const { ENV, log, $destroy, ...services } = await prepareServer(
-      [...new Set([...injectedNames, 'ENV', 'log', '$destroy'])],
+    const { ENV, log, $destroy, $instance, ...services } = await prepareServer(
+      [...new Set([...injectedNames, 'ENV', 'log', '$destroy', '$instance'])],
       await prepareEnvironment(),
     );
 
     if (ENV.DRY_RUN) {
       log('warning', '🌵 - Dry run, shutting down now!');
+      return $destroy();
+    }
+
+    if (ENV.MERMAID_RUN) {
+      const CONFIG_REG_EXP = /^([A-Z0-9_]+)$/;
+      const MERMAID_GRAPH_CONFIG = {
+        classes: {
+          handlers: 'fill:#e7cdd2,stroke:#ebd4cb,stroke-width:1px;',
+          config: 'fill:#d4cdcc,stroke:#ebd4cb,stroke-width:1px;',
+          others: 'fill:#ebd4cb,stroke:#000,stroke-width:1px;',
+        },
+        styles: [
+          {
+            pattern: HANDLER_REG_EXP,
+            className: 'handlers',
+          },
+          {
+            pattern: CONFIG_REG_EXP,
+            className: 'config',
+          },
+          {
+            pattern: /^(.+)$/,
+            className: 'others',
+          },
+        ],
+        shapes: [
+          {
+            pattern: HANDLER_REG_EXP,
+            template: '$0(($0))',
+          },
+          {
+            pattern: CONFIG_REG_EXP,
+            template: '$0{$0}',
+          },
+        ],
+      };
+      log('warning', '🌵 - Mermaid graph generated, shutting down now!');
+      process.stdout.write($instance.toMermaidGraph(MERMAID_GRAPH_CONFIG));
       return $destroy();
     }
 
