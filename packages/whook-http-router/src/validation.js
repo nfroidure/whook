@@ -54,9 +54,22 @@ export function prepareBodyValidator(ajv, operation) {
         return validators;
       }
 
+      let validator;
+
+      try {
+        validator = ajv.compile(mediaTypeObject.schema);
+      } catch (err) {
+        throw YError.wrap(
+          err,
+          'E_BAD_BODY_SCHEMA',
+          operation.operationId,
+          mediaType,
+        );
+      }
+
       return {
         ...validators,
-        [mediaType]: ajv.compile(mediaTypeObject.schema),
+        [mediaType]: validator,
       };
     },
     {},
@@ -217,6 +230,7 @@ export function prepareParametersValidators(ajv, operationId, parameters) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
         operationId,
+        parameter.name,
         'content',
       );
     }
@@ -225,6 +239,7 @@ export function prepareParametersValidators(ajv, operationId, parameters) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
         operationId,
+        parameter.name,
         'style',
         parameter.style,
       );
@@ -234,15 +249,29 @@ export function prepareParametersValidators(ajv, operationId, parameters) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
         operationId,
+        parameter.name,
         'in',
         parameter.in,
+      );
+    }
+
+    let validator;
+
+    try {
+      validator = ajv.compile(parameter.schema);
+    } catch (err) {
+      throw YError.wrap(
+        err,
+        'E_BAD_PARAMETER_SCHEMA',
+        operationId,
+        parameter.name,
       );
     }
 
     validators[parameter.name] = _validateParameter.bind(
       null,
       parameter,
-      ajv.compile(parameter.schema),
+      validator,
     );
     return validators;
   }, {});

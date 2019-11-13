@@ -687,7 +687,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         assert.equal(err.code, 'E_UNSUPPORTED_PARAMETER_DEFINITION');
-        assert.deepEqual(err.params, ['ping', 'in', {}.undef]);
+        assert.deepEqual(err.params, ['ping', 'lol', 'in', {}.undef]);
       }
     });
   });
