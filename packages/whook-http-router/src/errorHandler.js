@@ -5,7 +5,7 @@ export default initializer(
   {
     name: 'errorHandler',
     type: 'service',
-    inject: ['?ENV', '?DEBUG_NODE_ENVS', '?STRINGIFYERS'],
+    inject: ['NODE_ENV', '?DEBUG_NODE_ENVS', '?STRINGIFYERS'],
   },
   initErrorHandler,
 );
@@ -15,8 +15,8 @@ export default initializer(
  * HTTP router
  * @param  {Object}   services
  * The services the server depends on
- * @param  {Object}   [services.ENV]
- * The services the server depends on
+ * @param  {Object}   services.NODE_ENV
+ * The injected NODE_ENV value
  * @param  {Array}   [services.DEBUG_NODE_ENVS]
  * The environnement that activate debugging
  *  (prints stack trace in HTTP errors responses)
@@ -26,7 +26,7 @@ export default initializer(
  * A promise of a function to handle errors
  */
 function initErrorHandler({
-  ENV = {},
+  NODE_ENV,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
 }) {
@@ -72,7 +72,7 @@ function initErrorHandler({
         },
       };
 
-      if (ENV && DEBUG_NODE_ENVS.includes(ENV.NODE_ENV)) {
+      if (DEBUG_NODE_ENVS.includes(NODE_ENV)) {
         response.body.error.stack = err.stack;
         response.body.error.params = err.params;
       }

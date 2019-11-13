@@ -58,7 +58,7 @@ export default initializer(
   {
     name: 'httpRouter',
     inject: [
-      '?ENV',
+      'NODE_ENV',
       '?DEBUG_NODE_ENVS',
       '?BUFFER_LIMIT',
       'HANDLERS',
@@ -89,8 +89,8 @@ export default initializer(
  * @param  {Object}   services.HANDLERS
  * The handlers for the operations decribe
  *  by the OpenAPI API definition
- * @param  {Object}   [services.ENV]
- * The services the server depends on
+ * @param  {Object}   services.NODE_ENV
+ * The injected NODE_ENV value
  * @param  {Array}   [services.DEBUG_NODE_ENVS]
  * The environnement that activate debugging
  *  (prints stack trace in HTTP errors responses)
@@ -118,7 +118,7 @@ export default initializer(
  * A promise of a function to handle HTTP requests.
  */
 async function initHTTPRouter({
-  ENV = {},
+  NODE_ENV,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   HANDLERS,
@@ -135,7 +135,8 @@ async function initHTTPRouter({
 }) {
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
   const ajv = new Ajv({
-    verbose: ENV && DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
+    verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
+    strictKeywords: true,
   });
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
@@ -179,7 +180,6 @@ async function initHTTPRouter({
         .start(async () => {
           const method = request.method;
           const path = request.url.split(SEARCH_SEPARATOR)[0];
-          const search = request.url.substr(path.length);
           const parts = path.split('/').filter(a => a);
           let [result, pathParameters] = routers[method]
             ? routers[method].find(parts)
@@ -208,6 +208,9 @@ async function initHTTPRouter({
 
           operation = _operation_;
 
+          const search = request.url.substr(
+            request.url.split(SEARCH_SEPARATOR)[0].length,
+          );
           const bodySpec = extractBodySpec(
             request,
             consumableMediaTypes,
