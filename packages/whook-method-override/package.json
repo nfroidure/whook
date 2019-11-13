@@ -1,6 +1,6 @@
 {
   "name": "@whook/method-override",
-  "version": "4.0.0-alpha.12",
+  "version": "4.0.0-alpha.13",
   "description": "A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.",
   "main": "dist/index.js",
   "metapak": {
@@ -49,8 +49,8 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
-    "@whook/http-transaction": "^4.0.0-alpha.12",
-    "@whook/whook": "^4.0.0-alpha.12",
+    "@whook/http-transaction": "^4.0.0-alpha.13",
+    "@whook/whook": "^4.0.0-alpha.13",
     "babel-eslint": "^10.0.1",
     "babel-plugin-knifecycle": "^1.0.3",
     "eslint": "^5.13.0",
