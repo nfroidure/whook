@@ -174,9 +174,9 @@ async function initAutoload({
     if ('HANDLERS' === resolvedName) {
       const handlerNames = [
         ...new Set(
-          (await getOpenAPIOperations(
-            await flattenOpenAPI(await getAPI()),
-          )).map(operation => operation.operationId),
+          (
+            await getOpenAPIOperations(await flattenOpenAPI(await getAPI()))
+          ).map(operation => operation.operationId),
         ),
       ].map(handlerName => `${handlerName}>${handlerName}Wrapped`);
 

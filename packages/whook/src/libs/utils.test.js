@@ -14,22 +14,12 @@ describe('identity', () => {
 
 describe('pipe', () => {
   it('should work', () => {
-    expect(
-      pipe(
-        identity,
-        identity,
-      )('a'),
-    ).toEqual('a');
+    expect(pipe(identity, identity)('a')).toEqual('a');
   });
 });
 
 describe('noop', () => {
   it('should work', () => {
-    expect(
-      compose(
-        identity,
-        identity,
-      )('a'),
-    ).toEqual('a');
+    expect(compose(identity, identity)('a')).toEqual('a');
   });
 });
