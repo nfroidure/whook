@@ -5,6 +5,10 @@ describe('getOpenAPI', () => {
     swagger: '2.0',
     paths: {
       '/time': {
+        options: {
+          tags: ['public'],
+          'x-whook': { memx: 2, tx: 18 },
+        },
         get: {
           tags: ['public'],
           'x-whook': { memx: 2, tx: 18 },

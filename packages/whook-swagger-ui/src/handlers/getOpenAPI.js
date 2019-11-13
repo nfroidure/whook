@@ -26,14 +26,10 @@ export const definition = {
   },
 };
 
-async function getOpenAPI({ API }, { authenticated = false }) {
-  if (authenticated) {
-    return {
-      status: 200,
-      body: API,
-    };
-  }
-
+async function getOpenAPI(
+  { API },
+  { authenticated = false, mutedMethods = ['options'] },
+) {
   const operations = await getOpenAPIOperations(API);
   const tagIsPresent = {};
 
@@ -44,7 +40,14 @@ async function getOpenAPI({ API }, { authenticated = false }) {
         operation.tags.forEach(tag => {
           tagIsPresent[tag] = true;
         });
-      if (operation['x-whook'] && operation['x-whook'].private) {
+      if (
+        operation['x-whook'] &&
+        operation['x-whook'].private &&
+        !authenticated
+      ) {
+        return paths;
+      }
+      if (mutedMethods.includes(operation.method)) {
         return paths;
       }
 
@@ -52,7 +55,11 @@ async function getOpenAPI({ API }, { authenticated = false }) {
         ...paths[operation.path],
         [operation.method]: {
           ...API.paths[operation.path][operation.method],
-          'x-whook': {}.undef,
+          ...(authenticated
+            ? {}
+            : {
+                'x-whook': {}.undef,
+              }),
         },
       };
 
