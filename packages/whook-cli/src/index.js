@@ -21,17 +21,13 @@ export default async function run({ prepareEnvironment }) {
     // on their prefix (maybe already the case, check that)
     $.register(constant('WRAPPERS', []));
 
-    const { command, log, $destroy } = await $.run([
-      'command',
-      'log',
-      '$destroy',
-    ]);
+    const { command, log } = await $.run(['command', 'log']);
 
     log('debug', 'Environment initialized 🚀🌕');
 
     await command();
 
-    await $destroy();
+    await $.destroy();
     process.exit();
   } catch (err) {
     // eslint-disable-next-line

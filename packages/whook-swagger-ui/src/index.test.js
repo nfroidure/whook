@@ -111,15 +111,15 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $destroy } = await prepareServer(
-      ['$destroy', 'httpServer', 'process'],
+    const { $instance } = await prepareServer(
+      ['$instance', 'httpServer', 'process'],
       $,
     );
     const { status, headers, data } = await axios.get(
       `http://${HOST}:${PORT}${BASE_PATH}/ping`,
     );
 
-    await $destroy();
+    await $instance.destroy();
 
     expect({
       status,
@@ -158,15 +158,15 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $destroy } = await prepareServer(
-      ['$destroy', 'httpServer', 'process'],
+    const { $instance } = await prepareServer(
+      ['$instance', 'httpServer', 'process'],
       $,
     );
     const { status, headers, data } = await axios.get(
       `http://${HOST}:${PORT + 2}/docs`,
     );
 
-    await $destroy();
+    await $instance.destroy();
 
     expect({
       status,
@@ -201,12 +201,12 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2012-01-15T00:00:00Z').getTime());
 
-    const { $destroy } = await prepareServer(
-      ['$destroy', 'httpServer', 'process'],
+    const { $instance } = await prepareServer(
+      ['$instance', 'httpServer', 'process'],
       $,
     );
 
-    await $destroy();
+    await $instance.destroy();
 
     expect({
       debugCalls: debug.mock.calls,

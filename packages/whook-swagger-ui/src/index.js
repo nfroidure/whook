@@ -31,7 +31,7 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
       });
 
       log(
-        'info',
+        'warning',
         `💁 - Serving the public API docs: ${swaggerUIURL}?url=${encodeURIComponent(
           publicSwaggerURL,
         )}`,
@@ -39,7 +39,7 @@ export default function wrapHTTPRouterWithSwaggerUI(initHTTPRouter) {
 
       if (DEV_ACCESS_TOKEN) {
         log(
-          'info',
+          'warning',
           `💁 - Serving the private API docs: ${swaggerUIURL}?url=${encodeURIComponent(
             publicSwaggerURL +
               '?access_token=' +

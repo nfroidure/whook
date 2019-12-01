@@ -48,16 +48,13 @@ Object {
   ],
   "debugCalls": Array [
     Array [
-      "Logging service initialized.",
+      "👣 - Logging service initialized.",
     ],
     Array [
-      "Delay service initialized.",
+      "⌛ - Delay service initialized.",
     ],
     Array [
-      "Running in \\"test\\" environment.",
-    ],
-    Array [
-      "Process service initialized.",
+      "📇 - Process service initialized.",
     ],
     Array [
       "💱 - HTTP Transaction initialized.",
@@ -72,11 +69,14 @@ Object {
       "✔️ - HTTP server closed!",
     ],
     Array [
-      "Cancelling pending timeouts:",
+      "⏳ - Cancelling pending timeouts:",
       0,
     ],
   ],
   "logErrorCalls": Array [
+    Array [
+      "🔂 - Running in \\"test\\" environment.",
+    ],
     Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:8889\\".",
     ],
@@ -197,16 +197,13 @@ Object {
 ",
   "debugCalls": Array [
     Array [
-      "Logging service initialized.",
+      "👣 - Logging service initialized.",
     ],
     Array [
-      "Delay service initialized.",
+      "⌛ - Delay service initialized.",
     ],
     Array [
-      "Running in \\"test\\" environment.",
-    ],
-    Array [
-      "Process service initialized.",
+      "📇 - Process service initialized.",
     ],
     Array [
       "💱 - HTTP Transaction initialized.",
@@ -221,7 +218,7 @@ Object {
       "✔️ - HTTP server closed!",
     ],
     Array [
-      "Cancelling pending timeouts:",
+      "⏳ - Cancelling pending timeouts:",
       0,
     ],
   ],
@@ -237,20 +234,22 @@ Object {
   },
   "logErrorCalls": Array [
     Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8890\\".",
+      "🔂 - Running in \\"test\\" environment.",
     ],
-    Array [
-      "On air 🚀🌕",
-    ],
-  ],
-  "logInfoCalls": Array [
     Array [
       "💁 - Serving the public API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI",
     ],
     Array [
       "💁 - Serving the private API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
     ],
+    Array [
+      "🎙️ - HTTP Server listening at \\"http://localhost:8890\\".",
+    ],
+    Array [
+      "On air 🚀🌕",
+    ],
   ],
+  "logInfoCalls": Array [],
   "status": 200,
 }
 `;
@@ -306,16 +305,13 @@ Object {
   },
   "debugCalls": Array [
     Array [
-      "Logging service initialized.",
+      "👣 - Logging service initialized.",
     ],
     Array [
-      "Delay service initialized.",
+      "⌛ - Delay service initialized.",
     ],
     Array [
-      "Running in \\"test\\" environment.",
-    ],
-    Array [
-      "Process service initialized.",
+      "📇 - Process service initialized.",
     ],
     Array [
       "💱 - HTTP Transaction initialized.",
@@ -324,11 +320,11 @@ Object {
       "🚦 - HTTP Router initialized.",
     ],
     Array [
-      "Created a delay:",
+      "⏳ - Created a delay:",
       30000,
     ],
     Array [
-      "Cleared a delay",
+      "⏳ - Cleared a delay",
     ],
     Array [
       "✅ - Closing HTTP server.",
@@ -337,7 +333,7 @@ Object {
       "✔️ - HTTP server closed!",
     ],
     Array [
-      "Cancelling pending timeouts:",
+      "⏳ - Cancelling pending timeouts:",
       0,
     ],
   ],
@@ -353,6 +349,15 @@ Object {
   },
   "logErrorCalls": Array [
     Array [
+      "🔂 - Running in \\"test\\" environment.",
+    ],
+    Array [
+      "💁 - Serving the public API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI",
+    ],
+    Array [
+      "💁 - Serving the private API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
+    ],
+    Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
     ],
     Array [
@@ -360,12 +365,6 @@ Object {
     ],
   ],
   "logInfoCalls": Array [
-    Array [
-      "💁 - Serving the public API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI",
-    ],
-    Array [
-      "💁 - Serving the private API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
-    ],
     Array [
       Object {
         "endInBytes": 135,

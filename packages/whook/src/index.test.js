@@ -61,13 +61,13 @@ describe('runServer', () => {
     }
     process.env.ISOLATED_ENV = 1;
 
-    const { $destroy } = await runServer(prepareEnvironment, prepareServer, [
-      '$destroy',
+    const { $instance } = await runServer(prepareEnvironment, prepareServer, [
+      '$instance',
       'httpServer',
       'process',
     ]);
 
-    await $destroy();
+    await $instance.destroy();
 
     expect({
       debugCalls: debug.mock.calls.sort((a, b) => (a[0] > b[0] ? 1 : 0)),

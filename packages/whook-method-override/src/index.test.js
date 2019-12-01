@@ -42,7 +42,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   const debug = jest.fn();
   const time = jest.fn();
   const $autoload = jest.fn();
-  let $destroy;
+  let $instance;
   async function prepareEnvironment() {
     const $ = await basePrepareEnvironment();
 
@@ -83,16 +83,16 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   process.env.ISOLATED_ENV = 1;
 
   beforeAll(async () => {
-    const { $destroy: _destroy } = await runServer(
+    const { $instance: _instance } = await runServer(
       prepareEnvironment,
       prepareServer,
-      ['$destroy', 'httpServer', 'process'],
+      ['$instance', 'httpServer', 'process'],
     );
-    $destroy = _destroy;
+    $instance = _instance;
   });
 
   afterAll(async () => {
-    await $destroy();
+    await $instance.destroy();
   });
 
   beforeEach(() => {

@@ -82,7 +82,10 @@ async function initAutoload({
   let API;
   const getAPI = (() => {
     return async () => {
-      API = API || (await $injector(['API'])).API;
+      if (!API) {
+        // eslint-disable-next-line
+        API = (await $injector(['API'])).API;
+      }
       return API;
     };
   })();
@@ -96,7 +99,10 @@ async function initAutoload({
     let wrapHandler;
 
     return async handlerInitializer => {
-      WRAPPERS = WRAPPERS || (await $injector(['WRAPPERS'])).WRAPPERS || [];
+      if (!WRAPPERS) {
+        // eslint-disable-next-line
+        WRAPPERS = (await $injector(['WRAPPERS'])).WRAPPERS || [];
+      }
       wrapHandler =
         wrapHandler || (WRAPPERS.length ? compose(...WRAPPERS) : identity);
 
@@ -109,6 +115,7 @@ async function initAutoload({
       return injectedName;
     }
     if (!SERVICE_NAME_MAP) {
+      // eslint-disable-next-line
       SERVICE_NAME_MAP = (await $injector(['SERVICE_NAME_MAP']))
         .SERVICE_NAME_MAP;
     }
@@ -149,7 +156,10 @@ async function initAutoload({
      to create constants on the fly
     */
     if ('CONFIGS' !== resolvedName) {
-      CONFIGS = CONFIGS || (await $injector(['CONFIGS'])).CONFIGS;
+      if (!CONFIGS) {
+        // eslint-disable-next-line
+        CONFIGS = (await $injector(['CONFIGS'])).CONFIGS;
+      }
     }
 
     /* Architecture Note #5.4: Constants

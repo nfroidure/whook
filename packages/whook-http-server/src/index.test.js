@@ -123,7 +123,7 @@ describe('initHTTPServer', () => {
       port: PORT,
     });
 
-    await new Promise(async (resolve, reject) => {
+    await new Promise((resolve, reject) => {
       client.on('error', reject);
       client.on('connect', resolve);
       client.write('GET / HTTP/1.1\r\n\r\n');

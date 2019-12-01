@@ -6,6 +6,7 @@ import {
   initRandomService,
   initDelayService,
   initProcessService,
+  DEFAULT_LOG_ROUTING,
 } from 'common-services';
 import initHTTPRouter from '@whook/http-router';
 import initErrorHandler from '@whook/http-router/dist/errorHandler';
@@ -30,14 +31,14 @@ export async function runServer(
   injectedNames = [],
 ) {
   try {
-    const { ENV, log, $destroy, $instance, ...services } = await prepareServer(
-      [...new Set([...injectedNames, 'ENV', 'log', '$destroy', '$instance'])],
-      await prepareEnvironment(),
+    const $ = await prepareEnvironment();
+    const { ENV, log, ...services } = await prepareServer(
+      [...new Set([...injectedNames, 'ENV', 'log'])],
+      $,
     );
-
     if (ENV.DRY_RUN) {
       log('warning', '🌵 - Dry run, shutting down now!');
-      return $destroy();
+      return $.destroy();
     }
 
     if (ENV.MERMAID_RUN) {
@@ -74,11 +75,11 @@ export async function runServer(
         ],
       };
       log('warning', '🌵 - Mermaid graph generated, shutting down now!');
-      process.stdout.write($instance.toMermaidGraph(MERMAID_GRAPH_CONFIG));
-      return $destroy();
+      process.stdout.write($.toMermaidGraph(MERMAID_GRAPH_CONFIG));
+      return $.destroy();
     }
 
-    return { ENV, log, $destroy, ...services };
+    return { ENV, log, $instance: $, ...services };
   } catch (err) {
     // eslint-disable-next-line
     console.error('💀 - Cannot launch the process:', err.stack);
@@ -172,6 +173,11 @@ export async function prepareEnvironment($ = new Knifecycle()) {
     }),
   );
   $.register(constant('exit', process.exit));
+
+  // Needed to avoid a dead lock
+  // TODO: Remove when fixed that issue
+  // https://github.com/nfroidure/knifecycle/issues/108
+  $.register(constant('LOG_ROUTING', DEFAULT_LOG_ROUTING));
 
   /* Architecture Note #3.5: Initializers
   Whook's embed a few default initializers proxied from

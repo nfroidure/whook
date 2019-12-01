@@ -44,20 +44,20 @@ describe('runServer', () => {
   }
   process.env.ISOLATED_ENV = 1;
 
-  let $destroy;
+  let $instance;
 
   beforeAll(async () => {
-    const { $destroy: _destroy } = await runServer(
+    const { $instance: _instance } = await runServer(
       prepareEnvironment,
       prepareServer,
-      ['$destroy', 'httpServer', 'process'],
+      ['$instance', 'httpServer', 'process'],
     );
 
-    $destroy = _destroy;
+    $instance = _instance;
   }, 5000);
 
   afterAll(async () => {
-    await $destroy();
+    await $instance.destroy();
   }, 1000);
 
   afterEach(() => {
