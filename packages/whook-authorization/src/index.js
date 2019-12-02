@@ -105,6 +105,7 @@ async function handleWithAuthorization(
         parsedAuthorization = parseAuthorizationHeader(
           authorization,
           usableMechanisms,
+          { strict: false },
         );
       } catch (err) {
         // This code should be simplified by solving this issue

@@ -245,6 +245,31 @@ Object {
 }
 `;
 
+exports[`wrapHandlerWithAuthorization with authenticated but not restricted endpoints should work with Bearer tokens and good authentication check 1`] = `
+Object {
+  "authenticationChecks": Array [
+    Array [
+      "bearer",
+      Object {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+    ],
+  ],
+  "response": Object {
+    "headers": Object {
+      "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
+    },
+    "status": 200,
+  },
+}
+`;
+
 exports[`wrapHandlerWithAuthorization with authenticated but not restricted endpoints should work with access tokens and good authentication check 1`] = `
 Object {
   "authenticationChecks": Array [

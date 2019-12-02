@@ -199,7 +199,14 @@ export function extractParametersFromSecuritySchemes(securitySchemes) {
               name: 'authorization',
               schema: {
                 type: 'string',
-                pattern: `(${httpSchemes.join('|')}) .*`,
+                pattern: `(${httpSchemes
+                  .map(
+                    httpScheme =>
+                      `(${
+                        httpScheme[0]
+                      }|${httpScheme[0].toUpperCase()})${httpScheme.slice(1)}`,
+                  )
+                  .join('|')}) .*`,
               },
             },
           ]

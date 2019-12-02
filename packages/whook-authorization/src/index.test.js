@@ -90,6 +90,33 @@ describe('wrapHandlerWithAuthorization', () => {
       });
       const response = await wrappedHandler(
         {
+          authorization: 'bearer yolo',
+        },
+        NOOP_AUTHENTICATED_OPERATION,
+      );
+
+      expect({
+        response,
+        authenticationChecks: authentication.check.mock.calls,
+        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      }).toMatchSnapshot();
+    });
+
+    it('should work with Bearer tokens and good authentication check', async () => {
+      authentication.check.mockResolvedValue({
+        userId: 1,
+        scopes: ['user', 'admin'],
+      });
+      const noopHandler = handler(() => ({ status: 200 }), 'getNoop');
+      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
+        noopHandler,
+      );
+      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+        authentication,
+        log,
+      });
+      const response = await wrappedHandler(
+        {
           authorization: 'Bearer yolo',
         },
         NOOP_AUTHENTICATED_OPERATION,
