@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTime should work 1`] = `
+Object {
+  "response": Object {
+    "body": Object {
+      "time": 1390694400000,
+    },
+    "status": 200,
+  },
+  "timeCalls": Array [
+    Array [],
+  ],
+}
+`;

@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`extractParametersFromSecuritySchemes should fail with unsupported API scheme source 1`] = `
+Object {
+  "errorCode": "E_UNSUPPORTED_API_KEY_SOURCE",
+  "errorParams": Array [
+    "cookie",
+    "access_token",
+  ],
+}
+`;
+
+exports[`extractParametersFromSecuritySchemes should fail with unsupported security scheme 1`] = `
+Object {
+  "errorCode": "E_UNSUPPORTED_HTTP_SCHEME",
+  "errorParams": Array [
+    "mutual",
+  ],
+}
+`;
+
+exports[`extractParametersFromSecuritySchemes should work with OAuth security scheme 1`] = `
+Array [
+  Object {
+    "in": "header",
+    "name": "authorization",
+    "schema": Object {
+      "pattern": "((b|B)earer) .*",
+      "type": "string",
+    },
+  },
+  Object {
+    "in": "query",
+    "name": "access_token",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+]
+`;
+
+exports[`extractParametersFromSecuritySchemes should work with OpenId security scheme 1`] = `
+Array [
+  Object {
+    "in": "header",
+    "name": "authorization",
+    "schema": Object {
+      "pattern": "((b|B)earer) .*",
+      "type": "string",
+    },
+  },
+  Object {
+    "in": "query",
+    "name": "access_token",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+]
+`;
+
+exports[`extractParametersFromSecuritySchemes should work with apiKey in header security scheme 1`] = `
+Array [
+  Object {
+    "in": "header",
+    "name": "yolo",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+]
+`;
+
+exports[`extractParametersFromSecuritySchemes should work with apiKey in query security scheme 1`] = `
+Array [
+  Object {
+    "in": "query",
+    "name": "yolo",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+]
+`;
+
+exports[`extractParametersFromSecuritySchemes should work with header overlapping security schemes 1`] = `
+Array [
+  Object {
+    "in": "header",
+    "name": "authorization",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+  Object {
+    "in": "query",
+    "name": "access_token",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+]
+`;
+
+exports[`extractParametersFromSecuritySchemes should work with nested security scheme 1`] = `
+Array [
+  Object {
+    "in": "header",
+    "name": "authorization",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+  Object {
+    "in": "header",
+    "name": "yolo",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+  Object {
+    "in": "query",
+    "name": "yolo",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+  Object {
+    "in": "query",
+    "name": "access_token",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+]
+`;
+
+exports[`extractParametersFromSecuritySchemes should work with no security scheme 1`] = `Array []`;
+
+exports[`extractParametersFromSecuritySchemes should work with query overlapping security schemes 1`] = `
+Array [
+  Object {
+    "in": "query",
+    "name": "access_token",
+    "schema": Object {
+      "type": "string",
+    },
+  },
+  Object {
+    "in": "header",
+    "name": "authorization",
+    "schema": Object {
+      "pattern": "((b|B)earer) .*",
+      "type": "string",
+    },
+  },
+]
+`;
