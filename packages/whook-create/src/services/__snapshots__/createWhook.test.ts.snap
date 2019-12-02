@@ -1,0 +1,528 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initCreateWhook should fail with access problems 1`] = `
+Object {
+  "copyCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example",
+      "/home/whoiam/projects/yolo",
+      Object {
+        "filter": [Function],
+      },
+    ],
+  ],
+  "errorCode": "E_ACCESS",
+  "errorParams": Array [],
+  "execCalls": Array [
+    Array [
+      "git init",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "🏁️ - Starting Whook project's creation!",
+    ],
+  ],
+  "oraCalls": Array [],
+  "oraStartCalls": Array [],
+  "oraStopAndPersistCalls": Array [],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/package",
+    ],
+  ],
+  "writeFileCalls": Array [
+    Array [
+      "/home/whoiam/projects/yolo/package.json",
+      "{\\"name\\":\\"super-project\\",\\"version\\":\\"0.0.0\\",\\"description\\":\\"A new Whook project\\",\\"main\\":\\"dist/index.js\\",\\"types\\":\\"src/index.d.ts\\",\\"scripts\\":{\\"compile\\":\\"babel --extensions '.ts,.js' src --out-dir=dist\\",\\"cover\\":\\"npm run jest -- --coverage\\",\\"debug\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} babel-node --extensions '.ts,.js' --inspect bin/dev\\",\\"dev\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/dev\\",\\"jest\\":\\"NODE_ENV=test jest\\",\\"lint\\":\\"eslint 'src/**/*.ts'\\",\\"prettier\\":\\"prettier --write 'src/**/*.ts'\\",\\"preversion\\":\\"npm run compile\\",\\"start\\":\\"NODE_ENV=\${NODE_ENV:-development} node bin/start\\",\\"test\\":\\"npm run jest\\",\\"types\\":\\"rm src/index.d.ts; tsc --project . --declaration --emitDeclarationOnly; npm run prettier -- src/index.d.ts\\",\\"whook\\":\\"NODE_ENV=\${NODE_ENV:-development} whook\\",\\"whook-dev\\":\\"PROJECT_SRC='src' NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js\\"},\\"author\\":{\\"name\\":\\"Wayne Campbell\\",\\"email\\":\\"wayne@warner.com\\"},\\"license\\":\\"SEE LICENSE\\",\\"repository\\":{\\"type\\":\\"git\\",\\"url\\":\\"https://github.com/nfroidure/whook.git\\"},\\"bugs\\":{\\"url\\":\\"https://github.com/nfroidure/whook/issues\\"},\\"homepage\\":\\"https://github.com/nfroidure/whook\\",\\"dependencies\\":{\\"@whook/authorization\\":\\"<current_version>\\",\\"@whook/cli\\":\\"<current_version>\\",\\"@whook/cors\\":\\"<current_version>\\",\\"@whook/http-router\\":\\"<current_version>\\",\\"@whook/swagger-ui\\":\\"<current_version>\\",\\"@whook/whook\\":\\"<current_version>\\",\\"common-services\\":\\"^6.1.0\\",\\"ecstatic\\":\\"^4.1.2\\",\\"http-auth-utils\\":\\"^2.3.0\\",\\"knifecycle\\":\\"^8.0.1\\",\\"yerror\\":\\"^5.0.0\\",\\"yhttperror\\":\\"^5.0.0\\"},\\"devDependencies\\":{\\"@babel/cli\\":\\"^7.7.4\\",\\"@babel/core\\":\\"^7.7.4\\",\\"@babel/node\\":\\"^7.2.2\\",\\"@babel/plugin-proposal-class-properties\\":\\"^7.7.4\\",\\"@babel/plugin-proposal-object-rest-spread\\":\\"^7.7.4\\",\\"@babel/preset-env\\":\\"^7.7.4\\",\\"@babel/preset-typescript\\":\\"^7.7.4\\",\\"@babel/register\\":\\"^7.7.4\\",\\"@types/jest\\":\\"^24.0.23\\",\\"@typescript-eslint/parser\\":\\"^2.9.0\\",\\"axios\\":\\"^0.19.0\\",\\"babel-eslint\\":\\"^10.0.3\\",\\"babel-plugin-knifecycle\\":\\"^1.1.1\\",\\"eslint\\":\\"^6.7.1\\",\\"eslint-plugin-prettier\\":\\"^3.1.1\\",\\"jest\\":\\"^24.9.0\\",\\"jsdoc-to-markdown\\":\\"^4.0.1\\",\\"openapi-schema-validator\\":\\"^3.0.3\\",\\"prettier\\":\\"^1.19.1\\",\\"typescript\\":\\"^3.7.2\\"},\\"contributors\\":[],\\"engines\\":{\\"node\\":\\">=8.12.0\\"},\\"files\\":[\\"dist/**/*.js\\",\\"bin/**/*\\",\\"src/index.d.ts\\",\\"LICENSE\\",\\"README.md\\",\\"CHANGELOG.md\\"],\\"eslintConfig\\":{\\"extends\\":\\"eslint:recommended\\",\\"parserOptions\\":{\\"ecmaVersion\\":2018,\\"sourceType\\":\\"module\\",\\"modules\\":true},\\"env\\":{\\"es6\\":true,\\"node\\":true,\\"jest\\":true,\\"mocha\\":true},\\"plugins\\":[\\"prettier\\"],\\"rules\\":{\\"prettier/prettier\\":\\"error\\"},\\"parser\\":\\"@typescript-eslint/parser\\",\\"ignorePatterns\\":[\\"*.d.ts\\"],\\"overrides\\":[{\\"files\\":[\\"*.ts\\"],\\"rules\\":{\\"no-unused-vars\\":[1,{\\"args\\":\\"none\\"}]}}]},\\"prettier\\":{\\"semi\\":true,\\"printWidth\\":80,\\"singleQuote\\":true,\\"trailingComma\\":\\"all\\",\\"proseWrap\\":\\"always\\"},\\"babel\\":{\\"presets\\":[\\"@babel/typescript\\",[\\"@babel/env\\",{\\"targets\\":{\\"node\\":\\"8.12.0\\"}}]],\\"plugins\\":[\\"@babel/proposal-class-properties\\",\\"@babel/plugin-proposal-object-rest-spread\\",\\"babel-plugin-knifecycle\\"]},\\"jest\\":{\\"coverageReporters\\":[\\"lcov\\",\\"html\\"],\\"testPathIgnorePatterns\\":[\\"/node_modules/\\"],\\"roots\\":[\\"<rootDir>/src\\"]}}",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/LICENSE",
+      "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/.gitignore",
+      "node_modules",
+    ],
+  ],
+}
+`;
+
+exports[`initCreateWhook should handle git initialization problems 1`] = `
+Object {
+  "copyCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example",
+      "/home/whoiam/projects/yolo",
+      Object {
+        "filter": [Function],
+      },
+    ],
+  ],
+  "execCalls": Array [
+    Array [
+      "git init",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+    Array [
+      "npm i",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "🏁️ - Starting Whook project's creation!",
+    ],
+    Array [
+      "error",
+      "⚠️ - Could not initialize the git project!",
+    ],
+    Array [
+      "warning",
+      "✔️ - Project created!",
+    ],
+    Array [
+      "warning",
+      "➕ - Run \`cd yolo\` to enter the project.",
+    ],
+    Array [
+      "warning",
+      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
+    ],
+    Array [
+      "warning",
+      "➕ - And finally run \`npm run dev\` to start dev!",
+    ],
+  ],
+  "oraCalls": Array [
+    Array [
+      Object {
+        "text": "Installing dependencies...",
+      },
+    ],
+  ],
+  "oraStartCalls": Array [
+    Array [],
+  ],
+  "oraStopAndPersistCalls": Array [
+    Array [
+      Object {
+        "symbol": "✔️",
+        "text": "Installed dependencies",
+      },
+    ],
+  ],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/package",
+    ],
+  ],
+  "writeFileCalls": Array [
+    Array [
+      "/home/whoiam/projects/yolo/package.json",
+      "{\\"name\\":\\"super-project\\",\\"version\\":\\"0.0.0\\",\\"description\\":\\"A new Whook project\\",\\"main\\":\\"dist/index.js\\",\\"types\\":\\"src/index.d.ts\\",\\"scripts\\":{\\"compile\\":\\"babel --extensions '.ts,.js' src --out-dir=dist\\",\\"cover\\":\\"npm run jest -- --coverage\\",\\"debug\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} babel-node --extensions '.ts,.js' --inspect bin/dev\\",\\"dev\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/dev\\",\\"jest\\":\\"NODE_ENV=test jest\\",\\"lint\\":\\"eslint 'src/**/*.ts'\\",\\"prettier\\":\\"prettier --write 'src/**/*.ts'\\",\\"preversion\\":\\"npm run compile\\",\\"start\\":\\"NODE_ENV=\${NODE_ENV:-development} node bin/start\\",\\"test\\":\\"npm run jest\\",\\"types\\":\\"rm src/index.d.ts; tsc --project . --declaration --emitDeclarationOnly; npm run prettier -- src/index.d.ts\\",\\"whook\\":\\"NODE_ENV=\${NODE_ENV:-development} whook\\",\\"whook-dev\\":\\"PROJECT_SRC='src' NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js\\"},\\"author\\":{\\"name\\":\\"Wayne Campbell\\",\\"email\\":\\"wayne@warner.com\\"},\\"license\\":\\"SEE LICENSE\\",\\"repository\\":{\\"type\\":\\"git\\",\\"url\\":\\"https://github.com/nfroidure/whook.git\\"},\\"bugs\\":{\\"url\\":\\"https://github.com/nfroidure/whook/issues\\"},\\"homepage\\":\\"https://github.com/nfroidure/whook\\",\\"dependencies\\":{\\"@whook/authorization\\":\\"<current_version>\\",\\"@whook/cli\\":\\"<current_version>\\",\\"@whook/cors\\":\\"<current_version>\\",\\"@whook/http-router\\":\\"<current_version>\\",\\"@whook/swagger-ui\\":\\"<current_version>\\",\\"@whook/whook\\":\\"<current_version>\\",\\"common-services\\":\\"^6.1.0\\",\\"ecstatic\\":\\"^4.1.2\\",\\"http-auth-utils\\":\\"^2.3.0\\",\\"knifecycle\\":\\"^8.0.1\\",\\"yerror\\":\\"^5.0.0\\",\\"yhttperror\\":\\"^5.0.0\\"},\\"devDependencies\\":{\\"@babel/cli\\":\\"^7.7.4\\",\\"@babel/core\\":\\"^7.7.4\\",\\"@babel/node\\":\\"^7.2.2\\",\\"@babel/plugin-proposal-class-properties\\":\\"^7.7.4\\",\\"@babel/plugin-proposal-object-rest-spread\\":\\"^7.7.4\\",\\"@babel/preset-env\\":\\"^7.7.4\\",\\"@babel/preset-typescript\\":\\"^7.7.4\\",\\"@babel/register\\":\\"^7.7.4\\",\\"@types/jest\\":\\"^24.0.23\\",\\"@typescript-eslint/parser\\":\\"^2.9.0\\",\\"axios\\":\\"^0.19.0\\",\\"babel-eslint\\":\\"^10.0.3\\",\\"babel-plugin-knifecycle\\":\\"^1.1.1\\",\\"eslint\\":\\"^6.7.1\\",\\"eslint-plugin-prettier\\":\\"^3.1.1\\",\\"jest\\":\\"^24.9.0\\",\\"jsdoc-to-markdown\\":\\"^4.0.1\\",\\"openapi-schema-validator\\":\\"^3.0.3\\",\\"prettier\\":\\"^1.19.1\\",\\"typescript\\":\\"^3.7.2\\"},\\"contributors\\":[],\\"engines\\":{\\"node\\":\\">=8.12.0\\"},\\"files\\":[\\"dist/**/*.js\\",\\"bin/**/*\\",\\"src/index.d.ts\\",\\"LICENSE\\",\\"README.md\\",\\"CHANGELOG.md\\"],\\"eslintConfig\\":{\\"extends\\":\\"eslint:recommended\\",\\"parserOptions\\":{\\"ecmaVersion\\":2018,\\"sourceType\\":\\"module\\",\\"modules\\":true},\\"env\\":{\\"es6\\":true,\\"node\\":true,\\"jest\\":true,\\"mocha\\":true},\\"plugins\\":[\\"prettier\\"],\\"rules\\":{\\"prettier/prettier\\":\\"error\\"},\\"parser\\":\\"@typescript-eslint/parser\\",\\"ignorePatterns\\":[\\"*.d.ts\\"],\\"overrides\\":[{\\"files\\":[\\"*.ts\\"],\\"rules\\":{\\"no-unused-vars\\":[1,{\\"args\\":\\"none\\"}]}}]},\\"prettier\\":{\\"semi\\":true,\\"printWidth\\":80,\\"singleQuote\\":true,\\"trailingComma\\":\\"all\\",\\"proseWrap\\":\\"always\\"},\\"babel\\":{\\"presets\\":[\\"@babel/typescript\\",[\\"@babel/env\\",{\\"targets\\":{\\"node\\":\\"8.12.0\\"}}]],\\"plugins\\":[\\"@babel/proposal-class-properties\\",\\"@babel/plugin-proposal-object-rest-spread\\",\\"babel-plugin-knifecycle\\"]},\\"jest\\":{\\"coverageReporters\\":[\\"lcov\\",\\"html\\"],\\"testPathIgnorePatterns\\":[\\"/node_modules/\\"],\\"roots\\":[\\"<rootDir>/src\\"]}}",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/LICENSE",
+      "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/.gitignore",
+      "node_modules",
+    ],
+  ],
+}
+`;
+
+exports[`initCreateWhook should handle network issues 1`] = `
+Object {
+  "copyCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example",
+      "/home/whoiam/projects/yolo",
+      Object {
+        "filter": [Function],
+      },
+    ],
+  ],
+  "execCalls": Array [
+    Array [
+      "git init",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+    Array [
+      "npm i",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "🏁️ - Starting Whook project's creation!",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/package.json",
+      " => ",
+      "/home/whoiam/projects/yolo/package.json",
+      " (",
+      "..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/package-lock.json",
+      " => ",
+      "/home/whoiam/projects/yolo/package-lock.json",
+      " (",
+      "..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/LICENSE",
+      " => ",
+      "/home/whoiam/projects/yolo/LICENSE",
+      " (",
+      "..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/dist/index.js",
+      " => ",
+      "/home/whoiam/projects/yolo/dist/index.js",
+      " (",
+      "../..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Moving ",
+      "/var/lib/node/node_modules/whook-example/src/index.js",
+      " => ",
+      "/home/whoiam/projects/yolo/src/index.js",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/coverage/index.html",
+      " => ",
+      "/home/whoiam/projects/yolo/coverage/index.html",
+      " (",
+      "../..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js",
+      " => ",
+      "/home/whoiam/projects/yolo/node_modules/whook/index.js",
+      " (",
+      "../../..",
+      ")",
+    ],
+    Array [
+      "error",
+      "⚠️ - Could not initialize the git project!",
+    ],
+    Array [
+      "error",
+      "⚠️ - Could not retrieve the \`.gitignore\` file contents from: ",
+      "https://www.gitignore.io/api/osx,node,linux",
+    ],
+    Array [
+      "warning",
+      "✔️ - Project created!",
+    ],
+    Array [
+      "warning",
+      "➕ - Run \`cd yolo\` to enter the project.",
+    ],
+    Array [
+      "warning",
+      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
+    ],
+    Array [
+      "warning",
+      "➕ - And finally run \`npm run dev\` to start dev!",
+    ],
+  ],
+  "oraCalls": Array [
+    Array [
+      Object {
+        "text": "Installing dependencies...",
+      },
+    ],
+  ],
+  "oraStartCalls": Array [
+    Array [],
+  ],
+  "oraStopAndPersistCalls": Array [
+    Array [
+      Object {
+        "symbol": "✔️",
+        "text": "Installed dependencies",
+      },
+    ],
+  ],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/package",
+    ],
+  ],
+  "writeFileCalls": Array [
+    Array [
+      "/home/whoiam/projects/yolo/package.json",
+      "{\\"name\\":\\"super-project\\",\\"version\\":\\"0.0.0\\",\\"description\\":\\"A new Whook project\\",\\"main\\":\\"dist/index.js\\",\\"types\\":\\"src/index.d.ts\\",\\"scripts\\":{\\"compile\\":\\"babel --extensions '.ts,.js' src --out-dir=dist\\",\\"cover\\":\\"npm run jest -- --coverage\\",\\"debug\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} babel-node --extensions '.ts,.js' --inspect bin/dev\\",\\"dev\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/dev\\",\\"jest\\":\\"NODE_ENV=test jest\\",\\"lint\\":\\"eslint 'src/**/*.ts'\\",\\"prettier\\":\\"prettier --write 'src/**/*.ts'\\",\\"preversion\\":\\"npm run compile\\",\\"start\\":\\"NODE_ENV=\${NODE_ENV:-development} node bin/start\\",\\"test\\":\\"npm run jest\\",\\"types\\":\\"rm src/index.d.ts; tsc --project . --declaration --emitDeclarationOnly; npm run prettier -- src/index.d.ts\\",\\"whook\\":\\"NODE_ENV=\${NODE_ENV:-development} whook\\",\\"whook-dev\\":\\"PROJECT_SRC='src' NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js\\"},\\"author\\":{\\"name\\":\\"Wayne Campbell\\",\\"email\\":\\"wayne@warner.com\\"},\\"license\\":\\"SEE LICENSE\\",\\"repository\\":{\\"type\\":\\"git\\",\\"url\\":\\"https://github.com/nfroidure/whook.git\\"},\\"bugs\\":{\\"url\\":\\"https://github.com/nfroidure/whook/issues\\"},\\"homepage\\":\\"https://github.com/nfroidure/whook\\",\\"dependencies\\":{\\"@whook/authorization\\":\\"<current_version>\\",\\"@whook/cli\\":\\"<current_version>\\",\\"@whook/cors\\":\\"<current_version>\\",\\"@whook/http-router\\":\\"<current_version>\\",\\"@whook/swagger-ui\\":\\"<current_version>\\",\\"@whook/whook\\":\\"<current_version>\\",\\"common-services\\":\\"^6.1.0\\",\\"ecstatic\\":\\"^4.1.2\\",\\"http-auth-utils\\":\\"^2.3.0\\",\\"knifecycle\\":\\"^8.0.1\\",\\"yerror\\":\\"^5.0.0\\",\\"yhttperror\\":\\"^5.0.0\\"},\\"devDependencies\\":{\\"@babel/cli\\":\\"^7.7.4\\",\\"@babel/core\\":\\"^7.7.4\\",\\"@babel/node\\":\\"^7.2.2\\",\\"@babel/plugin-proposal-class-properties\\":\\"^7.7.4\\",\\"@babel/plugin-proposal-object-rest-spread\\":\\"^7.7.4\\",\\"@babel/preset-env\\":\\"^7.7.4\\",\\"@babel/preset-typescript\\":\\"^7.7.4\\",\\"@babel/register\\":\\"^7.7.4\\",\\"@types/jest\\":\\"^24.0.23\\",\\"@typescript-eslint/parser\\":\\"^2.9.0\\",\\"axios\\":\\"^0.19.0\\",\\"babel-eslint\\":\\"^10.0.3\\",\\"babel-plugin-knifecycle\\":\\"^1.1.1\\",\\"eslint\\":\\"^6.7.1\\",\\"eslint-plugin-prettier\\":\\"^3.1.1\\",\\"jest\\":\\"^24.9.0\\",\\"jsdoc-to-markdown\\":\\"^4.0.1\\",\\"openapi-schema-validator\\":\\"^3.0.3\\",\\"prettier\\":\\"^1.19.1\\",\\"typescript\\":\\"^3.7.2\\"},\\"contributors\\":[],\\"engines\\":{\\"node\\":\\">=8.12.0\\"},\\"files\\":[\\"dist/**/*.js\\",\\"bin/**/*\\",\\"src/index.d.ts\\",\\"LICENSE\\",\\"README.md\\",\\"CHANGELOG.md\\"],\\"eslintConfig\\":{\\"extends\\":\\"eslint:recommended\\",\\"parserOptions\\":{\\"ecmaVersion\\":2018,\\"sourceType\\":\\"module\\",\\"modules\\":true},\\"env\\":{\\"es6\\":true,\\"node\\":true,\\"jest\\":true,\\"mocha\\":true},\\"plugins\\":[\\"prettier\\"],\\"rules\\":{\\"prettier/prettier\\":\\"error\\"},\\"parser\\":\\"@typescript-eslint/parser\\",\\"ignorePatterns\\":[\\"*.d.ts\\"],\\"overrides\\":[{\\"files\\":[\\"*.ts\\"],\\"rules\\":{\\"no-unused-vars\\":[1,{\\"args\\":\\"none\\"}]}}]},\\"prettier\\":{\\"semi\\":true,\\"printWidth\\":80,\\"singleQuote\\":true,\\"trailingComma\\":\\"all\\",\\"proseWrap\\":\\"always\\"},\\"babel\\":{\\"presets\\":[\\"@babel/typescript\\",[\\"@babel/env\\",{\\"targets\\":{\\"node\\":\\"8.12.0\\"}}]],\\"plugins\\":[\\"@babel/proposal-class-properties\\",\\"@babel/plugin-proposal-object-rest-spread\\",\\"babel-plugin-knifecycle\\"]},\\"jest\\":{\\"coverageReporters\\":[\\"lcov\\",\\"html\\"],\\"testPathIgnorePatterns\\":[\\"/node_modules/\\"],\\"roots\\":[\\"<rootDir>/src\\"]}}",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/LICENSE",
+      "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
+    ],
+  ],
+}
+`;
+
+exports[`initCreateWhook should work 1`] = `
+Object {
+  "copyCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example",
+      "/home/whoiam/projects/yolo",
+      Object {
+        "filter": [Function],
+      },
+    ],
+  ],
+  "execCalls": Array [
+    Array [
+      "git init",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+    Array [
+      "npm i",
+      Object {
+        "cwd": "/home/whoiam/projects/yolo",
+      },
+      [Function],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "🏁️ - Starting Whook project's creation!",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/package.json",
+      " => ",
+      "/home/whoiam/projects/yolo/package.json",
+      " (",
+      "..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/package-lock.json",
+      " => ",
+      "/home/whoiam/projects/yolo/package-lock.json",
+      " (",
+      "..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/LICENSE",
+      " => ",
+      "/home/whoiam/projects/yolo/LICENSE",
+      " (",
+      "..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/dist/index.js",
+      " => ",
+      "/home/whoiam/projects/yolo/dist/index.js",
+      " (",
+      "../..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Moving ",
+      "/var/lib/node/node_modules/whook-example/src/index.js",
+      " => ",
+      "/home/whoiam/projects/yolo/src/index.js",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/coverage/index.html",
+      " => ",
+      "/home/whoiam/projects/yolo/coverage/index.html",
+      " (",
+      "../..",
+      ")",
+    ],
+    Array [
+      "debug",
+      "Discarding ",
+      "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js",
+      " => ",
+      "/home/whoiam/projects/yolo/node_modules/whook/index.js",
+      " (",
+      "../../..",
+      ")",
+    ],
+    Array [
+      "warning",
+      "✔️ - Project created!",
+    ],
+    Array [
+      "warning",
+      "➕ - Run \`cd yolo\` to enter the project.",
+    ],
+    Array [
+      "warning",
+      "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
+    ],
+    Array [
+      "warning",
+      "➕ - And finally run \`npm run dev\` to start dev!",
+    ],
+  ],
+  "oraCalls": Array [
+    Array [
+      Object {
+        "text": "Installing dependencies...",
+      },
+    ],
+  ],
+  "oraStartCalls": Array [
+    Array [],
+  ],
+  "oraStopAndPersistCalls": Array [
+    Array [
+      Object {
+        "symbol": "✔️",
+        "text": "Installed dependencies",
+      },
+    ],
+  ],
+  "readFileCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/whook-example/package",
+    ],
+  ],
+  "writeFileCalls": Array [
+    Array [
+      "/home/whoiam/projects/yolo/package.json",
+      "{\\"name\\":\\"super-project\\",\\"version\\":\\"0.0.0\\",\\"description\\":\\"A new Whook project\\",\\"main\\":\\"dist/index.js\\",\\"types\\":\\"src/index.d.ts\\",\\"scripts\\":{\\"compile\\":\\"babel --extensions '.ts,.js' src --out-dir=dist\\",\\"cover\\":\\"npm run jest -- --coverage\\",\\"debug\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} babel-node --extensions '.ts,.js' --inspect bin/dev\\",\\"dev\\":\\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/dev\\",\\"jest\\":\\"NODE_ENV=test jest\\",\\"lint\\":\\"eslint 'src/**/*.ts'\\",\\"prettier\\":\\"prettier --write 'src/**/*.ts'\\",\\"preversion\\":\\"npm run compile\\",\\"start\\":\\"NODE_ENV=\${NODE_ENV:-development} node bin/start\\",\\"test\\":\\"npm run jest\\",\\"types\\":\\"rm src/index.d.ts; tsc --project . --declaration --emitDeclarationOnly; npm run prettier -- src/index.d.ts\\",\\"whook\\":\\"NODE_ENV=\${NODE_ENV:-development} whook\\",\\"whook-dev\\":\\"PROJECT_SRC='src' NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js\\"},\\"author\\":{\\"name\\":\\"Wayne Campbell\\",\\"email\\":\\"wayne@warner.com\\"},\\"license\\":\\"SEE LICENSE\\",\\"repository\\":{\\"type\\":\\"git\\",\\"url\\":\\"https://github.com/nfroidure/whook.git\\"},\\"bugs\\":{\\"url\\":\\"https://github.com/nfroidure/whook/issues\\"},\\"homepage\\":\\"https://github.com/nfroidure/whook\\",\\"dependencies\\":{\\"@whook/authorization\\":\\"<current_version>\\",\\"@whook/cli\\":\\"<current_version>\\",\\"@whook/cors\\":\\"<current_version>\\",\\"@whook/http-router\\":\\"<current_version>\\",\\"@whook/swagger-ui\\":\\"<current_version>\\",\\"@whook/whook\\":\\"<current_version>\\",\\"common-services\\":\\"^6.1.0\\",\\"ecstatic\\":\\"^4.1.2\\",\\"http-auth-utils\\":\\"^2.3.0\\",\\"knifecycle\\":\\"^8.0.1\\",\\"yerror\\":\\"^5.0.0\\",\\"yhttperror\\":\\"^5.0.0\\"},\\"devDependencies\\":{\\"@babel/cli\\":\\"^7.7.4\\",\\"@babel/core\\":\\"^7.7.4\\",\\"@babel/node\\":\\"^7.2.2\\",\\"@babel/plugin-proposal-class-properties\\":\\"^7.7.4\\",\\"@babel/plugin-proposal-object-rest-spread\\":\\"^7.7.4\\",\\"@babel/preset-env\\":\\"^7.7.4\\",\\"@babel/preset-typescript\\":\\"^7.7.4\\",\\"@babel/register\\":\\"^7.7.4\\",\\"@types/jest\\":\\"^24.0.23\\",\\"@typescript-eslint/parser\\":\\"^2.9.0\\",\\"axios\\":\\"^0.19.0\\",\\"babel-eslint\\":\\"^10.0.3\\",\\"babel-plugin-knifecycle\\":\\"^1.1.1\\",\\"eslint\\":\\"^6.7.1\\",\\"eslint-plugin-prettier\\":\\"^3.1.1\\",\\"jest\\":\\"^24.9.0\\",\\"jsdoc-to-markdown\\":\\"^4.0.1\\",\\"openapi-schema-validator\\":\\"^3.0.3\\",\\"prettier\\":\\"^1.19.1\\",\\"typescript\\":\\"^3.7.2\\"},\\"contributors\\":[],\\"engines\\":{\\"node\\":\\">=8.12.0\\"},\\"files\\":[\\"dist/**/*.js\\",\\"bin/**/*\\",\\"src/index.d.ts\\",\\"LICENSE\\",\\"README.md\\",\\"CHANGELOG.md\\"],\\"eslintConfig\\":{\\"extends\\":\\"eslint:recommended\\",\\"parserOptions\\":{\\"ecmaVersion\\":2018,\\"sourceType\\":\\"module\\",\\"modules\\":true},\\"env\\":{\\"es6\\":true,\\"node\\":true,\\"jest\\":true,\\"mocha\\":true},\\"plugins\\":[\\"prettier\\"],\\"rules\\":{\\"prettier/prettier\\":\\"error\\"},\\"parser\\":\\"@typescript-eslint/parser\\",\\"ignorePatterns\\":[\\"*.d.ts\\"],\\"overrides\\":[{\\"files\\":[\\"*.ts\\"],\\"rules\\":{\\"no-unused-vars\\":[1,{\\"args\\":\\"none\\"}]}}]},\\"prettier\\":{\\"semi\\":true,\\"printWidth\\":80,\\"singleQuote\\":true,\\"trailingComma\\":\\"all\\",\\"proseWrap\\":\\"always\\"},\\"babel\\":{\\"presets\\":[\\"@babel/typescript\\",[\\"@babel/env\\",{\\"targets\\":{\\"node\\":\\"8.12.0\\"}}]],\\"plugins\\":[\\"@babel/proposal-class-properties\\",\\"@babel/plugin-proposal-object-rest-spread\\",\\"babel-plugin-knifecycle\\"]},\\"jest\\":{\\"coverageReporters\\":[\\"lcov\\",\\"html\\"],\\"testPathIgnorePatterns\\":[\\"/node_modules/\\"],\\"roots\\":[\\"<rootDir>/src\\"]}}",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/LICENSE",
+      "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/README.md",
+      "# super-project
+
+YOLO
+
+## Author
+Wayne Campbell
+
+",
+    ],
+    Array [
+      "/home/whoiam/projects/yolo/.gitignore",
+      "node_modules",
+    ],
+  ],
+}
+`;
