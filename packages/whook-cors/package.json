@@ -1,6 +1,6 @@
 {
   "name": "@whook/cors",
-  "version": "4.0.0-alpha.13",
+  "version": "4.0.0-alpha.14",
   "description": "A wrapper to provide CORS support to a Whook server",
   "main": "dist/index.js",
   "metapak": {
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/http-router": "^4.0.0-alpha.13",
+    "@whook/http-router": "^4.0.0-alpha.14",
     "knifecycle": "^7.0.3"
   },
   "peerDependencies": {
