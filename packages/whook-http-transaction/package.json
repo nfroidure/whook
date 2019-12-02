@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "knifecycle": "^7.0.2",
+    "knifecycle": "^7.0.3",
     "ms": "^2.1.2",
     "statuses": "^1.5.0",
     "yhttperror": "^4.0.0"

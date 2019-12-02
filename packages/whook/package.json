@@ -88,7 +88,7 @@
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "internal-ip": "^5.0.0",
-    "knifecycle": "^7.0.2",
+    "knifecycle": "^7.0.3",
     "pkg-dir": "^4.2.0",
     "portfinder": "^1.0.25"
   },

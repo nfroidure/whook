@@ -55,7 +55,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "ecstatic": "^4.1.2",
-    "knifecycle": "^7.0.2",
+    "knifecycle": "^7.0.3",
     "swagger-ui-dist": "^3.24.3"
   },
   "devDependencies": {

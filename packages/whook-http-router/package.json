@@ -43,7 +43,7 @@
     "camel-case": "^3.0.0",
     "content-type": "^1.0.4",
     "first-chunk-stream": "^4.0.0",
-    "knifecycle": "^7.0.2",
+    "knifecycle": "^7.0.3",
     "ms": "^2.1.2",
     "negotiator": "^0.6.2",
     "qs": "^6.9.1",
