@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-transaction",
-  "version": "3.1.3",
+  "version": "4.0.0-alpha.35",
   "description": "Isolated HTTP Transactions for the Whook framework",
   "keywords": [
     "whook",
@@ -61,7 +61,7 @@
     "yhttperror": "^5.0.0"
   },
   "peerDependencies": {
-    "@whook/whook": "^3.1.3"
+    "@whook/whook": "^4.0.0-alpha.24"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
