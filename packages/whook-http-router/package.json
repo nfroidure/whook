@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-router",
-  "version": "3.1.3",
+  "version": "4.0.0-alpha.17",
   "description": "The Whook base HTTP router",
   "main": "dist/index.js",
   "types": "src/index.d.ts",
@@ -44,7 +44,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@types/qs": "^6.9.0",
-    "@whook/http-transaction": "3.1.3",
+    "@whook/http-transaction": "^4.0.0-alpha.17",
     "ajv": "^6.10.2",
     "bytes": "^3.1.0",
     "camel-case": "^3.0.0",
@@ -62,7 +62,7 @@
     "yhttperror": "^5.0.0"
   },
   "peerDependencies": {
-    "@whook/whook": "^3.1.3"
+    "@whook/whook": "^4.0.0-alpha.17"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",
