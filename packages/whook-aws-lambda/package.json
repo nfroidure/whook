@@ -1,6 +1,6 @@
 {
   "name": "@whook/aws-lambda",
-  "version": "3.1.3",
+  "version": "4.0.0-alpha.34",
   "description": "Build and deploy to AWS Lambda with Whook.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -54,11 +54,11 @@
     "camel-case": "^4.1.1",
     "common-services": "^6.2.0",
     "cpr": "3.0.1",
+    "knifecycle": "^8.1.0",
     "memfs": "3.0.4",
     "memory-fs": "0.5.0",
-    "qs": "^6.9.1",
-    "knifecycle": "^8.1.0",
     "openapi-types": "^1.3.5",
+    "qs": "^6.9.1",
     "yerror": "^5.0.0"
   },
   "devDependencies": {
