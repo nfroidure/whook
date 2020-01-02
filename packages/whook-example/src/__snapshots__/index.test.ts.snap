@@ -1,0 +1,555 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`runServer should authenticate users 1`] = `
+Object {
+  "data": Object {
+    "transactions": Object {
+      "1": Object {
+        "errored": false,
+        "id": "1",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "authorization": "Fake 1-admin",
+          "connection": "close",
+          "host": "localhost:9999",
+          "user-agent": "axios/0.19.0",
+        },
+        "startInBytes": 164,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "url": "/v4/diag",
+      },
+    },
+  },
+  "debugCalls": Array [
+    Array [
+      "⏳ - Created a delay:",
+      30000,
+    ],
+    Array [
+      "⏳ - Cleared a delay",
+    ],
+  ],
+  "headers": Object {
+    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "access-control-allow-origin": "*",
+    "connection": "close",
+    "content-type": "application/json",
+    "date": undefined,
+    "transaction-id": "1",
+    "transfer-encoding": "chunked",
+    "vary": "Origin",
+    "x-authenticated": "{\\"hash\\":\\"1-admin\\",\\"userId\\":1,\\"scopes\\":[\\"admin\\"]}",
+  },
+  "logErrorCalls": Array [],
+  "logInfoCalls": Array [
+    Array [
+      Object {
+        "endInBytes": 164,
+        "endOutBytes": 826,
+        "endTime": 1390694400000,
+        "errored": false,
+        "id": "1",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "authorization": "Fake 1-admin",
+          "connection": "close",
+          "host": "localhost:9999",
+          "user-agent": "axios/0.19.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+          "X-Authenticated": "{\\"hash\\":\\"1-admin\\",\\"userId\\":1,\\"scopes\\":[\\"admin\\"]}",
+          "content-type": "application/json",
+        },
+        "startInBytes": 164,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 200,
+        "url": "/v4/diag",
+      },
+    ],
+  ],
+  "status": 200,
+}
+`;
+
+exports[`runServer should fail with bad fake tokens 1`] = `
+Object {
+  "data": Object {
+    "error": Object {
+      "code": "E_INVALID_FAKE_TOKEN",
+      "guruMeditation": "2",
+    },
+  },
+  "debugCalls": Array [
+    Array [
+      "⏳ - Created a delay:",
+      30000,
+    ],
+    Array [
+      "⏳ - Cleared a delay",
+    ],
+  ],
+  "headers": Object {
+    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "access-control-allow-origin": "*",
+    "cache-control": "private",
+    "connection": "close",
+    "content-type": "application/json",
+    "date": undefined,
+    "transaction-id": "2",
+    "transfer-encoding": "chunked",
+    "vary": "Origin",
+  },
+  "logErrorCalls": Array [],
+  "logInfoCalls": Array [
+    Array [
+      Object {
+        "endInBytes": 164,
+        "endOutBytes": 510,
+        "endTime": 1390694400000,
+        "errored": true,
+        "id": "2",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "authorization": "Fake e-admin",
+          "connection": "close",
+          "host": "localhost:9999",
+          "user-agent": "axios/0.19.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+          "cache-control": "private",
+          "content-type": "application/json",
+        },
+        "startInBytes": 164,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 400,
+        "url": "/v4/diag",
+      },
+    ],
+  ],
+  "status": 400,
+}
+`;
+
+exports[`runServer should ping 1`] = `
+Object {
+  "data": Object {
+    "pong": "pong",
+  },
+  "debugCalls": Array [
+    Array [
+      "⏳ - Created a delay:",
+      30000,
+    ],
+    Array [
+      "🔓 - Public endpoint detected, letting the call pass through!",
+    ],
+    Array [
+      "⏳ - Cleared a delay",
+    ],
+  ],
+  "headers": Object {
+    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "access-control-allow-origin": "*",
+    "connection": "close",
+    "content-type": "application/json",
+    "date": undefined,
+    "transaction-id": "0",
+    "transfer-encoding": "chunked",
+    "vary": "Origin",
+    "x-node-env": "test",
+  },
+  "logErrorCalls": Array [],
+  "logInfoCalls": Array [
+    Array [
+      Object {
+        "endInBytes": 135,
+        "endOutBytes": 447,
+        "endTime": 1390694400000,
+        "errored": false,
+        "id": "0",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "accept": "application/json, text/plain, */*",
+          "connection": "close",
+          "host": "localhost:9999",
+          "user-agent": "axios/0.19.0",
+        },
+        "resHeaders": Object {
+          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Vary": "Origin",
+          "X-Node-ENV": "test",
+          "content-type": "application/json",
+        },
+        "startInBytes": 135,
+        "startOutBytes": 0,
+        "startTime": 1390694400000,
+        "statusCode": 200,
+        "url": "/v4/ping",
+      },
+    ],
+  ],
+  "status": 200,
+}
+`;
+
+exports[`runServer should work 1`] = `
+Object {
+  "debugCalls": Array [
+    Array [
+      "👣 - Logging service initialized.",
+    ],
+    Array [
+      "⌛ - Delay service initialized.",
+    ],
+    Array [
+      "♻️ - Loading the environment service.",
+    ],
+    Array [
+      "➰ - Plugin \\"@whook/cli\\" resolved to: /home/whoiam/projects/whook/packages/whook-cli/dist",
+    ],
+    Array [
+      "➰ - Plugin \\"@whook/whook\\" resolved to: /home/whoiam/projects/whook/dist",
+    ],
+    Array [
+      "🏭 - Initializing the CONFIGS service.",
+    ],
+    Array [
+      "🤖 - Initializing the \`$autoload\` service.",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_HEADERS_COUNT",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_HEADERS_COUNT",
+    ],
+    Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/KEEP_ALIVE_TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SOCKET_TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SOCKET_TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/SOCKET_TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CONNECTIONS",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CONNECTIONS",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_CONNECTIONS",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/dist/services/PROCESS_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SIGNALS",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/dist/services/SIGNALS",
+    ],
+    Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT",
+    ],
+    Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/BUFFER_LIMIT",
+    ],
+    Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/dist/services/BUFFER_LIMIT",
+    ],
+    Array [
+      "💿 - Service \\"API\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/API.ts",
+    ],
+    Array [
+      "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS",
+    ],
+    Array [
+      "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PARSERS",
+    ],
+    Array [
+      "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/dist/services/PARSERS",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/STRINGIFYERS",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/dist/services/STRINGIFYERS",
+    ],
+    Array [
+      "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS",
+    ],
+    Array [
+      "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DECODERS",
+    ],
+    Array [
+      "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/dist/services/DECODERS",
+    ],
+    Array [
+      "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS",
+    ],
+    Array [
+      "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/ENCODERS",
+    ],
+    Array [
+      "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/dist/services/ENCODERS",
+    ],
+    Array [
+      "🚫 - Service \\"QUERY_PARSER\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER",
+    ],
+    Array [
+      "🚫 - Service \\"QUERY_PARSER\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/QUERY_PARSER",
+    ],
+    Array [
+      "🚫 - Service \\"QUERY_PARSER\\" not found in: /home/whoiam/projects/whook/dist/services/QUERY_PARSER",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DEV_ACCESS_TOKEN",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/dist/services/DEV_ACCESS_TOKEN",
+    ],
+    Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/uniqueId",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/dist/services/uniqueId",
+    ],
+    Array [
+      "💿 - Loading API initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/API.ts.",
+    ],
+    Array [
+      "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL",
+    ],
+    Array [
+      "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/BASE_URL",
+    ],
+    Array [
+      "💿 - Service \\"BASE_URL\\" found in: /home/whoiam/projects/whook/dist/services/BASE_URL.js",
+    ],
+    Array [
+      "💿 - Loading BASE_URL initializer from /home/whoiam/projects/whook/dist/services/BASE_URL.js.",
+    ],
+    Array [
+      "📇 - Process service initialized.",
+    ],
+    Array [
+      "💱 - HTTP Transaction initialized.",
+    ],
+    Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL",
+    ],
+    Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROTOCOL",
+    ],
+    Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/dist/services/PROTOCOL",
+    ],
+    Array [
+      "🚫 - Could not load \\".env.test\\" file.",
+    ],
+    Array [
+      "Error: ENOENT: no such file or directory, open '/home/whoiam/projects/whook/packages/whook-example/.env.test'",
+    ],
+    Array [
+      "🈁 - Generated the BASE_URL constant:",
+      "http://localhost:9999",
+    ],
+    Array [
+      "🦄 - Initializing the API service!",
+    ],
+    Array [
+      "💿 - Service \\"getOpenAPIWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+    ],
+    Array [
+      "💿 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts",
+    ],
+    Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing",
+    ],
+    Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing",
+    ],
+    Array [
+      "💿 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/dist/handlers/getPing.js",
+    ],
+    Array [
+      "💿 - Service \\"getDelayWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
+    ],
+    Array [
+      "💿 - Service \\"getDiagnosticWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
+    ],
+    Array [
+      "💿 - Service \\"getTimeWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+    ],
+    Array [
+      "💿 - Service \\"putEchoWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
+    ],
+    Array [
+      "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts.",
+    ],
+    Array [
+      "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts.",
+    ],
+    Array [
+      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/dist/handlers/getPing.js.",
+    ],
+    Array [
+      "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts.",
+    ],
+    Array [
+      "💿 - Loading getDiagnosticWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts.",
+    ],
+    Array [
+      "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts.",
+    ],
+    Array [
+      "💿 - Loading putEchoWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts.",
+    ],
+    Array [
+      "💿 - Service \\"WRAPPERS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts",
+    ],
+    Array [
+      "💿 - Loading WRAPPERS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts.",
+    ],
+    Array [
+      "💿 - Service \\"MECHANISMS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_MECHANISM",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_MECHANISM",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/dist/services/DEFAULT_MECHANISM",
+    ],
+    Array [
+      "💿 - Service \\"authentication\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts",
+    ],
+    Array [
+      "💿 - Loading MECHANISMS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts.",
+    ],
+    Array [
+      "💿 - Loading authentication initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts.",
+    ],
+    Array [
+      "🔧 - Initializing auth mechanisms",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getOpenAPI\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"optionsWithCORS\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getPing\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getDelay\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getDiagnostic\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getTime\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"putEcho\\".",
+    ],
+    Array [
+      "🚦 - HTTP Router initialized.",
+    ],
+  ],
+  "logErrorCalls": Array [
+    Array [
+      "🖥 - Using an isolated env.",
+    ],
+    Array [
+      "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/whook-example/src/config/test/config.",
+    ],
+    Array [
+      "🔂 - Running in \\"test\\" environment.",
+    ],
+    Array [
+      "⚠️ - Using fake auth mechanism!",
+    ],
+    Array [
+      "💁 - Serving the public API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv4%2FopenAPI",
+    ],
+    Array [
+      "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
+    ],
+    Array [
+      "On air 🚀🌕",
+    ],
+  ],
+  "logInfoCalls": Array [],
+}
+`;

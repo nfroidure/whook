@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getDelay should work 1`] = `
+Object {
+  "delayClearCalls": Array [],
+  "delayCreateCalls": Array [
+    Array [
+      1000,
+    ],
+  ],
+  "response": Object {
+    "status": 200,
+  },
+}
+`;

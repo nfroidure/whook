@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initAuthor should handle git failures 1`] = `
+Object {
+  "author": Object {
+    "email": "wayne@warner.com",
+    "name": "Wayne Campbell",
+  },
+  "execCalls": Array [
+    Array [
+      "git config --get user.name",
+      [Function],
+    ],
+    Array [
+      "git config --get user.email",
+      [Function],
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "default": undefined,
+          "message": "What's your name?",
+          "name": "authorName",
+        },
+        Object {
+          "default": undefined,
+          "message": "You email?",
+          "name": "authorEmail",
+        },
+      ],
+    ],
+  ],
+  "lockReleaseCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "lockTakeCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "✍️ - Initializing author...",
+    ],
+    Array [
+      "stack",
+      undefined,
+    ],
+    Array [
+      "stack",
+      undefined,
+    ],
+    Array [
+      "debug",
+      "Could not get author from Git",
+    ],
+  ],
+}
+`;
+
+exports[`initAuthor should release the lock on failure 1`] = `
+Object {
+  "errorCode": "E_PROMPT_ERROR",
+  "errorParams": Array [],
+  "execCalls": Array [
+    Array [
+      "git config --get user.name",
+      [Function],
+    ],
+    Array [
+      "git config --get user.email",
+      [Function],
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "default": "Wayne Campbell",
+          "message": "What's your name?",
+          "name": "authorName",
+        },
+        Object {
+          "default": "wayne@warner.com",
+          "message": "You email?",
+          "name": "authorEmail",
+        },
+      ],
+    ],
+  ],
+  "lockReleaseCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "lockTakeCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "✍️ - Initializing author...",
+    ],
+  ],
+}
+`;
+
+exports[`initAuthor should work 1`] = `
+Object {
+  "author": Object {
+    "email": "wayne@warner.com",
+    "name": "Wayne Campbell",
+  },
+  "execCalls": Array [
+    Array [
+      "git config --get user.name",
+      [Function],
+    ],
+    Array [
+      "git config --get user.email",
+      [Function],
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "default": "Wayne Campbell",
+          "message": "What's your name?",
+          "name": "authorName",
+        },
+        Object {
+          "default": "wayne@warner.com",
+          "message": "You email?",
+          "name": "authorEmail",
+        },
+      ],
+    ],
+  ],
+  "lockReleaseCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "lockTakeCalls": Array [
+    Array [
+      "cli:input",
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "✍️ - Initializing author...",
+    ],
+  ],
+}
+`;

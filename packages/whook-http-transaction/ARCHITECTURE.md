@@ -25,7 +25,7 @@ You can simply do this by wrapping this service. See
  [`@whook/method-override`](../whook-method-override/README.md)
  for a working example.
 
-[See in context](./src/index.js#L15-L32)
+[See in context](./src/index.ts#L87-L104)
 
 
 
@@ -42,47 +42,47 @@ Each transaction has a unique id that is either
  request header. This allows to trace
  transactions end to end with that unique id.
 
-[See in context](./src/index.js#L102-L113)
+[See in context](./src/index.ts#L177-L188)
 
 
 
 ### Transaction start
 
 Once initiated, the transaction can be started. It
- basically spawns a promise that will be resolved
- to the actual response or rejected if the timeout
- is reached.
+   basically spawns a promise that will be resolved
+   to the actual response or rejected if the timeout
+   is reached.
 
-[See in context](./src/index.js#L186-L191)
+[See in context](./src/index.ts#L268-L273)
 
 
 
 ### Transaction errors
 
 Here we are simply casting and logging errors.
- It is important for debugging but also for
- ending the transaction properly if an error
- occurs.
+   It is important for debugging but also for
+   ending the transaction properly if an error
+   occurs.
 
-[See in context](./src/index.js#L210-L215)
+[See in context](./src/index.ts#L292-L297)
 
 
 
 ### Transaction end
 
 We end the transaction by writing the final status
- and headers and piping the response body if any.
+   and headers and piping the response body if any.
 
-The transaction can till error at that time but it
- is too late for changing the response status so
- we are just logging the event.
- This could be handled with
- [HTTP trailers](https://nodejs.org/api/http.html#http_response_addtrailers_headers)
- but the lack of client side support for now is
- preventing us to use them.
+  The transaction can till error at that time but it
+   is too late for changing the response status so
+   we are just logging the event.
+   This could be handled with
+   [HTTP trailers](https://nodejs.org/api/http.html#http_response_addtrailers_headers)
+   but the lack of client side support for now is
+   preventing us to use them.
 
- Once terminated, the transaction is removed
-  from the `TRANSACTIONS` hash.
+   Once terminated, the transaction is removed
+from the `TRANSACTIONS` hash.
 
-[See in context](./src/index.js#L246-L260)
+[See in context](./src/index.ts#L328-L342)
 

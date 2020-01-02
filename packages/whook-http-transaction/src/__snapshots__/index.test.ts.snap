@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initHTTPTransaction httpTransaction should fail on timeout 1`] = `
+Object {
+  "delayClearCalls": Array [],
+  "delayCreateCalls": Array [
+    Array [
+      30000,
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "💱 - HTTP Transaction initialized.",
+    ],
+  ],
+  "request": Object {
+    "body": Object {
+      "connection": Object {
+        "encrypted": true,
+      },
+      "headers": Object {
+        "x-forwarded-for": "127.0.0.1",
+      },
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "socket": Object {
+        "bytesRead": 16,
+        "bytesWritten": 64,
+      },
+      "ts": 1000000,
+      "url": "/v1/users/1?extended=true",
+    },
+    "headers": Object {
+      "x-forwarded-for": "127.0.0.1",
+    },
+    "method": "get",
+    "url": "/v1/users/1?extended=true",
+  },
+  "timeCalls": Array [
+    Array [],
+  ],
+  "uniqueIdCalls": Array [
+    Array [],
+  ],
+}
+`;
+
+exports[`initHTTPTransaction httpTransaction should fail with non-unique transaction id 1`] = `
+Object {
+  "delayClearCalls": Array [],
+  "delayCreateCalls": Array [
+    Array [
+      30000,
+    ],
+  ],
+  "timeCalls": Array [
+    Array [],
+  ],
+  "uniqueIdCalls": Array [
+    Array [],
+  ],
+}
+`;
+
+exports[`initHTTPTransaction httpTransaction should work 1`] = `
+Object {
+  "buildResponseCalls": Array [
+    Array [],
+  ],
+  "delayClearCalls": Array [
+    Array [
+      Promise {},
+    ],
+  ],
+  "delayCreateCalls": Array [
+    Array [
+      30000,
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "💱 - HTTP Transaction initialized.",
+    ],
+    Array [
+      "info",
+      Object {
+        "endInBytes": 16,
+        "endOutBytes": 64,
+        "endTime": 1326585600000,
+        "errored": false,
+        "id": "[id]",
+        "ip": "127.0.0.1",
+        "method": "GET",
+        "protocol": "http",
+        "reqHeaders": Object {
+          "x-forwarded-for": "127.0.0.1",
+        },
+        "resHeaders": Object {
+          "Content-Type": "application/json",
+        },
+        "startInBytes": 16,
+        "startOutBytes": 64,
+        "startTime": 1326585600000,
+        "statusCode": 200,
+        "url": "/v1/users/1?extended=true",
+      },
+    ],
+  ],
+  "request": Object {
+    "body": Object {
+      "connection": Object {
+        "encrypted": true,
+      },
+      "headers": Object {
+        "x-forwarded-for": "127.0.0.1",
+      },
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "socket": Object {
+        "bytesRead": 16,
+        "bytesWritten": 64,
+      },
+      "ts": 1000000,
+      "url": "/v1/users/1?extended=true",
+    },
+    "headers": Object {
+      "x-forwarded-for": "127.0.0.1",
+    },
+    "method": "get",
+    "url": "/v1/users/1?extended=true",
+  },
+  "timeCalls": Array [
+    Array [],
+    Array [],
+  ],
+  "uniqueIdCalls": Array [
+    Array [],
+  ],
+}
+`;
+
+exports[`initHTTPTransaction should work 1`] = `
+Object {
+  "delayClearCalls": Array [],
+  "delayCreateCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "💱 - HTTP Transaction initialized.",
+    ],
+  ],
+  "timeCalls": Array [],
+  "uniqueIdCalls": Array [],
+}
+`;

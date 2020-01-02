@@ -10,36 +10,42 @@
       "babel",
       "jest",
       "jsarch",
-      "jsdocs"
+      "jsdocs",
+      "typescript"
     ],
     "data": {
       "childPackage": true,
-      "testsFiles": "'src/**/*.test.js'",
-      "files": "'src/**/*.js'",
+      "testsFiles": "'src/**/*.test.ts'",
+      "files": "'src/**/*.ts'",
       "ignore": [
         "dist"
       ],
+      "typesFiles": "src/**/*.ts",
+      "typesDefs": "src/index.d.ts",
       "bundleFiles": [
-        "dist/**/*.js"
+        "dist/**/*.js",
+        "src/index.d.ts"
       ]
     }
   },
   "main": "dist/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
-    "architecture": "jsarch 'src/**/*.js' > ARCHITECTURE.md && git add ARCHITECTURE.md",
+    "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
-    "compile": "babel src --out-dir=dist",
+    "compile": "babel --extensions '.ts,.js' src --out-dir=dist",
     "cover": "npm run jest -- --coverage",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
-    "doc": "echo \"# API\" > API.md; jsdoc2md 'src/**/*.js' >> API.md && git add API.md",
+    "doc": "echo \"# API\" > API.md; jsdoc2md undefined >> API.md && git add API.md",
     "jest": "NODE_ENV=test jest",
-    "lint": "eslint 'src/**/*.js'",
+    "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
     "precz": "npm t && npm run lint && npm run metapak -- -s",
-    "prettier": "prettier --write 'src/**/*.js'",
+    "prettier": "prettier --write 'src/**/*.ts'",
     "preversion": "npm t && npm run lint && npm run compile && npm run metapak -- -s",
-    "test": "npm run jest"
+    "test": "npm run jest",
+    "types": "rm src/index.d.ts; tsc --project . --declaration --emitDeclarationOnly; npm run prettier -- src/index.d.ts"
   },
   "keywords": [
     "REST",
@@ -66,11 +72,15 @@
   "devDependencies": {
     "@babel/cli": "^7.7.4",
     "@babel/core": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
+    "@babel/preset-typescript": "^7.7.4",
     "@babel/register": "^7.7.4",
+    "@types/jest": "^24.0.23",
+    "@typescript-eslint/parser": "^2.9.0",
     "babel-eslint": "^10.0.3",
-    "babel-plugin-knifecycle": "^1.0.3",
+    "babel-plugin-knifecycle": "^1.1.1",
     "eslint": "^6.7.1",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
@@ -78,17 +88,19 @@
     "jsdoc-to-markdown": "^5.0.3",
     "metapak": "^3.1.6",
     "metapak-nfroidure": "9.7.4",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.2"
   },
   "dependencies": {
     "@whook/http-router": "^3.1.3",
     "@whook/http-server": "^3.1.3",
     "@whook/http-transaction": "^3.1.3",
-    "common-services": "^6.0.0",
+    "common-services": "^6.1.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "internal-ip": "^5.0.0",
-    "knifecycle": "^7.0.3",
+    "knifecycle": "^8.0.1",
+    "openapi-types": "^1.3.5",
     "pkg-dir": "^4.2.0",
     "portfinder": "^1.0.25"
   },
@@ -98,6 +110,7 @@
   },
   "babel": {
     "presets": [
+      "@babel/typescript",
       [
         "@babel/env",
         {
@@ -108,6 +121,7 @@
       ]
     ],
     "plugins": [
+      "@babel/proposal-class-properties",
       "@babel/plugin-proposal-object-rest-spread",
       "babel-plugin-knifecycle"
     ]
@@ -142,7 +156,26 @@
     ],
     "rules": {
       "prettier/prettier": "error"
-    }
+    },
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": [
+      "*.d.ts"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "no-unused-vars": [
+            1,
+            {
+              "args": "none"
+            }
+          ]
+        }
+      }
+    ]
   },
   "prettier": {
     "semi": true,
@@ -153,8 +186,16 @@
   },
   "files": [
     "dist/**/*.js",
+    "src/index.d.ts",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
-  ]
+  ],
+  "jsarch": {
+    "parserOptions": {
+      "plugins": [
+        "typescript"
+      ]
+    }
+  }
 }
