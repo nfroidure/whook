@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-server",
-  "version": "4.0.0-alpha.18",
+  "version": "4.0.0-alpha.19",
   "description": "The Whook base HTTP server",
   "main": "dist/index.js",
   "types": "src/index.d.ts",
@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/http-router": "^4.0.0-alpha.18",
+    "@whook/http-router": "^4.0.0-alpha.19",
     "knifecycle": "^8.0.1",
     "ms": "^2.1.2",
     "yerror": "^5.0.0"
