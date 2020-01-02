@@ -3,10 +3,10 @@ import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
   prepareEnvironment as prepareBaseEnvironment,
+  initAutoload,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
-import initAutoload from '@whook/whook/dist/services/_autoload';
 
 // Per convention a Whook server main file must export
 //  the following 3 functions to be composable:

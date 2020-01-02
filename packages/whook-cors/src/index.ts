@@ -1,4 +1,4 @@
-import { flattenOpenAPI } from '@whook/http-router/dist/utils';
+import OpenAPIParser from 'swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router/dist/validation';
 import { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
 import {
@@ -81,7 +81,8 @@ async function handleWithCORS<
 export async function augmentAPIWithCORS(
   API: OpenAPIV3.Document,
 ): Promise<OpenAPIV3.Document> {
-  const flattenedAPI = await flattenOpenAPI(API);
+  const $refs = await OpenAPIParser.resolve(API);
+  const flattenedAPI: OpenAPIV3.Document = API;
 
   return Object.keys(flattenedAPI.paths).reduce((newAPI, path) => {
     const existingOperation = newAPI.paths[path].options;
@@ -94,7 +95,8 @@ export async function augmentAPIWithCORS(
       ...new Set([...METHOD_CORS_PRIORITY]),
       ...Object.keys(newAPI.paths[path]),
     ].find(method => newAPI.paths[path][method]);
-    const canonicalOperation = newAPI.paths[path][canonicalOperationMethod];
+    const canonicalOperation: OpenAPIV3.OperationObject =
+      newAPI.paths[path][canonicalOperationMethod];
 
     const whookConfig = {
       type: 'http',
@@ -112,23 +114,52 @@ export async function augmentAPIWithCORS(
       operationId: 'optionsWithCORS',
       summary: 'Enable OPTIONS for CORS',
       tags: ['CORS'],
-      'x-whook': {
-        ...whookConfig,
-      },
       parameters: (canonicalOperation.parameters || [])
         .concat(extractOperationSecurityParameters(API, canonicalOperation))
-        .filter(
-          parameter => 'path' === parameter.in || 'query' === parameter.in,
-        )
-        .map(parameter => ({
-          ...parameter,
-          required: 'path' === parameter.in,
-        })),
+        .filter(parameter => {
+          const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
+            .$ref
+            ? ($refs.get(
+                (parameter as OpenAPIV3.ReferenceObject).$ref,
+              ) as OpenAPIV3.ParameterObject)
+            : (parameter as OpenAPIV3.ParameterObject);
+
+          return (
+            'path' === dereferencedParameter.in ||
+            'query' === dereferencedParameter.in
+          );
+        })
+        .map(parameter => {
+          const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
+            .$ref
+            ? ($refs.get(
+                (parameter as OpenAPIV3.ReferenceObject).$ref,
+              ) as OpenAPIV3.ParameterObject)
+            : (parameter as OpenAPIV3.ParameterObject);
+
+          if (
+            dereferencedParameter.in === 'path' ||
+            !dereferencedParameter.required
+          ) {
+            return parameter;
+          }
+
+          // Avoid to require parameters for CORS
+          return {
+            ...dereferencedParameter,
+            required: false,
+          };
+        }),
       responses: {
         200: {
           description: 'CORS sent.',
         },
       },
+    };
+
+    // Must be set separately since not supported by OAS3 types atm
+    (newAPI.paths[path].options as any)['x-whook'] = {
+      ...whookConfig,
     };
 
     return newAPI;

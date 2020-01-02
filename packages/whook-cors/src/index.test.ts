@@ -76,6 +76,38 @@ describe('augmentAPIWithCORS()', () => {
               flows: {},
             },
           },
+          schemas: {
+            user: {
+              type: 'object',
+              additionalProperties: true,
+            },
+          },
+          parameters: {
+            userId: {
+              in: 'path',
+              name: 'userId',
+              required: true,
+              schema: {
+                type: 'number',
+              },
+            },
+            full: {
+              in: 'query',
+              name: 'full',
+              required: true,
+              schema: {
+                type: 'boolean',
+              },
+            },
+            retry: {
+              in: 'query',
+              name: 'retry',
+              required: false,
+              schema: {
+                type: 'boolean',
+              },
+            },
+          },
         },
         paths: {
           '/ping': {
@@ -109,33 +141,50 @@ describe('augmentAPIWithCORS()', () => {
               ],
               parameters: [
                 {
-                  in: 'path',
-                  name: 'userId',
-                  required: true,
-                  schema: {
-                    type: 'number',
-                  },
+                  $ref: '#/components/parameters/userId',
                 },
                 {
-                  in: 'query',
-                  name: 'full',
-                  required: true,
-                  schema: {
-                    type: 'boolean',
-                  },
+                  $ref: '#/components/parameters/full',
                 },
                 {
-                  in: 'query',
-                  name: 'retry',
-                  required: false,
-                  schema: {
-                    type: 'boolean',
-                  },
+                  $ref: '#/components/parameters/retry',
                 },
               ],
               responses: {
                 '200': {
                   description: 'The user',
+                },
+              },
+            },
+            get: {
+              operationId: 'getUser',
+              summary: 'Return a user.',
+              security: [
+                {
+                  oAuth2: ['user'],
+                },
+              ],
+              parameters: [
+                {
+                  $ref: '#/components/parameters/userId',
+                },
+                {
+                  $ref: '#/components/parameters/full',
+                },
+                {
+                  $ref: '#/components/parameters/retry',
+                },
+              ],
+              responses: {
+                '200': {
+                  description: 'The user',
+                  content: {
+                    'application/json': {
+                      schema: {
+                        $ref: '#/components/schemas/user',
+                      },
+                    },
+                  },
                 },
               },
             },

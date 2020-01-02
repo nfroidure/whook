@@ -3,6 +3,38 @@
 exports[`augmentAPIWithCORS() should work 1`] = `
 Object {
   "components": Object {
+    "parameters": Object {
+      "full": Object {
+        "in": "query",
+        "name": "full",
+        "required": true,
+        "schema": Object {
+          "type": "boolean",
+        },
+      },
+      "retry": Object {
+        "in": "query",
+        "name": "retry",
+        "required": false,
+        "schema": Object {
+          "type": "boolean",
+        },
+      },
+      "userId": Object {
+        "in": "path",
+        "name": "userId",
+        "required": true,
+        "schema": Object {
+          "type": "number",
+        },
+      },
+    },
+    "schemas": Object {
+      "user": Object {
+        "additionalProperties": true,
+        "type": "object",
+      },
+    },
     "securitySchemes": Object {
       "oAuth2": Object {
         "flows": Object {},
@@ -52,32 +84,51 @@ Object {
       },
     },
     "/users/{userid}": Object {
+      "get": Object {
+        "operationId": "getUser",
+        "parameters": Array [
+          Object {
+            "$ref": "#/components/parameters/userId",
+          },
+          Object {
+            "$ref": "#/components/parameters/full",
+          },
+          Object {
+            "$ref": "#/components/parameters/retry",
+          },
+        ],
+        "responses": Object {
+          "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/user",
+                },
+              },
+            },
+            "description": "The user",
+          },
+        },
+        "security": Array [
+          Object {
+            "oAuth2": Array [
+              "user",
+            ],
+          },
+        ],
+        "summary": "Return a user.",
+      },
       "head": Object {
         "operationId": "getUser",
         "parameters": Array [
           Object {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "schema": Object {
-              "type": "number",
-            },
+            "$ref": "#/components/parameters/userId",
           },
           Object {
-            "in": "query",
-            "name": "full",
-            "required": true,
-            "schema": Object {
-              "type": "boolean",
-            },
+            "$ref": "#/components/parameters/full",
           },
           Object {
-            "in": "query",
-            "name": "retry",
-            "required": false,
-            "schema": Object {
-              "type": "boolean",
-            },
+            "$ref": "#/components/parameters/retry",
           },
         ],
         "responses": Object {
@@ -98,12 +149,7 @@ Object {
         "operationId": "optionsWithCORS",
         "parameters": Array [
           Object {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "schema": Object {
-              "type": "number",
-            },
+            "$ref": "#/components/parameters/userId",
           },
           Object {
             "in": "query",
@@ -114,17 +160,11 @@ Object {
             },
           },
           Object {
-            "in": "query",
-            "name": "retry",
-            "required": false,
-            "schema": Object {
-              "type": "boolean",
-            },
+            "$ref": "#/components/parameters/retry",
           },
           Object {
             "in": "query",
             "name": "access_token",
-            "required": false,
             "schema": Object {
               "type": "string",
             },
