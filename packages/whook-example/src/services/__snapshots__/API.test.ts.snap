@@ -168,7 +168,6 @@ Object {
             Object {
               "in": "query",
               "name": "access_token",
-              "required": false,
               "schema": Object {
                 "type": "string",
               },
@@ -300,7 +299,6 @@ Object {
             Object {
               "in": "query",
               "name": "access_token",
-              "required": false,
               "schema": Object {
                 "type": "string",
               },
