@@ -159,3 +159,66 @@ $ whook env --name NODE_ENV --default \\"default value\\"
   ],
 }
 `;
+
+exports[`lsCommand should work with some plugins and ignored files 1`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "debug",
+      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/lol/dist",
+    ],
+    Array [
+      "debug",
+      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/cli/dist",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"project\\": 2 commands",
+    ],
+    Array [
+      "info",
+      "- ls: Print available commands",
+    ],
+    Array [
+      "info",
+      "- env: A command printing env values",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"@whook/cli\\": none",
+    ],
+    Array [
+      "info",
+      "
+
+# Provided by \\"@whook/whook\\": none",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "readDirCalls": Array [
+    Array [
+      "/home/whoiam/whook-project/dist/commands",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/commands",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/lol/dist/commands",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/whook-project/dist/commands/ls",
+    ],
+    Array [
+      "/home/whoiam/whook-project/dist/commands/env",
+    ],
+  ],
+}
+`;

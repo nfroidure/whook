@@ -72,6 +72,7 @@ async function initLsCommand({
                 file =>
                   file !== '..' &&
                   file !== '.' &&
+                  !file.startsWith('__') &&
                   !file.endsWith('.test.js') &&
                   !file.endsWith('.d.js') &&
                   !file.endsWith('.test.ts') &&

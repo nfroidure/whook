@@ -89,6 +89,47 @@ describe('lsCommand', () => {
       }).toMatchSnapshot();
     });
 
+    it('with some plugins and ignored files', async () => {
+      readDir.mockResolvedValueOnce(['ls', 'env', '__snapshots__']);
+      readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
+      _require.mockReturnValueOnce({
+        default: initLsCommand,
+        definition: initLsCommandDefinition,
+      });
+      _require.mockReturnValueOnce({
+        default: initEnvCommand,
+        definition: initEnvCommandDefinition,
+      });
+      promptArgs.mockResolvedValueOnce({
+        _: ['ls'],
+      });
+
+      const lsCommand = await initLsCommand({
+        CONFIG: {},
+        PROJECT_SRC: '/home/whoiam/whook-project/dist',
+        WHOOK_PLUGINS: ['@whook/cli', '@whook/whook'],
+        WHOOK_PLUGINS_PATHS: [
+          '/var/lib/node/node_modules/@whook/cli/dist',
+          '/var/lib/node/node_modules/@whook/lol/dist',
+        ],
+        promptArgs,
+        readDir,
+        log,
+        EOL: '\n',
+        require: (_require as unknown) as any,
+      });
+      await lsCommand();
+
+      expect({
+        promptArgsCalls: promptArgs.mock.calls,
+        logCalls: log.mock.calls.filter(
+          args => !['stack', 'debug-stack'].includes(args[0]),
+        ),
+        readDirCalls: readDir.mock.calls,
+        requireCalls: _require.mock.calls,
+      }).toMatchSnapshot();
+    });
+
     it('with some plugins and a verbose output', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));

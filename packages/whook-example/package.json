@@ -44,7 +44,7 @@
     "test": "npm run jest",
     "types": "rm src/index.d.ts; tsc --project . --declaration --emitDeclarationOnly; npm run prettier -- src/index.d.ts",
     "whook": "NODE_ENV=${NODE_ENV:-development} whook",
-    "whook-dev": "PROJECT_SRC='src' NODE_ENV=${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js"
+    "whook-dev": "PROJECT_SRC=\"$PWD/src\" NODE_ENV=${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js"
   },
   "author": {
     "name": "Nicolas Froidure",

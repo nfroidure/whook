@@ -26,10 +26,16 @@ See the [Whook example server commands](https://github.com/nfroidure/whook/tree/
 
 ## Dev
 
-To test the CLI script:
+To test the CLI script, go to a project (in this repo `@whook/example`):
 ```sh
 npm run compile
-node bin/whook
+cd ../whook-example
+
+# Debugging compiled commands
+node ../whook-cli/bin/whook.js -- ls
+
+# Debugging source commands
+PROJECT_SRC="$PWD/src" NODE_ENV=${NODE_ENV:-development} npm run cli -- babel-node --extensions '.ts,.js' -- ../whook-cli/bin/whook.js -- ls
 ```
 
 [//]: # (::contents:end)
