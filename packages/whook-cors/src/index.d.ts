@@ -16,7 +16,7 @@ export declare type CORSConfig = {
  */
 export declare function wrapHandlerWithCORS<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D, S>;
+): ServiceInitializer<D & CORSConfig, S>;
 export declare function initHandlerWithCORS<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
   services: D,

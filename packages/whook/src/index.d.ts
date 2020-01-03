@@ -1,4 +1,5 @@
 import Knifecycle, { Services } from 'knifecycle';
+import { ProcessServiceConfig } from 'common-services';
 import {
   HTTPRouterConfig,
   HTTPRouterProvider,
@@ -34,6 +35,7 @@ import initAutoload, {
   WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload';
+import initGetPing from './handlers/getPing';
 import { noop, identity, compose, pipe } from './libs/utils';
 import { OpenAPIV3 } from 'openapi-types';
 import { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
@@ -42,6 +44,7 @@ export {
   identity,
   compose,
   pipe,
+  initGetPing,
   initAutoload,
   WhookServiceMap,
   WhookInitializerMap,
@@ -66,7 +69,8 @@ export {
   HTTPServerService,
 };
 export declare type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
-export declare type WhookConfigs = HTTPRouterConfig &
+export declare type WhookConfigs = ProcessServiceConfig &
+  HTTPRouterConfig &
   HTTPServerConfig &
   HTTPTransactionConfig &
   AutoloadConfig &
@@ -74,8 +78,6 @@ export declare type WhookConfigs = HTTPRouterConfig &
   CONFIGSConfig &
   ENVConfig &
   WhookPluginsPathsConfig & {
-    NODE_ENV?: string;
-    NODE_ENVS: string[];
     CONFIG: WhookConfig;
   };
 export declare type WhookDefinition = {

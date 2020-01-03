@@ -30,7 +30,7 @@ export type CORSConfig = {
  */
 export function wrapHandlerWithCORS<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D, S> {
+): ServiceInitializer<D & CORSConfig, S> {
   return alsoInject(
     ['CORS'],
     reuseSpecialProps(initHandler, initHandlerWithCORS.bind(null, initHandler)),
@@ -82,9 +82,8 @@ export async function augmentAPIWithCORS(
   API: OpenAPIV3.Document,
 ): Promise<OpenAPIV3.Document> {
   const $refs = await OpenAPIParser.resolve(API);
-  const flattenedAPI: OpenAPIV3.Document = API;
 
-  return Object.keys(flattenedAPI.paths).reduce((newAPI, path) => {
+  return Object.keys(API.paths).reduce((newAPI, path) => {
     const existingOperation = newAPI.paths[path].options;
 
     if (existingOperation) {
@@ -163,7 +162,7 @@ export async function augmentAPIWithCORS(
     };
 
     return newAPI;
-  }, flattenedAPI);
+  }, API);
 }
 
 /**

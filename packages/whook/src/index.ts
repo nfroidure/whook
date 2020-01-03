@@ -52,6 +52,7 @@ import initAutoload, {
   WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload';
+import initGetPing from './handlers/getPing';
 import { noop, identity, compose, pipe } from './libs/utils';
 import { OpenAPIV3 } from 'openapi-types';
 import { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
@@ -61,6 +62,7 @@ export {
   identity,
   compose,
   pipe,
+  initGetPing,
   initAutoload,
   WhookServiceMap,
   WhookInitializerMap,
