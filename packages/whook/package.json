@@ -1,6 +1,6 @@
 {
   "name": "@whook/whook",
-  "version": "4.0.0-alpha.20",
+  "version": "4.0.0-alpha.21",
   "description": "Build strong and efficient REST web services.",
   "metapak": {
     "configs": [
@@ -92,9 +92,9 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@whook/http-router": "^4.0.0-alpha.20",
-    "@whook/http-server": "^4.0.0-alpha.20",
-    "@whook/http-transaction": "^4.0.0-alpha.20",
+    "@whook/http-router": "^4.0.0-alpha.21",
+    "@whook/http-server": "^4.0.0-alpha.21",
+    "@whook/http-transaction": "^4.0.0-alpha.21",
     "common-services": "^6.1.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",

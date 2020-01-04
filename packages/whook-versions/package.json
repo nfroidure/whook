@@ -1,6 +1,6 @@
 {
   "name": "@whook/versions",
-  "version": "4.0.0-alpha.20",
+  "version": "4.0.0-alpha.21",
   "description": "A wrapper to provide versions check support to a Whook server",
   "main": "dist/index.js",
   "types": "src/index.d.ts",
@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^4.0.0-alpha.20",
+    "@whook/whook": "^4.0.0-alpha.21",
     "knifecycle": "^8.0.1",
     "openapi-types": "^1.3.5"
   },
