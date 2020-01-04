@@ -56,6 +56,7 @@ Object {
         "id": "1",
         "ip": "127.0.0.1",
         "method": "GET",
+        "operationId": "getDiagnostic",
         "protocol": "http",
         "reqHeaders": Object {
           "accept": "application/json, text/plain, */*",
@@ -124,6 +125,7 @@ Object {
         "id": "2",
         "ip": "127.0.0.1",
         "method": "GET",
+        "operationId": "getDiagnostic",
         "protocol": "http",
         "reqHeaders": Object {
           "accept": "application/json, text/plain, */*",
@@ -192,6 +194,7 @@ Object {
         "id": "0",
         "ip": "127.0.0.1",
         "method": "GET",
+        "operationId": "getPing",
         "protocol": "http",
         "reqHeaders": Object {
           "accept": "application/json, text/plain, */*",

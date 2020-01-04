@@ -399,6 +399,7 @@ async function initHTTPRouter({
               },
               response,
             ),
+            operation ? operation.operationId : 'none',
           );
         });
     } catch (err) {

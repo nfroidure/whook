@@ -53,7 +53,7 @@ export declare type WhookHTTPTransaction = {
     id: string;
     start: (buildResponse: Handler<any, any, any>) => Promise<WhookResponse>;
     catch: (err: Error) => Promise<WhookResponse>;
-    end: (response: WhookResponse) => Promise<void>;
+    end: (response: WhookResponse, operationId?: string) => Promise<void>;
   };
 };
 export declare type HTTPTransactionService = (

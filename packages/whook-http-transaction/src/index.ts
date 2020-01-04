@@ -11,6 +11,8 @@ import statuses from 'statuses';
 import ms from 'ms';
 import { IncomingMessage, ServerResponse } from 'http';
 import { OpenAPIV3 } from 'openapi-types';
+import YError from 'yerror';
+import YHTTPError from 'yhttperror';
 
 export type WhookOperation = OpenAPIV3.OperationObject & {
   path: string;
@@ -66,7 +68,7 @@ export type WhookHTTPTransaction = {
     id: string;
     start: (buildResponse: Handler<any, any, any>) => Promise<WhookResponse>;
     catch: (err: Error) => Promise<WhookResponse>;
-    end: (response: WhookResponse) => Promise<void>;
+    end: (response: WhookResponse, operationId?: string) => Promise<void>;
   };
 };
 
@@ -261,9 +263,9 @@ async function initHTTPTransaction({
    * A promise to be resolved with the signed token.
    */
   async function startTransaction(
-    { id, delayPromise },
-    initializationPromise,
-    buildResponse,
+    { id, delayPromise }: { id: string; delayPromise: Promise<void> },
+    initializationPromise: Promise<void>,
+    buildResponse: () => Promise<WhookResponse>,
   ) {
     /* Architecture Note #1.2: Transaction start
   Once initiated, the transaction can be started. It
@@ -288,14 +290,17 @@ async function initHTTPTransaction({
    * @return {Promise}
    * A promise to be resolved with the signed token.
    */
-  async function catchTransaction({ id, req }, err) {
+  async function catchTransaction(
+    { id, req }: { id: string; req: IncomingMessage },
+    err: Error | YError | YHTTPError,
+  ) {
     /* Architecture Note #1.3: Transaction errors
   Here we are simply casting and logging errors.
    It is important for debugging but also for
    ending the transaction properly if an error
    occurs.
   */
-    err = HTTPError.cast(err, err.httpCode || 500);
+    err = HTTPError.cast(err, (err as YHTTPError).httpCode || 500);
     log('error', 'An error occured', {
       guruMeditation: id,
       request:
@@ -304,10 +309,10 @@ async function initHTTPTransaction({
         (req.headers.host || 'localhost') +
         TRANSACTIONS[id].url,
       verb: req.method,
-      status: err.httpCode,
-      code: err.code,
+      status: (err as YHTTPError).httpCode,
+      code: (err as YError).code,
       stack: err.stack,
-      details: err.params,
+      details: (err as YError).params,
     });
 
     TRANSACTIONS[id].errored = true;
@@ -324,7 +329,21 @@ async function initHTTPTransaction({
    * @return {Promise<Object>}
    * A promise to be resolved with the signed token.
    */
-  async function endTransaction({ id, req, res, delayPromise }, response) {
+  async function endTransaction(
+    {
+      id,
+      req,
+      res,
+      delayPromise,
+    }: {
+      id: string;
+      req: IncomingMessage;
+      res: ServerResponse;
+      delayPromise: Promise<void>;
+    },
+    response: WhookResponse,
+    operationId: string = 'none',
+  ): Promise<void> {
     /* Architecture Note #1.4: Transaction end
   We end the transaction by writing the final status
    and headers and piping the response body if any.
@@ -366,6 +385,7 @@ async function initHTTPTransaction({
           TRANSACTIONS[id].url,
         method: req.method,
         stack: err.stack || err,
+        operationId,
       });
     }
     TRANSACTIONS[id].endTime = time();
@@ -373,6 +393,7 @@ async function initHTTPTransaction({
     TRANSACTIONS[id].endOutBytes = req.socket.bytesWritten;
     TRANSACTIONS[id].statusCode = response.status;
     TRANSACTIONS[id].resHeaders = response.headers || {};
+    TRANSACTIONS[id].operationId = operationId;
 
     log('info', TRANSACTIONS[id]);
 

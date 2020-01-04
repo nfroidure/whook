@@ -93,6 +93,7 @@ Object {
         "id": "[id]",
         "ip": "127.0.0.1",
         "method": "GET",
+        "operationId": "theOperationId",
         "protocol": "http",
         "reqHeaders": Object {
           "x-forwarded-for": "127.0.0.1",

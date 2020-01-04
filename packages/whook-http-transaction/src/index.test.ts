@@ -113,7 +113,7 @@ describe('initHTTPTransaction', () => {
         (buildResponse as unknown) as WhookHandler<any, any>,
       );
 
-      await transaction.end(response);
+      await transaction.end(response, 'theOperationId');
 
       expect(request.url).toEqual('/v1/users/1?extended=true');
       expect(request.method).toEqual('get');
