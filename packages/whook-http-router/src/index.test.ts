@@ -131,20 +131,20 @@ describe('initHTTPRouter', () => {
         },
       },
       '/users/{userId}/avatar': {
+        parameters: [
+          {
+            in: 'path',
+            name: 'userId',
+            required: true,
+            schema: {
+              type: 'number',
+              pattern: '^[0-9]+$',
+            },
+          },
+        ],
         head: {
           operationId: 'headUserAvatar',
           summary: "Checks user's avatar existance.",
-          parameters: [
-            {
-              in: 'path',
-              name: 'userId',
-              required: true,
-              schema: {
-                type: 'number',
-                pattern: '^[0-9]+$',
-              },
-            },
-          ],
           responses: {
             '200': {
               description: 'User avatar exists.',
@@ -157,17 +157,6 @@ describe('initHTTPRouter', () => {
         get: {
           operationId: 'getUserAvatar',
           summary: "Retrieve user's avatar.",
-          parameters: [
-            {
-              in: 'path',
-              name: 'userId',
-              required: true,
-              schema: {
-                type: 'number',
-                pattern: '^[0-9]+$',
-              },
-            },
-          ],
           responses: {
             default: {
               $ref: '#/components/responses/UnexpectedError',
@@ -192,15 +181,6 @@ describe('initHTTPRouter', () => {
           operationId: 'putUserAvatar',
           summary: "Set user's avatar.",
           parameters: [
-            {
-              in: 'path',
-              name: 'userId',
-              required: true,
-              schema: {
-                type: 'number',
-                pattern: '^[0-9]+$',
-              },
-            },
             {
               in: 'header',
               name: 'content-type',
@@ -241,17 +221,6 @@ describe('initHTTPRouter', () => {
         delete: {
           operationId: 'deleteUserAvatar',
           summary: "Ensure user's avatar is gone.",
-          parameters: [
-            {
-              in: 'path',
-              name: 'userId',
-              required: true,
-              schema: {
-                type: 'number',
-                pattern: '^[0-9]+$',
-              },
-            },
-          ],
           responses: {
             default: {
               $ref: '#/components/responses/UnexpectedError',

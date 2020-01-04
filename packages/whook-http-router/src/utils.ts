@@ -3,6 +3,17 @@ import YError from 'yerror';
 import { OpenAPIV3 } from 'openapi-types';
 import { WhookOperation } from '@whook/http-transaction';
 
+const OPEN_API_METHODS = [
+  'options',
+  'head',
+  'get',
+  'put',
+  'post',
+  'patch',
+  'delete',
+  'trace',
+];
+
 export type SupportedSecurityScheme =
   | OpenAPIV3.HttpSecurityScheme
   | OpenAPIV3.ApiKeySecurityScheme
@@ -55,15 +66,20 @@ export function getOpenAPIOperations(
 ): WhookOperation[] {
   return Object.keys(API.paths).reduce(
     (operations, path) =>
-      Object.keys(API.paths[path]).reduce(
-        (operations, method) =>
-          operations.concat({
-            path,
-            method,
-            ...API.paths[path][method],
-          }),
-        operations,
-      ),
+      Object.keys(API.paths[path])
+        .filter(key => OPEN_API_METHODS.includes(key))
+        .reduce(
+          (operations, method) =>
+            operations.concat({
+              path,
+              method,
+              ...API.paths[path][method],
+              parameters: (API.paths[path][method].parameters || []).concat(
+                API.paths[path].parameters || [],
+              ),
+            }),
+          operations,
+        ),
     [],
   );
 }
