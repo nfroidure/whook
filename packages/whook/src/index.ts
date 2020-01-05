@@ -45,6 +45,12 @@ import initWhookPluginsPaths, {
   WhookPluginsPathsService,
   WhookPluginsPathsConfig,
 } from './services/WHOOK_PLUGINS_PATHS';
+import initAPIDefinitions, {
+  WhookAPIDefinitions,
+  WhookAPIHandlerDefinition,
+  WhookAPIParameterDefinition,
+  WhookAPISchemaDefinition,
+} from './services/API_DEFINITIONS';
 import initAutoload, {
   HANDLER_REG_EXP,
   AutoloadConfig,
@@ -52,7 +58,9 @@ import initAutoload, {
   WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload';
-import initGetPing from './handlers/getPing';
+import initGetPing, {
+  definition as initGetPingDefinition,
+} from './handlers/getPing';
 import { noop, identity, compose, pipe } from './libs/utils';
 import { OpenAPIV3 } from 'openapi-types';
 import { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
@@ -63,7 +71,13 @@ export {
   compose,
   pipe,
   initGetPing,
+  initGetPingDefinition,
   initAutoload,
+  initAPIDefinitions,
+  WhookAPIDefinitions,
+  WhookAPIHandlerDefinition,
+  WhookAPIParameterDefinition,
+  WhookAPISchemaDefinition,
   WhookServiceMap,
   WhookInitializerMap,
   ENVService,
@@ -100,12 +114,6 @@ export type WhookConfigs = ProcessServiceConfig &
   WhookPluginsPathsConfig & {
     CONFIG: WhookConfig;
   };
-
-export type WhookDefinition = {
-  path: string;
-  method: string;
-  operation: OpenAPIV3.OperationObject;
-};
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn

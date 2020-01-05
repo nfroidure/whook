@@ -1,4 +1,4 @@
-import { WhookConfig } from '@whook/whook';
+import { WhookConfig, WhookAPIDefinitions } from '@whook/whook';
 import { LogService } from 'common-services';
 import { OpenAPIV3 } from 'openapi-types';
 export declare type APIEnv = {
@@ -10,6 +10,7 @@ export declare type APIConfig = {
   BASE_URL?: string;
   BASE_PATH?: string;
   API_VERSION: string;
+  API_DEFINITIONS: WhookAPIDefinitions;
 };
 export declare type APIDependencies = APIConfig & {
   ENV: APIEnv;
@@ -24,5 +25,6 @@ declare function initAPI({
   BASE_URL,
   BASE_PATH,
   API_VERSION,
+  API_DEFINITIONS,
   log,
 }: APIDependencies): Promise<OpenAPIV3.Document>;

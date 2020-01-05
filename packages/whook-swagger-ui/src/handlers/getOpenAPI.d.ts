@@ -1,4 +1,4 @@
-import { WhookDefinition } from '@whook/whook';
+import { WhookAPIHandlerDefinition } from '@whook/whook';
 declare const _default: import('knifecycle').HandlerInitializer<
   {
     API: any;
@@ -25,4 +25,4 @@ declare const _default: import('knifecycle').HandlerInitializer<
   >
 >;
 export default _default;
-export declare const definition: WhookDefinition;
+export declare const definition: WhookAPIHandlerDefinition;

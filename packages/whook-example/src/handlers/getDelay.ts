@@ -1,12 +1,25 @@
 import { autoHandler } from 'knifecycle';
 import {
   WhookResponse,
-  WhookDefinition,
-  WhookHandlerFunction,
+  WhookAPIHandlerDefinition,
+  WhookAPIParameterDefinition,
 } from '@whook/whook';
 import { DelayService } from 'common-services';
 
-export const definition: WhookDefinition = {
+export const durationParameter: WhookAPIParameterDefinition = {
+  name: 'duration',
+  parameter: {
+    in: 'query',
+    name: 'duration',
+    required: true,
+    description: 'Duration in milliseconds',
+    schema: {
+      type: 'number',
+    },
+  },
+};
+
+export const definition: WhookAPIHandlerDefinition = {
   path: '/delay',
   method: 'get',
   operation: {
@@ -15,13 +28,7 @@ export const definition: WhookDefinition = {
     tags: ['system'],
     parameters: [
       {
-        in: 'query',
-        name: 'duration',
-        required: true,
-        description: 'Duration in milliseconds',
-        schema: {
-          type: 'number',
-        },
+        $ref: `#/components/parameters/${durationParameter.name}`,
       },
     ],
     responses: {

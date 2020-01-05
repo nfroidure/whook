@@ -4,6 +4,7 @@ import {
   prepareServer as prepareBaseServer,
   prepareEnvironment as prepareBaseEnvironment,
   initAutoload,
+  initAPIDefinitions,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
@@ -53,6 +54,7 @@ export async function prepareEnvironment(
   // respective folders. Of course, you can also write your own
   // autoloader
   $.register(initAutoload);
+  $.register(initAPIDefinitions);
 
   // You have to declare the project main file directory
   // to allow autoloading features to work with it either

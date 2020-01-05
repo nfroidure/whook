@@ -1,13 +1,6 @@
 import { name, autoService } from 'knifecycle';
-
-import { definition as getOpenAPIDefinition } from '../handlers/getOpenAPI';
-import { definition as getPingDefinition } from '@whook/whook/dist/handlers/getPing';
-import { definition as getDelayDefinition } from '../handlers/getDelay';
-import { definition as getDiagnosticDefinition } from '../handlers/getDiagnostic';
-import { definition as getTimeDefinition } from '../handlers/getTime';
-import { definition as putEchoDefinition } from '../handlers/putEcho';
 import { augmentAPIWithCORS } from '@whook/cors';
-import { WhookConfig, noop } from '@whook/whook';
+import { WhookConfig, WhookAPIDefinitions, noop } from '@whook/whook';
 import { LogService } from 'common-services';
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -20,6 +13,7 @@ export type APIConfig = {
   BASE_URL?: string;
   BASE_PATH?: string;
   API_VERSION: string;
+  API_DEFINITIONS: WhookAPIDefinitions;
 };
 export type APIDependencies = APIConfig & {
   ENV: APIEnv;
@@ -37,6 +31,7 @@ async function initAPI({
   BASE_URL,
   BASE_PATH = '',
   API_VERSION,
+  API_DEFINITIONS,
   log = noop,
 }: APIDependencies) {
   log('debug', '🦄 - Initializing the API service!');
@@ -53,7 +48,9 @@ async function initAPI({
         url: `${BASE_URL}${BASE_PATH}`,
       },
     ],
+    ...API_DEFINITIONS,
     components: {
+      ...API_DEFINITIONS.components,
       securitySchemes: {
         bearerAuth: {
           type: 'http',
@@ -72,41 +69,77 @@ async function initAPI({
           : {}),
       },
     },
-    paths: [
-      getOpenAPIDefinition,
-      getPingDefinition,
-      getDelayDefinition,
-      getDiagnosticDefinition,
-      getTimeDefinition,
-      putEchoDefinition,
-    ]
-      .map(definition =>
-        ENV.DEV_MODE && definition.operation.security
-          ? {
-              ...definition,
-              operation: {
-                ...definition.operation,
-                security: [
-                  ...definition.operation.security,
-                  { fakeAuth: ['admin'] },
-                ],
-              },
-            }
-          : definition,
-      )
-      .reduce(
-        (paths, definition) => ({
-          ...paths,
-          [definition.path]: {
-            ...(paths[definition.path] || {}),
-            [definition.method]: definition.operation,
-          },
-        }),
-        {},
-      ),
+    // paths: [
+    //   getOpenAPIDefinition,
+    //   getPingDefinition,
+    //   getDelayDefinition,
+    //   getDiagnosticDefinition,
+    //   getTimeDefinition,
+    //   putEchoDefinition,
+    // ]
+    //   .map(definition =>
+    //     ENV.DEV_MODE && definition.operation.security
+    //       ? {
+    //           ...definition,
+    //           operation: {
+    //             ...definition.operation,
+    //             security: [
+    //               ...definition.operation.security,
+    //               { fakeAuth: ['admin'] },
+    //             ],
+    //           },
+    //         }
+    //       : definition,
+    //   )
+    //   .reduce(
+    //     (paths, definition) => ({
+    //       ...paths,
+    //       [definition.path]: {
+    //         ...(paths[definition.path] || {}),
+    //         [definition.method]: definition.operation,
+    //       },
+    //     }),
+    //     {},
+    //   ),
   };
 
   // You can apply transformations to your API like
   // here for CORS support (OPTIONS method handling)
-  return augmentAPIWithCORS(API);
+  return augmentAPIWithCORS(await augmentAPIWithFakeAuth({ ENV }, API));
+}
+
+async function augmentAPIWithFakeAuth(
+  { ENV }: { ENV: APIEnv },
+  API: OpenAPIV3.Document,
+): Promise<OpenAPIV3.Document> {
+  if (!ENV.DEV_MODE) {
+    return API;
+  }
+
+  return {
+    ...API,
+    paths: Object.keys(API.paths).reduce<OpenAPIV3.PathsObject>(
+      (newPathsObject, path) => ({
+        ...newPathsObject,
+        [path]: Object.keys(API.paths[path]).reduce(
+          (newPathItem, method) => ({
+            ...newPathItem,
+            [method]: {
+              ...API.paths[path][method],
+              ...(API.paths[path][method].security
+                ? {
+                    security: [
+                      ...API.paths[path][method].security,
+                      { fakeAuth: ['admin'] },
+                    ],
+                  }
+                : {}),
+            },
+          }),
+          {},
+        ),
+      }),
+      {},
+    ),
+  };
 }

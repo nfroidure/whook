@@ -1,6 +1,11 @@
-import { WhookResponse, WhookDefinition } from '@whook/whook';
+import {
+  WhookResponse,
+  WhookAPIHandlerDefinition,
+  WhookAPIParameterDefinition,
+} from '@whook/whook';
 import { DelayService } from 'common-services';
-export declare const definition: WhookDefinition;
+export declare const durationParameter: WhookAPIParameterDefinition;
+export declare const definition: WhookAPIHandlerDefinition;
 declare const _default: import('knifecycle').HandlerInitializer<
   {
     delay: DelayService;

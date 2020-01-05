@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initAPIDefinitions should work with a few handlers 1`] = `
+Object {
+  "API_DEFINITIONS": Object {
+    "components": Object {
+      "parameters": Object {
+        "userId": Object {
+          "in": "path",
+          "name": "userId",
+          "schema": Object {
+            "type": "number",
+          },
+        },
+      },
+      "schemas": Object {
+        "User": Object {
+          "properties": Object {
+            "name": Object {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+    },
+    "paths": Object {
+      "/ping": Object {
+        "get": Object {
+          "operationId": "getPing",
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "additionalProperties": false,
+                    "properties": Object {
+                      "pong": Object {
+                        "enum": Array [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Pong",
+            },
+          },
+          "summary": "Checks API's availability.",
+          "tags": Array [
+            "system",
+          ],
+        },
+      },
+      "/users/{userId}": Object {
+        "get": Object {
+          "operationId": "getUser",
+          "parameters": Array [
+            Object {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+        },
+      },
+    },
+  },
+  "logCalls": Array [],
+  "readDirCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getPing",
+    ],
+    Array [
+      "/home/whoiam/project/src/handlers/getUser",
+    ],
+  ],
+}
+`;
+
+exports[`initAPIDefinitions should work with no handlers 1`] = `
+Object {
+  "API_DEFINITIONS": Object {
+    "components": Object {
+      "parameters": Object {},
+      "schemas": Object {},
+    },
+    "paths": Object {},
+  },
+  "logCalls": Array [],
+  "readDirCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers",
+    ],
+  ],
+  "requireCalls": Array [],
+}
+`;

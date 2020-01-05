@@ -5,11 +5,20 @@ import {
   getOpenAPIOperations,
 } from '@whook/http-router/dist/utils';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
+import { initAPIDefinitions } from '@whook/whook';
+import path from 'path';
 
 describe('API', () => {
-  const { CONFIG, NODE_ENV, DEBUG_NODE_ENVS } = FULL_CONFIG;
+  const { CONFIG } = FULL_CONFIG;
   const BASE_URL = 'http://localhost:1337';
+  let API_DEFINITIONS;
   const log = jest.fn();
+
+  beforeAll(async () => {
+    API_DEFINITIONS = await initAPIDefinitions({
+      PROJECT_SRC: path.join(__dirname, '..'),
+    });
+  });
 
   beforeEach(() => {
     log.mockReset();
@@ -21,6 +30,7 @@ describe('API', () => {
       CONFIG,
       BASE_URL,
       API_VERSION: '1.1.0',
+      API_DEFINITIONS,
       log,
     });
 
@@ -36,6 +46,7 @@ describe('API', () => {
       CONFIG,
       BASE_URL,
       API_VERSION: '1.1.0',
+      API_DEFINITIONS,
       log,
     });
     const securitySchemes = API.components.securitySchemes;
@@ -62,6 +73,7 @@ describe('API', () => {
       CONFIG,
       BASE_URL,
       API_VERSION: '1.1.0',
+      API_DEFINITIONS,
       log,
     });
 
@@ -79,6 +91,7 @@ describe('API', () => {
         CONFIG,
         BASE_URL,
         API_VERSION: '1.1.0',
+        API_DEFINITIONS,
         log,
       });
 

@@ -64,6 +64,29 @@ exports[`API should work 1`] = `
 Object {
   "API": Object {
     "components": Object {
+      "parameters": Object {
+        "duration": Object {
+          "description": "Duration in milliseconds",
+          "in": "query",
+          "name": "duration",
+          "required": true,
+          "schema": Object {
+            "type": "number",
+          },
+        },
+      },
+      "schemas": Object {
+        "TimeSchema": Object {
+          "additionalProperties": false,
+          "properties": Object {
+            "currentDate": Object {
+              "format": "date-time",
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
       "securitySchemes": Object {
         "bearerAuth": Object {
           "description": "Bearer authentication with a user API token",
@@ -84,13 +107,7 @@ Object {
           "operationId": "getDelay",
           "parameters": Array [
             Object {
-              "description": "Duration in milliseconds",
-              "in": "query",
-              "name": "duration",
-              "required": true,
-              "schema": Object {
-                "type": "number",
-              },
+              "$ref": "#/components/parameters/duration",
             },
           ],
           "responses": Object {
@@ -378,14 +395,7 @@ Object {
               "content": Object {
                 "application/json": Object {
                   "schema": Object {
-                    "additionalProperties": false,
-                    "properties": Object {
-                      "currentDate": Object {
-                        "format": "date-time",
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
+                    "$ref": "#/components/schemas/TimeSchema",
                   },
                 },
               },

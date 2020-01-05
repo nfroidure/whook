@@ -1,6 +1,11 @@
-import { WhookDefinition, WhookResponse } from '@whook/whook';
+import {
+  WhookAPIHandlerDefinition,
+  WhookResponse,
+  WhookAPISchemaDefinition,
+} from '@whook/whook';
 import { TimeService } from 'common-services';
-export declare const definition: WhookDefinition;
+export declare const timeSchema: WhookAPISchemaDefinition;
+export declare const definition: WhookAPIHandlerDefinition;
 declare const _default: import('knifecycle').HandlerInitializer<
   {
     time: TimeService;

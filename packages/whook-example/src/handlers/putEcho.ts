@@ -1,6 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import YHTTPError from 'yhttperror';
-import { WhookDefinition } from '@whook/whook';
+import { WhookAPIHandlerDefinition } from '@whook/whook';
 import { OpenAPIV3 } from 'openapi-types';
 import { LogService } from 'common-services';
 
@@ -15,7 +15,7 @@ const echoSchema: OpenAPIV3.SchemaObject = {
   },
 };
 
-export const definition: WhookDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: '/echo',
   method: 'put',
   operation: {

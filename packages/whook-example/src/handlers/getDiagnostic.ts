@@ -1,7 +1,7 @@
 import { autoHandler } from 'knifecycle';
-import { WhookDefinition, WhookResponse } from '@whook/whook';
+import { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
 
-export const definition: WhookDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: '/diag',
   method: 'get',
   operation: {

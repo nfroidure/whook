@@ -1,10 +1,10 @@
 import { autoHandler } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router/dist/utils';
-import { WhookDefinition } from '@whook/whook';
+import { WhookAPIHandlerDefinition } from '@whook/whook';
 
 export default autoHandler(getOpenAPI);
 
-export const definition: WhookDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: '/openAPI',
   method: 'get',
   operation: {
@@ -25,7 +25,7 @@ export const definition: WhookDefinition = {
       },
     },
   },
-} as WhookDefinition;
+} as WhookAPIHandlerDefinition;
 
 async function getOpenAPI(
   { API },

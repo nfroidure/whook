@@ -1,8 +1,23 @@
 import { autoHandler } from 'knifecycle';
-import { WhookDefinition, WhookResponse } from '@whook/whook';
+import {
+  WhookAPIHandlerDefinition,
+  WhookResponse,
+  WhookAPISchemaDefinition,
+} from '@whook/whook';
 import { TimeService } from 'common-services';
 
-export const definition: WhookDefinition = {
+export const timeSchema: WhookAPISchemaDefinition = {
+  name: 'TimeSchema',
+  schema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      currentDate: { type: 'string', format: 'date-time' },
+    },
+  },
+};
+
+export const definition: WhookAPIHandlerDefinition = {
   path: '/time',
   method: 'get',
   operation: {
@@ -15,11 +30,7 @@ export const definition: WhookDefinition = {
         content: {
           'application/json': {
             schema: {
-              type: 'object',
-              additionalProperties: false,
-              properties: {
-                currentDate: { type: 'string', format: 'date-time' },
-              },
+              $ref: `#/components/schemas/${timeSchema.name}`,
             },
           },
         },

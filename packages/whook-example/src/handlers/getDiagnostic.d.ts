@@ -1,5 +1,5 @@
-import { WhookDefinition, WhookResponse } from '@whook/whook';
-export declare const definition: WhookDefinition;
+import { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
+export declare const definition: WhookAPIHandlerDefinition;
 declare const _default: import('knifecycle').HandlerInitializer<
   {
     TRANSACTIONS: {};

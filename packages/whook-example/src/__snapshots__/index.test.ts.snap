@@ -406,6 +406,24 @@ Object {
       "💱 - HTTP Transaction initialized.",
     ],
     Array [
+      "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/readDir",
+    ],
+    Array [
+      "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/readDir",
+    ],
+    Array [
+      "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/dist/services/readDir",
+    ],
+    Array [
+      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/require",
+    ],
+    Array [
+      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/require",
+    ],
+    Array [
+      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/dist/services/require",
+    ],
+    Array [
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL",
     ],
     Array [
@@ -413,6 +431,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/dist/services/PROTOCOL",
+    ],
+    Array [
+      "🈁 - Generating the API_DEFINITIONS",
     ],
     Array [
       "🚫 - Could not load \\".env.test\\" file.",
@@ -428,25 +449,19 @@ Object {
       "🦄 - Initializing the API service!",
     ],
     Array [
-      "💿 - Service \\"getOpenAPIWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+      "💿 - Service \\"getDelayWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
     ],
     Array [
       "💿 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts",
     ],
     Array [
-      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing",
-    ],
-    Array [
-      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing",
-    ],
-    Array [
-      "💿 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/dist/handlers/getPing.js",
-    ],
-    Array [
-      "💿 - Service \\"getDelayWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
-    ],
-    Array [
       "💿 - Service \\"getDiagnosticWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
+    ],
+    Array [
+      "💿 - Service \\"getOpenAPIWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+    ],
+    Array [
+      "💿 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.ts",
     ],
     Array [
       "💿 - Service \\"getTimeWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
@@ -455,19 +470,19 @@ Object {
       "💿 - Service \\"putEchoWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
     ],
     Array [
-      "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts.",
+      "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts.",
     ],
     Array [
       "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts.",
     ],
     Array [
-      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/dist/handlers/getPing.js.",
-    ],
-    Array [
-      "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts.",
-    ],
-    Array [
       "💿 - Loading getDiagnosticWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts.",
+    ],
+    Array [
+      "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts.",
+    ],
+    Array [
+      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.ts.",
     ],
     Array [
       "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts.",
@@ -506,19 +521,19 @@ Object {
       "🔧 - Initializing auth mechanisms",
     ],
     Array [
-      "🔐 - Initializing the authorization wrapper for \\"getOpenAPI\\".",
+      "🔐 - Initializing the authorization wrapper for \\"getDelay\\".",
     ],
     Array [
       "🔐 - Initializing the authorization wrapper for \\"optionsWithCORS\\".",
     ],
     Array [
-      "🔐 - Initializing the authorization wrapper for \\"getPing\\".",
-    ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"getDelay\\".",
-    ],
-    Array [
       "🔐 - Initializing the authorization wrapper for \\"getDiagnostic\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getOpenAPI\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getPing\\".",
     ],
     Array [
       "🔐 - Initializing the authorization wrapper for \\"getTime\\".",

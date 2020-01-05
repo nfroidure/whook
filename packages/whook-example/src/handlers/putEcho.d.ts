@@ -1,6 +1,6 @@
-import { WhookDefinition } from '@whook/whook';
+import { WhookAPIHandlerDefinition } from '@whook/whook';
 import { LogService } from 'common-services';
-export declare const definition: WhookDefinition;
+export declare const definition: WhookAPIHandlerDefinition;
 declare const _default: import('knifecycle').HandlerInitializer<
   {
     log: LogService;
