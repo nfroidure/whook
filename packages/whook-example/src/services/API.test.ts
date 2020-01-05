@@ -11,8 +11,8 @@ import path from 'path';
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;
   const BASE_URL = 'http://localhost:1337';
-  let API_DEFINITIONS;
   const log = jest.fn();
+  let API_DEFINITIONS;
 
   beforeAll(async () => {
     API_DEFINITIONS = await initAPIDefinitions({

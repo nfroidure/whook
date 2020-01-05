@@ -31,7 +31,7 @@ export declare type WhookAPIHandlerModule = {
     | WhookAPISchemaDefinition
     | WhookAPIParameterDefinition
     | WhookAPIHandlerDefinition;
-  operation: WhookAPIHandlerDefinition;
+  definition: WhookAPIHandlerDefinition;
 };
 declare const _default: typeof initAPIDefinitions;
 export default _default;

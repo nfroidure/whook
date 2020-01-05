@@ -1,6 +1,74 @@
-import initAPIDefinitions from './API_DEFINITIONS';
+import initAPIDefinitions, { WhookAPIHandlerModule } from './API_DEFINITIONS';
 import { definition as getPingDefinition } from '../handlers/getPing';
 import YError from 'yerror';
+
+const getUserModule: WhookAPIHandlerModule = {
+  definition: {
+    path: '/users/{userId}',
+    method: 'get',
+    operation: {
+      operationId: 'getUser',
+      parameters: [
+        {
+          $ref: `#/components/parameters/userId`,
+        },
+      ],
+      responses: {
+        200: {
+          description: 'The user',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: `#/components/schemas/User`,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  userIdParameter: {
+    name: 'userId',
+    parameter: {
+      name: 'userId',
+      in: 'path',
+      schema: { type: 'number' },
+    },
+  },
+  userSchema: {
+    name: 'User',
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+      },
+    },
+  },
+};
+const putUserModule: WhookAPIHandlerModule = {
+  definition: {
+    path: '/users/{userId}',
+    method: 'put',
+    operation: {
+      operationId: 'putUser',
+      parameters: [
+        {
+          $ref: `#/components/parameters/userId`,
+        },
+      ],
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              $ref: `#/components/schemas/User`,
+            },
+          },
+        },
+      },
+      responses: getUserModule.definition.operation.responses,
+    },
+  },
+};
 
 describe('initAPIDefinitions', () => {
   const PROJECT_SRC = '/home/whoiam/project/src';
@@ -41,46 +109,27 @@ describe('initAPIDefinitions', () => {
       require.mockReturnValueOnce({
         definition: getPingDefinition,
       });
-      require.mockReturnValueOnce({
-        definition: {
-          path: '/users/{userId}',
-          method: 'get',
-          operation: {
-            operationId: 'getUser',
-            parameters: [
-              {
-                $ref: `#/components/parameters/userId`,
-              },
-            ],
-          },
-          responses: {
-            200: {
-              content: {
-                'application/json': {
-                  $ref: `#/components/schemas/User`,
-                },
-              },
-            },
-          },
-        },
-        userIdParameter: {
-          name: 'userId',
-          parameter: {
-            name: 'userId',
-            in: 'path',
-            schema: { type: 'number' },
-          },
-        },
-        userSchema: {
-          name: 'User',
-          schema: {
-            type: 'object',
-            properties: {
-              name: { type: 'string' },
-            },
-          },
-        },
+      require.mockReturnValueOnce(getUserModule);
+
+      const API_DEFINITIONS = await initAPIDefinitions({
+        PROJECT_SRC,
+        log,
+        readDir,
+        require: (require as unknown) as any,
       });
+
+      expect({
+        API_DEFINITIONS,
+        logCalls: log.mock.calls.filter(args => args[0].endsWith('stack')),
+        readDirCalls: readDir.mock.calls,
+        requireCalls: require.mock.calls,
+      }).toMatchSnapshot();
+    });
+
+    it('with a several handlers at the same path', async () => {
+      readDir.mockReturnValueOnce(['getUser', 'putUser']);
+      require.mockReturnValueOnce(getUserModule);
+      require.mockReturnValueOnce(putUserModule);
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,

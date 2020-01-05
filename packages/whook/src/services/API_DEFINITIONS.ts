@@ -43,7 +43,7 @@ export type WhookAPIHandlerModule = {
     | WhookAPISchemaDefinition
     | WhookAPIParameterDefinition
     | WhookAPIHandlerDefinition;
-  operation: WhookAPIHandlerDefinition;
+  definition: WhookAPIHandlerDefinition;
 };
 
 export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
@@ -91,6 +91,7 @@ async function initAPIDefinitions({
           ...(definition
             ? {
                 [definition.path]: {
+                  ...(paths[definition.path] || {}),
                   [definition.method]: definition.operation,
                 },
               }

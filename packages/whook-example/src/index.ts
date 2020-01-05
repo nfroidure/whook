@@ -54,6 +54,10 @@ export async function prepareEnvironment(
   // respective folders. Of course, you can also write your own
   // autoloader
   $.register(initAutoload);
+
+  // This service loads the API definitions directly by
+  // looking at your `src/handlers` folder. You can
+  // realease this behavior by removing this line
   $.register(initAPIDefinitions);
 
   // You have to declare the project main file directory

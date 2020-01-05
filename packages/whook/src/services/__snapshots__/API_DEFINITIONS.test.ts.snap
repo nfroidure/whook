@@ -63,6 +63,18 @@ Object {
               "$ref": "#/components/parameters/userId",
             },
           ],
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
         },
       },
     },
@@ -79,6 +91,101 @@ Object {
     ],
     Array [
       "/home/whoiam/project/src/handlers/getUser",
+    ],
+  ],
+}
+`;
+
+exports[`initAPIDefinitions should work with a several handlers at the same path 1`] = `
+Object {
+  "API_DEFINITIONS": Object {
+    "components": Object {
+      "parameters": Object {
+        "userId": Object {
+          "in": "path",
+          "name": "userId",
+          "schema": Object {
+            "type": "number",
+          },
+        },
+      },
+      "schemas": Object {
+        "User": Object {
+          "properties": Object {
+            "name": Object {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+    },
+    "paths": Object {
+      "/users/{userId}": Object {
+        "get": Object {
+          "operationId": "getUser",
+          "parameters": Array [
+            Object {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+        },
+        "put": Object {
+          "operationId": "putUser",
+          "parameters": Array [
+            Object {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+        },
+      },
+    },
+  },
+  "logCalls": Array [],
+  "readDirCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getUser",
+    ],
+    Array [
+      "/home/whoiam/project/src/handlers/putUser",
     ],
   ],
 }

@@ -1,6 +1,10 @@
 import { ProviderInitializer } from 'knifecycle';
 import { HTTPRouterService } from '@whook/whook';
+import initGetOpenAPI, {
+  definition as getOpenAPIDefinition,
+} from './handlers/getOpenAPI';
 import { LogService } from 'common-services';
+export { initGetOpenAPI, getOpenAPIDefinition };
 export declare type WhookSwaggerUIEnv = {
   DEV_MODE?: string;
 };

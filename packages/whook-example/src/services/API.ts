@@ -69,38 +69,6 @@ async function initAPI({
           : {}),
       },
     },
-    // paths: [
-    //   getOpenAPIDefinition,
-    //   getPingDefinition,
-    //   getDelayDefinition,
-    //   getDiagnosticDefinition,
-    //   getTimeDefinition,
-    //   putEchoDefinition,
-    // ]
-    //   .map(definition =>
-    //     ENV.DEV_MODE && definition.operation.security
-    //       ? {
-    //           ...definition,
-    //           operation: {
-    //             ...definition.operation,
-    //             security: [
-    //               ...definition.operation.security,
-    //               { fakeAuth: ['admin'] },
-    //             ],
-    //           },
-    //         }
-    //       : definition,
-    //   )
-    //   .reduce(
-    //     (paths, definition) => ({
-    //       ...paths,
-    //       [definition.path]: {
-    //         ...(paths[definition.path] || {}),
-    //         [definition.method]: definition.operation,
-    //       },
-    //     }),
-    //     {},
-    //   ),
   };
 
   // You can apply transformations to your API like

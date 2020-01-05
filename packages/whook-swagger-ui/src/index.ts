@@ -2,8 +2,12 @@ import { wrapInitializer, alsoInject, ProviderInitializer } from 'knifecycle';
 import { HTTPRouterProvider, HTTPRouterService } from '@whook/whook';
 import swaggerDist from 'swagger-ui-dist';
 import ecstatic from 'ecstatic';
-import { definition as getOpenAPIDefinition } from './handlers/getOpenAPI';
+import initGetOpenAPI, {
+  definition as getOpenAPIDefinition,
+} from './handlers/getOpenAPI';
 import { LogService } from 'common-services';
+
+export { initGetOpenAPI, getOpenAPIDefinition };
 
 export type WhookSwaggerUIEnv = {
   DEV_MODE?: string;
