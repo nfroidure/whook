@@ -1,6 +1,6 @@
 {
   "name": "@whook/method-override",
-  "version": "4.0.0-alpha.21",
+  "version": "4.0.0-alpha.22",
   "description": "A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.",
   "main": "dist/index.js",
   "types": "src/index.d.ts",
@@ -43,8 +43,8 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/http-transaction": "^4.0.0-alpha.21",
-    "@whook/whook": "^4.0.0-alpha.21",
+    "@whook/http-transaction": "^4.0.0-alpha.22",
+    "@whook/whook": "^4.0.0-alpha.22",
     "common-services": "^6.1.0",
     "knifecycle": "^8.0.1"
   },
