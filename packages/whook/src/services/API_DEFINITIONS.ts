@@ -25,10 +25,16 @@ export type WhookAPIDefinitions = {
   paths: OpenAPIV3.PathsObject;
   components: OpenAPIV3.ComponentsObject;
 };
+export type WhookAPIOperationConfig = {
+  disabled?: boolean;
+};
+export type WhookAPIOperationAddition = {
+  'x-whook'?: WhookAPIOperationConfig;
+};
 export type WhookAPIHandlerDefinition = {
   path: string;
   method: string;
-  operation: OpenAPIV3.OperationObject;
+  operation: OpenAPIV3.OperationObject & WhookAPIOperationAddition;
 };
 export type WhookAPISchemaDefinition = {
   name: string;
@@ -85,6 +91,10 @@ async function initAPIDefinitions({
     paths: handlersModules.reduce<OpenAPIV3.PathsObject>(
       (paths, module: WhookAPIHandlerModule) => {
         const definition = module.definition as WhookAPIHandlerDefinition;
+
+        if (((definition && definition.operation['x-whook']) || {}).disabled) {
+          return paths;
+        }
 
         return {
           ...paths,

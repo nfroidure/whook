@@ -1,4 +1,7 @@
-import initAPIDefinitions, { WhookAPIHandlerModule } from './API_DEFINITIONS';
+import initAPIDefinitions, {
+  WhookAPIHandlerModule,
+  WhookAPIHandlerDefinition,
+} from './API_DEFINITIONS';
 import { definition as getPingDefinition } from '../handlers/getPing';
 import YError from 'yerror';
 
@@ -129,6 +132,38 @@ describe('initAPIDefinitions', () => {
     it('with a several handlers at the same path', async () => {
       readDir.mockReturnValueOnce(['getUser', 'putUser']);
       require.mockReturnValueOnce(getUserModule);
+      require.mockReturnValueOnce(putUserModule);
+
+      const API_DEFINITIONS = await initAPIDefinitions({
+        PROJECT_SRC,
+        log,
+        readDir,
+        require: (require as unknown) as any,
+      });
+
+      expect({
+        API_DEFINITIONS,
+        logCalls: log.mock.calls.filter(args => args[0].endsWith('stack')),
+        readDirCalls: readDir.mock.calls,
+        requireCalls: require.mock.calls,
+      }).toMatchSnapshot();
+    });
+
+    it('with a disabled handler at the same path', async () => {
+      const getUserModuleDisabled: WhookAPIHandlerModule = {
+        ...getUserModule,
+        definition: {
+          ...getUserModule.definition,
+          operation: {
+            ...getUserModule.definition.operation,
+            'x-whook': {
+              disabled: true,
+            },
+          },
+        },
+      };
+      readDir.mockReturnValueOnce(['getUser', 'putUser']);
+      require.mockReturnValueOnce(getUserModuleDisabled);
       require.mockReturnValueOnce(putUserModule);
 
       const API_DEFINITIONS = await initAPIDefinitions({
