@@ -176,6 +176,7 @@
     ]
   },
   "jest": {
+    "testEnvironment": "node",
     "coverageReporters": [
       "lcov",
       "html"

@@ -70,9 +70,13 @@ describe('runServer', () => {
     await $instance.destroy();
 
     expect({
-      debugCalls: debug.mock.calls.sort((a, b) => (a[0] > b[0] ? 1 : 0)),
+      debugCalls: debug.mock.calls.sort(sortLogs),
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,
     }).toMatchSnapshot();
   });
 });
+
+function sortLogs(strs1, strs2) {
+  return strs1[0] > strs2[0] ? 1 : strs1[0] === strs2[0] ? 0 : -1;
+}

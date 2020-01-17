@@ -70,7 +70,7 @@ describe('runServer', () => {
 
   it('should work', async () => {
     expect({
-      debugCalls: debug.mock.calls.map(filterPaths),
+      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
       logInfoCalls: logger.info.mock.calls.map(filterPaths),
       logErrorCalls: logger.error.mock.calls.map(filterPaths),
     }).toMatchSnapshot();
@@ -92,7 +92,7 @@ describe('runServer', () => {
         date: undefined,
       },
       data,
-      debugCalls: debug.mock.calls.map(filterPaths),
+      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
       logInfoCalls: logger.info.mock.calls.map(filterPaths),
       logErrorCalls: logger.error.mock.calls.map(filterPaths),
     }).toMatchSnapshot();
@@ -117,7 +117,7 @@ describe('runServer', () => {
         date: undefined,
       },
       data,
-      debugCalls: debug.mock.calls.map(filterPaths),
+      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
       logInfoCalls: logger.info.mock.calls.map(filterPaths),
       logErrorCalls: logger.error.mock.calls.map(filterPaths),
     }).toMatchSnapshot();
@@ -146,7 +146,7 @@ describe('runServer', () => {
           date: undefined,
         },
         data,
-        debugCalls: debug.mock.calls.map(filterPaths),
+        debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
         logInfoCalls: logger.info.mock.calls.map(filterPaths),
         logErrorCalls: logger.error.mock.calls
           .map(filterPaths)
@@ -155,6 +155,10 @@ describe('runServer', () => {
     }
   });
 });
+
+function sortLogs(strs1, strs2) {
+  return strs1[0] > strs2[0] ? 1 : strs1[0] === strs2[0] ? 0 : -1;
+}
 
 function filterPaths(strs) {
   return strs.map(str =>
