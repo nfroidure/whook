@@ -13,11 +13,12 @@ export type APIConfig = {
   BASE_URL?: string;
   BASE_PATH?: string;
   API_VERSION: string;
-  API_DEFINITIONS: WhookAPIDefinitions;
+  API_DEFINITIONS?: WhookAPIDefinitions;
 };
 export type APIDependencies = APIConfig & {
   ENV: APIEnv;
   BASE_URL: string;
+  API_DEFINITIONS: WhookAPIDefinitions;
   log?: LogService;
 };
 

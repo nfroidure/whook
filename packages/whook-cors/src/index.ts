@@ -114,7 +114,12 @@ export async function augmentAPIWithCORS(
       summary: 'Enable OPTIONS for CORS',
       tags: ['CORS'],
       parameters: (canonicalOperation.parameters || [])
-        .concat(extractOperationSecurityParameters(API, canonicalOperation))
+        .concat(
+          extractOperationSecurityParameters(
+            API,
+            canonicalOperation as WhookOperation,
+          ),
+        )
         .filter(parameter => {
           const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
             .$ref

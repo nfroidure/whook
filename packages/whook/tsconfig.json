@@ -6,9 +6,9 @@
     "noImplicitAny": false,
     "removeComments": false,
     "preserveConstEnums": true,
-    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "declaration": true
   },
   "include": [
     "src/**/*.ts"

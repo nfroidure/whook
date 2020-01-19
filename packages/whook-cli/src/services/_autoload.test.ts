@@ -1,4 +1,3 @@
-import { resolveWhookPlugins } from '@whook/whook/dist/services/_autoload';
 import YError from 'yerror';
 
 describe('$autoload', () => {
@@ -18,7 +17,6 @@ describe('$autoload', () => {
       const _default = async () => $baseAutoload;
 
       _default.default = _default;
-      _default.resolveWhookPlugins = resolveWhookPlugins;
       return _default;
     });
 
@@ -48,7 +46,6 @@ describe('$autoload', () => {
       const _default = async () => $baseAutoload;
 
       _default.default = _default;
-      _default.resolveWhookPlugins = resolveWhookPlugins;
       return _default;
     });
     requireMock.mockImplementationOnce(() => {
@@ -81,7 +78,6 @@ describe('$autoload', () => {
       const _default = async () => $baseAutoload;
 
       _default.default = _default;
-      _default.resolveWhookPlugins = resolveWhookPlugins;
       return _default;
     });
     requireMock.mockReturnValueOnce({
@@ -115,7 +111,6 @@ describe('$autoload', () => {
       const _default = async () => $baseAutoload;
 
       _default.default = _default;
-      _default.resolveWhookPlugins = resolveWhookPlugins;
       return _default;
     });
     requireMock.mockImplementationOnce(() => {
@@ -152,7 +147,6 @@ describe('$autoload', () => {
       const _default = async () => $baseAutoload;
 
       _default.default = _default;
-      _default.resolveWhookPlugins = resolveWhookPlugins;
       return _default;
     });
     requireMock.mockImplementationOnce(() => {
@@ -192,7 +186,6 @@ describe('$autoload', () => {
       const _default = async () => $baseAutoload;
 
       _default.default = _default;
-      _default.resolveWhookPlugins = resolveWhookPlugins;
       return _default;
     });
     requireMock.mockImplementationOnce(() => {
@@ -233,7 +226,6 @@ describe('$autoload', () => {
         const _default = async () => $baseAutoload;
 
         _default.default = _default;
-        _default.resolveWhookPlugins = resolveWhookPlugins;
         return _default;
       });
       requireMock.mockReturnValueOnce({});
@@ -265,7 +257,6 @@ describe('$autoload', () => {
         const _default = async () => $baseAutoload;
 
         _default.default = _default;
-        _default.resolveWhookPlugins = resolveWhookPlugins;
         return _default;
       });
       requireMock.mockReturnValueOnce({
