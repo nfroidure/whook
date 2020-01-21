@@ -25,7 +25,7 @@ describe('commands should work', () => {
 
   it('with config', async () => {
     const { stdout, stderr } = await execCommand(
-      'npm run whook --silent -- config --name BASE_PATH',
+      'npm run whook --silent -- config --name HOST',
     );
 
     expect({

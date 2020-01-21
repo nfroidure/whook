@@ -4,7 +4,7 @@ exports[`commands should work with config 1`] = `
 Object {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.
 ",
-  "stdout": "\\"/v3\\"
+  "stdout": "\\"localhost\\"
 ",
 }
 `;
