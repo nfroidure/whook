@@ -413,6 +413,24 @@ Object {
       "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS",
     ],
     Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_SUFFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES",
+    ],
+    Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT",
     ],
     Array [

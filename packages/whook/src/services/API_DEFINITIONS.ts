@@ -9,6 +9,15 @@ import { OpenAPIV3 } from 'openapi-types';
 // Needed to avoid messing up babel builds 🤷
 const _require = require;
 
+export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
+export const DEFAULT_IGNORED_FILES_SUFFIXES = [
+  '.test.js',
+  '.d.js',
+  '.test.ts',
+  '.d.ts',
+  '.js.map',
+];
+
 /* Architecture Note #10: API definitions loader
 The `API_DEFINITIONS` service provide a convenient way to
  gather your various API definitions from the handlers you
@@ -17,6 +26,8 @@ The `API_DEFINITIONS` service provide a convenient way to
 
 export type WhookAPIDefinitionsDependencies = {
   PROJECT_SRC: string;
+  IGNORED_FILES_SUFFIXES?: string[];
+  IGNORED_FILES_PREFIXES?: string[];
   log?: LogService;
   require?: typeof _require;
   readDir?: typeof _readDir;
@@ -61,6 +72,10 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  * The services API_DEFINITIONS depends on
  * @param  {Object}   services.PROJECT_SRC
  * The project sources location
+ * @param  {Object}   [services.IGNORED_FILES_SUFFIXES]
+ * The files suffixes the autoloader must ignore
+ * @param  {Object}   [services.IGNORED_FILES_PREFIXES]
+ * The files prefixes the autoloader must ignore
  * @param  {Object}   [log=noop]
  * An optional logging service
  * @return {Promise<String>}
@@ -68,6 +83,8 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  */
 async function initAPIDefinitions({
   PROJECT_SRC,
+  IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
+  IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
   log = noop,
   readDir = _readDir,
   require = _require,
@@ -79,11 +96,8 @@ async function initAPIDefinitions({
       file =>
         file !== '..' &&
         file !== '.' &&
-        !file.startsWith('__') &&
-        !file.endsWith('.test.js') &&
-        !file.endsWith('.d.js') &&
-        !file.endsWith('.test.ts') &&
-        !file.endsWith('.d.ts'),
+        !IGNORED_FILES_PREFIXES.some(prefix => file.startsWith(prefix)) &&
+        !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
     )
     .map(file => path.join(PROJECT_SRC, 'handlers', file))
     .map(file => (require(file) as unknown) as WhookAPIHandlerModule);

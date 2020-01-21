@@ -11,6 +11,8 @@ import {
 } from '../services/promptArgs';
 import { LogService } from 'common-services';
 import {
+  DEFAULT_IGNORED_FILES_PREFIXES,
+  DEFAULT_IGNORED_FILES_SUFFIXES,
   CONFIGSService,
   WhookPluginsService,
   WhookPluginsPathsService,
@@ -40,6 +42,8 @@ export default extra(definition, autoService(initLsCommand));
 async function initLsCommand({
   CONFIG,
   PROJECT_SRC,
+  IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
+  IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
   WHOOK_PLUGINS,
   WHOOK_PLUGINS_PATHS,
   readDir = _readDir,
@@ -50,6 +54,8 @@ async function initLsCommand({
 }: {
   CONFIG: CONFIGSService;
   PROJECT_SRC: string;
+  IGNORED_FILES_SUFFIXES?: string[];
+  IGNORED_FILES_PREFIXES?: string[];
   WHOOK_PLUGINS: WhookPluginsService;
   WHOOK_PLUGINS_PATHS: WhookPluginsPathsService;
   readDir?: typeof _readDir;
@@ -72,11 +78,10 @@ async function initLsCommand({
                 file =>
                   file !== '..' &&
                   file !== '.' &&
-                  !file.startsWith('__') &&
-                  !file.endsWith('.test.js') &&
-                  !file.endsWith('.d.js') &&
-                  !file.endsWith('.test.ts') &&
-                  !file.endsWith('.d.ts'),
+                  !IGNORED_FILES_PREFIXES.some(prefix =>
+                    file.startsWith(prefix),
+                  ) &&
+                  !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
               )
               .map(file => path.join(pluginPath, 'commands', file))
               .map(file => require(file))

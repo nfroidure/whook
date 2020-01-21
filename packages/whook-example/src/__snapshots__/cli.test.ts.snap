@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`commands should work with config 1`] = `
+Object {
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.
+",
+  "stdout": "\\"/v3\\"
+",
+}
+`;
+
+exports[`commands should work with env 1`] = `
+Object {
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.
+🖥 - Using local env.
+",
+  "stdout": "test
+",
+}
+`;
+
+exports[`commands should work with ls 1`] = `
+Object {
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.
+",
+  "stdout": "
+
+# Provided by \\"@whook/example\\": 1 commands
+- printEnv: A command printing every env values
+
+
+# Provided by \\"@whook/cli\\": 4 commands
+- config: A simple program that returns the queryed config value
+- env: A command printing env values
+- handler: Runs the given server handler for testing purpose
+- ls: Print available commands
+
+
+# Provided by \\"@whook/whook\\": none
+",
+}
+`;

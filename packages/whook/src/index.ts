@@ -46,6 +46,8 @@ import initWhookPluginsPaths, {
   WhookPluginsPathsConfig,
 } from './services/WHOOK_PLUGINS_PATHS';
 import initAPIDefinitions, {
+  DEFAULT_IGNORED_FILES_PREFIXES,
+  DEFAULT_IGNORED_FILES_SUFFIXES,
   WhookAPIDefinitions,
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
@@ -73,6 +75,8 @@ export {
   initGetPing,
   initGetPingDefinition,
   initAutoload,
+  DEFAULT_IGNORED_FILES_PREFIXES,
+  DEFAULT_IGNORED_FILES_SUFFIXES,
   initAPIDefinitions,
   WhookAPIDefinitions,
   WhookAPIHandlerDefinition,
