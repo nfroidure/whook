@@ -9,7 +9,7 @@ import {
 } from 'knifecycle';
 import { OpenAPIV3 } from 'openapi-types';
 import YHTTPError from 'yhttperror';
-import semver from 'semver';
+import semverSatisfies from 'semver/functions/satisfies';
 import camelCase from 'camel-case';
 
 export type VersionDescriptor = {
@@ -61,7 +61,7 @@ async function handleWithVersionChecker<
 
     if (
       'undefined' !== typeof value &&
-      !semver.satisfies(value, version.rule, { includePrerelease: true })
+      !semverSatisfies(value, version.rule, { includePrerelease: true })
     ) {
       throw new YHTTPError(
         418,
