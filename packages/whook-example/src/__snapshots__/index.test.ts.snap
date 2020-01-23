@@ -15,9 +15,9 @@ Object {
           "authorization": "Fake 1-admin",
           "connection": "close",
           "host": "localhost:9999",
-          "user-agent": "axios/0.19.1",
+          "user-agent": "__avoid_axios_version__",
         },
-        "startInBytes": 164,
+        "startInBytes": 175,
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "url": "/v4/diag",
@@ -49,8 +49,8 @@ Object {
   "logInfoCalls": Array [
     Array [
       Object {
-        "endInBytes": 164,
-        "endOutBytes": 826,
+        "endInBytes": 175,
+        "endOutBytes": 837,
         "endTime": 1390694400000,
         "errored": false,
         "id": "1",
@@ -63,7 +63,7 @@ Object {
           "authorization": "Fake 1-admin",
           "connection": "close",
           "host": "localhost:9999",
-          "user-agent": "axios/0.19.1",
+          "user-agent": "__avoid_axios_version__",
         },
         "resHeaders": Object {
           "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
@@ -73,7 +73,7 @@ Object {
           "X-Authenticated": "{\\"hash\\":\\"1-admin\\",\\"userId\\":1,\\"scopes\\":[\\"admin\\"]}",
           "content-type": "application/json",
         },
-        "startInBytes": 164,
+        "startInBytes": 175,
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,
@@ -118,7 +118,7 @@ Object {
   "logInfoCalls": Array [
     Array [
       Object {
-        "endInBytes": 164,
+        "endInBytes": 175,
         "endOutBytes": 510,
         "endTime": 1390694400000,
         "errored": true,
@@ -132,7 +132,7 @@ Object {
           "authorization": "Fake e-admin",
           "connection": "close",
           "host": "localhost:9999",
-          "user-agent": "axios/0.19.1",
+          "user-agent": "__avoid_axios_version__",
         },
         "resHeaders": Object {
           "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
@@ -142,7 +142,7 @@ Object {
           "cache-control": "private",
           "content-type": "application/json",
         },
-        "startInBytes": 164,
+        "startInBytes": 175,
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 400,
@@ -187,7 +187,7 @@ Object {
   "logInfoCalls": Array [
     Array [
       Object {
-        "endInBytes": 135,
+        "endInBytes": 146,
         "endOutBytes": 447,
         "endTime": 1390694400000,
         "errored": false,
@@ -200,7 +200,7 @@ Object {
           "accept": "application/json, text/plain, */*",
           "connection": "close",
           "host": "localhost:9999",
-          "user-agent": "axios/0.19.1",
+          "user-agent": "__avoid_axios_version__",
         },
         "resHeaders": Object {
           "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
@@ -210,7 +210,7 @@ Object {
           "X-Node-ENV": "test",
           "content-type": "application/json",
         },
-        "startInBytes": 135,
+        "startInBytes": 146,
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "statusCode": 200,

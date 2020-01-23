@@ -115,9 +115,11 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios.get(
-      `http://${HOST}:${PORT}${BASE_PATH}/ping`,
-    );
+    const { status, headers, data } = await axios({
+      method: 'get',
+      url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
+      headers: { 'user-agent': '__avoid_axios_version__' },
+    });
 
     await $instance.destroy();
 
@@ -162,9 +164,11 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios.get(
-      `http://${HOST}:${PORT + 2}/docs`,
-    );
+    const { status, headers, data } = await axios({
+      method: 'get',
+      url: `http://${HOST}:${PORT + 2}/docs`,
+      headers: { 'user-agent': '__avoid_axios_version__' },
+    });
 
     await $instance.destroy();
 

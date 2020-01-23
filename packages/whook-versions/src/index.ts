@@ -93,6 +93,29 @@ export async function augmentAPIWithVersionsHeaders(
 ) {
   return {
     ...API,
+    components: {
+      ...(API.components || {}),
+      parameters: {
+        ...((API.components || {}).parameters || {}),
+        ...VERSIONS.reduce<{ [key: string]: OpenAPIV3.ParameterObject }>(
+          (versionsParameters, version) => ({
+            ...versionsParameters,
+            [camelCase(version.header)]: {
+              name: version.header,
+              in: 'header',
+              required: false,
+              example: '1.1.2-beta.1',
+              schema: {
+                type: 'string',
+                pattern:
+                  '^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$',
+              },
+            },
+          }),
+          {},
+        ),
+      },
+    },
     paths: Object.keys(API.paths).reduce<OpenAPIV3.PathsObject>(
       reducePaths,
       API.paths,
@@ -122,15 +145,7 @@ export async function augmentAPIWithVersionsHeaders(
         ...pathItemObject[method],
         parameters: (pathItemObject[method].parameters || []).concat(
           VERSIONS.map(version => ({
-            name: version.header,
-            in: 'header',
-            required: false,
-            example: '1.1.2-beta.1',
-            schema: {
-              type: 'string',
-              pattern:
-                '^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$',
-            },
+            $ref: `#/components/parameters/${camelCase(version.header)}`,
           })),
         ),
       },

@@ -113,6 +113,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: {
         'X-HTTP-Method-Override': 'get',
+        'user-agent': '__avoid_axios_version__',
       },
     }).catch(err => err.response);
 
@@ -135,6 +136,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
+      headers: { 'user-agent': '__avoid_axios_version__' },
     }).catch(err => err.response);
 
     expect({

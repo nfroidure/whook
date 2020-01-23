@@ -2,6 +2,40 @@
 
 exports[`augmentAPIWithVersionsHeaders() should work 1`] = `
 Object {
+  "components": Object {
+    "parameters": Object {
+      "xApiVersion": Object {
+        "example": "1.1.2-beta.1",
+        "in": "header",
+        "name": "X-API-Version",
+        "required": false,
+        "schema": Object {
+          "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
+          "type": "string",
+        },
+      },
+      "xAppVersion": Object {
+        "example": "1.1.2-beta.1",
+        "in": "header",
+        "name": "X-APP-Version",
+        "required": false,
+        "schema": Object {
+          "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
+          "type": "string",
+        },
+      },
+      "xSdkVersion": Object {
+        "example": "1.1.2-beta.1",
+        "in": "header",
+        "name": "X-SDK-Version",
+        "required": false,
+        "schema": Object {
+          "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
+          "type": "string",
+        },
+      },
+    },
+  },
   "info": Object {
     "description": "A sample Swagger file for testing purpose.",
     "title": "Sample Swagger",
@@ -14,34 +48,13 @@ Object {
         "operationId": "ping",
         "parameters": Array [
           Object {
-            "example": "1.1.2-beta.1",
-            "in": "header",
-            "name": "X-API-Version",
-            "required": false,
-            "schema": Object {
-              "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
-              "type": "string",
-            },
+            "$ref": "#/components/parameters/xApiVersion",
           },
           Object {
-            "example": "1.1.2-beta.1",
-            "in": "header",
-            "name": "X-SDK-Version",
-            "required": false,
-            "schema": Object {
-              "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
-              "type": "string",
-            },
+            "$ref": "#/components/parameters/xSdkVersion",
           },
           Object {
-            "example": "1.1.2-beta.1",
-            "in": "header",
-            "name": "X-APP-Version",
-            "required": false,
-            "schema": Object {
-              "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
-              "type": "string",
-            },
+            "$ref": "#/components/parameters/xAppVersion",
           },
         ],
         "responses": Object {

@@ -376,7 +376,7 @@ Object {
   "logInfoCalls": Array [
     Array [
       Object {
-        "endInBytes": 135,
+        "endInBytes": 146,
         "endOutBytes": 179,
         "endTime": 1267833600000,
         "errored": false,
@@ -389,12 +389,12 @@ Object {
           "accept": "application/json, text/plain, */*",
           "connection": "close",
           "host": "localhost:8888",
-          "user-agent": "axios/0.19.1",
+          "user-agent": "__avoid_axios_version__",
         },
         "resHeaders": Object {
           "content-type": "application/json",
         },
-        "startInBytes": 135,
+        "startInBytes": 146,
         "startOutBytes": 0,
         "startTime": 1267833600000,
         "statusCode": 200,

@@ -82,6 +82,7 @@ describe('runServer', () => {
     const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
+      headers: { 'user-agent': '__avoid_axios_version__' },
     });
 
     expect({
@@ -106,6 +107,7 @@ describe('runServer', () => {
       url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
       headers: {
         authorization: `Fake 1-admin`,
+        'user-agent': '__avoid_axios_version__',
       },
     });
 
@@ -132,6 +134,7 @@ describe('runServer', () => {
         url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
         headers: {
           authorization: `Fake e-admin`,
+          'user-agent': '__avoid_axios_version__',
         },
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
