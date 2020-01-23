@@ -17,7 +17,7 @@ describe('NECHANISMS', () => {
     expect(MECHANISMS).toEqual([BEARER_MECHANISM]);
 
     expect({
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -30,7 +30,7 @@ describe('NECHANISMS', () => {
     expect(MECHANISMS).toEqual([BEARER_MECHANISM, FAKE_MECHANISM]);
 
     expect({
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 });

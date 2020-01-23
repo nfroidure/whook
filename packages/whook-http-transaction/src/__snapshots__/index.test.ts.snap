@@ -64,6 +64,12 @@ Object {
       30000,
     ],
   ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "💱 - HTTP Transaction initialized.",
+    ],
+  ],
   "obfuscateCalls": Array [],
   "obfuscateSensibleHeadersCalls": Array [
     Array [

@@ -37,7 +37,7 @@ describe('$autoload', () => {
       result,
       requireCalls: requireMock.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -69,7 +69,7 @@ describe('$autoload', () => {
       result,
       requireCalls: requireMock.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -102,7 +102,7 @@ describe('$autoload', () => {
       result,
       requireCalls: requireMock.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -138,7 +138,7 @@ describe('$autoload', () => {
       result,
       requireCalls: requireMock.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -177,7 +177,7 @@ describe('$autoload', () => {
       result,
       requireCalls: requireMock.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -216,7 +216,7 @@ describe('$autoload', () => {
       result,
       requireCalls: requireMock.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -247,7 +247,7 @@ describe('$autoload', () => {
           errorParams: err.params,
           requireCalls: requireMock.mock.calls,
           baseAutoloaderCalls: $baseAutoload.mock.calls,
-          logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchSnapshot();
       }
     });
@@ -280,7 +280,7 @@ describe('$autoload', () => {
           errorParams: err.params,
           requireCalls: requireMock.mock.calls,
           baseAutoloaderCalls: $baseAutoload.mock.calls,
-          logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchSnapshot();
       }
     });

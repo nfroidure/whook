@@ -48,12 +48,16 @@ Object {
       "✍️ - Initializing author...",
     ],
     Array [
-      "stack",
-      undefined,
+      "debug",
+      "STDERR:
+",
+      "",
     ],
     Array [
-      "stack",
-      undefined,
+      "debug",
+      "STDERR:
+",
+      "",
     ],
     Array [
       "debug",

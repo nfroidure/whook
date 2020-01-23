@@ -1,0 +1,181 @@
+{
+  "name": "@whook/oauth2",
+  "version": "3.1.3",
+  "description": "OAuth2 implementation for Whook servers",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "metapak": {
+    "configs": [
+      "main",
+      "readme",
+      "eslint",
+      "babel",
+      "jest",
+      "jsdocs",
+      "typescript"
+    ],
+    "data": {
+      "childPackage": true,
+      "files": "'src/**/*.ts'",
+      "testsFiles": "'src/**/*.test.ts'",
+      "ignore": [
+        "dist"
+      ],
+      "bundleFiles": [
+        "dist",
+        "src"
+      ]
+    }
+  },
+  "author": {
+    "name": "Nicolas Froidure",
+    "email": "nicolas.froidure@insertafter.com",
+    "url": "http://insertafter.com/en/index.html"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nfroidure/whook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nfroidure/whook/issues"
+  },
+  "homepage": "https://github.com/nfroidure/whook",
+  "dependencies": {
+    "@whook/authorization": "3.1.3",
+    "@whook/whook": "3.1.3",
+    "camel-case": "^4.1.1",
+    "common-services": "^6.2.0",
+    "knifecycle": "^8.1.0",
+    "ms": "^2.1.2",
+    "snake-case": "^3.0.3",
+    "yerror": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
+    "@babel/register": "^7.8.6",
+    "@types/jest": "^24.9.0",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-knifecycle": "^1.2.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "http-auth-utils": "^2.4.0",
+    "jest": "^25.1.0",
+    "jsdoc-to-markdown": "^5.0.3",
+    "metapak": "^3.1.8",
+    "metapak-nfroidure": "9.8.1",
+    "openapi-types": "^1.3.5",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.3"
+  },
+  "contributors": [],
+  "engines": {
+    "node": ">=10.19.0"
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "modules": true
+    },
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": "error"
+    },
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": [
+      "*.d.ts"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "rules": {
+          "no-unused-vars": [
+            1,
+            {
+              "args": "none"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "proseWrap": "always"
+  },
+  "babel": {
+    "presets": [
+      "@babel/typescript",
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "10.19.0"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread",
+      "babel-plugin-knifecycle"
+    ]
+  },
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "html"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testEnvironment": "node"
+  },
+  "scripts": {
+    "cli": "env NODE_ENV=${NODE_ENV:-cli}",
+    "compile": "babel --extensions '.ts,.js' src --out-dir=dist --source-maps=true",
+    "cover": "npm run jest -- --coverage",
+    "doc": "echo \"# API\" > API.md; jsdoc2md undefined >> API.md && git add API.md",
+    "jest": "NODE_ENV=test jest",
+    "lint": "eslint 'src/**/*.ts'",
+    "metapak": "metapak",
+    "precz": "npm run compile",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "preversion": "npm run compile",
+    "test": "npm run jest",
+    "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist"
+  }
+}

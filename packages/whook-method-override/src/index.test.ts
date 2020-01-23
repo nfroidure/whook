@@ -9,12 +9,13 @@ import {
 import Knifecycle, { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import YError from 'yerror';
+import { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
   const BASE_PATH = '/v1';
   const PORT = 6666;
   const HOST = 'localhost';
-  const API = {
+  const API: OpenAPIV3.Document = {
     openapi: '3.0.2',
     info: {
       version: '1.0.0',
@@ -108,7 +109,8 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
         'X-HTTP-Method-Override': 'get',
         'user-agent': '__avoid_axios_version__',
       },
-    }).catch(err => err.response);
+      validateStatus: () => true,
+    });
 
     expect({
       status,
@@ -130,7 +132,8 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: { 'user-agent': '__avoid_axios_version__' },
-    }).catch(err => err.response);
+      validateStatus: () => true,
+    });
 
     expect({
       status,

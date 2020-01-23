@@ -2,7 +2,7 @@ import COMMON_CONFIG, { AppConfigs } from '../common/config';
 
 const CONFIG: AppConfigs = {
   ...COMMON_CONFIG,
-  DEV_ACCESS_TOKEN: '1-admin',
+  DEV_ACCESS_TOKEN: 'admin|1|1',
   DEFAULT_MECHANISM: 'Fake',
   // This allows you to map service names depending on
   // the targetted environment. Here, for dev, we don't send SMS

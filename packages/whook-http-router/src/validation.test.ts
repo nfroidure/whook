@@ -1,5 +1,9 @@
-import { extractParametersFromSecuritySchemes } from './validation';
+import {
+  extractParametersFromSecuritySchemes,
+  extractOperationSecurityParameters,
+} from './validation';
 import YError from 'yerror';
+import { OpenAPIV3 } from 'openapi-types';
 
 describe('extractParametersFromSecuritySchemes', () => {
   describe('should work', () => {
@@ -158,6 +162,224 @@ describe('extractParametersFromSecuritySchemes', () => {
           errorParams: err.params,
         }).toMatchSnapshot();
       }
+    });
+  });
+});
+
+describe('extractOperationSecurityParameters', () => {
+  describe('should work', () => {
+    it('with no security scheme', () => {
+      const operation = {
+        path: '/test',
+        method: 'get',
+        operationId: 'test',
+      };
+      const API: OpenAPIV3.Document = {
+        openapi: '3.0.2',
+        info: {
+          version: '1.0.0',
+          title: 'Sample OpenAPI',
+          description: 'A sample OpenAPI file for testing purpose.',
+        },
+        paths: {
+          '/test': {
+            get: operation,
+          },
+        },
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              description: 'Bearer authentication with a user API token',
+            },
+            basicAuth: {
+              type: 'http',
+              description: 'Basic authentication of an API client',
+              scheme: 'basic',
+            },
+          },
+        },
+      };
+      expect(
+        extractOperationSecurityParameters(API, operation),
+      ).toMatchInlineSnapshot(`Array []`);
+    });
+
+    it('with the bearer security scheme', () => {
+      const operation = {
+        path: '/test',
+        method: 'get',
+        operationId: 'test',
+        security: [
+          {
+            bearerAuth: ['user:delegate'],
+          },
+        ],
+      };
+      const API: OpenAPIV3.Document = {
+        openapi: '3.0.2',
+        info: {
+          version: '1.0.0',
+          title: 'Sample OpenAPI',
+          description: 'A sample OpenAPI file for testing purpose.',
+        },
+        paths: {
+          '/test': {
+            get: operation,
+          },
+        },
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              description: 'Bearer authentication with a user API token',
+            },
+            basicAuth: {
+              type: 'http',
+              description: 'Basic authentication of an API client',
+              scheme: 'basic',
+            },
+          },
+        },
+      };
+      expect(extractOperationSecurityParameters(API, operation))
+        .toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "in": "header",
+            "name": "authorization",
+            "schema": Object {
+              "pattern": "((b|B)earer) .*",
+              "type": "string",
+            },
+          },
+          Object {
+            "in": "query",
+            "name": "access_token",
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ]
+      `);
+    });
+
+    it('with the basic security scheme', () => {
+      const operation = {
+        path: '/test',
+        method: 'get',
+        operationId: 'test',
+        security: [
+          {
+            basicAuth: ['user:delegate'],
+          },
+        ],
+      };
+      const API: OpenAPIV3.Document = {
+        openapi: '3.0.2',
+        info: {
+          version: '1.0.0',
+          title: 'Sample OpenAPI',
+          description: 'A sample OpenAPI file for testing purpose.',
+        },
+        paths: {
+          '/test': {
+            get: operation,
+          },
+        },
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              description: 'Bearer authentication with a user API token',
+            },
+            basicAuth: {
+              type: 'http',
+              description: 'Basic authentication of an API client',
+              scheme: 'basic',
+            },
+          },
+        },
+      };
+      expect(extractOperationSecurityParameters(API, operation))
+        .toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "in": "header",
+            "name": "authorization",
+            "schema": Object {
+              "pattern": "((b|B)asic) .*",
+              "type": "string",
+            },
+          },
+        ]
+      `);
+    });
+
+    it('with the basic and bearer security schemes', () => {
+      const operation = {
+        path: '/test',
+        method: 'get',
+        operationId: 'test',
+        security: [
+          {
+            bearerAuth: ['user:delegate'],
+          },
+          {
+            basicAuth: ['user:delegate'],
+          },
+        ],
+      };
+      const API: OpenAPIV3.Document = {
+        openapi: '3.0.2',
+        info: {
+          version: '1.0.0',
+          title: 'Sample OpenAPI',
+          description: 'A sample OpenAPI file for testing purpose.',
+        },
+        paths: {
+          '/test': {
+            get: operation,
+          },
+        },
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              description: 'Bearer authentication with a user API token',
+            },
+            basicAuth: {
+              type: 'http',
+              description: 'Basic authentication of an API client',
+              scheme: 'basic',
+            },
+          },
+        },
+      };
+      expect(extractOperationSecurityParameters(API, operation))
+        .toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "in": "header",
+            "name": "authorization",
+            "schema": Object {
+              "pattern": "((b|B)earer|(b|B)asic) .*",
+              "type": "string",
+            },
+          },
+          Object {
+            "in": "query",
+            "name": "access_token",
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ]
+      `);
     });
   });
 });

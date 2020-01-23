@@ -129,7 +129,7 @@ Mr Bean
       oraCalls: ora.mock.calls,
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -188,7 +188,7 @@ Mr Bean
       oraCalls: ora.mock.calls,
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
-      logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -232,7 +232,7 @@ Mr Bean
       oraCalls: ora.mock.calls,
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
-      logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -281,7 +281,7 @@ Mr Bean
         oraCalls: ora.mock.calls,
         oraStartCalls: oraInstance.start.mock.calls,
         oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
-        logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });

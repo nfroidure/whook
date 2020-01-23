@@ -69,7 +69,7 @@ export async function prepareEnvironment(
   // transactions
   $.register(constant('TRANSACTIONS', {}));
 
-  // Setup your own whook plugins or avoid whook default by leaving it empty
+  // Setup your own whook plugins or avoid whook defaults by leaving it empty
   $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
 
   return $;

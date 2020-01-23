@@ -79,7 +79,7 @@ Also add the following lines in your `package.json` file :
 +    "@whook/aws-lambda": "^3.1.3",
 +    "@whook/http-transaction": "^3.1.3",
 +    "babel-loader": "^8.0.6",
-+    "babel-plugin-knifecycle": "^1.1.1",
++    "babel-plugin-knifecycle": "^1.2.0",
 +    "webpack": "4.41.5"
   }
 ```

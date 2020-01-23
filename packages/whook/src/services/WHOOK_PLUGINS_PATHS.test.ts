@@ -21,7 +21,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
 
       expect({
         WHOOK_PLUGINS_PATHS,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -43,7 +43,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
 
       expect({
         WHOOK_PLUGINS_PATHS,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -68,7 +68,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
         expect({
           errorCode: err.code,
           errorParams: err.params,
-          logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           resolveCalls: resolve.mock.calls,
         }).toMatchSnapshot();
       }

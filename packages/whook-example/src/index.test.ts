@@ -83,6 +83,7 @@ describe('runServer', () => {
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: { 'user-agent': '__avoid_axios_version__' },
+      validateStatus: () => true,
     });
 
     expect({
@@ -106,9 +107,10 @@ describe('runServer', () => {
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
       headers: {
-        authorization: `Fake 1-admin`,
+        authorization: `Fake admin|1|1`,
         'user-agent': '__avoid_axios_version__',
       },
+      validateStatus: () => true,
     });
 
     expect({
@@ -128,34 +130,30 @@ describe('runServer', () => {
   it('should fail with bad fake tokens', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
 
-    try {
-      await axios({
-        method: 'get',
-        url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
-        headers: {
-          authorization: `Fake e-admin`,
-          'user-agent': '__avoid_axios_version__',
-        },
-      });
-      throw new YError('E_UNEXPECTED_SUCCESS');
-    } catch (err) {
-      const { status, headers, data } = err.response;
+    const { status, headers, data } = await axios({
+      method: 'get',
+      url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
+      headers: {
+        authorization: `Fake e-admin`,
+        'user-agent': '__avoid_axios_version__',
+      },
+      validateStatus: () => true,
+    });
 
-      expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-        },
-        data,
-        debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-        logInfoCalls: logger.info.mock.calls
-          .map(filterPaths)
-          .filter(([arg1]) => arg1 !== 'ERROR'),
-        logErrorCalls: logger.error.mock.calls.map(filterPaths),
-      }).toMatchSnapshot();
-    }
+    expect({
+      status,
+      headers: {
+        ...headers,
+        // Erasing the Date header that may be added by Axios :/
+        date: undefined,
+      },
+      data,
+      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.info.mock.calls
+        .map(filterPaths)
+        .filter(([arg1]) => arg1 !== 'ERROR'),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths),
+    }).toMatchSnapshot();
   });
 });
 

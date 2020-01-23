@@ -27,7 +27,7 @@ describe('printEnvCommand', () => {
 
     expect({
       result,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 });

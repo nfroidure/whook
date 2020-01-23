@@ -52,14 +52,14 @@
     "commitizen": "^4.0.3",
     "conventional-changelog-cli": "^2.0.31",
     "coveralls": "^3.0.4",
-    "cz-conventional-changelog": "^3.0.2",
-    "lerna": "^3.19.0",
-    "metapak": "^3.1.7",
-    "metapak-nfroidure": "9.8.2"
+    "cz-conventional-changelog": "^3.1.0",
+    "lerna": "^3.20.2",
+    "metapak": "^3.1.8",
+    "metapak-nfroidure": "10.0.1"
   },
   "contributors": [],
   "engines": {
-    "node": ">=8.12.0"
+    "node": ">=10.19.0"
   },
   "config": {
     "commitizen": {

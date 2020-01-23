@@ -73,7 +73,7 @@ async function readGitProperty(
       `git config --get ${name}`,
       (err: Error, stdout: string, stderr: string) => {
         if (err) {
-          log('stack', stderr);
+          log('debug', 'STDERR:\n', stderr || '');
           reject(YError.wrap(err));
           return;
         }

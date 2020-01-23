@@ -36,7 +36,7 @@ describe('API', () => {
 
     expect({
       API,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 

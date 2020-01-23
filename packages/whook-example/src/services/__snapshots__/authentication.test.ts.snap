@@ -22,10 +22,9 @@ Object {
 exports[`authentication .check() with bearer type should work with a good token 1`] = `
 Object {
   "result": Object {
-    "scopes": Array [
-      "admin",
-    ],
-    "userId": 1,
+    "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+    "scope": "admin",
+    "userId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
   },
 }
 `;
@@ -33,10 +32,9 @@ Object {
 exports[`authentication .check() with fake type should work with fakedata 1`] = `
 Object {
   "result": Object {
-    "scopes": Array [
-      "user",
-    ],
-    "userId": 1,
+    "applicationId": "1",
+    "scope": "user",
+    "userId": "1",
   },
 }
 `;

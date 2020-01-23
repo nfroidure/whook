@@ -1,32 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`wrapHandlerWithAuthorization should fail with a mismatch between user and authenticated one 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
-      "bearer",
-      Object {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": Object {},
-  "errorParams": Array [
-    1,
-    3,
-  ],
-  "httpCode": 403,
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
-    ],
-  ],
-  "noopMockCalls": Array [],
-}
-`;
-
 exports[`wrapHandlerWithAuthorization should fail with access_token disabled 1`] = `
 Object {
   "authenticationChecks": Array [],
@@ -162,7 +135,7 @@ Object {
   "errorCode": "E_UNAUTHORIZED",
   "errorHeaders": Object {},
   "errorParams": Array [
-    Array [],
+    "",
     Array [
       "user",
       "admin",
@@ -260,11 +233,11 @@ Object {
       Object {
         "access_token": "yolo",
         "authenticated": true,
-        "scopes": Array [
-          "user",
-          "admin",
-        ],
-        "userId": 1,
+        "authenticationData": Object {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
       },
       Object {
         "method": "get",
@@ -292,7 +265,7 @@ Object {
   ],
   "response": Object {
     "headers": Object {
-      "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
+      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
     },
     "status": 200,
   },
@@ -353,12 +326,12 @@ Object {
       },
       Object {
         "authenticated": true,
+        "authenticationData": Object {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
         "authorization": "Bearer yolo",
-        "scopes": Array [
-          "user",
-          "admin",
-        ],
-        "userId": 1,
       },
       Object {
         "method": "get",
@@ -386,7 +359,7 @@ Object {
   ],
   "response": Object {
     "headers": Object {
-      "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
+      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
     },
     "status": 200,
   },
@@ -447,12 +420,12 @@ Object {
       },
       Object {
         "authenticated": true,
+        "authenticationData": Object {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
         "authorization": "Bearer yolo",
-        "scopes": Array [
-          "user",
-          "admin",
-        ],
-        "userId": 1,
       },
       Object {
         "method": "get",
@@ -481,7 +454,7 @@ Object {
   ],
   "response": Object {
     "headers": Object {
-      "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
+      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
     },
     "status": 200,
   },
@@ -543,11 +516,11 @@ Object {
       Object {
         "access_token": "yolo",
         "authenticated": true,
-        "scopes": Array [
-          "user",
-          "admin",
-        ],
-        "userId": 1,
+        "authenticationData": Object {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
       },
       Object {
         "method": "get",
@@ -576,7 +549,7 @@ Object {
   ],
   "response": Object {
     "headers": Object {
-      "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
+      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
     },
     "status": 200,
   },
@@ -637,12 +610,12 @@ Object {
       },
       Object {
         "authenticated": true,
+        "authenticationData": Object {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
         "authorization": "bearer yolo",
-        "scopes": Array [
-          "user",
-          "admin",
-        ],
-        "userId": 1,
       },
       Object {
         "method": "get",
@@ -671,7 +644,7 @@ Object {
   ],
   "response": Object {
     "headers": Object {
-      "X-Authenticated": "{\\"userId\\":1,\\"scopes\\":[\\"user\\",\\"admin\\"]}",
+      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
     },
     "status": 200,
   },

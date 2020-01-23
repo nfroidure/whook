@@ -36,7 +36,7 @@ describe('handlerCommand', () => {
 
       expect({
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
       }).toMatchSnapshot();
     });
@@ -63,7 +63,7 @@ describe('handlerCommand', () => {
 
       expect({
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
       }).toMatchSnapshot();
     });
@@ -97,7 +97,7 @@ describe('handlerCommand', () => {
           errorCode: err.code,
           errorParams: err.params,
           promptArgsCalls: promptArgs.mock.calls,
-          logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchSnapshot();
       }
@@ -129,7 +129,7 @@ describe('handlerCommand', () => {
           errorCode: err.code,
           errorParams: err.params,
           promptArgsCalls: promptArgs.mock.calls,
-          logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchSnapshot();
       }

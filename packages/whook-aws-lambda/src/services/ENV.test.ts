@@ -30,7 +30,7 @@ DB_HOST = 'localhost'
 
     expect({
       ENV,
-      logCalls: log.mock.calls.filter(args => 'debug-stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       readFileCalls: readFile.mock.calls,
     }).toMatchInlineSnapshot(`
       Object {

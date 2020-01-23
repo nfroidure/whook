@@ -58,7 +58,12 @@ Object {
       },
     },
   },
-  "logCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",
@@ -154,7 +159,12 @@ Object {
       },
     },
   },
-  "logCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",
@@ -249,7 +259,12 @@ Object {
       },
     },
   },
-  "logCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",
@@ -275,7 +290,12 @@ Object {
     },
     "paths": Object {},
   },
-  "logCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",

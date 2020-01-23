@@ -84,7 +84,7 @@ describe('wrapHandlerWithAuthorization', () => {
         response,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
   });
@@ -92,8 +92,9 @@ describe('wrapHandlerWithAuthorization', () => {
   describe('with authenticated but not restricted endpoints', () => {
     it('should work with bearer tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scopes: ['user', 'admin'],
+        scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
         any,
@@ -118,14 +119,15 @@ describe('wrapHandlerWithAuthorization', () => {
         response,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
     it('should work with Bearer tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scopes: ['user', 'admin'],
+        scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
         any,
@@ -150,14 +152,15 @@ describe('wrapHandlerWithAuthorization', () => {
         response,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
     it('should work with access tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scopes: ['user', 'admin'],
+        scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
         any,
@@ -182,14 +185,15 @@ describe('wrapHandlerWithAuthorization', () => {
         response,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
     it('should work with no authentication at all', async () => {
       authentication.check.mockResolvedValue({
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scopes: ['user', 'admin'],
+        scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
         any,
@@ -209,7 +213,7 @@ describe('wrapHandlerWithAuthorization', () => {
         response,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
   });
@@ -217,8 +221,9 @@ describe('wrapHandlerWithAuthorization', () => {
   describe('with authenticated and restricted endpoints', () => {
     it('should work with bearer tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scopes: ['user', 'admin'],
+        scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
         any,
@@ -243,14 +248,15 @@ describe('wrapHandlerWithAuthorization', () => {
         response,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
     it('should work with access tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scopes: ['user', 'admin'],
+        scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
         any,
@@ -275,7 +281,7 @@ describe('wrapHandlerWithAuthorization', () => {
         response,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
   });
@@ -307,47 +313,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
-      }).toMatchSnapshot();
-    }
-  });
-
-  it('should fail with a mismatch between user and authenticated one', async () => {
-    authentication.check.mockResolvedValue({
-      userId: 1,
-      scopes: ['user', 'admin'],
-    });
-    const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
-      any,
-      any,
-      any
-    >;
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
-      authentication,
-      log,
-    });
-
-    try {
-      await wrappedHandler(
-        {
-          access_token: 'yolo',
-          userId: 3,
-        },
-        NOOP_RESTRICTED_OPERATION,
-      );
-      throw new YError('E_UNEXPECTED_SUCCESS');
-    } catch (err) {
-      expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
-        noopMockCalls: noopMock.mock.calls,
-        authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
@@ -382,15 +348,16 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
 
   it('should fail without right scopes', async () => {
     authentication.check.mockResolvedValue({
+      applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       userId: 1,
-      scopes: [],
+      scope: '',
     });
     const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
       any,
@@ -421,15 +388,16 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
 
   it('should fail with unallowed mechanisms', async () => {
     authentication.check.mockResolvedValue({
+      applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       userId: 1,
-      scopes: [],
+      scope: '',
     });
     const noopHandler = handler(noopMock, 'getNoop') as HandlerInitializer<
       any,
@@ -461,7 +429,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
@@ -500,7 +468,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
@@ -534,7 +502,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
@@ -574,7 +542,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
@@ -615,7 +583,7 @@ describe('wrapHandlerWithAuthorization', () => {
         errorHeaders: err.headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });

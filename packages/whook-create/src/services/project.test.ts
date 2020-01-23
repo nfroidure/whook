@@ -42,7 +42,7 @@ describe('initProject', () => {
       lockTakeCalls: lock.take.mock.calls,
       lockReleaseCalls: lock.release.mock.calls,
       ensureDirCalls: ensureDir.mock.calls,
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -74,7 +74,7 @@ describe('initProject', () => {
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
-        logCalls: log.mock.calls.filter(([type]) => 'stack' !== type),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });
