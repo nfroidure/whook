@@ -3,6 +3,7 @@ import {
   WhookResponse,
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
+  WhookHandlerFunction,
 } from '@whook/whook';
 import { DelayService } from 'common-services';
 
@@ -39,10 +40,12 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(getDelay);
-
 async function getDelay(
-  { delay }: { delay: DelayService },
+  {
+    delay,
+  }: {
+    delay: DelayService;
+  },
   { duration }: { duration: number },
 ): Promise<WhookResponse<200, {}, undefined>> {
   await delay.create(duration);
@@ -50,3 +53,5 @@ async function getDelay(
     status: 200,
   };
 }
+
+export default autoHandler(getDelay);

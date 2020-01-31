@@ -2,7 +2,11 @@ import initGetOpenAPI from './getOpenAPI';
 
 describe('getOpenAPI', () => {
   const API = {
-    swagger: '2.0',
+    openapi: '2.0',
+    info: {
+      title: 'test',
+      version: '1',
+    },
     paths: {
       '/time': {
         options: {

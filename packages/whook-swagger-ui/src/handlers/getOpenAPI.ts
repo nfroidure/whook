@@ -1,6 +1,7 @@
 import { autoHandler } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router/dist/utils';
-import { WhookAPIHandlerDefinition } from '@whook/whook';
+import { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
+import { OpenAPIV3 } from 'openapi-types';
 
 export default autoHandler(getOpenAPI);
 
@@ -28,9 +29,12 @@ export const definition: WhookAPIHandlerDefinition = {
 } as WhookAPIHandlerDefinition;
 
 async function getOpenAPI(
-  { API },
-  { authenticated = false, mutedMethods = ['options'] },
-) {
+  { API }: { API: OpenAPIV3.Document },
+  {
+    authenticated = false,
+    mutedMethods = ['options'],
+  }: { authenticated?: boolean; mutedMethods?: string[] },
+): Promise<WhookResponse<200, {}, OpenAPIV3.Document>> {
   const operations = await getOpenAPIOperations(API);
   const tagIsPresent = {};
 

@@ -1,6 +1,7 @@
-import getOpenAPI, {
-  definition as baseGetOpenAPIDefinition,
-} from '@whook/swagger-ui/dist/handlers/getOpenAPI';
+import {
+  initGetOpenAPI as getOpenAPI,
+  getOpenAPIDefinition as baseGetOpenAPIDefinition,
+} from '@whook/swagger-ui';
 
 // TODO: Use WHOOK_PLUGINS to get handlers from plugins
 // instead of proxying here

@@ -1,6 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import YHTTPError from 'yhttperror';
-import { WhookAPIHandlerDefinition } from '@whook/whook';
+import { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
 import { OpenAPIV3 } from 'openapi-types';
 import { LogService } from 'common-services';
 
@@ -48,7 +48,12 @@ export const definition: WhookAPIHandlerDefinition = {
 
 export default autoHandler(putEcho);
 
-async function putEcho({ log }: { log: LogService }, { body }) {
+type Echo = { echo: string };
+
+async function putEcho(
+  { log }: { log: LogService },
+  { body }: { body: Echo },
+): Promise<WhookResponse<200, {}, Echo>> {
   if (body.echo.includes('Voldemort')) {
     throw new YHTTPError(400, 'E_MUST_NOT_BE_NAMED', body.echo);
   }

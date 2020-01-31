@@ -32,11 +32,14 @@ export const definition: WhookAPIHandlerDefinition = {
 
 export default autoHandler(getDiagnostic);
 
+type Transaction = {};
+type Transactions = { [id: string]: Transaction };
+
 async function getDiagnostic({
   TRANSACTIONS,
 }: {
-  TRANSACTIONS: {};
-}): Promise<WhookResponse> {
+  TRANSACTIONS: Transactions;
+}): Promise<WhookResponse<200, {}, { transactions: Transactions }>> {
   return {
     status: 200,
     body: {

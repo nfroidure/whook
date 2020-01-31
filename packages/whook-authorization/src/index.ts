@@ -86,7 +86,7 @@ async function handleWithAuthorization<P extends Parameters, A, R, WR>(
     authentication,
     log,
   }: WhookAuthorizationDependencies<A, R>,
-  handler: WhookHandler<WR, WhookOperation, P>,
+  handler: WhookHandler<P, WR, WhookOperation>,
   parameters: P,
   operation: WhookOperation,
 ): Promise<WR> {

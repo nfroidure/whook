@@ -5,8 +5,10 @@ Object {
   "response": Object {
     "body": Object {
       "info": Object {
+        "title": "test",
         "version": "<already_tested>",
       },
+      "openapi": "2.0",
       "paths": Object {
         "/time": Object {
           "get": Object {
@@ -28,7 +30,6 @@ Object {
           },
         },
       },
-      "swagger": "2.0",
       "tags": Array [
         Object {
           "name": "public",
@@ -48,8 +49,10 @@ Object {
   "response": Object {
     "body": Object {
       "info": Object {
+        "title": "test",
         "version": "<already_tested>",
       },
+      "openapi": "2.0",
       "paths": Object {
         "/time": Object {
           "get": Object {
@@ -60,7 +63,6 @@ Object {
           },
         },
       },
-      "swagger": "2.0",
       "tags": Array [
         Object {
           "name": "public",

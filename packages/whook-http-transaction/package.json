@@ -72,8 +72,9 @@
     "jsarch": "^2.0.3",
     "jsdoc-to-markdown": "^5.0.3",
     "metapak": "^3.1.6",
-    "metapak-nfroidure": "9.8.1",
+    "metapak-nfroidure": "9.8.2",
     "prettier": "^1.19.1",
+    "rimraf": "^3.0.1",
     "streamtest": "^1.2.4",
     "typescript": "^3.7.5",
     "yerror": "^5.0.0"

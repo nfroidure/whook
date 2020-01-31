@@ -2,8 +2,10 @@
 
 exports[`putEcho should fail when crossing the red line ;) 1`] = `
 Object {
-  "errorCode": undefined,
-  "errorParams": undefined,
+  "errorCode": "E_MUST_NOT_BE_NAMED",
+  "errorParams": Array [
+    "Big up to Lord Voldemort!",
+  ],
   "logCalls": Array [
     Array [
       "warning",

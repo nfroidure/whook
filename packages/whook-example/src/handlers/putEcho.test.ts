@@ -27,7 +27,7 @@ describe('putEcho', () => {
 
     try {
       await putEcho({
-        body: 'Big up to Lord Voldemort!',
+        body: { echo: 'Big up to Lord Voldemort!' },
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {

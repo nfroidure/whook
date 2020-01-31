@@ -45,7 +45,7 @@ async function getTime({
   time,
 }: {
   time: TimeService;
-}): Promise<WhookResponse> {
+}): Promise<WhookResponse<200, {}, { time: number }>> {
   return {
     status: 200,
     body: {

@@ -52,7 +52,7 @@ async function handleWithCORS<
   P extends Parameters
 >(
   { CORS }: CORSConfig,
-  handler: WhookHandler<R, O, P>,
+  handler: WhookHandler<P, R, O>,
   parameters: P,
   operation: O,
 ): Promise<R> {

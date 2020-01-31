@@ -52,7 +52,7 @@ async function handleWithVersionChecker<
   P extends Parameters
 >(
   { VERSIONS }: VersionsConfig,
-  handler: WhookHandler<R, O, P>,
+  handler: WhookHandler<P, R, O>,
   parameters: P,
   operation: O,
 ): Promise<R> {

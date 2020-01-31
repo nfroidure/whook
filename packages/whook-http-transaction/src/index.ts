@@ -39,16 +39,16 @@ export type WhookResponse<
 };
 
 export type WhookHandlerFunction<
-  D = Dependencies,
-  R = WhookResponse,
-  O = WhookOperation,
-  P = Parameters
+  D extends Dependencies,
+  P extends Parameters,
+  R extends WhookResponse,
+  O = WhookOperation
 > = HandlerFunction<D, P, [O] | [], R>;
 
 export type WhookHandler<
+  P = Parameters,
   R = WhookResponse,
-  O = WhookOperation | undefined,
-  P = Parameters
+  O = WhookOperation | undefined
 > = Handler<P, [O] | [], R>;
 
 export type HTTPTransactionConfig = {
@@ -207,7 +207,8 @@ async function initHTTPTransaction({
       id: '',
       protocol: 'http',
       ip:
-        ([].concat(req.headers['x-forwarded-for'])[0] || '').split(',')[0] ||
+        '' +
+          ([].concat(req.headers['x-forwarded-for'])[0] || '').split(',')[0] ||
         req.connection.remoteAddress,
       startInBytes: req.socket.bytesRead,
       startOutBytes: req.socket.bytesWritten,

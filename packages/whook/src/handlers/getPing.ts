@@ -36,7 +36,7 @@ async function getPing({
   NODE_ENV,
 }: {
   NODE_ENV: string;
-}): Promise<WhookResponse> {
+}): Promise<WhookResponse<200, { 'X-Node-ENV': string }, { pong: 'pong' }>> {
   return {
     status: 200,
     headers: {
