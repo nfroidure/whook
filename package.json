@@ -34,13 +34,6 @@
     "test": "lerna run test",
     "version": "npm run changelog"
   },
-  "keywords": [
-    "REST",
-    "HTTP",
-    "server",
-    "web",
-    "services"
-  ],
   "author": {
     "name": "Nicolas Froidure",
     "email": "nicolas.froidure@insertafter.com",
