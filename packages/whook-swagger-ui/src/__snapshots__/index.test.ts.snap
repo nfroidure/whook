@@ -48,6 +48,21 @@ Object {
     Array [
       "uniqueId",
     ],
+    Array [
+      "SHIELD_CHAR",
+    ],
+    Array [
+      "MAX_CLEAR_CHARS",
+    ],
+    Array [
+      "MAX_CLEAR_RATIO",
+    ],
+    Array [
+      "SENSIBLE_PROPS",
+    ],
+    Array [
+      "SENSIBLE_HEADERS",
+    ],
   ],
   "debugCalls": Array [
     Array [
@@ -55,6 +70,12 @@ Object {
     ],
     Array [
       "⌛ - Delay service initialized.",
+    ],
+    Array [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    Array [
+      "❤️ - Initializing the APM service.",
     ],
     Array [
       "📇 - Process service initialized.",
@@ -139,6 +160,21 @@ Object {
     Array [
       "uniqueId",
     ],
+    Array [
+      "SHIELD_CHAR",
+    ],
+    Array [
+      "MAX_CLEAR_CHARS",
+    ],
+    Array [
+      "MAX_CLEAR_RATIO",
+    ],
+    Array [
+      "SENSIBLE_PROPS",
+    ],
+    Array [
+      "SENSIBLE_HEADERS",
+    ],
   ],
   "data": "<!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
@@ -207,6 +243,12 @@ Object {
     ],
     Array [
       "⌛ - Delay service initialized.",
+    ],
+    Array [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    Array [
+      "❤️ - Initializing the APM service.",
     ],
     Array [
       "📇 - Process service initialized.",
@@ -308,6 +350,21 @@ Object {
     Array [
       "uniqueId",
     ],
+    Array [
+      "SHIELD_CHAR",
+    ],
+    Array [
+      "MAX_CLEAR_CHARS",
+    ],
+    Array [
+      "MAX_CLEAR_RATIO",
+    ],
+    Array [
+      "SENSIBLE_PROPS",
+    ],
+    Array [
+      "SENSIBLE_HEADERS",
+    ],
   ],
   "data": Object {
     "ping": "pong",
@@ -318,6 +375,12 @@ Object {
     ],
     Array [
       "⌛ - Delay service initialized.",
+    ],
+    Array [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    Array [
+      "❤️ - Initializing the APM service.",
     ],
     Array [
       "📇 - Process service initialized.",
@@ -375,31 +438,8 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      Object {
-        "endInBytes": 146,
-        "endOutBytes": 179,
-        "endTime": 1267833600000,
-        "errored": false,
-        "id": "0",
-        "ip": "127.0.0.1",
-        "method": "GET",
-        "operationId": "getPing",
-        "protocol": "http",
-        "reqHeaders": Object {
-          "accept": "application/json, text/plain, */*",
-          "connection": "close",
-          "host": "localhost:8888",
-          "user-agent": "__avoid_axios_version__",
-        },
-        "resHeaders": Object {
-          "content-type": "application/json",
-        },
-        "startInBytes": 146,
-        "startOutBytes": 0,
-        "startTime": 1267833600000,
-        "statusCode": 200,
-        "url": "/v1/ping",
-      },
+      "CALL",
+      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":146,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:8888\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":146,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
     ],
   ],
   "status": 200,

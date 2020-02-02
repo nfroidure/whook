@@ -10,6 +10,11 @@ const CONFIG: AppConfigs = {
   SERVICE_NAME_MAP: {
     sendSMS: 'logSMS',
   },
+  // Avoid obfuscating secrets in development
+  MAX_CLEAR_CHARS: Infinity,
+  MAX_CLEAR_RATIO: 0,
+  SENSIBLE_PROPS: [],
+  SENSIBLE_HEADERS: [],
 };
 
 export default CONFIG;
