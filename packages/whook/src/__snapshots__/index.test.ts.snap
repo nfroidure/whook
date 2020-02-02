@@ -20,6 +20,9 @@ Object {
       "✔️ - HTTP server closed!",
     ],
     Array [
+      "❤️ - Initializing the APM service.",
+    ],
+    Array [
       "👣 - Logging service initialized.",
     ],
     Array [
@@ -27,6 +30,9 @@ Object {
     ],
     Array [
       "📇 - Process service initialized.",
+    ],
+    Array [
+      "🕶️ - Initializing the obfuscator service.",
     ],
     Array [
       "🚦 - HTTP Router initialized.",

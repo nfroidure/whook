@@ -13,6 +13,19 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { OpenAPIV3 } from 'openapi-types';
 import YError from 'yerror';
 import YHTTPError from 'yhttperror';
+import initObfuscatorService, {
+  ObfuscatorService,
+  ObfuscatorConfig,
+} from './services/obfuscator';
+import initAPMService, { APMService } from './services/apm';
+
+export {
+  initObfuscatorService,
+  ObfuscatorConfig,
+  ObfuscatorService,
+  initAPMService,
+  APMService,
+};
 
 export type WhookOperation = OpenAPIV3.OperationObject & {
   path: string;
@@ -56,9 +69,11 @@ export type HTTPTransactionConfig = {
   TRANSACTIONS?: {};
 };
 export type HTTPTransactionDependencies = HTTPTransactionConfig & {
-  log?: LogService;
-  time?: TimeService;
+  obfuscator: ObfuscatorService;
   delay: DelayService;
+  log?: LogService;
+  apm?: APMService;
+  time?: TimeService;
   uniqueId?: () => string;
 };
 
@@ -107,9 +122,11 @@ You can simply do this by wrapping this service. See
 export default service(initHTTPTransaction, 'httpTransaction', [
   '?TIMEOUT',
   '?TRANSACTIONS',
-  '?log',
-  '?time',
   'delay',
+  'obfuscator',
+  '?log',
+  '?apm',
+  '?time',
   '?uniqueId',
 ]);
 
@@ -123,12 +140,16 @@ export default service(initHTTPTransaction, 'httpTransaction', [
  *  should take to complete before being cancelled.
  * @param  {Object}     [services.TRANSACTIONS={}]
  * A hash of every current transactions
- * @param  {Function}   [services.time]
- * A timing function
  * @param  {Object}     services.delay
  * A delaying service
+ * @param  {Object}     services.obfuscator
+ * A service to avoid logging sensible informations
  * @param  {Function}   [services.log]
  * A logging function
+ * @param  {Function}   [services.apm]
+ * An apm function
+ * @param  {Function}   [services.time]
+ * A timing function
  * @param  {Function}   [services.uniqueId]
  * A function returning unique identifiers
  * @return {Promise<WhookHTTPTransaction>}
@@ -144,6 +165,8 @@ export default service(initHTTPTransaction, 'httpTransaction', [
 async function initHTTPTransaction({
   TIMEOUT = DEFAULT_TIMEOUT,
   TRANSACTIONS,
+  apm = noop,
+  obfuscator,
   log = noop,
   time = Date.now.bind(Date),
   delay,
@@ -215,7 +238,7 @@ async function initHTTPTransaction({
       startTime: time(),
       url: req.url,
       method: req.method,
-      reqHeaders: req.headers,
+      reqHeaders: obfuscator.obfuscateSensibleHeaders(request.headers),
       errored: false,
     };
     const delayPromise = delay.create(TIMEOUT);
@@ -302,7 +325,7 @@ async function initHTTPTransaction({
    occurs.
   */
     err = HTTPError.cast(err, (err as YHTTPError).httpCode || 500);
-    log('error', 'An error occured', {
+    apm('ERROR', {
       guruMeditation: id,
       request:
         TRANSACTIONS[id].protocol +
@@ -377,7 +400,7 @@ async function initHTTPTransaction({
       });
     } catch (err) {
       TRANSACTIONS[id].errored = true;
-      log('error', 'An error occured', {
+      apm('ERROR', {
         guruMeditation: id,
         request:
           TRANSACTIONS[id].protocol +
@@ -396,7 +419,7 @@ async function initHTTPTransaction({
     TRANSACTIONS[id].resHeaders = response.headers || {};
     TRANSACTIONS[id].operationId = operationId;
 
-    log('info', TRANSACTIONS[id]);
+    apm('CALL', TRANSACTIONS[id]);
 
     delete TRANSACTIONS[id];
 

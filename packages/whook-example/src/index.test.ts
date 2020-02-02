@@ -150,10 +150,10 @@ describe('runServer', () => {
         },
         data,
         debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-        logInfoCalls: logger.info.mock.calls.map(filterPaths),
-        logErrorCalls: logger.error.mock.calls
+        logInfoCalls: logger.info.mock.calls
           .map(filterPaths)
-          .filter(([arg1]) => arg1 !== 'An error occured'),
+          .filter(([arg1]) => arg1 !== 'ERROR'),
+        logErrorCalls: logger.error.mock.calls.map(filterPaths),
       }).toMatchSnapshot();
     }
   });

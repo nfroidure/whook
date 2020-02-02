@@ -24,6 +24,11 @@ import initHTTPTransaction, {
   WhookHandlerFunction,
   HTTPTransactionConfig,
   HTTPTransactionService,
+  initObfuscatorService,
+  ObfuscatorConfig,
+  ObfuscatorService,
+  initAPMService,
+  APMService,
 } from '@whook/http-transaction';
 import initHTTPServer, {
   HTTPServerConfig,
@@ -103,6 +108,9 @@ export {
   HTTPServerConfig,
   HTTPServerProvider,
   HTTPServerService,
+  ObfuscatorConfig,
+  ObfuscatorService,
+  APMService,
 };
 
 export type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
@@ -117,7 +125,7 @@ export type WhookConfigs = ProcessServiceConfig &
   ENVConfig &
   WhookPluginsPathsConfig & {
     CONFIG: WhookConfig;
-  };
+  } & ObfuscatorConfig;
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
@@ -311,6 +319,8 @@ export async function prepareEnvironment(
     initConfigs,
     initWhookPluginsPaths,
     initProjectDir,
+    initObfuscatorService,
+    initAPMService,
   ].forEach($.register.bind($));
 
   return $;

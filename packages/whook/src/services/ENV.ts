@@ -44,7 +44,7 @@ export type ENVDependencies = ENVConfig & {
  * @param  {Object}   services
  * The services ENV depends on
  * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value to lookk for `.env.${NODE_ENV}` env file
+ * The injected NODE_ENV value to look for `.env.${NODE_ENV}` env file
  * @param  {Object}   services.PWD
  * The process current working directory
  * @param  {Object}   [services.BASE_ENV={}]

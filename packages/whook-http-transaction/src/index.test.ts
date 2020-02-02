@@ -11,24 +11,36 @@ function streamifyBody(response) {
 
 describe('initHTTPTransaction', () => {
   const log = jest.fn();
+  const apm = jest.fn();
   const time = jest.fn();
   const uniqueId = jest.fn();
   const delay = {
     create: jest.fn(),
     clear: jest.fn(),
   };
+  const obfuscator = {
+    obfuscate: jest.fn(),
+    obfuscateSensibleProps: jest.fn(),
+    obfuscateSensibleHeaders: jest.fn(),
+  };
 
   beforeEach(() => {
     log.mockReset();
+    apm.mockReset();
     time.mockReset();
     uniqueId.mockReset();
     delay.create.mockReset();
     delay.clear.mockReset();
+    obfuscator.obfuscate.mockReset();
+    obfuscator.obfuscateSensibleProps.mockReset();
+    obfuscator.obfuscateSensibleHeaders.mockReset();
   });
 
   test('should work', async () => {
     const httpTransaction = await initHTTPTransaction({
+      obfuscator,
       log,
+      apm,
       time,
       delay,
       uniqueId,
@@ -37,10 +49,15 @@ describe('initHTTPTransaction', () => {
     expect(httpTransaction).toBeTruthy();
     expect({
       logCalls: log.mock.calls,
+      apmCalls: apm.mock.calls,
       timeCalls: time.mock.calls,
       uniqueIdCalls: uniqueId.mock.calls,
       delayCreateCalls: delay.create.mock.calls,
       delayClearCalls: delay.clear.mock.calls,
+      obfuscateCalls: obfuscator.obfuscate.mock.calls,
+      obfuscateSensiblePropsCalls: obfuscator.obfuscateSensibleProps.mock.calls,
+      obfuscateSensibleHeadersCalls:
+        obfuscator.obfuscateSensibleHeaders.mock.calls,
     }).toMatchSnapshot();
   });
 
@@ -71,7 +88,9 @@ describe('initHTTPTransaction', () => {
       delay.clear.mockResolvedValue(undefined);
 
       const httpTransaction = await initHTTPTransaction({
+        obfuscator,
         log,
+        apm,
         time,
         delay,
         uniqueId,
@@ -139,10 +158,16 @@ describe('initHTTPTransaction', () => {
         request,
         buildResponseCalls: buildResponse.mock.calls,
         logCalls: log.mock.calls,
+        apmCalls: apm.mock.calls,
         timeCalls: time.mock.calls,
         uniqueIdCalls: uniqueId.mock.calls,
         delayCreateCalls: delay.create.mock.calls,
         delayClearCalls: delay.clear.mock.calls,
+        obfuscateCalls: obfuscator.obfuscate.mock.calls,
+        obfuscateSensiblePropsCalls:
+          obfuscator.obfuscateSensibleProps.mock.calls,
+        obfuscateSensibleHeadersCalls:
+          obfuscator.obfuscateSensibleHeaders.mock.calls,
       }).toMatchSnapshot();
     });
 
@@ -156,7 +181,9 @@ describe('initHTTPTransaction', () => {
 
       try {
         const httpTransaction = await initHTTPTransaction({
+          obfuscator,
           log,
+          apm,
           time,
           delay,
           uniqueId,
@@ -198,10 +225,16 @@ describe('initHTTPTransaction', () => {
         expect({
           request,
           logCalls: log.mock.calls,
+          apmCalls: apm.mock.calls,
           timeCalls: time.mock.calls,
           uniqueIdCalls: uniqueId.mock.calls,
           delayCreateCalls: delay.create.mock.calls,
           delayClearCalls: delay.clear.mock.calls,
+          obfuscateCalls: obfuscator.obfuscate.mock.calls,
+          obfuscateSensiblePropsCalls:
+            obfuscator.obfuscateSensibleProps.mock.calls,
+          obfuscateSensibleHeadersCalls:
+            obfuscator.obfuscateSensibleHeaders.mock.calls,
         }).toMatchSnapshot();
       }
     });
@@ -214,7 +247,9 @@ describe('initHTTPTransaction', () => {
 
       try {
         const httpTransaction = await initHTTPTransaction({
+          obfuscator,
           log,
+          apm,
           time,
           delay,
           uniqueId,
@@ -258,6 +293,11 @@ describe('initHTTPTransaction', () => {
           uniqueIdCalls: uniqueId.mock.calls,
           delayCreateCalls: delay.create.mock.calls,
           delayClearCalls: delay.clear.mock.calls,
+          obfuscateCalls: obfuscator.obfuscate.mock.calls,
+          obfuscateSensiblePropsCalls:
+            obfuscator.obfuscateSensibleProps.mock.calls,
+          obfuscateSensibleHeadersCalls:
+            obfuscator.obfuscateSensibleHeaders.mock.calls,
         }).toMatchSnapshot();
       }
     });

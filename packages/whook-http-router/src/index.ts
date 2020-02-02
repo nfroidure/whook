@@ -49,7 +49,12 @@ function identity(x) {
   return x;
 }
 
-export { initErrorHandler, WhookErrorHandler };
+export {
+  initErrorHandler,
+  WhookErrorHandler,
+  flattenOpenAPI,
+  getOpenAPIOperations,
+};
 
 export type WhookHandlers = { [name: string]: WhookHandler };
 export type WhookParser = (content: string) => string;

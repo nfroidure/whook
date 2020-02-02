@@ -12,7 +12,7 @@ Object {
         "protocol": "http",
         "reqHeaders": Object {
           "accept": "application/json, text/plain, */*",
-          "authorization": "Fake 1-admin",
+          "authorization": "Fa...n",
           "connection": "close",
           "host": "localhost:9999",
           "user-agent": "__avoid_axios_version__",
@@ -48,37 +48,8 @@ Object {
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
-      Object {
-        "endInBytes": 175,
-        "endOutBytes": 837,
-        "endTime": 1390694400000,
-        "errored": false,
-        "id": "1",
-        "ip": "127.0.0.1",
-        "method": "GET",
-        "operationId": "getDiagnostic",
-        "protocol": "http",
-        "reqHeaders": Object {
-          "accept": "application/json, text/plain, */*",
-          "authorization": "Fake 1-admin",
-          "connection": "close",
-          "host": "localhost:9999",
-          "user-agent": "__avoid_axios_version__",
-        },
-        "resHeaders": Object {
-          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-          "Access-Control-Allow-Origin": "*",
-          "Vary": "Origin",
-          "X-Authenticated": "{\\"hash\\":\\"1-admin\\",\\"userId\\":1,\\"scopes\\":[\\"admin\\"]}",
-          "content-type": "application/json",
-        },
-        "startInBytes": 175,
-        "startOutBytes": 0,
-        "startTime": 1390694400000,
-        "statusCode": 200,
-        "url": "/v4/diag",
-      },
+      "CALL",
+      "{\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":831,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Authenticated\\":\\"{\\\\\\"hash\\\\\\":\\\\\\"1-admin\\\\\\",\\\\\\"userId\\\\\\":1,\\\\\\"scopes\\\\\\":[\\\\\\"admin\\\\\\"]}\\",\\"Access-Control-Allow-Origin\\":\\"*\\",\\"Access-Control-Allow-Methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"Access-Control-Allow-Headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"Vary\\":\\"Origin\\"},\\"operationId\\":\\"getDiagnostic\\"}",
     ],
   ],
   "status": 200,
@@ -117,37 +88,8 @@ Object {
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
-      Object {
-        "endInBytes": 175,
-        "endOutBytes": 510,
-        "endTime": 1390694400000,
-        "errored": true,
-        "id": "2",
-        "ip": "127.0.0.1",
-        "method": "GET",
-        "operationId": "getDiagnostic",
-        "protocol": "http",
-        "reqHeaders": Object {
-          "accept": "application/json, text/plain, */*",
-          "authorization": "Fake e-admin",
-          "connection": "close",
-          "host": "localhost:9999",
-          "user-agent": "__avoid_axios_version__",
-        },
-        "resHeaders": Object {
-          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-          "Access-Control-Allow-Origin": "*",
-          "Vary": "Origin",
-          "cache-control": "private",
-          "content-type": "application/json",
-        },
-        "startInBytes": 175,
-        "startOutBytes": 0,
-        "startTime": 1390694400000,
-        "statusCode": 400,
-        "url": "/v4/diag",
-      },
+      "CALL",
+      "{\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":510,\\"statusCode\\":400,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"Access-Control-Allow-Origin\\":\\"*\\",\\"Access-Control-Allow-Methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"Access-Control-Allow-Headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"Vary\\":\\"Origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"getDiagnostic\\"}",
     ],
   ],
   "status": 400,
@@ -186,36 +128,8 @@ Object {
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
-      Object {
-        "endInBytes": 146,
-        "endOutBytes": 447,
-        "endTime": 1390694400000,
-        "errored": false,
-        "id": "0",
-        "ip": "127.0.0.1",
-        "method": "GET",
-        "operationId": "getPing",
-        "protocol": "http",
-        "reqHeaders": Object {
-          "accept": "application/json, text/plain, */*",
-          "connection": "close",
-          "host": "localhost:9999",
-          "user-agent": "__avoid_axios_version__",
-        },
-        "resHeaders": Object {
-          "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-          "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-          "Access-Control-Allow-Origin": "*",
-          "Vary": "Origin",
-          "X-Node-ENV": "test",
-          "content-type": "application/json",
-        },
-        "startInBytes": 146,
-        "startOutBytes": 0,
-        "startTime": 1390694400000,
-        "statusCode": 200,
-        "url": "/v4/ping",
-      },
+      "CALL",
+      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":146,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":146,\\"endOutBytes\\":447,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Node-ENV\\":\\"test\\",\\"Access-Control-Allow-Origin\\":\\"*\\",\\"Access-Control-Allow-Methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"Access-Control-Allow-Headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"Vary\\":\\"Origin\\"},\\"operationId\\":\\"getPing\\"}",
     ],
   ],
   "status": 200,
@@ -233,6 +147,9 @@ Object {
     ],
     Array [
       "♻️ - Loading the environment service.",
+    ],
+    Array [
+      "❤️ - Initializing the APM service.",
     ],
     Array [
       "➰ - Plugin \\"@whook/cli\\" resolved to: /home/whoiam/projects/whook/packages/whook-cli/dist",
@@ -356,6 +273,9 @@ Object {
       "🔧 - Initializing auth mechanisms",
     ],
     Array [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    Array [
       "🚦 - HTTP Router initialized.",
     ],
     Array [
@@ -440,6 +360,24 @@ Object {
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT",
     ],
     Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_CLEAR_CHARS",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_CHARS",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_CHARS",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_RATIO",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO",
+    ],
+    Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_CONNECTIONS",
     ],
     Array [
@@ -492,6 +430,33 @@ Object {
     ],
     Array [
       "🚫 - Service \\"QUERY_PARSER\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_HEADERS",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_HEADERS",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/dist/services/SENSIBLE_PROPS",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_PROPS",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_PROPS",
+    ],
+    Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/dist/services/SHIELD_CHAR",
+    ],
+    Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SHIELD_CHAR",
+    ],
+    Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR",
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/dist/services/SIGNALS",
