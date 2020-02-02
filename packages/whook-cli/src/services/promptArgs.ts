@@ -18,6 +18,7 @@ export type WhookCommandDefinitionArguments = {
     [name: string]: {
       type: 'boolean' | 'string' | 'number';
       description: string;
+      pattern?: string;
       enum?: WhookArgsTypes[];
       default?: string | boolean | number;
     };

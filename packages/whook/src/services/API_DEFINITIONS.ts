@@ -39,13 +39,15 @@ export type WhookAPIDefinitions = {
 export type WhookAPIOperationConfig = {
   disabled?: boolean;
 };
-export type WhookAPIOperationAddition = {
-  'x-whook'?: WhookAPIOperationConfig;
+export type WhookAPIOperationAddition<T = {}> = {
+  'x-whook'?: T & WhookAPIOperationConfig;
 };
-export type WhookAPIHandlerDefinition = {
+export type WhookAPIOperation<T = {}> = OpenAPIV3.OperationObject &
+  WhookAPIOperationAddition<T>;
+export type WhookAPIHandlerDefinition<T = {}> = {
   path: string;
   method: string;
-  operation: OpenAPIV3.OperationObject & WhookAPIOperationAddition;
+  operation: WhookAPIOperation<T>;
 };
 export type WhookAPISchemaDefinition = {
   name: string;

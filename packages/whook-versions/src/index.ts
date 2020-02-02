@@ -16,7 +16,7 @@ import {
 import { OpenAPIV3 } from 'openapi-types';
 import YHTTPError from 'yhttperror';
 import semverSatisfies from 'semver/functions/satisfies';
-import camelCase from 'camel-case';
+import { camelCase } from 'camel-case';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_DEPRECATED_VERSION: {

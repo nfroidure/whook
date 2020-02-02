@@ -18,7 +18,7 @@ export type ObfuscatorDependencies = {
 } & ObfuscatorConfig;
 export type ObfuscatorService = {
   obfuscate: (secret: string) => string;
-  obfuscateSensibleProps: (propValue: any, propName: string) => any;
+  obfuscateSensibleProps: (propValue: any, propName?: string) => any;
   obfuscateSensibleHeaders: (headers: {
     [name: string]: string;
   }) => { [name: string]: string };
