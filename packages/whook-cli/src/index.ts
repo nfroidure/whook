@@ -1,6 +1,10 @@
 import { constant } from 'knifecycle';
 import { readArgs } from './libs/args';
-import initArgs, { WhookCommandArgs } from './services/args';
+import initArgs, {
+  WhookCommandNamedArgs,
+  WhookCommandArgsRest,
+  WhookCommandArgs,
+} from './services/args';
 import initPromptArgs, {
   WhookArgsTypes,
   WhookCommandHandler,
@@ -16,6 +20,8 @@ export {
   WhookCommandHandler,
   WhookCommandDefinition,
   PromptArgs,
+  WhookCommandNamedArgs,
+  WhookCommandArgsRest,
   WhookCommandArgs,
 };
 

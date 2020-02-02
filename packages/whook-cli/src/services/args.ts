@@ -5,12 +5,12 @@ import { WhookArgsTypes } from '..';
 
 export default options({ singleton: true }, autoService(initArgs));
 
-interface WhookCommandNamedArgs {
+export type WhookCommandNamedArgs = {
   [name: string]: WhookArgsTypes;
-}
-interface WhookCommandArgsRest {
+};
+export type WhookCommandArgsRest = {
   _?: string[];
-}
+};
 export type WhookCommandArgs = WhookCommandNamedArgs & WhookCommandArgsRest;
 
 async function initArgs({

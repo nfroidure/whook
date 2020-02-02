@@ -85,6 +85,7 @@ export {
   WhookServiceMap,
   WhookInitializerMap,
   ENVService,
+  initEnv,
   WhookPluginsService,
   WhookPluginsPathsService,
   CONFIGSService,
@@ -185,7 +186,7 @@ export async function runServer<S = Services>(
   } catch (err) {
     // eslint-disable-next-line
     console.error('💀 - Cannot launch the process:', err.stack);
-    //process.exit(1);
+    process.exit(1);
   }
 }
 
