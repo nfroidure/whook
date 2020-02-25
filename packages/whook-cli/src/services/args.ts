@@ -11,7 +11,7 @@ interface WhookCommandNamedArgs {
 interface WhookCommandArgsRest {
   _?: string[];
 }
-export type WhookCommandArgs = WhookCommandNamedArgs & WhookCommandArgsRest;
+export type WhookCommandArgs = WhookCommandArgsRest & WhookCommandNamedArgs;
 
 async function initArgs({
   ARGS,

@@ -14,14 +14,14 @@ describe('printEnvCommand', () => {
     const printEnvCommand = await initPrintEnvCommand({
       log,
       ENV: { NODE_ENV: 'test' },
-      args: Object.assign(
+      args: (Object.assign(
         {
           keysOnly: true,
         },
         {
           _: ['env'],
         },
-      ),
+      ) as unknown) as WhookCommandArgs,
     });
     const result = await printEnvCommand();
 

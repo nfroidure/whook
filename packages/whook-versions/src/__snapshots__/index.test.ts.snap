@@ -44,8 +44,8 @@ Object {
   "openapi": "3.0.2",
   "paths": Object {
     "/ping": Object {
-      "head": Object {
-        "operationId": "ping",
+      "get": Object {
+        "operationId": "getPing",
         "parameters": Array [
           Object {
             "$ref": "#/components/parameters/xApiVersion",
@@ -59,10 +59,29 @@ Object {
         ],
         "responses": Object {
           "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "additionalProperties": false,
+                  "properties": Object {
+                    "pong": Object {
+                      "enum": Array [
+                        "pong",
+                      ],
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
             "description": "Pong",
           },
         },
         "summary": "Checks API's availability.",
+        "tags": Array [
+          "system",
+        ],
       },
     },
   },

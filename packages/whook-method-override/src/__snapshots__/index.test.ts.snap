@@ -13,10 +13,29 @@ Object {
         "path": "/ping",
         "responses": Object {
           "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "additionalProperties": false,
+                  "properties": Object {
+                    "pong": Object {
+                      "enum": Array [
+                        "pong",
+                      ],
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
             "description": "Pong",
           },
         },
         "summary": "Checks API's availability.",
+        "tags": Array [
+          "system",
+        ],
       },
     ],
   ],
@@ -43,10 +62,29 @@ Object {
         "path": "/ping",
         "responses": Object {
           "200": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "additionalProperties": false,
+                  "properties": Object {
+                    "pong": Object {
+                      "enum": Array [
+                        "pong",
+                      ],
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
             "description": "Pong",
           },
         },
         "summary": "Checks API's availability.",
+        "tags": Array [
+          "system",
+        ],
       },
     ],
   ],

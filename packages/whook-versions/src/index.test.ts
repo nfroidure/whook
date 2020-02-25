@@ -2,7 +2,7 @@ import {
   augmentAPIWithVersionsHeaders,
   wrapHandlerWithVersionChecker,
 } from './index';
-import { initGetPing } from '@whook/whook';
+import { initGetPing, initGetPingDefinition } from '@whook/whook';
 import YError from 'yerror';
 
 const VERSIONS = [
@@ -34,16 +34,8 @@ describe('augmentAPIWithVersionsHeaders()', () => {
             description: 'A sample Swagger file for testing purpose.',
           },
           paths: {
-            '/ping': {
-              head: {
-                operationId: 'ping',
-                summary: "Checks API's availability.",
-                responses: {
-                  '200': {
-                    description: 'Pong',
-                  },
-                },
-              },
+            [initGetPingDefinition.path]: {
+              [initGetPingDefinition.method]: initGetPingDefinition.operation,
             },
           },
         },

@@ -4,6 +4,7 @@ import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
+  initGetPingDefinition,
 } from '@whook/whook';
 import Knifecycle, { constant, initializer } from 'knifecycle';
 import axios from 'axios';
@@ -21,16 +22,8 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      '/ping': {
-        get: {
-          operationId: 'getPing',
-          summary: "Checks API's availability.",
-          responses: {
-            '200': {
-              description: 'Pong',
-            },
-          },
-        },
+      [initGetPingDefinition.path]: {
+        [initGetPingDefinition.method]: initGetPingDefinition.operation,
       },
     },
   };

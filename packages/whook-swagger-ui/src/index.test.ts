@@ -1,6 +1,10 @@
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
-import { prepareServer, prepareEnvironment } from '@whook/whook';
+import {
+  prepareServer,
+  prepareEnvironment,
+  initGetPingDefinition,
+} from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
 import YError from 'yerror';
@@ -17,30 +21,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      '/ping': {
-        get: {
-          operationId: 'getPing',
-          summary: "Checks API's availability.",
-          responses: {
-            '200': {
-              description: 'Pong',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    additionalProperties: false,
-                    properties: {
-                      pong: {
-                        type: 'string',
-                        enum: ['pong'],
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
+      [initGetPingDefinition.path]: {
+        [initGetPingDefinition.method]: initGetPingDefinition.operation,
       },
     },
   };
@@ -135,7 +117,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       },
       data,
 
-      debugCalls: debug.mock.calls,
+      debugCalls: debug.mock.calls.sort(sortLogs),
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
@@ -184,7 +166,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       },
       data,
 
-      debugCalls: debug.mock.calls,
+      debugCalls: debug.mock.calls.sort(sortLogs),
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
@@ -208,10 +190,14 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     await $instance.destroy();
 
     expect({
-      debugCalls: debug.mock.calls,
+      debugCalls: debug.mock.calls.sort(sortLogs),
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();
   });
 });
+
+function sortLogs(strs1, strs2) {
+  return strs1[0] > strs2[0] ? 1 : strs1[0] === strs2[0] ? 0 : -1;
+}
