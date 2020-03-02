@@ -29,7 +29,15 @@ import {
   extractConsumableMediaTypes,
 } from './lib';
 import { getBody, sendBody } from './body';
-import initErrorHandler, { WhookErrorHandler } from './errorHandler';
+import initErrorHandler, {
+  DEFAULT_ERROR_URI,
+  DEFAULT_ERRORS_DESCRIPTORS,
+  DEFAULT_DEFAULT_ERROR_CODE,
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
+  ErrorHandlerConfig,
+  WhookErrorHandler,
+} from './errorHandler';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -50,8 +58,20 @@ function identity(x) {
 }
 
 export {
+  DEFAULT_DEBUG_NODE_ENVS,
+  DEFAULT_BUFFER_LIMIT,
+  DEFAULT_PARSERS,
+  DEFAULT_STRINGIFYERS,
+  DEFAULT_DECODERS,
+  DEFAULT_ENCODERS,
   initErrorHandler,
   WhookErrorHandler,
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
+  DEFAULT_ERROR_URI,
+  DEFAULT_ERRORS_DESCRIPTORS,
+  DEFAULT_DEFAULT_ERROR_CODE,
+  ErrorHandlerConfig,
   flattenOpenAPI,
   getOpenAPIOperations,
 };
@@ -278,7 +298,13 @@ async function initHTTPRouter({
 
           if (!handler) {
             log('debug', '❌ - No handler found for: ', method, parts);
-            throw new HTTPError(404, 'E_NOT_FOUND', method, parts);
+            throw new HTTPError(
+              404,
+              'E_NOT_FOUND',
+              method,
+              parts,
+              '/' + parts.join('/'),
+            );
           }
 
           operation = _operation_;
@@ -368,6 +394,7 @@ async function initHTTPRouter({
               500,
               'E_STRINGIFYER_LACK',
               response.headers['content-type'],
+              response,
             );
           }
           if (response.body) {
@@ -431,7 +458,7 @@ function _explodePath(path, parameters) {
       );
 
       if (!parameter) {
-        throw new YError('E_UNDECLARED_PATH_PARAMETER', node);
+        throw new YError('E_UNDECLARED_PATH_PARAMETER', path, node);
       }
       return parameter;
     });

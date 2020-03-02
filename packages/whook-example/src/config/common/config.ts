@@ -4,6 +4,7 @@ import { CORSConfig } from '@whook/cors';
 import { WhookConfigs } from '@whook/whook';
 import { AuthenticationConfig } from '../../services/authentication';
 import { APIConfig } from '../../services/API';
+import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 
 const packageConf = require('../../../package');
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
@@ -28,6 +29,13 @@ const CONFIG: AppConfigs = {
   NODE_ENVS,
   DEBUG_NODE_ENVS: process.env.DEBUG ? NODE_ENVS : DEBUG_NODE_ENVS,
   SERVICE_NAME_MAP: {},
+  ERRORS_DESCRIPTORS: {
+    ...DEFAULT_ERRORS_DESCRIPTORS,
+    E_INVALID_FAKE_TOKEN: {
+      code: 'invalid_fake_token',
+      description: 'The provided token ("$0") do not match',
+    },
+  },
   TOKEN: 'oudelali',
   CORS: {
     'Access-Control-Allow-Origin': '*',

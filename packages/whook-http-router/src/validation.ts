@@ -267,9 +267,14 @@ export function prepareParametersValidators(
   operationId: string,
   parameters: OpenAPIV3.ParameterObject[],
 ): { [name: string]: ajv.ValidateFunction } {
-  return parameters.reduce((validators, parameter) => {
+  return parameters.reduce((validators, parameter, index) => {
     if ('string' !== typeof parameter.name) {
-      throw new YError('E_BAD_PARAMETER_NAME', operationId);
+      throw new YError(
+        'E_BAD_PARAMETER_NAME',
+        operationId,
+        index,
+        parameter.name,
+      );
     }
 
     if (parameter.content) {

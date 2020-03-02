@@ -70,9 +70,52 @@ async function initAuthentication({ TOKEN }) {
 The properties added next to the `scopes` one will be passed to
  the wrapped handlers and an `authenticated` property will also
  be added in order for handlers to know if the client were
- authneticated.
+ authenticated.
 
-To see a usage of this wrapper, you may have a look at the
+Then, simply add it to your `WRAPPERS` service:
+```js
+import { service } from 'knifecycle';
+import { WhookWrapper } from '@whook/whook';
+import { wrapHandlerWithAuthorization } from '@whook/authorization';
+
+export default service(initWrappers, 'WRAPPERS');
+
+async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
+  const WRAPPERS = [wrapHandlerWithAuthorization];
+
+  return WRAPPERS;
+}
+```
+
+Then add the config and the errors descriptors or provide your own :
+```diff
+
+import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
++ import {
++   AUTHORIZATION_ERRORS_DESCRIPTORS,
++   WhookAuthorizationConfig
++ } from '@whook/authorization';
+
+// ...
+
+export type AppConfigs = WhookConfigs &
++  WhookAuthorizationConfig &
+  APIConfig;
+
+const CONFIG: AppConfigs = {
+  // ...
+-   ERRORS_DESCRIPTORS: DEFAULT_ERRORS_DESCRIPTORS,
++   ERRORS_DESCRIPTORS: {
++     ...DEFAULT_ERRORS_DESCRIPTORS,
++    ...AUTHORIZATION_ERRORS_DESCRIPTORS,
++   },
+  // ...
+};
+
+export default CONFIG;
+```
+
+To see a complete usage of this wrapper, you may have a look at the
  [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
  project.
 

@@ -58,6 +58,7 @@ Object {
   "errorParams": Array [
     "Bearer",
     Array [],
+    "noopHandler",
   ],
   "httpCode": 500,
   "logCalls": Array [

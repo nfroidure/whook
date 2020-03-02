@@ -1,0 +1,240 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initHTTPRouter httpRouter CUSTOMHEADER should 404 1`] = `
+Object {
+  "error": "bad_handler",
+  "error_debug_data": undefined,
+  "error_description": "No endpoint found at that path (\\"customheader\\", \\"/v1/users/1\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should fail with a bad parameter 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The value provided (\\"lol\\") is not a boolean",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_BOOLEAN",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should fail without a required parameter 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "This endpoint requires a value for the parameter \\"extended\\"",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUIRED_PARAMETER",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should lately fail when stringifier lack 1`] = `
+Object {
+  "error": "router_misconfiguration",
+  "error_debug_data": undefined,
+  "error_description": "The router has no stringifyer declared for the response content type \\"text/plain\\" with status \\"200\\"",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_STRINGIFYER_LACK",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns no response 1`] = `
+Object {
+  "error": "bad_handler",
+  "error_debug_data": undefined,
+  "error_description": "The handler for the operation id \\"getUser\\" seems to not return any response",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns no status 1`] = `
+Object {
+  "error": "bad_handler",
+  "error_debug_data": undefined,
+  "error_description": "The handler for the operation id \\"getUser\\" seems to not return any status",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE_STATUS",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns nothing 1`] = `
+Object {
+  "error": "bad_handler",
+  "error_debug_data": undefined,
+  "error_description": "The handler for the operation id \\"getUser\\" seems to not return a promise",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE_PROMISE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should lately fail whith unacceptable media type 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The asked response media type \\"text/word\\" is not satifyable (allowed media types \\"application/json,text/plain\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNACCEPTABLE_MEDIA_TYPE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should proxy error headers 1`] = `
+Object {
+  "error": "error",
+  "error_debug_data": undefined,
+  "error_description": "Got an unexpected error",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should work with a handler erroring 1`] = `
+Object {
+  "error": "error",
+  "error_debug_data": undefined,
+  "error_description": "Got an unexpected error",
+}
+`;
+
+exports[`initHTTPRouter httpRouter GET should work with an unexisting route 1`] = `
+Object {
+  "error": "bad_handler",
+  "error_debug_data": undefined,
+  "error_description": "No endpoint found at that path (\\"get\\", \\"/v1/gods/1\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail bad JSON contents 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The request body could not be parsed",
+  "error_params": Array [
+    "{ name\\": \\"John Doe\\" }",
+  ],
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_BODY",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail when parsers lacks 1`] = `
+Object {
+  "error": "error",
+  "error_debug_data": undefined,
+  "error_description": "Got an unexpected error",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with a bad content length 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The request body length (\\"22\\") is different than the length defined in the headers (\\"21\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_BODY_LENGTH",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with a bad content type 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The content type provided is wierd \\"#$===;;;==\\"",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_CONTENT_TYPE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with a bad content type header 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The content type provided is wierd \\"$%$;;;===\\"",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_CONTENT_TYPE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with an erroring stream 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "Failed to read the request body input stream",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_FAILURE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with an unsupported content type header 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The body media type \\"text/plain\\" is not supported (supported media types \\"image/jpeg,image/png\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNSUPPORTED_MEDIA_TYPE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with illegal contents according to the schema 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The request body does not match the schema",
+  "error_params": Array [
+    Object {
+      "nate": "John Doe",
+    },
+    Array [
+      Object {
+        "data": Object {
+          "nate": "John Doe",
+        },
+        "dataPath": "",
+        "keyword": "additionalProperties",
+        "message": "should NOT have additional properties",
+        "params": Object {
+          "additionalProperty": "nate",
+        },
+        "parentSchema": Object {
+          "additionalProperties": false,
+          "properties": Object {
+            "name": Object {
+              "type": "string",
+            },
+          },
+          "required": Array [
+            "name",
+          ],
+          "type": "object",
+        },
+        "schema": false,
+        "schemaPath": "#/additionalProperties",
+      },
+    ],
+  ],
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_REQUEST_BODY",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with no contents at all 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "This endpoint requires a value for the parameter \\"Authorization\\"",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUIRED_PARAMETER",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with too large contents declared 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The request content length (\\"21\\") exceeded the maximun allowed (\\"20\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_CONTENT_TOO_LARGE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with too large contents not declared 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The request content length (\\"21\\") exceeded the maximun allowed (\\"20\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_CONTENT_TOO_LARGE",
+}
+`;
+
+exports[`initHTTPRouter httpRouter PUT should fail with unsupported charset 1`] = `
+Object {
+  "error": "bad_request",
+  "error_debug_data": undefined,
+  "error_description": "The asked response charset \\"UTF-32;q=0.9, ISO-8859-1;q=0.8, UTF-16;q=0.7\\" is not satifyable (allowed charsets \\"utf-8\\")",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNACCEPTABLE_CHARSET",
+}
+`;

@@ -49,6 +49,12 @@ Object {
       "uniqueId",
     ],
     Array [
+      "ERRORS_DESCRIPTORS",
+    ],
+    Array [
+      "DEFAULT_ERROR_CODE",
+    ],
+    Array [
       "SHIELD_CHAR",
     ],
     Array [
@@ -159,6 +165,12 @@ Object {
     ],
     Array [
       "uniqueId",
+    ],
+    Array [
+      "ERRORS_DESCRIPTORS",
+    ],
+    Array [
+      "DEFAULT_ERROR_CODE",
     ],
     Array [
       "SHIELD_CHAR",
@@ -349,6 +361,12 @@ Object {
     ],
     Array [
       "uniqueId",
+    ],
+    Array [
+      "ERRORS_DESCRIPTORS",
+    ],
+    Array [
+      "DEFAULT_ERROR_CODE",
     ],
     Array [
       "SHIELD_CHAR",
