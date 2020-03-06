@@ -80,7 +80,7 @@ Also add the following line in your `package.json` file :
 +    "@whook/http-transaction": "^3.1.3",
 +    "babel-loader": "^8.0.6",
 +    "babel-plugin-knifecycle": "^1.1.1",
-+    "webpack": "4.41.5",
++    "webpack": "4.41.5"
   }
 ```
 

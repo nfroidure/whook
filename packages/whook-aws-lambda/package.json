@@ -73,6 +73,7 @@
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
     "babel-plugin-knifecycle": "^1.1.1",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
@@ -82,7 +83,8 @@
     "metapak-nfroidure": "9.8.2",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "webpack": "4.41.5"
   },
   "contributors": [],
   "engines": {
