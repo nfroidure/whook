@@ -100,7 +100,11 @@ export function pickupOperationSecuritySchemes(
       }
 
       if (!securitySchemes[schemeKey]) {
-        throw new YError('E_UNDECLARED_SECURITY_SCHEME', schemeKey);
+        throw new YError(
+          'E_UNDECLARED_SECURITY_SCHEME',
+          schemeKey,
+          operation.operationId,
+        );
       }
 
       return {

@@ -59,10 +59,11 @@ Object {
 exports[`runServer should fail with bad fake tokens 1`] = `
 Object {
   "data": Object {
-    "error": Object {
-      "code": "E_INVALID_FAKE_TOKEN",
+    "error": "invalid_fake_token",
+    "error_debug_data": Object {
       "guruMeditation": "2",
     },
+    "error_description": "The provided token (\\"e-admin\\") do not match",
   },
   "debugCalls": Array [
     Array [
@@ -89,7 +90,7 @@ Object {
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":510,\\"statusCode\\":400,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"Access-Control-Allow-Origin\\":\\"*\\",\\"Access-Control-Allow-Methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"Access-Control-Allow-Headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"Vary\\":\\"Origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"getDiagnostic\\"}",
+      "{\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":588,\\"statusCode\\":400,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"Access-Control-Allow-Origin\\":\\"*\\",\\"Access-Control-Allow-Methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"Access-Control-Allow-Headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"Vary\\":\\"Origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"getDiagnostic\\"}",
     ],
   ],
   "status": 400,
@@ -304,6 +305,15 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_ERROR_CODE",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE",
     ],
     Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/dist/services/DEFAULT_MECHANISM",

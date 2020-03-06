@@ -11,6 +11,12 @@ import {
   ProcessServiceConfig,
 } from 'common-services';
 import initHTTPRouter, {
+  DEFAULT_ERROR_URI,
+  DEFAULT_ERRORS_DESCRIPTORS,
+  DEFAULT_DEFAULT_ERROR_CODE,
+  ErrorHandlerConfig,
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
   initErrorHandler,
   HTTPRouterConfig,
   HTTPRouterProvider,
@@ -105,6 +111,11 @@ export {
   HTTPRouterConfig,
   HTTPRouterProvider,
   HTTPRouterService,
+  DEFAULT_ERROR_URI,
+  DEFAULT_ERRORS_DESCRIPTORS,
+  DEFAULT_DEFAULT_ERROR_CODE,
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
   HTTPServerConfig,
   HTTPServerProvider,
   HTTPServerService,
@@ -117,6 +128,7 @@ export type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
 
 export type WhookConfigs = ProcessServiceConfig &
   HTTPRouterConfig &
+  ErrorHandlerConfig &
   HTTPServerConfig &
   HTTPTransactionConfig &
   AutoloadConfig &

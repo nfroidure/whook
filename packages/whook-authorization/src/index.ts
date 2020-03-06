@@ -7,13 +7,43 @@ import {
   Dependencies,
 } from 'knifecycle';
 import HTTPError from 'yhttperror';
-import { WhookHandler, WhookOperation } from '@whook/whook';
+import {
+  WhookHandler,
+  WhookOperation,
+  WhookErrorsDescriptors,
+  DEFAULT_ERROR_URI,
+} from '@whook/whook';
 import { LogService } from 'common-services';
 import {
   parseAuthorizationHeader,
   buildWWWAuthenticateHeader,
   BEARER as BEARER_MECHANISM,
 } from 'http-auth-utils';
+
+export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
+  E_OPERATION_REQUIRED: {
+    code: 'server_misconfiguration',
+    description:
+      'The authorization wrapper needs to have the operation passed in',
+    uri: DEFAULT_ERROR_URI,
+  },
+  E_UNAUTHORIZED: {
+    code: 'unauthorized_client',
+    description: 'Access refused to this resource for the authenticated client',
+    uri: DEFAULT_ERROR_URI,
+  },
+  E_UNALLOWED_AUTH_MECHANISM: {
+    code: 'bad_request',
+    description: 'Unsupported auth mecanism',
+    uri: DEFAULT_ERROR_URI,
+  },
+  E_MISCONFIGURATION: {
+    code: 'bad_handler',
+    description:
+      'The operation "$2" is misconfigured for the authorization type "$0"',
+    uri: DEFAULT_ERROR_URI,
+  },
+};
 
 export interface AuthenticationService<A, R> {
   check: (type: string, data: A) => Promise<R>;
@@ -171,6 +201,7 @@ async function handleWithAuthorization<P extends Parameters, A, R, WR>(
           'E_MISCONFIGURATION',
           parsedAuthorization.type,
           requiredScopes,
+          operation.operationId,
         );
       }
 

@@ -1,4 +1,10 @@
-import { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
+import {
+  DEFAULT_ERROR_URI,
+  WhookResponse,
+  WhookHandler,
+  WhookOperation,
+  WhookErrorsDescriptors,
+} from '@whook/whook';
 import {
   reuseSpecialProps,
   alsoInject,
@@ -11,6 +17,15 @@ import { OpenAPIV3 } from 'openapi-types';
 import YHTTPError from 'yhttperror';
 import semverSatisfies from 'semver/functions/satisfies';
 import camelCase from 'camel-case';
+
+export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
+  E_DEPRECATED_VERSION: {
+    code: 'bad_request',
+    description:
+      'The version header "$0" value ("$1") does not match the rule "$3"',
+    uri: DEFAULT_ERROR_URI,
+  },
+};
 
 export type VersionDescriptor = {
   header: string;

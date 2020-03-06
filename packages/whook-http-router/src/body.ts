@@ -58,6 +58,7 @@ export async function getBody(
       400,
       'E_REQUEST_CONTENT_TOO_LARGE',
       bodySpec.contentLength,
+      bufferLimit,
     );
   }
 
@@ -79,7 +80,12 @@ export async function getBody(
           }
 
           reject(
-            new HTTPError(400, 'E_REQUEST_CONTENT_TOO_LARGE', chunk.length),
+            new HTTPError(
+              400,
+              'E_REQUEST_CONTENT_TOO_LARGE',
+              chunk.length,
+              bufferLimit,
+            ),
           );
           return FirstChunkStream.stop;
         },
@@ -105,7 +111,7 @@ export async function getBody(
       }
     });
   } catch (err) {
-    throw HTTPError.wrap(err, 400, 'E_BAD_BODY');
+    throw HTTPError.wrap(err, 400, 'E_BAD_BODY', body.toString());
   }
 }
 
@@ -119,7 +125,11 @@ export async function sendBody({ ENCODERS, STRINGIFYERS }, response) {
   }
 
   if (!STRINGIFYERS[response.headers['content-type']]) {
-    throw new YError('E_FATAL_STRINGIFYER_LACK', response);
+    throw new YError(
+      'E_STRINGIFYER_LACK',
+      response.headers['content-type'],
+      response,
+    );
   }
 
   const Encoder = ENCODERS['utf-8'];

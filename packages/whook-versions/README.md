@@ -16,6 +16,61 @@
 This wrapper simply answer to any HTTP call with a unsupported
  version header with a 418 HTTP error.
 
+To use this module, simply add it to your `WRAPPERS` service:
+```js
+import { service } from 'knifecycle';
+import { WhookWrapper } from '@whook/whook';
+import { wrapHandlerWithVersions } from '@whook/versions';
+
+export default service(initWrappers, 'WRAPPERS');
+
+async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
+  const WRAPPERS = [wrapHandlerWithVersions];
+
+  return WRAPPERS;
+}
+```
+
+And add the versions config and the errors descriptors or provide your own :
+```diff
+
+import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
++ import {
++   VERSIONS_ERRORS_DESCRIPTORS,
++   WhookVersionsConfig
++ } from '@whook/versions';
+
+// ...
+
++ const VERSIONS = [
++   {
++     header: 'X-SDK-Version',
++     rule: '>=2.2.0',
++   },
++   {
++     header: 'X-APP-Version',
++     rule: '>=3.6.0',
++   },
++ ];
+
+export type AppConfigs = WhookConfigs &
++  WhookVersionsConfig &
+  APIConfig;
+
+const CONFIG: AppConfigs = {
+  // ...
+-   ERRORS_DESCRIPTORS: DEFAULT_ERRORS_DESCRIPTORS,
++   ERRORS_DESCRIPTORS: {
++     ...DEFAULT_ERRORS_DESCRIPTORS,
++    ...VERSIONS_ERRORS_DESCRIPTORS,
++   },
+  // ...
++   VERSIONS,
+};
+
+export default CONFIG;
+```
+
 [//]: # (::contents:end)
 
 # Authors

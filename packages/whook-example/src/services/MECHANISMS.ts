@@ -15,7 +15,7 @@ export const FAKE_MECHANISM = {
     });
 
     if ('undefined' === typeof userId || 'undefined' === typeof scopes) {
-      throw new HTTPError(400, 'E_INVALID_FAKE_TOKEN');
+      throw new HTTPError(400, 'E_INVALID_FAKE_TOKEN', rest);
     }
 
     return {

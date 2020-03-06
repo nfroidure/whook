@@ -97,7 +97,11 @@ export function extractBodySpec(
         bodySpec.boundary = parsedContentType.parameters.boundary;
       }
     } catch (err) {
-      throw new HTTPError(400, 'E_BAD_CONTENT_TYPE');
+      throw new HTTPError(
+        400,
+        'E_BAD_CONTENT_TYPE',
+        request.headers['content-type'],
+      );
     }
   }
 
@@ -208,10 +212,22 @@ export async function executeHandler(
   const response = await responsePromise;
 
   if (!response) {
-    throw new HTTPError(500, 'E_NO_RESPONSE');
+    throw new HTTPError(
+      500,
+      'E_NO_RESPONSE',
+      operation.operationId,
+      operation.method,
+      operation.path,
+    );
   }
   if ('number' !== typeof response.status) {
-    throw new HTTPError(500, 'E_NO_RESPONSE_STATUS');
+    throw new HTTPError(
+      500,
+      'E_NO_RESPONSE_STATUS',
+      operation.operationId,
+      operation.method,
+      operation.path,
+    );
   }
 
   response.headers = response.headers || {};

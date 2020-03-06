@@ -7,7 +7,11 @@ import initHTTPRouter from './index';
 import initErrorHandler from './errorHandler';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { OpenAPIV3 } from 'openapi-types';
-import { HTTPTransactionService, WhookHandler } from '@whook/http-transaction';
+import {
+  HTTPTransactionService,
+  WhookHandler,
+  WhookResponse,
+} from '@whook/http-transaction';
 import { IncomingMessage, ServerResponse } from 'http';
 
 function waitResponse(response, raw: boolean = true) {
@@ -79,7 +83,7 @@ function prepareTransaction(result: any = Promise.resolve()) {
 
 describe('initHTTPRouter', () => {
   const NODE_ENV = 'test';
-  const DEBUG_NODE_ENVS = [];
+  const DEBUG_NODE_ENVS = ['test'];
   const BASE_PATH = '/v1';
   const API: OpenAPIV3.Document = {
     openapi: '3.0.2',
@@ -1104,24 +1108,8 @@ describe('initHTTPRouter', () => {
           } catch (err) {
             expect({
               errorCode: err.code,
-              errorParams: err.params,
             }).toEqual({
-              errorCode: 'E_FATAL_STRINGIFYER_LACK',
-              errorParams: [
-                {
-                  body: {
-                    error: {
-                      code: 'E_STRINGIFYER_LACK',
-                      guruMeditation: undefined,
-                    },
-                  },
-                  headers: {
-                    'cache-control': 'private',
-                    'content-type': undefined,
-                  },
-                  status: 500,
-                },
-              ],
+              errorCode: 'E_STRINGIFYER_LACK',
             });
           }
 
@@ -1186,14 +1174,11 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
-
-          expect(response).toEqual({
-            body: JSON.stringify({
-              error: { code: 'E_STRINGIFYER_LACK' },
-            }),
+          )) as WhookResponse;
+          expect(response.body).toMatch(/E_STRINGIFYER_LACK/);
+          expect({ ...response, body: undefined }).toEqual({
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
@@ -1204,6 +1189,11 @@ describe('initHTTPRouter', () => {
             userId: 1,
             extended: true,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('whith unacceptable media type', async () => {
@@ -1260,16 +1250,12 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              error: {
-                code: 'E_UNACCEPTABLE_MEDIA_TYPE',
-              },
-            }),
+          expect(response.body).toMatch(/E_UNACCEPTABLE_MEDIA_TYPE/);
+          expect({ ...response, body: undefined }).toEqual({
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
@@ -1280,6 +1266,11 @@ describe('initHTTPRouter', () => {
             userId: 1,
             extended: true,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('when the handler returns nothing', async () => {
@@ -1324,16 +1315,12 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              error: {
-                code: 'E_NO_RESPONSE_PROMISE',
-              },
-            }),
+          expect(response.body).toMatch(/E_NO_RESPONSE_PROMISE/);
+          expect({ ...response, body: undefined }).toEqual({
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
@@ -1344,6 +1331,11 @@ describe('initHTTPRouter', () => {
             userId: 1,
             extended: true,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('when the handler returns no response', async () => {
@@ -1389,16 +1381,12 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              error: {
-                code: 'E_NO_RESPONSE',
-              },
-            }),
+          expect(response.body).toMatch(/E_NO_RESPONSE/);
+          expect({ ...response, body: undefined }).toEqual({
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
@@ -1409,6 +1397,11 @@ describe('initHTTPRouter', () => {
             userId: 1,
             extended: true,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('when the handler returns no status', async () => {
@@ -1453,16 +1446,12 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              error: {
-                code: 'E_NO_RESPONSE_STATUS',
-              },
-            }),
+          expect(response.body).toMatch(/E_NO_RESPONSE_STATUS/);
+          expect({ ...response, body: undefined }).toEqual({
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
@@ -1473,6 +1462,11 @@ describe('initHTTPRouter', () => {
             userId: 1,
             extended: true,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
       });
 
@@ -1521,21 +1515,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
-          expect(response).toEqual({
+          )) as WhookResponse;
+
+          expect(response.body).toMatch(/E_REQUIRED_PARAMETER/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_REQUIRED_PARAMETER',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with a bad parameter', async () => {
@@ -1581,22 +1577,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_BAD_BOOLEAN/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_BAD_BOOLEAN',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
       });
 
@@ -1645,26 +1642,27 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response = await waitResponse(
+        const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
-        );
+        )) as WhookResponse;
 
-        expect(response).toEqual({
+        expect(response.body).toMatch(/E_UNAUTHORIZED/);
+        expect({ ...response, body: undefined }).toEqual({
           status: 501,
           headers: {
             'content-type': 'application/json',
             'cache-control': 'private',
           },
-          body: JSON.stringify({
-            error: {
-              code: 'E_UNAUTHORIZED',
-            },
-          }),
         });
         expect(handler.mock.calls[0][0]).toEqual({
           userId: 1,
           extended: true,
         });
+
+        expect({
+          ...JSON.parse(response.body),
+          error_debug_data: undefined,
+        }).toMatchSnapshot();
       });
 
       test('should proxy error headers', async () => {
@@ -1714,27 +1712,28 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response = await waitResponse(
+        const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
-        );
+        )) as WhookResponse;
 
-        expect(response).toEqual({
+        expect(response.body).toMatch(/E_UNAUTHORIZED/);
+        expect({ ...response, body: undefined }).toEqual({
           status: 501,
           headers: {
             'content-type': 'application/json',
             'cache-control': 'private',
             'X-Test': 'Error header',
           },
-          body: JSON.stringify({
-            error: {
-              code: 'E_UNAUTHORIZED',
-            },
-          }),
         });
         expect(handler.mock.calls[0][0]).toEqual({
           userId: 1,
           extended: true,
         });
+
+        expect({
+          ...JSON.parse(response.body),
+          error_debug_data: undefined,
+        }).toMatchSnapshot();
       });
 
       test('should work with an unexisting route', async () => {
@@ -1780,22 +1779,23 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response = await waitResponse(
+        const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
-        );
+        )) as WhookResponse;
 
-        expect(response).toEqual({
+        expect(response.body).toMatch(/E_NOT_FOUND/);
+        expect({ ...response, body: undefined }).toEqual({
           status: 404,
           headers: {
             'content-type': 'application/json',
             'cache-control': 'private',
           },
-          body: JSON.stringify({
-            error: {
-              code: 'E_NOT_FOUND',
-            },
-          }),
         });
+
+        expect({
+          ...JSON.parse(response.body),
+          error_debug_data: undefined,
+        }).toMatchSnapshot();
       });
     });
 
@@ -2079,22 +2079,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              error: {
-                code: 'E_BAD_CONTENT_TYPE',
-              },
-            }),
+          expect(response.body).toMatch(/E_BAD_CONTENT_TYPE/);
+          expect({ ...response, body: undefined }).toEqual({
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
             status: 400,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with an unsupported content type header', async () => {
@@ -2141,22 +2142,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionStart).toBeCalled();
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              error: {
-                code: 'E_UNSUPPORTED_MEDIA_TYPE',
-              },
-            }),
+          expect(response.body).toMatch(/E_UNSUPPORTED_MEDIA_TYPE/);
+          expect({ ...response, body: undefined }).toEqual({
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
             status: 415,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with illegal contents according to the schema', async () => {
@@ -2210,22 +2212,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_BAD_REQUEST_BODY/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_BAD_REQUEST_BODY',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with a bad content type', async () => {
@@ -2278,22 +2281,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_BAD_CONTENT_TYPE/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_BAD_CONTENT_TYPE',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with a bad content length', async () => {
@@ -2346,22 +2350,22 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_BAD_BODY_LENGTH/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_BAD_BODY_LENGTH',
-              },
-            }),
           });
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('bad JSON contents', async () => {
@@ -2414,22 +2418,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_BAD_BODY/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_BAD_BODY',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with an erroring stream', async () => {
@@ -2480,22 +2485,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_REQUEST_FAILURE/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_REQUEST_FAILURE',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with too large contents declared', async () => {
@@ -2549,22 +2555,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_REQUEST_CONTENT_TOO_LARGE/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_REQUEST_CONTENT_TOO_LARGE',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with too large contents not declared', async () => {
@@ -2618,22 +2625,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_REQUEST_CONTENT_TOO_LARGE/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_REQUEST_CONTENT_TOO_LARGE',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('when parsers lacks', async () => {
@@ -2687,22 +2695,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_PARSER_LACK/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 500,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_PARSER_LACK',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with unsupported charset', async () => {
@@ -2755,26 +2764,27 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_UNACCEPTABLE_CHARSET/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 406,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_UNACCEPTABLE_CHARSET',
-              },
-            }),
           });
           expect(handler.mock.calls[0][0]).toEqual({
             userId: 1,
             extended: false,
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
 
         test('with no contents at all', async () => {
@@ -2823,22 +2833,23 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response = await waitResponse(
+          const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
-          );
+          )) as WhookResponse;
 
-          expect(response).toEqual({
+          expect(response.body).toMatch(/E_REQUIRED_PARAMETER/);
+          expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
               'content-type': 'application/json',
               'cache-control': 'private',
             },
-            body: JSON.stringify({
-              error: {
-                code: 'E_REQUIRED_PARAMETER',
-              },
-            }),
           });
+
+          expect({
+            ...JSON.parse(response.body),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
         });
       });
     });
@@ -2948,22 +2959,23 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response = await waitResponse(
+        const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
-        );
+        )) as WhookResponse;
 
-        expect(response).toEqual({
-          body: JSON.stringify({
-            error: {
-              code: 'E_NOT_FOUND',
-            },
-          }),
+        expect(response.body).toMatch(/E_NOT_FOUND/);
+        expect({ ...response, body: undefined }).toEqual({
           headers: {
             'content-type': 'application/json',
             'cache-control': 'private',
           },
           status: 404,
         });
+
+        expect({
+          ...JSON.parse(response.body),
+          error_debug_data: undefined,
+        }).toMatchSnapshot();
       });
     });
   });
