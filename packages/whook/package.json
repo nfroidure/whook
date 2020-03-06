@@ -1,6 +1,6 @@
 {
   "name": "@whook/whook",
-  "version": "4.0.0-alpha.31",
+  "version": "4.0.0-alpha.32",
   "description": "Build strong and efficient REST web services.",
   "keywords": [
     "whook",
@@ -99,9 +99,9 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@whook/http-router": "^4.0.0-alpha.31",
-    "@whook/http-server": "^4.0.0-alpha.31",
-    "@whook/http-transaction": "^4.0.0-alpha.31",
+    "@whook/http-router": "^4.0.0-alpha.32",
+    "@whook/http-server": "^4.0.0-alpha.32",
+    "@whook/http-transaction": "^4.0.0-alpha.32",
     "common-services": "^6.2.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
