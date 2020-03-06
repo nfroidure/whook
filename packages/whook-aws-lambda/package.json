@@ -1,23 +1,9 @@
 {
-  "name": "@whook/cli",
+  "name": "@whook/aws-lambda",
   "version": "3.1.3",
-  "description": "The Whook server CLI",
-  "keywords": [
-    "whook",
-    "knifecycle",
-    "REST",
-    "HTTP",
-    "OpenAPI",
-    "web",
-    "service",
-    "command",
-    "cli"
-  ],
+  "description": "Build and deploy to AWS Lambda with Whook.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "bin": {
-    "whook": "bin/whook.js"
-  },
   "metapak": {
     "configs": [
       "main",
@@ -31,29 +17,15 @@
     "data": {
       "childPackage": true,
       "files": "'src/**/*.ts'",
+      "testsFiles": "'src/**/*.test.ts'",
       "ignore": [
         "dist"
       ],
       "bundleFiles": [
-        "bin",
         "dist",
         "src"
       ]
     }
-  },
-  "scripts": {
-    "cli": "env NODE_ENV=${NODE_ENV:-cli}",
-    "compile": "babel --extensions '.ts,.js' src --out-dir=dist --source-maps=true",
-    "cover": "npm run jest -- --coverage",
-    "doc": "echo \"# API\" > API.md; jsdoc2md undefined >> API.md && git add API.md",
-    "jest": "NODE_ENV=test jest",
-    "lint": "eslint 'src/**/*.ts'",
-    "metapak": "metapak",
-    "precz": "npm run compile",
-    "prettier": "prettier --write 'src/**/*.ts'",
-    "preversion": "npm run compile",
-    "test": "npm run jest",
-    "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist"
   },
   "author": {
     "name": "Nicolas Froidure",
@@ -69,14 +41,25 @@
     "url": "https://github.com/nfroidure/whook/issues"
   },
   "homepage": "https://github.com/nfroidure/whook",
+  "peerDependencies": {
+    "babel-loader": "^8.0.6",
+    "babel-plugin-knifecycle": "^1.1.1",
+    "webpack": "4.41.5"
+  },
   "dependencies": {
-    "@whook/whook": "^3.1.3",
+    "@whook/cli": "3.1.3",
+    "@whook/http-router": "3.1.3",
+    "@whook/whook": "3.1.3",
     "ajv": "^6.11.0",
+    "camel-case": "^4.1.1",
     "common-services": "^6.2.0",
-    "inquirer": "^7.0.0",
+    "cpr": "3.0.1",
+    "memfs": "3.0.4",
+    "memory-fs": "0.5.0",
+    "qs": "^6.9.1",
     "knifecycle": "^8.1.0",
-    "miniquery": "^1.1.2",
-    "yargs-parser": "^16.1.0"
+    "openapi-types": "^1.3.5",
+    "yerror": "^5.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
@@ -106,7 +89,6 @@
     "node": ">=8.12.0"
   },
   "files": [
-    "bin",
     "dist",
     "src",
     "LICENSE",
@@ -188,5 +170,19 @@
     "roots": [
       "<rootDir>/src"
     ]
+  },
+  "scripts": {
+    "cli": "env NODE_ENV=${NODE_ENV:-cli}",
+    "compile": "babel --extensions '.ts,.js' src --out-dir=dist --source-maps=true",
+    "cover": "npm run jest -- --coverage",
+    "doc": "echo \"# API\" > API.md; jsdoc2md undefined >> API.md && git add API.md",
+    "jest": "NODE_ENV=test jest",
+    "lint": "eslint 'src/**/*.ts'",
+    "metapak": "metapak",
+    "precz": "npm run compile",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "preversion": "npm run compile",
+    "test": "npm run jest",
+    "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist"
   }
 }

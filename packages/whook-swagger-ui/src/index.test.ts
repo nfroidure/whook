@@ -116,7 +116,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         server: undefined,
       },
       data,
-
       debugCalls: debug.mock.calls.sort(sortLogs),
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,
@@ -165,7 +164,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         server: undefined,
       },
       data,
-
       debugCalls: debug.mock.calls.sort(sortLogs),
       logInfoCalls: logger.info.mock.calls,
       logErrorCalls: logger.error.mock.calls,

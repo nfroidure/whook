@@ -1,4 +1,4 @@
-import camelCase from 'camel-case';
+import { camelCase } from 'camel-case';
 import YError from 'yerror';
 import HTTPError from 'yhttperror';
 import Stream from 'stream';
