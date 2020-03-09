@@ -70,6 +70,11 @@ async function initAPI({
           : {}),
       },
     },
+    tags: [
+      {
+        name: 'system',
+      },
+    ],
   };
 
   // You can apply transformations to your API like

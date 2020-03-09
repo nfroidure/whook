@@ -433,6 +433,11 @@ Object {
         "url": "http://localhost:1337",
       },
     ],
+    "tags": Array [
+      Object {
+        "name": "system",
+      },
+    ],
   },
   "logCalls": Array [
     Array [

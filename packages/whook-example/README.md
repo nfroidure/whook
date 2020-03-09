@@ -31,6 +31,11 @@ Start the server in development mode:
 npm run dev
 ```
 
+Create a new endpoint / service / provider or command:
+```sh
+npx whook create
+```
+
 List available commands:
 ```sh
 npx whook ls
@@ -39,7 +44,7 @@ npx whook ls
 # Debug
 Execute a handler in isolation:
 ```sh
-npm run whook -- handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
+npx whook -- handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
 ```
 
 Debug `whook` internals:
@@ -47,7 +52,7 @@ Debug `whook` internals:
 DEBUG=whook npm run dev
 ```
 
-Debug `knifecycle` internals (dependency injections issues):
+Debug `knifecycle` internals (dependency injection issues):
 ```sh
 DEBUG=knifecycle npm run dev
 ```
