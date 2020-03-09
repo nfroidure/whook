@@ -8,7 +8,7 @@ Object {
         "title": "test",
         "version": "<already_tested>",
       },
-      "openapi": "2.0",
+      "openapi": "3.0.0",
       "paths": Object {
         "/time": Object {
           "get": Object {
@@ -52,10 +52,57 @@ Object {
         "title": "test",
         "version": "<already_tested>",
       },
-      "openapi": "2.0",
+      "openapi": "3.0.0",
       "paths": Object {
         "/time": Object {
           "get": Object {
+            "tags": Array [
+              "public",
+            ],
+            "x-whook": undefined,
+          },
+        },
+      },
+      "tags": Array [
+        Object {
+          "name": "public",
+        },
+        Object {
+          "name": "private",
+        },
+      ],
+    },
+    "status": 200,
+  },
+}
+`;
+
+exports[`getOpenAPI should work with muted paramerter 1`] = `
+Object {
+  "response": Object {
+    "body": Object {
+      "components": Object {
+        "parameters": Object {
+          "xRefToRemove": Object {
+            "in": "header",
+            "name": "X-Ref-To-Remove",
+          },
+        },
+      },
+      "info": Object {
+        "title": "test",
+        "version": "<already_tested>",
+      },
+      "openapi": "3.0.0",
+      "paths": Object {
+        "/time": Object {
+          "get": Object {
+            "parameters": Array [
+              Object {
+                "in": "query",
+                "name": "queryParam",
+              },
+            ],
             "tags": Array [
               "public",
             ],
