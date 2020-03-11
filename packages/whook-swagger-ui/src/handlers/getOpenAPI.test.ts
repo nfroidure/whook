@@ -2,7 +2,7 @@ import initGetOpenAPI from './getOpenAPI';
 
 describe('getOpenAPI', () => {
   const API = {
-    openapi: '2.0',
+    openapi: '3.0.0',
     info: {
       title: 'test',
       version: '1',
@@ -20,6 +20,50 @@ describe('getOpenAPI', () => {
         put: {
           tags: ['private'],
           'x-whook': { private: true },
+        },
+      },
+    },
+    tags: [{ name: 'public' }, { name: 'private' }],
+  };
+
+  const APIWithParameters = {
+    openapi: '3.0.0',
+    info: {
+      title: 'test',
+      version: '1',
+    },
+    paths: {
+      '/time': {
+        options: {
+          tags: ['public'],
+          'x-whook': { memx: 2, tx: 18 },
+        },
+        get: {
+          tags: ['public'],
+          'x-whook': { memx: 2, tx: 18 },
+          parameters: [
+            {
+              in: 'query',
+              name: 'queryParam',
+            },
+            {
+              in: 'query',
+              name: 'parameterToRemove',
+            },
+            { $ref: '#/components/parameters/xRefToRemove' },
+          ],
+        },
+        put: {
+          tags: ['private'],
+          'x-whook': { private: true },
+        },
+      },
+    },
+    components: {
+      parameters: {
+        xRefToRemove: {
+          name: 'X-Ref-To-Remove',
+          in: 'header',
         },
       },
     },
@@ -52,6 +96,28 @@ describe('getOpenAPI', () => {
     });
     const response = await getOpenAPI({
       authenticated: true,
+    });
+
+    expect({
+      response: {
+        ...response,
+        body: {
+          ...response.body,
+          info: {
+            ...response.body.info,
+            version: '<already_tested>',
+          },
+        },
+      },
+    }).toMatchSnapshot();
+  });
+
+  it('should work with muted paramerter', async () => {
+    const getOpenAPI = await initGetOpenAPI({
+      API: APIWithParameters,
+    });
+    const response = await getOpenAPI({
+      mutedParameters: ['X-Ref-To-Remove', 'parameterToRemove'],
     });
 
     expect({

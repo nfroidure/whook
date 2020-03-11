@@ -2,6 +2,7 @@ import { autoHandler } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router/dist/utils';
 import { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
 import { OpenAPIV3 } from 'openapi-types';
+import OpenAPIParser from 'swagger-parser';
 
 export default autoHandler(getOpenAPI);
 
@@ -28,14 +29,41 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 } as WhookAPIHandlerDefinition;
 
+function removeMutedParameters(
+  parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,
+  mutedParameters: string[],
+  $refs: OpenAPIParser.$Refs,
+) {
+  return parameters.reduce((acc, parameter) => {
+    const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject).$ref
+      ? ($refs.get(
+          (parameter as OpenAPIV3.ReferenceObject).$ref,
+        ) as OpenAPIV3.ParameterObject)
+      : (parameter as OpenAPIV3.ParameterObject);
+
+    if (mutedParameters.includes(dereferencedParameter.name)) {
+      return acc;
+    }
+
+    return acc.concat(parameter);
+  }, []);
+}
+
 async function getOpenAPI(
   { API }: { API: OpenAPIV3.Document },
   {
     authenticated = false,
     mutedMethods = ['options'],
-  }: { authenticated?: boolean; mutedMethods?: string[] },
+    mutedParameters = [],
+  }: {
+    authenticated?: boolean;
+    mutedMethods?: string[];
+    mutedParameters?: string[];
+  },
 ): Promise<WhookResponse<200, {}, OpenAPIV3.Document>> {
   const operations = await getOpenAPIOperations(API);
+  const $refs = await OpenAPIParser.resolve(API);
+
   const tagIsPresent = {};
 
   const CLEANED_API = {
@@ -60,6 +88,14 @@ async function getOpenAPI(
         ...paths[operation.path],
         [operation.method]: {
           ...API.paths[operation.path][operation.method],
+          ...(operation.parameters &&
+            operation.parameters.length && {
+              parameters: removeMutedParameters(
+                operation.parameters,
+                mutedParameters,
+                $refs,
+              ),
+            }),
           ...(authenticated
             ? {}
             : {
