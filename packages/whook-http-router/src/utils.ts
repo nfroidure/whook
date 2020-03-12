@@ -3,7 +3,7 @@ import YError from 'yerror';
 import { OpenAPIV3 } from 'openapi-types';
 import { WhookOperation } from '@whook/http-transaction';
 
-const OPEN_API_METHODS = [
+export const OPEN_API_METHODS = [
   'options',
   'head',
   'get',

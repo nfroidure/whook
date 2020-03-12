@@ -11,7 +11,11 @@ import {
   WhookOperation,
   HTTPTransactionService,
 } from '@whook/http-transaction';
-import { flattenOpenAPI, getOpenAPIOperations } from './utils';
+import {
+  OPEN_API_METHODS,
+  flattenOpenAPI,
+  getOpenAPIOperations,
+} from './utils';
 import {
   prepareParametersValidators,
   applyValidators,
@@ -20,6 +24,8 @@ import {
   extractOperationSecurityParameters,
 } from './validation';
 import {
+  BodySpec,
+  ResponseSpec,
   extractBodySpec,
   extractResponseSpec,
   checkResponseCharset,
@@ -58,6 +64,7 @@ function identity(x) {
 }
 
 export {
+  OPEN_API_METHODS,
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
@@ -74,6 +81,8 @@ export {
   ErrorHandlerConfig,
   flattenOpenAPI,
   getOpenAPIOperations,
+  BodySpec,
+  ResponseSpec,
 };
 
 export type WhookHandlers = { [name: string]: WhookHandler };

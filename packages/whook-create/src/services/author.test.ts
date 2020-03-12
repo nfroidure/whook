@@ -1,3 +1,4 @@
+import _inquirer from 'inquirer';
 import initAuthor from './author';
 
 describe('initAuthor', () => {
@@ -28,7 +29,7 @@ describe('initAuthor', () => {
     lock.release.mockResolvedValueOnce(undefined);
 
     const author = await initAuthor({
-      inquirer,
+      inquirer: (inquirer as unknown) as typeof _inquirer,
       exec,
       lock,
       log,
@@ -55,7 +56,7 @@ describe('initAuthor', () => {
     lock.release.mockResolvedValueOnce(undefined);
 
     const author = await initAuthor({
-      inquirer,
+      inquirer: (inquirer as unknown) as typeof _inquirer,
       exec,
       lock,
       log,
@@ -80,7 +81,7 @@ describe('initAuthor', () => {
 
     try {
       await initAuthor({
-        inquirer,
+        inquirer: (inquirer as unknown) as typeof _inquirer,
         exec,
         lock,
         log,

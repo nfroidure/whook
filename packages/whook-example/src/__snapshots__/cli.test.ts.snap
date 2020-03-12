@@ -29,8 +29,9 @@ Object {
 - printEnv: A command printing every env values
 
 
-# Provided by \\"@whook/cli\\": 4 commands
+# Provided by \\"@whook/cli\\": 5 commands
 - config: A simple program that returns the queryed config value
+- create: A command helping to create new Whook files easily
 - env: A command printing env values
 - handler: Runs the given server handler for testing purpose
 - ls: Print available commands

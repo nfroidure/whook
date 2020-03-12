@@ -1,0 +1,1163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createCommand for commands should work when existing with dependencies and erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "message": "Give the command description",
+          "name": "description",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands/aCommand.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands/aCommand.ts",
+      "import { extra, autoService } from 'knifecycle';
+import { LogService } from 'common-services';
+import {
+  PromptArgs,
+  WhookCommandArgs,
+  WhookCommandDefinition,
+  WhookCommandHandler,
+  readArgs,
+} from '@whook/cli';
+
+
+export const definition: WhookCommandDefinition = {
+  description: 'yolo',
+  example: \`whook aCommand --param \\"value\\"\`,
+  arguments: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['param'],
+    properties: {
+      param: {
+        description: 'A parameter',
+        type: 'string',
+        default: 'A default value',
+      },
+    },
+  },
+};
+
+export default extra(definition, autoService(initACommandCommand));
+
+async function initACommandCommand({
+  NODE_ENV,
+  PROJECT_DIR,
+  log,
+  promptArgs,
+}: {
+  NODE_ENV: string;
+  PROJECT_DIR: string;
+  log: LogService;
+  promptArgs: PromptArgs;
+}): Promise<WhookCommandHandler> {
+  return async () => {
+    const { param } = readArgs(
+      definition.arguments,
+      await promptArgs(),
+    ) as { param: string; };
+
+  // Implement your command here
+  }
+}
+",
+    ],
+  ],
+}
+`;
+
+exports[`createCommand for commands should work when existing with dependencies but no erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "message": "Give the command description",
+          "name": "description",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands/aCommand.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [],
+}
+`;
+
+exports[`createCommand for commands should work with no dependencies 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "message": "Give the command description",
+          "name": "description",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands/aCommand.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/commands/aCommand.ts",
+      "import { extra, autoService } from 'knifecycle';
+import {
+  PromptArgs,
+  WhookCommandArgs,
+  WhookCommandDefinition,
+  WhookCommandHandler,
+  readArgs,
+} from '@whook/cli';
+
+
+export const definition: WhookCommandDefinition = {
+  description: 'yolo',
+  example: \`whook aCommand --param \\"value\\"\`,
+  arguments: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['param'],
+    properties: {
+      param: {
+        description: 'A parameter',
+        type: 'string',
+        default: 'A default value',
+      },
+    },
+  },
+};
+
+export default extra(definition, autoService(initACommandCommand));
+
+async function initACommandCommand({
+  promptArgs,
+}: {
+  promptArgs: PromptArgs;
+}): Promise<WhookCommandHandler> {
+  return async () => {
+    const { param } = readArgs(
+      definition.arguments,
+      await promptArgs(),
+    ) as { param: string; };
+
+  // Implement your command here
+  }
+}
+",
+    ],
+  ],
+}
+`;
+
+exports[`createCommand for handlers should work with an existing get and dependencies and erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "options",
+            "head",
+            "get",
+            "put",
+            "post",
+            "patch",
+            "delete",
+            "trace",
+          ],
+          "default": "get",
+          "message": "Give the handler method",
+          "name": "method",
+          "type": "list",
+        },
+        Object {
+          "message": "Give the handler path",
+          "name": "path",
+          "type": "input",
+        },
+        Object {
+          "message": "Give the handler description",
+          "name": "description",
+          "type": "input",
+        },
+        Object {
+          "choices": Array [
+            "system",
+          ],
+          "message": "Assing one or more tags to the handler",
+          "name": "tags",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers/getHandler.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers/getHandler.ts",
+      "import { autoHandler } from 'knifecycle';
+import { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
+import { LogService } from 'common-services';
+
+export const definition: WhookAPIHandlerDefinition = {
+  path: '/lol',
+  method: 'get',
+  operation: {
+    operationId: 'getHandler',
+    summary: 'yolo',
+    tags: [],
+    parameters: [
+      {
+        name: 'param',
+        in: 'query',
+        required: false,
+        schema: { type: 'number' },
+      },
+    ],
+    responses: {
+      200: {
+        description: 'Success',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+type HandlerDependencies = {
+  NODE_ENV: string;
+  PROJECT_DIR: string;
+  log: LogService;
+};
+
+export default autoHandler(getHandler);
+
+async function getHandler({
+  NODE_ENV,
+  PROJECT_DIR,
+  log,
+}: HandlerDependencies, {
+    param,
+  } : {
+    param: number;
+  }): Promise<WhookResponse<200, {}, {}>> {
+  return {
+    status: 200,
+    headers: {},
+    body: { param },
+  };
+}
+",
+    ],
+  ],
+}
+`;
+
+exports[`createCommand for handlers should work with an existing get and dependencies but no erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "options",
+            "head",
+            "get",
+            "put",
+            "post",
+            "patch",
+            "delete",
+            "trace",
+          ],
+          "default": "get",
+          "message": "Give the handler method",
+          "name": "method",
+          "type": "list",
+        },
+        Object {
+          "message": "Give the handler path",
+          "name": "path",
+          "type": "input",
+        },
+        Object {
+          "message": "Give the handler description",
+          "name": "description",
+          "type": "input",
+        },
+        Object {
+          "choices": Array [
+            "system",
+          ],
+          "message": "Assing one or more tags to the handler",
+          "name": "tags",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers/getHandler.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [],
+}
+`;
+
+exports[`createCommand for handlers should work with get and no dependencies 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "options",
+            "head",
+            "get",
+            "put",
+            "post",
+            "patch",
+            "delete",
+            "trace",
+          ],
+          "default": "get",
+          "message": "Give the handler method",
+          "name": "method",
+          "type": "list",
+        },
+        Object {
+          "message": "Give the handler path",
+          "name": "path",
+          "type": "input",
+        },
+        Object {
+          "message": "Give the handler description",
+          "name": "description",
+          "type": "input",
+        },
+        Object {
+          "choices": Array [
+            "system",
+          ],
+          "message": "Assing one or more tags to the handler",
+          "name": "tags",
+          "type": "checkbox",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers/getHandler.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/handlers/getHandler.ts",
+      "import { autoHandler } from 'knifecycle';
+import { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
+
+export const definition: WhookAPIHandlerDefinition = {
+  path: '/lol',
+  method: 'get',
+  operation: {
+    operationId: 'getHandler',
+    summary: 'yolo',
+    tags: [],
+    parameters: [
+      {
+        name: 'param',
+        in: 'query',
+        required: false,
+        schema: { type: 'number' },
+      },
+    ],
+    responses: {
+      200: {
+        description: 'Success',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+type HandlerDependencies = {};
+
+export default autoHandler(getHandler);
+
+async function getHandler(_: HandlerDependencies, {
+    param,
+  } : {
+    param: number;
+  }): Promise<WhookResponse<200, {}, {}>> {
+  return {
+    status: 200,
+    headers: {},
+    body: { param },
+  };
+}
+",
+    ],
+  ],
+}
+`;
+
+exports[`createCommand for providers should work when existing with dependencies and erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aProvider.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aProvider.ts",
+      "import { autoProvider, Provider } from 'knifecycle';
+import { LogService } from 'common-services';
+
+export type AProviderService = {};
+export type AProviderProvider = Provider<AProviderService>;
+export type AProviderDependencies = {
+  NODE_ENV: string;
+  PROJECT_DIR: string;
+  log: LogService;
+};
+
+export default autoProvider(initAProvider);
+
+async function initAProvider({
+  NODE_ENV,
+  PROJECT_DIR,
+  log,
+}: AProviderDependencies): Promise<AProviderProvider> {
+  // Instantiate and return your service
+  return {
+    service: {},
+    dispose: async () => {
+      // Do any action before the process shutdown
+      // (closing db connections... etc)
+    },
+    // You can also set a promise for unexpected errors
+    //  that shutdown the app when it happens
+    // errorPromise: new Promise(),
+  };
+}
+",
+    ],
+  ],
+}
+`;
+
+exports[`createCommand for providers should work when existing with dependencies but no erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aProvider.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [],
+}
+`;
+
+exports[`createCommand for providers should work with no dependencies 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aProvider.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aProvider.ts",
+      "import { autoProvider, Provider } from 'knifecycle';
+
+export type AProviderService = {};
+export type AProviderProvider = Provider<AProviderService>;
+export type AProviderDependencies = {};
+
+export default autoProvider(initAProvider);
+
+async function initAProvider(_: AProviderDependencies): Promise<AProviderProvider> {
+  // Instantiate and return your service
+  return {
+    service: {},
+    dispose: async () => {
+      // Do any action before the process shutdown
+      // (closing db connections... etc)
+    },
+    // You can also set a promise for unexpected errors
+    //  that shutdown the app when it happens
+    // errorPromise: new Promise(),
+  };
+}
+",
+    ],
+  ],
+}
+`;
+
+exports[`createCommand for services should work when existing with dependencies and erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aService.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aService.ts",
+      "import { autoService } from 'knifecycle';
+import { LogService } from 'common-services';
+
+export type AServiceService = {};
+export type AServiceDependencies = {
+  NODE_ENV: string;
+  PROJECT_DIR: string;
+  log: LogService;
+};
+
+export default autoService(initAService);
+
+async function initAService({
+  NODE_ENV,
+  PROJECT_DIR,
+  log,
+}: AServiceDependencies): Promise<AServiceService> {
+  // Instantiate and return your service
+  return {};
+}
+",
+    ],
+  ],
+}
+`;
+
+exports[`createCommand for services should work when existing with dependencies but no erase allowed 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+    Array [
+      Array [
+        Object {
+          "name": "Erase ?",
+          "type": "confirm",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "warning",
+      "⚠️ - The file already exists !",
+    ],
+  ],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aService.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [],
+}
+`;
+
+exports[`createCommand for services should work with no dependencies 1`] = `
+Object {
+  "ensureDirCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services",
+    ],
+  ],
+  "inquirerPromptCalls": Array [
+    Array [
+      Array [
+        Object {
+          "choices": Array [
+            "time",
+            "log",
+            "random",
+            "delay",
+            "process",
+            "HOST",
+            "PORT",
+            "PROJECT_DIR",
+            "PROJECT_SRC",
+            "NODE_ENV",
+            "DEBUG_NODE_ENVS",
+            "WHOOK_PLUGINS_PATHS",
+            "API_DEFINITIONS",
+            "ENV",
+            "APM",
+            "CONFIGS",
+          ],
+          "message": "Which services do you want to use?",
+          "name": "services",
+          "type": "checkbox",
+        },
+      ],
+    ],
+  ],
+  "logCalls": Array [],
+  "pathExistsCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aService.ts",
+    ],
+  ],
+  "promptArgsCalls": Array [
+    Array [],
+  ],
+  "result": undefined,
+  "writeFileCalls": Array [
+    Array [
+      "/hom/whoiam/project/src/services/aService.ts",
+      "import { autoService } from 'knifecycle';
+
+export type AServiceService = {};
+export type AServiceDependencies = {};
+
+export default autoService(initAService);
+
+async function initAService(_: AServiceDependencies): Promise<AServiceService> {
+  // Instantiate and return your service
+  return {};
+}
+",
+    ],
+  ],
+}
+`;

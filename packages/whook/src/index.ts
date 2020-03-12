@@ -11,6 +11,7 @@ import {
   ProcessServiceConfig,
 } from 'common-services';
 import initHTTPRouter, {
+  OPEN_API_METHODS,
   DEFAULT_ERROR_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
@@ -113,6 +114,7 @@ export {
   WhookHandler,
   WhookHandlerFunction,
   WhookWrapper,
+  OPEN_API_METHODS,
   HTTPTransactionConfig,
   HTTPTransactionService,
   HTTPRouterConfig,
