@@ -15,29 +15,26 @@
 
 To use it, just wrap the HTTP router with this module and
  register it again with the `Knifecycle` instance inside the
- `runServer` function:
+ `runServer` function (usually in `src/index.ts`):
+```diff
++ import initHTTPRouter from '@whook/http-router';
++ import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 
-```js
-import Knifecycle from 'knifecycle';
-import {
-  runServer as runBaseServer,
-  prepareServer as prepareBaseServer,
-} from '@whook/whook';
-import initHTTPRouter from '@whook/http-router';
-import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
+// (...)
 
 // It is important to do this in the runServer function since it really
 //  make sense only when actually running the server
 export async function runServer(injectedNames = [], $ = new Knifecycle()) {
-  $.register(
-    wrapHTTPRouterWithSwaggerUI(initHTTPRouter),
-  );
+
+  // (...)
+
++   // Add support for Swagger UI
++   $.register(
++     wrapHTTPRouterWithSwaggerUI(initHTTPRouter),
++   );
 
   return await runBaseServer(injectedNames, $);
 }
-
-export const prepareServer = prepareBaseServer;
-
 ```
 
 [//]: # (::contents:end)

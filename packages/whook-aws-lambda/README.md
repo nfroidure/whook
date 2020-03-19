@@ -70,7 +70,7 @@ And add create the runBuild function in you `index.ts` main file :
 + } 
 ```
 
-Also add the following line in your `package.json` file :
+Also add the following lines in your `package.json` file :
 ```diff
   scripts: {
 +    "build": "NODE_ENV=${NODE_ENV:-development} node bin/build",

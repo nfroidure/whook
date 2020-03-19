@@ -13,9 +13,83 @@
 
 [//]: # (::contents:start)
 
-To see how to add CORS support to your application, have a look
- at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
- project, it will be well documented here as soon as possible.
+To use this module, simply add it to your `WRAPPERS` service
+ (usually in `src/services/WRAPPERS.ts`):
+```diff
+import { service } from 'knifecycle';
+import { WhookWrapper } from '@whook/whook';
++ import { wrapHandlerWithCors } from '@whook/cors';
+
+export default service(initWrappers, 'WRAPPERS');
+
+async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
+-  const WRAPPERS = [];
++  const WRAPPERS = [wrapHandlerWithCors];
+
+  return WRAPPERS;
+}
+```
+
+And add the CORS config (usually in `src/config/common/config.js`):
+```diff
++ import {
++   CORSConfig
++ } from '@whook/cors';
+
+// ...
+
+export type AppConfigs = WhookConfigs &
++  CORSConfig &
+  APIConfig;
+
+const CONFIG: AppConfigs = {
+  // ...
++   CORS: {
++     'Access-Control-Allow-Origin': '*',
++     'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
++     'Access-Control-Allow-Headers': [
++       'Accept',
++       'Accept-Encoding',
++       'Accept-Language',
++       'Referrer',
++       'Content-Type',
++       'Content-Encoding',
++       'Authorization',
++       'Keep-Alive',
++       'User-Agent',
++     ].join(','),
++     Vary: 'Origin',
++   },
+};
+
+export default CONFIG;
+```
+
+Finally, you must adapt the API service to handle CORS options:
+```diff
++ import { augmentAPIWithCORS } from '@whook/cors';
+
+// (...)
+
+export default name('API', autoService(initAPI));
+
+// The API service is where you put your handlers
+// altogether to form the final API
+async function initAPI({
+// (..)
+) {
+
+  // (..)
+
+  // You can apply transformations to your API like
+  // here for CORS support (OPTIONS method handling)
+-  return augmentAPIWithFakeAuth({ ENV }, API);
++  return augmentAPIWithCORS(await augmentAPIWithFakeAuth({ ENV }, API));
+}
+```
+
+To see a real example have a look at the
+ [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example).
 
 [//]: # (::contents:end)
 

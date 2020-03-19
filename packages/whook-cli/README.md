@@ -15,14 +15,25 @@
 
 This is the Whook server CLI tool. To create new commands, you simply
  have to create new files in the `src/commands` folder of your Whook
- project.
+ project and let the autoloader detect it ;).
 
 By setting `@whook/cli` in the `WHOOK_PLUGINS` constant, you will
- benefit of the commands
- [embedded in this plugin](https://github.com/nfroidure/whook/tree/master/packages/whook-cli/src/commands).
+ benefit of [the commands provided by this module](https://github.com/nfroidure/whook/tree/master/packages/whook-cli/src/commands):
+```diff
+  // (...)
+  // Setup your own whook plugins or avoid whook defaults by leaving it empty
+-  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
++  $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
+  // (...)
+```
 
 See the [Whook example server commands](https://github.com/nfroidure/whook/tree/master/packages/whook-example/src/commands)
  for simple examples on creating your own commands in a `whook` project.
+
+You can also create a new command by running:
+```sh
+npx whook create --type commands
+```
 
 ## Dev
 

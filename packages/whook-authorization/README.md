@@ -33,7 +33,7 @@ Note that the form-encoded body parameter defined by the bearer
 To use this wrapper, you'll have to create an `authentication`
  service. Here is a simple unique token based implementation:
  ```js
- import { autoService } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import YError from 'yerror';
 
 export default autoService(initAuthentication);
@@ -72,24 +72,26 @@ The properties added next to the `scopes` one will be passed to
  be added in order for handlers to know if the client were
  authenticated.
 
-Then, simply add it to your `WRAPPERS` service:
-```js
+Then, simply add it to your `WRAPPERS` service (usually in
+ `src/services/WRAPPERS.ts`):
+```diff
 import { service } from 'knifecycle';
 import { WhookWrapper } from '@whook/whook';
-import { wrapHandlerWithAuthorization } from '@whook/authorization';
++ import { wrapHandlerWithAuthorization } from '@whook/authorization';
 
 export default service(initWrappers, 'WRAPPERS');
 
 async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
-  const WRAPPERS = [wrapHandlerWithAuthorization];
+-   const WRAPPERS = [];
++   const WRAPPERS = [wrapHandlerWithAuthorization];
 
   return WRAPPERS;
 }
 ```
 
-Then add the config and the errors descriptors or provide your own :
+Then add the config and the errors descriptors or provide your
+ own (usually in `src/config/common/config.js`):
 ```diff
-
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 + import {
 +   AUTHORIZATION_ERRORS_DESCRIPTORS,
@@ -107,7 +109,7 @@ const CONFIG: AppConfigs = {
 -   ERRORS_DESCRIPTORS: DEFAULT_ERRORS_DESCRIPTORS,
 +   ERRORS_DESCRIPTORS: {
 +     ...DEFAULT_ERRORS_DESCRIPTORS,
-+    ...AUTHORIZATION_ERRORS_DESCRIPTORS,
++     ...AUTHORIZATION_ERRORS_DESCRIPTORS,
 +   },
   // ...
 };

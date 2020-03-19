@@ -13,9 +13,33 @@
 
 [//]: # (::contents:start)
 
-To see how to add authorization support to your application, have a look
- at the [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
- project, it will be well documented here as soon as possible.
+To use this module, simply override the httpTransaction service
+ into your main file (usually in `src/index.ts`):
+```diff
++ import initHTTPTransaction from '@whook/http-transaction';
++ import wrapHTTPTransactionWithMethodOverride from '@whook/method-override';
+
+// (...)
+
+// The `prepareEnvironment` one is intended to prepare the server environment
+export async function prepareEnvironment(
+  $: Knifecycle = new Knifecycle(),
+): Promise<Knifecycle> {
+  $ = await prepareBaseEnvironment($);
+
+  // (...)
+
++  // Add method override to the server 
++  $.register(
++    wrapHTTPRouterWithSwaggerUI(initHTTPTransaction),
++  );
+
+  return $;
+}
+
+// (...)
+
+```
 
 [//]: # (::contents:end)
 
