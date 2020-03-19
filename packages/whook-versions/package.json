@@ -1,6 +1,6 @@
 {
   "name": "@whook/versions",
-  "version": "4.0.0-alpha.34",
+  "version": "4.0.0-alpha.35",
   "description": "A wrapper to provide versions check support to a Whook server",
   "keywords": [
     "whook",
@@ -51,7 +51,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^4.0.0-alpha.34",
+    "@whook/whook": "^4.0.0-alpha.35",
     "knifecycle": "^8.1.0",
     "openapi-types": "^1.3.5",
     "semver": "^7.1.1"
