@@ -8,12 +8,13 @@ import {
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
 import YError from 'yerror';
+import { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
   const PORT = 8888;
   const BASE_PATH = '/v1';
-  const API = {
+  const API: OpenAPIV3.Document = {
     openapi: '3.0.2',
     info: {
       version: '1.0.0',
@@ -101,6 +102,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: { 'user-agent': '__avoid_axios_version__' },
+      validateStatus: () => true,
     });
 
     await $instance.destroy();
@@ -149,6 +151,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       method: 'get',
       url: `http://${HOST}:${PORT + 2}/docs`,
       headers: { 'user-agent': '__avoid_axios_version__' },
+      validateStatus: () => true,
     });
 
     await $instance.destroy();

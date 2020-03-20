@@ -21,7 +21,7 @@ describe('initBaseURL', () => {
 
     expect({
       BASE_URL,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -38,7 +38,7 @@ describe('initBaseURL', () => {
 
     expect({
       BASE_URL,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -56,7 +56,7 @@ describe('initBaseURL', () => {
 
     expect({
       BASE_URL,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -76,7 +76,7 @@ describe('initBaseURL', () => {
 
     expect({
       BASE_URL,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 });

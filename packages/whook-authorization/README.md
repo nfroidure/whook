@@ -31,15 +31,34 @@ Note that the form-encoded body parameter defined by the bearer
  not set the token in headers.
 
 To use this wrapper, you'll have to create an `authentication`
- service. Here is a simple unique token based implementation:
- ```js
+ service. Here is a simple unique token based implementation
+ (usually in `src/services/authentication.ts`):
+ ```ts
 import { autoService } from 'knifecycle';
 import YError from 'yerror';
+import {
+  AuthenticationService,
+  BaseAuthenticationData,
+} from '@whook/authorization';
+
+export type AuthenticationConfig = {
+  TOKEN: string;
+};
+
+export type BearerPayload = { hash: string };
+export type MyAuthenticationService = AuthenticationService<
+  BearerPayload,
+  BaseAuthenticationData & {
+    userId: number;
+  }
+>;
 
 export default autoService(initAuthentication);
 
-async function initAuthentication({ TOKEN }) {
-  const authentication = {
+async function initAuthentication({
+  TOKEN,
+}: AuthenticationConfig): Promise<MyAuthenticationService> {
+  const authentication: MyAuthenticationService = {
     // The authentication service must have a check
     // method which take the type of authentication
     // used by the client and its parsed payload
@@ -51,8 +70,9 @@ async function initAuthentication({ TOKEN }) {
           // property containing an array of the actual
           // scopes the authentication check resolved to
           return {
+            applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
             userId: 1,
-            scopes: ['admin'],
+            scope: 'admin',
           };
         }
         throw new YError('E_BAD_BEARER_TOKEN', type, data.hash);

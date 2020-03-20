@@ -26,7 +26,7 @@ describe('initHTTPServer', () => {
     await httpServer.dispose();
 
     expect({
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       httpRouterCalls: httpRouter.mock.calls,
     }).toMatchSnapshot();
   });
@@ -44,7 +44,7 @@ describe('initHTTPServer', () => {
     await httpServer.dispose();
 
     expect({
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       httpRouterCalls: httpRouter.mock.calls,
     }).toMatchSnapshot();
   });
@@ -71,7 +71,7 @@ describe('initHTTPServer', () => {
       expect({
         errorCode: err.code,
         errorParams: err.params,
-        logCalls: log.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();
     }
@@ -105,7 +105,7 @@ describe('initHTTPServer', () => {
       expect({
         errorCode: err.code,
         errorParams: err.params,
-        logCalls: log.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();
     }
@@ -135,7 +135,7 @@ describe('initHTTPServer', () => {
     await httpServer.dispose();
 
     expect({
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       httpRouterCalls: httpRouter.mock.calls,
     }).toMatchSnapshot();
   });
@@ -160,13 +160,14 @@ describe('initHTTPServer', () => {
     const { status } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}/`,
+      validateStatus: () => true,
     });
 
     await httpServer.dispose();
 
     expect({
       status,
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 });

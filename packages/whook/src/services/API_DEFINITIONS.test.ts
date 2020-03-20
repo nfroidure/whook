@@ -101,7 +101,7 @@ describe('initAPIDefinitions', () => {
 
       expect({
         API_DEFINITIONS,
-        logCalls: log.mock.calls.filter(args => args[0].endsWith('stack')),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: require.mock.calls,
       }).toMatchSnapshot();
@@ -123,7 +123,7 @@ describe('initAPIDefinitions', () => {
 
       expect({
         API_DEFINITIONS,
-        logCalls: log.mock.calls.filter(args => args[0].endsWith('stack')),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: require.mock.calls,
       }).toMatchSnapshot();
@@ -143,7 +143,7 @@ describe('initAPIDefinitions', () => {
 
       expect({
         API_DEFINITIONS,
-        logCalls: log.mock.calls.filter(args => args[0].endsWith('stack')),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: require.mock.calls,
       }).toMatchSnapshot();
@@ -175,7 +175,7 @@ describe('initAPIDefinitions', () => {
 
       expect({
         API_DEFINITIONS,
-        logCalls: log.mock.calls.filter(args => args[0].endsWith('stack')),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: require.mock.calls,
       }).toMatchSnapshot();

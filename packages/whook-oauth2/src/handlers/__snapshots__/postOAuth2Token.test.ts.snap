@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`postOAuth2Token should create a token 1`] = `
+Object {
+  "logCalls": Array [],
+  "oAuth2AccessTokenCreateCalls": Array [
+    Array [
+      Object {
+        "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "scope": "user",
+      },
+      undefined,
+    ],
+  ],
+  "oAuth2RefreshTokenCreateCalls": Array [
+    Array [
+      Object {
+        "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "scope": "user",
+      },
+      undefined,
+    ],
+  ],
+  "response": Object {
+    "body": Object {
+      "access_token": "an_access_token",
+      "expiration_date": "2010-03-07T00:00:00.000Z",
+      "expires_in": 86400,
+      "refresh_token": "a_refresh_token",
+      "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+      "refresh_token_expires_in": 5364748800,
+      "token_type": "bearer",
+    },
+    "status": 200,
+  },
+}
+`;
+
+exports[`postOAuth2Token should fail with a bad grant type 2`] = `
+Object {
+  "logCalls": Array [
+    Array [
+      "debug",
+      "👫 - OAuth2 token issuing error",
+      "E_UNKNOWN_AUTHENTICATOR_TYPE",
+    ],
+  ],
+  "oAuth2AccessTokenCreateCalls": Array [],
+  "oAuth2RefreshTokenCreateCalls": Array [],
+}
+`;

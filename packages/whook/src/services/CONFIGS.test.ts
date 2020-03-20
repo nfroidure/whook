@@ -50,7 +50,7 @@ describe('initCONFIGS', () => {
       expect({
         errorCode: err.code,
         errorParams: err.params,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         requireCalls: require.mock.calls,
       }).toMatchSnapshot();
     }

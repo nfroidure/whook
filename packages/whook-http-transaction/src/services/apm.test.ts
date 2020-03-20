@@ -15,7 +15,7 @@ describe('APM service', () => {
     });
 
     expect({
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
       Object {
         "logCalls": Array [

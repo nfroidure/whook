@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`postOAuth2Acknowledge should redirect 2`] = `
+Object {
+  "checkApplicationCalls": Array [
+    Array [
+      Object {
+        "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "scope": "",
+        "type": "root",
+      },
+    ],
+  ],
+  "codeGranterAcknowledgerAcknowledgeCalls": Array [
+    Array [
+      Object {
+        "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "scope": "auth",
+        "userId": 1,
+      },
+      Object {
+        "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "redirectURI": "https://www.example.com",
+        "scope": "user",
+      },
+      Object {},
+    ],
+  ],
+  "codeGranterAuthenticatorAuthenticateCalls": Array [],
+  "codeGranterAuthorizerAuthorizeCalls": Array [],
+  "logCalls": Array [],
+  "tokenGranterAcknowledgerAcknowledgeCalls": Array [],
+  "tokenGranterAuthorizerAuthorizeCalls": Array [],
+}
+`;
+
+exports[`postOAuth2Acknowledge should redirect errors too 2`] = `
+Object {
+  "checkApplicationCalls": Array [
+    Array [
+      Object {
+        "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "scope": "",
+        "type": "root",
+      },
+    ],
+  ],
+  "codeGranterAcknowledgerAcknowledgeCalls": Array [],
+  "codeGranterAuthenticatorAuthenticateCalls": Array [],
+  "codeGranterAuthorizerAuthorizeCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "👫 - OAuth2 acknowledge error",
+      "E_UNKNOWN_ACKNOWLEDGOR_TYPE",
+    ],
+  ],
+  "tokenGranterAcknowledgerAcknowledgeCalls": Array [],
+  "tokenGranterAuthorizerAuthorizeCalls": Array [],
+}
+`;

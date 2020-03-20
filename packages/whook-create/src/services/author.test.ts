@@ -41,7 +41,7 @@ describe('initAuthor', () => {
       lockTakeCalls: lock.take.mock.calls,
       lockReleaseCalls: lock.release.mock.calls,
       execCalls: exec.mock.calls,
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -68,7 +68,7 @@ describe('initAuthor', () => {
       lockTakeCalls: lock.take.mock.calls,
       lockReleaseCalls: lock.release.mock.calls,
       execCalls: exec.mock.calls,
-      logCalls: log.mock.calls.filter(([type]) => 'debug-stack' !== type),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -94,9 +94,7 @@ describe('initAuthor', () => {
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,
         execCalls: exec.mock.calls,
-        logCalls: log.mock.calls.filter(
-          ([type]) => !['stack', 'debug-stack'].includes(type),
-        ),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });

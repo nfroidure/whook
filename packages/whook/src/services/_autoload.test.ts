@@ -44,7 +44,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -75,7 +75,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -112,7 +112,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -148,7 +148,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -209,7 +209,7 @@ describe('$autoload', () => {
       expect({
         result,
         HANDLERS: await result.initializer({ getPing: () => {} }),
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -249,7 +249,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -294,7 +294,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -341,7 +341,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -383,7 +383,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -429,7 +429,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -468,7 +468,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -510,7 +510,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -552,7 +552,7 @@ describe('$autoload', () => {
 
       expect({
         result,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         requireCalls: require.mock.calls,
         resolveCalls: resolve.mock.calls,

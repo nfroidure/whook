@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOAuth2Authorize should redirect 2`] = `
+Object {
+  "codeGranterAcknowledgerAcknowledgeCalls": Array [],
+  "codeGranterAuthenticatorAuthenticateCalls": Array [],
+  "codeGranterAuthorizerAuthorizeCalls": Array [
+    Array [
+      Object {
+        "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "redirectURI": "https://www.example.com",
+        "scope": "user",
+      },
+      Object {},
+    ],
+  ],
+  "logCalls": Array [],
+  "tokenGranterAcknowledgerAcknowledgeCalls": Array [],
+  "tokenGranterAuthorizerAuthorizeCalls": Array [],
+}
+`;
+
+exports[`getOAuth2Authorize should redirect with an error when some 2`] = `
+Object {
+  "codeGranterAcknowledgerAcknowledgeCalls": Array [],
+  "codeGranterAuthenticatorAuthenticateCalls": Array [],
+  "codeGranterAuthorizerAuthorizeCalls": Array [],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "👫 - OAuth2 initialization error",
+      "E_UNKNOWN_AUTHORIZER_TYPE",
+    ],
+  ],
+  "tokenGranterAcknowledgerAcknowledgeCalls": Array [],
+  "tokenGranterAuthorizerAuthorizeCalls": Array [],
+}
+`;

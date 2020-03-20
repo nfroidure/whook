@@ -48,7 +48,7 @@ describe('initHTTPTransaction', () => {
 
     expect(httpTransaction).toBeTruthy();
     expect({
-      logCalls: log.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       apmCalls: apm.mock.calls,
       timeCalls: time.mock.calls,
       uniqueIdCalls: uniqueId.mock.calls,
@@ -157,7 +157,7 @@ describe('initHTTPTransaction', () => {
       expect({
         request,
         buildResponseCalls: buildResponse.mock.calls,
-        logCalls: log.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         apmCalls: apm.mock.calls,
         timeCalls: time.mock.calls,
         uniqueIdCalls: uniqueId.mock.calls,
@@ -224,7 +224,7 @@ describe('initHTTPTransaction', () => {
         expect(err.httpCode).toEqual(504);
         expect({
           request,
-          logCalls: log.mock.calls,
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           apmCalls: apm.mock.calls,
           timeCalls: time.mock.calls,
           uniqueIdCalls: uniqueId.mock.calls,
@@ -289,6 +289,7 @@ describe('initHTTPTransaction', () => {
         expect(err.code).toEqual('E_TRANSACTION_ID_NOT_UNIQUE');
         expect(err.httpCode).toEqual(400);
         expect({
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           timeCalls: time.mock.calls,
           uniqueIdCalls: uniqueId.mock.calls,
           delayCreateCalls: delay.create.mock.calls,

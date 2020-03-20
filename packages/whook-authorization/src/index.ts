@@ -45,7 +45,17 @@ export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   },
 };
 
-export interface AuthenticationService<A, R> {
+export type AuthenticationApplicationId = string;
+export type AuthenticationScope = string;
+export type BaseAuthenticationData<
+  T = AuthenticationApplicationId,
+  U = AuthenticationScope
+> = {
+  applicationId: T;
+  scope: U;
+};
+
+export interface AuthenticationService<A, R extends BaseAuthenticationData> {
   check: (type: string, data: A) => Promise<R>;
 }
 
@@ -54,7 +64,10 @@ export type WhookAuthorizationConfig = {
   DEFAULT_MECHANISM?: string;
 };
 
-export type WhookAuthorizationDependencies<A, R> = WhookAuthorizationConfig & {
+export type WhookAuthorizationDependencies<
+  A,
+  R extends BaseAuthenticationData
+> = WhookAuthorizationConfig & {
   authentication: AuthenticationService<A, R>;
   log: LogService;
 };
@@ -78,7 +91,12 @@ export function wrapHandlerWithAuthorization<D, S extends WhookHandler>(
   );
 }
 
-async function initHandlerWithAuthorization<A, R, D, S extends WhookHandler>(
+async function initHandlerWithAuthorization<
+  A,
+  R extends BaseAuthenticationData,
+  D,
+  S extends WhookHandler
+>(
   initHandler: ServiceInitializer<D, S>,
   services: WhookAuthorizationDependencies<A, R> & D,
 ): Promise<S> {
@@ -109,7 +127,12 @@ async function initHandlerWithAuthorization<A, R, D, S extends WhookHandler>(
   );
 }
 
-async function handleWithAuthorization<P extends Parameters, A, R, WR>(
+async function handleWithAuthorization<
+  P extends Parameters,
+  A,
+  R extends BaseAuthenticationData,
+  WR
+>(
   {
     MECHANISMS,
     DEFAULT_MECHANISM,
@@ -205,10 +228,10 @@ async function handleWithAuthorization<P extends Parameters, A, R, WR>(
         );
       }
 
-      let authorizationContent;
+      let authenticationData: R;
 
       try {
-        authorizationContent = await authentication.check(
+        authenticationData = await authentication.check(
           parsedAuthorization.type.toLowerCase(),
           parsedAuthorization.data,
         );
@@ -216,29 +239,16 @@ async function handleWithAuthorization<P extends Parameters, A, R, WR>(
         throw HTTPError.cast(err, 401);
       }
 
-      // Check user id if present in parameters
-      if (
-        'undefined' !== typeof parameters.userId &&
-        authorizationContent.userId !== parameters.userId
-      ) {
-        throw new HTTPError(
-          403,
-          'E_UNAUTHORIZED',
-          authorizationContent.userId,
-          parameters.userId,
-        );
-      }
-
       // Check scopes
       if (
         !requiredScopes.some(requiredScope =>
-          authorizationContent.scopes.includes(requiredScope),
+          authenticationData.scope.split(',').includes(requiredScope),
         )
       ) {
         throw new HTTPError(
           403,
           'E_UNAUTHORIZED',
-          authorizationContent.scopes,
+          authenticationData.scope,
           requiredScopes,
         );
       }
@@ -246,7 +256,7 @@ async function handleWithAuthorization<P extends Parameters, A, R, WR>(
       response = await handler(
         {
           ...parameters,
-          ...authorizationContent,
+          authenticationData,
           authenticated: true,
         },
         operation,
@@ -255,7 +265,7 @@ async function handleWithAuthorization<P extends Parameters, A, R, WR>(
         ...response,
         headers: {
           ...(response.headers || {}),
-          'X-Authenticated': JSON.stringify(authorizationContent),
+          'X-Authenticated': JSON.stringify(authenticationData),
         },
       };
     } catch (err) {

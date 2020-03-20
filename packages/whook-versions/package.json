@@ -57,31 +57,31 @@
     "semver": "^7.1.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.3",
-    "@babel/core": "^7.8.3",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-env": "^7.8.7",
     "@babel/preset-typescript": "^7.8.3",
-    "@babel/register": "^7.8.3",
+    "@babel/register": "^7.8.6",
     "@types/jest": "^24.9.0",
-    "@typescript-eslint/eslint-plugin": "^2.16.0",
-    "@typescript-eslint/parser": "^2.16.0",
-    "babel-eslint": "^10.0.3",
-    "babel-plugin-knifecycle": "^1.1.1",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-knifecycle": "^1.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "jsdoc-to-markdown": "^5.0.3",
-    "metapak": "^3.1.7",
-    "metapak-nfroidure": "9.8.2",
+    "metapak": "^3.1.8",
+    "metapak-nfroidure": "10.0.1",
     "prettier": "^1.19.1",
-    "rimraf": "^3.0.1",
-    "typescript": "^3.7.5"
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.3"
   },
   "contributors": [],
   "engines": {
-    "node": ">=8.12.0"
+    "node": ">=10.19.0"
   },
   "files": [
     "dist",
@@ -143,7 +143,7 @@
         "@babel/env",
         {
           "targets": {
-            "node": "8.12.0"
+            "node": "10.19.0"
           }
         }
       ]

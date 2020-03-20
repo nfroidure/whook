@@ -40,9 +40,7 @@ describe('lsCommand', () => {
       expect({
         result,
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter(
-          args => !['stack', 'debug-stack'].includes(args[0]),
-        ),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: _require.mock.calls,
       }).toMatchSnapshot();
@@ -81,9 +79,7 @@ describe('lsCommand', () => {
 
       expect({
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter(
-          args => !['stack', 'debug-stack'].includes(args[0]),
-        ),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: _require.mock.calls,
       }).toMatchSnapshot();
@@ -122,9 +118,7 @@ describe('lsCommand', () => {
 
       expect({
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter(
-          args => !['stack', 'debug-stack'].includes(args[0]),
-        ),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: _require.mock.calls,
       }).toMatchSnapshot();
@@ -166,9 +160,7 @@ describe('lsCommand', () => {
 
       expect({
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter(
-          args => !['stack', 'debug-stack'].includes(args[0]),
-        ),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         requireCalls: _require.mock.calls,
       }).toMatchSnapshot();

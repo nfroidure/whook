@@ -34,8 +34,9 @@ describe('authentication', () => {
       it('should work with fakedata', async () => {
         const authentication = await initAuthentication({ TOKEN });
         const result = await authentication.check('fake', {
-          userId: 1,
-          scopes: ['user'],
+          applicationId: '1',
+          userId: '1',
+          scope: 'user',
         });
 
         expect({

@@ -16,7 +16,7 @@ describe('putEcho', () => {
 
     expect({
       response,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -34,7 +34,7 @@ describe('putEcho', () => {
       expect({
         errorCode: err.code,
         errorParams: err.params,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }
   });

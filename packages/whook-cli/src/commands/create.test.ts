@@ -73,7 +73,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -116,7 +116,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -159,7 +159,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
   });
@@ -195,7 +195,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -232,7 +232,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -269,7 +269,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
   });
@@ -305,7 +305,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -342,7 +342,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -379,7 +379,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
   });
@@ -418,7 +418,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -458,7 +458,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
 
@@ -498,7 +498,7 @@ describe('createCommand', () => {
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     });
   });

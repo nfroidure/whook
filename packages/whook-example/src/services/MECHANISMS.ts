@@ -5,23 +5,28 @@ import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 export const FAKE_MECHANISM = {
   type: 'Fake',
   parseAuthorizationRest: rest => {
-    let userId;
-    let scopes;
+    let scope: string;
+    let applicationId: string;
+    let userId: string;
 
-    rest.replace(/^(\d+)-((\w+,)*(\w+){1})$/, (_, rawUserId, rawScopes) => {
-      userId = parseInt(rawUserId);
-      scopes = rawScopes.split();
-      return '';
-    });
+    rest.replace(
+      /^([^|]*)\|([^|]+)\|([^|]+)$/,
+      (_, _scope, _applicationId, _userId) => {
+        scope = _scope;
+        applicationId = _applicationId;
+        userId = _userId;
+        return '';
+      },
+    );
 
-    if ('undefined' === typeof userId || 'undefined' === typeof scopes) {
+    if ('undefined' === typeof scope) {
       throw new HTTPError(400, 'E_INVALID_FAKE_TOKEN', rest);
     }
 
     return {
-      hash: rest,
+      applicationId,
+      scope,
       userId,
-      scopes,
     };
   },
 };

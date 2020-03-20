@@ -58,7 +58,7 @@ describe('whook-cli', () => {
       exitCalls: processExit.mock.calls,
       cwdCalls: processCWD.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
@@ -110,7 +110,7 @@ describe('whook-cli', () => {
       cwdCalls: processCWD.mock.calls,
       errorCalls: consoleError.mock.calls.map(([arg1]) => [arg1]),
       autoloaderCalls: $autoload.mock.calls,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 });
