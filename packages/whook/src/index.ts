@@ -144,6 +144,7 @@ export type WhookConfigs = ProcessServiceConfig &
   BaseURLConfig &
   CONFIGSConfig &
   ENVConfig &
+  ProcessServiceConfig &
   WhookPluginsPathsConfig & {
     CONFIG: WhookConfig;
   } & ObfuscatorConfig;
