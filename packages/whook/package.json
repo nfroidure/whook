@@ -102,11 +102,11 @@
     "@whook/http-router": "^3.1.3",
     "@whook/http-server": "^3.1.3",
     "@whook/http-transaction": "^3.1.3",
-    "common-services": "^6.2.0",
+    "common-services": "^7.0.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "internal-ip": "^5.0.0",
-    "knifecycle": "^8.1.0",
+    "knifecycle": "^9.0.0",
     "openapi-types": "^1.3.5",
     "pkg-dir": "^4.2.0",
     "portfinder": "^1.0.25"
