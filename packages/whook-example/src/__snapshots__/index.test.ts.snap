@@ -184,6 +184,9 @@ Object {
       "💿 - Loading MECHANISMS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts.",
     ],
     Array [
+      "💿 - Loading QUERY_PARSER initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts.",
+    ],
+    Array [
       "💿 - Loading WRAPPERS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts.",
     ],
     Array [
@@ -218,6 +221,9 @@ Object {
     ],
     Array [
       "💿 - Service \\"MECHANISMS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts",
+    ],
+    Array [
+      "💿 - Service \\"QUERY_PARSER\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts",
     ],
     Array [
       "💿 - Service \\"WRAPPERS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts",
@@ -431,15 +437,6 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL",
-    ],
-    Array [
-      "🚫 - Service \\"QUERY_PARSER\\" not found in: /home/whoiam/projects/whook/dist/services/QUERY_PARSER",
-    ],
-    Array [
-      "🚫 - Service \\"QUERY_PARSER\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/QUERY_PARSER",
-    ],
-    Array [
-      "🚫 - Service \\"QUERY_PARSER\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER",
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS",

@@ -108,7 +108,7 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8889\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:11112\\".",
     ],
     Array [
       "On air 🚀🌕",
@@ -358,7 +358,7 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8890\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:11113\\".",
     ],
     Array [
       "On air 🚀🌕",
@@ -367,7 +367,7 @@ Object {
   "logInfoCalls": Array [
     Array [
       "🕸️ - Serving the GraphIQL UI.",
-      "http://localhost:8890/graphiql",
+      "http://localhost:11113/graphiql",
     ],
   ],
 }
@@ -488,7 +488,7 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:11111\\".",
     ],
     Array [
       "On air 🚀🌕",
@@ -497,11 +497,11 @@ Object {
   "logInfoCalls": Array [
     Array [
       "🕸️ - Serving the GraphIQL UI.",
-      "http://localhost:8888/graphiql",
+      "http://localhost:11111/graphiql",
     ],
     Array [
       "CALL",
-      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":146,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:8888\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":146,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
+      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":147,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:11111\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":147,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
     ],
   ],
 }

@@ -45,7 +45,7 @@ import { OpenAPIV3 } from 'openapi-types';
 
 describe('OAuth2 server', () => {
   const BASE_PATH = '/v1';
-  const PORT = 6666;
+  const PORT = 4444;
   const HOST = 'localhost';
   const logger = {
     info: jest.fn(),

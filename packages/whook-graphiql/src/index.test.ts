@@ -12,7 +12,7 @@ import { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPRouterWithGraphIQL', () => {
   const HOST = 'localhost';
-  const PORT = 8888;
+  const PORT = 11111;
   const BASE_PATH = '/v1';
   const API: OpenAPIV3.Document = {
     openapi: '3.0.2',

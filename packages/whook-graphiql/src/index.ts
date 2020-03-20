@@ -6,6 +6,11 @@ import swaggerDist from 'swagger-ui-dist';
 import ecstatic from 'ecstatic';
 import { LogService } from 'common-services';
 
+const DEFAULT_GRAPHIQL = {
+  path: '/graphiql',
+  defaultQuery: '',
+};
+
 export type WhookGraphIQLEnv = {
   DEV_MODE?: string;
 };
@@ -18,7 +23,7 @@ export type WhookGraphIQLConfig = {
   BASE_PATH: string;
   HOST?: string;
   PORT?: number;
-  GRAPHIQL: WhookGraphIQLOptions;
+  GRAPHIQL?: WhookGraphIQLOptions;
   ENV: WhookGraphIQLEnv;
 };
 export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
@@ -44,7 +49,7 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
         BASE_PATH,
         HOST,
         PORT,
-        GRAPHIQL,
+        GRAPHIQL = DEFAULT_GRAPHIQL,
         ENV,
         log = noop,
       }: WhookGraphIQLDependencies,

@@ -12,7 +12,7 @@ import { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
-  const PORT = 8888;
+  const PORT = 22222;
   const BASE_PATH = '/v1';
   const API: OpenAPIV3.Document = {
     openapi: '3.0.2',

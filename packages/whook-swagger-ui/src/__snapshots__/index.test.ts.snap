@@ -108,7 +108,7 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8889\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:22223\\".",
     ],
     Array [
       "On air 🚀🌕",
@@ -297,13 +297,13 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "💁 - Serving the public API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI",
+      "💁 - Serving the public API docs: http://localhost:22224/docs?url=http%3A%2F%2Flocalhost%3A22224%2Fv1%2FopenAPI",
     ],
     Array [
-      "💁 - Serving the private API docs: http://localhost:8890/docs?url=http%3A%2F%2Flocalhost%3A8890%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
+      "💁 - Serving the private API docs: http://localhost:22224/docs?url=http%3A%2F%2Flocalhost%3A22224%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
     ],
     Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8890\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:22224\\".",
     ],
     Array [
       "On air 🚀🌕",
@@ -442,13 +442,13 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "💁 - Serving the public API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI",
+      "💁 - Serving the public API docs: http://localhost:22222/docs?url=http%3A%2F%2Flocalhost%3A22222%2Fv1%2FopenAPI",
     ],
     Array [
-      "💁 - Serving the private API docs: http://localhost:8888/docs?url=http%3A%2F%2Flocalhost%3A8888%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
+      "💁 - Serving the private API docs: http://localhost:22222/docs?url=http%3A%2F%2Flocalhost%3A22222%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
     ],
     Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:8888\\".",
+      "🎙️ - HTTP Server listening at \\"http://localhost:22222\\".",
     ],
     Array [
       "On air 🚀🌕",
@@ -457,7 +457,7 @@ Object {
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":146,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:8888\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":146,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
+      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":147,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:22222\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":147,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
     ],
   ],
   "status": 200,

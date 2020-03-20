@@ -85,6 +85,10 @@ export {
   ResponseSpec,
 };
 
+export type WhookQueryStringParser = (
+  definitions: Parameters<typeof strictQs>[1],
+  query: Parameters<typeof strictQs>[2],
+) => ReturnType<typeof strictQs>;
 export type WhookHandlers = { [name: string]: WhookHandler };
 export type WhookParser = (content: string) => string;
 export type WhookParsers = { [name: string]: WhookParser };
@@ -116,7 +120,7 @@ export type HTTPRouterDependencies = HTTPRouterConfig & {
   STRINGIFYERS?: WhookStringifyers;
   DECODERS?: WhookEncoders<Transform>;
   ENCODERS?: WhookDecoders<Transform>;
-  QUERY_PARSER?: typeof strictQs;
+  QUERY_PARSER?: WhookQueryStringParser;
   log?: LogService;
   httpTransaction: HTTPTransactionService;
   errorHandler: Function;
@@ -229,7 +233,7 @@ async function initHTTPRouter({
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
-  QUERY_PARSER = strictQs,
+  QUERY_PARSER = strictQs.bind(null, {}),
   log = noop,
   httpTransaction,
   errorHandler,
