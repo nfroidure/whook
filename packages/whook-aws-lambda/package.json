@@ -1,6 +1,6 @@
 {
   "name": "@whook/aws-lambda",
-  "version": "4.0.0-alpha.35",
+  "version": "4.0.0-alpha.36",
   "description": "Build and deploy to AWS Lambda with Whook.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -47,9 +47,9 @@
     "webpack": "4.41.5"
   },
   "dependencies": {
-    "@whook/cli": "^4.0.0-alpha.35",
-    "@whook/http-router": "^4.0.0-alpha.35",
-    "@whook/whook": "^4.0.0-alpha.35",
+    "@whook/cli": "^4.0.0-alpha.36",
+    "@whook/http-router": "^4.0.0-alpha.36",
+    "@whook/whook": "^4.0.0-alpha.36",
     "ajv": "^6.11.0",
     "camel-case": "^4.1.1",
     "common-services": "^7.0.0",

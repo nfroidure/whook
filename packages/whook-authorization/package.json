@@ -1,6 +1,6 @@
 {
   "name": "@whook/authorization",
-  "version": "4.0.0-alpha.35",
+  "version": "4.0.0-alpha.36",
   "description": "A wrapper to provide authorization support to a Whook server",
   "keywords": [
     "whook",
@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^4.0.0-alpha.35",
+    "@whook/whook": "^4.0.0-alpha.36",
     "common-services": "^7.0.0",
     "http-auth-utils": "^2.4.0",
     "knifecycle": "^9.0.0"
