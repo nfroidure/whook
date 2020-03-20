@@ -153,6 +153,8 @@ export const responseTypeParameter = {
 
 [//]: # (::contents:end)
 
+# API
+
 # Authors
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 

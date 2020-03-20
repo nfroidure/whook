@@ -29,6 +29,8 @@
     "data": {
       "childPackage": true,
       "files": "'src/**/*.ts'",
+      "testsFiles": "'src/**/*.test.ts'",
+      "distFiles": "'dist/**/*.js'",
       "ignore": [
         "dist"
       ],

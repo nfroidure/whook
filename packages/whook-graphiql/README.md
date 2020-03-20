@@ -4,11 +4,11 @@
 [//]: # (`content:start/end` flags, your changes would)
 [//]: # (be overridden.)
 [//]: # ( )
-# @whook/swagger-ui
-> A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev
+# @whook/graphiql
+> A wrapper for the Whook HTTP Router to provide GraphIQL for local dev
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-swagger-ui/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Fswagger-ui.svg)](https://npmjs.org/package/@whook/swagger-ui)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-graphiql/LICENSE)
+[![NPM version](https://badge.fury.io/js/%40whook%2Fgraphiql.svg)](https://npmjs.org/package/@whook/graphiql)
 
 
 [//]: # (::contents:start)
@@ -18,7 +18,7 @@ To use it, just wrap the HTTP router with this module and
  `runServer` function (usually in `src/index.ts`):
 ```diff
 + import initHTTPRouter from '@whook/http-router';
-+ import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
++ import wrapHTTPRouterWithGraphIQL from '@whook/graphiql';
 
 // (...)
 
@@ -28,9 +28,9 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 
   // (...)
 
-+   // Add support for Swagger UI
++   // Add support for GraphIQL UI
 +   $.register(
-+     wrapHTTPRouterWithSwaggerUI(initHTTPRouter),
++     wrapHTTPRouterWithGraphIQL(initHTTPRouter),
 +   );
 
   return await runBaseServer(injectedNames, $);
@@ -40,11 +40,11 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 [//]: # (::contents:end)
 
 # API
-<a name="wrapHTTPRouterWithSwaggerUI"></a>
+<a name="wrapHTTPRouterWithGraphIQL"></a>
 
-## wrapHTTPRouterWithSwaggerUI(initHTTPRouter) ⇒ <code>function</code>
+## wrapHTTPRouterWithGraphIQL(initHTTPRouter) ⇒ <code>function</code>
 Wraps the `httpRouter` initializer to also serve the
-Swagger/OpenAPI UI for development purpose.
+GraphIQL UI for development purpose.
 
 **Kind**: global function  
 **Returns**: <code>function</code> - The `httpRouter` initializer wrapped  
@@ -58,4 +58,4 @@ Swagger/OpenAPI UI for development purpose.
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-swagger-ui/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-graphiql/LICENSE)

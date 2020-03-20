@@ -25,7 +25,7 @@ You can simply do this by wrapping this service. See
  [`@whook/method-override`](../whook-method-override/README.md)
  for a working example.
 
-[See in context](./src/index.ts#L87-L104)
+[See in context](./src/index.ts#L104-L121)
 
 
 
@@ -42,7 +42,7 @@ Each transaction has a unique id that is either
  request header. This allows to trace
  transactions end to end with that unique id.
 
-[See in context](./src/index.ts#L177-L188)
+[See in context](./src/index.ts#L202-L213)
 
 
 
@@ -53,7 +53,7 @@ Once initiated, the transaction can be started. It
    to the actual response or rejected if the timeout
    is reached.
 
-[See in context](./src/index.ts#L268-L273)
+[See in context](./src/index.ts#L294-L299)
 
 
 
@@ -64,7 +64,7 @@ Here we are simply casting and logging errors.
    ending the transaction properly if an error
    occurs.
 
-[See in context](./src/index.ts#L292-L297)
+[See in context](./src/index.ts#L321-L326)
 
 
 
@@ -84,5 +84,5 @@ We end the transaction by writing the final status
    Once terminated, the transaction is removed
 from the `TRANSACTIONS` hash.
 
-[See in context](./src/index.ts#L328-L342)
+[See in context](./src/index.ts#L371-L385)
 

@@ -18,6 +18,7 @@
       "childPackage": true,
       "files": "'src/**/*.ts'",
       "testsFiles": "'src/**/*.test.ts'",
+      "distFiles": "'dist/**/*.js'",
       "ignore": [
         "dist"
       ],
@@ -177,7 +178,7 @@
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "compile": "babel --extensions '.ts,.js' src --out-dir=dist --source-maps=true",
     "cover": "npm run jest -- --coverage",
-    "doc": "echo \"# API\" > API.md; jsdoc2md undefined >> API.md && git add API.md",
+    "doc": "echo \"# API\" > API.md; jsdoc2md 'dist/**/*.js' >> API.md && git add API.md",
     "jest": "NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",

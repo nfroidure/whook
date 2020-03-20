@@ -1,9 +1,9 @@
 # API
-<a name="wrapHTTPRouterWithSwaggerUI"></a>
+<a name="wrapHTTPRouterWithGraphIQL"></a>
 
-## wrapHTTPRouterWithSwaggerUI(initHTTPRouter) ⇒ <code>function</code>
+## wrapHTTPRouterWithGraphIQL(initHTTPRouter) ⇒ <code>function</code>
 Wraps the `httpRouter` initializer to also serve the
-Swagger/OpenAPI UI for development purpose.
+GraphIQL UI for development purpose.
 
 **Kind**: global function  
 **Returns**: <code>function</code> - The `httpRouter` initializer wrapped  

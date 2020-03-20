@@ -13,7 +13,7 @@ Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L108-L112)
+[See in context](./src/index.ts#L152-L156)
 
 
 
@@ -26,7 +26,7 @@ Whook exposes a `prepareServer` function to create its server
  containing the bootstrapped environment and allowing
  to complete and run the server.
 
-[See in context](./src/index.ts#L178-L185)
+[See in context](./src/index.ts#L222-L229)
 
 
 
@@ -36,7 +36,7 @@ Whook exposes a `prepareServer` function to create its server
  *  server. We also inject `log` for logging purpose and custom other
  *  injected name that were required upfront.
 
-[See in context](./src/index.ts#L199-L203)
+[See in context](./src/index.ts#L243-L247)
 
 
 
@@ -48,7 +48,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server.
 
-[See in context](./src/index.ts#L216-L222)
+[See in context](./src/index.ts#L260-L266)
 
 
 
@@ -58,7 +58,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L233-L237)
+[See in context](./src/index.ts#L277-L281)
 
 
 
@@ -67,7 +67,7 @@ The Whook server heavily rely on the process working directory
 Whook has different behaviors depending on the `NODE_ENV` value
  consider setting it to production before shipping.
 
-[See in context](./src/index.ts#L241-L244)
+[See in context](./src/index.ts#L285-L288)
 
 
 
@@ -76,7 +76,7 @@ Whook has different behaviors depending on the `NODE_ENV` value
 Whook need to know where to look up for things like
  commands / handlers etc...
 
-[See in context](./src/index.ts#L248-L251)
+[See in context](./src/index.ts#L292-L295)
 
 
 
@@ -87,7 +87,7 @@ Whook's default logger write to the NodeJS default console
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
-[See in context](./src/index.ts#L254-L259)
+[See in context](./src/index.ts#L298-L303)
 
 
 
@@ -98,7 +98,18 @@ Whook's embed a few default initializers proxied from
  `src/services` folder. It can be wrapped or overriden,
  at will, later in project's main file.
 
-[See in context](./src/index.ts#L278-L283)
+[See in context](./src/index.ts#L322-L327)
+
+
+
+## Base URL
+
+The `BASE_URL` service is intended to provide a base URL where
+ the API can be found at. It can be overriden directly via
+ injecting it but it is useful to have a usable URL while
+ debugging production environnement.
+
+[See in context](./src/services/BASE_URL.ts#L6-L11)
 
 
 
@@ -111,17 +122,6 @@ The `ENV` service add a layer of configuration over just using
  `process.env.NODE_ENV` and `process.cwd()` values or not.
 
 [See in context](./src/services/ENV.ts#L8-L14)
-
-
-
-## Base URL
-
-The `BASE_URL` service is intended to provide a base URL where
- the API can be found at. It can be overriden directly via
- injecting it but it is useful to have a usable URL while
- debugging production environnement.
-
-[See in context](./src/services/BASE_URL.ts#L6-L11)
 
 
 
@@ -286,4 +286,14 @@ Whook auto loader can look for initializers in a list of
  located allowing one to use services/handlers from it.
 
 [See in context](./src/services/WHOOK_PLUGINS_PATHS.ts#L9-L15)
+
+
+
+## API definitions loader
+
+The `API_DEFINITIONS` service provide a convenient way to
+ gather your various API definitions from the handlers you
+ created in the `src/handlers` folder.
+
+[See in context](./src/services/API_DEFINITIONS.ts#L21-L25)
 

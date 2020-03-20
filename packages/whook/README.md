@@ -36,6 +36,31 @@ Whook is built over Knifecyle which is great for adding or easily override/wrap
 [//]: # (::contents:end)
 
 # API
+## Members
+
+<dl>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
+<dd><p>Initialize the API_DEFINITIONS service according to the porject handlers.</p>
+</dd>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
+<dd><p>Initialize the BASE_URL service according to the HOST/PORT
+ so that applications fallbacks to that default base URL.</p>
+</dd>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Initialize the CONFIGS service according to the NODE_ENV</p>
+</dd>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
+<dd><p>Initialize the PORT service from ENV or auto-detection if
+ none specified in ENV</p>
+</dd>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
+<dd><p>Auto detect the Whook PROJECT_DIR</p>
+</dd>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
+<dd><p>Auto detect the Whook WHOOK_PLUGINS_PATHS</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
@@ -45,9 +70,6 @@ Whook is built over Knifecyle which is great for adding or easily override/wrap
 <dt><a href="#prepareEnvironment">prepareEnvironment($)</a> ⇒</dt>
 <dd><p>Prepare the Whook server environment</p>
 </dd>
-<dt><a href="#initCONFIGS">initCONFIGS(services, [log])</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
-<dd><p>Initialize the CONFIGS serviceaccording to the NODE_ENV</p>
-</dd>
 <dt><a href="#initENV">initENV(services, [log])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Initialize the ENV service using process env plus dotenv files</p>
 </dd>
@@ -55,17 +77,101 @@ Whook is built over Knifecyle which is great for adding or easily override/wrap
 <dd><p>Initialize the HOST service from ENV or auto-detection if
  none specified in ENV</p>
 </dd>
-<dt><a href="#initPort">initPort(services, [log])</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
-<dd><p>Initialize the PORT service from ENV or auto-detection if
- none specified in ENV</p>
-</dd>
-<dt><a href="#initProjectDir">initProjectDir(services, [log])</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
-<dd><p>Auto detect the Whook PROJECT_DIR</p>
-</dd>
-<dt><a href="#initWhookPluginsPaths">initWhookPluginsPaths(services, [log])</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
-<dd><p>Auto detect the Whook WHOOK_PLUGINS_PATHS</p>
-</dd>
 </dl>
+
+<a name="default"></a>
+
+## default ⇒ <code>Promise.&lt;String&gt;</code>
+Initialize the API_DEFINITIONS service according to the porject handlers.
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise of a containing the actual host.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services API_DEFINITIONS depends on |
+| services.PROJECT_SRC | <code>Object</code> |  | The project sources location |
+| [services.IGNORED_FILES_SUFFIXES] | <code>Object</code> |  | The files suffixes the autoloader must ignore |
+| [services.IGNORED_FILES_PREFIXES] | <code>Object</code> |  | The files prefixes the autoloader must ignore |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="default"></a>
+
+## default ⇒ <code>Promise.&lt;String&gt;</code>
+Initialize the BASE_URL service according to the HOST/PORT
+ so that applications fallbacks to that default base URL.
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise of a containing the actual host.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services BASE_URL depends on |
+| services.ENV | <code>Object</code> |  | The process environment |
+| services.CONFIG | <code>Object</code> |  | The injected CONFIG value |
+| [services.PROTOCOL] | <code>Object</code> |  | The injected PROTOCOL value |
+| services.HOST | <code>Object</code> |  | The injected HOST value |
+| services.PORT | <code>Object</code> |  | The injected PORT value |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="default"></a>
+
+## default ⇒ <code>Promise.&lt;Object&gt;</code>
+Initialize the CONFIGS service according to the NODE_ENV
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a an object the actual configuration properties.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services CONFIGS depends on |
+| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
+| services.PROJECT_SRC | <code>Object</code> |  | The project source directory |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="default"></a>
+
+## default ⇒ <code>Promise.&lt;Number&gt;</code>
+Initialize the PORT service from ENV or auto-detection if
+ none specified in ENV
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;Number&gt;</code> - A promise of a number representing the actual port.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services PORT depends on |
+| [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="default"></a>
+
+## default ⇒ <code>Promise.&lt;string&gt;</code>
+Auto detect the Whook PROJECT_DIR
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a number representing the actual port.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services PROJECT_DIR depends on |
+| services.PWD | <code>Object</code> |  | The process working directory |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="default"></a>
+
+## default ⇒ <code>Promise.&lt;string&gt;</code>
+Auto detect the Whook WHOOK_PLUGINS_PATHS
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a number representing the actual port.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services WHOOK_PLUGINS_PATHS depends on |
+| services.WHOOK_PLUGINS | <code>Array.&lt;String&gt;</code> |  | The active whook plugins list |
+| services.PROJECT_SRC | <code>String</code> |  | The project source directory |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="prepareServer"></a>
 
@@ -94,21 +200,6 @@ A promise of the Knifecycle instance
 | --- | --- | --- |
 | $ | <code>Knifecycle</code> | The Knifecycle instance to set the various services |
 
-<a name="initCONFIGS"></a>
-
-## initCONFIGS(services, [log]) ⇒ <code>Promise.&lt;String&gt;</code>
-Initialize the CONFIGS serviceaccording to the NODE_ENV
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;String&gt;</code> - A promise of a containing the actual host.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services CONFIGS depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
-| services.PROJECT_SRC | <code>Object</code> |  | The project source directory |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
 <a name="initENV"></a>
 
 ## initENV(services, [log]) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -120,7 +211,7 @@ Initialize the ENV service using process env plus dotenv files
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services ENV depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to lookk for `.env.${NODE_ENV}` env file |
+| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to look for `.env.${NODE_ENV}` env file |
 | services.PWD | <code>Object</code> |  | The process current working directory |
 | [services.BASE_ENV] | <code>Object</code> | <code>{}</code> | An optional base environment |
 | [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -138,50 +229,6 @@ Initialize the HOST service from ENV or auto-detection if
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services HOST depends on |
 | [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
-<a name="initPort"></a>
-
-## initPort(services, [log]) ⇒ <code>Promise.&lt;Number&gt;</code>
-Initialize the PORT service from ENV or auto-detection if
- none specified in ENV
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;Number&gt;</code> - A promise of a number representing the actual port.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services PORT depends on |
-| [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
-<a name="initProjectDir"></a>
-
-## initProjectDir(services, [log]) ⇒ <code>Promise.&lt;string&gt;</code>
-Auto detect the Whook PROJECT_DIR
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a number representing the actual port.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services PROJECT_DIR depends on |
-| services.PWD | <code>Object</code> |  | The process working directory |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
-<a name="initWhookPluginsPaths"></a>
-
-## initWhookPluginsPaths(services, [log]) ⇒ <code>Promise.&lt;string&gt;</code>
-Auto detect the Whook WHOOK_PLUGINS_PATHS
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a number representing the actual port.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services WHOOK_PLUGINS_PATHS depends on |
-| services.WHOOK_PLUGINS | <code>Array.&lt;String&gt;</code> |  | The active whook plugins list |
-| services.PROJECT_SRC | <code>String</code> |  | The project source directory |
 | [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 

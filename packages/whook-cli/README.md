@@ -7,8 +7,12 @@
 # @whook/cli
 > The Whook server CLI
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-cli/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook-cli/blob/master/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/nfroidure/@whook/cli/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/@whook/cli?branch=master)
 [![NPM version](https://badge.fury.io/js/%40whook%2Fcli.svg)](https://npmjs.org/package/@whook/cli)
+[![Dependency Status](https://david-dm.org/nfroidure/@whook/cli.svg)](https://david-dm.org/nfroidure/@whook/cli)
+[![devDependency Status](https://david-dm.org/nfroidure/@whook/cli/dev-status.svg)](https://david-dm.org/nfroidure/@whook/cli#info=devDependencies)
+[![Package Quality](http://npm.packagequality.com/shield/@whook/cli.svg)](http://packagequality.com/#?package=@whook/cli)
 
 
 [//]: # (::contents:start)
@@ -57,4 +61,4 @@ PROJECT_SRC="$PWD/src" NODE_ENV=${NODE_ENV:-development} npm run cli -- babel-no
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-cli/LICENSE)
+[MIT](https://github.com/nfroidure/whook-cli/blob/master/LICENSE)
