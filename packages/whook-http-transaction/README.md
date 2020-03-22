@@ -30,34 +30,44 @@ This service is intended to build those objects from Node HTTP ones
 ## Functions
 
 <dl>
-<dt><a href="#initHTTPTransaction">initHTTPTransaction(services)</a> ⇒ <code><a href="#HTTPTransaction">Promise.&lt;HTTPTransaction&gt;</a></code></dt>
+<dt><a href="#default">default(services)</a> ⇒ <code><a href="#WhookHTTPTransaction">Promise.&lt;WhookHTTPTransaction&gt;</a></code></dt>
 <dd><p>Instantiate the httpTransaction service</p>
+</dd>
+<dt><a href="#initAPM">initAPM(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Application monitoring service that simply log stringified contents.</p>
+</dd>
+<dt><a href="#initObfuscator">initObfuscator(constants)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Allow to proxy constants directly by serializing it in the
+ build, saving some computing and increasing boot time of
+ lambdas.</p>
 </dd>
 </dl>
 
 ## Typedefs
 
 <dl>
-<dt><a href="#HTTPTransaction">HTTPTransaction</a></dt>
+<dt><a href="#WhookHTTPTransaction">WhookHTTPTransaction</a></dt>
 <dd></dd>
 </dl>
 
-<a name="initHTTPTransaction"></a>
+<a name="default"></a>
 
-## initHTTPTransaction(services) ⇒ [<code>Promise.&lt;HTTPTransaction&gt;</code>](#HTTPTransaction)
+## default(services) ⇒ [<code>Promise.&lt;WhookHTTPTransaction&gt;</code>](#WhookHTTPTransaction)
 Instantiate the httpTransaction service
 
 **Kind**: global function  
-**Returns**: [<code>Promise.&lt;HTTPTransaction&gt;</code>](#HTTPTransaction) - A promise of the httpTransaction function  
+**Returns**: [<code>Promise.&lt;WhookHTTPTransaction&gt;</code>](#WhookHTTPTransaction) - A promise of the httpTransaction function  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services to inject |
 | [services.TIMEOUT] | <code>Number</code> | <code>30000</code> | A number indicating how many ms the transaction  should take to complete before being cancelled. |
 | [services.TRANSACTIONS] | <code>Object</code> | <code>{}</code> | A hash of every current transactions |
-| [services.time] | <code>function</code> |  | A timing function |
 | services.delay | <code>Object</code> |  | A delaying service |
+| services.obfuscator | <code>Object</code> |  | A service to avoid logging sensible informations |
 | [services.log] | <code>function</code> |  | A logging function |
+| [services.apm] | <code>function</code> |  | An apm function |
+| [services.time] | <code>function</code> |  | A timing function |
 | [services.uniqueId] | <code>function</code> |  | A function returning unique identifiers |
 
 **Example**  
@@ -69,67 +79,87 @@ const httpTransaction = await initHTTPTransaction({
   time: Date.now.bind(Date),
 });
 ```
-<a name="initHTTPTransaction..httpTransaction"></a>
+<a name="initAPM"></a>
 
-### initHTTPTransaction~httpTransaction(req, res) ⇒ <code>Array</code>
-Create a new HTTP transaction
+## initAPM(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Application monitoring service that simply log stringified contents.
 
-**Kind**: inner method of [<code>initHTTPTransaction</code>](#initHTTPTransaction)  
-**Returns**: <code>Array</code> - The normalized request and the HTTP
-transaction created in an array.  
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of the apm service.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| req | <code>HTTPRequest</code> | A raw NodeJS HTTP incoming message |
-| res | <code>HTTPResponse</code> | A raw NodeJS HTTP response |
+| services | <code>Object</code> | The services to inject |
+| [services.log] | <code>function</code> | A logging function |
 
-<a name="HTTPTransaction"></a>
+<a name="initObfuscator"></a>
 
-## HTTPTransaction
+## initObfuscator(constants) ⇒ <code>Promise.&lt;Object&gt;</code>
+Allow to proxy constants directly by serializing it in the
+ build, saving some computing and increasing boot time of
+ lambdas.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the gathered constants.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| constants | <code>Object</code> | The serializable constants to gather |
+
+**Example**  
+```js
+import { initBuildConstants } from '@whook/aws-lambda';
+import { alsoInject } from 'knifecycle';
+
+export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
+```
+<a name="WhookHTTPTransaction"></a>
+
+## WhookHTTPTransaction
 **Kind**: global typedef  
 
-* [HTTPTransaction](#HTTPTransaction)
-    * [.id](#HTTPTransaction.id)
-    * [.start](#HTTPTransaction.start) ⇒ <code>Promise.&lt;Object&gt;</code>
-    * [.catch](#HTTPTransaction.catch) ⇒ <code>Promise</code>
-    * [.end](#HTTPTransaction.end) ⇒ <code>Promise.&lt;Object&gt;</code>
+* [WhookHTTPTransaction](#WhookHTTPTransaction)
+    * [.id](#WhookHTTPTransaction.id)
+    * [.start](#WhookHTTPTransaction.start) ⇒ <code>Promise.&lt;Object&gt;</code>
+    * [.catch](#WhookHTTPTransaction.catch) ⇒ <code>Promise</code>
+    * [.end](#WhookHTTPTransaction.end) ⇒ <code>Promise.&lt;Object&gt;</code>
 
-<a name="HTTPTransaction.id"></a>
+<a name="WhookHTTPTransaction.id"></a>
 
-### HTTPTransaction.id
+### WhookHTTPTransaction.id
 Id of the transaction
 
-**Kind**: static property of [<code>HTTPTransaction</code>](#HTTPTransaction)  
-<a name="HTTPTransaction.start"></a>
+**Kind**: static property of [<code>WhookHTTPTransaction</code>](#WhookHTTPTransaction)  
+<a name="WhookHTTPTransaction.start"></a>
 
-### HTTPTransaction.start ⇒ <code>Promise.&lt;Object&gt;</code>
+### WhookHTTPTransaction.start ⇒ <code>Promise.&lt;Object&gt;</code>
 Start the transaction
 
-**Kind**: static property of [<code>HTTPTransaction</code>](#HTTPTransaction)  
+**Kind**: static property of [<code>WhookHTTPTransaction</code>](#WhookHTTPTransaction)  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise to be resolved with the signed token.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | buildResponse | <code>function</code> | A function that builds a response |
 
-<a name="HTTPTransaction.catch"></a>
+<a name="WhookHTTPTransaction.catch"></a>
 
-### HTTPTransaction.catch ⇒ <code>Promise</code>
+### WhookHTTPTransaction.catch ⇒ <code>Promise</code>
 Catch a transaction error
 
-**Kind**: static property of [<code>HTTPTransaction</code>](#HTTPTransaction)  
+**Kind**: static property of [<code>WhookHTTPTransaction</code>](#WhookHTTPTransaction)  
 **Returns**: <code>Promise</code> - A promise to be resolved with the signed token.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | err | <code>Error</code> | A function that builds a response |
 
-<a name="HTTPTransaction.end"></a>
+<a name="WhookHTTPTransaction.end"></a>
 
-### HTTPTransaction.end ⇒ <code>Promise.&lt;Object&gt;</code>
+### WhookHTTPTransaction.end ⇒ <code>Promise.&lt;Object&gt;</code>
 End the transaction
 
-**Kind**: static property of [<code>HTTPTransaction</code>](#HTTPTransaction)  
+**Kind**: static property of [<code>WhookHTTPTransaction</code>](#WhookHTTPTransaction)  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise to be resolved with the signed token.  
 
 | Param | Type | Description |

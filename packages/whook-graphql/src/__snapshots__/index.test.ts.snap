@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphQL server should work with a GraphQL error 2`] = `
+Object {
+  "authenticationCheckCalls": Array [
+    Array [
+      "bearer",
+      Object {
+        "hash": "hash",
+      },
+    ],
+  ],
+}
+`;
+
+exports[`GraphQL server should work with a query with args 2`] = `
+Object {
+  "authenticationCheckCalls": Array [
+    Array [
+      "bearer",
+      Object {
+        "hash": "hash",
+      },
+    ],
+  ],
+}
+`;
+
+exports[`GraphQL server should work with a query with variables 2`] = `
+Object {
+  "authenticationCheckCalls": Array [
+    Array [
+      "bearer",
+      Object {
+        "hash": "hash",
+      },
+    ],
+  ],
+}
+`;
+
+exports[`GraphQL server should work with a simple query 2`] = `
+Object {
+  "authenticationCheckCalls": Array [
+    Array [
+      "bearer",
+      Object {
+        "hash": "hash",
+      },
+    ],
+  ],
+}
+`;
+
+exports[`GraphQL server should work with a simple query though the GET endpoint 2`] = `
+Object {
+  "authenticationCheckCalls": Array [
+    Array [
+      "bearer",
+      Object {
+        "hash": "hash",
+      },
+    ],
+  ],
+}
+`;

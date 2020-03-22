@@ -26,16 +26,13 @@
     ],
     "data": {
       "childPackage": true,
-      "testsFiles": "'src/**/*.test.ts'",
       "files": "'src/**/*.ts'",
+      "testsFiles": "'src/**/*.test.ts'",
+      "distFiles": "'dist/**/*.js'",
       "ignore": [
         "dist"
       ],
-      "typesFiles": "src/**/*.ts",
-      "typesDefs": "src/index.d.ts",
       "bundleFiles": [
-        "dist/**/*.js",
-        "src/index.d.ts",
         "dist",
         "src"
       ]
@@ -50,7 +47,7 @@
     "compile": "babel --extensions '.ts,.js' src --out-dir=dist --source-maps=true",
     "cover": "npm run jest -- --coverage",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
-    "doc": "echo \"# API\" > API.md; jsdoc2md undefined >> API.md && git add API.md",
+    "doc": "echo \"# API\" > API.md; jsdoc2md 'dist/**/*.js' >> API.md && git add API.md",
     "jest": "NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
@@ -193,8 +190,6 @@
     "proseWrap": "always"
   },
   "files": [
-    "dist/**/*.js",
-    "src/index.d.ts",
     "dist",
     "src",
     "LICENSE",
