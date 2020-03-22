@@ -24,7 +24,6 @@ export type WhookGraphIQLConfig = {
   HOST?: string;
   PORT?: number;
   GRAPHIQL?: WhookGraphIQLOptions;
-  ENV: WhookGraphIQLEnv;
 };
 export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
   ENV: WhookGraphIQLEnv;
