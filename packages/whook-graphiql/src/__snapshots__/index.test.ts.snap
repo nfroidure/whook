@@ -40,6 +40,9 @@ Object {
       "QUERY_PARSER",
     ],
     Array [
+      "DEV_ACCESS_MECHANISM",
+    ],
+    Array [
       "TIMEOUT",
     ],
     Array [
@@ -156,6 +159,9 @@ Object {
     ],
     Array [
       "QUERY_PARSER",
+    ],
+    Array [
+      "DEV_ACCESS_MECHANISM",
     ],
     Array [
       "TIMEOUT",
@@ -411,6 +417,9 @@ Object {
     ],
     Array [
       "QUERY_PARSER",
+    ],
+    Array [
+      "DEV_ACCESS_MECHANISM",
     ],
     Array [
       "TIMEOUT",

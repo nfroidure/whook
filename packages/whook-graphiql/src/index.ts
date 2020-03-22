@@ -17,9 +17,11 @@ export type WhookGraphIQLEnv = {
 export type WhookGraphIQLOptions = {
   defaultQuery: string;
   path: string;
+  graphQLPath?: string;
 };
 export type WhookGraphIQLConfig = {
   DEV_ACCESS_TOKEN?: string;
+  DEV_ACCESS_MECHANISM?: string;
   BASE_PATH: string;
   HOST?: string;
   PORT?: number;
@@ -44,7 +46,8 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
   return wrapInitializer(
     async (
       {
-        DEV_ACCESS_TOKEN,
+        DEV_ACCESS_TOKEN = '',
+        DEV_ACCESS_MECHANISM = 'Bearer',
         BASE_PATH,
         HOST,
         PORT,
@@ -74,11 +77,11 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
           return GraphiQL.resolveGraphiQLString(
             query,
             {
-              endpointURL: `${BASE_PATH}/graphql`,
+              endpointURL: `${BASE_PATH}${GRAPHIQL.graphQLPath || '/graphql'}`,
               query: GRAPHIQL.defaultQuery,
               ...(DEV_ACCESS_TOKEN
                 ? {
-                    passHeader: `'Authorization': 'Bearer ${DEV_ACCESS_TOKEN}'`,
+                    passHeader: `'Authorization': '${DEV_ACCESS_MECHANISM} ${DEV_ACCESS_TOKEN}'`,
                   }
                 : {}),
             },
@@ -102,6 +105,7 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
     alsoInject(
       [
         '?DEV_ACCESS_TOKEN',
+        '?DEV_ACCESS_MECHANISM',
         'BASE_PATH',
         'HOST',
         'PORT',
