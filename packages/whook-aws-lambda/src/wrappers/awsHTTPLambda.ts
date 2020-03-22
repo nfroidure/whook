@@ -38,6 +38,7 @@ import {
 } from '@whook/whook';
 import { PassThrough } from 'stream';
 import qs from 'qs';
+import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import { camelCase } from 'camel-case';
 import { TimeService, LogService } from 'common-services';
 import { OpenAPIV3 } from 'openapi-types';
@@ -59,7 +60,6 @@ type HTTPWrapperDependencies = {
   WRAPPERS: WhookWrapper<any, any>[];
 };
 
-const BASE_10 = 10;
 const SEARCH_SEPARATOR = '?';
 const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
@@ -530,34 +530,6 @@ export function castParameterValue(parameter, value) {
     }
   }
   return value;
-}
-
-// Above functions were borrowed from here
-// https://github.com/nfroidure/strict-qs/blob/master/src/index.js#L221-L238
-// TODO: Export it on strict-qs
-// and import it here
-export function parseReentrantNumber(str) {
-  const value = parseFloat(str);
-
-  if (value.toString(BASE_10) !== str) {
-    throw new HTTPError(
-      400,
-      'E_NON_REENTRANT_NUMBER',
-      str,
-      value.toString(BASE_10),
-    );
-  }
-
-  return value;
-}
-
-export function parseBoolean(str) {
-  if ('true' === str) {
-    return true;
-  } else if ('false' === str) {
-    return false;
-  }
-  throw new HTTPError(400, 'E_BAD_BOOLEAN', str);
 }
 
 function obfuscateEventBody(obfuscator, rawBody) {
