@@ -20,6 +20,13 @@ import { initImporter } from 'common-services';
 import { join } from 'node:path';
 import { type LogService } from 'common-services';
 import { pathItemToOperationMap } from 'ya-open-api-types';
+import { initGetGraphQL, initPostGraphQL } from '@whook/graphql';
+
+// To avoid Jest weird concurrency errors
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+initGetGraphQL;
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+initPostGraphQL;
 
 describe('API', () => {
   // TODO: Use import.meta.resolve when Jest will support it
