@@ -72,6 +72,16 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     ...DEFAULT_SWAGGER_UI_OPTIONS,
     defaultModelRendering: 'model',
   },
+  GRAPHIQL: {
+    path: '/graphiql',
+    defaultQuery: '{ hello }',
+  },
+  QUERY_PARSER_OPTIONS: {
+    allowEmptySearch: true,
+    allowUnknownParams: true,
+    allowUnorderedParams: true,
+    allowDefault: true,
+  },
 };
 
 export default CONFIG;

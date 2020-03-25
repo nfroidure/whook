@@ -10,6 +10,7 @@ Finally the configuration file for a given environment
 const CONFIG: AppConfig = {
   ...COMMON_CONFIG,
   HOST: 'localhost',
+  DEV_ACCESS_MECHANISM: 'Fake',
   DEV_ACCESS_TOKEN: 'admin|1|1',
   DEFAULT_MECHANISM: 'Fake',
   OPEN_API_TYPES_CONFIG: {

@@ -26,6 +26,13 @@ import {
 import { initImporter, type LogService } from 'common-services';
 import { pathItemToOperationMap } from 'ya-open-api-types';
 import { wrapDefinitionsWithCORS } from '@whook/cors';
+import { initGetGraphQL, initPostGraphQL } from '@whook/graphql';
+
+// To avoid Jest weird concurrency errors
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+initGetGraphQL;
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+initPostGraphQL;
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;
