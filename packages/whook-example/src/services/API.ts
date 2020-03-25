@@ -4,6 +4,7 @@ import { noop } from '@whook/whook';
 import type { WhookConfig, WhookAPIDefinitions } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import { getGraphQLDefinition, postGraphQLDefinition } from '@whook/graphql';
 
 export type APIEnv = {
   DEV_MODE?: string;

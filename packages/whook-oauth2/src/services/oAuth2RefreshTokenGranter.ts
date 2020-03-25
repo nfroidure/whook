@@ -35,7 +35,9 @@ async function initOAuth2RefreshTokenGranter({
   checkApplication,
   oAuth2RefreshToken,
   log = noop,
-}: OAuth2RefreshTokenGranterDependencies): Promise<OAuth2RefreshTokenGranterService> {
+}: OAuth2RefreshTokenGranterDependencies): Promise<
+  OAuth2RefreshTokenGranterService
+> {
   const authenticateWithRefreshToken: OAuth2RefreshTokenGranterService['authenticator']['authenticate'] = async (
     { refreshToken, scope: demandedScope },
     authenticationData,

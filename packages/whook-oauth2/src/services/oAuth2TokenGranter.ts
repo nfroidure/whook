@@ -59,7 +59,9 @@ async function initOAuth2TokenGranter({
 
   // Access Token Response:
   // https://tools.ietf.org/html/rfc6749#section-4.2.2
-  const acknowledgeWithToken: OAuth2GranterService<OAuth2TokenGranterParameters>['acknowledger']['acknowledge'] = async (
+  const acknowledgeWithToken: OAuth2GranterService<
+    OAuth2TokenGranterParameters
+  >['acknowledger']['acknowledge'] = async (
     authenticationData,
     { clientId, redirectURI, scope: providedScope },
     additionalParameters,
