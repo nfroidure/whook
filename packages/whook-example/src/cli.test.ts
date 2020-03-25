@@ -9,9 +9,9 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-    }).toMatchInlineSnapshot(`
+  stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+  stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/')
+}).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 ",
@@ -30,6 +30,9 @@ describe('commands should work', () => {
 - handler: Runs the given server handler for testing purpose
 - inspect: A simple program that returns the result of the injected service
 - ls: Print available commands
+
+
+# Provided by "@whook/graphql": none
 
 
 # Provided by "@whook/cors": none
