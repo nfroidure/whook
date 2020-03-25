@@ -21,6 +21,32 @@ declare namespace API {
       export type $200 = Components.Responses.Diagnostic<200>;
     }
   }
+  export namespace GetGraphQL {
+    export type Output = Responses.$200;
+    export type Input = {
+      readonly query: Parameters.Query;
+      readonly variables?: Parameters.Variables;
+      readonly operationName?: Parameters.OperationName;
+    };
+    export namespace Responses {
+      export type $200 = Components.Responses.getGraphQLResponse200<200>;
+    }
+    export namespace Parameters {
+      export type Query = Components.Parameters.GetGraphQL0;
+      export type Variables = Components.Parameters.GetGraphQL1;
+      export type OperationName = Components.Parameters.GetGraphQL2;
+    }
+  }
+  export namespace PostGraphQL {
+    export type Body = Components.RequestBodies.PostGraphQLRequestBody;
+    export type Output = Responses.$200;
+    export type Input = {
+      readonly body?: Body;
+    };
+    export namespace Responses {
+      export type $200 = Components.Responses.postGraphQLResponse200<200>;
+    }
+  }
   export namespace GetOpenAPI {
     export type Output = Responses.$200;
     export type Input = {};
@@ -76,11 +102,16 @@ declare namespace API {
 declare namespace Components {
   export namespace RequestBodies {
     export type Echo = Components.Schemas.Echo;
+    export type PostGraphQLRequestBody =
+      Components.Schemas.RequestBodiespostGraphQLRequestBodyBody0;
   }
   export namespace Parameters {
     export type Duration = number;
     export type PathParam1 = number;
     export type PathParam2 = string;
+    export type GetGraphQL0 = string;
+    export type GetGraphQL1 = string;
+    export type GetGraphQL2 = string;
     export type GetParameters3 = boolean;
     export type QueryParam = string[];
     export type GetParameters4 = number[];
@@ -106,6 +137,20 @@ declare namespace Components {
         readonly [name: string]: unknown;
       };
       readonly body: Components.Schemas.Echo;
+    };
+    export type getGraphQLResponse200<S extends number> = {
+      readonly status: S;
+      readonly headers?: {
+        readonly [name: string]: unknown;
+      };
+      readonly body: Components.Schemas.ResponsesgetGraphQLResponse200Body0;
+    };
+    export type postGraphQLResponse200<S extends number> = {
+      readonly status: S;
+      readonly headers?: {
+        readonly [name: string]: unknown;
+      };
+      readonly body: Components.Schemas.ResponsespostGraphQLResponse200Body0;
     };
     export type getOpenAPIResponse200<S extends number> = {
       readonly status: S;
@@ -143,10 +188,20 @@ declare namespace Components {
     export type Echo = {
       echo: string;
     };
+    export type RequestBodiespostGraphQLRequestBodyBody0 = {
+      query?: string;
+      [pattern: string]: unknown;
+    };
     export type ResponsesDiagnosticBody0 = {
       transactions: {
         [pattern: string]: unknown;
       };
+    };
+    export type ResponsesgetGraphQLResponse200Body0 = {
+      [pattern: string]: unknown;
+    };
+    export type ResponsespostGraphQLResponse200Body0 = {
+      [pattern: string]: unknown;
     };
     export type ResponsesgetOpenAPIResponse200Body0 = {};
     export type ResponsesgetParametersResponse200Body0 = {
