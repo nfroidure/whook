@@ -82,10 +82,13 @@
   "dependencies": {
     "@whook/authorization": "^27.0.1",
     "@whook/cors": "^27.0.1",
+    "@whook/graphiql": "^27.0.1",
+    "@whook/graphql": "^27.0.1",
     "@whook/swagger-ui": "^27.0.1",
     "@whook/whook": "^27.0.1",
     "application-services": "^9.2.0",
     "common-services": "^20.1.0",
+    "graphql-tag": "^2.12.6",
     "http-auth-utils": "^7.0.1",
     "jwt-service": "^12.0.2",
     "knifecycle": "^21.4.0",
