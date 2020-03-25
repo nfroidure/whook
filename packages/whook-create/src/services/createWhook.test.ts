@@ -146,12 +146,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -161,6 +161,8 @@ describe('initCreateWhook', () => {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/graphiql": "^18.0.0",
+    "@whook/graphql": "^18.0.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -168,6 +170,7 @@ describe('initCreateWhook', () => {
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.0",
     "common-services": "^17.0.0",
+    "graphql-tag": "^2.12.6",
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.0",
     "knifecycle": "^18.0.0",
@@ -341,12 +344,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -356,6 +359,8 @@ describe('initCreateWhook', () => {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/graphiql": "^18.0.0",
+    "@whook/graphql": "^18.0.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -363,6 +368,7 @@ describe('initCreateWhook', () => {
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.0",
     "common-services": "^17.0.0",
+    "graphql-tag": "^2.12.6",
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.0",
     "knifecycle": "^18.0.0",
@@ -521,12 +527,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -536,6 +542,8 @@ describe('initCreateWhook', () => {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/graphiql": "^18.0.0",
+    "@whook/graphql": "^18.0.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -543,6 +551,7 @@ describe('initCreateWhook', () => {
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.0",
     "common-services": "^17.0.0",
+    "graphql-tag": "^2.12.6",
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.0",
     "knifecycle": "^18.0.0",
