@@ -9,7 +9,8 @@ import {
 import { GraphQLSchema } from 'graphql';
 import { LogService } from 'common-services';
 import { WhookGraphQLService } from '..';
-import { HttpQueryError } from 'apollo-server-core';
+import { HttpQueryError, runHttpQuery } from 'apollo-server-core';
+import { Headers } from 'apollo-server-env';
 
 // Serving GraphQL over HTTP
 // https://graphql.org/learn/serving-over-http/
@@ -57,28 +58,41 @@ export const definition: WhookAPIHandlerDefinition = {
 
 export default autoHandler(postGraphQL);
 
-async function postGraphQL(
+async function postGraphQL<
+  T extends { [name: string]: unknown } = { [name: string]: unknown }
+>(
   { graphQL, log = noop }: { graphQL: WhookGraphQLService; log: LogService },
   {
     body,
     ...requestContext
-  }: {
+  }: T & {
     body: {
       query: string;
       variables: { [name: string]: any };
       operationName: string;
       [name: string]: unknown;
     };
-    [name: string]: unknown;
   },
   operation: WhookOperation,
 ): Promise<WhookResponse<number, {}, any>> {
   try {
-    const { graphqlResponse, responseInit } = await graphQL.query({
-      context: { requestContext },
+    const options = await graphQL.createGraphQLServerOptions({
+      requestContext,
       operation,
-      query: body,
     });
+    const { responseInit, graphqlResponse } = await runHttpQuery(
+      [requestContext, operation],
+      {
+        options,
+        method: operation.method.toUpperCase(),
+        query: body,
+        request: {
+          url: operation.path,
+          method: operation.method.toUpperCase(),
+          headers: new Headers({}),
+        },
+      },
+    );
 
     return {
       status: 200,

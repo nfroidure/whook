@@ -86,6 +86,8 @@ describe('GraphQL server', () => {
     },
   };
   const authentication = { check: jest.fn() };
+  const context = jest.fn();
+
   class UpperCaseDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
       const { resolve = defaultFieldResolver } = field;
@@ -187,10 +189,19 @@ describe('GraphQL server', () => {
         echoFragment,
       ]),
     );
+    $.register(
+      constant('GRAPHQL_SERVER_OPTIONS', {
+        context,
+      }),
+    );
 
     return $;
   }
 
+  context.mockImplementation(async ({ operation, requestContext }) => ({
+    operationId: operation.operationId,
+    authenticationData: requestContext.authenticationData,
+  }));
   $autoload.mockImplementation(async serviceName => {
     throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
   });
@@ -271,6 +282,7 @@ describe('GraphQL server', () => {
         }
       `);
       expect({
+        contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
       }).toMatchSnapshot();
     });
@@ -321,6 +333,7 @@ describe('GraphQL server', () => {
         }
       `);
       expect({
+        contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
       }).toMatchSnapshot();
     });
@@ -375,6 +388,7 @@ describe('GraphQL server', () => {
         }
       `);
       expect({
+        contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
       }).toMatchSnapshot();
     });
@@ -429,6 +443,7 @@ describe('GraphQL server', () => {
         }
       `);
       expect({
+        contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
       }).toMatchSnapshot();
     });
@@ -490,6 +505,7 @@ Object {
 }
 `);
       expect({
+        contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
       }).toMatchSnapshot();
     });

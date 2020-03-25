@@ -1,31 +1,27 @@
-import { autoService } from 'knifecycle';
+import { autoService, Provider } from 'knifecycle';
 import YError from 'yerror';
 import { noop, WhookOperation } from '@whook/whook';
 import { LogService } from 'common-services';
 import {
   ApolloServerBase,
-  GraphQLOptions,
+  gql,
   Config,
-  runHttpQuery,
+  GraphQLOptions,
 } from 'apollo-server-core';
-import { Headers } from 'apollo-server-env';
 
+type DocumentNode = ReturnType<typeof gql>;
 type ElementOf<A> = A extends (infer T)[] ? T : never;
 type IResolvers = ElementOf<Config['resolvers']>;
-type ApolloServerOptions = ConstructorParameters<typeof ApolloServer>[0];
-type GraphQLParseOptions = ApolloServerOptions['parseOptions'];
-type HttpQueryRequestQuery = Parameters<typeof runHttpQuery>[1]['query'];
+type ApolloServerOptions = Config;
 
 export type WhookGraphQLFragmentService = {
-  typeDefs: Config['typeDefs'];
+  typeDefs: DocumentNode | DocumentNode[];
   resolvers?: IResolvers;
   schemaDirectives?: ApolloServerOptions['schemaDirectives'];
 };
 
 export type WhookGraphQLConfig = {
-  GRAPHQL_OPTIONS?: {
-    parseOptions?: GraphQLParseOptions;
-  };
+  GRAPHQL_SERVER_OPTIONS?: Config;
 };
 
 export type WhookGraphQLDependencies = WhookGraphQLConfig & {
@@ -36,15 +32,7 @@ export type WhookGraphQLDependencies = WhookGraphQLConfig & {
   log: LogService;
 };
 
-export type WhookGraphQLService = {
-  query({
-    context: any,
-    operation: WhookOperation,
-    query: HttpQueryRequestQuery,
-  }): ReturnType<typeof runHttpQuery>;
-};
-
-class ApolloServer extends ApolloServerBase {
+export class WhookGraphQLService extends ApolloServerBase {
   // If you feel tempted to add an option to this constructor. Please consider
   // another place, since the documentation becomes much more complicated when
   // the constructor is not longer shared between all integration
@@ -65,8 +53,14 @@ class ApolloServer extends ApolloServerBase {
   // This translates the arguments from the middleware into graphQL options It
   // provides typings for the integration specific behavior, ideally this would
   // be propagated with a generic to the super class
-  createGraphQLServerOptions(context: unknown): Promise<GraphQLOptions> {
-    return super.graphQLServerOptions({ context });
+  createGraphQLServerOptions<U>({
+    operation,
+    requestContext,
+  }: {
+    operation: WhookOperation;
+    requestContext: U;
+  }): Promise<GraphQLOptions> {
+    return super.graphQLServerOptions({ operation, requestContext });
   }
 }
 
@@ -78,8 +72,8 @@ export default autoService(initGraphQL);
  * The services the server depends on
  * @param  {Object}   services.NODE_ENV
  * The injected NODE_ENV value
- * @param  {Array}   [services.GRAPHQL_OPTIONS]
- * The GraphQL options to pass to the schema
+ * @param  {Object|Function}   [services.GRAPHQL_SERVER_OPTIONS]
+ * The GraphQL options to pass to the server
  * @param  {String}   ENV
  * The process environment
  * @param  {String}   [graphQLFragments]
@@ -92,60 +86,46 @@ export default autoService(initGraphQL);
  * A promise of a GraphQL service
  */
 async function initGraphQL({
-  GRAPHQL_OPTIONS = {},
+  GRAPHQL_SERVER_OPTIONS = {},
   ENV,
   graphQLFragments = [],
   log = noop,
 }: WhookGraphQLDependencies): Promise<WhookGraphQLService> {
-  const apolloServer = new ApolloServer({
-    parseOptions: GRAPHQL_OPTIONS.parseOptions,
+  const baseResolvers = GRAPHQL_SERVER_OPTIONS.resolvers
+    ? GRAPHQL_SERVER_OPTIONS.resolvers instanceof Array
+      ? (GRAPHQL_SERVER_OPTIONS.resolvers as IResolvers[])
+      : [GRAPHQL_SERVER_OPTIONS.resolvers as IResolvers]
+    : [];
+  const baseTypeDefs = GRAPHQL_SERVER_OPTIONS.typeDefs
+    ? GRAPHQL_SERVER_OPTIONS.typeDefs instanceof Array
+      ? (GRAPHQL_SERVER_OPTIONS.typeDefs as DocumentNode[])
+      : [GRAPHQL_SERVER_OPTIONS.typeDefs as DocumentNode]
+    : [];
+  const apolloServer = new WhookGraphQLService({
+    ...GRAPHQL_SERVER_OPTIONS,
     typeDefs: graphQLFragments.reduce(
       (accTypeDefs, { typeDefs }) => [...accTypeDefs, ...[].concat(typeDefs)],
-      [],
+      baseTypeDefs,
     ),
     resolvers: graphQLFragments
       .map(({ resolvers }) => resolvers)
       .reduce(
         (accResolvers, resolvers) => [...accResolvers, ...[].concat(resolvers)],
-        [],
+        baseResolvers,
       ),
     schemaDirectives: graphQLFragments.reduce(
       (accSchemaDirectives, { schemaDirectives }) => ({
         ...accSchemaDirectives,
         ...schemaDirectives,
       }),
-      {},
+      GRAPHQL_SERVER_OPTIONS.schemaDirectives,
     ),
-    introspection: !!ENV.DEV_MODE,
+    introspection: GRAPHQL_SERVER_OPTIONS.introspection || !!ENV.DEV_MODE,
   });
 
   await apolloServer.waitStart();
 
-  const query: WhookGraphQLService['query'] = async ({
-    context,
-    query,
-    operation,
-  }) => {
-    const options = await apolloServer.createGraphQLServerOptions(context);
-
-    return runHttpQuery([], {
-      options: {
-        ...options,
-        context,
-      },
-      method: operation.method.toUpperCase(),
-      query,
-      request: {
-        url: operation.path,
-        method: operation.method.toUpperCase(),
-        headers: new Headers({}),
-      },
-    });
-  };
-
   log('debug', '🕸️ - Initializing the GraphQL Service');
 
-  return {
-    query,
-  };
+  return apolloServer;
 }

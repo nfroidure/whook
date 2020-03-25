@@ -13,6 +13,9 @@
 
 [//]: # (::contents:start)
 
+This module uses [Apollo](https://www.apollographql.com/) under the hood
+ most of its concepts (modules, plugins...) applies to it.
+
 ## Quick setup
 
 Install the module in your project:
@@ -25,6 +28,14 @@ Declare the plugin into your `index.ts` file:
 +  import { WhookGraphQLFragmentService } from '@whook/graphql';
 +  import { gql } from 'apollo-server-core';
   // (...)
+
++  // Add the Apollo Server configuration
++  $.register(constant('GRAPHQL_SERVER_OPTIONS', {
++    context: ({ operation, requestContext }) => ({
++      operationId: operation.operationId,
++      authenticationData: requestContext.authenticationData,
++    }),
++  }));
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
 -  $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
@@ -57,7 +68,24 @@ Declare the plugin into your `index.ts` file:
 ```
 
 The GraphQL fragments can be declared into separated services
- for more readability.
+ for more readability, just create a service to gather them
+ all (usually in `src/services/graphQLFragments.ts`):
+```ts
+import { initializer } from 'knifecycle';
+
+export default initializer(
+  {
+    name: 'graphQLFragments',
+    type: 'service',
+    inject: [
+      'graphQLUserFragment',
+      'graphQLMessageFragment',
+    ],
+    options: { singleton: true },
+  },
+  async services => Object.keys(services).map(key => services[key]),
+);
+```
 
 See [this repository tests](./src/intex.test.ts) for more examples.
 

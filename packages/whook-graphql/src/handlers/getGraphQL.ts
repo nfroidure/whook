@@ -65,18 +65,19 @@ export const definition: WhookAPIHandlerDefinition = {
 
 export default autoHandler(getGraphQL);
 
-async function getGraphQL(
+async function getGraphQL<
+  T extends { [name: string]: unknown } = { [name: string]: unknown }
+>(
   { postGraphQL }: { postGraphQL: Await<ReturnType<typeof initPostGraphQL>> },
   {
     query,
     variables = '{}',
     operationName,
     ...requestContext
-  }: {
+  }: T & {
     query: string;
     variables: string;
     operationName: string;
-    [name: string]: unknown;
   },
   operation: WhookOperation,
 ): ReturnType<Await<ReturnType<typeof initPostGraphQL>>> {

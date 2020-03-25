@@ -9,7 +9,7 @@ import initGraphQL, {
   WhookGraphQLDependencies,
   WhookGraphQLService,
   WhookGraphQLFragmentService,
-} from './services/graphql';
+} from './services/graphQL';
 
 export {
   initGetGraphQL,
