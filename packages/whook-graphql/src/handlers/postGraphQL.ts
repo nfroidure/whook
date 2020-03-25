@@ -113,7 +113,7 @@ async function postGraphQL<
       log('debug', '💥 - Got a GraphQL error!');
       log('debug-stack', err.stack);
       return {
-        body: (err as HttpQueryError).message,
+        body: JSON.parse((err as HttpQueryError).message),
         status: (err as HttpQueryError).statusCode,
         headers: (err as HttpQueryError).headers,
       };

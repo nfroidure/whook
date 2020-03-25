@@ -318,20 +318,34 @@ describe('GraphQL server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": "{\\"errors\\":[{\\"message\\":\\"Syntax Error: Expected Name, found <EOF>\\",\\"locations\\":[{\\"line\\":4,\\"column\\":13}],\\"extensions\\":{\\"code\\":\\"GRAPHQL_PARSE_FAILED\\"}}]}
-        ",
-          "headers": Object {
-            "connection": "close",
-            "content-type": "application/json",
-            "date": undefined,
-            "transaction-id": "1",
-            "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+Object {
+  "data": Object {
+    "errors": Array [
+      Object {
+        "extensions": Object {
+          "code": "GRAPHQL_PARSE_FAILED",
+        },
+        "locations": Array [
+          Object {
+            "column": 13,
+            "line": 4,
           },
-          "status": 400,
-        }
-      `);
+        ],
+        "message": "Syntax Error: Expected Name, found <EOF>",
+      },
+    ],
+  },
+  "headers": Object {
+    "connection": "close",
+    "content-type": "application/json",
+    "date": undefined,
+    "transaction-id": "1",
+    "transfer-encoding": "chunked",
+    "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+  },
+  "status": 400,
+}
+`);
       expect({
         contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
