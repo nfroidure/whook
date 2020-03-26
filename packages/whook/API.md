@@ -54,6 +54,7 @@ Initialize the API_DEFINITIONS service according to the porject handlers.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services API_DEFINITIONS depends on |
 | services.PROJECT_SRC | <code>Object</code> |  | The project sources location |
+| services.WHOOK_PLUGINS_PATHS | <code>Object</code> |  | The plugins paths to load services from |
 | [services.IGNORED_FILES_SUFFIXES] | <code>Object</code> |  | The files suffixes the autoloader must ignore |
 | [services.IGNORED_FILES_PREFIXES] | <code>Object</code> |  | The files prefixes the autoloader must ignore |
 | [log] | <code>Object</code> | <code>noop</code> | An optional logging service |

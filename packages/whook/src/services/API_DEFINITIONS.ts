@@ -24,10 +24,14 @@ The `API_DEFINITIONS` service provide a convenient way to
  created in the `src/handlers` folder.
 */
 
-export type WhookAPIDefinitionsDependencies = {
-  PROJECT_SRC: string;
+export type WhookAPIDefinitionsConfig = {
+  WHOOK_PLUGINS_PATHS?: string[];
+  PROJECT_SRC?: string;
   IGNORED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_PREFIXES?: string[];
+};
+export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
+  PROJECT_SRC: string;
   log?: LogService;
   require?: typeof _require;
   readDir?: typeof _readDir;
@@ -74,6 +78,8 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  * The services API_DEFINITIONS depends on
  * @param  {Object}   services.PROJECT_SRC
  * The project sources location
+ * @param  {Object}   services.WHOOK_PLUGINS_PATHS
+ * The plugins paths to load services from
  * @param  {Object}   [services.IGNORED_FILES_SUFFIXES]
  * The files suffixes the autoloader must ignore
  * @param  {Object}   [services.IGNORED_FILES_PREFIXES]
@@ -85,6 +91,7 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  */
 async function initAPIDefinitions({
   PROJECT_SRC,
+  WHOOK_PLUGINS_PATHS = [],
   IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
   IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
   log = noop,
@@ -93,16 +100,51 @@ async function initAPIDefinitions({
 }: WhookAPIDefinitionsDependencies): Promise<WhookAPIDefinitions> {
   log('debug', `🈁 - Generating the API_DEFINITIONS`);
 
-  const handlersModules = (await readDir(path.join(PROJECT_SRC, 'handlers')))
-    .filter(
-      file =>
-        file !== '..' &&
-        file !== '.' &&
-        !IGNORED_FILES_PREFIXES.some(prefix => file.startsWith(prefix)) &&
-        !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
-    )
-    .map(file => path.join(PROJECT_SRC, 'handlers', file))
-    .map(file => (require(file) as unknown) as WhookAPIHandlerModule);
+  const seenFiles = new Map<string, boolean>();
+  const handlersModules: WhookAPIHandlerModule[] = await [
+    PROJECT_SRC,
+    ...WHOOK_PLUGINS_PATHS,
+  ].reduce(async (accHandlersModulesPromise, currentPath) => {
+    let files;
+
+    try {
+      files = await readDir(path.join(currentPath, 'handlers'));
+    } catch (err) {
+      // throw only if the root plugin dir doesn't exists
+      if (err.code === 'E_BAD_DIR') {
+        try {
+          await readDir(path.join(currentPath));
+        } catch (err) {
+          throw new YError('E_BAD_PLUGIN_DIR');
+        }
+
+        files = [];
+      }
+    }
+
+    const currentHandlersModules = files
+      .filter(
+        file =>
+          file !== '..' &&
+          file !== '.' &&
+          !IGNORED_FILES_PREFIXES.some(prefix => file.startsWith(prefix)) &&
+          !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
+      )
+      // Avoid loading the same handler twice if
+      // overriden upstream by another plugin or the
+      // root project path
+      .filter(file => {
+        if (seenFiles.get(file)) {
+          return false;
+        }
+        seenFiles.set(file, true);
+        return true;
+      })
+      .map(file => path.join(currentPath, 'handlers', file))
+      .map(file => (require(file) as unknown) as WhookAPIHandlerModule);
+
+    return [...(await accHandlersModulesPromise), ...currentHandlersModules];
+  }, Promise.resolve([]));
 
   const API_DEFINITIONS = {
     paths: handlersModules.reduce<OpenAPIV3.PathsObject>(
@@ -171,7 +213,7 @@ async function _readDir(dir: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
     readdir(dir, (err, files) => {
       if (err) {
-        reject(YError.wrap(err, 'E_BAD_PLUGIN_DIR', dir));
+        reject(YError.wrap(err, 'E_BAD_DIR', dir));
         return;
       }
       resolve(files);

@@ -81,8 +81,8 @@ export default initializer(
  * The services `$autoload` depends on
  * @param  {Object}   services.PROJECT_SRC
  * The project source directory
- * @param  {Object}   services.WHOOK_PLUGINS
- * The plugins to load services from
+ * @param  {Object}   services.WHOOK_PLUGINS_PATHS
+ * The plugins paths to load services from
  * @param  {Object}   services.$injector
  * An injector for internal dynamic services loading
  * @param  {Object}   [services.SERVICE_NAME_MAP={}]

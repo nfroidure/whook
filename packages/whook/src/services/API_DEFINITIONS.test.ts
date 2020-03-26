@@ -129,6 +129,55 @@ describe('initAPIDefinitions', () => {
       }).toMatchSnapshot();
     });
 
+    it('with a few handlers in different plugins paths', async () => {
+      readDir.mockReturnValueOnce(['getPing']);
+      readDir.mockReturnValueOnce(['getUser']);
+      require.mockReturnValueOnce({
+        definition: getPingDefinition,
+      });
+      require.mockReturnValueOnce(getUserModule);
+
+      const API_DEFINITIONS = await initAPIDefinitions({
+        PROJECT_SRC,
+        WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
+        log,
+        readDir,
+        require: (require as unknown) as any,
+      });
+
+      expect({
+        API_DEFINITIONS,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        readDirCalls: readDir.mock.calls,
+        requireCalls: require.mock.calls,
+      }).toMatchSnapshot();
+    });
+
+    it('with a few handlers in different plugins paths and an overriden one', async () => {
+      readDir.mockReturnValueOnce(['getPing']);
+      readDir.mockReturnValueOnce(['getPing', 'getUser']);
+      require.mockReturnValueOnce({
+        definition: getPingDefinition,
+      });
+      require.mockReturnValueOnce(getUserModule);
+      require.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE'));
+
+      const API_DEFINITIONS = await initAPIDefinitions({
+        PROJECT_SRC,
+        WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
+        log,
+        readDir,
+        require: (require as unknown) as any,
+      });
+
+      expect({
+        API_DEFINITIONS,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        readDirCalls: readDir.mock.calls,
+        requireCalls: require.mock.calls,
+      }).toMatchSnapshot();
+    });
+
     it('with a several handlers at the same path', async () => {
       readDir.mockReturnValueOnce(['getUser', 'putUser']);
       require.mockReturnValueOnce(getUserModule);
