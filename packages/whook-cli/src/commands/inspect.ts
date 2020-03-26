@@ -1,4 +1,4 @@
-import { extra, autoService } from 'knifecycle';
+import { extra, autoService, Injector } from 'knifecycle';
 import { readArgs } from '../libs/args';
 import YError from 'yerror';
 import miniquery from 'miniquery';
@@ -11,19 +11,20 @@ import {
 } from '../services/promptArgs';
 
 export const definition: WhookCommandDefinition = {
-  description: 'A simple program that returns the queryed config value',
-  example: `whook config --name MYSQL --query 'auth.username' --default root`,
+  description:
+    'A simple program that returns the result of the injected service',
+  example: `whook config --name API_DEFINITIONS --query 'paths.*'`,
   arguments: {
     type: 'object',
     additionalProperties: false,
     required: ['name'],
     properties: {
       name: {
-        description: 'Configuration name',
+        description: 'Injected service name',
         type: 'string',
       },
       query: {
-        description: 'Property to pickup in config (uses `miniquery`)',
+        description: 'Property to pickup in the result (uses `miniquery`)',
         type: 'string',
       },
       default: {
@@ -42,11 +43,11 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initConfigCommand));
 
 async function initConfigCommand({
-  CONFIGS,
+  $injector,
   promptArgs,
   log = noop,
 }: {
-  CONFIGS: CONFIGSService;
+  $injector: Injector<any>;
   promptArgs: PromptArgs;
   log?: LogService;
 }): Promise<WhookCommandHandler> {
@@ -54,18 +55,25 @@ async function initConfigCommand({
     const { name, query, default: defaultValue, pretty } = readArgs(
       definition.arguments,
       await promptArgs(),
-    ) as { name: string; query: string; default: unknown; pretty: boolean };
+    ) as { name: string; query: string; default: unknown; pretty: true };
+    let service;
 
-    if ('undefined' === typeof CONFIGS[name]) {
-      log('error', `No config found for ${name}`);
+    try {
+      const injectionResult = await $injector([name]);
+
+      service = injectionResult[name];
+    } catch (err) {
+      log('error', `No service found for ${name}`);
+      log('error', `try debugging with the DEBUG=whook env.`);
       if ('undefined' === typeof defaultValue) {
-        throw new YError('E_NO_CONFIG', name);
+        throw new YError('E_NO_SERVICE_FOUND', name);
       }
+
       log('info', `${JSON.stringify(defaultValue, null, pretty ? 2 : 0)}`);
       return;
     }
 
-    const results = query ? miniquery(query, [CONFIGS[name]]) : [CONFIGS[name]];
+    const results = query ? miniquery(query, [service]) : [service];
 
     if (!results.length) {
       log('error', `Could not find any results for ${query}`);

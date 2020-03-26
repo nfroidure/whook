@@ -1,8 +1,8 @@
-import initConfigCommand from './config';
+import initInspectCommand from './inspect';
 import YError from 'yerror';
 
-describe('configCommand', () => {
-  const CONFIGS = {
+describe('inspectCommand', () => {
+  const SERVICES = {
     MYSQL: {
       auth: {
         username: 'root',
@@ -10,26 +10,29 @@ describe('configCommand', () => {
       version: '2.1.1',
     },
   };
+  const $injector = jest.fn();
   const promptArgs = jest.fn();
   const log = jest.fn();
 
   beforeEach(() => {
+    $injector.mockReset();
     promptArgs.mockReset();
     log.mockReset();
   });
 
   it('should work with no query at all', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
+      _: ['inspect'],
       name: 'MYSQL',
     });
+    $injector.mockResolvedValueOnce(SERVICES);
 
-    const configCommand = await initConfigCommand({
+    const inspectCommand = await initInspectCommand({
       log,
-      CONFIGS,
+      $injector,
       promptArgs,
     });
-    const result = await configCommand();
+    const result = await inspectCommand();
 
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
@@ -46,23 +49,25 @@ describe('configCommand', () => {
     expect({
       result,
       promptArgsCalls: promptArgs.mock.calls,
+      injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
   it('should work with one value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
+      _: ['inspect'],
       name: 'MYSQL',
       query: 'auth.username',
     });
+    $injector.mockResolvedValueOnce(SERVICES);
 
-    const configCommand = await initConfigCommand({
+    const inspectCommand = await initInspectCommand({
       log,
-      CONFIGS,
+      $injector,
       promptArgs,
     });
-    const result = await configCommand();
+    const result = await inspectCommand();
 
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
@@ -79,23 +84,26 @@ describe('configCommand', () => {
     expect({
       result,
       promptArgsCalls: promptArgs.mock.calls,
+      injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
   it('should work with several values', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
+      _: ['inspect'],
       name: 'MYSQL',
       query: 'auth.*',
+      pretty: true,
     });
+    $injector.mockResolvedValueOnce(SERVICES);
 
-    const configCommand = await initConfigCommand({
+    const inspectCommand = await initInspectCommand({
       log,
-      CONFIGS,
+      $injector,
       promptArgs,
     });
-    const result = await configCommand();
+    const result = await inspectCommand();
 
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
@@ -112,23 +120,25 @@ describe('configCommand', () => {
     expect({
       result,
       promptArgsCalls: promptArgs.mock.calls,
+      injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
   it('should work with an unexisting config but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
+      _: ['inspect'],
       name: 'DOES_NOT_EXIST',
       default: 'v8',
     });
+    $injector.mockRejectedValueOnce(new YError('E_NOT_FOUND'));
 
-    const configCommand = await initConfigCommand({
+    const inspectCommand = await initInspectCommand({
       log,
-      CONFIGS,
+      $injector,
       promptArgs,
     });
-    const result = await configCommand();
+    const result = await inspectCommand();
 
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
@@ -145,24 +155,26 @@ Object {
     expect({
       result,
       promptArgsCalls: promptArgs.mock.calls,
+      injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
   it('should work with no result but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
+      _: ['inspect'],
       name: 'MYSQL',
       query: 'nothing_here',
       default: 'v8',
     });
+    $injector.mockResolvedValueOnce(SERVICES);
 
-    const configCommand = await initConfigCommand({
+    const inspectCommand = await initInspectCommand({
       log,
-      CONFIGS,
+      $injector,
       promptArgs,
     });
-    const result = await configCommand();
+    const result = await inspectCommand();
 
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
@@ -179,24 +191,25 @@ Object {
     expect({
       result,
       promptArgsCalls: promptArgs.mock.calls,
+      injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
 
   it('should fail with unexisting config name', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
+      _: ['inspect'],
       name: 'DOES_NOT_EXIST',
     });
 
-    const configCommand = await initConfigCommand({
+    const inspectCommand = await initInspectCommand({
       log,
-      CONFIGS,
+      $injector,
       promptArgs,
     });
 
     try {
-      await configCommand();
+      await inspectCommand();
       throw new YError('E_UNEXPEXTED_SUCCESS');
     } catch (err) {
       expect({
@@ -204,7 +217,7 @@ Object {
         errorParams: err.params,
       }).toMatchInlineSnapshot(`
         Object {
-          "errorCode": "E_NO_CONFIG",
+          "errorCode": "E_NO_SERVICE_FOUND",
           "errorParams": Array [
             "DOES_NOT_EXIST",
           ],
@@ -212,6 +225,7 @@ Object {
       `);
       expect({
         promptArgsCalls: promptArgs.mock.calls,
+        injectorCalls: $injector.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
     }
@@ -219,19 +233,20 @@ Object {
 
   it('should fail with no result', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
+      _: ['inspect'],
       name: 'MYSQL',
       query: 'nothing_here',
     });
+    $injector.mockResolvedValueOnce(SERVICES);
 
-    const configCommand = await initConfigCommand({
+    const inspectCommand = await initInspectCommand({
       log,
-      CONFIGS,
+      $injector,
       promptArgs,
     });
 
     try {
-      await configCommand();
+      await inspectCommand();
       throw new YError('E_UNEXPEXTED_SUCCESS');
     } catch (err) {
       expect({
@@ -248,6 +263,7 @@ Object {
       `);
       expect({
         promptArgsCalls: promptArgs.mock.calls,
+        injectorCalls: $injector.mock.calls,
         logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
       }).toMatchSnapshot();
     }
