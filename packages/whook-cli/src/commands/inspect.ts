@@ -40,9 +40,9 @@ export const definition: WhookCommandDefinition = {
   },
 };
 
-export default extra(definition, autoService(initConfigCommand));
+export default extra(definition, autoService(initInspectCommand));
 
-async function initConfigCommand({
+async function initInspectCommand({
   $injector,
   promptArgs,
   log = noop,

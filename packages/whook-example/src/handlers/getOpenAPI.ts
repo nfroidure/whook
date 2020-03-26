@@ -3,8 +3,9 @@ import {
   getOpenAPIDefinition as baseGetOpenAPIDefinition,
 } from '@whook/swagger-ui';
 
-// TODO: Use WHOOK_PLUGINS to get handlers from plugins
-// instead of proxying here
+// We could use WHOOK_PLUGINS to get handlers from plugins
+//  instead of proxying here, but we want to ensure the
+//  endpoint is reachable with a token too
 
 export const definition = {
   ...baseGetOpenAPIDefinition,

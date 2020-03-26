@@ -34,7 +34,7 @@ Object {
 - create: A command helping to create new Whook files easily
 - env: A command printing env values
 - handler: Runs the given server handler for testing purpose
-- config: A simple program that returns the result of the injected service
+- inspect: A simple program that returns the result of the injected service
 - ls: Print available commands
 
 

@@ -17,6 +17,7 @@ describe('API', () => {
   beforeAll(async () => {
     API_DEFINITIONS = await initAPIDefinitions({
       PROJECT_SRC: path.join(__dirname, '..'),
+      WHOOK_PLUGINS_PATHS: [path.dirname(require.resolve('@whook/whook/dist'))],
     });
   });
 

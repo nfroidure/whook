@@ -202,7 +202,7 @@ Object {
       "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts.",
     ],
     Array [
-      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.ts.",
+      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/dist/handlers/getPing.js.",
     ],
     Array [
       "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts.",
@@ -241,7 +241,7 @@ Object {
       "💿 - Service \\"getOpenAPIWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
     ],
     Array [
-      "💿 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.ts",
+      "💿 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/dist/handlers/getPing.js",
     ],
     Array [
       "💿 - Service \\"getTimeWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
@@ -500,6 +500,12 @@ Object {
     ],
     Array [
       "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing",
+    ],
+    Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing",
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/dist/services/readDir",

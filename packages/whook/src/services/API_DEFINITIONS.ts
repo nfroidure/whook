@@ -105,6 +105,9 @@ async function initAPIDefinitions({
     PROJECT_SRC,
     ...WHOOK_PLUGINS_PATHS,
   ].reduce(async (accHandlersModulesPromise, currentPath) => {
+    // We need to await previous modules here to ensure the
+    // `seenFiles` variable is completed in order
+    const accHandlersModules = await accHandlersModulesPromise;
     let files;
 
     try {
@@ -113,7 +116,7 @@ async function initAPIDefinitions({
       // throw only if the root plugin dir doesn't exists
       if (err.code === 'E_BAD_DIR') {
         try {
-          await readDir(path.join(currentPath));
+          await readDir(currentPath);
         } catch (err) {
           throw new YError('E_BAD_PLUGIN_DIR');
         }
@@ -143,7 +146,7 @@ async function initAPIDefinitions({
       .map(file => path.join(currentPath, 'handlers', file))
       .map(file => (require(file) as unknown) as WhookAPIHandlerModule);
 
-    return [...(await accHandlersModulesPromise), ...currentHandlersModules];
+    return [...accHandlersModules, ...currentHandlersModules];
   }, Promise.resolve([]));
 
   const API_DEFINITIONS = {
