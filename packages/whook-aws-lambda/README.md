@@ -99,6 +99,14 @@ You can easily test your lambda builds by adding `@whook/aws-lambda`
 npm run whook -- testHTTPLambda --name getPing
 ```
 
+## Deployment
+
+We recommend using [Terraform](https://terraform.io) to deploy your
+ lambda functions.
+
+There is a complete example on how to deploy your lambdas
+ [in this pull request](https://github.com/nfroidure/whook/pull/54).
+
 [//]: # (::contents:end)
 
 # API

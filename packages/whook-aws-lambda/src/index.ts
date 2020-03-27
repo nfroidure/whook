@@ -337,7 +337,7 @@ async function buildFinalLambda(
   await Promise.all([
     ensureFileAsync({ log }, `${lambdaPath}/index.js`, contents, 'utf-8'),
     mappings
-      ? await ensureFileAsync(
+      ? ensureFileAsync(
           { log },
           `${lambdaPath}/index.js.map`,
           mappings,
@@ -402,10 +402,10 @@ async function ensureFileAsync(
     }
   } catch (err) {
     log('debug', 'Write new file:', path);
-    return writeFileAsync(path, content, encoding);
+    return await writeFileAsync(path, content, encoding);
   }
   log('debug', 'Write changed file:', path);
-  return writeFileAsync(path, content, encoding);
+  return await writeFileAsync(path, content, encoding);
 }
 
 // Cannot promisify mkdirp easily so doing it by hand
