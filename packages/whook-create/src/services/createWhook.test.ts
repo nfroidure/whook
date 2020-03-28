@@ -12,6 +12,7 @@ describe('initCreateWhook', () => {
     dependencies: {
       ..._packageJSON.dependencies,
       '@whook/authorization': '<current_version>',
+      '@whook/aws-lambda': '<current_version>',
       '@whook/cli': '<current_version>',
       '@whook/cors': '<current_version>',
       '@whook/http-router': '<current_version>',
@@ -138,6 +139,7 @@ Mr Bean
         "babel": Object {
           "env": Object {
             "cjs": Object {
+              "comments": true,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -151,6 +153,7 @@ Mr Bean
               ],
             },
             "mjs": Object {
+              "comments": false,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -184,6 +187,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -308,7 +312,7 @@ Mr Bean
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
-          "test": "npm run jest",
+          "test": "NODE_ENV=test npm run build && npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
@@ -393,6 +397,7 @@ Mr Bean
         "babel": Object {
           "env": Object {
             "cjs": Object {
+              "comments": true,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -406,6 +411,7 @@ Mr Bean
               ],
             },
             "mjs": Object {
+              "comments": false,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -439,6 +445,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -563,7 +570,7 @@ Mr Bean
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
-          "test": "npm run jest",
+          "test": "NODE_ENV=test npm run build && npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
@@ -633,6 +640,7 @@ Mr Bean
         "babel": Object {
           "env": Object {
             "cjs": Object {
+              "comments": true,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -646,6 +654,7 @@ Mr Bean
               ],
             },
             "mjs": Object {
+              "comments": false,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -679,6 +688,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -803,7 +813,7 @@ Mr Bean
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
-          "test": "npm run jest",
+          "test": "NODE_ENV=test npm run build && npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",

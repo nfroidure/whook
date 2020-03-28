@@ -13,12 +13,13 @@
 
 [//]: # (::contents:start)
 
-This is a basic [Whook](https://github.com/nfroidure/whook)
- server demonstrating the various usages of the Whook framework to build
- REST APIs.
+This is a basic [Whook](https://github.com/nfroidure/whook) server demonstrating
+the various usages of the Whook framework to build REST APIs.
 
 ## Usage
+
 To run the server in production:
+
 ```sh
 npm it
 NODE_ENV=production npm start
@@ -27,6 +28,7 @@ NODE_ENV=production npm start
 ## Dev
 
 Start the server in development:
+
 ```sh
 # Simple dev mode
 npm run dev
@@ -36,34 +38,110 @@ npm run watch
 ```
 
 Create a new endpoint / service / provider or command:
+
 ```sh
 npx whook create
 ```
 
 List available commands:
+
 ```sh
 npx whook ls
 ```
 
+## Deploying with AWS Lambda
+
+First install Terraform:
+
+```sh
+wget https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_amd64.zip
+mkdir .bin
+unzip -d .bin terraform_0.14.0_linux_amd64.zip
+rm terraform_0.14.0_linux_amd64.zip
+```
+
+Then initialize the Terraform configuration:
+
+```sh
+cd ./terraform
+../.bin/terraform init;
+```
+
+Create a new workspace:
+
+```sh
+../.bin/terraform workspace new staging
+```
+
+Build the lambdas:
+
+```sh
+NODE_ENV=staging npm run build
+```
+
+Build the commands Terraform depends on:
+
+```sh
+npm run compile
+```
+
+Plan the deployment:
+
+```sh
+../.bin/terraform plan -out=terraform.plan
+```
+
+Apply changes:
+
+```sh
+../.bin/terraform apply terraform.plan
+```
+
+Finally retrieve the API URL and add and enjoy!
+
+```sh
+../.bin/terraform output api_url
+curl "$(.bin/terraform output api_url)staging/v3/ping"
+# {"pong":"pong"}
+```
+
 Generate API types:
+
 ```sh
 npm run apitypes
 ```
 
 ## Debug
+
 Execute a handler in isolation:
+
 ```sh
 npx whook handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
 ```
 
 Debug `whook` internals:
+
 ```sh
 DEBUG=whook npm run dev
 ```
 
 Debug `knifecycle` internals (dependency injection issues):
+
 ```sh
 DEBUG=knifecycle npm run dev
+```
+
+Debug built lambdas:
+
+```sh
+## HTTP
+NODE_ENV=staging npx whook testHTTPLambda --name putEcho \
+ --parameters '{ "body": { "echo": "Hey!" } }'
+## Cron
+NODE_ENV=staging npx whook testCronLambda --name handleMinutes
+## Consumer
+NODE_ENV=staging npx whook testConsumerLambda --name handleMessages \
+ --event '{ "Records": [{ "test": "test" }] }'
 ```
 
 [//]: # (::contents:end)
