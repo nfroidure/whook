@@ -44,6 +44,52 @@ List available commands:
 ```sh
 npx whook ls
 ```
+## Deploying with AWS Lambda
+
+First install Terraform:
+```sh
+wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
+mkdir .bin
+unzip -d .bin terraform_0.12.24_linux_amd64.zip
+rm terraform_0.12.24_linux_amd64.zip
+```
+
+Then initialize the Terraform configuration:
+```sh
+.bin/terraform init ./terraform;
+```
+
+Create a new workspace:
+```sh
+.bin/terraform workspace new staging
+```
+
+Build the lambdas:
+```sh
+NODE_ENV=staging npm run build
+```
+
+Build the commands Terraform depends on:
+```sh
+npm run compile
+```
+
+Plan the deployment:
+```sh
+.bin/terraform plan -out=terraform.plan terraform
+```
+
+Apply changes:
+```sh
+.bin/terraform apply terraform.plan
+```
+
+Finally retrieve the API URL and add and enjoy!
+```sh
+.bin/terraform output api_url
+curl "$(.bin/terraform output api_url)staging/v3/ping"
+# {"pong":"pong"}
+```
 
 Generate API types:
 ```sh
@@ -64,6 +110,18 @@ DEBUG=whook npm run dev
 Debug `knifecycle` internals (dependency injection issues):
 ```sh
 DEBUG=knifecycle npm run dev
+```
+
+Debug built lambdas:
+```sh
+## HTTP
+NODE_ENV=staging npx whook testHTTPLambda --name putEcho \
+ --parameters '{ "body": { "echo": "Hey!" } }'
+## Cron
+NODE_ENV=staging npx whook testCronLambda --name handleMinutes
+## Consumer
+NODE_ENV=staging npx whook testConsumerLambda --name handleMessages \
+ --event '{ "Records": [{ "test": "test" }] }'
 ```
 
 [//]: # (::contents:end)

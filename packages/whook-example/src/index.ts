@@ -9,7 +9,10 @@ import {
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
-import YError from 'yerror';
+import {
+  runBuild as runBaseBuild,
+  prepareBuildEnvironment as prepareBaseBuildEnvironment,
+} from '@whook/aws-lambda';
 import type { DependencyDeclaration, Dependencies } from 'knifecycle';
 
 // Per convention a Whook server main file must export
@@ -80,7 +83,12 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
   $.register(
-    constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook', '@whook/cors']),
+    constant('WHOOK_PLUGINS', [
+      '@whook/aws-lambda',
+      '@whook/cli',
+      '@whook/cors',
+      '@whook/whook',
+    ]),
   );
 
   return $;
@@ -94,10 +102,7 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
 export async function runBuild(
   innerPrepareEnvironment = prepareBuildEnvironment,
 ): Promise<void> {
-  throw new YError('E_NO_BUILD_IMPLEMENTED');
-
-  // Usually, here you call the installed build
-  // return runBaseBuild(innerPrepareEnvironment);
+  return runBaseBuild(innerPrepareEnvironment);
 }
 
 // The `prepareBuildEnvironment` create the build
@@ -108,7 +113,7 @@ export async function prepareBuildEnvironment<
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env
-  // $ = await prepareBaseBuildEnvironment($);
+  $ = await prepareBaseBuildEnvironment($);
 
   // The build often need to know were initializer
   //  can be found to create a static build and
@@ -119,7 +124,7 @@ export async function prepareBuildEnvironment<
       apm: '@whook/http-transaction/dist/services/apm',
       obfuscator: '@whook/http-transaction/dist/services/obfuscator',
       errorHandler: '@whook/http-router/dist/services/errorHandler',
-      log: 'common-services/dist/log',
+      log: '@whook/aws-lambda/dist/services/log',
       time: 'common-services/dist/time',
       delay: 'common-services/dist/delay',
     }),

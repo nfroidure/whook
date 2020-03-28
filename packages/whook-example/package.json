@@ -32,7 +32,12 @@
       "testsFiles": "'src/**/*.test.ts'",
       "distFiles": "'dist/**/*.js'",
       "ignore": [
-        "dist"
+        "dist",
+        "builds",
+        ".bin",
+        ".terraform",
+        "*.plan",
+        "*.tfstate.d"
       ],
       "bundleFiles": [
         "bin",
@@ -56,7 +61,7 @@
     "metapak": "metapak",
     "prettier": "prettier --write 'src/**/*.ts'",
     "start": "NODE_ENV=${NODE_ENV:-development} node bin/start",
-    "test": "npm run jest",
+    "test": "NODE_ENV=test npm run build && npm run jest",
     "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
     "watch": "NODE_ENV=${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
     "whook": "NODE_ENV=${NODE_ENV:-development} whook",
@@ -78,6 +83,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/authorization": "^7.1.5",
+    "@whook/aws-lambda": "^7.1.5",
     "@whook/cli": "^7.1.5",
     "@whook/cors": "^7.1.5",
     "@whook/http-router": "^7.1.5",
@@ -109,6 +115,7 @@
     "@typescript-eslint/parser": "^4.8.1",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
     "babel-plugin-knifecycle": "^5.0.0",
     "chokidar": "^3.4.3",
     "eslint": "^7.13.0",
@@ -121,7 +128,8 @@
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "schema2dts": "^2.0.0",
-    "typescript": "^4.0.5"
+    "typescript": "^4.0.5",
+    "webpack": "4.44.2"
   },
   "contributors": [],
   "engines": {
@@ -170,7 +178,25 @@
     "trailingComma": "all",
     "proseWrap": "always"
   },
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "html"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testEnvironment": "node"
+  },
   "babel": {
+    "plugins": [
+      "@babel/proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread",
+      "babel-plugin-knifecycle"
+    ],
     "presets": [
       "@babel/typescript",
       [
@@ -181,11 +207,6 @@
           }
         }
       ]
-    ],
-    "plugins": [
-      "@babel/proposal-class-properties",
-      "@babel/plugin-proposal-object-rest-spread",
-      "babel-plugin-knifecycle"
     ],
     "env": {
       "cjs": {
@@ -199,7 +220,8 @@
               "modules": "commonjs"
             }
           ]
-        ]
+        ],
+        "comments": true
       },
       "mjs": {
         "presets": [
@@ -212,22 +234,10 @@
               "modules": false
             }
           ]
-        ]
+        ],
+        "comments": false
       }
     },
     "sourceMaps": true
-  },
-  "jest": {
-    "coverageReporters": [
-      "lcov",
-      "html"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "testEnvironment": "node"
   }
 }

@@ -1,11 +1,17 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
+import type { WhookCompilerConfig } from '@whook/aws-lambda';
 import type { WhookAuthorizationConfig } from '@whook/authorization';
 import type {
   WhookAPIOperationSwaggerConfig,
   WhookSwaggerUIConfig,
 } from '@whook/swagger-ui';
 import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
-import type { WhookAPIHandlerDefinition, WhookConfigs } from '@whook/whook';
+import type {
+  WhookAPIHandlerDefinition,
+  WhookConfigs,
+  ProxyedENVConfig,
+  WhookAPIOperationConfig,
+} from '@whook/whook';
 import type { APIConfig } from '../../services/API';
 import type { JWTServiceConfig } from 'jwt-service';
 
@@ -20,11 +26,47 @@ export type AppConfigs = WhookConfigs &
   WhookSwaggerUIConfig &
   WhookCORSConfig &
   APIConfig &
+  WhookCompilerConfig &
+  ProxyedENVConfig &
   JWTServiceConfig;
 
 // Export custom handlers definitions
+export type WhookAWSLambdaBaseBuildConfiguration = {
+  private?: boolean;
+  memory?: number;
+  timeout?: number;
+  suffix?: string;
+  sourceOperationId?: string;
+};
+export type WhookAWSLambdaBaseHTTPConfiguration<T> = {
+  type: 'http';
+} & WhookAWSLambdaBaseBuildConfiguration &
+  T;
+export type WhookAWSLambdaBaseCronConfiguration<T> = {
+  type: 'cron';
+  schedule: string;
+} & WhookAWSLambdaBaseBuildConfiguration &
+  T;
+export type WhookAWSLambdaBaseConsumerConfiguration<T> = {
+  type: 'consumer';
+} & WhookAWSLambdaBaseBuildConfiguration &
+  T;
+export type WhookAWSLambdaBaseTransformerConfiguration<T> = {
+  type: 'transformer';
+} & WhookAWSLambdaBaseBuildConfiguration &
+  T;
+export type WhookAWSLambdaBuildConfiguration<T = {}> =
+  | WhookAWSLambdaBaseHTTPConfiguration<T>
+  | WhookAWSLambdaBaseCronConfiguration<T>
+  | WhookAWSLambdaBaseConsumerConfiguration<T>
+  | WhookAWSLambdaBaseTransformerConfiguration<T>;
+export type APIOperationConfig = WhookAWSLambdaBuildConfiguration<
+  WhookAPIOperationCORSConfig &
+    WhookAPIOperationSwaggerConfig &
+    WhookAPIOperationConfig
+>;
 export type APIHandlerDefinition = WhookAPIHandlerDefinition<
-  WhookAPIOperationCORSConfig & WhookAPIOperationSwaggerConfig
+  APIOperationConfig
 >;
 
 const CONFIG: AppConfigs = {
@@ -35,9 +77,11 @@ const CONFIG: AppConfigs = {
   CONFIG: {
     name: packageConf.name,
     description: packageConf.description || '',
+    baseURL: 'https://api.example.com',
   },
   NODE_ENVS,
   DEBUG_NODE_ENVS: process.env.DEBUG ? NODE_ENVS : DEBUG_NODE_ENVS,
+  PROXYED_ENV_VARS: ['NODE_ENV', 'JWT_SECRET'],
   SERVICE_NAME_MAP: {},
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,

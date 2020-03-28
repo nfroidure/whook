@@ -34,6 +34,8 @@ Array [
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /consumer/messages",
+  "post /cron/minutes",
   "put /echo",
 ]
 `;
@@ -139,6 +141,45 @@ Object {
     },
     "openapi": "3.0.2",
     "paths": Object {
+      "/consumer/messages": Object {
+        "post": Object {
+          "operationId": "handleMessages",
+          "responses": Object {
+            "200": Object {
+              "description": "Batch handled",
+            },
+          },
+          "summary": "Handle queue messages.",
+          "tags": Array [
+            "system",
+          ],
+          "x-whook": Object {
+            "disabled": false,
+            "private": true,
+            "type": "consumer",
+          },
+        },
+      },
+      "/cron/minutes": Object {
+        "post": Object {
+          "operationId": "handleMinutes",
+          "responses": Object {
+            "200": Object {
+              "description": "Cron executed",
+            },
+          },
+          "summary": "Executes every minutes.",
+          "tags": Array [
+            "system",
+          ],
+          "x-whook": Object {
+            "disabled": false,
+            "private": true,
+            "schedule": "*/1 * * * *",
+            "type": "cron",
+          },
+        },
+      },
       "/delay": Object {
         "get": Object {
           "operationId": "getDelay",

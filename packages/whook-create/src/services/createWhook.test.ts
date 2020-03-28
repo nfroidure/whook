@@ -12,6 +12,7 @@ describe('initCreateWhook', () => {
     dependencies: {
       ..._packageJSON.dependencies,
       '@whook/authorization': '<current_version>',
+      '@whook/aws-lambda': '<current_version>',
       '@whook/cli': '<current_version>',
       '@whook/cors': '<current_version>',
       '@whook/http-router': '<current_version>',
@@ -138,6 +139,7 @@ Mr Bean
         "babel": Object {
           "env": Object {
             "cjs": Object {
+              "comments": true,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -151,6 +153,7 @@ Mr Bean
               ],
             },
             "mjs": Object {
+              "comments": false,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -184,6 +187,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -216,6 +220,7 @@ Mr Bean
           "@typescript-eslint/parser": "^4.8.1",
           "axios": "^0.21.1",
           "babel-eslint": "^10.1.0",
+          "babel-loader": "^8.1.0",
           "babel-plugin-knifecycle": "^5.0.0",
           "chokidar": "^3.4.3",
           "eslint": "^7.13.0",
@@ -227,6 +232,7 @@ Mr Bean
           "rimraf": "^3.0.2",
           "schema2dts": "^2.0.0",
           "typescript": "^4.0.5",
+          "webpack": "4.44.2",
         },
         "engines": Object {
           "node": ">=12.19.0",
@@ -308,7 +314,7 @@ Mr Bean
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
-          "test": "npm run jest",
+          "test": "NODE_ENV=test npm run build && npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
@@ -393,6 +399,7 @@ Mr Bean
         "babel": Object {
           "env": Object {
             "cjs": Object {
+              "comments": true,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -406,6 +413,7 @@ Mr Bean
               ],
             },
             "mjs": Object {
+              "comments": false,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -439,6 +447,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -471,6 +480,7 @@ Mr Bean
           "@typescript-eslint/parser": "^4.8.1",
           "axios": "^0.21.1",
           "babel-eslint": "^10.1.0",
+          "babel-loader": "^8.1.0",
           "babel-plugin-knifecycle": "^5.0.0",
           "chokidar": "^3.4.3",
           "eslint": "^7.13.0",
@@ -482,6 +492,7 @@ Mr Bean
           "rimraf": "^3.0.2",
           "schema2dts": "^2.0.0",
           "typescript": "^4.0.5",
+          "webpack": "4.44.2",
         },
         "engines": Object {
           "node": ">=12.19.0",
@@ -563,7 +574,7 @@ Mr Bean
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
-          "test": "npm run jest",
+          "test": "NODE_ENV=test npm run build && npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
@@ -633,6 +644,7 @@ Mr Bean
         "babel": Object {
           "env": Object {
             "cjs": Object {
+              "comments": true,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -646,6 +658,7 @@ Mr Bean
               ],
             },
             "mjs": Object {
+              "comments": false,
               "presets": Array [
                 Array [
                   "@babel/env",
@@ -679,6 +692,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -711,6 +725,7 @@ Mr Bean
           "@typescript-eslint/parser": "^4.8.1",
           "axios": "^0.21.1",
           "babel-eslint": "^10.1.0",
+          "babel-loader": "^8.1.0",
           "babel-plugin-knifecycle": "^5.0.0",
           "chokidar": "^3.4.3",
           "eslint": "^7.13.0",
@@ -722,6 +737,7 @@ Mr Bean
           "rimraf": "^3.0.2",
           "schema2dts": "^2.0.0",
           "typescript": "^4.0.5",
+          "webpack": "4.44.2",
         },
         "engines": Object {
           "node": ">=12.19.0",
@@ -803,7 +819,7 @@ Mr Bean
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
-          "test": "npm run jest",
+          "test": "NODE_ENV=test npm run build && npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
