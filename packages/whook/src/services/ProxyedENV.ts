@@ -1,14 +1,14 @@
-import { initEnv, ENVService, noop } from '@whook/whook';
+import initEnv, { ENVService } from './ENV';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { LogService } from 'common-services';
+import { noop } from '../libs/utils';
 
-export type ENVConfig = {
+export type ProxyedENVConfig = {
   NODE_ENV?: string;
   PROXYED_ENV_VARS?: string[];
 };
-export type ENVDependencies = ENVConfig & {
+export type ProxyedENVDependencies = ProxyedENVConfig & {
   NODE_ENV: string;
-  PROXYED_ENV_VARS: string[];
   log?: LogService;
 };
 

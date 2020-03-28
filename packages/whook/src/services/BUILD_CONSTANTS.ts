@@ -1,26 +1,24 @@
 import { service } from 'knifecycle';
 
-export default service(initBuildConstants, 'BUILD_CONSTANTS', [
-  'API_DEFINITIONS',
-]);
+export default service(initBuildConstants, 'BUILD_CONSTANTS', []);
 
-export type BuildConstants = { [name: string]: any };
+export type WhookBuildConstantsService = { [name: string]: any };
 
 /**
  * Allow to proxy constants directly by serializing it in the
  *  build, saving some computing and increasing boot time of
- *  lambdas.
+ *  the build.
  * @param  {Object}   constants
  * The serializable constants to gather
  * @return {Promise<Object>}
  * A promise of an object containing the gathered constants.
  * @example
- * import { initBuildConstants } from '@whook/aws-lambda';
+ * import { initBuildConstants } from '@whook/whook';
  * import { alsoInject } from 'knifecycle';
  *
  * export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
  */
-async function initBuildConstants<S = BuildConstants>(
+async function initBuildConstants<S = WhookBuildConstantsService>(
   constants: S,
 ): Promise<S> {
   return constants;

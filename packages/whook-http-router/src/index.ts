@@ -57,6 +57,7 @@ import { LogService } from 'common-services';
 import { IncomingMessage, ServerResponse } from 'http';
 
 const SEARCH_SEPARATOR = '?';
+const PATH_SEPARATOR = '/';
 
 function noop() {}
 function identity(x) {
@@ -288,7 +289,7 @@ async function initHTTPRouter({
         .start(async () => {
           const method = request.method;
           const path = request.url.split(SEARCH_SEPARATOR)[0];
-          const parts = path.split('/').filter(a => a);
+          const parts = path.split(PATH_SEPARATOR).filter(identity);
           let [result, pathParameters] = routers[method]
             ? routers[method].find(parts)
             : [];
@@ -316,7 +317,7 @@ async function initHTTPRouter({
               'E_NOT_FOUND',
               method,
               parts,
-              '/' + parts.join('/'),
+              PATH_SEPARATOR + parts.join(PATH_SEPARATOR),
             );
           }
 
@@ -457,7 +458,7 @@ async function initHTTPRouter({
 
 function _explodePath(path, parameters) {
   return path
-    .split('/')
+    .split(PATH_SEPARATOR)
     .filter(identity)
     .map(node => {
       const matches = /^{([a-z0-9]+)}$/i.exec(node);
@@ -497,7 +498,7 @@ async function _createRouters({
   operations.forEach(operation => {
     const { path, method, operationId, parameters } = operation;
 
-    if (!path.startsWith('/')) {
+    if (!path.startsWith(PATH_SEPARATOR)) {
       throw new YError('E_BAD_PATH', path);
     }
     if (!operationId) {

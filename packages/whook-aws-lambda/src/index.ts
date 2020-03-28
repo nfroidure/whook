@@ -14,7 +14,6 @@ import initCompiler, {
   DEFAULT_COMPILER_OPTIONS,
 } from './services/compiler';
 import initBuildAutoloader from './services/_autoload';
-import initBuildConstants from './services/BUILD_CONSTANTS';
 import Knifecycle, { SPECIAL_PROPS, constant, Autoloader } from 'knifecycle';
 import { WhookAPIOperationAddition } from '@whook/whook';
 import {
@@ -92,8 +91,6 @@ const BUILD_DEFINITIONS: {
     },
   },
 };
-
-export { initBuildConstants };
 
 export async function prepareBuildEnvironment(
   $: Knifecycle = new Knifecycle(),

@@ -8,6 +8,7 @@ import {
 } from '@whook/http-router';
 import { reuseSpecialProps, alsoInject, ServiceInitializer } from 'knifecycle';
 import Ajv from 'ajv';
+import bytes from 'bytes';
 import HTTPError from 'yhttperror';
 import {
   prepareParametersValidators,
@@ -192,6 +193,7 @@ async function handleForAWSHTTPLambda(
 ) {
   const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
   const startTime = time();
+  const bufferLimit = bytes.parse(BUFFER_LIMIT);
 
   log(
     'info',
@@ -239,7 +241,7 @@ async function handleForAWSHTTPLambda(
         {
           DECODERS,
           PARSERS,
-          bufferLimit: BUFFER_LIMIT,
+          bufferLimit,
         },
         operation,
         request.body,

@@ -56,6 +56,9 @@ Whook is built over Knifecyle which is great for adding or easily override/wrap
 <dt><a href="#default">default</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
 <dd><p>Auto detect the Whook PROJECT_DIR</p>
 </dd>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap the ENV service in order to filter ENV vars for the build</p>
+</dd>
 <dt><a href="#default">default</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
 <dd><p>Auto detect the Whook WHOOK_PLUGINS_PATHS</p>
 </dd>
@@ -69,6 +72,11 @@ Whook is built over Knifecyle which is great for adding or easily override/wrap
 </dd>
 <dt><a href="#prepareEnvironment">prepareEnvironment($)</a> ⇒</dt>
 <dd><p>Prepare the Whook server environment</p>
+</dd>
+<dt><a href="#initBuildConstants">initBuildConstants(constants)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Allow to proxy constants directly by serializing it in the
+ build, saving some computing and increasing boot time of
+ the build.</p>
 </dd>
 <dt><a href="#initENV">initENV(services, [log])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Initialize the ENV service using process env plus dotenv files</p>
@@ -161,6 +169,21 @@ Auto detect the Whook PROJECT_DIR
 
 <a name="default"></a>
 
+## default ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap the ENV service in order to filter ENV vars for the build
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services ENV depends on |
+| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to add it to the build env |
+| [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
+| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="default"></a>
+
 ## default ⇒ <code>Promise.&lt;string&gt;</code>
 Auto detect the Whook WHOOK_PLUGINS_PATHS
 
@@ -201,6 +224,27 @@ A promise of the Knifecycle instance
 | --- | --- | --- |
 | $ | <code>Knifecycle</code> | The Knifecycle instance to set the various services |
 
+<a name="initBuildConstants"></a>
+
+## initBuildConstants(constants) ⇒ <code>Promise.&lt;Object&gt;</code>
+Allow to proxy constants directly by serializing it in the
+ build, saving some computing and increasing boot time of
+ the build.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the gathered constants.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| constants | <code>Object</code> | The serializable constants to gather |
+
+**Example**  
+```js
+import { initBuildConstants } from '@whook/aws-lambda';
+import { alsoInject } from 'knifecycle';
+
+export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
+```
 <a name="initENV"></a>
 
 ## initENV(services, [log]) ⇒ <code>Promise.&lt;Object&gt;</code>

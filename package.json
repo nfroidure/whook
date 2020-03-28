@@ -11,7 +11,13 @@
     ],
     "data": {
       "ignore": [
-        "dist"
+        "dist",
+        "builds",
+        ".bin",
+        ".terraform",
+        "*.plan",
+        "*.tfstate.d",
+        "*.credentials.json"
       ],
       "rootPackage": true
     }

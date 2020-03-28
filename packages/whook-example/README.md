@@ -41,10 +41,10 @@ List available commands:
 npx whook ls
 ```
 
-# Debug
+## Debug
 Execute a handler in isolation:
 ```sh
-npx whook -- handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
+npx whook handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
 ```
 
 Debug `whook` internals:

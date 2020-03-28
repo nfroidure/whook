@@ -46,6 +46,10 @@ import initHTTPServer, {
 import initPort, { PortEnv } from './services/PORT';
 import initHost, { HostEnv } from './services/HOST';
 import initEnv, { ENVConfig, ENVService } from './services/ENV';
+import initProxyedENV, { ProxyedENVConfig } from './services/ProxyedENV';
+import initBuildConstants, {
+  WhookBuildConstantsService,
+} from './services/BUILD_CONSTANTS';
 import initConfigs, {
   CONFIGSService,
   WhookConfig,
@@ -102,8 +106,12 @@ export {
   WhookAPIOperationConfig,
   WhookServiceMap,
   WhookInitializerMap,
+  WhookBuildConstantsService,
+  initBuildConstants,
   ENVService,
   initEnv,
+  ProxyedENVConfig,
+  initProxyedENV,
   WhookPluginsService,
   WhookPluginsPathsService,
   CONFIGSService,

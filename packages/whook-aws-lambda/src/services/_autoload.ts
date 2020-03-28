@@ -1,4 +1,4 @@
-import { initAutoload, noop } from '@whook/whook';
+import { WhookBuildConstantsService, initAutoload, noop } from '@whook/whook';
 import Knifecycle, {
   SPECIAL_PROPS,
   wrapInitializer,
@@ -8,7 +8,6 @@ import Knifecycle, {
 } from 'knifecycle';
 import YError from 'yerror';
 import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
-import { BuildConstants } from './BUILD_CONSTANTS';
 import { LogService } from 'common-services';
 
 /**
@@ -35,7 +34,7 @@ export default alsoInject(
         $instance,
         log = noop,
       }: {
-        BUILD_CONSTANTS?: BuildConstants;
+        BUILD_CONSTANTS?: WhookBuildConstantsService;
         $injector: Injector<any>;
         $instance: Knifecycle;
         log: LogService;

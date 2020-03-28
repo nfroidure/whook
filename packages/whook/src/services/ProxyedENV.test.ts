@@ -1,4 +1,4 @@
-import initEnv from './ENV';
+import initEnv from './ProxyedENV';
 
 describe('initEnv', () => {
   const log = jest.fn();

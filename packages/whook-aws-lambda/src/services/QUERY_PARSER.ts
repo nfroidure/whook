@@ -27,11 +27,13 @@ export default initializer(
 );
 
 function castParameters(parameters, values) {
+  const endValues = {};
+
   (parameters || []).forEach(parameter => {
-    values[parameter.name] = castParameterValue(
+    endValues[parameter.name] = castParameterValue(
       parameter,
       values[parameter.name],
     );
   });
-  return values;
+  return endValues;
 }

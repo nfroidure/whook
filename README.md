@@ -17,8 +17,10 @@
 [![Coverage Status](https://coveralls.io/repos/nfroidure/whook/badge.svg?branch=master)](https://coveralls.io/r/nfroidure/whook?branch=master)
 
 Why write code when you have an OpenAPI definition?
+ [Check this deck](https://slides.com/nfroidure/introducing-whook)
+ for a complete introduction to Whook's principles!
 
-# Summary
+## Summary
 
 Whook eats your documentation and provide you with a
  performant router that take care of running the right
@@ -28,7 +30,7 @@ By using the OpenAPI standard and the dependency injection
  pattern, Whook provides a convenient, highly modular and easily
  testable back end framework.
 
-# Quickstart
+## Quickstart
 
 To start a new Whook project:
 
@@ -44,21 +46,12 @@ DRY_RUN=1 npm run start
 npm t
 ```
 
-
-**Work in progress:** Despite I use it in production already,
- the Whook's API may change.
-
-Using it right now, will imply making changes when the next
- major release will happen. If you would like to get involved
- in its early development, feel free to add issues / comments
- or to improve the code.
-
-# Usage
+## Usage
 
 The documentation and a tutorial are still to be written but
  the code is easy to read so let's dive in in the meanwhile.
 
-# Principles
+## Principles
 This projects aims to make creating well documented and highly
  customizable REST APIs a breeze. It is the final outcome of my experience
  [building REST APIs with NodeJS](https://insertafter.com/en/blog/http_rest_apis_with_nodejs.html).
@@ -100,7 +93,7 @@ And that's it, you have your REST API. We have
 You may add global wrappers to change every handlers input/output on the
  fly or add a local wrapper specifically to one of a few handlers.
 
-# Contributing
+## Contributing
 
 Clone this project's repository and run:
 
@@ -115,7 +108,7 @@ The repository is based on LernaJS that allows to host several NPM
 Install those [VSCode extensions](https://insertafter.com/en/blog/my_vscode_configuration.html)
  to get a smooth developer experience.
 
-# Publishing
+## Publishing
 
 ```sh
 NODE_ENV=cli npm run lerna  -- publish

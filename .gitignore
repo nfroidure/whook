@@ -130,3 +130,9 @@ Temporary Items
 
 # Project custom ignored file
 dist
+builds
+.bin
+.terraform
+*.plan
+*.tfstate.d
+*.credentials.json

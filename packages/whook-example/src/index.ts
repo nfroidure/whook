@@ -1,13 +1,15 @@
-import Knifecycle, { constant, Services } from 'knifecycle';
+import Knifecycle, { constant, Services, alsoInject } from 'knifecycle';
 import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
   prepareEnvironment as prepareBaseEnvironment,
   initAutoload,
   initAPIDefinitions,
+  initBuildConstants,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
+import YError from 'yerror';
 
 // Per convention a Whook server main file must export
 //  the following 3 functions to be composable:
@@ -57,7 +59,7 @@ export async function prepareEnvironment(
 
   // This service loads the API definitions directly by
   // looking at your `src/handlers` folder. You can
-  // realease this behavior by removing this line
+  // release this behavior by removing this line
   $.register(initAPIDefinitions);
 
   // You have to declare the project main file directory
@@ -71,6 +73,53 @@ export async function prepareEnvironment(
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
   $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
+
+  return $;
+}
+
+// Additionnally, 2 others functions can be exported
+//  for building purpose
+
+// The `runBuild` function is intended to build the
+// project
+export async function runBuild(
+  innerPrepareEnvironment = prepareBuildEnvironment,
+): Promise<void> {
+  throw new YError('E_NO_BUILD_IMPLEMENTED');
+
+  // Usually, here you call the installed build
+  // return runBaseBuild(innerPrepareEnvironment);
+}
+
+// The `prepareBuildEnvironment` create the build
+//  environment
+export async function prepareBuildEnvironment(
+  $: Knifecycle = new Knifecycle(),
+): Promise<Knifecycle> {
+  $ = await prepareEnvironment($);
+
+  // Usually, here you call the installed build env
+  // $ = await prepareBaseBuildEnvironment($);
+
+  // The build often need to know were initializer
+  //  can be found to create a static build and
+  //  remove the need to create an injector
+  $.register(
+    constant('INITIALIZER_PATH_MAP', {
+      ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
+      apm: require.resolve('@whook/http-transaction/dist/services/apm'),
+      obfuscator: require.resolve(
+        '@whook/http-transaction/dist/services/obfuscator',
+      ),
+      log: require.resolve('common-services/dist/log'),
+      time: require.resolve('common-services/dist/time'),
+      delay: require.resolve('common-services/dist/delay'),
+    }),
+  );
+
+  // Finally, some constants can be serialized instead of being
+  //  initialized in the target build saving some time at boot
+  $.register(alsoInject(['API_DEFINITIONS'], initBuildConstants));
 
   return $;
 }
