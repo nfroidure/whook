@@ -96,24 +96,8 @@ async function initTerraformValuesCommand({
       pathsIndex: number;
       lambdaType: string;
     };
-    if (type === 'globals') {
-      const commitHash = await execAsync(`git rev-parse HEAD`);
-      const commitMessage = (
-        await execAsync(`git rev-list --format=%B --max-count=1 HEAD`)
-      ).split('\n')[1];
-      const openapiHash = crypto
-        .createHash('md5')
-        .update(JSON.stringify(API))
-        .digest('hex');
-      const infos = {
-        commitHash,
-        commitMessage,
-        openapiHash,
-      };
-      log('info', JSON.stringify(infos));
-      return;
-    }
-    const configurations = getOpenAPIOperations(API).map(operation => {
+    const allOperations = await getOpenAPIOperations(API);
+    const configurations = allOperations.map(operation => {
       const whookConfiguration = (operation['x-whook'] || {
         type: 'http',
       }) as WhookAWSLambdaBuildConfiguration;
@@ -124,6 +108,7 @@ async function initTerraformValuesCommand({
         contentHandling: 'CONVERT_TO_TEXT',
         description: operation.summary || '',
         enabled: 'true',
+        operationId: operation.operationId,
         sourceOperationId: operation.operationId,
         suffix: '',
         ...Object.keys(whookConfiguration).reduce(
@@ -151,6 +136,54 @@ async function initTerraformValuesCommand({
         ...configuration,
       };
     });
+
+    if (type === 'globals') {
+      const commitHash = await execAsync(`git rev-parse HEAD`);
+      const commitMessage = (
+        await execAsync(`git rev-list --format=%B --max-count=1 HEAD`)
+      ).split('\n')[1];
+      const openapi = JSON.stringify({
+        ...API,
+        servers: [],
+        paths: configurations
+          .filter(({ type }) => !type || type === 'http')
+          .reduce((currentPaths, configuration) => {
+            return {
+              ...currentPaths,
+              [configuration.path]: {
+                ...(currentPaths[configuration.path] || {}),
+                [configuration.method.toLowerCase()]: {
+                  ...((API.paths[configuration.path] || {})[
+                    configuration.method.toLowerCase()
+                  ] || {}),
+                  operationId: configuration.qualifiedOperationId,
+                  responses: {},
+                  ['x-amazon-apigateway-integration']: {
+                    uri: `\${${configuration.qualifiedOperationId}}`,
+                    httpMethod: 'POST',
+                    contentHandling: 'CONVERT_TO_TEXT',
+                    timeoutInMillis: parseInt(configuration.timeout, 10) * 1000,
+                    type: 'aws_proxy',
+                  },
+                },
+              },
+            };
+          }, {}),
+      });
+
+      const openapiHash = crypto
+        .createHash('md5')
+        .update(JSON.stringify(API))
+        .digest('hex');
+      const infos = {
+        commitHash,
+        commitMessage,
+        openapi,
+        openapiHash,
+      };
+      log('info', JSON.stringify(infos));
+      return;
+    }
 
     if (type === 'lambdas') {
       const lambdas = configurations

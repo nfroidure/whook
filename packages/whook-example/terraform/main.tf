@@ -7,6 +7,10 @@ provider "archive" {
   version = "~> 1.3"
 }
 
+provider "template" {
+  version = "~> 2.1.2"
+}
+
 output api_url {
   value = aws_api_gateway_deployment.api_gateway_deployment.invoke_url
 }

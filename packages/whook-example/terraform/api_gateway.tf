@@ -9,6 +9,16 @@ resource "aws_internet_gateway" "api_gateway" {
   }
 }
 
+data "template_file" "template_file" {
+  template = data.external.globals.result["openapi"]
+
+  vars = zipmap(
+    keys(data.external.api_lambdas.result),
+    [for key in keys(data.external.api_lambdas.result) : aws_lambda_function.lambda_function[key].invoke_arn]
+  )
+}
+
+
 resource "aws_api_gateway_rest_api" "api_gateway_rest_api" {
   name                     = "Whook API (${terraform.workspace})"
   description              = "Whook API"
@@ -20,17 +30,18 @@ resource "aws_api_gateway_rest_api" "api_gateway_rest_api" {
     "image/webp",
     "application/pdf"
   ]
+  body       = data.template_file.template_file.rendered
   depends_on = [aws_lambda_function.lambda_function]
 }
 
 resource "aws_api_gateway_deployment" "api_gateway_deployment" {
-  rest_api_id       = aws_api_gateway_rest_api.api_gateway_rest_api.id
+  rest_api_id = aws_api_gateway_rest_api.api_gateway_rest_api.id
   # This has to be left empty to let api_gateway_stage
   #  manage the stage options
   stage_name        = ""
   stage_description = "Deployment checksums ${data.external.globals.result["openapiHash"]}-${data.external.globals.result["commitHash"]}"
   description       = data.external.globals.result["commitMessage"]
-  depends_on        = [aws_api_gateway_integration.api_gateway_integration]
+  depends_on        = [aws_api_gateway_rest_api.api_gateway_rest_api]
 
   lifecycle {
     create_before_destroy = true
