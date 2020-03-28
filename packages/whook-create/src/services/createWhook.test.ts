@@ -172,6 +172,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "^3.1.3",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -202,6 +203,7 @@ Mr Bean
           "@typescript-eslint/parser": "^2.26.0",
           "axios": "^0.19.0",
           "babel-eslint": "^10.1.0",
+          "babel-loader": "^8.0.6",
           "babel-plugin-knifecycle": "^1.2.0",
           "eslint": "^6.8.0",
           "eslint-plugin-prettier": "^3.1.2",
@@ -211,6 +213,7 @@ Mr Bean
           "prettier": "^2.0.2",
           "rimraf": "^3.0.2",
           "typescript": "^3.8.3",
+          "webpack": "4.41.5",
         },
         "engines": Object {
           "node": ">=10.19.0",
@@ -425,6 +428,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "^3.1.3",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -455,6 +459,7 @@ Mr Bean
           "@typescript-eslint/parser": "^2.26.0",
           "axios": "^0.19.0",
           "babel-eslint": "^10.1.0",
+          "babel-loader": "^8.0.6",
           "babel-plugin-knifecycle": "^1.2.0",
           "eslint": "^6.8.0",
           "eslint-plugin-prettier": "^3.1.2",
@@ -464,6 +469,7 @@ Mr Bean
           "prettier": "^2.0.2",
           "rimraf": "^3.0.2",
           "typescript": "^3.8.3",
+          "webpack": "4.41.5",
         },
         "engines": Object {
           "node": ">=10.19.0",
@@ -663,6 +669,7 @@ Mr Bean
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
+          "@whook/aws-lambda": "^3.1.3",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
@@ -693,6 +700,7 @@ Mr Bean
           "@typescript-eslint/parser": "^2.26.0",
           "axios": "^0.19.0",
           "babel-eslint": "^10.1.0",
+          "babel-loader": "^8.0.6",
           "babel-plugin-knifecycle": "^1.2.0",
           "eslint": "^6.8.0",
           "eslint-plugin-prettier": "^3.1.2",
@@ -702,6 +710,7 @@ Mr Bean
           "prettier": "^2.0.2",
           "rimraf": "^3.0.2",
           "typescript": "^3.8.3",
+          "webpack": "4.41.5",
         },
         "engines": Object {
           "node": ">=10.19.0",

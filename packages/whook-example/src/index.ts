@@ -9,7 +9,10 @@ import {
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
-import YError from 'yerror';
+import {
+  runBuild as runBaseBuild,
+  prepareBuildEnvironment as prepareBaseBuildEnvironment,
+} from '@whook/aws-lambda';
 import type { Services } from 'knifecycle';
 
 // Per convention a Whook server main file must export
@@ -74,7 +77,12 @@ export async function prepareEnvironment(
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
   $.register(
-    constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook', '@whook/cors']),
+    constant('WHOOK_PLUGINS', [
+      '@whook/aws-lambda',
+      '@whook/cli',
+      '@whook/cors',
+      '@whook/whook',
+    ]),
   );
 
   return $;
@@ -88,10 +96,7 @@ export async function prepareEnvironment(
 export async function runBuild(
   innerPrepareEnvironment = prepareBuildEnvironment,
 ): Promise<void> {
-  throw new YError('E_NO_BUILD_IMPLEMENTED');
-
-  // Usually, here you call the installed build
-  // return runBaseBuild(innerPrepareEnvironment);
+  return runBaseBuild(innerPrepareEnvironment);
 }
 
 // The `prepareBuildEnvironment` create the build
@@ -102,7 +107,7 @@ export async function prepareBuildEnvironment(
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env
-  // $ = await prepareBaseBuildEnvironment($);
+  $ = await prepareBaseBuildEnvironment($);
 
   // The build often need to know were initializer
   //  can be found to create a static build and
@@ -114,7 +119,7 @@ export async function prepareBuildEnvironment(
       obfuscator: require.resolve(
         '@whook/http-transaction/dist/services/obfuscator',
       ),
-      log: require.resolve('common-services/dist/log'),
+      log: require.resolve('@whook/aws-lambda/dist/services/log'),
       time: require.resolve('common-services/dist/time'),
       delay: require.resolve('common-services/dist/delay'),
     }),

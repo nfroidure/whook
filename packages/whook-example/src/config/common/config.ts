@@ -1,4 +1,5 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
+import type { WhookCompilerConfig } from '@whook/aws-lambda';
 import type { WhookAuthorizationConfig } from '@whook/authorization';
 import type { WhookSwaggerUIConfig } from '@whook/swagger-ui';
 import type { CORSConfig } from '@whook/cors';
@@ -15,6 +16,7 @@ export type AppConfigs = WhookConfigs &
   WhookAuthorizationConfig &
   WhookSwaggerUIConfig &
   CORSConfig &
+  WhookCompilerConfig &
   APIConfig;
 
 const CONFIG: AppConfigs = {

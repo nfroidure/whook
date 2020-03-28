@@ -153,6 +153,9 @@ Object {
       "❤️ - Initializing the APM service.",
     ],
     Array [
+      "➰ - Plugin \\"@whook/aws-lambda\\" resolved to: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist",
+    ],
+    Array [
       "➰ - Plugin \\"@whook/cli\\" resolved to: /home/whoiam/projects/whook/packages/whook-cli/dist",
     ],
     Array [
@@ -217,6 +220,12 @@ Object {
       "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts.",
     ],
     Array [
+      "💿 - Loading handleMessagesWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts.",
+    ],
+    Array [
+      "💿 - Loading handleMinutesWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts.",
+    ],
+    Array [
       "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js.",
     ],
     Array [
@@ -259,6 +268,12 @@ Object {
       "💿 - Service \\"getTimeWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
     ],
     Array [
+      "💿 - Service \\"handleMessagesWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts",
+    ],
+    Array [
+      "💿 - Service \\"handleMinutesWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts",
+    ],
+    Array [
       "💿 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js",
     ],
     Array [
@@ -283,6 +298,12 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getTime\\".",
     ],
     Array [
+      "🔐 - Initializing the authorization wrapper for \\"handleMessages\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"handleMinutes\\".",
+    ],
+    Array [
       "🔐 - Initializing the authorization wrapper for \\"optionsWithCORS\\".",
     ],
     Array [
@@ -301,13 +322,22 @@ Object {
       "🚫 - Could not load \\".env.test\\" file.",
     ],
     Array [
+      "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/BASE_URL",
+    ],
+    Array [
       "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/BASE_URL",
+    ],
+    Array [
+      "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/BASE_URL",
     ],
     Array [
       "🚫 - Service \\"BASE_URL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL",
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/dist/services/BUFFER_LIMIT",
+    ],
+    Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/BUFFER_LIMIT",
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/BUFFER_LIMIT",
@@ -322,6 +352,9 @@ Object {
       "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/dist/services/DECODERS",
     ],
     Array [
+      "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DECODERS",
+    ],
+    Array [
       "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DECODERS",
     ],
     Array [
@@ -332,6 +365,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DEFAULT_ERROR_CODE",
     ],
     Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_ERROR_CODE",
@@ -346,6 +382,9 @@ Object {
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/dist/services/DEFAULT_MECHANISM",
     ],
     Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DEFAULT_MECHANISM",
+    ],
+    Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_MECHANISM",
     ],
     Array [
@@ -356,6 +395,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/dist/services/DEV_ACCESS_TOKEN",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DEV_ACCESS_TOKEN",
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN",
@@ -370,6 +412,9 @@ Object {
       "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/dist/services/ENCODERS",
     ],
     Array [
+      "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/ENCODERS",
+    ],
+    Array [
       "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/ENCODERS",
     ],
     Array [
@@ -380,6 +425,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_PREFIXES",
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES",
@@ -394,6 +442,9 @@ Object {
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES",
     ],
     Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_SUFFIXES",
+    ],
+    Array [
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_SUFFIXES",
     ],
     Array [
@@ -404,6 +455,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT",
+    ],
+    Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/KEEP_ALIVE_TIMEOUT",
     ],
     Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/KEEP_ALIVE_TIMEOUT",
@@ -418,6 +472,9 @@ Object {
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_CLEAR_CHARS",
     ],
     Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/MAX_CLEAR_CHARS",
+    ],
+    Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_CHARS",
     ],
     Array [
@@ -428,6 +485,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/MAX_CLEAR_RATIO",
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_RATIO",
@@ -442,6 +502,9 @@ Object {
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_CONNECTIONS",
     ],
     Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/MAX_CONNECTIONS",
+    ],
+    Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CONNECTIONS",
     ],
     Array [
@@ -452,6 +515,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/dist/services/MAX_HEADERS_COUNT",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/MAX_HEADERS_COUNT",
     ],
     Array [
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_HEADERS_COUNT",
@@ -466,6 +532,9 @@ Object {
       "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/dist/services/PARSERS",
     ],
     Array [
+      "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PARSERS",
+    ],
+    Array [
       "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PARSERS",
     ],
     Array [
@@ -476,6 +545,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/dist/services/PROCESS_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PROCESS_NAME",
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_NAME",
@@ -490,6 +562,9 @@ Object {
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/dist/services/PROTOCOL",
     ],
     Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PROTOCOL",
+    ],
+    Array [
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROTOCOL",
     ],
     Array [
@@ -500,6 +575,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/REDUCED_FILES_SUFFIXES",
     ],
     Array [
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/REDUCED_FILES_SUFFIXES",
@@ -514,6 +592,9 @@ Object {
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS",
     ],
     Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SENSIBLE_HEADERS",
+    ],
+    Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_HEADERS",
     ],
     Array [
@@ -524,6 +605,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/dist/services/SENSIBLE_PROPS",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SENSIBLE_PROPS",
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_PROPS",
@@ -538,6 +622,9 @@ Object {
       "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/dist/services/SHIELD_CHAR",
     ],
     Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SHIELD_CHAR",
+    ],
+    Array [
       "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SHIELD_CHAR",
     ],
     Array [
@@ -548,6 +635,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/dist/services/SIGNALS",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SIGNALS",
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SIGNALS",
@@ -562,6 +652,9 @@ Object {
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/SOCKET_TIMEOUT",
     ],
     Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SOCKET_TIMEOUT",
+    ],
+    Array [
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SOCKET_TIMEOUT",
     ],
     Array [
@@ -572,6 +665,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/dist/services/STRINGIFYERS",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/STRINGIFYERS",
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/STRINGIFYERS",
@@ -586,6 +682,9 @@ Object {
       "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/TIMEOUT",
     ],
     Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/TIMEOUT",
+    ],
+    Array [
       "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/TIMEOUT",
     ],
     Array [
@@ -595,13 +694,19 @@ Object {
       "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT",
     ],
     Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/handlers/getPing",
+    ],
+    Array [
       "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing",
+    ],
+    Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/getPing",
     ],
     Array [
       "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing",
     ],
     Array [
-      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in: /home/whoiam/projects/whook/dist/handlers/optionsWithCORS",
+      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/handlers/optionsWithCORS",
     ],
     Array [
       "🚫 - Service \\"optionsWithCORSWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/handlers/optionsWithCORS",
@@ -611,6 +716,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/dist/services/readDir",
+    ],
+    Array [
+      "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/readDir",
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/readDir",
@@ -623,6 +731,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/dist/services/uniqueId",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/uniqueId",
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/uniqueId",
@@ -674,6 +785,18 @@ Object {
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
