@@ -13,8 +13,13 @@
 
 [//]: # (::contents:start)
 
-The `httpServer` service is responsible for instanciating
- the httpServer and handling its start/shutdown.
+The [Whook](https://github.com/nfroidure/whook)'s `httpServer` service
+ is responsible for instanciating the NodeJS HTTP Server and handling
+ its start/shutdown.
+
+It can be easily replaced by any other HTTP server (an HTTPS one for
+ instance if you cannot use a gateway or a proxy to handle HTTPS
+ connections).
 
 [//]: # (::contents:end)
 

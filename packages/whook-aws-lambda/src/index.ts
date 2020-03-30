@@ -97,9 +97,10 @@ export async function prepareBuildEnvironment(
 ): Promise<Knifecycle> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: '@whook/aws-lambda/services/ENV',
-      log: '@whook/aws-lambda/services/log',
-      time: 'common-services/dist/time',
+      ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
+      log: require.resolve('@whook/aws-lambda/services/log'),
+      time: require.resolve('common-services/dist/time'),
+      delay: require.resolve('common-services/dist/delay'),
     }),
   );
   $.register(initInitializerBuilder);

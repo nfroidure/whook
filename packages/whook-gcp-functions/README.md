@@ -13,7 +13,8 @@
 
 [//]: # (::contents:start)
 
-This module is aimed to help you to build and deploy your Whook server
+This module is aimed to help you to build and deploy your
+ [Whook](https://github.com/nfroidure/whook) server
  to [Google Cloud Functions](https://cloud.google.com/functions).
 
 You can find a complete setup with a Terraform deployment example in
@@ -30,10 +31,10 @@ npm i --save-dev @whook/http-transaction babel-loader babel-plugin-knifecycle we
 Add this module to your Whook plugins and tweak the 2 build functions
  in your `index.ts` main file:
 ```diff
-import {
-  runBuild as runBaseBuild,
-  prepareBuildEnvironment as prepareBaseBuildEnvironment,
-} from '@whook/gcp-functions';
++import {
++  runBuild as runBaseBuild,
++  prepareBuildEnvironment as prepareBaseBuildEnvironment,
++} from '@whook/gcp-functions';
 
 // (...)
 
@@ -62,7 +63,7 @@ export async function prepareEnvironment(
 export async function runBuild(
   innerPrepareEnvironment = prepareBuildEnvironment,
 ): Promise<void> {
-  throw new YError('E_NO_BUILD_IMPLEMENTED');
+-  throw new YError('E_NO_BUILD_IMPLEMENTED');
 
   // Usually, here you call the installed build
 -  // return runBaseBuild(innerPrepareEnvironment);

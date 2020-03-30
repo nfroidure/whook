@@ -13,6 +13,22 @@
 
 [//]: # (::contents:start)
 
+This module provides the GraphIQL UI to your local
+ [Whook](https://github.com/nfroidure/whook) server !
+
+## Usage
+
+The `DEV_MODE=1` environment variable must be used
+ when starting your server (`npm run dev` does it
+ by default).
+
+## Setup
+
+Install the module:
+```sh
+npm i @whook/swagger-ui
+```
+
 To use it, just wrap the HTTP router with this module and
  register it again with the `Knifecycle` instance inside the
  `runServer` function (usually in `src/index.ts`):
@@ -28,7 +44,8 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 
   // (...)
 
-+   // Add support for Swagger UI
++   // Add support for Swagger UI by wrapping and
++  //  overriding the original HTTP Router
 +   $.register(
 +     wrapHTTPRouterWithSwaggerUI(initHTTPRouter),
 +   );

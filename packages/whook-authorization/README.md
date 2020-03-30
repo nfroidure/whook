@@ -13,7 +13,8 @@
 
 [//]: # (::contents:start)
 
-This wrapper ties authentication with only two kinds of input:
+This [Whook](https://github.com/nfroidure/whook) wrapper ties
+ authentication with only two kinds of input:
 - the `authorization` header which allows several mechanisms to be used
   including custom ones (this module is using
   [`http-auth-utils`](https://www.npmjs.com/package/http-auth-utils)

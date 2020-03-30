@@ -1,5 +1,6 @@
 import {
   DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
   WhookResponse,
   WhookHandler,
   WhookOperation,
@@ -24,6 +25,7 @@ export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     description:
       'The version header "$0" value ("$1") does not match the rule "$3"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
 };
 

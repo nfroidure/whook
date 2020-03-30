@@ -64,18 +64,29 @@ const DEFAULT_SENSIBLE_PROPS: SensibleValueDescriptor[] = [
 ];
 
 /**
- * Allow to proxy constants directly by serializing it in the
- *  build, saving some computing and increasing boot time of
- *  lambdas.
- * @param  {Object}   constants
- * The serializable constants to gather
+ * Obfuscate sensible informations.
+ * @param  {Object}   services
+ * The service dependend on
+ * @param  {Object}   [services.SHIELD_CHAR]
+ * The char for replacing sensible informations
+ * @param  {Object}   [services.MAX_CLEAR_CHARS]
+ * The maximum clear chars to display
+ * @param  {Object}   [services.MAX_CLEAR_RATIO]
+ * The maximum clear chars ratio to display
+ * @param  {Object}   [services.SENSIBLE_PROPS]
+ * Sensible properties names
+ * @param  {Object}   [services.SENSIBLE_HEADERS]
+ * Sensible headers names
  * @return {Promise<Object>}
  * A promise of an object containing the gathered constants.
  * @example
- * import { initBuildConstants } from '@whook/aws-lambda';
+ * import { initObfuscator } from '@whook/http-transaction';
  * import { alsoInject } from 'knifecycle';
  *
- * export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
+ * const obfuscator = await initObfuscator();
+ *
+ * console.log(obfuscator('my very secret information!));
+ * // my ...on!
  */
 async function initObfuscator({
   SHIELD_CHAR = DEFAULT_SHIELD_CHAR,

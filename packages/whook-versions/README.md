@@ -13,8 +13,8 @@
 
 [//]: # (::contents:start)
 
-This wrapper simply answer to any HTTP call with a unsupported
- version header with a 418 HTTP error.
+This [Whook](https://github.com/nfroidure/whook)'s wrapper simply answer
+ to any HTTP call with a unsupported version header with a 418 HTTP error.
 
 To use this module, simply add it to your `WRAPPERS` service
  (usually in `src/services/WRAPPERS.ts`):

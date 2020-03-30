@@ -16,22 +16,16 @@
 `whook` allows you to create REST web services by providing
  its ingredients and the recipe to make it work altogether.
 
-The recipe is your Open API definition while ingredients
- are handlers, services and their configuration.
+The recipe is your Open API (OAS3) definition while ingredients
+ are handlers, wrappers, services and their configuration.
 
-## Principles
-Whook work by adding ingredients to you API:
-- configuration: Whokk look ups for `config/{NODE_ENV}/config.js` files. It creates
- constants you can inject in your handlers and services.
-- API: It defines the various endpoint of you API and how to map these to handlers
- thanks to the well known OpenAPI format (formerly Swagger),
-- handlers: the code that implement those endpoints,
-- services: various services that deal with global states,
-- wrappers: higher order functions you can apply to handlers (CORS, authentication...).
+## Quick start
 
-Whook is built over Knifecyle which is great for adding or easily override/wrap
- a lot of its core component. It brings instrumentation and testability to
- your code bases.
+```js
+npm init @whook
+```
+
+Learn more about [Whook](https://github.com/nfroidure/whook#whook).
 
 [//]: # (::contents:end)
 

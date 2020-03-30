@@ -13,90 +13,124 @@
 
 [//]: # (::contents:start)
 
-This module is aimed to help you to deploy your Whook server
- to AWS Lambda.
+This module is aimed to help you to build and deploy your Whook server
+ to [AWS Lambda](https://aws.amazon.com/en/lambda/).
 
-## Testing commands
+You can find a complete setup with a Terraform deployment example in
+ [this pull request](https://github.com/nfroidure/whook/pull/54).
 
-Building lambdas is done by creating the build script in your project `bin`
- folder :
+## Quick setup
+
+Install this module and its peer dependencies :
 ```sh
-cat "#! /usr/bin/env node
-
-const { runBuild } = require('../dist/index');
-
-runBuild();
-" > bin/build.js
+npm i @whook/aws-lambda;
+npm i --save-dev @whook/http-transaction babel-loader babel-plugin-knifecycle webpack
 ```
 
-And add create the runBuild function in you `index.ts` main file :
+
+Add this module to your Whook plugins and tweak the 2 build functions
+ in your `index.ts` main file:
 ```diff
-+ import {
-+   initBuildConstants,
-+   runBuild as runBaseBuild,
-+   prepareBuildEnvironment as prepareBaseBuildEnvironment,
-+ } from '@whook/aws-lambda';
-+
-+ // The `runBuild` function is intended to build the
-+ // project
-+
-+ export async function runBuild(
-+   innerPrepareEnvironment = prepareBuildEnvironment,
-+ ): Promise<void> {
++import {
++  runBuild as runBaseBuild,
++  prepareBuildEnvironment as prepareBaseBuildEnvironment,
++} from '@whook/aws-lambda';
+
+// (...)
+
+export async function prepareEnvironment(
+  $: Knifecycle = new Knifecycle(),
+): Promise<Knifecycle> {
+
+  // (...)
+
+  // Setup your own whook plugins or avoid whook defaults by leaving it empty
+-  $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
++  $.register(constant('WHOOK_PLUGINS', [
++    '@whook/aws-lambda',
++    '@whook/cli',
++    '@whook/whook',
++  ]));
+
+  // (...)
+
+}
+
+// (...)
+
+// The `runBuild` function is intended to build the
+// project
+export async function runBuild(
+  innerPrepareEnvironment = prepareBuildEnvironment,
+): Promise<void> {
+-  throw new YError('E_NO_BUILD_IMPLEMENTED');
+
+  // Usually, here you call the installed build
+-  // return runBaseBuild(innerPrepareEnvironment);
 +   return runBaseBuild(innerPrepareEnvironment);
-+ }
-+
-+ export async function prepareBuildEnvironment(
-+   $: Knifecycle = new Knifecycle(),
-+ ): Promise<Knifecycle> {
-+   $ = await prepareEnvironment($);
-+   $ = await prepareBaseBuildEnvironment($);
-+
-+   $.register(
-+     constant('INITIALIZER_PATH_MAP', {
-+       ENV: require.resolve('@whook/aws-lambda/dist/services/ENV'),
-+       log: require.resolve('@whook/aws-lambda/dist/services/log'),
-+       apm: require.resolve('@whook/http-transaction/dist/services/apm'),
-+       obfuscator: require.resolve(
-+         '@whook/http-transaction/dist/services/obfuscator',
-+       ),
-+       time: require.resolve('common-services/dist/time'),
-+       delay: require.resolve('common-services/dist/delay'),
-+     }),
-+   );
-+   $.register(alsoInject(['API_DEFINITIONS'], initBuildConstants));
-+
-+   return $;
-+ } 
+}
+
+// (...)
+
+// The `prepareBuildEnvironment` create the build
+//  environment
+export async function prepareBuildEnvironment(
+  $: Knifecycle = new Knifecycle(),
+): Promise<Knifecycle> {
+  $ = await prepareEnvironment($);
+
+  // (...)
+
+-  // Usually, here you call the installed build env
+-  // $ = await prepareBaseBuildEnvironment($);
++  // Calling the AWS specific build
++  $ = await prepareBaseBuildEnvironment($);
+
+
+  // The build often need to know were initializer
+  //  can be found to create a static build and
+  //  remove the need to create an injector
+  $.register(
+    constant('INITIALIZER_PATH_MAP', {
+      ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
+      apm: require.resolve('@whook/http-transaction/dist/services/apm'),
+      obfuscator: require.resolve(
+        '@whook/http-transaction/dist/services/obfuscator',
+      ),
+-      log: require.resolve('common-services/dist/log'),
++      log: require.resolve('@whook/aws-lambda/dist/services/log'),
+      time: require.resolve('common-services/dist/time'),
+      delay: require.resolve('common-services/dist/delay'),
+    }),
+  );
+
+  // (...)
+
+} 
 ```
 
-Also add the following lines in your `package.json` file :
-```diff
-  scripts: {
-+    "build": "NODE_ENV=${NODE_ENV:-development} node bin/build",
-  },
-  devDependencies: {
-+    "@whook/aws-lambda": "^3.1.3",
-+    "@whook/http-transaction": "^3.1.3",
-+    "babel-loader": "^8.0.6",
-+    "babel-plugin-knifecycle": "^1.2.0",
-+    "webpack": "4.41.5"
-  }
-```
+# Build
 
-To build your lambdas :
+To build your functions :
 ```sh
-# Build all lambdas
+# Build all functions
 npm run compile && npm run build
-# Build only one lambda
+# Build only one function
 npm run compile && npm run build -- getPing
 ```
 
-You can easily test your lambda builds by adding `@whook/aws-lambda`
+# Debug
+
+You can easily test your function builds by adding `@whook/aws-lambda`
  to your `WHOOK_PLUGINS` list. It provides you some commands like
  the `testHTTPLambda` one:
 ```sh
-npm run whook -- testHTTPLambda --name getPing
+npx whook testHTTPLambda --name getPing
+```
+
+To get more insights when errors happens:
+```sh
+npm run whook-dev -- testHTTPLambda --name getPing
 ```
 
 ## Deployment
@@ -104,7 +138,7 @@ npm run whook -- testHTTPLambda --name getPing
 We recommend using [Terraform](https://terraform.io) to deploy your
  lambda functions.
 
-There is a complete example on how to deploy your lambdas
+There is a complete example on how to deploy your functions
  [in this pull request](https://github.com/nfroidure/whook/pull/54).
 
 [//]: # (::contents:end)

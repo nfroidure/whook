@@ -5,6 +5,7 @@ Object {
   "error": "bad_handler",
   "error_debug_data": undefined,
   "error_description": "No endpoint found at that path (\\"customheader\\", \\"/v1/users/1\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
 }
 `;
@@ -14,6 +15,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The value provided (\\"lol\\") is not a boolean",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_BOOLEAN+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_BOOLEAN",
 }
 `;
@@ -23,6 +25,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "This endpoint requires a value for the parameter \\"extended\\"",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_REQUIRED_PARAMETER+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUIRED_PARAMETER",
 }
 `;
@@ -32,6 +35,7 @@ Object {
   "error": "router_misconfiguration",
   "error_debug_data": undefined,
   "error_description": "The router has no stringifyer declared for the response content type \\"text/plain\\" with status \\"200\\"",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_STRINGIFYER_LACK+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_STRINGIFYER_LACK",
 }
 `;
@@ -41,6 +45,7 @@ Object {
   "error": "bad_handler",
   "error_debug_data": undefined,
   "error_description": "The handler for the operation id \\"getUser\\" seems to not return any response",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NO_RESPONSE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE",
 }
 `;
@@ -50,6 +55,7 @@ Object {
   "error": "bad_handler",
   "error_debug_data": undefined,
   "error_description": "The handler for the operation id \\"getUser\\" seems to not return any status",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NO_RESPONSE_STATUS+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE_STATUS",
 }
 `;
@@ -59,6 +65,7 @@ Object {
   "error": "bad_handler",
   "error_debug_data": undefined,
   "error_description": "The handler for the operation id \\"getUser\\" seems to not return a promise",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NO_RESPONSE_PROMISE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE_PROMISE",
 }
 `;
@@ -68,6 +75,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The asked response media type \\"text/word\\" is not satifyable (allowed media types \\"application/json,text/plain\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_UNACCEPTABLE_MEDIA_TYPE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNACCEPTABLE_MEDIA_TYPE",
 }
 `;
@@ -77,6 +85,7 @@ Object {
   "error": "error",
   "error_debug_data": undefined,
   "error_description": "Got an unexpected error",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_UNAUTHORIZED+whook+error+code",
 }
 `;
 
@@ -85,6 +94,7 @@ Object {
   "error": "error",
   "error_debug_data": undefined,
   "error_description": "Got an unexpected error",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_UNAUTHORIZED+whook+error+code",
 }
 `;
 
@@ -93,6 +103,7 @@ Object {
   "error": "bad_handler",
   "error_debug_data": undefined,
   "error_description": "No endpoint found at that path (\\"get\\", \\"/v1/gods/1\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
 }
 `;
@@ -102,6 +113,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The request body could not be parsed",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_BODY+whook+error+code",
   "error_params": Array [
     "{ name\\": \\"John Doe\\" }",
   ],
@@ -114,6 +126,7 @@ Object {
   "error": "error",
   "error_debug_data": undefined,
   "error_description": "Got an unexpected error",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_PARSER_LACK+whook+error+code",
 }
 `;
 
@@ -122,6 +135,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The request body length (\\"22\\") is different than the length defined in the headers (\\"21\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_BODY_LENGTH+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_BODY_LENGTH",
 }
 `;
@@ -131,6 +145,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The content type provided is wierd \\"#$===;;;==\\"",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_CONTENT_TYPE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_CONTENT_TYPE",
 }
 `;
@@ -140,6 +155,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The content type provided is wierd \\"$%$;;;===\\"",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_CONTENT_TYPE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_CONTENT_TYPE",
 }
 `;
@@ -149,6 +165,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "Failed to read the request body input stream",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_REQUEST_FAILURE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_FAILURE",
 }
 `;
@@ -158,6 +175,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The body media type \\"text/plain\\" is not supported (supported media types \\"image/jpeg,image/png\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_UNSUPPORTED_MEDIA_TYPE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNSUPPORTED_MEDIA_TYPE",
 }
 `;
@@ -167,6 +185,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The request body does not match the schema",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_REQUEST_BODY+whook+error+code",
   "error_params": Array [
     Object {
       "nate": "John Doe",
@@ -208,6 +227,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "This endpoint requires a value for the parameter \\"Authorization\\"",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_REQUIRED_PARAMETER+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUIRED_PARAMETER",
 }
 `;
@@ -217,6 +237,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The request content length (\\"21\\") exceeded the maximun allowed (\\"20\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_REQUEST_CONTENT_TOO_LARGE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_CONTENT_TOO_LARGE",
 }
 `;
@@ -226,6 +247,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The request content length (\\"21\\") exceeded the maximun allowed (\\"20\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_REQUEST_CONTENT_TOO_LARGE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_CONTENT_TOO_LARGE",
 }
 `;
@@ -235,6 +257,7 @@ Object {
   "error": "bad_request",
   "error_debug_data": undefined,
   "error_description": "The asked response charset \\"UTF-32;q=0.9, ISO-8859-1;q=0.8, UTF-16;q=0.7\\" is not satifyable (allowed charsets \\"utf-8\\")",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_UNACCEPTABLE_CHARSET+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNACCEPTABLE_CHARSET",
 }
 `;

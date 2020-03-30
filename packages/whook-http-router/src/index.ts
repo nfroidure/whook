@@ -37,6 +37,7 @@ import {
 import { getBody, sendBody } from './body';
 import initErrorHandler, {
   DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
   WhookErrorsDescriptors,
@@ -77,6 +78,7 @@ export {
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
   DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
   ErrorHandlerConfig,

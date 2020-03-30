@@ -13,6 +13,8 @@
 
 [//]: # (::contents:start)
 
+Brings GraphQL to your [Whook](https://github.com/nfroidure/whook) server!
+
 This module uses [Apollo](https://www.apollographql.com/) under the hood
  most of its concepts (modules, plugins...) applies to it.
 

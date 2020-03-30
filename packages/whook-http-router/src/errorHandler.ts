@@ -36,6 +36,7 @@ export type WhookErrorDescriptor = {
   code: string;
   description?: string;
   uri?: string;
+  help?: string;
   status?: number;
   transmittedParams?: number[];
 };
@@ -45,122 +46,145 @@ export type WhookErrorsDescriptors = {
 
 export const DEFAULT_ERROR_URI =
   'https://stackoverflow.com/search?q=%5Bwhook%5D+$code';
+export const DEFAULT_HELP_URI =
+  'https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+$code+whook+error+code';
 export const DEFAULT_DEFAULT_ERROR_CODE = 'E_UNEXPECTED';
 export const DEFAULT_ERRORS_DESCRIPTORS = {
   [DEFAULT_DEFAULT_ERROR_CODE]: {
     code: 'error',
     description: 'Got an unexpected error',
     status: 500,
+    help: DEFAULT_HELP_URI,
   },
   E_TRANSACTION_TIMEOUT: {
     code: 'error',
     description: 'The request processing timed out (timeout: "$0")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_STRINGIFYER_LACK: {
     code: 'router_misconfiguration',
     description:
       'The router has no stringifyer declared for the response content type "$0" with status "$1.status"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNDECLARED_PATH_PARAMETER: {
     code: 'router_misconfiguration',
     description:
       'The no path parameter declared for the node "$0" on the path "$1"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_PATH: {
     code: 'router_misconfiguration',
     description: 'The path "$0" must start with a slash',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_NO_OPERATION_ID: {
     code: 'router_misconfiguration',
     description: 'No operation id for the path "$0" and the "$1"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_NO_HANDLER: {
     code: 'router_misconfiguration',
     description: 'No handler declared for the operation id "$0"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_OPEN_API: {
     code: 'router_misconfiguration',
     description: 'The Open API provided to the router seems invalid',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNDECLARED_SECURITY_SCHEME: {
     code: 'router_misconfiguration',
     description:
       'An operation ("$1") mentions an undeclared security scheme ("$0")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_BODY_SCHEMA: {
     code: 'router_misconfiguration',
     description: 'An operation ("$0") has an invalid body schema ("$1")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNSUPPORTED_HTTP_SCHEME: {
     code: 'router_misconfiguration',
     description: 'This router do not support this security schema yet ("$0")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNSUPPORTED_API_KEY_SOURCE: {
     code: 'router_misconfiguration',
     description: 'This router do not support this API key source yet ("$0")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_PARAMETER_NAME: {
     code: 'router_misconfiguration',
     description:
       'Bad name for the parameter at index "$1" for the operation "$0"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNSUPPORTED_PARAMETER_DEFINITION: {
     code: 'router_misconfiguration',
     description:
       'This router does not support the parameter "$1" defined in "$0"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_PARAMETER_SCHEMA: {
     code: 'router_misconfiguration',
     description:
       'The router  where unable to compile the parameter "$1" defined in "$0"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_NO_RESPONSE_PROMISE: {
     code: 'bad_handler',
     description:
       'The handler for the operation id "$0" seems to not return a promise',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_NO_RESPONSE: {
     code: 'bad_handler',
     description:
       'The handler for the operation id "$0" seems to not return any response',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_NO_RESPONSE_STATUS: {
     code: 'bad_handler',
     description:
       'The handler for the operation id "$0" seems to not return any status',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_NOT_FOUND: {
     code: 'bad_handler',
     description: 'No endpoint found at that path ("$0", "$2")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_REQUEST_CONTENT_TOO_LARGE: {
     code: 'bad_request',
     description:
       'The request content length ("$0") exceeded the maximun allowed ("$1")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_BODY: {
     code: 'bad_request',
     description: 'The request body could not be parsed',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
     transmittedParams: [0],
   },
   E_BAD_BODY_LENGTH: {
@@ -168,50 +192,59 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
     description:
       'The request body length ("$0") is different than the length defined in the headers ("$1")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNSUPPORTED_CHARSET: {
     code: 'bad_request',
     description:
       'The body charset "$0" is not supported (supported charsets "$1")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_CONTENT_TYPE: {
     code: 'bad_request',
     description: 'The content type provided is wierd "$0"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_REQUEST_FAILURE: {
     code: 'bad_request',
     description: 'Failed to read the request body input stream',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNSUPPORTED_MEDIA_TYPE: {
     code: 'bad_request',
     description:
       'The body media type "$0" is not supported (supported media types "$1")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNACCEPTABLE_CHARSET: {
     code: 'bad_request',
     description:
       'The asked response charset "$0" is not satifyable (allowed charsets "$2")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_UNACCEPTABLE_MEDIA_TYPE: {
     code: 'bad_request',
     description:
       'The asked response media type "$0" is not satifyable (allowed media types "$1")',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_REQUIRED_REQUEST_BODY: {
     code: 'bad_request',
     description: 'This endpoint requires a request body to be sent',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_REQUEST_BODY: {
     code: 'bad_request',
     description: 'The request body does not match the schema',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
     transmittedParams: [2, 3],
   },
   E_NO_REQUEST_BODY: {
@@ -219,34 +252,40 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
     description:
       'This endpoint do not declare a request body but one were sent',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_REQUIRED_PARAMETER: {
     code: 'bad_request',
     description: 'This endpoint requires a value for the parameter "$0"',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_BAD_PARAMETER: {
     code: 'bad_request',
     description: 'The value provided for the parameter "$0" is not valid',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
     transmittedParams: [2, 3],
   },
   E_NON_REENTRANT_NUMBER: {
     code: 'bad_request',
     description: 'The value provided for the parameter "$0" is not reentrant',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
     transmittedParams: [2, 3],
   },
   E_BAD_BOOLEAN: {
     code: 'bad_request',
     description: 'The value provided ("$0") is not a boolean',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
   E_TRANSACTION_ID_NOT_UNIQUE: {
     code: 'bad_request',
     description:
       'The transaction id of the request "$0" is colliding with another one.',
     uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
   },
 };
 
@@ -277,6 +316,7 @@ export type WhookErrorResponse = WhookResponse<
     error: string;
     error_description?: string;
     error_uri?: string;
+    error_help_uri?: string;
     error_params?: unknown[];
     error_debug_data: {
       guruMeditation: string;
@@ -397,6 +437,10 @@ async function initErrorHandler({
         errorDescriptor.description,
       ),
       error_uri: replaceTemplatedValues(err as YError, errorDescriptor.uri),
+      error_help_uri: replaceTemplatedValues(
+        err as YError,
+        errorDescriptor.help,
+      ),
       error_params: errorDescriptor.transmittedParams
         ? errorDescriptor.transmittedParams.map(
             paramIndex => ((err as YError).params || [])[paramIndex],

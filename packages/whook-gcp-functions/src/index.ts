@@ -76,9 +76,10 @@ export async function prepareBuildEnvironment(
 ): Promise<Knifecycle> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: '@whook/gcp-functions/services/ENV',
-      log: '@whook/gcp-functions/services/log',
-      time: 'common-services/dist/time',
+      ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
+      log: require.resolve('@whook/gcp-functions/services/log'),
+      time: require.resolve('common-services/dist/time'),
+      delay: require.resolve('common-services/dist/delay'),
     }),
   );
   $.register(initInitializerBuilder);

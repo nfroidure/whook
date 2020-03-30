@@ -13,9 +13,13 @@
 
 [//]: # (::contents:start)
 
-The `httpRouter` service is responsible for wiring routes
- definitions to their actual implementation while filtering
- inputs and ensuring good outputs.
+The [Whook](https://github.com/nfroidure/whook)'s `httpRouter` service
+ is responsible for wiring routes definitions to their actual
+ implementation while filtering inputs and ensuring good outputs.
+
+This is the default implementation of the Framework but it can be
+ replaced or customized by setting your own configurations
+ to replace the default ones (see the [API section](#API)).
 
 [//]: # (::contents:end)
 

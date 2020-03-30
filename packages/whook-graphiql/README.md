@@ -13,7 +13,23 @@
 
 [//]: # (::contents:start)
 
-To use it, just wrap the HTTP router with this module and
+This module provides the GraphIQL UI to your local
+ [Whook](https://github.com/nfroidure/whook) server !
+
+## Usage
+
+The `DEV_MODE=1` environment variable must be used
+ when starting your server (`npm run dev` does it
+ by default).
+
+## Setup
+
+Install the module:
+```sh
+npm i @whook/graphiql
+```
+
+Then, just wrap the HTTP router with this module and
  register it again with the `Knifecycle` instance inside the
  `runServer` function (usually in `src/index.ts`):
 ```diff
@@ -28,10 +44,11 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 
   // (...)
 
-+   // Add support for GraphIQL UI
-+   $.register(
-+     wrapHTTPRouterWithGraphIQL(initHTTPRouter),
-+   );
++  // Add support for GraphIQL UI by wrapping and
++  //  overriding the original HTTP Router
++  $.register(
++    wrapHTTPRouterWithGraphIQL(initHTTPRouter),
++  );
 
   return await runBaseServer(injectedNames, $);
 }

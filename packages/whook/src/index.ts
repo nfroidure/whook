@@ -13,6 +13,7 @@ import {
 import initHTTPRouter, {
   OPEN_API_METHODS,
   DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
   ErrorHandlerConfig,
@@ -129,6 +130,7 @@ export {
   HTTPRouterProvider,
   HTTPRouterService,
   DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
   WhookErrorsDescriptors,

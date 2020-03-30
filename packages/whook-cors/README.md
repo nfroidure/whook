@@ -13,6 +13,13 @@
 
 [//]: # (::contents:start)
 
+This  [Whook](https://github.com/nfroidure/whook) wrapper provides
+ CORS support by adding it to your OpenAPI file and creating the
+ handlers that runs the OPTIONS method when you cannot do it at
+ the proxy/gateway level.
+
+## Usage
+
 To use this module, simply add it to your `WRAPPERS` service
  (usually in `src/services/WRAPPERS.ts`):
 ```diff

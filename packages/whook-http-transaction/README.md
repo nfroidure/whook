@@ -13,11 +13,13 @@
 
 [//]: # (::contents:start)
 
-Whook takes a very unusual direction when it comes to dealing with
- HTTP transactions. It makes requests and responses serializable to:
-- only work with functions that take request and return responses
+[Whook](https://github.com/nfroidure/whook) takes a very unusual direction
+ when it comes to dealing with HTTP transactions. It makes requests and
+ responses serializable to:
+- only work with functions that take request and return responses (
+ allowing your handlers to be pure functions),
 - have [easily unit testable](https://github.com/nfroidure/whook/blob/e7470fed860a8e1644b15625c9db4dd8198b70a6/packages/whook-example/src/handlers/putEcho.test.js)
- handlers.
+ handlers thanks to concise snapshots.
 
 This service is intended to build those objects from Node HTTP ones
  before passing them to the handlers. It also keeps track of running
@@ -36,10 +38,8 @@ This service is intended to build those objects from Node HTTP ones
 <dt><a href="#initAPM">initAPM(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Application monitoring service that simply log stringified contents.</p>
 </dd>
-<dt><a href="#initObfuscator">initObfuscator(constants)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Allow to proxy constants directly by serializing it in the
- build, saving some computing and increasing boot time of
- lambdas.</p>
+<dt><a href="#initObfuscator">initObfuscator(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Obfuscate sensible informations.</p>
 </dd>
 </dl>
 
@@ -94,24 +94,30 @@ Application monitoring service that simply log stringified contents.
 
 <a name="initObfuscator"></a>
 
-## initObfuscator(constants) ⇒ <code>Promise.&lt;Object&gt;</code>
-Allow to proxy constants directly by serializing it in the
- build, saving some computing and increasing boot time of
- lambdas.
+## initObfuscator(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Obfuscate sensible informations.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the gathered constants.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| constants | <code>Object</code> | The serializable constants to gather |
+| services | <code>Object</code> | The service dependend on |
+| [services.SHIELD_CHAR] | <code>Object</code> | The char for replacing sensible informations |
+| [services.MAX_CLEAR_CHARS] | <code>Object</code> | The maximum clear chars to display |
+| [services.MAX_CLEAR_RATIO] | <code>Object</code> | The maximum clear chars ratio to display |
+| [services.SENSIBLE_PROPS] | <code>Object</code> | Sensible properties names |
+| [services.SENSIBLE_HEADERS] | <code>Object</code> | Sensible headers names |
 
 **Example**  
 ```js
-import { initBuildConstants } from '@whook/aws-lambda';
+import { initObfuscator } from '@whook/http-transaction';
 import { alsoInject } from 'knifecycle';
 
-export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
+const obfuscator = await initObfuscator();
+
+console.log(obfuscator('my very secret information!));
+// my ...on!
 ```
 <a name="WhookHTTPTransaction"></a>
 
