@@ -42,21 +42,28 @@ DRY_RUN=1 npm run start
 
 # Run tests
 npm t
+
+# Compile the project
+npm run compile
+
+# Create a new handler/service/provider
+npx whook create
 ```
 
 ## Why use Whook?
 
-- robust: types, fonctional programming
+- robust: types, functional programming
 - highly modular, extendable and reusable
 - fully integrated and production ready
-- easy to deploy: enter the anylith era
+- easy to deploy, anywhere: enter the anylith era
 - easy to test: TDD, E2E tests made easy
 - feature complete for most API use cases
+- simplify you life but embrace projects complexity
 
 ## Usage
 
-The documentation and a tutorial are still to be written, expect
- it to come very soon.
+A tutorial is still to be written, expect it to come very soon.
+ The above [quickstart command](#quickstart) is a good starting point.
 
 That said you can check the following "How to" PRs:
 - [add GraphQL](https://github.com/nfroidure/whook/pull/62)

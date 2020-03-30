@@ -39,6 +39,9 @@ Object {
 
 
 # Provided by \\"@whook/whook\\": none
+
+
+# Provided by \\"@whook/cors\\": none
 ",
 }
 `;
