@@ -159,6 +159,9 @@ Object {
       "➰ - Plugin \\"@whook/cors\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist\\".",
     ],
     Array [
+      "➰ - Plugin \\"@whook/gcp-functions\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist\\".",
+    ],
+    Array [
       "➰ - Plugin \\"@whook/whook\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist\\".",
     ],
     Array [
@@ -318,7 +321,13 @@ Object {
       "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/BASE_URL\\".",
     ],
     Array [
+      "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/services/BASE_URL\\".",
+    ],
+    Array [
       "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/BASE_URL\\".",
+    ],
+    Array [
+      "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/BASE_URL\\".",
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/BUFFER_LIMIT\\".",
@@ -328,6 +337,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/BUFFER_LIMIT\\".",
+    ],
+    Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/BUFFER_LIMIT\\".",
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BUFFER_LIMIT\\".",
@@ -342,6 +354,9 @@ Object {
       "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DECODERS\\".",
     ],
     Array [
+      "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/DECODERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DECODERS\\".",
     ],
     Array [
@@ -352,6 +367,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/DEFAULT_ERROR_CODE\\".",
     ],
     Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEFAULT_ERROR_CODE\\".",
@@ -366,6 +384,9 @@ Object {
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DEFAULT_MECHANISM\\".",
     ],
     Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/DEFAULT_MECHANISM\\".",
+    ],
+    Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEFAULT_MECHANISM\\".",
     ],
     Array [
@@ -376,6 +397,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DEV_ACCESS_TOKEN\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/DEV_ACCESS_TOKEN\\".",
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEV_ACCESS_TOKEN\\".",
@@ -390,6 +414,9 @@ Object {
       "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/ENCODERS\\".",
     ],
     Array [
+      "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/ENCODERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/ENCODERS\\".",
     ],
     Array [
@@ -400,6 +427,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES\\".",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/IGNORED_FILES_PREFIXES\\".",
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/IGNORED_FILES_PREFIXES\\".",
@@ -414,6 +444,9 @@ Object {
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES\\".",
     ],
     Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/IGNORED_FILES_SUFFIXES\\".",
+    ],
+    Array [
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/IGNORED_FILES_SUFFIXES\\".",
     ],
     Array [
@@ -424,6 +457,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME\\".",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/JWT_SECRET_ENV_NAME\\".",
     ],
     Array [
       "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/JWT_SECRET_ENV_NAME\\".",
@@ -438,6 +474,9 @@ Object {
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT\\".",
     ],
     Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/KEEP_ALIVE_TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/KEEP_ALIVE_TIMEOUT\\".",
     ],
     Array [
@@ -448,6 +487,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_CLEAR_CHARS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/MAX_CLEAR_CHARS\\".",
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CLEAR_CHARS\\".",
@@ -462,6 +504,9 @@ Object {
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO\\".",
     ],
     Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/MAX_CLEAR_RATIO\\".",
+    ],
+    Array [
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CLEAR_RATIO\\".",
     ],
     Array [
@@ -472,6 +517,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_CONNECTIONS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/MAX_CONNECTIONS\\".",
     ],
     Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CONNECTIONS\\".",
@@ -486,6 +534,9 @@ Object {
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT\\".",
     ],
     Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/MAX_HEADERS_COUNT\\".",
+    ],
+    Array [
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_HEADERS_COUNT\\".",
     ],
     Array [
@@ -496,6 +547,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PARSERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/PARSERS\\".",
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PARSERS\\".",
@@ -510,6 +564,9 @@ Object {
       "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PROCESS_ENV\\".",
     ],
     Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/PROCESS_ENV\\".",
+    ],
+    Array [
       "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROCESS_ENV\\".",
     ],
     Array [
@@ -520,6 +577,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PROCESS_NAME\\".",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/PROCESS_NAME\\".",
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROCESS_NAME\\".",
@@ -534,6 +594,9 @@ Object {
       "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PROTOCOL\\".",
     ],
     Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/PROTOCOL\\".",
+    ],
+    Array [
       "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROTOCOL\\".",
     ],
     Array [
@@ -544,6 +607,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES\\".",
+    ],
+    Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/REDUCED_FILES_SUFFIXES\\".",
     ],
     Array [
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/REDUCED_FILES_SUFFIXES\\".",
@@ -558,6 +624,9 @@ Object {
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SENSIBLE_HEADERS\\".",
     ],
     Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/SENSIBLE_HEADERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SENSIBLE_HEADERS\\".",
     ],
     Array [
@@ -568,6 +637,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SENSIBLE_PROPS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/SENSIBLE_PROPS\\".",
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SENSIBLE_PROPS\\".",
@@ -582,6 +654,9 @@ Object {
       "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SHIELD_CHAR\\".",
     ],
     Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/SHIELD_CHAR\\".",
+    ],
+    Array [
       "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SHIELD_CHAR\\".",
     ],
     Array [
@@ -592,6 +667,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SIGNALS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/SIGNALS\\".",
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SIGNALS\\".",
@@ -606,6 +684,9 @@ Object {
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SOCKET_TIMEOUT\\".",
     ],
     Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/SOCKET_TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SOCKET_TIMEOUT\\".",
     ],
     Array [
@@ -616,6 +697,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/STRINGIFYERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/STRINGIFYERS\\".",
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/STRINGIFYERS\\".",
@@ -630,22 +714,28 @@ Object {
       "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/TIMEOUT\\".",
     ],
     Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/TIMEOUT\\".",
     ],
     Array [
       "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/handlers/getPing\\".",
     ],
     Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/getPing\\".",
+    ],
+    Array [
       "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getPing\\".",
     ],
     Array [
-      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/handlers/optionsWithCORS\\".",
+      "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/handlers/getPing\\".",
     ],
     Array [
       "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/optionsWithCORS\\".",
     ],
     Array [
-      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/optionsWithCORS\\".",
+      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/readDir\\".",
@@ -655,6 +745,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/readDir\\".",
+    ],
+    Array [
+      "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/readDir\\".",
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/readDir\\".",
@@ -669,6 +762,9 @@ Object {
       "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/readFile\\".",
     ],
     Array [
+      "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/readFile\\".",
+    ],
+    Array [
       "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/readFile\\".",
     ],
     Array [
@@ -679,6 +775,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/uniqueId\\".",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/services/uniqueId\\".",
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/uniqueId\\".",
@@ -823,6 +922,9 @@ Object {
     ],
     Array [
       "🛂 - Resolving \\"@whook/cors\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/index\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"@whook/gcp-functions\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-gcp-functions/dist/index\\".",
     ],
     Array [
       "🛂 - Resolving \\"@whook/whook\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/index\\".",

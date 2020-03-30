@@ -78,7 +78,12 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
   $.register(
-    constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook', '@whook/cors']),
+    constant('WHOOK_PLUGINS', [
+      '@whook/gcp-functions',
+      '@whook/cors',
+      '@whook/cli',
+      '@whook/whook',
+    ]),
   );
 
   return $;
