@@ -29,6 +29,7 @@ export type WhookAPIDefinitionsConfig = {
   PROJECT_SRC?: string;
   IGNORED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_PREFIXES?: string[];
+  FILTER_API_TAGS?: string[];
 };
 export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
   PROJECT_SRC: string;
@@ -84,6 +85,9 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  * The files suffixes the autoloader must ignore
  * @param  {Object}   [services.IGNORED_FILES_PREFIXES]
  * The files prefixes the autoloader must ignore
+ * @param  {Object}   [services.FILTER_API_TAGS]
+ * Allows to only keep the endpoints taggeds with
+ *  the given tags
  * @param  {Object}   [log=noop]
  * An optional logging service
  * @return {Promise<String>}
@@ -94,6 +98,7 @@ async function initAPIDefinitions({
   WHOOK_PLUGINS_PATHS = [],
   IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
   IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
+  FILTER_API_TAGS = [],
   log = noop,
   readDir = _readDir,
   require = _require,
@@ -101,60 +106,97 @@ async function initAPIDefinitions({
   log('debug', `🈁 - Generating the API_DEFINITIONS`);
 
   const seenFiles = new Map<string, boolean>();
-  const handlersModules: WhookAPIHandlerModule[] = await [
-    PROJECT_SRC,
-    ...WHOOK_PLUGINS_PATHS,
-  ].reduce(async (accHandlersModulesPromise, currentPath) => {
-    // We need to await previous modules here to ensure the
-    // `seenFiles` variable is completed in order
-    const accHandlersModules = await accHandlersModulesPromise;
-    let files;
+  const handlersModules: {
+    file: string;
+    module: WhookAPIHandlerModule;
+  }[] = await [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].reduce(
+    async (accHandlersModulesPromise, currentPath) => {
+      // We need to await previous modules here to ensure the
+      // `seenFiles` variable is completed in order
+      const accHandlersModules = await accHandlersModulesPromise;
+      let files;
 
-    try {
-      files = await readDir(path.join(currentPath, 'handlers'));
-    } catch (err) {
-      // throw only if the root plugin dir doesn't exists
-      if (err.code === 'E_BAD_DIR') {
-        try {
-          await readDir(currentPath);
-        } catch (err) {
-          throw new YError('E_BAD_PLUGIN_DIR');
+      try {
+        files = await readDir(path.join(currentPath, 'handlers'));
+      } catch (err) {
+        // throw only if the root plugin dir doesn't exists
+        if (err.code === 'E_BAD_DIR') {
+          try {
+            await readDir(currentPath);
+          } catch (err) {
+            throw new YError('E_BAD_PLUGIN_DIR');
+          }
+
+          files = [];
         }
-
-        files = [];
       }
-    }
 
-    const currentHandlersModules = files
-      .filter(
-        file =>
-          file !== '..' &&
-          file !== '.' &&
-          !IGNORED_FILES_PREFIXES.some(prefix => file.startsWith(prefix)) &&
-          !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
-      )
-      // Avoid loading the same handler twice if
-      // overriden upstream by another plugin or the
-      // root project path
-      .filter(file => {
-        if (seenFiles.get(file)) {
-          return false;
-        }
-        seenFiles.set(file, true);
-        return true;
-      })
-      .map(file => path.join(currentPath, 'handlers', file))
-      .map(file => (require(file) as unknown) as WhookAPIHandlerModule);
+      const currentHandlersModules = files
+        .filter(
+          file =>
+            file !== '..' &&
+            file !== '.' &&
+            !IGNORED_FILES_PREFIXES.some(prefix => file.startsWith(prefix)) &&
+            !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
+        )
+        // Avoid loading the same handler twice if
+        // overriden upstream by another plugin or the
+        // root project path
+        .filter(file => {
+          if (seenFiles.get(file)) {
+            return false;
+          }
+          seenFiles.set(file, true);
+          return true;
+        })
+        .map(file => path.join(currentPath, 'handlers', file))
+        .map(file => ({
+          file,
+          module: (require(file) as unknown) as WhookAPIHandlerModule,
+        }));
 
-    return [...accHandlersModules, ...currentHandlersModules];
-  }, Promise.resolve([]));
+      return [...accHandlersModules, ...currentHandlersModules];
+    },
+    Promise.resolve([]),
+  );
 
   const API_DEFINITIONS = {
     paths: handlersModules.reduce<OpenAPIV3.PathsObject>(
-      (paths, module: WhookAPIHandlerModule) => {
+      (
+        paths,
+        { file, module }: { file: string; module: WhookAPIHandlerModule },
+      ) => {
         const definition = module.definition as WhookAPIHandlerDefinition;
 
-        if (((definition && definition.operation['x-whook']) || {}).disabled) {
+        if (!definition) {
+          log('debug', `🈁 - Handler module at ${file} exports no definition!`);
+          return paths;
+        }
+
+        if ((definition.operation['x-whook'] || {}).disabled) {
+          log(
+            'debug',
+            `⏳ - Ignored handler "${definition.operation.operationId}" since disabled by its definition!`,
+          );
+          return paths;
+        }
+
+        const operationTags =
+          (definition && definition.operation && definition.operation.tags) ||
+          [];
+
+        if (
+          FILTER_API_TAGS.length > 0 &&
+          operationTags.every(tag => !FILTER_API_TAGS.includes(tag))
+        ) {
+          log(
+            'debug',
+            `⏳ - Ignored handler "${
+              definition.operation.operationId
+            }" via its tags ("${operationTags.join(
+              ',',
+            )}" not found in "${FILTER_API_TAGS.join(',')}")!`,
+          );
           return paths;
         }
 
@@ -176,7 +218,7 @@ async function initAPIDefinitions({
       schemas: handlersModules.reduce<{
         [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
       }>(
-        (schemas, module) => ({
+        (schemas, { module }) => ({
           ...schemas,
           ...Object.keys(module)
             .filter(key => key.endsWith('Schema'))
@@ -191,7 +233,7 @@ async function initAPIDefinitions({
       parameters: handlersModules.reduce<{
         [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject;
       }>(
-        (parameters, module) => ({
+        (parameters, { module }) => ({
           ...parameters,
           ...Object.keys(module)
             .filter(key => key.endsWith('Parameter'))

@@ -11,6 +11,7 @@ const getUserModule: WhookAPIHandlerModule = {
     method: 'get',
     operation: {
       operationId: 'getUser',
+      tags: ['user'],
       parameters: [
         {
           $ref: `#/components/parameters/userId`,
@@ -54,6 +55,7 @@ const putUserModule: WhookAPIHandlerModule = {
     method: 'put',
     operation: {
       operationId: 'putUser',
+      tags: ['user'],
       parameters: [
         {
           $ref: `#/components/parameters/userId`,
@@ -217,6 +219,37 @@ describe('initAPIDefinitions', () => {
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
+        log,
+        readDir,
+        require: (require as unknown) as any,
+      });
+
+      expect({
+        API_DEFINITIONS,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        readDirCalls: readDir.mock.calls,
+        requireCalls: require.mock.calls,
+      }).toMatchSnapshot();
+    });
+
+    it('with a filtered handler', async () => {
+      const getUserModuleDisabled: WhookAPIHandlerModule = {
+        ...getUserModule,
+        definition: {
+          ...getUserModule.definition,
+          operation: {
+            ...getUserModule.definition.operation,
+            tags: ['other'],
+          },
+        },
+      };
+      readDir.mockReturnValueOnce(['getUser', 'putUser']);
+      require.mockReturnValueOnce(getUserModuleDisabled);
+      require.mockReturnValueOnce(putUserModule);
+
+      const API_DEFINITIONS = await initAPIDefinitions({
+        PROJECT_SRC,
+        FILTER_API_TAGS: ['user'],
         log,
         readDir,
         require: (require as unknown) as any,

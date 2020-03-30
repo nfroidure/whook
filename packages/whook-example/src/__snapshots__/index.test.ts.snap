@@ -166,6 +166,9 @@ Object {
       "🈁 - Generating the API_DEFINITIONS",
     ],
     Array [
+      "🈁 - Handler module at /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts exports no definition!",
+    ],
+    Array [
       "🏭 - Initializing the CONFIGS service.",
     ],
     Array [
@@ -179,6 +182,9 @@ Object {
     ],
     Array [
       "💿 - Loading BASE_URL initializer from /home/whoiam/projects/whook/dist/services/BASE_URL.js.",
+    ],
+    Array [
+      "💿 - Loading FILTER_API_TAGS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts.",
     ],
     Array [
       "💿 - Loading MECHANISMS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts.",
@@ -218,6 +224,9 @@ Object {
     ],
     Array [
       "💿 - Service \\"BASE_URL\\" found in: /home/whoiam/projects/whook/dist/services/BASE_URL.js",
+    ],
+    Array [
+      "💿 - Service \\"FILTER_API_TAGS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts",
     ],
     Array [
       "💿 - Service \\"MECHANISMS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts",

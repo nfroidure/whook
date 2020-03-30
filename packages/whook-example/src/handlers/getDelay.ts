@@ -26,7 +26,7 @@ export const definition: WhookAPIHandlerDefinition = {
   operation: {
     operationId: 'getDelay',
     summary: 'Answer after a given delay.',
-    tags: ['system'],
+    tags: ['example'],
     parameters: [
       {
         $ref: `#/components/parameters/${durationParameter.name}`,

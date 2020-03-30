@@ -21,7 +21,7 @@ export const definition: WhookAPIHandlerDefinition = {
   operation: {
     operationId: 'putEcho',
     summary: 'Echoes what it takes.',
-    tags: ['system'],
+    tags: ['example'],
     requestBody: {
       description: 'The input sentence',
       content: {

@@ -54,6 +54,9 @@ Object {
               "description": "The user",
             },
           },
+          "tags": Array [
+            "user",
+          ],
         },
       },
     },
@@ -62,6 +65,10 @@ Object {
     Array [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
+    ],
+    Array [
+      "debug",
+      "⏳ - Ignored handler \\"getUser\\" since disabled by its definition!",
     ],
   ],
   "readDirCalls": Array [
@@ -155,6 +162,9 @@ Object {
               "description": "The user",
             },
           },
+          "tags": Array [
+            "user",
+          ],
         },
       },
     },
@@ -256,6 +266,9 @@ Object {
               "description": "The user",
             },
           },
+          "tags": Array [
+            "user",
+          ],
         },
       },
     },
@@ -360,6 +373,9 @@ Object {
               "description": "The user",
             },
           },
+          "tags": Array [
+            "user",
+          ],
         },
       },
     },
@@ -384,6 +400,93 @@ Object {
     ],
     Array [
       "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
+    ],
+  ],
+}
+`;
+
+exports[`initAPIDefinitions should work with a filtered handler 1`] = `
+Object {
+  "API_DEFINITIONS": Object {
+    "components": Object {
+      "parameters": Object {
+        "userId": Object {
+          "in": "path",
+          "name": "userId",
+          "schema": Object {
+            "type": "number",
+          },
+        },
+      },
+      "schemas": Object {
+        "User": Object {
+          "properties": Object {
+            "name": Object {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+    },
+    "paths": Object {
+      "/users/{userId}": Object {
+        "put": Object {
+          "operationId": "putUser",
+          "parameters": Array [
+            Object {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": Array [
+            "user",
+          ],
+        },
+      },
+    },
+  },
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+    Array [
+      "debug",
+      "⏳ - Ignored handler \\"getUser\\" via its tags (\\"other\\" not found in \\"user\\")!",
+    ],
+  ],
+  "readDirCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers",
+    ],
+  ],
+  "requireCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getUser",
+    ],
+    Array [
+      "/home/whoiam/project/src/handlers/putUser",
     ],
   ],
 }
@@ -434,6 +537,9 @@ Object {
               "description": "The user",
             },
           },
+          "tags": Array [
+            "user",
+          ],
         },
         "put": Object {
           "operationId": "putUser",
@@ -463,6 +569,9 @@ Object {
               "description": "The user",
             },
           },
+          "tags": Array [
+            "user",
+          ],
         },
       },
     },

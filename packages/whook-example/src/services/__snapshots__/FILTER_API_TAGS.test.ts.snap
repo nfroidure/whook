@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initFilterAPITags should work with empty ENV 2`] = `
+Object {
+  "logCalls": Array [],
+}
+`;
+
+exports[`initFilterAPITags should work with not ENV 2`] = `
+Object {
+  "logCalls": Array [],
+}
+`;
+
+exports[`initFilterAPITags should work with some tags in ENV 2`] = `
+Object {
+  "logCalls": Array [],
+}
+`;

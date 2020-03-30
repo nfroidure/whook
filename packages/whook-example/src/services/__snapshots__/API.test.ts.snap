@@ -117,7 +117,7 @@ Object {
           },
           "summary": "Answer after a given delay.",
           "tags": Array [
-            "system",
+            "example",
           ],
         },
         "options": Object {
@@ -274,7 +274,7 @@ Object {
           },
           "summary": "Echoes what it takes.",
           "tags": Array [
-            "system",
+            "example",
           ],
         },
       },
