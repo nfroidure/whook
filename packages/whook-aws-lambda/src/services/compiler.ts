@@ -13,6 +13,7 @@ export type WhookCompilerOptions = {
   externalModules?: string[];
   ignoredModules?: string[];
   extensions?: string[];
+  target?: string;
 };
 export type WhookCompilerConfig = {
   NODE_ENV?: string;
@@ -28,10 +29,11 @@ export type WhookCompilerService = (
   entryPoint: string,
 ) => Promise<WhookCompilationResult>;
 
-export const DEFAULT_COMPILER_OPTIONS: WhookCompilerOptions = {
+export const DEFAULT_COMPILER_OPTIONS: Required<WhookCompilerOptions> = {
   externalModules: ['ecstatic'],
   ignoredModules: [],
   extensions: ['.ts', '.js', '.json'],
+  target: '12.13',
 };
 
 async function initCompiler({
@@ -46,7 +48,8 @@ async function initCompiler({
   ): Promise<WhookCompilationResult> {
     const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
     const basePath = path.dirname(entryPoint);
-    const compilerOptions: WhookCompilerOptions = {
+    const compilerOptions: Required<WhookCompilerOptions> = {
+      ...DEFAULT_COMPILER_OPTIONS,
       ...COMPILER_OPTIONS,
       ...options,
     };
@@ -112,7 +115,7 @@ async function initCompiler({
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
         }),
-        ...(compilerOptions.ignoredModules || []).map(
+        ...compilerOptions.ignoredModules.map(
           ignoredModule => new webpack.IgnorePlugin(new RegExp(ignoredModule)),
         ),
         ...(debugging
@@ -126,9 +129,9 @@ async function initCompiler({
         __dirname: true,
       },
       resolve: {
-        extensions: compilerOptions.extensions || ['.js'],
+        extensions: compilerOptions.extensions,
       },
-      externals: compilerOptions.externalModules || [],
+      externals: compilerOptions.externalModules,
       module: {
         rules: [
           // This rule must be added to handle deep dependencies usage
@@ -151,7 +154,7 @@ async function initCompiler({
                     {
                       modules: false,
                       targets: {
-                        node: '12.13',
+                        node: compilerOptions.target,
                       },
                     },
                   ],

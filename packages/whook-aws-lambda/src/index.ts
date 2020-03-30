@@ -98,7 +98,7 @@ export async function prepareBuildEnvironment(
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
-      log: require.resolve('@whook/aws-lambda/services/log'),
+      log: require.resolve(__dirname + '/services/log'),
       time: require.resolve('common-services/dist/time'),
       delay: require.resolve('common-services/dist/delay'),
     }),
