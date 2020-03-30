@@ -240,7 +240,7 @@ Allow to proxy constants directly by serializing it in the
 
 **Example**  
 ```js
-import { initBuildConstants } from '@whook/aws-lambda';
+import { initBuildConstants } from '@whook/whook';
 import { alsoInject } from 'knifecycle';
 
 export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
