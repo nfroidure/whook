@@ -13,8 +13,19 @@ describe('getTime', () => {
     const response = await getTime();
 
     expect({
-      timeCalls: time.mock.calls,
       response,
+    }).toMatchInlineSnapshot(`
+      Object {
+        "response": Object {
+          "body": Object {
+            "time": 1390694400000,
+          },
+          "status": 200,
+        },
+      }
+    `);
+    expect({
+      timeCalls: time.mock.calls,
     }).toMatchSnapshot();
   });
 });

@@ -11,6 +11,15 @@ describe('getDiagnostic', () => {
 
     expect({
       response,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "response": Object {
+          "body": Object {
+            "transactions": Object {},
+          },
+          "status": 200,
+        },
+      }
+    `);
   });
 });

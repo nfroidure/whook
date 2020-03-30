@@ -16,6 +16,17 @@ describe('putEcho', () => {
 
     expect({
       response,
+    }).toMatchInlineSnapshot(`
+      Object {
+        "response": Object {
+          "body": Object {
+            "echo": "Repeat this!",
+          },
+          "status": 200,
+        },
+      }
+    `);
+    expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
@@ -34,6 +45,15 @@ describe('putEcho', () => {
       expect({
         errorCode: err.code,
         errorParams: err.params,
+      }).toMatchInlineSnapshot(`
+        Object {
+          "errorCode": "E_MUST_NOT_BE_NAMED",
+          "errorParams": Array [
+            "Big up to Lord Voldemort!",
+          ],
+        }
+      `);
+      expect({
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchSnapshot();
     }

@@ -1,4 +1,8 @@
-import { wrapHandlerWithCORS, optionsWithCORS, augmentAPIWithCORS } from '.';
+import {
+  wrapHandlerWithCORS,
+  initOptionsWithCORS,
+  augmentAPIWithCORS,
+} from '.';
 import { handler } from 'knifecycle';
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -22,7 +26,7 @@ describe('wrapHandlerWithCORS', () => {
 
   it('should work', async () => {
     const wrappedOptionsWithCORS = wrapHandlerWithCORS<any, any>(
-      optionsWithCORS,
+      initOptionsWithCORS,
     );
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,

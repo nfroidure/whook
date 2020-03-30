@@ -21,6 +21,14 @@ describe('getDelay', () => {
 
     expect({
       response,
+    }).toMatchInlineSnapshot(`
+      Object {
+        "response": Object {
+          "status": 200,
+        },
+      }
+    `);
+    expect({
       delayCreateCalls: delay.create.mock.calls,
       delayClearCalls: delay.clear.mock.calls,
     }).toMatchSnapshot();

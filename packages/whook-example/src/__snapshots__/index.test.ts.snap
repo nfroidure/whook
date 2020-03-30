@@ -156,6 +156,9 @@ Object {
       "➰ - Plugin \\"@whook/cli\\" resolved to: /home/whoiam/projects/whook/packages/whook-cli/dist",
     ],
     Array [
+      "➰ - Plugin \\"@whook/cors\\" resolved to: /home/whoiam/projects/whook/packages/whook-cors/dist",
+    ],
+    Array [
       "➰ - Plugin \\"@whook/whook\\" resolved to: /home/whoiam/projects/whook/dist",
     ],
     Array [
@@ -166,7 +169,7 @@ Object {
       "🈁 - Generating the API_DEFINITIONS",
     ],
     Array [
-      "🈁 - Handler module at /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts exports no definition!",
+      "🈁 - Handler module at /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js exports no definition!",
     ],
     Array [
       "🏭 - Initializing the CONFIGS service.",
@@ -214,7 +217,7 @@ Object {
       "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts.",
     ],
     Array [
-      "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts.",
+      "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js.",
     ],
     Array [
       "💿 - Loading putEchoWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts.",
@@ -256,7 +259,7 @@ Object {
       "💿 - Service \\"getTimeWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
     ],
     Array [
-      "💿 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts",
+      "💿 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js",
     ],
     Array [
       "💿 - Service \\"putEchoWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
@@ -310,6 +313,9 @@ Object {
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/BUFFER_LIMIT",
     ],
     Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT",
+    ],
+    Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT",
     ],
     Array [
@@ -317,6 +323,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DECODERS",
+    ],
+    Array [
+      "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS",
     ],
     Array [
       "🚫 - Service \\"DECODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS",
@@ -328,6 +337,9 @@ Object {
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_ERROR_CODE",
     ],
     Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE",
+    ],
+    Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE",
     ],
     Array [
@@ -335,6 +347,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_MECHANISM",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM",
     ],
     Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_MECHANISM",
@@ -346,6 +361,9 @@ Object {
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN",
     ],
     Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN",
+    ],
+    Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/DEV_ACCESS_TOKEN",
     ],
     Array [
@@ -353,6 +371,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/ENCODERS",
+    ],
+    Array [
+      "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/ENCODERS",
     ],
     Array [
       "🚫 - Service \\"ENCODERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS",
@@ -364,6 +385,9 @@ Object {
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES",
     ],
     Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES",
+    ],
+    Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES",
     ],
     Array [
@@ -371,6 +395,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_SUFFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES",
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES",
@@ -382,6 +409,9 @@ Object {
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/KEEP_ALIVE_TIMEOUT",
     ],
     Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/KEEP_ALIVE_TIMEOUT",
+    ],
+    Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT",
     ],
     Array [
@@ -389,6 +419,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_CHARS",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_CHARS",
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_CHARS",
@@ -400,6 +433,9 @@ Object {
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_RATIO",
     ],
     Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO",
+    ],
+    Array [
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO",
     ],
     Array [
@@ -407,6 +443,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CONNECTIONS",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CONNECTIONS",
     ],
     Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CONNECTIONS",
@@ -418,6 +457,9 @@ Object {
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_HEADERS_COUNT",
     ],
     Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_HEADERS_COUNT",
+    ],
+    Array [
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT",
     ],
     Array [
@@ -425,6 +467,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PARSERS",
+    ],
+    Array [
+      "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS",
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS",
@@ -436,6 +481,9 @@ Object {
       "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_NAME",
     ],
     Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME",
+    ],
+    Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME",
     ],
     Array [
@@ -443,6 +491,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROTOCOL",
+    ],
+    Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/PROTOCOL",
     ],
     Array [
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL",
@@ -454,6 +505,9 @@ Object {
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_HEADERS",
     ],
     Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS",
+    ],
+    Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_HEADERS",
     ],
     Array [
@@ -461,6 +515,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_PROPS",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_PROPS",
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_PROPS",
@@ -472,6 +529,9 @@ Object {
       "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SHIELD_CHAR",
     ],
     Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR",
+    ],
+    Array [
       "🚫 - Service \\"SHIELD_CHAR\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR",
     ],
     Array [
@@ -479,6 +539,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SIGNALS",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS",
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS",
@@ -490,6 +553,9 @@ Object {
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/SOCKET_TIMEOUT",
     ],
     Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/SOCKET_TIMEOUT",
+    ],
+    Array [
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/SOCKET_TIMEOUT",
     ],
     Array [
@@ -497,6 +563,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/STRINGIFYERS",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS",
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS",
@@ -508,6 +577,9 @@ Object {
       "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/TIMEOUT",
     ],
     Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT",
+    ],
+    Array [
       "🚫 - Service \\"TIMEOUT\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT",
     ],
     Array [
@@ -517,10 +589,22 @@ Object {
       "🚫 - Service \\"getPingWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing",
     ],
     Array [
+      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in: /home/whoiam/projects/whook/dist/handlers/optionsWithCORS",
+    ],
+    Array [
+      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/handlers/optionsWithCORS",
+    ],
+    Array [
+      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS",
+    ],
+    Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/dist/services/readDir",
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/readDir",
+    ],
+    Array [
+      "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/readDir",
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/readDir",
@@ -532,6 +616,9 @@ Object {
       "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/require",
     ],
     Array [
+      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/require",
+    ],
+    Array [
       "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/require",
     ],
     Array [
@@ -539,6 +626,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/uniqueId",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId",
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId",

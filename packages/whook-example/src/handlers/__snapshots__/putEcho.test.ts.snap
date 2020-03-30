@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`putEcho should fail when crossing the red line ;) 1`] = `
+exports[`putEcho should fail when crossing the red line ;) 2`] = `
 Object {
-  "errorCode": "E_MUST_NOT_BE_NAMED",
-  "errorParams": Array [
-    "Big up to Lord Voldemort!",
-  ],
   "logCalls": Array [
     Array [
       "warning",
@@ -15,7 +11,7 @@ Object {
 }
 `;
 
-exports[`putEcho should work 1`] = `
+exports[`putEcho should work 2`] = `
 Object {
   "logCalls": Array [
     Array [
@@ -23,11 +19,5 @@ Object {
       "📢 - Echoing \\"Repeat this!\\"",
     ],
   ],
-  "response": Object {
-    "body": Object {
-      "echo": "Repeat this!",
-    },
-    "status": 200,
-  },
 }
 `;

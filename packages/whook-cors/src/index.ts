@@ -10,6 +10,7 @@ import {
   Dependencies,
 } from 'knifecycle';
 import { OpenAPIV3 } from 'openapi-types';
+import initOptionsWithCORS from './handlers/optionsWithCORS';
 
 // Ensures the deterministic canonical operation
 const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
@@ -170,15 +171,4 @@ export async function augmentAPIWithCORS(
   }, API);
 }
 
-/**
- * A simple Whook handler that just returns a 200 OK
- *  HTTP response
- * @returns {Promise<Object>} The HTTP response object
- */
-export const optionsWithCORS = handler(_optionsWithCORS, 'optionsWithCORS');
-
-async function _optionsWithCORS() {
-  return {
-    status: 200,
-  };
-}
+export { initOptionsWithCORS };
