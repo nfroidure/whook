@@ -96,6 +96,7 @@ Initialize the API_DEFINITIONS service according to the porject handlers.
 | services.WHOOK_PLUGINS_PATHS | <code>Object</code> |  | The plugins paths to load services from |
 | [services.IGNORED_FILES_SUFFIXES] | <code>Object</code> |  | The files suffixes the autoloader must ignore |
 | [services.IGNORED_FILES_PREFIXES] | <code>Object</code> |  | The files prefixes the autoloader must ignore |
+| [services.FILTER_API_TAGS] | <code>Object</code> |  | Allows to only keep the endpoints taggeds with  the given tags |
 | [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="default"></a>

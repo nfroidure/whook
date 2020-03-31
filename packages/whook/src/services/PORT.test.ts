@@ -15,6 +15,12 @@ describe('initPORT', () => {
 
     expect({
       port,
+    }).toMatchInlineSnapshot(`
+      Object {
+        "port": 1337,
+      }
+    `);
+    expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
   });
@@ -24,7 +30,7 @@ describe('initPORT', () => {
       log,
     });
 
-    expect(port);
+    expect(port).toBeGreaterThan(0);
     expect({
       logCalls: log.mock.calls
         .filter(args => 'stack' !== args[0])

@@ -15,7 +15,7 @@ Object {
 }
 `;
 
-exports[`initPORT should use the env port first 1`] = `
+exports[`initPORT should use the env port first 2`] = `
 Object {
   "logCalls": Array [
     Array [
@@ -27,6 +27,5 @@ Object {
       "♻️ - Using ENV port 1337",
     ],
   ],
-  "port": 1337,
 }
 `;

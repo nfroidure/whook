@@ -1,11 +1,12 @@
 import { wrapInitializer, alsoInject, ProviderInitializer } from 'knifecycle';
 import { HTTPRouterProvider, HTTPRouterService } from '@whook/whook';
-import swaggerDist from 'swagger-ui-dist';
-import ecstatic from 'ecstatic';
 import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
 } from './handlers/getOpenAPI';
 import { LogService } from 'common-services';
+
+// Needed to avoid messing up babel builds 🤷
+const _require = require;
 
 export { initGetOpenAPI, getOpenAPIDefinition };
 
@@ -24,6 +25,7 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   HOST: string;
   PORT: number;
   log: LogService;
+  require: typeof _require;
 };
 
 /**
@@ -44,6 +46,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
         HOST,
         PORT,
         log = noop,
+        require = _require,
       }: WhookSwaggerUIDependencies,
       httpRouter: HTTPRouterProvider,
     ) => {
@@ -56,8 +59,8 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
       const publicSwaggerURL = `${localURL}${BASE_PATH || ''}${
         getOpenAPIDefinition.path
       }`;
-      const staticRouter = ecstatic({
-        root: swaggerDist.absolutePath(),
+      const staticRouter = require('ecstatic')({
+        root: require('swagger-ui-dist').absolutePath(),
         showdir: false,
         baseDir: './docs',
       });

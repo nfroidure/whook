@@ -30,8 +30,8 @@ export type WhookCompilerService = (
 ) => Promise<WhookCompilationResult>;
 
 export const DEFAULT_COMPILER_OPTIONS: Required<WhookCompilerOptions> = {
-  externalModules: ['ecstatic', 'swagger-ui-dist', 'portfinder', 'internal-ip'],
-  ignoredModules: ['ecstatic', 'swagger-ui-dist', 'portfinder', 'internal-ip'],
+  externalModules: [],
+  ignoredModules: [],
   extensions: ['.ts', '.js', '.json'],
   target: '12.13',
 };

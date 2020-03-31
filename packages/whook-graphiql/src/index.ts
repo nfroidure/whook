@@ -1,10 +1,11 @@
 import url from 'url';
 import * as GraphiQL from 'apollo-server-module-graphiql';
 import { wrapInitializer, alsoInject, ProviderInitializer } from 'knifecycle';
-import { HTTPRouterProvider, HTTPRouterService, noop } from '@whook/whook';
-import swaggerDist from 'swagger-ui-dist';
-import ecstatic from 'ecstatic';
+import { HTTPRouterService, noop, HTTPRouterProvider } from '@whook/whook';
 import { LogService } from 'common-services';
+
+// Needed to avoid messing up babel builds 🤷
+const _require = require;
 
 const DEFAULT_GRAPHIQL = {
   path: '/graphiql',
@@ -32,6 +33,7 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
   HOST: string;
   PORT: number;
   log: LogService;
+  require: typeof _require;
 };
 
 /**
@@ -54,8 +56,9 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
         GRAPHIQL = DEFAULT_GRAPHIQL,
         ENV,
         log = noop,
+        require = _require,
       }: WhookGraphIQLDependencies,
-      httpRouter,
+      httpRouter: HTTPRouterProvider,
     ) => {
       if (!ENV.DEV_MODE) {
         return httpRouter;

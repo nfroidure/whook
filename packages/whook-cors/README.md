@@ -101,10 +101,10 @@ To see a real example have a look at the
 [//]: # (::contents:end)
 
 # API
-## Constants
+## Members
 
 <dl>
-<dt><a href="#optionsWithCORS">optionsWithCORS</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#_default">_default</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>A simple Whook handler that just returns a 200 OK
  HTTP response</p>
 </dd>
@@ -122,13 +122,13 @@ To see a real example have a look at the
 </dd>
 </dl>
 
-<a name="optionsWithCORS"></a>
+<a name="_default"></a>
 
-## optionsWithCORS ⇒ <code>Promise.&lt;Object&gt;</code>
+## \_default ⇒ <code>Promise.&lt;Object&gt;</code>
 A simple Whook handler that just returns a 200 OK
  HTTP response
 
-**Kind**: global constant  
+**Kind**: global variable  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - The HTTP response object  
 <a name="wrapHandlerWithCORS"></a>
 

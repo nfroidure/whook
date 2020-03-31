@@ -1,7 +1,9 @@
-import _internalIp from 'internal-ip';
 import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 import { LogService } from 'common-services';
+
+// Needed to avoid messing up babel builds 🤷
+const _require = require;
 
 /* Architecture Note #6: IP detection
 If no `HOST` configuration is specified in dependencies nor in ENV,
@@ -37,11 +39,11 @@ export type HostEnv = {
 async function initHost({
   ENV = {},
   log = noop,
-  internalIp = _internalIp,
+  require = _require,
 }: {
   ENV?: HostEnv;
   log?: LogService;
-  internalIp?: { v4: typeof _internalIp.v4 };
+  require?: typeof _require;
 }): Promise<string> {
   log('debug', `🏭 - Initializing the HOST service.`);
 
@@ -49,7 +51,7 @@ async function initHost({
     log('warning', `♻️ - Using ENV host ${ENV.HOST}`);
     return ENV.HOST;
   }
-  const host = await internalIp.v4();
+  const host = (await require('internal-ip').v4()) as string;
 
   if (!host) {
     log('warning', `🚫 - Could not detect any host. Fallbacking to localhost.`);

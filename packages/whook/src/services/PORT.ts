@@ -1,7 +1,9 @@
-import portfinder from 'portfinder';
 import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
 import { LogService } from 'common-services';
+
+// Needed to avoid messing up babel builds 🤷
+const _require = require;
 
 /* Architecture Note #7: Port detection
 If no `PORT` configuration is specified in dependencies nor in ENV,
@@ -37,9 +39,11 @@ export default initializer(
 async function initPort({
   ENV = {},
   log = noop,
+  require = _require,
 }: {
   ENV?: PortEnv;
   log?: LogService;
+  require?: typeof _require;
 }): Promise<number> {
   log('debug', `🏭 - Initializing the PORT service.`);
 
@@ -47,7 +51,7 @@ async function initPort({
     log('warning', `♻️ - Using ENV port ${ENV.PORT}`);
     return parseInt(ENV.PORT, 10);
   }
-  const port = await portfinder.getPortPromise();
+  const port = (await require('portfinder').getPortPromise()) as number;
 
   if (!port) {
     log('warning', `🚫 - Could not detect any free port.`);
