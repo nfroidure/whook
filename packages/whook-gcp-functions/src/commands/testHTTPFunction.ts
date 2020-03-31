@@ -1,20 +1,17 @@
 import { loadLambda } from '../libs/utils';
 import { extra, autoService } from 'knifecycle';
-import { LogService, TimeService } from 'common-services';
-import {
-  readArgs,
+import { readArgs } from '@whook/cli';
+import YError from 'yerror';
+import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import stream from 'stream';
+import { camelCase } from 'camel-case';
+import type {
   WhookCommandArgs,
   WhookCommandDefinition,
   WhookCommandNamedArgs,
 } from '@whook/cli';
-import YError from 'yerror';
-import Knifecycle from 'knifecycle';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
-import uuid from 'uuid';
-import { camelCase } from 'camel-case';
-import { WhookConfig } from '@whook/whook';
-import { OpenAPIV3 } from 'openapi-types';
-import { PassThrough } from 'stream';
+import type { LogService, TimeService } from 'common-services';
+import type { OpenAPIV3 } from 'openapi-types';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
@@ -95,7 +92,7 @@ async function initTestHTTPLambdaCommand({
     }
 
     const search = ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[])
-      .filter(p => p.in === 'query')
+      .filter((p) => p.in === 'query')
       .reduce((accSearch, p) => {
         if (null != parameters[p.name]) {
           return (
@@ -127,7 +124,7 @@ async function initTestHTTPLambdaCommand({
       method: OPERATION.method,
       originalUrl: path + (search ? SEARCH_SEPARATOR + search : ''),
       headers: ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[])
-        .filter(p => p.in === 'header')
+        .filter((p) => p.in === 'header')
         .reduce((headerParameters, p) => {
           headerParameters[p.name] = parameters[camelCase(p.name)];
           return headerParameters;
@@ -151,7 +148,7 @@ async function initTestHTTPLambdaCommand({
       data: '',
     };
     await new Promise((resolve, reject) => {
-      const gcpfResponse: any = new PassThrough();
+      const gcpfResponse: any = new stream.PassThrough();
 
       gcpfResponse.set = (name: string, value: string) => {
         response.headers[name] = value;

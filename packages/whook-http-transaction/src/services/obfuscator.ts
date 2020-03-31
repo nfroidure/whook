@@ -142,7 +142,7 @@ async function initObfuscator({
   function obfuscateSensibleHeaders(headers: { [name: string]: string }) {
     return Object.keys(headers).reduce((finalHeaders, headerName) => {
       const sensibleHeader = SENSIBLE_HEADERS.find(
-        sensibleHeader =>
+        (sensibleHeader) =>
           sensibleHeader.name.toLowerCase() === headerName.toLowerCase(),
       );
       return {
@@ -160,7 +160,7 @@ async function initObfuscator({
 
   function obfuscateSensibleProps(propValue, propName = '_') {
     if (propValue instanceof Array) {
-      return propValue.map(value => obfuscateSensibleProps(value, propName));
+      return propValue.map((value) => obfuscateSensibleProps(value, propName));
     } else if (typeof propValue === 'object' && propValue !== null) {
       return Object.keys(propValue).reduce(
         (newObject, key) => ({
@@ -175,7 +175,7 @@ async function initObfuscator({
       typeof propValue === 'number'
     ) {
       const sensibleProp = SENSIBLE_PROPS.find(
-        sensibleProp =>
+        (sensibleProp) =>
           sensibleProp.name.toLowerCase() === propName.toLowerCase(),
       );
 

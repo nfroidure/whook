@@ -5,9 +5,8 @@ import {
   DEFAULT_STRINGIFYERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
-  WhookQueryStringParser,
 } from '@whook/http-router';
-import { reuseSpecialProps, alsoInject, ServiceInitializer } from 'knifecycle';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import Ajv from 'ajv';
 import HTTPError from 'yhttperror';
 import {
@@ -15,8 +14,6 @@ import {
   prepareBodyValidator,
   applyValidators,
   filterHeaders,
-} from '@whook/http-router/dist/validation';
-import {
   extractBodySpec,
   extractResponseSpec,
   checkResponseCharset,
@@ -24,11 +21,16 @@ import {
   executeHandler,
   extractProduceableMediaTypes,
   extractConsumableMediaTypes,
-} from '@whook/http-router/dist/lib';
-import { getBody, sendBody } from '@whook/http-router/dist/body';
-import {
-  noop,
-  compose,
+  getBody,
+  sendBody,
+} from '@whook/http-router';
+import { noop, compose, identity } from '@whook/whook';
+import stream from 'stream';
+import { parseReentrantNumber, parseBoolean } from 'strict-qs';
+import { camelCase } from 'camel-case';
+import { WhookQueryStringParser } from '@whook/http-router';
+import type { ServiceInitializer } from 'knifecycle';
+import type {
   WhookRequest,
   WhookResponse,
   WhookHandler,
@@ -36,14 +38,9 @@ import {
   WhookOperation,
   APMService,
   WhookWrapper,
-  identity,
 } from '@whook/whook';
-import { PassThrough } from 'stream';
-import qs from 'qs';
-import { parseReentrantNumber, parseBoolean } from 'strict-qs';
-import { camelCase } from 'camel-case';
-import { TimeService, LogService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
+import type { TimeService, LogService } from 'common-services';
+import type { OpenAPIV3 } from 'openapi-types';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -282,8 +279,8 @@ async function handleForAWSHTTPLambda(
 
       // TODO: Update strictQS to handle OpenAPI 3
       const retroCompatibleQueryParameters = (OPERATION.parameters || [])
-        .filter(p => (p as any).in === 'query')
-        .map(p => ({ ...p, ...(p as any).schema }));
+        .filter((p) => (p as any).in === 'query')
+        .map((p) => ({ ...p, ...(p as any).schema }));
 
       parameters = {
         ...pathParameters,
@@ -484,7 +481,7 @@ async function gcpfReqToRequest(req: any): Promise<WhookRequest> {
 
   if (req.rawBody) {
     request.headers['content-length'] = req.rawBody.length.toString();
-    request.body = new PassThrough();
+    request.body = new stream.PassThrough();
     request.body.write(req.rawBody);
     request.body.end();
   }
@@ -496,7 +493,7 @@ async function pipeResponseInGCPFResponse(
   response: WhookResponse,
   res: any,
 ): Promise<void> {
-  Object.keys(response.headers).forEach(headerName => {
+  Object.keys(response.headers).forEach((headerName) => {
     res.set(headerName, response.headers[headerName]);
   });
   res.status(response.status);

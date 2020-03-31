@@ -2,18 +2,18 @@ import { autoHandler } from 'knifecycle';
 import YError from 'yerror';
 import { snakeCase } from 'snake-case';
 import { setURLError } from './getOAuth2Authorize';
-import {
+import type {
   WhookAPIHandlerDefinition,
   WhookErrorsDescriptors,
   WhookAPIOperationConfig,
   WhookAPIParameterDefinition,
 } from '@whook/whook';
-import {
+import type {
   CheckApplicationService,
   OAuth2GranterService,
 } from '../services/oAuth2Granters';
-import { LogService } from 'common-services';
-import { BaseAuthenticationData } from '@whook/authorization';
+import type { LogService } from 'common-services';
+import type { BaseAuthenticationData } from '@whook/authorization';
 
 /* Architecture Note #2: OAuth2 acknowledge
 This endpoint is to be used by the authentication SSR frontend
@@ -154,7 +154,7 @@ async function postOAuth2Acknowledge<
     }
 
     const granter = oAuth2Granters.find(
-      granter =>
+      (granter) =>
         granter.acknowledger &&
         granter.acknowledger.acknowledgmentType === responseType,
     );
@@ -180,7 +180,7 @@ async function postOAuth2Acknowledge<
     url.searchParams.set('client_id', applicationId);
     url.searchParams.set('scope', scope);
     url.searchParams.set('state', state);
-    Object.keys(additionalProperties).forEach(key =>
+    Object.keys(additionalProperties).forEach((key) =>
       url.searchParams.set(snakeCase(key), additionalProperties[key] as string),
     );
   } catch (err) {

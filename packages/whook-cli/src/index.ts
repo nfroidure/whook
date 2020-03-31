@@ -14,8 +14,7 @@ import initPromptArgs, {
 import initCommand from './services/command';
 import initAutoloader from './services/_autoload';
 
-export {
-  readArgs,
+export type {
   WhookArgsTypes,
   WhookCommandHandler,
   WhookCommandDefinition,
@@ -24,6 +23,7 @@ export {
   WhookCommandArgsRest,
   WhookCommandArgs,
 };
+export { readArgs };
 
 export default async function run({ prepareEnvironment }) {
   try {

@@ -1,6 +1,7 @@
 import { name, autoService } from 'knifecycle';
-import { ENVService, noop, identity } from '@whook/whook';
-import { LogService } from 'common-services';
+import { noop, identity } from '@whook/whook';
+import type { ENVService } from '@whook/whook';
+import type { LogService } from 'common-services';
 
 export default name('FILTER_API_TAGS', autoService(initFilterAPITags));
 

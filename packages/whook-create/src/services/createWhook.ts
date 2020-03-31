@@ -1,4 +1,4 @@
-import { autoService, ServiceInitializer } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import path from 'path';
 import _axios from 'axios';
 import _ora from 'ora';
@@ -8,14 +8,10 @@ import {
   writeFile as _writeFile,
   readFile as _readFile,
   copy as _copy,
-  ensureDir as _ensureDir,
 } from 'fs-extra';
-import { LogService } from 'common-services';
-import { ProjectService } from './project';
-import { AuthorService } from './author';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import type { LogService } from 'common-services';
+import type { ProjectService } from './project';
+import type { AuthorService } from './author';
 
 const GIT_IGNORE_URL = 'https://www.gitignore.io/api/osx,node,linux';
 const README_REGEXP = /^(?:[^]*)\[\/\/\]: # \(::contents:start\)\r?\n\r?\n([^]*)\r?\n\r?\n\[\/\/\]: # \(::contents:end\)(?:[^]*)$/gm;
@@ -31,7 +27,6 @@ export default autoService(async function initCreateWhook({
   readFile = _readFile,
   exec = _exec,
   copy = _copy,
-  require = _require,
   axios = _axios,
   ora = _ora,
   log,
@@ -44,7 +39,6 @@ export default autoService(async function initCreateWhook({
   readFile: typeof _readFile;
   exec: typeof _exec;
   copy: typeof _copy;
-  require: typeof _require;
   axios?: typeof _axios;
   ora?: typeof _ora;
   log?: LogService;
@@ -52,7 +46,9 @@ export default autoService(async function initCreateWhook({
   return async function createWhook() {
     log('warning', "🏁️ - Starting Whook project's creation!");
 
-    const basePackageJSON = require(path.join(SOURCE_DIR, 'package'));
+    const basePackageJSON = JSON.parse(
+      (await readFile(path.join(SOURCE_DIR, 'package.json'))).toString(),
+    );
 
     const finalPackageJSON = {
       ...basePackageJSON,
@@ -72,7 +68,7 @@ export default autoService(async function initCreateWhook({
         metapak: undefined,
         cli: undefined,
       },
-      files: basePackageJSON.files.filter(pattern => pattern !== 'src/**/*'),
+      files: basePackageJSON.files.filter((pattern) => pattern !== 'src/**/*'),
       author: {
         name: author.name,
         email: author.email,
@@ -109,7 +105,7 @@ export default autoService(async function initCreateWhook({
           return true;
         },
       }),
-      readFile(path.join(SOURCE_DIR, 'README.md')).then(data =>
+      readFile(path.join(SOURCE_DIR, 'README.md')).then((data) =>
         writeFile(
           path.join(project.directory, 'README.md'),
           `# ${project.name}
@@ -134,10 +130,10 @@ ${author.name}
         method: 'get',
         url: GIT_IGNORE_URL,
       })
-        .then(response =>
+        .then((response) =>
           writeFile(path.join(project.directory, '.gitignore'), response.data),
         )
-        .catch(err => {
+        .catch((err) => {
           log(
             'error',
             '⚠️ - Could not retrieve the `.gitignore` file contents from: ',
@@ -160,7 +156,7 @@ ${author.name}
             resolve(stdout.trim());
           },
         ),
-      ).catch(err => {
+      ).catch((err) => {
         log('error', '⚠️ - Could not initialize the git project!');
         log('stack', err.stack);
       }),

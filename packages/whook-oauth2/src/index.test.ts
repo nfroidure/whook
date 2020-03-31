@@ -8,7 +8,7 @@ import {
   AUTHORIZATION_ERRORS_DESCRIPTORS,
   wrapHandlerWithAuthorization,
 } from '@whook/authorization';
-import Knifecycle, { constant, initializer } from 'knifecycle';
+import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import YError from 'yerror';
 import {
@@ -34,14 +34,15 @@ import {
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
   initOAuth2TokenGranter,
-  OAuth2Options,
   postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
   postOAuth2TokenPasswordTokenRequestBodySchema,
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
   postOAuth2TokenRefreshTokenRequestBodySchema,
 } from '.';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OAuth2Options } from '.';
+import type Knifecycle from 'knifecycle';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('OAuth2 server', () => {
   const BASE_PATH = '/v1';
@@ -189,7 +190,7 @@ describe('OAuth2 server', () => {
           ],
           options: { singleton: true },
         },
-        async services => services,
+        async (services) => services,
       ),
     );
     $.register(constant('authentication', authentication));
@@ -209,12 +210,12 @@ describe('OAuth2 server', () => {
       initOAuth2PasswordGranter,
       initOAuth2RefreshTokenGranter,
       initOAuth2TokenGranter,
-    ].forEach(handlerInitializer => $.register(handlerInitializer));
+    ].forEach((handlerInitializer) => $.register(handlerInitializer));
 
     return $;
   }
 
-  $autoload.mockImplementation(async serviceName => {
+  $autoload.mockImplementation(async (serviceName) => {
     throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
   });
   process.env.ISOLATED_ENV = '1';
@@ -249,7 +250,7 @@ describe('OAuth2 server', () => {
       oAuth2Password.check,
       checkApplication,
       authentication.check,
-    ].forEach(mock => mock.mockReset());
+    ].forEach((mock) => mock.mockReset());
   });
 
   describe('with the password flow', () => {
@@ -262,7 +263,7 @@ describe('OAuth2 server', () => {
         oAuth2Code.check,
         oAuth2Code.create,
         oAuth2RefreshToken.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
@@ -358,7 +359,7 @@ describe('OAuth2 server', () => {
         oAuth2Code.check,
         oAuth2Code.create,
         oAuth2Password.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
@@ -453,7 +454,7 @@ describe('OAuth2 server', () => {
         oAuth2Code.check,
         oAuth2Code.create,
         oAuth2Password.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
@@ -551,7 +552,7 @@ describe('OAuth2 server', () => {
         oAuth2Code.create,
         oAuth2ClientCredentials.check,
         oAuth2Password.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       checkApplication.mockResolvedValueOnce({
@@ -620,7 +621,7 @@ describe('OAuth2 server', () => {
         oAuth2Code.check,
         oAuth2ClientCredentials.check,
         oAuth2Password.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
@@ -695,7 +696,7 @@ describe('OAuth2 server', () => {
         oAuth2RefreshToken.check,
         oAuth2ClientCredentials.check,
         oAuth2Password.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
@@ -794,7 +795,7 @@ describe('OAuth2 server', () => {
         oAuth2Code.create,
         oAuth2ClientCredentials.check,
         oAuth2Password.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       checkApplication.mockResolvedValueOnce({
@@ -861,7 +862,7 @@ describe('OAuth2 server', () => {
         oAuth2Code.create,
         oAuth2ClientCredentials.check,
         oAuth2Password.check,
-      ].forEach(mock =>
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({

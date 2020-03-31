@@ -1,10 +1,10 @@
-import { WhookAuthorizationConfig } from '@whook/authorization';
-import { WhookSwaggerUIConfig } from '@whook/swagger-ui';
-import { CORSConfig } from '@whook/cors';
-import { WhookConfigs } from '@whook/whook';
-import { AuthenticationConfig } from '../../services/authentication';
-import { APIConfig } from '../../services/API';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
+import type { WhookAuthorizationConfig } from '@whook/authorization';
+import type { WhookSwaggerUIConfig } from '@whook/swagger-ui';
+import type { CORSConfig } from '@whook/cors';
+import type { WhookConfigs } from '@whook/whook';
+import type { AuthenticationConfig } from '../../services/authentication';
+import type { APIConfig } from '../../services/API';
 
 const packageConf = require('../../../package');
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];

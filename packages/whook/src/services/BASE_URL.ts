@@ -1,7 +1,7 @@
 import { autoService, name } from 'knifecycle';
 import { noop } from '../libs/utils';
-import { WhookConfig } from './CONFIGS';
-import { LogService } from 'common-services';
+import type { WhookConfig } from './CONFIGS';
+import type { LogService } from 'common-services';
 
 /* Architecture Note #4: Base URL
 The `BASE_URL` service is intended to provide a base URL where
@@ -43,7 +43,7 @@ export default name('BASE_URL', autoService(initBaseURL));
  * The injected HOST value
  * @param  {Object}   services.PORT
  * The injected PORT value
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<String>}
  * A promise of a containing the actual host.

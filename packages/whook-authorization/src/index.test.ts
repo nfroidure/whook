@@ -1,16 +1,16 @@
 import { wrapHandlerWithAuthorization } from '.';
-import {
-  handler,
-  ServiceInitializer,
-  HandlerInitializer,
-  HandlerFunction,
-} from 'knifecycle';
+import { handler } from 'knifecycle';
 import YError from 'yerror';
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
-import { WhookOperation, WhookHandler } from '@whook/whook';
+import type {
+  ServiceInitializer,
+  HandlerInitializer,
+  HandlerFunction,
+} from 'knifecycle';
+import type { WhookOperation, WhookHandler } from '@whook/whook';
 
 describe('wrapHandlerWithAuthorization', () => {
   const noopMock = (jest.fn(() => ({

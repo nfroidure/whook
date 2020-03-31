@@ -1,4 +1,5 @@
-import COMMON_CONFIG, { AppConfigs } from '../common/config';
+import COMMON_CONFIG from '../common/config';
+import type { AppConfigs } from '../common/config';
 
 const CONFIG: AppConfigs = {
   ...COMMON_CONFIG,

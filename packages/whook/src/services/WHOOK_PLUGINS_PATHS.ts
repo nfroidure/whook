@@ -1,7 +1,7 @@
 import path from 'path';
 import { name, options, autoService } from 'knifecycle';
 import YError from 'yerror';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
 
 // Needed to avoid messing up babel builds 🤷
 const _resolve = require.resolve;
@@ -39,7 +39,7 @@ export default options(
  * The active whook plugins list
  * @param  {String}   services.PROJECT_SRC
  * The project source directory
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<string>}
  * A promise of a number representing the actual port.
@@ -50,7 +50,7 @@ async function initWhookPluginsPaths({
   resolve = _resolve,
   log,
 }: WhookPluginsPathsDependencies): Promise<WhookPluginsPathsService> {
-  return WHOOK_PLUGINS.map(pluginName => {
+  return WHOOK_PLUGINS.map((pluginName) => {
     try {
       // It is important to resolve from the projects
       // root directory since this is were modules are

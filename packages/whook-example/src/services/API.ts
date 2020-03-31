@@ -1,8 +1,9 @@
 import { name, autoService } from 'knifecycle';
 import { augmentAPIWithCORS } from '@whook/cors';
-import { WhookConfig, WhookAPIDefinitions, noop } from '@whook/whook';
-import { LogService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
+import { noop } from '@whook/whook';
+import type { WhookConfig, WhookAPIDefinitions } from '@whook/whook';
+import type { LogService } from 'common-services';
+import type { OpenAPIV3 } from 'openapi-types';
 
 export type APIEnv = {
   DEV_MODE?: string;

@@ -1,16 +1,10 @@
 import OpenAPIParser from 'swagger-parser';
-import { extractOperationSecurityParameters } from '@whook/http-router/dist/validation';
-import { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
-import {
-  reuseSpecialProps,
-  alsoInject,
-  handler,
-  ServiceInitializer,
-  Parameters,
-  Dependencies,
-} from 'knifecycle';
-import { OpenAPIV3 } from 'openapi-types';
+import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
+import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
+import type { OpenAPIV3 } from 'openapi-types';
 
 // Ensures the deterministic canonical operation
 const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
@@ -94,7 +88,7 @@ export async function augmentAPIWithCORS(
     const canonicalOperationMethod = [
       ...new Set([...METHOD_CORS_PRIORITY]),
       ...Object.keys(newAPI.paths[path]),
-    ].find(method => newAPI.paths[path][method]);
+    ].find((method) => newAPI.paths[path][method]);
     const canonicalOperation: OpenAPIV3.OperationObject =
       newAPI.paths[path][canonicalOperationMethod];
 
@@ -121,7 +115,7 @@ export async function augmentAPIWithCORS(
             canonicalOperation as WhookOperation,
           ),
         )
-        .filter(parameter => {
+        .filter((parameter) => {
           const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
             .$ref
             ? ($refs.get(
@@ -134,7 +128,7 @@ export async function augmentAPIWithCORS(
             'query' === dereferencedParameter.in
           );
         })
-        .map(parameter => {
+        .map((parameter) => {
           const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
             .$ref
             ? ($refs.get(

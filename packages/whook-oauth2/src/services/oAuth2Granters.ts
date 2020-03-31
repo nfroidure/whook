@@ -1,16 +1,11 @@
-import YError from 'yerror';
 import { initializer } from 'knifecycle';
-import { URL } from 'url';
-import { snakeCase } from 'snake-case';
-import {
-  noop,
+import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
+import type {
   WhookErrorDescriptor,
   WhookErrorsDescriptors,
-  DEFAULT_ERROR_URI,
-  DEFAULT_HELP_URI,
 } from '@whook/whook';
-import { BaseAuthenticationData } from '@whook/authorization';
-import { LogService } from 'common-services';
+import type { BaseAuthenticationData } from '@whook/authorization';
+import type { LogService } from 'common-services';
 
 export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_UNKNOWN_AUTHORIZER_TYPE: {
@@ -265,5 +260,5 @@ export default initializer(
     ],
     options: { singleton: true },
   },
-  async services => Object.keys(services).map(key => services[key]),
+  async (services) => Object.keys(services).map((key) => services[key]),
 );

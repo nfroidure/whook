@@ -1,10 +1,12 @@
-import { extra, autoService, Injector } from 'knifecycle';
+import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args';
 import YError from 'yerror';
 import miniquery from 'miniquery';
-import { LogService } from 'common-services';
-import { noop, CONFIGSService } from '@whook/whook';
-import {
+import { noop } from '@whook/whook';
+import type { CONFIGSService } from '@whook/whook';
+import type { Injector } from 'knifecycle';
+import type { LogService } from 'common-services';
+import type {
   PromptArgs,
   WhookCommandDefinition,
   WhookCommandHandler,

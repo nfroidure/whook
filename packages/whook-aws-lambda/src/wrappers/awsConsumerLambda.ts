@@ -1,14 +1,10 @@
-import { reuseSpecialProps, alsoInject, ServiceInitializer } from 'knifecycle';
-import {
-  noop,
-  WhookOperation,
-  APMService,
-  WhookHandler,
-  identity,
-} from '@whook/whook';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { noop, identity } from '@whook/whook';
 import YError from 'yerror';
 import YHTTPError from 'yhttperror';
-import { TimeService, LogService } from 'common-services';
+import type { ServiceInitializer } from 'knifecycle';
+import type { WhookOperation, APMService, WhookHandler } from '@whook/whook';
+import type { TimeService, LogService } from 'common-services';
 
 type ConsumerWrapperDependencies = {
   NODE_ENV: string;
@@ -48,7 +44,7 @@ async function handleForAWSConsumerLambda(
     OPERATION,
     apm,
     time = Date.now.bind(Date),
-    log,
+    log = noop,
   }: ConsumerWrapperDependencies,
   handler: WhookHandler,
   event: { Records: unknown[] },
@@ -82,14 +78,14 @@ async function handleForAWSConsumerLambda(
       }),
     );
     const batchStats: any = {};
-    const failures = responses.filter(response => response.status >= 500);
+    const failures = responses.filter((response) => response.status >= 500);
 
     batchStats.batchItems = responses.length;
     batchStats.batchSuccesses = responses.length - failures.length;
     batchStats.batchFailures = failures.length;
-    batchStats.batchStatuses = responses.map(response => response.status);
+    batchStats.batchStatuses = responses.map((response) => response.status);
     batchStats.batchErrorCodes = responses
-      .map(response => response.body && response.body.code)
+      .map((response) => response.body && response.body.code)
       .filter(identity);
 
     apm('CONSUMER', {

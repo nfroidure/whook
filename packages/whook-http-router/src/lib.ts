@@ -1,14 +1,16 @@
 import HTTPError from 'yhttperror';
-import { parse as parseContentType } from 'content-type';
+import contentType from 'content-type';
 import preferredCharsets from 'negotiator/lib/charset';
 import preferredMediaType from 'negotiator/lib/encoding';
-import { OpenAPIV3 } from 'openapi-types';
-import {
+import type { OpenAPIV3 } from 'openapi-types';
+import type {
   WhookRequest,
   WhookHandler,
   WhookOperation,
 } from '@whook/http-transaction';
-import { Parameters } from 'knifecycle';
+import type { Parameters } from 'knifecycle';
+
+const { parse: parseContentType } = contentType;
 
 export type BodySpec = {
   contentType: string;

@@ -1,7 +1,9 @@
-import { reuseSpecialProps, alsoInject, ServiceInitializer } from 'knifecycle';
-import { noop, APMService, WhookOperation, WhookHandler } from '@whook/whook';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { noop } from '@whook/whook';
 import YError from 'yerror';
-import { LogService, TimeService } from 'common-services';
+import type { ServiceInitializer } from 'knifecycle';
+import type { APMService, WhookOperation, WhookHandler } from '@whook/whook';
+import type { LogService, TimeService } from 'common-services';
 
 type CronWrapperDependencies = {
   NODE_ENV: string;
@@ -38,7 +40,7 @@ async function handleForAWSCronLambda(
     OPERATION,
     apm,
     time = Date.now.bind(Date),
-    log,
+    log = noop,
   }: CronWrapperDependencies,
   handler: WhookHandler,
   event: any,

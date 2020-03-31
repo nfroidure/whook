@@ -44,7 +44,7 @@ describe('initProjectDir', () => {
         errorParams: err.params,
         pkgDirCalls: pkgDir.mock.calls,
         logCalls: log.mock.calls
-          .filter(args => 'stack' !== args[0])
+          .filter((args) => 'stack' !== args[0])
           .map(([arg1, arg2, ...args]) => {
             return [arg1, arg2.replace(/port (\d+)/, 'port ${PORT}'), ...args];
           }),

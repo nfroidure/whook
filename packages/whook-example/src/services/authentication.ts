@@ -1,9 +1,9 @@
 import { autoService } from 'knifecycle';
-import {
+import YError from 'yerror';
+import type {
   AuthenticationService,
   BaseAuthenticationData,
 } from '@whook/authorization';
-import YError from 'yerror';
 
 export default autoService(initAuthentication);
 

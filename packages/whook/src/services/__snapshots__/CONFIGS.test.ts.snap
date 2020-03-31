@@ -6,6 +6,11 @@ Object {
   "errorParams": Array [
     "/home/whoami/my-whook-project/src/config/development/config",
   ],
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/config/development/config",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -20,11 +25,6 @@ Object {
       "☢ - Could not load configuration file: /home/whoami/my-whook-project/src/config/development/config.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/config/development/config",
-    ],
-  ],
 }
 `;
 
@@ -35,6 +35,11 @@ Object {
       "testConfig": "test",
     },
   },
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/config/development/config",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -43,11 +48,6 @@ Object {
     Array [
       "warning",
       "⚡ - Loading configurations from /home/whoami/my-whook-project/src/config/development/config.",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/config/development/config",
     ],
   ],
 }

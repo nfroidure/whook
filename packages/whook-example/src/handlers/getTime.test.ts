@@ -1,5 +1,5 @@
 import initGetTime from './getTime';
-import { TimeService } from 'common-services';
+import type { TimeService } from 'common-services';
 
 describe('getTime', () => {
   const time = jest.fn() as TimeService & jest.Mock<number>;

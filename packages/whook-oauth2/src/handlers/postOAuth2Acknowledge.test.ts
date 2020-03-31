@@ -1,11 +1,9 @@
 import initPostOAuth2Acknowledge from './postOAuth2Acknowledge';
 import YError from 'yerror';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
-import {
-  OAUTH2_ERRORS_DESCRIPTORS,
-  OAuth2GranterService,
-} from '../services/oAuth2Granters';
-import { BaseAuthenticationData } from '@whook/authorization';
+import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters';
+import type { OAuth2GranterService } from '../services/oAuth2Granters';
+import type { BaseAuthenticationData } from '@whook/authorization';
 
 describe('postOAuth2Acknowledge', () => {
   const ERRORS_DESCRIPTORS = {
@@ -39,7 +37,7 @@ describe('postOAuth2Acknowledge', () => {
       codeGranter.authenticator.authenticate,
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
-    ].forEach(mock => mock.mockReset());
+    ].forEach((mock) => mock.mockReset());
   });
 
   test('should redirect', async () => {
@@ -48,7 +46,7 @@ describe('postOAuth2Acknowledge', () => {
       codeGranter.authenticator.authenticate,
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
-    ].forEach(mock =>
+    ].forEach((mock) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
     codeGranter.acknowledger.acknowledge.mockResolvedValueOnce({
@@ -117,7 +115,7 @@ describe('postOAuth2Acknowledge', () => {
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
       codeGranter.acknowledger.acknowledge,
-    ].forEach(mock =>
+    ].forEach((mock) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
 

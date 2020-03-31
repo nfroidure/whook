@@ -1,7 +1,7 @@
 import { initializer } from 'knifecycle';
 import qs from 'qs';
-import { WhookQueryStringParser } from '@whook/http-router';
 import { castParameterValue } from '../wrappers/awsHTTPLambda';
+import type { WhookQueryStringParser } from '@whook/http-router';
 
 // A custom query parser that mimic the AWS one behavior
 // for local development
@@ -19,7 +19,7 @@ export default initializer(
       const queryStringParameters = qs.parse(search.slice(1));
 
       return castParameters(
-        parameters ? parameters.filter(p => 'query' === (p as any).in) : [],
+        parameters ? parameters.filter((p) => 'query' === (p as any).in) : [],
         queryStringParameters,
       );
     }) as WhookQueryStringParser;
@@ -29,7 +29,7 @@ export default initializer(
 function castParameters(parameters, values) {
   const endValues = {};
 
-  (parameters || []).forEach(parameter => {
+  (parameters || []).forEach((parameter) => {
     endValues[parameter.name] = castParameterValue(
       parameter,
       values[parameter.name],

@@ -1,9 +1,9 @@
 import { autoService } from 'knifecycle';
-import { LockService, LogService } from 'common-services';
 import { ensureDir as _ensureDir } from 'fs-extra';
 import path from 'path';
 import _inquirer from 'inquirer';
 import YError from 'yerror';
+import type { LockService, LogService } from 'common-services';
 
 const DEFAULT_PROJECT_NAME = 'new-whook-project';
 

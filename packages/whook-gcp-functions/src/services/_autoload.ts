@@ -1,14 +1,16 @@
-import { WhookBuildConstantsService, initAutoload, noop } from '@whook/whook';
-import Knifecycle, {
+import { initAutoload, noop } from '@whook/whook';
+import {
   SPECIAL_PROPS,
   wrapInitializer,
   constant,
   alsoInject,
-  Injector,
 } from 'knifecycle';
 import YError from 'yerror';
 import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
-import { LogService } from 'common-services';
+import type Knifecycle from 'knifecycle';
+import type { Injector } from 'knifecycle';
+import type { WhookBuildConstantsService } from '@whook/whook';
+import type { LogService } from 'common-services';
 
 /**
  * Wrap the _autoload service in order to build AWS
@@ -19,7 +21,7 @@ import { LogService } from 'common-services';
  * The injected NODE_ENV value to add it to the build env
  * @param  {Object}   [services.PROXYED_ENV_VARS={}]
  * A list of environment variable names to proxy
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.
@@ -56,7 +58,7 @@ export default alsoInject(
 
       log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
 
-      return async serviceName => {
+      return async (serviceName) => {
         try {
           // TODO: add initializer map to knifecycle public API
           const initializer = ($instance as any)._initializers.get(serviceName);
@@ -75,7 +77,7 @@ export default alsoInject(
 
           if (serviceName.startsWith('OPERATION_')) {
             const OPERATION = (await getAPIOperations()).find(
-              operation =>
+              (operation) =>
                 serviceName ===
                 (((operation['x-whook'] || {}).sourceOperationId &&
                   'OPERATION_' +

@@ -5,7 +5,7 @@ import joinPath from 'memory-fs/lib/join';
 import { Volume, createFsFromVolume } from 'memfs';
 import webpack from 'webpack';
 import { autoService } from 'knifecycle';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
 
 export default autoService(initCompiler);
 
@@ -13,6 +13,7 @@ export type WhookCompilerOptions = {
   externalModules?: string[];
   ignoredModules?: string[];
   extensions?: string[];
+  mainFields?: string[];
   target?: string;
 };
 export type WhookCompilerConfig = {
@@ -32,8 +33,9 @@ export type WhookCompilerService = (
 export const DEFAULT_COMPILER_OPTIONS: Required<WhookCompilerOptions> = {
   externalModules: [],
   ignoredModules: [],
-  extensions: ['.ts', '.js', '.json'],
-  target: '10.16.2',
+  extensions: ['.ts', '.mjs', '.js', '.json'],
+  mainFields: ['browser', 'module', 'main'],
+  target: '12.13',
 };
 
 async function initCompiler({
@@ -48,7 +50,7 @@ async function initCompiler({
   ): Promise<WhookCompilationResult> {
     const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
     const basePath = path.dirname(entryPoint);
-    const compilerOptions: WhookCompilerOptions = {
+    const compilerOptions: Required<WhookCompilerOptions> = {
       ...DEFAULT_COMPILER_OPTIONS,
       ...COMPILER_OPTIONS,
       ...options,
@@ -115,9 +117,9 @@ async function initCompiler({
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
         }),
-        ...compilerOptions.ignoredModules.map(
-          ignoredModule => new webpack.IgnorePlugin(new RegExp(ignoredModule)),
-        ),
+        ...compilerOptions.ignoredModules.map((ignoredModule) => {
+          new webpack.IgnorePlugin(new RegExp(ignoredModule));
+        }),
         ...(debugging
           ? [new webpack.NamedModulesPlugin(), new webpack.NamedChunksPlugin()]
           : [
@@ -129,21 +131,24 @@ async function initCompiler({
         __dirname: true,
       },
       resolve: {
+        mainFields: compilerOptions.mainFields,
         extensions: compilerOptions.extensions,
       },
       externals: compilerOptions.externalModules,
       module: {
         rules: [
           // This rule must be added to handle deep dependencies usage
-          // of the .esm extension. It should be safe someday to remove
-          // it but who knows when ¯\_(ツ)_/¯
+          //  of the .esm extension. It should be safe someday to remove
+          //  it but who knows when ¯\_(ツ)_/¯
+          // Also, it seems to make the build heavyer (maybe impeaching
+          //  some tree shaking anyhow).
           {
             test: /\.mjs$/,
             type: 'javascript/auto',
+            exclude: /node_modules/,
           },
           {
             test: /\.(js|ts)$/,
-            exclude: /node_modules/,
             use: {
               loader: 'babel-loader',
               options: {

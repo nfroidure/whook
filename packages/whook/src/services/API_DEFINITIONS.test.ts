@@ -1,9 +1,10 @@
-import initAPIDefinitions, {
+import initAPIDefinitions from './API_DEFINITIONS';
+import { definition as getPingDefinition } from '../handlers/getPing';
+import YError from 'yerror';
+import type {
   WhookAPIHandlerModule,
   WhookAPIHandlerDefinition,
 } from './API_DEFINITIONS';
-import { definition as getPingDefinition } from '../handlers/getPing';
-import YError from 'yerror';
 
 const getUserModule: WhookAPIHandlerModule = {
   definition: {
@@ -78,19 +79,19 @@ const putUserModule: WhookAPIHandlerModule = {
 describe('initAPIDefinitions', () => {
   const PROJECT_SRC = '/home/whoiam/project/src';
   const log = jest.fn();
-  const require = jest.fn();
+  const importer = jest.fn();
   const readDir = jest.fn();
 
   beforeEach(() => {
     log.mockReset();
-    require.mockReset();
+    importer.mockReset();
     readDir.mockReset();
   });
 
   describe('should work', () => {
     it('with no handlers', async () => {
       readDir.mockReturnValueOnce([]);
-      require.mockImplementationOnce(() => {
+      importer.mockImplementationOnce(() => {
         throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
       });
 
@@ -98,105 +99,105 @@ describe('initAPIDefinitions', () => {
         PROJECT_SRC,
         log,
         readDir,
-        require: (require as unknown) as any,
+        importer,
       });
 
       expect({
         API_DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
     it('with a few handlers', async () => {
       readDir.mockReturnValueOnce(['getPing', 'getUser']);
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         definition: getPingDefinition,
       });
-      require.mockReturnValueOnce(getUserModule);
+      importer.mockResolvedValueOnce(getUserModule);
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
         log,
         readDir,
-        require: (require as unknown) as any,
+        importer,
       });
 
       expect({
         API_DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
     it('with a few handlers in different plugins paths', async () => {
       readDir.mockReturnValueOnce(['getPing']);
       readDir.mockReturnValueOnce(['getUser']);
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         definition: getPingDefinition,
       });
-      require.mockReturnValueOnce(getUserModule);
+      importer.mockResolvedValueOnce(getUserModule);
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
         WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
         log,
         readDir,
-        require: (require as unknown) as any,
+        importer,
       });
 
       expect({
         API_DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
     it('with a few handlers in different plugins paths and an overriden one', async () => {
       readDir.mockReturnValueOnce(['getPing']);
       readDir.mockReturnValueOnce(['getPing', 'getUser']);
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         definition: getPingDefinition,
       });
-      require.mockReturnValueOnce(getUserModule);
-      require.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE'));
+      importer.mockResolvedValueOnce(getUserModule);
+      importer.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE'));
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
         WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
         log,
         readDir,
-        require: (require as unknown) as any,
+        importer,
       });
 
       expect({
         API_DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
     it('with a several handlers at the same path', async () => {
       readDir.mockReturnValueOnce(['getUser', 'putUser']);
-      require.mockReturnValueOnce(getUserModule);
-      require.mockReturnValueOnce(putUserModule);
+      importer.mockResolvedValueOnce(getUserModule);
+      importer.mockResolvedValueOnce(putUserModule);
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
         log,
         readDir,
-        require: (require as unknown) as any,
+        importer,
       });
 
       expect({
         API_DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
@@ -214,21 +215,21 @@ describe('initAPIDefinitions', () => {
         },
       };
       readDir.mockReturnValueOnce(['getUser', 'putUser']);
-      require.mockReturnValueOnce(getUserModuleDisabled);
-      require.mockReturnValueOnce(putUserModule);
+      importer.mockResolvedValueOnce(getUserModuleDisabled);
+      importer.mockResolvedValueOnce(putUserModule);
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
         log,
         readDir,
-        require: (require as unknown) as any,
+        importer,
       });
 
       expect({
         API_DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
@@ -244,22 +245,22 @@ describe('initAPIDefinitions', () => {
         },
       };
       readDir.mockReturnValueOnce(['getUser', 'putUser']);
-      require.mockReturnValueOnce(getUserModuleDisabled);
-      require.mockReturnValueOnce(putUserModule);
+      importer.mockResolvedValueOnce(getUserModuleDisabled);
+      importer.mockResolvedValueOnce(putUserModule);
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
         FILTER_API_TAGS: ['user'],
         log,
         readDir,
-        require: (require as unknown) as any,
+        importer,
       });
 
       expect({
         API_DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
   });

@@ -1,6 +1,6 @@
 import YError from 'yerror';
 import path from 'path';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
 
 export async function loadLambda(
   {

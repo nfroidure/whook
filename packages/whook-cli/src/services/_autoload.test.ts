@@ -2,13 +2,13 @@ import YError from 'yerror';
 
 describe('$autoload', () => {
   const log = jest.fn();
-  const requireMock = jest.fn();
+  const importer = jest.fn();
   const $baseAutoload = jest.fn();
 
   beforeEach(() => {
     jest.resetModules();
     log.mockReset();
-    requireMock.mockReset();
+    importer.mockReset();
     $baseAutoload.mockReset();
   });
 
@@ -25,7 +25,7 @@ describe('$autoload', () => {
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
       args: { _: [] },
-      require: requireMock,
+      importer,
       log,
     });
     const { path, initializer } = await $autoload('commandHandler');
@@ -35,7 +35,7 @@ describe('$autoload', () => {
     expect({
       path,
       result,
-      requireCalls: requireMock.mock.calls,
+      importerCalls: importer.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
@@ -48,7 +48,7 @@ describe('$autoload', () => {
       _default.default = _default;
       return _default;
     });
-    requireMock.mockImplementationOnce(() => {
+    importer.mockImplementationOnce(() => {
       throw new YError('E_NO_MODULE');
     });
 
@@ -57,7 +57,7 @@ describe('$autoload', () => {
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
       args: { _: ['myCommand'] },
-      require: requireMock,
+      importer,
       log,
     });
     const { path, initializer } = await $autoload('commandHandler');
@@ -67,7 +67,7 @@ describe('$autoload', () => {
     expect({
       path,
       result,
-      requireCalls: requireMock.mock.calls,
+      importerCalls: importer.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
@@ -80,7 +80,7 @@ describe('$autoload', () => {
       _default.default = _default;
       return _default;
     });
-    requireMock.mockReturnValueOnce({
+    importer.mockReturnValueOnce({
       default: async () => async () => log('warning', 'Command called!'),
       definition: {},
     });
@@ -90,7 +90,7 @@ describe('$autoload', () => {
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
       args: { _: ['myCommand'] },
-      require: requireMock,
+      importer,
       log,
     });
     const { path, initializer } = await $autoload('commandHandler');
@@ -100,7 +100,7 @@ describe('$autoload', () => {
     expect({
       path,
       result,
-      requireCalls: requireMock.mock.calls,
+      importerCalls: importer.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
@@ -113,10 +113,10 @@ describe('$autoload', () => {
       _default.default = _default;
       return _default;
     });
-    requireMock.mockImplementationOnce(() => {
+    importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
-    requireMock.mockImplementationOnce(() => ({
+    importer.mockImplementationOnce(() => ({
       default: async () => async () => log('warning', 'Command called!'),
       definition: {},
     }));
@@ -126,7 +126,7 @@ describe('$autoload', () => {
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
       args: { _: ['myCommand'] },
-      require: requireMock,
+      importer,
       log,
     });
     const { path, initializer } = await $autoload('commandHandler');
@@ -136,7 +136,7 @@ describe('$autoload', () => {
     expect({
       path,
       result,
-      requireCalls: requireMock.mock.calls,
+      importerCalls: importer.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
@@ -149,10 +149,10 @@ describe('$autoload', () => {
       _default.default = _default;
       return _default;
     });
-    requireMock.mockImplementationOnce(() => {
+    importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
-    requireMock.mockImplementationOnce(() => {
+    importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
     $baseAutoload.mockResolvedValueOnce({
@@ -165,7 +165,7 @@ describe('$autoload', () => {
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
       args: { _: ['myCommand'] },
-      require: requireMock,
+      importer,
       log,
     });
     const { path, initializer } = await $autoload('commandHandler');
@@ -175,7 +175,7 @@ describe('$autoload', () => {
     expect({
       path,
       result,
-      requireCalls: requireMock.mock.calls,
+      importerCalls: importer.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
@@ -188,10 +188,10 @@ describe('$autoload', () => {
       _default.default = _default;
       return _default;
     });
-    requireMock.mockImplementationOnce(() => {
+    importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
-    requireMock.mockImplementationOnce(() => {
+    importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
     $baseAutoload.mockResolvedValueOnce({
@@ -204,7 +204,7 @@ describe('$autoload', () => {
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
       args: { _: ['myCommand'] },
-      require: requireMock,
+      importer,
       log,
     });
     const { path, initializer } = await $autoload('anotherService');
@@ -214,7 +214,7 @@ describe('$autoload', () => {
     expect({
       path,
       result,
-      requireCalls: requireMock.mock.calls,
+      importerCalls: importer.mock.calls,
       baseAutoloaderCalls: $baseAutoload.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchSnapshot();
@@ -228,7 +228,7 @@ describe('$autoload', () => {
         _default.default = _default;
         return _default;
       });
-      requireMock.mockReturnValueOnce({});
+      importer.mockReturnValueOnce({});
 
       const initAutoload = require('./_autoload').default;
 
@@ -237,7 +237,7 @@ describe('$autoload', () => {
           PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
           WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
           args: { _: ['myCommand'] },
-          require: requireMock,
+          importer,
           log,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
@@ -245,7 +245,7 @@ describe('$autoload', () => {
         expect({
           errorCode: err.code,
           errorParams: err.params,
-          requireCalls: requireMock.mock.calls,
+          importerCalls: importer.mock.calls,
           baseAutoloaderCalls: $baseAutoload.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchSnapshot();
@@ -259,7 +259,7 @@ describe('$autoload', () => {
         _default.default = _default;
         return _default;
       });
-      requireMock.mockReturnValueOnce({
+      importer.mockReturnValueOnce({
         default: async () => {},
       });
 
@@ -270,7 +270,7 @@ describe('$autoload', () => {
           PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
           WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
           args: { _: ['myCommand'] },
-          require: requireMock,
+          importer,
           log,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
@@ -278,7 +278,7 @@ describe('$autoload', () => {
         expect({
           errorCode: err.code,
           errorParams: err.params,
-          requireCalls: requireMock.mock.calls,
+          importerCalls: importer.mock.calls,
           baseAutoloaderCalls: $baseAutoload.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchSnapshot();

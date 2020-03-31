@@ -1,10 +1,10 @@
 import HTTPError from 'yhttperror';
 import FirstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
-import { WhookOperation } from '@whook/http-transaction';
-import { BodySpec } from './lib';
-import { OpenAPIV3 } from 'openapi-types';
 import YError from 'yerror';
+import type { WhookOperation } from '@whook/http-transaction';
+import type { BodySpec } from './lib';
+import type { OpenAPIV3 } from 'openapi-types';
 
 /* Architecture Note #1.1: Request body
 According to the OpenAPI specification
@@ -65,7 +65,7 @@ export async function getBody(
   const body: Buffer = await new Promise((resolve, reject) => {
     const Decoder = DECODERS[bodySpec.charset];
 
-    inputStream.on('error', err => {
+    inputStream.on('error', (err) => {
       reject(HTTPError.wrap(err, 400, 'E_REQUEST_FAILURE'));
     });
     inputStream.pipe(new Decoder()).pipe(
@@ -73,7 +73,7 @@ export async function getBody(
         {
           chunkSize: bufferLimit + 1,
         },
-        async chunk => {
+        async (chunk) => {
           if (bufferLimit >= chunk.length) {
             resolve(chunk);
             return chunk;

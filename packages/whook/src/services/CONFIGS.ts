@@ -1,11 +1,9 @@
-import { initializer } from 'knifecycle';
+import { autoService, options, name } from 'knifecycle';
 import { noop } from '../libs/utils';
 import path from 'path';
 import YError from 'yerror';
-import { LogService } from 'common-services';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import type { LogService } from 'common-services';
+import type { ImporterService } from './importer';
 
 export type CONFIGSService = {
   [name: string]: any;
@@ -18,7 +16,6 @@ export type CONFIGSDependencies = CONFIGSConfig & {
   PROJECT_SRC: string;
   NODE_ENV: string;
   log?: LogService;
-  require?: typeof _require;
 };
 
 export type WhookConfig = {
@@ -27,14 +24,9 @@ export type WhookConfig = {
   baseURL?: string;
 };
 
-export default initializer(
-  {
-    name: 'CONFIGS',
-    type: 'service',
-    inject: ['PROJECT_SRC', 'NODE_ENV', '?log'],
-    options: { singleton: true },
-  },
-  initCONFIGS,
+export default name(
+  'CONFIGS',
+  options({ singleton: true }, autoService(initCONFIGS)),
 );
 
 /**
@@ -45,21 +37,23 @@ export default initializer(
  * The injected NODE_ENV value
  * @param  {Object}   services.PROJECT_SRC
  * The project source directory
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
+ * @param  {Object}   services.importer
+ * A service allowing to dynamically import ES modules
  * @return {Promise<Object>}
  * A promise of a an object the actual configuration properties.
  */
 async function initCONFIGS({
   PROJECT_SRC,
   NODE_ENV,
+  importer,
   log = noop,
-  require = _require,
 }: {
   PROJECT_SRC: string;
   NODE_ENV: string;
+  importer: ImporterService<{ default: CONFIGSService }>;
   log?: LogService;
-  require?: typeof _require;
 }): Promise<CONFIGSService> {
   log('debug', `🏭 - Initializing the CONFIGS service.`);
 
@@ -68,7 +62,7 @@ async function initCONFIGS({
   log('warning', `⚡ - Loading configurations from ${configPath}.`);
 
   try {
-    return require(configPath).default;
+    return (await importer(configPath)).default;
   } catch (err) {
     log('warning', `☢ - Could not load configuration file: ${configPath}.`);
     log('stack', err.stack);

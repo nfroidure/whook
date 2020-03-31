@@ -1,23 +1,16 @@
-import {
-  DEFAULT_ERROR_URI,
-  DEFAULT_HELP_URI,
+import YHTTPError from 'yhttperror';
+import semverSatisfies from 'semver/functions/satisfies';
+import { camelCase } from 'camel-case';
+import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
+import type {
   WhookResponse,
   WhookHandler,
   WhookOperation,
   WhookErrorsDescriptors,
 } from '@whook/whook';
-import {
-  reuseSpecialProps,
-  alsoInject,
-  handler,
-  ServiceInitializer,
-  Parameters,
-  Dependencies,
-} from 'knifecycle';
 import { OpenAPIV3 } from 'openapi-types';
-import YHTTPError from 'yhttperror';
-import semverSatisfies from 'semver/functions/satisfies';
-import { camelCase } from 'camel-case';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_DEPRECATED_VERSION: {
@@ -73,7 +66,7 @@ async function handleWithVersionChecker<
   parameters: P,
   operation: O,
 ): Promise<R> {
-  VERSIONS.forEach(version => {
+  VERSIONS.forEach((version) => {
     const value = parameters[camelCase(version.header)];
 
     if (
@@ -161,7 +154,7 @@ export async function augmentAPIWithVersionsHeaders(
       [method]: {
         ...pathItemObject[method],
         parameters: (pathItemObject[method].parameters || []).concat(
-          VERSIONS.map(version => ({
+          VERSIONS.map((version) => ({
             $ref: `#/components/parameters/${camelCase(version.header)}`,
           })),
         ),

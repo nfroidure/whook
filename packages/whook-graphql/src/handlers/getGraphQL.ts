@@ -3,7 +3,7 @@ import initPostGraphQL, {
   definition as postGraphQLDefinition,
 } from './postGraphQL';
 import YHTTPError from 'yhttperror';
-import { WhookAPIHandlerDefinition, WhookOperation } from '@whook/whook';
+import type { WhookAPIHandlerDefinition, WhookOperation } from '@whook/whook';
 
 type Await<T> = T extends {
   then(onfulfilled?: (value: infer U) => unknown): unknown;
@@ -80,7 +80,7 @@ async function getGraphQL<
     operationName: string;
   },
   operation: WhookOperation,
-): ReturnType<Await<ReturnType<typeof initPostGraphQL>>> {
+): Promise<ReturnType<Await<ReturnType<typeof initPostGraphQL>>>> {
   const deserializedVariables = deserialize(variables, 'variables');
 
   return await postGraphQL(

@@ -1,7 +1,8 @@
-import initEnv, { ENVService } from './ENV';
+import initEnv from './ENV';
 import { wrapInitializer, alsoInject } from 'knifecycle';
-import { LogService } from 'common-services';
 import { noop } from '../libs/utils';
+import type { LogService } from 'common-services';
+import type { ENVService } from './ENV';
 
 export type ProxyedENVConfig = {
   NODE_ENV?: string;
@@ -26,7 +27,7 @@ export default alsoInject(
  * The injected NODE_ENV value to add it to the build env
  * @param  {Object}   [services.PROXYED_ENV_VARS={}]
  * A list of environment variable names to proxy
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.

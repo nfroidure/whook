@@ -5,22 +5,23 @@ import YError from 'yerror';
 import path from 'path';
 import os from 'os';
 import {
+  DEFAULT_IGNORED_FILES_PREFIXES,
+  DEFAULT_IGNORED_FILES_SUFFIXES,
+  DEFAULT_REDUCED_FILES_SUFFIXES,
+  noop,
+} from '@whook/whook';
+import type {
   WhookCommandDefinition,
   PromptArgs,
   WhookCommandHandler,
 } from '../services/promptArgs';
-import { LogService } from 'common-services';
-import {
-  DEFAULT_IGNORED_FILES_PREFIXES,
-  DEFAULT_IGNORED_FILES_SUFFIXES,
+import type { LogService } from 'common-services';
+import type {
   CONFIGSService,
   WhookPluginsService,
   WhookPluginsPathsService,
-  noop,
+  ImporterService,
 } from '@whook/whook';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
 
 export const definition: WhookCommandDefinition = {
   description: 'Print available commands',
@@ -44,25 +45,27 @@ async function initLsCommand({
   PROJECT_SRC,
   IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
   IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
+  REDUCED_FILES_SUFFIXES = DEFAULT_REDUCED_FILES_SUFFIXES,
   WHOOK_PLUGINS,
   WHOOK_PLUGINS_PATHS,
   readDir = _readDir,
   log = noop,
   promptArgs,
   EOL = os.EOL,
-  require = _require,
+  importer,
 }: {
   CONFIG: CONFIGSService;
   PROJECT_SRC: string;
   IGNORED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_PREFIXES?: string[];
+  REDUCED_FILES_SUFFIXES?: string[];
   WHOOK_PLUGINS: WhookPluginsService;
   WHOOK_PLUGINS_PATHS: WhookPluginsPathsService;
   readDir?: typeof _readDir;
   log?: LogService;
   promptArgs: PromptArgs;
   EOL?: typeof os.EOL;
-  require?: typeof _require;
+  importer: ImporterService<any>;
 }): Promise<WhookCommandHandler> {
   return async () => {
     const { verbose } = readArgs(definition.arguments, await promptArgs());
@@ -73,22 +76,38 @@ async function initLsCommand({
         try {
           return {
             plugin: commandsSources[i],
-            commands: (await readDir(path.join(pluginPath, 'commands')))
-              .filter(
-                file =>
-                  file !== '..' &&
-                  file !== '.' &&
-                  !IGNORED_FILES_PREFIXES.some(prefix =>
-                    file.startsWith(prefix),
-                  ) &&
-                  !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
+            commands: (
+              await Promise.all(
+                [
+                  ...new Set(
+                    (await readDir(path.join(pluginPath, 'commands')))
+                      .filter(
+                        (file) =>
+                          file !== '..' &&
+                          file !== '.' &&
+                          !IGNORED_FILES_PREFIXES.some((prefix) =>
+                            file.startsWith(prefix),
+                          ) &&
+                          !IGNORED_FILES_SUFFIXES.some((suffix) =>
+                            file.endsWith(suffix),
+                          ),
+                      )
+                      .map((file) =>
+                        REDUCED_FILES_SUFFIXES.some((suffix) =>
+                          file.endsWith(suffix),
+                        )
+                          ? file.split('.').slice(0, -1).join('.')
+                          : file,
+                      ),
+                  ),
+                ]
+                  .map((file) => path.join(pluginPath, 'commands', file))
+                  .map(async (file) => await importer(file)),
               )
-              .map(file => path.join(pluginPath, 'commands', file))
-              .map(file => require(file))
-              .map(({ definition, default: initializer }) => ({
-                definition,
-                name: initializer[SPECIAL_PROPS.NAME].replace(/Command$/, ''),
-              })),
+            ).map(({ definition, default: initializer }) => ({
+              definition,
+              name: initializer[SPECIAL_PROPS.NAME].replace(/Command$/, ''),
+            })),
           };
         } catch (err) {
           log('debug', `✅ - No commands folder found at path ${pluginPath}`);

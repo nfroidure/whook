@@ -11,14 +11,16 @@ import initGraphQL, {
   WhookGraphQLFragmentService,
 } from './services/graphQL';
 
+export type {
+  WhookGraphQLConfig,
+  WhookGraphQLDependencies,
+  WhookGraphQLService,
+  WhookGraphQLFragmentService,
+};
 export {
   initGetGraphQL,
   getGraphQLDefinition,
   initPostGraphQL,
   postGraphQLDefinition,
   initGraphQL,
-  WhookGraphQLConfig,
-  WhookGraphQLDependencies,
-  WhookGraphQLService,
-  WhookGraphQLFragmentService,
 };

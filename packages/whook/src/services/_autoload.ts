@@ -1,27 +1,18 @@
 import { identity, noop, compose } from '../libs/utils';
-import {
-  initializer,
-  constant,
-  name,
-  Injector,
-  Autoloader,
-  ServiceInitializer,
-} from 'knifecycle';
-import {
-  flattenOpenAPI,
-  getOpenAPIOperations,
-} from '@whook/http-router/dist/utils';
+import { constant, name, autoService, options, initializer } from 'knifecycle';
+import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
 import path from 'path';
 import YError from 'yerror';
-import { CONFIGSService } from './CONFIGS';
-import { LogService } from 'common-services';
-import { WhookHandler } from '@whook/http-transaction';
-
-export const HANDLER_REG_EXP = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
+import type { Injector, Autoloader, ServiceInitializer } from 'knifecycle';
+import type { CONFIGSService } from './CONFIGS';
+import type { LogService } from 'common-services';
+import type { WhookHandler } from '@whook/http-transaction';
+import type { ImporterService } from './importer';
 
 // Needed to avoid messing up babel builds 🤷
-const _require = require;
 const _resolve = require.resolve;
+
+export const HANDLER_REG_EXP = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
 
 export interface WhookWrapper<D, S extends WhookHandler> {
   (initializer: ServiceInitializer<D, S>): ServiceInitializer<D, S>;
@@ -46,8 +37,8 @@ export type AutoloadDependencies<D> = AutoloadConfig & {
   CONFIGS?: CONFIGSService;
   WRAPPERS?: WhookWrapper<D, WhookHandler>[];
   $injector: Injector<any>;
+  importer: ImporterService<any>;
   log?: LogService;
-  require?: typeof _require;
   resolve?: typeof _resolve;
 };
 
@@ -56,23 +47,9 @@ The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project automatically from the installed whook plugins.
 */
-export default initializer(
-  {
-    name: '$autoload',
-    type: 'service',
-    inject: [
-      'PROJECT_SRC',
-      'WHOOK_PLUGINS_PATHS',
-      '$injector',
-      '?SERVICE_NAME_MAP',
-      '?INITIALIZER_PATH_MAP',
-      '?WRAPPERS',
-      '?CONFIGS',
-      '?log',
-    ],
-    options: { singleton: true },
-  },
-  initAutoload,
+export default options(
+  { singleton: true },
+  name('$autoload', autoService(initAutoload)),
 );
 
 /**
@@ -89,12 +66,14 @@ export default initializer(
  * An optional object to map services names to other names
  * @param  {Object}   [services.INITIALIZER_PATH_MAP={}]
  * An optional object to map non-autoloadable initializers
- * @param  {Array}   [services.WRAPPERS]
+ * @param  {Array}    [services.WRAPPERS]
  * An optional list of wrappers to inject
- * @param  {Array}   [services.CONFIGS]
+ * @param  {Array}    [services.CONFIGS]
  * Optional CONFIGS object to inject
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
+ * @param  {Object}   services.importer
+ * A service allowing to dynamically import ES modules
  * @return {Promise<Function>}
  * A promise of the autoload function.
  */
@@ -102,15 +81,18 @@ async function initAutoload<D>({
   PROJECT_SRC,
   WHOOK_PLUGINS_PATHS = [],
   $injector,
-  SERVICE_NAME_MAP,
-  INITIALIZER_PATH_MAP = {},
-  WRAPPERS,
-  CONFIGS,
+  SERVICE_NAME_MAP = undefined,
+  INITIALIZER_PATH_MAP = undefined,
+  WRAPPERS = undefined,
+  CONFIGS = undefined,
   log = noop,
-  require = _require,
+  importer,
   resolve = _resolve,
 }: AutoloadDependencies<D>): Promise<Autoloader<any>> {
   log('debug', '🤖 - Initializing the `$autoload` service.');
+
+  // Here to allow DI auto-detection since {} causes errors
+  INITIALIZER_PATH_MAP = INITIALIZER_PATH_MAP || {};
 
   /* Architecture Note #5.3: API auto loading
   We cannot inject the `API` in the auto loader since
@@ -133,10 +115,10 @@ async function initAutoload<D>({
    it is dynamically loaded so giving a second chance here
    for `WRAPPERS` to be set.
   */
-  const doWrapHandler = (WRAPPERS => {
+  const doWrapHandler = ((WRAPPERS) => {
     let wrapHandler;
 
-    return async handlerInitializer => {
+    return async (handlerInitializer) => {
       if (!WRAPPERS) {
         // eslint-disable-next-line
         WRAPPERS = (await $injector(['WRAPPERS'])).WRAPPERS || [];
@@ -148,7 +130,7 @@ async function initAutoload<D>({
     };
   })(WRAPPERS);
 
-  const mapInjectedName = async injectedName => {
+  const mapInjectedName = async (injectedName) => {
     if ('SERVICE_NAME_MAP' === injectedName) {
       return injectedName;
     }
@@ -224,9 +206,9 @@ async function initAutoload<D>({
         ...new Set(
           (
             await getOpenAPIOperations(await flattenOpenAPI(await getAPI()))
-          ).map(operation => operation.operationId),
+          ).map((operation) => operation.operationId),
         ),
-      ].map(handlerName => `${handlerName}>${handlerName}Wrapped`);
+      ].map((handlerName) => `${handlerName}>${handlerName}Wrapped`);
 
       return {
         name: resolvedName,
@@ -239,7 +221,7 @@ async function initAutoload<D>({
               singleton: true,
             },
           },
-          async HANDLERS => HANDLERS,
+          async (HANDLERS) => HANDLERS,
         ),
         path: 'internal://' + resolvedName,
       };
@@ -295,7 +277,7 @@ async function initAutoload<D>({
 
     log('debug', `💿 - Service "${resolvedName}" found in: ${modulePath}`);
 
-    const resolvedInitializer = await require(modulePath).default;
+    const resolvedInitializer = (await importer(modulePath)).default;
 
     log(
       'debug',

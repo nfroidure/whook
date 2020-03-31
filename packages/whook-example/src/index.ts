@@ -1,4 +1,4 @@
-import Knifecycle, { constant, Services, alsoInject } from 'knifecycle';
+import Knifecycle, { constant, alsoInject } from 'knifecycle';
 import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
@@ -10,6 +10,7 @@ import {
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import YError from 'yerror';
+import type { Services } from 'knifecycle';
 
 // Per convention a Whook server main file must export
 //  the following 3 functions to be composable:

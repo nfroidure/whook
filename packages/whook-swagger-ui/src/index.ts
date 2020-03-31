@@ -1,12 +1,14 @@
-import { wrapInitializer, alsoInject, ProviderInitializer } from 'knifecycle';
-import { HTTPRouterProvider, HTTPRouterService } from '@whook/whook';
+import { wrapInitializer, alsoInject } from 'knifecycle';
 import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
 } from './handlers/getOpenAPI';
-import { LogService } from 'common-services';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import type { ProviderInitializer } from 'knifecycle';
+import type {
+  HTTPRouterProvider,
+  HTTPRouterService,
+  ImporterService,
+} from '@whook/whook';
+import type { LogService } from 'common-services';
 
 export { initGetOpenAPI, getOpenAPIDefinition };
 
@@ -25,7 +27,7 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   HOST: string;
   PORT: number;
   log: LogService;
-  require: typeof _require;
+  importer: ImporterService<any>;
 };
 
 /**
@@ -46,7 +48,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
         HOST,
         PORT,
         log = noop,
-        require = _require,
+        importer,
       }: WhookSwaggerUIDependencies,
       httpRouter: HTTPRouterProvider,
     ) => {
@@ -59,8 +61,8 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
       const publicSwaggerURL = `${localURL}${BASE_PATH || ''}${
         getOpenAPIDefinition.path
       }`;
-      const staticRouter = require('ecstatic')({
-        root: require('swagger-ui-dist').absolutePath(),
+      const staticRouter = (await importer('ecstatic')).default({
+        root: (await importer('swagger-ui-dist')).absolutePath(),
         showdir: false,
         baseDir: './docs',
       });
@@ -96,7 +98,15 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
       }
     },
     alsoInject(
-      ['ENV', '?DEV_ACCESS_TOKEN', 'BASE_PATH', 'HOST', 'PORT', '?log'],
+      [
+        'ENV',
+        '?DEV_ACCESS_TOKEN',
+        'BASE_PATH',
+        'HOST',
+        'PORT',
+        'importer',
+        '?log',
+      ],
       initHTTPRouter,
     ),
   );

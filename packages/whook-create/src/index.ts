@@ -16,17 +16,14 @@ import {
 } from 'common-services';
 import initAuthor from './services/author';
 import initProject from './services/project';
-import initCreateWhook, { CreateWhookService } from './services/createWhook';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import initCreateWhook from './services/createWhook';
+import type { CreateWhookService } from './services/createWhook';
 
 export async function runCreateWhook() {
   try {
     const $ = new Knifecycle();
 
     $.register(constant('CWD', process.cwd()));
-    $.register(constant('require', _require));
     $.register(constant('inquirer', inquirer));
     $.register(constant('exec', _exec));
     $.register(constant('writeFile', _writeFile));

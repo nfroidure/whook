@@ -1,11 +1,8 @@
 import initAPI from './API';
 import FULL_CONFIG from '../config/test/config';
-import {
-  flattenOpenAPI,
-  getOpenAPIOperations,
-} from '@whook/http-router/dist/utils';
+import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import { initAPIDefinitions } from '@whook/whook';
+import { initAPIDefinitions, initImporter } from '@whook/whook';
 import path from 'path';
 
 describe('API', () => {
@@ -15,9 +12,12 @@ describe('API', () => {
   let API_DEFINITIONS;
 
   beforeAll(async () => {
+    const importer = await initImporter({ log });
+
     API_DEFINITIONS = await initAPIDefinitions({
       PROJECT_SRC: path.join(__dirname, '..'),
       WHOOK_PLUGINS_PATHS: [path.dirname(require.resolve('@whook/whook/dist'))],
+      importer,
     });
   });
 
@@ -55,11 +55,12 @@ describe('API', () => {
 
     expect(
       operations
-        .filter(operation => operation.security && operation.security.length)
-        .filter(operation =>
-          operation.security.some(operationSecurity =>
+        .filter((operation) => operation.security && operation.security.length)
+        .filter((operation) =>
+          operation.security.some((operationSecurity) =>
             Object.keys(operationSecurity).some(
-              operationSecurityName => !securitySchemes[operationSecurityName],
+              (operationSecurityName) =>
+                !securitySchemes[operationSecurityName],
             ),
           ),
         )
@@ -103,7 +104,8 @@ describe('API', () => {
       expect(
         operations
           .filter(
-            operation => !operation['x-whook'] || !operation['x-whook'].private,
+            (operation) =>
+              !operation['x-whook'] || !operation['x-whook'].private,
           )
           .map(({ method, path }) => `${method} ${path}`)
           .sort(),
@@ -114,7 +116,8 @@ describe('API', () => {
       expect(
         operations
           .filter(
-            operation => !operation['x-whook'] || !operation['x-whook'].private,
+            (operation) =>
+              !operation['x-whook'] || !operation['x-whook'].private,
           )
           .map(({ method, path }) => `${method} ${path}`)
           .sort(),
@@ -125,7 +128,8 @@ describe('API', () => {
       expect(
         operations
           .filter(
-            operation => !operation.security || operation.security.length === 0,
+            (operation) =>
+              !operation.security || operation.security.length === 0,
           )
           .map(({ method, path }) => `${method} ${path}`)
           .sort(),
@@ -136,10 +140,10 @@ describe('API', () => {
       expect(
         operations
           .filter(
-            operation =>
+            (operation) =>
               operation.security &&
               operation.security.some(
-                security => Object.keys(security).length === 0,
+                (security) => Object.keys(security).length === 0,
               ),
           )
           .map(({ method, path }) => `${method} ${path}`)
@@ -151,9 +155,9 @@ describe('API', () => {
       expect(
         operations
           .filter(
-            operation =>
+            (operation) =>
               operation.security &&
-              operation.security.some(security => security.basicAuth),
+              operation.security.some((security) => security.basicAuth),
           )
           .map(({ method, path }) => `${method} ${path}`)
           .sort(),
@@ -164,9 +168,9 @@ describe('API', () => {
       expect(
         operations
           .filter(
-            operation =>
+            (operation) =>
               operation.security &&
-              operation.security.some(security => security.bearerAuth),
+              operation.security.some((security) => security.bearerAuth),
           )
           .map(({ method, path }) => `${method} ${path}`)
           .sort(),

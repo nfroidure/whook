@@ -1,31 +1,28 @@
-import {
-  service,
+import { service } from 'knifecycle';
+import HTTPError from 'yhttperror';
+import statuses from 'statuses';
+import ms from 'ms';
+import initObfuscatorService from './services/obfuscator';
+import initAPMService from './services/apm';
+import type {
   Parameters,
   Handler,
   HandlerFunction,
   Dependencies,
 } from 'knifecycle';
-import { LogService, TimeService, DelayService } from 'common-services';
-import HTTPError from 'yhttperror';
-import statuses from 'statuses';
-import ms from 'ms';
-import { IncomingMessage, ServerResponse } from 'http';
-import { OpenAPIV3 } from 'openapi-types';
-import YError from 'yerror';
-import YHTTPError from 'yhttperror';
-import initObfuscatorService, {
+import type { LogService, TimeService, DelayService } from 'common-services';
+import type { IncomingMessage, ServerResponse } from 'http';
+import type { OpenAPIV3 } from 'openapi-types';
+import type YError from 'yerror';
+import type YHTTPError from 'yhttperror';
+import type {
   ObfuscatorService,
   ObfuscatorConfig,
 } from './services/obfuscator';
-import initAPMService, { APMService } from './services/apm';
+import type { APMService } from './services/apm';
 
-export {
-  initObfuscatorService,
-  ObfuscatorConfig,
-  ObfuscatorService,
-  initAPMService,
-  APMService,
-};
+export type { ObfuscatorConfig, ObfuscatorService, APMService };
+export { initObfuscatorService, initAPMService };
 
 export type WhookOperation = OpenAPIV3.OperationObject & {
   path: string;

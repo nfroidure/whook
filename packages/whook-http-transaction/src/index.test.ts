@@ -1,7 +1,8 @@
 import StreamTest from 'streamtest';
 import YError from 'yerror';
-import initHTTPTransaction, { WhookHandler, WhookResponse } from './index';
-import { IncomingMessage } from 'http';
+import initHTTPTransaction from './index';
+import type { WhookHandler, WhookResponse } from './index';
+import type { IncomingMessage } from 'http';
 
 function streamifyBody(response) {
   return Object.assign({}, response, {
@@ -66,7 +67,7 @@ describe('initHTTPTransaction', () => {
     let res;
     let resBodyPromise;
 
-    beforeEach(done => {
+    beforeEach((done) => {
       buildResponse.mockReset();
       resBodyPromise = new Promise((resolve, reject) => {
         res = StreamTest.v2.toText((err, text) => {

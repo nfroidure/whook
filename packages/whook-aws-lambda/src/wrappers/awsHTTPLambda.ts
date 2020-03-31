@@ -6,7 +6,7 @@ import {
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
 } from '@whook/http-router';
-import { reuseSpecialProps, alsoInject, ServiceInitializer } from 'knifecycle';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import Ajv from 'ajv';
 import bytes from 'bytes';
 import HTTPError from 'yhttperror';
@@ -15,8 +15,6 @@ import {
   prepareBodyValidator,
   applyValidators,
   filterHeaders,
-} from '@whook/http-router/dist/validation';
-import {
   extractBodySpec,
   extractResponseSpec,
   checkResponseCharset,
@@ -24,11 +22,16 @@ import {
   executeHandler,
   extractProduceableMediaTypes,
   extractConsumableMediaTypes,
-} from '@whook/http-router/dist/lib';
-import { getBody, sendBody } from '@whook/http-router/dist/body';
-import {
-  noop,
-  compose,
+  getBody,
+  sendBody,
+} from '@whook/http-router';
+import stream from 'stream';
+import qs from 'qs';
+import { parseReentrantNumber, parseBoolean } from 'strict-qs';
+import { camelCase } from 'camel-case';
+import { noop, compose } from '@whook/whook';
+import type { ServiceInitializer } from 'knifecycle';
+import type {
   WhookRequest,
   WhookResponse,
   WhookHandler,
@@ -37,12 +40,8 @@ import {
   APMService,
   WhookWrapper,
 } from '@whook/whook';
-import { PassThrough } from 'stream';
-import qs from 'qs';
-import { parseReentrantNumber, parseBoolean } from 'strict-qs';
-import { camelCase } from 'camel-case';
-import { TimeService, LogService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
+import type { TimeService, LogService } from 'common-services';
+import type { OpenAPIV3 } from 'openapi-types';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -456,7 +455,7 @@ async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
   if (event.body) {
     const buf = Buffer.from(event.body);
     request.headers['content-length'] = buf.length.toString();
-    request.body = new PassThrough();
+    request.body = new stream.PassThrough();
     request.body.write(buf);
     request.body.end();
   }

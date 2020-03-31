@@ -6,9 +6,10 @@ import {
   prepareEnvironment as basePrepareEnvironment,
   initGetPingDefinition,
 } from '@whook/whook';
-import Knifecycle, { constant, initializer } from 'knifecycle';
+import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import YError from 'yerror';
+import type Knifecycle from 'knifecycle';
 import { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
@@ -71,7 +72,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     return $;
   }
 
-  $autoload.mockImplementation(async serviceName => {
+  $autoload.mockImplementation(async (serviceName) => {
     throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
   });
   process.env.ISOLATED_ENV = '1';

@@ -1,10 +1,11 @@
-import { name, autoProvider, Provider } from 'knifecycle';
-import { LogService } from 'common-services';
-import { HTTPRouterService } from '@whook/http-router';
+import { name, autoProvider } from 'knifecycle';
 import http from 'http';
 import ms from 'ms';
 import YError from 'yerror';
-import { Socket } from 'net';
+import type { Provider } from 'knifecycle';
+import type { LogService } from 'common-services';
+import type { HTTPRouterService } from '@whook/http-router';
+import type { Socket } from 'net';
 
 export type HTTPServerEnv = {
   DESTROY_SOCKETS?: string;
@@ -80,14 +81,14 @@ async function initHTTPServer({
     @typedef HTTPServer
   */
   const httpServer = http.createServer(httpRouter);
-  const listenPromise = new Promise(resolve => {
+  const listenPromise = new Promise((resolve) => {
     httpServer.listen(PORT, HOST, () => {
       log('warning', `🎙️ - HTTP Server listening at "http://${HOST}:${PORT}".`);
       resolve(httpServer);
     });
   });
   const fatalErrorPromise: Promise<void> = new Promise((_, reject) => {
-    httpServer.once('error', err =>
+    httpServer.once('error', (err) =>
       reject(YError.wrap(err, 'E_HTTP_SERVER_ERROR')),
     );
   });
@@ -102,7 +103,7 @@ async function initHTTPServer({
   }
 
   if (ENV.DESTROY_SOCKETS) {
-    httpServer.on('connection', socket => {
+    httpServer.on('connection', (socket) => {
       sockets.add(socket);
       socket.on('close', () => {
         sockets.delete(socket);
@@ -119,7 +120,7 @@ async function initHTTPServer({
         // Avoid to keepalive connections on shutdown
         httpServer.timeout = 1;
         httpServer.keepAliveTimeout = 1;
-        httpServer.close(err => {
+        httpServer.close((err) => {
           if (err) {
             reject(err);
             return;

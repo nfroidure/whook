@@ -5,7 +5,15 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
+      "🛂 - Initializing the importer!",
+    ],
+    Array [
+      "debug",
       "🏭 - Initializing the PORT service.",
+    ],
+    Array [
+      "debug",
+      "🛂 - Dynamic import of: portfinder",
     ],
     Array [
       "warning",
@@ -18,6 +26,10 @@ Object {
 exports[`initPORT should use the env port first 2`] = `
 Object {
   "logCalls": Array [
+    Array [
+      "debug",
+      "🛂 - Initializing the importer!",
+    ],
     Array [
       "debug",
       "🏭 - Initializing the PORT service.",

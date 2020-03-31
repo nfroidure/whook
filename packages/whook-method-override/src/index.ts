@@ -1,8 +1,9 @@
-import { reuseSpecialProps, alsoInject, ServiceInitializer } from 'knifecycle';
-import { HTTPTransactionService } from '@whook/whook';
-import { LogService } from 'common-services';
-import { WhookHTTPTransaction } from '@whook/http-transaction';
-import { ServerResponse, IncomingMessage } from 'http';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import type { ServiceInitializer } from 'knifecycle';
+import type { HTTPTransactionService } from '@whook/whook';
+import type { LogService } from 'common-services';
+import type { WhookHTTPTransaction } from '@whook/http-transaction';
+import type { ServerResponse, IncomingMessage } from 'http';
 
 /**
  * Wrap the Whook transaction service to handle method
@@ -45,7 +46,7 @@ async function initHTTPTransactionWithMethodOverride<D>(
           ? request.headers['x-http-method-override'].toLowerCase()
           : request.method,
         headers: Object.keys(request.headers)
-          .filter(headerName => 'x-http-method-override' === headerName)
+          .filter((headerName) => 'x-http-method-override' === headerName)
           .reduce((newHeaders, headerName) => {
             newHeaders[headerName] = request.headers[headerName];
             return newHeaders;

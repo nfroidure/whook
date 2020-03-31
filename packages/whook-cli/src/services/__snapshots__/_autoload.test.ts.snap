@@ -7,6 +7,14 @@ Object {
       "anotherService",
     ],
   ],
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -22,14 +30,6 @@ Object {
     ],
   ],
   "path": "mocked://service",
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
   "result": undefined,
 }
 `;
@@ -41,15 +41,15 @@ Object {
   "errorParams": Array [
     "myCommand",
   ],
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
     ],
   ],
 }
@@ -62,15 +62,15 @@ Object {
   "errorParams": Array [
     "myCommand",
   ],
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
     ],
   ],
 }
@@ -79,6 +79,7 @@ Object {
 exports[`$autoload should warn with no command name 1`] = `
 Object {
   "baseAutoloaderCalls": Array [],
+  "importerCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
@@ -90,7 +91,6 @@ Object {
     ],
   ],
   "path": "command://undefined",
-  "requireCalls": Array [],
   "result": undefined,
 }
 `;
@@ -98,6 +98,14 @@ Object {
 exports[`$autoload should warn with not found commands 1`] = `
 Object {
   "baseAutoloaderCalls": Array [],
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -113,14 +121,6 @@ Object {
     ],
   ],
   "path": "command://myCommand",
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
   "result": undefined,
 }
 `;
@@ -128,6 +128,14 @@ Object {
 exports[`$autoload should work with bad commands 1`] = `
 Object {
   "baseAutoloaderCalls": Array [],
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -147,14 +155,6 @@ Object {
     ],
   ],
   "path": "command://myCommand",
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
   "result": undefined,
 }
 `;
@@ -162,6 +162,11 @@ Object {
 exports[`$autoload should work with project commands 1`] = `
 Object {
   "baseAutoloaderCalls": Array [],
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -173,11 +178,6 @@ Object {
     ],
   ],
   "path": "command://myCommand",
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-  ],
   "result": undefined,
 }
 `;
@@ -185,6 +185,14 @@ Object {
 exports[`$autoload should work with whook-cli commands 1`] = `
 Object {
   "baseAutoloaderCalls": Array [],
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+    ],
+    Array [
+      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -200,14 +208,6 @@ Object {
     ],
   ],
   "path": "command://myCommand",
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
   "result": undefined,
 }
 `;

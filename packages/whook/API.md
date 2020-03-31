@@ -41,12 +41,17 @@
  build, saving some computing and increasing boot time of
  the build.</p>
 </dd>
-<dt><a href="#initENV">initENV(services, [log])</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#initENV">initENV(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Initialize the ENV service using process env plus dotenv files</p>
 </dd>
-<dt><a href="#initHost">initHost(services, [log])</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
+<dt><a href="#initHost">initHost(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
 <dd><p>Initialize the HOST service from ENV or auto-detection if
  none specified in ENV</p>
+</dd>
+<dt><a href="#initImporter">initImporter(constants)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Allow to proxy constants directly by serializing it in the
+ build, saving some computing and increasing boot time of
+ the build.</p>
 </dd>
 </dl>
 
@@ -66,7 +71,8 @@ Initialize the API_DEFINITIONS service according to the porject handlers.
 | [services.IGNORED_FILES_SUFFIXES] | <code>Object</code> |  | The files suffixes the autoloader must ignore |
 | [services.IGNORED_FILES_PREFIXES] | <code>Object</code> |  | The files prefixes the autoloader must ignore |
 | [services.FILTER_API_TAGS] | <code>Object</code> |  | Allows to only keep the endpoints taggeds with  the given tags |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="default"></a>
 
@@ -85,7 +91,7 @@ Initialize the BASE_URL service according to the HOST/PORT
 | [services.PROTOCOL] | <code>Object</code> |  | The injected PROTOCOL value |
 | services.HOST | <code>Object</code> |  | The injected HOST value |
 | services.PORT | <code>Object</code> |  | The injected PORT value |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="default"></a>
 
@@ -100,7 +106,8 @@ Initialize the CONFIGS service according to the NODE_ENV
 | services | <code>Object</code> |  | The services CONFIGS depends on |
 | services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
 | services.PROJECT_SRC | <code>Object</code> |  | The project source directory |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
 <a name="default"></a>
 
@@ -115,7 +122,8 @@ Initialize the PORT service from ENV or auto-detection if
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services PORT depends on |
 | [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
 <a name="default"></a>
 
@@ -129,7 +137,7 @@ Auto detect the Whook PROJECT_DIR
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services PROJECT_DIR depends on |
 | services.PWD | <code>Object</code> |  | The process working directory |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="default"></a>
 
@@ -144,7 +152,7 @@ Wrap the ENV service in order to filter ENV vars for the build
 | services | <code>Object</code> |  | The services ENV depends on |
 | services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to add it to the build env |
 | [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="default"></a>
 
@@ -159,7 +167,7 @@ Auto detect the Whook WHOOK_PLUGINS_PATHS
 | services | <code>Object</code> |  | The services WHOOK_PLUGINS_PATHS depends on |
 | services.WHOOK_PLUGINS | <code>Array.&lt;String&gt;</code> |  | The active whook plugins list |
 | services.PROJECT_SRC | <code>String</code> |  | The project source directory |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="prepareServer"></a>
 
@@ -211,7 +219,7 @@ export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
 ```
 <a name="initENV"></a>
 
-## initENV(services, [log]) ⇒ <code>Promise.&lt;Object&gt;</code>
+## initENV(services) ⇒ <code>Promise.&lt;Object&gt;</code>
 Initialize the ENV service using process env plus dotenv files
 
 **Kind**: global function  
@@ -223,11 +231,11 @@ Initialize the ENV service using process env plus dotenv files
 | services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to look for `.env.${NODE_ENV}` env file |
 | services.PWD | <code>Object</code> |  | The process current working directory |
 | [services.BASE_ENV] | <code>Object</code> | <code>{}</code> | An optional base environment |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="initHost"></a>
 
-## initHost(services, [log]) ⇒ <code>Promise.&lt;String&gt;</code>
+## initHost(services) ⇒ <code>Promise.&lt;String&gt;</code>
 Initialize the HOST service from ENV or auto-detection if
  none specified in ENV
 
@@ -238,5 +246,27 @@ Initialize the HOST service from ENV or auto-detection if
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services HOST depends on |
 | [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
-| [log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
+<a name="initImporter"></a>
+
+## initImporter(constants) ⇒ <code>Promise.&lt;Object&gt;</code>
+Allow to proxy constants directly by serializing it in the
+ build, saving some computing and increasing boot time of
+ the build.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the gathered constants.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| constants | <code>Object</code> | The serializable constants to gather |
+
+**Example**  
+```js
+import { initBuildConstants } from '@whook/whook';
+import { alsoInject } from 'knifecycle';
+
+export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
+```

@@ -1,8 +1,7 @@
 import _inquirer from 'inquirer';
 import initCreateCommand from './create';
-import YError from 'yerror';
-import { OpenAPIV3 } from 'openapi-types';
 import { initGetPingDefinition } from '@whook/whook';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('createCommand', () => {
   const PROJECT_DIR = '/hom/whoiam/project';

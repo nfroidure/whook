@@ -1,19 +1,19 @@
 import { autoHandler } from 'knifecycle';
 import { camelCaseObjectProperties } from './getOAuth2Authorize';
-import { OpenAPIV3 } from 'openapi-types';
-import { LogService, TimeService } from 'common-services';
-import {
+import { noop } from '@whook/whook';
+import YError from 'yerror';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { LogService, TimeService } from 'common-services';
+import type {
   WhookAPISchemaDefinition,
   WhookAPIHandlerDefinition,
-  noop,
 } from '@whook/whook';
-import {
+import type {
   OAuth2GranterService,
   OAuth2AccessTokenService,
   OAuth2RefreshTokenService,
 } from '../services/oAuth2Granters';
-import YError from 'yerror';
-import { BaseAuthenticationData } from '@whook/authorization';
+import type { BaseAuthenticationData } from '@whook/authorization';
 
 /* Architecture Note #2: OAuth2 acknowledge
 This endpoint is to be used by the authentication server page
@@ -251,7 +251,7 @@ async function postOAuth2Token<
 ) {
   try {
     const granter = oAuth2Granters.find(
-      granter =>
+      (granter) =>
         granter.authenticator && granter.authenticator.grantType === grantType,
     );
 

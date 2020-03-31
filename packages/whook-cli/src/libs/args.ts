@@ -1,7 +1,7 @@
 import Ajv from 'ajv';
 import YError from 'yerror';
-import { WhookCommandDefinitionArguments } from '../services/promptArgs';
-import { WhookCommandArgs } from '../services/args';
+import type { WhookCommandDefinitionArguments } from '../services/promptArgs';
+import type { WhookCommandArgs } from '../services/args';
 
 // TODO: Add ajv human readable error builder
 export function readArgs(

@@ -2,7 +2,7 @@ import pkgDir from 'pkg-dir';
 import { name, options, autoService } from 'knifecycle';
 import YError from 'yerror';
 import { noop } from '../libs/utils';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
 
 export type ProjectDirConfig = {
   PWD: string;
@@ -29,7 +29,7 @@ export default options(
  * The services PROJECT_DIR depends on
  * @param  {Object}   services.PWD
  * The process working directory
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<string>}
  * A promise of a number representing the actual port.

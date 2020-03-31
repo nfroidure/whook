@@ -1,21 +1,23 @@
 import { autoService, name } from 'knifecycle';
-import { readdir } from 'fs';
+import fs from 'fs';
 import YError from 'yerror';
 import path from 'path';
 import { noop } from '../libs/utils';
 import { LogService } from 'common-services';
 import { OpenAPIV3 } from 'openapi-types';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import { ImporterService } from '..';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
+export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.mjs'];
 export const DEFAULT_IGNORED_FILES_SUFFIXES = [
   '.test.js',
   '.d.js',
   '.test.ts',
+  '.d.mjs',
+  '.test.mjs',
   '.d.ts',
   '.js.map',
+  '.mjs.map',
 ];
 
 /* Architecture Note #10: API definitions loader
@@ -27,6 +29,7 @@ The `API_DEFINITIONS` service provide a convenient way to
 export type WhookAPIDefinitionsConfig = {
   WHOOK_PLUGINS_PATHS?: string[];
   PROJECT_SRC?: string;
+  REDUCED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_PREFIXES?: string[];
   FILTER_API_TAGS?: string[];
@@ -34,7 +37,7 @@ export type WhookAPIDefinitionsConfig = {
 export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
   PROJECT_SRC: string;
   log?: LogService;
-  require?: typeof _require;
+  importer: ImporterService<WhookAPIHandlerModule>;
   readDir?: typeof _readDir;
 };
 export type WhookAPIDefinitions = {
@@ -88,7 +91,9 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  * @param  {Object}   [services.FILTER_API_TAGS]
  * Allows to only keep the endpoints taggeds with
  *  the given tags
- * @param  {Object}   [log=noop]
+ * @param  {Object}   services.importer
+ * A service allowing to dynamically import ES modules
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<String>}
  * A promise of a containing the actual host.
@@ -98,10 +103,11 @@ async function initAPIDefinitions({
   WHOOK_PLUGINS_PATHS = [],
   IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
   IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
+  REDUCED_FILES_SUFFIXES = DEFAULT_REDUCED_FILES_SUFFIXES,
   FILTER_API_TAGS = [],
+  importer,
   log = noop,
   readDir = _readDir,
-  require = _require,
 }: WhookAPIDefinitionsDependencies): Promise<WhookAPIDefinitions> {
   log('debug', `🈁 - Generating the API_DEFINITIONS`);
 
@@ -114,7 +120,7 @@ async function initAPIDefinitions({
       // We need to await previous modules here to ensure the
       // `seenFiles` variable is completed in order
       const accHandlersModules = await accHandlersModulesPromise;
-      let files;
+      let files: string[];
 
       try {
         files = await readDir(path.join(currentPath, 'handlers'));
@@ -131,29 +137,44 @@ async function initAPIDefinitions({
         }
       }
 
-      const currentHandlersModules = files
-        .filter(
-          file =>
-            file !== '..' &&
-            file !== '.' &&
-            !IGNORED_FILES_PREFIXES.some(prefix => file.startsWith(prefix)) &&
-            !IGNORED_FILES_SUFFIXES.some(suffix => file.endsWith(suffix)),
-        )
-        // Avoid loading the same handler twice if
-        // overriden upstream by another plugin or the
-        // root project path
-        .filter(file => {
-          if (seenFiles.get(file)) {
-            return false;
-          }
-          seenFiles.set(file, true);
-          return true;
-        })
-        .map(file => path.join(currentPath, 'handlers', file))
-        .map(file => ({
-          file,
-          module: (require(file) as unknown) as WhookAPIHandlerModule,
-        }));
+      const currentHandlersModules = await Promise.all(
+        [
+          ...new Set(
+            files
+              .filter(
+                (file) =>
+                  file !== '..' &&
+                  file !== '.' &&
+                  !IGNORED_FILES_PREFIXES.some((prefix) =>
+                    file.startsWith(prefix),
+                  ) &&
+                  !IGNORED_FILES_SUFFIXES.some((suffix) =>
+                    file.endsWith(suffix),
+                  ),
+              )
+              .map((file) =>
+                REDUCED_FILES_SUFFIXES.some((suffix) => file.endsWith(suffix))
+                  ? file.split('.').slice(0, -1).join('.')
+                  : file,
+              ),
+          ),
+        ]
+          // Avoid loading the same handler twice if
+          // overriden upstream by another plugin or the
+          // root project path
+          .filter((file) => {
+            if (seenFiles.get(file)) {
+              return false;
+            }
+            seenFiles.set(file, true);
+            return true;
+          })
+          .map((file) => path.join(currentPath, 'handlers', file))
+          .map(async (file) => ({
+            file,
+            module: await importer(file),
+          })),
+      );
 
       return [...accHandlersModules, ...currentHandlersModules];
     },
@@ -187,7 +208,7 @@ async function initAPIDefinitions({
 
         if (
           FILTER_API_TAGS.length > 0 &&
-          operationTags.every(tag => !FILTER_API_TAGS.includes(tag))
+          operationTags.every((tag) => !FILTER_API_TAGS.includes(tag))
         ) {
           log(
             'debug',
@@ -221,7 +242,7 @@ async function initAPIDefinitions({
         (schemas, { module }) => ({
           ...schemas,
           ...Object.keys(module)
-            .filter(key => key.endsWith('Schema'))
+            .filter((key) => key.endsWith('Schema'))
             .reduce((addedSchemas, key) => {
               const schema = module[key] as WhookAPISchemaDefinition;
 
@@ -236,7 +257,7 @@ async function initAPIDefinitions({
         (parameters, { module }) => ({
           ...parameters,
           ...Object.keys(module)
-            .filter(key => key.endsWith('Parameter'))
+            .filter((key) => key.endsWith('Parameter'))
             .reduce((addedParameters, key) => {
               const parameter = module[key] as WhookAPIParameterDefinition;
 
@@ -256,7 +277,7 @@ async function initAPIDefinitions({
 
 async function _readDir(dir: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
-    readdir(dir, (err, files) => {
+    fs.readdir(dir, (err, files) => {
       if (err) {
         reject(YError.wrap(err, 'E_BAD_DIR', dir));
         return;

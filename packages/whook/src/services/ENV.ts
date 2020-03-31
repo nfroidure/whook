@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
-import fs, { read } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { initializer } from 'knifecycle';
 import { noop } from '../libs/utils';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
 
 /* Architecture Note #4: Environment service
 The `ENV` service add a layer of configuration over just using
@@ -49,7 +49,7 @@ export type ENVDependencies = ENVConfig & {
  * The process current working directory
  * @param  {Object}   [services.BASE_ENV={}]
  * An optional base environment
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the actual env vars.

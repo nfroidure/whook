@@ -6,13 +6,13 @@ import YError from 'yerror';
 import initHTTPRouter from './index';
 import initErrorHandler from './errorHandler';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import { OpenAPIV3 } from 'openapi-types';
-import {
+import type { OpenAPIV3 } from 'openapi-types';
+import type {
   HTTPTransactionService,
   WhookHandler,
   WhookResponse,
 } from '@whook/http-transaction';
-import { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage, ServerResponse } from 'http';
 
 function waitResponse(response, raw: boolean = true) {
   return new Promise((resolve, reject) => {
@@ -44,12 +44,14 @@ function prepareTransaction(result: any = Promise.resolve()) {
       ? Promise.resolve(result)
       : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
   ) as WhookHandler & jest.Mock;
-  const httpTransactionStart = jest.fn(async buildResponse => buildResponse());
-  const httpTransactionCatch = jest.fn(async err => {
+  const httpTransactionStart = jest.fn(async (buildResponse) =>
+    buildResponse(),
+  );
+  const httpTransactionCatch = jest.fn(async (err) => {
     throw HTTPError.cast(err);
   });
-  const httpTransactionEnd = jest.fn(async res => {});
-  const httpTransaction = jest.fn(async req => ({
+  const httpTransactionEnd = jest.fn(async (res) => {});
+  const httpTransaction = jest.fn(async (req) => ({
     request: {
       url: req.url,
       method: req.method.toLowerCase(),
