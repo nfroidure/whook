@@ -8,7 +8,7 @@ import {
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
 import YError from 'yerror';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
@@ -33,7 +33,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   };
   const debug = jest.fn();
   const time = jest.fn();
-  const $autoload = jest.fn(async serviceName => {
+  const $autoload = jest.fn(async (serviceName) => {
     throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
   });
   let $;

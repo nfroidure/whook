@@ -2,13 +2,12 @@ import { camelCase } from 'camel-case';
 import YError from 'yerror';
 import HTTPError from 'yhttperror';
 import Stream from 'stream';
-import {
-  pickupOperationSecuritySchemes,
-  SupportedSecurityScheme,
-} from './utils';
-import { OpenAPIV3 } from 'openapi-types';
-import ajv, { Ajv } from 'ajv';
-import { WhookOperation } from '@whook/http-transaction';
+import { pickupOperationSecuritySchemes } from './utils';
+import ajv from 'ajv';
+import type { Ajv } from 'ajv';
+import type { SupportedSecurityScheme } from './utils';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { WhookOperation } from '@whook/http-transaction';
 
 /* Architecture Note #1.1: Validators
 For performance reasons, the validators are
@@ -153,7 +152,7 @@ export function extractOperationSecurityParameters(
     operation,
   );
   const securitySchemes = Object.keys(operationSecuritySchemes).map(
-    schemeKey => operationSecuritySchemes[schemeKey],
+    (schemeKey) => operationSecuritySchemes[schemeKey],
   );
 
   return extractParametersFromSecuritySchemes(securitySchemes);
@@ -162,14 +161,14 @@ export function extractOperationSecurityParameters(
 export function extractParametersFromSecuritySchemes(
   securitySchemes: (SupportedSecurityScheme | OpenAPIV3.OpenIdSecurityScheme)[],
 ): OpenAPIV3.ParameterObject[] {
-  const hasOAuth = securitySchemes.some(securityScheme =>
+  const hasOAuth = securitySchemes.some((securityScheme) =>
     ['oauth2', 'openIdConnect'].includes(securityScheme.type),
   );
   const httpSchemes = [
     ...new Set([
       ...securitySchemes
-        .filter(securityScheme => securityScheme.type === 'http')
-        .map(securityScheme => {
+        .filter((securityScheme) => securityScheme.type === 'http')
+        .map((securityScheme) => {
           if (
             !SUPPORTED_HTTP_SCHEMES.includes(
               (securityScheme as OpenAPIV3.HttpSecurityScheme).scheme,
@@ -190,7 +189,7 @@ export function extractParametersFromSecuritySchemes(
   let hasAccessTokenApiKey = false;
 
   const securityParameters: OpenAPIV3.ParameterObject[] = securitySchemes
-    .filter(securityScheme => securityScheme.type === 'apiKey')
+    .filter((securityScheme) => securityScheme.type === 'apiKey')
     .map((securityScheme: OpenAPIV3.ApiKeySecurityScheme) => {
       if (securityScheme.in === 'cookie') {
         throw new YError(
@@ -235,7 +234,7 @@ export function extractParametersFromSecuritySchemes(
                 type: 'string',
                 pattern: `(${httpSchemes
                   .map(
-                    httpScheme =>
+                    (httpScheme) =>
                       `(${
                         httpScheme[0]
                       }|${httpScheme[0].toUpperCase()})${httpScheme.slice(1)}`,
@@ -359,7 +358,7 @@ export function filterHeaders(
   headers: { [name: string]: string },
 ): { [name: string]: string } {
   return (parameters || [])
-    .filter(parameter => 'header' === parameter.in)
+    .filter((parameter) => 'header' === parameter.in)
     .reduce((filteredHeaders, parameter) => {
       if (headers[parameter.name.toLowerCase()]) {
         filteredHeaders[camelCase(parameter.name)] =

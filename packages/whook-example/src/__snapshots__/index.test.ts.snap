@@ -169,7 +169,7 @@ Object {
       "🈁 - Generating the API_DEFINITIONS",
     ],
     Array [
-      "🈁 - Handler module at /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js exports no definition!",
+      "🈁 - Handler module at /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS exports no definition!",
     ],
     Array [
       "🏭 - Initializing the CONFIGS service.",
@@ -499,6 +499,18 @@ Object {
       "🚫 - Service \\"PROTOCOL\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL",
     ],
     Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/REDUCED_FILES_SUFFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES",
+    ],
+    Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES",
+    ],
+    Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in: /home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS",
     ],
     Array [
@@ -610,18 +622,6 @@ Object {
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/readDir",
     ],
     Array [
-      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/dist/services/require",
-    ],
-    Array [
-      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/require",
-    ],
-    Array [
-      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/require",
-    ],
-    Array [
-      "🚫 - Service \\"require\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/require",
-    ],
-    Array [
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/dist/services/uniqueId",
     ],
     Array [
@@ -634,6 +634,81 @@ Object {
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId",
     ],
     Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/dist/handlers/getPing",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/dist/handlers/getPing.js",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/dist/services/BASE_URL.js",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/config/test/config",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/API.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: ecstatic",
+    ],
+    Array [
+      "🛂 - Dynamic import of: swagger-ui-dist",
+    ],
+    Array [
+      "🛂 - Initializing the importer!",
+    ],
+    Array [
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     Array [
@@ -642,25 +717,25 @@ Object {
   ],
   "logErrorCalls": Array [
     Array [
-      "🖥 - Using an isolated env.",
-    ],
-    Array [
-      "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/whook-example/src/config/test/config.",
-    ],
-    Array [
-      "🔂 - Running in \\"test\\" environment.",
+      "On air 🚀🌕",
     ],
     Array [
       "⚠️ - Using fake auth mechanism!",
     ],
     Array [
-      "💁 - Serving the public API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv4%2FopenAPI",
+      "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/whook-example/src/config/test/config.",
     ],
     Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
     ],
     Array [
-      "On air 🚀🌕",
+      "💁 - Serving the public API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv4%2FopenAPI",
+    ],
+    Array [
+      "🔂 - Running in \\"test\\" environment.",
+    ],
+    Array [
+      "🖥 - Using an isolated env.",
     ],
   ],
   "logInfoCalls": Array [],

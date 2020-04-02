@@ -1,12 +1,12 @@
 import { initializer } from 'knifecycle';
 import { DEFAULT_DEBUG_NODE_ENVS, DEFAULT_STRINGIFYERS } from './constants';
-import { WhookStringifyers } from '.';
-import { ResponseSpec } from './lib';
-import { WhookResponse } from '@whook/http-transaction';
 import miniquery from 'miniquery';
-import YError from 'yerror';
-import YHTTPError from 'yhttperror';
-import { OpenAPIV3 } from 'openapi-types';
+import type { WhookStringifyers } from '.';
+import type { ResponseSpec } from './lib';
+import type { WhookResponse } from '@whook/http-transaction';
+import type YError from 'yerror';
+import type YHTTPError from 'yhttperror';
+import type { OpenAPIV3 } from 'openapi-types';
 
 /* Architecture Note #2: Error handler
 
@@ -443,7 +443,7 @@ async function initErrorHandler({
       ),
       error_params: errorDescriptor.transmittedParams
         ? errorDescriptor.transmittedParams.map(
-            paramIndex => ((err as YError).params || [])[paramIndex],
+            (paramIndex) => ((err as YError).params || [])[paramIndex],
           )
         : undefined,
       error_debug_data: {

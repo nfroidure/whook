@@ -61,6 +61,14 @@ Object {
       },
     },
   },
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getUser",
+    ],
+    Array [
+      "/home/whoiam/project/src/handlers/putUser",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -74,14 +82,6 @@ Object {
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/project/src/handlers/getUser",
-    ],
-    Array [
-      "/home/whoiam/project/src/handlers/putUser",
     ],
   ],
 }
@@ -169,6 +169,14 @@ Object {
       },
     },
   },
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getPing",
+    ],
+    Array [
+      "/home/whoiam/project/src/handlers/getUser",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -178,14 +186,6 @@ Object {
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/project/src/handlers/getPing",
-    ],
-    Array [
-      "/home/whoiam/project/src/handlers/getUser",
     ],
   ],
 }
@@ -273,6 +273,14 @@ Object {
       },
     },
   },
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getPing",
+    ],
+    Array [
+      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -285,14 +293,6 @@ Object {
     ],
     Array [
       "/home/whoiam/project/node_modules/@whook/dist/handlers",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/project/src/handlers/getPing",
-    ],
-    Array [
-      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
     ],
   ],
 }
@@ -380,6 +380,14 @@ Object {
       },
     },
   },
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getPing",
+    ],
+    Array [
+      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -392,14 +400,6 @@ Object {
     ],
     Array [
       "/home/whoiam/project/node_modules/@whook/dist/handlers",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/project/src/handlers/getPing",
-    ],
-    Array [
-      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
     ],
   ],
 }
@@ -466,6 +466,14 @@ Object {
       },
     },
   },
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getUser",
+    ],
+    Array [
+      "/home/whoiam/project/src/handlers/putUser",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -479,14 +487,6 @@ Object {
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/project/src/handlers/getUser",
-    ],
-    Array [
-      "/home/whoiam/project/src/handlers/putUser",
     ],
   ],
 }
@@ -576,6 +576,14 @@ Object {
       },
     },
   },
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getUser",
+    ],
+    Array [
+      "/home/whoiam/project/src/handlers/putUser",
+    ],
+  ],
   "logCalls": Array [
     Array [
       "debug",
@@ -585,14 +593,6 @@ Object {
   "readDirCalls": Array [
     Array [
       "/home/whoiam/project/src/handlers",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoiam/project/src/handlers/getUser",
-    ],
-    Array [
-      "/home/whoiam/project/src/handlers/putUser",
     ],
   ],
 }
@@ -607,6 +607,7 @@ Object {
     },
     "paths": Object {},
   },
+  "importerCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
@@ -618,6 +619,5 @@ Object {
       "/home/whoiam/project/src/handlers",
     ],
   ],
-  "requireCalls": Array [],
 }
 `;

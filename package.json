@@ -61,7 +61,7 @@
     "cz-conventional-changelog": "^3.1.0",
     "lerna": "^3.20.2",
     "metapak": "^3.1.8",
-    "metapak-nfroidure": "10.0.1"
+    "metapak-nfroidure": "10.1.2"
   },
   "contributors": [],
   "engines": {

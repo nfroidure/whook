@@ -102,6 +102,9 @@ Object {
     Array [
       "🚦 - HTTP Router initialized.",
     ],
+    Array [
+      "🛂 - Initializing the importer!",
+    ],
   ],
   "logErrorCalls": Array [
     Array [
@@ -281,6 +284,15 @@ Object {
     Array [
       "🚦 - HTTP Router initialized.",
     ],
+    Array [
+      "🛂 - Dynamic import of: ecstatic",
+    ],
+    Array [
+      "🛂 - Dynamic import of: swagger-ui-dist",
+    ],
+    Array [
+      "🛂 - Initializing the importer!",
+    ],
   ],
   "headers": Object {
     "cache-control": "max-age=3600",
@@ -425,6 +437,15 @@ Object {
     ],
     Array [
       "🚦 - HTTP Router initialized.",
+    ],
+    Array [
+      "🛂 - Dynamic import of: ecstatic",
+    ],
+    Array [
+      "🛂 - Dynamic import of: swagger-ui-dist",
+    ],
+    Array [
+      "🛂 - Initializing the importer!",
     ],
   ],
   "headers": Object {

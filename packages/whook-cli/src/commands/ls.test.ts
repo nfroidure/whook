@@ -6,13 +6,13 @@ describe('lsCommand', () => {
   const promptArgs = jest.fn();
   const log = jest.fn();
   const readDir = jest.fn();
-  const _require = jest.fn();
+  const importer = jest.fn();
 
   beforeEach(() => {
     promptArgs.mockReset();
     log.mockReset();
     readDir.mockReset();
-    _require.mockReset();
+    importer.mockReset();
   });
 
   describe('should work', () => {
@@ -33,7 +33,7 @@ describe('lsCommand', () => {
         readDir,
         log,
         EOL: '\n',
-        require: (_require as unknown) as any,
+        importer,
       });
       const result = await lsCommand();
 
@@ -42,18 +42,18 @@ describe('lsCommand', () => {
         promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: _require.mock.calls,
+        requireCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
     it('with some plugins', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
-      _require.mockReturnValueOnce({
+      importer.mockReturnValueOnce({
         default: initLsCommand,
         definition: initLsCommandDefinition,
       });
-      _require.mockReturnValueOnce({
+      importer.mockReturnValueOnce({
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
@@ -73,7 +73,7 @@ describe('lsCommand', () => {
         readDir,
         log,
         EOL: '\n',
-        require: (_require as unknown) as any,
+        importer,
       });
       await lsCommand();
 
@@ -81,18 +81,18 @@ describe('lsCommand', () => {
         promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: _require.mock.calls,
+        requireCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
     it('with some plugins and ignored files', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env', '__snapshots__']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
-      _require.mockReturnValueOnce({
+      importer.mockReturnValueOnce({
         default: initLsCommand,
         definition: initLsCommandDefinition,
       });
-      _require.mockReturnValueOnce({
+      importer.mockReturnValueOnce({
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
@@ -112,7 +112,7 @@ describe('lsCommand', () => {
         readDir,
         log,
         EOL: '\n',
-        require: (_require as unknown) as any,
+        importer,
       });
       await lsCommand();
 
@@ -120,18 +120,18 @@ describe('lsCommand', () => {
         promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: _require.mock.calls,
+        requireCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
 
     it('with some plugins and a verbose output', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
-      _require.mockReturnValueOnce({
+      importer.mockReturnValueOnce({
         default: initLsCommand,
         definition: initLsCommandDefinition,
       });
-      _require.mockReturnValueOnce({
+      importer.mockReturnValueOnce({
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
@@ -154,7 +154,7 @@ describe('lsCommand', () => {
         readDir,
         log,
         EOL: '\n',
-        require: (_require as unknown) as any,
+        importer,
       });
       await lsCommand();
 
@@ -162,7 +162,7 @@ describe('lsCommand', () => {
         promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
-        requireCalls: _require.mock.calls,
+        requireCalls: importer.mock.calls,
       }).toMatchSnapshot();
     });
   });

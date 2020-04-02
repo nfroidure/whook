@@ -1,12 +1,12 @@
 import { autoService } from 'knifecycle';
-import { LogService } from 'common-services';
 import { noop } from '@whook/whook';
 import YError from 'yerror';
-import {
+import type { LogService } from 'common-services';
+import type {
   OAuth2GranterService,
   CheckApplicationService,
 } from './oAuth2Granters';
-import { BaseAuthenticationData } from '@whook/authorization';
+import type { BaseAuthenticationData } from '@whook/authorization';
 
 export type OAuth2ClientCredentialsGranterDependencies = {
   checkApplication: CheckApplicationService;

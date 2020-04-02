@@ -3,15 +3,15 @@ import YError from 'yerror';
 
 describe('initCONFIGS', () => {
   const log = jest.fn();
-  const require = jest.fn();
+  const importer = jest.fn();
 
   beforeEach(() => {
     log.mockReset();
-    require.mockReset();
+    importer.mockReset();
   });
 
   it('should work with existing configs', async () => {
-    require.mockReturnValueOnce({
+    importer.mockResolvedValueOnce({
       default: {
         CONFIG: {
           testConfig: 'test',
@@ -23,18 +23,18 @@ describe('initCONFIGS', () => {
       NODE_ENV: 'development',
       PROJECT_SRC: '/home/whoami/my-whook-project/src',
       log,
-      require: (require as unknown) as NodeRequire,
+      importer,
     });
 
     expect({
       CONFIGS,
-      logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
-      requireCalls: require.mock.calls,
+      logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
+      importerCalls: importer.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should fail with non-existing file', async () => {
-    require.mockImplementationOnce(() => {
+    importer.mockImplementationOnce(() => {
       throw new Error('EEXISTS');
     });
 
@@ -43,7 +43,7 @@ describe('initCONFIGS', () => {
         NODE_ENV: 'development',
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         log,
-        require: (require as unknown) as NodeRequire,
+        importer,
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
@@ -51,7 +51,7 @@ describe('initCONFIGS', () => {
         errorCode: err.code,
         errorParams: err.params,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
       }).toMatchSnapshot();
     }
   });

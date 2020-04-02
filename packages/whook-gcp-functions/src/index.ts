@@ -14,21 +14,15 @@ import initCompiler, {
   DEFAULT_COMPILER_OPTIONS,
 } from './services/compiler';
 import initBuildAutoloader from './services/_autoload';
-import Knifecycle, { SPECIAL_PROPS, constant, Autoloader } from 'knifecycle';
-import { WhookAPIOperationAddition } from '@whook/whook';
-import {
-  flattenOpenAPI,
-  getOpenAPIOperations,
-} from '@whook/http-router/dist/utils';
-import { OpenAPIV3 } from 'openapi-types';
-import { LogService } from 'common-services';
+import Knifecycle, { SPECIAL_PROPS, constant } from 'knifecycle';
+import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import type { Autoloader } from 'knifecycle';
+import type { WhookAPIOperationAddition } from '@whook/whook';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { LogService } from 'common-services';
 
-export {
-  WhookCompilerConfig,
-  WhookCompilerOptions,
-  WhookCompilerService,
-  DEFAULT_COMPILER_OPTIONS,
-};
+export type { WhookCompilerConfig, WhookCompilerOptions, WhookCompilerService };
+export { DEFAULT_COMPILER_OPTIONS };
 export type WhookAPIOperationAWSLambdaConfig = {
   type?: 'http' | 'cron' | 'consumer' | 'transformer';
   enabled?: boolean;
@@ -192,7 +186,7 @@ async function processOperations(
   await Promise.all(
     operations
       .slice(0, BUILD_PARALLELISM)
-      .map(operation =>
+      .map((operation) =>
         buildAnyLambda(
           { NODE_ENV, PROJECT_DIR, compiler, log, $autoload, buildInitializer },
           operation,
@@ -248,7 +242,7 @@ async function buildAnyLambda(
     const finalHandlerInitializer = applyWrapper(rootNode.initializer);
 
     const initializerContent = await buildInitializer(
-      finalHandlerInitializer[SPECIAL_PROPS.INJECT].map(name =>
+      finalHandlerInitializer[SPECIAL_PROPS.INJECT].map((name) =>
         name === 'OPERATION' ? `OPERATION>OPERATION_${finalEntryPoint}` : name,
       ),
     );
@@ -257,7 +251,7 @@ async function buildAnyLambda(
       path: buildDefinition.wrapper.path,
     });
 
-    await mkdirpAsync(lambdaPath);
+    await mkdirp(lambdaPath);
     await Promise.all([
       copyStaticFiles(
         { PROJECT_DIR, log },
@@ -330,7 +324,7 @@ async function copyStaticFiles(
 ) {
   await Promise.all(
     staticFiles.map(
-      async staticFile =>
+      async (staticFile) =>
         await copyFiles(
           { log },
           path.join(PROJECT_DIR, 'node_modules', staticFile),
@@ -347,7 +341,7 @@ async function copyFiles(
 ) {
   let theError;
   try {
-    await mkdirpAsync(destination);
+    await mkdirp(destination);
     const data = await readFileAsync(source, 'utf-8');
     await ensureFileAsync({ log }, destination, data, 'utf-8');
   } catch (err) {
@@ -382,20 +376,6 @@ async function ensureFileAsync(
   }
   log('debug', 'Write changed file:', path);
   return await writeFileAsync(path, content, encoding);
-}
-
-// Cannot promisify mkdirp easily so doing it by hand
-// https://github.com/substack/node-mkdirp/issues/136
-async function mkdirpAsync(path: string) {
-  return new Promise((resolve, reject) => {
-    mkdirp(path, err => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve();
-    });
-  });
 }
 
 // Taken from https://github.com/streamich/memfs/issues/404#issuecomment-522450466

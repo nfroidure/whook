@@ -1,5 +1,5 @@
 import initPrintEnvCommand from './printEnv';
-import { WhookCommandArgs } from '@whook/cli';
+import type { WhookCommandArgs } from '@whook/cli';
 
 describe('printEnvCommand', () => {
   const log = jest.fn();

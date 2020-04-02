@@ -1,9 +1,7 @@
-import { initializer } from 'knifecycle';
+import { autoService, name } from 'knifecycle';
 import { noop } from '../libs/utils';
-import { LogService } from 'common-services';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import type { LogService } from 'common-services';
+import type { ImporterService } from '..';
 
 /* Architecture Note #7: Port detection
 If no `PORT` configuration is specified in dependencies nor in ENV,
@@ -14,15 +12,7 @@ export type PortEnv = {
   PORT?: string;
 };
 
-export default initializer(
-  {
-    name: 'PORT',
-    type: 'service',
-    inject: ['?ENV', '?log'],
-    options: { singleton: true },
-  },
-  initPort,
-);
+export default name('PORT', autoService(initPort));
 
 /**
  * Initialize the PORT service from ENV or auto-detection if
@@ -31,19 +21,21 @@ export default initializer(
  * The services PORT depends on
  * @param  {Object}   [services.ENV={}]
  * An optional environment object
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
+ * @param  {Object}   services.importer
+ * A service allowing to dynamically import ES modules
  * @return {Promise<Number>}
  * A promise of a number representing the actual port.
  */
 async function initPort({
   ENV = {},
   log = noop,
-  require = _require,
+  importer,
 }: {
   ENV?: PortEnv;
   log?: LogService;
-  require?: typeof _require;
+  importer: ImporterService<{ getPortPromise: () => Promise<number> }>;
 }): Promise<number> {
   log('debug', `🏭 - Initializing the PORT service.`);
 
@@ -51,7 +43,8 @@ async function initPort({
     log('warning', `♻️ - Using ENV port ${ENV.PORT}`);
     return parseInt(ENV.PORT, 10);
   }
-  const port = (await require('portfinder').getPortPromise()) as number;
+
+  const port = await (await importer('portfinder')).getPortPromise();
 
   if (!port) {
     log('warning', `🚫 - Could not detect any free port.`);

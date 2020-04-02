@@ -30,7 +30,6 @@ describe('initCreateWhook', () => {
   const readFile = jest.fn();
   const exec = jest.fn();
   const copy = jest.fn();
-  const _require = jest.fn();
   const axios = jest.fn();
   const ora = jest.fn();
   const oraInstance = {
@@ -41,7 +40,6 @@ describe('initCreateWhook', () => {
 
   beforeEach(() => {
     axios.mockReset();
-    _require.mockReset();
     writeFile.mockReset();
     readFile.mockReset();
     exec.mockReset();
@@ -71,7 +69,7 @@ Mr Bean
   });
 
   it('should work', async () => {
-    _require.mockReturnValueOnce(packageJSON);
+    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
         [
@@ -82,7 +80,7 @@ Mr Bean
           'src/index.js',
           'coverage/index.html',
           'node_modules/whook/index.js',
-        ].map(fileName =>
+        ].map((fileName) =>
           filter(
             `${SOURCE_DIR}/${fileName}`,
             `${project.directory}/${fileName}`,
@@ -112,7 +110,6 @@ Mr Bean
       readFile,
       exec: exec as any,
       copy,
-      require: _require as any,
       axios: axios as any,
       ora: ora as any,
       log,
@@ -121,7 +118,6 @@ Mr Bean
     await createWhook();
 
     expect({
-      requireCalls: _require.mock.calls,
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       readFileCalls: readFile.mock.calls,
@@ -134,7 +130,7 @@ Mr Bean
   });
 
   it('should handle network issues', async () => {
-    _require.mockReturnValueOnce(packageJSON);
+    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
         [
@@ -145,7 +141,7 @@ Mr Bean
           'src/index.js',
           'coverage/index.html',
           'node_modules/whook/index.js',
-        ].map(fileName =>
+        ].map((fileName) =>
           filter(
             `${SOURCE_DIR}/${fileName}`,
             `${project.directory}/${fileName}`,
@@ -171,7 +167,6 @@ Mr Bean
       readFile,
       exec: exec as any,
       copy,
-      require: _require as any,
       axios: axios as any,
       ora: ora as any,
       log,
@@ -180,7 +175,6 @@ Mr Bean
     await createWhook();
 
     expect({
-      requireCalls: _require.mock.calls,
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       readFileCalls: readFile.mock.calls,
@@ -193,7 +187,7 @@ Mr Bean
   });
 
   it('should handle git initialization problems', async () => {
-    _require.mockReturnValueOnce(packageJSON);
+    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
     copy.mockResolvedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
       data: 'node_modules',
@@ -215,7 +209,6 @@ Mr Bean
       readFile,
       exec: exec as any,
       copy,
-      require: _require as any,
       axios: axios as any,
       ora: ora as any,
       log,
@@ -224,7 +217,6 @@ Mr Bean
     await createWhook();
 
     expect({
-      requireCalls: _require.mock.calls,
       copyCalls: copy.mock.calls,
       writeFileCalls: writeFile.mock.calls,
       readFileCalls: readFile.mock.calls,
@@ -237,7 +229,7 @@ Mr Bean
   });
 
   it('should fail with access problems', async () => {
-    _require.mockReturnValueOnce(packageJSON);
+    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
       data: 'node_modules',
@@ -260,7 +252,6 @@ Mr Bean
         readFile,
         exec: exec as any,
         copy,
-        require: _require as any,
         axios: axios as any,
         ora: ora as any,
         log,
@@ -273,7 +264,6 @@ Mr Bean
       expect({
         errorCode: err.code,
         errorParams: err.params,
-        requireCalls: _require.mock.calls,
         copyCalls: copy.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         readFileCalls: readFile.mock.calls,

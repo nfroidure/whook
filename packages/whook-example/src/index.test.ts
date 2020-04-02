@@ -5,7 +5,6 @@ import {
   prepareEnvironment as basePrepareEnvironment,
 } from './index';
 import axios from 'axios';
-import YError from 'yerror';
 
 const packageConf = require('../../../package');
 
@@ -71,8 +70,8 @@ describe('runServer', () => {
   it('should work', async () => {
     expect({
       debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls.map(filterPaths),
-      logErrorCalls: logger.error.mock.calls.map(filterPaths),
+      logInfoCalls: logger.info.mock.calls.map(filterPaths).sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
 
@@ -95,8 +94,8 @@ describe('runServer', () => {
       },
       data,
       debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls.map(filterPaths),
-      logErrorCalls: logger.error.mock.calls.map(filterPaths),
+      logInfoCalls: logger.info.mock.calls.map(filterPaths).sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
 
@@ -122,8 +121,8 @@ describe('runServer', () => {
       },
       data,
       debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls.map(filterPaths),
-      logErrorCalls: logger.error.mock.calls.map(filterPaths),
+      logInfoCalls: logger.info.mock.calls.map(filterPaths).sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
 
@@ -151,8 +150,9 @@ describe('runServer', () => {
       debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
       logInfoCalls: logger.info.mock.calls
         .map(filterPaths)
-        .filter(([arg1]) => arg1 !== 'ERROR'),
-      logErrorCalls: logger.error.mock.calls.map(filterPaths),
+        .filter(([arg1]) => arg1 !== 'ERROR')
+        .sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
 });
@@ -162,11 +162,11 @@ function sortLogs(strs1, strs2) {
 }
 
 function filterPaths(strs) {
-  return strs.map(str =>
+  return strs.map((str) =>
     'string' !== typeof str
       ? str
       : str.replace(
-          /('| )(\/[^/]+){1,}\/whook\//g,
+          /('| |^)(\/[^/]+){1,}\/whook\//g,
           '$1/home/whoiam/projects/whook/',
         ),
   );

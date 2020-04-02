@@ -1,8 +1,8 @@
 import { autoHandler } from 'knifecycle';
-import { getOpenAPIOperations } from '@whook/http-router/dist/utils';
-import { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
-import { OpenAPIV3 } from 'openapi-types';
+import { getOpenAPIOperations } from '@whook/http-router';
 import OpenAPIParser from 'swagger-parser';
+import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
+import type { OpenAPIV3 } from 'openapi-types';
 
 export default autoHandler(getOpenAPI);
 
@@ -70,7 +70,7 @@ async function getOpenAPI(
     ...API,
     paths: operations.reduce((paths, operation) => {
       if (operation.tags)
-        operation.tags.forEach(tag => {
+        operation.tags.forEach((tag) => {
           tagIsPresent[tag] = true;
         });
       if (
@@ -106,7 +106,7 @@ async function getOpenAPI(
 
       return paths;
     }, {}),
-    tags: API.tags ? API.tags.filter(tag => tagIsPresent[tag.name]) : [],
+    tags: API.tags ? API.tags.filter((tag) => tagIsPresent[tag.name]) : [],
   };
 
   return {

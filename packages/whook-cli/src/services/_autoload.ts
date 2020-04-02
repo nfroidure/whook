@@ -1,5 +1,6 @@
+import { noop } from '@whook/whook';
 import path from 'path';
-import initAutoloader from '@whook/whook/dist/services/_autoload';
+import { initAutoload } from '@whook/whook';
 import {
   wrapInitializer,
   alsoInject,
@@ -8,16 +9,29 @@ import {
   name,
 } from 'knifecycle';
 import YError from 'yerror';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import type { ImporterService } from '@whook/whook';
+import type { Autoloader } from 'knifecycle';
+import type { WhookCommandArgs } from '../../dist';
+import type { LogService } from 'common-services';
 
 export default alsoInject(
-  ['args', 'PROJECT_SRC', 'WHOOK_PLUGINS_PATHS', 'log'],
+  ['args', 'PROJECT_SRC', 'WHOOK_PLUGINS_PATHS', 'log', 'importer'],
   wrapInitializer(
     async (
-      { PROJECT_SRC, WHOOK_PLUGINS_PATHS, args, log, require = _require },
-      $autoload,
+      {
+        PROJECT_SRC,
+        WHOOK_PLUGINS_PATHS,
+        args,
+        log = noop,
+        importer,
+      }: {
+        PROJECT_SRC: string;
+        WHOOK_PLUGINS_PATHS: string[];
+        args: WhookCommandArgs;
+        log: LogService;
+        importer: ImporterService<any>;
+      },
+      $autoload: Autoloader,
     ) => {
       log('debug', '🤖 - Wrapping the whook autoloader.');
 
@@ -35,16 +49,16 @@ export default alsoInject(
           definition: {},
         };
       } else {
-        [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].some(basePath => {
+        for (const basePath of [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS]) {
           const finalPath = path.join(basePath, 'commands', commandName);
           try {
-            commandModule = require(finalPath);
-            return true;
+            commandModule = await importer(finalPath);
+            break;
           } catch (err) {
             log('debug', `Command "${commandName}" not found in: ${finalPath}`);
             log('debug-stack', err.stack);
           }
-        });
+        }
       }
 
       if (!commandModule) {
@@ -66,7 +80,7 @@ export default alsoInject(
         throw new YError('E_NO_COMMAND_DEFINITION', commandName);
       }
 
-      return async serviceName => {
+      return async (serviceName) => {
         if (serviceName === 'COMMAND_DEFINITION') {
           return {
             initializer: constant(serviceName, commandModule.definition),
@@ -83,6 +97,6 @@ export default alsoInject(
         return $autoload(serviceName);
       };
     },
-    initAutoloader,
+    initAutoload,
   ),
 );

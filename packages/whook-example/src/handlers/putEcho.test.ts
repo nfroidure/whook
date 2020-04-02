@@ -1,6 +1,6 @@
 import initPutEcho, { definition } from './putEcho';
 import YError from 'yerror';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('putEcho', () => {
   const log = jest.fn();

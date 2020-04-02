@@ -7,8 +7,6 @@ import {
   initDelayService,
   initProcessService,
   DEFAULT_LOG_ROUTING,
-  LogService,
-  ProcessServiceConfig,
 } from 'common-services';
 import initHTTPRouter, {
   OPEN_API_METHODS,
@@ -16,55 +14,54 @@ import initHTTPRouter, {
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-  ErrorHandlerConfig,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
   initErrorHandler,
-  HTTPRouterConfig,
-  HTTPRouterProvider,
-  HTTPRouterService,
 } from '@whook/http-router';
 import initHTTPTransaction, {
-  WhookOperation,
-  WhookRequest,
-  WhookResponse,
-  WhookHandler,
-  WhookHandlerFunction,
-  HTTPTransactionConfig,
-  HTTPTransactionService,
   initObfuscatorService,
-  ObfuscatorConfig,
-  ObfuscatorService,
   initAPMService,
-  APMService,
 } from '@whook/http-transaction';
-import initHTTPServer, {
+import initHTTPServer from '@whook/http-server';
+import initPort from './services/PORT';
+import initHost from './services/HOST';
+import initEnv from './services/ENV';
+import initProxyedENV from './services/ProxyedENV';
+import initBuildConstants from './services/BUILD_CONSTANTS';
+import initConfigs from './services/CONFIGS';
+import initImporter from './services/importer';
+import initProjectDir from './services/PROJECT_DIR';
+import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS';
+import initAPIDefinitions, {
+  DEFAULT_IGNORED_FILES_PREFIXES,
+  DEFAULT_IGNORED_FILES_SUFFIXES,
+  DEFAULT_REDUCED_FILES_SUFFIXES,
+} from './services/API_DEFINITIONS';
+import initAutoload, { HANDLER_REG_EXP } from './services/_autoload';
+import initGetPing, {
+  definition as initGetPingDefinition,
+} from './handlers/getPing';
+import type { PortEnv } from './services/PORT';
+import type {
   HTTPServerConfig,
   HTTPServerProvider,
   HTTPServerService,
   HTTPServerEnv,
 } from '@whook/http-server';
-import initPort, { PortEnv } from './services/PORT';
-import initHost, { HostEnv } from './services/HOST';
-import initEnv, { ENVConfig, ENVService } from './services/ENV';
-import initProxyedENV, { ProxyedENVConfig } from './services/ProxyedENV';
-import initBuildConstants, {
-  WhookBuildConstantsService,
-} from './services/BUILD_CONSTANTS';
-import initConfigs, {
+import type { HostEnv } from './services/HOST';
+import type { ENVConfig, ENVService } from './services/ENV';
+import type { ProxyedENVConfig } from './services/ProxyedENV';
+import type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS';
+import type {
   CONFIGSService,
   WhookConfig,
   CONFIGSConfig,
 } from './services/CONFIGS';
-import initProjectDir from './services/PROJECT_DIR';
-import initWhookPluginsPaths, {
+import type { ImporterService } from './services/importer';
+import type {
   WhookPluginsService,
   WhookPluginsPathsService,
   WhookPluginsPathsConfig,
 } from './services/WHOOK_PLUGINS_PATHS';
-import initAPIDefinitions, {
-  DEFAULT_IGNORED_FILES_PREFIXES,
-  DEFAULT_IGNORED_FILES_SUFFIXES,
+import type {
   WhookAPIDefinitions,
   WhookAPIOperationAddition,
   WhookAPIOperationConfig,
@@ -73,20 +70,77 @@ import initAPIDefinitions, {
   WhookAPIParameterDefinition,
   WhookAPISchemaDefinition,
 } from './services/API_DEFINITIONS';
-import initAutoload, {
-  HANDLER_REG_EXP,
+import type {
   AutoloadConfig,
   WhookWrapper,
   WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload';
-import initGetPing, {
-  definition as initGetPingDefinition,
-} from './handlers/getPing';
+import type { LogService, ProcessServiceConfig } from 'common-services';
+import type {
+  ErrorHandlerConfig,
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
+  HTTPRouterConfig,
+  HTTPRouterProvider,
+  HTTPRouterService,
+} from '@whook/http-router';
+import type {
+  WhookOperation,
+  WhookRequest,
+  WhookResponse,
+  WhookHandler,
+  WhookHandlerFunction,
+  HTTPTransactionConfig,
+  HTTPTransactionService,
+  ObfuscatorConfig,
+  ObfuscatorService,
+  APMService,
+} from '@whook/http-transaction';
 import { noop, identity, compose, pipe } from './libs/utils';
-import { OpenAPIV3 } from 'openapi-types';
-import { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
 
+export type {
+  WhookAPIDefinitions,
+  WhookAPIOperationAddition,
+  WhookAPIOperation,
+  WhookAPIHandlerDefinition,
+  WhookAPIParameterDefinition,
+  WhookAPISchemaDefinition,
+  WhookAPIOperationConfig,
+  WhookServiceMap,
+  WhookInitializerMap,
+  WhookBuildConstantsService,
+  ImporterService,
+  ENVService,
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
+  HTTPServerConfig,
+  HTTPServerProvider,
+  HTTPServerService,
+  ObfuscatorConfig,
+  ObfuscatorService,
+  APMService,
+  WhookPluginsService,
+  WhookPluginsPathsService,
+  CONFIGSService,
+  WhookConfig,
+  WhookOperation,
+  WhookRequest,
+  WhookResponse,
+  WhookHandler,
+  WhookHandlerFunction,
+  WhookWrapper,
+  ProxyedENVConfig,
+  HTTPTransactionService,
+  HTTPTransactionConfig,
+  HTTPRouterConfig,
+  HTTPRouterProvider,
+  HTTPRouterService,
+  PortEnv,
+  HostEnv,
+};
 export {
   noop,
   identity,
@@ -97,54 +151,20 @@ export {
   initAutoload,
   DEFAULT_IGNORED_FILES_PREFIXES,
   DEFAULT_IGNORED_FILES_SUFFIXES,
+  DEFAULT_REDUCED_FILES_SUFFIXES,
   initAPIDefinitions,
-  WhookAPIDefinitions,
-  WhookAPIOperationAddition,
-  WhookAPIOperation,
-  WhookAPIHandlerDefinition,
-  WhookAPIParameterDefinition,
-  WhookAPISchemaDefinition,
-  WhookAPIOperationConfig,
-  WhookServiceMap,
-  WhookInitializerMap,
-  WhookBuildConstantsService,
   initBuildConstants,
-  ENVService,
+  initImporter,
   initEnv,
-  ProxyedENVConfig,
   initProxyedENV,
-  PortEnv,
   initPort,
-  HostEnv,
   initHost,
-  WhookPluginsService,
-  WhookPluginsPathsService,
-  CONFIGSService,
-  WhookConfig,
-  WhookOperation,
-  WhookRequest,
-  WhookResponse,
-  WhookHandler,
-  WhookHandlerFunction,
-  WhookWrapper,
   OPEN_API_METHODS,
-  HTTPTransactionConfig,
-  HTTPTransactionService,
-  HTTPRouterConfig,
-  HTTPRouterProvider,
-  HTTPRouterService,
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
-  HTTPServerConfig,
-  HTTPServerProvider,
-  HTTPServerService,
-  ObfuscatorConfig,
-  ObfuscatorService,
-  APMService,
+  HANDLER_REG_EXP,
 };
 
 export type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
@@ -295,6 +315,9 @@ export async function prepareEnvironment(
    */
   const PWD = process.cwd();
   $.register(constant('PWD', PWD));
+
+  // Importer
+  $.register(initImporter);
 
   /* Architecture Note #3.2: `NODE_ENV` env var
   Whook has different behaviors depending on the `NODE_ENV` value

@@ -2,34 +2,33 @@ import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
-  DEFAULT_ERRORS_DESCRIPTORS,
 } from '@whook/whook';
-import Knifecycle, { constant, initializer } from 'knifecycle';
+import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import YError from 'yerror';
-import {
-  AUTHORIZATION_ERRORS_DESCRIPTORS,
-  wrapHandlerWithAuthorization,
-} from '@whook/authorization';
+import { wrapHandlerWithAuthorization } from '@whook/authorization';
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
+import { gql } from 'apollo-server-core';
+import { SchemaDirectiveVisitor } from 'graphql-tools';
+import { defaultFieldResolver } from 'graphql';
 import {
   initGetGraphQL,
   getGraphQLDefinition,
   initPostGraphQL,
   postGraphQLDefinition,
   initGraphQL,
+} from '.';
+import type {
   WhookGraphQLConfig,
   WhookGraphQLDependencies,
   WhookGraphQLService,
   WhookGraphQLFragmentService,
 } from '.';
-import { OpenAPIV3 } from 'openapi-types';
-import { gql } from 'apollo-server-core';
-import { SchemaDirectiveVisitor } from 'graphql-tools';
-import { defaultFieldResolver } from 'graphql';
+import type Knifecycle from 'knifecycle';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('GraphQL server', () => {
   const BASE_PATH = '/v1';
@@ -91,7 +90,7 @@ describe('GraphQL server', () => {
   class UpperCaseDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
       const { resolve = defaultFieldResolver } = field;
-      field.resolve = async function(...args) {
+      field.resolve = async function (...args) {
         const result = await resolve.apply(this, args);
         if (typeof result === 'string') {
           return result.toUpperCase();
@@ -138,14 +137,14 @@ describe('GraphQL server', () => {
           inject: ['getGraphQL', 'postGraphQL'],
           options: { singleton: true },
         },
-        async services => services,
+        async (services) => services,
       ),
     );
     $.register(constant('authentication', authentication));
     [
       initGetGraphQL,
       wrapHandlerWithAuthorization(initPostGraphQL),
-    ].forEach(handlerInitializer => $.register(handlerInitializer));
+    ].forEach((handlerInitializer) => $.register(handlerInitializer));
 
     const helloFragment: WhookGraphQLFragmentService = {
       typeDefs: gql`
@@ -202,7 +201,7 @@ describe('GraphQL server', () => {
     operationId: operation.operationId,
     authenticationData: requestContext.authenticationData,
   }));
-  $autoload.mockImplementation(async serviceName => {
+  $autoload.mockImplementation(async (serviceName) => {
     throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
   });
   process.env.ISOLATED_ENV = '1';
@@ -228,7 +227,7 @@ describe('GraphQL server', () => {
       time,
       $autoload,
       authentication.check,
-    ].forEach(mock => mock.mockReset());
+    ].forEach((mock) => mock.mockReset());
   });
 
   describe('should work', () => {

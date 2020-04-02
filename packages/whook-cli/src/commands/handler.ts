@@ -1,13 +1,15 @@
-import { extra, autoService, Injector, Parameters } from 'knifecycle';
+import { extra, autoService } from 'knifecycle';
 import YError from 'yerror';
 import { readArgs } from '../libs/args';
-import {
+import { noop } from '@whook/whook';
+import type { WhookHandler, WhookResponse } from '@whook/whook';
+import type {
   WhookCommandDefinition,
   PromptArgs,
   WhookCommandHandler,
 } from '../services/promptArgs';
-import { noop, WhookHandler, WhookResponse } from '@whook/whook';
-import { LogService } from 'common-services';
+import type { Injector, Parameters } from 'knifecycle';
+import type { LogService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {
   description: 'Runs the given server handler for testing purpose',

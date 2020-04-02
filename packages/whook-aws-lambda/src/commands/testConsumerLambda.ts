@@ -1,7 +1,8 @@
 import { loadLambda } from '../libs/utils';
 import { extra, autoService } from 'knifecycle';
-import { LogService } from 'common-services';
-import { readArgs, WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
+import { readArgs } from '@whook/cli';
+import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
+import type { LogService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing AWS consumer lambda',

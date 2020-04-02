@@ -1,19 +1,18 @@
 import { loadLambda } from '../libs/utils';
 import { extra, autoService } from 'knifecycle';
-import { LogService, TimeService } from 'common-services';
-import {
-  readArgs,
+import { readArgs } from '@whook/cli';
+import { noop } from '@whook/whook';
+import YError from 'yerror';
+import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import uuid from 'uuid';
+import { camelCase } from 'camel-case';
+import type { LogService, TimeService } from 'common-services';
+import type {
   WhookCommandArgs,
   WhookCommandDefinition,
   WhookCommandNamedArgs,
 } from '@whook/cli';
-import YError from 'yerror';
-import Knifecycle from 'knifecycle';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
-import uuid from 'uuid';
-import { camelCase } from 'camel-case';
-import { WhookConfig } from '@whook/whook';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing AWS HTTP lambda',
@@ -54,7 +53,7 @@ async function initTestHTTPLambdaCommand({
   PROJECT_DIR,
   API,
   time,
-  log,
+  log = noop,
   args,
 }: {
   NODE_ENV: string;
@@ -94,14 +93,14 @@ async function initTestHTTPLambdaCommand({
     const awsRequest = {
       pathParameters: ((OPERATION.parameters ||
         []) as OpenAPIV3.ParameterObject[])
-        .filter(p => p.in === 'path')
+        .filter((p) => p.in === 'path')
         .reduce((pathParameters, p) => {
           pathParameters[p.name] = '' + parameters[p.name];
           return pathParameters;
         }, {}),
       queryStringParameters: ((OPERATION.parameters ||
         []) as OpenAPIV3.ParameterObject[])
-        .filter(p => p.in === 'query')
+        .filter((p) => p.in === 'query')
         .reduce((queryStringParameters, p) => {
           queryStringParameters[p.name] =
             null != parameters[p.name]
@@ -110,7 +109,7 @@ async function initTestHTTPLambdaCommand({
           return queryStringParameters;
         }, {}),
       headers: ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[])
-        .filter(p => p.in === 'header')
+        .filter((p) => p.in === 'header')
         .reduce((headerParameters, p) => {
           headerParameters[p.name] = parameters[camelCase(p.name)];
           return headerParameters;

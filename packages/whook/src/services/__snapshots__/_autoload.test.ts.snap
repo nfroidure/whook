@@ -6,6 +6,7 @@ Object {
   "errorParams": Array [
     "getPing",
   ],
+  "importerCalls": Array [],
   "injectorCalls": Array [
     Array [
       Array [
@@ -23,7 +24,6 @@ Object {
       "🚫 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
     ],
   ],
-  "requireCalls": Array [],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/handlers/getPing",
@@ -34,6 +34,11 @@ Object {
 
 exports[`$autoload should work for API 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/services/API.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -55,11 +60,6 @@ Object {
       "💿 - Loading API initializer from /home/whoami/my-whook-project/src/services/API.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/services/API.js",
-    ],
-  ],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/services/API",
@@ -75,6 +75,11 @@ Object {
 
 exports[`$autoload should work for SERVICE_NAME_MAP 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -96,11 +101,6 @@ Object {
       "💿 - Loading SERVICE_NAME_MAP initializer from /home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js",
-    ],
-  ],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP",
@@ -116,6 +116,7 @@ Object {
 
 exports[`$autoload should work for a config constant 1`] = `
 Object {
+  "importerCalls": Array [],
   "injectorCalls": Array [
     Array [
       Array [
@@ -129,7 +130,6 @@ Object {
       "🤖 - Initializing the \`$autoload\` service.",
     ],
   ],
-  "requireCalls": Array [],
   "resolveCalls": Array [],
   "result": Object {
     "initializer": [Function],
@@ -141,6 +141,11 @@ Object {
 
 exports[`$autoload should work for configs 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/services/CONFIGS.js",
+    ],
+  ],
   "injectorCalls": Array [],
   "logCalls": Array [
     Array [
@@ -154,11 +159,6 @@ Object {
     Array [
       "debug",
       "💿 - Loading CONFIGS initializer from /home/whoami/my-whook-project/src/services/CONFIGS.js.",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/services/CONFIGS.js",
     ],
   ],
   "resolveCalls": Array [
@@ -180,6 +180,11 @@ Object {
 
 exports[`$autoload should work for handlers 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPing.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -201,11 +206,6 @@ Object {
       "💿 - Loading getPing initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/handlers/getPing.js",
-    ],
-  ],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/handlers/getPing",
@@ -224,6 +224,7 @@ Object {
   "HANDLERS": Object {
     "getPing": [Function],
   },
+  "importerCalls": Array [],
   "injectorCalls": Array [
     Array [
       Array [
@@ -242,7 +243,6 @@ Object {
       "🤖 - Initializing the \`$autoload\` service.",
     ],
   ],
-  "requireCalls": Array [],
   "resolveCalls": Array [],
   "result": Object {
     "initializer": [Function],
@@ -254,6 +254,11 @@ Object {
 
 exports[`$autoload should work for handlers in sub plugins 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -279,11 +284,6 @@ Object {
       "💿 - Loading getPing initializer from /var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js",
-    ],
-  ],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/handlers/getPing",
@@ -302,6 +302,11 @@ Object {
 
 exports[`$autoload should work for name mapped handlers 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPingMock.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -327,11 +332,6 @@ Object {
       "💿 - Loading getPing initializer via getPingMock resolution from /home/whoami/my-whook-project/src/handlers/getPingMock.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/handlers/getPingMock.js",
-    ],
-  ],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/handlers/getPingMock",
@@ -347,6 +347,11 @@ Object {
 
 exports[`$autoload should work for name mapped handlers with dynamic SERVICE_NAME_MAP 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPingMock.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -377,11 +382,6 @@ Object {
       "💿 - Loading getPing initializer via getPingMock resolution from /home/whoami/my-whook-project/src/handlers/getPingMock.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/handlers/getPingMock.js",
-    ],
-  ],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/handlers/getPingMock",
@@ -397,6 +397,11 @@ Object {
 
 exports[`$autoload should work for path mapped handlers 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-other-project/src/handlers/getPing.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -422,11 +427,6 @@ Object {
       "💿 - Loading getPing initializer from /home/whoami/my-other-project/src/handlers/getPing.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-other-project/src/handlers/getPing.js",
-    ],
-  ],
   "resolveCalls": Array [],
   "result": Object {
     "initializer": [Function],
@@ -438,6 +438,11 @@ Object {
 
 exports[`$autoload should work for wrapped handlers 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPing.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -462,11 +467,6 @@ Object {
     Array [
       "debug",
       "💿 - Loading getPingWrapped initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
   "resolveCalls": Array [
@@ -484,6 +484,11 @@ Object {
 
 exports[`$autoload should work with empty wrappers 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPing.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -510,11 +515,6 @@ Object {
       "💿 - Loading getPingWrapped initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
     ],
   ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/handlers/getPing.js",
-    ],
-  ],
   "resolveCalls": Array [
     Array [
       "/home/whoami/my-whook-project/src/handlers/getPing",
@@ -530,6 +530,11 @@ Object {
 
 exports[`$autoload should work with no wrappers 1`] = `
 Object {
+  "importerCalls": Array [
+    Array [
+      "/home/whoami/my-whook-project/src/handlers/getPing.js",
+    ],
+  ],
   "injectorCalls": Array [
     Array [
       Array [
@@ -549,11 +554,6 @@ Object {
     Array [
       "debug",
       "💿 - Loading getPing initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
-    ],
-  ],
-  "requireCalls": Array [
-    Array [
-      "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
   "resolveCalls": Array [

@@ -2,7 +2,7 @@ import { autoService } from 'knifecycle';
 import _inquirer from 'inquirer';
 import YError from 'yerror';
 import { exec as _exec } from 'child_process';
-import { LockService, LogService } from 'common-services';
+import type { LockService, LogService } from 'common-services';
 
 export interface AuthorService {
   name: string;
@@ -24,7 +24,7 @@ export default autoService(async function initAuthor({
   const [userName, userEmail] = await Promise.all([
     readGitProperty({ exec, log }, 'user.name'),
     readGitProperty({ exec, log }, 'user.email'),
-  ]).catch(err => {
+  ]).catch((err) => {
     log('debug', 'Could not get author from Git');
     log('debug-stack', err.stack);
     return [];

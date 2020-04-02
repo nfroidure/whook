@@ -4,7 +4,7 @@ import {
   augmentAPIWithCORS,
 } from '.';
 import { handler } from 'knifecycle';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHandlerWithCORS', () => {
   const CORS = {

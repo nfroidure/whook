@@ -1,11 +1,14 @@
 import url from 'url';
 import * as GraphiQL from 'apollo-server-module-graphiql';
-import { wrapInitializer, alsoInject, ProviderInitializer } from 'knifecycle';
-import { HTTPRouterService, noop, HTTPRouterProvider } from '@whook/whook';
-import { LogService } from 'common-services';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import { wrapInitializer, alsoInject } from 'knifecycle';
+import { noop } from '@whook/whook';
+import type {
+  HTTPRouterService,
+  HTTPRouterProvider,
+  ImporterService,
+} from '@whook/whook';
+import type { ProviderInitializer } from 'knifecycle';
+import type { LogService } from 'common-services';
 
 const DEFAULT_GRAPHIQL = {
   path: '/graphiql',
@@ -33,7 +36,7 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
   HOST: string;
   PORT: number;
   log: LogService;
-  require: typeof _require;
+  importer: ImporterService<any>;
 };
 
 /**
@@ -56,7 +59,7 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
         GRAPHIQL = DEFAULT_GRAPHIQL,
         ENV,
         log = noop,
-        require = _require,
+        importer,
       }: WhookGraphIQLDependencies,
       httpRouter: HTTPRouterProvider,
     ) => {
@@ -90,12 +93,12 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
             },
             req,
           ).then(
-            graphiqlString => {
+            (graphiqlString) => {
               res.setHeader('Content-Type', 'text/html');
               res.write(graphiqlString);
               res.end();
             },
-            error => {
+            (error) => {
               res.statusCode = 500;
               res.write(error.stack);
               res.end();
@@ -114,6 +117,7 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
         'PORT',
         '?GRAPHIQL',
         'ENV',
+        'importer',
         '?log',
       ],
       initHTTPRouter,

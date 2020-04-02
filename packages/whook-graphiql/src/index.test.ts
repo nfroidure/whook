@@ -6,9 +6,10 @@ import {
   initGetPingDefinition,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
-import wrapHTTPRouterWithGraphIQL, { WhookGraphIQLOptions } from '.';
 import YError from 'yerror';
-import { OpenAPIV3 } from 'openapi-types';
+import wrapHTTPRouterWithGraphIQL from '.';
+import type { WhookGraphIQLOptions } from '.';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPRouterWithGraphIQL', () => {
   const HOST = 'localhost';
@@ -33,7 +34,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
   };
   const debug = jest.fn();
   const time = jest.fn();
-  const $autoload = jest.fn(async serviceName => {
+  const $autoload = jest.fn(async (serviceName) => {
     throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
   });
   const GRAPHIQL: WhookGraphIQLOptions = {

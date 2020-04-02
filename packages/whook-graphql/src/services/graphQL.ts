@@ -1,13 +1,9 @@
-import { autoService, Provider } from 'knifecycle';
-import YError from 'yerror';
-import { noop, WhookOperation } from '@whook/whook';
-import { LogService } from 'common-services';
-import {
-  ApolloServerBase,
-  gql,
-  Config,
-  GraphQLOptions,
-} from 'apollo-server-core';
+import { autoService } from 'knifecycle';
+import { noop } from '@whook/whook';
+import { ApolloServerBase, gql } from 'apollo-server-core';
+import type { WhookOperation } from '@whook/whook';
+import type { LogService } from 'common-services';
+import type { Config, GraphQLOptions } from 'apollo-server-core';
 
 type DocumentNode = ReturnType<typeof gql>;
 type ElementOf<A> = A extends (infer T)[] ? T : never;

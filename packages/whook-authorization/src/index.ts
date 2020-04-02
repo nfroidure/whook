@@ -1,25 +1,18 @@
-import {
-  SPECIAL_PROPS,
-  reuseSpecialProps,
-  alsoInject,
-  ServiceInitializer,
-  Parameters,
-  Dependencies,
-} from 'knifecycle';
+import { SPECIAL_PROPS, reuseSpecialProps, alsoInject } from 'knifecycle';
 import HTTPError from 'yhttperror';
-import {
-  WhookHandler,
-  WhookOperation,
-  WhookErrorsDescriptors,
-  DEFAULT_ERROR_URI,
-  DEFAULT_HELP_URI,
-} from '@whook/whook';
-import { LogService } from 'common-services';
+import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import {
   parseAuthorizationHeader,
   buildWWWAuthenticateHeader,
   BEARER as BEARER_MECHANISM,
 } from 'http-auth-utils';
+import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
+import type {
+  WhookHandler,
+  WhookOperation,
+  WhookErrorsDescriptors,
+} from '@whook/whook';
+import type { LogService } from 'common-services';
 
 export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_OPERATION_REQUIRED: {
@@ -164,7 +157,7 @@ async function handleWithAuthorization<
     'undefined' === typeof operation.security ||
     operation.security.length === 0;
   const optionalAuth = (operation.security || []).some(
-    security => Object.keys(security).length === 0,
+    (security) => Object.keys(security).length === 0,
   );
   const authorization =
     parameters.access_token && DEFAULT_MECHANISM
@@ -185,9 +178,9 @@ async function handleWithAuthorization<
   } else {
     let parsedAuthorization;
 
-    const usableMechanisms = MECHANISMS.filter(mechanism =>
+    const usableMechanisms = MECHANISMS.filter((mechanism) =>
       operation.security.find(
-        security => security[`${mechanism.type.toLowerCase()}Auth`],
+        (security) => security[`${mechanism.type.toLowerCase()}Auth`],
       ),
     );
 
@@ -208,7 +201,7 @@ async function handleWithAuthorization<
         if (
           err.code === 'E_UNKNOWN_AUTH_MECHANISM' &&
           MECHANISMS.some(
-            mechanism =>
+            (mechanism) =>
               authorization.substr(0, mechanism.type.length) === mechanism.type,
           )
         ) {
@@ -219,7 +212,7 @@ async function handleWithAuthorization<
 
       const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
       const requiredScopes = (operation.security.find(
-        security => security[authName],
+        (security) => security[authName],
       ) || { [authName]: [] })[authName];
 
       // If security exists, we need at least one scope
@@ -246,7 +239,7 @@ async function handleWithAuthorization<
 
       // Check scopes
       if (
-        !requiredScopes.some(requiredScope =>
+        !requiredScopes.some((requiredScope) =>
           authenticationData.scope.split(',').includes(requiredScope),
         )
       ) {

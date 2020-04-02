@@ -1,16 +1,11 @@
 import bytes from 'bytes';
-import Stream, { Transform } from 'stream';
-import { initializer, Provider } from 'knifecycle';
+import Stream from 'stream';
+import { initializer } from 'knifecycle';
 import HTTPError from 'yhttperror';
 import YError from 'yerror';
 import Siso from 'siso';
 import Ajv from 'ajv';
 import strictQs from 'strict-qs';
-import {
-  WhookHandler,
-  WhookOperation,
-  HTTPTransactionService,
-} from '@whook/http-transaction';
 import {
   OPEN_API_METHODS,
   flattenOpenAPI,
@@ -53,9 +48,16 @@ import {
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
 } from './constants';
-import { OpenAPIV3 } from 'openapi-types';
-import { LogService } from 'common-services';
-import { IncomingMessage, ServerResponse } from 'http';
+import type { Provider } from 'knifecycle';
+import type { Transform } from 'stream';
+import type {
+  WhookHandler,
+  WhookOperation,
+  HTTPTransactionService,
+} from '@whook/http-transaction';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { LogService } from 'common-services';
+import type { IncomingMessage, ServerResponse } from 'http';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
@@ -65,6 +67,14 @@ function identity(x) {
   return x;
 }
 
+export type {
+  WhookErrorHandler,
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
+  ErrorHandlerConfig,
+  BodySpec,
+  ResponseSpec,
+};
 export {
   OPEN_API_METHODS,
   DEFAULT_DEBUG_NODE_ENVS,
@@ -74,18 +84,26 @@ export {
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
   initErrorHandler,
-  WhookErrorHandler,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-  ErrorHandlerConfig,
   flattenOpenAPI,
   getOpenAPIOperations,
-  BodySpec,
-  ResponseSpec,
+  extractOperationSecurityParameters,
+  prepareParametersValidators,
+  prepareBodyValidator,
+  applyValidators,
+  filterHeaders,
+  extractBodySpec,
+  extractResponseSpec,
+  checkResponseCharset,
+  checkResponseMediaType,
+  executeHandler,
+  extractProduceableMediaTypes,
+  extractConsumableMediaTypes,
+  getBody,
+  sendBody,
 };
 
 export type WhookQueryStringParser = (
@@ -355,8 +373,8 @@ async function initHTTPRouter({
             );
             // TODO: Update strictQS to handle OpenAPI 3
             const retroCompatibleQueryParameters = (operation.parameters || [])
-              .filter(p => p.in === 'query')
-              .map(p => ({ ...p, ...p.schema }));
+              .filter((p) => p.in === 'query')
+              .map((p) => ({ ...p, ...p.schema }));
 
             parameters = {
               ...pathParameters,
@@ -426,7 +444,7 @@ async function initHTTPRouter({
         })
         .catch(transaction.catch)
         .catch(errorHandler.bind(null, transaction.id, responseSpec))
-        .then(async response => {
+        .then(async (response) => {
           if (response.body && 'head' === request.method) {
             log(
               'warning',
@@ -462,7 +480,7 @@ function _explodePath(path, parameters) {
   return path
     .split(PATH_SEPARATOR)
     .filter(identity)
-    .map(node => {
+    .map((node) => {
       const matches = /^{([a-z0-9]+)}$/i.exec(node);
 
       if (!matches) {
@@ -470,7 +488,7 @@ function _explodePath(path, parameters) {
       }
 
       const parameter = (parameters || []).find(
-        aParameter => aParameter.name === matches[1],
+        (aParameter) => aParameter.name === matches[1],
       );
 
       if (!parameter) {
@@ -497,7 +515,7 @@ async function _createRouters({
   const flattenedAPI = await flattenOpenAPI(API);
   const operations = await getOpenAPIOperations(flattenedAPI);
 
-  operations.forEach(operation => {
+  operations.forEach((operation) => {
     const { path, method, operationId, parameters } = operation;
 
     if (!path.startsWith(PATH_SEPARATOR)) {
@@ -516,8 +534,8 @@ async function _createRouters({
     // TODO: create a new major version of Siso to handle OpenAPI
     // path params mode widely
     const pathParameters = ((parameters || []) as OpenAPIV3.ParameterObject[])
-      .filter(p => 'path' === p.in)
-      .map(p => {
+      .filter((p) => 'path' === p.in)
+      .map((p) => {
         if (p.style) {
           log('warning', '⚠️ - Only a style subset is supported currently!');
         }

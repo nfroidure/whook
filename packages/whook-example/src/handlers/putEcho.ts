@@ -1,8 +1,8 @@
 import { autoHandler } from 'knifecycle';
 import YHTTPError from 'yhttperror';
-import { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
-import { OpenAPIV3 } from 'openapi-types';
-import { LogService } from 'common-services';
+import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { LogService } from 'common-services';
 
 const echoSchema: OpenAPIV3.SchemaObject = {
   type: 'object',

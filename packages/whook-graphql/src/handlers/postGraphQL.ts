@@ -1,16 +1,17 @@
 import { autoHandler } from 'knifecycle';
 import HTTPError from 'yhttperror';
-import {
+import { noop } from '@whook/whook';
+import { Headers } from 'apollo-server-env';
+import { runHttpQuery } from 'apollo-server-core';
+import type {
   WhookAPIHandlerDefinition,
   WhookOperation,
-  noop,
   WhookResponse,
 } from '@whook/whook';
-import { GraphQLSchema } from 'graphql';
-import { LogService } from 'common-services';
-import { WhookGraphQLService } from '..';
-import { HttpQueryError, runHttpQuery } from 'apollo-server-core';
-import { Headers } from 'apollo-server-env';
+import type { GraphQLSchema } from 'graphql';
+import type { LogService } from 'common-services';
+import type { WhookGraphQLService } from '..';
+import type { HttpQueryError } from 'apollo-server-core';
 
 // Serving GraphQL over HTTP
 // https://graphql.org/learn/serving-over-http/
@@ -98,7 +99,7 @@ async function postGraphQL<
       status: 200,
       // Remove content related headers and lowercase them
       headers: Object.keys(responseInit.headers || {})
-        .filter(key => !/content-\w+/i.test(key))
+        .filter((key) => !/content-\w+/i.test(key))
         .reduce(
           (keptsHeaders, key) => ({
             ...keptsHeaders,

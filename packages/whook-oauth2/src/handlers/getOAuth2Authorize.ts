@@ -1,18 +1,18 @@
 import { autoHandler } from 'knifecycle';
 import { camelCase } from 'camel-case';
 import YError from 'yerror';
-import {
+import type {
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookResponse,
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
 } from '@whook/whook';
-import {
+import type {
   OAuth2Options,
   OAuth2GranterService,
 } from '../services/oAuth2Granters';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
 
 /* Architecture Note #1: OAuth2 authorize
 This endpoint simply redirect the user to the authentication
@@ -146,7 +146,7 @@ async function getOAuth2Authorize(
 
   try {
     const granter = oAuth2Granters.find(
-      granter =>
+      (granter) =>
         granter.authorizer && granter.authorizer.responseType === responseType,
     );
 

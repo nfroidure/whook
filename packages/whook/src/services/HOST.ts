@@ -1,24 +1,14 @@
-import { initializer } from 'knifecycle';
+import { autoService, name } from 'knifecycle';
 import { noop } from '../libs/utils';
-import { LogService } from 'common-services';
-
-// Needed to avoid messing up babel builds 🤷
-const _require = require;
+import type { LogService } from 'common-services';
+import type { ImporterService } from '..';
 
 /* Architecture Note #6: IP detection
 If no `HOST` configuration is specified in dependencies nor in ENV,
  this service detects the machine host automagically.
 */
 
-export default initializer(
-  {
-    name: 'HOST',
-    type: 'service',
-    inject: ['?ENV', '?log'],
-    options: { singleton: true },
-  },
-  initHost,
-);
+export default name('HOST', autoService(initHost));
 
 export type HostEnv = {
   HOST?: string;
@@ -31,19 +21,21 @@ export type HostEnv = {
  * The services HOST depends on
  * @param  {Object}   [services.ENV={}]
  * An optional environment object
- * @param  {Object}   [log=noop]
+ * @param  {Object}   [services.log=noop]
  * An optional logging service
+ * @param  {Object}   services.importer
+ * A service allowing to dynamically import ES modules
  * @return {Promise<String>}
  * A promise of a containing the actual host.
  */
 async function initHost({
   ENV = {},
   log = noop,
-  require = _require,
+  importer,
 }: {
   ENV?: HostEnv;
   log?: LogService;
-  require?: typeof _require;
+  importer: ImporterService<{ v4: () => Promise<string> }>;
 }): Promise<string> {
   log('debug', `🏭 - Initializing the HOST service.`);
 
@@ -51,7 +43,7 @@ async function initHost({
     log('warning', `♻️ - Using ENV host ${ENV.HOST}`);
     return ENV.HOST;
   }
-  const host = (await require('internal-ip').v4()) as string;
+  const host = await (await importer('internal-ip')).v4();
 
   if (!host) {
     log('warning', `🚫 - Could not detect any host. Fallbacking to localhost.`);

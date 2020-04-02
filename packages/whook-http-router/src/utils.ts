@@ -1,7 +1,7 @@
 import OpenAPIParser from 'swagger-parser';
 import YError from 'yerror';
-import { OpenAPIV3 } from 'openapi-types';
-import { WhookOperation } from '@whook/http-transaction';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { WhookOperation } from '@whook/http-transaction';
 
 export const OPEN_API_METHODS = [
   'options',
@@ -67,7 +67,7 @@ export function getOpenAPIOperations(
   return Object.keys(API.paths).reduce(
     (operations, path) =>
       Object.keys(API.paths[path])
-        .filter(key => OPEN_API_METHODS.includes(key))
+        .filter((key) => OPEN_API_METHODS.includes(key))
         .reduce(
           (operations, method) =>
             operations.concat({

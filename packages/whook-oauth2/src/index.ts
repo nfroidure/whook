@@ -19,6 +19,13 @@ import initPostOAuth2Token, {
 } from './handlers/postOAuth2Token';
 import initOAuth2Granters, {
   OAUTH2_ERRORS_DESCRIPTORS,
+} from './services/oAuth2Granters';
+import initOAuth2ClientCredentialsGranter from './services/oAuth2ClientCredentialsGranter';
+import initOAuth2CodeGranter from './services/oAuth2CodeGranter';
+import initOAuth2PasswordGranter from './services/oAuth2PasswordGranter';
+import initOAuth2RefreshTokenGranter from './services/oAuth2RefreshTokenGranter';
+import initOAuth2TokenGranter from './services/oAuth2TokenGranter';
+import type {
   OAuth2CodeService,
   OAuth2PasswordService,
   OAuth2AccessTokenService,
@@ -28,12 +35,17 @@ import initOAuth2Granters, {
   OAuth2Options,
   OAuth2Config,
 } from './services/oAuth2Granters';
-import initOAuth2ClientCredentialsGranter from './services/oAuth2ClientCredentialsGranter';
-import initOAuth2CodeGranter from './services/oAuth2CodeGranter';
-import initOAuth2PasswordGranter from './services/oAuth2PasswordGranter';
-import initOAuth2RefreshTokenGranter from './services/oAuth2RefreshTokenGranter';
-import initOAuth2TokenGranter from './services/oAuth2TokenGranter';
 
+export type {
+  OAuth2CodeService,
+  OAuth2PasswordService,
+  OAuth2AccessTokenService,
+  OAuth2RefreshTokenService,
+  CheckApplicationService,
+  OAuth2GranterService,
+  OAuth2Options,
+  OAuth2Config,
+};
 export {
   initGetOAuth2Authorize,
   getOAuth2AuthorizeDefinition,
@@ -52,14 +64,6 @@ export {
   postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
   OAUTH2_ERRORS_DESCRIPTORS,
-  OAuth2CodeService,
-  OAuth2PasswordService,
-  OAuth2AccessTokenService,
-  OAuth2RefreshTokenService,
-  CheckApplicationService,
-  OAuth2GranterService,
-  OAuth2Options,
-  OAuth2Config,
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
   initOAuth2CodeGranter,

@@ -1,7 +1,9 @@
-import { reuseSpecialProps, alsoInject, ServiceInitializer } from 'knifecycle';
-import { noop, WhookOperation, APMService, WhookHandler } from '@whook/whook';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { noop } from '@whook/whook';
 import YError from 'yerror';
-import { TimeService, LogService } from 'common-services';
+import type { WhookOperation, APMService, WhookHandler } from '@whook/whook';
+import type { ServiceInitializer } from 'knifecycle';
+import type { TimeService, LogService } from 'common-services';
 
 type TransformerWrapperDependencies = {
   NODE_ENV: string;
@@ -55,7 +57,7 @@ async function handleForAWSTransformerLambda(
     OPERATION,
     apm,
     time = Date.now.bind(Date),
-    log,
+    log = noop,
   }: TransformerWrapperDependencies,
   handler: WhookHandler,
   event: { records: EncodedRecord[] },

@@ -1,23 +1,24 @@
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args';
 import YError from 'yerror';
-import {
-  WhookCommandHandler,
-  WhookCommandDefinition,
-  PromptArgs,
-} from '../services/promptArgs';
-import { OPEN_API_METHODS, ENVService, noop, WhookConfigs } from '@whook/whook';
-import { LogService } from 'common-services';
 import { camelCase } from 'camel-case';
-import { HANDLER_REG_EXP } from '@whook/whook/dist/services/_autoload';
+import { HANDLER_REG_EXP } from '@whook/whook';
 import _inquirer from 'inquirer';
 import path from 'path';
-import { OpenAPIV3 } from 'openapi-types';
+import { OPEN_API_METHODS, noop } from '@whook/whook';
 import {
   writeFile as _writeFile,
   ensureDir as _ensureDir,
   pathExists as _pathExists,
 } from 'fs-extra';
+import type { ENVService, WhookConfigs } from '@whook/whook';
+import type {
+  WhookCommandHandler,
+  WhookCommandDefinition,
+  PromptArgs,
+} from '../services/promptArgs';
+import type { LogService } from 'common-services';
+import type { OpenAPIV3 } from 'openapi-types';
 
 // Currently, we rely on a static list of services but
 // best would be to use TypeScript introspection and
@@ -131,7 +132,7 @@ async function initCreateCommand({
 
     const servicesTypes = services
       .sort()
-      .map(name => ({
+      .map((name) => ({
         name,
         type: allTypes[name],
       }))
@@ -157,22 +158,22 @@ async function initCreateCommand({
 }`
       : '';
     const commonServices = services.filter(
-      service => commonServicesTypes[service],
+      (service) => commonServicesTypes[service],
     );
     const whookServices = services.filter(
-      service => whookServicesTypes[service],
+      (service) => whookServicesTypes[service],
     );
     const imports =
       (commonServices.length
         ? `
 import { ${commonServices
-            .map(name => commonServicesTypes[name])
+            .map((name) => commonServicesTypes[name])
             .join(', ')} } from 'common-services';`
         : '') +
       (whookServices.length
         ? `
 import { ${whookServices
-            .map(name => whookServicesTypes[name])
+            .map((name) => whookServicesTypes[name])
             .join(', ')} } from '@whook/whook';`
         : '') +
       (type === 'command'
@@ -195,7 +196,7 @@ import {
           type: 'list',
           message: 'Give the handler method',
           choices: OPEN_API_METHODS,
-          default: [HANDLER_REG_EXP.exec(finalName)[1]].filter(maybeMethod =>
+          default: [HANDLER_REG_EXP.exec(finalName)[1]].filter((maybeMethod) =>
             OPEN_API_METHODS.includes(maybeMethod),
           )[0],
         },
@@ -322,7 +323,7 @@ export const definition: WhookAPIHandlerDefinition = {
   operation: {
     operationId: '${name}',
     summary: '${description.replace(/'/g, "\\'")}',
-    tags: [${tags.map(tag => `'${tag}'`).join(', ')}],
+    tags: [${tags.map((tag) => `'${tag}'`).join(', ')}],
     parameters: [
       {
         name: 'param',
@@ -402,8 +403,9 @@ export type ${upperCamelizedName}Dependencies = ${typesDeclaration || '{}'};
 
 export default autoService(init${upperCamelizedName});
 
-async function init${upperCamelizedName}(${parametersDeclaration ||
-    '_'}: ${upperCamelizedName}Dependencies): Promise<${upperCamelizedName}Service> {
+async function init${upperCamelizedName}(${
+    parametersDeclaration || '_'
+  }: ${upperCamelizedName}Dependencies): Promise<${upperCamelizedName}Service> {
   // Instantiate and return your service
   return {};
 }
@@ -426,8 +428,9 @@ export type ${upperCamelizedName}Dependencies = ${typesDeclaration || '{}'};
 
 export default autoProvider(init${upperCamelizedName});
 
-async function init${upperCamelizedName}(${parametersDeclaration ||
-    '_'}: ${upperCamelizedName}Dependencies): Promise<${upperCamelizedName}Provider> {
+async function init${upperCamelizedName}(${
+    parametersDeclaration || '_'
+  }: ${upperCamelizedName}Dependencies): Promise<${upperCamelizedName}Provider> {
   // Instantiate and return your service
   return {
     service: {},
@@ -473,8 +476,9 @@ export const definition: WhookCommandDefinition = {
 
 export default extra(definition, autoService(init${upperCamelizedName}Command));
 
-async function init${upperCamelizedName}Command(${parametersDeclaration ||
-    '_'}: ${typesDeclaration || {}}): Promise<WhookCommandHandler> {
+async function init${upperCamelizedName}Command(${
+    parametersDeclaration || '_'
+  }: ${typesDeclaration || {}}): Promise<WhookCommandHandler> {
   return async () => {
     const { param } = readArgs(
       definition.arguments,

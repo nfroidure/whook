@@ -1,8 +1,8 @@
-import { HTTPRouterService } from '@whook/http-router';
 import initHTTPServer from './index';
 import axios from 'axios';
 import net from 'net';
 import YError from 'yerror';
+import type { HTTPRouterService } from '@whook/http-router';
 
 describe('initHTTPServer', () => {
   const PORT = 7777;
@@ -89,9 +89,9 @@ describe('initHTTPServer', () => {
     });
 
     try {
-      httpServer.service.close = ((realClose => async cb => {
+      httpServer.service.close = (((realClose) => async (cb) => {
         await new Promise((resolve, reject) => {
-          realClose(err => (err && (reject(err) as any)) || resolve());
+          realClose((err) => (err && (reject(err) as any)) || resolve());
         });
 
         cb(new YError('E_ERROR'));

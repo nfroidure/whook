@@ -1,4 +1,4 @@
-import { PassThrough } from 'stream';
+import stream from 'stream';
 import qs from 'qs';
 
 export const DEFAULT_DEBUG_NODE_ENVS = ['test', 'development'];
@@ -16,10 +16,10 @@ export const DEFAULT_STRINGIFYERS = {
     qs.stringify(content),
 };
 export const DEFAULT_DECODERS = {
-  'utf-8': PassThrough,
+  'utf-8': stream.PassThrough,
 };
 export const DEFAULT_ENCODERS = {
-  'utf-8': PassThrough,
+  'utf-8': stream.PassThrough,
 };
 
 function ensureString(maybeString: any): string {

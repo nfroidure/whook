@@ -1,7 +1,6 @@
 import initPostOAuth2Token from './postOAuth2Token';
-import { OAuth2GranterService } from '..';
-import oAuth2CodeGranter from '../services/oAuth2CodeGranter';
 import YError from 'yerror';
+import type { OAuth2GranterService } from '..';
 
 describe('postOAuth2Token', () => {
   const log = jest.fn();

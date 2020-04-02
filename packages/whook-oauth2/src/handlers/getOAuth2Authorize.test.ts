@@ -2,7 +2,7 @@ import initGetOAuth2Authorize from './getOAuth2Authorize';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters';
 import YError from 'yerror';
-import { OAuth2Options, OAuth2GranterService } from '..';
+import type { OAuth2Options, OAuth2GranterService } from '..';
 
 describe('getOAuth2Authorize', () => {
   const OAUTH2: OAuth2Options = {
@@ -37,7 +37,7 @@ describe('getOAuth2Authorize', () => {
       codeGranter.authenticator.authenticate,
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
-    ].forEach(mock => mock.mockReset());
+    ].forEach((mock) => mock.mockReset());
   });
 
   test('should redirect', async () => {
@@ -46,7 +46,7 @@ describe('getOAuth2Authorize', () => {
       codeGranter.authenticator.authenticate,
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
-    ].forEach(mock =>
+    ].forEach((mock) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
     codeGranter.authorizer.authorize.mockResolvedValueOnce({
@@ -78,7 +78,7 @@ describe('getOAuth2Authorize', () => {
       }
     `);
     expect({
-      logCalls: log.mock.calls.filter(args => args[0].endsWith('stack')),
+      logCalls: log.mock.calls.filter((args) => args[0].endsWith('stack')),
       codeGranterAuthorizerAuthorizeCalls:
         codeGranter.authorizer.authorize.mock.calls,
       codeGranterAcknowledgerAcknowledgeCalls:
@@ -99,7 +99,7 @@ describe('getOAuth2Authorize', () => {
       codeGranter.authenticator.authenticate,
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
-    ].forEach(mock =>
+    ].forEach((mock) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
 

@@ -1,11 +1,11 @@
 import { autoHandler } from 'knifecycle';
-import {
+import type {
   WhookResponse,
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookHandlerFunction,
 } from '@whook/whook';
-import { DelayService } from 'common-services';
+import type { DelayService } from 'common-services';
 
 export const durationParameter: WhookAPIParameterDefinition = {
   name: 'duration',

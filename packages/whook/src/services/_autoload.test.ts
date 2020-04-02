@@ -6,13 +6,13 @@ import { identity } from '../libs/utils';
 describe('$autoload', () => {
   const log = jest.fn();
   const $injector = jest.fn();
-  const require = jest.fn();
+  const importer = jest.fn();
   const resolve = jest.fn();
 
   beforeEach(() => {
     log.mockReset();
     $injector.mockReset();
-    require.mockReset();
+    importer.mockReset();
     resolve.mockReset();
   });
 
@@ -21,7 +21,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/services/CONFIGS.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: {
           CONFIG: {
             testConfig: 'test',
@@ -37,7 +37,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('CONFIGS');
@@ -46,7 +46,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -68,7 +68,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('CONFIG');
@@ -77,7 +77,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -93,7 +93,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/services/API.js',
       );
-      require.mockImplementationOnce(() => ({
+      importer.mockImplementationOnce(() => ({
         default: service(async () => ({ info: {} }), 'API'),
       }));
 
@@ -105,7 +105,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('API');
@@ -114,7 +114,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -130,7 +130,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js',
       );
-      require.mockImplementationOnce(() => ({
+      importer.mockImplementationOnce(() => ({
         default: service(async () => ({ info: {} }), 'SERVICE_NAME_MAP'),
       }));
 
@@ -141,7 +141,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('SERVICE_NAME_MAP');
@@ -150,7 +150,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -189,7 +189,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPing.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       });
 
@@ -201,7 +201,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('HANDLERS');
@@ -211,7 +211,7 @@ describe('$autoload', () => {
         HANDLERS: await result.initializer({ getPing: () => {} }),
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -230,7 +230,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPing.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       });
 
@@ -242,7 +242,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPing');
@@ -251,7 +251,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -270,7 +270,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPingMock.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(
           async () => async () => ({ status: 200 }),
           'getPingMock',
@@ -287,7 +287,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPing');
@@ -296,7 +296,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -320,7 +320,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPingMock.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(
           async () => async () => ({ status: 200 }),
           'getPingMock',
@@ -334,7 +334,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPing');
@@ -343,7 +343,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -362,7 +362,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPing.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       });
 
@@ -376,7 +376,7 @@ describe('$autoload', () => {
         },
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPing');
@@ -385,7 +385,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -407,7 +407,7 @@ describe('$autoload', () => {
       resolve.mockImplementationOnce(
         () => '/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       });
 
@@ -422,7 +422,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPing');
@@ -431,7 +431,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -450,7 +450,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPing.js',
       );
-      require.mockImplementationOnce(() => ({
+      importer.mockImplementationOnce(() => ({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       }));
 
@@ -461,7 +461,7 @@ describe('$autoload', () => {
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPing');
@@ -470,7 +470,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -492,7 +492,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPing.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       });
 
@@ -503,7 +503,7 @@ describe('$autoload', () => {
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPingWrapped');
@@ -512,7 +512,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -534,7 +534,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPing.js',
       );
-      require.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       });
 
@@ -545,7 +545,7 @@ describe('$autoload', () => {
         SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
       const result = await $autoload('getPingWrapped');
@@ -554,7 +554,7 @@ describe('$autoload', () => {
         result,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
-        requireCalls: require.mock.calls,
+        importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchSnapshot();
     });
@@ -584,7 +584,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
-        require: (require as unknown) as any,
+        importer,
         resolve: (resolve as unknown) as any,
       });
 
@@ -595,9 +595,9 @@ describe('$autoload', () => {
         expect({
           errorCode: err.code,
           errorParams: err.params,
-          logCalls: log.mock.calls.filter(args => 'stack' !== args[0]),
+          logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
           injectorCalls: $injector.mock.calls,
-          requireCalls: require.mock.calls,
+          importerCalls: importer.mock.calls,
           resolveCalls: resolve.mock.calls,
         }).toMatchSnapshot();
       }
