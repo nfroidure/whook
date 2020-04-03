@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-router",
-  "version": "4.0.0-alpha.42",
+  "version": "4.0.0-alpha.43",
   "description": "The Whook base HTTP router",
   "keywords": [
     "whook",
@@ -54,8 +54,9 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
+    "@apidevtools/swagger-parser": "^9.0.1",
     "@types/qs": "^6.9.0",
-    "@whook/http-transaction": "^4.0.0-alpha.42",
+    "@whook/http-transaction": "^4.0.0-alpha.43",
     "ajv": "^6.12.0",
     "bytes": "^3.1.0",
     "camel-case": "^4.1.1",
@@ -69,7 +70,6 @@
     "qs": "^6.9.3",
     "siso": "^3.2.0",
     "strict-qs": "^6.1.1",
-    "@apidevtools/swagger-parser": "^9.0.1",
     "yerror": "^5.0.0",
     "yhttperror": "^5.0.0"
   },
