@@ -55,7 +55,7 @@
     "ajv": "^6.12.0",
     "bytes": "^3.1.0",
     "camel-case": "^4.1.1",
-    "common-services": "^7.1.2",
+    "common-services": "^7.1.4",
     "cpr": "3.0.1",
     "knifecycle": "^9.1.1",
     "memfs": "3.0.4",
