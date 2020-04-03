@@ -1,6 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router';
-import OpenAPIParser from 'swagger-parser';
+import SwaggerParser from '@apidevtools/swagger-parser';
 import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 
@@ -32,7 +32,7 @@ export const definition: WhookAPIHandlerDefinition = {
 function removeMutedParameters(
   parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,
   mutedParameters: string[],
-  $refs: OpenAPIParser.$Refs,
+  $refs: SwaggerParser.$Refs,
 ) {
   return parameters.reduce((acc, parameter) => {
     const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject).$ref
@@ -62,7 +62,7 @@ async function getOpenAPI(
   },
 ): Promise<WhookResponse<200, {}, OpenAPIV3.Document>> {
   const operations = await getOpenAPIOperations(API);
-  const $refs = await OpenAPIParser.resolve(API);
+  const $refs = await SwaggerParser.resolve(API);
 
   const tagIsPresent = {};
 

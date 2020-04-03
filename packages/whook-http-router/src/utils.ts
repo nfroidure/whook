@@ -1,4 +1,4 @@
-import OpenAPIParser from 'swagger-parser';
+import SwaggerParser from '@apidevtools/swagger-parser';
 import YError from 'yerror';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookOperation } from '@whook/http-transaction';
@@ -31,7 +31,7 @@ export async function flattenOpenAPI(
   API: OpenAPIV3.Document,
 ): Promise<OpenAPIV3.Document> {
   try {
-    const parser = new OpenAPIParser();
+    const parser = new SwaggerParser();
 
     // Currently the OpenAPI parser changes the API in place
     //  this is why we're deep cloning it here

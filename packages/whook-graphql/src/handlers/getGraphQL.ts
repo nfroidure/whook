@@ -80,7 +80,7 @@ async function getGraphQL<
     operationName: string;
   },
   operation: WhookOperation,
-): Promise<ReturnType<Await<ReturnType<typeof initPostGraphQL>>>> {
+): Promise<Await<ReturnType<Await<ReturnType<typeof initPostGraphQL>>>>> {
   const deserializedVariables = deserialize(variables, 'variables');
 
   return await postGraphQL(

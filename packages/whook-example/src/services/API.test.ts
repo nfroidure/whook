@@ -4,6 +4,7 @@ import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { initAPIDefinitions, initImporter } from '@whook/whook';
 import path from 'path';
+import { WhookAPIHandlerModule } from '@whook/whook/dist/services/API_DEFINITIONS';
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;
@@ -12,7 +13,7 @@ describe('API', () => {
   let API_DEFINITIONS;
 
   beforeAll(async () => {
-    const importer = await initImporter({ log });
+    const importer = await initImporter<WhookAPIHandlerModule>({ log });
 
     API_DEFINITIONS = await initAPIDefinitions({
       PROJECT_SRC: path.join(__dirname, '..'),

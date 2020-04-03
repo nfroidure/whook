@@ -1,4 +1,4 @@
-import OpenAPIParser from 'swagger-parser';
+import SwaggerParser from '@apidevtools/swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
@@ -76,7 +76,7 @@ async function handleWithCORS<
 export async function augmentAPIWithCORS(
   API: OpenAPIV3.Document,
 ): Promise<OpenAPIV3.Document> {
-  const $refs = await OpenAPIParser.resolve(API);
+  const $refs = await SwaggerParser.resolve(API);
 
   return Object.keys(API.paths).reduce((newAPI, path) => {
     const existingOperation = newAPI.paths[path].options;
