@@ -51,17 +51,19 @@ export default autoService(async function initCreateWhook({
     );
 
     const finalPackageJSON = {
-      ...basePackageJSON,
       name: project.name,
       description: 'A new Whook project',
       version: '0.0.0',
       license: 'SEE LICENSE',
-      bin: undefined,
-      metapak: undefined,
-      devDependencies: {
-        ...basePackageJSON.devDependencies,
-        metapak: undefined,
-        'metapak-nfroidure': undefined,
+      engines: basePackageJSON.engines,
+      main: basePackageJSON.main,
+      module: basePackageJSON.module,
+      types: basePackageJSON.types,
+      private: true,
+      keywords: ['whook'],
+      author: {
+        name: author.name,
+        email: author.email,
       },
       scripts: {
         ...basePackageJSON.scripts,
@@ -69,10 +71,17 @@ export default autoService(async function initCreateWhook({
         cli: undefined,
       },
       files: basePackageJSON.files.filter((pattern) => pattern !== 'src/**/*'),
-      author: {
-        name: author.name,
-        email: author.email,
+      dependencies: basePackageJSON.dependencies,
+      devDependencies: {
+        ...basePackageJSON.devDependencies,
+        metapak: undefined,
+        'metapak-nfroidure': undefined,
       },
+      eslintConfig: basePackageJSON.eslintConfig,
+      prettier: basePackageJSON.prettier,
+      babel: basePackageJSON.babel,
+      jest: basePackageJSON.jest,
+      metapak: undefined,
     };
 
     await Promise.all([
