@@ -149,6 +149,7 @@ async function initCompiler({
           },
           {
             test: /\.(js|ts)$/,
+            exclude: /node_modules|dist/,
             use: {
               loader: 'babel-loader',
               options: {
