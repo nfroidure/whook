@@ -70,7 +70,7 @@
     "babel-plugin-knifecycle": "^1.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "http-auth-utils": "^2.4.0",
+    "http-auth-utils": "^2.5.0",
     "jest": "^25.2.4",
     "jsdoc-to-markdown": "^5.0.3",
     "metapak": "^3.1.8",
