@@ -28,7 +28,7 @@ import {
 import stream from 'stream';
 import qs from 'qs';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
-import { camelCase } from 'camel-case';
+import camelCase from 'camelcase';
 import { noop, compose } from '@whook/whook';
 import type { ServiceInitializer } from 'knifecycle';
 import type {

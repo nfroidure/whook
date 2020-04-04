@@ -58,7 +58,7 @@ async function initCompiler({
     const memoryFS = createFsFromVolume(new Volume());
     // Configurations inspired from modes
     // See https://webpack.js.org/configuration/mode/
-    const compiler = webpack({
+    const configuration = {
       entry: entryPoint,
       target: 'node',
       mode: 'none',
@@ -118,7 +118,7 @@ async function initCompiler({
           'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
         }),
         ...compilerOptions.ignoredModules.map((ignoredModule) => {
-          new webpack.IgnorePlugin(new RegExp(ignoredModule));
+          return new webpack.IgnorePlugin(new RegExp(ignoredModule));
         }),
         ...(debugging
           ? [new webpack.NamedModulesPlugin(), new webpack.NamedChunksPlugin()]
@@ -137,16 +137,6 @@ async function initCompiler({
       externals: compilerOptions.externalModules,
       module: {
         rules: [
-          // This rule must be added to handle deep dependencies usage
-          //  of the .esm extension. It should be safe someday to remove
-          //  it but who knows when ¯\_(ツ)_/¯
-          // Also, it seems to make the build heavyer (maybe impeaching
-          //  some tree shaking anyhow).
-          {
-            test: /\.mjs$/,
-            type: 'javascript/auto',
-            exclude: /node_modules/,
-          },
           {
             test: /\.(js|ts)$/,
             exclude: /node_modules|dist/,
@@ -176,7 +166,8 @@ async function initCompiler({
           },
         ],
       },
-    });
+    };
+    const compiler = webpack(configuration);
 
     compiler.outputFileSystem = ensureWebpackMemoryFs(memoryFS);
 

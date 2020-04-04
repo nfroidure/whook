@@ -46,7 +46,7 @@
   "dependencies": {
     "@whook/authorization": "^3.1.3",
     "@whook/whook": "^3.1.3",
-    "camel-case": "^4.1.1",
+    "camelcase": "^5.3.1",
     "common-services": "^7.1.4",
     "knifecycle": "^9.1.1",
     "ms": "^2.1.2",

@@ -4,7 +4,7 @@ import { readArgs } from '@whook/cli';
 import YError from 'yerror';
 import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
 import stream from 'stream';
-import { camelCase } from 'camel-case';
+import camelCase from 'camelcase';
 import type {
   WhookCommandArgs,
   WhookCommandDefinition,

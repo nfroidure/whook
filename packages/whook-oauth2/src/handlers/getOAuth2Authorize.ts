@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import { camelCase } from 'camel-case';
+import camelCase from 'camelcase';
 import YError from 'yerror';
 import type {
   WhookAPIHandlerDefinition,

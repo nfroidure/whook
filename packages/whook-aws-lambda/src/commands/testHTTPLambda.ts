@@ -5,7 +5,7 @@ import { noop } from '@whook/whook';
 import YError from 'yerror';
 import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
 import uuid from 'uuid';
-import { camelCase } from 'camel-case';
+import camelCase from 'camelcase';
 import type { LogService, TimeService } from 'common-services';
 import type {
   WhookCommandArgs,
