@@ -24,6 +24,7 @@ export const definition: WhookAPIHandlerDefinition = {
     tags: ['example'],
     requestBody: {
       description: 'The input sentence',
+      required: true,
       content: {
         'application/json': {
           schema: echoSchema,

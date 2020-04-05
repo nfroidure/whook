@@ -211,6 +211,9 @@ Object {
       "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts.",
     ],
     Array [
+      "💿 - Loading getParametersWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts.",
+    ],
+    Array [
       "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/dist/handlers/getPing.js.",
     ],
     Array [
@@ -253,6 +256,9 @@ Object {
       "💿 - Service \\"getOpenAPIWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
     ],
     Array [
+      "💿 - Service \\"getParametersWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts",
+    ],
+    Array [
       "💿 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/dist/handlers/getPing.js",
     ],
     Array [
@@ -275,6 +281,9 @@ Object {
     ],
     Array [
       "🔐 - Initializing the authorization wrapper for \\"getOpenAPI\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getParameters\\".",
     ],
     Array [
       "🔐 - Initializing the authorization wrapper for \\"getPing\\".",
@@ -668,6 +677,12 @@ Object {
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts",
+    ],
+    Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",

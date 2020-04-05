@@ -64,7 +64,7 @@ export type WhookAPISchemaDefinition = {
 };
 export type WhookAPIParameterDefinition = {
   name: string;
-  parameter: OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject;
+  parameter: OpenAPIV3.ParameterObject;
 };
 export type WhookAPIHandlerModule = {
   [name: string]:

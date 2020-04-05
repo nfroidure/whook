@@ -91,6 +91,8 @@ async function initTestHTTPLambdaCommand({
       throw new YError('E_OPERATION_NOT_FOUND');
     }
 
+    const hasBody = !!OPERATION.requestBody;
+    const parameters = JSON.parse(rawParameters);
     const search = ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[])
       .filter((p) => p.in === 'query')
       .reduce((accSearch, p) => {
@@ -118,8 +120,6 @@ async function initTestHTTPLambdaCommand({
         return part;
       })
       .join(PATH_SEPARATOR);
-    const hasBody = !!OPERATION.requestBody;
-    const parameters = JSON.parse(rawParameters);
     const gcpfRequest = {
       method: OPERATION.method,
       originalUrl: path + (search ? SEARCH_SEPARATOR + search : ''),
@@ -132,8 +132,10 @@ async function initTestHTTPLambdaCommand({
       rawBody: Buffer.from(
         hasBody
           ? contentType === 'application/json'
-            ? JSON.stringify(parameters.body)
-            : parameters.body
+            ? parameters.body
+              ? JSON.stringify(parameters.body)
+              : ''
+            : parameters.body || ''
           : '',
       ),
     };

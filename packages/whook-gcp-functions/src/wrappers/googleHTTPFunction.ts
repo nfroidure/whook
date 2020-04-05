@@ -8,6 +8,7 @@ import {
 } from '@whook/http-router';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import Ajv from 'ajv';
+import bytes from 'bytes';
 import HTTPError from 'yhttperror';
 import {
   prepareParametersValidators,
@@ -48,12 +49,10 @@ type HTTPWrapperDependencies = {
   OPERATION: WhookOperation;
   DECODERS?: typeof DEFAULT_DECODERS;
   ENCODERS?: typeof DEFAULT_ENCODERS;
-  PARSED_HEADERS?: string[];
   PARSERS?: typeof DEFAULT_PARSERS;
   STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
   QUERY_PARSER: WhookQueryStringParser;
   BUFFER_LIMIT?: string;
-  apm: APMService;
   obfuscator: ObfuscatorService;
   time?: TimeService;
   log?: LogService;
@@ -62,10 +61,11 @@ type HTTPWrapperDependencies = {
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
-const uuidPattern =
-  '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
-export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
+export default function wrapHandlerForAWSHTTPFunction<
+  D,
+  S extends WhookHandler
+>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & HTTPWrapperDependencies, S> {
   return alsoInject(
@@ -76,24 +76,22 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
       'NODE_ENV',
       '?DECODERS',
       '?ENCODERS',
-      '?PARSED_HEADERS',
       '?PARSERS',
       '?STRINGIFYERS',
       '?BUFFER_LIMIT',
       'QUERY_PARSER',
-      'apm',
       'obfuscator',
       '?log',
       '?time',
     ],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSHTTPLambda.bind(null, initHandler),
+      initHandlerForAWSHTTPFunction.bind(null, initHandler),
     ),
   );
 }
 
-async function initHandlerForAWSHTTPLambda(
+async function initHandlerForAWSHTTPFunction(
   initHandler,
   {
     OPERATION,
@@ -102,7 +100,6 @@ async function initHandlerForAWSHTTPLambda(
     DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
     DECODERS = DEFAULT_DECODERS,
     ENCODERS = DEFAULT_ENCODERS,
-    PARSED_HEADERS = [],
     log = noop,
     time = Date.now.bind(Date),
     ...services
@@ -135,7 +132,7 @@ async function initHandlerForAWSHTTPLambda(
     log,
   });
 
-  return handleForAWSHTTPLambda.bind(
+  return handleForAWSHTTPFunction.bind(
     null,
     {
       OPERATION,
@@ -143,7 +140,6 @@ async function initHandlerForAWSHTTPLambda(
       DEBUG_NODE_ENVS,
       DECODERS,
       ENCODERS,
-      PARSED_HEADERS,
       log,
       time,
       ...services,
@@ -160,7 +156,7 @@ async function initHandlerForAWSHTTPLambda(
   );
 }
 
-async function handleForAWSHTTPLambda(
+async function handleForAWSHTTPFunction(
   {
     OPERATION,
     DEBUG_NODE_ENVS,
@@ -170,14 +166,12 @@ async function handleForAWSHTTPLambda(
     PARSERS = DEFAULT_PARSERS,
     STRINGIFYERS = DEFAULT_STRINGIFYERS,
     BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
-    PARSED_HEADERS,
     QUERY_PARSER,
     // TODO: Better handling of CORS in errors should
     // be found
     CORS,
     log,
     time,
-    apm,
     obfuscator,
   }: HTTPWrapperDependencies & { CORS: any },
   {
@@ -194,6 +188,7 @@ async function handleForAWSHTTPLambda(
 ) {
   const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
   const startTime = time();
+  const bufferLimit = bytes.parse(BUFFER_LIMIT);
 
   log(
     'info',
@@ -243,7 +238,7 @@ async function handleForAWSHTTPLambda(
         {
           DECODERS,
           PARSERS,
-          bufferLimit: BUFFER_LIMIT,
+          bufferLimit,
         },
         operation,
         request.body,
@@ -412,64 +407,6 @@ async function handleForAWSHTTPLambda(
     ),
     res,
   );
-
-  // log(
-  //   'debug',
-  //   'AWS_RESPONSE_EVENT',
-  //   JSON.stringify({
-  //     ...awsResponse,
-  //     body: obfuscateEventBody(obfuscator, awsResponse.body),
-  //     headers: obfuscator.obfuscateSensibleHeaders(awsResponse.headers),
-  //   }),
-  // );
-
-  // apm('CALL', {
-  //   id: event.requestContext.requestId,
-  //   transactionId:
-  //     request.headers['x-transaction-id'] &&
-  //     new RegExp(uuidPattern).test(request.headers['x-transaction-id'])
-  //       ? event.headers['x-transaction-id']
-  //       : event.requestContext.requestId,
-  //   environment: NODE_ENV,
-  //   method: event.requestContext.httpMethod,
-  //   resourcePath: event.requestContext.resourcePath,
-  //   path: event.requestContext.path,
-  //   userAgent:
-  //     event.requestContext.identity && event.requestContext.identity.userAgent,
-  //   triggerTime: event.requestContext.requestTimeEpoch,
-  //   lambdaName: OPERATION.operationId,
-  //   parameters: obfuscator.obfuscateSensibleProps(parameters),
-  //   status: response.status,
-  //   headers: obfuscator.obfuscateSensibleHeaders(
-  //     Object.keys(response.headers).reduce(
-  //       (finalHeaders, headerName) => ({
-  //         ...finalHeaders,
-  //         ...(PARSED_HEADERS.includes(headerName)
-  //           ? {}
-  //           : {
-  //               [headerName]: response.headers[headerName],
-  //             }),
-  //       }),
-  //       {},
-  //     ),
-  //   ),
-  //   bodyLength: awsResponse.body ? awsResponse.body.length : 0,
-  //   type: responseLog.type,
-  //   stack: responseLog.stack,
-  //   code: responseLog.code,
-  //   params: responseLog.params,
-  //   startTime,
-  //   endTime: time(),
-  //   ...PARSED_HEADERS.reduce(
-  //     (result, parsedHeader) => ({
-  //       ...result,
-  //       ...(response.headers[parsedHeader]
-  //         ? JSON.parse(response.headers[parsedHeader])
-  //         : {}),
-  //     }),
-  //     {},
-  //   ),
-  // });
 }
 
 async function gcpfReqToRequest(req: any): Promise<WhookRequest> {
