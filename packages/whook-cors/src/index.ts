@@ -118,9 +118,8 @@ export async function augmentAPIWithCORS(
         .filter((parameter) => {
           const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
             .$ref
-            ? ($refs.get(
-                (parameter as OpenAPIV3.ReferenceObject).$ref,
-              ) as OpenAPIV3.ParameterObject)
+            ? ($refs.get((parameter as OpenAPIV3.ReferenceObject).$ref) as
+              OpenAPIV3.ParameterObject)
             : (parameter as OpenAPIV3.ParameterObject);
 
           return (
@@ -131,9 +130,8 @@ export async function augmentAPIWithCORS(
         .map((parameter) => {
           const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
             .$ref
-            ? ($refs.get(
-                (parameter as OpenAPIV3.ReferenceObject).$ref,
-              ) as OpenAPIV3.ParameterObject)
+            ? ($refs.get((parameter as OpenAPIV3.ReferenceObject).$ref) as
+              OpenAPIV3.ParameterObject)
             : (parameter as OpenAPIV3.ParameterObject);
 
           if (

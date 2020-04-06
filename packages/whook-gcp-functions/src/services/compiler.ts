@@ -189,16 +189,14 @@ async function initCompiler({
       });
     });
 
-    const contents: string = (memoryFS.readFileSync(
-      `${basePath}/index.js`,
-      'utf-8',
-    ) as unknown) as string;
+    const contents: string =
+      (memoryFS.readFileSync(`${basePath}/index.js`, 'utf-8') as unknown) as
+      string;
     const mappings: string = debugging
       ? ''
-      : ((memoryFS.readFileSync(
-          `${basePath}/index.js.map`,
-          'utf-8',
-        ) as unknown) as string);
+      : ((memoryFS.readFileSync(`${basePath}/index.js.map`, 'utf-8') as
+          unknown) as
+        string);
 
     return { contents, mappings };
   };

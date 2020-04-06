@@ -35,9 +35,9 @@ export async function flattenOpenAPI(
 
     // Currently the OpenAPI parser changes the API in place
     //  this is why we're deep cloning it here
-    const result = (await parser.dereference(
-      JSON.parse(JSON.stringify(API)),
-    )) as OpenAPIV3.Document;
+    const result =
+      (await parser.dereference(JSON.parse(JSON.stringify(API)))) as
+      OpenAPIV3.Document;
 
     return result;
   } catch (err) {
@@ -91,27 +91,29 @@ export function pickupOperationSecuritySchemes(
   const securitySchemes =
     (openAPI.components && openAPI.components.securitySchemes) || {};
 
-  return (operation.security || openAPI.security || []).reduce(
-    (operationSecuritySchemes, security) => {
-      const schemeKey = Object.keys(security)[0];
+  return (
+    (operation.security || openAPI.security || []).reduce(
+      (operationSecuritySchemes, security) => {
+        const schemeKey = Object.keys(security)[0];
 
-      if (!schemeKey) {
-        return operationSecuritySchemes;
-      }
+        if (!schemeKey) {
+          return operationSecuritySchemes;
+        }
 
-      if (!securitySchemes[schemeKey]) {
-        throw new YError(
-          'E_UNDECLARED_SECURITY_SCHEME',
-          schemeKey,
-          operation.operationId,
-        );
-      }
+        if (!securitySchemes[schemeKey]) {
+          throw new YError(
+            'E_UNDECLARED_SECURITY_SCHEME',
+            schemeKey,
+            operation.operationId,
+          );
+        }
 
-      return {
-        ...operationSecuritySchemes,
-        [schemeKey]: securitySchemes[schemeKey] as SupportedSecurityScheme,
-      };
-    },
-    {},
-  ) as { [name: string]: SupportedSecurityScheme };
+        return {
+          ...operationSecuritySchemes,
+          [schemeKey]: securitySchemes[schemeKey] as SupportedSecurityScheme,
+        };
+      },
+      {},
+    ) as { [name: string]: SupportedSecurityScheme }
+  );
 }

@@ -34,8 +34,8 @@ export async function getBody(
     requestBody.content &&
     requestBody.content[bodySpec.contentType] &&
     requestBody.content[bodySpec.contentType].schema &&
-    (requestBody.content[bodySpec.contentType]
-      .schema as OpenAPIV3.NonArraySchemaObject);
+    (requestBody.content[bodySpec.contentType].schema as
+      OpenAPIV3.NonArraySchemaObject);
   const bodyIsParseable =
     schemaObject &&
     (schemaObject.type !== 'string' || schemaObject.format !== 'binary');

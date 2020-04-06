@@ -20,10 +20,11 @@ export function readArgs(
     _: [, ...listedArgs],
     ...namedArgs
   } = args;
-  const cleanedArgs = {
-    ...namedArgs,
-    ...(listedArgs.length ? { _: listedArgs } : {}),
-  } as WhookCommandArgs;
+  const cleanedArgs =
+    {
+      ...namedArgs,
+      ...(listedArgs.length ? { _: listedArgs } : {}),
+    } as WhookCommandArgs;
 
   validator(cleanedArgs);
 

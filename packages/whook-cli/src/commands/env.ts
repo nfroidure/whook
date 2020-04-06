@@ -41,10 +41,9 @@ async function initEnvCommand({
   log?: LogService;
 }) {
   return async () => {
-    const { name, default: defaultValue } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { name: string; default: unknown };
+    const { name, default: defaultValue } =
+      readArgs(definition.arguments, await promptArgs()) as
+      { name: string; default: unknown };
 
     if (
       'undefined' === typeof ENV[name] &&

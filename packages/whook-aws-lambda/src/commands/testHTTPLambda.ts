@@ -69,12 +69,14 @@ async function initTestHTTPLambdaCommand({
       type,
       contentType,
       parameters: rawParameters,
-    }: WhookCommandNamedArgs = readArgs(definition.arguments, args) as {
-      name: string;
-      type: string;
-      contentType: string;
-      parameters: string;
-    };
+    }: WhookCommandNamedArgs =
+      readArgs(definition.arguments, args) as
+      {
+        name: string;
+        type: string;
+        contentType: string;
+        parameters: string;
+      };
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,
@@ -91,15 +93,17 @@ async function initTestHTTPLambdaCommand({
     const hasBody = !!OPERATION.requestBody;
     const parameters = JSON.parse(rawParameters);
     const awsRequest = {
-      pathParameters: ((OPERATION.parameters ||
-        []) as OpenAPIV3.ParameterObject[])
+      pathParameters: (
+        (OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]
+      )
         .filter((p) => p.in === 'path')
         .reduce((pathParameters, p) => {
           pathParameters[p.name] = '' + parameters[p.name];
           return pathParameters;
         }, {}),
-      queryStringParameters: ((OPERATION.parameters ||
-        []) as OpenAPIV3.ParameterObject[])
+      queryStringParameters: (
+        (OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]
+      )
         .filter((p) => p.in === 'query')
         .reduce((queryStringParameters, p) => {
           queryStringParameters[p.name] =

@@ -28,9 +28,10 @@ export const definition: WhookAPIHandlerDefinition = {
     summary: `Implements the logic that allow the authentication frontend
  to get the [Redirection Endpoint](https://tools.ietf.org/html/rfc6749#section-3.1.2).`,
     tags: ['oauth2'],
-    'x-whook': {
-      private: true,
-    } as WhookAPIOperationConfig,
+    'x-whook':
+      {
+        private: true,
+      } as WhookAPIOperationConfig,
     requestBody: {
       required: true,
       content: {

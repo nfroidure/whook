@@ -99,10 +99,9 @@ async function initCreateCommand({
   log?: LogService;
 }): Promise<WhookCommandHandler> {
   return async () => {
-    const { type, name } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { type: string; name: string };
+    const { type, name } =
+      readArgs(definition.arguments, await promptArgs()) as
+      { type: string; name: string };
     const finalName = camelCase(name);
 
     if (name !== finalName) {
@@ -117,18 +116,19 @@ async function initCreateCommand({
       throw new YError('E_BAD_HANDLER_NAME', finalName, HANDLER_REG_EXP);
     }
 
-    const { services } = (await inquirer.prompt([
-      {
-        name: 'services',
-        type: 'checkbox',
-        message: 'Which services do you want to use?',
-        choices: [
-          ...Object.keys(commonServicesTypes),
-          ...Object.keys(whookSimpleTypes),
-          ...Object.keys(whookServicesTypes),
-        ],
-      },
-    ])) as { services: string[] };
+    const { services } =
+      (await inquirer.prompt([
+        {
+          name: 'services',
+          type: 'checkbox',
+          message: 'Which services do you want to use?',
+          choices: [
+            ...Object.keys(commonServicesTypes),
+            ...Object.keys(whookSimpleTypes),
+            ...Object.keys(whookServicesTypes),
+          ],
+        },
+      ])) as { services: string[] };
 
     const servicesTypes = services
       .sort()
@@ -190,27 +190,30 @@ import {
     let fileSource = '';
 
     if (type === 'handler') {
-      let baseQuestions = [
-        {
-          name: 'method',
-          type: 'list',
-          message: 'Give the handler method',
-          choices: OPEN_API_METHODS,
-          default: [HANDLER_REG_EXP.exec(finalName)[1]].filter((maybeMethod) =>
-            OPEN_API_METHODS.includes(maybeMethod),
-          )[0],
-        },
-        {
-          name: 'path',
-          type: 'input',
-          message: 'Give the handler path',
-        },
-        {
-          name: 'description',
-          type: 'input',
-          message: 'Give the handler description',
-        },
-      ] as _inquirer.Answers[];
+      let baseQuestions =
+        [
+          {
+            name: 'method',
+            type: 'list',
+            message: 'Give the handler method',
+            choices: OPEN_API_METHODS,
+            default: [
+              HANDLER_REG_EXP.exec(finalName)[1],
+            ].filter((maybeMethod) =>
+              OPEN_API_METHODS.includes(maybeMethod),
+            )[0],
+          },
+          {
+            name: 'path',
+            type: 'input',
+            message: 'Give the handler path',
+          },
+          {
+            name: 'description',
+            type: 'input',
+            message: 'Give the handler description',
+          },
+        ] as _inquirer.Answers[];
       if (API.tags && API.tags.length) {
         baseQuestions = [
           ...baseQuestions,
@@ -222,14 +225,14 @@ import {
           },
         ];
       }
-      const { method, path, description, tags } = (await inquirer.prompt(
-        baseQuestions,
-      )) as {
-        method: string;
-        path: string;
-        description: string;
-        tags: string[];
-      };
+      const { method, path, description, tags } =
+        (await inquirer.prompt(baseQuestions)) as
+        {
+          method: string;
+          path: string;
+          description: string;
+          tags: string[];
+        };
       fileSource = buildHandlerSource(
         name,
         path,
@@ -255,12 +258,13 @@ import {
         imports,
       );
     } else if (type === 'command') {
-      const { description } = (await inquirer.prompt([
-        {
-          name: 'description',
-          message: 'Give the command description',
-        },
-      ])) as { description: string };
+      const { description } =
+        (await inquirer.prompt([
+          {
+            name: 'description',
+            message: 'Give the command description',
+          },
+        ])) as { description: string };
 
       fileSource = buildCommandSource(
         name,
@@ -287,14 +291,16 @@ import {
     if (await pathExists(filePath)) {
       log('warning', '⚠️ - The file already exists !');
 
-      const { erase } = (await inquirer.prompt([
+      const { erase } =
+        (await inquirer.prompt([
+          {
+            name: 'Erase ?',
+            type: 'confirm',
+          },
+        ])) as
         {
-          name: 'Erase ?',
-          type: 'confirm',
-        },
-      ])) as {
-        erase: boolean;
-      };
+          erase: boolean;
+        };
 
       if (!erase) {
         return;

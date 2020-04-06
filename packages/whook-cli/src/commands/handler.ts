@@ -44,10 +44,9 @@ async function initHandlerCommand({
   promptArgs: PromptArgs;
 }): Promise<WhookCommandHandler> {
   return async () => {
-    const { name: handlerName, parameters: handlerParameters } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { name: string; parameters: string };
+    const { name: handlerName, parameters: handlerParameters } =
+      readArgs(definition.arguments, await promptArgs()) as
+      { name: string; parameters: string };
     let parsedParameters: Parameters;
 
     try {

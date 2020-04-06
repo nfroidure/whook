@@ -71,12 +71,14 @@ async function initTestHTTPLambdaCommand({
       type,
       contentType,
       parameters: rawParameters,
-    }: WhookCommandNamedArgs = readArgs(definition.arguments, args) as {
-      name: string;
-      type: string;
-      contentType: string;
-      parameters: string;
-    };
+    }: WhookCommandNamedArgs =
+      readArgs(definition.arguments, args) as
+      {
+        name: string;
+        type: string;
+        contentType: string;
+        parameters: string;
+      };
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,

@@ -116,22 +116,23 @@ export const refreshTokenRequestBodySchema: WhookAPISchemaDefinition = {
 
 export const tokenBodySchema: WhookAPISchemaDefinition = {
   name: 'TokenRequestBody',
-  schema: {
-    oneOf: [
-      {
-        $ref: `#/components/schemas/${passwordTokenRequestBodySchema.name}`,
-      },
-      {
-        $ref: `#/components/schemas/${authorizationCodeTokenRequestBodySchema.name}`,
-      },
-      {
-        $ref: `#/components/schemas/${clientCredentialsTokenRequestBodySchema.name}`,
-      },
-      {
-        $ref: `#/components/schemas/${refreshTokenRequestBodySchema.name}`,
-      },
-    ],
-  } as OpenAPIV3.SchemaObject,
+  schema:
+    {
+      oneOf: [
+        {
+          $ref: `#/components/schemas/${passwordTokenRequestBodySchema.name}`,
+        },
+        {
+          $ref: `#/components/schemas/${authorizationCodeTokenRequestBodySchema.name}`,
+        },
+        {
+          $ref: `#/components/schemas/${clientCredentialsTokenRequestBodySchema.name}`,
+        },
+        {
+          $ref: `#/components/schemas/${refreshTokenRequestBodySchema.name}`,
+        },
+      ],
+    } as OpenAPIV3.SchemaObject,
 };
 
 export const definition: WhookAPIHandlerDefinition = {

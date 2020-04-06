@@ -49,11 +49,13 @@ async function initTestCronLambdaCommand({
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { name, type, date } = readArgs(definition.arguments, args) as {
-      name: string;
-      type: string;
-      date: string;
-    };
+    const { name, type, date } =
+      readArgs(definition.arguments, args) as
+      {
+        name: string;
+        type: string;
+        date: string;
+      };
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,
