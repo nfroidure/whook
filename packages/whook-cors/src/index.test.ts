@@ -194,19 +194,18 @@ describe('augmentAPIWithCORS()', () => {
             },
           },
           '/crons/tokens': {
-            post:
-              {
-                operationId: 'ping',
-                'x-whook': {
-                  type: 'cron',
+            post: {
+              operationId: 'ping',
+              'x-whook': {
+                type: 'cron',
+              },
+              summary: "Checks API's availability.",
+              responses: {
+                '200': {
+                  description: 'Pong',
                 },
-                summary: "Checks API's availability.",
-                responses: {
-                  '200': {
-                    description: 'Pong',
-                  },
-                },
-              } as OpenAPIV3.OperationObject,
+              },
+            } as OpenAPIV3.OperationObject,
           },
         },
       }),

@@ -52,9 +52,10 @@ async function initConfigCommand({
   log?: LogService;
 }): Promise<WhookCommandHandler> {
   return async () => {
-    const { name, query, default: defaultValue, pretty } =
-      readArgs(definition.arguments, await promptArgs()) as
-      { name: string; query: string; default: unknown; pretty: boolean };
+    const { name, query, default: defaultValue, pretty } = readArgs(
+      definition.arguments,
+      await promptArgs(),
+    ) as { name: string; query: string; default: unknown; pretty: boolean };
 
     if ('undefined' === typeof CONFIGS[name]) {
       log('error', `No config found for ${name}`);

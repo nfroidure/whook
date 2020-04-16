@@ -6,29 +6,28 @@ import type { OpenAPIV3 } from 'openapi-types';
 
 export default autoHandler(getOpenAPI);
 
-export const definition: WhookAPIHandlerDefinition =
-  {
-    path: '/openAPI',
-    method: 'get',
-    operation: {
-      operationId: 'getOpenAPI',
-      summary: 'Get API documentation.',
-      tags: ['system'],
-      'x-whook': { private: false },
-      responses: {
-        '200': {
-          description: 'Provides the private Open API documentation',
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-              },
+export const definition: WhookAPIHandlerDefinition = {
+  path: '/openAPI',
+  method: 'get',
+  operation: {
+    operationId: 'getOpenAPI',
+    summary: 'Get API documentation.',
+    tags: ['system'],
+    'x-whook': { private: false },
+    responses: {
+      '200': {
+        description: 'Provides the private Open API documentation',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
             },
           },
         },
       },
     },
-  } as WhookAPIHandlerDefinition;
+  },
+} as WhookAPIHandlerDefinition;
 
 function removeMutedParameters(
   parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,
@@ -37,8 +36,9 @@ function removeMutedParameters(
 ) {
   return parameters.reduce((acc, parameter) => {
     const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject).$ref
-      ? ($refs.get((parameter as OpenAPIV3.ReferenceObject).$ref) as
-        OpenAPIV3.ParameterObject)
+      ? ($refs.get(
+          (parameter as OpenAPIV3.ReferenceObject).$ref,
+        ) as OpenAPIV3.ParameterObject)
       : (parameter as OpenAPIV3.ParameterObject);
 
     if (mutedParameters.includes(dereferencedParameter.name)) {

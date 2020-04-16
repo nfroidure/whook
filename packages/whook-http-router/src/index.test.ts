@@ -37,14 +37,13 @@ function waitResponse(response, raw: boolean = true) {
 }
 
 function prepareTransaction(result: any = Promise.resolve()) {
-  const handler =
-    jest.fn(() =>
-      null === result
-        ? undefined
-        : result
-        ? Promise.resolve(result)
-        : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
-    ) as WhookHandler & jest.Mock;
+  const handler = jest.fn(() =>
+    null === result
+      ? undefined
+      : result
+      ? Promise.resolve(result)
+      : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+  ) as WhookHandler & jest.Mock;
   const httpTransactionStart = jest.fn(async (buildResponse) =>
     buildResponse(),
   );
@@ -477,17 +476,14 @@ describe('initHTTPRouter', () => {
           NODE_ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
-          API:
-            ({
-              info: API.info,
-              paths: {
-                '/lol': {
-                  get: {},
-                },
+          API: ({
+            info: API.info,
+            paths: {
+              '/lol': {
+                get: {},
               },
-            } as
-              unknown) as
-            OpenAPIV3.Document,
+            },
+          } as unknown) as OpenAPIV3.Document,
           log,
           BASE_PATH,
           httpTransaction,
@@ -652,9 +648,7 @@ describe('initHTTPRouter', () => {
                     ({
                       in: 'query',
                       type: 'string',
-                    } as
-                      unknown) as
-                      OpenAPIV3.ParameterObject,
+                    } as unknown) as OpenAPIV3.ParameterObject,
                   ],
                 },
               },
@@ -695,9 +689,7 @@ describe('initHTTPRouter', () => {
                     ({
                       name: 'lol',
                       type: 'string',
-                    } as
-                      unknown) as
-                      OpenAPIV3.ParameterObject,
+                    } as unknown) as OpenAPIV3.ParameterObject,
                   ],
                 },
               },
@@ -1184,9 +1176,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
           expect(response.body).toMatch(/E_STRINGIFYER_LACK/);
           expect({ ...response, body: undefined }).toEqual({
             headers: {
@@ -1260,9 +1252,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_UNACCEPTABLE_MEDIA_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -1325,9 +1317,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_NO_RESPONSE_PROMISE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -1391,9 +1383,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_NO_RESPONSE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -1456,9 +1448,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_NO_RESPONSE_STATUS/);
           expect({ ...response, body: undefined }).toEqual({
@@ -1525,9 +1517,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUIRED_PARAMETER/);
           expect({ ...response, body: undefined }).toEqual({
@@ -1587,9 +1579,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_BOOLEAN/);
           expect({ ...response, body: undefined }).toEqual({
@@ -1652,9 +1644,9 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response =
-          (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-          WhookResponse;
+        const response = (await waitResponse(
+          httpTransactionEnd.mock.calls[0][0],
+        )) as WhookResponse;
 
         expect(response.body).toMatch(/E_UNAUTHORIZED/);
         expect({ ...response, body: undefined }).toEqual({
@@ -1722,9 +1714,9 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response =
-          (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-          WhookResponse;
+        const response = (await waitResponse(
+          httpTransactionEnd.mock.calls[0][0],
+        )) as WhookResponse;
 
         expect(response.body).toMatch(/E_UNAUTHORIZED/);
         expect({ ...response, body: undefined }).toEqual({
@@ -1789,9 +1781,9 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response =
-          (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-          WhookResponse;
+        const response = (await waitResponse(
+          httpTransactionEnd.mock.calls[0][0],
+        )) as WhookResponse;
 
         expect(response.body).toMatch(/E_NOT_FOUND/);
         expect({ ...response, body: undefined }).toEqual({
@@ -2089,9 +2081,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_CONTENT_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2152,9 +2144,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionStart).toBeCalled();
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_UNSUPPORTED_MEDIA_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2222,9 +2214,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_REQUEST_BODY/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2291,9 +2283,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_CONTENT_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2360,9 +2352,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_BODY_LENGTH/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2428,9 +2420,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_BODY/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2495,9 +2487,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUEST_FAILURE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2565,9 +2557,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUEST_CONTENT_TOO_LARGE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2635,9 +2627,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUEST_CONTENT_TOO_LARGE/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2705,9 +2697,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_PARSER_LACK/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2774,9 +2766,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_UNACCEPTABLE_CHARSET/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2843,9 +2835,9 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
 
-          const response =
-            (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-            WhookResponse;
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUIRED_PARAMETER/);
           expect({ ...response, body: undefined }).toEqual({
@@ -2969,9 +2961,9 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionCatch).toBeCalled();
         expect(httpTransactionEnd).toBeCalled();
 
-        const response =
-          (await waitResponse(httpTransactionEnd.mock.calls[0][0])) as
-          WhookResponse;
+        const response = (await waitResponse(
+          httpTransactionEnd.mock.calls[0][0],
+        )) as WhookResponse;
 
         expect(response.body).toMatch(/E_NOT_FOUND/);
         expect({ ...response, body: undefined }).toEqual({

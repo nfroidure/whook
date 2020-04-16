@@ -50,8 +50,9 @@ export function extractProduceableMediaTypes(
     ...new Set(
       Object.keys(operation.responses).reduce(
         (produceableMediaTypes, status) => {
-          const response =
-            operation.responses[status] as OpenAPIV3.ResponseObject;
+          const response = operation.responses[
+            status
+          ] as OpenAPIV3.ResponseObject;
 
           if (!response.content) {
             return produceableMediaTypes;

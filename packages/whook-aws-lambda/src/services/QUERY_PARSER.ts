@@ -15,16 +15,14 @@ export default initializer(
     inject: [],
   },
   async () => {
-    return (
-      ((parameters, search) => {
-        const queryStringParameters = qs.parse(search.slice(1));
+    return ((parameters, search) => {
+      const queryStringParameters = qs.parse(search.slice(1));
 
-        return castParameters(
-          parameters ? parameters.filter((p) => 'query' === (p as any).in) : [],
-          queryStringParameters,
-        );
-      }) as WhookQueryStringParser
-    );
+      return castParameters(
+        parameters ? parameters.filter((p) => 'query' === (p as any).in) : [],
+        queryStringParameters,
+      );
+    }) as WhookQueryStringParser;
   },
 );
 

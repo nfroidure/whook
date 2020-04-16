@@ -89,16 +89,15 @@ describe('initHTTPServer', () => {
     });
 
     try {
-      httpServer.service.close =
-        (((realClose) => async (cb) => {
-          await new Promise((resolve, reject) => {
-            realClose((err) => (err && (reject(err) as any)) || resolve());
-          });
+      httpServer.service.close = (((realClose) => async (cb) => {
+        await new Promise((resolve, reject) => {
+          realClose((err) => (err && (reject(err) as any)) || resolve());
+        });
 
-          cb(new YError('E_ERROR'));
-        })(httpServer.service.close.bind(httpServer.service)) as
-          unknown) as
-        typeof httpServer.service.close;
+        cb(new YError('E_ERROR'));
+      })(
+        httpServer.service.close.bind(httpServer.service),
+      ) as unknown) as typeof httpServer.service.close;
 
       await httpServer.dispose();
       throw new YError('E_UNEXPECTED_SUCCESS');
@@ -148,17 +147,14 @@ describe('initHTTPServer', () => {
       },
       HOST,
       PORT,
-      httpRouter:
-        (((_, res) => {
-          res.writeHead(200, {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          });
-          res.end();
-        }) as
-          unknown) as
-        HTTPRouterService,
+      httpRouter: (((_, res) => {
+        res.writeHead(200, {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        });
+        res.end();
+      }) as unknown) as HTTPRouterService,
     });
 
     const { status } = await axios({

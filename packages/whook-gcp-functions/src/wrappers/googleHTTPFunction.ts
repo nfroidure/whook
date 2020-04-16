@@ -286,9 +286,8 @@ async function handleForAWSHTTPFunction(
         ),
       };
 
-      parameters = (
-        (OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]
-      ).reduce(
+      parameters = ((OPERATION.parameters ||
+        []) as OpenAPIV3.ParameterObject[]).reduce(
         (cleanParameters, parameter) => {
           const parameterName =
             parameter.in === 'header'
@@ -338,8 +337,8 @@ async function handleForAWSHTTPFunction(
       responseObject &&
       responseObject.content &&
       responseObject.content[response.headers['content-type']] &&
-      (responseObject.content[response.headers['content-type']].schema as
-        OpenAPIV3.SchemaObject);
+      (responseObject.content[response.headers['content-type']]
+        .schema as OpenAPIV3.SchemaObject);
     const responseHasSchema =
       responseSchema &&
       (responseSchema.type !== 'string' || responseSchema.format !== 'binary');

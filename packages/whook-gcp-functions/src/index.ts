@@ -33,15 +33,20 @@ export type WhookAPIOperationAWSLambdaConfig = {
 type WhookAPIAWSLambdaOperation = OpenAPIV3.OperationObject &
   WhookAPIOperationAddition<WhookAPIOperationAWSLambdaConfig>;
 
-const readFileAsync =
-  util.promisify(fs.readFile) as
-  (path: string, encoding: string) => Promise<string>;
-const writeFileAsync =
-  util.promisify(fs.writeFile) as
-  (path: string, content: string, encoding: string) => Promise<void>;
-const cprAsync =
-  util.promisify(cpr) as
-  (source: string, destination: string, options: any) => Promise<any>;
+const readFileAsync = util.promisify(fs.readFile) as (
+  path: string,
+  encoding: string,
+) => Promise<string>;
+const writeFileAsync = util.promisify(fs.writeFile) as (
+  path: string,
+  content: string,
+  encoding: string,
+) => Promise<void>;
+const cprAsync = util.promisify(cpr) as (
+  source: string,
+  destination: string,
+  options: any,
+) => Promise<any>;
 
 const BUILD_DEFINITIONS: {
   [type: string]: {

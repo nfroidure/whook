@@ -54,9 +54,10 @@ async function initInspectCommand({
   log?: LogService;
 }): Promise<WhookCommandHandler> {
   return async () => {
-    const { name, query, default: defaultValue, pretty } =
-      readArgs(definition.arguments, await promptArgs()) as
-      { name: string; query: string; default: unknown; pretty: true };
+    const { name, query, default: defaultValue, pretty } = readArgs(
+      definition.arguments,
+      await promptArgs(),
+    ) as { name: string; query: string; default: unknown; pretty: true };
     let service;
 
     try {

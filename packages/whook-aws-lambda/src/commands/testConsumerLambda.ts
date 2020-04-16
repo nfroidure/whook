@@ -44,13 +44,11 @@ async function initTestConsumerLambdaCommand({
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { name, type, event } =
-      readArgs(definition.arguments, args) as
-      {
-        name: string;
-        type: string;
-        event: string;
-      };
+    const { name, type, event } = readArgs(definition.arguments, args) as {
+      name: string;
+      type: string;
+      event: string;
+    };
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,

@@ -213,18 +213,16 @@ export function extractParametersFromSecuritySchemes(
         hasAccessTokenApiKey = true;
       }
 
-      return (
-        {
-          in: securityScheme.in,
-          name:
-            securityScheme.in === 'header'
-              ? securityScheme.name.toLowerCase()
-              : securityScheme.name,
-          schema: {
-            type: 'string',
-          },
-        } as OpenAPIV3.ParameterObject
-      );
+      return {
+        in: securityScheme.in,
+        name:
+          securityScheme.in === 'header'
+            ? securityScheme.name.toLowerCase()
+            : securityScheme.name,
+        schema: {
+          type: 'string',
+        },
+      } as OpenAPIV3.ParameterObject;
     })
     .concat(
       httpSchemes.length && !hasAuthorizationApiKey

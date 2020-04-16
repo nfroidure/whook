@@ -151,7 +151,12 @@
     "trailingComma": "all",
     "proseWrap": "always"
   },
+
   "babel": {
+    "plugins": [
+      "@babel/proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread"
+    ],
     "presets": [
       "@babel/typescript",
       [
@@ -162,11 +167,6 @@
           }
         }
       ]
-    ],
-    "plugins": [
-      "@babel/proposal-class-properties",
-      "@babel/plugin-proposal-object-rest-spread",
-      "babel-plugin-knifecycle"
     ],
     "env": {
       "cjs": {
@@ -180,7 +180,8 @@
               "modules": "commonjs"
             }
           ]
-        ]
+        ],
+        "comments": true
       },
       "mjs": {
         "presets": [
@@ -190,10 +191,11 @@
               "targets": {
                 "node": "12"
               },
-              "modules": "false"
+              "modules": false
             }
           ]
-        ]
+        ],
+        "comments": false
       }
     },
     "sourceMaps": true

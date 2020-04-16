@@ -143,7 +143,7 @@ Mr Bean
                 Array [
                   "@babel/env",
                   Object {
-                    "modules": "false",
+                    "modules": false,
                     "targets": Object {
                       "node": "12",
                     },
@@ -396,7 +396,7 @@ Mr Bean
                 Array [
                   "@babel/env",
                   Object {
-                    "modules": "false",
+                    "modules": false,
                     "targets": Object {
                       "node": "12",
                     },
@@ -634,7 +634,7 @@ Mr Bean
                 Array [
                   "@babel/env",
                   Object {
-                    "modules": "false",
+                    "modules": false,
                     "targets": Object {
                       "node": "12",
                     },
