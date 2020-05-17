@@ -386,7 +386,7 @@ async function initHTTPTransaction({
         res.on('finish', resolve);
         res.writeHead(
           response.status,
-          statuses[response.status],
+          statuses.message[response.status],
           Object.assign({}, response.headers, { 'Transaction-Id': id }),
         );
         if (response.body && response.body.pipe) {
