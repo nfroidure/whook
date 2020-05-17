@@ -8,6 +8,7 @@ import {
   writeFile as _writeFile,
   readFile as _readFile,
   copy as _copy,
+  readdir as _readdir,
 } from 'fs-extra';
 import type { LogService } from 'common-services';
 import type { ProjectService } from './project';
@@ -25,6 +26,7 @@ export default autoService(async function initCreateWhook({
   project,
   writeFile = _writeFile,
   readFile = _readFile,
+  readdir = _readdir,
   exec = _exec,
   copy = _copy,
   axios = _axios,
@@ -37,6 +39,7 @@ export default autoService(async function initCreateWhook({
   project: ProjectService;
   writeFile: typeof _writeFile;
   readFile: typeof _readFile;
+  readdir: typeof _readdir;
   exec: typeof _exec;
   copy: typeof _copy;
   axios?: typeof _axios;
@@ -125,6 +128,14 @@ ${data.toString().replace(README_REGEXP, '$1')}
 ${author.name}
 
 `,
+        ),
+      ),
+      ...(
+        await readdir(path.join(SOURCE_DIR, 'src', 'config'))
+      ).map((environment) =>
+        writeFile(
+          path.join(project.directory, `.env.${environment}`),
+          'JWT_SECRET=oudelali\n',
         ),
       ),
       writeFile(

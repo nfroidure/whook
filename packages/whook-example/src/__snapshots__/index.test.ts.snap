@@ -12,12 +12,12 @@ Object {
         "protocol": "http",
         "reqHeaders": Object {
           "accept": "application/json, text/plain, */*",
-          "authorization": "Fa...1",
+          "authorization": "Bearer eyJ...xZ0",
           "connection": "close",
           "host": "localhost:9999",
           "user-agent": "__avoid_axios_version__",
         },
-        "startInBytes": 177,
+        "startInBytes": 370,
         "startOutBytes": 0,
         "startTime": 1390694400000,
         "url": "/v4/diag",
@@ -43,13 +43,13 @@ Object {
     "transaction-id": "1",
     "transfer-encoding": "chunked",
     "vary": "Origin",
-    "x-authenticated": "{\\"applicationId\\":\\"1\\",\\"scope\\":\\"admin\\",\\"userId\\":\\"1\\"}",
+    "x-authenticated": "{\\"scope\\":\\"admin\\",\\"userId\\":\\"1\\",\\"applicationId\\":\\"1\\",\\"iat\\":1390694400,\\"exp\\":1390867200,\\"nbf\\":1390694400}",
   },
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":177,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...1\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":177,\\"endOutBytes\\":833,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Authenticated\\":\\"{\\\\\\"applicationId\\\\\\":\\\\\\"1\\\\\\",\\\\\\"scope\\\\\\":\\\\\\"admin\\\\\\",\\\\\\"userId\\\\\\":\\\\\\"1\\\\\\"}\\",\\"Access-Control-Allow-Origin\\":\\"*\\",\\"Access-Control-Allow-Methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"Access-Control-Allow-Headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"Vary\\":\\"Origin\\"},\\"operationId\\":\\"getDiagnostic\\"}",
+      "{\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":370,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Bearer eyJ...xZ0\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":370,\\"endOutBytes\\":894,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Authenticated\\":\\"{\\\\\\"scope\\\\\\":\\\\\\"admin\\\\\\",\\\\\\"userId\\\\\\":\\\\\\"1\\\\\\",\\\\\\"applicationId\\\\\\":\\\\\\"1\\\\\\",\\\\\\"iat\\\\\\":1390694400,\\\\\\"exp\\\\\\":1390867200,\\\\\\"nbf\\\\\\":1390694400}\\",\\"Access-Control-Allow-Origin\\":\\"*\\",\\"Access-Control-Allow-Methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"Access-Control-Allow-Headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"Vary\\":\\"Origin\\"},\\"operationId\\":\\"getDiagnostic\\"}",
     ],
   ],
   "status": 200,
@@ -220,6 +220,9 @@ Object {
       "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts.",
     ],
     Array [
+      "💿 - Loading jwtToken initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts.",
+    ],
+    Array [
       "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js.",
     ],
     Array [
@@ -263,6 +266,9 @@ Object {
     ],
     Array [
       "💿 - Service \\"getTimeWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+    ],
+    Array [
+      "💿 - Service \\"jwtToken\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts",
     ],
     Array [
       "💿 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js",
@@ -715,6 +721,9 @@ Object {
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts",
     ],
     Array [
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts",
+    ],
+    Array [
       "🛂 - Dynamic import of: ecstatic",
     ],
     Array [
@@ -753,6 +762,10 @@ Object {
       "🖥 - Using an isolated env.",
     ],
   ],
-  "logInfoCalls": Array [],
+  "logInfoCalls": Array [
+    Array [
+      "JWT service initialized!",
+    ],
+  ],
 }
 `;

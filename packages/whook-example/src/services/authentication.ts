@@ -1,4 +1,5 @@
 import { autoService } from 'knifecycle';
+import { JWTService } from 'jwt-service';
 import YError from 'yerror';
 import type {
   AuthenticationService,
@@ -7,8 +8,8 @@ import type {
 
 export default autoService(initAuthentication);
 
-export type AuthenticationConfig = {
-  TOKEN: string;
+export type AuthenticationDependencies = {
+  jwtToken: JWTService<AuthenticationData>;
 };
 
 export type AuthenticationData = BaseAuthenticationData & {
@@ -20,8 +21,8 @@ type BearerPayload = { hash: string };
 
 // A fake authentication service
 async function initAuthentication({
-  TOKEN,
-}: AuthenticationConfig): Promise<
+  jwtToken,
+}: AuthenticationDependencies): Promise<
   AuthenticationService<FakePayload | BearerPayload, AuthenticationData>
 > {
   const authentication = {
@@ -33,18 +34,16 @@ async function initAuthentication({
         return data as FakePayload;
       }
       if (type === 'bearer') {
-        if ((data as BearerPayload).hash === TOKEN) {
-          return {
-            applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-            userId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-            scope: 'admin',
-          };
+        try {
+          return await jwtToken.verify((data as BearerPayload).hash);
+        } catch (err) {
+          throw YError.wrap(
+            err,
+            'E_BAD_BEARER_TOKEN',
+            type,
+            (data as BearerPayload).hash,
+          );
         }
-        throw new YError(
-          'E_BAD_BEARER_TOKEN',
-          type,
-          (data as BearerPayload).hash,
-        );
       }
       throw new YError('E_UNEXPECTED_AUTH_TYPE', type);
     },

@@ -3,19 +3,19 @@ import type { WhookAuthorizationConfig } from '@whook/authorization';
 import type { WhookSwaggerUIConfig } from '@whook/swagger-ui';
 import type { CORSConfig } from '@whook/cors';
 import type { WhookConfigs } from '@whook/whook';
-import type { AuthenticationConfig } from '../../services/authentication';
 import type { APIConfig } from '../../services/API';
+import type { JWTServiceConfig } from 'jwt-service';
 
 const packageConf = require('../../../package');
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
 const NODE_ENVS = [...DEBUG_NODE_ENVS, 'uat', 'production'];
 
 export type AppConfigs = WhookConfigs &
-  AuthenticationConfig &
   WhookAuthorizationConfig &
   WhookSwaggerUIConfig &
   CORSConfig &
-  APIConfig;
+  APIConfig &
+  JWTServiceConfig;
 
 const CONFIG: AppConfigs = {
   BASE_ENV: {},
@@ -36,7 +36,11 @@ const CONFIG: AppConfigs = {
       description: 'The provided token ("$0") do not match',
     },
   },
-  TOKEN: 'oudelali',
+  JWT: {
+    duration: '2d',
+    tolerance: '2h',
+    algorithms: ['HS256'],
+  },
   CORS: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',

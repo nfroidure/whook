@@ -5,6 +5,8 @@ import {
   prepareEnvironment as basePrepareEnvironment,
 } from './index';
 import axios from 'axios';
+import { JWTService } from 'jwt-service';
+import { AuthenticationData } from './services/authentication';
 
 const packageConf = require('../../../package');
 
@@ -28,6 +30,7 @@ describe('runServer', () => {
     $.register(
       constant('BASE_ENV', {
         DEV_MODE: '1',
+        JWT_SECRET: 'oudelali',
       }),
     );
     $.register(constant('PORT', PORT));
@@ -45,15 +48,21 @@ describe('runServer', () => {
   process.env.ISOLATED_ENV = '1';
 
   let $instance;
+  let jwtToken: JWTService<AuthenticationData>;
 
   beforeAll(async () => {
-    const { $instance: _instance } = await runServer(
-      prepareEnvironment,
-      prepareServer,
-      ['$instance', 'httpServer', 'process'],
-    );
+    const {
+      $instance: _instance,
+      jwtToken: _jwtToken,
+    } = await runServer(prepareEnvironment, prepareServer, [
+      '$instance',
+      'httpServer',
+      'process',
+      'jwtToken',
+    ]);
 
     $instance = _instance;
+    jwtToken = _jwtToken;
   }, 5000);
 
   afterAll(async () => {
@@ -106,7 +115,15 @@ describe('runServer', () => {
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
       headers: {
-        authorization: `Fake admin|1|1`,
+        authorization: `Bearer ${
+          (
+            await jwtToken.sign({
+              scope: 'admin',
+              userId: '1',
+              applicationId: '1',
+            })
+          ).token
+        }`,
         'user-agent': '__avoid_axios_version__',
       },
       validateStatus: () => true,

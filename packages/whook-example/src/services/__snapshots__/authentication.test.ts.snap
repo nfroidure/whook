@@ -23,6 +23,9 @@ exports[`authentication .check() with bearer type should work with a good token 
 Object {
   "result": Object {
     "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+    "exp": 396151200,
+    "iat": 396144000,
+    "nbf": 396144000,
     "scope": "admin",
     "userId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
   },

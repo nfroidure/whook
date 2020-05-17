@@ -28,6 +28,7 @@ describe('initCreateWhook', () => {
   };
   const writeFile = jest.fn();
   const readFile = jest.fn();
+  const readdir = jest.fn();
   const exec = jest.fn();
   const copy = jest.fn();
   const axios = jest.fn();
@@ -42,6 +43,7 @@ describe('initCreateWhook', () => {
     axios.mockReset();
     writeFile.mockReset();
     readFile.mockReset();
+    readdir.mockReset();
     exec.mockReset();
     copy.mockReset();
     log.mockReset();
@@ -70,6 +72,7 @@ Mr Bean
 
   it('should work', async () => {
     readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
         [
@@ -108,6 +111,7 @@ Mr Bean
       project,
       writeFile,
       readFile,
+      readdir,
       exec: exec as any,
       copy,
       axios: axios as any,
@@ -117,7 +121,13 @@ Mr Bean
 
     await createWhook();
 
-    expect(JSON.parse(writeFile.mock.calls[0][1])).toMatchInlineSnapshot(`
+    expect(
+      JSON.parse(
+        writeFile.mock.calls.find((call) =>
+          call[0].endsWith('package.json'),
+        )[1],
+      ),
+    ).toMatchInlineSnapshot(`
       Object {
         "author": Object {
           "email": "wayne@warner.com",
@@ -180,6 +190,7 @@ Mr Bean
           "@whook/whook": "<current_version>",
           "common-services": "^7.1.4",
           "http-auth-utils": "^2.5.0",
+          "jwt-service": "^5.0.0",
           "knifecycle": "^9.1.1",
           "strict-qs": "^6.1.2",
           "yerror": "^5.0.0",
@@ -322,11 +333,13 @@ Mr Bean
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      readdirCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should handle network issues', async () => {
     readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
         [
@@ -361,6 +374,7 @@ Mr Bean
       project,
       writeFile,
       readFile,
+      readdir,
       exec: exec as any,
       copy,
       axios: axios as any,
@@ -370,7 +384,13 @@ Mr Bean
 
     await createWhook();
 
-    expect(JSON.parse(writeFile.mock.calls[0][1])).toMatchInlineSnapshot(`
+    expect(
+      JSON.parse(
+        writeFile.mock.calls.find((call) =>
+          call[0].endsWith('package.json'),
+        )[1],
+      ),
+    ).toMatchInlineSnapshot(`
       Object {
         "author": Object {
           "email": "wayne@warner.com",
@@ -433,6 +453,7 @@ Mr Bean
           "@whook/whook": "<current_version>",
           "common-services": "^7.1.4",
           "http-auth-utils": "^2.5.0",
+          "jwt-service": "^5.0.0",
           "knifecycle": "^9.1.1",
           "strict-qs": "^6.1.2",
           "yerror": "^5.0.0",
@@ -575,11 +596,13 @@ Mr Bean
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      readdirCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should handle git initialization problems', async () => {
     readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockResolvedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
       data: 'node_modules',
@@ -599,6 +622,7 @@ Mr Bean
       project,
       writeFile,
       readFile,
+      readdir,
       exec: exec as any,
       copy,
       axios: axios as any,
@@ -608,7 +632,13 @@ Mr Bean
 
     await createWhook();
 
-    expect(JSON.parse(writeFile.mock.calls[0][1])).toMatchInlineSnapshot(`
+    expect(
+      JSON.parse(
+        writeFile.mock.calls.find((call) =>
+          call[0].endsWith('package.json'),
+        )[1],
+      ),
+    ).toMatchInlineSnapshot(`
       Object {
         "author": Object {
           "email": "wayne@warner.com",
@@ -671,6 +701,7 @@ Mr Bean
           "@whook/whook": "<current_version>",
           "common-services": "^7.1.4",
           "http-auth-utils": "^2.5.0",
+          "jwt-service": "^5.0.0",
           "knifecycle": "^9.1.1",
           "strict-qs": "^6.1.2",
           "yerror": "^5.0.0",
@@ -813,11 +844,13 @@ Mr Bean
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      readdirCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should fail with access problems', async () => {
     readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
       data: 'node_modules',
@@ -838,6 +871,7 @@ Mr Bean
         project,
         writeFile,
         readFile,
+        readdir,
         exec: exec as any,
         copy,
         axios: axios as any,
@@ -867,6 +901,7 @@ Mr Bean
         oraStartCalls: oraInstance.start.mock.calls,
         oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        readdirCalls: readdir.mock.calls,
       }).toMatchSnapshot();
     }
   });
