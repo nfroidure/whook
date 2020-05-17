@@ -1,6 +1,6 @@
 {
   "name": "@whook/swagger-ui",
-  "version": "4.0.0-alpha.43",
+  "version": "4.0.0-alpha.44",
   "description": "A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev",
   "keywords": [
     "whook",
@@ -70,7 +70,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^4.0.0-alpha.43",
+    "@whook/whook": "^4.0.0-alpha.44",
     "axios": "^0.19.2",
     "ecstatic": "^4.1.4",
     "knifecycle": "^9.1.1",
@@ -90,7 +90,7 @@
     "@types/jest": "^25.2.2",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
-    "@whook/http-router": "^4.0.0-alpha.43",
+    "@whook/http-router": "^4.0.0-alpha.44",
     "@whook/whook": "^4.0.0-alpha.43",
     "babel-eslint": "^10.1.0",
     "babel-plugin-knifecycle": "^1.2.0",
