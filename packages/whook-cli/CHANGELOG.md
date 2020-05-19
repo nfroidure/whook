@@ -1,3 +1,12 @@
+## [4.0.1](https://github.com/nfroidure/whook/compare/v4.0.0...v4.0.1) (2020-05-19)
+
+
+### Bug Fixes
+
+* **core:** fix monorepo config ([1e30e86](https://github.com/nfroidure/whook/commit/1e30e861bd8b4bd5674248f20f56e4a1aaa28e15))
+
+
+
 # [4.0.0](https://github.com/nfroidure/whook/compare/v3.1.3...v4.0.0) (2020-05-19)
 
 

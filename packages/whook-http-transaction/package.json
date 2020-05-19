@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-transaction",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Isolated HTTP Transactions for the Whook framework",
   "keywords": [
     "whook",

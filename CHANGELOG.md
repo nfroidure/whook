@@ -1,3 +1,12 @@
+## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.0...v3.1.3) (2020-05-19)
+
+
+### Bug Fixes
+
+* **core:** fix monorepo config ([1e30e86](https://github.com/nfroidure/whook/commit/1e30e861bd8b4bd5674248f20f56e4a1aaa28e15))
+
+
+
 <a name="3.1.3"></a>
 ## [3.1.3](https://github.com/nfroidure/whook/compare/v3.1.2...v3.1.3) (2018-10-31)
 
