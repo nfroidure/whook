@@ -34,9 +34,9 @@
     "metapak": "metapak",
     "postinstall": "lerna bootstrap --hoist && npm run compile && lerna link",
     "postmetapak": "lerna run metapak",
-    "precz": "npm t && npm run lint && npm run lerna -- run types && npm run metapak -- -s",
+    "precz": "npm t && npm run lint && npm run compile && npm run lerna -- run types && npm run metapak -- -s",
     "prettier": "prettier --write 'src/**/*.js'",
-    "preversion": "npm t && npm run lint && npm run lerna -- run types && npm run metapak -- -s && npm run compile",
+    "preversion": "npm t && npm run lint && npm run compile && npm run lerna -- run types && npm run metapak -- -s",
     "test": "lerna run test",
     "version": "npm run changelog"
   },
@@ -61,7 +61,7 @@
     "cz-conventional-changelog": "^3.2.0",
     "lerna": "^3.21.0",
     "metapak": "^3.1.10",
-    "metapak-nfroidure": "10.2.0"
+    "metapak-nfroidure": "10.2.1"
   },
   "contributors": [],
   "engines": {

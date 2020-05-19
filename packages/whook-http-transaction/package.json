@@ -64,7 +64,7 @@
     "yhttperror": "^5.0.0"
   },
   "peerDependencies": {
-    "@whook/whook": "^3.1.3"
+    "@whook/whook": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -87,7 +87,7 @@
     "jsarch": "^3.0.0",
     "jsdoc-to-markdown": "^5.0.3",
     "metapak": "^3.1.10",
-    "metapak-nfroidure": "10.2.0",
+    "metapak-nfroidure": "10.2.1",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "streamtest": "^1.2.4",
@@ -222,9 +222,7 @@
     "jest": "NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
-    "precz": "npm run compile",
     "prettier": "prettier --write 'src/**/*.ts'",
-    "preversion": "npm run compile",
     "test": "npm run jest",
     "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist"
   },
