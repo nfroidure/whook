@@ -96,11 +96,51 @@ these granters.
 ## Customizing handlers
 
 The endpoints definitions are designed to support the standard OAuth2
-definitions but can be easily overriden like this:
+definitions but can be easily overriden.
+
+You will probably need to protect the `postOAuth2Token` endpoint
+ with your own security mecanism :
+```ts
+// In a `src/handlers/postOAuth2Token.ts` fileimport {
+  initPostOAuth2Token,
+  postOAuth2TokenDefinition,
+  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
+  postOAuth2TokenPasswordTokenRequestBodySchema,
+  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
+  postOAuth2TokenRefreshTokenRequestBodySchema,
+  postOAuth2TokenTokenBodySchema,
+} from '@whook/oauth2';
+import type { WhookAPIHandlerDefinition } from '@whook/whook';
+
+export default initPostOAuth2Token;
+
+export const definition: WhookAPIHandlerDefinition = {
+  ...postOAuth2TokenDefinition,
+  operation: {
+    ...postOAuth2TokenDefinition.operation,
+    security: [
+      {
+        basicAuth: ['admin'],
+      },
+    ],
+  },
+};
+
+export {
+  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
+  postOAuth2TokenPasswordTokenRequestBodySchema,
+  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
+  postOAuth2TokenRefreshTokenRequestBodySchema,
+  postOAuth2TokenTokenBodySchema,
+};
+```
+
+Or you may want to reduce the OAuth2 grant types supported:
 
 ```ts
 // In a `src/handlers/getOAuth2Authorize.ts` file
-import initGetOAuth2Authorize, {
+import {
+  initGetOAuth2Authorize,
   getOAuth2AuthorizeDefinition as definition,
   getOAuth2AuthorizeResponseTypeParameter as baseResponseTypeParameter,
   getOAuth2AuthorizeClientIdParameter as clientIdParameter,

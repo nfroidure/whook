@@ -20,7 +20,7 @@ This endpoint is to be used by the authentication server page
  to acknowlege that the user accepted the client request.
 */
 export const authorizationCodeTokenRequestBodySchema: WhookAPISchemaDefinition = {
-  name: 'AuthorizationCodeTokenRequestBody',
+  name: 'AuthorizationCodeRequestBody',
   schema: {
     type: 'object',
     description:
@@ -46,7 +46,7 @@ export const authorizationCodeTokenRequestBodySchema: WhookAPISchemaDefinition =
 };
 
 export const passwordTokenRequestBodySchema: WhookAPISchemaDefinition = {
-  name: 'PasswordTokenRequestBody',
+  name: 'PasswordRequestBody',
   schema: {
     type: 'object',
     description:
@@ -72,7 +72,7 @@ export const passwordTokenRequestBodySchema: WhookAPISchemaDefinition = {
 };
 
 export const clientCredentialsTokenRequestBodySchema: WhookAPISchemaDefinition = {
-  name: 'ClientCredentialsTokenRequestBody',
+  name: 'ClientCredentialsRequestBody',
   schema: {
     type: 'object',
     description:

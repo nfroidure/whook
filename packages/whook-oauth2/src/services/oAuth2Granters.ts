@@ -145,7 +145,7 @@ export type OAuth2PasswordService<
   PASSWORD = string
 > = {
   check: (
-    AUTHENTICATION_DATA,
+    authenticationData: AUTHENTICATION_DATA,
     username: USERNAME,
     password: PASSWORD,
     demandedScope: AUTHENTICATION_DATA['scope'],
