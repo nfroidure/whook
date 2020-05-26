@@ -1,7 +1,7 @@
 import initMechanisms, { FAKE_MECHANISM } from './MECHANISMS';
 import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 
-describe('NECHANISMS', () => {
+describe('MECHANISMS', () => {
   const log = jest.fn();
 
   beforeEach(() => {

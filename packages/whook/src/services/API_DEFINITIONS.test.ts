@@ -181,6 +181,31 @@ describe('initAPIDefinitions', () => {
       }).toMatchSnapshot();
     });
 
+    it('with a few handlers in different plugins paths and an overriden one but with a different extension', async () => {
+      readDir.mockReturnValueOnce(['getPing.ts']);
+      readDir.mockReturnValueOnce(['getPing', 'getUser']);
+      importer.mockResolvedValueOnce({
+        definition: getPingDefinition,
+      });
+      importer.mockResolvedValueOnce(getUserModule);
+      importer.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE'));
+
+      const API_DEFINITIONS = await initAPIDefinitions({
+        PROJECT_SRC,
+        WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
+        log,
+        readDir,
+        importer,
+      });
+
+      expect({
+        API_DEFINITIONS,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        readDirCalls: readDir.mock.calls,
+        importerCalls: importer.mock.calls,
+      }).toMatchSnapshot();
+    });
+
     it('with a several handlers at the same path', async () => {
       readDir.mockReturnValueOnce(['getUser', 'putUser']);
       importer.mockResolvedValueOnce(getUserModule);

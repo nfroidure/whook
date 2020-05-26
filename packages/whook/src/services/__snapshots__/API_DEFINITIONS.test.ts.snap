@@ -405,6 +405,113 @@ Object {
 }
 `;
 
+exports[`initAPIDefinitions should work with a few handlers in different plugins paths and an overriden one but with a different extension 1`] = `
+Object {
+  "API_DEFINITIONS": Object {
+    "components": Object {
+      "parameters": Object {
+        "userId": Object {
+          "in": "path",
+          "name": "userId",
+          "schema": Object {
+            "type": "number",
+          },
+        },
+      },
+      "schemas": Object {
+        "User": Object {
+          "properties": Object {
+            "name": Object {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+    },
+    "paths": Object {
+      "/ping": Object {
+        "get": Object {
+          "operationId": "getPing",
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "additionalProperties": false,
+                    "properties": Object {
+                      "pong": Object {
+                        "enum": Array [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Pong",
+            },
+          },
+          "summary": "Checks API's availability.",
+          "tags": Array [
+            "system",
+          ],
+        },
+      },
+      "/users/{userId}": Object {
+        "get": Object {
+          "operationId": "getUser",
+          "parameters": Array [
+            Object {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": Array [
+            "user",
+          ],
+        },
+      },
+    },
+  },
+  "importerCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers/getPing",
+    ],
+    Array [
+      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
+    ],
+  ],
+  "logCalls": Array [
+    Array [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": Array [
+    Array [
+      "/home/whoiam/project/src/handlers",
+    ],
+    Array [
+      "/home/whoiam/project/node_modules/@whook/dist/handlers",
+    ],
+  ],
+}
+`;
+
 exports[`initAPIDefinitions should work with a filtered handler 1`] = `
 Object {
   "API_DEFINITIONS": Object {

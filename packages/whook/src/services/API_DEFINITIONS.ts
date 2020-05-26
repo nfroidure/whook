@@ -8,7 +8,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { ImporterService } from '..';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
-export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.mjs'];
+export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.ts', '.mjs'];
 export const DEFAULT_IGNORED_FILES_SUFFIXES = [
   '.test.js',
   '.d.js',

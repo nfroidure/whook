@@ -34,6 +34,7 @@ import initAPIDefinitions, {
   DEFAULT_IGNORED_FILES_PREFIXES,
   DEFAULT_IGNORED_FILES_SUFFIXES,
   DEFAULT_REDUCED_FILES_SUFFIXES,
+  WhookAPIDefinitionsConfig,
 } from './services/API_DEFINITIONS';
 import initAutoload, { HANDLER_REG_EXP } from './services/_autoload';
 import initGetPing, {
@@ -181,7 +182,8 @@ export type WhookConfigs = ProcessServiceConfig &
   ProcessServiceConfig &
   WhookPluginsPathsConfig & {
     CONFIG: WhookConfig;
-  } & ObfuscatorConfig;
+  } & ObfuscatorConfig &
+  WhookAPIDefinitionsConfig;
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
