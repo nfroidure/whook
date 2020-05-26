@@ -1,3 +1,13 @@
+## [4.0.2](https://github.com/nfroidure/whook/compare/v4.0.1...v4.0.2) (2020-05-26)
+
+
+### Bug Fixes
+
+* **@whook/oauth2:** fix typings and docs mistakes ([f81d8ce](https://github.com/nfroidure/whook/commit/f81d8cec5f217c2ecbdef17c360a2ad673356994))
+* **@whook/whook:** take typescript in count for API definitions ([220d016](https://github.com/nfroidure/whook/commit/220d0166f4226a8311b9f59831534ca584595e1d))
+
+
+
 ## [4.0.1](https://github.com/nfroidure/whook/compare/v4.0.0...v4.0.1) (2020-05-19)
 
 

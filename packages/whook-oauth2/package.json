@@ -1,6 +1,6 @@
 {
   "name": "@whook/oauth2",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "OAuth2 implementation for Whook servers",
   "main": "dist/index",
   "module": "dist/index.mjs",
@@ -44,8 +44,8 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^4.0.1",
-    "@whook/whook": "^4.0.1",
+    "@whook/authorization": "^4.0.2",
+    "@whook/whook": "^4.0.2",
     "camelcase": "^6.0.0",
     "common-services": "^7.1.4",
     "knifecycle": "^9.1.1",
