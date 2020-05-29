@@ -1,6 +1,6 @@
 {
   "name": "@whook/oauth2",
-  "version": "4.0.2",
+  "version": "4.0.3-alpha.0",
   "description": "OAuth2 implementation for Whook servers",
   "main": "dist/index",
   "module": "dist/index.mjs",
@@ -50,7 +50,6 @@
     "common-services": "^7.1.4",
     "knifecycle": "^9.1.1",
     "ms": "^2.1.2",
-    "snake-case": "^3.0.3",
     "yerror": "^5.0.0"
   },
   "devDependencies": {

@@ -1,12 +1,10 @@
 import { autoHandler } from 'knifecycle';
 import YError from 'yerror';
-import { snakeCase } from 'snake-case';
 import { setURLError } from './getOAuth2Authorize';
 import type {
   WhookAPIHandlerDefinition,
   WhookErrorsDescriptors,
   WhookAPIOperationConfig,
-  WhookAPIParameterDefinition,
 } from '@whook/whook';
 import type {
   CheckApplicationService,
@@ -38,6 +36,7 @@ export const definition: WhookAPIHandlerDefinition = {
           schema: {
             type: 'object',
             required: [
+              'responseType',
               'clientId',
               'redirectURI',
               'scope',
@@ -45,7 +44,7 @@ export const definition: WhookAPIHandlerDefinition = {
               'acknowledged',
             ],
             properties: {
-              responsetype: {
+              responseType: {
                 type: 'string',
               },
               clientId: {
@@ -200,4 +199,11 @@ async function postOAuth2Acknowledge<
       location: url.href,
     },
   };
+}
+
+function snakeCase(s: string): string {
+  return s
+    .split(/(?=(?<![A-Z])[A-Z])|[^a-zA-Z]+/)
+    .map((s) => s.toLowerCase())
+    .join('_');
 }
