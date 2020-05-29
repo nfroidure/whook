@@ -707,9 +707,7 @@ describe('OAuth2 server', () => {
       oAuth2Code.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,auth',
-        authentication: {
-          userId: 1,
-        },
+        userId: 1,
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',

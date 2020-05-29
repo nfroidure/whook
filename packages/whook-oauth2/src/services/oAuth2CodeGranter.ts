@@ -66,7 +66,7 @@ async function initOAuth2CodeGranter({
     additionalParameters,
   ) => {
     const code = await oAuth2Code.create(
-      { applicationId: clientId, scope },
+      { ...authenticationData, applicationId: clientId, scope },
       redirectURI,
       additionalParameters,
     );

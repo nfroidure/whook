@@ -108,10 +108,8 @@ Object {
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-        "authentication": Object {
-          "userId": 1,
-        },
         "scope": "user,auth",
+        "userId": 1,
       },
     ],
   ],
@@ -137,10 +135,8 @@ Object {
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-        "authentication": Object {
-          "userId": 1,
-        },
         "scope": "user,auth",
+        "userId": 1,
       },
     ],
   ],

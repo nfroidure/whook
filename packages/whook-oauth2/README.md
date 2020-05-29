@@ -93,12 +93,159 @@ The `oAuth2Granters` service gather the various granters services you can use in
 your application but you can write your own that uses a subset or a superset of
 these granters.
 
+Here, for example an handler that implement a verify token mechanism
+ in order to validate a user subscription:
+```ts
+import { autoService } from 'knifecycle';
+import { noop } from '@whook/whook';
+import YError from 'yerror';
+import type { LogService } from 'common-services';
+import { AuthenticationData } from './authentication';
+import { OAuth2GranterService, CheckApplicationService } from '@whook/oauth2';
+import { JWTService } from 'jwt-service';
+import { PGService } from 'postgresql-service';
+
+export type OAuth2VerifyTokenGranterDependencies = {
+  checkApplication: CheckApplicationService;
+  jwtToken: JWTService<AuthenticationData>;
+  pg: Pick<PGService, 'query'>;
+  log?: LogService;
+};
+export type OAuth2VerifyTokenGranterParameters = {
+  verifyToken: string;
+};
+export type OAuth2VerifyTokenGranterService = OAuth2GranterService<
+  unknown,
+  unknown,
+  OAuth2VerifyTokenGranterParameters,
+  AuthenticationData
+>;
+
+export default autoService(initOAuth2VerifyTokenGranter);
+
+const USER_VERIFY_QUERY = `
+UPDATE users
+SET roles = ARRAY['user'::role]
+WHERE id = $$userId
+`;
+
+async function initOAuth2VerifyTokenGranter({
+  checkApplication,
+  jwtToken,
+  pg,
+  log = noop,
+}: OAuth2VerifyTokenGranterDependencies): Promise<
+  OAuth2VerifyTokenGranterService
+> {
+  const authenticateWithVerifyToken: OAuth2VerifyTokenGranterService['authenticator']['authenticate'] = async (
+    { verifyToken },
+    authenticationData,
+  ) => {
+    try {
+      // The client must be authenticated
+      if (!authenticationData) {
+        throw new YError('E_UNAUTHORIZED');
+      }
+
+      const newAuthenticationData = await jwtToken.verify(verifyToken);
+
+      await checkApplication({
+        applicationId: authenticationData.applicationId,
+        type: 'verify',
+        scope: newAuthenticationData.scope,
+      });
+
+      const result = await pg.query(USER_VERIFY_QUERY, {
+        userId: newAuthenticationData.userId,
+      });
+
+      if (result.rowCount === 0) {
+        throw new YError('E_ALREADY_VERIFIED', authenticationData.userId);
+      }
+
+      return newAuthenticationData;
+    } catch (err) {
+      if (err.code === 'E_BAD_TOKEN') {
+        throw YError.wrap(err, 'E_BAD_REFRESH_TOKEN');
+      }
+      throw err;
+    }
+  };
+
+  log('debug', '👫 - OAuth2VerifyTokenGranter Service Initialized!');
+
+  return {
+    type: 'verify',
+    authenticator: {
+      grantType: 'verify_token',
+      authenticate: authenticateWithVerifyToken,
+    },
+  };
+}
+```
+
 ## Customizing handlers
 
 The endpoints definitions are designed to support the standard OAuth2
 definitions but can be easily overriden.
 
-You will probably need to protect the `postOAuth2Token` endpoint
+You will have to protect the `postOAuth2Acknowledge` with your own
+ security mechanism :
+```ts
+import {
+  initPostOAuth2Acknowledge,
+  postOAuth2AcknowledgeDefinition,
+} from '@whook/oauth2';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { WhookAPIHandlerDefinition } from '@whook/whook';
+
+export default initPostOAuth2Acknowledge;
+
+export const definition: WhookAPIHandlerDefinition = {
+  ...postOAuth2AcknowledgeDefinition,
+  operation: {
+    ...postOAuth2AcknowledgeDefinition.operation,
+    security: [
+      {
+        bearerAuth: ['user'],
+      },
+    ],
+    // Optionally you can rewrite the endpoint definition
+    // to add more custom parameters to your endpoint
+    requestBody: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: {
+            ...((postOAuth2AcknowledgeDefinition.operation
+              .requestBody as OpenAPIV3.RequestBodyObject).content[
+              'application/json'
+            ].schema as OpenAPIV3.NonArraySchemaObject),
+            required: [
+              'userId',
+              ...((postOAuth2AcknowledgeDefinition.operation
+                .requestBody as OpenAPIV3.RequestBodyObject).content[
+                'application/json'
+              ].schema as OpenAPIV3.NonArraySchemaObject).required,
+            ],
+            properties: {
+              ...((postOAuth2AcknowledgeDefinition.operation
+                .requestBody as OpenAPIV3.RequestBodyObject).content[
+                'application/json'
+              ].schema as OpenAPIV3.NonArraySchemaObject).properties,
+              userId: {
+                type: 'string',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
+```
+
+You will probably need to also protect the `postOAuth2Token` endpoint
  with your own security mecanism :
 ```ts
 // In a `src/handlers/postOAuth2Token.ts` fileimport {

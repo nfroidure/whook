@@ -667,37 +667,37 @@ Object {
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/config/test/config",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts",
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
+      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho",
     ],
     Array [
       "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",

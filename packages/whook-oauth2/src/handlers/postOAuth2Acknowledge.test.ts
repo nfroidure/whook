@@ -53,6 +53,7 @@ describe('postOAuth2Acknowledge', () => {
       applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       redirectURI: 'http://lol',
       scope: 'user',
+      userId: 1,
     });
 
     const postOAuth2Acknowledge = await initPostOAuth2Acknowledge<
@@ -86,7 +87,7 @@ describe('postOAuth2Acknowledge', () => {
       Object {
         "response": Object {
           "headers": Object {
-            "location": "https://www.example.com/?client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&redirect_uri=http%3A%2F%2Flol",
+            "location": "https://www.example.com/?client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&redirect_uri=http%3A%2F%2Flol&user_id=1",
           },
           "status": 302,
         },

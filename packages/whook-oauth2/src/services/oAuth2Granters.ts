@@ -1,11 +1,7 @@
 import { initializer } from 'knifecycle';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
-import type {
-  WhookErrorDescriptor,
-  WhookErrorsDescriptors,
-} from '@whook/whook';
+import type { WhookErrorsDescriptors } from '@whook/whook';
 import type { BaseAuthenticationData } from '@whook/authorization';
-import type { LogService } from 'common-services';
 
 export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_UNKNOWN_AUTHORIZER_TYPE: {
@@ -132,11 +128,11 @@ export type OAuth2CodeService<
     authenticationData: AUTHENTICATION_DATA,
     code: CODE,
     redirectURI: string,
-  ) => Promise<{
-    applicationId: AUTHENTICATION_DATA['applicationId'];
-    scope: AUTHENTICATION_DATA['scope'];
-    authentication: AUTHENTICATION_DATA;
-  }>;
+  ) => Promise<
+    AUTHENTICATION_DATA & {
+      redirectURI: string;
+    } & { [name: string]: unknown }
+  >;
 };
 
 export type OAuth2PasswordService<
