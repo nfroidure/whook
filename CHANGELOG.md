@@ -1,3 +1,12 @@
+## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.2...v3.1.3) (2020-05-29)
+
+
+### Bug Fixes
+
+* **@whook/oauth2:** fix types and add some tests ([3f064d7](https://github.com/nfroidure/whook/commit/3f064d7a5a9b23a963007bef7dcc05eb13cdae38))
+
+
+
 ## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.1...v3.1.3) (2020-05-26)
 
 
