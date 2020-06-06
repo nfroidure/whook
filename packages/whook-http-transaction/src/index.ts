@@ -316,12 +316,11 @@ async function initHTTPTransaction({
     err: Error | YError | YHTTPError,
   ) {
     /* Architecture Note #1.3: Transaction errors
-  Here we are simply casting and logging errors.
+  Here we are simply logging errors.
    It is important for debugging but also for
    ending the transaction properly if an error
    occurs.
   */
-    err = HTTPError.cast(err, (err as YHTTPError).httpCode || 500);
     apm('ERROR', {
       guruMeditation: id,
       request:
@@ -330,10 +329,10 @@ async function initHTTPTransaction({
         (req.headers.host || 'localhost') +
         TRANSACTIONS[id].url,
       verb: req.method,
-      status: (err as YHTTPError).httpCode,
-      code: (err as YError).code,
+      status: (err as YHTTPError).httpCode || 500,
+      code: (err as YError).code || 'E_UNEXPECTED',
       stack: err.stack,
-      details: (err as YError).params,
+      details: (err as YError).params || [],
     });
 
     TRANSACTIONS[id].errored = true;
