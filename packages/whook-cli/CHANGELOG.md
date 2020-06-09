@@ -1,3 +1,12 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v4.0.3...v4.0.4) (2020-06-09)
+
+
+### Bug Fixes
+
+* **@whook/http-transaction:** fix error agnosticism ([90a2865](https://github.com/nfroidure/whook/commit/90a2865b58fe0a39e0b65bff8f461cccf7527dae))
+
+
+
 ## [4.0.3](https://github.com/nfroidure/whook/compare/v4.0.2...v4.0.3) (2020-05-29)
 
 
