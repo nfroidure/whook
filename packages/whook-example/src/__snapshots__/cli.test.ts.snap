@@ -25,8 +25,15 @@ Object {
 ",
   "stdout": "
 
-# Provided by \\"@whook/example\\": 1 commands
+# Provided by \\"@whook/example\\": 2 commands
 - printEnv: A command printing every env values
+- terraformValues: A command printing lambdas informations for Terraform
+
+
+# Provided by \\"@whook/aws-lambda\\": 3 commands
+- testConsumerLambda: A command for testing AWS consumer lambda
+- testCronLambda: A command for testing AWS cron lambda
+- testHTTPLambda: A command for testing AWS HTTP lambda
 
 
 # Provided by \\"@whook/cli\\": 6 commands
@@ -38,10 +45,10 @@ Object {
 - ls: Print available commands
 
 
-# Provided by \\"@whook/whook\\": none
-
-
 # Provided by \\"@whook/cors\\": none
+
+
+# Provided by \\"@whook/whook\\": none
 ",
 }
 `;
