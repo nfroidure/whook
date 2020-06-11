@@ -1,4 +1,4 @@
-import { initAutoload, noop } from '@whook/whook';
+import { initAutoload, noop, WhookOperation } from '@whook/whook';
 import {
   SPECIAL_PROPS,
   wrapInitializer,
@@ -11,6 +11,7 @@ import type Knifecycle from 'knifecycle';
 import type { Injector } from 'knifecycle';
 import type { WhookBuildConstantsService } from '@whook/whook';
 import type { LogService } from 'common-services';
+import { OpenAPIV3 } from 'openapi-types';
 
 /**
  * Wrap the _autoload service in order to build AWS
@@ -43,16 +44,39 @@ export default alsoInject(
       },
       $autoload,
     ) => {
-      let API_OPERATIONS;
-      const getAPIOperations = (() => {
-        return async () => {
+      let API: OpenAPIV3.Document;
+      let OPERATION_APIS: WhookOperation[];
+      const getAPIOperation = (() => {
+        return async (serviceName) => {
           // eslint-disable-next-line
-          API_OPERATIONS =
-            API_OPERATIONS ||
-            (await getOpenAPIOperations(
-              await flattenOpenAPI((await $injector(['API'])).API),
-            ));
-          return API_OPERATIONS;
+          API = API || (await flattenOpenAPI((await $injector(['API'])).API));
+          // eslint-disable-next-line
+          OPERATION_APIS = OPERATION_APIS || getOpenAPIOperations(API);
+
+          const OPERATION = OPERATION_APIS.find(
+            (operation) =>
+              serviceName ===
+              (((operation['x-whook'] || {}).sourceOperationId &&
+                'OPERATION_API_' +
+                  (operation['x-whook'] || {}).sourceOperationId) ||
+                'OPERATION_API_' + operation.operationId) +
+                ((operation['x-whook'] || {}).suffix || ''),
+          );
+
+          if (!OPERATION) {
+            log('error', '💥 - Unable to find a lambda operation definition!');
+            throw new YError('E_OPERATION_NOT_FOUND', serviceName);
+          }
+
+          // TODO: Do a better cleanup of all unuseful resources
+          return {
+            ...API,
+            paths: {
+              [OPERATION.path]: {
+                [OPERATION.method]: OPERATION,
+              },
+            },
+          };
         };
       })();
 
@@ -75,27 +99,11 @@ export default alsoInject(
             };
           }
 
-          if (serviceName.startsWith('OPERATION_')) {
-            const OPERATION = (await getAPIOperations()).find(
-              (operation) =>
-                serviceName ===
-                (((operation['x-whook'] || {}).sourceOperationId &&
-                  'OPERATION_' +
-                    (operation['x-whook'] || {}).sourceOperationId) ||
-                  'OPERATION_' + operation.operationId) +
-                  ((operation['x-whook'] || {}).suffix || ''),
-            );
-
-            if (!OPERATION) {
-              log(
-                'error',
-                '💥 - Unable to find a lambda operation definition!',
-              );
-              throw new YError('E_OPERATION_NOT_FOUND', serviceName);
-            }
+          if (serviceName.startsWith('OPERATION_API_')) {
+            const OPERATION_API = await getAPIOperation(serviceName);
 
             return {
-              initializer: constant(serviceName, OPERATION),
+              initializer: constant(serviceName, OPERATION_API),
               path: `api://${serviceName}`,
             };
           }

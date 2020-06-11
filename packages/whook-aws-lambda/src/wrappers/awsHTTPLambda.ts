@@ -5,8 +5,9 @@ import {
   DEFAULT_STRINGIFYERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
+  extractOperationSecurityParameters,
 } from '@whook/http-router';
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { reuseSpecialProps, alsoInject, HandlerInitializer } from 'knifecycle';
 import Ajv from 'ajv';
 import bytes from 'bytes';
 import HTTPError from 'yhttperror';
@@ -69,7 +70,7 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
 ): ServiceInitializer<D & HTTPWrapperDependencies, S> {
   return alsoInject(
     [
-      'OPERATION',
+      'OPERATION_API',
       'WRAPPERS',
       '?DEBUG_NODE_ENVS',
       'NODE_ENV',
@@ -92,9 +93,9 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
 }
 
 async function initHandlerForAWSHTTPLambda(
-  initHandler,
+  initHandler: HandlerInitializer<unknown, unknown[], unknown>,
   {
-    OPERATION,
+    OPERATION_API,
     WRAPPERS,
     NODE_ENV,
     DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
@@ -106,6 +107,13 @@ async function initHandlerForAWSHTTPLambda(
     ...services
   },
 ) {
+  const path = Object.keys(OPERATION_API.paths)[0];
+  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const OPERATION: WhookOperation = {
+    path,
+    method,
+    ...OPERATION_API.paths[path][method],
+  };
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
   const consumableMediaTypes = extractConsumableMediaTypes(OPERATION);
@@ -116,10 +124,16 @@ async function initHandlerForAWSHTTPLambda(
     coerceTypes: true,
     strictKeywords: true,
   });
+  const ammendedParameters = extractOperationSecurityParameters(
+    OPERATION_API,
+    OPERATION,
+  );
   const validators = prepareParametersValidators(
     ajv,
     OPERATION.operationId,
-    OPERATION.parameters || [],
+    ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]).concat(
+      ammendedParameters,
+    ),
   );
   const bodyValidator = prepareBodyValidator(ajv, OPERATION);
   const applyWrappers = compose(...WRAPPERS);
@@ -153,6 +167,7 @@ async function initHandlerForAWSHTTPLambda(
       produceableCharsets,
       validators,
       bodyValidator,
+      ammendedParameters,
     },
     handler,
   );
@@ -184,6 +199,7 @@ async function handleForAWSHTTPLambda(
     produceableCharsets,
     validators,
     bodyValidator,
+    ammendedParameters,
   },
   handler: WhookHandler,
   event,
@@ -193,6 +209,9 @@ async function handleForAWSHTTPLambda(
   const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
   const startTime = time();
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
+  const operationParameters = (OPERATION.parameters || []).concat(
+    ammendedParameters,
+  );
 
   log(
     'info',
@@ -251,13 +270,12 @@ async function handleForAWSHTTPLambda(
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
         ...filterHeaders(
-          operation.parameters as OpenAPIV3.ParameterObject[],
+          operationParameters as OpenAPIV3.ParameterObject[],
           request.headers,
         ),
       };
 
-      parameters = ((OPERATION.parameters ||
-        []) as OpenAPIV3.ParameterObject[]).reduce(
+      parameters = (operationParameters as OpenAPIV3.ParameterObject[]).reduce(
         (cleanParameters, parameter) => {
           const parameterName =
             parameter.in === 'header'

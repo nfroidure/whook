@@ -264,7 +264,9 @@ async function buildAnyLambda(
 
     const initializerContent = await buildInitializer(
       finalHandlerInitializer[SPECIAL_PROPS.INJECT].map((name) =>
-        name === 'OPERATION' ? `OPERATION>OPERATION_${finalEntryPoint}` : name,
+        name === 'OPERATION_API'
+          ? `OPERATION_API>OPERATION_API_${finalEntryPoint}`
+          : name,
       ),
     );
     const indexContent = await buildLambdaIndex(rootNode, {
