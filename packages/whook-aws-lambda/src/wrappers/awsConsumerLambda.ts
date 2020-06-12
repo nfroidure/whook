@@ -5,10 +5,11 @@ import YHTTPError from 'yhttperror';
 import type { ServiceInitializer } from 'knifecycle';
 import type { WhookOperation, APMService, WhookHandler } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
+import { OpenAPIV3 } from 'openapi-types';
 
 type ConsumerWrapperDependencies = {
   NODE_ENV: string;
-  OPERATION: WhookOperation;
+  OPERATION_API: OpenAPIV3.Document;
   apm: APMService;
   time?: TimeService;
   log?: LogService;
@@ -21,7 +22,7 @@ export default function wrapHandlerForAWSConsumerLambda<
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & ConsumerWrapperDependencies, S> {
   return alsoInject(
-    ['OPERATION', 'NODE_ENV', 'apm', '?time', '?log'],
+    ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
       initHandlerForAWSConsumerLambda.bind(null, initHandler),
@@ -41,7 +42,7 @@ async function initHandlerForAWSConsumerLambda<D, S extends WhookHandler>(
 async function handleForAWSConsumerLambda(
   {
     NODE_ENV,
-    OPERATION,
+    OPERATION_API,
     apm,
     time = Date.now.bind(Date),
     log = noop,
@@ -51,6 +52,13 @@ async function handleForAWSConsumerLambda(
   context: unknown,
   callback: (err: Error, result?: any) => void,
 ) {
+  const path = Object.keys(OPERATION_API.paths)[0];
+  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const OPERATION: WhookOperation = {
+    path,
+    method,
+    ...OPERATION_API.paths[path][method],
+  };
   const startTime = time();
 
   try {

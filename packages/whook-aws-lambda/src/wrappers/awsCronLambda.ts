@@ -4,10 +4,11 @@ import YError from 'yerror';
 import type { ServiceInitializer } from 'knifecycle';
 import type { APMService, WhookOperation, WhookHandler } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
+import { OpenAPIV3 } from 'openapi-types';
 
 type CronWrapperDependencies = {
   NODE_ENV: string;
-  OPERATION: WhookOperation;
+  OPERATION_API: OpenAPIV3.Document;
   apm: APMService;
   time?: TimeService;
   log?: LogService;
@@ -17,7 +18,7 @@ export default function wrapHandlerForAWSCronLambda<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & CronWrapperDependencies, S> {
   return alsoInject(
-    ['NODE_ENV', 'OPERATION', 'apm', '?time', '?log'],
+    ['NODE_ENV', 'OPERATION_API', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
       initHandlerForAWSCronLambda.bind(null, initHandler),
@@ -37,7 +38,7 @@ async function initHandlerForAWSCronLambda<D, S extends WhookHandler>(
 async function handleForAWSCronLambda(
   {
     NODE_ENV,
-    OPERATION,
+    OPERATION_API,
     apm,
     time = Date.now.bind(Date),
     log = noop,
@@ -47,6 +48,13 @@ async function handleForAWSCronLambda(
   context: unknown,
   callback: (err: Error, result?: any) => void,
 ) {
+  const path = Object.keys(OPERATION_API.paths)[0];
+  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const OPERATION: WhookOperation = {
+    path,
+    method,
+    ...OPERATION_API.paths[path][method],
+  };
   const startTime = time();
   const parameters = {
     date: event.time,
