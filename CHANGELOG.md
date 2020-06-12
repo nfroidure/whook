@@ -1,3 +1,12 @@
+## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.4...v3.1.3) (2020-06-12)
+
+
+### Bug Fixes
+
+* **build:** fix lambdas builds for authentication parameters ([a8a1691](https://github.com/nfroidure/whook/commit/a8a1691ac919195e35ce6006b4ccdb624e416087))
+
+
+
 ## [3.1.3](https://github.com/nfroidure/whook/compare/v4.0.3...v3.1.3) (2020-06-09)
 
 
