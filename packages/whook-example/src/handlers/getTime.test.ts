@@ -18,7 +18,7 @@ describe('getTime', () => {
       Object {
         "response": Object {
           "body": Object {
-            "time": 1390694400000,
+            "currentDate": "2014-01-26T00:00:00.000Z",
           },
           "status": 200,
         },

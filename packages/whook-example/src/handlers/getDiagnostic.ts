@@ -21,7 +21,13 @@ export const definition: WhookAPIHandlerDefinition = {
           'application/json': {
             schema: {
               type: 'object',
-              additionalProperties: true,
+              required: ['transactions'],
+              properties: {
+                transactions: {
+                  type: 'object',
+                  additionalProperties: true,
+                },
+              },
             },
           },
         },
@@ -32,14 +38,11 @@ export const definition: WhookAPIHandlerDefinition = {
 
 export default autoHandler(getDiagnostic);
 
-type Transaction = {};
-type Transactions = { [id: string]: Transaction };
-
 async function getDiagnostic({
   TRANSACTIONS,
 }: {
-  TRANSACTIONS: Transactions;
-}): Promise<WhookResponse<200, {}, { transactions: Transactions }>> {
+  TRANSACTIONS: Paths.GetDiagnostic.Responses.$200['transactions'];
+}): Promise<WhookResponse<200, {}, Paths.GetDiagnostic.Responses.$200>> {
   return {
     status: 200,
     body: {

@@ -46,7 +46,7 @@ async function getDelay(
   }: {
     delay: DelayService;
   },
-  { duration }: { duration: number },
+  { duration }: { duration: Components.Parameters.Duration.Duration },
 ): Promise<WhookResponse<200, {}, undefined>> {
   await delay.create(duration);
   return {

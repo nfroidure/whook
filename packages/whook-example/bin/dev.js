@@ -1,3 +1,3 @@
-import { runServer } from '../src/index';
+import { watchDevServer } from '../src/dev';
 
-runServer();
+watchDevServer();

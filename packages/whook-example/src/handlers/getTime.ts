@@ -45,11 +45,11 @@ async function getTime({
   time,
 }: {
   time: TimeService;
-}): Promise<WhookResponse<200, {}, { time: number }>> {
+}): Promise<WhookResponse<200, {}, Components.Schemas.TimeSchema>> {
   return {
     status: 200,
     body: {
-      time: time(),
+      currentDate: new Date(time()).toISOString(),
     },
   };
 }
