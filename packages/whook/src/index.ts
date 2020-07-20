@@ -99,7 +99,6 @@ import type {
   APMService,
 } from '@whook/http-transaction';
 import { noop, identity, compose, pipe } from './libs/utils';
-import type { OpenAPIV3 } from 'openapi-types';
 import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
 
 export type {

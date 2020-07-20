@@ -25,7 +25,9 @@ Object {
 ",
   "stdout": "
 
-# Provided by \\"@whook/example\\": 1 commands
+# Provided by \\"@whook/example\\": 3 commands
+- generateOpenAPISchema: Write openAPI schema to stdout
+- generateOpenAPITypes: Write openAPI types to stdout
 - printEnv: A command printing every env values
 
 

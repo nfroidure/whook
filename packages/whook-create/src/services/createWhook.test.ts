@@ -304,6 +304,7 @@ Mr Bean
         },
         "private": true,
         "scripts": Object {
+          "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=false | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
           "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
           "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
@@ -317,6 +318,7 @@ Mr Bean
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
           "test": "npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
+          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
           "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js",
         },
@@ -566,6 +568,7 @@ Mr Bean
         },
         "private": true,
         "scripts": Object {
+          "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=false | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
           "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
           "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
@@ -579,6 +582,7 @@ Mr Bean
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
           "test": "npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
+          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
           "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js",
         },
@@ -813,6 +817,7 @@ Mr Bean
         },
         "private": true,
         "scripts": Object {
+          "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=false | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
           "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
           "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
@@ -826,6 +831,7 @@ Mr Bean
           "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
           "test": "npm run jest",
           "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
+          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
           "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js",
         },

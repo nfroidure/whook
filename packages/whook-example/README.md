@@ -26,9 +26,13 @@ NODE_ENV=production npm start
 
 ## Dev
 
-Start the server in development mode:
+Start the server in development:
 ```sh
+# Simple dev mode
 npm run dev
+
+# Watch mode
+npm run watch
 ```
 
 Create a new endpoint / service / provider or command:
@@ -39,6 +43,11 @@ npx whook create
 List available commands:
 ```sh
 npx whook ls
+```
+
+Generate API types:
+```sh
+npm run apitypes
 ```
 
 ## Debug

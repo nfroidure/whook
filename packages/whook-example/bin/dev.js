@@ -1,3 +1,3 @@
-import { watchDevServer } from '../src/dev';
+const { runServer } = require('../src/index');
 
-watchDevServer();
+runServer();

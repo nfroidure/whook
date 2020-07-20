@@ -1,13 +1,14 @@
 import chokidar from 'chokidar';
-import dtsgenerator, { parseSchema } from 'dtsgenerator';
 import path from 'path';
 import crypto from 'crypto';
-import { writeFileSync } from 'fs';
-import type { Schema } from 'dtsgenerator';
+import { PassThrough } from 'stream';
+import { createWriteStream } from 'fs';
+import initGenerateOpenAPITypes from './commands/generateOpenAPITypes';
 import type { Knifecycle } from 'knifecycle';
-import type { DelayService } from 'common-services';
+import type { DelayService, LogService } from 'common-services';
 
 let $instance: Knifecycle;
+let log: LogService;
 let delay: DelayService;
 let delayPromise: Promise<void>;
 let hash: string;
@@ -41,10 +42,7 @@ export async function watchDevServer() {
 
 export async function restartDevServer() {
   if ($instance) {
-    console.log(
-      'info',
-      '➡️ Changes detected : Will restart the server soon...',
-    );
+    log('warning', '➡️ - Changes detected : Will restart the server soon...');
     await delayPromise;
     await $instance.destroy();
     delayPromise = undefined;
@@ -57,15 +55,24 @@ export async function restartDevServer() {
     $instance: _instance,
     delay: _delay,
     getOpenAPI,
-  } = await runServer(prepareEnvironment, prepareServer, [
+    log: _log,
+  } = (await runServer(prepareEnvironment, prepareServer, [
     'PROJECT_SRC',
     '$instance',
     'delay',
     'getOpenAPI',
-  ]);
+    'log',
+  ])) as {
+    PROJECT_SRC: string;
+    $instance: Knifecycle;
+    delay: DelayService;
+    getOpenAPI;
+    log: LogService;
+  };
 
   $instance = _instance;
   delay = _delay;
+  log = _log;
 
   const response = await getOpenAPI({
     authenticated: true,
@@ -77,13 +84,35 @@ export async function restartDevServer() {
 
   if (hash !== newHash) {
     hash = newHash;
-    console.log('info', '🦄 - API Changed : Generating API types...');
+    log('warning', '🦄 - API Changed : Generating API types...');
 
-    const schema = await parseSchema(response.body);
-    const typesDefs = await dtsgenerator({
-      contents: [schema],
+    const instream = new PassThrough();
+    const bridge = new PassThrough();
+    const openAPITypesGenerationPromise = (
+      await initGenerateOpenAPITypes({
+        instream,
+        outstream: bridge,
+        log,
+      })
+    )();
+
+    const writeStream = createWriteStream(
+      path.join(PROJECT_SRC, 'openAPISchema.d.ts'),
+    );
+    const writeStreamCompletionPromise = new Promise((resolve, reject) => {
+      writeStream.once('finish', resolve);
+      writeStream.once('error', reject);
     });
 
-    writeFileSync(path.join(PROJECT_SRC, 'openAPISchema.d.ts'), typesDefs);
+    bridge.pipe(writeStream);
+
+    instream.write(openAPIData);
+    instream.end();
+
+    await Promise.all([
+      openAPITypesGenerationPromise,
+      writeStreamCompletionPromise,
+    ]);
+    log('warning', '🦄 - API types generated!');
   }
 }
