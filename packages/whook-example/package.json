@@ -42,7 +42,7 @@
     }
   },
   "scripts": {
-    "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=false | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+    "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
     "build": "npm run compile && NODE_ENV=${NODE_ENV:-development} node bin/build",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",

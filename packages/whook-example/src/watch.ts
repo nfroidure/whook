@@ -25,10 +25,10 @@ export async function watchDevServer() {
 
       if (filePath.match(/package.*\.json/)) {
         for (let key in require.cache) {
-          delete require.cache[key];
+          uncache(key);
         }
       } else {
-        delete require.cache[absolutePath];
+        uncache(absolutePath, true);
       }
 
       if (delay) {
@@ -115,4 +115,22 @@ export async function restartDevServer() {
     ]);
     log('warning', '🦄 - API types generated!');
   }
+}
+
+function uncache(key: string, recursively = false) {
+  const module = require.cache[key];
+
+  if (!module) {
+    return;
+  }
+
+  if (!key.endsWith('.node')) {
+    delete require.cache[key];
+  }
+
+  if (!recursively) {
+    return;
+  }
+
+  uncache(module.parent.id);
 }
