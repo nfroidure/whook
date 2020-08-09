@@ -19,7 +19,7 @@ describe('printEnvCommand', () => {
           keysOnly: true,
         },
         {
-          _: ['env'],
+          _: ['printEnv'],
         },
       ) as unknown) as WhookCommandArgs,
     });

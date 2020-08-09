@@ -60,6 +60,27 @@ export const definition: WhookAPIHandlerDefinition = {
     responses: {
       204: {
         description: 'Delay expired',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                aHeader: {
+                  type: 'boolean',
+                },
+                pathParam1: {
+                  type: 'number',
+                },
+                pathParam2: {
+                  type: 'array',
+                  items: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     },
   },
@@ -72,17 +93,11 @@ async function getParameters(
     pathParam1,
     pathParam2,
   }: {
-    aHeader: boolean;
-    pathParam1: number;
-    pathParam2: string[];
+    aHeader: Paths.GetParameters.Parameters.AHeader;
+    pathParam1: Components.Parameters.PathParam1.PathParam1;
+    pathParam2: Components.Parameters.PathParam2.PathParam2;
   },
-): Promise<
-  WhookResponse<
-    200,
-    {},
-    { aHeader: boolean; pathParam1: number; pathParam2: string[] }
-  >
-> {
+): Promise<WhookResponse<200, {}, Paths.GetParameters.Responses.$204>> {
   return {
     status: 200,
     body: {

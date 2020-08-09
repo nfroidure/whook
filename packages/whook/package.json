@@ -103,7 +103,7 @@
     "@whook/http-router": "^4.0.4",
     "@whook/http-server": "^4.0.4",
     "@whook/http-transaction": "^4.0.4",
-    "common-services": "^7.1.4",
+    "common-services": "^7.1.5",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "internal-ip": "^6.0.0",

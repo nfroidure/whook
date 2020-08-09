@@ -60,7 +60,7 @@
     "@whook/whook": "^4.0.4",
     "ajv": "^6.12.2",
     "camelcase": "^6.0.0",
-    "common-services": "^7.1.4",
+    "common-services": "^7.1.5",
     "cpr": "3.0.1",
     "knifecycle": "^9.1.1",
     "memfs": "3.2.0",

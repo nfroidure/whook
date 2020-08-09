@@ -101,6 +101,18 @@ Object {
         },
       },
       "schemas": Object {
+        "Echo": Object {
+          "additionalProperties": false,
+          "properties": Object {
+            "echo": Object {
+              "type": "string",
+            },
+          },
+          "required": Array [
+            "echo",
+          ],
+          "type": "object",
+        },
         "TimeSchema": Object {
           "additionalProperties": false,
           "properties": Object {
@@ -184,7 +196,15 @@ Object {
               "content": Object {
                 "application/json": Object {
                   "schema": Object {
-                    "additionalProperties": true,
+                    "properties": Object {
+                      "transactions": Object {
+                        "additionalProperties": true,
+                        "type": "object",
+                      },
+                    },
+                    "required": Array [
+                      "transactions",
+                    ],
                     "type": "object",
                   },
                 },
@@ -261,16 +281,7 @@ Object {
                   "echo": "Repeat this!",
                 },
                 "schema": Object {
-                  "additionalProperties": false,
-                  "properties": Object {
-                    "echo": Object {
-                      "type": "string",
-                    },
-                  },
-                  "required": Array [
-                    "echo",
-                  ],
-                  "type": "object",
+                  "$ref": "#/components/schemas/Echo",
                 },
               },
             },
@@ -282,16 +293,7 @@ Object {
               "content": Object {
                 "application/json": Object {
                   "schema": Object {
-                    "additionalProperties": false,
-                    "properties": Object {
-                      "echo": Object {
-                        "type": "string",
-                      },
-                    },
-                    "required": Array [
-                      "echo",
-                    ],
-                    "type": "object",
+                    "$ref": "#/components/schemas/Echo",
                   },
                 },
               },
@@ -473,6 +475,27 @@ Object {
           ],
           "responses": Object {
             "204": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "aHeader": Object {
+                        "type": "boolean",
+                      },
+                      "pathParam1": Object {
+                        "type": "number",
+                      },
+                      "pathParam2": Object {
+                        "items": Object {
+                          "type": "string",
+                        },
+                        "type": "array",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
               "description": "Delay expired",
             },
           },
