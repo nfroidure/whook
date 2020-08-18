@@ -2,6 +2,7 @@ import { initializer } from 'knifecycle';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import type { WhookErrorsDescriptors } from '@whook/whook';
 import type { BaseAuthenticationData } from '@whook/authorization';
+import { CodeChallengeMethod } from './oAuth2CodeGranter';
 
 export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_UNKNOWN_AUTHORIZER_TYPE: {
@@ -50,6 +51,20 @@ export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     code: 'invalid_request',
     status: 403,
     description: `The response type "$0" is not allowed for this application.`,
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_PKCE_REQUIRED: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'Code challenge required',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_PKCE_NOT_SUPPORTED: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'Code challenge not supported for that response type ($0)',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -129,12 +144,17 @@ export type OAuth2CodeService<
   create: (
     authenticationData: AUTHENTICATION_DATA,
     redirectURI: string,
-    additionalParameters: { [name: string]: unknown },
+    additionalParameters: {
+      codeChallenge: string;
+      codeChallengeMethod: CodeChallengeMethod;
+      [name: string]: unknown;
+    },
   ) => Promise<CODE>;
   check: (
     authenticationData: AUTHENTICATION_DATA,
     code: CODE,
     redirectURI: string,
+    codeVerifier?: string,
   ) => Promise<
     AUTHENTICATION_DATA & {
       redirectURI: string;
@@ -249,6 +269,7 @@ export type OAuth2GranterService<
 
 export type OAuth2Options = {
   authenticateURL: string;
+  forcePKCE?: boolean;
 };
 
 export type OAuth2Config = {

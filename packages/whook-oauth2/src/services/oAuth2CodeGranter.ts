@@ -1,5 +1,6 @@
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
+import { createHash } from 'crypto';
 import YError from 'yerror';
 import type { LogService } from 'common-services';
 import type {
@@ -10,23 +11,34 @@ import type {
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 export const CODE_GRANTER_TYPE = 'code';
+export const CODE_CHALLENGE_METHODS = ['plain', 'S256'] as const;
 
+export type CodeChallengeMethod = typeof CODE_CHALLENGE_METHODS[number];
 export type OAuth2CodeGranterDependencies = {
   oAuth2Code: OAuth2CodeService;
   checkApplication: CheckApplicationService;
   log?: LogService;
 };
-export type OAuth2CodeGranterParameters = {
+export type OAuth2CodeGranterAuthorizeParameters = {
+  codeChallenge: string;
+  codeChallengeMethod: CodeChallengeMethod;
+};
+export type OAuth2CodeGranterAcknowledgeParameters = {
+  codeChallenge: string;
+  codeChallengeMethod: CodeChallengeMethod;
+};
+export type OAuth2CodeGranterGrantParameters = {
   code: string;
   redirectURI: string;
   clientId: string;
+  codeVerifier: string;
 };
 export type OAuth2CodeGranterService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
 > = OAuth2GranterService<
-  Record<string, unknown>,
-  Record<string, unknown>,
-  OAuth2CodeGranterParameters,
+  OAuth2CodeGranterAuthorizeParameters & Record<string, unknown>,
+  OAuth2CodeGranterAcknowledgeParameters & Record<string, unknown>,
+  OAuth2CodeGranterGrantParameters & Record<string, unknown>,
   AUTHENTICATION_DATA
 >;
 
@@ -39,11 +51,10 @@ async function initOAuth2CodeGranter({
   checkApplication,
   log = noop,
 }: OAuth2CodeGranterDependencies): Promise<OAuth2CodeGranterService> {
-  const authorizeWithCode: OAuth2CodeGranterService['authorizer']['authorize'] = async ({
-    clientId,
-    redirectURI,
-    scope = '',
-  }) => {
+  const authorizeWithCode: OAuth2CodeGranterService['authorizer']['authorize'] = async (
+    { clientId, redirectURI, scope = '' },
+    { codeChallenge, codeChallengeMethod },
+  ) => {
     const { redirectURI: finalRedirectURI } = await checkApplication({
       applicationId: clientId,
       type: CODE_GRANTER_TYPE,
@@ -55,6 +66,8 @@ async function initOAuth2CodeGranter({
       applicationId: clientId,
       redirectURI: finalRedirectURI,
       scope,
+      codeChallenge,
+      codeChallengeMethod,
     };
   };
 
@@ -63,12 +76,20 @@ async function initOAuth2CodeGranter({
   const acknowledgeWithCode: OAuth2CodeGranterService['acknowledger']['acknowledge'] = async (
     authenticationData,
     { clientId, redirectURI, scope },
-    additionalParameters,
+    {
+      codeChallenge = '',
+      codeChallengeMethod = 'plain',
+      ...additionalParameters
+    },
   ) => {
     const code = await oAuth2Code.create(
       { ...authenticationData, applicationId: clientId, scope },
       redirectURI,
-      additionalParameters,
+      {
+        codeChallenge,
+        codeChallengeMethod,
+        ...additionalParameters,
+      },
     );
 
     return {
@@ -80,7 +101,7 @@ async function initOAuth2CodeGranter({
   };
 
   const authenticateWithCode: OAuth2CodeGranterService['authenticator']['authenticate'] = async (
-    { code, clientId, redirectURI },
+    { code, clientId, redirectURI, codeVerifier },
     authenticationData,
   ) => {
     // The client must be authenticated (for now, see below)
@@ -89,7 +110,7 @@ async function initOAuth2CodeGranter({
     }
 
     // This check is not really necessary atm but it acts
-    // as a reminde that this grant type could be used
+    // as a reminder that this grant type could be used
     // without authenticating the client. In this
     // scenario, the authenticationData should be deducted
     // from the clientId and the code given in parameters
@@ -112,6 +133,7 @@ async function initOAuth2CodeGranter({
       authenticationData,
       code,
       redirectURI,
+      codeVerifier,
     );
 
     return newAuthenticationData;
@@ -134,4 +156,22 @@ async function initOAuth2CodeGranter({
       authenticate: authenticateWithCode,
     },
   };
+}
+
+// See https://tools.ietf.org/html/rfc7636#appendix-A
+export function base64UrlEncode(buf: Buffer): string {
+  let s = buf.toString('base64');
+  s = s.split('=')[0];
+  s = s.replace('+', '-');
+  s = s.replace('/', '_');
+  return s;
+}
+
+export function hashCodeVerifier(
+  codeVerifier: Buffer,
+  method: CodeChallengeMethod,
+): Buffer {
+  return 'plain' === method
+    ? codeVerifier
+    : createHash('sha256').update(codeVerifier).digest();
 }

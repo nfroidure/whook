@@ -11,7 +11,10 @@ Object {
         "redirectURI": "https://www.example.com",
         "scope": "user",
       },
-      Object {},
+      Object {
+        "codeChallenge": "",
+        "codeChallengeMethod": "plain",
+      },
     ],
   ],
   "logCalls": Array [],

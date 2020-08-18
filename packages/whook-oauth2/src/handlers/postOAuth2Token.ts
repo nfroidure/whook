@@ -40,6 +40,10 @@ export const authorizationCodeTokenRequestBodySchema: WhookAPISchemaDefinition =
       redirect_uri: {
         type: 'string',
       },
+      code_verifier: {
+        type: 'string',
+        pattern: '^[\\d\\w\\-/\\._~]+$',
+      },
     },
   },
 };
