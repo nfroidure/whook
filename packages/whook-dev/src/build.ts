@@ -163,7 +163,7 @@ export async function runBuild(
     ]);
   } catch (err) {
     stderr.write(
-      `💀 - Cannot launch the build: ${printStackTrace(err as Error)}`,
+      `💀 - Cannot launch the build: ${printStackTrace(err)}`,
     );
     exit(1);
   }
@@ -183,7 +183,7 @@ async function ensureFile(
     }
   } catch (err) {
     log('debug', `🗀 - Write new file: "${path}".`);
-    log('debug-stack', printStackTrace(err as Error));
+    log('debug-stack', printStackTrace(err));
     return await writeFile(path, content);
   }
   log('debug', `🗀 - Write changed file: "${path}".`);

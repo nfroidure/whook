@@ -72,7 +72,7 @@ export async function watchDevProcess<T extends Dependencies>({
       // and then another one for the server. It would allow
       // to wrap the chokidar watch into a service too.
       log?.('debug', '🤷 - Cannot find/parse .gitignore');
-      log?.('debug-stack', printStackTrace(err as Error));
+      log?.('debug-stack', printStackTrace(err));
     }
     return ignoreBuilder.createFilter();
   })();

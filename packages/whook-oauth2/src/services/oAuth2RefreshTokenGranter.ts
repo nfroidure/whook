@@ -8,16 +8,17 @@ import {
   type OAuth2RefreshTokenService,
 } from './oAuth2Granters.js';
 
-export type OAuth2RefreshTokenGranterDependencies = {
+export interface OAuth2RefreshTokenGranterDependencies {
   checkApplication: CheckApplicationService;
   oAuth2RefreshToken: OAuth2RefreshTokenService;
   log?: LogService;
 };
-export type OAuth2RefreshTokenGranterParameters = {
+export interface OAuth2RefreshTokenGranterParameters {
   refreshToken: string;
   scope?: string;
 };
 export type OAuth2RefreshTokenGranterService = OAuth2GranterService<
+  Record<string, unknown>,
   Record<string, unknown>,
   Record<string, unknown>,
   OAuth2RefreshTokenGranterParameters

@@ -8,17 +8,18 @@ import {
   type CheckApplicationService,
 } from './oAuth2Granters.js';
 
-export type OAuth2PasswordGranterDependencies = {
+export interface OAuth2PasswordGranterDependencies {
   oAuth2Password: OAuth2PasswordService;
   checkApplication: CheckApplicationService;
   log?: LogService;
 };
-export type OAuth2PasswordGranterParameters = {
+export interface OAuth2PasswordGranterParameters {
   username: string;
   password: string;
   scope?: string;
 };
 export type OAuth2PasswordGranterService = OAuth2GranterService<
+  Record<string, unknown>,
   Record<string, unknown>,
   Record<string, unknown>,
   OAuth2PasswordGranterParameters

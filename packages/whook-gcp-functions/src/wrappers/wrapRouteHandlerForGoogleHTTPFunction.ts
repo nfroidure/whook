@@ -509,7 +509,7 @@ async function handleForAWSHTTPFunction(
       code: (err as YError)?.code || 'E_UNEXPECTED',
       statusCode: response.status,
       params: ((err as YError)?.debug as string[]) || [],
-      stack: printStackTrace(err as Error),
+      stack: printStackTrace(err),
     };
 
     log?.('error', JSON.stringify(responseLog));

@@ -195,7 +195,7 @@ async function initConsumersDefinitions({
           'error',
           `🔴 - Got an error while loading a consumer file: ${file}`,
         );
-        log('error-stack', printStackTrace(err as Error));
+        log('error-stack', printStackTrace(err));
       }
     }
   }

@@ -108,7 +108,7 @@ async function initCommand({
       const argError = pickYErrorWithCode(err as Error, 'E_BAD_ARG');
 
       if (argError) {
-        log('debug-stack', printStackTrace(err as Error));
+        log('debug-stack', printStackTrace(err));
         if (argError.debug[0][0].keyword === 'required') {
           if (argError.debug[0][0].params.missingProperty) {
             $fatalError.throwFatalError(err as Error);
@@ -142,7 +142,7 @@ async function initCommand({
         return;
       }
 
-      log('error-stack', printStackTrace(err as Error));
+      log('error-stack', printStackTrace(err));
       $fatalError.throwFatalError(err as Error);
       return;
     }

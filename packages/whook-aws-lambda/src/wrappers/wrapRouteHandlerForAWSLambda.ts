@@ -504,7 +504,7 @@ async function handleForAWSHTTPLambda(
       code: (err as YError)?.code || 'E_UNEXPECTED',
       statusCode: response.status,
       params: ((err as YError)?.debug as JsonValue[]) || [],
-      stack: printStackTrace(err as Error),
+      stack: printStackTrace(err),
     };
 
     log('error', JSON.stringify(responseLog));

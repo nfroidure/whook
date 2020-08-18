@@ -80,7 +80,7 @@ async function initRouteCommand({
       log('info', JSON.stringify(response, null, 2));
     } catch (err) {
       log('error', 'Got an error while running the route.');
-      log('error-stack', printStackTrace(err as Error));
+      log('error-stack', printStackTrace(err));
     }
   };
 }

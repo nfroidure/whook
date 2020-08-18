@@ -4,26 +4,71 @@ import { YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
   type OAuth2GranterService,
-  type OAuth2CodeService,
   type CheckApplicationService,
 } from './oAuth2Granters.js';
+import { createHash } from 'crypto';
+import { type WhookAuthenticationData } from '@whook/authorization';
 
 export const CODE_GRANTER_TYPE = 'code';
+export const PLAIN_CODE_CHALLENGE_METHOD = 'plain';
+export const S256_CODE_CHALLENGE_METHOD = 'S256';
+export const CODE_CHALLENGE_METHODS = [
+  PLAIN_CODE_CHALLENGE_METHOD,
+  S256_CODE_CHALLENGE_METHOD,
+] as const;
 
-export type OAuth2CodeGranterDependencies = {
+export type CodeChallengeMethod = (typeof CODE_CHALLENGE_METHODS)[number];
+
+export interface OAuth2CodeService<
+  P extends object = Record<string, unknown>,
+  C extends string = string,
+> {
+  create: (
+    authenticationData: WhookAuthenticationData,
+    redirectURI: string,
+    codeChallenge: string | undefined,
+    codeChallengeMethod: CodeChallengeMethod | undefined,
+    additionalParameters: P,
+  ) => Promise<C>;
+  check: (
+    authenticationData: WhookAuthenticationData,
+    code: C,
+    redirectURI: string,
+    codeVerifier: string | undefined,
+  ) => Promise<
+    WhookAuthenticationData & {
+      redirectURI: string;
+    } & P
+  >;
+}
+
+export interface OAuth2CodeGranterDependencies {
   oAuth2Code: OAuth2CodeService;
   checkApplication: CheckApplicationService;
   log?: LogService;
-};
-export type OAuth2CodeGranterParameters = {
+}
+export interface OAuth2CodeGranterAuthorizeParameters {
+  codeChallenge: string;
+  codeChallengeMethod: CodeChallengeMethod;
+}
+export interface OAuth2CodeGranterAcknowledgedData {
+  code: string;
+}
+export interface OAuth2CodeGranterAcknowledgeParameters {
+  codeChallenge: string;
+  codeChallengeMethod: CodeChallengeMethod;
+}
+export interface OAuth2CodeGranterGrantParameters {
   code: string;
   redirectURI: string;
   clientId: string;
-};
+  codeVerifier: string;
+}
 export type OAuth2CodeGranterService = OAuth2GranterService<
-  Record<string, unknown>,
-  Record<string, unknown>,
-  OAuth2CodeGranterParameters
+  OAuth2CodeGranterAuthorizeParameters,
+  OAuth2CodeGranterAcknowledgedData,
+  OAuth2CodeGranterAcknowledgeParameters,
+  OAuth2CodeGranterGrantParameters
 >;
 
 export default location(autoService(initOAuth2CodeGranter), import.meta.url);
@@ -59,28 +104,38 @@ async function initOAuth2CodeGranter({
   >['acknowledge'] = async (
     authenticationData,
     { clientId, redirectURI, scope },
-    additionalParameters,
+    {
+      codeChallenge,
+      codeChallengeMethod,
+      ...additionalParameters
+    },
   ) => {
     const code = await oAuth2Code.create(
       { ...authenticationData, applicationId: clientId, scope },
       redirectURI,
+      codeChallenge,
+      codeChallengeMethod,
       additionalParameters,
     );
 
     return {
-      // TODO: check a way to avoid this by adding params
-      ...authenticationData,
-      applicationId: clientId,
+      authenticationData: {
+        ...authenticationData,
+        applicationId: clientId,
+        scope,
+      },
       redirectURI,
-      scope,
-      code,
+      acknowledgedData: {
+        code,
+      },
+      additionalParameters,
     };
   };
 
   const authenticateWithCode: NonNullable<
     OAuth2CodeGranterService['authenticator']
   >['authenticate'] = async (
-    { code, clientId, redirectURI },
+    { code, clientId, redirectURI, codeVerifier },
     authenticationData,
   ) => {
     // The client must be authenticated (for now, see below)
@@ -111,6 +166,7 @@ async function initOAuth2CodeGranter({
       authenticationData,
       code,
       redirectURI,
+      codeVerifier,
     );
 
     return newAuthenticationData;
@@ -133,4 +189,26 @@ async function initOAuth2CodeGranter({
       authenticate: authenticateWithCode,
     },
   };
+}
+
+// See https://tools.ietf.org/html/rfc7636#appendix-A
+export function base64UrlEncode(buf: Buffer): string {
+  let s = buf.toString('base64');
+  s = s.split('=')[0];
+  s = s.replaceAll('+', '-');
+  s = s.replaceAll('/', '_');
+  return s;
+}
+
+export function hashCodeVerifier(
+  codeVerifier: Buffer,
+  method: CodeChallengeMethod,
+): Buffer {
+  if (PLAIN_CODE_CHALLENGE_METHOD === method) {
+    return codeVerifier;
+  }
+  if (S256_CODE_CHALLENGE_METHOD === method) {
+    return createHash('sha256').update(codeVerifier).digest();
+  }
+  throw new YError('E_UNSUPPORTED_CODE_CHALLENGE_METHOD', [method]);
 }

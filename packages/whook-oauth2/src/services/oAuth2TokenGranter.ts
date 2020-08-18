@@ -5,23 +5,31 @@ import {
   type OAuth2GranterService,
   type OAuth2AccessTokenService,
   type CheckApplicationService,
-  type OAuth2CodeService,
 } from './oAuth2Granters.js';
+import { type OAuth2CodeService } from './oAuth2CodeGranter.js';
 
 export const IMPLICIT_GRANTER_TYPE = 'token';
 
-export type OAuth2TokenGranterDependencies = {
+export interface OAuth2TokenGranterDependencies {
   oAuth2Code: OAuth2CodeService;
   checkApplication: CheckApplicationService;
   oAuth2AccessToken: OAuth2AccessTokenService;
   time?: TimeService;
   log?: LogService;
-};
-export type OAuth2TokenGranterParameters = Record<string, unknown>;
+}
+export type OAuth2TokenGranterAuthorizeParameters = Record<string, unknown>;
+export interface OAuth2TokenGranterAcknowledgedData {
+  accessToken: string;
+  tokenType: 'bearer';
+  expiresIn: number;
+}
+export type OAuth2TokenGranterAcknowledgeParameters = Record<string, unknown>;
+export type OAuth2TokenGranterGrantParameters = Record<string, unknown>;
 export type OAuth2TokenGranterService = OAuth2GranterService<
-  Record<string, unknown>,
-  Record<string, unknown>,
-  OAuth2TokenGranterParameters
+  OAuth2TokenGranterAuthorizeParameters,
+  OAuth2TokenGranterAcknowledgedData,
+  OAuth2TokenGranterAcknowledgeParameters,
+  OAuth2TokenGranterGrantParameters
 >;
 
 export default location(autoService(initOAuth2TokenGranter), import.meta.url);
@@ -54,7 +62,7 @@ async function initOAuth2TokenGranter({
   // Access Token Response:
   // https://tools.ietf.org/html/rfc6749#section-4.2.2
   const acknowledgeWithToken: NonNullable<
-    OAuth2GranterService<OAuth2TokenGranterParameters>['acknowledger']
+    OAuth2TokenGranterService['acknowledger']
   >['acknowledge'] = async (
     authenticationData,
     { clientId, redirectURI, scope: providedScope },
@@ -80,14 +88,18 @@ async function initOAuth2TokenGranter({
       );
 
     return {
-      // TODO: check a way to avoid this by adding params
-      ...authenticationData,
-      applicationId: clientId,
+      authenticationData: {
+        ...authenticationData,
+        applicationId: clientId,
+        scope: providedScope,
+      },
       redirectURI: finalRedirectURI,
-      scope: providedScope,
-      accessToken,
-      tokenType: 'bearer',
-      expiresIn: Math.round((accessTokenExpiresAt - time()) / 1000),
+      acknowledgedData: {
+        accessToken,
+        tokenType: 'bearer',
+        expiresIn: Math.round((accessTokenExpiresAt - time()) / 1000),
+      },
+      additionalParameters,
     };
   };
 

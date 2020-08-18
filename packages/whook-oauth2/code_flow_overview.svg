@@ -2,20 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="1000mm"
    height="950mm"
    viewBox="0 0 1000 950"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="code_flow_overview.svg">
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="code_flow_overview.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -25,21 +25,24 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.12374369"
-     inkscape:cx="3057.0523"
-     inkscape:cy="2707.9247"
+     inkscape:zoom="0.24748738"
+     inkscape:cx="2175.8685"
+     inkscape:cy="2016.2644"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g874"
      showgrid="false"
      inkscape:window-width="1855"
-     inkscape:window-height="1056"
+     inkscape:window-height="1050"
      inkscape:window-x="65"
-     inkscape:window-y="24"
+     inkscape:window-y="30"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -77,7 +80,7 @@
          id="tspan102">Whook OAuth2 Code Flow</tspan></text>
     <g
        id="g401"
-       transform="translate(-3.0238095,78.550654)">
+       transform="translate(-3.0238095,105.5382)">
       <rect
          transform="scale(-1,1)"
          y="301.92151"
@@ -85,7 +88,7 @@
          height="6.3354821"
          width="259.86398"
          id="rect313"
-         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.21385115;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.213851;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          inkscape:transform-center-y="0.011120656"
          inkscape:transform-center-x="-17.381507"
@@ -107,9 +110,9 @@
          id="text341"
          y="339.91226"
          x="71.975479"
-         style="font-style:normal;font-weight:normal;font-size:19.75555611px;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35679758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;font-size:19.7556px;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.356798px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-size:19.75555611px;line-height:1.25;stroke-width:0.35679758px"
+           style="font-size:19.7556px;line-height:1.25;stroke-width:0.356798px"
            y="339.91226"
            x="71.975479"
            id="tspan339"
@@ -285,14 +288,14 @@
     </g>
     <g
        id="g440"
-       transform="translate(0,57.610783)">
+       transform="translate(0,112.11505)">
       <rect
          y="210.52623"
          x="336.35962"
          height="6.3354821"
          width="273.43152"
          id="rect329"
-         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.21936274;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.219363;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          transform="scale(-1,1)"
          inkscape:transform-center-y="0.011120656"
@@ -313,7 +316,7 @@
          sodipodi:type="star" />
       <text
          xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:19.75555611px;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35679758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="font-style:normal;font-weight:normal;font-size:19.7556px;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.356798px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          x="334.81989"
          y="247.68468"
          id="text337"><tspan
@@ -321,7 +324,7 @@
            id="tspan335"
            x="334.81989"
            y="247.68468"
-           style="font-size:19.75555611px;line-height:1.25;stroke-width:0.35679758px">postOAuth2Acknowledge</tspan></text>
+           style="font-size:19.7556px;line-height:1.25;stroke-width:0.356798px">postOAuth2Acknowledge</tspan></text>
     </g>
     <g
        id="g385"
@@ -363,55 +366,57 @@
            x="498.40942"
            sodipodi:role="line">Issue a token</tspan></text>
     </g>
-    <g
-       id="g406"
-       transform="translate(0,31.6816)">
-      <rect
-         transform="rotate(90)"
-         style="opacity:1;fill:#00a7ff;fill-opacity:1;stroke:none;stroke-width:0.55222321;stroke-opacity:1"
-         id="rect4228-6"
-         width="660"
-         height="70"
-         x="-3"
-         y="-330" />
-      <text
-         transform="rotate(90)"
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.29466057px;line-height:0%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Bold';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.22061086;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         x="330.75494"
+    <rect
+       transform="rotate(90)"
+       style="fill:#00a7ff;fill-opacity:1;stroke:none;stroke-width:0.552223;stroke-opacity:1"
+       id="rect4228-6"
+       width="423.02408"
+       height="70"
+       x="75.666008"
+       y="-330" />
+    <text
+       transform="rotate(90)"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.29466px;line-height:0%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Bold';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.220611;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="288.35208"
+       y="-279.8685"
+       id="text4230-7"><tspan
+         sodipodi:role="line"
+         x="288.35208"
          y="-279.8685"
-         id="text4230-7"><tspan
-           sodipodi:role="line"
-           x="330.75494"
-           y="-279.8685"
-           id="tspan4232-5"
-           style="font-size:35.29773712px;line-height:1.25;stroke-width:0.22061086">OAuth2 SSR Frontend</tspan></text>
-    </g>
+         id="tspan4232-5"
+         style="font-size:35.2977px;line-height:1.25;stroke-width:0.220611">OAuth2 SSR Frontend</tspan></text>
     <g
-       id="g874">
+       id="g874"
+       transform="translate(312.45337,-41.335516)">
       <text
          id="text337-0"
-         y="258.76233"
-         x="220.02924"
-         style="font-style:normal;font-weight:normal;font-size:19.75555611px;line-height:0%;font-family:sans-serif;text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35679758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         y="255.60602"
+         x="66.633499"
+         style="font-style:normal;font-weight:normal;font-size:19.7556px;line-height:0%;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.356798px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           style="font-size:19.75555611px;line-height:1.25;text-align:end;text-anchor:end;stroke-width:0.35679758px"
-           y="258.76233"
-           x="220.02922"
-           id="tspan335-9"
-           sodipodi:role="line">User Authenticates</tspan><tspan
+           style="font-size:19.7556px;line-height:1.25;text-align:start;text-anchor:start;stroke-width:0.356798px"
+           y="255.60602"
+           x="66.633499"
+           id="tspan393"
+           sodipodi:role="line">User authenticates</tspan><tspan
            id="tspan498"
-           style="font-size:19.75555611px;line-height:1.25;text-align:end;text-anchor:end;stroke-width:0.35679758px"
-           y="283.45679"
-           x="220.02924"
-           sodipodi:role="line">&amp; Acknowledges</tspan></text>
+           style="font-size:19.7556px;line-height:1.25;text-align:start;text-anchor:start;stroke-width:0.356798px"
+           y="280.30051"
+           x="66.633499"
+           sodipodi:role="line">(may use the password</tspan><tspan
+           style="font-size:19.7556px;line-height:1.25;text-align:start;text-anchor:start;stroke-width:0.356798px"
+           y="304.99503"
+           x="66.633499"
+           sodipodi:role="line"
+           id="tspan451">granter) &amp; acknowledges</tspan></text>
       <path
          sodipodi:type="star"
-         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.01553615;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.0155361;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path331-3"
          sodipodi:sides="3"
          sodipodi:cx="-243.33992"
-         sodipodi:cy="263.89382"
+         sodipodi:cy="263.89383"
          sodipodi:r1="12.365796"
          sodipodi:r2="6.182898"
          sodipodi:arg1="1.047518"
@@ -420,9 +425,9 @@
          inkscape:rounded="0"
          inkscape:randomized="0"
          d="m -237.16045,274.6049 -9.27264,-5.35751 -9.27263,-5.35752 9.27607,-5.35158 9.27606,-5.35157 -0.003,10.70909 z"
-         inkscape:transform-center-x="-11.677786"
+         inkscape:transform-center-x="11.67779"
          inkscape:transform-center-y="0.0074650116"
-         transform="scale(-1,1)" />
+         transform="translate(285.06271,12.337378)" />
     </g>
   </g>
 </svg>

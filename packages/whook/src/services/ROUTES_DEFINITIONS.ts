@@ -195,7 +195,7 @@ async function initRoutesDefinitions({
           'error',
           `🔴 - Got an error while loading an handler file: ${file}`,
         );
-        log('error-stack', printStackTrace(err as Error));
+        log('error-stack', printStackTrace(err));
       }
     }
   }

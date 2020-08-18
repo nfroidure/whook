@@ -216,7 +216,7 @@ builds/
             'error',
             `⚠️ - Could not retrieve the \`.gitignore\` file contents from: "${GIT_IGNORE_URL}"`,
           );
-          log('error-stack', printStackTrace(err as Error));
+          log('error-stack', printStackTrace(err));
         }),
       new Promise((resolve, reject) =>
         exec(
@@ -235,7 +235,7 @@ builds/
         ),
       ).catch((err) => {
         log('error', '⚠️ - Could not initialize the git project!');
-        log('error-stack', printStackTrace(err as Error));
+        log('error-stack', printStackTrace(err));
       }),
     ]);
 
@@ -271,7 +271,7 @@ builds/
         symbol: '❌',
         text: 'Failed to install dependencies',
       });
-      log('error-stack', printStackTrace(err as Error));
+      log('error-stack', printStackTrace(err));
     }
 
     log(

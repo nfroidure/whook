@@ -90,10 +90,15 @@ describe('postOAuth2Acknowledge', () => {
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
     codeGranter.acknowledger.acknowledge.mockResolvedValueOnce({
-      applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-      redirectURI: 'http://lol',
-      scope: 'user',
-      userId: '1',
+      authenticationData: {
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        scope: 'user',
+        userId: '1',
+      },
+      redirectURI: 'https://www.example.com?my_custom_parameter=a_custom_value',
+      acknowledgedData: {
+        code: 'a_valid_code',
+      },
     });
 
     const postOAuth2Acknowledge = await initPostOAuth2Acknowledge({
@@ -120,14 +125,14 @@ describe('postOAuth2Acknowledge', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      {
-        "response": {
-          "headers": {
-            "location": "https://www.example.com/?client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&redirect_uri=http%3A%2F%2Flol&user_id=1",
-          },
-          "status": 302,
-        },
-      }
+     {
+       "response": {
+         "headers": {
+           "location": "https://www.example.com/?my_custom_parameter=a_custom_value&client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&code=a_valid_code",
+         },
+         "status": 302,
+       },
+     }
     `);
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -180,15 +185,15 @@ describe('postOAuth2Acknowledge', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-{
-  "response": {
-    "headers": {
-      "location": "https://www.example.com/?error=unsupported_response_type&error_description=Type+%22yolo%22+not+supported.",
-    },
-    "status": 302,
-  },
-}
-`);
+     {
+       "response": {
+         "headers": {
+           "location": "https://www.example.com/?error=unsupported_response_type&error_description=Type+%22yolo%22+not+supported.",
+         },
+         "status": 302,
+       },
+     }
+    `);
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       checkApplicationCalls: checkApplication.mock.calls,

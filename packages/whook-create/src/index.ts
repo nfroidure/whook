@@ -63,7 +63,7 @@ export async function runCreateWhook(): Promise<void> {
     await createWhook();
   } catch (err) {
     stderr.write(
-      `💀 - Cannot launch the process: ${printStackTrace(err as Error)}`,
+      `💀 - Cannot launch the process: ${printStackTrace(err)}`,
     );
     exit(1);
   }

@@ -13,8 +13,8 @@
 [//]: # (::contents:start)
 
 This module is aimed to allow you to easily bring OAuth2 to your
-[Whook](https://github.com/nfroidure/whook) server. It must be used with a
-server side rendered frontend that brings the UI that allows users to
+[Whook](https://github.com/nfroidure/whook) server. To use the code flow, it
+requires a server side rendered frontend that brings the UI that allows users to
 authenticate and allow client applications to act on behalf of them.
 
 ![Code Flow Overview](./code_flow_overview.svg)
@@ -41,7 +41,8 @@ This module requires you to implement some services it relies on:
 - `oAuth2ClientCredentialsService` aimed to check the `client_credential` grant
   type with your own logic (if you use it),
 - `OAuth2CodeService` aimed to check the `code` grant type with your own logic
-  (if you use it).
+  (if you use it). Note that it is your responsibility to implement the PKCE
+  logic in it.
 
 ## Quick setup
 
@@ -221,8 +222,8 @@ async function initOAuth2VerifyTokenGranter({
 
 ## Additional routes/helpers
 
-For internal use, you may prefer use cookies based auth routes like
-`postLogin`, `postLogout` and `postRefresh`.
+For internal use, you may prefer use cookies based auth routes like `postLogin`,
+`postLogout` and `postRefresh`.
 
 To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
 
@@ -237,10 +238,10 @@ To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
 +  },
 ```
 
-Than import the `postLogin`, `postLogout` and `postRefresh` routes like so:
+Then import the `postLogin`, `postLogout` and `postRefresh` routes like so:
 
 ```ts
-// src/routes/postRefresh.ts
+// src/routes/postAuthRefresh.ts
 import {
   initPostAuthRefresh,
   postAuthRefreshDefinition,
@@ -263,7 +264,7 @@ export const definition: WhookRouteDefinition = {
 export default initPostAuthRefresh;
 ```
 
-Additionnaly, you could create any handler in the `/auth` path in order to
+Additionally, you could create any handler in the `/auth` path in order to
 receive the auth cookies. For example, you may want to serve user profiles
 there.
 
@@ -328,10 +329,11 @@ export const definition: WhookRouteDefinition = {
 ```
 
 You will probably need to also protect the `postOAuth2Token` endpoint with your
-own security mecanism:
+own security mechanism:
 
 ```ts
-// In a `src/routes/postOAuth2Token.ts` fileimport {
+// In a `src/routes/postOAuth2Token.ts` file
+import {
   initPostOAuth2Token,
   postOAuth2TokenDefinition,
   postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
