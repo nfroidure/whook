@@ -7,23 +7,35 @@ import {
   type OAuth2CodeService,
   type CheckApplicationService,
 } from './oAuth2Granters.js';
+import { createHash } from 'crypto';
 
 export const CODE_GRANTER_TYPE = 'code';
+export const CODE_CHALLENGE_METHODS = ['plain', 'S256'] as const;
 
+export type CodeChallengeMethod = (typeof CODE_CHALLENGE_METHODS)[number];
 export type OAuth2CodeGranterDependencies = {
   oAuth2Code: OAuth2CodeService;
   checkApplication: CheckApplicationService;
   log?: LogService;
 };
-export type OAuth2CodeGranterParameters = {
+export type OAuth2CodeGranterAuthorizeParameters = {
+  codeChallenge: string;
+  codeChallengeMethod: CodeChallengeMethod;
+};
+export type OAuth2CodeGranterAcknowledgeParameters = {
+  codeChallenge: string;
+  codeChallengeMethod: CodeChallengeMethod;
+};
+export type OAuth2CodeGranterGrantParameters = {
   code: string;
   redirectURI: string;
   clientId: string;
+  codeVerifier: string;
 };
 export type OAuth2CodeGranterService = OAuth2GranterService<
-  Record<string, unknown>,
-  Record<string, unknown>,
-  OAuth2CodeGranterParameters
+  OAuth2CodeGranterAuthorizeParameters & Record<string, unknown>,
+  OAuth2CodeGranterAcknowledgeParameters & Record<string, unknown>,
+  OAuth2CodeGranterGrantParameters
 >;
 
 export default location(autoService(initOAuth2CodeGranter), import.meta.url);
@@ -37,7 +49,10 @@ async function initOAuth2CodeGranter({
 }: OAuth2CodeGranterDependencies): Promise<OAuth2CodeGranterService> {
   const authorizeWithCode: NonNullable<
     OAuth2CodeGranterService['authorizer']
-  >['authorize'] = async ({ clientId, redirectURI, scope = '' }) => {
+  >['authorize'] = async (
+    { clientId, redirectURI, scope = '' },
+    { codeChallenge, codeChallengeMethod },
+  ) => {
     const { redirectURI: finalRedirectURI } = await checkApplication({
       applicationId: clientId,
       type: CODE_GRANTER_TYPE,
@@ -49,6 +64,8 @@ async function initOAuth2CodeGranter({
       applicationId: clientId,
       redirectURI: finalRedirectURI,
       scope,
+      codeChallenge,
+      codeChallengeMethod,
     };
   };
 
@@ -59,12 +76,20 @@ async function initOAuth2CodeGranter({
   >['acknowledge'] = async (
     authenticationData,
     { clientId, redirectURI, scope },
-    additionalParameters,
+    {
+      codeChallenge = '',
+      codeChallengeMethod = 'plain',
+      ...additionalParameters
+    },
   ) => {
     const code = await oAuth2Code.create(
       { ...authenticationData, applicationId: clientId, scope },
       redirectURI,
-      additionalParameters,
+      {
+        codeChallenge,
+        codeChallengeMethod,
+        ...additionalParameters,
+      },
     );
 
     return {
@@ -80,7 +105,7 @@ async function initOAuth2CodeGranter({
   const authenticateWithCode: NonNullable<
     OAuth2CodeGranterService['authenticator']
   >['authenticate'] = async (
-    { code, clientId, redirectURI },
+    { code, clientId, redirectURI, codeVerifier },
     authenticationData,
   ) => {
     // The client must be authenticated (for now, see below)
@@ -112,6 +137,7 @@ async function initOAuth2CodeGranter({
       authenticationData,
       code,
       redirectURI,
+      codeVerifier,
     );
 
     return newAuthenticationData;
@@ -134,4 +160,22 @@ async function initOAuth2CodeGranter({
       authenticate: authenticateWithCode,
     },
   };
+}
+
+// See https://tools.ietf.org/html/rfc7636#appendix-A
+export function base64UrlEncode(buf: Buffer): string {
+  let s = buf.toString('base64');
+  s = s.split('=')[0];
+  s = s.replace('+', '-');
+  s = s.replace('/', '_');
+  return s;
+}
+
+export function hashCodeVerifier(
+  codeVerifier: Buffer,
+  method: CodeChallengeMethod,
+): Buffer {
+  return 'plain' === method
+    ? codeVerifier
+    : createHash('sha256').update(codeVerifier).digest();
 }
