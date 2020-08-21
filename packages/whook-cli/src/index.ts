@@ -1,18 +1,20 @@
 import { constant } from 'knifecycle';
 import { readArgs } from './libs/args';
-import initArgs, {
+import initArgs from './services/args';
+import initPromptArgs from './services/promptArgs';
+import initCommand from './services/command';
+import initAutoloader from './services/_autoload';
+import type {
   WhookCommandNamedArgs,
   WhookCommandArgsRest,
   WhookCommandArgs,
 } from './services/args';
-import initPromptArgs, {
+import type {
   WhookArgsTypes,
   WhookCommandHandler,
   WhookCommandDefinition,
   PromptArgs,
 } from './services/promptArgs';
-import initCommand from './services/command';
-import initAutoloader from './services/_autoload';
 
 export type {
   WhookArgsTypes,

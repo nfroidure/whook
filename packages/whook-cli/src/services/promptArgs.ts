@@ -1,9 +1,8 @@
-import parseArgs from 'yargs-parser';
 import { autoService, options } from 'knifecycle';
 import _inquirer from 'inquirer';
-import { LogService } from 'common-services';
 import { noop } from '@whook/whook';
-import { WhookCommandArgs } from './args';
+import type { LogService } from 'common-services';
+import type { WhookCommandArgs } from './args';
 
 export default options({ singleton: true }, autoService(initPromptArgs));
 

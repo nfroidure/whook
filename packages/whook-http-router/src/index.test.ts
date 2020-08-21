@@ -435,7 +435,11 @@ describe('initHTTPRouter', () => {
   });
 
   test('should test a valid swagger file', async () => {
-    const result = new OpenAPISchemaValidator({ version: 3 }).validate(API);
+    const result = new OpenAPISchemaValidator({ version: 3 }).validate(
+      // Temporar type fix due to version mismatch of OpenAPIV3
+      // between Whook and OpenAPISchemaValidator
+      API as any,
+    );
 
     assert.deepEqual(result, {
       errors: [],

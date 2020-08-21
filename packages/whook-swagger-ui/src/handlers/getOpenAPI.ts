@@ -62,7 +62,9 @@ async function getOpenAPI(
   },
 ): Promise<WhookResponse<200, {}, OpenAPIV3.Document>> {
   const operations = await getOpenAPIOperations(API);
-  const $refs = await SwaggerParser.resolve(API);
+  // Temporar type fix due to version mismatch of OpenAPIV3
+  // between Whook and SwaggerParser
+  const $refs = await SwaggerParser.resolve(API as any);
 
   const tagIsPresent = {};
 

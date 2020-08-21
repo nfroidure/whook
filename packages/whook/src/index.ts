@@ -70,6 +70,7 @@ import type {
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookAPISchemaDefinition,
+  WhookAPIHandlerModule,
 } from './services/API_DEFINITIONS';
 import type {
   AutoloadConfig,
@@ -108,6 +109,7 @@ export type {
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookAPISchemaDefinition,
+  WhookAPIHandlerModule,
   WhookAPIOperationConfig,
   WhookServiceMap,
   WhookInitializerMap,

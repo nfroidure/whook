@@ -11,7 +11,6 @@ import {
   ensureDir as _ensureDir,
   pathExists as _pathExists,
 } from 'fs-extra';
-import type { ENVService, WhookConfigs } from '@whook/whook';
 import type {
   WhookCommandHandler,
   WhookCommandDefinition,

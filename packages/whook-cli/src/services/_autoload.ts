@@ -1,6 +1,5 @@
-import { noop } from '@whook/whook';
+import { noop, initAutoload } from '@whook/whook';
 import path from 'path';
-import { initAutoload } from '@whook/whook';
 import {
   wrapInitializer,
   alsoInject,
@@ -11,7 +10,7 @@ import {
 import YError from 'yerror';
 import type { ImporterService } from '@whook/whook';
 import type { Autoloader } from 'knifecycle';
-import type { WhookCommandArgs } from '../../dist';
+import type { WhookCommandArgs } from '..';
 import type { LogService } from 'common-services';
 
 export default alsoInject(

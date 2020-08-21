@@ -4,7 +4,7 @@ import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { initAPIDefinitions, initImporter } from '@whook/whook';
 import path from 'path';
-import { WhookAPIHandlerModule } from '@whook/whook/dist/services/API_DEFINITIONS';
+import type { WhookAPIHandlerModule } from '@whook/whook';
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;
@@ -80,7 +80,11 @@ describe('API', () => {
       log,
     });
 
-    const result = new OpenAPISchemaValidator({ version: 3 }).validate(API);
+    const result = new OpenAPISchemaValidator({ version: 3 }).validate(
+      // Temporar type fix due to version mismatch of OpenAPIV3
+      // between Whook and OpenAPISchemaValidator
+      API as any,
+    );
 
     expect({ result }).toMatchSnapshot();
   });

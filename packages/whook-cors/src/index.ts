@@ -76,7 +76,9 @@ async function handleWithCORS<
 export async function augmentAPIWithCORS(
   API: OpenAPIV3.Document,
 ): Promise<OpenAPIV3.Document> {
-  const $refs = await SwaggerParser.resolve(API);
+  // Temporar type fix due to version mismatch of OpenAPIV3
+  // between Whook and SwaggerParser
+  const $refs = await SwaggerParser.resolve(API as any);
 
   return Object.keys(API.paths).reduce((newAPI, path) => {
     const existingOperation = newAPI.paths[path].options;
