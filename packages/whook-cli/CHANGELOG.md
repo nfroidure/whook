@@ -1,3 +1,19 @@
+# [4.1.0](https://github.com/nfroidure/whook/compare/v4.0.5...v4.1.0) (2020-08-21)
+
+
+### Bug Fixes
+
+* **tests:** update tests for the new swagger-ui patch ([a4d16e0](https://github.com/nfroidure/whook/commit/a4d16e03a4dc7db4a7746a051c8f16b5999e80ef))
+* **watch:** fix cache invalidation for deep dependencies ([86025c7](https://github.com/nfroidure/whook/commit/86025c757e7e0538036e98128fa76b3160773dc4))
+
+
+### Features
+
+* **dev:** watch mode and API types ([c2a0acd](https://github.com/nfroidure/whook/commit/c2a0acd6506f4cc55a57293cb4968fc0000220f8)), closes [#75](https://github.com/nfroidure/whook/issues/75) [#51](https://github.com/nfroidure/whook/issues/51)
+* **types:** allow parametrization of handler definitions ([1d7a9b3](https://github.com/nfroidure/whook/commit/1d7a9b3309e7401fa8bcf9c5e4557d71c38d3079))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v4.0.3...v4.0.4) (2020-06-09)
 
 
