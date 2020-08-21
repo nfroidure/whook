@@ -100,10 +100,10 @@ import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import YError from 'yerror';
 import type { LogService } from 'common-services';
-import { AuthenticationData } from './authentication';
-import { OAuth2GranterService, CheckApplicationService } from '@whook/oauth2';
-import { JWTService } from 'jwt-service';
-import { PGService } from 'postgresql-service';
+import type { AuthenticationData } from './authentication';
+import type { OAuth2GranterService, CheckApplicationService } from '@whook/oauth2';
+import type { JWTService } from 'jwt-service';
+import type { PGService } from 'postgresql-service';
 
 export type OAuth2VerifyTokenGranterDependencies = {
   checkApplication: CheckApplicationService;

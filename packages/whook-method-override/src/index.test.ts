@@ -10,7 +10,7 @@ import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import YError from 'yerror';
 import type Knifecycle from 'knifecycle';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
   const BASE_PATH = '/v1';

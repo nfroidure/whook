@@ -10,7 +10,7 @@ import type {
   WhookOperation,
   WhookErrorsDescriptors,
 } from '@whook/whook';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_DEPRECATED_VERSION: {

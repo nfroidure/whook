@@ -11,7 +11,7 @@ import type Knifecycle from 'knifecycle';
 import type { Injector } from 'knifecycle';
 import type { WhookBuildConstantsService } from '@whook/whook';
 import type { LogService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 /**
  * Wrap the _autoload service in order to build AWS

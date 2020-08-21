@@ -5,8 +5,8 @@ import {
   prepareEnvironment as basePrepareEnvironment,
 } from './index';
 import axios from 'axios';
-import { JWTService } from 'jwt-service';
-import { AuthenticationData } from './services/authentication';
+import type { JWTService } from 'jwt-service';
+import type { AuthenticationData } from './services/authentication';
 
 const packageConf = require('../package');
 

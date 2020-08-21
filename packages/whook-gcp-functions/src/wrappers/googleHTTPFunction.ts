@@ -30,7 +30,7 @@ import { noop, compose, identity } from '@whook/whook';
 import stream from 'stream';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import camelCase from 'camelcase';
-import { WhookQueryStringParser } from '@whook/http-router';
+import type { WhookQueryStringParser } from '@whook/http-router';
 import type { ServiceInitializer } from 'knifecycle';
 import type {
   WhookRequest,

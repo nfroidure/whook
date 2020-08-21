@@ -404,7 +404,7 @@ Object {
     Array [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
-import { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
+import type { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
 import { LogService } from 'common-services';
 
 export const definition: WhookAPIHandlerDefinition = {
@@ -655,7 +655,7 @@ Object {
     Array [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
-import { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
+import type { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/lol',

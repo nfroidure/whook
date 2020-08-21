@@ -3,9 +3,9 @@ import fs from 'fs';
 import YError from 'yerror';
 import path from 'path';
 import { noop } from '../libs/utils';
-import { LogService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
-import { ImporterService } from '..';
+import type { LogService } from 'common-services';
+import type { OpenAPIV3 } from 'openapi-types';
+import type { ImporterService } from '..';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
 export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.ts', '.mjs'];

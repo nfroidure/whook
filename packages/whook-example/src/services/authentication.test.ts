@@ -1,7 +1,8 @@
-import initAuthentication, { AuthenticationData } from './authentication';
+import initAuthentication from './authentication';
 import YError from 'yerror';
 import initJWT from '../services/jwtToken';
-import { JWTService } from 'jwt-service';
+import type { AuthenticationData } from './authentication';
+import type { JWTService } from 'jwt-service';
 
 describe('authentication', () => {
   const time = jest.fn();

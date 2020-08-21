@@ -24,8 +24,8 @@ To use this module, simply add it to your `WRAPPERS` service
  (usually in `src/services/WRAPPERS.ts`):
 ```diff
 import { service } from 'knifecycle';
-import { WhookWrapper } from '@whook/whook';
 + import { wrapHandlerWithCors } from '@whook/cors';
+import type { WhookWrapper } from '@whook/whook';
 
 export default service(initWrappers, 'WRAPPERS');
 

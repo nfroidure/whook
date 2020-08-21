@@ -1,5 +1,5 @@
 import { autoService } from 'knifecycle';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
 
 export type SensibleValueDescriptor = {
   name: string;

@@ -4,7 +4,7 @@ import YError from 'yerror';
 import type { WhookOperation, APMService, WhookHandler } from '@whook/whook';
 import type { ServiceInitializer } from 'knifecycle';
 import type { TimeService, LogService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 type TransformerWrapperDependencies = {
   NODE_ENV: string;

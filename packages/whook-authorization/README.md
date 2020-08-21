@@ -97,7 +97,7 @@ Then, simply add it to your `WRAPPERS` service (usually in
  `src/services/WRAPPERS.ts`):
 ```diff
 import { service } from 'knifecycle';
-import { WhookWrapper } from '@whook/whook';
+import type { WhookWrapper } from '@whook/whook';
 + import { wrapHandlerWithAuthorization } from '@whook/authorization';
 
 export default service(initWrappers, 'WRAPPERS');

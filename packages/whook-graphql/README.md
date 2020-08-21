@@ -27,8 +27,8 @@ npm i @whook/graphql apollo-server-core
 
 Declare the plugin into your `index.ts` file:
 ```diff
-+  import { WhookGraphQLFragmentService } from '@whook/graphql';
 +  import { gql } from 'apollo-server-core';
++  import type { WhookGraphQLFragmentService } from '@whook/graphql';
   // (...)
 
 +  // Add the Apollo Server configuration

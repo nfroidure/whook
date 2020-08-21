@@ -5,7 +5,7 @@ import YHTTPError from 'yhttperror';
 import type { ServiceInitializer } from 'knifecycle';
 import type { WhookOperation, APMService, WhookHandler } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 type ConsumerWrapperDependencies = {
   NODE_ENV: string;

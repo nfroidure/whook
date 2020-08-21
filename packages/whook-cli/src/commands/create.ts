@@ -314,7 +314,7 @@ function buildHandlerSource(
   imports: string,
 ) {
   return `import { autoHandler } from 'knifecycle';
-import { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';${imports}
+import type { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';${imports}
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '${path}',

@@ -4,7 +4,7 @@ import YError from 'yerror';
 import type { ServiceInitializer } from 'knifecycle';
 import type { APMService, WhookOperation, WhookHandler } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
 type CronWrapperDependencies = {
   NODE_ENV: string;
