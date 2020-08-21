@@ -228,6 +228,6 @@ ${author.name}
       'warning',
       `➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.`,
     );
-    log('warning', `➕ - And finally run \`npm run dev\` to start dev!`);
+    log('warning', `➕ - And finally run \`npm run watch\` to start dev!`);
   };
 });

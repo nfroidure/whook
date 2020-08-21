@@ -130,7 +130,7 @@ Object {
     ],
     Array [
       "warning",
-      "➕ - And finally run \`npm run dev\` to start dev!",
+      "➕ - And finally run \`npm run watch\` to start dev!",
     ],
   ],
   "oraCalls": Array [
@@ -327,7 +327,7 @@ Object {
     ],
     Array [
       "warning",
-      "➕ - And finally run \`npm run dev\` to start dev!",
+      "➕ - And finally run \`npm run watch\` to start dev!",
     ],
   ],
   "oraCalls": Array [
@@ -511,7 +511,7 @@ Object {
     ],
     Array [
       "warning",
-      "➕ - And finally run \`npm run dev\` to start dev!",
+      "➕ - And finally run \`npm run watch\` to start dev!",
     ],
   ],
   "oraCalls": Array [
