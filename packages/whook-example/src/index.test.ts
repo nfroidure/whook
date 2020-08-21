@@ -8,7 +8,7 @@ import axios from 'axios';
 import { JWTService } from 'jwt-service';
 import { AuthenticationData } from './services/authentication';
 
-const packageConf = require('../../../package');
+const packageConf = require('../package');
 
 describe('runServer', () => {
   const logger = {

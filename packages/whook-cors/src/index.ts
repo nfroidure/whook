@@ -6,7 +6,7 @@ import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
 import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 
-// Ensures the deterministic canonical operation
+// Ensures a deterministic canonical operation
 const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
 
 export type CORSConfig = {
