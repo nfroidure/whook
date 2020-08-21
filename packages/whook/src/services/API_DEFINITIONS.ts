@@ -61,10 +61,13 @@ export type WhookAPISchemaDefinition<T = any> = {
   name: string;
   schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
   example?: T;
+  examples?: T[];
 };
-export type WhookAPIParameterDefinition = {
+export type WhookAPIParameterDefinition<T = any> = {
   name: string;
   parameter: OpenAPIV3.ParameterObject;
+  example?: T;
+  examples?: T[];
 };
 export type WhookAPIHandlerModule = {
   [name: string]:
