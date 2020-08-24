@@ -1,3 +1,14 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v4.1.0...v4.0.4) (2020-08-24)
+
+
+### Bug Fixes
+
+* **@whook/create:** fix tests failure when creating a project ([96a81d7](https://github.com/nfroidure/whook/commit/96a81d7493990f6be46044a208100c0e1ec74bbf))
+* **docs:** fix repo url ([2129109](https://github.com/nfroidure/whook/commit/2129109c880f8e89a12df9e16b76a70bad460a02))
+* **types:** fix types imports declarations ([91d72f4](https://github.com/nfroidure/whook/commit/91d72f4c6dc2698a8204bc04715fe09b1c712652))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v4.0.5...v4.0.4) (2020-08-21)
 
 
