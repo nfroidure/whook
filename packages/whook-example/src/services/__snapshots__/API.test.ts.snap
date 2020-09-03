@@ -88,7 +88,7 @@ Object {
           },
         },
         "pathParam2": Object {
-          "description": "Duration in milliseconds",
+          "description": "A list of items",
           "in": "path",
           "name": "pathParam2",
           "required": true,
@@ -474,7 +474,7 @@ Object {
             },
           ],
           "responses": Object {
-            "204": Object {
+            "200": Object {
               "content": Object {
                 "application/json": Object {
                   "schema": Object {

@@ -26,9 +26,12 @@ export type CORSConfig = {
 export function wrapHandlerWithCORS<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & CORSConfig, S> {
-  return alsoInject(
+  return alsoInject<CORSConfig, typeof initHandler>(
     ['CORS'],
-    reuseSpecialProps(initHandler, initHandlerWithCORS.bind(null, initHandler)),
+    reuseSpecialProps(
+      initHandler,
+      initHandlerWithCORS.bind(null, initHandler),
+    ) as any,
   );
 }
 

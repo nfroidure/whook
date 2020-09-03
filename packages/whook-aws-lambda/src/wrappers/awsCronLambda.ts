@@ -23,7 +23,7 @@ export default function wrapHandlerForAWSCronLambda<D, S extends WhookHandler>(
       initHandler,
       initHandlerForAWSCronLambda.bind(null, initHandler),
     ),
-  );
+  ) as any;
 }
 
 async function initHandlerForAWSCronLambda<D, S extends WhookHandler>(

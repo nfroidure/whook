@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
+import type { WhookAPIHandlerDefinition } from '@whook/whook';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/diag',
@@ -41,8 +41,8 @@ export default autoHandler(getDiagnostic);
 async function getDiagnostic({
   TRANSACTIONS,
 }: {
-  TRANSACTIONS: Paths.GetDiagnostic.Responses.$200['transactions'];
-}): Promise<WhookResponse<200, {}, Paths.GetDiagnostic.Responses.$200>> {
+  TRANSACTIONS: API.GetDiagnostic.Responses.$200['transactions'];
+}): Promise<API.GetDiagnostic.Output> {
   return {
     status: 200,
     body: {

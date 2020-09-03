@@ -44,7 +44,7 @@ export function wrapHandlerWithVersionChecker<D, S extends WhookHandler>(
       initHandler,
       initHandlerWithVersionChecker.bind(null, initHandler),
     ),
-  );
+  ) as any;
 }
 
 export async function initHandlerWithVersionChecker<D, S extends WhookHandler>(

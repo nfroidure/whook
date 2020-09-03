@@ -68,16 +68,34 @@ describe('generateOpenAPITypes', () => {
             "📇 - Writing types...",
           ],
         ],
-        "output": "declare namespace Paths {
-          namespace GetPing {
-              namespace Responses {
-                  export interface $200 {
-                      pong?: \\"pong\\";
-                  }
+        "output": "declare namespace API {
+          export namespace GetPing {
+              export type Input = {};
+              export type Output = {
+                  readonly status: 200;
+                  readonly headers?: NonNullable<{
+                      [pattern: string]: NonNullable<string>;
+                  }>;
+                  readonly body: Responses.$200;
+              };
+              export namespace Responses {
+                  export type $200 = Components.Schemas.ApiResponses.GetPing.Response200.Schema0;
               }
           }
       }
-      ",
+      declare namespace Components {
+          export namespace Schemas {
+              export namespace ApiResponses {
+                  export namespace GetPing {
+                      export namespace Response200 {
+                          export type Schema0 = NonNullable<{
+                              pong?: \\"pong\\";
+                          }>;
+                      }
+                  }
+              }
+          }
+      }",
         "result": undefined,
       }
     `,

@@ -1,10 +1,12 @@
 import { autoHandler } from 'knifecycle';
 import YHTTPError from 'yhttperror';
-import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { WhookAPISchemaDefinition } from '@whook/whook';
+import type {
+  WhookAPIHandlerDefinition,
+  WhookAPISchemaDefinition,
+} from '@whook/whook';
 
-export const echoSchema: WhookAPISchemaDefinition = {
+export const echoSchema: WhookAPISchemaDefinition<Components.Schemas.Echo> = {
   name: 'Echo',
   schema: {
     type: 'object',
@@ -58,8 +60,8 @@ export default autoHandler(putEcho);
 
 async function putEcho(
   { log }: { log: LogService },
-  { body }: { body: Components.Schemas.Echo },
-): Promise<WhookResponse<200, {}, Components.Schemas.Echo>> {
+  { body }: API.PutEcho.Input,
+): Promise<API.PutEcho.Output> {
   if (body.echo.includes('Voldemort')) {
     throw new YHTTPError(400, 'E_MUST_NOT_BE_NAMED', body.echo);
   }

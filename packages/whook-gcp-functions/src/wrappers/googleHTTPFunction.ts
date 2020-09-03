@@ -89,7 +89,7 @@ export default function wrapHandlerForAWSHTTPFunction<
       initHandler,
       initHandlerForAWSHTTPFunction.bind(null, initHandler),
     ),
-  );
+  ) as any;
 }
 
 async function initHandlerForAWSHTTPFunction(
