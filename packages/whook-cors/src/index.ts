@@ -41,6 +41,10 @@ export async function initHandlerWithCORS<D, S extends WhookHandler>(
   return handleWithCORS.bind(null, services, handler);
 }
 
+function isGetter(obj, prop) {
+  return !!Object.getOwnPropertyDescriptor(obj, prop)['get']
+}
+
 async function handleWithCORS<
   R extends WhookResponse,
   O extends WhookOperation,
@@ -62,7 +66,10 @@ async function handleWithCORS<
       },
     };
   } catch (err) {
-    err.headers = Object.assign({}, CORS);
+    // Test if setter is available, could produce another error if err only has a getter
+    if (!err.hasOwnProperty("headers") || !isGetter(err, 'headers')) {
+      err.headers = Object.assign({}, CORS);
+    }
     throw err;
   }
 }
