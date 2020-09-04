@@ -317,34 +317,34 @@ describe('GraphQL server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-Object {
-  "data": Object {
-    "errors": Array [
-      Object {
-        "extensions": Object {
-          "code": "GRAPHQL_PARSE_FAILED",
-        },
-        "locations": Array [
-          Object {
-            "column": 13,
-            "line": 4,
+        Object {
+          "data": Object {
+            "errors": Array [
+              Object {
+                "extensions": Object {
+                  "code": "GRAPHQL_PARSE_FAILED",
+                },
+                "locations": Array [
+                  Object {
+                    "column": 13,
+                    "line": 4,
+                  },
+                ],
+                "message": "Syntax Error: Expected Name, found <EOF>.",
+              },
+            ],
           },
-        ],
-        "message": "Syntax Error: Expected Name, found <EOF>",
-      },
-    ],
-  },
-  "headers": Object {
-    "connection": "close",
-    "content-type": "application/json",
-    "date": undefined,
-    "transaction-id": "1",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
-  },
-  "status": 400,
-}
-`);
+          "headers": Object {
+            "connection": "close",
+            "content-type": "application/json",
+            "date": undefined,
+            "transaction-id": "1",
+            "transfer-encoding": "chunked",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+          },
+          "status": 400,
+        }
+      `);
       expect({
         contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -500,23 +500,23 @@ Object {
         },
         data,
       }).toMatchInlineSnapshot(`
-Object {
-  "data": Object {
-    "data": Object {
-      "echo": "Echoing: yolo!",
-    },
-  },
-  "headers": Object {
-    "connection": "close",
-    "content-type": "application/json",
-    "date": undefined,
-    "transaction-id": "4",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
-  },
-  "status": 200,
-}
-`);
+        Object {
+          "data": Object {
+            "data": Object {
+              "echo": "Echoing: yolo!",
+            },
+          },
+          "headers": Object {
+            "connection": "close",
+            "content-type": "application/json",
+            "date": undefined,
+            "transaction-id": "4",
+            "transfer-encoding": "chunked",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+          },
+          "status": 200,
+        }
+      `);
       expect({
         contextCalls: context.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,

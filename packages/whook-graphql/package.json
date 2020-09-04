@@ -70,7 +70,7 @@
   "dependencies": {
     "@whook/http-transaction": "^4.1.1",
     "@whook/whook": "^4.1.1",
-    "apollo-server-core": "^2.16.1",
+    "apollo-server-core": "^2.17.0",
     "apollo-server-env": "^2.4.5",
     "common-services": "^7.1.5",
     "knifecycle": "^9.1.1",
