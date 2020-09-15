@@ -40,7 +40,7 @@ export default function wrapHandlerForAWSTransformerLambda<
       initHandler,
       initHandlerForAWSTransformerLambda.bind(null, initHandler),
     ),
-  );
+  ) as any;
 }
 
 async function initHandlerForAWSTransformerLambda<D, S extends WhookHandler>(

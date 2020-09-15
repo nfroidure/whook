@@ -1,14 +1,12 @@
 import { autoHandler } from 'knifecycle';
 import type {
-  WhookResponse,
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
-  WhookHandlerFunction,
 } from '@whook/whook';
-import type { DelayService } from 'common-services';
 
-export const pathParam1Parameter: WhookAPIParameterDefinition = {
+export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam1> = {
   name: 'pathParam1',
+  example: 123,
   parameter: {
     in: 'path',
     name: 'pathParam1',
@@ -19,13 +17,14 @@ export const pathParam1Parameter: WhookAPIParameterDefinition = {
     },
   },
 };
-export const pathParam2Parameter: WhookAPIParameterDefinition = {
+export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam2> = {
   name: 'pathParam2',
+  example: ['item1', 'item2'],
   parameter: {
     in: 'path',
     name: 'pathParam2',
     required: true,
-    description: 'Duration in milliseconds',
+    description: 'A list of items',
     schema: {
       type: 'array',
       items: {
@@ -58,7 +57,7 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     ],
     responses: {
-      204: {
+      200: {
         description: 'Delay expired',
         content: {
           'application/json': {
@@ -88,16 +87,8 @@ export const definition: WhookAPIHandlerDefinition = {
 
 async function getParameters(
   _,
-  {
-    aHeader,
-    pathParam1,
-    pathParam2,
-  }: {
-    aHeader: Paths.GetParameters.Parameters.AHeader;
-    pathParam1: Components.Parameters.PathParam1.PathParam1;
-    pathParam2: Components.Parameters.PathParam2.PathParam2;
-  },
-): Promise<WhookResponse<200, {}, Paths.GetParameters.Responses.$204>> {
+  { aHeader, pathParam1, pathParam2 }: API.GetParameters.Input,
+): Promise<API.GetParameters.Output> {
   return {
     status: 200,
     body: {

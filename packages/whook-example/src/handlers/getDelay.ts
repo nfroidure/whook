@@ -1,14 +1,13 @@
 import { autoHandler } from 'knifecycle';
 import type {
-  WhookResponse,
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
-  WhookHandlerFunction,
 } from '@whook/whook';
 import type { DelayService } from 'common-services';
 
-export const durationParameter: WhookAPIParameterDefinition = {
+export const durationParameter: WhookAPIParameterDefinition<API.GetDelay.Parameters.Duration> = {
   name: 'duration',
+  example: 1,
   parameter: {
     in: 'query',
     name: 'duration',
@@ -46,8 +45,8 @@ async function getDelay(
   }: {
     delay: DelayService;
   },
-  { duration }: { duration: Components.Parameters.Duration.Duration },
-): Promise<WhookResponse<200, {}, undefined>> {
+  { duration }: API.GetDelay.Input,
+): Promise<API.GetDelay.Output> {
   await delay.create(duration);
   return {
     status: 200,

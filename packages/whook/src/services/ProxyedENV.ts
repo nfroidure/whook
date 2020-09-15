@@ -16,7 +16,7 @@ export type ProxyedENVDependencies = ProxyedENVConfig & {
 export default alsoInject(
   ['?log', 'NODE_ENV', '?PROXYED_ENV_VARS'],
   // TODO: Better generics in knifecycle ()
-  wrapInitializer<any, any, any>(wrapEnvForBuild, initEnv),
+  wrapInitializer(wrapEnvForBuild, initEnv),
 );
 
 /**

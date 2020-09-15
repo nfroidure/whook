@@ -1,12 +1,11 @@
 import { autoHandler } from 'knifecycle';
 import type {
   WhookAPIHandlerDefinition,
-  WhookResponse,
   WhookAPISchemaDefinition,
 } from '@whook/whook';
 import type { TimeService } from 'common-services';
 
-export const timeSchema: WhookAPISchemaDefinition = {
+export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema> = {
   name: 'TimeSchema',
   schema: {
     type: 'object',
@@ -45,7 +44,7 @@ async function getTime({
   time,
 }: {
   time: TimeService;
-}): Promise<WhookResponse<200, {}, Components.Schemas.TimeSchema>> {
+}): Promise<API.GetTime.Output> {
   return {
     status: 200,
     body: {

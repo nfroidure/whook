@@ -27,7 +27,7 @@ export default function wrapHandlerForAWSConsumerLambda<
       initHandler,
       initHandlerForAWSConsumerLambda.bind(null, initHandler),
     ),
-  );
+  ) as any;
 }
 
 async function initHandlerForAWSConsumerLambda<D, S extends WhookHandler>(

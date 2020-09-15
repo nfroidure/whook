@@ -89,7 +89,7 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
       initHandler,
       initHandlerForAWSHTTPLambda.bind(null, initHandler),
     ),
-  );
+  ) as any;
 }
 
 async function initHandlerForAWSHTTPLambda(

@@ -20,7 +20,7 @@ export default function wrapHTTPTransactionWithMethodOverride<D>(
       initHTTPTransaction,
       initHTTPTransactionWithMethodOverride.bind(null, initHTTPTransaction),
     ),
-  );
+  ) as any;
 }
 
 async function initHTTPTransactionWithMethodOverride<D>(
