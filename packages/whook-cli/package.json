@@ -1,6 +1,6 @@
 {
   "name": "@whook/cli",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "The Whook server CLI",
   "keywords": [
     "whook",

@@ -1,3 +1,13 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v4.1.1...v4.0.4) (2020-09-15)
+
+
+### Bug Fixes
+
+* **cors:** test if err has setter ([3451f54](https://github.com/nfroidure/whook/commit/3451f5437f60c514416d73e4bc8ecaca65ae261a))
+* **tests:** fix tests after apollo graphql updates ([e8398ff](https://github.com/nfroidure/whook/commit/e8398ffb2b59f514aede9b1a371ea436bd02b97e))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v4.1.0...v4.0.4) (2020-08-24)
 
 
