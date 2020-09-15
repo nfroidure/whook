@@ -1,3 +1,18 @@
+# [5.0.0](https://github.com/nfroidure/whook/compare/v4.1.2...v5.0.0) (2020-09-15)
+
+
+### Code Refactoring
+
+* **types:** use schema2dts instead of dtsgenerator ([f5d7166](https://github.com/nfroidure/whook/commit/f5d7166be136da3c7d654180022bd4cfa4089aa6))
+
+
+### BREAKING CHANGES
+
+* **types:** Typings of input/output strongly changes but allows for more clarity,
+expressiveness and productivity
+
+
+
 ## [4.1.2](https://github.com/nfroidure/whook/compare/v4.1.1...v4.1.2) (2020-09-15)
 
 
