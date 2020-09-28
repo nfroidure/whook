@@ -31,6 +31,7 @@ Object {
       "refresh_token_expires_in": 5364748800,
       "token_type": "bearer",
     },
+    "headers": Object {},
     "status": 200,
   },
 }

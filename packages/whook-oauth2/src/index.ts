@@ -35,6 +35,25 @@ import type {
   OAuth2Options,
   OAuth2Config,
 } from './services/oAuth2Granters';
+import initPostAuthLogin, {
+  definition as postAuthLoginDefinition,
+} from './handlers/postAuthLogin';
+import initPostAuthLogout, {
+  definition as postAuthLogoutDefinition,
+} from './handlers/postAuthLogout';
+import initPostAuthRefresh, {
+  authCookieHeaderParameter,
+  definition as postAuthRefreshDefinition,
+} from './handlers/postAuthRefresh';
+import initAuthCookiesService, {
+  AUTH_API_PREFIX,
+} from './services/authCookies';
+import type {
+  AuthHandlersConfig,
+  AuthCookiesService,
+  AuthCookiesConfig,
+  AuthCookiesData,
+} from './services/authCookies';
 
 export type {
   OAuth2CodeService,
@@ -45,6 +64,10 @@ export type {
   OAuth2GranterService,
   OAuth2Options,
   OAuth2Config,
+  AuthHandlersConfig,
+  AuthCookiesService,
+  AuthCookiesConfig,
+  AuthCookiesData,
 };
 export {
   initGetOAuth2Authorize,
@@ -70,4 +93,13 @@ export {
   initOAuth2PasswordGranter,
   initOAuth2RefreshTokenGranter,
   initOAuth2TokenGranter,
+  AUTH_API_PREFIX,
+  authCookieHeaderParameter,
+  initPostAuthLogin,
+  postAuthLoginDefinition,
+  initPostAuthLogout,
+  postAuthLogoutDefinition,
+  initPostAuthRefresh,
+  postAuthRefreshDefinition,
+  initAuthCookiesService,
 };

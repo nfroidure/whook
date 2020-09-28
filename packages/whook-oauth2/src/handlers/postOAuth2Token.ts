@@ -275,6 +275,7 @@ async function postOAuth2Token<
 
     return {
       status: 200,
+      headers: {},
       body: {
         access_token: accessToken,
         token_type: 'bearer',
