@@ -113,6 +113,13 @@ export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
+  E_REFRESH_COOKIE: {
+    code: 'invalid_request',
+    status: 400,
+    description: `Could not find any refresh_token value in the cookie header ($0).`,
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
 };
 
 export type OAuth2CodeService<

@@ -21,6 +21,7 @@ authenticate and allow client applications to act on behalf of them.
 ![Code Flow Overview](./code_flow_overview.svg)
 
 The module provides :
+
 - 3 handlers : the 2 OAuth2 standard endpoints (`getOAuth2authorize` and
   `postOAuth2Tokentoken`) plus the `postOAuth2Acknowledge` to be used by the SSR
   frontend,
@@ -28,6 +29,7 @@ The module provides :
   You can create your own granter services to create additional grant types.
 
 This module requires you to implement some services it relies on:
+
 - `oAuth2AccessToken` that generates and checks the `access_token` and the
   `oAuth2RefreshToken` for the `refresh_token` both have the same interface,
 - `checkApplication` service that is supposed to check whether an application
@@ -42,11 +44,13 @@ This module requires you to implement some services it relies on:
 ## Quick setup
 
 Install the module in your project:
+
 ```sh
 npm i @whook/oauth2
 ```
 
 Declare the plugin into your `index.ts` file:
+
 ```diff
   // (...)
 
@@ -58,6 +62,7 @@ Declare the plugin into your `index.ts` file:
 ```
 
 Add the OAuth2 configuration to your config files:
+
 ```diff
 + import {
 +   OAUTH2_ERRORS_DESCRIPTORS,
@@ -93,15 +98,19 @@ The `oAuth2Granters` service gather the various granters services you can use in
 your application but you can write your own that uses a subset or a superset of
 these granters.
 
-Here, for example an handler that implement a verify token mechanism
- in order to validate a user subscription:
+Here, for example an handler that implement a verify token mechanism in order to
+validate a user subscription:
+
 ```ts
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import YError from 'yerror';
 import type { LogService } from 'common-services';
 import type { AuthenticationData } from './authentication';
-import type { OAuth2GranterService, CheckApplicationService } from '@whook/oauth2';
+import type {
+  OAuth2GranterService,
+  CheckApplicationService,
+} from '@whook/oauth2';
 import type { JWTService } from 'jwt-service';
 import type { PGService } from 'postgresql-service';
 
@@ -184,13 +193,58 @@ async function initOAuth2VerifyTokenGranter({
 }
 ```
 
+## Additional handlers/helpers
+
+For internal use, you may prefer use cookies based auth handlers like
+`postLogin`, `postLogout` and `postRefresh`.
+
+To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
+```diff
+// src/production/config.ts
++  COOKIES: {
++    domain: 'example.org',
++  },
++  ROOT_AUTHENTICATION_DATA: {
++    applicationId: 'abbacaca-abba-caca-caca-abbacacacaca',
++    scope: 'user,admin',
++  },
+```
+
+Than import the `postLogin`, `postLogout` and `postRefresh` handlers like so:
+```ts
+// src/handlers/postRefresh.ts 
+import {
+  initPostAuthRefresh,
+  postAuthRefreshDefinition,
+  authCookieHeaderParameter,
+} from '@whook/oauth2';
+import type { WhookAPIHandlerDefinition } from '@whook/whook';
+
+export { authCookieHeaderParameter };
+
+export const definition: WhookAPIHandlerDefinition = {
+  ...postAuthRefreshDefinition,
+  operation: {
+    ...postAuthRefreshDefinition.operation,
+    'x-whook': {
+      disabled: false,
+    },
+  },
+};
+
+export default initPostAuthRefresh;
+```
+
+Additionnaly, you could create any handler in the `/auth` path in order to receive the auth cookies.
+
 ## Customizing handlers
 
 The endpoints definitions are designed to support the standard OAuth2
 definitions but can be easily overriden.
 
-You will have to protect the `postOAuth2Acknowledge` with your own
- security mechanism :
+You will have to protect the `postOAuth2Acknowledge` with your own security
+mechanism :
+
 ```ts
 import {
   initPostOAuth2Acknowledge,
@@ -245,8 +299,9 @@ export const definition: WhookAPIHandlerDefinition = {
 };
 ```
 
-You will probably need to also protect the `postOAuth2Token` endpoint
- with your own security mecanism :
+You will probably need to also protect the `postOAuth2Token` endpoint with your
+own security mecanism :
+
 ```ts
 // In a `src/handlers/postOAuth2Token.ts` fileimport {
   initPostOAuth2Token,
@@ -317,10 +372,6 @@ export const responseTypeParameter = {
   },
 };
 ```
-
-[//]: # (::contents:end)
-
-
 
 [//]: # (::contents:end)
 
