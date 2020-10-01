@@ -54,6 +54,33 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 }
 ```
 
+And add the SwaggerUI config (usually in `src/config/common/config.js`):
+```diff
++ import type {
++   WhookAPIOperationSwaggerConfig,
++   WhookSwaggerUIConfig,
++ } from '@whook/swagger-ui';
+
+// ...
+
+export type AppConfigs = WhookConfigs &
+  CORSConfig &
++  WhookSwaggerUIConfig &
+  APIConfig;
+
+const CONFIG: AppConfigs = {
+  // ...
+};
+
+// Export custom handlers definitions
+export type APIHandlerDefinition = WhookAPIHandlerDefinition<
+  WhookAPIOperationCORSConfig &
++  WhookAPIOperationSwaggerConfig
+>;
+
+export default CONFIG;
+```
+
 [//]: # (::contents:end)
 
 # API

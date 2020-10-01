@@ -39,8 +39,9 @@ async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
 
 And add the CORS config (usually in `src/config/common/config.js`):
 ```diff
-+ import {
-+   CORSConfig
++ import type {
++   CORSConfig,
++   WhookAPIOperationCORSConfig,
 + } from '@whook/cors';
 
 // ...
@@ -65,9 +66,14 @@ const CONFIG: AppConfigs = {
 +       'Keep-Alive',
 +       'User-Agent',
 +     ].join(','),
-+     Vary: 'Origin',
 +   },
 };
+
+// Export custom handlers definitions
+export type APIHandlerDefinition = WhookAPIHandlerDefinition<
++  WhookAPIOperationCORSConfig &
+  WhookAPIOperationSwaggerConfig
+>;
 
 export default CONFIG;
 ```

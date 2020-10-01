@@ -17,7 +17,7 @@ import type {
   WhookCompilerConfig,
 } from './services/compiler';
 import type { Autoloader } from 'knifecycle';
-import type { WhookAPIOperationAddition } from '@whook/whook';
+import type { WhookAPIOperationAddition, WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 
@@ -29,9 +29,8 @@ export type WhookAPIOperationAWSLambdaConfig = {
   sourceOperationId?: string;
   staticFiles?: string[];
   compilerOptios?: WhookCompilerOptions;
+  suffix?: string;
 };
-type WhookAPIAWSLambdaOperation = OpenAPIV3.OperationObject &
-  WhookAPIOperationAddition<WhookAPIOperationAWSLambdaConfig>;
 
 const readFileAsync = util.promisify(fs.readFile) as (
   path: string,
@@ -145,9 +144,11 @@ export async function runBuild(
 
     log('info', 'Environment initialized 🚀🌕');
 
-    const operations: WhookAPIAWSLambdaOperation[] = (
-      await flattenOpenAPI(API).then(getOpenAPIOperations)
-    ).filter((operation: WhookAPIAWSLambdaOperation) => {
+    const operations = (
+      await getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(
+        await flattenOpenAPI(API),
+      )
+    ).filter((operation) => {
       if (handlerName) {
         const sourceOperationId =
           operation['x-whook'] && operation['x-whook'].sourceOperationId;
@@ -200,7 +201,7 @@ async function processOperations(
     $autoload: Autoloader;
     buildInitializer: Function;
   },
-  operations: WhookAPIAWSLambdaOperation[],
+  operations: WhookOperation<WhookAPIOperationAWSLambdaConfig>[],
 ) {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
 

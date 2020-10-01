@@ -13,6 +13,7 @@ import type { WhookBuildConstantsService } from '@whook/whook';
 import type { Injector } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { WhookAPIOperationAWSLambdaConfig } from '..';
 
 /**
  * Wrap the _autoload service in order to build AWS
@@ -53,13 +54,15 @@ export default alsoInject(
       }>
     > => {
       let API: OpenAPIV3.Document;
-      let OPERATION_APIS: WhookOperation[];
+      let OPERATION_APIS: WhookOperation<WhookAPIOperationAWSLambdaConfig>[];
       const getAPIOperation = (() => {
         return async (serviceName) => {
           // eslint-disable-next-line
           API = API || (await flattenOpenAPI((await $injector(['API'])).API));
           // eslint-disable-next-line
-          OPERATION_APIS = OPERATION_APIS || getOpenAPIOperations(API);
+          OPERATION_APIS =
+            OPERATION_APIS ||
+            getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API);
 
           const OPERATION = OPERATION_APIS.find(
             (operation) =>

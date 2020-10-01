@@ -24,9 +24,10 @@ import type { APMService } from './services/apm';
 export type { ObfuscatorConfig, ObfuscatorService, APMService };
 export { initObfuscatorService, initAPMService };
 
-export type WhookOperation = OpenAPIV3.OperationObject & {
+export type WhookOperation<T = {}> = OpenAPIV3.OperationObject & {
   path: string;
   method: string;
+  'x-whook'?: T;
 };
 
 export type WhookRequest = {

@@ -17,21 +17,20 @@ import initBuildAutoloader from './services/_autoload';
 import Knifecycle, { SPECIAL_PROPS, constant } from 'knifecycle';
 import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
 import type { Autoloader } from 'knifecycle';
-import type { WhookAPIOperationAddition } from '@whook/whook';
+import type { WhookAPIOperationAddition, WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 
 export type { WhookCompilerConfig, WhookCompilerOptions, WhookCompilerService };
 export { DEFAULT_COMPILER_OPTIONS };
-export type WhookAPIOperationAWSLambdaConfig = {
+export type WhookAPIOperationGCPFunctionConfig = {
   type?: 'http' | 'cron' | 'consumer' | 'transformer';
   enabled?: boolean;
   sourceOperationId?: string;
   staticFiles?: string[];
   compilerOptios?: WhookCompilerOptions;
+  suffix?: string;
 };
-type WhookAPIAWSLambdaOperation = OpenAPIV3.OperationObject &
-  WhookAPIOperationAddition<WhookAPIOperationAWSLambdaConfig>;
 
 const readFileAsync = util.promisify(fs.readFile) as (
   path: string,
@@ -124,9 +123,11 @@ export async function runBuild(
 
     log('info', 'Environment initialized 🚀🌕');
 
-    const operations: WhookAPIAWSLambdaOperation[] = (
-      await flattenOpenAPI(API).then(getOpenAPIOperations)
-    ).filter((operation: WhookAPIAWSLambdaOperation) => {
+    const operations = (
+      await getOpenAPIOperations<WhookAPIOperationGCPFunctionConfig>(
+        await flattenOpenAPI(API),
+      )
+    ).filter((operation) => {
       if (handlerName) {
         const sourceOperationId =
           operation['x-whook'] && operation['x-whook'].sourceOperationId;
@@ -179,7 +180,7 @@ async function processOperations(
     $autoload: Autoloader;
     buildInitializer: Function;
   },
-  operations: WhookAPIAWSLambdaOperation[],
+  operations: WhookOperation<WhookAPIOperationGCPFunctionConfig>[],
 ) {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
 
@@ -219,7 +220,7 @@ async function buildAnyLambda(
   const { operationId } = operation;
 
   try {
-    const whookConfig: WhookAPIOperationAWSLambdaConfig =
+    const whookConfig: WhookAPIOperationGCPFunctionConfig =
       operation['x-whook'] || {};
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;

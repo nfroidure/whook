@@ -7,6 +7,7 @@ import type {
   HTTPRouterProvider,
   HTTPRouterService,
   ImporterService,
+  WhookAPIHandlerDefinition,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
 
@@ -28,6 +29,9 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   PORT: number;
   log: LogService;
   importer: ImporterService<any>;
+};
+export type WhookAPIOperationSwaggerConfig = {
+  private?: boolean;
 };
 
 /**

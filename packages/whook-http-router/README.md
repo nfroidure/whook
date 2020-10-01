@@ -122,8 +122,9 @@ Return a OpenAPI operation in a more
 
 **Example**  
 ```js
-getOpenAPIOperations(API)
-.map((operation) => {
+(
+  await getOpenAPIOperations(API)
+).map((operation) => {
    const { path, method, operationId, parameters } = operation;
 
   // Do something with that operation

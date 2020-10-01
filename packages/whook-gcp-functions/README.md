@@ -109,6 +109,39 @@ export async function prepareBuildEnvironment(
 } 
 ```
 
+And add the GCP Functions config (usually in `src/config/common/config.js`):
+```diff
++ import type {
++   WhookCompilerConfig,
++   WhookAPIOperationGCPFunctionConfig,
++ } from '@whook/gcp-functions';
+
+// ...
+
+export type AppConfigs = WhookConfigs &
++  WhookCompilerConfig &
+  APIConfig;
+
+const CONFIG: AppConfigs = {
+  // ...
++  COMPILER_OPTIONS: {
++    externalModules: [],
++    ignoredModules: [],
++    extensions: ['.ts', '.mjs', '.js', '.json'],
++    mainFields: ['browser', 'module', 'main'],
++    target: '12.13',
++  },
+};
+
+// Export custom handlers definitions
+export type APIHandlerDefinition = WhookAPIHandlerDefinition<
++  WhookAPIOperationGCPFunctionConfig &
+  WhookAPIOperationSwaggerConfig
+>;
+
+export default CONFIG;
+```
+
 # Build
 
 To build your functions :
