@@ -2,7 +2,7 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
-import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
+import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 
@@ -12,8 +12,11 @@ const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
 export type CORSConfig = {
   CORS: {
     'Access-Control-Allow-Origin': string;
-    'Access-Control-Allow-Methods': string;
     'Access-Control-Allow-Headers': string;
+    'Access-Control-Expose-Headers'?: string;
+    'Access-Control-Allow-Methods'?: string;
+    'Access-Control-Max-Age'?: string;
+    'Access-Control-Allow-Credentials'?: 'true';
     Vary: string;
   };
 };
