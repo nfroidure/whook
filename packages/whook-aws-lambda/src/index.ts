@@ -1,5 +1,4 @@
 /* eslint global-require:0 */
-import joinPath from 'memory-fs/lib/join';
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
@@ -17,18 +16,18 @@ import type {
   WhookCompilerConfig,
 } from './services/compiler';
 import type { Autoloader } from 'knifecycle';
-import type { WhookAPIOperationAddition, WhookOperation } from '@whook/whook';
+import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 
 export type { WhookCompilerConfig, WhookCompilerOptions, WhookCompilerService };
 export { DEFAULT_COMPILER_OPTIONS };
+
 export type WhookAPIOperationAWSLambdaConfig = {
   type?: 'http' | 'cron' | 'consumer' | 'transformer';
-  enabled?: boolean;
   sourceOperationId?: string;
   staticFiles?: string[];
-  compilerOptios?: WhookCompilerOptions;
+  compilerOptions?: WhookCompilerOptions;
   suffix?: string;
 };
 
@@ -235,14 +234,27 @@ async function processOperations(
 }
 
 async function buildAnyLambda(
-  { NODE_ENV, PROJECT_DIR, compiler, log, $autoload, buildInitializer },
-  operation,
+  {
+    NODE_ENV,
+    PROJECT_DIR,
+    compiler,
+    log,
+    $autoload,
+    buildInitializer,
+  }: {
+    NODE_ENV: string;
+    PROJECT_DIR: string;
+    compiler: WhookCompilerService;
+    log: LogService;
+    $autoload: Autoloader;
+    buildInitializer: Function;
+  },
+  operation: WhookOperation<WhookAPIOperationAWSLambdaConfig>,
 ) {
   const { operationId } = operation;
 
   try {
-    const whookConfig: WhookAPIOperationAWSLambdaConfig =
-      operation['x-whook'] || {};
+    const whookConfig = operation['x-whook'] || {};
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
     const entryPoint = operationId;
@@ -289,11 +301,7 @@ async function buildAnyLambda(
       ),
       ensureFileAsync({ log }, path.join(lambdaPath, 'main.js'), indexContent),
     ]);
-    await buildFinalLambda(
-      { NODE_ENV, compiler, log },
-      lambdaPath,
-      whookConfig,
-    );
+    await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
   } catch (err) {
     log('error', `Error building ${operationId}'...`);
     log('stack', err.stack);
@@ -322,12 +330,15 @@ export default function handler (event, context, callback) {
 }
 
 async function buildFinalLambda(
-  { NODE_ENV, compiler, log },
-  lambdaPath,
-  whookConfig,
+  { compiler, log }: { compiler: WhookCompilerService; log: LogService },
+  lambdaPath: string,
+  whookConfig: WhookAPIOperationAWSLambdaConfig,
 ) {
   const entryPoint = `${lambdaPath}/main.js`;
-  const { contents, mappings } = await compiler(entryPoint);
+  const { contents, mappings } = await compiler(
+    entryPoint,
+    whookConfig.compilerOptions,
+  );
 
   await Promise.all([
     ensureFileAsync({ log }, `${lambdaPath}/index.js`, contents, 'utf-8'),
@@ -401,19 +412,4 @@ async function ensureFileAsync(
   }
   log('debug', 'Write changed file:', path);
   return await writeFileAsync(path, content, encoding);
-}
-
-// Taken from https://github.com/streamich/memfs/issues/404#issuecomment-522450466
-// Awaiting for Webpack to avoid using .join on fs
-function ensureWebpackMemoryFs(fs) {
-  // Return it back, when it has Webpack 'join' method
-  if (fs.join) {
-    return fs;
-  }
-
-  // Create FS proxy, adding `join` method to memfs, but not modifying original object
-  const nextFs = Object.create(fs);
-  nextFs.join = joinPath;
-
-  return nextFs;
 }
