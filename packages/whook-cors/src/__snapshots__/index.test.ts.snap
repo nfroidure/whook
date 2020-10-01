@@ -190,28 +190,3 @@ Object {
   },
 }
 `;
-
-exports[`wrapHandlerWithCORS should add CORS to errors 1`] = `
-Object {
-  "headers": Object {
-    "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-    "Access-Control-Allow-Origin": "*",
-    "Vary": "Origin",
-  },
-}
-`;
-
-exports[`wrapHandlerWithCORS should work 1`] = `
-Object {
-  "response": Object {
-    "headers": Object {
-      "Access-Control-Allow-Headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-      "Access-Control-Allow-Origin": "*",
-      "Vary": "Origin",
-    },
-    "status": 200,
-  },
-}
-`;

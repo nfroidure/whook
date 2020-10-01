@@ -48,6 +48,7 @@ export type WhookAPIOperationConfig = {
   disabled?: boolean;
 };
 export type WhookAPIOperationAddition<T = {}> = {
+  operationId: OpenAPIV3.OperationObject['operationId'];
   'x-whook'?: T & WhookAPIOperationConfig;
 };
 export type WhookAPIOperation<T = {}> = OpenAPIV3.OperationObject &

@@ -54,16 +54,17 @@ export async function flattenOpenAPI(
  * @return {Array}
  * An array of all the OpenAPI operations
  * @example
- * getOpenAPIOperations(API)
- * .map((operation) => {
+ * (
+ *   await getOpenAPIOperations(API)
+ * ).map((operation) => {
  *    const { path, method, operationId, parameters } = operation;
  *
  *   // Do something with that operation
  * });
  */
-export function getOpenAPIOperations(
+export function getOpenAPIOperations<T = {}>(
   API: OpenAPIV3.Document,
-): WhookOperation[] {
+): WhookOperation<T>[] {
   return Object.keys(API.paths).reduce(
     (operations, path) =>
       Object.keys(API.paths[path])

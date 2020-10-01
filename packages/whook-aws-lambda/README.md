@@ -109,6 +109,39 @@ export async function prepareBuildEnvironment(
 } 
 ```
 
+And add the AWS Lambda config (usually in `src/config/common/config.js`):
+```diff
++ import type {
++   WhookCompilerConfig,
++   WhookAPIOperationAWSLambdaConfig,
++ } from '@whook/aws-lambda';
+
+// ...
+
+export type AppConfigs = WhookConfigs &
++  WhookCompilerConfig &
+  APIConfig;
+
+const CONFIG: AppConfigs = {
+  // ...
++  COMPILER_OPTIONS: {
++    externalModules: [],
++    ignoredModules: [],
++    extensions: ['.ts', '.mjs', '.js', '.json'],
++    mainFields: ['browser', 'module', 'main'],
++    target: '12.13',
++  },
+};
+
+// Export custom handlers definitions
+export type APIHandlerDefinition = WhookAPIHandlerDefinition<
++  WhookAPIOperationAWSLambdaConfig &
+  WhookAPIOperationSwaggerConfig
+>;
+
+export default CONFIG;
+```
+
 # Build
 
 To build your functions :

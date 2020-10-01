@@ -2,23 +2,40 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { identity } from '@whook/whook';
 import type { ServiceInitializer, Parameters } from 'knifecycle';
-import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
+import type {
+  WhookResponse,
+  WhookHandler,
+  WhookOperation,
+  WhookAPIHandlerDefinition,
+} from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 
 // Ensures a deterministic canonical operation
 const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
 
 export type CORSConfig = {
-  CORS: {
-    'Access-Control-Allow-Origin': string;
-    'Access-Control-Allow-Headers': string;
-    'Access-Control-Expose-Headers'?: string;
-    'Access-Control-Allow-Methods'?: string;
-    'Access-Control-Max-Age'?: string;
-    'Access-Control-Allow-Credentials'?: 'true';
-    Vary: string;
-  };
+  'Access-Control-Allow-Origin': string;
+  'Access-Control-Allow-Headers': string;
+  'Access-Control-Expose-Headers'?: string;
+  'Access-Control-Allow-Methods'?: string;
+  'Access-Control-Max-Age'?: string;
+  'Access-Control-Allow-Credentials'?: 'true';
+};
+export type WhookCORSConfig = {
+  CORS: CORSConfig;
+};
+export type WhookAPIOperationCORSConfig = {
+  cors?:
+    | {
+        type: 'merge';
+        value: Partial<CORSConfig>;
+      }
+    | {
+        type: 'replace';
+        value: CORSConfig;
+      };
 };
 
 /**
@@ -28,8 +45,8 @@ export type CORSConfig = {
  */
 export function wrapHandlerWithCORS<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & CORSConfig, S> {
-  return alsoInject<CORSConfig, typeof initHandler>(
+): ServiceInitializer<D & WhookCORSConfig, S> {
+  return alsoInject<WhookCORSConfig, typeof initHandler>(
     ['CORS'],
     reuseSpecialProps(
       initHandler,
@@ -62,28 +79,46 @@ function isGetter(obj: any, prop: string): boolean {
 
 async function handleWithCORS<
   R extends WhookResponse,
-  O extends WhookOperation,
+  O extends WhookAPIHandlerDefinition<WhookAPIOperationCORSConfig>,
   P extends Parameters
 >(
-  { CORS }: CORSConfig,
+  { CORS }: WhookCORSConfig,
   handler: WhookHandler<P, R, O>,
   parameters: P,
   operation: O,
 ): Promise<R> {
+  const operationCORSConfig = operation['x-whook']?.cors;
+  const finalCORS = lowerCaseHeaders(
+    operationCORSConfig && operationCORSConfig.type === 'replace'
+      ? operationCORSConfig.value
+      : operationCORSConfig && operationCORSConfig.type === 'merge'
+      ? {
+          ...CORS,
+          ...operationCORSConfig.value,
+        }
+      : CORS,
+  );
+
   try {
     const response = await handler(parameters, operation);
 
     return {
       ...response,
       headers: {
-        ...response.headers,
-        ...CORS,
+        ...(response.headers || {}),
+        ...finalCORS,
+        vary: mergeVaryHeaders((response.headers || {}).vary || '', 'Origin'),
       },
     };
   } catch (err) {
     // Test if setter is available, could produce another error if err only has a getter
     if (!isGetter(err, 'headers')) {
-      err.headers = Object.assign({}, CORS);
+      err.headers = Object.assign(
+        {
+          vary: 'Origin',
+        },
+        finalCORS,
+      );
     }
     throw err;
   }
@@ -190,3 +225,26 @@ export async function augmentAPIWithCORS(
 }
 
 export { initOptionsWithCORS };
+
+function mergeVaryHeaders(baseHeader: string, addedValue: string): string {
+  const baseHeaderValues = baseHeader
+    .split(',')
+    .filter(identity)
+    .map((v) => v.trim().toLowerCase());
+
+  if (baseHeaderValues.includes('*')) {
+    return '*';
+  }
+
+  return [...new Set([...baseHeaderValues, addedValue])].join(', ');
+}
+
+function lowerCaseHeaders<T>(object: Record<string, T>): Record<string, T> {
+  return Object.keys(object).reduce(
+    (finalObject, key) => ({
+      ...finalObject,
+      [key.toLowerCase()]: object[key],
+    }),
+    {},
+  );
+}

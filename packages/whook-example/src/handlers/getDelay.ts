@@ -1,8 +1,6 @@
 import { autoHandler } from 'knifecycle';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPIParameterDefinition,
-} from '@whook/whook';
+import type { WhookAPIParameterDefinition } from '@whook/whook';
+import type { APIHandlerDefinition } from '../config/common/config';
 import type { DelayService } from 'common-services';
 
 export const durationParameter: WhookAPIParameterDefinition<API.GetDelay.Parameters.Duration> = {
@@ -19,7 +17,7 @@ export const durationParameter: WhookAPIParameterDefinition<API.GetDelay.Paramet
   },
 };
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: APIHandlerDefinition = {
   path: '/delay',
   method: 'get',
   operation: {

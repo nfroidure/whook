@@ -1,8 +1,6 @@
 import { autoHandler } from 'knifecycle';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPIParameterDefinition,
-} from '@whook/whook';
+import type { WhookAPIParameterDefinition } from '@whook/whook';
+import type { APIHandlerDefinition } from '../config/common/config';
 
 export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam1> = {
   name: 'pathParam1',
@@ -34,7 +32,7 @@ export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.
   },
 };
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: APIHandlerDefinition = {
   path: `/{${pathParam1Parameter.parameter.name}}/{${pathParam2Parameter.parameter.name}}`,
   method: 'get',
   operation: {

@@ -3,10 +3,11 @@ import { getOpenAPIOperations } from '@whook/http-router';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
+import { WhookAPIOperationSwaggerConfig } from '..';
 
 export default autoHandler(getOpenAPI);
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: WhookAPIHandlerDefinition<WhookAPIOperationSwaggerConfig> = {
   path: '/openAPI',
   method: 'get',
   operation: {
@@ -61,7 +62,9 @@ async function getOpenAPI(
     mutedParameters?: string[];
   },
 ): Promise<WhookResponse<200, {}, OpenAPIV3.Document>> {
-  const operations = await getOpenAPIOperations(API);
+  const operations = await getOpenAPIOperations<WhookAPIOperationSwaggerConfig>(
+    API,
+  );
   // Temporar type fix due to version mismatch of OpenAPIV3
   // between Whook and SwaggerParser
   const $refs = await SwaggerParser.resolve(API as any);

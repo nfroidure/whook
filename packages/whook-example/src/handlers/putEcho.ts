@@ -1,10 +1,8 @@
 import { autoHandler } from 'knifecycle';
 import YHTTPError from 'yhttperror';
 import type { LogService } from 'common-services';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPISchemaDefinition,
-} from '@whook/whook';
+import type { WhookAPISchemaDefinition } from '@whook/whook';
+import type { APIHandlerDefinition } from '../config/common/config';
 
 export const echoSchema: WhookAPISchemaDefinition<Components.Schemas.Echo> = {
   name: 'Echo',
@@ -20,7 +18,7 @@ export const echoSchema: WhookAPISchemaDefinition<Components.Schemas.Echo> = {
   },
 };
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: APIHandlerDefinition = {
   path: '/echo',
   method: 'put',
   operation: {

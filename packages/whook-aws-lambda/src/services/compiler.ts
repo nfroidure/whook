@@ -28,6 +28,7 @@ export type WhookCompilerDependencies = WhookCompilerConfig & {
 type WhookCompilationResult = { contents: string; mappings: string };
 export type WhookCompilerService = (
   entryPoint: string,
+  options?: WhookCompilerOptions,
 ) => Promise<WhookCompilationResult>;
 
 export const DEFAULT_COMPILER_OPTIONS: Required<WhookCompilerOptions> = {
@@ -46,7 +47,7 @@ async function initCompiler({
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
   return async function compiler(
     entryPoint: string,
-    options?: {},
+    options?: WhookCompilerOptions,
   ): Promise<WhookCompilationResult> {
     const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
     const basePath = path.dirname(entryPoint);

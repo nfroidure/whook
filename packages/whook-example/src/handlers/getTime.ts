@@ -1,8 +1,6 @@
 import { autoHandler } from 'knifecycle';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPISchemaDefinition,
-} from '@whook/whook';
+import type { WhookAPISchemaDefinition } from '@whook/whook';
+import type { APIHandlerDefinition } from '../config/common/config';
 import type { TimeService } from 'common-services';
 
 export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema> = {
@@ -16,7 +14,7 @@ export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema>
   },
 };
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: APIHandlerDefinition = {
   path: '/time',
   method: 'get',
   operation: {

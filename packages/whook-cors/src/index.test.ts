@@ -5,9 +5,11 @@ import {
 } from '.';
 import { handler } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
+import { CORSConfig } from '.';
+import { WhookOperation } from '@whook/whook';
 
 describe('wrapHandlerWithCORS', () => {
-  const CORS = {
+  const CORS: CORSConfig = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': [
@@ -21,7 +23,17 @@ describe('wrapHandlerWithCORS', () => {
       'Keep-Alive',
       'User-Agent',
     ].join(','),
-    Vary: 'Origin',
+  };
+  const OPERATION: WhookOperation = {
+    path: '/test',
+    method: 'get',
+    operationId: 'getOp',
+    responses: {
+      '200': {
+        description: 'Ok',
+      },
+    },
+    'x-whook': {},
   };
 
   it('should work', async () => {
@@ -31,11 +43,104 @@ describe('wrapHandlerWithCORS', () => {
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,
     });
-    const response = await wrappedHandler();
+    const response = await wrappedHandler({}, OPERATION);
 
     expect({
       response,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "response": Object {
+          "headers": Object {
+            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+            "access-control-allow-origin": "*",
+            "vary": "Origin",
+          },
+          "status": 200,
+        },
+      }
+    `);
+  });
+
+  it('should work with replace custom CORS', async () => {
+    const wrappedOptionsWithCORS = wrapHandlerWithCORS<any, any>(
+      initOptionsWithCORS,
+    );
+    const wrappedHandler = await wrappedOptionsWithCORS({
+      CORS,
+    });
+    const response = await wrappedHandler(
+      {},
+      {
+        ...OPERATION,
+        'x-whook': {
+          cors: {
+            type: 'replace',
+            value: {
+              ...CORS,
+              'Access-Control-Allow-Credentials': 'true',
+            },
+          },
+        },
+      },
+    );
+
+    expect({
+      response,
+    }).toMatchInlineSnapshot(`
+      Object {
+        "response": Object {
+          "headers": Object {
+            "access-control-allow-credentials": "true",
+            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+            "access-control-allow-origin": "*",
+            "vary": "Origin",
+          },
+          "status": 200,
+        },
+      }
+    `);
+  });
+
+  it('should work with merge custom CORS', async () => {
+    const wrappedOptionsWithCORS = wrapHandlerWithCORS<any, any>(
+      initOptionsWithCORS,
+    );
+    const wrappedHandler = await wrappedOptionsWithCORS({
+      CORS,
+    });
+    const response = await wrappedHandler(
+      {},
+      {
+        ...OPERATION,
+        'x-whook': {
+          cors: {
+            type: 'merge',
+            value: {
+              'Access-Control-Allow-Credentials': 'true',
+            },
+          },
+        },
+      },
+    );
+
+    expect({
+      response,
+    }).toMatchInlineSnapshot(`
+      Object {
+        "response": Object {
+          "headers": Object {
+            "access-control-allow-credentials": "true",
+            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+            "access-control-allow-origin": "*",
+            "vary": "Origin",
+          },
+          "status": 200,
+        },
+      }
+    `);
   });
 
   it('should add CORS to errors', async () => {
@@ -53,12 +158,21 @@ describe('wrapHandlerWithCORS', () => {
     });
 
     try {
-      await wrappedHandler();
+      await wrappedHandler({}, OPERATION);
       throw new Error('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         headers: err.headers,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        Object {
+          "headers": Object {
+            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+            "access-control-allow-origin": "*",
+            "vary": "Origin",
+          },
+        }
+      `);
     }
   });
 });
