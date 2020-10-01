@@ -1,3 +1,18 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v5.0.0...v4.0.4) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@whook/cors:** allow to configure all CORS headers ([8b933dd](https://github.com/nfroidure/whook/commit/8b933ddc87f3d21567b1b01a49ef467a88b2dcf8))
+
+
+### Features
+
+* **@whook/cors:** add custom CORS per handlers support ([b62c068](https://github.com/nfroidure/whook/commit/b62c0689509b9ff460e2eea4e4ad538012f78a69))
+* **@whook/oauth2:** add common auth endpoints ([0af41c3](https://github.com/nfroidure/whook/commit/0af41c3c13d9937b3a7913cb639aec62ab825314))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v4.1.2...v4.0.4) (2020-09-15)
 
 
