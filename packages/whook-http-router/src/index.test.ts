@@ -198,6 +198,7 @@ describe('initHTTPRouter', () => {
           ],
           requestBody: {
             description: 'The input sentence',
+            required: true,
             content: {
               'image/jpeg': {
                 schema: { type: 'string', format: 'binary' },
@@ -309,6 +310,7 @@ describe('initHTTPRouter', () => {
           summary: 'Upsert a user.',
           requestBody: {
             description: 'The input user',
+            required: true,
             content: {
               'application/json': {
                 schema: {

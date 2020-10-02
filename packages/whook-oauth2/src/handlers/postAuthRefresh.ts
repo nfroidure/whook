@@ -19,7 +19,7 @@ export const authCookieHeaderParameter: WhookAPIParameterDefinition<string> = {
   parameter: {
     name: 'cookie',
     in: 'header',
-    required: true,
+    required: false,
     schema: {
       type: 'string',
     },
@@ -42,6 +42,7 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     ],
     requestBody: {
+      required: true,
       content: {
         'application/json': {
           schema: {
@@ -91,13 +92,13 @@ async function postAuthRefresh<
   },
   {
     body,
-    cookie,
+    cookie = '',
   }: {
     body: {
       scope: string;
       remember: boolean;
     };
-    cookie: string;
+    cookie?: string;
   },
 ) {
   const parsedCookies = authCookies.parse(cookie);

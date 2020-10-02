@@ -45,7 +45,7 @@ describe('authCookies', () => {
 
       expect(result).toMatchInlineSnapshot(`
         Array [
-          "access_token=; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
+          "access_token=; Max-Age=0; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
           "refresh_token=; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
         ]
       `);

@@ -22,6 +22,7 @@ export const definition: WhookAPIHandlerDefinition = {
     },
     parameters: [],
     requestBody: {
+      required: true,
       content: {
         'application/json': {
           schema: {
