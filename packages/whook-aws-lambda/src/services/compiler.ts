@@ -47,7 +47,7 @@ async function initCompiler({
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
   return async function compiler(
     entryPoint: string,
-    options?: WhookCompilerOptions,
+    options: WhookCompilerOptions = {},
   ): Promise<WhookCompilationResult> {
     const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
     const basePath = path.dirname(entryPoint);
