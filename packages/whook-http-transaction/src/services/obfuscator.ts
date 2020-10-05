@@ -38,6 +38,11 @@ const DEFAULT_SENSIBLE_HEADERS: SensibleValueDescriptor[] = [
     clearIndices: [0],
   },
   { name: 'cookie', pattern: /^(.*)$/i, clearIndices: [] },
+  {
+    name: 'set-cookie',
+    pattern: /^([^=]+=)([^;]*)(.*)$/i,
+    clearIndices: [0, 2],
+  },
 ];
 const DEFAULT_SENSIBLE_PROPS: SensibleValueDescriptor[] = [
   {
@@ -121,7 +126,23 @@ async function initObfuscator({
     );
   }
 
-  function selectivelyObfuscate(pattern, clearIndices, value) {
+  function selectivelyObfuscateAll(
+    pattern: RegExp,
+    clearIndices: number[],
+    values: string | string[],
+  ) {
+    return values instanceof Array
+      ? values.map((value) =>
+          selectivelyObfuscate(pattern, clearIndices, value),
+        )
+      : selectivelyObfuscate(pattern, clearIndices, values);
+  }
+
+  function selectivelyObfuscate(
+    pattern: RegExp,
+    clearIndices: number[],
+    value: string,
+  ) {
     // SECURITY: Here, we first test the pattern to ensure
     // the selective obfuscation will work, if not, we obfuscate
     // the whole value to default to security
@@ -139,7 +160,9 @@ async function initObfuscator({
       : obfuscate(value);
   }
 
-  function obfuscateSensibleHeaders(headers: { [name: string]: string }) {
+  function obfuscateSensibleHeaders(headers: {
+    [name: string]: string | string[];
+  }) {
     return Object.keys(headers).reduce((finalHeaders, headerName) => {
       const sensibleHeader = SENSIBLE_HEADERS.find(
         (sensibleHeader) =>
@@ -148,7 +171,7 @@ async function initObfuscator({
       return {
         ...finalHeaders,
         [headerName]: sensibleHeader
-          ? selectivelyObfuscate(
+          ? selectivelyObfuscateAll(
               sensibleHeader.pattern,
               sensibleHeader.clearIndices,
               headers[headerName],
@@ -158,7 +181,7 @@ async function initObfuscator({
     }, {});
   }
 
-  function obfuscateSensibleProps(propValue, propName = '_') {
+  function obfuscateSensibleProps(propValue: any, propName = '_') {
     if (propValue instanceof Array) {
       return propValue.map((value) => obfuscateSensibleProps(value, propName));
     } else if (typeof propValue === 'object' && propValue !== null) {
@@ -183,7 +206,7 @@ async function initObfuscator({
         ? selectivelyObfuscate(
             sensibleProp.pattern,
             sensibleProp.clearIndices,
-            propValue,
+            propValue.toString(),
           )
         : propValue;
     } else if (null === propValue) {

@@ -86,6 +86,19 @@ describe('Obfuscator Service', () => {
         }
       `);
     });
+
+    it('should work with set-cookie sensible headers', () => {
+      expect(
+        obfuscator.obfuscateSensibleHeaders({
+          'Set-Cookie':
+            'refresh_token=XdJ2%2BXmU0GLqB9bOfFOKWzg4ixn%2BfmJlWEHb%2FPXFrN4MHmteVfAC1WNMVCbSwT9M%2FbkJmIgdFXvDvEMDvZw0elIRvClwjaLVXgQqGSbtbkMTSv%2BtvvdnqIrfYRSuwhX2v5YqvUJsKk1RmxRekOyq5gthUutdT8iHc0PMdKiojm0UTdEq3Jzefc70BhdXnjDH9uQJMb5JfuzZKbx994yk9NdQMnjYUC4Fo6i0SFqPtLGi4mxnOp8Rug5Zm11tdej9sA4UXPsITx%2BhKkdVEm0J%2BqXVeCD7kD7Ybuw%2Bno%2FcxNwSCYy7WFPG6VNTAWPP9jctqWYCICiDjYNgFM0IoikCNQ%3D%3D; Domain=app.diagrams-technologies.com; Path=/v0/auth; HttpOnly; Secure; SameSite=Strict',
+        }),
+      ).toMatchInlineSnapshot(`
+        Object {
+          "Set-Cookie": "refresh_token=XdJ...%3D; Domain=app.diagrams-technologies.com; Path=/v0/auth; HttpOnly; Secure; SameSite=Strict",
+        }
+      `);
+    });
   });
 
   describe('obfuscateSensibleProps()', () => {

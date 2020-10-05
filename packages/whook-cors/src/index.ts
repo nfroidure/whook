@@ -226,11 +226,21 @@ export async function augmentAPIWithCORS(
 
 export { initOptionsWithCORS };
 
-function mergeVaryHeaders(baseHeader: string, addedValue: string): string {
-  const baseHeaderValues = baseHeader
-    .split(',')
-    .filter(identity)
-    .map((v) => v.trim().toLowerCase());
+function mergeVaryHeaders(
+  baseHeader: string | string[],
+  addedValue: string,
+): string {
+  const baseHeaderValues = (baseHeader instanceof Array
+    ? baseHeader
+    : [baseHeader]
+  )
+    .map((value) =>
+      value
+        .split(',')
+        .filter(identity)
+        .map((v) => v.trim().toLowerCase()),
+    )
+    .reduce((allValues, values) => [...allValues, ...values], []);
 
   if (baseHeaderValues.includes('*')) {
     return '*';

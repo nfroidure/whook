@@ -408,21 +408,21 @@ async function initHTTPRouter({
             operation.responses[response.status] &&
             operation.responses[response.status].content &&
             operation.responses[response.status].content[
-              response.headers['content-type']
+              response.headers['content-type'] as string
             ] &&
             operation.responses[response.status].content[
-              response.headers['content-type']
+              response.headers['content-type'] as string
             ].schema &&
             (operation.responses[response.status].content[
-              response.headers['content-type']
+              response.headers['content-type'] as string
             ].schema.type !== 'string' ||
               operation.responses[response.status].content[
-                response.headers['content-type']
+                response.headers['content-type'] as string
               ].schema.format !== 'binary');
 
           if (
             responseHasSchema &&
-            !STRINGIFYERS[response.headers['content-type']]
+            !STRINGIFYERS[response.headers['content-type'] as string]
           ) {
             throw new HTTPError(
               500,

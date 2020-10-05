@@ -484,6 +484,7 @@ async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
 type AWSResponseEvent = {
   statusCode: number;
   headers: { [name: string]: string };
+  multiValueHeaders: { [name: string]: string[] };
   body?: string;
   isBase64Encoded?: boolean;
 };
@@ -493,7 +494,28 @@ async function responseToAWSResponseEvent(
 ): Promise<AWSResponseEvent> {
   const amazonResponse: AWSResponseEvent = {
     statusCode: response.status,
-    headers: response.headers,
+    headers: Object.keys(response.headers || {}).reduce(
+      (stringHeaders, name) => ({
+        ...stringHeaders,
+        ...(typeof response.headers[name] === 'string'
+          ? {
+              [name]: response.headers[name],
+            }
+          : {}),
+      }),
+      {},
+    ),
+    multiValueHeaders: Object.keys(response.headers || {}).reduce(
+      (stringHeaders, name) => ({
+        ...stringHeaders,
+        ...((response.headers[name] as any) instanceof Array
+          ? {
+              [name]: response.headers[name],
+            }
+          : {}),
+      }),
+      {},
+    ),
   };
 
   if (response.body) {
@@ -511,8 +533,10 @@ async function responseToAWSResponseEvent(
       });
     });
     if (
-      response.headers['content-type'].startsWith('image/') ||
-      response.headers['content-type'].startsWith('application/pdf')
+      (response.headers['content-type'] as 'string').startsWith('image/') ||
+      (response.headers['content-type'] as 'string').startsWith(
+        'application/pdf',
+      )
     ) {
       amazonResponse.body = buf.toString('base64');
       amazonResponse.isBase64Encoded = true;

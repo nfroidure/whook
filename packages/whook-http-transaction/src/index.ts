@@ -40,7 +40,7 @@ export type WhookRequest = {
 export type WhookResponse<
   S = number,
   H = {
-    [name: string]: string;
+    [name: string]: string | string[];
   },
   B = any
 > = {
