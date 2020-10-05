@@ -1,3 +1,14 @@
+## [5.1.1](https://github.com/nfroidure/whook/compare/v5.1.0...v5.1.1) (2020-10-05)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix lambdas build for multiple headers ([ed5537a](https://github.com/nfroidure/whook/commit/ed5537a3ac0f71afe9c78e3895e266444fdab607))
+* **@whook/oauth2:** fix cookies for dev env ([51776df](https://github.com/nfroidure/whook/commit/51776df13d42c7f912f3c32ddb70e06103a80ff9))
+* **build:** fix the lambda/gcp builds ([b97b774](https://github.com/nfroidure/whook/commit/b97b77411b7404692f094c35c63c9f994e230f04))
+
+
+
 # [5.1.0](https://github.com/nfroidure/whook/compare/v5.0.0...v5.1.0) (2020-10-01)
 
 
