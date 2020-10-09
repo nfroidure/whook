@@ -192,7 +192,7 @@ describe('initHTTPRouter', () => {
               name: 'content-type',
               required: true,
               schema: {
-                type: 'string',
+                $ref: '#/components/schemas/ContentType',
               },
             },
           ],
@@ -201,10 +201,14 @@ describe('initHTTPRouter', () => {
             required: true,
             content: {
               'image/jpeg': {
-                schema: { type: 'string', format: 'binary' },
+                schema: {
+                  $ref: '#/components/schemas/BinaryPayload',
+                },
               },
               'image/png': {
-                schema: { type: 'string', format: 'binary' },
+                schema: {
+                  $ref: '#/components/schemas/BinaryPayload',
+                },
               },
             },
           },
@@ -325,15 +329,7 @@ describe('initHTTPRouter', () => {
             },
           },
           parameters: [
-            {
-              in: 'path',
-              name: 'userId',
-              required: true,
-              schema: {
-                type: 'number',
-                pattern: '^[0-9]+$',
-              },
-            },
+            { $ref: '#/components/parameters/UserId' },
             {
               in: 'header',
               name: 'Authorization',
@@ -403,7 +399,25 @@ describe('initHTTPRouter', () => {
           },
         },
       },
+      parameters: {
+        UserId: {
+          in: 'path',
+          name: 'userId',
+          required: true,
+          schema: {
+            $ref: '#/components/schemas/UserIdSchema',
+          },
+        },
+      },
       schemas: {
+        BinaryPayload: {
+          type: 'string',
+          format: 'binary',
+        },
+        UserIdSchema: {
+          type: 'number',
+          pattern: '^[0-9]+$',
+        },
         Error: {
           type: 'object',
           properties: {
@@ -425,6 +439,9 @@ describe('initHTTPRouter', () => {
               type: 'string',
             },
           },
+        },
+        ContentType: {
+          type: 'string',
         },
       },
     },
@@ -2652,7 +2669,7 @@ describe('initHTTPRouter', () => {
           }).toMatchSnapshot();
         });
 
-        test('when parsers lacks', async () => {
+        test.only('when parsers lacks', async () => {
           let {
             httpTransaction,
             httpTransactionStart,
