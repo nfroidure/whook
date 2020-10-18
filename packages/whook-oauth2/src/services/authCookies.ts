@@ -48,7 +48,7 @@ async function initAuthCookies({
         httpOnly: true,
         domain: ENV.DEV_MODE ? undefined : COOKIES.domain,
         secure: !ENV.DEV_MODE,
-        sameSite: ENV.DEV_MODE ? 'none' : true,
+        ...(ENV.DEV_MODE ? {} : { sameSite: true }),
         ...(data.access_token ? {} : { maxAge: 0 }),
       }),
       cookie.serialize('refresh_token', data.refresh_token || '', {
@@ -56,7 +56,7 @@ async function initAuthCookies({
         httpOnly: true,
         domain: ENV.DEV_MODE ? undefined : COOKIES.domain,
         secure: !ENV.DEV_MODE,
-        sameSite: ENV.DEV_MODE ? 'none' : true,
+        ...(ENV.DEV_MODE ? {} : { sameSite: true }),
         ...(session ? {} : { maxAge: Math.round(ms('100y') / 1000) }),
       }),
     ];
