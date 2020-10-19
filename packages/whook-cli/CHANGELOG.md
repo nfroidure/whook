@@ -1,3 +1,12 @@
+## [5.1.2](https://github.com/nfroidure/whook/compare/v5.1.1...v5.1.2) (2020-10-19)
+
+
+### Bug Fixes
+
+* **cookies:** avoid specifying sameSite for local dev ([2e4aa8d](https://github.com/nfroidure/whook/commit/2e4aa8d9eb6ab51415178e1da797802a5e71a4c9))
+
+
+
 ## [5.1.1](https://github.com/nfroidure/whook/compare/v5.1.0...v5.1.1) (2020-10-05)
 
 
