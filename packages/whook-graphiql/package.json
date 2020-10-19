@@ -70,7 +70,7 @@
   "dependencies": {
     "@whook/whook": "^5.1.1",
     "apollo-server-module-graphiql": "^1.4.0",
-    "knifecycle": "^10.0.2",
+    "knifecycle": "^10.0.3",
     "openapi-types": "^7.0.1"
   },
   "devDependencies": {
@@ -89,7 +89,7 @@
     "@whook/http-router": "^5.1.1",
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-knifecycle": "^3.0.0",
+    "babel-plugin-knifecycle": "^3.0.1",
     "eslint": "^7.7.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.4.0",
