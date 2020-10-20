@@ -74,7 +74,7 @@
     "yhttperror": "^5.0.0"
   },
   "peerDependencies": {
-    "@whook/whook": "^4.0.0"
+    "@whook/whook": "^5.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
