@@ -1,3 +1,12 @@
+## [5.1.3](https://github.com/nfroidure/whook/compare/v5.1.2...v5.1.3) (2020-10-28)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix support for multi-valued query parameters ([02546b5](https://github.com/nfroidure/whook/commit/02546b575d1868a41fbe221b7f7341b3e3d6e95d))
+
+
+
 ## [5.1.2](https://github.com/nfroidure/whook/compare/v5.1.1...v5.1.2) (2020-10-19)
 
 
