@@ -54,14 +54,12 @@ async function initTestHTTPLambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
   API,
-  time,
   log,
   args,
 }: {
   NODE_ENV: string;
   PROJECT_DIR: string;
   API: OpenAPIV3.Document;
-  time: TimeService;
   log: LogService;
   args: WhookCommandArgs;
 }) {

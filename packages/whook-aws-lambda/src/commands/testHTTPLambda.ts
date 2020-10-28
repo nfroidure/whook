@@ -132,7 +132,7 @@ async function initTestHTTPLambdaCommand({
             return parameters[name];
           }),
         resourcePath: '/v1' + OPERATION.path,
-        stage: process.env.NODE_ENV || 'development',
+        stage: NODE_ENV,
         requestTimeEpoch: time(),
         requestId: randomUUID(),
         httpMethod: OPERATION.method.toUpperCase(),
