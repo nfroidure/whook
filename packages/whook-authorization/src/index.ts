@@ -6,7 +6,7 @@ import {
   buildWWWAuthenticateHeader,
   BEARER as BEARER_MECHANISM,
 } from 'http-auth-utils';
-import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
+import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type {
   WhookHandler,
   WhookOperation,

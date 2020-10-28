@@ -268,7 +268,10 @@ async function handleForAWSHTTPLambda(
 
       parameters = {
         ...(event.pathParameters || {}),
-        ...(event.queryStringParameters || {}),
+        ...filterQueryParameters(
+          operationParameters as OpenAPIV3.ParameterObject[],
+          event.multiValueQueryStringParameters,
+        ),
         ...filterHeaders(
           operationParameters as OpenAPIV3.ParameterObject[],
           request.headers,
@@ -457,7 +460,7 @@ async function handleForAWSHTTPLambda(
 
 async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
   const queryStringParametersNames = Object.keys(
-    event.requestContext.queryStringParameters || {},
+    event.multiValueQueryStringParameters || {},
   );
   const request: WhookRequest = {
     method: event.requestContext.httpMethod.toLowerCase(),
@@ -466,7 +469,7 @@ async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
       event.requestContext.path +
       (queryStringParametersNames.length
         ? SEARCH_SEPARATOR +
-          qs.stringify(event.requestContext.queryStringParameters)
+          qs.stringify(event.multiValueQueryStringParameters || {})
         : ''),
   };
 
@@ -585,4 +588,22 @@ function obfuscateEventBody(obfuscator, rawBody) {
     } catch (err) {}
   }
   return rawBody;
+}
+
+function filterQueryParameters(
+  parameters: OpenAPIV3.ParameterObject[],
+  queryParameters: { [name: string]: string[] },
+): { [name: string]: string } {
+  return (parameters || [])
+    .filter((parameter) => 'query' === parameter.in)
+    .reduce((filteredHeaders, parameter) => {
+      if (queryParameters[parameter.name]) {
+        if ((parameter.schema as OpenAPIV3.SchemaObject).type === 'array') {
+          filteredHeaders[parameter.name] = queryParameters[parameter.name];
+        } else {
+          filteredHeaders[parameter.name] = queryParameters[parameter.name][0];
+        }
+      }
+      return filteredHeaders;
+    }, {});
 }

@@ -4,8 +4,9 @@ import { readArgs } from '@whook/cli';
 import { noop } from '@whook/whook';
 import YError from 'yerror';
 import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
-import uuid from 'uuid';
+import { v4 as randomUUID } from 'uuid';
 import camelCase from 'camelcase';
+import { extractOperationSecurityParameters } from '@whook/http-router';
 import type { LogService, TimeService } from 'common-services';
 import type {
   WhookCommandArgs,
@@ -88,27 +89,32 @@ async function initTestHTTPLambdaCommand({
     if (!OPERATION) {
       throw new YError('E_OPERATION_NOT_FOUND');
     }
+
+    const ammendedParameters = extractOperationSecurityParameters(
+      API,
+      OPERATION,
+    ).concat((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]);
     const hasBody = !!OPERATION.requestBody;
     const parameters = JSON.parse(rawParameters);
     const awsRequest = {
-      pathParameters: ((OPERATION.parameters ||
-        []) as OpenAPIV3.ParameterObject[])
+      pathParameters: ammendedParameters
         .filter((p) => p.in === 'path')
         .reduce((pathParameters, p) => {
           pathParameters[p.name] = '' + parameters[p.name];
           return pathParameters;
         }, {}),
-      queryStringParameters: ((OPERATION.parameters ||
-        []) as OpenAPIV3.ParameterObject[])
+      multiValueQueryStringParameters: ammendedParameters
         .filter((p) => p.in === 'query')
-        .reduce((queryStringParameters, p) => {
-          queryStringParameters[p.name] =
+        .reduce((multiValueQueryStringParameters, p) => {
+          multiValueQueryStringParameters[p.name] =
             null != parameters[p.name]
-              ? '' + parameters[p.name]
-              : parameters[p.name];
-          return queryStringParameters;
+              ? parameters[p.name] instanceof Array
+                ? parameters[p.name].map((val) => '' + val)
+                : ['' + parameters[p.name]]
+              : undefined;
+          return multiValueQueryStringParameters;
         }, {}),
-      headers: ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[])
+      headers: ammendedParameters
         .filter((p) => p.in === 'header')
         .reduce((headerParameters, p) => {
           headerParameters[p.name] = parameters[camelCase(p.name)];
@@ -128,7 +134,7 @@ async function initTestHTTPLambdaCommand({
         resourcePath: '/v1' + OPERATION.path,
         stage: process.env.NODE_ENV || 'development',
         requestTimeEpoch: time(),
-        requestId: uuid.v1(),
+        requestId: randomUUID(),
         httpMethod: OPERATION.method.toUpperCase(),
       },
     };
