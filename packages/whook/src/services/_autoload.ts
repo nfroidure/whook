@@ -1,6 +1,6 @@
 import { identity, noop, compose } from '../libs/utils';
 import { constant, name, autoService, options, initializer } from 'knifecycle';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import { getOpenAPIOperations } from '@whook/http-router';
 import path from 'path';
 import YError from 'yerror';
 import type { Injector, Autoloader, ServiceInitializer } from 'knifecycle';
@@ -204,9 +204,9 @@ async function initAutoload<D>({
     if ('HANDLERS' === resolvedName) {
       const handlerNames = [
         ...new Set(
-          (
-            await getOpenAPIOperations(await flattenOpenAPI(await getAPI()))
-          ).map((operation) => operation.operationId),
+          (await getOpenAPIOperations(await getAPI())).map(
+            (operation) => operation.operationId,
+          ),
         ),
       ].map((handlerName) => `${handlerName}>${handlerName}Wrapped`);
 

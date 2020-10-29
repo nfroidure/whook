@@ -222,7 +222,7 @@ Mr Bean
           "openapi-schema-validator": "^3.0.3",
           "prettier": "^2.0.5",
           "rimraf": "^3.0.2",
-          "schema2dts": "^1.0.1",
+          "schema2dts": "^1.0.2",
           "typescript": "^4.0.2",
         },
         "engines": Object {
@@ -486,7 +486,7 @@ Mr Bean
           "openapi-schema-validator": "^3.0.3",
           "prettier": "^2.0.5",
           "rimraf": "^3.0.2",
-          "schema2dts": "^1.0.1",
+          "schema2dts": "^1.0.2",
           "typescript": "^4.0.2",
         },
         "engines": Object {
@@ -735,7 +735,7 @@ Mr Bean
           "openapi-schema-validator": "^3.0.3",
           "prettier": "^2.0.5",
           "rimraf": "^3.0.2",
-          "schema2dts": "^1.0.1",
+          "schema2dts": "^1.0.2",
           "typescript": "^4.0.2",
         },
         "engines": Object {

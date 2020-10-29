@@ -13,7 +13,7 @@ Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L160-L164)
+[See in context](./src/index.ts#L189-L193)
 
 
 
@@ -26,7 +26,7 @@ Whook exposes a `prepareServer` function to create its server
  containing the bootstrapped environment and allowing
  to complete and run the server.
 
-[See in context](./src/index.ts#L230-L237)
+[See in context](./src/index.ts#L259-L266)
 
 
 
@@ -36,7 +36,7 @@ Whook exposes a `prepareServer` function to create its server
  *  server. We also inject `log` for logging purpose and custom other
  *  injected name that were required upfront.
 
-[See in context](./src/index.ts#L251-L255)
+[See in context](./src/index.ts#L280-L284)
 
 
 
@@ -48,7 +48,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server.
 
-[See in context](./src/index.ts#L268-L274)
+[See in context](./src/index.ts#L297-L303)
 
 
 
@@ -58,7 +58,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L285-L289)
+[See in context](./src/index.ts#L314-L318)
 
 
 
@@ -67,7 +67,7 @@ The Whook server heavily rely on the process working directory
 Whook has different behaviors depending on the `NODE_ENV` value
  consider setting it to production before shipping.
 
-[See in context](./src/index.ts#L293-L296)
+[See in context](./src/index.ts#L325-L328)
 
 
 
@@ -76,7 +76,7 @@ Whook has different behaviors depending on the `NODE_ENV` value
 Whook need to know where to look up for things like
  commands / handlers etc...
 
-[See in context](./src/index.ts#L300-L303)
+[See in context](./src/index.ts#L332-L335)
 
 
 
@@ -87,7 +87,7 @@ Whook's default logger write to the NodeJS default console
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
-[See in context](./src/index.ts#L306-L311)
+[See in context](./src/index.ts#L338-L343)
 
 
 
@@ -98,7 +98,7 @@ Whook's embed a few default initializers proxied from
  `src/services` folder. It can be wrapped or overriden,
  at will, later in project's main file.
 
-[See in context](./src/index.ts#L330-L335)
+[See in context](./src/index.ts#L362-L367)
 
 
 
@@ -152,7 +152,7 @@ The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project automatically from the installed whook plugins.
 
-[See in context](./src/services/_autoload.ts#L54-L58)
+[See in context](./src/services/_autoload.ts#L45-L49)
 
 
 
@@ -165,7 +165,7 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.ts#L188-L195)
+[See in context](./src/services/_autoload.ts#L170-L177)
 
 
 
@@ -175,7 +175,7 @@ We cannot inject the `WRAPPERS` in the auto loader when
  it is dynamically loaded so giving a second chance here
  for `WRAPPERS` to be set.
 
-[See in context](./src/services/_autoload.ts#L131-L135)
+[See in context](./src/services/_autoload.ts#L113-L117)
 
 
 
@@ -185,7 +185,7 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing this during the auto
  loader initialization.
 
-[See in context](./src/services/_autoload.ts#L115-L119)
+[See in context](./src/services/_autoload.ts#L97-L101)
 
 
 
@@ -194,7 +194,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded `CONFIGS` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L203-L206)
+[See in context](./src/services/_autoload.ts#L185-L188)
 
 
 
@@ -203,7 +203,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L218-L221)
+[See in context](./src/services/_autoload.ts#L200-L203)
 
 
 
@@ -212,7 +212,7 @@ Here, we build the handlers map needed by the router by injecting every
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.ts#L248-L251)
+[See in context](./src/services/_autoload.ts#L230-L233)
 
 
 
@@ -220,7 +220,7 @@ Finally, we either require the handler/service module if
 
 Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L33-L35)
+[See in context](./src/services/_autoload.ts#L24-L26)
 
 
 
@@ -229,7 +229,7 @@ Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
 In order to be able to substituate easily a service per another
  one can specify a mapping between a service and its substitution.
 
-[See in context](./src/services/_autoload.ts#L175-L178)
+[See in context](./src/services/_autoload.ts#L157-L160)
 
 
 
@@ -237,7 +237,7 @@ In order to be able to substituate easily a service per another
 
 Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L29-L31)
+[See in context](./src/services/_autoload.ts#L20-L22)
 
 
 
@@ -246,7 +246,7 @@ Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L281-L284)
+[See in context](./src/services/_autoload.ts#L263-L266)
 
 
 
@@ -295,5 +295,5 @@ The `API_DEFINITIONS` service provide a convenient way to
  gather your various API definitions from the handlers you
  created in the `src/handlers` folder.
 
-[See in context](./src/services/API_DEFINITIONS.ts#L21-L25)
+[See in context](./src/services/API_DEFINITIONS.ts#L23-L27)
 

@@ -2,7 +2,10 @@ import { loadLambda } from '../libs/utils';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import YError from 'yerror';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import {
+  dereferenceOpenAPIOperations,
+  getOpenAPIOperations,
+} from '@whook/http-router';
 import stream from 'stream';
 import camelCase from 'camelcase';
 import type {
@@ -82,7 +85,7 @@ async function initTestHTTPLambdaCommand({
       type,
     );
     const OPERATION = (
-      await getOpenAPIOperations(await flattenOpenAPI(API))
+      await dereferenceOpenAPIOperations(API, getOpenAPIOperations(API))
     ).find(({ operationId }) => operationId === name);
 
     if (!OPERATION) {

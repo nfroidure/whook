@@ -28,6 +28,7 @@ describe('wrapHandlerWithCORS', () => {
     path: '/test',
     method: 'get',
     operationId: 'getOp',
+    parameters: [],
     responses: {
       '200': {
         description: 'Ok',

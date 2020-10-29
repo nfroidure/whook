@@ -1,6 +1,6 @@
 import initAPI from './API';
 import FULL_CONFIG from '../config/test/config';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import { getOpenAPIOperations } from '@whook/http-router';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { initAPIDefinitions, initImporter } from '@whook/whook';
 import path from 'path';
@@ -52,7 +52,7 @@ describe('API', () => {
       log,
     });
     const securitySchemes = API.components.securitySchemes;
-    const operations = await getOpenAPIOperations(API);
+    const operations = getOpenAPIOperations(API);
 
     expect(
       operations
@@ -102,7 +102,7 @@ describe('API', () => {
         log,
       });
 
-      operations = await getOpenAPIOperations(await flattenOpenAPI(API));
+      operations = getOpenAPIOperations(API);
     });
 
     it('endpoints', async () => {

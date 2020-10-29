@@ -39,6 +39,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -57,6 +58,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -114,6 +116,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -132,6 +135,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -204,6 +208,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -222,6 +227,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -279,6 +285,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -297,6 +304,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -376,12 +384,14 @@ Object {
             },
           ],
           "path": "/graphql",
+          "requestBody": undefined,
           "responses": Object {
             "200": Object {
               "content": Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -439,6 +449,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -457,6 +468,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -529,6 +541,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -547,6 +560,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -604,6 +618,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -622,6 +637,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -701,12 +717,14 @@ Object {
             },
           ],
           "path": "/graphql",
+          "requestBody": undefined,
           "responses": Object {
             "200": Object {
               "content": Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -764,6 +782,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -782,6 +801,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -839,6 +859,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -857,6 +878,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -929,6 +951,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -947,6 +970,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -1019,6 +1043,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -1037,6 +1062,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -1094,6 +1120,7 @@ Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": true,
+                  "definitions": Object {},
                   "properties": Object {
                     "query": Object {
                       "type": "string",
@@ -1112,6 +1139,7 @@ Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },
@@ -1191,12 +1219,14 @@ Object {
             },
           ],
           "path": "/graphql",
+          "requestBody": undefined,
           "responses": Object {
             "200": Object {
               "content": Object {
                 "application/json": Object {
                   "schema": Object {
                     "additionalProperties": true,
+                    "definitions": Object {},
                     "type": "object",
                   },
                 },

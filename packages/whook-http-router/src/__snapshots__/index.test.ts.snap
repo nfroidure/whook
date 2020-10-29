@@ -203,9 +203,71 @@ Object {
         },
         "parentSchema": Object {
           "additionalProperties": false,
+          "definitions": Object {
+            "BinaryPayload": Object {
+              "format": "binary",
+              "type": "string",
+            },
+            "ContentType": Object {
+              "type": "string",
+            },
+            "Error": Object {
+              "properties": Object {
+                "code": Object {
+                  "pattern": "^E_[a-zA-Z0-9_]+$",
+                  "type": "string",
+                },
+                "transactionId": Object {
+                  "type": "string",
+                },
+              },
+              "type": "object",
+            },
+            "Recursive": Object {
+              "additionalProperties": false,
+              "properties": Object {
+                "childs": Object {
+                  "items": Object {
+                    "$ref": "#/definitions/Recursive",
+                  },
+                  "type": "array",
+                },
+                "id": Object {
+                  "type": "string",
+                },
+              },
+              "required": Array [
+                "id",
+                "childs",
+              ],
+              "type": "object",
+            },
+            "User": Object {
+              "additionalProperties": false,
+              "properties": Object {
+                "name": Object {
+                  "type": "string",
+                },
+                "tree": Object {
+                  "$ref": "#/definitions/Recursive",
+                },
+              },
+              "required": Array [
+                "name",
+              ],
+              "type": "object",
+            },
+            "UserIdSchema": Object {
+              "pattern": "^[0-9]+$",
+              "type": "number",
+            },
+          },
           "properties": Object {
             "name": Object {
               "type": "string",
+            },
+            "tree": Object {
+              "$ref": "#/definitions/Recursive",
             },
           },
           "required": Array [

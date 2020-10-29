@@ -11,12 +11,14 @@ Object {
         "operationId": "getPing",
         "parameters": Array [],
         "path": "/ping",
+        "requestBody": undefined,
         "responses": Object {
           "200": Object {
             "content": Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": false,
+                  "definitions": Object {},
                   "properties": Object {
                     "pong": Object {
                       "enum": Array [
@@ -60,12 +62,14 @@ Object {
         "operationId": "getPing",
         "parameters": Array [],
         "path": "/ping",
+        "requestBody": undefined,
         "responses": Object {
           "200": Object {
             "content": Object {
               "application/json": Object {
                 "schema": Object {
                   "additionalProperties": false,
+                  "definitions": Object {},
                   "properties": Object {
                     "pong": Object {
                       "enum": Array [

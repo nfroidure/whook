@@ -8,7 +8,10 @@ import Knifecycle, {
   Initializer,
 } from 'knifecycle';
 import YError from 'yerror';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import {
+  dereferenceOpenAPIOperations,
+  getOpenAPIOperations,
+} from '@whook/http-router';
 import type { WhookBuildConstantsService } from '@whook/whook';
 import type { Injector } from 'knifecycle';
 import type { LogService } from 'common-services';
@@ -58,11 +61,14 @@ export default alsoInject(
       const getAPIOperation = (() => {
         return async (serviceName) => {
           // eslint-disable-next-line
-          API = API || (await flattenOpenAPI((await $injector(['API'])).API));
+          API = API || (await $injector(['API'])).API;
           // eslint-disable-next-line
           OPERATION_APIS =
             OPERATION_APIS ||
-            getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API);
+            (await dereferenceOpenAPIOperations(
+              API,
+              getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API),
+            ));
 
           const OPERATION = OPERATION_APIS.find(
             (operation) =>

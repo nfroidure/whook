@@ -3,7 +3,10 @@ import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import { noop } from '@whook/whook';
 import YError from 'yerror';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import {
+  dereferenceOpenAPIOperations,
+  getOpenAPIOperations,
+} from '@whook/http-router';
 import { v4 as randomUUID } from 'uuid';
 import camelCase from 'camelcase';
 import { extractOperationSecurityParameters } from '@whook/http-router';
@@ -14,6 +17,7 @@ import type {
   WhookCommandNamedArgs,
 } from '@whook/cli';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { WhookAPIOperationAWSLambdaConfig } from '..';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing AWS HTTP lambda',
@@ -83,7 +87,10 @@ async function initTestHTTPLambdaCommand({
       type,
     );
     const OPERATION = (
-      await getOpenAPIOperations(await flattenOpenAPI(API))
+      await dereferenceOpenAPIOperations(
+        API,
+        getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API),
+      )
     ).find(({ operationId }) => operationId === name);
 
     if (!OPERATION) {
@@ -93,7 +100,7 @@ async function initTestHTTPLambdaCommand({
     const ammendedParameters = extractOperationSecurityParameters(
       API,
       OPERATION,
-    ).concat((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]);
+    ).concat(OPERATION.parameters);
     const hasBody = !!OPERATION.requestBody;
     const parameters = JSON.parse(rawParameters);
     const awsRequest = {

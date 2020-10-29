@@ -173,6 +173,8 @@ describe('extractOperationSecurityParameters', () => {
         path: '/test',
         method: 'get',
         operationId: 'test',
+        parameters: [],
+        responses: {},
       };
       const API: OpenAPIV3.Document = {
         openapi: '3.0.2',
@@ -216,6 +218,8 @@ describe('extractOperationSecurityParameters', () => {
             bearerAuth: ['user:delegate'],
           },
         ],
+        parameters: [],
+        responses: {},
       };
       const API: OpenAPIV3.Document = {
         openapi: '3.0.2',
@@ -276,6 +280,8 @@ describe('extractOperationSecurityParameters', () => {
             basicAuth: ['user:delegate'],
           },
         ],
+        parameters: [],
+        responses: {},
       };
       const API: OpenAPIV3.Document = {
         openapi: '3.0.2',
@@ -332,6 +338,8 @@ describe('extractOperationSecurityParameters', () => {
             basicAuth: ['user:delegate'],
           },
         ],
+        parameters: [],
+        responses: {},
       };
       const API: OpenAPIV3.Document = {
         openapi: '3.0.2',
