@@ -10,6 +10,7 @@ import {
   OPEN_API_METHODS,
   flattenOpenAPI,
   getOpenAPIOperations,
+  dereferenceOpenAPIOperations,
 } from './utils';
 import {
   prepareParametersValidators,
@@ -54,6 +55,7 @@ import type {
   WhookHandler,
   WhookOperation,
   HTTPTransactionService,
+  DereferencedParameterObject,
 } from '@whook/http-transaction';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
@@ -89,6 +91,7 @@ export {
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
   flattenOpenAPI,
+  dereferenceOpenAPIOperations,
   getOpenAPIOperations,
   extractOperationSecurityParameters,
   prepareParametersValidators,
@@ -300,7 +303,7 @@ async function initHTTPRouter({
     res: ServerResponse,
   ): Promise<void> {
     try {
-      let operation;
+      let operation: WhookOperation;
       let responseSpec = defaultResponseSpec;
 
       const { request, transaction } = await httpTransaction(req, res);
@@ -378,7 +381,7 @@ async function initHTTPRouter({
 
             parameters = {
               ...pathParameters,
-              ...QUERY_PARSER(retroCompatibleQueryParameters, search),
+              ...QUERY_PARSER(retroCompatibleQueryParameters as any, search),
               ...filterHeaders(operation.parameters, request.headers),
             };
 
@@ -512,8 +515,10 @@ async function _createRouters({
   log: LogService;
 }): Promise<{ [method: string]: Siso<RouteDescriptor> }> {
   const routers = {};
-  const flattenedAPI = await flattenOpenAPI(API);
-  const operations = await getOpenAPIOperations(flattenedAPI);
+  const operations = await dereferenceOpenAPIOperations(
+    API,
+    getOpenAPIOperations(API),
+  );
 
   operations.forEach((operation) => {
     const { path, method, operationId, parameters } = operation;
@@ -545,7 +550,7 @@ async function _createRouters({
         };
       });
     const ammendedParameters = extractOperationSecurityParameters(
-      flattenedAPI,
+      API,
       operation,
     );
 
@@ -563,7 +568,7 @@ function _prepareRoute(
   { ajv }: { ajv: Ajv.Ajv },
   operation: WhookOperation,
   handler: WhookHandler,
-  ammendedParameters: OpenAPIV3.ParameterObject[] = [],
+  ammendedParameters: DereferencedParameterObject[] = [],
 ) {
   const consumableMediaTypes = extractConsumableMediaTypes(operation);
   const produceableMediaTypes = extractProduceableMediaTypes(operation);
@@ -580,7 +585,7 @@ function _prepareRoute(
     validators: prepareParametersValidators(
       ajv,
       operation.operationId,
-      parameters as OpenAPIV3.ParameterObject[],
+      parameters,
     ),
     bodyValidator: prepareBodyValidator(ajv, operation),
   };

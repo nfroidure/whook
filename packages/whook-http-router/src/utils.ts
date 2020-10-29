@@ -1,7 +1,12 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
+import type { $Refs } from '@apidevtools/swagger-parser';
 import YError from 'yerror';
 import type { OpenAPIV3 } from 'openapi-types';
-import type { WhookOperation } from '@whook/http-transaction';
+import type {
+  DereferencedRequestBodyObject,
+  DereferencedResponseObject,
+  WhookOperation,
+} from '@whook/http-transaction';
 
 export const OPEN_API_METHODS = [
   'options',
@@ -14,6 +19,11 @@ export const OPEN_API_METHODS = [
   'trace',
 ];
 
+export type WhookRawOperation<T = {}> = OpenAPIV3.OperationObject & {
+  path: string;
+  method: string;
+  'x-whook'?: T;
+};
 export type SupportedSecurityScheme =
   | OpenAPIV3.HttpSecurityScheme
   | OpenAPIV3.ApiKeySecurityScheme
@@ -54,35 +64,187 @@ export async function flattenOpenAPI(
  * @return {Array}
  * An array of all the OpenAPI operations
  * @example
- * (
- *   await getOpenAPIOperations(API)
- * ).map((operation) => {
- *    const { path, method, operationId, parameters } = operation;
+ * getOpenAPIOperations(API)
+ *   .map((operation) => {
+ *     const { path, method, operationId, parameters } = operation;
  *
- *   // Do something with that operation
- * });
+ *     // Do something with that operation
+ *   });
  */
 export function getOpenAPIOperations<T = {}>(
   API: OpenAPIV3.Document,
-): WhookOperation<T>[] {
-  return Object.keys(API.paths).reduce(
+): WhookRawOperation<T>[] {
+  return Object.keys(API.paths).reduce<WhookRawOperation<T>[]>(
     (operations, path) =>
       Object.keys(API.paths[path])
         .filter((key) => OPEN_API_METHODS.includes(key))
-        .reduce(
-          (operations, method) =>
-            operations.concat({
-              path,
-              method,
-              ...API.paths[path][method],
-              parameters: (API.paths[path][method].parameters || []).concat(
-                API.paths[path].parameters || [],
-              ),
-            }),
-          operations,
-        ),
+        .reduce<WhookRawOperation<T>[]>((operations, method) => {
+          const operation = {
+            path,
+            method,
+            ...API.paths[path][method],
+            parameters: (API.paths[path][method].parameters || []).concat(
+              API.paths[path].parameters || [],
+            ),
+          };
+
+          return [...operations, operation];
+        }, operations),
     [],
   );
+}
+
+/**
+ * Dereference API operations and transform OpenAPISchemas
+ *  into JSONSchemas
+ * @param  {Object} API
+ * An OpenAPI object
+ * @param  {Object} operations
+ * The OpenAPI operation objects
+ * @return {Object}
+ * The dereferenced OpenAPI operations
+ */
+export async function dereferenceOpenAPIOperations<T = {}>(
+  API: OpenAPIV3.Document,
+  operations: WhookRawOperation<T>[],
+): Promise<WhookOperation<T>[]> {
+  let $refs: $Refs;
+
+  try {
+    $refs = await SwaggerParser.resolve(API);
+  } catch (err) {
+    throw YError.wrap(err, 'E_BAD_OPEN_API');
+  }
+
+  return operations.map((operation) => {
+    const parameters = (operation.parameters || [])
+      .map((parameter) =>
+        (parameter as OpenAPIV3.ReferenceObject).$ref
+          ? ($refs.get(
+              (parameter as OpenAPIV3.ReferenceObject).$ref,
+            ) as OpenAPIV3.ParameterObject)
+          : (parameter as OpenAPIV3.ParameterObject),
+      )
+      .map((parameter) => {
+        // Currently supporting only schema based
+        //  parameters
+        if (!parameter.schema) {
+          throw new YError('E_PARAMETER_WITHOUT_SCHEMA', parameter.name);
+        }
+        return {
+          ...parameter,
+          schema: (parameter.schema as OpenAPIV3.ReferenceObject).$ref
+            ? ($refs.get(
+                (parameter.schema as OpenAPIV3.ReferenceObject).$ref,
+              ) as OpenAPIV3.SchemaObject)
+            : (parameter.schema as OpenAPIV3.SchemaObject),
+        };
+      })
+      .map((parameter) =>
+        parameter.schema.type === 'array'
+          ? {
+              ...parameter,
+              schema: {
+                ...parameter.schema,
+                items: (parameter.schema.items as OpenAPIV3.ReferenceObject)
+                  .$ref
+                  ? ($refs.get(
+                      (parameter.schema.items as OpenAPIV3.ReferenceObject)
+                        .$ref,
+                    ) as OpenAPIV3.SchemaObject)
+                  : (parameter.schema.items as OpenAPIV3.SchemaObject),
+              },
+            }
+          : parameter,
+      );
+    const baseRequestBody = operation.requestBody
+      ? (operation.requestBody as OpenAPIV3.ReferenceObject).$ref
+        ? ($refs.get(
+            (operation.requestBody as OpenAPIV3.ReferenceObject).$ref,
+          ) as OpenAPIV3.ParameterObject)
+        : (operation.requestBody as OpenAPIV3.RequestBodyObject)
+      : undefined;
+
+    const requestBody: DereferencedRequestBodyObject = baseRequestBody
+      ? {
+          ...baseRequestBody,
+          content: Object.keys(baseRequestBody.content).reduce(
+            (requestBodyContent, mediaType) => {
+              const mediaTypeSchema = baseRequestBody.content[mediaType].schema
+                ? (baseRequestBody.content[mediaType]
+                    .schema as OpenAPIV3.ReferenceObject).$ref
+                  ? ($refs.get(
+                      (baseRequestBody.content[mediaType]
+                        .schema as OpenAPIV3.ReferenceObject).$ref,
+                    ) as OpenAPIV3.SchemaObject)
+                  : (baseRequestBody.content[mediaType]
+                      .schema as OpenAPIV3.SchemaObject)
+                : undefined;
+
+              return {
+                ...requestBodyContent,
+                [mediaType]: {
+                  ...baseRequestBody.content[mediaType],
+                  schema: buildJSONSchemaFromAPISchema(API, mediaTypeSchema),
+                },
+              };
+            },
+            {},
+          ),
+        }
+      : undefined;
+    const responses: Record<string, DereferencedResponseObject> = Object.keys(
+      operation.responses || {},
+    ).reduce((allResponses, status) => {
+      const responseObject = (operation.responses[
+        status
+      ] as OpenAPIV3.ReferenceObject).$ref
+        ? ($refs.get(
+            (operation.responses[status] as OpenAPIV3.ReferenceObject).$ref,
+          ) as OpenAPIV3.ResponseObject)
+        : (operation.responses[status] as OpenAPIV3.ResponseObject);
+      const finalResponseObject: DereferencedResponseObject = {
+        ...responseObject,
+        content: responseObject.content
+          ? Object.keys(responseObject.content).reduce(
+              (responseObjectContent, mediaType) => {
+                const mediaTypeSchema = responseObject.content[mediaType].schema
+                  ? (responseObject.content[mediaType]
+                      .schema as OpenAPIV3.ReferenceObject).$ref
+                    ? ($refs.get(
+                        (responseObject.content[mediaType]
+                          .schema as OpenAPIV3.ReferenceObject).$ref,
+                      ) as OpenAPIV3.SchemaObject)
+                    : (responseObject.content[mediaType]
+                        .schema as OpenAPIV3.SchemaObject)
+                  : undefined;
+
+                return {
+                  ...responseObjectContent,
+                  [mediaType]: {
+                    ...responseObject.content[mediaType],
+                    schema: buildJSONSchemaFromAPISchema(API, mediaTypeSchema),
+                  },
+                };
+              },
+              {},
+            )
+          : undefined,
+      };
+
+      return {
+        ...allResponses,
+        [status]: finalResponseObject,
+      };
+    }, {});
+
+    return {
+      ...operation,
+      parameters,
+      requestBody,
+      responses,
+    };
+  });
 }
 
 export function pickupOperationSecuritySchemes(
@@ -115,4 +277,16 @@ export function pickupOperationSecuritySchemes(
     },
     {},
   ) as { [name: string]: SupportedSecurityScheme };
+}
+
+function buildJSONSchemaFromAPISchema(
+  API: OpenAPIV3.Document,
+  baseSchema: OpenAPIV3.SchemaObject,
+): OpenAPIV3.SchemaObject {
+  return JSON.parse(
+    JSON.stringify({
+      ...baseSchema,
+      definitions: (API.components || {}).schemas || {},
+    }).replace(/#\/components\/schemas\//g, '#/definitions/'),
+  );
 }

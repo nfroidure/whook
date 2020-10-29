@@ -9,7 +9,10 @@ import initInitializerBuilder from 'knifecycle/dist/build';
 import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler';
 import initBuildAutoloader from './services/_autoload';
 import Knifecycle, { SPECIAL_PROPS, constant } from 'knifecycle';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import {
+  dereferenceOpenAPIOperations,
+  getOpenAPIOperations,
+} from '@whook/http-router';
 import type {
   WhookCompilerOptions,
   WhookCompilerService,
@@ -144,8 +147,9 @@ export async function runBuild(
     log('info', 'Environment initialized 🚀🌕');
 
     const operations = (
-      await getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(
-        await flattenOpenAPI(API),
+      await dereferenceOpenAPIOperations(
+        API,
+        getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API),
       )
     ).filter((operation) => {
       if (handlerName) {

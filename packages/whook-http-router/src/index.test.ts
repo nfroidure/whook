@@ -147,6 +147,17 @@ describe('initHTTPRouter', () => {
               pattern: '^[0-9]+$',
             },
           },
+          {
+            in: 'query',
+            name: 'forFriendsUserId',
+            required: false,
+            schema: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/UserIdSchema',
+              },
+            },
+          },
         ],
         head: {
           operationId: 'headUserAvatar',
@@ -438,10 +449,25 @@ describe('initHTTPRouter', () => {
             name: {
               type: 'string',
             },
+            tree: {
+              $ref: '#/components/schemas/Recursive',
+            },
           },
         },
         ContentType: {
           type: 'string',
+        },
+        Recursive: {
+          type: 'object',
+          required: ['id', 'childs'],
+          additionalProperties: false,
+          properties: {
+            id: { type: 'string' },
+            childs: {
+              type: 'array',
+              items: { $ref: '#/components/schemas/Recursive' },
+            },
+          },
         },
       },
     },
@@ -670,7 +696,9 @@ describe('initHTTPRouter', () => {
                   parameters: [
                     ({
                       in: 'query',
-                      type: 'string',
+                      schema: {
+                        type: 'string',
+                      },
                     } as unknown) as OpenAPIV3.ParameterObject,
                   ],
                 },
@@ -685,6 +713,47 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         assert.equal(err.code, 'E_BAD_PARAMETER_NAME');
+      }
+    });
+
+    test('when an operation has no schema', async () => {
+      try {
+        const errorHandler = await initErrorHandler({
+          NODE_ENV,
+          DEBUG_NODE_ENVS,
+        });
+        let { httpTransaction, HANDLERS } = prepareTransaction();
+
+        await initHTTPRouter({
+          NODE_ENV,
+          DEBUG_NODE_ENVS,
+          HANDLERS,
+          API: {
+            openapi: API.openapi,
+            servers: API.servers,
+            info: API.info,
+            paths: {
+              '/lol': {
+                get: {
+                  operationId: 'ping',
+                  parameters: [
+                    ({
+                      name: 'lol',
+                      in: 'query',
+                    } as unknown) as OpenAPIV3.ParameterObject,
+                  ],
+                },
+              },
+            },
+          },
+          log,
+          BASE_PATH,
+          httpTransaction,
+          errorHandler,
+        });
+        throw new YError('E_UNEXPECTED_SUCCESS');
+      } catch (err) {
+        assert.equal(err.code, 'E_PARAMETER_WITHOUT_SCHEMA');
       }
     });
 
@@ -711,7 +780,9 @@ describe('initHTTPRouter', () => {
                   parameters: [
                     ({
                       name: 'lol',
-                      type: 'string',
+                      schema: {
+                        type: 'string',
+                      },
                     } as unknown) as OpenAPIV3.ParameterObject,
                   ],
                 },
@@ -1038,7 +1109,7 @@ describe('initHTTPRouter', () => {
           });
           const req = {
             method: 'GET',
-            url: '/v1/users/1/avatar',
+            url: '/v1/users/1/avatar?forFriendsUserId=2&forFriendsUserId=3',
             headers: {},
           };
 
@@ -1069,6 +1140,7 @@ describe('initHTTPRouter', () => {
           });
           expect(handler.mock.calls[0][0]).toEqual({
             userId: 1,
+            forFriendsUserId: [2, 3],
           });
         });
       });
@@ -2669,7 +2741,7 @@ describe('initHTTPRouter', () => {
           }).toMatchSnapshot();
         });
 
-        test.only('when parsers lacks', async () => {
+        test('when parsers lacks', async () => {
           let {
             httpTransaction,
             httpTransactionStart,

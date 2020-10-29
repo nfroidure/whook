@@ -7,7 +7,10 @@ import ajv from 'ajv';
 import type { Ajv } from 'ajv';
 import type { SupportedSecurityScheme } from './utils';
 import type { OpenAPIV3 } from 'openapi-types';
-import type { WhookOperation } from '@whook/http-transaction';
+import type {
+  DereferencedParameterObject,
+  WhookOperation,
+} from '@whook/http-transaction';
 
 /* Architecture Note #1.1: Validators
 For performance reasons, the validators are
@@ -146,7 +149,7 @@ const SUPPORTED_HTTP_SCHEMES = ['basic', 'bearer', 'digest'];
 export function extractOperationSecurityParameters(
   openAPI: OpenAPIV3.Document,
   operation: WhookOperation,
-): OpenAPIV3.ParameterObject[] {
+): DereferencedParameterObject[] {
   const operationSecuritySchemes = pickupOperationSecuritySchemes(
     openAPI,
     operation,
@@ -160,7 +163,7 @@ export function extractOperationSecurityParameters(
 
 export function extractParametersFromSecuritySchemes(
   securitySchemes: (SupportedSecurityScheme | OpenAPIV3.OpenIdSecurityScheme)[],
-): OpenAPIV3.ParameterObject[] {
+): DereferencedParameterObject[] {
   const hasOAuth = securitySchemes.some((securityScheme) =>
     ['oauth2', 'openIdConnect'].includes(securityScheme.type),
   );
@@ -188,7 +191,7 @@ export function extractParametersFromSecuritySchemes(
   let hasAuthorizationApiKey = false;
   let hasAccessTokenApiKey = false;
 
-  const securityParameters: OpenAPIV3.ParameterObject[] = securitySchemes
+  const securityParameters: DereferencedParameterObject[] = securitySchemes
     .filter((securityScheme) => securityScheme.type === 'apiKey')
     .map((securityScheme: OpenAPIV3.ApiKeySecurityScheme) => {
       if (securityScheme.in === 'cookie') {
@@ -222,7 +225,7 @@ export function extractParametersFromSecuritySchemes(
         schema: {
           type: 'string',
         },
-      } as OpenAPIV3.ParameterObject;
+      } as DereferencedParameterObject;
     })
     .concat(
       httpSchemes.length && !hasAuthorizationApiKey

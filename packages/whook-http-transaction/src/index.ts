@@ -24,7 +24,47 @@ import type { APMService } from './services/apm';
 export type { ObfuscatorConfig, ObfuscatorService, APMService };
 export { initObfuscatorService, initAPMService };
 
-export type WhookOperation<T = {}> = OpenAPIV3.OperationObject & {
+export type DereferencedMediaTypeObject = Omit<
+  OpenAPIV3.MediaTypeObject,
+  'schema'
+> & {
+  schema: OpenAPIV3.SchemaObject;
+};
+export type DereferencedResponseObject = Omit<
+  OpenAPIV3.ResponseObject,
+  'content'
+> & {
+  content?: {
+    [media: string]: DereferencedMediaTypeObject;
+  };
+};
+export type DereferencedRequestBodyObject = Omit<
+  OpenAPIV3.RequestBodyObject,
+  'content'
+> & {
+  content: {
+    [media: string]: DereferencedMediaTypeObject;
+  };
+};
+export type DereferencedParameterObject = Omit<
+  OpenAPIV3.ParameterObject,
+  'schema'
+> & {
+  schema: OpenAPIV3.SchemaObject;
+};
+
+export type DereferencedOperationObject = Omit<
+  OpenAPIV3.OperationObject,
+  'parameters' | 'requestBody' | 'responses'
+> & {
+  parameters: DereferencedParameterObject[];
+  requestBody?: DereferencedRequestBodyObject;
+  responses: {
+    [code: string]: DereferencedResponseObject;
+  };
+};
+
+export type WhookOperation<T = {}> = DereferencedOperationObject & {
   path: string;
   method: string;
   'x-whook'?: T;

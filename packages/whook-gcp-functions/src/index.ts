@@ -14,7 +14,10 @@ import initCompiler, {
 } from './services/compiler';
 import initBuildAutoloader from './services/_autoload';
 import Knifecycle, { SPECIAL_PROPS, constant } from 'knifecycle';
-import { flattenOpenAPI, getOpenAPIOperations } from '@whook/http-router';
+import {
+  dereferenceOpenAPIOperations,
+  getOpenAPIOperations,
+} from '@whook/http-router';
 import type { Autoloader } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -123,8 +126,9 @@ export async function runBuild(
     log('info', 'Environment initialized 🚀🌕');
 
     const operations = (
-      await getOpenAPIOperations<WhookAPIOperationGCPFunctionConfig>(
-        await flattenOpenAPI(API),
+      await dereferenceOpenAPIOperations(
+        API,
+        getOpenAPIOperations<WhookAPIOperationGCPFunctionConfig>(API),
       )
     ).filter((operation) => {
       if (handlerName) {

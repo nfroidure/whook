@@ -62,9 +62,7 @@ async function getOpenAPI(
     mutedParameters?: string[];
   },
 ): Promise<WhookResponse<200, {}, OpenAPIV3.Document>> {
-  const operations = await getOpenAPIOperations<WhookAPIOperationSwaggerConfig>(
-    API,
-  );
+  const operations = getOpenAPIOperations<WhookAPIOperationSwaggerConfig>(API);
   // Temporar type fix due to version mismatch of OpenAPIV3
   // between Whook and SwaggerParser
   const $refs = await SwaggerParser.resolve(API as any);

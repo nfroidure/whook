@@ -26,6 +26,7 @@ describe('wrapHandlerWithAuthorization', () => {
     operationId: 'noopHandler',
     summary: 'Does nothing.',
     tags: ['system'],
+    parameters: [],
     responses: {
       200: {
         description: 'Sucessfully did nothing!',

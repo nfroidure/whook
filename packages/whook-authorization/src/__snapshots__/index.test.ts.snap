@@ -242,6 +242,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "noopHandler",
+        "parameters": Array [],
         "path": "/path",
         "responses": Object {
           "200": Object {
@@ -336,6 +337,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "noopHandler",
+        "parameters": Array [],
         "path": "/path",
         "responses": Object {
           "200": Object {
@@ -430,6 +432,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "noopHandler",
+        "parameters": Array [],
         "path": "/path",
         "responses": Object {
           "200": Object {
@@ -525,6 +528,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "noopHandler",
+        "parameters": Array [],
         "path": "/path",
         "responses": Object {
           "200": Object {
@@ -620,6 +624,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "noopHandler",
+        "parameters": Array [],
         "path": "/path",
         "responses": Object {
           "200": Object {
@@ -699,6 +704,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "noopHandler",
+        "parameters": Array [],
         "path": "/path",
         "responses": Object {
           "200": Object {
@@ -776,6 +782,7 @@ Object {
       Object {
         "method": "get",
         "operationId": "noopHandler",
+        "parameters": Array [],
         "path": "/path",
         "responses": Object {
           "200": Object {
