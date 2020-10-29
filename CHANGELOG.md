@@ -1,3 +1,18 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.3...v4.0.4) (2020-10-29)
+
+
+### Bug Fixes
+
+* **commands:** fix AWS/GCP test commands ([4db35ea](https://github.com/nfroidure/whook/commit/4db35eac4a860742c385752c840244a45a84585c))
+* **dependencies:** align dependencies versions ([32136d4](https://github.com/nfroidure/whook/commit/32136d4d3e0f716d514ddce8652a62fb44a16a86))
+
+
+### Features
+
+* **@whook/http-router:** allow recursive schemas in the API definition ([60eda00](https://github.com/nfroidure/whook/commit/60eda00dc87dcbe4cd24a23a266b15e3e08a941d)), closes [#91](https://github.com/nfroidure/whook/issues/91)
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.2...v4.0.4) (2020-10-28)
 
 
