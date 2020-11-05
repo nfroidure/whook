@@ -11,6 +11,7 @@ import type {
   DereferencedParameterObject,
   WhookOperation,
 } from '@whook/http-transaction';
+import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 
 /* Architecture Note #1.1: Validators
 For performance reasons, the validators are
@@ -357,7 +358,7 @@ export function _validateParameter(
 }
 
 export function filterHeaders(
-  parameters: OpenAPIV3.ParameterObject[],
+  parameters: DereferencedParameterObject[],
   headers: { [name: string]: string },
 ): { [name: string]: string } {
   return (parameters || [])
@@ -369,4 +370,49 @@ export function filterHeaders(
       }
       return filteredHeaders;
     }, {});
+}
+
+export function castParameters<
+  T = boolean | boolean[] | string | string[] | number | number[]
+>(
+  parameters: DereferencedParameterObject[],
+  values: { [name: string]: string },
+): { [name: string]: T } {
+  return (parameters || []).reduce((filteredValues, parameter) => {
+    const parameterName =
+      parameter.in === 'header' ? camelCase(parameter.name) : parameter.name;
+
+    if (values[parameterName]) {
+      filteredValues[parameterName] = castSchemaValue(
+        parameter.schema,
+        values[parameterName],
+      );
+    }
+    return filteredValues;
+  }, {});
+}
+
+export function castSchemaValue<
+  T = boolean | boolean[] | string | string[] | number | number[]
+>(schema: DereferencedParameterObject['schema'], value: string | string[]): T {
+  let castedValue: T;
+
+  if ('undefined' !== typeof value) {
+    if ('array' === schema.type) {
+      castedValue = ((value as string[]).map(
+        castSchemaValue.bind(null, schema.items),
+      ) as unknown) as T;
+    } else if ('boolean' === schema.type) {
+      castedValue = (parseBoolean(value as string) as unknown) as T;
+    } else if ('number' === schema.type) {
+      castedValue = (parseReentrantNumber(value as string) as unknown) as T;
+    } else {
+      castedValue = (value as unknown) as T;
+    }
+
+    if (schema.enum && !schema.enum.includes(value)) {
+      throw new HTTPError(400, 'E_NOT_IN_ENUM', value, schema.enum);
+    }
+  }
+  return castedValue;
 }

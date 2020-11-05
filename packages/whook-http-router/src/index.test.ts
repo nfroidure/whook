@@ -206,6 +206,24 @@ describe('initHTTPRouter', () => {
                 $ref: '#/components/schemas/ContentType',
               },
             },
+            {
+              name: 'x-file-name',
+              in: 'header',
+              required: true,
+              schema: { type: 'string' },
+            },
+            {
+              name: 'x-file-size',
+              in: 'header',
+              required: true,
+              schema: { type: 'number' },
+            },
+            {
+              name: 'x-file-type',
+              in: 'header',
+              required: true,
+              schema: { type: 'string' },
+            },
           ],
           requestBody: {
             description: 'The input sentence',
@@ -2017,6 +2035,9 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'image/jpeg',
             'content-length': '4',
+            'x-file-size': '123456',
+            'x-file-name': 'photo.jpg',
+            'x-file-type': 'image/jpeg',
           };
 
           log.mockReset();

@@ -6,6 +6,7 @@ import {
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
   extractOperationSecurityParameters,
+  castParameters,
 } from '@whook/http-router';
 import { reuseSpecialProps, alsoInject, HandlerInitializer } from 'knifecycle';
 import Ajv from 'ajv';
@@ -28,8 +29,6 @@ import {
 } from '@whook/http-router';
 import stream from 'stream';
 import qs from 'qs';
-import { parseReentrantNumber, parseBoolean } from 'strict-qs';
-import camelCase from 'camelcase';
 import { noop, compose } from '@whook/whook';
 import type { ServiceInitializer } from 'knifecycle';
 import type {
@@ -269,36 +268,19 @@ async function handleForAWSHTTPLambda(
       parameters = {
         ...(event.pathParameters || {}),
         ...filterQueryParameters(
-          operationParameters as OpenAPIV3.ParameterObject[],
+          operationParameters,
           event.multiValueQueryStringParameters,
         ),
-        ...filterHeaders(
-          operationParameters as OpenAPIV3.ParameterObject[],
-          request.headers,
-        ),
+        ...filterHeaders(operationParameters, request.headers),
       };
 
-      parameters = (operationParameters as OpenAPIV3.ParameterObject[]).reduce(
-        (cleanParameters, parameter) => {
-          const parameterName =
-            parameter.in === 'header'
-              ? camelCase(parameter.name)
-              : parameter.name;
-
-          cleanParameters[parameterName] = castParameterValue(
-            parameter.schema,
-            parameters[parameterName],
-          );
-
-          return cleanParameters;
-        },
-        {
-          // TODO: Use the security of the operation to infer
-          // authorization parameters, see:
-          // https://github.com/nfroidure/whook/blob/06ccae93d1d52d97ff70fd5e19fa826bdabf3968/packages/whook-http-router/src/validation.js#L110
-          authorization: parameters.authorization,
-        },
-      );
+      parameters = {
+        // TODO: Use the security of the operation to infer
+        // authorization parameters, see:
+        // https://github.com/nfroidure/whook/blob/06ccae93d1d52d97ff70fd5e19fa826bdabf3968/packages/whook-http-router/src/validation.js#L110
+        authorization: parameters.authorization,
+        ...castParameters(operationParameters, parameters),
+      };
 
       applyValidators(operation, validators, parameters);
 
@@ -558,24 +540,6 @@ function lowerCaseHeaders(headers) {
     newHeaders[newName] = headers[name];
     return newHeaders;
   }, {});
-}
-
-export function castParameterValue(parameter, value) {
-  if ('undefined' !== typeof value) {
-    if ('boolean' === parameter.type) {
-      value = parseBoolean(value);
-    } else if ('number' === parameter.type) {
-      value = parseReentrantNumber(value);
-    } else if ('array' === parameter.type) {
-      value = ('' + value)
-        .split(',')
-        .map(castParameterValue.bind(null, parameter.items));
-    }
-    if (parameter.enum && !parameter.enum.includes(value)) {
-      throw new HTTPError(400, 'E_NOT_IN_ENUM', value, parameter.enum);
-    }
-  }
-  return value;
 }
 
 function obfuscateEventBody(obfuscator, rawBody) {

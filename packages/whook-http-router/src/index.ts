@@ -18,6 +18,8 @@ import {
   filterHeaders,
   prepareBodyValidator,
   extractOperationSecurityParameters,
+  castSchemaValue,
+  castParameters,
 } from './validation';
 import {
   BodySpec,
@@ -94,6 +96,8 @@ export {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
   extractOperationSecurityParameters,
+  castSchemaValue,
+  castParameters,
   prepareParametersValidators,
   prepareBodyValidator,
   applyValidators,
@@ -378,11 +382,17 @@ async function initHTTPRouter({
             const retroCompatibleQueryParameters = (operation.parameters || [])
               .filter((p) => p.in === 'query')
               .map((p) => ({ ...p, ...p.schema }));
+            const headersParameters = (operation.parameters || []).filter(
+              (p) => p.in === 'header',
+            );
 
             parameters = {
               ...pathParameters,
               ...QUERY_PARSER(retroCompatibleQueryParameters as any, search),
-              ...filterHeaders(operation.parameters, request.headers),
+              ...castParameters(
+                headersParameters,
+                filterHeaders(headersParameters, request.headers),
+              ),
             };
 
             applyValidators(operation, validators, parameters);
