@@ -410,8 +410,8 @@ export function castSchemaValue<
       castedValue = (value as unknown) as T;
     }
 
-    if (schema.enum && !schema.enum.includes(value)) {
-      throw new HTTPError(400, 'E_NOT_IN_ENUM', value, schema.enum);
+    if (schema.enum && !schema.enum.includes(castedValue)) {
+      throw new HTTPError(400, 'E_NOT_IN_ENUM', castedValue, schema.enum);
     }
   }
   return castedValue;

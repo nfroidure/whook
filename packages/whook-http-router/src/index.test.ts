@@ -158,6 +158,15 @@ describe('initHTTPRouter', () => {
               },
             },
           },
+          {
+            in: 'header',
+            name: 'x-depth',
+            required: false,
+            schema: {
+              type: 'number',
+              enum: [0, 1, 2],
+            },
+          },
         ],
         head: {
           operationId: 'headUserAvatar',
@@ -1128,7 +1137,9 @@ describe('initHTTPRouter', () => {
           const req = {
             method: 'GET',
             url: '/v1/users/1/avatar?forFriendsUserId=2&forFriendsUserId=3',
-            headers: {},
+            headers: {
+              'x-depth': '1',
+            },
           };
 
           log.mockReset();
@@ -1159,6 +1170,7 @@ describe('initHTTPRouter', () => {
           expect(handler.mock.calls[0][0]).toEqual({
             userId: 1,
             forFriendsUserId: [2, 3],
+            xDepth: 1,
           });
         });
       });
