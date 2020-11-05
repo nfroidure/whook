@@ -1,3 +1,12 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.4...v4.0.4) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@whook/http-router:** fix headers casting ([5566a1d](https://github.com/nfroidure/whook/commit/5566a1d726c2a3e23aa40c8ae9190144c1461e61))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.3...v4.0.4) (2020-10-29)
 
 
