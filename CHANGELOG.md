@@ -1,3 +1,12 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.5...v4.0.4) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@whook/http-router:** fix enum testing ([41dd4ea](https://github.com/nfroidure/whook/commit/41dd4eaa02024c3a000dc8f0101fd2f99c75696d))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.4...v4.0.4) (2020-11-05)
 
 
