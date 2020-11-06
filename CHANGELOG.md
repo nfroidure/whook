@@ -1,3 +1,12 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.7...v4.0.4) (2020-11-06)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix handling of base64 encoded request bodies ([9b0b811](https://github.com/nfroidure/whook/commit/9b0b811a2c1cc2432966c370dbec8a72859a5f0a))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.6...v4.0.4) (2020-11-06)
 
 
