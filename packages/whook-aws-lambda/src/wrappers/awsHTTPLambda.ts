@@ -457,7 +457,10 @@ async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
   };
 
   if (event.body) {
-    const buf = Buffer.from(event.body);
+    const buf = Buffer.from(
+      event.body,
+      event.isBase64Encoded ? 'base64' : 'utf8',
+    );
     request.headers['content-length'] = buf.length.toString();
     request.body = new stream.PassThrough();
     request.body.write(buf);
