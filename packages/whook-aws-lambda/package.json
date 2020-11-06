@@ -1,6 +1,6 @@
 {
   "name": "@whook/aws-lambda",
-  "version": "5.1.6",
+  "version": "5.1.7",
   "description": "Build and deploy to AWS Lambda with Whook.",
   "main": "dist/index",
   "module": "dist/index.mjs",

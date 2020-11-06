@@ -1,3 +1,12 @@
+## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.6...v4.0.4) (2020-11-06)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix query parameters parsing when AWS sets it to null ([89ebc66](https://github.com/nfroidure/whook/commit/89ebc663f6159ad0ba62153a9db5db020eb01096))
+
+
+
 ## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.5...v4.0.4) (2020-11-05)
 
 
