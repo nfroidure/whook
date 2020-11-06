@@ -8,7 +8,7 @@ import {
   extractOperationSecurityParameters,
   castParameters,
 } from '@whook/http-router';
-import { reuseSpecialProps, alsoInject, HandlerInitializer } from 'knifecycle';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import Ajv from 'ajv';
 import bytes from 'bytes';
 import HTTPError from 'yhttperror';
@@ -30,7 +30,7 @@ import {
 import stream from 'stream';
 import qs from 'qs';
 import { noop, compose } from '@whook/whook';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, HandlerInitializer } from 'knifecycle';
 import type {
   WhookRequest,
   WhookResponse,
@@ -42,6 +42,7 @@ import type {
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { DereferencedParameterObject } from '@whook/http-transaction';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -269,7 +270,7 @@ async function handleForAWSHTTPLambda(
         ...(event.pathParameters || {}),
         ...filterQueryParameters(
           operationParameters,
-          event.multiValueQueryStringParameters,
+          event.multiValueQueryStringParameters || {},
         ),
         ...filterHeaders(operationParameters, request.headers),
       };
@@ -555,14 +556,14 @@ function obfuscateEventBody(obfuscator, rawBody) {
 }
 
 function filterQueryParameters(
-  parameters: OpenAPIV3.ParameterObject[],
+  parameters: DereferencedParameterObject[],
   queryParameters: { [name: string]: string[] },
 ): { [name: string]: string } {
   return (parameters || [])
     .filter((parameter) => 'query' === parameter.in)
     .reduce((filteredHeaders, parameter) => {
       if (queryParameters[parameter.name]) {
-        if ((parameter.schema as OpenAPIV3.SchemaObject).type === 'array') {
+        if (parameter.schema.type === 'array') {
           filteredHeaders[parameter.name] = queryParameters[parameter.name];
         } else {
           filteredHeaders[parameter.name] = queryParameters[parameter.name][0];

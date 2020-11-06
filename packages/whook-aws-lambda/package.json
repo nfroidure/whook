@@ -51,6 +51,7 @@
   "dependencies": {
     "@whook/cli": "^5.1.6",
     "@whook/http-router": "^5.1.6",
+    "@whook/http-transaction": "^5.1.4",
     "@whook/whook": "^5.1.6",
     "ajv": "^6.12.6",
     "bytes": "^3.1.0",
