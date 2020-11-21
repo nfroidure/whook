@@ -4,6 +4,9 @@ import crypto from 'crypto';
 import { PassThrough } from 'stream';
 import { createWriteStream } from 'fs';
 import initGenerateOpenAPITypes from './commands/generateOpenAPITypes';
+import { readFile } from 'fs';
+import { promisify } from 'util';
+import parseGitIgnore from 'parse-gitignore';
 import type { Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 
@@ -14,30 +17,49 @@ let delayPromise: Promise<void>;
 let hash: string;
 
 export async function watchDevServer() {
+  let ignored = ['node_modules', '*.d.ts', '.git'];
+
+  try {
+    ignored = ignored.concat(
+      parseGitIgnore((await promisify(readFile)('.gitignore')).toString()),
+    );
+  } catch (err) {
+    // cannot find/parse .gitignore
+  }
+
   await restartDevServer();
-  chokidar
-    .watch(['**/*.ts', 'package*.json', ''], {
-      ignored: ['node_modules', 'coverage', '*.d.ts'],
-      ignoreInitial: true,
-    })
-    .on('all', (_event, filePath) => {
-      const absolutePath = path.join(process.cwd(), filePath);
 
-      if (filePath.match(/package.*\.json/)) {
-        for (let key in require.cache) {
-          uncache(key);
-        }
-      } else {
-        uncache(absolutePath, true);
-      }
+  await new Promise((resolve, reject) => {
+    chokidar
+      .watch(['**/*.ts', 'package*.json'], {
+        ignored,
+        ignoreInitial: true,
+      })
+      .once('ready', (err) => {
+        resolve(err);
+      })
+      .once('error', (err) => {
+        reject(err);
+      })
+      .on('all', (_event, filePath) => {
+        const absolutePath = path.join(process.cwd(), filePath);
 
-      if (delay) {
-        if (!delayPromise) {
-          delayPromise = delay.create(2000);
-          restartDevServer();
+        if (filePath.match(/package.*\.json/)) {
+          for (let key in require.cache) {
+            uncache(key);
+          }
+        } else {
+          uncache(absolutePath, true);
         }
-      }
-    });
+
+        if (delay) {
+          if (!delayPromise) {
+            delayPromise = delay.create(2000);
+            restartDevServer();
+          }
+        }
+      });
+  });
 }
 
 export async function restartDevServer() {
@@ -45,7 +67,6 @@ export async function restartDevServer() {
     log('warning', '➡️ - Changes detected : Will restart the server soon...');
     await delayPromise;
     await $instance.destroy();
-    delayPromise = undefined;
   }
 
   const { runServer, prepareEnvironment, prepareServer } = await import('.');
@@ -73,6 +94,8 @@ export async function restartDevServer() {
   $instance = _instance;
   delay = _delay;
   log = _log;
+
+  delayPromise = undefined;
 
   const response = await getOpenAPI({
     authenticated: true,

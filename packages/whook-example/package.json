@@ -116,6 +116,7 @@
     "metapak": "^3.1.10",
     "metapak-nfroidure": "10.2.5",
     "openapi-schema-validator": "^3.0.3",
+    "parse-gitignore": "^1.0.1",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "schema2dts": "^1.0.2",
