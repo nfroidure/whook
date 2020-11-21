@@ -83,7 +83,7 @@ export default initializer(
       'graphQLUserFragment',
       'graphQLMessageFragment',
     ],
-    options: { singleton: true },
+    singleton: true,
   },
   async services => Object.keys(services).map(key => services[key]),
 );

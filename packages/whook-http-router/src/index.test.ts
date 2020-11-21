@@ -1318,7 +1318,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -1395,7 +1395,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -1460,7 +1460,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -1526,7 +1526,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -1591,7 +1591,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -1656,7 +1656,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -1718,7 +1718,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -1787,7 +1787,7 @@ describe('initHTTPRouter', () => {
         });
 
         expect({
-          ...JSON.parse(response.body),
+          ...JSON.parse(response.body as string),
           error_debug_data: undefined,
         }).toMatchSnapshot();
       });
@@ -1858,7 +1858,7 @@ describe('initHTTPRouter', () => {
         });
 
         expect({
-          ...JSON.parse(response.body),
+          ...JSON.parse(response.body as string),
           error_debug_data: undefined,
         }).toMatchSnapshot();
       });
@@ -1920,7 +1920,7 @@ describe('initHTTPRouter', () => {
         });
 
         expect({
-          ...JSON.parse(response.body),
+          ...JSON.parse(response.body as string),
           error_debug_data: undefined,
         }).toMatchSnapshot();
       });
@@ -2223,7 +2223,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2286,7 +2286,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2356,7 +2356,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2425,7 +2425,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2493,7 +2493,7 @@ describe('initHTTPRouter', () => {
             },
           });
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2562,7 +2562,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2629,7 +2629,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2699,7 +2699,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2769,7 +2769,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2839,7 +2839,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2912,7 +2912,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -2977,7 +2977,7 @@ describe('initHTTPRouter', () => {
           });
 
           expect({
-            ...JSON.parse(response.body),
+            ...JSON.parse(response.body as string),
             error_debug_data: undefined,
           }).toMatchSnapshot();
         });
@@ -3103,7 +3103,7 @@ describe('initHTTPRouter', () => {
         });
 
         expect({
-          ...JSON.parse(response.body),
+          ...JSON.parse(response.body as string),
           error_debug_data: undefined,
         }).toMatchSnapshot();
       });

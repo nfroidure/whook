@@ -48,7 +48,7 @@ import {
   DEFAULT_ENCODERS,
 } from './constants';
 import type { Provider } from 'knifecycle';
-import type { Transform } from 'stream';
+import type { Transform, Readable } from 'stream';
 import type {
   WhookHandler,
   WhookOperation,
@@ -210,7 +210,7 @@ export default initializer(
       'httpTransaction',
       'errorHandler',
     ],
-    options: { singleton: true },
+    singleton: true,
   },
   initHTTPRouter,
 );
@@ -379,7 +379,7 @@ async function initHTTPRouter({
                 bufferLimit,
               },
               operation,
-              request.body,
+              request.body as Readable,
               bodySpec,
             );
             // TODO: Update strictQS to handle OpenAPI 3

@@ -27,13 +27,11 @@ export type {
 };
 export { readArgs };
 
-export default async function run({
-  prepareEnvironment,
-}: {
-  prepareEnvironment: () => Promise<Knifecycle>;
-}): Promise<void> {
+export default async function run<T extends Knifecycle<any>>(
+  innerPrepareEnvironment: ($?: T) => Promise<T>,
+): Promise<void> {
   try {
-    const $ = await prepareEnvironment();
+    const $ = await innerPrepareEnvironment();
 
     $.register(constant('PWD', process.cwd()));
     $.register(constant('ARGS', process.argv));

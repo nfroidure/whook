@@ -5,6 +5,7 @@ import type {
   WhookAPIHandlerDefinition,
   WhookErrorsDescriptors,
   WhookAPIOperationConfig,
+  WhookResponse,
 } from '@whook/whook';
 import type {
   CheckApplicationService,
@@ -96,7 +97,7 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(postOAuth2Acknowledge);
 
 async function postOAuth2Acknowledge<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData
 >(
   {
     ERRORS_DESCRIPTORS,
@@ -132,7 +133,7 @@ async function postOAuth2Acknowledge<
       [name: string]: unknown;
     };
   },
-) {
+): Promise<WhookResponse<302, { location: string }>> {
   if (!authenticationData) {
     throw new YError('E_UNAUTHORIZED');
   }

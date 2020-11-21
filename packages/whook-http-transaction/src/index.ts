@@ -4,15 +4,12 @@ import statuses from 'statuses';
 import ms from 'ms';
 import initObfuscatorService from './services/obfuscator';
 import initAPMService from './services/apm';
-import type {
-  Parameters,
-  Handler,
-  HandlerFunction,
-  Dependencies,
-} from 'knifecycle';
+import type { Parameters, HandlerFunction, Dependencies } from 'knifecycle';
 import type { LogService, TimeService, DelayService } from 'common-services';
 import type { IncomingMessage, ServerResponse } from 'http';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { JsonValue } from 'type-fest';
+import type { Readable } from 'stream';
 import type YError from 'yerror';
 import type YHTTPError from 'yhttperror';
 import type {
@@ -72,19 +69,20 @@ export type WhookOperation<
   'x-whook'?: T;
 };
 
-export type WhookRequest = {
+export type WhookRequest<
+  H = Record<string, string | string[]>,
+  B = JsonValue | Readable
+> = {
   url: string;
   method: string;
-  headers: { [name: string]: string };
-  body?: any;
+  headers: H;
+  body?: B;
 };
 
 export type WhookResponse<
   S = number,
-  H = {
-    [name: string]: string | string[];
-  },
-  B = any
+  H = Record<string, string | string[]>,
+  B = JsonValue | Readable
 > = {
   status: S;
   headers?: H;
@@ -93,16 +91,17 @@ export type WhookResponse<
 
 export type WhookHandlerFunction<
   D extends Dependencies,
+  V,
   P extends Parameters,
   R extends WhookResponse,
   O = WhookOperation
-> = HandlerFunction<D, P, [O] | [], R>;
+> = HandlerFunction<D, V, P, [O] | [], R>;
 
 export type WhookHandler<
   P = Parameters,
   R = WhookResponse,
-  O = WhookOperation | undefined
-> = Handler<P, [O] | [], R>;
+  O = WhookOperation
+> = (parameters?: P, operation?: O) => Promise<R>;
 
 export type HTTPTransactionConfig = {
   TIMEOUT?: number;
@@ -121,7 +120,7 @@ export type WhookHTTPTransaction = {
   request: WhookRequest;
   transaction: {
     id: string;
-    start: (buildResponse: Handler<any, any, any>) => Promise<WhookResponse>;
+    start: (buildResponse: WhookHandler) => Promise<WhookResponse>;
     catch: (err: Error) => Promise<WhookResponse>;
     end: (response: WhookResponse, operationId?: string) => Promise<void>;
   };
@@ -431,8 +430,8 @@ async function initHTTPTransaction({
           statuses.message[response.status],
           Object.assign({}, response.headers, { 'Transaction-Id': id }),
         );
-        if (response.body && response.body.pipe) {
-          response.body.pipe(res);
+        if (response.body && (response.body as Readable).pipe) {
+          (response.body as Readable).pipe(res);
         } else {
           res.end();
         }

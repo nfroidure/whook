@@ -1,4 +1,4 @@
-import { autoService, options, name } from 'knifecycle';
+import { autoService, singleton, name } from 'knifecycle';
 import { noop } from '../libs/utils';
 import path from 'path';
 import YError from 'yerror';
@@ -24,10 +24,7 @@ export type WhookConfig = {
   baseURL?: string;
 };
 
-export default name(
-  'CONFIGS',
-  options({ singleton: true }, autoService(initCONFIGS)),
-);
+export default name('CONFIGS', singleton(autoService(initCONFIGS)));
 
 /**
  * Initialize the CONFIGS service according to the NODE_ENV

@@ -42,7 +42,25 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
  */
 export default function wrapHTTPRouterWithGraphIQL<D>(
   initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
-): ProviderInitializer<D, HTTPRouterService> {
+): ProviderInitializer<WhookGraphIQLDependencies & D, HTTPRouterService> {
+  const augmentedInitializer = alsoInject<
+    WhookGraphIQLDependencies,
+    D,
+    HTTPRouterService
+  >(
+    [
+      '?DEV_ACCESS_TOKEN',
+      '?DEV_ACCESS_MECHANISM',
+      'BASE_PATH',
+      'HOST',
+      'PORT',
+      '?GRAPHIQL',
+      'ENV',
+      '?log',
+    ],
+    initHTTPRouter,
+  );
+
   return wrapInitializer(
     async (
       {
@@ -102,18 +120,6 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
         return httpRouter.service(req, res);
       }
     },
-    alsoInject(
-      [
-        '?DEV_ACCESS_TOKEN',
-        '?DEV_ACCESS_MECHANISM',
-        'BASE_PATH',
-        'HOST',
-        'PORT',
-        '?GRAPHIQL',
-        'ENV',
-        '?log',
-      ],
-      initHTTPRouter,
-    ),
+    augmentedInitializer,
   );
 }

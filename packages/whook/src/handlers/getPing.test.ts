@@ -5,7 +5,7 @@ describe('getPing', () => {
     const getPing = await initGetPing({
       NODE_ENV: 'test',
     });
-    const response = await getPing();
+    const response = await getPing({});
 
     expect({
       response,

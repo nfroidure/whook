@@ -47,7 +47,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
         {
           name: '$autoload',
           type: 'service',
-          options: { singleton: true },
+          singleton: true,
         },
         async () => $autoload,
       ),
@@ -78,11 +78,13 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   process.env.ISOLATED_ENV = '1';
 
   beforeAll(async () => {
-    const { $instance: _instance } = await runServer<{ $instance: Knifecycle }>(
-      prepareEnvironment,
-      prepareServer,
-      ['$instance', 'httpServer', 'process'],
-    );
+    const { $instance: _instance } = await runServer<{
+      $instance: Knifecycle<any>;
+    }>(prepareEnvironment, prepareServer, [
+      '$instance',
+      'httpServer',
+      'process',
+    ]);
     $instance = _instance;
   });
 

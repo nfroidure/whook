@@ -1,6 +1,6 @@
-import { autoService, options } from 'knifecycle';
+import { autoService, singleton } from 'knifecycle';
 
-export default options({ singleton: true }, autoService(initCommand));
+export default singleton(autoService(initCommand));
 
 async function initCommand({ commandHandler, log }) {
   return async function commandRunner() {

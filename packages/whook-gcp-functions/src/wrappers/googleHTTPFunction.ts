@@ -8,7 +8,7 @@ import {
   extractOperationSecurityParameters,
   castParameters,
 } from '@whook/http-router';
-import { reuseSpecialProps, alsoInject, HandlerInitializer } from 'knifecycle';
+import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import Ajv from 'ajv';
 import bytes from 'bytes';
 import HTTPError from 'yhttperror';
@@ -41,6 +41,7 @@ import type {
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { Readable } from 'stream';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -91,7 +92,7 @@ export default function wrapHandlerForAWSHTTPFunction<
 }
 
 async function initHandlerForAWSHTTPFunction(
-  initHandler: HandlerInitializer<unknown, unknown[], unknown>,
+  initHandler: ServiceInitializer<unknown, WhookHandler>,
   {
     OPERATION_API,
     WRAPPERS,
@@ -253,7 +254,7 @@ async function handleForAWSHTTPFunction(
           bufferLimit,
         },
         operation,
-        request.body,
+        request.body as Readable,
         bodySpec,
       );
       const path = request.url.split(SEARCH_SEPARATOR)[0];
@@ -412,9 +413,11 @@ async function gcpfReqToRequest(req: any): Promise<WhookRequest> {
 
   if (req.rawBody) {
     request.headers['content-length'] = req.rawBody.length.toString();
-    request.body = new stream.PassThrough();
-    request.body.write(req.rawBody);
-    request.body.end();
+    const bodyStream = new stream.PassThrough();
+
+    request.body = bodyStream;
+    bodyStream.write(req.rawBody);
+    bodyStream.end();
   }
 
   return request;
@@ -430,7 +433,7 @@ async function pipeResponseInGCPFResponse(
   res.status(response.status);
 
   if (response.body) {
-    response.body.pipe(res);
+    (response.body as Readable).pipe(res);
     return;
   }
 

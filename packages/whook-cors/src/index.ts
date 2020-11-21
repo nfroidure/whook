@@ -1,7 +1,7 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS';
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { wrapInitializer, alsoInject } from 'knifecycle';
 import { identity } from '@whook/whook';
 import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type {
@@ -46,22 +46,14 @@ export type WhookAPIOperationCORSConfig = {
 export function wrapHandlerWithCORS<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & WhookCORSConfig, S> {
-  return alsoInject<WhookCORSConfig, typeof initHandler>(
+  const augmentedInitializer = alsoInject<WhookCORSConfig, D, S>(
     ['CORS'],
-    reuseSpecialProps(
-      initHandler,
-      initHandlerWithCORS.bind(null, initHandler),
-    ) as any,
+    initHandler,
   );
-}
 
-export async function initHandlerWithCORS<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
-  const handler = await initHandler(services);
-
-  return handleWithCORS.bind(null, services, handler);
+  return wrapInitializer(async (services, handler) => {
+    return handleWithCORS.bind(null, services, handler);
+  }, augmentedInitializer);
 }
 
 function isGetter(obj: any, prop: string): boolean {

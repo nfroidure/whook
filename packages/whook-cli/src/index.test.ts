@@ -1,4 +1,4 @@
-import Knifecycle, { constant, service, options } from 'knifecycle';
+import Knifecycle, { constant, service, singleton } from 'knifecycle';
 
 describe('whook-cli', () => {
   const log = jest.fn();
@@ -22,10 +22,7 @@ describe('whook-cli', () => {
       .mockImplementation(processExit as any);
 
     jest.doMock('./services/_autoload', () => {
-      return options(
-        { singleton: true },
-        service(async () => $autoload, '$autoload'),
-      );
+      return singleton(service(async () => $autoload, '$autoload'));
     });
 
     $autoload.mockResolvedValueOnce({
@@ -50,7 +47,7 @@ describe('whook-cli', () => {
 
     $.register(constant('log', log));
 
-    await run({ prepareEnvironment: () => $ });
+    await run(() => $);
 
     mockCWD.mockRestore();
     mockExit.mockRestore();
@@ -76,10 +73,7 @@ describe('whook-cli', () => {
       .mockImplementation(processExit as any);
 
     jest.doMock('./services/_autoload', () => {
-      return options(
-        { singleton: true },
-        service(async () => $autoload, '$autoload'),
-      );
+      return singleton(service(async () => $autoload, '$autoload'));
     });
 
     $autoload.mockResolvedValueOnce({});
@@ -101,7 +95,7 @@ describe('whook-cli', () => {
 
     $.register(constant('log', log));
 
-    await run({ prepareEnvironment: () => $ });
+    await run(() => $);
 
     mockCWD.mockRestore();
     mockExit.mockRestore();

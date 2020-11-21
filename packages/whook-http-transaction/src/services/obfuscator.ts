@@ -19,9 +19,9 @@ export type ObfuscatorDependencies = {
 export type ObfuscatorService = {
   obfuscate: (secret: string) => string;
   obfuscateSensibleProps: (propValue: any, propName?: string) => any;
-  obfuscateSensibleHeaders: (headers: {
-    [name: string]: string;
-  }) => { [name: string]: string };
+  obfuscateSensibleHeaders: (
+    headers: Record<string, string | string[]>,
+  ) => Record<string, string | string[]>;
 };
 
 export default autoService(initObfuscator);
@@ -160,9 +160,9 @@ async function initObfuscator({
       : obfuscate(value);
   }
 
-  function obfuscateSensibleHeaders(headers: {
-    [name: string]: string | string[];
-  }) {
+  function obfuscateSensibleHeaders(
+    headers: Record<string, string | string[]>,
+  ): Record<string, string | string[]> {
     return Object.keys(headers).reduce((finalHeaders, headerName) => {
       const sensibleHeader = SENSIBLE_HEADERS.find(
         (sensibleHeader) =>

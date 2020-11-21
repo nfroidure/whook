@@ -1,9 +1,9 @@
-import { autoService, options } from 'knifecycle';
+import { autoService, singleton } from 'knifecycle';
 import parseArgs from 'yargs-parser';
 import type { LogService } from 'common-services';
 import type { WhookArgsTypes } from '..';
 
-export default options({ singleton: true }, autoService(initArgs));
+export default singleton(autoService(initArgs));
 
 export type WhookCommandNamedArgs = {
   [name: string]: WhookArgsTypes;

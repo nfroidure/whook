@@ -36,7 +36,7 @@ export function applyValidators(
   operation: WhookOperation,
   validators: { [name: string]: ajv.ValidateFunction },
   parameters: any[],
-) {
+): void {
   ((operation.parameters || []) as OpenAPIV3.ParameterObject[]).forEach(
     ({ name, in: isIn }) => {
       if ('header' === isIn) {
@@ -47,7 +47,10 @@ export function applyValidators(
   );
 }
 
-export function prepareBodyValidator(ajv, operation) {
+export function prepareBodyValidator(
+  ajv: Ajv,
+  operation: WhookOperation,
+): (operation: WhookOperation, contentType: string, value: unknown) => void {
   if (!(operation.requestBody && operation.requestBody.content)) {
     return _rejectAnyRequestBody;
   }
@@ -97,8 +100,8 @@ function _validateRequestBody(
   validators: ajv.ValidateFunction[],
   operation: WhookOperation,
   contentType: string,
-  value: any,
-) {
+  value: unknown,
+): void {
   if (
     (operation.requestBody as OpenAPIV3.RequestBodyObject).required &&
     'undefined' === typeof value
@@ -108,7 +111,7 @@ function _validateRequestBody(
       'E_REQUIRED_REQUEST_BODY',
       operation.operationId,
       typeof value,
-      (value as any) instanceof Stream ? 'Stream' : value,
+      value,
     );
   }
   // Streamed contents, let it pass
@@ -129,9 +132,9 @@ function _validateRequestBody(
 
 function _rejectAnyRequestBody(
   operation: WhookOperation,
-  contentType: string,
-  value: any,
-) {
+  _contentType: string,
+  value: unknown,
+): void {
   if ('undefined' !== typeof value) {
     throw new HTTPError(
       400,
@@ -334,8 +337,8 @@ export function prepareParametersValidators(
 export function _validateParameter(
   parameter: OpenAPIV3.ParameterObject,
   validator: ajv.ValidateFunction,
-  value: any,
-) {
+  value: unknown,
+): void {
   if (parameter.required && 'undefined' === typeof value) {
     throw new HTTPError(
       400,
@@ -359,8 +362,8 @@ export function _validateParameter(
 
 export function filterHeaders(
   parameters: DereferencedParameterObject[],
-  headers: { [name: string]: string },
-): { [name: string]: string } {
+  headers: Record<string, string | string[]>,
+): Record<string, string | string[]> {
   return (parameters || [])
     .filter((parameter) => 'header' === parameter.in)
     .reduce((filteredHeaders, parameter) => {
@@ -376,8 +379,8 @@ export function castParameters<
   T = boolean | boolean[] | string | string[] | number | number[]
 >(
   parameters: DereferencedParameterObject[],
-  values: { [name: string]: string },
-): { [name: string]: T } {
+  values: Record<string, string | string[]>,
+): Record<string, T> {
   return (parameters || []).reduce((filteredValues, parameter) => {
     const parameterName =
       parameter.in === 'header' ? camelCase(parameter.name) : parameter.name;

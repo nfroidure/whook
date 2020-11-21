@@ -132,7 +132,13 @@ Object {
   ],
   "resolveCalls": Array [],
   "result": Object {
-    "initializer": [Function],
+    "initializer": Object {
+      "$name": "CONFIG",
+      "$type": "constant",
+      "$value": Object {
+        "testConfig": "test",
+      },
+    },
     "name": "CONFIG",
     "path": "internal://CONFIG",
   },

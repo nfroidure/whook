@@ -1,10 +1,10 @@
-import { autoService, options } from 'knifecycle';
+import { autoService, singleton } from 'knifecycle';
 import _inquirer from 'inquirer';
 import { noop } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type { WhookCommandArgs } from './args';
 
-export default options({ singleton: true }, autoService(initPromptArgs));
+export default singleton(autoService(initPromptArgs));
 
 export type WhookArgsTypes = string | boolean | number;
 export type WhookCommandHandler = () => Promise<void>;

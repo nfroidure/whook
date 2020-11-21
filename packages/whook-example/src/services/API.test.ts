@@ -13,7 +13,7 @@ describe('API', () => {
   let API_DEFINITIONS;
 
   beforeAll(async () => {
-    const importer = await initImporter<WhookAPIHandlerModule>({ log });
+    const importer = await initImporter({ log });
 
     API_DEFINITIONS = await initAPIDefinitions({
       PROJECT_SRC: path.join(__dirname, '..'),

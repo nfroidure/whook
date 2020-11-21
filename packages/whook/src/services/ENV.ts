@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { initializer } from 'knifecycle';
+import { autoService, name, singleton } from 'knifecycle';
 import { noop } from '../libs/utils';
 import type { LogService } from 'common-services';
 
@@ -13,15 +13,7 @@ The `ENV` service add a layer of configuration over just using
  `process.env.NODE_ENV` and `process.cwd()` values or not.
 */
 
-export default initializer(
-  {
-    name: 'ENV',
-    type: 'service',
-    inject: ['NODE_ENV', 'PWD', '?BASE_ENV', '?log'],
-    options: { singleton: true },
-  },
-  initENV,
-);
+export default singleton(name('ENV', autoService(initENV)));
 
 export type ENVService = {
   [name: string]: string;

@@ -490,6 +490,18 @@ Object {
       "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS",
     ],
     Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/dist/services/PROCESS_ENV",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_ENV",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_ENV",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_ENV",
+    ],
+    Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/dist/services/PROCESS_NAME",
     ],
     Array [
@@ -635,6 +647,18 @@ Object {
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/readDir",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/dist/services/readFile",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/readFile",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/readFile",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/readFile",
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/dist/services/uniqueId",

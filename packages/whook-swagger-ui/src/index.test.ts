@@ -54,7 +54,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         {
           name: '$autoload',
           type: 'service',
-          options: { singleton: true },
+          singleton: true,
         },
         async () => $autoload,
       ),

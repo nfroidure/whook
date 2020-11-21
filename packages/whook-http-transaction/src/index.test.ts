@@ -130,7 +130,7 @@ describe('initHTTPTransaction', () => {
       );
 
       const response = await transaction.start(
-        (buildResponse as unknown) as WhookHandler<any, any>,
+        (buildResponse as unknown) as WhookHandler,
       );
 
       await transaction.end(response, 'theOperationId');
@@ -213,9 +213,7 @@ describe('initHTTPTransaction', () => {
 
         request = _request;
 
-        await transaction.start(
-          (buildResponse as unknown) as WhookHandler<any, any>,
-        );
+        await transaction.start((buildResponse as unknown) as WhookHandler);
 
         await transaction.end({} as WhookResponse);
 
@@ -280,7 +278,7 @@ describe('initHTTPTransaction', () => {
         );
 
         await transaction
-          .start((buildResponse as unknown) as WhookHandler<any, any>)
+          .start((buildResponse as unknown) as WhookHandler)
           .catch(transaction.catch)
           .then(streamifyBody)
           .then(transaction.end);

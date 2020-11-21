@@ -2,7 +2,7 @@ import YHTTPError from 'yhttperror';
 import semverSatisfies from 'semver/functions/satisfies';
 import camelCase from 'camelcase';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { wrapInitializer, alsoInject } from 'knifecycle';
 import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type {
   WhookResponse,
@@ -37,23 +37,15 @@ export type VersionsConfig = {
  */
 export function wrapHandlerWithVersionChecker<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & VersionsConfig, S> {
-  return alsoInject(
+): ServiceInitializer<VersionsConfig & D, S> {
+  const augmentedInitializer = alsoInject<VersionsConfig, D, S>(
     ['VERSIONS'],
-    reuseSpecialProps(
-      initHandler,
-      initHandlerWithVersionChecker.bind(null, initHandler),
-    ),
-  ) as any;
-}
+    initHandler,
+  );
 
-export async function initHandlerWithVersionChecker<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
-  const handler = await initHandler(services);
-
-  return handleWithVersionChecker.bind(null, services, handler);
+  return wrapInitializer(async (services: VersionsConfig, handler: S) => {
+    return handleWithVersionChecker.bind(null, services, handler);
+  }, augmentedInitializer);
 }
 
 async function handleWithVersionChecker<

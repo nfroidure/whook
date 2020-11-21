@@ -1,5 +1,5 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
-import { noop } from '@whook/whook';
+import { noop, WhookResponse } from '@whook/whook';
 import YError from 'yerror';
 import type { WhookOperation, APMService, WhookHandler } from '@whook/whook';
 import type { ServiceInitializer } from 'knifecycle';
@@ -60,7 +60,10 @@ async function handleForAWSTransformerLambda(
     time = Date.now.bind(Date),
     log = noop,
   }: TransformerWrapperDependencies,
-  handler: WhookHandler,
+  handler: WhookHandler<
+    { body: any[] },
+    WhookResponse<number, Record<string, string | string[]>, any[]>
+  >,
   event: { records: EncodedRecord[] },
   context: unknown,
   callback: (err: Error, result?: any) => void,

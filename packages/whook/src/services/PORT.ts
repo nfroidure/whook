@@ -5,9 +5,10 @@ import type { ImporterService } from '..';
 
 /* Architecture Note #7: Port detection
 If no `PORT` configuration is specified in dependencies nor in ENV,
- this service detects a free port automagically.
+this service detects a free port automagically.
 */
 
+type PortFinderModule = { getPortPromise: () => Promise<number> };
 export type PortEnv = {
   PORT?: string;
 };
@@ -35,7 +36,7 @@ async function initPort({
 }: {
   ENV?: PortEnv;
   log?: LogService;
-  importer: ImporterService<{ getPortPromise: () => Promise<number> }>;
+  importer: ImporterService<PortFinderModule>;
 }): Promise<number> {
   log('debug', `🏭 - Initializing the PORT service.`);
 

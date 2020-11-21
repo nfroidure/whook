@@ -7,6 +7,7 @@ import type {
   WhookRequest,
   WhookHandler,
   WhookOperation,
+  WhookResponse,
 } from '@whook/http-transaction';
 import type { Parameters } from 'knifecycle';
 
@@ -113,7 +114,10 @@ export function extractBodySpec(
   return bodySpec;
 }
 
-export function checkBodyCharset(bodySpec, consumableCharsets: string[]) {
+export function checkBodyCharset(
+  bodySpec: BodySpec,
+  consumableCharsets: string[],
+): void {
   if (
     bodySpec.contentLength &&
     bodySpec.charset &&
@@ -128,7 +132,10 @@ export function checkBodyCharset(bodySpec, consumableCharsets: string[]) {
   }
 }
 
-export function checkBodyMediaType(bodySpec, consumableMediaTypes) {
+export function checkBodyMediaType(
+  bodySpec: BodySpec,
+  consumableMediaTypes: string[],
+): void {
   if (
     bodySpec.contentLength &&
     bodySpec.contentType &&
@@ -149,7 +156,7 @@ export function extractResponseSpec(
   supportedMediaTypes: string[],
   supportedCharsets: string[],
 ): ResponseSpec {
-  const accept = request.headers.accept || '*';
+  const accept = (request.headers.accept as string) || '*';
   const responseSpec: ResponseSpec = {
     charsets: request.headers['accept-charset']
       ? preferredCharsets(request.headers['accept-charset'], supportedCharsets)
@@ -167,7 +174,7 @@ export function checkResponseMediaType(
   request: WhookRequest,
   responseSpec: ResponseSpec,
   produceableMediaTypes: string[],
-) {
+): void {
   if (0 === responseSpec.contentTypes.length) {
     throw new HTTPError(
       406,
@@ -182,7 +189,7 @@ export function checkResponseCharset(
   request: WhookRequest,
   responseSpec: ResponseSpec,
   produceableCharsets: string[],
-) {
+): void {
   if (0 === responseSpec.charsets.length) {
     throw new HTTPError(
       406,
@@ -198,7 +205,7 @@ export async function executeHandler(
   operation: WhookOperation,
   handler: WhookHandler,
   parameters: Parameters,
-) {
+): Promise<WhookResponse> {
   const responsePromise = handler(parameters, operation);
 
   if (!(responsePromise && responsePromise.then)) {

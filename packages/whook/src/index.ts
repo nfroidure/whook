@@ -1,5 +1,6 @@
-import Knifecycle, { constant, Services } from 'knifecycle';
+import Knifecycle, { constant } from 'knifecycle';
 import debug from 'debug';
+import { noop, identity, compose, pipe } from './libs/utils';
 import {
   initLogService,
   initTimeService,
@@ -99,8 +100,8 @@ import type {
   ObfuscatorService,
   APMService,
 } from '@whook/http-transaction';
-import { noop, identity, compose, pipe } from './libs/utils';
 import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
+import type { Dependencies } from 'knifecycle';
 
 export type {
   WhookAPIDefinitions,
@@ -191,22 +192,24 @@ Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 */
-export async function runServer<S = Services>(
-  aPrepareEnvironment: typeof prepareEnvironment,
-  aPrepareServer: typeof prepareServer,
+export async function runServer<
+  D extends Dependencies,
+  T extends Knifecycle<D> = Knifecycle<D>
+>(
+  innerPrepareEnvironment: ($?: T) => Promise<T>,
+  innerPrepareServer: (injectedNames: string[], $: T) => Promise<D>,
   injectedNames: string[] = [],
-): Promise<S> {
+): Promise<D> {
   try {
-    const $ = await aPrepareEnvironment();
-    const { ENV, log, ...services } = await aPrepareServer<{
-      ENV: ENVService;
-      log: LogService;
-      services: any[];
-    }>([...new Set([...injectedNames, 'ENV', 'log'])], $);
+    const $ = await innerPrepareEnvironment();
+    const { ENV, log, ...services } = await innerPrepareServer(
+      [...new Set([...injectedNames, 'ENV', 'log'])],
+      $,
+    );
     if (ENV.DRY_RUN) {
       log('warning', '🌵 - Dry run, shutting down now!');
       await $.destroy();
-      return ({} as unknown) as S;
+      return {} as D;
     }
 
     if (ENV.MERMAID_RUN) {
@@ -245,10 +248,10 @@ export async function runServer<S = Services>(
       log('warning', '🌵 - Mermaid graph generated, shutting down now!');
       process.stdout.write($.toMermaidGraph(MERMAID_GRAPH_CONFIG));
       await $.destroy();
-      return ({} as unknown) as S;
+      return {} as D;
     }
 
-    return ({ ENV, log, $instance: $, ...services } as unknown) as S;
+    return ({ ENV, log, $instance: $, ...services } as unknown) as D;
   } catch (err) {
     // eslint-disable-next-line
     console.error('💀 - Cannot launch the process:', err.stack);
@@ -273,25 +276,22 @@ Whook exposes a `prepareServer` function to create its server
  * @returns Object
  * A promise of the injected services
  */
-export async function prepareServer<S = Services>(
-  injectedNames: string[] = [],
-  $: Knifecycle,
-): Promise<S> {
+export async function prepareServer<
+  D extends Dependencies,
+  T extends Knifecycle<D>
+>(injectedNames: string[], $: T): Promise<D> {
   /* Architecture Note #2.1: Root injections
    * We need to inject `httpServer` and `process` to bring life to our
    *  server. We also inject `log` for logging purpose and custom other
    *  injected name that were required upfront.
    */
-  const {
-    log,
-    ...services
-  }: { log: LogService; services: any[] } = await $.run([
+  const { log, ...services } = await $.run([
     ...new Set([...injectedNames, 'log', 'httpServer', 'process']),
   ]);
 
   log('warning', 'On air 🚀🌕');
 
-  return ({ log, ...services } as unknown) as S;
+  return ({ log, ...services } as unknown) as D;
 }
 
 /* Architecture Note #3: Server environment
@@ -308,9 +308,9 @@ The Whook `prepareEnvironment` function aims to provide the complete
  * @returns Promise<Knifecycle>
  * A promise of the Knifecycle instance
  */
-export async function prepareEnvironment(
-  $: Knifecycle = new Knifecycle(),
-): Promise<Knifecycle> {
+export async function prepareEnvironment<T extends Knifecycle<any>>(
+  $: T = new Knifecycle() as T,
+): Promise<T> {
   /* Architecture Note #3.1: `PWD` env var
   The Whook server heavily rely on the process working directory
    to dynamically load contents. We are making it available to
