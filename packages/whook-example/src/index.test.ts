@@ -8,6 +8,7 @@ import axios from 'axios';
 import type { JWTService } from 'jwt-service';
 import type { AuthenticationData } from './services/authentication';
 
+// eslint-disable-next-line
 const packageConf = require('../package');
 
 describe('runServer', () => {

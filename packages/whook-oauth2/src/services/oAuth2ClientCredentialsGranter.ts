@@ -22,8 +22,8 @@ export type OAuth2ClientCredentialsGranterParameters<
 export type OAuth2ClientCredentialsGranterService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
 > = OAuth2GranterService<
-  unknown,
-  unknown,
+  Record<string, unknown>,
+  Record<string, unknown>,
   OAuth2ClientCredentialsGranterParameters,
   AUTHENTICATION_DATA
 >;
@@ -35,9 +35,7 @@ export default autoService(initOAuth2ClientCredentialsGranter);
 async function initOAuth2ClientCredentialsGranter({
   checkApplication,
   log = noop,
-}: OAuth2ClientCredentialsGranterDependencies): Promise<
-  OAuth2ClientCredentialsGranterService
-> {
+}: OAuth2ClientCredentialsGranterDependencies): Promise<OAuth2ClientCredentialsGranterService> {
   const authenticateWithClientCredentials: OAuth2ClientCredentialsGranterService['authenticator']['authenticate'] = async (
     { scope: demandedScope = '' },
     authenticationData,

@@ -19,7 +19,9 @@ export const OPEN_API_METHODS = [
   'trace',
 ];
 
-export type WhookRawOperation<T = {}> = OpenAPIV3.OperationObject & {
+export type WhookRawOperation<
+  T = Record<string, unknown>
+> = OpenAPIV3.OperationObject & {
   path: string;
   method: string;
   'x-whook'?: T;
@@ -71,7 +73,7 @@ export async function flattenOpenAPI(
  *     // Do something with that operation
  *   });
  */
-export function getOpenAPIOperations<T = {}>(
+export function getOpenAPIOperations<T = Record<string, unknown>>(
   API: OpenAPIV3.Document,
 ): WhookRawOperation<T>[] {
   return Object.keys(API.paths).reduce<WhookRawOperation<T>[]>(
@@ -104,7 +106,7 @@ export function getOpenAPIOperations<T = {}>(
  * @return {Object}
  * The dereferenced OpenAPI operations
  */
-export async function dereferenceOpenAPIOperations<T = {}>(
+export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
   API: OpenAPIV3.Document,
   operations: WhookRawOperation<T>[],
 ): Promise<WhookOperation<T>[]> {

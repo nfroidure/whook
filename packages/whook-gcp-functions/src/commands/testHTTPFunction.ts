@@ -150,7 +150,7 @@ async function initTestHTTPLambdaCommand({
       headers: {},
       data: '',
     };
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       const gcpfResponse: any = new stream.PassThrough();
 
       gcpfResponse.set = (name: string, value: string) => {

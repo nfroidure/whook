@@ -5,7 +5,7 @@ export type APMService<T = string> = (type: T, data: any) => void;
 
 export default name('apm', autoService(initAPM));
 
-const noop = () => {};
+const noop = () => undefined;
 
 /**
  * Application monitoring service that simply log stringified contents.

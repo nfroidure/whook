@@ -1,7 +1,6 @@
 import initGenerateOpenAPITypes from './generateOpenAPITypes';
 import { PassThrough } from 'stream';
 import { initGetPingDefinition } from '@whook/whook';
-import type { WhookCommandArgs } from '@whook/cli';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('generateOpenAPITypes', () => {

@@ -24,8 +24,8 @@ export type OAuth2CodeGranterParameters = {
 export type OAuth2CodeGranterService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
 > = OAuth2GranterService<
-  unknown,
-  { [name: string]: unknown },
+  Record<string, unknown>,
+  Record<string, unknown>,
   OAuth2CodeGranterParameters,
   AUTHENTICATION_DATA
 >;

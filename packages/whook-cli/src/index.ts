@@ -1,4 +1,4 @@
-import { constant } from 'knifecycle';
+import Knifecycle, { constant } from 'knifecycle';
 import { readArgs } from './libs/args';
 import initArgs from './services/args';
 import initPromptArgs from './services/promptArgs';
@@ -27,7 +27,11 @@ export type {
 };
 export { readArgs };
 
-export default async function run({ prepareEnvironment }) {
+export default async function run({
+  prepareEnvironment,
+}: {
+  prepareEnvironment: () => Promise<Knifecycle>;
+}): Promise<void> {
   try {
     const $ = await prepareEnvironment();
 

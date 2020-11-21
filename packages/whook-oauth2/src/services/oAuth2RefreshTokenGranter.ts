@@ -21,8 +21,8 @@ export type OAuth2RefreshTokenGranterParameters = {
 export type OAuth2RefreshTokenGranterService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
 > = OAuth2GranterService<
-  unknown,
-  unknown,
+  Record<string, unknown>,
+  Record<string, unknown>,
   OAuth2RefreshTokenGranterParameters,
   AUTHENTICATION_DATA
 >;
@@ -35,9 +35,7 @@ async function initOAuth2RefreshTokenGranter({
   checkApplication,
   oAuth2RefreshToken,
   log = noop,
-}: OAuth2RefreshTokenGranterDependencies): Promise<
-  OAuth2RefreshTokenGranterService
-> {
+}: OAuth2RefreshTokenGranterDependencies): Promise<OAuth2RefreshTokenGranterService> {
   const authenticateWithRefreshToken: OAuth2RefreshTokenGranterService['authenticator']['authenticate'] = async (
     { refreshToken, scope: demandedScope },
     authenticationData,

@@ -44,6 +44,7 @@ describe('whook-cli', () => {
     });
     processCWD.mockReturnValueOnce('/home/whoiam/projects/my-cool-project');
 
+    // eslint-disable-next-line
     const run = require('./index').default;
     const $ = new Knifecycle();
 
@@ -94,6 +95,7 @@ describe('whook-cli', () => {
     });
     processCWD.mockReturnValueOnce('/home/whoiam/projects/my-cool-project');
 
+    // eslint-disable-next-line
     const run = require('./index').default;
     const $ = new Knifecycle();
 

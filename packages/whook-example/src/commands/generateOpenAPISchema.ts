@@ -2,7 +2,7 @@ import { initGetOpenAPI } from '@whook/swagger-ui';
 import { readArgs } from '@whook/cli';
 import { autoService, extra } from 'knifecycle';
 import type { LogService } from 'common-services';
-import type { PromiseValue } from 'type-fest';
+import type { AsyncReturnType } from 'type-fest';
 import type { WhookCommandDefinition, WhookCommandArgs } from '@whook/cli';
 
 export const definition: WhookCommandDefinition = {
@@ -35,7 +35,7 @@ async function initGenerateOpenAPISchema({
   args,
   log,
 }: {
-  getOpenAPI: PromiseValue<ReturnType<typeof initGetOpenAPI>>;
+  getOpenAPI: AsyncReturnType<typeof initGetOpenAPI>;
   outstream: NodeJS.WritableStream;
   args: WhookCommandArgs;
   log: LogService;

@@ -133,7 +133,7 @@ async function initHandlerForAWSHTTPFunction(
     ),
   );
   const bodyValidator = prepareBodyValidator(ajv, OPERATION);
-  const applyWrappers = compose(...WRAPPERS);
+  const applyWrappers = compose(...WRAPPERS) as any;
 
   const handler = await applyWrappers(initHandler)({
     OPERATION,

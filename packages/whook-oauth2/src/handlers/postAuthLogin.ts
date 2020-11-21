@@ -7,7 +7,7 @@ import type {
   AuthCookiesService,
   AuthHandlersConfig,
 } from '../services/authCookies';
-import type { PromiseValue } from 'type-fest';
+import type { AsyncReturnType } from 'type-fest';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 export const definition: WhookAPIHandlerDefinition = {
@@ -70,7 +70,7 @@ async function postAuthLogin<
     postOAuth2Token,
   }: AuthHandlersConfig<AUTHENTICATION_DATA> & {
     authCookies: Pick<AuthCookiesService, 'build'>;
-    postOAuth2Token: PromiseValue<ReturnType<typeof initPostOauth2Token>>;
+    postOAuth2Token: AsyncReturnType<typeof initPostOauth2Token>;
   },
   {
     body,
@@ -111,7 +111,7 @@ async function postAuthLogin<
       },
     };
   } catch (err) {
-    let newErr = YHTTPError.wrap(err);
+    const newErr = YHTTPError.wrap(err);
 
     newErr.headers = {
       ...(err.headers || {}),

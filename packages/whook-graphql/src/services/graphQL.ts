@@ -42,7 +42,7 @@ export class WhookGraphQLService extends ApolloServerBase {
     super(options);
   }
 
-  async waitStart() {
+  async waitStart(): Promise<void> {
     await super.willStart();
   }
 

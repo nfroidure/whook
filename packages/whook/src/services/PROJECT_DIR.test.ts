@@ -14,6 +14,7 @@ describe('initProjectDir', () => {
     jest.doMock('pkg-dir', () => pkgDir);
     pkgDir.mockResolvedValueOnce('/home/whoiam/projects/my-whook/project');
 
+    // eslint-disable-next-line
     const initProjectDir = require('./PROJECT_DIR').default;
     const PROJECT_DIR = await initProjectDir({
       PWD: '/home/whoiam/projects/my-whook/project/src/lol',
@@ -31,6 +32,7 @@ describe('initProjectDir', () => {
     jest.doMock('pkg-dir', () => pkgDir);
     pkgDir.mockResolvedValueOnce('');
 
+    // eslint-disable-next-line
     const initProjectDir = require('./PROJECT_DIR').default;
     try {
       await initProjectDir({

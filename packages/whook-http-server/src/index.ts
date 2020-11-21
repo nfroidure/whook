@@ -28,7 +28,9 @@ export type HTTPServerDependencies = HTTPServerConfig & {
 export type HTTPServerService = http.Server;
 export type HTTPServerProvider = Provider<HTTPServerService>;
 
-function noop() {}
+function noop() {
+  return undefined;
+}
 
 const DEFAULT_ENV = {};
 
@@ -115,7 +117,7 @@ async function initHTTPServer({
     service: httpServer,
     fatalErrorPromise,
     dispose: async () => {
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
         log('debug', '✅ - Closing HTTP server.');
         // Avoid to keepalive connections on shutdown
         httpServer.timeout = 1;

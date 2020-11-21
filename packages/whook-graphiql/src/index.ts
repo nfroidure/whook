@@ -2,11 +2,7 @@ import url from 'url';
 import * as GraphiQL from 'apollo-server-module-graphiql';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
-import type {
-  HTTPRouterService,
-  HTTPRouterProvider,
-  ImporterService,
-} from '@whook/whook';
+import type { HTTPRouterService, HTTPRouterProvider } from '@whook/whook';
 import type { ProviderInitializer } from 'knifecycle';
 import type { LogService } from 'common-services';
 
@@ -36,7 +32,6 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
   HOST: string;
   PORT: number;
   log: LogService;
-  importer: ImporterService<any>;
 };
 
 /**
@@ -59,7 +54,6 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
         GRAPHIQL = DEFAULT_GRAPHIQL,
         ENV,
         log = noop,
-        importer,
       }: WhookGraphIQLDependencies,
       httpRouter: HTTPRouterProvider,
     ) => {
@@ -117,7 +111,6 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
         'PORT',
         '?GRAPHIQL',
         'ENV',
-        'importer',
         '?log',
       ],
       initHTTPRouter,

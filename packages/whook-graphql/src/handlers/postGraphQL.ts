@@ -8,7 +8,6 @@ import type {
   WhookOperation,
   WhookResponse,
 } from '@whook/whook';
-import type { GraphQLSchema } from 'graphql';
 import type { LogService } from 'common-services';
 import type { WhookGraphQLService } from '..';
 import type { HttpQueryError } from 'apollo-server-core';
@@ -59,9 +58,7 @@ export const definition: WhookAPIHandlerDefinition = {
 
 export default autoHandler(postGraphQL);
 
-async function postGraphQL<
-  T extends { [name: string]: unknown } = { [name: string]: unknown }
->(
+async function postGraphQL<T extends Record<string, unknown>>(
   { graphQL, log = noop }: { graphQL: WhookGraphQLService; log: LogService },
   {
     body,
@@ -69,13 +66,13 @@ async function postGraphQL<
   }: T & {
     body: {
       query: string;
-      variables: { [name: string]: any };
+      variables: Record<string, unknown>;
       operationName: string;
       [name: string]: unknown;
     };
   },
   operation: WhookOperation,
-): Promise<WhookResponse<number, {}, any>> {
+): Promise<WhookResponse<number>> {
   try {
     const options = await graphQL.createGraphQLServerOptions({
       requestContext,

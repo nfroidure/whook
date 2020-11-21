@@ -307,7 +307,7 @@ function buildHandlerSource(
   name: string,
   path: string,
   method: string,
-  description: string = '',
+  description = '',
   tags: string[] = [],
   parametersDeclaration,
   typesDeclaration,

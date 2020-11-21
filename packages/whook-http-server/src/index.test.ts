@@ -90,7 +90,7 @@ describe('initHTTPServer', () => {
 
     try {
       httpServer.service.close = (((realClose) => async (cb) => {
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           realClose((err) => (err && (reject(err) as any)) || resolve());
         });
 
@@ -126,9 +126,9 @@ describe('initHTTPServer', () => {
       port: PORT,
     });
 
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       client.on('error', reject);
-      client.on('connect', resolve);
+      client.on('connect', () => resolve());
       client.write('GET / HTTP/1.1\r\n\r\n');
     });
 

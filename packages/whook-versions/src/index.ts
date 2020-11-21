@@ -3,7 +3,7 @@ import semverSatisfies from 'semver/functions/satisfies';
 import camelCase from 'camelcase';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
-import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
+import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type {
   WhookResponse,
   WhookHandler,
@@ -100,7 +100,7 @@ async function handleWithVersionChecker<
 export async function augmentAPIWithVersionsHeaders(
   API: OpenAPIV3.Document,
   VERSIONS: VersionDescriptor[],
-) {
+): Promise<OpenAPIV3.Document> {
   return {
     ...API,
     components: {

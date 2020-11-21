@@ -1,14 +1,19 @@
-// @ts-ignore: noop do not operate ¯\_(ツ)_/¯
-export function noop(...args: any[]) {}
+export function noop(..._args: unknown[]): void {
+  return undefined;
+}
 
 export function identity<T>(id: T): T {
   return id;
 }
 
-export function compose(...fns: Function[]): Function {
-  return fns.reduce((f, g) => (...args: Array<any>) => f(g(...args)));
+export function compose<
+  T extends (...args: any[]) => any = (...args: unknown[]) => unknown
+>(...fns: ((...args: unknown[]) => unknown)[]): T {
+  return fns.reduce((f, g) => (...args: unknown[]) => f(g(...args))) as T;
 }
 
-export function pipe(...fns: Function[]): Function {
+export function pipe(
+  ...fns: ((...args: unknown[]) => unknown)[]
+): (...args: unknown[]) => unknown {
   return compose.apply(compose, fns.reverse());
 }

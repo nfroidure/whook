@@ -188,7 +188,7 @@ export function extractParametersFromSecuritySchemes(
       ...(hasOAuth ? ['bearer'] : []),
     ]),
   ];
-  let hasBearerAuth = httpSchemes.includes('bearer');
+  const hasBearerAuth = httpSchemes.includes('bearer');
   let hasAuthorizationApiKey = false;
   let hasAccessTokenApiKey = false;
 

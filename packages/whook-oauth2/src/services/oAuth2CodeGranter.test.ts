@@ -1,5 +1,4 @@
 import initOAuth2CodeGranter from './oAuth2CodeGranter';
-import type { BaseAuthenticationData } from '@whook/authorization';
 
 describe('OAuth2CodeGranter', () => {
   const oAuth2Code = {

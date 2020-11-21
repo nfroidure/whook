@@ -38,10 +38,6 @@ import initErrorHandler, {
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
-  ErrorHandlerConfig,
-  WhookErrorHandler,
 } from './errorHandler';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
@@ -62,12 +58,20 @@ import type {
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { IncomingMessage, ServerResponse } from 'http';
+import type {
+  WhookErrorsDescriptors,
+  WhookErrorDescriptor,
+  ErrorHandlerConfig,
+  WhookErrorHandler,
+} from './errorHandler';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
 
-function noop() {}
-function identity(x) {
+function noop() {
+  return undefined;
+}
+function identity<T>(x: T): T {
   return x;
 }
 
@@ -118,7 +122,7 @@ export type WhookQueryStringParser = (
   query: Parameters<typeof strictQs>[2],
 ) => ReturnType<typeof strictQs>;
 export type WhookHandlers = { [name: string]: WhookHandler };
-export type WhookParser = (content: string) => string;
+export type WhookParser = (content: string, bodySpec?: BodySpec) => string;
 export type WhookParsers = { [name: string]: WhookParser };
 export type WhookStringifyer = (content: string) => string;
 export type WhookStringifyers = { [name: string]: WhookStringifyer };
@@ -151,7 +155,7 @@ export type HTTPRouterDependencies = HTTPRouterConfig & {
   QUERY_PARSER?: WhookQueryStringParser;
   log?: LogService;
   httpTransaction: HTTPTransactionService;
-  errorHandler: Function;
+  errorHandler: WhookErrorHandler;
 };
 export interface HTTPRouterService {
   (req: IncomingMessage, res: ServerResponse): Promise<void>;

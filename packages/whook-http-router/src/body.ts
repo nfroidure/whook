@@ -2,9 +2,12 @@ import HTTPError from 'yhttperror';
 import FirstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
 import YError from 'yerror';
-import type { WhookOperation } from '@whook/http-transaction';
+import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
 import type { BodySpec } from './lib';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { WhookEncoders, WhookParsers } from '.';
+import type { Transform } from 'stream';
+import { WhookDecoders, WhookStringifyers } from '../dist';
 
 /* Architecture Note #1.1: Request body
 According to the OpenAPI specification
@@ -19,12 +22,20 @@ there are two kinds of requests:
  be parsed and validated into the
  handler itself.
 */
-export async function getBody(
-  { DECODERS, PARSERS, bufferLimit },
+export async function getBody<T>(
+  {
+    DECODERS,
+    PARSERS,
+    bufferLimit,
+  }: {
+    DECODERS?: WhookDecoders<Transform>;
+    PARSERS?: WhookParsers;
+    bufferLimit: number;
+  },
   operation: WhookOperation,
   inputStream: Stream.Readable,
   bodySpec: BodySpec,
-): Promise<Stream.Readable | {} | void> {
+): Promise<Stream.Readable | string | T | void> {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
   const requestBody = operation.requestBody
     ? (operation.requestBody as OpenAPIV3.RequestBodyObject)
@@ -115,7 +126,16 @@ export async function getBody(
   }
 }
 
-export async function sendBody({ ENCODERS, STRINGIFYERS }, response) {
+export async function sendBody(
+  {
+    ENCODERS,
+    STRINGIFYERS,
+  }: {
+    ENCODERS?: WhookEncoders<Transform>;
+    STRINGIFYERS?: WhookStringifyers;
+  },
+  response: WhookResponse,
+): Promise<WhookResponse> {
   if (!response.body) {
     return response;
   }
@@ -124,7 +144,7 @@ export async function sendBody({ ENCODERS, STRINGIFYERS }, response) {
     return response;
   }
 
-  if (!STRINGIFYERS[response.headers['content-type']]) {
+  if (!STRINGIFYERS[response.headers['content-type'] as string]) {
     throw new YError(
       'E_STRINGIFYER_LACK',
       response.headers['content-type'],
@@ -134,7 +154,9 @@ export async function sendBody({ ENCODERS, STRINGIFYERS }, response) {
 
   const Encoder = ENCODERS['utf-8'];
   const stream = new Encoder();
-  const content = STRINGIFYERS[response.headers['content-type']](response.body);
+  const content = STRINGIFYERS[response.headers['content-type'] as string](
+    response.body,
+  );
 
   stream.write(content);
 

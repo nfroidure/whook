@@ -45,7 +45,7 @@ export async function watchDevServer() {
         const absolutePath = path.join(process.cwd(), filePath);
 
         if (filePath.match(/package.*\.json/)) {
-          for (let key in require.cache) {
+          for (const key in require.cache) {
             uncache(key);
           }
         } else {

@@ -14,7 +14,7 @@ import type {
 } from '@whook/http-transaction';
 import type { IncomingMessage, ServerResponse } from 'http';
 
-function waitResponse(response, raw: boolean = true) {
+function waitResponse(response, raw = true) {
   return new Promise((resolve, reject) => {
     if (!response.body) {
       resolve(response);
@@ -50,7 +50,7 @@ function prepareTransaction(result: any = Promise.resolve()) {
   const httpTransactionCatch = jest.fn(async (err) => {
     throw HTTPError.cast(err);
   });
-  const httpTransactionEnd = jest.fn(async (res) => {});
+  const httpTransactionEnd = jest.fn(async (res) => undefined);
   const httpTransaction = jest.fn(async (req) => ({
     request: {
       url: req.url,
@@ -519,7 +519,7 @@ describe('initHTTPRouter', () => {
   });
 
   test('should work', async () => {
-    let { httpTransaction, HANDLERS } = prepareTransaction();
+    const { httpTransaction, HANDLERS } = prepareTransaction();
     const errorHandler = await initErrorHandler({ NODE_ENV, DEBUG_NODE_ENVS });
     const httpRouter = await initHTTPRouter({
       NODE_ENV,
@@ -542,7 +542,7 @@ describe('initHTTPRouter', () => {
   describe('should fail', () => {
     test('when the API parsing fails', async () => {
       try {
-        let { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, HANDLERS } = prepareTransaction();
         const errorHandler = await initErrorHandler({
           NODE_ENV,
           DEBUG_NODE_ENVS,
@@ -574,7 +574,7 @@ describe('initHTTPRouter', () => {
 
     test('when operation id is lacking', async () => {
       try {
-        let { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, HANDLERS } = prepareTransaction();
         const errorHandler = await initErrorHandler({
           NODE_ENV,
           DEBUG_NODE_ENVS,
@@ -612,7 +612,7 @@ describe('initHTTPRouter', () => {
           NODE_ENV,
           DEBUG_NODE_ENVS,
         });
-        let { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
           NODE_ENV,
@@ -641,7 +641,7 @@ describe('initHTTPRouter', () => {
 
     test('when a path parameter is lacking', async () => {
       try {
-        let { httpTransaction, handler } = prepareTransaction();
+        const { httpTransaction, handler } = prepareTransaction();
         const errorHandler = await initErrorHandler({
           NODE_ENV,
           DEBUG_NODE_ENVS,
@@ -679,7 +679,7 @@ describe('initHTTPRouter', () => {
 
     test('when operation handler is lacking', async () => {
       try {
-        let { httpTransaction } = prepareTransaction();
+        const { httpTransaction } = prepareTransaction();
         const errorHandler = await initErrorHandler({
           NODE_ENV,
           DEBUG_NODE_ENVS,
@@ -706,7 +706,7 @@ describe('initHTTPRouter', () => {
           NODE_ENV,
           DEBUG_NODE_ENVS,
         });
-        let { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
           NODE_ENV,
@@ -749,7 +749,7 @@ describe('initHTTPRouter', () => {
           NODE_ENV,
           DEBUG_NODE_ENVS,
         });
-        let { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
           NODE_ENV,
@@ -790,7 +790,7 @@ describe('initHTTPRouter', () => {
           NODE_ENV,
           DEBUG_NODE_ENVS,
         });
-        let { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
           NODE_ENV,
@@ -832,7 +832,7 @@ describe('initHTTPRouter', () => {
   describe('httpRouter', () => {
     describe('HEAD', () => {
       test('should work with an existing route', async () => {
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,
@@ -895,7 +895,7 @@ describe('initHTTPRouter', () => {
       });
 
       test('should work with an existing GET route', async () => {
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,
@@ -962,7 +962,7 @@ describe('initHTTPRouter', () => {
       });
 
       test('should work with a */* accept header', async () => {
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,
@@ -1035,7 +1035,7 @@ describe('initHTTPRouter', () => {
     describe('GET', () => {
       describe('should work', () => {
         test('with an existing stringified route', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1106,7 +1106,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with an existing streamed route', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1177,7 +1177,7 @@ describe('initHTTPRouter', () => {
 
       describe('should crash the router', () => {
         test('when stringifier lack for errors too', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1249,7 +1249,7 @@ describe('initHTTPRouter', () => {
 
       describe('should lately fail', () => {
         test('when stringifier lack', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1324,7 +1324,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('whith unacceptable media type', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1401,7 +1401,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('when the handler returns nothing', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1466,7 +1466,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('when the handler returns no response', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1532,7 +1532,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('when the handler returns no status', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1599,7 +1599,7 @@ describe('initHTTPRouter', () => {
 
       describe('should fail', () => {
         test('without a required parameter', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1662,7 +1662,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with a bad parameter', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -1725,7 +1725,7 @@ describe('initHTTPRouter', () => {
       });
 
       test('should work with a handler erroring', async () => {
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,
@@ -1798,7 +1798,7 @@ describe('initHTTPRouter', () => {
         handlerError.headers = {
           'X-Test': 'Error header',
         };
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,
@@ -1864,7 +1864,7 @@ describe('initHTTPRouter', () => {
       });
 
       test('should work with an unexisting route', async () => {
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,
@@ -1929,7 +1929,7 @@ describe('initHTTPRouter', () => {
     describe('PUT', () => {
       describe('should work', () => {
         test('with an existing stringified route', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2012,7 +2012,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with an existing streamed route', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2080,7 +2080,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with a capitalized charset', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2166,7 +2166,7 @@ describe('initHTTPRouter', () => {
 
       describe('should fail', () => {
         test('with a bad content type header', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2229,7 +2229,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with an unsupported content type header', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2292,7 +2292,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with illegal contents according to the schema', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2362,7 +2362,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with a bad content type', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2431,7 +2431,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with a bad content length', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2499,7 +2499,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('bad JSON contents', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2568,7 +2568,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with an erroring stream', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2635,7 +2635,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with too large contents declared', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2705,7 +2705,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with too large contents not declared', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2775,7 +2775,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('when parsers lacks', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2845,7 +2845,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with unsupported charset', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2918,7 +2918,7 @@ describe('initHTTPRouter', () => {
         });
 
         test('with no contents at all', async () => {
-          let {
+          const {
             httpTransaction,
             httpTransactionStart,
             httpTransactionCatch,
@@ -2986,7 +2986,7 @@ describe('initHTTPRouter', () => {
 
     describe('DELETE', () => {
       test('with an existing route', async () => {
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,
@@ -3046,7 +3046,7 @@ describe('initHTTPRouter', () => {
 
     describe('CUSTOMHEADER', () => {
       test('should 404', async () => {
-        let {
+        const {
           httpTransaction,
           httpTransactionStart,
           httpTransactionCatch,

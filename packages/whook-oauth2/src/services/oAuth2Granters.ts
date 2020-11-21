@@ -194,9 +194,15 @@ export type CheckApplicationService = {
 };
 
 export type OAuth2GranterService<
-  AUTHORIZE_PARAMETERS extends {} = { [name: string]: unknown },
-  ACKNOWLEDGE_PARAMETERS extends {} = { [name: string]: unknown },
-  GRANT_PARAMETERS extends {} = { [name: string]: unknown },
+  AUTHORIZE_PARAMETERS extends Record<string, unknown> = Record<
+    string,
+    unknown
+  >,
+  ACKNOWLEDGE_PARAMETERS extends Record<string, unknown> = Record<
+    string,
+    unknown
+  >,
+  GRANT_PARAMETERS extends Record<string, unknown> = Record<string, unknown>,
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
 > = {
   type: string;

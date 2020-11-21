@@ -85,7 +85,7 @@ describe('initHTTPTransaction', () => {
     test('should work', async () => {
       time.mockReturnValue(new Date('2012-01-15T00:00:00.000Z').getTime());
       uniqueId.mockReturnValue('[id]');
-      delay.create.mockReturnValueOnce(new Promise(() => {}));
+      delay.create.mockReturnValueOnce(new Promise(() => undefined));
       delay.clear.mockResolvedValue(undefined);
 
       const httpTransaction = await initHTTPTransaction({
@@ -204,7 +204,7 @@ describe('initHTTPTransaction', () => {
           },
         };
 
-        buildResponse.mockReturnValueOnce(new Promise(() => {}));
+        buildResponse.mockReturnValueOnce(new Promise(() => undefined));
 
         const { request: _request, transaction } = await httpTransaction(
           (req as unknown) as IncomingMessage,
@@ -243,7 +243,7 @@ describe('initHTTPTransaction', () => {
     test('should fail with non-unique transaction id', async () => {
       time.mockReturnValue(new Date('2012-01-15T00:00:00.000Z').getTime());
       uniqueId.mockReturnValue('[id]');
-      delay.create.mockReturnValueOnce(new Promise(() => {}));
+      delay.create.mockReturnValueOnce(new Promise(() => undefined));
       delay.clear.mockResolvedValue(undefined);
 
       try {

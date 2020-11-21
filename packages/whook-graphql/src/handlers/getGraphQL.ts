@@ -4,12 +4,7 @@ import initPostGraphQL, {
 } from './postGraphQL';
 import YHTTPError from 'yhttperror';
 import type { WhookAPIHandlerDefinition, WhookOperation } from '@whook/whook';
-
-type Await<T> = T extends {
-  then(onfulfilled?: (value: infer U) => unknown): unknown;
-}
-  ? U
-  : T;
+import type { AsyncReturnType } from 'type-fest';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: postGraphQLDefinition.path,
@@ -65,10 +60,8 @@ export const definition: WhookAPIHandlerDefinition = {
 
 export default autoHandler(getGraphQL);
 
-async function getGraphQL<
-  T extends { [name: string]: unknown } = { [name: string]: unknown }
->(
-  { postGraphQL }: { postGraphQL: Await<ReturnType<typeof initPostGraphQL>> },
+async function getGraphQL<T extends Record<string, unknown>>(
+  { postGraphQL }: { postGraphQL: AsyncReturnType<typeof initPostGraphQL> },
   {
     query,
     variables = '{}',
@@ -80,7 +73,7 @@ async function getGraphQL<
     operationName: string;
   },
   operation: WhookOperation,
-): Promise<Await<ReturnType<Await<ReturnType<typeof initPostGraphQL>>>>> {
+): Promise<AsyncReturnType<AsyncReturnType<typeof initPostGraphQL>>> {
   const deserializedVariables = deserialize(variables, 'variables');
 
   return await postGraphQL(
@@ -96,8 +89,8 @@ async function getGraphQL<
   );
 }
 
-function deserialize(data: string, name: string): { [name: string]: any } {
-  let deserializedData;
+function deserialize<T>(data: string, name: string): Record<string, T> {
+  let deserializedData: Record<string, T>;
 
   try {
     deserializedData = JSON.parse(data);

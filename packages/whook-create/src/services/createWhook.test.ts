@@ -1,6 +1,7 @@
 import initCreateWhook from './createWhook';
 import YError from 'yerror';
 
+// eslint-disable-next-line
 const _packageJSON = require('@whook/example/package.json');
 
 describe('initCreateWhook', () => {
@@ -174,7 +175,7 @@ Mr Bean
               "@babel/env",
               Object {
                 "targets": Object {
-                  "node": "10.19.0",
+                  "node": "12.19.0",
                 },
               },
             ],
@@ -194,40 +195,41 @@ Mr Bean
           "jwt-service": "^6.0.3",
           "knifecycle": "^10.0.3",
           "strict-qs": "^6.1.3",
+          "type-fest": "^0.19.0",
           "yerror": "^5.0.0",
           "yhttperror": "^5.0.0",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
-          "@babel/cli": "^7.10.5",
-          "@babel/core": "^7.11.1",
+          "@babel/cli": "^7.12.1",
+          "@babel/core": "^7.12.3",
           "@babel/node": "^7.2.2",
-          "@babel/plugin-proposal-class-properties": "^7.10.4",
-          "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+          "@babel/plugin-proposal-class-properties": "^7.12.1",
+          "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
           "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-          "@babel/plugin-syntax-import-meta": "^7.8.3",
-          "@babel/preset-env": "^7.11.0",
-          "@babel/preset-typescript": "^7.10.4",
-          "@babel/register": "^7.10.5",
-          "@types/jest": "^26.0.10",
-          "@typescript-eslint/eslint-plugin": "^3.9.1",
-          "@typescript-eslint/parser": "^3.9.1",
+          "@babel/plugin-syntax-import-meta": "^7.10.4",
+          "@babel/preset-env": "^7.12.1",
+          "@babel/preset-typescript": "^7.12.1",
+          "@babel/register": "^7.12.1",
+          "@types/jest": "^26.0.15",
+          "@typescript-eslint/eslint-plugin": "^4.8.1",
+          "@typescript-eslint/parser": "^4.8.1",
           "axios": "^0.21.0",
           "babel-eslint": "^10.1.0",
           "babel-plugin-knifecycle": "^3.0.1",
-          "chokidar": "^3.4.1",
-          "eslint": "^7.7.0",
+          "chokidar": "^3.4.3",
+          "eslint": "^7.13.0",
           "eslint-plugin-prettier": "^3.1.4",
-          "jest": "^26.4.0",
+          "jest": "^26.6.3",
           "openapi-schema-validator": "^3.0.3",
           "parse-gitignore": "^1.0.1",
-          "prettier": "^2.0.5",
+          "prettier": "^2.1.2",
           "rimraf": "^3.0.2",
           "schema2dts": "^1.0.2",
-          "typescript": "^4.0.2",
+          "typescript": "^4.0.5",
         },
         "engines": Object {
-          "node": ">=10.19.0",
+          "node": ">=12.19.0",
         },
         "eslintConfig": Object {
           "env": Object {
@@ -236,24 +238,13 @@ Mr Bean
             "mocha": true,
             "node": true,
           },
-          "extends": "eslint:recommended",
+          "extends": Array [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/eslint-recommended",
+            "plugin:@typescript-eslint/recommended",
+          ],
           "ignorePatterns": Array [
             "*.d.ts",
-          ],
-          "overrides": Array [
-            Object {
-              "files": Array [
-                "*.ts",
-              ],
-              "rules": Object {
-                "no-unused-vars": Array [
-                  1,
-                  Object {
-                    "args": "none",
-                  },
-                ],
-              },
-            },
           ],
           "parser": "@typescript-eslint/parser",
           "parserOptions": Object {
@@ -439,7 +430,7 @@ Mr Bean
               "@babel/env",
               Object {
                 "targets": Object {
-                  "node": "10.19.0",
+                  "node": "12.19.0",
                 },
               },
             ],
@@ -459,40 +450,41 @@ Mr Bean
           "jwt-service": "^6.0.3",
           "knifecycle": "^10.0.3",
           "strict-qs": "^6.1.3",
+          "type-fest": "^0.19.0",
           "yerror": "^5.0.0",
           "yhttperror": "^5.0.0",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
-          "@babel/cli": "^7.10.5",
-          "@babel/core": "^7.11.1",
+          "@babel/cli": "^7.12.1",
+          "@babel/core": "^7.12.3",
           "@babel/node": "^7.2.2",
-          "@babel/plugin-proposal-class-properties": "^7.10.4",
-          "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+          "@babel/plugin-proposal-class-properties": "^7.12.1",
+          "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
           "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-          "@babel/plugin-syntax-import-meta": "^7.8.3",
-          "@babel/preset-env": "^7.11.0",
-          "@babel/preset-typescript": "^7.10.4",
-          "@babel/register": "^7.10.5",
-          "@types/jest": "^26.0.10",
-          "@typescript-eslint/eslint-plugin": "^3.9.1",
-          "@typescript-eslint/parser": "^3.9.1",
+          "@babel/plugin-syntax-import-meta": "^7.10.4",
+          "@babel/preset-env": "^7.12.1",
+          "@babel/preset-typescript": "^7.12.1",
+          "@babel/register": "^7.12.1",
+          "@types/jest": "^26.0.15",
+          "@typescript-eslint/eslint-plugin": "^4.8.1",
+          "@typescript-eslint/parser": "^4.8.1",
           "axios": "^0.21.0",
           "babel-eslint": "^10.1.0",
           "babel-plugin-knifecycle": "^3.0.1",
-          "chokidar": "^3.4.1",
-          "eslint": "^7.7.0",
+          "chokidar": "^3.4.3",
+          "eslint": "^7.13.0",
           "eslint-plugin-prettier": "^3.1.4",
-          "jest": "^26.4.0",
+          "jest": "^26.6.3",
           "openapi-schema-validator": "^3.0.3",
           "parse-gitignore": "^1.0.1",
-          "prettier": "^2.0.5",
+          "prettier": "^2.1.2",
           "rimraf": "^3.0.2",
           "schema2dts": "^1.0.2",
-          "typescript": "^4.0.2",
+          "typescript": "^4.0.5",
         },
         "engines": Object {
-          "node": ">=10.19.0",
+          "node": ">=12.19.0",
         },
         "eslintConfig": Object {
           "env": Object {
@@ -501,24 +493,13 @@ Mr Bean
             "mocha": true,
             "node": true,
           },
-          "extends": "eslint:recommended",
+          "extends": Array [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/eslint-recommended",
+            "plugin:@typescript-eslint/recommended",
+          ],
           "ignorePatterns": Array [
             "*.d.ts",
-          ],
-          "overrides": Array [
-            Object {
-              "files": Array [
-                "*.ts",
-              ],
-              "rules": Object {
-                "no-unused-vars": Array [
-                  1,
-                  Object {
-                    "args": "none",
-                  },
-                ],
-              },
-            },
           ],
           "parser": "@typescript-eslint/parser",
           "parserOptions": Object {
@@ -689,7 +670,7 @@ Mr Bean
               "@babel/env",
               Object {
                 "targets": Object {
-                  "node": "10.19.0",
+                  "node": "12.19.0",
                 },
               },
             ],
@@ -709,40 +690,41 @@ Mr Bean
           "jwt-service": "^6.0.3",
           "knifecycle": "^10.0.3",
           "strict-qs": "^6.1.3",
+          "type-fest": "^0.19.0",
           "yerror": "^5.0.0",
           "yhttperror": "^5.0.0",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
-          "@babel/cli": "^7.10.5",
-          "@babel/core": "^7.11.1",
+          "@babel/cli": "^7.12.1",
+          "@babel/core": "^7.12.3",
           "@babel/node": "^7.2.2",
-          "@babel/plugin-proposal-class-properties": "^7.10.4",
-          "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+          "@babel/plugin-proposal-class-properties": "^7.12.1",
+          "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
           "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-          "@babel/plugin-syntax-import-meta": "^7.8.3",
-          "@babel/preset-env": "^7.11.0",
-          "@babel/preset-typescript": "^7.10.4",
-          "@babel/register": "^7.10.5",
-          "@types/jest": "^26.0.10",
-          "@typescript-eslint/eslint-plugin": "^3.9.1",
-          "@typescript-eslint/parser": "^3.9.1",
+          "@babel/plugin-syntax-import-meta": "^7.10.4",
+          "@babel/preset-env": "^7.12.1",
+          "@babel/preset-typescript": "^7.12.1",
+          "@babel/register": "^7.12.1",
+          "@types/jest": "^26.0.15",
+          "@typescript-eslint/eslint-plugin": "^4.8.1",
+          "@typescript-eslint/parser": "^4.8.1",
           "axios": "^0.21.0",
           "babel-eslint": "^10.1.0",
           "babel-plugin-knifecycle": "^3.0.1",
-          "chokidar": "^3.4.1",
-          "eslint": "^7.7.0",
+          "chokidar": "^3.4.3",
+          "eslint": "^7.13.0",
           "eslint-plugin-prettier": "^3.1.4",
-          "jest": "^26.4.0",
+          "jest": "^26.6.3",
           "openapi-schema-validator": "^3.0.3",
           "parse-gitignore": "^1.0.1",
-          "prettier": "^2.0.5",
+          "prettier": "^2.1.2",
           "rimraf": "^3.0.2",
           "schema2dts": "^1.0.2",
-          "typescript": "^4.0.2",
+          "typescript": "^4.0.5",
         },
         "engines": Object {
-          "node": ">=10.19.0",
+          "node": ">=12.19.0",
         },
         "eslintConfig": Object {
           "env": Object {
@@ -751,24 +733,13 @@ Mr Bean
             "mocha": true,
             "node": true,
           },
-          "extends": "eslint:recommended",
+          "extends": Array [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/eslint-recommended",
+            "plugin:@typescript-eslint/recommended",
+          ],
           "ignorePatterns": Array [
             "*.d.ts",
-          ],
-          "overrides": Array [
-            Object {
-              "files": Array [
-                "*.ts",
-              ],
-              "rules": Object {
-                "no-unused-vars": Array [
-                  1,
-                  Object {
-                    "args": "none",
-                  },
-                ],
-              },
-            },
           ],
           "parser": "@typescript-eslint/parser",
           "parserOptions": Object {

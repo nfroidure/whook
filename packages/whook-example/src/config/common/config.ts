@@ -9,6 +9,7 @@ import type { WhookAPIHandlerDefinition, WhookConfigs } from '@whook/whook';
 import type { APIConfig } from '../../services/API';
 import type { JWTServiceConfig } from 'jwt-service';
 
+// eslint-disable-next-line
 const packageConf = require('../../../package');
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
 const NODE_ENVS = [...DEBUG_NODE_ENVS, 'uat', 'production'];

@@ -139,8 +139,7 @@ async function getOAuth2Authorize(
     redirect_uri?: string;
     scope?: string;
     state: string;
-    authorizeParameters?: { [name: string]: unknown };
-  },
+  } & Record<string, unknown>,
 ): Promise<WhookResponse> {
   const url = new URL(OAUTH2.authenticateURL);
 
@@ -197,7 +196,9 @@ async function getOAuth2Authorize(
 
 // The OAuth2 standard uses snake case names so we are
 // converting them to the project standards asap
-export function camelCaseObjectProperties(object) {
+export function camelCaseObjectProperties<T>(
+  object: Record<string, T>,
+): Record<string, T> {
   return Object.keys(object).reduce((camelCasedObject, key) => {
     const newKey = key === 'redirect_uri' ? 'redirectURI' : camelCase(key);
 

@@ -131,6 +131,7 @@ export async function runBuild(
       log: LogService;
       $autoload: Autoloader;
       API: OpenAPIV3.Document;
+      // eslint-disable-next-line
       buildInitializer: Function;
     } = await $.run([
       'NODE_ENV',
@@ -202,6 +203,7 @@ async function processOperations(
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader;
+    // eslint-disable-next-line
     buildInitializer: Function;
   },
   operations: WhookOperation<WhookAPIOperationAWSLambdaConfig>[],
@@ -251,6 +253,7 @@ async function buildAnyLambda(
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader;
+    // eslint-disable-next-line
     buildInitializer: Function;
   },
   operation: WhookOperation<WhookAPIOperationAWSLambdaConfig>,
@@ -267,6 +270,7 @@ async function buildAnyLambda(
       ((operation['x-whook'] || {}).suffix || '');
     log('info', `Building ${operationType} '${finalEntryPoint}'...`);
     const buildDefinition = BUILD_DEFINITIONS[operationType];
+    // eslint-disable-next-line
     const applyWrapper = require(buildDefinition.wrapper.path).default;
     const rootNode = await $autoload(
       entryPoint + (buildDefinition.suffix || ''),
@@ -401,7 +405,7 @@ async function ensureFileAsync(
   { log }: { log: LogService },
   path: string,
   content: string,
-  encoding: string = 'utf-8',
+  encoding = 'utf-8',
 ) {
   try {
     const oldContent = await readFileAsync(path, encoding);

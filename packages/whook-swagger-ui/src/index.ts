@@ -7,9 +7,9 @@ import type {
   HTTPRouterProvider,
   HTTPRouterService,
   ImporterService,
-  WhookAPIHandlerDefinition,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
+import type ECStatic from 'ecstatic';
 
 export { initGetOpenAPI, getOpenAPIDefinition };
 
@@ -28,7 +28,7 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   HOST: string;
   PORT: number;
   log: LogService;
-  importer: ImporterService<any>;
+  importer: ImporterService<ECStatic>;
 };
 export type WhookAPIOperationSwaggerConfig = {
   private?: boolean;
@@ -116,4 +116,6 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
   );
 }
 
-function noop() {}
+function noop() {
+  return undefined;
+}

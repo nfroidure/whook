@@ -22,8 +22,8 @@ export type OAuth2PasswordGranterParameters = {
 export type OAuth2PasswordGranterService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
 > = OAuth2GranterService<
-  unknown,
-  unknown,
+  Record<string, unknown>,
+  Record<string, unknown>,
   OAuth2PasswordGranterParameters,
   AUTHENTICATION_DATA
 >;

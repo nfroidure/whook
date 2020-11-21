@@ -26,7 +26,7 @@ export type ObfuscatorService = {
 
 export default autoService(initObfuscator);
 
-const noop = () => {};
+const noop = () => undefined;
 
 const DEFAULT_MAX_CLEAR_CHARS = 6;
 const DEFAULT_MAX_CLEAR_RATIO = 4;

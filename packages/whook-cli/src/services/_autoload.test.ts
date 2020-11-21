@@ -20,6 +20,7 @@ describe('$autoload', () => {
       return _default;
     });
 
+    // eslint-disable-next-line
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
@@ -52,6 +53,7 @@ describe('$autoload', () => {
       throw new YError('E_NO_MODULE');
     });
 
+    // eslint-disable-next-line
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
@@ -85,6 +87,7 @@ describe('$autoload', () => {
       definition: {},
     });
 
+    // eslint-disable-next-line
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
@@ -121,6 +124,7 @@ describe('$autoload', () => {
       definition: {},
     }));
 
+    // eslint-disable-next-line
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
@@ -156,10 +160,11 @@ describe('$autoload', () => {
       throw new Error('ENOENT');
     });
     $baseAutoload.mockResolvedValueOnce({
-      initializer: async () => async () => {},
+      initializer: async () => async () => undefined,
       path: 'mocked://service',
     });
 
+    // eslint-disable-next-line
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
@@ -195,10 +200,11 @@ describe('$autoload', () => {
       throw new Error('ENOENT');
     });
     $baseAutoload.mockResolvedValueOnce({
-      initializer: async () => async () => {},
+      initializer: async () => async () => undefined,
       path: 'mocked://service',
     });
 
+    // eslint-disable-next-line
     const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
       PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
@@ -230,6 +236,7 @@ describe('$autoload', () => {
       });
       importer.mockReturnValueOnce({});
 
+      // eslint-disable-next-line
       const initAutoload = require('./_autoload').default;
 
       try {
@@ -260,9 +267,10 @@ describe('$autoload', () => {
         return _default;
       });
       importer.mockReturnValueOnce({
-        default: async () => {},
+        default: async () => undefined,
       });
 
+      // eslint-disable-next-line
       const initAutoload = require('./_autoload').default;
 
       try {

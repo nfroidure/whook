@@ -21,12 +21,7 @@ import {
   postGraphQLDefinition,
   initGraphQL,
 } from '.';
-import type {
-  WhookGraphQLConfig,
-  WhookGraphQLDependencies,
-  WhookGraphQLService,
-  WhookGraphQLFragmentService,
-} from '.';
+import type { WhookGraphQLFragmentService } from '.';
 import type Knifecycle from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 
@@ -169,7 +164,7 @@ describe('GraphQL server', () => {
       `,
       resolvers: {
         Query: {
-          echo: (root, args, context) => `Echoing: ${args.message}!`,
+          echo: (_root, args) => `Echoing: ${args.message}!`,
         },
       },
     };

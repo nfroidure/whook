@@ -172,7 +172,7 @@ async function initCompiler({
 
     compiler.outputFileSystem = ensureWebpackMemoryFs(memoryFS);
 
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       compiler.run((err, stats) => {
         if (err) {
           reject(YError.wrap(err, 'E_WEBPACK', err.details));

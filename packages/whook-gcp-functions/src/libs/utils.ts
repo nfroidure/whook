@@ -25,6 +25,7 @@ export async function loadLambda(
   log('debug', '⛏️ - Loading lambda module at path:', modulePath);
 
   try {
+    // eslint-disable-next-line
     const module = require(modulePath);
 
     if (!module) {

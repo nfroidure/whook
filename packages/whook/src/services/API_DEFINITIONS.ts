@@ -47,13 +47,14 @@ export type WhookAPIDefinitions = {
 export type WhookAPIOperationConfig = {
   disabled?: boolean;
 };
-export type WhookAPIOperationAddition<T = {}> = {
+export type WhookAPIOperationAddition<T = Record<string, any>> = {
   operationId: OpenAPIV3.OperationObject['operationId'];
   'x-whook'?: T & WhookAPIOperationConfig;
 };
-export type WhookAPIOperation<T = {}> = OpenAPIV3.OperationObject &
-  WhookAPIOperationAddition<T>;
-export type WhookAPIHandlerDefinition<T = {}> = {
+export type WhookAPIOperation<
+  T = Record<string, any>
+> = OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
+export type WhookAPIHandlerDefinition<T = Record<string, any>> = {
   path: string;
   method: string;
   operation: WhookAPIOperation<T>;

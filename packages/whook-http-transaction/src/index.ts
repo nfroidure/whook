@@ -64,7 +64,9 @@ export type DereferencedOperationObject = Omit<
   };
 };
 
-export type WhookOperation<T = {}> = DereferencedOperationObject & {
+export type WhookOperation<
+  T = Record<string, unknown>
+> = DereferencedOperationObject & {
   path: string;
   method: string;
   'x-whook'?: T;
@@ -104,7 +106,7 @@ export type WhookHandler<
 
 export type HTTPTransactionConfig = {
   TIMEOUT?: number;
-  TRANSACTIONS?: {};
+  TRANSACTIONS?: Record<string, Record<string, unknown>>;
 };
 export type HTTPTransactionDependencies = HTTPTransactionConfig & {
   obfuscator: ObfuscatorService;
@@ -130,7 +132,7 @@ export type HTTPTransactionService = (
   res: ServerResponse,
 ) => Promise<WhookHTTPTransaction>;
 
-const noop = () => {};
+const noop = () => undefined;
 const DEFAULT_TIMEOUT = ms('30s');
 
 function createIncrementor(n = 0) {
@@ -403,7 +405,7 @@ async function initHTTPTransaction({
       delayPromise: Promise<void>;
     },
     response: WhookResponse,
-    operationId: string = 'none',
+    operationId = 'none',
   ): Promise<void> {
     /* Architecture Note #1.4: Transaction end
   We end the transaction by writing the final status
