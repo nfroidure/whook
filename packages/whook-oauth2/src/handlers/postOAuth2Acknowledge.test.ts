@@ -3,6 +3,7 @@ import YError from 'yerror';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters';
 import type { OAuth2GranterService } from '../services/oAuth2Granters';
+import type { BaseAuthenticationData } from '@whook/authorization';
 
 describe('postOAuth2Acknowledge', () => {
   const ERRORS_DESCRIPTORS = {
@@ -52,9 +53,14 @@ describe('postOAuth2Acknowledge', () => {
       applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       redirectURI: 'http://lol',
       scope: 'user',
+      userId: 1,
     });
 
-    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge({
+    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge<
+      BaseAuthenticationData & {
+        userId: number;
+      }
+    >({
       ERRORS_DESCRIPTORS,
       oAuth2Granters,
       checkApplication,
@@ -64,6 +70,7 @@ describe('postOAuth2Acknowledge', () => {
       authenticationData: {
         applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         scope: 'auth',
+        userId: 1,
       },
       body: {
         responseType: 'code',
@@ -80,7 +87,7 @@ describe('postOAuth2Acknowledge', () => {
       Object {
         "response": Object {
           "headers": Object {
-            "location": "https://www.example.com/?client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&redirect_uri=http%3A%2F%2Flol",
+            "location": "https://www.example.com/?client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&redirect_uri=http%3A%2F%2Flol&user_id=1",
           },
           "status": 302,
         },
@@ -113,7 +120,11 @@ describe('postOAuth2Acknowledge', () => {
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
 
-    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge({
+    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge<
+      BaseAuthenticationData & {
+        userId: number;
+      }
+    >({
       ERRORS_DESCRIPTORS,
       oAuth2Granters,
       checkApplication,
@@ -123,6 +134,7 @@ describe('postOAuth2Acknowledge', () => {
       authenticationData: {
         applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         scope: 'auth',
+        userId: 1,
       },
       body: {
         responseType: 'yolo',

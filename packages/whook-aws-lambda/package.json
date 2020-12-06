@@ -45,7 +45,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "peerDependencies": {
     "babel-loader": "^8.1.0",
-    "babel-plugin-knifecycle": "^3.0.1",
+    "babel-plugin-knifecycle": "^5.0.0",
     "webpack": "^4.44.1"
   },
   "dependencies": {
@@ -56,9 +56,9 @@
     "ajv": "^6.12.6",
     "bytes": "^3.1.0",
     "camelcase": "^6.2.0",
-    "common-services": "^8.0.2",
+    "common-services": "^9.0.0",
     "cpr": "3.0.1",
-    "knifecycle": "^11.0.0-beta.7",
+    "knifecycle": "^11.0.0",
     "memfs": "3.2.0",
     "memory-fs": "0.5.0",
     "mkdirp": "^1.0.4",
@@ -84,7 +84,7 @@
     "@typescript-eslint/parser": "^4.8.1",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "babel-plugin-knifecycle": "^3.0.1",
+    "babel-plugin-knifecycle": "^5.0.0",
     "eslint": "^7.13.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.3",

@@ -16,6 +16,7 @@ Object {
       Object {
         "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
         "scope": "auth",
+        "userId": 1,
       },
       Object {
         "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",

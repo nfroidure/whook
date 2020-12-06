@@ -418,6 +418,18 @@ Object {
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES",
     ],
     Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT",
     ],
     Array [

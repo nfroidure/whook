@@ -134,6 +134,7 @@ Object {
   "result": Object {
     "initializer": Object {
       "$name": "CONFIG",
+      "$singleton": true,
       "$type": "constant",
       "$value": Object {
         "testConfig": "test",
