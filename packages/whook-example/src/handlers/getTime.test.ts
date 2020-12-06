@@ -10,7 +10,7 @@ describe('getTime', () => {
     const getTime = await initGetTime({
       time,
     });
-    const response = await getTime();
+    const response = await getTime({});
 
     expect({
       response,

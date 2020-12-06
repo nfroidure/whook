@@ -4,7 +4,13 @@ import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 
 export const FAKE_MECHANISM = {
   type: 'Fake',
-  parseAuthorizationRest: (rest) => {
+  parseAuthorizationRest: (
+    rest: string,
+  ): {
+    scope: string;
+    applicationId: string;
+    userId: string;
+  } => {
     let scope: string;
     let applicationId: string;
     let userId: string;

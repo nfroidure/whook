@@ -1,5 +1,11 @@
 import { identity, noop, compose } from '../libs/utils';
-import { constant, name, autoService, options, initializer } from 'knifecycle';
+import {
+  constant,
+  name,
+  autoService,
+  singleton,
+  initializer,
+} from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router';
 import path from 'path';
 import YError from 'yerror';
@@ -47,10 +53,7 @@ The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project automatically from the installed whook plugins.
 */
-export default options(
-  { singleton: true },
-  name('$autoload', autoService(initAutoload)),
-);
+export default singleton(name('$autoload', autoService(initAutoload)));
 
 /**
  * Initialize the Whook default DI autoloader
@@ -217,9 +220,7 @@ async function initAutoload<D>({
             name: 'HANDLERS',
             inject: handlerNames,
             type: 'service',
-            options: {
-              singleton: true,
-            },
+            singleton: true,
           },
           async (HANDLERS) => HANDLERS,
         ),

@@ -55,11 +55,12 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "common-services": "^8.0.2",
-    "knifecycle": "^10.0.3",
+    "common-services": "^9.0.0",
+    "knifecycle": "^11.0.0",
     "ms": "^2.1.2",
     "openapi-types": "^7.0.1",
     "statuses": "^2.0.0",
+    "type-fest": "^0.20.2",
     "yerror": "^5.0.0",
     "yhttperror": "^5.0.0"
   },
@@ -80,7 +81,7 @@
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-knifecycle": "^3.0.1",
+    "babel-plugin-knifecycle": "^5.0.0",
     "eslint": "^7.13.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.3",

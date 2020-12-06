@@ -1,4 +1,4 @@
-import { SPECIAL_PROPS, reuseSpecialProps, alsoInject } from 'knifecycle';
+import { SPECIAL_PROPS, wrapInitializer, alsoInject } from 'knifecycle';
 import HTTPError from 'yhttperror';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import {
@@ -75,53 +75,53 @@ export type WhookAuthorizationDependencies<
  * @param {Function} initHandler The handler initializer
  * @returns {Function} The handler initializer wrapped
  */
-export function wrapHandlerWithAuthorization<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D, S> {
-  const newInitializer: ServiceInitializer<
-    D,
-    S
-  > = initHandlerWithAuthorization.bind(null, initHandler);
-
-  return alsoInject(
-    ['?MECHANISMS', '?DEFAULT_MECHANISM', 'authentication', 'log'],
-    reuseSpecialProps(initHandler, newInitializer),
-  );
-}
-
-async function initHandlerWithAuthorization<
+export function wrapHandlerWithAuthorization<
+  P extends Parameters,
   A,
   R extends BaseAuthenticationData,
+  WR,
   D,
-  S extends WhookHandler
+  S extends WhookHandler<P, WR, WhookOperation>
 >(
   initHandler: ServiceInitializer<D, S>,
-  services: WhookAuthorizationDependencies<A, R> & D,
-): Promise<S> {
-  const {
-    MECHANISMS = [BEARER_MECHANISM],
-    DEFAULT_MECHANISM = BEARER_MECHANISM.type,
-    authentication,
-    log,
-  } = services;
-
-  log(
-    'debug',
-    `🔐 - Initializing the authorization wrapper for "${
-      initHandler[SPECIAL_PROPS.NAME]
-    }".`,
+): ServiceInitializer<WhookAuthorizationDependencies<A, R> & D, S> {
+  const augmentedInitializer = alsoInject<
+    WhookAuthorizationDependencies<A, R>,
+    D,
+    S
+  >(
+    ['?MECHANISMS', '?DEFAULT_MECHANISM', 'authentication', 'log'],
+    initHandler,
   );
-  const handler: S = await initHandler(services as D);
 
-  return handleWithAuthorization.bind(
-    null,
-    {
-      MECHANISMS,
-      DEFAULT_MECHANISM,
-      authentication,
-      log,
+  return wrapInitializer(
+    async (services: WhookAuthorizationDependencies<A, R>, handler: S) => {
+      const {
+        MECHANISMS = [BEARER_MECHANISM],
+        DEFAULT_MECHANISM = BEARER_MECHANISM.type,
+        authentication,
+        log,
+      } = services;
+
+      log(
+        'debug',
+        `🔐 - Initializing the authorization wrapper for "${
+          initHandler[SPECIAL_PROPS.NAME]
+        }".`,
+      );
+
+      return handleWithAuthorization.bind(
+        null,
+        {
+          MECHANISMS,
+          DEFAULT_MECHANISM,
+          authentication,
+          log,
+        },
+        handler,
+      );
     },
-    handler,
+    augmentedInitializer,
   );
 }
 

@@ -7,7 +7,7 @@ describe('getDiagnostic', () => {
     const getDiagnostic = await initGetDiagnostic({
       TRANSACTIONS,
     });
-    const response = await getDiagnostic();
+    const response = await getDiagnostic({});
 
     expect({
       response,

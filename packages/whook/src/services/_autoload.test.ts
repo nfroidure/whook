@@ -208,7 +208,9 @@ describe('$autoload', () => {
 
       expect({
         result,
-        HANDLERS: await result.initializer({ getPing: () => undefined }),
+        HANDLERS: await (result.initializer as any)({
+          getPing: () => undefined,
+        }),
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,

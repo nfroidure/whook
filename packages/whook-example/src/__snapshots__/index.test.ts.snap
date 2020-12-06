@@ -418,6 +418,18 @@ Object {
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES",
     ],
     Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME",
+    ],
+    Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in: /home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT",
     ],
     Array [
@@ -488,6 +500,18 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/dist/services/PROCESS_ENV",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_ENV",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_ENV",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_ENV",
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in: /home/whoiam/projects/whook/dist/services/PROCESS_NAME",
@@ -635,6 +659,18 @@ Object {
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/readDir",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/dist/services/readFile",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/packages/whook-cli/dist/services/readFile",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/packages/whook-cors/dist/services/readFile",
+    ],
+    Array [
+      "🚫 - Service \\"readFile\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/readFile",
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/dist/services/uniqueId",

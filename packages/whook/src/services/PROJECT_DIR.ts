@@ -1,5 +1,5 @@
 import pkgDir from 'pkg-dir';
-import { name, options, autoService } from 'knifecycle';
+import { name, singleton, autoService } from 'knifecycle';
 import YError from 'yerror';
 import { noop } from '../libs/utils';
 import type { LogService } from 'common-services';
@@ -18,10 +18,7 @@ Whook needs to know the directory of the project under
  automatically detect it.
 */
 
-export default options(
-  { singleton: true },
-  name('PROJECT_DIR', autoService(initProjectDir)),
-);
+export default singleton(name('PROJECT_DIR', autoService(initProjectDir)));
 
 /**
  * Auto detect the Whook PROJECT_DIR

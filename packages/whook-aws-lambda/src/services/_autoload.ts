@@ -44,7 +44,7 @@ export default alsoInject(
       }: {
         BUILD_CONSTANTS?: WhookBuildConstantsService;
         $injector: Injector<any>;
-        $instance: Knifecycle;
+        $instance: Knifecycle<any>;
         log: LogService;
       },
       $autoload: Autoloader,

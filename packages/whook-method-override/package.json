@@ -55,8 +55,8 @@
   "dependencies": {
     "@whook/http-transaction": "^5.1.4",
     "@whook/whook": "^5.1.6",
-    "common-services": "^8.0.2",
-    "knifecycle": "^10.0.3"
+    "common-services": "^9.0.0",
+    "knifecycle": "^11.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -73,7 +73,7 @@
     "@typescript-eslint/parser": "^4.8.1",
     "@whook/whook": "^3.1.3",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-knifecycle": "^3.0.1",
+    "babel-plugin-knifecycle": "^5.0.0",
     "eslint": "^7.13.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.3",

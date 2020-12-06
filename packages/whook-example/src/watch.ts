@@ -10,7 +10,7 @@ import parseGitIgnore from 'parse-gitignore';
 import type { Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 
-let $instance: Knifecycle;
+let $instance: Knifecycle<any>;
 let log: LogService;
 let delay: DelayService;
 let delayPromise: Promise<void>;
@@ -85,7 +85,7 @@ export async function restartDevServer() {
     'log',
   ])) as {
     PROJECT_SRC: string;
-    $instance: Knifecycle;
+    $instance: Knifecycle<any>;
     delay: DelayService;
     getOpenAPI;
     log: LogService;

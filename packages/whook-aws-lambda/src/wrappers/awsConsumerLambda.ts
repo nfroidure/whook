@@ -93,7 +93,7 @@ async function handleForAWSConsumerLambda(
     batchStats.batchFailures = failures.length;
     batchStats.batchStatuses = responses.map((response) => response.status);
     batchStats.batchErrorCodes = responses
-      .map((response) => response.body && response.body.code)
+      .map((response) => response.body && (response.body as any).code)
       .filter(identity);
 
     apm('CONSUMER', {

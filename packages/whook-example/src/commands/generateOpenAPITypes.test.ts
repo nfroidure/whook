@@ -73,7 +73,7 @@ describe('generateOpenAPITypes', () => {
               export type Output = {
                   readonly status: 200;
                   readonly headers?: NonNullable<{
-                      [pattern: string]: NonNullable<string>;
+                      [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
                   }>;
                   readonly body: Responses.$200;
               };

@@ -1,5 +1,6 @@
 import { autoService } from 'knifecycle';
 import { noop } from '../libs/utils';
+import type { Service } from 'knifecycle';
 import type { LogService } from 'common-services';
 
 export default autoService(initImporter);
@@ -20,7 +21,7 @@ export type ImporterService<M> = (path: string) => Promise<M>;
  *
  * export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
  */
-async function initImporter<M = unknown>({
+async function initImporter<M extends Service = Service>({
   log = noop,
 }: {
   log: LogService;

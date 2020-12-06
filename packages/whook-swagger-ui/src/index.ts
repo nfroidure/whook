@@ -42,7 +42,24 @@ export type WhookAPIOperationSwaggerConfig = {
  */
 export default function wrapHTTPRouterWithSwaggerUI<D>(
   initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
-): ProviderInitializer<D, HTTPRouterService> {
+): ProviderInitializer<D & WhookSwaggerUIDependencies, HTTPRouterService> {
+  const augmentedInitializer = alsoInject<
+    WhookSwaggerUIDependencies,
+    D,
+    HTTPRouterService
+  >(
+    [
+      'ENV',
+      '?DEV_ACCESS_TOKEN',
+      'BASE_PATH',
+      'HOST',
+      'PORT',
+      'importer',
+      '?log',
+    ],
+    initHTTPRouter,
+  );
+
   return wrapInitializer(
     async (
       {
@@ -101,18 +118,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
         return httpRouter.service(req, res);
       }
     },
-    alsoInject(
-      [
-        'ENV',
-        '?DEV_ACCESS_TOKEN',
-        'BASE_PATH',
-        'HOST',
-        'PORT',
-        'importer',
-        '?log',
-      ],
-      initHTTPRouter,
-    ),
+    augmentedInitializer,
   );
 }
 

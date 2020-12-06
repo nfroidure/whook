@@ -47,9 +47,9 @@ export async function runCreateWhook() {
         warning: console.log.bind(console),
       }),
     );
-    $.register(initLogService);
-    $.register(initLockService);
-    $.register(initDelayService);
+    $.register(initLogService as any);
+    $.register(initLockService as any);
+    $.register(initDelayService as any);
     $.register(initAuthor);
     $.register(initProject);
     $.register(initCreateWhook);

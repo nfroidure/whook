@@ -30,7 +30,7 @@ import {
 import stream from 'stream';
 import qs from 'qs';
 import { noop, compose } from '@whook/whook';
-import type { ServiceInitializer, HandlerInitializer } from 'knifecycle';
+import type { ServiceInitializer } from 'knifecycle';
 import type {
   WhookRequest,
   WhookResponse,
@@ -42,6 +42,7 @@ import type {
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { Readable } from 'stream';
 import type { DereferencedParameterObject } from '@whook/http-transaction';
 
 type HTTPWrapperDependencies = {
@@ -93,7 +94,7 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
 }
 
 async function initHandlerForAWSHTTPLambda(
-  initHandler: HandlerInitializer<unknown, unknown[], unknown>,
+  initHandler: ServiceInitializer<unknown, WhookHandler>,
   {
     OPERATION_API,
     WRAPPERS,
@@ -262,7 +263,7 @@ async function handleForAWSHTTPLambda(
           bufferLimit,
         },
         operation,
-        request.body,
+        request.body as Readable,
         bodySpec,
       );
 
@@ -395,7 +396,9 @@ async function handleForAWSHTTPLambda(
     id: event.requestContext.requestId,
     transactionId:
       request.headers['x-transaction-id'] &&
-      new RegExp(uuidPattern).test(request.headers['x-transaction-id'])
+      new RegExp(uuidPattern).test(
+        request.headers['x-transaction-id'] as string,
+      )
         ? event.headers['x-transaction-id']
         : event.requestContext.requestId,
     environment: NODE_ENV,
@@ -461,10 +464,12 @@ async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
       event.body,
       event.isBase64Encoded ? 'base64' : 'utf8',
     );
+    const bodyStream = new stream.PassThrough();
+
     request.headers['content-length'] = buf.length.toString();
-    request.body = new stream.PassThrough();
-    request.body.write(buf);
-    request.body.end();
+    request.body = bodyStream;
+    bodyStream.write(buf);
+    bodyStream.end();
   }
 
   return request;
@@ -508,7 +513,7 @@ async function responseToAWSResponseEvent(
   };
 
   if (response.body) {
-    const stream = response.body;
+    const stream = response.body as Readable;
     const buf: Buffer = await new Promise((resolve, reject) => {
       const chunks = [];
 

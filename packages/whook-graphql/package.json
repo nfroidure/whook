@@ -72,10 +72,10 @@
     "@whook/whook": "^5.1.6",
     "apollo-server-core": "^2.19.0",
     "apollo-server-env": "^2.4.5",
-    "common-services": "^8.0.2",
-    "knifecycle": "^10.0.3",
+    "common-services": "^9.0.0",
+    "knifecycle": "^11.0.0",
     "openapi-types": "^7.0.1",
-    "type-fest": "^0.19.0",
+    "type-fest": "^0.20.2",
     "yhttperror": "^5.0.0"
   },
   "devDependencies": {
@@ -94,7 +94,7 @@
     "@whook/authorization": "^5.1.6",
     "axios": "^0.21.0",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-knifecycle": "^3.0.1",
+    "babel-plugin-knifecycle": "^5.0.0",
     "eslint": "^7.13.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.3",

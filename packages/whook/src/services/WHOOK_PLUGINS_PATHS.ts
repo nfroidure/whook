@@ -1,5 +1,5 @@
 import path from 'path';
-import { name, options, autoService } from 'knifecycle';
+import { name, singleton, autoService } from 'knifecycle';
 import YError from 'yerror';
 import type { LogService } from 'common-services';
 
@@ -26,8 +26,7 @@ export type WhookPluginsPathsDependencies = WhookPluginsPathsConfig & {
   log: LogService;
 };
 
-export default options(
-  { singleton: true },
+export default singleton(
   name('WHOOK_PLUGINS_PATHS', autoService(initWhookPluginsPaths)),
 );
 

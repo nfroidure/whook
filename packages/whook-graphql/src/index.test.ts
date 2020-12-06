@@ -105,7 +105,7 @@ describe('GraphQL server', () => {
         {
           name: '$autoload',
           type: 'service',
-          options: { singleton: true },
+          singleton: true,
         },
         async () => $autoload,
       ),
@@ -130,7 +130,7 @@ describe('GraphQL server', () => {
           name: 'HANDLERS',
           type: 'service',
           inject: ['getGraphQL', 'postGraphQL'],
-          options: { singleton: true },
+          singleton: true,
         },
         async (services) => services,
       ),
@@ -202,11 +202,13 @@ describe('GraphQL server', () => {
   process.env.ISOLATED_ENV = '1';
 
   beforeAll(async () => {
-    const { $instance: _instance } = await runServer<{ $instance: Knifecycle }>(
-      prepareEnvironment,
-      prepareServer,
-      ['$instance', 'httpServer', 'process'],
-    );
+    const { $instance: _instance } = await runServer<{
+      $instance: Knifecycle<any>;
+    }>(prepareEnvironment, prepareServer, [
+      '$instance',
+      'httpServer',
+      'process',
+    ]);
     $instance = _instance;
   });
 

@@ -5,9 +5,14 @@ import YError from 'yerror';
 import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
 import type { BodySpec } from './lib';
 import type { OpenAPIV3 } from 'openapi-types';
-import type { WhookEncoders, WhookParsers } from '.';
-import type { Transform } from 'stream';
-import { WhookDecoders, WhookStringifyers } from '../dist';
+import type { JsonValue } from 'type-fest';
+import type {
+  WhookEncoders,
+  WhookParsers,
+  WhookDecoders,
+  WhookStringifyers,
+} from '.';
+import type { Transform, Readable } from 'stream';
 
 /* Architecture Note #1.1: Request body
 According to the OpenAPI specification
@@ -22,7 +27,9 @@ there are two kinds of requests:
  be parsed and validated into the
  handler itself.
 */
-export async function getBody<T>(
+export async function getBody<
+  T extends Readable | JsonValue | void = Readable | JsonValue | void
+>(
   {
     DECODERS,
     PARSERS,
@@ -33,9 +40,9 @@ export async function getBody<T>(
     bufferLimit: number;
   },
   operation: WhookOperation,
-  inputStream: Stream.Readable,
+  inputStream: Readable,
   bodySpec: BodySpec,
-): Promise<Stream.Readable | string | T | void> {
+): Promise<T> {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
   const requestBody = operation.requestBody
     ? (operation.requestBody as OpenAPIV3.RequestBodyObject)
@@ -52,11 +59,11 @@ export async function getBody<T>(
     (schemaObject.type !== 'string' || schemaObject.format !== 'binary');
 
   if (bodyIsEmpty) {
-    return Promise.resolve();
+    return;
   }
 
   if (!bodyIsParseable) {
-    return Promise.resolve(inputStream);
+    return inputStream as T;
   }
   if (!PARSERS[bodySpec.contentType]) {
     return Promise.reject(
@@ -114,9 +121,9 @@ export async function getBody<T>(
   }
 
   try {
-    return await new Promise((resolve, reject) => {
+    return await new Promise<T>((resolve, reject) => {
       try {
-        resolve(PARSERS[bodySpec.contentType](body.toString(), bodySpec));
+        resolve(PARSERS[bodySpec.contentType](body.toString(), bodySpec) as T);
       } catch (err) {
         reject(err);
       }
@@ -155,7 +162,7 @@ export async function sendBody(
   const Encoder = ENCODERS['utf-8'];
   const stream = new Encoder();
   const content = STRINGIFYERS[response.headers['content-type'] as string](
-    response.body,
+    response.body as string,
   );
 
   stream.write(content);

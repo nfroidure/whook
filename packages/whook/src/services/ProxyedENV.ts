@@ -2,7 +2,7 @@ import initEnv from './ENV';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '../libs/utils';
 import type { LogService } from 'common-services';
-import type { ENVService } from './ENV';
+import type { ENVService, ENVDependencies } from './ENV';
 
 export type ProxyedENVConfig = {
   NODE_ENV?: string;
@@ -13,9 +13,8 @@ export type ProxyedENVDependencies = ProxyedENVConfig & {
   log?: LogService;
 };
 
-export default alsoInject(
+export default alsoInject<ProxyedENVDependencies, ENVDependencies, ENVService>(
   ['?log', 'NODE_ENV', '?PROXYED_ENV_VARS'],
-  // TODO: Better generics in knifecycle ()
   wrapInitializer(wrapEnvForBuild, initEnv),
 );
 

@@ -48,10 +48,10 @@
     "@whook/authorization": "^5.1.6",
     "@whook/whook": "^5.1.6",
     "camelcase": "^6.1.0",
-    "common-services": "^8.0.2",
+    "common-services": "^9.0.0",
     "cookie": "^0.4.1",
-    "knifecycle": "^10.0.3",
-    "type-fest": "^0.19.0",
+    "knifecycle": "^11.0.0",
+    "type-fest": "^0.20.2",
     "yerror": "^5.0.0",
     "yhttperror": "^5.0.0"
   },
@@ -69,10 +69,10 @@
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-knifecycle": "^3.0.1",
+    "babel-plugin-knifecycle": "^5.0.0",
     "eslint": "^7.13.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "http-auth-utils": "^2.6.0",
+    "http-auth-utils": "^3.0.0",
     "jest": "^26.6.3",
     "jsdoc-to-markdown": "^6.0.1",
     "metapak": "^3.1.10",
@@ -142,7 +142,6 @@
     ],
     "plugins": [
       "@babel/proposal-class-properties",
-      "@babel/plugin-proposal-object-rest-spread",
       "babel-plugin-knifecycle"
     ],
     "env": {

@@ -10,18 +10,21 @@ import {
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import YError from 'yerror';
-import type { Services } from 'knifecycle';
+import type { Dependencies } from 'knifecycle';
 
 // Per convention a Whook server main file must export
 //  the following 3 functions to be composable:
 
 // The `runServer` function is intended to run the server
 // and may be proxied as is except in some e2e test cases
-export async function runServer(
-  innerPrepareEnvironment = prepareEnvironment,
-  innerPrepareServer = prepareServer,
-  injectedNames = [],
-) {
+export async function runServer<
+  D extends Dependencies,
+  T extends Knifecycle<D> = Knifecycle<D>
+>(
+  innerPrepareEnvironment: ($?: T) => Promise<T>,
+  innerPrepareServer: (injectedNames: string[], $: T) => Promise<D>,
+  injectedNames: string[] = [],
+): Promise<D> {
   return runBaseServer(
     innerPrepareEnvironment,
     innerPrepareServer,
@@ -30,22 +33,22 @@ export async function runServer(
 }
 
 // The `prepareServer` function is intended to prepare the server
-export async function prepareServer<S = Services>(
-  injectedNames: any[] = [],
-  $: Knifecycle = new Knifecycle(),
-): Promise<S> {
-  // Add here any logic bounded to the server only
+export async function prepareServer<
+  D extends Dependencies,
+  T extends Knifecycle<D>
+>(injectedNames: string[], $: T): Promise<D> {
+  // Add here any logic bound to the server only
   // For example, here we add a Swagger UI page for
   // development purpose
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
+  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as any);
 
   return await prepareBaseServer(injectedNames, $);
 }
 
 // The `prepareEnvironment` one is intended to prepare the server environment
-export async function prepareEnvironment(
-  $: Knifecycle = new Knifecycle(),
-): Promise<Knifecycle> {
+export async function prepareEnvironment<T extends Knifecycle<any>>(
+  $: T = new Knifecycle() as T,
+): Promise<T> {
   $ = await prepareBaseEnvironment($);
 
   // You can register any service/handler required to bootstrap
@@ -96,9 +99,9 @@ export async function runBuild(
 
 // The `prepareBuildEnvironment` create the build
 //  environment
-export async function prepareBuildEnvironment(
-  $: Knifecycle = new Knifecycle(),
-): Promise<Knifecycle> {
+export async function prepareBuildEnvironment<T extends Knifecycle<any>>(
+  $: T = new Knifecycle() as T,
+): Promise<T> {
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env

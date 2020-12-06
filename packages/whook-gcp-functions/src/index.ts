@@ -5,7 +5,6 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import cpr from 'cpr';
 import YError from 'yerror';
-import initInitializerBuilder from 'knifecycle/dist/build';
 import initCompiler, {
   WhookCompilerOptions,
   WhookCompilerService,
@@ -13,11 +12,16 @@ import initCompiler, {
   DEFAULT_COMPILER_OPTIONS,
 } from './services/compiler';
 import initBuildAutoloader from './services/_autoload';
-import Knifecycle, { SPECIAL_PROPS, constant } from 'knifecycle';
+import Knifecycle, {
+  SPECIAL_PROPS,
+  constant,
+  initInitializerBuilder,
+} from 'knifecycle';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
+import type { BuildInitializer } from 'knifecycle';
 import type { Autoloader } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -66,9 +70,9 @@ const BUILD_DEFINITIONS: {
   },
 };
 
-export async function prepareBuildEnvironment(
-  $: Knifecycle = new Knifecycle(),
-): Promise<Knifecycle> {
+export async function prepareBuildEnvironment<T extends Knifecycle<any>>(
+  $: T = new Knifecycle() as T,
+): Promise<T> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
@@ -111,7 +115,7 @@ export async function runBuild(
       $autoload: Autoloader;
       API: OpenAPIV3.Document;
       // eslint-disable-next-line
-      buildInitializer: Function;
+      buildInitializer: BuildInitializer;
     } = await $.run([
       'NODE_ENV',
       'BUILD_PARALLELISM',
@@ -182,8 +186,7 @@ async function processOperations(
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader;
-    // eslint-disable-next-line
-    buildInitializer: Function;
+    buildInitializer: BuildInitializer;
   },
   operations: WhookOperation<WhookAPIOperationGCPFunctionConfig>[],
 ) {
@@ -232,8 +235,7 @@ async function buildAnyLambda(
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader;
-    // eslint-disable-next-line
-    buildInitializer: Function;
+    buildInitializer: BuildInitializer;
   },
   operation: WhookOperation<WhookAPIOperationGCPFunctionConfig>,
 ) {
