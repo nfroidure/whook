@@ -55,7 +55,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/whook": "^5.1.6",
-    "knifecycle": "^11.0.0",
+    "knifecycle": "^11.0.1",
     "openapi-types": "^7.0.1",
     "semver": "^7.3.2"
   },

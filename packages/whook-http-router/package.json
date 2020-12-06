@@ -62,7 +62,7 @@
     "camelcase": "^6.2.0",
     "content-type": "^1.0.4",
     "first-chunk-stream": "^4.0.0",
-    "knifecycle": "^11.0.0",
+    "knifecycle": "^11.0.1",
     "miniquery": "^1.1.2",
     "ms": "^2.1.2",
     "negotiator": "^0.6.2",
