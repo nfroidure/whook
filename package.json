@@ -1,6 +1,6 @@
 {
   "name": "whook",
-  "version": "4.0.4",
+  "version": "0.0.0",
   "description": "Build strong and efficient REST web services.",
   "private": true,
   "metapak": {
@@ -38,7 +38,7 @@
     "prettier": "prettier --write 'src/**/*.js'",
     "preversion": "npm t && npm run lint && npm run compile && npm run lerna -- run types && npm run metapak -- -s",
     "test": "lerna run test",
-    "version": "npm run changelog"
+    "postversion": "npm run changelog"
   },
   "author": {
     "name": "Nicolas Froidure",
