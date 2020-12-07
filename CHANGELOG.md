@@ -1,4 +1,4 @@
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.7...v4.0.4) (2020-11-06)
+## [5.1.8](https://github.com/nfroidure/whook/compare/v5.1.7...v5.1.8) (2020-11-06)
 
 
 ### Bug Fixes
@@ -7,7 +7,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.6...v4.0.4) (2020-11-06)
+## [5.1.7](https://github.com/nfroidure/whook/compare/v5.1.6...v5.1.7) (2020-11-06)
 
 
 ### Bug Fixes
@@ -16,7 +16,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.5...v4.0.4) (2020-11-05)
+## [5.1.6](https://github.com/nfroidure/whook/compare/v5.1.5...v5.1.6) (2020-11-05)
 
 
 ### Bug Fixes
@@ -25,7 +25,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.4...v4.0.4) (2020-11-05)
+## [5.1.5](https://github.com/nfroidure/whook/compare/v5.1.4...v5.1.5) (2020-11-05)
 
 
 ### Bug Fixes
@@ -34,7 +34,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.3...v4.0.4) (2020-10-29)
+## [5.1.4](https://github.com/nfroidure/whook/compare/v5.1.3...v5.1.4) (2020-10-29)
 
 
 ### Bug Fixes
@@ -49,7 +49,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.2...v4.0.4) (2020-10-28)
+## [5.1.3](https://github.com/nfroidure/whook/compare/v5.1.2...v5.1.3) (2020-10-28)
 
 
 ### Bug Fixes
@@ -58,7 +58,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.1...v4.0.4) (2020-10-19)
+## [5.1.2](https://github.com/nfroidure/whook/compare/v5.1.1...v5.1.2) (2020-10-19)
 
 
 ### Bug Fixes
@@ -67,7 +67,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.1.0...v4.0.4) (2020-10-05)
+## [5.1.1](https://github.com/nfroidure/whook/compare/v5.1.0...v5.1.1) (2020-10-05)
 
 
 ### Bug Fixes
@@ -78,7 +78,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v5.0.0...v4.0.4) (2020-10-01)
+# [5.1.0](https://github.com/nfroidure/whook/compare/v5.0.0...v5.1.0) (2020-10-01)
 
 
 ### Bug Fixes
@@ -93,7 +93,7 @@
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v4.1.2...v4.0.4) (2020-09-15)
+# [5.0.0](https://github.com/nfroidure/whook/compare/v4.1.2...v5.0.0) (2020-09-15)
 
 
 ### Code Refactoring
@@ -108,7 +108,7 @@ expressiveness and productivity
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v4.1.1...v4.0.4) (2020-09-15)
+## [4.1.2](https://github.com/nfroidure/whook/compare/v4.1.1...v4.1.2) (2020-09-15)
 
 
 ### Bug Fixes
@@ -118,7 +118,7 @@ expressiveness and productivity
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v4.1.0...v4.0.4) (2020-08-24)
+## [4.1.1](https://github.com/nfroidure/whook/compare/v4.1.0...v4.1.1) (2020-08-24)
 
 
 ### Bug Fixes
@@ -129,7 +129,7 @@ expressiveness and productivity
 
 
 
-## [4.0.4](https://github.com/nfroidure/whook/compare/v4.0.5...v4.0.4) (2020-08-21)
+# [4.1.0](https://github.com/nfroidure/whook/compare/v4.0.5...v4.1.0) (2020-08-21)
 
 
 ### Bug Fixes
@@ -145,7 +145,27 @@ expressiveness and productivity
 
 
 
-## [4.0.3](https://github.com/nfroidure/whook/compare/v4.0.2...v4.0.3) (2020-06-12)
+## [4.0.5](https://github.com/nfroidure/whook/compare/v4.0.4...v4.0.5) (2020-06-12)
+
+
+### Bug Fixes
+
+* **build:** fix lambdas builds for authentication parameters ([f3dbc5b](https://github.com/nfroidure/whook/commit/f3dbc5b5e03fdcad2535c7e2ef1ee67bfa1ee02c))
+* **core:** fix package-lock.json ([ba337af](https://github.com/nfroidure/whook/commit/ba337af174c85526a4b1cb7f7ca0aa59c4a5bb85))
+* **docs:** retrieve missed changelog ([d1021f7](https://github.com/nfroidure/whook/commit/d1021f7aeae236b0e8e9fc6b46862543574f63d5)), closes [#70](https://github.com/nfroidure/whook/issues/70)
+
+
+
+## [4.0.4](https://github.com/nfroidure/whook/compare/v4.0.3...v4.0.4) (2020-06-09)
+
+
+### Bug Fixes
+
+* **@whook/http-transaction:** fix error agnosticism ([90a2865](https://github.com/nfroidure/whook/commit/90a2865b58fe0a39e0b65bff8f461cccf7527dae))
+
+
+
+## [4.0.3](https://github.com/nfroidure/whook/compare/v4.0.2...v4.0.3) (2020-05-29)
 
 
 ### Bug Fixes
@@ -155,7 +175,7 @@ expressiveness and productivity
 
 
 
-## [4.0.2](https://github.com/nfroidure/whook/compare/v4.0.1...v4.0.2) (2020-06-12)
+## [4.0.2](https://github.com/nfroidure/whook/compare/v4.0.1...v4.0.2) (2020-05-26)
 
 
 ### Bug Fixes
@@ -165,7 +185,7 @@ expressiveness and productivity
 
 
 
-## [4.0.1](https://github.com/nfroidure/whook/compare/v4.0.0...v4.0.1) (2020-06-12)
+## [4.0.1](https://github.com/nfroidure/whook/compare/v4.0.0...v4.0.1) (2020-05-19)
 
 
 ### Bug Fixes
@@ -174,7 +194,7 @@ expressiveness and productivity
 
 
 
-# [4.0.0](https://github.com/nfroidure/whook/compare/v3.1.3...v4.0.0) (2020-06-12)
+# [4.0.0](https://github.com/nfroidure/whook/compare/v3.1.3...v4.0.0) (2020-05-19)
 
 
 ### Bug Fixes
@@ -259,51 +279,53 @@ expressiveness and productivity
 * **swaggerui:** add mutedParameters option ([88c6176](https://github.com/nfroidure/whook/commit/88c6176e8d55359c4adabce4e04cf5d5521113fb))
 * **whook-swagger-ui:** Add a `getOpenAPI` endpoint ([f2b9853](https://github.com/nfroidure/whook/commit/f2b98537a543e03293b1fe51738323e5d334ea6c))
 
-<a name="3.1.3"></a>
+
+
 ## [3.1.3](https://github.com/nfroidure/whook/compare/v3.1.2...v3.1.3) (2018-10-31)
 
 
 ### Bug Fixes
 
-* **$autoload:** Fix wrapped handlers names ([647c166](https://github.com/nfroidure/whook/commit/647c166))
+* **$autoload:** Fix wrapped handlers names ([647c166](https://github.com/nfroidure/whook/commit/647c16684ca481b8a10f3a0d42f5d21f7611c91b))
 
 
 
-<a name="3.1.2"></a>
 ## [3.1.2](https://github.com/nfroidure/whook/compare/v3.1.1...v3.1.2) (2018-10-30)
 
 
 ### Bug Fixes
 
-* **$autoload:** Remove forgotten debug changes ([84c9bc2](https://github.com/nfroidure/whook/commit/84c9bc2))
+* **$autoload:** Remove forgotten debug changes ([84c9bc2](https://github.com/nfroidure/whook/commit/84c9bc2feb761992c65840c56bb387c68ec82b1b))
 
 
 
-<a name="3.1.1"></a>
 ## [3.1.1](https://github.com/nfroidure/whook/compare/v3.1.0...v3.1.1) (2018-10-30)
 
 
 ### Bug Fixes
 
-* **$autoload:** Ensure handlers can still be injected without wrappers ([68d9975](https://github.com/nfroidure/whook/commit/68d9975))
+* **$autoload:** Ensure handlers can still be injected without wrappers ([68d9975](https://github.com/nfroidure/whook/commit/68d997500eb97135fe26963ebc4fc5112f311d38))
 
 
 
-<a name="3.1.0"></a>
 # [3.1.0](https://github.com/nfroidure/whook/compare/v3.0.0...v3.1.0) (2018-10-22)
 
 
 ### Features
 
-* **PORT/HOST services:** Allow to pickup PORT/HOST from ENV ([8ffce98](https://github.com/nfroidure/whook/commit/8ffce98))
+* **PORT/HOST services:** Allow to pickup PORT/HOST from ENV ([8ffce98](https://github.com/nfroidure/whook/commit/8ffce981bc91851722d62cacd111129151f537c6))
 
 
 
-<a name="3.0.0"></a>
 # [3.0.0](https://github.com/nfroidure/whook/compare/v2.0.0...v3.0.0) (2018-10-21)
 
 
 
-<a name="2.0.0"></a>
 # [2.0.0](https://github.com/nfroidure/whook/compare/v0.1.0...v2.0.0) (2018-10-14)
+
+
+
+# 0.1.0 (2015-09-03)
+
+**Whook prototyped version:** first attempt at creating whook
 
