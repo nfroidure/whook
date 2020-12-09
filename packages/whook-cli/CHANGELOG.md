@@ -1,3 +1,15 @@
+# [6.0.0](https://github.com/nfroidure/whook/compare/v5.1.8...v6.0.0) (2020-12-09)
+
+
+### Bug Fixes
+
+* **@whook/example:** fix the watch script to completely wait for the server restart ([2d616f7](https://github.com/nfroidure/whook/commit/2d616f759fb3390e1a82f89661047e4b0a4d3234))
+* **dependencies:** update knifecycle ([351a9c4](https://github.com/nfroidure/whook/commit/351a9c4aae4c94f797e8fc76614384840e562c8f))
+* **doc:** regenerate the changelog ([d7234dc](https://github.com/nfroidure/whook/commit/d7234dc596dba94f55a9917118880b413c0de457))
+* **docs:** remove version from the root package ([487f02d](https://github.com/nfroidure/whook/commit/487f02d5ec548e2ea1cdd97a3827ee3cbb6a578a)), closes [#70](https://github.com/nfroidure/whook/issues/70)
+
+
+
 ## [5.1.6](https://github.com/nfroidure/whook/compare/v5.1.5...v5.1.6) (2020-11-05)
 
 
