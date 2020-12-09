@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -k packages/whook/package.json && git add CHANGELOG.md",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "compile": "lerna run compile",
     "cover": "lerna run cover",
@@ -38,7 +38,7 @@
     "prettier": "prettier --write 'src/**/*.js'",
     "preversion": "npm t && npm run lint && npm run compile && npm run lerna -- run types && npm run metapak -- -s",
     "test": "lerna run test",
-    "postversion": "npm run changelog"
+    "version": "npm run changelog"
   },
   "author": {
     "name": "Nicolas Froidure",
@@ -61,7 +61,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^3.22.1",
     "metapak": "^3.1.10",
-    "metapak-nfroidure": "11.0.3"
+    "metapak-nfroidure": "11.0.4"
   },
   "contributors": [],
   "engines": {
