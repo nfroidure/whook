@@ -71,14 +71,16 @@ Object {
     Array [
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { extra, autoService } from 'knifecycle';
-import { LogService } from 'common-services';
 import {
+  readArgs,
+} from '@whook/cli';
+import type {
   PromptArgs,
   WhookCommandArgs,
   WhookCommandDefinition,
   WhookCommandHandler,
-  readArgs,
 } from '@whook/cli';
+import type { LogService } from 'common-services';
 
 
 export const definition: WhookCommandDefinition = {
@@ -256,11 +258,13 @@ Object {
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { extra, autoService } from 'knifecycle';
 import {
+  readArgs,
+} from '@whook/cli';
+import type {
   PromptArgs,
   WhookCommandArgs,
   WhookCommandDefinition,
   WhookCommandHandler,
-  readArgs,
 } from '@whook/cli';
 
 
@@ -404,8 +408,9 @@ Object {
     Array [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
-import type { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
-import { LogService } from 'common-services';
+import type { WhookAPIHandlerDefinition } from '@whook/whook';
+import type { LogService } from 'common-services';
+
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/lol',
@@ -451,9 +456,7 @@ async function getHandler({
   log,
 }: HandlerDependencies, {
     param,
-  } : {
-    param: number;
-  }): Promise<WhookResponse<200, {}, {}>> {
+  } : API.GetHandler.Input): Promise<API.GetHandler.Output> {
   return {
     status: 200,
     headers: {},
@@ -655,7 +658,8 @@ Object {
     Array [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
-import type { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';
+import type { WhookAPIHandlerDefinition } from '@whook/whook';
+
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/lol',
@@ -693,9 +697,7 @@ export default autoHandler(getHandler);
 
 async function getHandler(_: HandlerDependencies, {
     param,
-  } : {
-    param: number;
-  }): Promise<WhookResponse<200, {}, {}>> {
+  } : API.GetHandler.Input): Promise<API.GetHandler.Output> {
   return {
     status: 200,
     headers: {},
@@ -771,7 +773,8 @@ Object {
     Array [
       "/hom/whoiam/project/src/services/aProvider.ts",
       "import { autoProvider, Provider } from 'knifecycle';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
+
 
 export type AProviderService = {};
 export type AProviderProvider = Provider<AProviderService>;
@@ -920,6 +923,7 @@ Object {
       "/hom/whoiam/project/src/services/aProvider.ts",
       "import { autoProvider, Provider } from 'knifecycle';
 
+
 export type AProviderService = {};
 export type AProviderProvider = Provider<AProviderService>;
 export type AProviderDependencies = {};
@@ -1008,7 +1012,8 @@ Object {
     Array [
       "/hom/whoiam/project/src/services/aService.ts",
       "import { autoService } from 'knifecycle';
-import { LogService } from 'common-services';
+import type { LogService } from 'common-services';
+
 
 export type AServiceService = {};
 export type AServiceDependencies = {
@@ -1146,6 +1151,7 @@ Object {
     Array [
       "/hom/whoiam/project/src/services/aService.ts",
       "import { autoService } from 'knifecycle';
+
 
 export type AServiceService = {};
 export type AServiceDependencies = {};

@@ -22,7 +22,7 @@ import type { OpenAPIV3 } from 'openapi-types';
 // Currently, we rely on a static list of services but
 // best would be to use TypeScript introspection and
 // the autoloader to allow to retrieve a dynamic list
-// of constants from the CONFIGS service and the WhookConfigs
+// of constants from the CONFIGS service, the WhookConfigs
 // type and the autoloader service.
 const commonServicesTypes = {
   time: 'TimeService',
@@ -45,9 +45,6 @@ const whookServicesTypes = {
   ENV: 'ENVService',
   APM: 'APMService',
   CONFIGS: 'CONFIGSService',
-};
-const whookCommandsTypes = {
-  promptArgs: 'PromptArgs',
 };
 const allTypes = {
   ...commonServicesTypes,
@@ -162,30 +159,35 @@ async function initCreateCommand({
     const whookServices = services.filter(
       (service) => whookServicesTypes[service],
     );
-    const imports =
-      (commonServices.length
-        ? `
-import { ${commonServices
-            .map((name) => commonServicesTypes[name])
-            .join(', ')} } from 'common-services';`
-        : '') +
-      (whookServices.length
-        ? `
-import { ${whookServices
-            .map((name) => whookServicesTypes[name])
-            .join(', ')} } from '@whook/whook';`
-        : '') +
-      (type === 'command'
+    const imports = `${
+      type === 'command'
         ? `
 import {
+  readArgs,
+} from '@whook/cli';
+import type {
   PromptArgs,
   WhookCommandArgs,
   WhookCommandDefinition,
   WhookCommandHandler,
-  readArgs,
-} from '@whook/cli';
-`
-        : '');
+} from '@whook/cli';`
+        : ''
+    }${
+      commonServices.length
+        ? `
+import type { ${commonServices
+            .map((name) => commonServicesTypes[name])
+            .join(', ')} } from 'common-services';`
+        : ''
+    }${
+      whookServices.length
+        ? `
+import type { ${whookServices
+            .map((name) => whookServicesTypes[name])
+            .join(', ')} } from '@whook/whook';`
+        : ''
+    }
+`;
     let fileSource = '';
 
     if (type === 'handler') {
@@ -313,8 +315,10 @@ function buildHandlerSource(
   typesDeclaration,
   imports: string,
 ) {
+  const APIHandlerName = name[0].toUpperCase() + name.slice(1);
+
   return `import { autoHandler } from 'knifecycle';
-import type { WhookResponse, WhookAPIHandlerDefinition } from '@whook/whook';${imports}
+import type { WhookAPIHandlerDefinition } from '@whook/whook';${imports}
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '${path}',
@@ -334,6 +338,7 @@ export const definition: WhookAPIHandlerDefinition = {
       ['post', 'put', 'patch'].includes(method)
         ? `
     requestBody: {
+      required: true,
       content: {
         'application/json': {
           schema: {
@@ -370,14 +375,7 @@ async function ${name}(${parametersDeclaration || '_'}: HandlerDependencies, {
     body,`
         : ''
     }
-  } : {
-    param: number;${
-      ['post', 'put'].includes(method)
-        ? `
-    body: {};`
-        : ''
-    }
-  }): Promise<WhookResponse<200, {}, {}>> {
+  } : API.${APIHandlerName}.Input): Promise<API.${APIHandlerName}.Output> {
   return {
     status: 200,
     headers: {},

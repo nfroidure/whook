@@ -13,7 +13,7 @@ declare namespace API {
         export type Output = {
             readonly status: 200;
             readonly headers?: NonNullable<{
-                [pattern: string]: NonNullable<string>;
+                [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
             }>;
             readonly body: Responses.$200;
         };
@@ -26,7 +26,7 @@ declare namespace API {
         export type Output = {
             readonly status: 200;
             readonly headers?: NonNullable<{
-                [pattern: string]: NonNullable<string>;
+                [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
             }>;
             readonly body: Responses.$200;
         };
@@ -43,7 +43,7 @@ declare namespace API {
         export type Output = {
             readonly status: 200;
             readonly headers?: NonNullable<{
-                [pattern: string]: NonNullable<string>;
+                [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
             }>;
             readonly body: Responses.$200;
         };
@@ -61,7 +61,7 @@ declare namespace API {
         export type Output = {
             readonly status: 200;
             readonly headers?: NonNullable<{
-                [pattern: string]: NonNullable<string>;
+                [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
             }>;
             readonly body: Responses.$200;
         };
@@ -77,7 +77,7 @@ declare namespace API {
         export type Output = {
             readonly status: 200;
             readonly headers?: NonNullable<{
-                [pattern: string]: NonNullable<string>;
+                [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
             }>;
             readonly body: Responses.$200;
         };
@@ -90,7 +90,7 @@ declare namespace API {
         export type Output = {
             readonly status: 200;
             readonly headers?: NonNullable<{
-                [pattern: string]: NonNullable<string>;
+                [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
             }>;
             readonly body: Responses.$200;
         };
