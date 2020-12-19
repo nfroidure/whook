@@ -3,10 +3,41 @@ import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { LogService } from 'common-services';
+import type { MSKEvent } from 'aws-lambda';
+
+const DEFAULT_EVENT: MSKEvent = {
+  eventSource: 'aws:kafka',
+  eventSourceArn:
+    'arn:aws:kafka:eu-west-3:765225263528:cluster/production/abbacaca-abba-caca-abba-cacaabbacaca-2',
+  records: {
+    'ingestion-bench-1': [
+      {
+        key: 'none',
+        topic: 'tropic',
+        partition: 1,
+        offset: 0,
+        timestamp: 1608321344592,
+        timestampType: 'CREATE_TIME',
+        value:
+          'WyJERy1TUi0wMDAxIiwieCIsIjIwMjAtMTAtMTVUMDg6MjE6MTAuMzA4WiIsIi0yNzIuMCJd',
+      },
+      {
+        key: 'none',
+        topic: 'tropic',
+        partition: 1,
+        offset: 1,
+        timestamp: 1608321344801,
+        timestampType: 'CREATE_TIME',
+        value:
+          'WyJERy1TUi0wMDAxIiwieCIsIjIwMjAtMTAtMTVUMDg6MjE6MTEuMjE1WiIsIi0xOTIuMCJd',
+      },
+    ],
+  },
+};
 
 export const definition: WhookCommandDefinition = {
-  description: 'A command for testing AWS consumer lambda',
-  example: `whook testConsumerLambda --name handleConsumerLambda`,
+  description: 'A command for testing AWS lambda Kafka consumers',
+  example: `whook KafkaConsumer --name handleKafkaConsumerLambda`,
   arguments: {
     type: 'object',
     additionalProperties: false,
@@ -23,16 +54,20 @@ export const definition: WhookCommandDefinition = {
         default: 'index',
       },
       event: {
-        description: 'The event batch',
+        description: 'The Kafka batch event',
         type: 'string',
+        default: JSON.stringify(DEFAULT_EVENT),
       },
     },
   },
 };
 
-export default extra(definition, autoService(initTestConsumerLambdaCommand));
+export default extra(
+  definition,
+  autoService(initTestKafkaConsumerLambdaCommand),
+);
 
-async function initTestConsumerLambdaCommand({
+async function initTestKafkaConsumerLambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
   log,

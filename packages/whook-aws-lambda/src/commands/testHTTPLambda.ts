@@ -18,6 +18,7 @@ import type {
 } from '@whook/cli';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookAPIOperationAWSLambdaConfig } from '..';
+import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing AWS HTTP lambda',
@@ -103,7 +104,7 @@ async function initTestHTTPLambdaCommand({
     ).concat(OPERATION.parameters);
     const hasBody = !!OPERATION.requestBody;
     const parameters = JSON.parse(rawParameters);
-    const awsRequest = {
+    const awsRequest: APIGatewayProxyEvent = {
       pathParameters: ammendedParameters
         .filter((p) => p.in === 'path')
         .reduce((pathParameters, p) => {
@@ -144,30 +145,32 @@ async function initTestHTTPLambdaCommand({
         requestId: randomUUID(),
         httpMethod: OPERATION.method.toUpperCase(),
       },
-    };
+    } as APIGatewayProxyEvent;
     if (hasBody) {
       awsRequest.headers['content-type'] = `${contentType};charset=UTF-8`;
     }
     log('info', 'AWS_REQUEST:', awsRequest);
 
-    const result = await new Promise((resolve, reject) => {
-      const handlerPromise = handler(
-        awsRequest,
-        {
-          succeed: (...args) => {
+    const result: APIGatewayProxyResult = await new Promise(
+      (resolve, reject) => {
+        const handlerPromise = handler(
+          awsRequest,
+          {
+            succeed: (...args: unknown[]) => {
+              handlerPromise.then(resolve.bind(null, ...args));
+            },
+            fail: reject,
+          },
+          (err: Error, ...args: unknown[]) => {
+            if (err) {
+              reject(err);
+              return;
+            }
             handlerPromise.then(resolve.bind(null, ...args));
           },
-          fail: reject,
-        },
-        (err, ...args) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          handlerPromise.then(resolve.bind(null, ...args));
-        },
-      ).catch(reject);
-    });
+        ).catch(reject);
+      },
+    );
     log('info', 'SUCCESS:', result);
   };
 }

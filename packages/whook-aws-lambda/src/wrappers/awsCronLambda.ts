@@ -2,9 +2,16 @@ import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
 import YError from 'yerror';
 import type { ServiceInitializer } from 'knifecycle';
-import type { APMService, WhookOperation, WhookHandler } from '@whook/whook';
+import type {
+  APMService,
+  WhookOperation,
+  WhookHandler,
+  WhookHeaders,
+  WhookResponse,
+} from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { ScheduledEvent, Context } from 'aws-lambda';
 
 type CronWrapperDependencies = {
   NODE_ENV: string;
@@ -14,16 +21,22 @@ type CronWrapperDependencies = {
   log?: LogService;
 };
 
+export type LambdaCronInput = { date: string };
+export type LambdaCronOutput = WhookResponse<number, WhookHeaders, void>;
+
 export default function wrapHandlerForAWSCronLambda<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & CronWrapperDependencies, S> {
-  return alsoInject(
+  return alsoInject<CronWrapperDependencies, D, S>(
     ['NODE_ENV', 'OPERATION_API', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSCronLambda.bind(null, initHandler),
+      initHandlerForAWSCronLambda.bind(null, initHandler) as ServiceInitializer<
+        D,
+        S
+      >,
     ),
-  ) as any;
+  );
 }
 
 async function initHandlerForAWSCronLambda<D, S extends WhookHandler>(
@@ -43,10 +56,10 @@ async function handleForAWSCronLambda(
     time = Date.now.bind(Date),
     log = noop,
   }: CronWrapperDependencies,
-  handler: WhookHandler,
-  event: any,
-  context: unknown,
-  callback: (err: Error, result?: any) => void,
+  handler: WhookHandler<LambdaCronInput, LambdaCronOutput>,
+  event: ScheduledEvent,
+  context: Context,
+  callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
   const method = Object.keys(OPERATION_API.paths[path])[0];
@@ -61,7 +74,8 @@ async function handleForAWSCronLambda(
   };
   try {
     log('debug', 'EVENT', JSON.stringify(event));
-    const response = await handler(parameters, OPERATION);
+
+    await handler(parameters, OPERATION);
 
     apm('CRON', {
       environment: NODE_ENV,
@@ -72,7 +86,7 @@ async function handleForAWSCronLambda(
       startTime,
       endTime: time(),
     });
-    callback(null, response);
+    callback(null);
   } catch (err) {
     const castedErr = YError.cast(err);
 

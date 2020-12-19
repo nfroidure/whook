@@ -22,16 +22,43 @@ import type {
   WhookCompilerService,
   WhookCompilerConfig,
 } from './services/compiler';
-import type { Autoloader } from 'knifecycle';
+import type { Autoloader, Dependencies } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
+import type { CprOptions } from 'cpr';
 
+export type {
+  LambdaConsumerInput,
+  LambdaConsumerOutput,
+} from './wrappers/awsConsumerLambda';
+export type {
+  LambdaCronInput,
+  LambdaCronOutput,
+} from './wrappers/awsCronLambda';
+export type {
+  LambdaHTTPInput,
+  LambdaHTTPOutput,
+} from './wrappers/awsHTTPLambda';
+export type {
+  LambdaKafkaConsumerInput,
+  LambdaKafkaConsumerOutput,
+} from './wrappers/awsKafkaConsumerLambda';
+export type {
+  LambdaLogSubscriberInput,
+  LambdaLogSubscriberOutput,
+} from './wrappers/awsLogSubscriberLambda';
+export type { LambdaS3Input, LambdaS3Output } from './wrappers/awsS3Lambda';
+export type {
+  LambdaTransformerInput,
+  LambdaTransformerOutput,
+} from './wrappers/awsTransformerLambda';
 export type { WhookCompilerConfig, WhookCompilerOptions, WhookCompilerService };
+
 export { DEFAULT_COMPILER_OPTIONS };
 
 export type WhookAPIOperationAWSLambdaConfig = {
-  type?: 'http' | 'cron' | 'consumer' | 'transformer';
+  type?: 'http' | 'cron' | 'consumer' | 'transformer' | 'kafka' | 's3' | 'log';
   sourceOperationId?: string;
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
@@ -50,16 +77,17 @@ const writeFileAsync = util.promisify(fs.writeFile) as (
 const cprAsync = util.promisify(cpr) as (
   source: string,
   destination: string,
-  options: any,
-) => Promise<any>;
+  options: CprOptions,
+) => Promise<string[]>;
 
-const BUILD_DEFINITIONS: {
-  [type: string]: {
+const BUILD_DEFINITIONS: Record<
+  WhookAPIOperationAWSLambdaConfig['type'],
+  {
     type: string;
     wrapper: { name: string; path: string };
     suffix?: string;
-  };
-} = {
+  }
+> = {
   http: {
     type: 'HTTP',
     wrapper: {
@@ -89,11 +117,32 @@ const BUILD_DEFINITIONS: {
       path: path.join(__dirname, 'wrappers', 'awsConsumerLambda'),
     },
   },
+  kafka: {
+    type: 'Kafka',
+    wrapper: {
+      name: 'wrapHandlerForAWSKafkaConsumerLambda',
+      path: path.join(__dirname, 'wrappers', 'awsKafkaConsumerLambda'),
+    },
+  },
+  s3: {
+    type: 'S3',
+    wrapper: {
+      name: 'wrapHandlerForAWSS3Lambda',
+      path: path.join(__dirname, 'wrappers', 'awsS3Lambda'),
+    },
+  },
+  log: {
+    type: 'Log',
+    wrapper: {
+      name: 'wrapHandlerForAWSLogSubscriberLambda',
+      path: path.join(__dirname, 'wrappers', 'awsLogSubscriberLambda'),
+    },
+  },
 };
 
-export async function prepareBuildEnvironment<T extends Knifecycle<any>>(
-  $: T = new Knifecycle() as T,
-): Promise<T> {
+export async function prepareBuildEnvironment<
+  T extends Knifecycle<Dependencies>
+>($: T = new Knifecycle() as T): Promise<T> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),

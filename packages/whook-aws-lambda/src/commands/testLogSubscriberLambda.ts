@@ -1,12 +1,35 @@
 import { loadLambda } from '../libs/utils';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
+import { encodePayload } from '../wrappers/awsLogSubscriberLambda';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { LogService } from 'common-services';
+import type {
+  CloudWatchLogsDecodedData,
+  CloudWatchLogsEvent,
+} from 'aws-lambda';
+
+// Event example from:
+// https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchlogs.html
+const DEFAULT_EVENT: CloudWatchLogsDecodedData = {
+  messageType: 'DATA_MESSAGE',
+  owner: '123456789012',
+  logGroup: '/aws/lambda/echo-nodejs',
+  logStream: '2019/03/13/[$LATEST]94fa867e5374431291a7fc14e2f56ae7',
+  subscriptionFilters: ['LambdaStream_cloudwatchlogs-node'],
+  logEvents: [
+    {
+      id: '34622316099697884706540976068822859012661220141643892546',
+      timestamp: 1552518348220,
+      message:
+        'REPORT RequestId: 6234bffe-149a-b642-81ff-2e8e376d8aff\tDuration: 46.84 ms\tBilled Duration: 47 ms \tMemory Size: 192 MB\tMax Memory Used: 72 MB\t\n',
+    },
+  ],
+};
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing AWS consumer lambda',
-  example: `whook testConsumerLambda --name handleConsumerLambda`,
+  example: `whook testS3Lambda --name handleS3Lambda`,
   arguments: {
     type: 'object',
     additionalProperties: false,
@@ -23,16 +46,17 @@ export const definition: WhookCommandDefinition = {
         default: 'index',
       },
       event: {
-        description: 'The event batch',
+        description: 'The S3 actions batch event',
         type: 'string',
+        default: JSON.stringify(DEFAULT_EVENT),
       },
     },
   },
 };
 
-export default extra(definition, autoService(initTestConsumerLambdaCommand));
+export default extra(definition, autoService(initTestS3LambdaCommand));
 
-async function initTestConsumerLambdaCommand({
+async function initTestS3LambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
   log,
@@ -55,7 +79,11 @@ async function initTestConsumerLambdaCommand({
       name,
       type,
     );
-    const parsedEvent = JSON.parse(event);
+    const parsedEvent: CloudWatchLogsEvent = {
+      awslogs: {
+        data: await encodePayload(JSON.parse(event)),
+      },
+    };
     const result = await new Promise((resolve, reject) => {
       const handlerPromise = handler(
         parsedEvent,

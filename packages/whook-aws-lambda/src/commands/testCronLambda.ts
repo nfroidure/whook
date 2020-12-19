@@ -67,12 +67,12 @@ async function initTestCronLambdaCommand({
           time: date,
         },
         {
-          succeed: (...args) => {
+          succeed: (...args: unknown[]) => {
             handlerPromise.then(resolve.bind(null, ...args));
           },
           fail: reject,
         },
-        (err, ...args) => {
+        (err: Error, ...args: unknown[]) => {
           if (err) {
             reject(err);
             return;
