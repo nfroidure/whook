@@ -69,10 +69,9 @@ export type WhookOperation<
   'x-whook'?: T;
 };
 
-export type WhookRequest<
-  H = Record<string, string | string[]>,
-  B = JsonValue | Readable
-> = {
+export type WhookHeaders = Record<string, string | string[]>;
+
+export type WhookRequest<H = WhookHeaders, B = JsonValue | Readable> = {
   url: string;
   method: string;
   headers: H;
@@ -81,7 +80,7 @@ export type WhookRequest<
 
 export type WhookResponse<
   S = number,
-  H = Record<string, string | string[]>,
+  H = WhookHeaders,
   B = JsonValue | Readable
 > = {
   status: S;

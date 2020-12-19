@@ -10,6 +10,7 @@ import type { OpenAPIV3 } from 'openapi-types';
 import type {
   DereferencedParameterObject,
   WhookOperation,
+  WhookHeaders,
 } from '@whook/http-transaction';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 
@@ -362,8 +363,8 @@ export function _validateParameter(
 
 export function filterHeaders(
   parameters: DereferencedParameterObject[],
-  headers: Record<string, string | string[]>,
-): Record<string, string | string[]> {
+  headers: WhookHeaders,
+): WhookHeaders {
   return (parameters || [])
     .filter((parameter) => 'header' === parameter.in)
     .reduce((filteredHeaders, parameter) => {
@@ -379,7 +380,7 @@ export function castParameters<
   T = boolean | boolean[] | string | string[] | number | number[]
 >(
   parameters: DereferencedParameterObject[],
-  values: Record<string, string | string[]>,
+  values: WhookHeaders,
 ): Record<string, T> {
   return (parameters || []).reduce((filteredValues, parameter) => {
     const parameterName =
