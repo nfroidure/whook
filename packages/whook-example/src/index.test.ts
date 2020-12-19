@@ -1,4 +1,4 @@
-import { constant } from 'knifecycle';
+import Knifecycle, { constant } from 'knifecycle';
 import {
   runServer,
   prepareServer,
@@ -23,8 +23,10 @@ describe('runServer', () => {
   const HOST = 'localhost';
   const BASE_PATH = '/v4';
 
-  async function prepareEnvironment() {
-    const $ = await basePrepareEnvironment();
+  async function prepareEnvironment<T extends Knifecycle<any>>(
+    $?: T,
+  ): Promise<T> {
+    $ = await basePrepareEnvironment($);
 
     $.register(constant('API_VERSION', packageConf.version));
     $.register(constant('BASE_PATH', BASE_PATH));
@@ -48,7 +50,7 @@ describe('runServer', () => {
   }
   process.env.ISOLATED_ENV = '1';
 
-  let $instance;
+  let $instance: Knifecycle<any>;
   let jwtToken: JWTService<AuthenticationData>;
 
   beforeAll(async () => {

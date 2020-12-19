@@ -7,16 +7,16 @@ import initGenerateOpenAPITypes from './commands/generateOpenAPITypes';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 import parseGitIgnore from 'parse-gitignore';
-import type { Knifecycle } from 'knifecycle';
+import type { Knifecycle, Dependencies } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 
-let $instance: Knifecycle<any>;
+let $instance: Knifecycle<Dependencies>;
 let log: LogService;
 let delay: DelayService;
 let delayPromise: Promise<void>;
 let hash: string;
 
-export async function watchDevServer() {
+export async function watchDevServer(): Promise<void> {
   let ignored = ['node_modules', '*.d.ts', '.git'];
 
   try {
@@ -29,16 +29,16 @@ export async function watchDevServer() {
 
   await restartDevServer();
 
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     chokidar
       .watch(['**/*.ts', 'package*.json'], {
         ignored,
         ignoreInitial: true,
       })
-      .once('ready', (err) => {
-        resolve(err);
+      .once('ready', () => {
+        resolve();
       })
-      .once('error', (err) => {
+      .once('error', (err: Error) => {
         reject(err);
       })
       .on('all', (_event, filePath) => {
@@ -62,7 +62,7 @@ export async function watchDevServer() {
   });
 }
 
-export async function restartDevServer() {
+export async function restartDevServer(): Promise<void> {
   if ($instance) {
     log('warning', '➡️ - Changes detected : Will restart the server soon...');
     await delayPromise;
@@ -85,7 +85,7 @@ export async function restartDevServer() {
     'log',
   ])) as {
     PROJECT_SRC: string;
-    $instance: Knifecycle<any>;
+    $instance: Knifecycle<Dependencies>;
     delay: DelayService;
     getOpenAPI;
     log: LogService;
