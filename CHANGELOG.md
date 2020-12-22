@@ -1,3 +1,24 @@
+# [7.0.0](https://github.com/nfroidure/whook/compare/v6.0.0...v7.0.0) (2020-12-22)
+
+
+### Bug Fixes
+
+* **types:** fix types ([78298d9](https://github.com/nfroidure/whook/commit/78298d90c68169369e25f7a84cf3fec9e4a77177))
+
+
+### Code Refactoring
+
+* **@whook/aws-lambda:** refactor lambda triggers ([f948220](https://github.com/nfroidure/whook/commit/f94822082be0b1c243c64ffec202e992330bee49)), closes [#95](https://github.com/nfroidure/whook/issues/95) [#96](https://github.com/nfroidure/whook/issues/96)
+
+
+### BREAKING CHANGES
+
+* **@whook/aws-lambda:** The consumers do not manage batchs anymore and simply pass the records to the
+lambda implementation in order to avoid having to write custom wrappers for each event type. The
+user are now free to handle the batchs the way they want.
+
+
+
 # [6.0.0](https://github.com/nfroidure/whook/compare/v5.1.8...v6.0.0) (2020-12-09)
 
 
