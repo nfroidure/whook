@@ -3,10 +3,24 @@ import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { LogService } from 'common-services';
+import type { FirehoseTransformationEvent } from 'aws-lambda';
+
+const DEFAULT_EVENT: FirehoseTransformationEvent = {
+  invocationId: 'xxxx',
+  deliveryStreamArn: 'aws:xx:xx:xx',
+  region: 'eu-west-3',
+  records: [
+    {
+      recordId: 'xxxxxxxxxxxxxxxxx',
+      approximateArrivalTimestamp: Date.parse('2010-03-06T00:00:00Z'),
+      data: Buffer.from(JSON.stringify({ some: 'data' })).toString('base64'),
+    },
+  ],
+};
 
 export const definition: WhookCommandDefinition = {
-  description: 'A command for testing AWS consumer lambda',
-  example: `whook testConsumerLambda --name handleConsumerLambda`,
+  description: 'A command for testing AWS lambda transformers',
+  example: `whook TransformerLambda --name handleTransformerLambda`,
   arguments: {
     type: 'object',
     additionalProperties: false,
@@ -23,16 +37,17 @@ export const definition: WhookCommandDefinition = {
         default: 'index',
       },
       event: {
-        description: 'The event batch',
+        description: 'The stream event',
         type: 'string',
+        default: JSON.stringify(DEFAULT_EVENT),
       },
     },
   },
 };
 
-export default extra(definition, autoService(initTestConsumerLambdaCommand));
+export default extra(definition, autoService(initTestTransformerLambdaCommand));
 
-async function initTestConsumerLambdaCommand({
+async function initTestTransformerLambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
   log,

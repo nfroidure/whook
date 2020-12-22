@@ -1,5 +1,7 @@
 import { autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
+import type { JsonValue } from 'type-fest';
+import type { WhookHeaders } from '..';
 
 export type SensibleValueDescriptor = {
   name: string;
@@ -18,10 +20,11 @@ export type ObfuscatorDependencies = {
 } & ObfuscatorConfig;
 export type ObfuscatorService = {
   obfuscate: (secret: string) => string;
-  obfuscateSensibleProps: (propValue: any, propName?: string) => any;
-  obfuscateSensibleHeaders: (
-    headers: Record<string, string | string[]>,
-  ) => Record<string, string | string[]>;
+  obfuscateSensibleProps: (
+    propValue: JsonValue,
+    propName?: string,
+  ) => JsonValue;
+  obfuscateSensibleHeaders: (headers: WhookHeaders) => WhookHeaders;
 };
 
 export default autoService(initObfuscator);
@@ -160,9 +163,7 @@ async function initObfuscator({
       : obfuscate(value);
   }
 
-  function obfuscateSensibleHeaders(
-    headers: Record<string, string | string[]>,
-  ): Record<string, string | string[]> {
+  function obfuscateSensibleHeaders(headers: WhookHeaders): WhookHeaders {
     return Object.keys(headers).reduce((finalHeaders, headerName) => {
       const sensibleHeader = SENSIBLE_HEADERS.find(
         (sensibleHeader) =>
@@ -181,7 +182,10 @@ async function initObfuscator({
     }, {});
   }
 
-  function obfuscateSensibleProps(propValue: any, propName = '_') {
+  function obfuscateSensibleProps(
+    propValue: JsonValue,
+    propName = '_',
+  ): JsonValue {
     if (propValue instanceof Array) {
       return propValue.map((value) => obfuscateSensibleProps(value, propName));
     } else if (typeof propValue === 'object' && propValue !== null) {

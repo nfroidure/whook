@@ -1,10 +1,23 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
-import { noop, WhookResponse } from '@whook/whook';
+import { noop } from '@whook/whook';
 import YError from 'yerror';
-import type { WhookOperation, APMService, WhookHandler } from '@whook/whook';
+import type {
+  WhookHeaders,
+  WhookResponse,
+  WhookOperation,
+  APMService,
+  WhookHandler,
+} from '@whook/whook';
 import type { ServiceInitializer } from 'knifecycle';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import type {
+  FirehoseTransformationEvent,
+  FirehoseTransformationEventRecord,
+  FirehoseTransformationResultRecord,
+  FirehoseTransformationResult,
+  Context,
+} from 'aws-lambda';
 
 type TransformerWrapperDependencies = {
   NODE_ENV: string;
@@ -14,16 +27,27 @@ type TransformerWrapperDependencies = {
   log?: LogService;
 };
 
-type EncodedRecord = {
-  recordId: string;
+export type FirehoseDecodedTransformationEventRecord = Omit<
+  FirehoseTransformationEventRecord,
+  'data'
+> & {
   data: string;
-  result?: string;
 };
-type DecodedRecord = {
-  recordId: string;
+export type FirehoseDecodedTransformationResultRecord = Omit<
+  FirehoseTransformationResultRecord,
+  'data'
+> & {
   data: string;
-  result?: string;
 };
+
+export type LambdaTransformerInput = {
+  body: FirehoseDecodedTransformationEventRecord[];
+};
+export type LambdaTransformerOutput = WhookResponse<
+  number,
+  WhookHeaders,
+  FirehoseDecodedTransformationResultRecord[]
+>;
 
 // Allow to transform Kinesis streams
 // See https://aws.amazon.com/fr/blogs/compute/amazon-kinesis-firehose-data-transformation-with-aws-lambda/
@@ -34,13 +58,16 @@ export default function wrapHandlerForAWSTransformerLambda<
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & TransformerWrapperDependencies, S> {
-  return alsoInject(
+  return alsoInject<TransformerWrapperDependencies, D, S>(
     ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSTransformerLambda.bind(null, initHandler),
+      initHandlerForAWSTransformerLambda.bind(
+        null,
+        initHandler,
+      ) as ServiceInitializer<D, S>,
     ),
-  ) as any;
+  );
 }
 
 async function initHandlerForAWSTransformerLambda<D, S extends WhookHandler>(
@@ -60,13 +87,10 @@ async function handleForAWSTransformerLambda(
     time = Date.now.bind(Date),
     log = noop,
   }: TransformerWrapperDependencies,
-  handler: WhookHandler<
-    { body: any[] },
-    WhookResponse<number, Record<string, string | string[]>, any[]>
-  >,
-  event: { records: EncodedRecord[] },
-  context: unknown,
-  callback: (err: Error, result?: any) => void,
+  handler: WhookHandler<LambdaTransformerInput, LambdaTransformerOutput>,
+  event: FirehoseTransformationEvent,
+  context: Context,
+  callback: (err: Error, result?: FirehoseTransformationResult) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
   const method = Object.keys(OPERATION_API.paths[path])[0];
@@ -81,7 +105,7 @@ async function handleForAWSTransformerLambda(
   };
 
   try {
-    log('info', 'EVENT', JSON.stringify(event));
+    log('debug', 'EVENT', JSON.stringify(event));
     const response = await handler(parameters, OPERATION);
 
     apm('TRANSFORMER', {
@@ -91,6 +115,7 @@ async function handleForAWSTransformerLambda(
       type: 'success',
       startTime,
       endTime: time(),
+      recordsLength: event.records.length,
     });
 
     callback(null, { records: response.body.map(encodeRecord) });
@@ -107,15 +132,19 @@ async function handleForAWSTransformerLambda(
       params: castedErr.params,
       startTime,
       endTime: time(),
+      recordsLength: event.records.length,
     });
 
     callback(err);
   }
 }
 
-function decodeRecord({ recordId, data }: EncodedRecord): DecodedRecord {
+function decodeRecord({
+  data,
+  ...props
+}: FirehoseTransformationEventRecord): FirehoseDecodedTransformationEventRecord {
   return {
-    recordId,
+    ...props,
     data: Buffer.from(data, 'base64').toString('utf8'),
   };
 }
@@ -124,7 +153,7 @@ function encodeRecord({
   recordId,
   data,
   result = 'Ok',
-}: DecodedRecord): EncodedRecord {
+}: FirehoseDecodedTransformationResultRecord): FirehoseTransformationResultRecord {
   return {
     recordId,
     data: Buffer.from(data, 'utf8').toString('base64'),

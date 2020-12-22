@@ -33,20 +33,22 @@ export async function runServer<
 }
 
 // The `prepareServer` function is intended to prepare the server
-export async function prepareServer<
-  D extends Dependencies,
-  T extends Knifecycle<D>
->(injectedNames: string[], $: T): Promise<D> {
+export async function prepareServer<T extends Knifecycle<Dependencies>>(
+  injectedNames: string[],
+  $: T,
+): Promise<Dependencies> {
   // Add here any logic bound to the server only
   // For example, here we add a Swagger UI page for
   // development purpose
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as any);
+  $.register(
+    wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as typeof initHTTPRouter,
+  );
 
   return await prepareBaseServer(injectedNames, $);
 }
 
 // The `prepareEnvironment` one is intended to prepare the server environment
-export async function prepareEnvironment<T extends Knifecycle<any>>(
+export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   $ = await prepareBaseEnvironment($);
@@ -99,9 +101,9 @@ export async function runBuild(
 
 // The `prepareBuildEnvironment` create the build
 //  environment
-export async function prepareBuildEnvironment<T extends Knifecycle<any>>(
-  $: T = new Knifecycle() as T,
-): Promise<T> {
+export async function prepareBuildEnvironment<
+  T extends Knifecycle<Dependencies>
+>($: T = new Knifecycle() as T): Promise<T> {
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env

@@ -3,47 +3,17 @@ import { noop } from '@whook/whook';
 import YError from 'yerror';
 import type { ServiceInitializer } from 'knifecycle';
 import type {
-  WhookOperation,
   APMService,
+  WhookOperation,
   WhookHandler,
   WhookHeaders,
   WhookResponse,
 } from '@whook/whook';
-import type { TimeService, LogService } from 'common-services';
+import type { LogService, TimeService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
-import type {
-  KinesisStreamEvent,
-  SQSEvent,
-  SNSEvent,
-  Context,
-  SESEvent,
-  DynamoDBStreamEvent,
-} from 'aws-lambda';
+import type { S3Event, Context } from 'aws-lambda';
 
-export type LambdaKinesisStreamConsumerInput = {
-  body: KinesisStreamEvent['Records'];
-};
-export type LambdaSQSConsumerInput = {
-  body: SQSEvent['Records'];
-};
-export type LambdaSNSConsumerInput = {
-  body: SNSEvent['Records'];
-};
-export type LambdaSESConsumerInput = {
-  body: SESEvent['Records'];
-};
-export type LambdaDynamoDBStreamConsumerInput = {
-  body: DynamoDBStreamEvent['Records'];
-};
-export type LambdaConsumerInput =
-  | LambdaKinesisStreamConsumerInput
-  | LambdaSQSConsumerInput
-  | LambdaSNSConsumerInput
-  | LambdaSESConsumerInput
-  | LambdaDynamoDBStreamConsumerInput;
-export type LambdaConsumerOutput = WhookResponse<number, WhookHeaders, void>;
-
-type ConsumerWrapperDependencies = {
+type S3WrapperDependencies = {
   NODE_ENV: string;
   OPERATION_API: OpenAPIV3.Document;
   apm: APMService;
@@ -51,48 +21,43 @@ type ConsumerWrapperDependencies = {
   log?: LogService;
 };
 
-export default function wrapHandlerForAWSConsumerLambda<
-  D,
-  S extends WhookHandler
->(
+export type LambdaS3Input = { body: S3Event['Records'] };
+export type LambdaS3Output = WhookResponse<number, WhookHeaders, void>;
+
+export default function wrapHandlerForAWSS3Lambda<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & ConsumerWrapperDependencies, S> {
-  return alsoInject<ConsumerWrapperDependencies, D, S>(
-    ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
+): ServiceInitializer<D & S3WrapperDependencies, S> {
+  return alsoInject<S3WrapperDependencies, D, S>(
+    ['NODE_ENV', 'OPERATION_API', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSConsumerLambda.bind(
-        null,
-        initHandler,
-      ) as ServiceInitializer<D, S>,
+      initHandlerForAWSS3Lambda.bind(null, initHandler) as ServiceInitializer<
+        D,
+        S
+      >,
     ),
   );
 }
 
-async function initHandlerForAWSConsumerLambda<D, S extends WhookHandler>(
+async function initHandlerForAWSS3Lambda<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
   services: D,
 ): Promise<S> {
   const handler: S = await initHandler(services);
 
-  return handleForAWSConsumerLambda.bind(null, services, handler);
+  return handleForAWSS3Lambda.bind(null, services, handler);
 }
 
-async function handleForAWSConsumerLambda(
+async function handleForAWSS3Lambda(
   {
     NODE_ENV,
     OPERATION_API,
     apm,
     time = Date.now.bind(Date),
     log = noop,
-  }: ConsumerWrapperDependencies,
-  handler: WhookHandler<LambdaConsumerInput, LambdaConsumerOutput>,
-  event:
-    | KinesisStreamEvent
-    | SQSEvent
-    | SNSEvent
-    | SESEvent
-    | DynamoDBStreamEvent,
+  }: S3WrapperDependencies,
+  handler: WhookHandler<LambdaS3Input, LambdaS3Output>,
+  event: S3Event,
   context: Context,
   callback: (err: Error) => void,
 ) {
@@ -106,31 +71,31 @@ async function handleForAWSConsumerLambda(
   const startTime = time();
   const parameters = {
     body: event.Records,
-  } as LambdaConsumerInput;
-
+  };
   try {
     log('debug', 'EVENT', JSON.stringify(event));
 
     await handler(parameters, OPERATION);
 
-    apm('CONSUMER', {
+    apm('S3', {
       environment: NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
+      parameters,
       type: 'success',
       startTime,
       endTime: time(),
       recordsLength: event.Records.length,
     });
-
     callback(null);
   } catch (err) {
     const castedErr = YError.cast(err);
 
-    apm('CONSUMER', {
+    apm('S3', {
       environment: NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
+      parameters,
       type: 'error',
       stack: castedErr.stack,
       code: castedErr.code,

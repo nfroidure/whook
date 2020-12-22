@@ -91,6 +91,7 @@ import type {
 import type {
   WhookOperation,
   WhookRequest,
+  WhookHeaders,
   WhookResponse,
   WhookHandler,
   WhookHandlerFunction,
@@ -131,6 +132,7 @@ export type {
   WhookConfig,
   WhookOperation,
   WhookRequest,
+  WhookHeaders,
   WhookResponse,
   WhookHandler,
   WhookHandlerFunction,

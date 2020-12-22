@@ -30,7 +30,12 @@ import {
 import stream from 'stream';
 import qs from 'qs';
 import { noop, compose } from '@whook/whook';
-import type { ServiceInitializer } from 'knifecycle';
+import type {
+  ServiceInitializer,
+  Dependencies,
+  Service,
+  Parameters,
+} from 'knifecycle';
 import type {
   WhookRequest,
   WhookResponse,
@@ -44,6 +49,11 @@ import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { Readable } from 'stream';
 import type { DereferencedParameterObject } from '@whook/http-transaction';
+import type {
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+  Context,
+} from 'aws-lambda';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -59,8 +69,11 @@ type HTTPWrapperDependencies = {
   obfuscator: ObfuscatorService;
   time?: TimeService;
   log?: LogService;
-  WRAPPERS: WhookWrapper<any, any>[];
+  WRAPPERS: WhookWrapper<Dependencies, Service>[];
 };
+
+export type LambdaHTTPInput = Parameters;
+export type LambdaHTTPOutput = WhookResponse;
 
 const SEARCH_SEPARATOR = '?';
 const uuidPattern =
@@ -69,7 +82,7 @@ const uuidPattern =
 export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & HTTPWrapperDependencies, S> {
-  return alsoInject(
+  return alsoInject<HTTPWrapperDependencies, D, S>(
     [
       'OPERATION_API',
       'WRAPPERS',
@@ -88,9 +101,12 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
     ],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSHTTPLambda.bind(null, initHandler),
+      initHandlerForAWSHTTPLambda.bind(null, initHandler) as ServiceInitializer<
+        D,
+        S
+      >,
     ),
-  ) as any;
+  );
 }
 
 async function initHandlerForAWSHTTPLambda(
@@ -137,7 +153,10 @@ async function initHandlerForAWSHTTPLambda(
     ),
   );
   const bodyValidator = prepareBodyValidator(ajv, OPERATION);
-  const applyWrappers = compose(...WRAPPERS) as any;
+  const applyWrappers = compose(...WRAPPERS) as WhookWrapper<
+    Dependencies,
+    Service
+  >;
 
   const handler = await applyWrappers(initHandler)({
     OPERATION,
@@ -192,7 +211,7 @@ async function handleForAWSHTTPLambda(
     time,
     apm,
     obfuscator,
-  }: HTTPWrapperDependencies & { CORS: any },
+  }: HTTPWrapperDependencies & { CORS: Record<string, string> },
   {
     consumableMediaTypes,
     produceableMediaTypes,
@@ -202,10 +221,10 @@ async function handleForAWSHTTPLambda(
     bodyValidator,
     ammendedParameters,
   },
-  handler: WhookHandler,
-  event,
-  context: unknown,
-  callback: (err: Error, result?: any) => void,
+  handler: WhookHandler<LambdaHTTPInput, LambdaHTTPOutput>,
+  event: APIGatewayProxyEvent,
+  context: Context,
+  callback: (err: Error, result?: APIGatewayProxyResult) => void,
 ) {
   const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
   const startTime = time();
@@ -388,7 +407,9 @@ async function handleForAWSHTTPLambda(
     JSON.stringify({
       ...awsResponse,
       body: obfuscateEventBody(obfuscator, awsResponse.body),
-      headers: obfuscator.obfuscateSensibleHeaders(awsResponse.headers),
+      headers: obfuscator.obfuscateSensibleHeaders(
+        awsResponse.headers as Record<string, string>,
+      ),
     }),
   );
 
@@ -444,7 +465,9 @@ async function handleForAWSHTTPLambda(
   callback(null, awsResponse);
 }
 
-async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
+async function awsRequestEventToRequest(
+  event: APIGatewayProxyEvent,
+): Promise<WhookRequest> {
   const queryStringParametersNames = Object.keys(
     event.multiValueQueryStringParameters || {},
   );
@@ -475,18 +498,10 @@ async function awsRequestEventToRequest(event: any): Promise<WhookRequest> {
   return request;
 }
 
-type AWSResponseEvent = {
-  statusCode: number;
-  headers: { [name: string]: string };
-  multiValueHeaders: { [name: string]: string[] };
-  body?: string;
-  isBase64Encoded?: boolean;
-};
-
 async function responseToAWSResponseEvent(
   response: WhookResponse,
-): Promise<AWSResponseEvent> {
-  const amazonResponse: AWSResponseEvent = {
+): Promise<APIGatewayProxyResult> {
+  const amazonResponse: APIGatewayProxyResult = {
     statusCode: response.status,
     headers: Object.keys(response.headers || {}).reduce(
       (stringHeaders, name) => ({
@@ -502,7 +517,7 @@ async function responseToAWSResponseEvent(
     multiValueHeaders: Object.keys(response.headers || {}).reduce(
       (stringHeaders, name) => ({
         ...stringHeaders,
-        ...((response.headers[name] as any) instanceof Array
+        ...(response.headers[name] instanceof Array
           ? {
               [name]: response.headers[name],
             }
@@ -510,6 +525,7 @@ async function responseToAWSResponseEvent(
       }),
       {},
     ),
+    body: undefined,
   };
 
   if (response.body) {
