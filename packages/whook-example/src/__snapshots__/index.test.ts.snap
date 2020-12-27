@@ -181,100 +181,100 @@ Object {
       "💱 - HTTP Transaction initialized.",
     ],
     Array [
-      "💿 - Loading API initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/API.ts.",
+      "💿 - Loading \\"API\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/API.ts\\".",
     ],
     Array [
-      "💿 - Loading BASE_URL initializer from /home/whoiam/projects/whook/dist/services/BASE_URL.js.",
+      "💿 - Loading \\"BASE_URL\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BASE_URL\\".",
     ],
     Array [
-      "💿 - Loading FILTER_API_TAGS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts.",
+      "💿 - Loading \\"FILTER_API_TAGS\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
     ],
     Array [
-      "💿 - Loading MECHANISMS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts.",
+      "💿 - Loading \\"MECHANISMS\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
     ],
     Array [
-      "💿 - Loading QUERY_PARSER initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts.",
+      "💿 - Loading \\"QUERY_PARSER\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
     ],
     Array [
-      "💿 - Loading WRAPPERS initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts.",
+      "💿 - Loading \\"WRAPPERS\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
     ],
     Array [
-      "💿 - Loading authentication initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts.",
+      "💿 - Loading \\"authentication\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/authentication.ts\\".",
     ],
     Array [
-      "💿 - Loading getDelayWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts.",
+      "💿 - Loading \\"getDelayWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
     ],
     Array [
-      "💿 - Loading getDiagnosticWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts.",
+      "💿 - Loading \\"getDiagnosticWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
     ],
     Array [
-      "💿 - Loading getOpenAPIWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts.",
+      "💿 - Loading \\"getOpenAPIWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
     ],
     Array [
-      "💿 - Loading getParametersWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts.",
+      "💿 - Loading \\"getParametersWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
     ],
     Array [
-      "💿 - Loading getPingWrapped initializer from /home/whoiam/projects/whook/dist/handlers/getPing.js.",
+      "💿 - Loading \\"getPingWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/getPing\\".",
     ],
     Array [
-      "💿 - Loading getTimeWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts.",
+      "💿 - Loading \\"getTimeWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
     ],
     Array [
-      "💿 - Loading jwtToken initializer from /home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts.",
+      "💿 - Loading \\"jwtToken\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/jwtToken.ts\\".",
     ],
     Array [
-      "💿 - Loading optionsWithCORSWrapped initializer from /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js.",
+      "💿 - Loading \\"optionsWithCORSWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
-      "💿 - Loading putEchoWrapped initializer from /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts.",
+      "💿 - Loading \\"putEchoWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
     ],
     Array [
-      "💿 - Service \\"API\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/API.ts",
+      "💿 - Service \\"API\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/API.ts\\".",
     ],
     Array [
-      "💿 - Service \\"BASE_URL\\" found in: /home/whoiam/projects/whook/dist/services/BASE_URL.js",
+      "💿 - Service \\"BASE_URL\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BASE_URL\\".",
     ],
     Array [
-      "💿 - Service \\"FILTER_API_TAGS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts",
+      "💿 - Service \\"FILTER_API_TAGS\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
     ],
     Array [
-      "💿 - Service \\"MECHANISMS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts",
+      "💿 - Service \\"MECHANISMS\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
     ],
     Array [
-      "💿 - Service \\"QUERY_PARSER\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts",
+      "💿 - Service \\"QUERY_PARSER\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
     ],
     Array [
-      "💿 - Service \\"WRAPPERS\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts",
+      "💿 - Service \\"WRAPPERS\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
     ],
     Array [
-      "💿 - Service \\"authentication\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts",
+      "💿 - Service \\"authentication\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/authentication.ts\\".",
     ],
     Array [
-      "💿 - Service \\"getDelayWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
+      "💿 - Service \\"getDelayWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
     ],
     Array [
-      "💿 - Service \\"getDiagnosticWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
+      "💿 - Service \\"getDiagnosticWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
     ],
     Array [
-      "💿 - Service \\"getOpenAPIWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+      "💿 - Service \\"getOpenAPIWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
     ],
     Array [
-      "💿 - Service \\"getParametersWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts",
+      "💿 - Service \\"getParametersWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
     ],
     Array [
-      "💿 - Service \\"getPingWrapped\\" found in: /home/whoiam/projects/whook/dist/handlers/getPing.js",
+      "💿 - Service \\"getPingWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/getPing\\".",
     ],
     Array [
-      "💿 - Service \\"getTimeWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+      "💿 - Service \\"getTimeWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
     ],
     Array [
-      "💿 - Service \\"jwtToken\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts",
+      "💿 - Service \\"jwtToken\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/jwtToken.ts\\".",
     ],
     Array [
-      "💿 - Service \\"optionsWithCORSWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js",
+      "💿 - Service \\"optionsWithCORSWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
-      "💿 - Service \\"putEchoWrapped\\" found in: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
+      "💿 - Service \\"putEchoWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
     ],
     Array [
       "📇 - Process service initialized.",
@@ -685,88 +685,148 @@ Object {
       "🚫 - Service \\"uniqueId\\" not found in: /home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/dist/handlers/getPing",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/dist/handlers/getPing.js",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/dist/services/BASE_URL.js",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/config/test/config\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDelay\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/config/test/config",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getParameters\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/API.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/API.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/authentication.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/jwtToken.ts\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/getPing\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/getPing\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: /home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts",
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BASE_URL\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: ecstatic",
+      "🛂 - Dynamic import of \\"ecstatic\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: swagger-ui-dist",
+      "🛂 - Dynamic import of \\"swagger-ui-dist\\".",
     ],
     Array [
       "🛂 - Initializing the importer!",
+    ],
+    Array [
+      "🛂 - Initializing the resolve service!",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDelay\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getParameters\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/API\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/API.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/FILTER_API_TAGS\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MECHANISMS\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/QUERY_PARSER\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/WRAPPERS\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/authentication\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/authentication.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/jwtToken\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/jwtToken.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/getPing\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/getPing\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BASE_URL\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BASE_URL\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"@whook/cli\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/index\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"@whook/cors\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/index\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"@whook/whook\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/index\\".",
     ],
     Array [
       "🤖 - Initializing the \`$autoload\` service.",

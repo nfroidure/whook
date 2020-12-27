@@ -21,7 +21,7 @@ import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
-import type { BuildInitializer } from 'knifecycle';
+import type { Service, BuildInitializer } from 'knifecycle';
 import type { Autoloader } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -50,8 +50,8 @@ const writeFileAsync = util.promisify(fs.writeFile) as (
 const cprAsync = util.promisify(cpr) as (
   source: string,
   destination: string,
-  options: any,
-) => Promise<any>;
+  options: cpr.CprOptions,
+) => Promise<unknown>;
 
 const BUILD_DEFINITIONS: {
   [type: string]: {
@@ -70,15 +70,15 @@ const BUILD_DEFINITIONS: {
   },
 };
 
-export async function prepareBuildEnvironment<T extends Knifecycle<any>>(
+export async function prepareBuildEnvironment<T extends Knifecycle<Service>>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
-      log: require.resolve(__dirname + '/services/log'),
-      time: require.resolve('common-services/dist/time'),
-      delay: require.resolve('common-services/dist/delay'),
+      ENV: '@whook/whook/dist/services/ProxyedENV',
+      log: __dirname + '/services/log',
+      time: 'common-services/dist/time',
+      delay: 'common-services/dist/delay',
     }),
   );
   $.register(initInitializerBuilder);

@@ -53,11 +53,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"API\\" found in: /home/whoami/my-whook-project/src/services/API.js",
+      "💿 - Service \\"API\\" found in \\"/home/whoami/my-whook-project/src/services/API.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading API initializer from /home/whoami/my-whook-project/src/services/API.js.",
+      "💿 - Loading \\"API\\" initializer from \\"/home/whoami/my-whook-project/src/services/API.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -94,11 +94,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"SERVICE_NAME_MAP\\" found in: /home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js",
+      "💿 - Service \\"SERVICE_NAME_MAP\\" found in \\"/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading SERVICE_NAME_MAP initializer from /home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js.",
+      "💿 - Loading \\"SERVICE_NAME_MAP\\" initializer from \\"/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -161,11 +161,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"CONFIGS\\" found in: /home/whoami/my-whook-project/src/services/CONFIGS.js",
+      "💿 - Service \\"CONFIGS\\" found in \\"/home/whoami/my-whook-project/src/services/CONFIGS.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading CONFIGS initializer from /home/whoami/my-whook-project/src/services/CONFIGS.js.",
+      "💿 - Loading \\"CONFIGS\\" initializer from \\"/home/whoami/my-whook-project/src/services/CONFIGS.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -206,11 +206,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPing\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPing initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
+      "💿 - Loading \\"getPing\\" initializer from \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -284,11 +284,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPing\\" found in: /var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in \\"/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPing initializer from /var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js.",
+      "💿 - Loading \\"getPing\\" initializer from \\"/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -332,11 +332,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPingMock\\" found in: /home/whoami/my-whook-project/src/handlers/getPingMock.js",
+      "💿 - Service \\"getPingMock\\" found in \\"/home/whoami/my-whook-project/src/handlers/getPingMock.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPing initializer via getPingMock resolution from /home/whoami/my-whook-project/src/handlers/getPingMock.js.",
+      "💿 - Loading \\"getPing\\" initializer via \\"getPingMock\\" resolution from \\"/home/whoami/my-whook-project/src/handlers/getPingMock.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -382,11 +382,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPingMock\\" found in: /home/whoami/my-whook-project/src/handlers/getPingMock.js",
+      "💿 - Service \\"getPingMock\\" found in \\"/home/whoami/my-whook-project/src/handlers/getPingMock.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPing initializer via getPingMock resolution from /home/whoami/my-whook-project/src/handlers/getPingMock.js.",
+      "💿 - Loading \\"getPing\\" initializer via \\"getPingMock\\" resolution from \\"/home/whoami/my-whook-project/src/handlers/getPingMock.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -406,7 +406,7 @@ exports[`$autoload should work for path mapped handlers 1`] = `
 Object {
   "importerCalls": Array [
     Array [
-      "/home/whoami/my-other-project/src/handlers/getPing.js",
+      "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
   "injectorCalls": Array [
@@ -427,18 +427,22 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPing\\" found in: /home/whoami/my-other-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPing initializer from /home/whoami/my-other-project/src/handlers/getPing.js.",
+      "💿 - Loading \\"getPing\\" initializer from \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
   ],
-  "resolveCalls": Array [],
+  "resolveCalls": Array [
+    Array [
+      "/home/whoami/my-other-project/src/handlers/getPing.js",
+    ],
+  ],
   "result": Object {
     "initializer": [Function],
     "name": "getPing",
-    "path": "/home/whoami/my-other-project/src/handlers/getPing.js",
+    "path": "/home/whoami/my-whook-project/src/handlers/getPing.js",
   },
 }
 `;
@@ -469,11 +473,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPingWrapped\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPingWrapped\\" found in \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPingWrapped initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
+      "💿 - Loading \\"getPingWrapped\\" initializer from \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -515,11 +519,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPingWrapped\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPingWrapped\\" found in \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPingWrapped initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
+      "💿 - Loading \\"getPingWrapped\\" initializer from \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -556,11 +560,11 @@ Object {
     ],
     Array [
       "debug",
-      "💿 - Service \\"getPing\\" found in: /home/whoami/my-whook-project/src/handlers/getPing.js",
+      "💿 - Service \\"getPing\\" found in \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
     Array [
       "debug",
-      "💿 - Loading getPing initializer from /home/whoami/my-whook-project/src/handlers/getPing.js.",
+      "💿 - Loading \\"getPing\\" initializer from \\"/home/whoami/my-whook-project/src/handlers/getPing.js\\".",
     ],
   ],
   "resolveCalls": Array [

@@ -139,6 +139,11 @@ async function initCompiler({
       module: {
         rules: [
           {
+            test: /\.mjs$/,
+            include: /node_modules|dist/,
+            type: 'javascript/auto',
+          },
+          {
             test: /\.(js|ts)$/,
             exclude: /node_modules|dist/,
             use: {
@@ -149,7 +154,7 @@ async function initCompiler({
                   [
                     '@babel/env',
                     {
-                      modules: false,
+                      modules: 'commonjs',
                       targets: {
                         node: compilerOptions.target,
                       },

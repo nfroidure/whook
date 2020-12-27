@@ -4,8 +4,6 @@ import Knifecycle, {
   wrapInitializer,
   constant,
   alsoInject,
-  Autoloader,
-  Initializer,
 } from 'knifecycle';
 import YError from 'yerror';
 import {
@@ -13,7 +11,13 @@ import {
   getOpenAPIOperations,
 } from '@whook/http-router';
 import type { WhookBuildConstantsService } from '@whook/whook';
-import type { Injector } from 'knifecycle';
+import type {
+  Injector,
+  Autoloader,
+  Initializer,
+  Dependencies,
+  Service,
+} from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookAPIOperationAWSLambdaConfig } from '..';
@@ -43,8 +47,8 @@ export default alsoInject(
         log = noop,
       }: {
         BUILD_CONSTANTS?: WhookBuildConstantsService;
-        $injector: Injector<any>;
-        $instance: Knifecycle<any>;
+        $injector: Injector<Service>;
+        $instance: Knifecycle<Dependencies>;
         log: LogService;
       },
       $autoload: Autoloader,
@@ -52,7 +56,7 @@ export default alsoInject(
       (
         serviceName: string,
       ) => Promise<{
-        initializer: Initializer<any, any>;
+        initializer: Initializer<Dependencies, Service>;
         path: string;
       }>
     > => {

@@ -28,6 +28,7 @@ import initEnv from './services/ENV';
 import initProxyedENV from './services/ProxyedENV';
 import initBuildConstants from './services/BUILD_CONSTANTS';
 import initConfigs from './services/CONFIGS';
+import initResolve from './services/resolve';
 import initImporter from './services/importer';
 import initProjectDir from './services/PROJECT_DIR';
 import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS';
@@ -159,6 +160,7 @@ export {
   DEFAULT_REDUCED_FILES_SUFFIXES,
   initAPIDefinitions,
   initBuildConstants,
+  initResolve,
   initImporter,
   initEnv,
   initProxyedENV,
@@ -320,6 +322,9 @@ export async function prepareEnvironment<T extends Knifecycle<any>>(
    */
   const PWD = process.cwd();
   $.register(constant('PWD', PWD));
+
+  // Resolve
+  $.register(initResolve);
 
   // Importer
   $.register(initImporter);

@@ -285,10 +285,10 @@ Object {
       "🚦 - HTTP Router initialized.",
     ],
     Array [
-      "🛂 - Dynamic import of: ecstatic",
+      "🛂 - Dynamic import of \\"ecstatic\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: swagger-ui-dist",
+      "🛂 - Dynamic import of \\"swagger-ui-dist\\".",
     ],
     Array [
       "🛂 - Initializing the importer!",
@@ -439,10 +439,10 @@ Object {
       "🚦 - HTTP Router initialized.",
     ],
     Array [
-      "🛂 - Dynamic import of: ecstatic",
+      "🛂 - Dynamic import of \\"ecstatic\\".",
     ],
     Array [
-      "🛂 - Dynamic import of: swagger-ui-dist",
+      "🛂 - Dynamic import of \\"swagger-ui-dist\\".",
     ],
     Array [
       "🛂 - Initializing the importer!",

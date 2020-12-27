@@ -4,7 +4,6 @@ import { getOpenAPIOperations } from '@whook/http-router';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { initAPIDefinitions, initImporter } from '@whook/whook';
 import path from 'path';
-import type { WhookAPIHandlerModule } from '@whook/whook';
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;

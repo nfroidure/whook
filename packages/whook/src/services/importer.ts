@@ -8,18 +8,11 @@ export default autoService(initImporter);
 export type ImporterService<M> = (path: string) => Promise<M>;
 
 /**
- * Allow to proxy constants directly by serializing it in the
- *  build, saving some computing and increasing boot time of
- *  the build.
- * @param  {Object}   constants
- * The serializable constants to gather
+ * Allow to import ES modules.
+ * @param  {string} path
+ * The module path
  * @return {Promise<Object>}
- * A promise of an object containing the gathered constants.
- * @example
- * import { initBuildConstants } from '@whook/whook';
- * import { alsoInject } from 'knifecycle';
- *
- * export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
+ * A promise of an imported module.
  */
 async function initImporter<M extends Service = Service>({
   log = noop,
@@ -27,7 +20,7 @@ async function initImporter<M extends Service = Service>({
   log: LogService;
 }): Promise<ImporterService<M>> {
   const importer = async (path: string) => {
-    log('debug', `🛂 - Dynamic import of: ${path}`);
+    log('debug', `🛂 - Dynamic import of "${path}".`);
     return await import(path);
   };
 

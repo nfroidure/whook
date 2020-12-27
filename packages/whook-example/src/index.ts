@@ -114,14 +114,12 @@ export async function prepareBuildEnvironment<
   //  remove the need to create an injector
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
-      apm: require.resolve('@whook/http-transaction/dist/services/apm'),
-      obfuscator: require.resolve(
-        '@whook/http-transaction/dist/services/obfuscator',
-      ),
-      log: require.resolve('common-services/dist/log'),
-      time: require.resolve('common-services/dist/time'),
-      delay: require.resolve('common-services/dist/delay'),
+      ENV: '@whook/whook/dist/services/ProxyedENV',
+      apm: '@whook/http-transaction/dist/services/apm',
+      obfuscator: '@whook/http-transaction/dist/services/obfuscator',
+      log: 'common-services/dist/log',
+      time: 'common-services/dist/time',
+      delay: 'common-services/dist/delay',
     }),
   );
 

@@ -14,22 +14,24 @@
 [//]: # (::contents:start)
 
 This module is aimed to help you to build and deploy your
- [Whook](https://github.com/nfroidure/whook) server
- to [Google Cloud Functions](https://cloud.google.com/functions).
+[Whook](https://github.com/nfroidure/whook) server to
+[Google Cloud Functions](https://cloud.google.com/functions).
 
 You can find a complete setup with a Terraform deployment example in
- [this pull request](https://github.com/nfroidure/whook/pull/66).
+[this pull request](https://github.com/nfroidure/whook/pull/66).
 
 ## Quick setup
 
 Install this module and its peer dependencies :
+
 ```sh
 npm i @whook/gcp-functions;
 npm i --save-dev @whook/http-transaction babel-loader babel-plugin-knifecycle webpack
 ```
 
-Add this module to your Whook plugins and tweak the 2 build functions
- in your `index.ts` main file:
+Add this module to your Whook plugins and tweak the 2 build functions in your
+`index.ts` main file:
+
 ```diff
 +import {
 +  runBuild as runBaseBuild,
@@ -92,24 +94,23 @@ export async function prepareBuildEnvironment(
   //  remove the need to create an injector
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: require.resolve('@whook/whook/dist/services/ProxyedENV'),
-      apm: require.resolve('@whook/http-transaction/dist/services/apm'),
-      obfuscator: require.resolve(
-        '@whook/http-transaction/dist/services/obfuscator',
-      ),
--      log: require.resolve('common-services/dist/log'),
-+      log: require.resolve('@whook/gcp-functions/dist/services/log'),
-      time: require.resolve('common-services/dist/time'),
-      delay: require.resolve('common-services/dist/delay'),
+      ENV: '@whook/whook/dist/services/ProxyedENV',
+      apm: '@whook/http-transaction/dist/services/apm',
+      obfuscator: '@whook/http-transaction/dist/services/obfuscator',
+-      log: 'common-services/dist/log',
++      log: '@whook/gcp-functions/dist/services/log',
+      time: 'common-services/dist/time',
+      delay: 'common-services/dist/delay',
     }),
   );
 
   // (...)
 
-} 
+}
 ```
 
 And add the GCP Functions config (usually in `src/config/common/config.js`):
+
 ```diff
 + import type {
 +   WhookCompilerConfig,
@@ -145,6 +146,7 @@ export default CONFIG;
 # Build
 
 To build your functions :
+
 ```sh
 # Build all functions
 npm run compile && npm run build
@@ -154,25 +156,26 @@ npm run compile && npm run build -- getPing
 
 # Debug
 
-You can easily test your function builds by adding `@whook/gcp-functions`
- to your `WHOOK_PLUGINS` list. It provides you some commands like
- the `testHTTPFunction` one:
+You can easily test your function builds by adding `@whook/gcp-functions` to
+your `WHOOK_PLUGINS` list. It provides you some commands like the
+`testHTTPFunction` one:
+
 ```sh
 npx whook testHTTPFunction --name getPing
 ```
 
 To get more insights when errors happens:
+
 ```sh
 npm run whook-dev -- testHTTPFunction --name getPing
 ```
 
 ## Deployment
 
-We recommend using [Terraform](https://terraform.io) to deploy your
- functions.
+We recommend using [Terraform](https://terraform.io) to deploy your functions.
 
 There is a complete example on how to deploy your functions
- [in this pull request](https://github.com/nfroidure/whook/pull/54).
+[in this pull request](https://github.com/nfroidure/whook/pull/54).
 
 [//]: # (::contents:end)
 

@@ -2,9 +2,7 @@ import path from 'path';
 import { name, singleton, autoService } from 'knifecycle';
 import YError from 'yerror';
 import type { LogService } from 'common-services';
-
-// Needed to avoid messing up babel builds 🤷
-const _resolve = require.resolve;
+import type { ResolveService } from './resolve';
 
 /* Architecture Note #9: Plugins paths
 
@@ -22,7 +20,7 @@ export type WhookPluginsPathsConfig = {
 export type WhookPluginsPathsDependencies = WhookPluginsPathsConfig & {
   WHOOK_PLUGINS: WhookPluginsService;
   PROJECT_SRC: string;
-  resolve?: typeof _resolve;
+  resolve: ResolveService;
   log: LogService;
 };
 
@@ -46,7 +44,7 @@ export default singleton(
 async function initWhookPluginsPaths({
   WHOOK_PLUGINS,
   PROJECT_SRC,
-  resolve = _resolve,
+  resolve,
   log,
 }: WhookPluginsPathsDependencies): Promise<WhookPluginsPathsService> {
   return WHOOK_PLUGINS.map((pluginName) => {
