@@ -1,6 +1,6 @@
 {
   "name": "@whook/gcp-functions",
-  "version": "7.0.0",
+  "version": "7.1.0",
   "description": "Build and deploy to GCP Cloud Functions with Whook.",
   "main": "dist/index",
   "module": "dist/index.mjs",
@@ -55,9 +55,9 @@
     "webpack": "^4.43.0"
   },
   "dependencies": {
-    "@whook/cli": "^7.0.0",
-    "@whook/http-router": "^7.0.0",
-    "@whook/whook": "^7.0.0",
+    "@whook/cli": "^7.1.0",
+    "@whook/http-router": "^7.1.0",
+    "@whook/whook": "^7.1.0",
     "ajv": "^6.12.6",
     "camelcase": "^6.2.0",
     "common-services": "^9.0.0",

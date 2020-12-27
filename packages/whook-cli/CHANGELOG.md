@@ -1,3 +1,12 @@
+# [7.1.0](https://github.com/nfroidure/whook/compare/v7.0.0...v7.1.0) (2020-12-27)
+
+
+### Features
+
+* **@whook/whook:** add warning for API overrides ([e3efc4b](https://github.com/nfroidure/whook/commit/e3efc4b2e740cc100ad72f6751c33aef90817f8c)), closes [#98](https://github.com/nfroidure/whook/issues/98)
+
+
+
 # [7.0.0](https://github.com/nfroidure/whook/compare/v6.0.0...v7.0.0) (2020-12-22)
 
 
