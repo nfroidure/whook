@@ -1,7 +1,8 @@
 import { name, autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
+import type { JsonValue } from 'type-fest';
 
-export type APMService<T = string> = (type: T, data: any) => void;
+export type APMService<T = string> = (type: T, data: JsonValue) => void;
 
 export default name('apm', autoService(initAPM));
 

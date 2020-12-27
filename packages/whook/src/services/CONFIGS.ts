@@ -4,10 +4,9 @@ import path from 'path';
 import YError from 'yerror';
 import type { LogService } from 'common-services';
 import type { ImporterService } from './importer';
+import type { JsonValue } from 'type-fest';
 
-export type CONFIGSService = {
-  [name: string]: any;
-};
+export type CONFIGSService = Record<string, JsonValue>;
 export type CONFIGSConfig = {
   PROJECT_SRC?: string;
   NODE_ENV?: string;

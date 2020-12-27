@@ -1,8 +1,9 @@
 import { service } from 'knifecycle';
+import type { JsonValue } from 'type-fest';
 
 export default service(initBuildConstants, 'BUILD_CONSTANTS', []);
 
-export type WhookBuildConstantsService = { [name: string]: any };
+export type WhookBuildConstantsService = Record<string, JsonValue>;
 
 /**
  * Allow to proxy constants directly by serializing it in the

@@ -80,7 +80,7 @@ import type {
   WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload';
-import type { LogService, ProcessServiceConfig } from 'common-services';
+import type { ProcessServiceConfig } from 'common-services';
 import type {
   ErrorHandlerConfig,
   WhookErrorsDescriptors,
@@ -312,7 +312,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  * @returns Promise<Knifecycle>
  * A promise of the Knifecycle instance
  */
-export async function prepareEnvironment<T extends Knifecycle<any>>(
+export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   /* Architecture Note #3.1: `PWD` env var

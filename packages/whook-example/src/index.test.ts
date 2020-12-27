@@ -1,10 +1,11 @@
-import Knifecycle, { constant } from 'knifecycle';
+import { constant } from 'knifecycle';
 import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
 } from './index';
 import axios from 'axios';
+import type { Knifecycle, Dependencies } from 'knifecycle';
 import type { JWTService } from 'jwt-service';
 import type { AuthenticationData } from './services/authentication';
 
@@ -23,7 +24,7 @@ describe('runServer', () => {
   const HOST = 'localhost';
   const BASE_PATH = '/v4';
 
-  async function prepareEnvironment<T extends Knifecycle<any>>(
+  async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
     $?: T,
   ): Promise<T> {
     $ = await basePrepareEnvironment($);
@@ -50,7 +51,7 @@ describe('runServer', () => {
   }
   process.env.ISOLATED_ENV = '1';
 
-  let $instance: Knifecycle<any>;
+  let $instance: Knifecycle<Dependencies>;
   let jwtToken: JWTService<AuthenticationData>;
 
   beforeAll(async () => {

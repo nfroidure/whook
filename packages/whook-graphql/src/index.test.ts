@@ -22,7 +22,7 @@ import {
   initGraphQL,
 } from '.';
 import type { WhookGraphQLFragmentService } from '.';
-import type Knifecycle from 'knifecycle';
+import type { Knifecycle, Dependencies } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('GraphQL server', () => {
@@ -203,7 +203,7 @@ describe('GraphQL server', () => {
 
   beforeAll(async () => {
     const { $instance: _instance } = await runServer<{
-      $instance: Knifecycle<any>;
+      $instance: Knifecycle<Dependencies>;
     }>(prepareEnvironment, prepareServer, [
       '$instance',
       'httpServer',

@@ -91,7 +91,13 @@ describe('initHTTPServer', () => {
     try {
       httpServer.service.close = (((realClose) => async (cb) => {
         await new Promise<void>((resolve, reject) => {
-          realClose((err) => (err && (reject(err) as any)) || resolve());
+          realClose((err: Error) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+            resolve();
+          });
         });
 
         cb(new YError('E_ERROR'));

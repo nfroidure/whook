@@ -10,7 +10,7 @@ import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
-import type Knifecycle from 'knifecycle';
+import type { Knifecycle, Dependencies, Service } from 'knifecycle';
 import type { Injector } from 'knifecycle';
 import type { WhookBuildConstantsService } from '@whook/whook';
 import type { LogService } from 'common-services';
@@ -42,8 +42,8 @@ export default alsoInject(
         log = noop,
       }: {
         BUILD_CONSTANTS?: WhookBuildConstantsService;
-        $injector: Injector<any>;
-        $instance: Knifecycle<any>;
+        $injector: Injector<Service>;
+        $instance: Knifecycle<Dependencies>;
         log: LogService;
       },
       $autoload,

@@ -5,7 +5,7 @@ import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
-import type { HandlerFunction, Parameters, Dependencies } from 'knifecycle';
+import type { Parameters, Dependencies } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 
 describe('wrapHandlerWithAuthorization', () => {

@@ -36,7 +36,7 @@ function waitResponse(response, raw = true) {
   });
 }
 
-function prepareTransaction(result: any = Promise.resolve()) {
+function prepareTransaction(result: unknown = Promise.resolve()) {
   const handler = jest.fn(() =>
     null === result
       ? undefined
@@ -50,7 +50,7 @@ function prepareTransaction(result: any = Promise.resolve()) {
   const httpTransactionCatch = jest.fn(async (err) => {
     throw HTTPError.cast(err);
   });
-  const httpTransactionEnd = jest.fn(async (res) => undefined);
+  const httpTransactionEnd = jest.fn(async (_res: unknown) => undefined);
   const httpTransaction = jest.fn(async (req) => ({
     request: {
       url: req.url,

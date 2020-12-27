@@ -19,7 +19,7 @@ import initProject from './services/project';
 import initCreateWhook from './services/createWhook';
 import type { CreateWhookService } from './services/createWhook';
 
-export async function runCreateWhook() {
+export async function runCreateWhook(): Promise<void> {
   try {
     const $ = new Knifecycle();
 
@@ -47,9 +47,9 @@ export async function runCreateWhook() {
         warning: console.log.bind(console),
       }),
     );
-    $.register(initLogService as any);
-    $.register(initLockService as any);
-    $.register(initDelayService as any);
+    $.register(initLogService);
+    $.register(initLockService);
+    $.register(initDelayService);
     $.register(initAuthor);
     $.register(initProject);
     $.register(initCreateWhook);

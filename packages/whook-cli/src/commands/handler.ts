@@ -63,9 +63,9 @@ async function initHandlerCommand({
     // with ajv or else
 
     try {
-      const handler: WhookHandler<any, any, any> = (
-        await $injector([handlerName])
-      )[handlerName];
+      const handler: WhookHandler = (await $injector([handlerName]))[
+        handlerName
+      ];
       const response: WhookResponse = await handler(
         parsedParameters,
         undefined,

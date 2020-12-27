@@ -15,11 +15,11 @@ describe('whook-cli', () => {
 
   it('should run commands', async () => {
     const processCWD = jest.fn();
-    const processExit = jest.fn();
+    const processExit = jest.fn<never, [number]>();
     const mockCWD = jest.spyOn(process, 'cwd').mockImplementation(processCWD);
     const mockExit = jest
       .spyOn(process, 'exit')
-      .mockImplementation(processExit as any);
+      .mockImplementation(processExit);
 
     jest.doMock('./services/_autoload', () => {
       return singleton(service(async () => $autoload, '$autoload'));
@@ -62,7 +62,7 @@ describe('whook-cli', () => {
 
   it('should exit when erroring', async () => {
     const processCWD = jest.fn();
-    const processExit = jest.fn();
+    const processExit = jest.fn<never, [number]>();
     const consoleError = jest.fn();
     const mockConsoleError = jest
       .spyOn(console, 'error')
@@ -70,7 +70,7 @@ describe('whook-cli', () => {
     const mockCWD = jest.spyOn(process, 'cwd').mockImplementation(processCWD);
     const mockExit = jest
       .spyOn(process, 'exit')
-      .mockImplementation(processExit as any);
+      .mockImplementation(processExit);
 
     jest.doMock('./services/_autoload', () => {
       return singleton(service(async () => $autoload, '$autoload'));

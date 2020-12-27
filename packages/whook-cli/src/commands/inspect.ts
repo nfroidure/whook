@@ -3,8 +3,7 @@ import { readArgs } from '../libs/args';
 import YError from 'yerror';
 import miniquery from 'miniquery';
 import { noop } from '@whook/whook';
-import type { CONFIGSService } from '@whook/whook';
-import type { Injector } from 'knifecycle';
+import type { Injector, Service } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type {
   PromptArgs,
@@ -49,7 +48,7 @@ async function initInspectCommand({
   promptArgs,
   log = noop,
 }: {
-  $injector: Injector<any>;
+  $injector: Injector<Service>;
   promptArgs: PromptArgs;
   log?: LogService;
 }): Promise<WhookCommandHandler> {

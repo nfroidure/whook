@@ -13,22 +13,39 @@ export type WhookCommandDefinitionArguments = {
   type: 'object';
   required?: string[];
   additionalProperties: false;
-  properties: {
-    [name: string]: {
-      type: 'boolean' | 'string' | 'number';
-      description: string;
-      pattern?: string;
-      enum?: WhookArgsTypes[];
-      default?: string | boolean | number;
-    };
-  };
+  properties: Record<
+    string,
+    | {
+        type: 'boolean' | 'string' | 'number';
+        description: string;
+        pattern?: string;
+        enum?: WhookArgsTypes[];
+        default?: WhookArgsTypes;
+      }
+    | {
+        type: 'array';
+        description: string;
+        minItems?: number;
+        maxItems?: number;
+        items: {
+          type: 'boolean' | 'string' | 'number';
+          description?: string;
+          pattern?: string;
+          enum?: WhookArgsTypes[];
+          default?: WhookArgsTypes;
+        };
+        default?: WhookArgsTypes[];
+      }
+  >;
 };
 export type WhookCommandDefinition = {
   description: string;
   example: string;
   arguments: WhookCommandDefinitionArguments;
 };
-export type PromptArgs = () => Promise<{ [name: string]: any }>;
+export type PromptArgs = () => Promise<{
+  [name: string]: WhookArgsTypes;
+}>;
 
 async function initPromptArgs({
   COMMAND_DEFINITION,
@@ -60,7 +77,10 @@ async function initPromptArgs({
               },
             ];
           }
-          if (['string', 'number'].includes(propertyDefinition.type)) {
+          if (
+            propertyDefinition.type === 'string' ||
+            propertyDefinition.type === 'number'
+          ) {
             if (propertyDefinition.enum) {
               return [
                 ...questions,

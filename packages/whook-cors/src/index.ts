@@ -56,7 +56,7 @@ export function wrapHandlerWithCORS<D, S extends WhookHandler>(
   }, augmentedInitializer);
 }
 
-function isGetter(obj: any, prop: string): boolean {
+function isGetter(obj: unknown, prop: string): boolean {
   if (typeof obj[prop] === 'undefined' || obj[prop] === null) {
     // Property not defined in obj, should be safe to write this property
     return false;

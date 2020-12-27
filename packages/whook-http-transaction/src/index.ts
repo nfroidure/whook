@@ -104,7 +104,7 @@ export type WhookHandler<
 
 export type HTTPTransactionConfig = {
   TIMEOUT?: number;
-  TRANSACTIONS?: Record<string, Record<string, unknown>>;
+  TRANSACTIONS?: Record<string, Record<string, JsonValue>>;
 };
 export type HTTPTransactionDependencies = HTTPTransactionConfig & {
   obfuscator: ObfuscatorService;

@@ -2,6 +2,7 @@ import initAutoload from './_autoload';
 import { service } from 'knifecycle';
 import YError from 'yerror';
 import { identity } from '../libs/utils';
+import type { ServiceInitializer, Dependencies, Service } from 'knifecycle';
 
 describe('$autoload', () => {
   const log = jest.fn();
@@ -38,7 +39,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('CONFIGS');
 
@@ -69,7 +70,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('CONFIG');
 
@@ -106,7 +107,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('API');
 
@@ -142,7 +143,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('SERVICE_NAME_MAP');
 
@@ -202,13 +203,16 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('HANDLERS');
 
       expect({
         result,
-        HANDLERS: await (result.initializer as any)({
+        HANDLERS: await (result.initializer as ServiceInitializer<
+          Dependencies,
+          Service
+        >)({
           getPing: () => undefined,
         }),
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -245,7 +249,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPing');
 
@@ -290,7 +294,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPing');
 
@@ -337,7 +341,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPing');
 
@@ -379,7 +383,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPing');
 
@@ -425,7 +429,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPing');
 
@@ -464,7 +468,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPing');
 
@@ -506,7 +510,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPingWrapped');
 
@@ -548,7 +552,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
       const result = await $autoload('getPingWrapped');
 
@@ -587,7 +591,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve: (resolve as unknown) as any,
+        resolve,
       });
 
       try {

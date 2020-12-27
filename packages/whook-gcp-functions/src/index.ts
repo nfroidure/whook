@@ -21,7 +21,7 @@ import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
-import type { Service, BuildInitializer } from 'knifecycle';
+import type { Dependencies, BuildInitializer } from 'knifecycle';
 import type { Autoloader } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -70,9 +70,9 @@ const BUILD_DEFINITIONS: {
   },
 };
 
-export async function prepareBuildEnvironment<T extends Knifecycle<Service>>(
-  $: T = new Knifecycle() as T,
-): Promise<T> {
+export async function prepareBuildEnvironment<
+  T extends Knifecycle<Dependencies>
+>($: T = new Knifecycle() as T): Promise<T> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ENV: '@whook/whook/dist/services/ProxyedENV',

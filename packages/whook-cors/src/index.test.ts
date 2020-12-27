@@ -4,9 +4,10 @@ import {
   augmentAPIWithCORS,
 } from '.';
 import { handler } from 'knifecycle';
+import type { Dependencies, Service } from 'knifecycle';
+import type { CORSConfig } from '.';
 import type { OpenAPIV3 } from 'openapi-types';
-import { CORSConfig } from '.';
-import { WhookOperation } from '@whook/whook';
+import type { WhookOperation } from '@whook/whook';
 
 describe('wrapHandlerWithCORS', () => {
   const CORS: CORSConfig = {
@@ -38,7 +39,7 @@ describe('wrapHandlerWithCORS', () => {
   };
 
   it('should work', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<any, any>(
+    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
       initOptionsWithCORS,
     );
     const wrappedHandler = await wrappedOptionsWithCORS({
@@ -64,7 +65,7 @@ describe('wrapHandlerWithCORS', () => {
   });
 
   it('should work with replace custom CORS', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<any, any>(
+    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
       initOptionsWithCORS,
     );
     const wrappedHandler = await wrappedOptionsWithCORS({
@@ -105,7 +106,7 @@ describe('wrapHandlerWithCORS', () => {
   });
 
   it('should work with merge custom CORS', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<any, any>(
+    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
       initOptionsWithCORS,
     );
     const wrappedHandler = await wrappedOptionsWithCORS({
@@ -145,7 +146,7 @@ describe('wrapHandlerWithCORS', () => {
   });
 
   it('should add CORS to errors', async () => {
-    const wrappedGetError = wrapHandlerWithCORS<any, any>(
+    const wrappedGetError = wrapHandlerWithCORS<Dependencies, Service>(
       handler(
         async function getError() {
           throw new Error();

@@ -12,7 +12,8 @@ import YError from 'yerror';
 import type {
   Injector,
   Autoloader,
-  ServiceInitializer,
+  ProviderInitializer,
+  Initializer,
   Dependencies,
   Service,
 } from 'knifecycle';
@@ -25,7 +26,7 @@ import type { ResolveService } from './resolve';
 export const HANDLER_REG_EXP = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
 
 export interface WhookWrapper<D, S extends WhookHandler> {
-  (initializer: ServiceInitializer<D, S>): ServiceInitializer<D, S>;
+  (initializer: Initializer<S, D>): Initializer<S, D>;
 }
 /* Architecture Note #5.7.1: WhookServiceMap
 Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
@@ -47,7 +48,9 @@ export type AutoloadDependencies<D> = AutoloadConfig & {
   CONFIGS?: CONFIGSService;
   WRAPPERS?: WhookWrapper<D, WhookHandler>[];
   $injector: Injector<Service>;
-  importer: ImporterService<{ default: any }>;
+  importer: ImporterService<{
+    default: Initializer<Service, Dependencies>;
+  }>;
   resolve: ResolveService;
   log?: LogService;
 };
@@ -160,7 +163,13 @@ async function initAutoload<D>({
    *  An Object containing the `path`, `name` and the `initializer`
    *  in its properties.
    */
-  async function $autoload(injectedName) {
+  async function $autoload(
+    injectedName: string,
+  ): Promise<{
+    name: string;
+    path: string;
+    initializer: Initializer<Service, Dependencies>;
+  }> {
     /* Architecture Note #5.7: Service name mapping
     In order to be able to substituate easily a service per another
      one can specify a mapping between a service and its substitution.
@@ -197,7 +206,10 @@ async function initAutoload<D>({
       return {
         name: resolvedName,
         path: 'internal://' + resolvedName,
-        initializer: constant(resolvedName, CONFIGS[resolvedName]),
+        initializer: constant(
+          resolvedName,
+          CONFIGS[resolvedName],
+        ) as Initializer<Service, Dependencies>,
       };
     }
 
@@ -298,7 +310,10 @@ async function initAutoload<D>({
       initializer: isWrappedHandler
         ? name(resolvedName, await doWrapHandler(resolvedInitializer))
         : injectedName !== resolvedName
-        ? name(injectedName, resolvedInitializer)
+        ? name(
+            injectedName,
+            resolvedInitializer as ProviderInitializer<Dependencies, Service>,
+          )
         : resolvedInitializer,
     };
   }

@@ -41,7 +41,7 @@ import {
   postOAuth2TokenRefreshTokenRequestBodySchema,
 } from '.';
 import type { OAuth2Options } from '.';
-import type Knifecycle from 'knifecycle';
+import type { Knifecycle, Dependencies } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('OAuth2 server', () => {
@@ -222,7 +222,7 @@ describe('OAuth2 server', () => {
 
   beforeAll(async () => {
     const { $instance: _instance } = await runServer<{
-      $instance: Knifecycle<any>;
+      $instance: Knifecycle<Dependencies>;
     }>(prepareEnvironment, prepareServer, [
       '$instance',
       'httpServer',

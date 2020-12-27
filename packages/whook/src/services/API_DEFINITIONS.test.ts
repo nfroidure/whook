@@ -1,10 +1,7 @@
 import initAPIDefinitions from './API_DEFINITIONS';
 import { definition as getPingDefinition } from '../handlers/getPing';
 import YError from 'yerror';
-import type {
-  WhookAPIHandlerModule,
-  WhookAPIHandlerDefinition,
-} from './API_DEFINITIONS';
+import type { WhookAPIHandlerModule } from './API_DEFINITIONS';
 
 const getUserModule: WhookAPIHandlerModule = {
   definition: {

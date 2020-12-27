@@ -47,6 +47,7 @@ import {
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
 } from './constants';
+import type { JsonValue } from 'type-fest';
 import type { Provider } from 'knifecycle';
 import type { Transform, Readable } from 'stream';
 import type {
@@ -122,18 +123,18 @@ export type WhookQueryStringParser = (
   query: Parameters<typeof strictQs>[2],
 ) => ReturnType<typeof strictQs>;
 export type WhookHandlers = { [name: string]: WhookHandler };
-export type WhookParser = (content: string, bodySpec?: BodySpec) => string;
+export type WhookParser = (content: string, bodySpec?: BodySpec) => JsonValue;
 export type WhookParsers = { [name: string]: WhookParser };
 export type WhookStringifyer = (content: string) => string;
 export type WhookStringifyers = { [name: string]: WhookStringifyer };
 export type WhookEncoder<T extends Transform> = {
-  new (...args: any[]): T;
+  new (...args: unknown[]): T;
 };
 export type WhookEncoders<T extends Transform> = {
   [name: string]: WhookEncoder<T>;
 };
 export type WhookDecoder<T extends Transform> = {
-  new (...args: any[]): T;
+  new (...args: unknown[]): T;
 };
 export type WhookDecoders<T extends Transform> = {
   [name: string]: WhookDecoder<T>;
@@ -173,7 +174,7 @@ type RouteDescriptor = {
   bodyValidator: (
     operation: WhookOperation,
     contentType: string,
-    body: any,
+    body: JsonValue | Readable | void,
   ) => void;
 };
 

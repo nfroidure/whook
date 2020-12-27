@@ -12,6 +12,7 @@ import type {
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { MSKEvent, Context } from 'aws-lambda';
+import { JsonValue } from 'type-fest';
 
 type KafkaConsumerWrapperDependencies = {
   NODE_ENV: string;
@@ -89,10 +90,14 @@ async function handleForAWSKafkaConsumerLambda(
       environment: NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
+      parameters: { body: ':MSKEventRecord' },
       type: 'success',
       startTime,
       endTime: time(),
-      recordsLength: event.records.length,
+      recordsLength: Object.keys(event.records).reduce(
+        (total, key) => total + event.records[key].length,
+        0,
+      ),
     });
 
     callback(null);
@@ -103,13 +108,17 @@ async function handleForAWSKafkaConsumerLambda(
       environment: NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
+      parameters: { body: ':MSKEventRecord' },
       type: 'error',
       stack: castedErr.stack,
       code: castedErr.code,
       params: castedErr.params,
       startTime,
       endTime: time(),
-      recordsLength: event.records.length,
+      recordsLength: Object.keys(event.records).reduce(
+        (total, key) => total + event.records[key].length,
+        0,
+      ),
     });
 
     callback(err);

@@ -1,18 +1,19 @@
 import stream from 'stream';
 import qs from 'qs';
+import { JsonValue } from 'type-fest';
 
 export const DEFAULT_DEBUG_NODE_ENVS = ['test', 'development'];
 export const DEFAULT_BUFFER_LIMIT = '500kB';
 export const DEFAULT_PARSERS = {
-  'application/json': (content: string): any => JSON.parse(content),
-  'text/plain': (content: string): any => content,
-  'application/x-www-form-urlencoded': (content: string): any =>
+  'application/json': (content: string): JsonValue => JSON.parse(content),
+  'text/plain': (content: string): JsonValue => content,
+  'application/x-www-form-urlencoded': (content: string): JsonValue =>
     qs.parse(content),
 };
 export const DEFAULT_STRINGIFYERS = {
-  'application/json': (content: any): string => JSON.stringify(content),
+  'application/json': (content: JsonValue): string => JSON.stringify(content),
   'text/plain': ensureString,
-  'application/x-www-form-urlencoded': (content: any): string =>
+  'application/x-www-form-urlencoded': (content: JsonValue): string =>
     qs.stringify(content),
 };
 export const DEFAULT_DECODERS = {
@@ -22,7 +23,7 @@ export const DEFAULT_ENCODERS = {
   'utf-8': stream.PassThrough,
 };
 
-function ensureString(maybeString: any): string {
+function ensureString(maybeString: unknown): string {
   return 'undefined' === typeof maybeString
     ? ''
     : 'string' === typeof maybeString

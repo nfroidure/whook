@@ -1,9 +1,10 @@
-import Knifecycle, { constant } from 'knifecycle';
+import { constant } from 'knifecycle';
 import { readArgs } from './libs/args';
 import initArgs from './services/args';
 import initPromptArgs from './services/promptArgs';
 import initCommand from './services/command';
 import initAutoloader from './services/_autoload';
+import type { Knifecycle, Dependencies } from 'knifecycle';
 import type {
   WhookCommandNamedArgs,
   WhookCommandArgsRest,
@@ -27,7 +28,7 @@ export type {
 };
 export { readArgs };
 
-export default async function run<T extends Knifecycle<any>>(
+export default async function run<T extends Knifecycle<Dependencies>>(
   innerPrepareEnvironment: ($?: T) => Promise<T>,
 ): Promise<void> {
   try {

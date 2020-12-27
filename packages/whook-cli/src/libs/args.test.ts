@@ -1,18 +1,19 @@
 import { readArgs } from './args';
 import { definition as handlerCommandDefinition } from '../commands/handler';
 import YError from 'yerror';
+import { WhookCommandArgs } from '..';
 
 describe('readArgs', () => {
   it('should work with no args', () => {
-    const args = {
+    const args = ({
       _: ['whook'],
-    };
+    } as unknown) as WhookCommandArgs;
 
     readArgs(
       {
         type: 'object',
       } as any,
-      args as any,
+      args,
     );
 
     expect({
@@ -21,13 +22,13 @@ describe('readArgs', () => {
   });
 
   it('should work with named args', () => {
-    const args = {
+    const args = ({
       _: ['whook'],
       name: 'getPing',
       parameters: '{}',
-    };
+    } as unknown) as WhookCommandArgs;
 
-    readArgs(handlerCommandDefinition.arguments, args as any);
+    readArgs(handlerCommandDefinition.arguments, args);
 
     expect({
       args,
@@ -35,9 +36,9 @@ describe('readArgs', () => {
   });
 
   it('should work with listed args', () => {
-    const args = {
+    const args = ({
       _: ['whook', 'hey'],
-    };
+    } as unknown) as WhookCommandArgs;
 
     readArgs(
       {
@@ -46,11 +47,15 @@ describe('readArgs', () => {
         properties: {
           _: {
             type: 'array',
+            description: 'Rest params',
             maxItems: Infinity,
+            items: {
+              type: 'string',
+            },
           },
         },
-      } as any,
-      args as any,
+      },
+      args,
     );
 
     expect({
@@ -59,13 +64,13 @@ describe('readArgs', () => {
   });
 
   it('should report named args errors', () => {
-    const args = {
+    const args = ({
       _: ['whook'],
       parameters: '{}',
-    };
+    } as unknown) as WhookCommandArgs;
 
     try {
-      readArgs(handlerCommandDefinition.arguments, args as any);
+      readArgs(handlerCommandDefinition.arguments, args);
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({

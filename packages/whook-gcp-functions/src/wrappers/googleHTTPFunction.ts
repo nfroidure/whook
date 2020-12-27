@@ -30,7 +30,7 @@ import {
 import { noop, compose, identity } from '@whook/whook';
 import stream from 'stream';
 import type { WhookQueryStringParser } from '@whook/http-router';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies, Service } from 'knifecycle';
 import type {
   WhookRequest,
   WhookResponse,
@@ -56,7 +56,7 @@ type HTTPWrapperDependencies = {
   obfuscator: ObfuscatorService;
   time?: TimeService;
   log?: LogService;
-  WRAPPERS: WhookWrapper<any, any>[];
+  WRAPPERS: WhookWrapper<Dependencies, Service>[];
 };
 
 const SEARCH_SEPARATOR = '?';
@@ -68,7 +68,7 @@ export default function wrapHandlerForAWSHTTPFunction<
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & HTTPWrapperDependencies, S> {
-  return alsoInject(
+  return alsoInject<HTTPWrapperDependencies, D, S>(
     [
       'OPERATION_API',
       'WRAPPERS',
@@ -86,9 +86,12 @@ export default function wrapHandlerForAWSHTTPFunction<
     ],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSHTTPFunction.bind(null, initHandler),
+      initHandlerForAWSHTTPFunction.bind(
+        null,
+        initHandler,
+      ) as ServiceInitializer<D, S>,
     ),
-  ) as any;
+  );
 }
 
 async function initHandlerForAWSHTTPFunction(
@@ -134,9 +137,15 @@ async function initHandlerForAWSHTTPFunction(
     ),
   );
   const bodyValidator = prepareBodyValidator(ajv, OPERATION);
-  const applyWrappers = compose(...WRAPPERS) as any;
+  const applyWrappers = compose(...WRAPPERS) as WhookWrapper<
+    Dependencies,
+    Service
+  >;
 
-  const handler = await applyWrappers(initHandler)({
+  const handler = await (applyWrappers(initHandler) as ServiceInitializer<
+    Dependencies,
+    Service
+  >)({
     OPERATION,
     DEBUG_NODE_ENVS,
     NODE_ENV,
@@ -185,9 +194,8 @@ async function handleForAWSHTTPFunction(
     // be found
     CORS,
     log,
-    time,
     obfuscator,
-  }: HTTPWrapperDependencies & { CORS: any },
+  }: HTTPWrapperDependencies & { CORS: Record<string, string> },
   {
     consumableMediaTypes,
     produceableMediaTypes,
@@ -197,8 +205,8 @@ async function handleForAWSHTTPFunction(
     bodyValidator,
   },
   handler: WhookHandler,
-  req: any,
-  res: any,
+  req,
+  res,
 ) {
   const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
@@ -287,12 +295,12 @@ async function handleForAWSHTTPFunction(
 
       // TODO: Update strictQS to handle OpenAPI 3
       const retroCompatibleQueryParameters = (OPERATION.parameters || [])
-        .filter((p) => (p as any).in === 'query')
-        .map((p) => ({ ...p, ...(p as any).schema }));
+        .filter((p) => p.in === 'query')
+        .map((p) => ({ ...p, ...p.schema }));
 
       parameters = {
         ...pathParameters,
-        ...QUERY_PARSER(retroCompatibleQueryParameters, search),
+        ...QUERY_PARSER(retroCompatibleQueryParameters as any, search),
         ...filterHeaders(operation.parameters, request.headers),
       };
 
@@ -404,7 +412,7 @@ async function handleForAWSHTTPFunction(
   );
 }
 
-async function gcpfReqToRequest(req: any): Promise<WhookRequest> {
+async function gcpfReqToRequest(req): Promise<WhookRequest> {
   const request: WhookRequest = {
     method: req.method.toLowerCase(),
     headers: lowerCaseHeaders(req.headers || {}),
@@ -425,7 +433,7 @@ async function gcpfReqToRequest(req: any): Promise<WhookRequest> {
 
 async function pipeResponseInGCPFResponse(
   response: WhookResponse,
-  res: any,
+  res,
 ): Promise<void> {
   Object.keys(response.headers).forEach((headerName) => {
     res.set(headerName, response.headers[headerName]);

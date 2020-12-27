@@ -5,9 +5,7 @@ import type { WhookArgsTypes } from '..';
 
 export default singleton(autoService(initArgs));
 
-export type WhookCommandNamedArgs = {
-  [name: string]: WhookArgsTypes;
-};
+export type WhookCommandNamedArgs = Record<string, WhookArgsTypes>;
 export type WhookCommandArgsRest = {
   _?: string[];
 };

@@ -9,7 +9,7 @@ import {
 } from 'knifecycle';
 import YError from 'yerror';
 import type { ImporterService } from '@whook/whook';
-import type { Autoloader } from 'knifecycle';
+import type { Autoloader, Service } from 'knifecycle';
 import type { WhookCommandArgs } from '..';
 import type { LogService } from 'common-services';
 
@@ -28,7 +28,7 @@ export default alsoInject(
         WHOOK_PLUGINS_PATHS: string[];
         args: WhookCommandArgs;
         log: LogService;
-        importer: ImporterService<any>;
+        importer: ImporterService<Service>;
       },
       $autoload: Autoloader,
     ) => {

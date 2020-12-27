@@ -4,6 +4,7 @@ import HTTPError from 'yhttperror';
 import Stream from 'stream';
 import { pickupOperationSecuritySchemes } from './utils';
 import ajv from 'ajv';
+import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import type { Ajv } from 'ajv';
 import type { SupportedSecurityScheme } from './utils';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -12,7 +13,7 @@ import type {
   WhookOperation,
   WhookHeaders,
 } from '@whook/http-transaction';
-import { parseReentrantNumber, parseBoolean } from 'strict-qs';
+import type { JsonValue } from 'type-fest';
 
 /* Architecture Note #1.1: Validators
 For performance reasons, the validators are
@@ -36,7 +37,7 @@ Also, looking closely to Prepack that
 export function applyValidators(
   operation: WhookOperation,
   validators: { [name: string]: ajv.ValidateFunction },
-  parameters: any[],
+  parameters: JsonValue[],
 ): void {
   ((operation.parameters || []) as OpenAPIV3.ParameterObject[]).forEach(
     ({ name, in: isIn }) => {

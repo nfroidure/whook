@@ -13,7 +13,7 @@ import type {
   WhookCommandDefinition,
   WhookCommandNamedArgs,
 } from '@whook/cli';
-import type { LogService, TimeService } from 'common-services';
+import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 
 const SEARCH_SEPARATOR = '?';
@@ -112,7 +112,7 @@ async function initTestHTTPLambdaCommand({
     const path = OPERATION.path
       .split(PATH_SEPARATOR)
 
-      .map((part, index) => {
+      .map((part) => {
         const matches = /^\{([\d\w]+)\}$/i.exec(part);
 
         if (matches) {

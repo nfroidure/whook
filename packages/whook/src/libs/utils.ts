@@ -7,7 +7,7 @@ export function identity<T>(id: T): T {
 }
 
 export function compose<
-  T extends (...args: any[]) => any = (...args: unknown[]) => unknown
+  T extends (...args: unknown[]) => unknown = (...args: unknown[]) => unknown
 >(...fns: ((...args: unknown[]) => unknown)[]): T {
   return fns.reduce((f, g) => (...args: unknown[]) => f(g(...args))) as T;
 }

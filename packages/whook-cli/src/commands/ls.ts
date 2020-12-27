@@ -10,6 +10,7 @@ import {
   DEFAULT_REDUCED_FILES_SUFFIXES,
   noop,
 } from '@whook/whook';
+import type { Service } from 'knifecycle';
 import type {
   WhookCommandDefinition,
   PromptArgs,
@@ -65,7 +66,7 @@ async function initLsCommand({
   log?: LogService;
   promptArgs: PromptArgs;
   EOL?: typeof os.EOL;
-  importer: ImporterService<any>;
+  importer: ImporterService<Service>;
 }): Promise<WhookCommandHandler> {
   return async () => {
     const { verbose } = readArgs(definition.arguments, await promptArgs());

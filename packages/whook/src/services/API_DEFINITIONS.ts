@@ -5,6 +5,7 @@ import path from 'path';
 import { noop } from '../libs/utils';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { JsonValue } from 'type-fest';
 import type { ImporterService } from '..';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
@@ -47,25 +48,25 @@ export type WhookAPIDefinitions = {
 export type WhookAPIOperationConfig = {
   disabled?: boolean;
 };
-export type WhookAPIOperationAddition<T = Record<string, any>> = {
+export type WhookAPIOperationAddition<T = Record<string, JsonValue>> = {
   operationId: OpenAPIV3.OperationObject['operationId'];
   'x-whook'?: T & WhookAPIOperationConfig;
 };
 export type WhookAPIOperation<
-  T = Record<string, any>
+  T = Record<string, JsonValue>
 > = OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
-export type WhookAPIHandlerDefinition<T = Record<string, any>> = {
+export type WhookAPIHandlerDefinition<T = Record<string, JsonValue>> = {
   path: string;
   method: string;
   operation: WhookAPIOperation<T>;
 };
-export type WhookAPISchemaDefinition<T = any> = {
+export type WhookAPISchemaDefinition<T = JsonValue> = {
   name: string;
   schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
   example?: T;
   examples?: T[];
 };
-export type WhookAPIParameterDefinition<T = any> = {
+export type WhookAPIParameterDefinition<T = JsonValue> = {
   name: string;
   parameter: OpenAPIV3.ParameterObject;
   example?: T;
@@ -226,6 +227,13 @@ async function initAPIDefinitions({
           return paths;
         }
 
+        if (paths[definition.path]?.[definition.method]) {
+          log(
+            'warning',
+            `⚠️ - Overriding an existing definition (${definition.method} ${definition.path}).`,
+          );
+        }
+
         return {
           ...paths,
           ...(definition
@@ -251,6 +259,13 @@ async function initAPIDefinitions({
             .reduce((addedSchemas, key) => {
               const schema = module[key] as WhookAPISchemaDefinition;
 
+              if (schemas[schema.name]) {
+                log(
+                  'warning',
+                  `⚠️ - Overriding an existing schema (${schema.name}).`,
+                );
+              }
+
               return { ...addedSchemas, [schema.name]: schema.schema };
             }, {}),
         }),
@@ -265,6 +280,13 @@ async function initAPIDefinitions({
             .filter((key) => key.endsWith('Parameter'))
             .reduce((addedParameters, key) => {
               const parameter = module[key] as WhookAPIParameterDefinition;
+
+              if (addedParameters[parameter.name]) {
+                log(
+                  'warning',
+                  `⚠️ - Overriding an existing parameter (${parameter.name}).`,
+                );
+              }
 
               return {
                 ...addedParameters,
