@@ -158,7 +158,7 @@ async function initHandlerForAWSHTTPLambda(
     Service
   >;
 
-  const handler = ((await applyWrappers(initHandler)) as ServiceInitializer<
+  const handler = await (applyWrappers(initHandler) as ServiceInitializer<
     Dependencies,
     Service
   >)({
