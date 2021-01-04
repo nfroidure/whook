@@ -197,7 +197,7 @@ Mr Bean
           "strict-qs": "^6.1.3",
           "type-fest": "^0.20.2",
           "yerror": "^5.0.0",
-          "yhttperror": "^5.0.0",
+          "yhttperror": "^5.0.2",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
@@ -452,7 +452,7 @@ Mr Bean
           "strict-qs": "^6.1.3",
           "type-fest": "^0.20.2",
           "yerror": "^5.0.0",
-          "yhttperror": "^5.0.0",
+          "yhttperror": "^5.0.2",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
@@ -692,7 +692,7 @@ Mr Bean
           "strict-qs": "^6.1.3",
           "type-fest": "^0.20.2",
           "yerror": "^5.0.0",
-          "yhttperror": "^5.0.0",
+          "yhttperror": "^5.0.2",
         },
         "description": "A new Whook project",
         "devDependencies": Object {

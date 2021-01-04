@@ -372,6 +372,7 @@ async function handleForAWSHTTPLambda(
       status: castedError.httpCode,
       headers: {
         ...CORS,
+        ...(castedError.headers ?? {}),
         'content-type': 'application/json',
       },
       body: {

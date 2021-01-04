@@ -62,7 +62,7 @@
     "statuses": "^2.0.0",
     "type-fest": "^0.20.2",
     "yerror": "^5.0.0",
-    "yhttperror": "^5.0.0"
+    "yhttperror": "^5.0.2"
   },
   "peerDependencies": {
     "@whook/whook": "^5.0.0"

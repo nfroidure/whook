@@ -76,7 +76,7 @@
     "knifecycle": "^11.0.1",
     "openapi-types": "^7.0.1",
     "type-fest": "^0.20.2",
-    "yhttperror": "^5.0.0"
+    "yhttperror": "^5.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",

@@ -105,12 +105,10 @@ async function handleWithCORS<
   } catch (err) {
     // Test if setter is available, could produce another error if err only has a getter
     if (!isGetter(err, 'headers')) {
-      err.headers = Object.assign(
-        {
-          vary: 'Origin',
-        },
-        finalCORS,
-      );
+      err.headers = {
+        ...finalCORS,
+        vary: 'Origin',
+      };
     }
     throw err;
   }
