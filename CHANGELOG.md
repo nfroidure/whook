@@ -1,3 +1,13 @@
+## [7.1.1](https://github.com/nfroidure/whook/compare/v7.1.0...v7.1.1) (2021-01-04)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix the HTTP wrapper ([aacd6c3](https://github.com/nfroidure/whook/commit/aacd6c38511ebac61dff9f9a21fb051bc170db1d))
+* **@whook/cors:** fix CORS when errors are casted ([6c18a87](https://github.com/nfroidure/whook/commit/6c18a8701e3e6437cebf7dd93c5e332423e3a9ee))
+
+
+
 # [7.1.0](https://github.com/nfroidure/whook/compare/v7.0.0...v7.1.0) (2020-12-27)
 
 
