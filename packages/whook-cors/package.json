@@ -1,6 +1,6 @@
 {
   "name": "@whook/cors",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "A wrapper to provide CORS support to a Whook server",
   "keywords": [
     "whook",

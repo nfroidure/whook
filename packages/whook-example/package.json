@@ -1,6 +1,6 @@
 {
   "name": "@whook/example",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "description": "A basic Whook server",
   "keywords": [
     "whook",
@@ -79,7 +79,7 @@
   "dependencies": {
     "@whook/authorization": "^7.1.1",
     "@whook/cli": "^7.1.1",
-    "@whook/cors": "^7.1.1",
+    "@whook/cors": "^7.1.2",
     "@whook/http-router": "^7.1.1",
     "@whook/http-transaction": "^7.1.1",
     "@whook/swagger-ui": "^7.1.1",
