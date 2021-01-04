@@ -30,6 +30,7 @@ import {
 import stream from 'stream';
 import qs from 'qs';
 import { noop, compose } from '@whook/whook';
+import { lowerCaseHeaders } from '@whook/cors';
 import type {
   ServiceInitializer,
   Dependencies,
@@ -54,6 +55,7 @@ import type {
   APIGatewayProxyResult,
   Context,
 } from 'aws-lambda';
+import type { CORSConfig } from '@whook/cors';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -207,14 +209,12 @@ async function handleForAWSHTTPLambda(
     STRINGIFYERS = DEFAULT_STRINGIFYERS,
     BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
     PARSED_HEADERS,
-    // TODO: Better handling of CORS in errors should
-    // be found
     CORS,
     log,
     time,
     apm,
     obfuscator,
-  }: HTTPWrapperDependencies & { CORS: Record<string, string> },
+  }: HTTPWrapperDependencies & { CORS: CORSConfig },
   {
     consumableMediaTypes,
     produceableMediaTypes,
@@ -371,7 +371,7 @@ async function handleForAWSHTTPLambda(
     response = {
       status: castedError.httpCode,
       headers: {
-        ...CORS,
+        ...lowerCaseHeaders(CORS),
         ...(castedError.headers ?? {}),
         'content-type': 'application/json',
       },
@@ -560,15 +560,6 @@ async function responseToAWSResponseEvent(
   }
 
   return amazonResponse;
-}
-
-function lowerCaseHeaders(headers) {
-  return Object.keys(headers).reduce((newHeaders, name) => {
-    const newName = name.toLowerCase();
-
-    newHeaders[newName] = headers[name];
-    return newHeaders;
-  }, {});
 }
 
 function obfuscateEventBody(obfuscator, rawBody) {

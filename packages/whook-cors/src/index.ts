@@ -239,7 +239,9 @@ function mergeVaryHeaders(
   return [...new Set([...baseHeaderValues, addedValue])].join(', ');
 }
 
-function lowerCaseHeaders<T>(object: Record<string, T>): Record<string, T> {
+export function lowerCaseHeaders<T>(
+  object: Record<string, T>,
+): Record<string, T> {
   return Object.keys(object).reduce(
     (finalObject, key) => ({
       ...finalObject,

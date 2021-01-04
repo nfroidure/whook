@@ -28,6 +28,7 @@ import {
   sendBody,
 } from '@whook/http-router';
 import { noop, compose, identity } from '@whook/whook';
+import { lowerCaseHeaders } from '@whook/cors';
 import stream from 'stream';
 import type { WhookQueryStringParser } from '@whook/http-router';
 import type { ServiceInitializer, Dependencies, Service } from 'knifecycle';
@@ -42,6 +43,7 @@ import type {
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { Readable } from 'stream';
+import type { CORSConfig } from '@whook/cors';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -190,12 +192,10 @@ async function handleForAWSHTTPFunction(
     STRINGIFYERS = DEFAULT_STRINGIFYERS,
     BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
     QUERY_PARSER,
-    // TODO: Better handling of CORS in errors should
-    // be found
     CORS,
     log,
     obfuscator,
-  }: HTTPWrapperDependencies & { CORS: Record<string, string> },
+  }: HTTPWrapperDependencies & { CORS: CORSConfig },
   {
     consumableMediaTypes,
     produceableMediaTypes,
@@ -377,7 +377,8 @@ async function handleForAWSHTTPFunction(
     response = {
       status: castedError.httpCode,
       headers: {
-        ...CORS,
+        ...lowerCaseHeaders(CORS),
+        ...(castedError.headers ?? {}),
         'content-type': 'application/json',
       },
       body: {
@@ -446,15 +447,6 @@ async function pipeResponseInGCPFResponse(
   }
 
   res.end();
-}
-
-function lowerCaseHeaders(headers) {
-  return Object.keys(headers).reduce((newHeaders, name) => {
-    const newName = name.toLowerCase();
-
-    newHeaders[newName] = headers[name];
-    return newHeaders;
-  }, {});
 }
 
 function obfuscateEventBody(obfuscator, rawBody) {

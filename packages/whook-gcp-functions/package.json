@@ -55,7 +55,9 @@
     "webpack": "^4.43.0"
   },
   "dependencies": {
+    "@types/bytes": "^3.1.0",
     "@whook/cli": "^7.1.1",
+    "@whook/cors": "^7.1.1",
     "@whook/http-router": "^7.1.1",
     "@whook/whook": "^7.1.1",
     "ajv": "^6.12.6",
