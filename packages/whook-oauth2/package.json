@@ -47,7 +47,7 @@
     "@types/cookies": "^0.7.4",
     "@whook/authorization": "^7.1.1",
     "@whook/whook": "^7.1.1",
-    "camelcase": "^6.1.0",
+    "camelcase": "^6.2.0",
     "common-services": "^9.0.0",
     "cookie": "^0.4.1",
     "knifecycle": "^11.0.1",

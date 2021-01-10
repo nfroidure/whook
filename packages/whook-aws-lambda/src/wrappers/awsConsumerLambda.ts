@@ -104,7 +104,7 @@ async function handleForAWSConsumerLambda(
     ...OPERATION_API.paths[path][method],
   };
   const startTime = time();
-  const parameters = {
+  const parameters: LambdaConsumerInput = {
     body: event.Records,
   } as LambdaConsumerInput;
 

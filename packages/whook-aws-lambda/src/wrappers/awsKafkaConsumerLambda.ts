@@ -12,7 +12,6 @@ import type {
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { MSKEvent, Context } from 'aws-lambda';
-import { JsonValue } from 'type-fest';
 
 type KafkaConsumerWrapperDependencies = {
   NODE_ENV: string;
@@ -77,7 +76,7 @@ async function handleForAWSKafkaConsumerLambda(
     ...OPERATION_API.paths[path][method],
   };
   const startTime = time();
-  const parameters = {
+  const parameters: LambdaKafkaConsumerInput = {
     body: event.records,
   };
 
