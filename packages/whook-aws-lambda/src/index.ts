@@ -6,9 +6,9 @@ import mkdirp from 'mkdirp';
 import cpr from 'cpr';
 import YError from 'yerror';
 import Knifecycle, {
-  initInitializerBuilder,
   SPECIAL_PROPS,
   constant,
+  initInitializerBuilder,
 } from 'knifecycle';
 import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler';
 import initBuildAutoloader from './services/_autoload';
@@ -16,13 +16,12 @@ import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
-import type { BuildInitializer } from 'knifecycle';
 import type {
   WhookCompilerOptions,
   WhookCompilerService,
   WhookCompilerConfig,
 } from './services/compiler';
-import type { Autoloader, Dependencies } from 'knifecycle';
+import type { Autoloader, Dependencies, BuildInitializer } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
@@ -234,7 +233,11 @@ export async function runBuild(
     process.exit();
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the build:', err.stack);
+    console.error(
+      '💀 - Cannot launch the build:',
+      err.stack,
+      JSON.stringify(err.params, null, 2),
+    );
     process.exit(1);
   }
 }
@@ -255,11 +258,10 @@ async function processOperations(
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader;
-    // eslint-disable-next-line
     buildInitializer: BuildInitializer;
   },
   operations: WhookOperation<WhookAPIOperationAWSLambdaConfig>[],
-) {
+): Promise<void> {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
 
   await Promise.all(
@@ -308,11 +310,12 @@ async function buildAnyLambda(
     buildInitializer: BuildInitializer;
   },
   operation: WhookOperation<WhookAPIOperationAWSLambdaConfig>,
-) {
+): Promise<void> {
   const { operationId } = operation;
 
   try {
-    const whookConfig = operation['x-whook'] || {};
+    const whookConfig: WhookAPIOperationAWSLambdaConfig =
+      operation['x-whook'] || {};
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
     const entryPoint = operationId;
@@ -364,6 +367,7 @@ async function buildAnyLambda(
   } catch (err) {
     log('error', `Error building ${operationId}'...`);
     log('stack', err.stack);
+    log('debug', JSON.stringify(err.params, null, 2));
     throw YError.wrap(err, 'E_LAMBDA_BUILD', operationId);
   }
 }
@@ -392,7 +396,7 @@ async function buildFinalLambda(
   { compiler, log }: { compiler: WhookCompilerService; log: LogService },
   lambdaPath: string,
   whookConfig: WhookAPIOperationAWSLambdaConfig,
-) {
+): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings } = await compiler(
     entryPoint,
@@ -416,7 +420,7 @@ async function copyStaticFiles(
   { PROJECT_DIR, log }: { PROJECT_DIR: string; log: LogService },
   lambdaPath: string,
   staticFiles: string[] = [],
-) {
+): Promise<void> {
   await Promise.all(
     staticFiles.map(
       async (staticFile) =>
@@ -433,7 +437,7 @@ async function copyFiles(
   { log }: { log: LogService },
   source: string,
   destination: string,
-) {
+): Promise<void> {
   let theError;
   try {
     await mkdirp(destination);
@@ -457,7 +461,7 @@ async function ensureFileAsync(
   path: string,
   content: string,
   encoding = 'utf-8',
-) {
+): Promise<void> {
   try {
     const oldContent = await readFileAsync(path, encoding);
 
