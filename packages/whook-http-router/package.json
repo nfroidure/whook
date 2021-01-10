@@ -66,7 +66,7 @@
     "miniquery": "^1.1.2",
     "ms": "^2.1.2",
     "negotiator": "^0.6.2",
-    "openapi-types": "^7.0.1",
+    "openapi-types": "7.0.1",
     "qs": "^6.9.4",
     "siso": "^4.0.3",
     "strict-qs": "^6.1.3",
