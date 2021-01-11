@@ -71,7 +71,7 @@
     "@whook/whook": "^7.1.1",
     "axios": "^0.21.0",
     "ecstatic": "^4.1.4",
-    "knifecycle": "^11.0.1",
+    "knifecycle": "^11.1.0",
     "openapi-types": "7.0.1",
     "swagger-ui-dist": "^3.37.0"
   },

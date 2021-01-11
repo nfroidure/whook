@@ -127,8 +127,8 @@ const CONFIG: AppConfigs = {
 +  COMPILER_OPTIONS: {
 +    externalModules: [],
 +    ignoredModules: [],
-+    extensions: ['.ts', '.mjs', '.js', '.json'],
-+    mainFields: ['browser', 'module', 'main'],
++    extensions: ['.ts', '.js', '.json'],
++    mainFields: ['browser', 'main'],
 +    target: '12.13',
 +  },
 };

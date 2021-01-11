@@ -5,7 +5,11 @@ import joinPath from 'memory-fs/lib/join';
 import { Volume, createFsFromVolume } from 'memfs';
 import webpack from 'webpack';
 import { autoService } from 'knifecycle';
+import type { Configuration } from 'webpack';
 import type { LogService } from 'common-services';
+import type { BuildOptions } from 'knifecycle/dist/build';
+
+export const DEFAULT_BUILD_OPTIONS: BuildOptions = { modules: 'commonjs' };
 
 export default autoService(initCompiler);
 
@@ -20,6 +24,7 @@ export type WhookCompilerConfig = {
   NODE_ENV?: string;
   DEBUG_NODE_ENVS: string[];
   COMPILER_OPTIONS?: WhookCompilerOptions;
+  BUILD_OPTIONS?: BuildOptions;
 };
 export type WhookCompilerDependencies = WhookCompilerConfig & {
   NODE_ENV: string;
@@ -34,15 +39,16 @@ export type WhookCompilerService = (
 export const DEFAULT_COMPILER_OPTIONS: Required<WhookCompilerOptions> = {
   externalModules: [],
   ignoredModules: [],
-  extensions: ['.ts', '.mjs', '.js', '.json'],
-  mainFields: ['browser', 'module', 'main'],
-  target: '12.13',
+  extensions: ['.ts', '.js', '.json'],
+  mainFields: ['browser', 'main'],
+  target: '12',
 };
 
 async function initCompiler({
   NODE_ENV,
   DEBUG_NODE_ENVS,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
+  BUILD_OPTIONS = DEFAULT_BUILD_OPTIONS,
   log = noop,
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
   return async function compiler(
@@ -59,10 +65,10 @@ async function initCompiler({
     const memoryFS = createFsFromVolume(new Volume());
     // Configurations inspired from modes
     // See https://webpack.js.org/configuration/mode/
-    const configuration = {
+    const configuration: Configuration = {
       entry: entryPoint,
-      target: 'node',
       mode: 'none',
+      target: 'node' + compilerOptions.target,
       devtool: debugging ? 'eval' : 'source-map',
       cache: debugging,
       performance: {
@@ -77,41 +83,32 @@ async function initCompiler({
       optimization: {
         nodeEnv: NODE_ENV,
         minimize: false,
+        emitOnErrors: debugging,
+        moduleIds: debugging ? 'named' : 'deterministic',
+        chunkIds: debugging ? 'named' : 'deterministic',
+        mangleExports: debugging ? false : 'deterministic',
+        flagIncludedChunks: !debugging,
+        concatenateModules: !debugging,
+        checkWasmTypes: !debugging,
+        sideEffects: !debugging,
+        usedExports: !debugging,
         ...(debugging
           ? {
-              namedModules: true,
-              namedChunks: true,
-              flagIncludedChunks: false,
-              occurrenceOrder: false,
-              sideEffects: false,
-              usedExports: false,
-              concatenateModules: false,
               splitChunks: {
                 hidePathInfo: false,
                 minSize: 10000,
                 maxAsyncRequests: Infinity,
                 maxInitialRequests: Infinity,
               },
-              noEmitOnErrors: false,
-              checkWasmTypes: false,
               removeAvailableModules: false,
             }
           : {
-              namedModules: false,
-              namedChunks: false,
-              flagIncludedChunks: true,
-              occurrenceOrder: true,
-              sideEffects: true,
-              usedExports: true,
-              concatenateModules: true,
               splitChunks: {
                 hidePathInfo: true,
                 minSize: 30000,
                 maxAsyncRequests: 5,
                 maxInitialRequests: 3,
               },
-              noEmitOnErrors: true,
-              checkWasmTypes: true,
             }),
       },
       plugins: [
@@ -119,10 +116,12 @@ async function initCompiler({
           'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
         }),
         ...compilerOptions.ignoredModules.map((ignoredModule) => {
-          return new webpack.IgnorePlugin(new RegExp(ignoredModule));
+          return new webpack.IgnorePlugin({
+            resourceRegExp: new RegExp(ignoredModule),
+          });
         }),
         ...(debugging
-          ? [new webpack.NamedModulesPlugin(), new webpack.NamedChunksPlugin()]
+          ? []
           : [
               new webpack.optimize.ModuleConcatenationPlugin(),
               new webpack.NoEmitOnErrorsPlugin(),
@@ -139,11 +138,6 @@ async function initCompiler({
       module: {
         rules: [
           {
-            test: /\.mjs$/,
-            include: /node_modules|dist/,
-            type: 'javascript/auto',
-          },
-          {
             test: /\.(js|ts)$/,
             exclude: /node_modules|dist/,
             use: {
@@ -154,7 +148,7 @@ async function initCompiler({
                   [
                     '@babel/env',
                     {
-                      modules: false,
+                      modules: BUILD_OPTIONS.modules,
                       targets: {
                         node: compilerOptions.target,
                       },
@@ -180,7 +174,7 @@ async function initCompiler({
     await new Promise<void>((resolve, reject) => {
       compiler.run((err, stats) => {
         if (err) {
-          reject(YError.wrap(err, 'E_WEBPACK', err.details));
+          reject(YError.wrap(err, 'E_WEBPACK', (err as any).details));
           return;
         }
         if (stats.hasErrors()) {

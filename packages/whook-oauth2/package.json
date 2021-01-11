@@ -50,7 +50,7 @@
     "camelcase": "^6.2.0",
     "common-services": "^9.0.0",
     "cookie": "^0.4.1",
-    "knifecycle": "^11.0.1",
+    "knifecycle": "^11.1.0",
     "type-fest": "^0.20.2",
     "yerror": "^5.0.0",
     "yhttperror": "^5.0.2"

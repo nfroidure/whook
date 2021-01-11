@@ -846,6 +846,10 @@ Object {
       "⚡ - Loading configurations from /home/whoiam/projects/whook/packages/whook-example/src/config/test/config.",
     ],
     Array [
+      "✔ - Found the project dir:",
+      "/home/whoiam/projects/whook/packages/whook-example",
+    ],
+    Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
     ],
     Array [

@@ -55,7 +55,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/http-router": "^7.1.1",
-    "knifecycle": "^11.0.1",
+    "knifecycle": "^11.1.0",
     "ms": "^2.1.2",
     "yerror": "^5.0.0"
   },

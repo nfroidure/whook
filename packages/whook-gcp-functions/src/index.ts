@@ -5,33 +5,42 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import cpr from 'cpr';
 import YError from 'yerror';
-import initCompiler, {
-  WhookCompilerOptions,
-  WhookCompilerService,
-  WhookCompilerConfig,
-  DEFAULT_COMPILER_OPTIONS,
-} from './services/compiler';
-import initBuildAutoloader from './services/_autoload';
 import Knifecycle, {
   SPECIAL_PROPS,
   constant,
   initInitializerBuilder,
 } from 'knifecycle';
+import initCompiler, {
+  DEFAULT_COMPILER_OPTIONS,
+  DEFAULT_BUILD_OPTIONS,
+} from './services/compiler';
+import initBuildAutoloader from './services/_autoload';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
-import type { Dependencies, BuildInitializer } from 'knifecycle';
-import type { Autoloader } from 'knifecycle';
+import type {
+  WhookCompilerOptions,
+  WhookCompilerService,
+  WhookCompilerConfig,
+} from './services/compiler';
+import type { Autoloader, Dependencies, BuildInitializer } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
+import type { CprOptions } from 'cpr';
+import type { BuildOptions } from 'knifecycle/dist/build';
 
 export type { WhookCompilerConfig, WhookCompilerOptions, WhookCompilerService };
-export { DEFAULT_COMPILER_OPTIONS };
+export { DEFAULT_COMPILER_OPTIONS, DEFAULT_BUILD_OPTIONS };
+export const DEFAULT_BUILD_PARALLELISM = 10;
 
+export type WhookBuildConfig = {
+  BUILD_OPTIONS?: BuildOptions;
+  BUILD_PARALLELISM?: number;
+};
 export type WhookAPIOperationGCPFunctionConfig = {
-  type?: 'http' | 'cron' | 'consumer' | 'transformer';
+  type?: 'http';
   sourceOperationId?: string;
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
@@ -50,16 +59,17 @@ const writeFileAsync = util.promisify(fs.writeFile) as (
 const cprAsync = util.promisify(cpr) as (
   source: string,
   destination: string,
-  options: cpr.CprOptions,
-) => Promise<unknown>;
+  options: CprOptions,
+) => Promise<string[]>;
 
-const BUILD_DEFINITIONS: {
-  [type: string]: {
+const BUILD_DEFINITIONS: Record<
+  WhookAPIOperationGCPFunctionConfig['type'],
+  {
     type: string;
     wrapper: { name: string; path: string };
     suffix?: string;
-  };
-} = {
+  }
+> = {
   http: {
     type: 'HTTP',
     wrapper: {
@@ -84,7 +94,6 @@ export async function prepareBuildEnvironment<
   $.register(initInitializerBuilder);
   $.register(initBuildAutoloader);
   $.register(initCompiler);
-  $.register(constant('BUILD_PARALLELISM', 10));
   $.register(constant('PORT', 1337));
   $.register(constant('HOST', 'localhost'));
 
@@ -100,25 +109,25 @@ export async function runBuild(
     const {
       NODE_ENV,
       BUILD_PARALLELISM,
+      BUILD_OPTIONS,
       PROJECT_DIR,
       compiler,
       log,
       $autoload,
       API,
       buildInitializer,
-    }: {
+    }: WhookBuildConfig & {
       NODE_ENV: string;
-      BUILD_PARALLELISM: number;
       PROJECT_DIR: string;
       compiler: WhookCompilerService;
       log: LogService;
       $autoload: Autoloader;
       API: OpenAPIV3.Document;
-      // eslint-disable-next-line
       buildInitializer: BuildInitializer;
     } = await $.run([
       'NODE_ENV',
-      'BUILD_PARALLELISM',
+      '?BUILD_PARALLELISM',
+      '?BUILD_OPTIONS',
       'PROJECT_DIR',
       'process',
       'compiler',
@@ -152,7 +161,8 @@ export async function runBuild(
     await processOperations(
       {
         NODE_ENV,
-        BUILD_PARALLELISM,
+        BUILD_OPTIONS: BUILD_OPTIONS || DEFAULT_BUILD_OPTIONS,
+        BUILD_PARALLELISM: BUILD_PARALLELISM || DEFAULT_BUILD_PARALLELISM,
         PROJECT_DIR,
         compiler,
         log,
@@ -165,7 +175,11 @@ export async function runBuild(
     process.exit();
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the build:', err.stack);
+    console.error(
+      '💀 - Cannot launch the build:',
+      err.stack,
+      JSON.stringify(err.params, null, 2),
+    );
     process.exit(1);
   }
 }
@@ -174,6 +188,7 @@ async function processOperations(
   {
     NODE_ENV,
     BUILD_PARALLELISM,
+    BUILD_OPTIONS,
     PROJECT_DIR,
     compiler,
     log,
@@ -182,6 +197,7 @@ async function processOperations(
   }: {
     NODE_ENV: string;
     BUILD_PARALLELISM: number;
+    BUILD_OPTIONS: BuildOptions;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
     log: LogService;
@@ -189,18 +205,24 @@ async function processOperations(
     buildInitializer: BuildInitializer;
   },
   operations: WhookOperation<WhookAPIOperationGCPFunctionConfig>[],
-) {
+): Promise<void> {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
 
   await Promise.all(
-    operations
-      .slice(0, BUILD_PARALLELISM)
-      .map((operation) =>
-        buildAnyLambda(
-          { NODE_ENV, PROJECT_DIR, compiler, log, $autoload, buildInitializer },
-          operation,
-        ),
+    operations.slice(0, BUILD_PARALLELISM).map((operation) =>
+      buildAnyLambda(
+        {
+          NODE_ENV,
+          PROJECT_DIR,
+          BUILD_OPTIONS,
+          compiler,
+          log,
+          $autoload,
+          buildInitializer,
+        },
+        operation,
       ),
+    ),
   );
 
   if (operationsLeft.length) {
@@ -209,6 +231,7 @@ async function processOperations(
       {
         NODE_ENV,
         BUILD_PARALLELISM,
+        BUILD_OPTIONS,
         PROJECT_DIR,
         compiler,
         log,
@@ -225,6 +248,7 @@ async function buildAnyLambda(
   {
     NODE_ENV,
     PROJECT_DIR,
+    BUILD_OPTIONS,
     compiler,
     log,
     $autoload,
@@ -232,13 +256,14 @@ async function buildAnyLambda(
   }: {
     NODE_ENV: string;
     PROJECT_DIR: string;
+    BUILD_OPTIONS: BuildOptions;
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader;
     buildInitializer: BuildInitializer;
   },
   operation: WhookOperation<WhookAPIOperationGCPFunctionConfig>,
-) {
+): Promise<void> {
   const { operationId } = operation;
 
   try {
@@ -271,11 +296,16 @@ async function buildAnyLambda(
           ? `OPERATION_API>OPERATION_API_${finalEntryPoint}`
           : name,
       ),
+      BUILD_OPTIONS,
     );
-    const indexContent = await buildLambdaIndex(rootNode, {
-      name: buildDefinition.wrapper.name,
-      path: buildDefinition.wrapper.path,
-    });
+    const indexContent = await buildLambdaIndex(
+      rootNode,
+      {
+        name: buildDefinition.wrapper.name,
+        path: buildDefinition.wrapper.path,
+      },
+      BUILD_OPTIONS,
+    );
 
     await mkdirp(lambdaPath);
     await Promise.all([
@@ -295,14 +325,26 @@ async function buildAnyLambda(
   } catch (err) {
     log('error', `Error building ${operationId}'...`);
     log('stack', err.stack);
+    log('debug', JSON.stringify(err.params, null, 2));
     throw YError.wrap(err, 'E_LAMBDA_BUILD', operationId);
   }
 }
 
-async function buildLambdaIndex(rootNode, buildWrapper) {
-  return `import initHandler from '${rootNode.path}';
+async function buildLambdaIndex(
+  rootNode: { path: string },
+  buildWrapper: { name: string; path: string },
+  options: BuildOptions,
+): Promise<string> {
+  return `${
+    options.modules === 'commonjs'
+      ? `const pickModule = (m) => { return m && m.default || m; }
+const initHandler = pickModule(require('${rootNode.path}'));
+const ${buildWrapper.name} = pickModule(require('${buildWrapper.path}'));
+const { initialize } = require('./initialize');`
+      : `import initHandler from '${rootNode.path}';
 import ${buildWrapper.name} from '${buildWrapper.path}';
-import { initialize } from './initialize';
+import { initialize } from './initialize';`
+  }
 
 const handlerInitializer = ${buildWrapper.name}(
     initHandler
@@ -311,7 +353,11 @@ const handlerInitializer = ${buildWrapper.name}(
 const handlerPromise = initialize()
   .then(handlerInitializer);
 
-export default function handler (req, res) {
+${
+  options.modules === 'commonjs'
+    ? 'module.exports = {}; module.exports.default = '
+    : 'export default '
+}function handler (req, res) {
   return handlerPromise
   .then(handler => handler(req, res));
 };
@@ -322,7 +368,7 @@ async function buildFinalLambda(
   { compiler, log }: { compiler: WhookCompilerService; log: LogService },
   lambdaPath: string,
   whookConfig: WhookAPIOperationGCPFunctionConfig,
-) {
+): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings } = await compiler(
     entryPoint,
@@ -346,7 +392,7 @@ async function copyStaticFiles(
   { PROJECT_DIR, log }: { PROJECT_DIR: string; log: LogService },
   lambdaPath: string,
   staticFiles: string[] = [],
-) {
+): Promise<void> {
   await Promise.all(
     staticFiles.map(
       async (staticFile) =>
@@ -363,7 +409,7 @@ async function copyFiles(
   { log }: { log: LogService },
   source: string,
   destination: string,
-) {
+): Promise<void> {
   let theError;
   try {
     await mkdirp(destination);
@@ -387,7 +433,7 @@ async function ensureFileAsync(
   path: string,
   content: string,
   encoding = 'utf-8',
-) {
+): Promise<void> {
   try {
     const oldContent = await readFileAsync(path, encoding);
 
