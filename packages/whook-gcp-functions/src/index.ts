@@ -10,7 +10,10 @@ import Knifecycle, {
   constant,
   initInitializerBuilder,
 } from 'knifecycle';
-import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler';
+import initCompiler, {
+  DEFAULT_COMPILER_OPTIONS,
+  DEFAULT_BUILD_OPTIONS,
+} from './services/compiler';
 import initBuildAutoloader from './services/_autoload';
 import {
   dereferenceOpenAPIOperations,
@@ -26,10 +29,16 @@ import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { CprOptions } from 'cpr';
+import type { BuildOptions } from 'knifecycle/dist/build';
 
 export type { WhookCompilerConfig, WhookCompilerOptions, WhookCompilerService };
-export { DEFAULT_COMPILER_OPTIONS };
+export { DEFAULT_COMPILER_OPTIONS, DEFAULT_BUILD_OPTIONS };
+export const DEFAULT_BUILD_PARALLELISM = 10;
 
+export type WhookBuildConfig = {
+  BUILD_OPTIONS?: BuildOptions;
+  BUILD_PARALLELISM?: number;
+};
 export type WhookAPIOperationGCPFunctionConfig = {
   type?: 'http';
   sourceOperationId?: string;
@@ -85,7 +94,6 @@ export async function prepareBuildEnvironment<
   $.register(initInitializerBuilder);
   $.register(initBuildAutoloader);
   $.register(initCompiler);
-  $.register(constant('BUILD_PARALLELISM', 10));
   $.register(constant('PORT', 1337));
   $.register(constant('HOST', 'localhost'));
 
@@ -101,15 +109,15 @@ export async function runBuild(
     const {
       NODE_ENV,
       BUILD_PARALLELISM,
+      BUILD_OPTIONS,
       PROJECT_DIR,
       compiler,
       log,
       $autoload,
       API,
       buildInitializer,
-    }: {
+    }: WhookBuildConfig & {
       NODE_ENV: string;
-      BUILD_PARALLELISM: number;
       PROJECT_DIR: string;
       compiler: WhookCompilerService;
       log: LogService;
@@ -118,7 +126,8 @@ export async function runBuild(
       buildInitializer: BuildInitializer;
     } = await $.run([
       'NODE_ENV',
-      'BUILD_PARALLELISM',
+      '?BUILD_PARALLELISM',
+      '?BUILD_OPTIONS',
       'PROJECT_DIR',
       'process',
       'compiler',
@@ -152,7 +161,8 @@ export async function runBuild(
     await processOperations(
       {
         NODE_ENV,
-        BUILD_PARALLELISM,
+        BUILD_OPTIONS: BUILD_OPTIONS || DEFAULT_BUILD_OPTIONS,
+        BUILD_PARALLELISM: BUILD_PARALLELISM || DEFAULT_BUILD_PARALLELISM,
         PROJECT_DIR,
         compiler,
         log,
@@ -178,6 +188,7 @@ async function processOperations(
   {
     NODE_ENV,
     BUILD_PARALLELISM,
+    BUILD_OPTIONS,
     PROJECT_DIR,
     compiler,
     log,
@@ -186,6 +197,7 @@ async function processOperations(
   }: {
     NODE_ENV: string;
     BUILD_PARALLELISM: number;
+    BUILD_OPTIONS: BuildOptions;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
     log: LogService;
@@ -197,14 +209,20 @@ async function processOperations(
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
 
   await Promise.all(
-    operations
-      .slice(0, BUILD_PARALLELISM)
-      .map((operation) =>
-        buildAnyLambda(
-          { NODE_ENV, PROJECT_DIR, compiler, log, $autoload, buildInitializer },
-          operation,
-        ),
+    operations.slice(0, BUILD_PARALLELISM).map((operation) =>
+      buildAnyLambda(
+        {
+          NODE_ENV,
+          PROJECT_DIR,
+          BUILD_OPTIONS,
+          compiler,
+          log,
+          $autoload,
+          buildInitializer,
+        },
+        operation,
       ),
+    ),
   );
 
   if (operationsLeft.length) {
@@ -213,6 +231,7 @@ async function processOperations(
       {
         NODE_ENV,
         BUILD_PARALLELISM,
+        BUILD_OPTIONS,
         PROJECT_DIR,
         compiler,
         log,
@@ -229,6 +248,7 @@ async function buildAnyLambda(
   {
     NODE_ENV,
     PROJECT_DIR,
+    BUILD_OPTIONS,
     compiler,
     log,
     $autoload,
@@ -236,6 +256,7 @@ async function buildAnyLambda(
   }: {
     NODE_ENV: string;
     PROJECT_DIR: string;
+    BUILD_OPTIONS: BuildOptions;
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader;
@@ -275,11 +296,16 @@ async function buildAnyLambda(
           ? `OPERATION_API>OPERATION_API_${finalEntryPoint}`
           : name,
       ),
+      BUILD_OPTIONS,
     );
-    const indexContent = await buildLambdaIndex(rootNode, {
-      name: buildDefinition.wrapper.name,
-      path: buildDefinition.wrapper.path,
-    });
+    const indexContent = await buildLambdaIndex(
+      rootNode,
+      {
+        name: buildDefinition.wrapper.name,
+        path: buildDefinition.wrapper.path,
+      },
+      BUILD_OPTIONS,
+    );
 
     await mkdirp(lambdaPath);
     await Promise.all([
@@ -304,10 +330,21 @@ async function buildAnyLambda(
   }
 }
 
-async function buildLambdaIndex(rootNode, buildWrapper) {
-  return `import initHandler from '${rootNode.path}';
+async function buildLambdaIndex(
+  rootNode: { path: string },
+  buildWrapper: { name: string; path: string },
+  options: BuildOptions,
+): Promise<string> {
+  return `${
+    options.modules === 'commonjs'
+      ? `const pickModule = (m) => { return m && m.default || m; }
+const initHandler = pickModule(require('${rootNode.path}'));
+const ${buildWrapper.name} = pickModule(require('${buildWrapper.path}'));
+const { initialize } = require('./initialize');`
+      : `import initHandler from '${rootNode.path}';
 import ${buildWrapper.name} from '${buildWrapper.path}';
-import { initialize } from './initialize';
+import { initialize } from './initialize';`
+  }
 
 const handlerInitializer = ${buildWrapper.name}(
     initHandler
@@ -316,7 +353,11 @@ const handlerInitializer = ${buildWrapper.name}(
 const handlerPromise = initialize()
   .then(handlerInitializer);
 
-export default function handler (req, res) {
+${
+  options.modules === 'commonjs'
+    ? 'module.exports = {}; module.exports.default = '
+    : 'export default '
+}function handler (req, res) {
   return handlerPromise
   .then(handler => handler(req, res));
 };

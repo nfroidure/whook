@@ -7,6 +7,9 @@ import webpack from 'webpack';
 import { autoService } from 'knifecycle';
 import type { Configuration } from 'webpack';
 import type { LogService } from 'common-services';
+import type { BuildOptions } from 'knifecycle/dist/build';
+
+export const DEFAULT_BUILD_OPTIONS: BuildOptions = { modules: 'commonjs' };
 
 export default autoService(initCompiler);
 
@@ -21,6 +24,7 @@ export type WhookCompilerConfig = {
   NODE_ENV?: string;
   DEBUG_NODE_ENVS: string[];
   COMPILER_OPTIONS?: WhookCompilerOptions;
+  BUILD_OPTIONS?: BuildOptions;
 };
 export type WhookCompilerDependencies = WhookCompilerConfig & {
   NODE_ENV: string;
@@ -35,8 +39,8 @@ export type WhookCompilerService = (
 export const DEFAULT_COMPILER_OPTIONS: Required<WhookCompilerOptions> = {
   externalModules: [],
   ignoredModules: [],
-  extensions: ['.ts', '.mjs', '.js', '.json'],
-  mainFields: ['browser', 'module', 'main'],
+  extensions: ['.ts', '.js', '.json'],
+  mainFields: ['browser', 'main'],
   target: '12',
 };
 
@@ -44,6 +48,7 @@ async function initCompiler({
   NODE_ENV,
   DEBUG_NODE_ENVS,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
+  BUILD_OPTIONS = DEFAULT_BUILD_OPTIONS,
   log = noop,
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
   return async function compiler(
@@ -133,11 +138,6 @@ async function initCompiler({
       module: {
         rules: [
           {
-            test: /\.mjs$/,
-            include: /node_modules|dist/,
-            type: 'javascript/auto',
-          },
-          {
             test: /\.(js|ts)$/,
             exclude: /node_modules|dist/,
             use: {
@@ -148,7 +148,7 @@ async function initCompiler({
                   [
                     '@babel/env',
                     {
-                      modules: false,
+                      modules: BUILD_OPTIONS.modules,
                       targets: {
                         node: compilerOptions.target,
                       },

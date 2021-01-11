@@ -56,7 +56,7 @@
     "@whook/http-transaction": "^7.1.1",
     "@whook/whook": "^7.1.1",
     "common-services": "^9.0.0",
-    "knifecycle": "^11.0.1"
+    "knifecycle": "^11.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
