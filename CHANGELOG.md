@@ -1,3 +1,13 @@
+## [7.1.3](https://github.com/nfroidure/whook/compare/v7.1.2...v7.1.3) (2021-01-11)
+
+
+### Bug Fixes
+
+* **dependencies:** fix dependencies hoisting ([289b0f6](https://github.com/nfroidure/whook/commit/289b0f64ed0fcd30415f31183aaa59d3e0bf4f02))
+* **types:** fix open api types ([4188781](https://github.com/nfroidure/whook/commit/418878182a22d7395ff7ae5980d9a935cb0925f6)), closes [#101](https://github.com/nfroidure/whook/issues/101) [kogosoftwarellc/open-api#703](https://github.com/kogosoftwarellc/open-api/issues/703)
+
+
+
 ## [7.1.1](https://github.com/nfroidure/whook/compare/v7.1.0...v7.1.1) (2021-01-04)
 
 
