@@ -1,3 +1,7 @@
+## [7.1.4](https://github.com/nfroidure/whook/compare/v7.1.3...v7.1.4) (2021-01-12)
+
+
+
 ## [7.1.3](https://github.com/nfroidure/whook/compare/v7.1.2...v7.1.3) (2021-01-11)
 
 
