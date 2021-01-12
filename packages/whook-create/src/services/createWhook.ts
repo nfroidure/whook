@@ -103,17 +103,14 @@ export default autoService(async function initCreateWhook({
           ) {
             log(
               'debug',
-              'Discarding ',
-              src,
-              ' => ',
-              dest,
-              ' (',
-              path.relative(src, SOURCE_DIR),
-              ')',
+              `Discarding "${src}" => "${dest} ("${path.relative(
+                src,
+                SOURCE_DIR,
+              )}").`,
             );
             return false;
           }
-          log('debug', 'Moving ', src, ' => ', dest);
+          log('debug', `Moving "${src}" => "${dest}".`);
           return true;
         },
       }),
@@ -158,8 +155,7 @@ ${author.name}
         .catch((err) => {
           log(
             'error',
-            '⚠️ - Could not retrieve the `.gitignore` file contents from: ',
-            GIT_IGNORE_URL,
+            `⚠️ - Could not retrieve the \`.gitignore\` file contents from: "${GIT_IGNORE_URL}"`,
           );
           log('stack', err.stack);
         }),

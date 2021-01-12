@@ -111,8 +111,7 @@ export default alsoInject(
           if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
             log(
               'debug',
-              '🤖 - Reusing a constant initializer directly from the Knifecycle instance:',
-              serviceName,
+              `🤖 - Reusing a constant initializer directly from the Knifecycle instance: "${serviceName}".`,
             );
             return {
               initializer,
@@ -138,7 +137,7 @@ export default alsoInject(
 
           return $autoload(serviceName);
         } catch (err) {
-          log('error', `Build error while loading ${serviceName}  `);
+          log('error', `Build error while loading "${serviceName}".`);
           log('stack', err.stack);
         }
       };

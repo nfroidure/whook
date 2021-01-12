@@ -64,8 +64,8 @@ async function initInspectCommand({
 
       service = injectionResult[name];
     } catch (err) {
-      log('error', `No service found for ${name}`);
-      log('error', `try debugging with the DEBUG=whook env.`);
+      log('error', `No service found for "${name}".`);
+      log('error', `Try debugging with the "DEBUG=whook" env.`);
       if ('undefined' === typeof defaultValue) {
         throw new YError('E_NO_SERVICE_FOUND', name);
       }
@@ -77,7 +77,7 @@ async function initInspectCommand({
     const results = query ? miniquery(query, [service]) : [service];
 
     if (!results.length) {
-      log('error', `Could not find any results for ${query}`);
+      log('error', `Could not find any results for "${query}".`);
       if ('undefined' === typeof defaultValue) {
         throw new YError('E_NO_RESULT', name, query);
       }

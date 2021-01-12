@@ -17,7 +17,7 @@ Object {
     ],
     Array [
       "warning",
-      "✔ - Found a free port \${PORT}",
+      "✔ - Found a free port \\"8000\\"",
     ],
   ],
 }
@@ -36,7 +36,7 @@ Object {
     ],
     Array [
       "warning",
-      "♻️ - Using ENV port 1337",
+      "♻️ - Using ENV port \\"1337\\"",
     ],
   ],
 }

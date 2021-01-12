@@ -40,17 +40,20 @@ async function initHost({
   log('debug', `🏭 - Initializing the HOST service.`);
 
   if ('undefined' !== typeof ENV.HOST) {
-    log('warning', `♻️ - Using ENV host ${ENV.HOST}`);
+    log('warning', `♻️ - Using ENV host "${ENV.HOST}"`);
     return ENV.HOST;
   }
   const host = await (await importer('internal-ip')).v4();
 
   if (!host) {
-    log('warning', `🚫 - Could not detect any host. Fallbacking to localhost.`);
+    log(
+      'warning',
+      `🚫 - Could not detect any host. Fallbacking to "localhost".`,
+    );
     return 'localhost';
   }
 
-  log('warning', `✔ - Using detected host ${host}`);
+  log('warning', `✔ - Using detected host "${host}".`);
 
   return host;
 }

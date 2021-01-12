@@ -22,11 +22,11 @@ Object {
     ],
     Array [
       "debug",
-      "Command \\"myCommand\\" not found in: /home/whoiam/projects/my-whook-project/src/commands/myCommand",
+      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
     ],
     Array [
       "debug",
-      "Command \\"myCommand\\" not found in: /var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
+      "Command \\"myCommand\\" not found in \\"/var/lib/node/node_modules/@whook/whook/src/commands/myCommand\\".",
     ],
   ],
   "path": "mocked://service",
@@ -113,7 +113,7 @@ Object {
     ],
     Array [
       "debug",
-      "Command \\"myCommand\\" not found in: /home/whoiam/projects/my-whook-project/src/commands/myCommand",
+      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
     ],
     Array [
       "warning",
@@ -143,11 +143,11 @@ Object {
     ],
     Array [
       "debug",
-      "Command \\"myCommand\\" not found in: /home/whoiam/projects/my-whook-project/src/commands/myCommand",
+      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
     ],
     Array [
       "debug",
-      "Command \\"myCommand\\" not found in: /var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
+      "Command \\"myCommand\\" not found in \\"/var/lib/node/node_modules/@whook/whook/src/commands/myCommand\\".",
     ],
     Array [
       "warning",
@@ -200,7 +200,7 @@ Object {
     ],
     Array [
       "debug",
-      "Command \\"myCommand\\" not found in: /home/whoiam/projects/my-whook-project/src/commands/myCommand",
+      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
     ],
     Array [
       "warning",

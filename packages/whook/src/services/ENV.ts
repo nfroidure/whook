@@ -81,7 +81,7 @@ async function initENV({
     const buf = await readFile(envPath);
     const FILE_ENV = dotenv.parse(buf);
 
-    log('warning', `💾 - Using .env file at ${envPath}.`);
+    log('warning', `💾 - Using .env file at "${envPath}".`);
 
     ENV = { ...ENV, ...FILE_ENV };
   } catch (err) {

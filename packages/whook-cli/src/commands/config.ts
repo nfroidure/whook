@@ -58,7 +58,7 @@ async function initConfigCommand({
     ) as { name: string; query: string; default: unknown; pretty: boolean };
 
     if ('undefined' === typeof CONFIGS[name]) {
-      log('error', `No config found for ${name}`);
+      log('error', `No config found for "${name}"`);
       if ('undefined' === typeof defaultValue) {
         throw new YError('E_NO_CONFIG', name);
       }
@@ -69,7 +69,7 @@ async function initConfigCommand({
     const results = query ? miniquery(query, [CONFIGS[name]]) : [CONFIGS[name]];
 
     if (!results.length) {
-      log('error', `Could not find any results for ${query}`);
+      log('error', `Could not find any results for "${query}".`);
       if ('undefined' === typeof defaultValue) {
         throw new YError('E_NO_RESULT', name, query);
       }

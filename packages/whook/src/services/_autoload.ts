@@ -269,7 +269,7 @@ async function initAutoload<D>({
             } catch (err) {
               log(
                 'debug',
-                `🚫 - Service "${resolvedName}" not found in: ${finalPath}`,
+                `🚫 - Service "${resolvedName}" not found in "${finalPath}".`,
               );
               return '';
             }

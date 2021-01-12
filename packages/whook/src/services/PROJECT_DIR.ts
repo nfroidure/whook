@@ -38,7 +38,7 @@ async function initProjectDir({
   const projectDir = await pkgDir(PWD);
 
   if (projectDir) {
-    log('warning', '✔ - Found the project dir:', projectDir);
+    log('warning', `✔ - Found the project dir "${projectDir}".`);
     return projectDir;
   }
 

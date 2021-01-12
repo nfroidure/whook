@@ -22,7 +22,7 @@ export async function loadLambda(
     type,
   );
 
-  log('debug', '⛏️ - Loading lambda module at path:', modulePath);
+  log('debug', `⛏️ - Loading lambda module at path "${modulePath}".`);
 
   try {
     // eslint-disable-next-line

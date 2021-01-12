@@ -49,7 +49,10 @@ export default autoService(async function initProject({
     try {
       await ensureDir(projectDirectory);
     } catch (err) {
-      log('error', "Cannot create the project's directory:", projectDirectory);
+      log(
+        'error',
+        `Cannot create the project's directory: "${projectDirectory}"`,
+      );
       log('stack', err.stack);
       throw YError.wrap(err, 'E_PROJECT_DIR', projectDirectory);
     }

@@ -196,7 +196,10 @@ async function initAPIDefinitions({
         const definition = module.definition as WhookAPIHandlerDefinition;
 
         if (!definition) {
-          log('debug', `🈁 - Handler module at ${file} exports no definition!`);
+          log(
+            'debug',
+            `🈁 - Handler module at "${file}" exports no definition!`,
+          );
           return paths;
         }
 
@@ -230,7 +233,7 @@ async function initAPIDefinitions({
         if (paths[definition.path]?.[definition.method]) {
           log(
             'warning',
-            `⚠️ - Overriding an existing definition (${definition.method} ${definition.path}).`,
+            `⚠️ - Overriding an existing definition ("${definition.method}" "${definition.path}").`,
           );
         }
 
@@ -262,7 +265,7 @@ async function initAPIDefinitions({
               if (schemas[schema.name]) {
                 log(
                   'warning',
-                  `⚠️ - Overriding an existing schema (${schema.name}).`,
+                  `⚠️ - Overriding an existing schema ("${schema.name}").`,
                 );
               }
 
@@ -284,7 +287,7 @@ async function initAPIDefinitions({
               if (addedParameters[parameter.name]) {
                 log(
                   'warning',
-                  `⚠️ - Overriding an existing parameter (${parameter.name}).`,
+                  `⚠️ - Overriding an existing parameter ("${parameter.name}").`,
                 );
               }
 

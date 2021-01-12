@@ -41,7 +41,7 @@ async function initPort({
   log('debug', `🏭 - Initializing the PORT service.`);
 
   if ('undefined' !== typeof ENV.PORT) {
-    log('warning', `♻️ - Using ENV port ${ENV.PORT}`);
+    log('warning', `♻️ - Using ENV port "${ENV.PORT}"`);
     return parseInt(ENV.PORT, 10);
   }
 
@@ -52,7 +52,7 @@ async function initPort({
     return 8080;
   }
 
-  log('warning', `✔ - Found a free port ${port}`);
+  log('warning', `✔ - Found a free port "${port}"`);
 
   return port;
 }

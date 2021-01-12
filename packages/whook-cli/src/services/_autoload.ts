@@ -54,7 +54,10 @@ export default alsoInject(
             commandModule = await importer(finalPath);
             break;
           } catch (err) {
-            log('debug', `Command "${commandName}" not found in: ${finalPath}`);
+            log(
+              'debug',
+              `Command "${commandName}" not found in "${finalPath}".`,
+            );
             log('debug-stack', err.stack);
           }
         }

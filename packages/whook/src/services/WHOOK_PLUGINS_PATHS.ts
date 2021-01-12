@@ -57,7 +57,7 @@ async function initWhookPluginsPaths({
         resolve(pluginName, { paths: [PROJECT_SRC] }),
       );
 
-      log('debug', `➰ - Plugin "${pluginName}" resolved to: ${modulePath}`);
+      log('debug', `➰ - Plugin "${pluginName}" resolved to "${modulePath}".`);
 
       return modulePath;
     } catch (err) {

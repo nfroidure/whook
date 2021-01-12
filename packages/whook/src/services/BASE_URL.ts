@@ -61,7 +61,7 @@ async function initBaseURL({
       ? CONFIG.baseURL
       : `${PROTOCOL}://${HOST}${PORT ? `:${PORT}` : ''}`;
 
-  log('debug', `🈁 - Generated the BASE_URL constant:`, BASE_URL);
+  log('debug', `🈁 - Generated the BASE_URL constant "${BASE_URL}".`);
 
   return BASE_URL;
 }

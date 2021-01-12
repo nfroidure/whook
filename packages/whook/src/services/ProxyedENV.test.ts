@@ -49,7 +49,7 @@ DB_HOST = 'localhost'
           ],
           Array [
             "warning",
-            "💾 - Using .env file at /home/whoami/my-whook-project/.env.development.",
+            "💾 - Using .env file at \\"/home/whoami/my-whook-project/.env.development\\".",
           ],
           Array [
             "debug",

@@ -51,8 +51,7 @@ Object {
     ],
     Array [
       "error",
-      "Cannot create the project's directory:",
-      "/home/whoiam/projects/yolo",
+      "Cannot create the project's directory: \\"/home/whoiam/projects/yolo\\"",
     ],
   ],
 }

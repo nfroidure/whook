@@ -12,7 +12,7 @@ Object {
     ],
     Array [
       "warning",
-      "🚫 - Could not detect any host. Fallbacking to localhost.",
+      "🚫 - Could not detect any host. Fallbacking to \\"localhost\\".",
     ],
   ],
   "requireCalls": Array [
@@ -35,7 +35,7 @@ Object {
     ],
     Array [
       "warning",
-      "✔ - Using detected host 192.168.1.10",
+      "✔ - Using detected host \\"192.168.1.10\\".",
     ],
   ],
   "requireCalls": Array [
@@ -56,7 +56,7 @@ Object {
     ],
     Array [
       "warning",
-      "♻️ - Using ENV host 192.168.1.11",
+      "♻️ - Using ENV host \\"192.168.1.11\\"",
     ],
   ],
   "requireCalls": Array [],

@@ -6,8 +6,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🈁 - Generated the BASE_URL constant:",
-      "https://example.com",
+      "🈁 - Generated the BASE_URL constant \\"https://example.com\\".",
     ],
   ],
 }
@@ -19,8 +18,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🈁 - Generated the BASE_URL constant:",
-      "http://localhost:1337",
+      "🈁 - Generated the BASE_URL constant \\"http://localhost:1337\\".",
     ],
   ],
 }
@@ -32,8 +30,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🈁 - Generated the BASE_URL constant:",
-      "https://localhost:1337",
+      "🈁 - Generated the BASE_URL constant \\"https://localhost:1337\\".",
     ],
   ],
 }
@@ -45,8 +42,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "🈁 - Generated the BASE_URL constant:",
-      "http://localhost:1337",
+      "🈁 - Generated the BASE_URL constant \\"http://localhost:1337\\".",
     ],
   ],
 }

@@ -111,7 +111,10 @@ async function initLsCommand({
             })),
           };
         } catch (err) {
-          log('debug', `✅ - No commands folder found at path ${pluginPath}`);
+          log(
+            'debug',
+            `✅ - No commands folder found at path "${pluginPath}".`,
+          );
           log('debug-stack', err.stack);
           return {
             plugin: commandsSources[i],

@@ -21,7 +21,7 @@ async function initFilterAPITags({
     .filter(identity);
 
   if (FILTER_API_TAGS.length > 0) {
-    log('info', `⏳ - Filtering API with (${FILTER_API_TAGS}) tags!`);
+    log('warning', `⏳ - Filtering API with (${FILTER_API_TAGS}) tags!`);
   }
 
   return FILTER_API_TAGS;

@@ -225,7 +225,7 @@ export async function runBuild(
       return true;
     });
 
-    log('info', `${operations.length} operations to process.`);
+    log('warning', `${operations.length} operations to process.`);
     await processOperations(
       {
         NODE_ENV,
@@ -343,7 +343,7 @@ async function buildAnyLambda(
     const finalEntryPoint =
       (sourceOperationId ? sourceOperationId : operationId) +
       ((operation['x-whook'] || {}).suffix || '');
-    log('info', `Building ${operationType} '${finalEntryPoint}'...`);
+    log('warning', `Building ${operationType} "${finalEntryPoint}"...`);
     const buildDefinition = BUILD_DEFINITIONS[operationType];
     // eslint-disable-next-line
     const applyWrapper = require(buildDefinition.wrapper.path).default;
@@ -391,7 +391,7 @@ async function buildAnyLambda(
     ]);
     await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
   } catch (err) {
-    log('error', `Error building ${operationId}'...`);
+    log('error', `Error building "${operationId}"...`);
     log('stack', err.stack);
     log('debug', JSON.stringify(err.params, null, 2));
     throw YError.wrap(err, 'E_LAMBDA_BUILD', operationId);
@@ -506,13 +506,13 @@ async function ensureFileAsync(
     const oldContent = await readFileAsync(path, encoding);
 
     if (oldContent === content) {
-      log('debug', 'Ignore unchanged file:', path);
+      log('debug', `Ignore unchanged file: "${path}".`);
       return;
     }
   } catch (err) {
-    log('debug', 'Write new file:', path);
+    log('debug', `Write new file: "${path}".`);
     return await writeFileAsync(path, content, encoding);
   }
-  log('debug', 'Write changed file:', path);
+  log('debug', `Write changed file: "${path}".`);
   return await writeFileAsync(path, content, encoding);
 }

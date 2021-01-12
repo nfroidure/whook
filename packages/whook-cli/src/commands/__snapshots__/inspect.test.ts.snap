@@ -12,7 +12,7 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "Could not find any results for nothing_here",
+      "Could not find any results for \\"nothing_here\\".",
     ],
   ],
   "promptArgsCalls": Array [
@@ -33,11 +33,11 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "No service found for DOES_NOT_EXIST",
+      "No service found for \\"DOES_NOT_EXIST\\".",
     ],
     Array [
       "error",
-      "try debugging with the DEBUG=whook env.",
+      "Try debugging with the \\"DEBUG=whook\\" env.",
     ],
   ],
   "promptArgsCalls": Array [
@@ -58,11 +58,11 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "No service found for DOES_NOT_EXIST",
+      "No service found for \\"DOES_NOT_EXIST\\".",
     ],
     Array [
       "error",
-      "try debugging with the DEBUG=whook env.",
+      "Try debugging with the \\"DEBUG=whook\\" env.",
     ],
     Array [
       "info",
@@ -110,7 +110,7 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "Could not find any results for nothing_here",
+      "Could not find any results for \\"nothing_here\\".",
     ],
     Array [
       "info",

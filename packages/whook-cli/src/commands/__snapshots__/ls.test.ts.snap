@@ -5,7 +5,7 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "✅ - No commands folder found at path /home/whoiam/whook-project/dist",
+      "✅ - No commands folder found at path \\"/home/whoiam/whook-project/dist\\".",
     ],
     Array [
       "info",
@@ -32,11 +32,11 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/lol/dist",
+      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/lol/dist\\".",
     ],
     Array [
       "debug",
-      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/cli/dist",
+      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/cli/dist\\".",
     ],
     Array [
       "info",
@@ -95,11 +95,11 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/lol/dist",
+      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/lol/dist\\".",
     ],
     Array [
       "debug",
-      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/cli/dist",
+      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/cli/dist\\".",
     ],
     Array [
       "info",
@@ -165,11 +165,11 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/lol/dist",
+      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/lol/dist\\".",
     ],
     Array [
       "debug",
-      "✅ - No commands folder found at path /var/lib/node/node_modules/@whook/cli/dist",
+      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/cli/dist\\".",
     ],
     Array [
       "info",

@@ -1,5 +1,5 @@
 import { initAutoload, noop, WhookOperation } from '@whook/whook';
-import {
+import Knifecycle, {
   SPECIAL_PROPS,
   wrapInitializer,
   constant,
@@ -10,12 +10,17 @@ import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
-import type { Knifecycle, Dependencies, Service } from 'knifecycle';
-import type { Injector } from 'knifecycle';
+import type {
+  Injector,
+  Autoloader,
+  Initializer,
+  Dependencies,
+  Service,
+} from 'knifecycle';
 import type { WhookBuildConstantsService } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
-import { WhookAPIOperationGCPFunctionConfig } from '..';
+import type { WhookAPIOperationGCPFunctionConfig } from '..';
 
 /**
  * Wrap the _autoload service in order to build AWS
@@ -46,8 +51,15 @@ export default alsoInject(
         $instance: Knifecycle<Dependencies>;
         log: LogService;
       },
-      $autoload,
-    ) => {
+      $autoload: Autoloader,
+    ): Promise<
+      (
+        serviceName: string,
+      ) => Promise<{
+        initializer: Initializer<Dependencies, Service>;
+        path: string;
+      }>
+    > => {
       let API: OpenAPIV3.Document;
       let OPERATION_APIS: WhookOperation<WhookAPIOperationGCPFunctionConfig>[];
       const getAPIOperation = (() => {
@@ -99,8 +111,7 @@ export default alsoInject(
           if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
             log(
               'debug',
-              '🤖 - Reusing a constant initializer directly from the Knifecycle instance:',
-              serviceName,
+              `🤖 - Reusing a constant initializer directly from the Knifecycle instance: "${serviceName}".`,
             );
             return {
               initializer,
@@ -126,7 +137,7 @@ export default alsoInject(
 
           return $autoload(serviceName);
         } catch (err) {
-          log('error', `Build error while loading ${serviceName}  `);
+          log('error', `Build error while loading "${serviceName}".`);
           log('stack', err.stack);
         }
       };

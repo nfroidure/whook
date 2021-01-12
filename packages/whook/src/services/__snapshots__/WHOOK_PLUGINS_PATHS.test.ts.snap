@@ -37,11 +37,11 @@ Object {
   "logCalls": Array [
     Array [
       "debug",
-      "➰ - Plugin \\"@whook/cli\\" resolved to: /var/lib/node/node_modules/@whook",
+      "➰ - Plugin \\"@whook/cli\\" resolved to \\"/var/lib/node/node_modules/@whook\\".",
     ],
     Array [
       "debug",
-      "➰ - Plugin \\"@whook/whook\\" resolved to: /var/lib/node/node_modules/@whook",
+      "➰ - Plugin \\"@whook/whook\\" resolved to \\"/var/lib/node/node_modules/@whook\\".",
     ],
   ],
   "resolveCalls": Array [

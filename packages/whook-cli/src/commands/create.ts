@@ -102,7 +102,7 @@ async function initCreateCommand({
     const finalName = camelCase(name);
 
     if (name !== finalName) {
-      log('warning', '🐪 - Camelized the name:', finalName);
+      log('warning', `🐪 - Camelized the name "${finalName}".`);
     }
 
     if (type === 'handler' && !HANDLER_REG_EXP.test(finalName)) {

@@ -21,7 +21,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
+      "🚫 - Service \\"getPing\\" not found in \\"/home/whoami/my-whook-project/src/handlers/getPing\\".",
     ],
   ],
   "resolveCalls": Array [
@@ -280,7 +280,7 @@ Object {
     ],
     Array [
       "debug",
-      "🚫 - Service \\"getPing\\" not found in: /home/whoami/my-whook-project/src/handlers/getPing",
+      "🚫 - Service \\"getPing\\" not found in \\"/home/whoami/my-whook-project/src/handlers/getPing\\".",
     ],
     Array [
       "debug",

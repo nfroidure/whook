@@ -5,7 +5,7 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "Could not find any results for nothing_here",
+      "Could not find any results for \\"nothing_here\\".",
     ],
   ],
   "promptArgsCalls": Array [
@@ -19,7 +19,7 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "No config found for DOES_NOT_EXIST",
+      "No config found for \\"DOES_NOT_EXIST\\"",
     ],
   ],
   "promptArgsCalls": Array [
@@ -33,7 +33,7 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "No config found for DOES_NOT_EXIST",
+      "No config found for \\"DOES_NOT_EXIST\\"",
     ],
     Array [
       "info",
@@ -67,7 +67,7 @@ Object {
   "logCalls": Array [
     Array [
       "error",
-      "Could not find any results for nothing_here",
+      "Could not find any results for \\"nothing_here\\".",
     ],
     Array [
       "info",

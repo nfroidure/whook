@@ -55,12 +55,12 @@ async function initCONFIGS({
 
   const configPath = path.join(PROJECT_SRC, 'config', NODE_ENV, 'config');
 
-  log('warning', `⚡ - Loading configurations from ${configPath}.`);
+  log('warning', `⚡ - Loading configurations from "${configPath}".`);
 
   try {
     return (await importer(configPath)).default;
   } catch (err) {
-    log('warning', `☢ - Could not load configuration file: ${configPath}.`);
+    log('warning', `☢ - Could not load configuration file "${configPath}".`);
     log('stack', err.stack);
     throw YError.wrap(err, 'E_NO_CONFIG', configPath);
   }

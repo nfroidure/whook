@@ -18,11 +18,11 @@ Object {
     ],
     Array [
       "warning",
-      "⚡ - Loading configurations from /home/whoami/my-whook-project/src/config/development/config.",
+      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config\\".",
     ],
     Array [
       "warning",
-      "☢ - Could not load configuration file: /home/whoami/my-whook-project/src/config/development/config.",
+      "☢ - Could not load configuration file \\"/home/whoami/my-whook-project/src/config/development/config\\".",
     ],
   ],
 }
@@ -47,7 +47,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡ - Loading configurations from /home/whoami/my-whook-project/src/config/development/config.",
+      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config\\".",
     ],
   ],
 }
