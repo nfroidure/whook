@@ -19,6 +19,7 @@ export type WhookCommandDefinitionArguments = {
         type: 'boolean' | 'string' | 'number';
         description: string;
         pattern?: string;
+        format?: string;
         enum?: WhookArgsTypes[];
         default?: WhookArgsTypes;
       }
@@ -31,6 +32,7 @@ export type WhookCommandDefinitionArguments = {
           type: 'boolean' | 'string' | 'number';
           description?: string;
           pattern?: string;
+          format?: string;
           enum?: WhookArgsTypes[];
           default?: WhookArgsTypes;
         };
