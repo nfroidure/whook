@@ -1,3 +1,13 @@
+## [7.1.5](https://github.com/nfroidure/whook/compare/v7.1.4...v7.1.5) (2021-02-11)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix error descriptor matching ([d8de8c5](https://github.com/nfroidure/whook/commit/d8de8c512725fb7ec8058babd74b7928a2f29481))
+* **@whook/cli:** fix command definition type ([b3b42ab](https://github.com/nfroidure/whook/commit/b3b42abde712ec093274e1f007610ca77ae4f3b4))
+
+
+
 ## [7.1.4](https://github.com/nfroidure/whook/compare/v7.1.3...v7.1.4) (2021-01-12)
 
 
