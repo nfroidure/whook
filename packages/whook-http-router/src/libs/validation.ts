@@ -2,11 +2,11 @@ import camelCase from 'camelcase';
 import YError from 'yerror';
 import HTTPError from 'yhttperror';
 import Stream from 'stream';
-import { pickupOperationSecuritySchemes } from './utils';
+import { pickupOperationSecuritySchemes } from './openAPIUtils';
 import ajv from 'ajv';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import type { Ajv } from 'ajv';
-import type { SupportedSecurityScheme } from './utils';
+import type { SupportedSecurityScheme } from './openAPIUtils';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
   DereferencedParameterObject,

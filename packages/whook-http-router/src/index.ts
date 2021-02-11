@@ -11,7 +11,7 @@ import {
   flattenOpenAPI,
   getOpenAPIOperations,
   dereferenceOpenAPIOperations,
-} from './utils';
+} from './libs/openAPIUtils';
 import {
   prepareParametersValidators,
   applyValidators,
@@ -20,7 +20,7 @@ import {
   extractOperationSecurityParameters,
   castSchemaValue,
   castParameters,
-} from './validation';
+} from './libs/validation';
 import {
   BodySpec,
   ResponseSpec,
@@ -31,14 +31,14 @@ import {
   executeHandler,
   extractProduceableMediaTypes,
   extractConsumableMediaTypes,
-} from './lib';
-import { getBody, sendBody } from './body';
+} from './libs/utils';
+import { getBody, sendBody } from './libs/body';
 import initErrorHandler, {
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-} from './errorHandler';
+} from './services/errorHandler';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -46,7 +46,7 @@ import {
   DEFAULT_STRINGIFYERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
-} from './constants';
+} from './libs/constants';
 import type { JsonValue } from 'type-fest';
 import type { Provider } from 'knifecycle';
 import type { Transform, Readable } from 'stream';
@@ -64,7 +64,7 @@ import type {
   WhookErrorDescriptor,
   ErrorHandlerConfig,
   WhookErrorHandler,
-} from './errorHandler';
+} from './services/errorHandler';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';

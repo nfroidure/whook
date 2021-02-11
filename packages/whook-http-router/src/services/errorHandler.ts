@@ -1,8 +1,11 @@
 import { initializer } from 'knifecycle';
-import { DEFAULT_DEBUG_NODE_ENVS, DEFAULT_STRINGIFYERS } from './constants';
+import {
+  DEFAULT_DEBUG_NODE_ENVS,
+  DEFAULT_STRINGIFYERS,
+} from '../libs/constants';
 import miniquery from 'miniquery';
-import type { WhookStringifyers } from '.';
-import type { ResponseSpec } from './lib';
+import type { WhookStringifyers } from '..';
+import type { ResponseSpec } from '../libs/utils';
 import type { WhookResponse } from '@whook/http-transaction';
 import type YError from 'yerror';
 import type YHTTPError from 'yhttperror';
@@ -415,7 +418,13 @@ async function initErrorHandler({
       ERRORS_DESCRIPTORS[errorCode] ||
       ERRORS_DESCRIPTORS[DEFAULT_DEFAULT_ERROR_CODE];
     const response: WhookErrorResponse = {
-      status: (err as YHTTPError).httpCode || errorDescriptor.status || 500,
+      status:
+        (errorDescriptor !== ERRORS_DESCRIPTORS[DEFAULT_DEFAULT_ERROR_CODE] &&
+        errorDescriptor.status
+          ? errorDescriptor.status
+          : undefined) ||
+        (err as YHTTPError).httpCode ||
+        ERRORS_DESCRIPTORS[DEFAULT_DEFAULT_ERROR_CODE].status,
       headers: Object.assign({}, (err as YHTTPError).headers || {}, {
         // Avoid caching errors
         'cache-control': 'private' as const,

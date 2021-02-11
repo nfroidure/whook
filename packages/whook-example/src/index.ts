@@ -118,6 +118,7 @@ export async function prepareBuildEnvironment<
       ENV: '@whook/whook/dist/services/ProxyedENV',
       apm: '@whook/http-transaction/dist/services/apm',
       obfuscator: '@whook/http-transaction/dist/services/obfuscator',
+      errorHandler: '@whook/http-router/dist/services/errorHandler',
       log: 'common-services/dist/log',
       time: 'common-services/dist/time',
       delay: 'common-services/dist/delay',

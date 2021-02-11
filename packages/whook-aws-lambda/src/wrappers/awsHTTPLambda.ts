@@ -56,6 +56,7 @@ import type {
   Context,
 } from 'aws-lambda';
 import type { CORSConfig } from '@whook/cors';
+import type { WhookErrorHandler } from '@whook/http-router';
 
 type HTTPWrapperDependencies = {
   NODE_ENV: string;
@@ -69,6 +70,7 @@ type HTTPWrapperDependencies = {
   BUFFER_LIMIT?: string;
   apm: APMService;
   obfuscator: ObfuscatorService;
+  errorHandler: WhookErrorHandler;
   time?: TimeService;
   log?: LogService;
   WRAPPERS: WhookWrapper<Dependencies, Service>[];
@@ -98,6 +100,7 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
       '?BUFFER_LIMIT',
       'apm',
       'obfuscator',
+      'errorHandler',
       '?log',
       '?time',
     ],
@@ -201,7 +204,6 @@ async function initHandlerForAWSHTTPLambda(
 async function handleForAWSHTTPLambda(
   {
     OPERATION,
-    DEBUG_NODE_ENVS,
     NODE_ENV,
     ENCODERS,
     DECODERS,
@@ -214,6 +216,7 @@ async function handleForAWSHTTPLambda(
     time,
     apm,
     obfuscator,
+    errorHandler,
   }: HTTPWrapperDependencies & { CORS: CORSConfig },
   {
     consumableMediaTypes,
@@ -229,7 +232,6 @@ async function handleForAWSHTTPLambda(
   context: Context,
   callback: (err: Error, result?: APIGatewayProxyResult) => void,
 ) {
-  const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
   const startTime = time();
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
   const operationParameters = (OPERATION.parameters || []).concat(
@@ -357,30 +359,28 @@ async function handleForAWSHTTPLambda(
     };
     log('debug', JSON.stringify(responseLog));
   } catch (err) {
-    const castedError = HTTPError.cast(err);
+    response = await errorHandler(
+      event.requestContext.requestId,
+      responseSpec,
+      err,
+    );
 
     responseLog = {
       type: 'error',
-      code: castedError.code,
-      statusCode: castedError.httpCode,
-      params: castedError.params || [],
-      stack: castedError.stack,
+      code: err.code || 'E_UNEXPECTED',
+      statusCode: response.status,
+      params: err.params || [],
+      stack: err.stack,
     };
 
     log('error', JSON.stringify(responseLog));
+
     response = {
-      status: castedError.httpCode,
+      ...response,
       headers: {
+        ...response.headers,
         ...lowerCaseHeaders(CORS),
-        ...(castedError.headers ?? {}),
         'content-type': 'application/json',
-      },
-      body: {
-        error: {
-          code: castedError.code,
-          stack: debugging ? responseLog.stack : undefined,
-          params: debugging ? responseLog.params : undefined,
-        },
       },
     };
   }

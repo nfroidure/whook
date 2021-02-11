@@ -3,7 +3,7 @@ import FirstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
 import YError from 'yerror';
 import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
-import type { BodySpec } from './lib';
+import type { BodySpec } from './utils';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type {
@@ -11,7 +11,7 @@ import type {
   WhookParsers,
   WhookDecoders,
   WhookStringifyers,
-} from '.';
+} from '..';
 import type { Transform, Readable } from 'stream';
 
 /* Architecture Note #1.1: Request body

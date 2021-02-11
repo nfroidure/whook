@@ -4,7 +4,7 @@ import StreamTest from 'streamtest';
 import HTTPError from 'yhttperror';
 import YError from 'yerror';
 import initHTTPRouter from './index';
-import initErrorHandler from './errorHandler';
+import initErrorHandler from './services/errorHandler';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
