@@ -144,7 +144,8 @@ describe('initHTTPRouter', () => {
             required: true,
             schema: {
               type: 'number',
-              pattern: '^[0-9]+$',
+              minimum: 0,
+              multipleOf: 1,
             },
           },
           {
@@ -291,7 +292,8 @@ describe('initHTTPRouter', () => {
               required: true,
               schema: {
                 type: 'number',
-                pattern: '^[0-9]+$',
+                minimum: 0,
+                multipleOf: 1,
               },
             },
             {
@@ -454,7 +456,8 @@ describe('initHTTPRouter', () => {
         },
         UserIdSchema: {
           type: 'number',
-          pattern: '^[0-9]+$',
+          minimum: 0,
+          multipleOf: 1,
         },
         Error: {
           type: 'object',

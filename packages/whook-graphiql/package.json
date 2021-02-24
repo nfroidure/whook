@@ -71,7 +71,7 @@
     "@whook/whook": "^7.1.5",
     "apollo-server-module-graphiql": "^1.4.0",
     "knifecycle": "^11.1.0",
-    "openapi-types": "7.0.1"
+    "openapi-types": "^7.2.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -87,7 +87,7 @@
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "@whook/http-router": "^7.1.5",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-knifecycle": "^5.0.0",
     "eslint": "^7.13.0",

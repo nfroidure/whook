@@ -3,9 +3,9 @@ import YError from 'yerror';
 import HTTPError from 'yhttperror';
 import Stream from 'stream';
 import { pickupOperationSecuritySchemes } from './openAPIUtils';
-import ajv from 'ajv';
+import Ajv from 'ajv';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
-import type { Ajv } from 'ajv';
+import type { ValidateFunction } from 'ajv';
 import type { SupportedSecurityScheme } from './openAPIUtils';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
@@ -36,7 +36,7 @@ Also, looking closely to Prepack that
 
 export function applyValidators(
   operation: WhookOperation,
-  validators: { [name: string]: ajv.ValidateFunction },
+  validators: { [name: string]: ValidateFunction },
   parameters: JsonValue[],
 ): void {
   ((operation.parameters || []) as OpenAPIV3.ParameterObject[]).forEach(
@@ -99,7 +99,7 @@ export function prepareBodyValidator(
 }
 
 function _validateRequestBody(
-  validators: ajv.ValidateFunction[],
+  validators: ValidateFunction[],
   operation: WhookOperation,
   contentType: string,
   value: unknown,
@@ -274,7 +274,7 @@ export function prepareParametersValidators(
   ajv: Ajv,
   operationId: string,
   parameters: OpenAPIV3.ParameterObject[],
-): { [name: string]: ajv.ValidateFunction } {
+): { [name: string]: ValidateFunction } {
   return parameters.reduce((validators, parameter, index) => {
     if ('string' !== typeof parameter.name) {
       throw new YError(
@@ -338,7 +338,7 @@ export function prepareParametersValidators(
 
 export function _validateParameter(
   parameter: OpenAPIV3.ParameterObject,
-  validator: ajv.ValidateFunction,
+  validator: ValidateFunction,
   value: unknown,
 ): void {
   if (parameter.required && 'undefined' === typeof value) {

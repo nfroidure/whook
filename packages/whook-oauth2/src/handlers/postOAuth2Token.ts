@@ -39,7 +39,6 @@ export const authorizationCodeTokenRequestBodySchema: WhookAPISchemaDefinition =
       },
       redirect_uri: {
         type: 'string',
-        format: 'uri',
       },
     },
   },

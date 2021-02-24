@@ -97,7 +97,7 @@
     "metapak-nfroidure": "11.0.4",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
-    "type-fest": "^0.20.2",
+    "type-fest": "^0.21.2",
     "typescript": "^4.0.5"
   },
   "dependencies": {
@@ -109,7 +109,7 @@
     "dotenv": "^8.2.0",
     "internal-ip": "^6.2.0",
     "knifecycle": "^11.1.0",
-    "openapi-types": "7.0.1",
+    "openapi-types": "^7.2.3",
     "pkg-dir": "^5.0.0",
     "portfinder": "^1.0.28"
   },

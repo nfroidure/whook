@@ -196,10 +196,10 @@ Object {
           "nate": "John Doe",
         },
         "dataPath": "",
-        "keyword": "additionalProperties",
-        "message": "should NOT have additional properties",
+        "keyword": "required",
+        "message": "should have required property 'name'",
         "params": Object {
-          "additionalProperty": "nate",
+          "missingProperty": "name",
         },
         "parentSchema": Object {
           "additionalProperties": false,
@@ -258,7 +258,8 @@ Object {
               "type": "object",
             },
             "UserIdSchema": Object {
-              "pattern": "^[0-9]+$",
+              "minimum": 0,
+              "multipleOf": 1,
               "type": "number",
             },
           },
@@ -275,8 +276,10 @@ Object {
           ],
           "type": "object",
         },
-        "schema": false,
-        "schemaPath": "#/additionalProperties",
+        "schema": Array [
+          "name",
+        ],
+        "schemaPath": "#/required",
       },
     ],
   ],

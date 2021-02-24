@@ -65,6 +65,7 @@ import type {
   ErrorHandlerConfig,
   WhookErrorHandler,
 } from './services/errorHandler';
+import type { ValidateFunction } from 'ajv';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
@@ -169,7 +170,7 @@ type RouteDescriptor = {
   produceableMediaTypes: string[];
   operation: WhookOperation;
   validators: {
-    [name: string]: Ajv.ValidateFunction;
+    [name: string]: ValidateFunction;
   };
   bodyValidator: (
     operation: WhookOperation,
@@ -274,7 +275,12 @@ async function initHTTPRouter({
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
   const ajv = new Ajv({
     verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
-    strictKeywords: true,
+    strict: true,
+    logger: {
+      log: (...args) => log('debug', ...args),
+      warn: (...args) => log('warning', ...args),
+      error: (...args) => log('error', ...args),
+    },
   });
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
@@ -526,7 +532,7 @@ async function _createRouters({
   API: OpenAPIV3.Document;
   HANDLERS: WhookHandlers;
   BASE_PATH: string;
-  ajv: Ajv.Ajv;
+  ajv: Ajv;
   log: LogService;
 }): Promise<{ [method: string]: Siso<RouteDescriptor> }> {
   const routers = {};
@@ -561,6 +567,7 @@ async function _createRouters({
         }
         return {
           ...p,
+          pattern: '^.*$',
           ...p.schema,
         };
       });
@@ -580,7 +587,7 @@ async function _createRouters({
 }
 
 function _prepareRoute(
-  { ajv }: { ajv: Ajv.Ajv },
+  { ajv }: { ajv: Ajv },
   operation: WhookOperation,
   handler: WhookHandler,
   ammendedParameters: DereferencedParameterObject[] = [],

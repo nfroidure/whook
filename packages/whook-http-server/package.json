@@ -56,7 +56,7 @@
   "dependencies": {
     "@whook/http-router": "^7.1.5",
     "knifecycle": "^11.1.0",
-    "ms": "^2.1.2",
+    "ms": "^2.1.3",
     "yerror": "^5.0.0"
   },
   "peerDependencies": {
@@ -75,7 +75,7 @@
     "@types/jest": "^26.0.15",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-knifecycle": "^5.0.0",
     "eslint": "^7.13.0",

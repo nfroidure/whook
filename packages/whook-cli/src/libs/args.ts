@@ -11,8 +11,7 @@ export function readArgs(
   const ajv = new Ajv({
     coerceTypes: true,
     useDefaults: true,
-    strictDefaults: true,
-    strictKeywords: true,
+    strict: true,
   });
   const validator = ajv.compile(schema);
 

@@ -48,7 +48,6 @@ describe('readArgs', () => {
           _: {
             type: 'array',
             description: 'Rest params',
-            maxItems: Infinity,
             items: {
               type: 'string',
             },

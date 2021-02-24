@@ -125,7 +125,7 @@ async function initHandlerForAWSHTTPFunction(
     verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
     useDefaults: true,
     coerceTypes: true,
-    strictKeywords: true,
+    strict: true,
   });
   const ammendedParameters = extractOperationSecurityParameters(
     OPERATION_API,
