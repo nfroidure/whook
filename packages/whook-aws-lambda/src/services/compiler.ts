@@ -41,7 +41,7 @@ export const DEFAULT_COMPILER_OPTIONS: Required<WhookCompilerOptions> = {
   ignoredModules: [],
   extensions: ['.ts', '.js', '.json'],
   mainFields: ['browser', 'main'],
-  target: '12',
+  target: '14',
 };
 
 async function initCompiler({

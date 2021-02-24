@@ -129,7 +129,7 @@ const CONFIG: AppConfigs = {
 +    ignoredModules: [],
 +    extensions: ['.ts', '.js', '.json'],
 +    mainFields: ['browser', 'main'],
-+    target: '12.13',
++    target: '14',
 +  },
 };
 
