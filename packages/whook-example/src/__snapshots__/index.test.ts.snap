@@ -159,6 +159,9 @@ Object {
       "➰ - Plugin \\"@whook/cors\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist\\".",
     ],
     Array [
+      "➰ - Plugin \\"@whook/graphql\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist\\".",
+    ],
+    Array [
       "➰ - Plugin \\"@whook/whook\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist\\".",
     ],
     Array [
@@ -207,6 +210,9 @@ Object {
       "💿 - Loading \\"getDiagnosticWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
     ],
     Array [
+      "💿 - Loading \\"getGraphQLWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getGraphQL.ts\\".",
+    ],
+    Array [
       "💿 - Loading \\"getOpenAPIWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
     ],
     Array [
@@ -223,6 +229,12 @@ Object {
     ],
     Array [
       "💿 - Loading \\"optionsWithCORSWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\".",
+    ],
+    Array [
+      "💿 - Loading \\"postGraphQL\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
+    ],
+    Array [
+      "💿 - Loading \\"postGraphQLWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
     ],
     Array [
       "💿 - Loading \\"putEchoWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
@@ -255,6 +267,9 @@ Object {
       "💿 - Service \\"getDiagnosticWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
     ],
     Array [
+      "💿 - Service \\"getGraphQLWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getGraphQL.ts\\".",
+    ],
+    Array [
       "💿 - Service \\"getOpenAPIWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
     ],
     Array [
@@ -273,6 +288,12 @@ Object {
       "💿 - Service \\"optionsWithCORSWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
+      "💿 - Service \\"postGraphQL\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
+    ],
+    Array [
+      "💿 - Service \\"postGraphQLWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
+    ],
+    Array [
       "💿 - Service \\"putEchoWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
     ],
     Array [
@@ -283,6 +304,9 @@ Object {
     ],
     Array [
       "🔐 - Initializing the authorization wrapper for \\"getDiagnostic\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"getGraphQL\\".",
     ],
     Array [
       "🔐 - Initializing the authorization wrapper for \\"getOpenAPI\\".",
@@ -300,6 +324,9 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"optionsWithCORS\\".",
     ],
     Array [
+      "🔐 - Initializing the authorization wrapper for \\"postGraphQL\\".",
+    ],
+    Array [
       "🔐 - Initializing the authorization wrapper for \\"putEcho\\".",
     ],
     Array [
@@ -307,6 +334,9 @@ Object {
     ],
     Array [
       "🕶️ - Initializing the obfuscator service.",
+    ],
+    Array [
+      "🕸️ - Initializing the GraphQL Service",
     ],
     Array [
       "🚦 - HTTP Router initialized.",
@@ -321,6 +351,9 @@ Object {
       "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/BASE_URL\\".",
     ],
     Array [
+      "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/BASE_URL\\".",
+    ],
+    Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/BUFFER_LIMIT\\".",
     ],
     Array [
@@ -328,6 +361,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/BUFFER_LIMIT\\".",
+    ],
+    Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/BUFFER_LIMIT\\".",
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BUFFER_LIMIT\\".",
@@ -342,6 +378,9 @@ Object {
       "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DECODERS\\".",
     ],
     Array [
+      "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/DECODERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DECODERS\\".",
     ],
     Array [
@@ -352,6 +391,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/DEFAULT_ERROR_CODE\\".",
     ],
     Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEFAULT_ERROR_CODE\\".",
@@ -366,7 +408,25 @@ Object {
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DEFAULT_MECHANISM\\".",
     ],
     Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/DEFAULT_MECHANISM\\".",
+    ],
+    Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEFAULT_MECHANISM\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/DEV_ACCESS_MECHANISM\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/services/DEV_ACCESS_MECHANISM\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DEV_ACCESS_MECHANISM\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/DEV_ACCESS_MECHANISM\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEV_ACCESS_MECHANISM\\".",
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN\\".",
@@ -376,6 +436,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/DEV_ACCESS_TOKEN\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/DEV_ACCESS_TOKEN\\".",
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEV_ACCESS_TOKEN\\".",
@@ -390,7 +453,25 @@ Object {
       "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/ENCODERS\\".",
     ],
     Array [
+      "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/ENCODERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/ENCODERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"GRAPHQL_SERVER_OPTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/GRAPHQL_SERVER_OPTIONS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"GRAPHQL_SERVER_OPTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/services/GRAPHQL_SERVER_OPTIONS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"GRAPHQL_SERVER_OPTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/GRAPHQL_SERVER_OPTIONS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"GRAPHQL_SERVER_OPTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/GRAPHQL_SERVER_OPTIONS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"GRAPHQL_SERVER_OPTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/GRAPHQL_SERVER_OPTIONS\\".",
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES\\".",
@@ -400,6 +481,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES\\".",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/IGNORED_FILES_PREFIXES\\".",
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/IGNORED_FILES_PREFIXES\\".",
@@ -414,6 +498,9 @@ Object {
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES\\".",
     ],
     Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/IGNORED_FILES_SUFFIXES\\".",
+    ],
+    Array [
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/IGNORED_FILES_SUFFIXES\\".",
     ],
     Array [
@@ -424,6 +511,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME\\".",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/JWT_SECRET_ENV_NAME\\".",
     ],
     Array [
       "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/JWT_SECRET_ENV_NAME\\".",
@@ -438,6 +528,9 @@ Object {
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT\\".",
     ],
     Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/KEEP_ALIVE_TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/KEEP_ALIVE_TIMEOUT\\".",
     ],
     Array [
@@ -448,6 +541,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_CLEAR_CHARS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/MAX_CLEAR_CHARS\\".",
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CLEAR_CHARS\\".",
@@ -462,6 +558,9 @@ Object {
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO\\".",
     ],
     Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/MAX_CLEAR_RATIO\\".",
+    ],
+    Array [
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CLEAR_RATIO\\".",
     ],
     Array [
@@ -472,6 +571,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_CONNECTIONS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/MAX_CONNECTIONS\\".",
     ],
     Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CONNECTIONS\\".",
@@ -486,6 +588,9 @@ Object {
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT\\".",
     ],
     Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/MAX_HEADERS_COUNT\\".",
+    ],
+    Array [
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_HEADERS_COUNT\\".",
     ],
     Array [
@@ -496,6 +601,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PARSERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/PARSERS\\".",
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PARSERS\\".",
@@ -510,6 +618,9 @@ Object {
       "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PROCESS_ENV\\".",
     ],
     Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/PROCESS_ENV\\".",
+    ],
+    Array [
       "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROCESS_ENV\\".",
     ],
     Array [
@@ -520,6 +631,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PROCESS_NAME\\".",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/PROCESS_NAME\\".",
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROCESS_NAME\\".",
@@ -534,6 +648,9 @@ Object {
       "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/PROTOCOL\\".",
     ],
     Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/PROTOCOL\\".",
+    ],
+    Array [
       "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROTOCOL\\".",
     ],
     Array [
@@ -544,6 +661,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES\\".",
+    ],
+    Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/REDUCED_FILES_SUFFIXES\\".",
     ],
     Array [
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/REDUCED_FILES_SUFFIXES\\".",
@@ -558,6 +678,9 @@ Object {
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SENSIBLE_HEADERS\\".",
     ],
     Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/SENSIBLE_HEADERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SENSIBLE_HEADERS\\".",
     ],
     Array [
@@ -568,6 +691,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SENSIBLE_PROPS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/SENSIBLE_PROPS\\".",
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SENSIBLE_PROPS\\".",
@@ -582,6 +708,9 @@ Object {
       "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SHIELD_CHAR\\".",
     ],
     Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/SHIELD_CHAR\\".",
+    ],
+    Array [
       "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SHIELD_CHAR\\".",
     ],
     Array [
@@ -592,6 +721,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SIGNALS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/SIGNALS\\".",
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SIGNALS\\".",
@@ -606,6 +738,9 @@ Object {
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/SOCKET_TIMEOUT\\".",
     ],
     Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/SOCKET_TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SOCKET_TIMEOUT\\".",
     ],
     Array [
@@ -616,6 +751,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/STRINGIFYERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/STRINGIFYERS\\".",
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/STRINGIFYERS\\".",
@@ -630,6 +768,9 @@ Object {
       "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/TIMEOUT\\".",
     ],
     Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/TIMEOUT\\".",
     ],
     Array [
@@ -639,10 +780,16 @@ Object {
       "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getPing\\".",
     ],
     Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/handlers/getPing\\".",
+    ],
+    Array [
       "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
       "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/optionsWithCORS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
       "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/optionsWithCORS\\".",
@@ -657,6 +804,9 @@ Object {
       "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/readDir\\".",
     ],
     Array [
+      "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/readDir\\".",
+    ],
+    Array [
       "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/readDir\\".",
     ],
     Array [
@@ -669,6 +819,9 @@ Object {
       "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/readFile\\".",
     ],
     Array [
+      "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/readFile\\".",
+    ],
+    Array [
       "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/readFile\\".",
     ],
     Array [
@@ -679,6 +832,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/uniqueId\\".",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/services/uniqueId\\".",
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/uniqueId\\".",
@@ -705,6 +861,12 @@ Object {
       "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
     ],
     Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getGraphQL\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getGraphQL.ts\\".",
+    ],
+    Array [
       "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI\\".",
     ],
     Array [
@@ -721,6 +883,15 @@ Object {
     ],
     Array [
       "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
     ],
     Array [
       "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho\\".",
@@ -780,6 +951,9 @@ Object {
       "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
     ],
     Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getGraphQL\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getGraphQL.ts\\".",
+    ],
+    Array [
       "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
     ],
     Array [
@@ -787,6 +961,12 @@ Object {
     ],
     Array [
       "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/postGraphQL.ts\\".",
     ],
     Array [
       "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
@@ -823,6 +1003,9 @@ Object {
     ],
     Array [
       "🛂 - Resolving \\"@whook/cors\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/index\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"@whook/graphql\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-graphql/dist/index\\".",
     ],
     Array [
       "🛂 - Resolving \\"@whook/whook\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/index\\".",
@@ -863,6 +1046,10 @@ Object {
   "logInfoCalls": Array [
     Array [
       "JWT service initialized!",
+    ],
+    Array [
+      "🕸️ - Serving the GraphIQL UI.",
+      "http://localhost:9999/graphiql",
     ],
   ],
 }

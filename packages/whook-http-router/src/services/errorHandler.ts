@@ -303,11 +303,9 @@ export type ErrorHandlerDependencies = ErrorHandlerConfig & {
 };
 
 export interface WhookErrorHandler {
-  (
-    transactionId: string,
-    responseSpec: ResponseSpec,
-    err: Error,
-  ): Promise<WhookErrorResponse>;
+  (transactionId: string, responseSpec: ResponseSpec, err: Error): Promise<
+    WhookErrorResponse
+  >;
 }
 
 export type WhookErrorResponse = WhookResponse<

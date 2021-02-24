@@ -35,7 +35,9 @@ export default autoService(initOAuth2ClientCredentialsGranter);
 async function initOAuth2ClientCredentialsGranter({
   checkApplication,
   log = noop,
-}: OAuth2ClientCredentialsGranterDependencies): Promise<OAuth2ClientCredentialsGranterService> {
+}: OAuth2ClientCredentialsGranterDependencies): Promise<
+  OAuth2ClientCredentialsGranterService
+> {
   const authenticateWithClientCredentials: OAuth2ClientCredentialsGranterService['authenticator']['authenticate'] = async (
     { scope: demandedScope = '' },
     authenticationData,

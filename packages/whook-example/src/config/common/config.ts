@@ -8,6 +8,8 @@ import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
 import type { WhookAPIHandlerDefinition, WhookConfigs } from '@whook/whook';
 import type { APIConfig } from '../../services/API';
 import type { JWTServiceConfig } from 'jwt-service';
+import type { WhookGraphQLConfig } from '@whook/graphql';
+import type { WhookGraphIQLConfig } from '@whook/graphiql';
 
 // eslint-disable-next-line
 const packageConf = require('../../../package');
@@ -19,8 +21,10 @@ export type AppConfigs = WhookConfigs &
   WhookAuthorizationConfig &
   WhookSwaggerUIConfig &
   WhookCORSConfig &
-  APIConfig &
-  JWTServiceConfig;
+  JWTServiceConfig &
+  WhookGraphQLConfig &
+  WhookGraphIQLConfig &
+  APIConfig;
 
 // Export custom handlers definitions
 export type APIHandlerDefinition = WhookAPIHandlerDefinition<
@@ -65,6 +69,10 @@ const CONFIG: AppConfigs = {
       'Keep-Alive',
       'User-Agent',
     ].join(','),
+  },
+  GRAPHIQL: {
+    path: '/graphiql',
+    defaultQuery: '{ hello }',
   },
 };
 

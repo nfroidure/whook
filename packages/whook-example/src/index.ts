@@ -10,7 +10,11 @@ import {
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import YError from 'yerror';
+import wrapHTTPRouterWithGraphIQL from '@whook/graphiql';
+import { initGraphQL } from '@whook/graphql';
+import { gql } from 'apollo-server-core';
 import type { DependencyDeclaration, Dependencies } from 'knifecycle';
+import type { WhookGraphQLFragmentService } from '@whook/graphql';
 
 // Per convention a Whook server main file must export
 //  the following 3 functions to be composable:
@@ -43,7 +47,11 @@ export async function prepareServer<
   // Add here any logic bound to the server only
   // For example, here we add a Swagger UI page for
   // development purpose
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as any);
+  $.register(
+    wrapHTTPRouterWithGraphIQL(
+      wrapHTTPRouterWithSwaggerUI(initHTTPRouter),
+    ) as any,
+  );
 
   return await prepareBaseServer(injectedNames, $);
 }
@@ -80,8 +88,33 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
   $.register(
-    constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook', '@whook/cors']),
+    constant('WHOOK_PLUGINS', [
+      '@whook/graphql',
+      '@whook/cli',
+      '@whook/whook',
+      '@whook/cors',
+    ]),
   );
+
+  // Declare the GraphQL schema fragments
+  const helloFragment: WhookGraphQLFragmentService = {
+    typeDefs: gql`
+      type Query {
+        hello: String
+      }
+      schema {
+        query: Query
+      }
+    `,
+    resolvers: {
+      Query: {
+        hello: () => 'Hello world!',
+      },
+    },
+  };
+
+  $.register(initGraphQL);
+  $.register(constant('graphQLFragments', [helloFragment]));
 
   return $;
 }

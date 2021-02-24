@@ -34,6 +34,9 @@ Object {
 - printEnv: A command printing every env values
 
 
+# Provided by \\"@whook/graphql\\": none
+
+
 # Provided by \\"@whook/cli\\": 6 commands
 - config: A simple program that returns the queryed config value
 - create: A command helping to create new Whook files easily

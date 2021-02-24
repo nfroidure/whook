@@ -3,6 +3,7 @@ import type { AppConfigs } from '../common/config';
 
 const CONFIG: AppConfigs = {
   ...COMMON_CONFIG,
+  DEV_ACCESS_MECHANISM: 'Fake',
   DEV_ACCESS_TOKEN: 'admin|1|1',
   DEFAULT_MECHANISM: 'Fake',
   // This allows you to map service names depending on
