@@ -197,7 +197,7 @@ Object {
   <head>
     <meta charset=\\"UTF-8\\">
     <title>Swagger UI</title>
-    <link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"./swagger-ui.css\\" >
+    <link rel=\\"stylesheet\\" type=\\"text/css\\" href=\\"./swagger-ui.css\\" />
     <link rel=\\"icon\\" type=\\"image/png\\" href=\\"./favicon-32x32.png\\" sizes=\\"32x32\\" />
     <link rel=\\"icon\\" type=\\"image/png\\" href=\\"./favicon-16x16.png\\" sizes=\\"16x16\\" />
     <style>
@@ -243,11 +243,11 @@ Object {
           SwaggerUIBundle.plugins.DownloadUrl
         ],
         layout: \\"StandaloneLayout\\"
-      })
+      });
       // End Swagger UI call region
 
-      window.ui = ui
-    }
+      window.ui = ui;
+    };
   </script>
   </body>
 </html>
@@ -297,7 +297,7 @@ Object {
   "headers": Object {
     "cache-control": "max-age=3600",
     "connection": "close",
-    "content-length": "1456",
+    "content-length": "1460",
     "content-type": "text/html",
     "date": undefined,
     "etag": undefined,

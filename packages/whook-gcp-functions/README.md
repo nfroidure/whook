@@ -30,7 +30,7 @@ npm i --save-dev @whook/http-transaction babel-loader babel-plugin-knifecycle we
 ```
 
 Add this module to your Whook plugins and tweak the 2 build functions in your
-`index.ts` main file:
+`build.ts` main file:
 
 ```diff
 +import {
@@ -85,7 +85,7 @@ export async function prepareBuildEnvironment(
 
 -  // Usually, here you call the installed build env
 -  // $ = await prepareBaseBuildEnvironment($);
-+  // Calling the GCP specific build
++  // Calling the GCP specific build env
 +  $ = await prepareBaseBuildEnvironment($);
 
 
@@ -94,8 +94,7 @@ export async function prepareBuildEnvironment(
   //  remove the need to create an injector
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: '@whook/whook/dist/services/ProxyedENV',
-      apm: '@whook/http-transaction/dist/services/apm',
+      // (...)
       obfuscator: '@whook/http-transaction/dist/services/obfuscator',
 -      log: 'common-services/dist/log',
 +      log: '@whook/gcp-functions/dist/services/log',
@@ -130,7 +129,7 @@ const CONFIG: AppConfigs = {
 +    ignoredModules: [],
 +    extensions: ['.ts', '.js', '.json'],
 +    mainFields: ['browser', 'main'],
-+    target: '12.13',
++    target: '12',
 +  },
 };
 

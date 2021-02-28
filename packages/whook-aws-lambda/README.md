@@ -29,7 +29,7 @@ npm i --save-dev @whook/http-transaction babel-loader babel-plugin-knifecycle we
 ```
 
 Add this module to your Whook plugins and tweak the 2 build functions in your
-`index.ts` main file:
+`build.ts` main file:
 
 ```diff
 +import {
@@ -84,7 +84,7 @@ export async function prepareBuildEnvironment(
 
 -  // Usually, here you call the installed build env
 -  // $ = await prepareBaseBuildEnvironment($);
-+  // Calling the AWS specific build
++  // Calling the AWS specific build env
 +  $ = await prepareBaseBuildEnvironment($);
 
 
@@ -93,8 +93,7 @@ export async function prepareBuildEnvironment(
   //  remove the need to create an injector
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: '@whook/whook/dist/services/ProxyedENV',
-      apm: '@whook/http-transaction/dist/services/apm',
+      // (...)
       obfuscator: '@whook/http-transaction/dist/services/obfuscator',
 -      log: 'common-services/dist/log',
 +      log: '@whook/aws-lambda/dist/services/log',
