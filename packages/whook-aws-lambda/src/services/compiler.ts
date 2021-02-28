@@ -1,4 +1,5 @@
 import path from 'path';
+import { build } from 'esbuild';
 import YError from 'yerror';
 import { noop } from '@whook/whook';
 import joinPath from 'memory-fs/lib/join';
@@ -56,12 +57,40 @@ async function initCompiler({
     options: WhookCompilerOptions = {},
   ): Promise<WhookCompilationResult> {
     const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
-    const basePath = path.dirname(entryPoint);
     const compilerOptions: Required<WhookCompilerOptions> = {
       ...DEFAULT_COMPILER_OPTIONS,
       ...COMPILER_OPTIONS,
       ...options,
     };
+    const basePath = path.dirname(entryPoint);
+    const outFile = basePath + '/index.js';
+
+    if (process.env.ESBUILD) {
+      const result = await build({
+        entryPoints: [entryPoint],
+        bundle: true,
+        write: false,
+        platform: 'node',
+        target: 'node14',
+        //outdir: basePath,
+        outfile: outFile,
+        sourcemap: debugging,
+        define: {
+          'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
+        },
+        external: compilerOptions.externalModules.concat(
+          compilerOptions.ignoredModules,
+        ),
+      });
+      console.log('ES Result:', result);
+      return {
+        contents: result.outputFiles.find((file) => file.path === outFile).text,
+        mappings: result.outputFiles.find(
+          (file) => file.path === outFile + '.map',
+        ).text,
+      };
+    }
+
     const memoryFS = createFsFromVolume(new Volume());
     // Configurations inspired from modes
     // See https://webpack.js.org/configuration/mode/
