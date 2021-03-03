@@ -5,6 +5,7 @@ import HTTPError from 'yhttperror';
 import YError from 'yerror';
 import Siso from 'siso';
 import Ajv from 'ajv';
+import addAJVFormats from 'ajv-formats';
 import strictQs from 'strict-qs';
 import {
   OPEN_API_METHODS,
@@ -282,6 +283,7 @@ async function initHTTPRouter({
       error: (...args) => log('error', ...args),
     },
   });
+  addAJVFormats(ajv);
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
   const defaultResponseSpec = {

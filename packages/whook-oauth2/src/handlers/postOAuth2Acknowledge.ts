@@ -52,6 +52,8 @@ export const definition: WhookAPIHandlerDefinition = {
               },
               redirectURI: {
                 type: 'string',
+                pattern: '^https?://',
+                format: 'uri',
               },
               scope: {
                 type: 'string',
@@ -82,7 +84,8 @@ export const definition: WhookAPIHandlerDefinition = {
               properties: {
                 redirectURI: {
                   type: 'string',
-                  // format: 'uri',
+                  pattern: '^https?://',
+                  format: 'uri',
                 },
               },
             },

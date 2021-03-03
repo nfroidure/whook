@@ -51,6 +51,8 @@ export const redirectURIParameter: WhookAPIParameterDefinition = {
     required: false,
     schema: {
       type: 'string',
+      pattern: '^https?://',
+      format: 'uri',
     },
   },
 };

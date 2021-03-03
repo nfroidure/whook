@@ -10,6 +10,7 @@ import {
 } from '@whook/http-router';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import Ajv from 'ajv';
+import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
 import HTTPError from 'yhttperror';
 import {
@@ -142,10 +143,16 @@ async function initHandlerForAWSHTTPLambda(
   const produceableMediaTypes = extractProduceableMediaTypes(OPERATION);
   const ajv = new Ajv({
     verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
+    strict: true,
+    logger: {
+      log: (...args) => log('debug', ...args),
+      warn: (...args) => log('warning', ...args),
+      error: (...args) => log('error', ...args),
+    },
     useDefaults: true,
     coerceTypes: true,
-    strict: true,
   });
+  addAJVFormats(ajv);
   const ammendedParameters = extractOperationSecurityParameters(
     OPERATION_API,
     OPERATION,

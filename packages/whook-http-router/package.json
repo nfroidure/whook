@@ -58,6 +58,7 @@
     "@types/qs": "^6.9.5",
     "@whook/http-transaction": "^8.0.0",
     "ajv": "^7.1.1",
+    "ajv-formats": "^1.5.1",
     "bytes": "^3.1.0",
     "camelcase": "^6.2.0",
     "content-type": "^1.0.4",

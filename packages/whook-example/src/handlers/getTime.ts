@@ -11,7 +11,7 @@ export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema>
     properties: {
       currentDate: {
         type: 'string',
-        // format: 'date-time'
+        format: 'date-time',
       },
     },
   },
