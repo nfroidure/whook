@@ -1,3 +1,26 @@
+# [8.0.0](https://github.com/nfroidure/whook/compare/v7.1.5...v8.0.0) (2021-03-03)
+
+
+### Code Refactoring
+
+* **build:** isolate build functions ([17f810e](https://github.com/nfroidure/whook/commit/17f810e114893c1ae4c350878cfed69421b854ed)), closes [#104](https://github.com/nfroidure/whook/issues/104)
+* **build:** use `esbuild` intead of `webpack` ([bdfcd2f](https://github.com/nfroidure/whook/commit/bdfcd2f3333295e73f3569bb957742dbb88f4a88))
+
+
+### Features
+
+* **@whook/aws-lambda:** support NodeJS14 ([f4569eb](https://github.com/nfroidure/whook/commit/f4569eb701263c1ae2c258256d43437547f5361b))
+
+
+### BREAKING CHANGES
+
+* **build:** The compiler were moved up to the `@whook/whook` project since it was the same for
+AWS/GCP and could be reused for other kinds of builds. Also existing project will have to remove
+`babel-loader`, `webpack` of dev dependencies and add `esbuild` instead.
+* **build:** Simply moving functions from `index.ts` to `build.ts`.
+
+
+
 ## [7.1.5](https://github.com/nfroidure/whook/compare/v7.1.4...v7.1.5) (2021-02-11)
 
 
