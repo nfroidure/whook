@@ -5,9 +5,14 @@ import type {
   WhookSwaggerUIConfig,
 } from '@whook/swagger-ui';
 import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
-import type { WhookAPIHandlerDefinition, WhookConfigs } from '@whook/whook';
+import type {
+  WhookAPIHandlerDefinition,
+  WhookConfigs,
+  WhookCompilerConfig,
+} from '@whook/whook';
 import type { APIConfig } from '../../services/API';
 import type { JWTServiceConfig } from 'jwt-service';
+import type { ProxyedENVConfig } from '@whook/whook';
 
 // eslint-disable-next-line
 const packageConf = require('../../../package');
@@ -20,7 +25,10 @@ export type AppConfigs = WhookConfigs &
   WhookSwaggerUIConfig &
   WhookCORSConfig &
   APIConfig &
-  JWTServiceConfig;
+  JWTServiceConfig &
+  WhookCompilerConfig &
+  ProxyedENVConfig &
+  APIConfig;
 
 // Export custom handlers definitions
 export type APIHandlerDefinition = WhookAPIHandlerDefinition<
@@ -38,7 +46,12 @@ const CONFIG: AppConfigs = {
   },
   NODE_ENVS,
   DEBUG_NODE_ENVS: process.env.DEBUG ? NODE_ENVS : DEBUG_NODE_ENVS,
+  PROXYED_ENV_VARS: ['NODE_ENV', 'JWT_SECRET'],
   SERVICE_NAME_MAP: {},
+  COMPILER_OPTIONS: {
+    externalModules: ['portfinder', 'internal-ip'],
+    ignoredModules: ['ecstatic', 'swagger-ui-dist'],
+  },
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,
     E_INVALID_FAKE_TOKEN: {

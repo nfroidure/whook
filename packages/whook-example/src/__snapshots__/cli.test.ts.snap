@@ -28,10 +28,18 @@ Object {
 ",
   "stdout": "
 
-# Provided by \\"@whook/example\\": 3 commands
+# Provided by \\"@whook/example\\": 4 commands
 - generateOpenAPISchema: Write openAPI schema to stdout
 - generateOpenAPITypes: Write openAPI types to stdout
 - printEnv: A command printing every env values
+- terraformValues: A command printing functions informations for Terraform
+
+
+# Provided by \\"@whook/gcp-functions\\": 1 commands
+- testHTTPLambda: A command for testing AWS HTTP lambda
+
+
+# Provided by \\"@whook/cors\\": none
 
 
 # Provided by \\"@whook/cli\\": 6 commands
@@ -44,9 +52,6 @@ Object {
 
 
 # Provided by \\"@whook/whook\\": none
-
-
-# Provided by \\"@whook/cors\\": none
 ",
 }
 `;
