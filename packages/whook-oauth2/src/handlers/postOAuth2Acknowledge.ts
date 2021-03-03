@@ -82,7 +82,7 @@ export const definition: WhookAPIHandlerDefinition = {
               properties: {
                 redirectURI: {
                   type: 'string',
-                  format: 'uri',
+                  // format: 'uri',
                 },
               },
             },

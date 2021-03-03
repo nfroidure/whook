@@ -117,7 +117,6 @@ Object {
           "additionalProperties": false,
           "properties": Object {
             "currentDate": Object {
-              "format": "date-time",
               "type": "string",
             },
           },

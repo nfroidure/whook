@@ -9,7 +9,10 @@ export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema>
     type: 'object',
     additionalProperties: false,
     properties: {
-      currentDate: { type: 'string', format: 'date-time' },
+      currentDate: {
+        type: 'string',
+        // format: 'date-time'
+      },
     },
   },
 };

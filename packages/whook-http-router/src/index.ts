@@ -565,10 +565,18 @@ async function _createRouters({
         if (p.style) {
           log('warning', '⚠️ - Only a style subset is supported currently!');
         }
+
         return {
           ...p,
-          pattern: '^.*$',
+          // TODO: Remove when this issue is tackled:
+          // https://github.com/nfroidure/siso/issues/45
+          ...((p.schema as OpenAPIV3.SchemaObject)?.enum
+            ? {}
+            : {
+                pattern: '^.*$',
+              }),
           ...p.schema,
+          schema: undefined,
         };
       });
     const ammendedParameters = extractOperationSecurityParameters(
