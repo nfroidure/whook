@@ -1,3 +1,12 @@
+## [8.0.2](https://github.com/nfroidure/whook/compare/v8.0.1...v8.0.2) (2021-03-03)
+
+
+### Bug Fixes
+
+* **@whook/http-router:** fix ajv validation of formats ([3d59215](https://github.com/nfroidure/whook/commit/3d5921571009d47ecfd3597d18f4456bae3c3068))
+
+
+
 ## [8.0.1](https://github.com/nfroidure/whook/compare/v8.0.0...v8.0.1) (2021-03-03)
 
 
