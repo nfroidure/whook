@@ -104,6 +104,15 @@ import type {
 } from '@whook/http-transaction';
 import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
 import type { Dependencies } from 'knifecycle';
+import initCompiler, {
+  DEFAULT_COMPILER_OPTIONS,
+  DEFAULT_BUILD_OPTIONS,
+} from './services/compiler';
+import type {
+  WhookCompilerOptions,
+  WhookCompilerService,
+  WhookCompilerConfig,
+} from './services/compiler';
 
 export type {
   WhookAPIDefinitions,
@@ -146,6 +155,9 @@ export type {
   HTTPRouterService,
   PortEnv,
   HostEnv,
+  WhookCompilerConfig,
+  WhookCompilerOptions,
+  WhookCompilerService,
 };
 export {
   noop,
@@ -172,6 +184,9 @@ export {
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
   HANDLER_REG_EXP,
+  initCompiler,
+  DEFAULT_COMPILER_OPTIONS,
+  DEFAULT_BUILD_OPTIONS,
 };
 
 export type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;

@@ -28,7 +28,7 @@ export async function prepareBuildEnvironment<
   // Usually, here you call the installed build env
   // $ = await prepareBaseBuildEnvironment($);
 
-  // The build often need to know were initializer
+  // The build often need to know were initializers
   //  can be found to create a static build and
   //  remove the need to create an injector
   $.register(

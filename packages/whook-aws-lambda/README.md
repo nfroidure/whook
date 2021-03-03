@@ -25,13 +25,14 @@ Install this module and its peer dependencies :
 
 ```sh
 npm i @whook/aws-lambda;
-npm i --save-dev @whook/http-transaction babel-loader babel-plugin-knifecycle webpack
+npm i --save-dev @whook/http-transaction esbuild
 ```
 
 Add this module to your Whook plugins and tweak the 2 build functions in your
 `build.ts` main file:
 
 ```diff
+- import YError from 'yerror';
 +import {
 +  runBuild as runBaseBuild,
 +  prepareBuildEnvironment as prepareBaseBuildEnvironment,
@@ -88,7 +89,7 @@ export async function prepareBuildEnvironment(
 +  $ = await prepareBaseBuildEnvironment($);
 
 
-  // The build often need to know were initializer
+  // The build often need to know were initializers
   //  can be found to create a static build and
   //  remove the need to create an injector
   $.register(
@@ -110,9 +111,9 @@ export async function prepareBuildEnvironment(
 And add the AWS Lambda config (usually in `src/config/common/config.js`):
 
 ```diff
++ import type { WhookCompilerConfig } from '@whook/whook';
 + import type {
-+   WhookCompilerConfig,
-+   WhookAPIOperationAWSLambdaConfig,
++   WhookAPIOperationGCPFunctionConfig
 + } from '@whook/aws-lambda';
 
 // ...
@@ -126,8 +127,6 @@ const CONFIG: AppConfigs = {
 +  COMPILER_OPTIONS: {
 +    externalModules: [],
 +    ignoredModules: [],
-+    extensions: ['.ts', '.js', '.json'],
-+    mainFields: ['browser', 'main'],
 +    target: '14',
 +  },
 };
@@ -148,6 +147,7 @@ To build your functions :
 ```sh
 # Build all functions
 npm run compile && npm run build
+
 # Build only one function
 npm run compile && npm run build -- getPing
 ```

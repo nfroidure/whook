@@ -10,22 +10,18 @@ import Knifecycle, {
   constant,
   initInitializerBuilder,
 } from 'knifecycle';
-import initCompiler, {
-  DEFAULT_COMPILER_OPTIONS,
-  DEFAULT_BUILD_OPTIONS,
-} from './services/compiler';
+import { DEFAULT_BUILD_OPTIONS, initCompiler } from '@whook/whook';
 import initBuildAutoloader from './services/_autoload';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
+import type { Autoloader, Dependencies, BuildInitializer } from 'knifecycle';
 import type {
+  WhookOperation,
   WhookCompilerOptions,
   WhookCompilerService,
-  WhookCompilerConfig,
-} from './services/compiler';
-import type { Autoloader, Dependencies, BuildInitializer } from 'knifecycle';
-import type { WhookOperation } from '@whook/whook';
+} from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { CprOptions } from 'cpr';
@@ -56,9 +52,7 @@ export type {
   LambdaTransformerInput,
   LambdaTransformerOutput,
 } from './wrappers/awsTransformerLambda';
-export type { WhookCompilerConfig, WhookCompilerOptions, WhookCompilerService };
 
-export { DEFAULT_COMPILER_OPTIONS, DEFAULT_BUILD_OPTIONS };
 export const DEFAULT_BUILD_PARALLELISM = 10;
 
 export type WhookBuildConfig = {

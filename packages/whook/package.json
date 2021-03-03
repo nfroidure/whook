@@ -73,6 +73,9 @@
     "url": "https://github.com/nfroidure/whook/issues"
   },
   "homepage": "https://github.com/nfroidure/whook",
+  "peerDependencies": {
+    "esbuild": "^0.8.54"
+  },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
@@ -88,6 +91,7 @@
     "@typescript-eslint/parser": "^4.8.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-knifecycle": "^5.0.0",
+    "esbuild": "^0.8.54",
     "eslint": "^7.13.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.3",
