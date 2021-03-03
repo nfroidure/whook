@@ -1,3 +1,12 @@
+## [8.0.1](https://github.com/nfroidure/whook/compare/v8.0.0...v8.0.1) (2021-03-03)
+
+
+### Bug Fixes
+
+* **@whook/http-router:** fix  compatibility issue ([e0b3a60](https://github.com/nfroidure/whook/commit/e0b3a60e783678d7ae136a7d38a1c5f36ca76ee3))
+
+
+
 # [8.0.0](https://github.com/nfroidure/whook/compare/v7.1.5...v8.0.0) (2021-03-03)
 
 
