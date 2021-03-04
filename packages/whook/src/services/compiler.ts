@@ -69,6 +69,10 @@ async function initCompiler({
       target: 'node' + compilerOptions.target,
       outfile: outFile,
       sourcemap: debugging,
+      // Let's keep build readable
+      minify: false,
+      // To keep Knifecycle initializers names untouched
+      keepNames: true,
       define: {
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
       },
