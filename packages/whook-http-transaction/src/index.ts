@@ -88,19 +88,27 @@ export type WhookResponse<
   body?: B;
 };
 
-export type WhookHandlerFunction<
+// eslint-disable-next-line
+export interface WhookHandlerFunction<
   D extends Dependencies,
-  V,
   P extends Parameters,
   R extends WhookResponse,
   O = WhookOperation
-> = HandlerFunction<D, V, P, [O] | [], R>;
+> extends HandlerFunction<
+    D,
+    P extends Parameters<infer V> ? V : never,
+    P,
+    [O] | [],
+    R
+  > {}
 
-export type WhookHandler<
+export interface WhookHandler<
   P = Parameters,
   R = WhookResponse,
   O = WhookOperation
-> = (parameters?: P, operation?: O) => Promise<R>;
+> {
+  (parameters?: P, operation?: O): Promise<R>;
+}
 
 export type HTTPTransactionConfig = {
   TIMEOUT?: number;
