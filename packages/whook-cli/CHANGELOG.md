@@ -1,3 +1,13 @@
+## [8.0.3](https://github.com/nfroidure/whook/compare/v8.0.2...v8.0.3) (2021-03-04)
+
+
+### Bug Fixes
+
+* **@whook/http-transaction:** prefer interfaces and fix regression on types ([f1a0dad](https://github.com/nfroidure/whook/commit/f1a0dad8f2a846e140112cba59cbbf2375b1a0a9))
+* **@whook/whook:** keep names for the build ([590c3ff](https://github.com/nfroidure/whook/commit/590c3ff7b4f807dc91d4e0989033d7db946b22a9))
+
+
+
 ## [8.0.2](https://github.com/nfroidure/whook/compare/v8.0.1...v8.0.2) (2021-03-03)
 
 
