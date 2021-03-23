@@ -1,4 +1,5 @@
 import { exec } from 'child_process';
+import YError from 'yerror';
 
 describe('commands should work', () => {
   it('with ls', async () => {
@@ -36,12 +37,12 @@ describe('commands should work', () => {
 });
 
 async function execCommand(
-  command,
+  command: string,
 ): Promise<{ stdout: string; stderr: string }> {
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       if (err) {
-        reject(err);
+        reject(YError.wrap(err, 'E_COMMAND_FAILURE', stdout, stderr));
         return;
       }
       resolve({ stdout, stderr });

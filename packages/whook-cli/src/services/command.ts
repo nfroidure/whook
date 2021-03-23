@@ -15,20 +15,20 @@ async function initCommand({ commandHandler, log }) {
               'error',
               `Argument "${err.params[0][0].params.missingProperty}" is required.`,
             );
-            return;
+            throw err;
           }
         }
         if (err.params[0][0].keyword === 'additionalProperties') {
           if (err.params[0][0].params.additionalProperty === '_') {
             log('error', 'No anonymous arguments allowed.');
-            return;
+            throw err;
           }
           if (err.params[0][0].params.additionalProperty) {
             log(
               'error',
               `Argument "${err.params[0][0].params.additionalProperty}" not allowed.`,
             );
-            return;
+            throw err;
           }
         }
         log(
@@ -37,7 +37,7 @@ async function initCommand({ commandHandler, log }) {
           err.params[0][0].message,
           err.params[0][0].params,
         );
-        return;
+        throw err;
       }
       throw err;
     }
