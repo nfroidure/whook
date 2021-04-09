@@ -234,7 +234,6 @@ export async function runBuild(
       operations,
     );
     await $.destroy();
-    process.exit();
   } catch (err) {
     // eslint-disable-next-line
     console.error(

@@ -34,6 +34,7 @@ export default async function run<T extends Knifecycle<Dependencies>>(
   try {
     const $ = await innerPrepareEnvironment();
 
+    $.register(constant('PROCESS_NAME', 'whook-cli'));
     $.register(constant('PWD', process.cwd()));
     $.register(constant('ARGS', process.argv));
     $.register(initArgs);
@@ -54,7 +55,6 @@ export default async function run<T extends Knifecycle<Dependencies>>(
     await command();
 
     await $.destroy();
-    process.exit();
   } catch (err) {
     // eslint-disable-next-line
     console.error('💀 - Cannot launch the process:', err.stack);

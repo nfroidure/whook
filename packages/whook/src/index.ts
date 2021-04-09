@@ -274,7 +274,7 @@ export async function runServer<
   } catch (err) {
     // eslint-disable-next-line
     console.error('💀 - Cannot launch the process:', err.stack);
-    //process.exit(1);
+    process.exit(1);
   }
 }
 

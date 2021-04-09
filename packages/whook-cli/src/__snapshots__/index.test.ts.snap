@@ -37,9 +37,7 @@ Object {
   "cwdCalls": Array [
     Array [],
   ],
-  "exitCalls": Array [
-    Array [],
-  ],
+  "exitCalls": Array [],
   "logCalls": Array [
     Array [
       "debug",
