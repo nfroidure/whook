@@ -195,9 +195,9 @@ Object {
         "data": Object {
           "nate": "John Doe",
         },
-        "dataPath": "",
+        "instancePath": "",
         "keyword": "required",
-        "message": "should have required property 'name'",
+        "message": "must have required property 'name'",
         "params": Object {
           "missingProperty": "name",
         },
