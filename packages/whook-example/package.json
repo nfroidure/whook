@@ -1,6 +1,6 @@
 {
   "name": "@whook/example",
-  "version": "8.0.3",
+  "version": "8.0.4",
   "description": "A basic Whook server",
   "keywords": [
     "whook",
@@ -77,13 +77,13 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^8.0.3",
-    "@whook/cli": "^8.0.3",
-    "@whook/cors": "^8.0.3",
-    "@whook/http-router": "^8.0.3",
-    "@whook/http-transaction": "^8.0.3",
-    "@whook/swagger-ui": "^8.0.3",
-    "@whook/whook": "^8.0.3",
+    "@whook/authorization": "^8.0.4",
+    "@whook/cli": "^8.0.4",
+    "@whook/cors": "^8.0.4",
+    "@whook/http-router": "^8.0.4",
+    "@whook/http-transaction": "^8.0.4",
+    "@whook/swagger-ui": "^8.0.4",
+    "@whook/whook": "^8.0.4",
     "common-services": "^9.0.1",
     "http-auth-utils": "^3.0.1",
     "jwt-service": "^7.1.3",

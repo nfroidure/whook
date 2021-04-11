@@ -1,3 +1,13 @@
+## [8.0.4](https://github.com/nfroidure/whook/compare/v8.0.3...v8.0.4) (2021-04-11)
+
+
+### Bug Fixes
+
+* **@whook/cli:** ensure CLI commands fail with args errors ([240b314](https://github.com/nfroidure/whook/commit/240b3141c7ec5a4232265f4b2770e192a645a475))
+* **core:** avoid exiting the process when everything is ok ([a5fd866](https://github.com/nfroidure/whook/commit/a5fd86643af8f62f069e38dedfbd655d2a8699fd))
+
+
+
 ## [8.0.3](https://github.com/nfroidure/whook/compare/v8.0.2...v8.0.3) (2021-03-04)
 
 
