@@ -5,6 +5,8 @@ import initGetOAuth2Authorize, {
   redirectURIParameter as getOAuth2AuthorizeRedirectURIParameter,
   scopeParameter as getOAuth2AuthorizeScopeParameter,
   stateParameter as getOAuth2AuthorizeStateParameter,
+  codeChallengeParameter as getOAuth2AuthorizeCodeChallengeParameter,
+  codeChallengeMethodParameter as getOAuth2AuthorizeCodeChallengeMethodParameter,
 } from './handlers/getOAuth2Authorize';
 import initPostOAuth2Acknowledge, {
   definition as postOAuth2AcknowledgeDefinition,
@@ -21,10 +23,14 @@ import initOAuth2Granters, {
   OAUTH2_ERRORS_DESCRIPTORS,
 } from './services/oAuth2Granters';
 import initOAuth2ClientCredentialsGranter from './services/oAuth2ClientCredentialsGranter';
-import initOAuth2CodeGranter from './services/oAuth2CodeGranter';
+import initOAuth2CodeGranter, {
+  base64UrlEncode,
+  hashCodeVerifier,
+} from './services/oAuth2CodeGranter';
 import initOAuth2PasswordGranter from './services/oAuth2PasswordGranter';
 import initOAuth2RefreshTokenGranter from './services/oAuth2RefreshTokenGranter';
 import initOAuth2TokenGranter from './services/oAuth2TokenGranter';
+import type { CodeChallengeMethod } from './services/oAuth2CodeGranter';
 import type {
   OAuth2CodeService,
   OAuth2PasswordService,
@@ -56,6 +62,7 @@ import type {
 } from './services/authCookies';
 
 export type {
+  CodeChallengeMethod,
   OAuth2CodeService,
   OAuth2PasswordService,
   OAuth2AccessTokenService,
@@ -77,6 +84,10 @@ export {
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
+  getOAuth2AuthorizeCodeChallengeParameter,
+  getOAuth2AuthorizeCodeChallengeMethodParameter,
+  base64UrlEncode,
+  hashCodeVerifier,
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,

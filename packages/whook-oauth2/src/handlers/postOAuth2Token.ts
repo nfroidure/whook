@@ -42,6 +42,10 @@ export const authorizationCodeTokenRequestBodySchema: WhookAPISchemaDefinition =
         pattern: '^https?://',
         format: 'uri',
       },
+      code_verifier: {
+        type: 'string',
+        pattern: '^[\\d\\w\\-/\\._~]+$',
+      },
     },
   },
 };

@@ -23,6 +23,8 @@ import {
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
+  getOAuth2AuthorizeCodeChallengeParameter,
+  getOAuth2AuthorizeCodeChallengeMethodParameter,
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,
@@ -108,6 +110,8 @@ describe('OAuth2 server', () => {
         getOAuth2AuthorizeRedirectURIParameter,
         getOAuth2AuthorizeScopeParameter,
         getOAuth2AuthorizeStateParameter,
+        getOAuth2AuthorizeCodeChallengeParameter,
+        getOAuth2AuthorizeCodeChallengeMethodParameter,
       ].reduce(
         (parametersHash, { name, parameter }) => ({
           ...parametersHash,

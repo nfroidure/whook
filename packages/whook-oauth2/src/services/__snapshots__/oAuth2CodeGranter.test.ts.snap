@@ -33,6 +33,7 @@ Object {
       },
       "yolo",
       "https://www.example.com/oauth2/code",
+      "",
     ],
   ],
   "oAuth2CodeCreateCalls": Array [
@@ -42,7 +43,10 @@ Object {
         "scope": "user",
       },
       "https://www.example.com/oauth2/code",
-      Object {},
+      Object {
+        "codeChallenge": "",
+        "codeChallengeMethod": "plain",
+      },
     ],
   ],
 }
