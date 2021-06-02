@@ -40,6 +40,16 @@ Object {
 }
 `;
 
+exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns a bad status 1`] = `
+Object {
+  "error": "bad_handler",
+  "error_debug_data": undefined,
+  "error_description": "The handler for the operation id \\"getUser\\" seems to not return any status",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NO_RESPONSE_STATUS+whook+error+code",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE_STATUS",
+}
+`;
+
 exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns no response 1`] = `
 Object {
   "error": "bad_handler",
@@ -54,9 +64,9 @@ exports[`initHTTPRouter httpRouter GET should lately fail when the handler retur
 Object {
   "error": "bad_handler",
   "error_debug_data": undefined,
-  "error_description": "The handler for the operation id \\"getUser\\" seems to not return any status",
-  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NO_RESPONSE_STATUS+whook+error+code",
-  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NO_RESPONSE_STATUS",
+  "error_description": "The handler for the operation id \\"getUser\\" seems to not be a number",
+  "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NON_NUMERIC_STATUS+whook+error+code",
+  "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NON_NUMERIC_STATUS",
 }
 `;
 

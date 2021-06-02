@@ -170,6 +170,13 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
+  E_NON_NUMERIC_STATUS: {
+    code: 'bad_handler',
+    description:
+      'The handler for the operation id "$0" seems to not be a number',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
   E_NOT_FOUND: {
     code: 'bad_handler',
     description: 'No endpoint found at that path ("$0", "$2")',

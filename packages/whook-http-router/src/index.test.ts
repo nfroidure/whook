@@ -1542,6 +1542,75 @@ describe('initHTTPRouter', () => {
             httpTransactionEnd,
             handler,
             HANDLERS,
+          } = prepareTransaction(
+            Promise.resolve({
+              status: '200',
+            }),
+          );
+          const errorHandler = await initErrorHandler({
+            NODE_ENV,
+            DEBUG_NODE_ENVS,
+          });
+          const httpRouter = await initHTTPRouter({
+            NODE_ENV,
+            DEBUG_NODE_ENVS,
+            HANDLERS,
+            API,
+            log,
+            BASE_PATH,
+            httpTransaction,
+            errorHandler,
+          });
+          const req = {
+            method: 'GET',
+            url: '/v1/users/1?extended=true',
+            headers: {},
+          };
+
+          log.mockReset();
+
+          await httpRouter.service(
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
+          );
+
+          expect(handler).toBeCalled();
+          expect(httpTransaction).toBeCalled();
+          expect(httpTransactionStart).toBeCalled();
+          expect(httpTransactionCatch).toBeCalled();
+          expect(httpTransactionEnd).toBeCalled();
+
+          const response = (await waitResponse(
+            httpTransactionEnd.mock.calls[0][0],
+          )) as WhookResponse;
+
+          expect(response.body).toMatch(/E_NON_NUMERIC_STATUS/);
+          expect({ ...response, body: undefined }).toEqual({
+            headers: {
+              'content-type': 'application/json',
+              'cache-control': 'private',
+            },
+            status: 500,
+          });
+          expect(handler.mock.calls[0][0]).toEqual({
+            userId: 1,
+            extended: true,
+          });
+
+          expect({
+            ...JSON.parse(response.body as string),
+            error_debug_data: undefined,
+          }).toMatchSnapshot();
+        });
+
+        test('when the handler returns a bad status', async () => {
+          const {
+            httpTransaction,
+            httpTransactionStart,
+            httpTransactionCatch,
+            httpTransactionEnd,
+            handler,
+            HANDLERS,
           } = prepareTransaction(Promise.resolve({}));
           const errorHandler = await initErrorHandler({
             NODE_ENV,

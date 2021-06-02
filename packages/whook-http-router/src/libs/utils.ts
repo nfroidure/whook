@@ -229,10 +229,19 @@ export async function executeHandler(
       operation.path,
     );
   }
-  if ('number' !== typeof response.status) {
+  if ('undefined' === typeof response.status) {
     throw new HTTPError(
       500,
       'E_NO_RESPONSE_STATUS',
+      operation.operationId,
+      operation.method,
+      operation.path,
+    );
+  }
+  if ('number' !== typeof response.status) {
+    throw new HTTPError(
+      500,
+      'E_NON_NUMERIC_STATUS',
       operation.operationId,
       operation.method,
       operation.path,
