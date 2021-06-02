@@ -6,7 +6,7 @@ import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command printing every env values',
-  example: `whook printEnv --name NODE_ENV`,
+  example: `whook printEnv --keysOnly`,
   arguments: {
     type: 'object',
     additionalProperties: false,
@@ -35,7 +35,9 @@ async function initPrintEnvCommand({
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { keysOnly } = readArgs(definition.arguments, args);
+    const { keysOnly } = readArgs(definition.arguments, args) as {
+      keysOnly: boolean;
+    };
 
     log('info', `${JSON.stringify(keysOnly ? Object.keys(ENV) : ENV)}`);
   };
