@@ -38,7 +38,7 @@ type LogSubscriberWrapperDependencies = {
 // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html
 export default function wrapHandlerForAWSLogSubscriberLambda<
   D,
-  S extends WhookHandler
+  S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & LogSubscriberWrapperDependencies, S> {

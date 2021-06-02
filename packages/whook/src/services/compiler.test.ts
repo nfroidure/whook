@@ -35,7 +35,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       Object {
-        "contentsLength": 84274,
+        "contentsLength": 89248,
         "logCalls": Array [],
         "mappingsLength": 0,
       }

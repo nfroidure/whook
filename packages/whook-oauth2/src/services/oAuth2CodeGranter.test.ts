@@ -48,17 +48,18 @@ describe('OAuth2CodeGranter', () => {
       },
       {},
     );
-    const authenticatorResult = await oAuth2CodeGranter.authenticator.authenticate(
-      {
-        clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-        redirectURI: 'https://www.example.com/oauth2/code',
-        code: 'yolo',
-      },
-      {
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-        scope: 'user',
-      },
-    );
+    const authenticatorResult =
+      await oAuth2CodeGranter.authenticator.authenticate(
+        {
+          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          redirectURI: 'https://www.example.com/oauth2/code',
+          code: 'yolo',
+        },
+        {
+          applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          scope: 'user',
+        },
+      );
 
     expect({
       authorizerResult,

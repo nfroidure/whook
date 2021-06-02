@@ -67,7 +67,7 @@ const PATH_SEPARATOR = '/';
 
 export default function wrapHandlerForAWSHTTPFunction<
   D,
-  S extends WhookHandler
+  S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & HTTPWrapperDependencies, S> {
@@ -151,10 +151,9 @@ async function initHandlerForAWSHTTPFunction(
     Service
   >;
 
-  const handler = await (applyWrappers(initHandler) as ServiceInitializer<
-    Dependencies,
-    Service
-  >)({
+  const handler = await (
+    applyWrappers(initHandler) as ServiceInitializer<Dependencies, Service>
+  )({
     OPERATION,
     DEBUG_NODE_ENVS,
     NODE_ENV,

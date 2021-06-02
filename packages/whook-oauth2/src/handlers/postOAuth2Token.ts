@@ -19,32 +19,33 @@ import type { BaseAuthenticationData } from '@whook/authorization';
 This endpoint is to be used by the authentication server page
  to acknowlege that the user accepted the client request.
 */
-export const authorizationCodeTokenRequestBodySchema: WhookAPISchemaDefinition = {
-  name: 'AuthorizationCodeRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Authorization code grant, see https://tools.ietf.org/html/rfc6749#section-4.1',
-    required: ['grant_type'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        enum: ['authorization_code'],
-      },
-      code: {
-        type: 'string',
-      },
-      client_id: {
-        type: 'string',
-      },
-      redirect_uri: {
-        type: 'string',
-        pattern: '^https?://',
-        format: 'uri',
+export const authorizationCodeTokenRequestBodySchema: WhookAPISchemaDefinition =
+  {
+    name: 'AuthorizationCodeRequestBody',
+    schema: {
+      type: 'object',
+      description:
+        'Authorization code grant, see https://tools.ietf.org/html/rfc6749#section-4.1',
+      required: ['grant_type'],
+      properties: {
+        grant_type: {
+          type: 'string',
+          enum: ['authorization_code'],
+        },
+        code: {
+          type: 'string',
+        },
+        client_id: {
+          type: 'string',
+        },
+        redirect_uri: {
+          type: 'string',
+          pattern: '^https?://',
+          format: 'uri',
+        },
       },
     },
-  },
-};
+  };
 
 export const passwordTokenRequestBodySchema: WhookAPISchemaDefinition = {
   name: 'PasswordRequestBody',
@@ -72,25 +73,26 @@ export const passwordTokenRequestBodySchema: WhookAPISchemaDefinition = {
   },
 };
 
-export const clientCredentialsTokenRequestBodySchema: WhookAPISchemaDefinition = {
-  name: 'ClientCredentialsRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Client credentials grant, see https://tools.ietf.org/html/rfc6749#section-4.4',
-    required: ['grant_type'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        enum: ['client_credentials'],
-      },
-      scope: {
-        type: 'string',
-        description: 'See https://tools.ietf.org/html/rfc6749#section-3.3',
+export const clientCredentialsTokenRequestBodySchema: WhookAPISchemaDefinition =
+  {
+    name: 'ClientCredentialsRequestBody',
+    schema: {
+      type: 'object',
+      description:
+        'Client credentials grant, see https://tools.ietf.org/html/rfc6749#section-4.4',
+      required: ['grant_type'],
+      properties: {
+        grant_type: {
+          type: 'string',
+          enum: ['client_credentials'],
+        },
+        scope: {
+          type: 'string',
+          description: 'See https://tools.ietf.org/html/rfc6749#section-3.3',
+        },
       },
     },
-  },
-};
+  };
 
 export const refreshTokenRequestBodySchema: WhookAPISchemaDefinition = {
   name: 'RefreshTokenRequestBody',
@@ -224,7 +226,7 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(postOAuth2Token);
 
 async function postOAuth2Token<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 >(
   {
     oAuth2Granters,

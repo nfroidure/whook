@@ -52,9 +52,8 @@ export type WhookAPIOperationAddition<T = Record<string, JsonValue>> = {
   operationId: OpenAPIV3.OperationObject['operationId'];
   'x-whook'?: T & WhookAPIOperationConfig;
 };
-export type WhookAPIOperation<
-  T = Record<string, JsonValue>
-> = OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
+export type WhookAPIOperation<T = Record<string, JsonValue>> =
+  OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
 export type WhookAPIHandlerDefinition<T = Record<string, JsonValue>> = {
   path: string;
   method: string;

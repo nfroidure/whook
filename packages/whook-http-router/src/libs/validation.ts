@@ -378,7 +378,7 @@ export function filterHeaders(
 }
 
 export function castParameters<
-  T = boolean | boolean[] | string | string[] | number | number[]
+  T = boolean | boolean[] | string | string[] | number | number[],
 >(
   parameters: DereferencedParameterObject[],
   values: WhookHeaders,
@@ -398,21 +398,21 @@ export function castParameters<
 }
 
 export function castSchemaValue<
-  T = boolean | boolean[] | string | string[] | number | number[]
+  T = boolean | boolean[] | string | string[] | number | number[],
 >(schema: DereferencedParameterObject['schema'], value: string | string[]): T {
   let castedValue: T;
 
   if ('undefined' !== typeof value) {
     if ('array' === schema.type) {
-      castedValue = ((value as string[]).map(
+      castedValue = (value as string[]).map(
         castSchemaValue.bind(null, schema.items),
-      ) as unknown) as T;
+      ) as unknown as T;
     } else if ('boolean' === schema.type) {
-      castedValue = (parseBoolean(value as string) as unknown) as T;
+      castedValue = parseBoolean(value as string) as unknown as T;
     } else if ('number' === schema.type) {
-      castedValue = (parseReentrantNumber(value as string) as unknown) as T;
+      castedValue = parseReentrantNumber(value as string) as unknown as T;
     } else {
-      castedValue = (value as unknown) as T;
+      castedValue = value as unknown as T;
     }
 
     if (schema.enum && !schema.enum.includes(castedValue)) {

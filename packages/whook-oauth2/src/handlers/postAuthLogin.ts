@@ -62,7 +62,7 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(postAuthLogin);
 
 async function postAuthLogin<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 >(
   {
     ROOT_AUTHENTICATION_DATA,

@@ -7,28 +7,29 @@ import { WhookAPIOperationSwaggerConfig } from '..';
 
 export default autoHandler(getOpenAPI);
 
-export const definition: WhookAPIHandlerDefinition<WhookAPIOperationSwaggerConfig> = {
-  path: '/openAPI',
-  method: 'get',
-  operation: {
-    operationId: 'getOpenAPI',
-    summary: 'Get API documentation.',
-    tags: ['system'],
-    'x-whook': { private: false },
-    responses: {
-      '200': {
-        description: 'Provides the private Open API documentation',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'object',
+export const definition: WhookAPIHandlerDefinition<WhookAPIOperationSwaggerConfig> =
+  {
+    path: '/openAPI',
+    method: 'get',
+    operation: {
+      operationId: 'getOpenAPI',
+      summary: 'Get API documentation.',
+      tags: ['system'],
+      'x-whook': { private: false },
+      responses: {
+        '200': {
+          description: 'Provides the private Open API documentation',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+              },
             },
           },
         },
       },
     },
-  },
-} as WhookAPIHandlerDefinition;
+  } as WhookAPIHandlerDefinition;
 
 function removeMutedParameters(
   parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,

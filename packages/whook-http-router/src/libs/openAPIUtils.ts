@@ -19,13 +19,12 @@ export const OPEN_API_METHODS = [
   'trace',
 ];
 
-export type WhookRawOperation<
-  T = Record<string, unknown>
-> = OpenAPIV3.OperationObject & {
-  path: string;
-  method: string;
-  'x-whook'?: T;
-};
+export type WhookRawOperation<T = Record<string, unknown>> =
+  OpenAPIV3.OperationObject & {
+    path: string;
+    method: string;
+    'x-whook'?: T;
+  };
 export type SupportedSecurityScheme =
   | OpenAPIV3.HttpSecurityScheme
   | OpenAPIV3.ApiKeySecurityScheme
@@ -173,11 +172,15 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
           content: Object.keys(baseRequestBody.content).reduce(
             (requestBodyContent, mediaType) => {
               const mediaTypeSchema = baseRequestBody.content[mediaType].schema
-                ? (baseRequestBody.content[mediaType]
-                    .schema as OpenAPIV3.ReferenceObject).$ref
+                ? (
+                    baseRequestBody.content[mediaType]
+                      .schema as OpenAPIV3.ReferenceObject
+                  ).$ref
                   ? ($refs.get(
-                      (baseRequestBody.content[mediaType]
-                        .schema as OpenAPIV3.ReferenceObject).$ref,
+                      (
+                        baseRequestBody.content[mediaType]
+                          .schema as OpenAPIV3.ReferenceObject
+                      ).$ref,
                     ) as OpenAPIV3.SchemaObject)
                   : (baseRequestBody.content[mediaType]
                       .schema as OpenAPIV3.SchemaObject)
@@ -198,9 +201,9 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
     const responses: Record<string, DereferencedResponseObject> = Object.keys(
       operation.responses || {},
     ).reduce((allResponses, status) => {
-      const responseObject = (operation.responses[
-        status
-      ] as OpenAPIV3.ReferenceObject).$ref
+      const responseObject = (
+        operation.responses[status] as OpenAPIV3.ReferenceObject
+      ).$ref
         ? ($refs.get(
             (operation.responses[status] as OpenAPIV3.ReferenceObject).$ref,
           ) as OpenAPIV3.ResponseObject)
@@ -211,11 +214,15 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
           ? Object.keys(responseObject.content).reduce(
               (responseObjectContent, mediaType) => {
                 const mediaTypeSchema = responseObject.content[mediaType].schema
-                  ? (responseObject.content[mediaType]
-                      .schema as OpenAPIV3.ReferenceObject).$ref
+                  ? (
+                      responseObject.content[mediaType]
+                        .schema as OpenAPIV3.ReferenceObject
+                    ).$ref
                     ? ($refs.get(
-                        (responseObject.content[mediaType]
-                          .schema as OpenAPIV3.ReferenceObject).$ref,
+                        (
+                          responseObject.content[mediaType]
+                            .schema as OpenAPIV3.ReferenceObject
+                        ).$ref,
                       ) as OpenAPIV3.SchemaObject)
                     : (responseObject.content[mediaType]
                         .schema as OpenAPIV3.SchemaObject)

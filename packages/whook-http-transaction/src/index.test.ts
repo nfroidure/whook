@@ -125,12 +125,12 @@ describe('initHTTPTransaction', () => {
       });
 
       const { request, transaction } = await httpTransaction(
-        (req as unknown) as IncomingMessage,
+        req as unknown as IncomingMessage,
         res,
       );
 
       const response = await transaction.start(
-        (buildResponse as unknown) as WhookHandler,
+        buildResponse as unknown as WhookHandler,
       );
 
       await transaction.end(response, 'theOperationId');
@@ -207,13 +207,13 @@ describe('initHTTPTransaction', () => {
         buildResponse.mockReturnValueOnce(new Promise(() => undefined));
 
         const { request: _request, transaction } = await httpTransaction(
-          (req as unknown) as IncomingMessage,
+          req as unknown as IncomingMessage,
           res,
         );
 
         request = _request;
 
-        await transaction.start((buildResponse as unknown) as WhookHandler);
+        await transaction.start(buildResponse as unknown as WhookHandler);
 
         await transaction.end({} as WhookResponse);
 
@@ -273,12 +273,12 @@ describe('initHTTPTransaction', () => {
         buildResponse.mockReturnValueOnce(Promise.resolve());
 
         const { transaction } = await httpTransaction(
-          (req as unknown) as IncomingMessage,
+          req as unknown as IncomingMessage,
           res,
         );
 
         await transaction
-          .start((buildResponse as unknown) as WhookHandler)
+          .start(buildResponse as unknown as WhookHandler)
           .catch(transaction.catch)
           .then(streamifyBody)
           .then(transaction.end);

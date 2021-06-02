@@ -2,35 +2,37 @@ import { autoHandler } from 'knifecycle';
 import type { WhookAPIParameterDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 
-export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam1> = {
-  name: 'pathParam1',
-  example: 123,
-  parameter: {
-    in: 'path',
+export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam1> =
+  {
     name: 'pathParam1',
-    required: true,
-    description: 'Duration in milliseconds',
-    schema: {
-      type: 'number',
-    },
-  },
-};
-export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam2> = {
-  name: 'pathParam2',
-  example: ['item1', 'item2'],
-  parameter: {
-    in: 'path',
-    name: 'pathParam2',
-    required: true,
-    description: 'A list of items',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'string',
+    example: 123,
+    parameter: {
+      in: 'path',
+      name: 'pathParam1',
+      required: true,
+      description: 'Duration in milliseconds',
+      schema: {
+        type: 'number',
       },
     },
-  },
-};
+  };
+export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam2> =
+  {
+    name: 'pathParam2',
+    example: ['item1', 'item2'],
+    parameter: {
+      in: 'path',
+      name: 'pathParam2',
+      required: true,
+      description: 'A list of items',
+      schema: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+    },
+  };
 
 export const definition: APIHandlerDefinition = {
   path: `/{${pathParam1Parameter.parameter.name}}/{${pathParam2Parameter.parameter.name}}`,

@@ -20,7 +20,7 @@ export type OAuth2PasswordGranterParameters = {
   scope?: string;
 };
 export type OAuth2PasswordGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 > = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
@@ -37,30 +37,31 @@ async function initOAuth2PasswordGranter({
   checkApplication,
   log = noop,
 }: OAuth2PasswordGranterDependencies): Promise<OAuth2PasswordGranterService> {
-  const authenticateWithPassword: OAuth2PasswordGranterService['authenticator']['authenticate'] = async (
-    { username, password, scope: demandedScope = '' },
-    authenticationData,
-  ) => {
-    // The client must be authenticated
-    if (!authenticationData) {
-      throw new YError('E_UNAUTHORIZED');
-    }
-
-    await checkApplication({
-      applicationId: authenticationData.applicationId,
-      type: 'password',
-      scope: demandedScope,
-    });
-
-    const finalAuthenticationData = await oAuth2Password.check(
+  const authenticateWithPassword: OAuth2PasswordGranterService['authenticator']['authenticate'] =
+    async (
+      { username, password, scope: demandedScope = '' },
       authenticationData,
-      username,
-      password,
-      demandedScope,
-    );
+    ) => {
+      // The client must be authenticated
+      if (!authenticationData) {
+        throw new YError('E_UNAUTHORIZED');
+      }
 
-    return finalAuthenticationData;
-  };
+      await checkApplication({
+        applicationId: authenticationData.applicationId,
+        type: 'password',
+        scope: demandedScope,
+      });
+
+      const finalAuthenticationData = await oAuth2Password.check(
+        authenticationData,
+        username,
+        password,
+        demandedScope,
+      );
+
+      return finalAuthenticationData;
+    };
 
   log('debug', '👫 - OAuth2PasswordGranter Service Initialized!');
 

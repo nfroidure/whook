@@ -30,7 +30,7 @@ export type LambdaKafkaConsumerOutput = WhookResponse<
 
 export default function wrapHandlerForAWSKafkaConsumerLambda<
   D,
-  S extends WhookHandler
+  S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & KafkaConsumerWrapperDependencies, S> {

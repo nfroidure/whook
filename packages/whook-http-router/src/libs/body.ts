@@ -28,7 +28,7 @@ there are two kinds of requests:
  handler itself.
 */
 export async function getBody<
-  T extends Readable | JsonValue | void = Readable | JsonValue | void
+  T extends Readable | JsonValue | void = Readable | JsonValue | void,
 >(
   {
     DECODERS,

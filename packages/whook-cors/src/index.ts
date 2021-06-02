@@ -72,7 +72,7 @@ function isGetter(obj: unknown, prop: string): boolean {
 async function handleWithCORS<
   R extends WhookResponse,
   O extends WhookAPIHandlerDefinition<WhookAPIOperationCORSConfig>,
-  P extends Parameters
+  P extends Parameters,
 >(
   { CORS }: WhookCORSConfig,
   handler: WhookHandler<P, R, O>,
@@ -220,9 +220,8 @@ function mergeVaryHeaders(
   baseHeader: string | string[],
   addedValue: string,
 ): string {
-  const baseHeaderValues = (baseHeader instanceof Array
-    ? baseHeader
-    : [baseHeader]
+  const baseHeaderValues = (
+    baseHeader instanceof Array ? baseHeader : [baseHeader]
   )
     .map((value) =>
       value

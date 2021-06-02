@@ -21,7 +21,7 @@ export async function runBuild(
 // The `prepareBuildEnvironment` create the build
 //  environment
 export async function prepareBuildEnvironment<
-  T extends Knifecycle<Dependencies>
+  T extends Knifecycle<Dependencies>,
 >($: T = new Knifecycle() as T): Promise<T> {
   $ = await prepareEnvironment($);
 

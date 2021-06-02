@@ -29,7 +29,7 @@ describe('initProject', () => {
     ensureDir.mockResolvedValueOnce(undefined);
 
     const project = await initProject({
-      inquirer: (inquirer as unknown) as typeof _inquirer,
+      inquirer: inquirer as unknown as typeof _inquirer,
       CWD,
       ensureDir,
       lock,
@@ -59,7 +59,7 @@ describe('initProject', () => {
 
     try {
       await initProject({
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         CWD,
         ensureDir,
         lock,

@@ -61,13 +61,12 @@ export type DereferencedOperationObject = Omit<
   };
 };
 
-export type WhookOperation<
-  T = Record<string, unknown>
-> = DereferencedOperationObject & {
-  path: string;
-  method: string;
-  'x-whook'?: T;
-};
+export type WhookOperation<T = Record<string, unknown>> =
+  DereferencedOperationObject & {
+    path: string;
+    method: string;
+    'x-whook'?: T;
+  };
 
 export type WhookHeaders = Record<string, string | string[]>;
 
@@ -81,7 +80,7 @@ export type WhookRequest<H = WhookHeaders, B = JsonValue | Readable> = {
 export type WhookResponse<
   S = number,
   H = WhookHeaders,
-  B = JsonValue | Readable
+  B = JsonValue | Readable,
 > = {
   status: S;
   headers?: H;
@@ -93,7 +92,7 @@ export interface WhookHandlerFunction<
   D extends Dependencies,
   P extends Parameters,
   R extends WhookResponse,
-  O = WhookOperation
+  O = WhookOperation,
 > extends HandlerFunction<
     D,
     P extends Parameters<infer V> ? V : never,
@@ -105,7 +104,7 @@ export interface WhookHandlerFunction<
 export interface WhookHandler<
   P = Parameters,
   R = WhookResponse,
-  O = WhookOperation
+  O = WhookOperation,
 > {
   (parameters?: P, operation?: O): Promise<R>;
 }

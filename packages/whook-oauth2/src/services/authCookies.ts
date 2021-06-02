@@ -6,7 +6,7 @@ import type { BaseAuthenticationData } from '@whook/authorization';
 export const AUTH_API_PREFIX = '/auth';
 
 export type AuthHandlersConfig<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 > = {
   ROOT_AUTHENTICATION_DATA: AUTHENTICATION_DATA;
 };

@@ -99,7 +99,7 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(postOAuth2Acknowledge);
 
 async function postOAuth2Acknowledge<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 >(
   {
     ERRORS_DESCRIPTORS,
@@ -165,19 +165,16 @@ async function postOAuth2Acknowledge<
       throw new YError('E_UNKNOWN_ACKNOWLEDGOR_TYPE', responseType);
     }
 
-    const {
-      applicationId,
-      scope,
-      ...additionalProperties
-    } = await granter.acknowledger.acknowledge(
-      authenticationData,
-      {
-        clientId,
-        redirectURI,
-        scope: demandedScope,
-      },
-      additionalParameters,
-    );
+    const { applicationId, scope, ...additionalProperties } =
+      await granter.acknowledger.acknowledge(
+        authenticationData,
+        {
+          clientId,
+          redirectURI,
+          scope: demandedScope,
+        },
+        additionalParameters,
+      );
 
     url.searchParams.set('client_id', applicationId);
     url.searchParams.set('scope', scope);

@@ -80,7 +80,7 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(postAuthRefresh);
 
 async function postAuthRefresh<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 >(
   {
     ROOT_AUTHENTICATION_DATA,

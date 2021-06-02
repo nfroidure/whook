@@ -15,7 +15,8 @@ import type { ProjectService } from './project';
 import type { AuthorService } from './author';
 
 const GIT_IGNORE_URL = 'https://www.gitignore.io/api/osx,node,linux';
-const README_REGEXP = /^(?:[^]*)\[\/\/\]: # \(::contents:start\)\r?\n\r?\n([^]*)\r?\n\r?\n\[\/\/\]: # \(::contents:end\)(?:[^]*)$/gm;
+const README_REGEXP =
+  /^(?:[^]*)\[\/\/\]: # \(::contents:start\)\r?\n\r?\n([^]*)\r?\n\r?\n\[\/\/\]: # \(::contents:end\)(?:[^]*)$/gm;
 
 export type CreateWhookService = () => Promise<void>;
 

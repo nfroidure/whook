@@ -66,9 +66,8 @@ describe('wrapHandlerWithAuthorization', () => {
   describe('with unauthenticated endpoints', () => {
     it('should work', async () => {
       const noopHandler = handler(noopMock, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-        noopHandler,
-      );
+      const wrappedNoodHandlerWithAuthorization =
+        wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
         authentication,
         log,
@@ -92,9 +91,8 @@ describe('wrapHandlerWithAuthorization', () => {
         scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-        noopHandler,
-      );
+      const wrappedNoodHandlerWithAuthorization =
+        wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
         authentication,
         log,
@@ -121,9 +119,8 @@ describe('wrapHandlerWithAuthorization', () => {
         scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-        noopHandler,
-      );
+      const wrappedNoodHandlerWithAuthorization =
+        wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
         authentication,
         log,
@@ -150,9 +147,8 @@ describe('wrapHandlerWithAuthorization', () => {
         scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-        noopHandler,
-      );
+      const wrappedNoodHandlerWithAuthorization =
+        wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
         authentication,
         log,
@@ -179,9 +175,8 @@ describe('wrapHandlerWithAuthorization', () => {
         scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-        noopHandler,
-      );
+      const wrappedNoodHandlerWithAuthorization =
+        wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
         authentication,
         log,
@@ -205,9 +200,8 @@ describe('wrapHandlerWithAuthorization', () => {
         scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-        noopHandler,
-      );
+      const wrappedNoodHandlerWithAuthorization =
+        wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
         authentication,
         log,
@@ -234,9 +228,8 @@ describe('wrapHandlerWithAuthorization', () => {
         scope: 'user,admin',
       });
       const noopHandler = handler(noopMock, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-        noopHandler,
-      );
+      const wrappedNoodHandlerWithAuthorization =
+        wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
         authentication,
         log,
@@ -259,9 +252,8 @@ describe('wrapHandlerWithAuthorization', () => {
 
   it('should fail with no operation definition provided', async () => {
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       authentication,
       log,
@@ -290,9 +282,8 @@ describe('wrapHandlerWithAuthorization', () => {
 
   it('should fail with bad operation definition provided', async () => {
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       authentication,
       log,
@@ -326,9 +317,8 @@ describe('wrapHandlerWithAuthorization', () => {
       scope: '',
     });
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       authentication,
       log,
@@ -362,9 +352,8 @@ describe('wrapHandlerWithAuthorization', () => {
       scope: '',
     });
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       MECHANISMS: [BASIC_MECHANISM, BEARER_MECHANISM],
       authentication,
@@ -398,9 +387,8 @@ describe('wrapHandlerWithAuthorization', () => {
     );
 
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       authentication,
       log,
@@ -433,9 +421,8 @@ describe('wrapHandlerWithAuthorization', () => {
     );
 
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       authentication,
       log,
@@ -463,9 +450,8 @@ describe('wrapHandlerWithAuthorization', () => {
     );
 
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       DEFAULT_MECHANISM: '',
       authentication,
@@ -501,9 +487,8 @@ describe('wrapHandlerWithAuthorization', () => {
     authentication.check.mockRejectedValue(new YError('E_UNAUTHORIZED'));
 
     const noopHandler = handler(noopMock, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization = wrapHandlerWithAuthorization(
-      noopHandler,
-    );
+    const wrappedNoodHandlerWithAuthorization =
+      wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
       authentication,
       log,

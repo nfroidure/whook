@@ -20,7 +20,8 @@ declare namespace API {
       readonly body: Responses.$200;
     };
     export namespace Responses {
-      export type $200 = Components.Schemas.ApiResponses.GetDiagnostic.Response200.Schema0;
+      export type $200 =
+        Components.Schemas.ApiResponses.GetDiagnostic.Response200.Schema0;
     }
   }
   export namespace GetOpenAPI {
@@ -35,7 +36,8 @@ declare namespace API {
       readonly body: Responses.$200;
     };
     export namespace Responses {
-      export type $200 = Components.Schemas.ApiResponses.GetOpenAPI.Response200.Schema0;
+      export type $200 =
+        Components.Schemas.ApiResponses.GetOpenAPI.Response200.Schema0;
     }
   }
   export namespace GetParameters {
@@ -54,7 +56,8 @@ declare namespace API {
       readonly body: Responses.$200;
     };
     export namespace Responses {
-      export type $200 = Components.Schemas.ApiResponses.GetParameters.Response200.Schema0;
+      export type $200 =
+        Components.Schemas.ApiResponses.GetParameters.Response200.Schema0;
     }
     export namespace Parameters {
       export type PathParam1 = Components.Schemas.ApiParameters.PathParam1;
@@ -74,7 +77,8 @@ declare namespace API {
       readonly body: Responses.$200;
     };
     export namespace Responses {
-      export type $200 = Components.Schemas.ApiResponses.GetTime.Response200.Schema0;
+      export type $200 =
+        Components.Schemas.ApiResponses.GetTime.Response200.Schema0;
     }
   }
   export namespace PutEcho {
@@ -92,7 +96,8 @@ declare namespace API {
       readonly body: Responses.$200;
     };
     export namespace Responses {
-      export type $200 = Components.Schemas.ApiResponses.PutEcho.Response200.Schema0;
+      export type $200 =
+        Components.Schemas.ApiResponses.PutEcho.Response200.Schema0;
     }
   }
   export namespace GetPing {
@@ -107,7 +112,8 @@ declare namespace API {
       readonly body: Responses.$200;
     };
     export namespace Responses {
-      export type $200 = Components.Schemas.ApiResponses.GetPing.Response200.Schema0;
+      export type $200 =
+        Components.Schemas.ApiResponses.GetPing.Response200.Schema0;
     }
   }
 }

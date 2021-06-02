@@ -75,7 +75,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
   };
   return {
     HANDLERS,
-    httpTransaction: (httpTransaction as unknown) as HTTPTransactionService,
+    httpTransaction: httpTransaction as unknown as HTTPTransactionService,
     httpTransactionStart,
     httpTransactionCatch,
     httpTransactionEnd,
@@ -555,14 +555,14 @@ describe('initHTTPRouter', () => {
           NODE_ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
-          API: ({
+          API: {
             info: API.info,
             paths: {
               '/lol': {
                 get: {},
               },
             },
-          } as unknown) as OpenAPIV3.Document,
+          } as unknown as OpenAPIV3.Document,
           log,
           BASE_PATH,
           httpTransaction,
@@ -724,12 +724,12 @@ describe('initHTTPRouter', () => {
                 get: {
                   operationId: 'ping',
                   parameters: [
-                    ({
+                    {
                       in: 'query',
                       schema: {
                         type: 'string',
                       },
-                    } as unknown) as OpenAPIV3.ParameterObject,
+                    } as unknown as OpenAPIV3.ParameterObject,
                   ],
                 },
               },
@@ -767,10 +767,10 @@ describe('initHTTPRouter', () => {
                 get: {
                   operationId: 'ping',
                   parameters: [
-                    ({
+                    {
                       name: 'lol',
                       in: 'query',
-                    } as unknown) as OpenAPIV3.ParameterObject,
+                    } as unknown as OpenAPIV3.ParameterObject,
                   ],
                 },
               },
@@ -808,12 +808,12 @@ describe('initHTTPRouter', () => {
                 get: {
                   operationId: 'ping',
                   parameters: [
-                    ({
+                    {
                       name: 'lol',
                       schema: {
                         type: 'string',
                       },
-                    } as unknown) as OpenAPIV3.ParameterObject,
+                    } as unknown as OpenAPIV3.ParameterObject,
                   ],
                 },
               },
@@ -872,8 +872,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).toBeCalled();
@@ -938,8 +938,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).toBeCalled();
@@ -1008,8 +1008,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).toBeCalled();
@@ -1078,8 +1078,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1148,8 +1148,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1222,8 +1222,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1294,8 +1294,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1370,8 +1370,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1435,8 +1435,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1501,8 +1501,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1566,8 +1566,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -1635,8 +1635,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -1697,8 +1697,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -1762,8 +1762,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).toBeCalled();
@@ -1832,8 +1832,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).toBeCalled();
@@ -1899,8 +1899,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).not.toBeCalled();
@@ -1981,8 +1981,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -2058,8 +2058,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -2132,8 +2132,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -2202,8 +2202,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2266,8 +2266,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2335,8 +2335,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2404,8 +2404,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2473,8 +2473,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2541,8 +2541,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2608,8 +2608,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2678,8 +2678,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2748,8 +2748,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2818,8 +2818,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -2887,8 +2887,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).toBeCalled();
@@ -2956,8 +2956,8 @@ describe('initHTTPRouter', () => {
           log.mockReset();
 
           await httpRouter.service(
-            (req as unknown) as IncomingMessage,
-            (res as unknown) as ServerResponse,
+            req as unknown as IncomingMessage,
+            res as unknown as ServerResponse,
           );
 
           expect(handler).not.toBeCalled();
@@ -3023,8 +3023,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).toBeCalled();
@@ -3082,8 +3082,8 @@ describe('initHTTPRouter', () => {
         log.mockReset();
 
         await httpRouter.service(
-          (req as unknown) as IncomingMessage,
-          (res as unknown) as ServerResponse,
+          req as unknown as IncomingMessage,
+          res as unknown as ServerResponse,
         );
 
         expect(handler).not.toBeCalled();

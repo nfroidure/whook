@@ -78,11 +78,11 @@
     "axios": "^0.21.1",
     "common-services": "^9.0.1",
     "debug": "^4.3.1",
-    "fs-extra": "^9.1.0",
-    "inquirer": "^8.0.0",
+    "fs-extra": "^10.0.0",
+    "inquirer": "^8.1.0",
     "knifecycle": "^11.1.1",
     "ora": "^5.4.0",
-    "yerror": "^6.0.0"
+    "yerror": "^6.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.14",

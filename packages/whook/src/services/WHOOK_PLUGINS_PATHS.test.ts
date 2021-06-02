@@ -15,7 +15,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
       const WHOOK_PLUGINS_PATHS = await initWhookPluginsPaths({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS: [],
-        resolve: (resolve as unknown) as RequireResolve,
+        resolve: resolve as unknown as RequireResolve,
         log,
       });
 
@@ -37,7 +37,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
       const WHOOK_PLUGINS_PATHS = await initWhookPluginsPaths({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS: ['@whook/cli', '@whook/whook'],
-        resolve: (resolve as unknown) as RequireResolve,
+        resolve: resolve as unknown as RequireResolve,
         log,
       });
 
@@ -60,7 +60,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
           PROJECT_SRC: '/home/whoami/my-whook-project/src',
           WHOOK_PLUGINS: ['@whook/unreal'],
           log,
-          resolve: (resolve as unknown) as RequireResolve,
+          resolve: resolve as unknown as RequireResolve,
         });
 
         throw new YError('E_UNEXPECTED_SUCCESS');

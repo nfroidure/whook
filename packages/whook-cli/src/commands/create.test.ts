@@ -60,7 +60,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -103,7 +103,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -146,7 +146,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -182,7 +182,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -219,7 +219,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -256,7 +256,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -292,7 +292,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -329,7 +329,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -366,7 +366,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -405,7 +405,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -445,7 +445,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();
@@ -485,7 +485,7 @@ describe('createCommand', () => {
         ensureDir,
         writeFile,
         pathExists,
-        inquirer: (inquirer as unknown) as typeof _inquirer,
+        inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
       const result = await createCommand();

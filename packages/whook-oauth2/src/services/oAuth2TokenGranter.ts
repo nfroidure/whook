@@ -20,7 +20,7 @@ export type OAuth2TokenGranterDependencies = {
 };
 export type OAuth2TokenGranterParameters = Record<string, unknown>;
 export type OAuth2TokenGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 > = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
@@ -38,60 +38,56 @@ async function initOAuth2TokenGranter({
   time = Date.now.bind(Date),
   log = noop,
 }: OAuth2TokenGranterDependencies): Promise<OAuth2TokenGranterService> {
-  const authorizeWithToken: OAuth2TokenGranterService['authorizer']['authorize'] = async ({
-    clientId,
-    redirectURI,
-    scope,
-  }) => {
-    const { redirectURI: finalRedirectURI } = await checkApplication({
-      applicationId: clientId,
-      type: IMPLICIT_GRANTER_TYPE,
-      redirectURI,
-      scope,
-    });
+  const authorizeWithToken: OAuth2TokenGranterService['authorizer']['authorize'] =
+    async ({ clientId, redirectURI, scope }) => {
+      const { redirectURI: finalRedirectURI } = await checkApplication({
+        applicationId: clientId,
+        type: IMPLICIT_GRANTER_TYPE,
+        redirectURI,
+        scope,
+      });
 
-    return {
-      applicationId: clientId,
-      redirectURI: finalRedirectURI,
-      scope,
+      return {
+        applicationId: clientId,
+        redirectURI: finalRedirectURI,
+        scope,
+      };
     };
-  };
 
   // Access Token Response:
   // https://tools.ietf.org/html/rfc6749#section-4.2.2
-  const acknowledgeWithToken: OAuth2GranterService<OAuth2TokenGranterParameters>['acknowledger']['acknowledge'] = async (
-    authenticationData,
-    { clientId, redirectURI, scope: providedScope },
-    additionalParameters,
-  ) => {
-    const { redirectURI: finalRedirectURI } = await checkApplication({
-      applicationId: clientId,
-      redirectURI,
-      scope: providedScope,
-      type: IMPLICIT_GRANTER_TYPE,
-    });
-
-    const {
-      token: accessToken,
-      expiresAt: accessTokenExpiresAt,
-    } = await oAuth2AccessToken.create(
+  const acknowledgeWithToken: OAuth2GranterService<OAuth2TokenGranterParameters>['acknowledger']['acknowledge'] =
+    async (
       authenticationData,
-      {
-        applicationId: clientId,
-        scope: providedScope,
-      },
+      { clientId, redirectURI, scope: providedScope },
       additionalParameters,
-    );
+    ) => {
+      const { redirectURI: finalRedirectURI } = await checkApplication({
+        applicationId: clientId,
+        redirectURI,
+        scope: providedScope,
+        type: IMPLICIT_GRANTER_TYPE,
+      });
 
-    return {
-      applicationId: clientId,
-      redirectURI: finalRedirectURI,
-      scope: providedScope,
-      accessToken,
-      tokenType: 'bearer',
-      expiresIn: Math.round((accessTokenExpiresAt - time()) / 1000),
+      const { token: accessToken, expiresAt: accessTokenExpiresAt } =
+        await oAuth2AccessToken.create(
+          authenticationData,
+          {
+            applicationId: clientId,
+            scope: providedScope,
+          },
+          additionalParameters,
+        );
+
+      return {
+        applicationId: clientId,
+        redirectURI: finalRedirectURI,
+        scope: providedScope,
+        accessToken,
+        tokenType: 'bearer',
+        expiresIn: Math.round((accessTokenExpiresAt - time()) / 1000),
+      };
     };
-  };
 
   log('debug', '👫 - OAuth2TokenGranter Service Initialized!');
 

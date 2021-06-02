@@ -53,7 +53,7 @@ type ConsumerWrapperDependencies = {
 
 export default function wrapHandlerForAWSConsumerLambda<
   D,
-  S extends WhookHandler
+  S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & ConsumerWrapperDependencies, S> {

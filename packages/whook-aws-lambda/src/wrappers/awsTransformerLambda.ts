@@ -54,7 +54,7 @@ export type LambdaTransformerOutput = WhookResponse<
 // See https://docs.aws.amazon.com/firehose/latest/dev/data-transformation.html
 export default function wrapHandlerForAWSTransformerLambda<
   D,
-  S extends WhookHandler
+  S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & TransformerWrapperDependencies, S> {

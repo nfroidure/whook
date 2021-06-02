@@ -3,19 +3,20 @@ import type { WhookAPIParameterDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 import type { DelayService } from 'common-services';
 
-export const durationParameter: WhookAPIParameterDefinition<API.GetDelay.Parameters.Duration> = {
-  name: 'duration',
-  example: 1,
-  parameter: {
-    in: 'query',
+export const durationParameter: WhookAPIParameterDefinition<API.GetDelay.Parameters.Duration> =
+  {
     name: 'duration',
-    required: true,
-    description: 'Duration in milliseconds',
-    schema: {
-      type: 'number',
+    example: 1,
+    parameter: {
+      in: 'query',
+      name: 'duration',
+      required: true,
+      description: 'Duration in milliseconds',
+      schema: {
+        type: 'number',
+      },
     },
-  },
-};
+  };
 
 export const definition: APIHandlerDefinition = {
   path: '/delay',

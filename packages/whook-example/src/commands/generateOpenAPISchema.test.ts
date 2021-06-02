@@ -37,14 +37,14 @@ describe('generateOpenAPISchema', () => {
       log,
       getOpenAPI,
       outstream,
-      args: (Object.assign(
+      args: Object.assign(
         {
           pretty: true,
         },
         {
           _: ['generateOpenAPISchema'],
         },
-      ) as unknown) as WhookCommandArgs,
+      ) as unknown as WhookCommandArgs,
     });
     const result = await generateOpenAPISchema();
 

@@ -55,15 +55,11 @@ describe('runServer', () => {
   let jwtToken: JWTService<AuthenticationData>;
 
   beforeAll(async () => {
-    const {
-      $instance: _instance,
-      jwtToken: _jwtToken,
-    } = await runServer(prepareEnvironment, prepareServer, [
-      '$instance',
-      'httpServer',
-      'process',
-      'jwtToken',
-    ]);
+    const { $instance: _instance, jwtToken: _jwtToken } = await runServer(
+      prepareEnvironment,
+      prepareServer,
+      ['$instance', 'httpServer', 'process', 'jwtToken'],
+    );
 
     $instance = _instance;
     jwtToken = _jwtToken;

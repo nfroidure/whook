@@ -39,9 +39,8 @@ describe('wrapHandlerWithCORS', () => {
   };
 
   it('should work', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
-      initOptionsWithCORS,
-    );
+    const wrappedOptionsWithCORS =
+      wrapHandlerWithCORS<Dependencies, Service>(initOptionsWithCORS);
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,
     });
@@ -65,9 +64,8 @@ describe('wrapHandlerWithCORS', () => {
   });
 
   it('should work with replace custom CORS', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
-      initOptionsWithCORS,
-    );
+    const wrappedOptionsWithCORS =
+      wrapHandlerWithCORS<Dependencies, Service>(initOptionsWithCORS);
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,
     });
@@ -106,9 +104,8 @@ describe('wrapHandlerWithCORS', () => {
   });
 
   it('should work with merge custom CORS', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
-      initOptionsWithCORS,
-    );
+    const wrappedOptionsWithCORS =
+      wrapHandlerWithCORS<Dependencies, Service>(initOptionsWithCORS);
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,
     });

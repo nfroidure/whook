@@ -213,7 +213,7 @@ Whook exposes a `runServer` function to programmatically spawn
 */
 export async function runServer<
   D extends Dependencies,
-  T extends Knifecycle<D> = Knifecycle<D>
+  T extends Knifecycle<D> = Knifecycle<D>,
 >(
   innerPrepareEnvironment: ($?: T) => Promise<T>,
   innerPrepareServer: (injectedNames: string[], $: T) => Promise<D>,
@@ -270,7 +270,7 @@ export async function runServer<
       return {} as D;
     }
 
-    return ({ ENV, log, $instance: $, ...services } as unknown) as D;
+    return { ENV, log, $instance: $, ...services } as unknown as D;
   } catch (err) {
     // eslint-disable-next-line
     console.error('💀 - Cannot launch the process:', err.stack);
@@ -297,7 +297,7 @@ Whook exposes a `prepareServer` function to create its server
  */
 export async function prepareServer<
   D extends Dependencies,
-  T extends Knifecycle<D>
+  T extends Knifecycle<D>,
 >(injectedNames: string[], $: T): Promise<D> {
   /* Architecture Note #2.1: Root injections
    * We need to inject `httpServer` and `process` to bring life to our
@@ -310,7 +310,7 @@ export async function prepareServer<
 
   log('warning', 'On air 🚀🌕');
 
-  return ({ log, ...services } as unknown) as D;
+  return { log, ...services } as unknown as D;
 }
 
 /* Architecture Note #3: Server environment

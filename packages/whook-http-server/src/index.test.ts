@@ -20,7 +20,7 @@ describe('initHTTPServer', () => {
       HOST,
       PORT,
       log,
-      httpRouter: (httpRouter as unknown) as HTTPRouterService,
+      httpRouter: httpRouter as unknown as HTTPRouterService,
     });
 
     await httpServer.dispose();
@@ -89,7 +89,7 @@ describe('initHTTPServer', () => {
     });
 
     try {
-      httpServer.service.close = (((realClose) => async (cb) => {
+      httpServer.service.close = ((realClose) => async (cb) => {
         await new Promise<void>((resolve, reject) => {
           realClose((err: Error) => {
             if (err) {
@@ -103,7 +103,7 @@ describe('initHTTPServer', () => {
         cb(new YError('E_ERROR'));
       })(
         httpServer.service.close.bind(httpServer.service),
-      ) as unknown) as typeof httpServer.service.close;
+      ) as unknown as typeof httpServer.service.close;
 
       await httpServer.dispose();
       throw new YError('E_UNEXPECTED_SUCCESS');
@@ -153,14 +153,14 @@ describe('initHTTPServer', () => {
       },
       HOST,
       PORT,
-      httpRouter: (((_, res) => {
+      httpRouter: ((_, res) => {
         res.writeHead(200, {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
           'Access-Control-Allow-Headers': 'Content-Type',
         });
         res.end();
-      }) as unknown) as HTTPRouterService,
+      }) as unknown as HTTPRouterService,
     });
 
     const { status } = await axios({

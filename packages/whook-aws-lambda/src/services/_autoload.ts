@@ -53,9 +53,7 @@ export default alsoInject(
       },
       $autoload: Autoloader,
     ): Promise<
-      (
-        serviceName: string,
-      ) => Promise<{
+      (serviceName: string) => Promise<{
         initializer: Initializer<Dependencies, Service>;
         path: string;
       }>

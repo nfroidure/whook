@@ -209,10 +209,9 @@ describe('$autoload', () => {
 
       expect({
         result,
-        HANDLERS: await (result.initializer as ServiceInitializer<
-          Dependencies,
-          Service
-        >)({
+        HANDLERS: await (
+          result.initializer as ServiceInitializer<Dependencies, Service>
+        )({
           getPing: () => undefined,
         }),
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),

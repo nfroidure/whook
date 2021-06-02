@@ -71,7 +71,7 @@
     "@whook/whook": "^8.0.4",
     "apollo-server-module-graphiql": "^1.4.0",
     "knifecycle": "^11.1.1",
-    "openapi-types": "^8.0.0"
+    "openapi-types": "^9.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.14",

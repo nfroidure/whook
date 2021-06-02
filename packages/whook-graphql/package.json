@@ -70,12 +70,12 @@
   "dependencies": {
     "@whook/http-transaction": "^8.0.4",
     "@whook/whook": "^8.0.4",
-    "apollo-server-core": "^2.22.2",
-    "apollo-server-env": "^3.0.0",
+    "apollo-server-core": "^2.25.0",
+    "apollo-server-env": "^3.1.0",
     "common-services": "^9.0.1",
     "knifecycle": "^11.1.1",
-    "openapi-types": "^8.0.0",
-    "type-fest": "^1.0.1",
+    "openapi-types": "^9.0.3",
+    "type-fest": "^1.2.0",
     "yhttperror": "^6.0.1"
   },
   "devDependencies": {

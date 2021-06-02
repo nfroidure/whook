@@ -27,7 +27,9 @@ describe('whook-cli', () => {
 
     $autoload.mockResolvedValueOnce({
       initializer: service(
-        async ({ log }) => async () => log('warning', 'Command ran!'),
+        async ({ log }) =>
+          async () =>
+            log('warning', 'Command ran!'),
         'commandHandler',
         ['log'],
       ),

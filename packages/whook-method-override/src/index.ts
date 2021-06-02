@@ -39,9 +39,9 @@ export default function wrapHTTPTransactionWithMethodOverride<D>(
           request: {
             ...request,
             method: request.headers['x-http-method-override']
-              ? (request.headers[
-                  'x-http-method-override'
-                ] as string).toLowerCase()
+              ? (
+                  request.headers['x-http-method-override'] as string
+                ).toLowerCase()
               : request.method,
             headers: Object.keys(request.headers)
               .filter((headerName) => 'x-http-method-override' === headerName)

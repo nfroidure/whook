@@ -13,14 +13,14 @@ export type OAuth2ClientCredentialsGranterDependencies = {
   log?: LogService;
 };
 export type OAuth2ClientCredentialsGranterParameters<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 > = {
   username: string;
   password: string;
   scope?: AUTHENTICATION_DATA['scope'];
 };
 export type OAuth2ClientCredentialsGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 > = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
@@ -36,28 +36,26 @@ async function initOAuth2ClientCredentialsGranter({
   checkApplication,
   log = noop,
 }: OAuth2ClientCredentialsGranterDependencies): Promise<OAuth2ClientCredentialsGranterService> {
-  const authenticateWithClientCredentials: OAuth2ClientCredentialsGranterService['authenticator']['authenticate'] = async (
-    { scope: demandedScope = '' },
-    authenticationData,
-  ) => {
-    // The client must be authenticated
-    if (!authenticationData) {
-      throw new YError('E_UNAUTHORIZED');
-    }
+  const authenticateWithClientCredentials: OAuth2ClientCredentialsGranterService['authenticator']['authenticate'] =
+    async ({ scope: demandedScope = '' }, authenticationData) => {
+      // The client must be authenticated
+      if (!authenticationData) {
+        throw new YError('E_UNAUTHORIZED');
+      }
 
-    // Checking the scope and availability of the demanded
-    // grant type
-    await checkApplication({
-      applicationId: authenticationData.applicationId,
-      type: 'client_credentials',
-      scope: demandedScope,
-    });
+      // Checking the scope and availability of the demanded
+      // grant type
+      await checkApplication({
+        applicationId: authenticationData.applicationId,
+        type: 'client_credentials',
+        scope: demandedScope,
+      });
 
-    return {
-      ...authenticationData,
-      scope: demandedScope,
+      return {
+        ...authenticationData,
+        scope: demandedScope,
+      };
     };
-  };
 
   log('debug', '👫 - OAuth2ClientCredentialsGranter Service Initialized!');
 

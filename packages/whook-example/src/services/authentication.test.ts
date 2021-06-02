@@ -42,7 +42,7 @@ describe('authentication', () => {
         time.mockReturnValueOnce(Date.parse('1982-07-22T01:00:00Z'));
 
         const result = await authentication.check('bearer', {
-          hash: (theToken as unknown) as string,
+          hash: theToken as unknown as string,
         });
 
         expect({

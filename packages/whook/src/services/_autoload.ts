@@ -23,7 +23,8 @@ import type { WhookHandler } from '@whook/http-transaction';
 import type { ImporterService } from './importer';
 import type { ResolveService } from './resolve';
 
-export const HANDLER_REG_EXP = /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
+export const HANDLER_REG_EXP =
+  /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
 
 export interface WhookWrapper<D, S extends WhookHandler> {
   (initializer: Initializer<S, D>): Initializer<S, D>;
@@ -163,9 +164,7 @@ async function initAutoload<D>({
    *  An Object containing the `path`, `name` and the `initializer`
    *  in its properties.
    */
-  async function $autoload(
-    injectedName: string,
-  ): Promise<{
+  async function $autoload(injectedName: string): Promise<{
     name: string;
     path: string;
     initializer: Initializer<Service, Dependencies>;
@@ -248,34 +247,35 @@ async function initAutoload<D>({
     Finally, we either require the handler/service module if
      none of the previous strategies applyed.
     */
-    const modulePath = (INITIALIZER_PATH_MAP[resolvedName]
-      ? resolve(INITIALIZER_PATH_MAP[resolvedName])
-      : [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].reduce(
-          (finalModulePath, basePath) => {
-            if (finalModulePath) {
-              return finalModulePath;
-            }
+    const modulePath = (
+      INITIALIZER_PATH_MAP[resolvedName]
+        ? resolve(INITIALIZER_PATH_MAP[resolvedName])
+        : [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].reduce(
+            (finalModulePath, basePath) => {
+              if (finalModulePath) {
+                return finalModulePath;
+              }
 
-            const finalPath = path.join(
-              basePath,
-              isHandler ? 'handlers' : 'services',
-              isWrappedHandler
-                ? resolvedName.replace(/Wrapped$/, '')
-                : resolvedName,
-            );
-
-            try {
-              return resolve(finalPath);
-            } catch (err) {
-              log(
-                'debug',
-                `🚫 - Service "${resolvedName}" not found in "${finalPath}".`,
+              const finalPath = path.join(
+                basePath,
+                isHandler ? 'handlers' : 'services',
+                isWrappedHandler
+                  ? resolvedName.replace(/Wrapped$/, '')
+                  : resolvedName,
               );
-              return '';
-            }
-          },
-          '',
-        )
+
+              try {
+                return resolve(finalPath);
+              } catch (err) {
+                log(
+                  'debug',
+                  `🚫 - Service "${resolvedName}" not found in "${finalPath}".`,
+                );
+                return '';
+              }
+            },
+            '',
+          )
     ).replace(/^\.js/, '');
 
     /* Architecture Note #5.8: Initializer path mapping

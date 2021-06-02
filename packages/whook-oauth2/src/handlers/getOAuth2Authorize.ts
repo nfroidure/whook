@@ -154,18 +154,15 @@ async function getOAuth2Authorize(
       throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', responseType);
     }
 
-    const {
-      applicationId,
-      redirectURI,
-      scope,
-    } = await granter.authorizer.authorize(
-      {
-        clientId,
-        redirectURI: demandedRedirectURI,
-        scope: demandedScope,
-      },
-      camelCaseObjectProperties(authorizeParameters),
-    );
+    const { applicationId, redirectURI, scope } =
+      await granter.authorizer.authorize(
+        {
+          clientId,
+          redirectURI: demandedRedirectURI,
+          scope: demandedScope,
+        },
+        camelCaseObjectProperties(authorizeParameters),
+      );
 
     url.searchParams.set('type', responseType);
     url.searchParams.set('redirect_uri', redirectURI);

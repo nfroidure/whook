@@ -17,7 +17,7 @@ import type { DependencyDeclaration, Dependencies } from 'knifecycle';
 // and may be proxied as is except in some e2e test cases
 export async function runServer<
   D extends Dependencies,
-  T extends Knifecycle<D> = Knifecycle<D>
+  T extends Knifecycle<D> = Knifecycle<D>,
 >(
   innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
   innerPrepareServer: (
@@ -36,7 +36,7 @@ export async function runServer<
 // The `prepareServer` function is intended to prepare the server
 export async function prepareServer<
   D extends Dependencies,
-  T extends Knifecycle<D> = Knifecycle<D>
+  T extends Knifecycle<D> = Knifecycle<D>,
 >(injectedNames: DependencyDeclaration[], $: T): Promise<D> {
   // Add here any logic bound to the server only
   // For example, here we add a Swagger UI page for

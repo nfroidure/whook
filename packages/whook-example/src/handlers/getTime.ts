@@ -3,19 +3,20 @@ import type { WhookAPISchemaDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 import type { TimeService } from 'common-services';
 
-export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema> = {
-  name: 'TimeSchema',
-  schema: {
-    type: 'object',
-    additionalProperties: false,
-    properties: {
-      currentDate: {
-        type: 'string',
-        format: 'date-time',
+export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema> =
+  {
+    name: 'TimeSchema',
+    schema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        currentDate: {
+          type: 'string',
+          format: 'date-time',
+        },
       },
     },
-  },
-};
+  };
 
 export const definition: APIHandlerDefinition = {
   path: '/time',

@@ -19,7 +19,7 @@ export type OAuth2RefreshTokenGranterParameters = {
   scope?: string;
 };
 export type OAuth2RefreshTokenGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 > = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
@@ -36,36 +36,34 @@ async function initOAuth2RefreshTokenGranter({
   oAuth2RefreshToken,
   log = noop,
 }: OAuth2RefreshTokenGranterDependencies): Promise<OAuth2RefreshTokenGranterService> {
-  const authenticateWithRefreshToken: OAuth2RefreshTokenGranterService['authenticator']['authenticate'] = async (
-    { refreshToken, scope: demandedScope },
-    authenticationData,
-  ) => {
-    try {
-      // The client must be authenticated
-      if (!authenticationData) {
-        throw new YError('E_UNAUTHORIZED');
+  const authenticateWithRefreshToken: OAuth2RefreshTokenGranterService['authenticator']['authenticate'] =
+    async ({ refreshToken, scope: demandedScope }, authenticationData) => {
+      try {
+        // The client must be authenticated
+        if (!authenticationData) {
+          throw new YError('E_UNAUTHORIZED');
+        }
+
+        await checkApplication({
+          applicationId: authenticationData.applicationId,
+          type: 'refresh',
+          scope: demandedScope,
+        });
+
+        const newAuthenticationData = await oAuth2RefreshToken.check(
+          authenticationData,
+          refreshToken,
+          demandedScope,
+        );
+
+        return newAuthenticationData;
+      } catch (err) {
+        if (err.code === 'E_BAD_TOKEN') {
+          throw YError.wrap(err, 'E_BAD_REFRESH_TOKEN');
+        }
+        throw err;
       }
-
-      await checkApplication({
-        applicationId: authenticationData.applicationId,
-        type: 'refresh',
-        scope: demandedScope,
-      });
-
-      const newAuthenticationData = await oAuth2RefreshToken.check(
-        authenticationData,
-        refreshToken,
-        demandedScope,
-      );
-
-      return newAuthenticationData;
-    } catch (err) {
-      if (err.code === 'E_BAD_TOKEN') {
-        throw YError.wrap(err, 'E_BAD_REFRESH_TOKEN');
-      }
-      throw err;
-    }
-  };
+    };
 
   log('debug', '👫 - OAuth2RefreshTokenGranter Service Initialized!');
 

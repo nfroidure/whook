@@ -136,10 +136,9 @@ describe('GraphQL server', () => {
       ),
     );
     $.register(constant('authentication', authentication));
-    [
-      initGetGraphQL,
-      wrapHandlerWithAuthorization(initPostGraphQL),
-    ].forEach((handlerInitializer) => $.register(handlerInitializer));
+    [initGetGraphQL, wrapHandlerWithAuthorization(initPostGraphQL)].forEach(
+      (handlerInitializer) => $.register(handlerInitializer),
+    );
 
     const helloFragment: WhookGraphQLFragmentService = {
       typeDefs: gql`

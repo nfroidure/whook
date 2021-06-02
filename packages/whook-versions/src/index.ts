@@ -51,7 +51,7 @@ export function wrapHandlerWithVersionChecker<D, S extends WhookHandler>(
 async function handleWithVersionChecker<
   R extends WhookResponse,
   O extends WhookOperation,
-  P extends Parameters
+  P extends Parameters,
 >(
   { VERSIONS }: VersionsConfig,
   handler: WhookHandler<P, R, O>,

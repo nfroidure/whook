@@ -47,7 +47,7 @@ export type AuthenticationApplicationId = string;
 export type AuthenticationScope = string;
 export type BaseAuthenticationData<
   T = AuthenticationApplicationId,
-  U = AuthenticationScope
+  U = AuthenticationScope,
 > = {
   applicationId: T;
   scope: U;
@@ -64,7 +64,7 @@ export type WhookAuthorizationConfig = {
 
 export type WhookAuthorizationDependencies<
   A,
-  R extends BaseAuthenticationData
+  R extends BaseAuthenticationData,
 > = WhookAuthorizationConfig & {
   authentication: AuthenticationService<A, R>;
   log: LogService;
@@ -81,7 +81,7 @@ export function wrapHandlerWithAuthorization<
   R extends BaseAuthenticationData,
   WR,
   D,
-  S extends WhookHandler<P, WR, WhookOperation>
+  S extends WhookHandler<P, WR, WhookOperation>,
 >(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<WhookAuthorizationDependencies<A, R> & D, S> {
@@ -129,7 +129,7 @@ async function handleWithAuthorization<
   P extends Parameters,
   A,
   R extends BaseAuthenticationData,
-  WR
+  WR,
 >(
   {
     MECHANISMS,

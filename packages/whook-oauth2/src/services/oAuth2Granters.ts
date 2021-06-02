@@ -124,7 +124,7 @@ export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
 
 export type OAuth2CodeService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-  CODE = string
+  CODE = string,
 > = {
   create: (
     authenticationData: AUTHENTICATION_DATA,
@@ -145,7 +145,7 @@ export type OAuth2CodeService<
 export type OAuth2PasswordService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
   USERNAME = string,
-  PASSWORD = string
+  PASSWORD = string,
 > = {
   check: (
     authenticationData: AUTHENTICATION_DATA,
@@ -157,7 +157,7 @@ export type OAuth2PasswordService<
 
 export type OAuth2AccessTokenService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-  TOKEN = string
+  TOKEN = string,
 > = {
   create: (
     authenticationData: AUTHENTICATION_DATA,
@@ -176,7 +176,7 @@ export type OAuth2AccessTokenService<
 
 export type OAuth2RefreshTokenService<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-  TOKEN = string
+  TOKEN = string,
 > = OAuth2AccessTokenService<AUTHENTICATION_DATA, TOKEN>;
 
 export type CheckApplicationService = {
@@ -203,7 +203,7 @@ export type OAuth2GranterService<
     unknown
   >,
   GRANT_PARAMETERS extends Record<string, unknown> = Record<string, unknown>,
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 > = {
   type: string;
   authorizer?: {
