@@ -35,42 +35,59 @@ export type WhookAPIDefinitionsConfig = {
   IGNORED_FILES_PREFIXES?: string[];
   FILTER_API_TAGS?: string[];
 };
+
 export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
   PROJECT_SRC: string;
   log?: LogService;
   importer: ImporterService<WhookAPIHandlerModule>;
   readDir?: typeof _readDir;
 };
+
 export type WhookAPIDefinitions = {
   paths: OpenAPIV3.PathsObject;
   components: OpenAPIV3.ComponentsObject;
 };
+
 export type WhookAPIOperationConfig = {
   disabled?: boolean;
 };
-export type WhookAPIOperationAddition<T = Record<string, JsonValue>> = {
+
+export type WhookAPIOperationAddition<
+  T extends Record<string, unknown> = Record<string, never>,
+> = {
   operationId: OpenAPIV3.OperationObject['operationId'];
-  'x-whook'?: T & WhookAPIOperationConfig;
+  'x-whook'?: WhookAPIOperationConfig & T;
 };
-export type WhookAPIOperation<T = Record<string, JsonValue>> =
-  OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
-export type WhookAPIHandlerDefinition<T = Record<string, JsonValue>> = {
+
+export type WhookAPIOperation<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> = OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
+
+export type WhookAPIHandlerDefinition<
+  T extends Record<string, unknown> = Record<string, unknown>,
+  U extends {
+    [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
+  } = unknown,
+> = {
   path: string;
   method: string;
-  operation: WhookAPIOperation<T>;
+  operation: WhookAPIOperation<T> & U;
 };
+
 export type WhookAPISchemaDefinition<T = JsonValue> = {
   name: string;
   schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
   example?: T;
   examples?: T[];
 };
+
 export type WhookAPIParameterDefinition<T = JsonValue> = {
   name: string;
   parameter: OpenAPIV3.ParameterObject;
   example?: T;
   examples?: T[];
 };
+
 export type WhookAPIHandlerModule = {
   [name: string]:
     | WhookAPISchemaDefinition

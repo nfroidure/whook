@@ -2,7 +2,7 @@ import { loadLambda } from '../libs/utils';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
-import type { LogService } from 'common-services';
+import type { LogService, TimeService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing AWS cron lambda',
@@ -28,6 +28,11 @@ export const definition: WhookCommandDefinition = {
         pattern: 'now|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z',
         default: 'now',
       },
+      parameters: {
+        description: 'Parameters to pass to the cron (as JSON string)',
+        type: 'string',
+        default: '{}',
+      },
     },
   },
 };
@@ -41,18 +46,24 @@ async function initTestCronLambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
   log,
+  time,
   args,
 }: {
   NODE_ENV: string;
   PROJECT_DIR: string;
   log: LogService;
+  time: TimeService;
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { name, type, date } = readArgs(definition.arguments, args) as {
+    const { name, type, date, parameters } = readArgs(
+      definition.arguments,
+      args,
+    ) as {
       name: string;
       type: string;
       date: string;
+      parameters: string;
     };
     const handler = await loadLambda(
       { PROJECT_DIR, log },
@@ -64,7 +75,8 @@ async function initTestCronLambdaCommand({
     const result = await new Promise((resolve, reject) => {
       const handlerPromise = handler(
         {
-          time: date,
+          time: date === 'now' ? new Date(time()).toISOString() : date,
+          parameters: JSON.parse(parameters),
         },
         {
           succeed: (...args: unknown[]) => {

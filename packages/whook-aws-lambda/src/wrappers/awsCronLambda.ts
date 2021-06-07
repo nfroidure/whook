@@ -12,6 +12,7 @@ import type {
 import type { LogService, TimeService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { ScheduledEvent, Context } from 'aws-lambda';
+import type { JsonObject } from 'type-fest';
 
 type CronWrapperDependencies = {
   NODE_ENV: string;
@@ -21,7 +22,10 @@ type CronWrapperDependencies = {
   log?: LogService;
 };
 
-export type LambdaCronInput = { date: string };
+export type LambdaCronInput<T extends JsonObject = JsonObject> = {
+  date: string;
+  parameters: T;
+};
 export type LambdaCronOutput = WhookResponse<number, WhookHeaders, void>;
 
 export default function wrapHandlerForAWSCronLambda<D, S extends WhookHandler>(
@@ -48,7 +52,7 @@ async function initHandlerForAWSCronLambda<D, S extends WhookHandler>(
   return handleForAWSCronLambda.bind(null, services, handler);
 }
 
-async function handleForAWSCronLambda(
+async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
   {
     NODE_ENV,
     OPERATION_API,
@@ -56,8 +60,8 @@ async function handleForAWSCronLambda(
     time = Date.now.bind(Date),
     log = noop,
   }: CronWrapperDependencies,
-  handler: WhookHandler<LambdaCronInput, LambdaCronOutput>,
-  event: ScheduledEvent,
+  handler: WhookHandler<LambdaCronInput<T>, LambdaCronOutput>,
+  event: ScheduledEvent & { parameters: T },
   context: Context,
   callback: (err: Error) => void,
 ) {
@@ -69,8 +73,9 @@ async function handleForAWSCronLambda(
     ...OPERATION_API.paths[path][method],
   };
   const startTime = time();
-  const parameters = {
+  const parameters: LambdaCronInput<T> = {
     date: event.time,
+    parameters: event.parameters,
   };
   try {
     log('debug', 'EVENT', JSON.stringify(event));

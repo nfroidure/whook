@@ -30,6 +30,11 @@ import type { BuildOptions } from 'knifecycle/dist/build';
 export type {
   LambdaConsumerInput,
   LambdaConsumerOutput,
+  LambdaKinesisStreamConsumerInput,
+  LambdaSQSConsumerInput,
+  LambdaSNSConsumerInput,
+  LambdaSESConsumerInput,
+  LambdaDynamoDBStreamConsumerInput,
 } from './wrappers/awsConsumerLambda';
 export type {
   LambdaCronInput,
@@ -59,13 +64,34 @@ export type WhookBuildConfig = {
   BUILD_OPTIONS?: BuildOptions;
   BUILD_PARALLELISM?: number;
 };
-export type WhookAPIOperationAWSLambdaConfig = {
-  type?: 'http' | 'cron' | 'consumer' | 'transformer' | 'kafka' | 's3' | 'log';
+export type WhookAPIOperationAWSLambdaConfig<
+  T extends {
+    type?:
+      | 'http'
+      | 'cron'
+      | 'consumer'
+      | 'transformer'
+      | 'kafka'
+      | 's3'
+      | 'log';
+  } = {
+    type?:
+      | 'http'
+      | 'cron'
+      | 'consumer'
+      | 'transformer'
+      | 'kafka'
+      | 's3'
+      | 'log';
+  },
+> = {
   sourceOperationId?: string;
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
   suffix?: string;
-};
+  memory?: number;
+  timeout?: number;
+} & T;
 
 const readFileAsync = util.promisify(fs.readFile) as (
   path: string,
