@@ -75,7 +75,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
   const startTime = time();
   const parameters: LambdaCronInput<T> = {
     date: event.time,
-    parameters: event.parameters,
+    parameters: event.parameters || ({} as T),
   };
   try {
     log('debug', 'EVENT', JSON.stringify(event));
