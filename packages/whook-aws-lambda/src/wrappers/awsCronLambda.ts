@@ -24,7 +24,7 @@ type CronWrapperDependencies = {
 
 export type LambdaCronInput<T extends JsonObject = JsonObject> = {
   date: string;
-  parameters: T;
+  body: T;
 };
 export type LambdaCronOutput = WhookResponse<number, WhookHeaders, void>;
 
@@ -61,7 +61,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
     log = noop,
   }: CronWrapperDependencies,
   handler: WhookHandler<LambdaCronInput<T>, LambdaCronOutput>,
-  event: ScheduledEvent & { parameters: T },
+  event: ScheduledEvent & { body: T },
   context: Context,
   callback: (err: Error) => void,
 ) {
@@ -75,7 +75,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
   const startTime = time();
   const parameters: LambdaCronInput<T> = {
     date: event.time,
-    parameters: event.parameters || ({} as T),
+    body: event.body || ({} as T),
   };
   try {
     log('debug', 'EVENT', JSON.stringify(event));

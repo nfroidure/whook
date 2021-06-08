@@ -28,7 +28,7 @@ export const definition: WhookCommandDefinition = {
         pattern: 'now|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z',
         default: 'now',
       },
-      parameters: {
+      body: {
         description: 'Parameters to pass to the cron (as JSON string)',
         type: 'string',
         default: '{}',
@@ -56,14 +56,11 @@ async function initTestCronLambdaCommand({
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { name, type, date, parameters } = readArgs(
-      definition.arguments,
-      args,
-    ) as {
+    const { name, type, date, body } = readArgs(definition.arguments, args) as {
       name: string;
       type: string;
       date: string;
-      parameters: string;
+      body: string;
     };
     const handler = await loadLambda(
       { PROJECT_DIR, log },
@@ -76,7 +73,7 @@ async function initTestCronLambdaCommand({
       const handlerPromise = handler(
         {
           time: date === 'now' ? new Date(time()).toISOString() : date,
-          parameters: JSON.parse(parameters),
+          body: JSON.parse(body),
         },
         {
           succeed: (...args: unknown[]) => {
