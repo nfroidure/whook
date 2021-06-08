@@ -1,6 +1,6 @@
 {
   "name": "@whook/gcp-functions",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "description": "Build and deploy to GCP Cloud Functions with Whook.",
   "main": "dist/index",
   "module": "dist/index.mjs",
@@ -51,10 +51,10 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@types/bytes": "^3.1.0",
-    "@whook/cli": "^8.1.0",
-    "@whook/cors": "^8.1.0",
+    "@whook/cli": "^8.1.1",
+    "@whook/cors": "^8.1.1",
     "@whook/http-router": "^8.1.0",
-    "@whook/whook": "^8.1.0",
+    "@whook/whook": "^8.1.1",
     "ajv": "^8.5.0",
     "ajv-formats": "^2.1.0",
     "camelcase": "^6.2.0",

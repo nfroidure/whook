@@ -1,3 +1,12 @@
+## [8.1.1](https://github.com/nfroidure/whook/compare/v8.1.0...v8.1.1) (2021-06-08)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix crons HTTP compatibility ([401d5af](https://github.com/nfroidure/whook/commit/401d5af82642e27916fdd2810305edb263d6baec))
+
+
+
 # [8.1.0](https://github.com/nfroidure/whook/compare/v8.0.4...v8.1.0) (2021-06-08)
 
 
