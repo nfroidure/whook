@@ -1,3 +1,14 @@
+# [8.1.0](https://github.com/nfroidure/whook/compare/v8.0.4...v8.1.0) (2021-06-08)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix default parameters value ([44d527a](https://github.com/nfroidure/whook/commit/44d527a2831481ac30bdc5a8915f868a1ed17ca0))
+* **@whook/http-router:** better error for bad status ([6c734b3](https://github.com/nfroidure/whook/commit/6c734b3ed05ae282e197a595f2c3c7d0f24465ee)), closes [#110](https://github.com/nfroidure/whook/issues/110)
+* **docs:** fix typo and formatting ([66380ba](https://github.com/nfroidure/whook/commit/66380baf1d2ba2d9ee487b342727f4e2a4458cee))
+
+
+
 ## [8.0.4](https://github.com/nfroidure/whook/compare/v8.0.3...v8.0.4) (2021-04-11)
 
 

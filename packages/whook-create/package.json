@@ -1,6 +1,6 @@
 {
   "name": "@whook/create",
-  "version": "8.0.4",
+  "version": "8.1.0",
   "description": "Kickstart a new Whook server",
   "keywords": [
     "whook",
@@ -73,8 +73,8 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/cli": "^8.0.4",
-    "@whook/example": "^8.0.4",
+    "@whook/cli": "^8.1.0",
+    "@whook/example": "^8.1.0",
     "axios": "^0.21.1",
     "common-services": "^9.0.1",
     "debug": "^4.3.1",
