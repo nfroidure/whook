@@ -32,7 +32,12 @@
       "testsFiles": "'src/**/*.test.ts'",
       "distFiles": "'dist/**/*.js'",
       "ignore": [
-        "dist"
+        "dist",
+        "builds",
+        ".bin",
+        ".terraform",
+        "*.plan",
+        "*.tfstate.d"
       ],
       "bundleFiles": [
         "bin",
@@ -56,7 +61,7 @@
     "metapak": "metapak",
     "prettier": "prettier --write 'src/**/*.ts'",
     "start": "NODE_ENV=${NODE_ENV:-development} node bin/start",
-    "test": "npm run jest",
+    "test": "NODE_ENV=test npm run build && npm run jest",
     "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
     "watch": "NODE_ENV=${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
     "whook": "NODE_ENV=${NODE_ENV:-development} whook",
@@ -78,6 +83,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/authorization": "^8.1.1",
+    "@whook/aws-lambda": "^8.1.1",
     "@whook/cli": "^8.1.1",
     "@whook/cors": "^8.1.1",
     "@whook/http-router": "^8.1.0",
@@ -170,7 +176,25 @@
     "trailingComma": "all",
     "proseWrap": "always"
   },
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "html"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testEnvironment": "node"
+  },
   "babel": {
+    "plugins": [
+      "@babel/proposal-class-properties",
+      "@babel/plugin-proposal-object-rest-spread",
+      "babel-plugin-knifecycle"
+    ],
     "presets": [
       "@babel/typescript",
       [
@@ -181,11 +205,6 @@
           }
         }
       ]
-    ],
-    "plugins": [
-      "@babel/proposal-class-properties",
-      "@babel/plugin-proposal-object-rest-spread",
-      "babel-plugin-knifecycle"
     ],
     "env": {
       "cjs": {
@@ -199,7 +218,8 @@
               "modules": "commonjs"
             }
           ]
-        ]
+        ],
+        "comments": true
       },
       "mjs": {
         "presets": [
@@ -212,22 +232,10 @@
               "modules": false
             }
           ]
-        ]
+        ],
+        "comments": false
       }
     },
     "sourceMaps": true
-  },
-  "jest": {
-    "coverageReporters": [
-      "lcov",
-      "html"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "testEnvironment": "node"
   }
 }

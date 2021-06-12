@@ -5,9 +5,17 @@ import type {
   WhookSwaggerUIConfig,
 } from '@whook/swagger-ui';
 import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
-import type { WhookAPIHandlerDefinition, WhookConfigs } from '@whook/whook';
+import type {
+  WhookAPIHandlerDefinition,
+  WhookConfigs,
+  ProxyedENVConfig,
+  WhookAPIOperationConfig,
+  WhookCompilerConfig,
+} from '@whook/whook';
+import type { WhookAPIOperationAWSLambdaConfig } from '@whook/aws-lambda';
 import type { APIConfig } from '../../services/API';
 import type { JWTServiceConfig } from 'jwt-service';
+import type { JsonObject } from 'type-fest';
 
 // eslint-disable-next-line
 const packageConf = require('../../../package');
@@ -20,11 +28,61 @@ export type AppConfigs = WhookConfigs &
   WhookSwaggerUIConfig &
   WhookCORSConfig &
   APIConfig &
+  WhookCompilerConfig &
+  ProxyedENVConfig &
   JWTServiceConfig;
 
 // Export custom handlers definitions
-export type APIHandlerDefinition = WhookAPIHandlerDefinition<
-  WhookAPIOperationCORSConfig & WhookAPIOperationSwaggerConfig
+export type WhookAWSLambdaBaseHTTPConfiguration = {
+  type: 'http';
+};
+export type WhookAWSLambdaBaseCronConfiguration<T = JsonObject> = {
+  type: 'cron';
+  schedules: {
+    rule: string;
+    body?: T;
+    enabled: boolean;
+  }[];
+};
+export type WhookAWSLambdaBaseConsumerConfiguration = {
+  type: 'consumer';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseTransformerConfiguration = {
+  type: 'transformer';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseKafkaConsumerConfiguration = {
+  type: 'kafka';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseLogSubscriberConfiguration = {
+  type: 'log';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseS3Configuration = {
+  type: 's3';
+  enabled: boolean;
+};
+
+export type APIOperationConfig<T = JsonObject> =
+  WhookAPIOperationAWSLambdaConfig<
+    WhookAPIOperationSwaggerConfig &
+      WhookAPIOperationCORSConfig &
+      WhookAPIOperationConfig &
+      WhookAPIOperationAWSLambdaConfig<
+        | WhookAWSLambdaBaseHTTPConfiguration
+        | WhookAWSLambdaBaseCronConfiguration<T>
+        | WhookAWSLambdaBaseConsumerConfiguration
+        | WhookAWSLambdaBaseTransformerConfiguration
+        | WhookAWSLambdaBaseKafkaConsumerConfiguration
+        | WhookAWSLambdaBaseLogSubscriberConfiguration
+        | WhookAWSLambdaBaseS3Configuration
+      >
+  >;
+
+export type APIHandlerDefinition<T = JsonObject> = WhookAPIHandlerDefinition<
+  APIOperationConfig<T>
 >;
 
 const CONFIG: AppConfigs = {
@@ -35,9 +93,11 @@ const CONFIG: AppConfigs = {
   CONFIG: {
     name: packageConf.name,
     description: packageConf.description || '',
+    baseURL: 'https://api.example.com',
   },
   NODE_ENVS,
   DEBUG_NODE_ENVS: process.env.DEBUG ? NODE_ENVS : DEBUG_NODE_ENVS,
+  PROXYED_ENV_VARS: ['NODE_ENV', 'JWT_SECRET'],
   SERVICE_NAME_MAP: {},
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,

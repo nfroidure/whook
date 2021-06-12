@@ -1,7 +1,10 @@
 import Knifecycle, { constant, alsoInject } from 'knifecycle';
 import { initBuildConstants } from '@whook/whook';
 import { prepareEnvironment } from '.';
-import YError from 'yerror';
+import {
+  runBuild as runBaseBuild,
+  prepareBuildEnvironment as prepareBaseBuildEnvironment,
+} from '@whook/aws-lambda';
 import type { Dependencies } from 'knifecycle';
 
 // Per convention a Whook server build file must export
@@ -12,10 +15,8 @@ import type { Dependencies } from 'knifecycle';
 export async function runBuild(
   innerPrepareEnvironment = prepareBuildEnvironment,
 ): Promise<void> {
-  throw new YError('E_NO_BUILD_IMPLEMENTED');
-
   // Usually, here you call the installed build
-  // return runBaseBuild(innerPrepareEnvironment);
+  return runBaseBuild(innerPrepareEnvironment);
 }
 
 // The `prepareBuildEnvironment` create the build
@@ -26,7 +27,7 @@ export async function prepareBuildEnvironment<
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env
-  // $ = await prepareBaseBuildEnvironment($);
+  $ = await prepareBaseBuildEnvironment($);
 
   // The build often need to know were initializers
   //  can be found to create a static build and
@@ -37,7 +38,7 @@ export async function prepareBuildEnvironment<
       apm: '@whook/http-transaction/dist/services/apm',
       obfuscator: '@whook/http-transaction/dist/services/obfuscator',
       errorHandler: '@whook/http-router/dist/services/errorHandler',
-      log: 'common-services/dist/log',
+      log: '@whook/aws-lambda/dist/services/log',
       time: 'common-services/dist/time',
       delay: 'common-services/dist/delay',
     }),

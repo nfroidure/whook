@@ -153,6 +153,9 @@ Object {
       "❤️ - Initializing the APM service.",
     ],
     Array [
+      "➰ - Plugin \\"@whook/aws-lambda\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist\\".",
+    ],
+    Array [
       "➰ - Plugin \\"@whook/cli\\" resolved to \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist\\".",
     ],
     Array [
@@ -219,6 +222,12 @@ Object {
       "💿 - Loading \\"getTimeWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
     ],
     Array [
+      "💿 - Loading \\"handleMessagesWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMessages.ts\\".",
+    ],
+    Array [
+      "💿 - Loading \\"handleMinutesWrapped\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMinutes.ts\\".",
+    ],
+    Array [
       "💿 - Loading \\"jwtToken\\" initializer from \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/jwtToken.ts\\".",
     ],
     Array [
@@ -267,6 +276,12 @@ Object {
       "💿 - Service \\"getTimeWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
     ],
     Array [
+      "💿 - Service \\"handleMessagesWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMessages.ts\\".",
+    ],
+    Array [
+      "💿 - Service \\"handleMinutesWrapped\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMinutes.ts\\".",
+    ],
+    Array [
       "💿 - Service \\"jwtToken\\" found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/jwtToken.ts\\".",
     ],
     Array [
@@ -297,6 +312,12 @@ Object {
       "🔐 - Initializing the authorization wrapper for \\"getTime\\".",
     ],
     Array [
+      "🔐 - Initializing the authorization wrapper for \\"handleMessages\\".",
+    ],
+    Array [
+      "🔐 - Initializing the authorization wrapper for \\"handleMinutes\\".",
+    ],
+    Array [
       "🔐 - Initializing the authorization wrapper for \\"optionsWithCORS\\".",
     ],
     Array [
@@ -315,10 +336,19 @@ Object {
       "🚫 - Could not load \\".env.test\\" file.",
     ],
     Array [
+      "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/BASE_URL\\".",
+    ],
+    Array [
       "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/BASE_URL\\".",
     ],
     Array [
+      "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/services/BASE_URL\\".",
+    ],
+    Array [
       "🚫 - Service \\"BASE_URL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/services/BASE_URL\\".",
+    ],
+    Array [
+      "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/BUFFER_LIMIT\\".",
     ],
     Array [
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/BUFFER_LIMIT\\".",
@@ -333,6 +363,9 @@ Object {
       "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BUFFER_LIMIT\\".",
     ],
     Array [
+      "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/DECODERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/DECODERS\\".",
     ],
     Array [
@@ -343,6 +376,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DECODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DECODERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/DEFAULT_ERROR_CODE\\".",
     ],
     Array [
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/DEFAULT_ERROR_CODE\\".",
@@ -357,6 +393,9 @@ Object {
       "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEFAULT_ERROR_CODE\\".",
     ],
     Array [
+      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/DEFAULT_MECHANISM\\".",
+    ],
+    Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/DEFAULT_MECHANISM\\".",
     ],
     Array [
@@ -367,6 +406,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEFAULT_MECHANISM\\".",
+    ],
+    Array [
+      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/DEV_ACCESS_TOKEN\\".",
     ],
     Array [
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN\\".",
@@ -381,6 +423,9 @@ Object {
       "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/DEV_ACCESS_TOKEN\\".",
     ],
     Array [
+      "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/ENCODERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/ENCODERS\\".",
     ],
     Array [
@@ -391,6 +436,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"ENCODERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/ENCODERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_PREFIXES\\".",
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES\\".",
@@ -405,6 +453,9 @@ Object {
       "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/IGNORED_FILES_PREFIXES\\".",
     ],
     Array [
+      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_SUFFIXES\\".",
+    ],
+    Array [
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/IGNORED_FILES_SUFFIXES\\".",
     ],
     Array [
@@ -415,6 +466,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/IGNORED_FILES_SUFFIXES\\".",
+    ],
+    Array [
+      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/JWT_SECRET_ENV_NAME\\".",
     ],
     Array [
       "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/JWT_SECRET_ENV_NAME\\".",
@@ -429,6 +483,9 @@ Object {
       "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/JWT_SECRET_ENV_NAME\\".",
     ],
     Array [
+      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/KEEP_ALIVE_TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/KEEP_ALIVE_TIMEOUT\\".",
     ],
     Array [
@@ -439,6 +496,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/KEEP_ALIVE_TIMEOUT\\".",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/MAX_CLEAR_CHARS\\".",
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/MAX_CLEAR_CHARS\\".",
@@ -453,6 +513,9 @@ Object {
       "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CLEAR_CHARS\\".",
     ],
     Array [
+      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/MAX_CLEAR_RATIO\\".",
+    ],
+    Array [
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/MAX_CLEAR_RATIO\\".",
     ],
     Array [
@@ -463,6 +526,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CLEAR_RATIO\\".",
+    ],
+    Array [
+      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/MAX_CONNECTIONS\\".",
     ],
     Array [
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/MAX_CONNECTIONS\\".",
@@ -477,6 +543,9 @@ Object {
       "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_CONNECTIONS\\".",
     ],
     Array [
+      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/MAX_HEADERS_COUNT\\".",
+    ],
+    Array [
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/MAX_HEADERS_COUNT\\".",
     ],
     Array [
@@ -487,6 +556,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/MAX_HEADERS_COUNT\\".",
+    ],
+    Array [
+      "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/PARSERS\\".",
     ],
     Array [
       "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/PARSERS\\".",
@@ -501,6 +573,9 @@ Object {
       "🚫 - Service \\"PARSERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PARSERS\\".",
     ],
     Array [
+      "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/PROCESS_ENV\\".",
+    ],
+    Array [
       "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/PROCESS_ENV\\".",
     ],
     Array [
@@ -511,6 +586,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROCESS_ENV\\".",
+    ],
+    Array [
+      "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/PROCESS_NAME\\".",
     ],
     Array [
       "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/PROCESS_NAME\\".",
@@ -525,6 +603,9 @@ Object {
       "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROCESS_NAME\\".",
     ],
     Array [
+      "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/PROTOCOL\\".",
+    ],
+    Array [
       "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/PROTOCOL\\".",
     ],
     Array [
@@ -535,6 +616,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/PROTOCOL\\".",
+    ],
+    Array [
+      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/REDUCED_FILES_SUFFIXES\\".",
     ],
     Array [
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/REDUCED_FILES_SUFFIXES\\".",
@@ -549,6 +633,9 @@ Object {
       "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/REDUCED_FILES_SUFFIXES\\".",
     ],
     Array [
+      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/SENSIBLE_HEADERS\\".",
+    ],
+    Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/SENSIBLE_HEADERS\\".",
     ],
     Array [
@@ -559,6 +646,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SENSIBLE_HEADERS\\".",
+    ],
+    Array [
+      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/SENSIBLE_PROPS\\".",
     ],
     Array [
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/SENSIBLE_PROPS\\".",
@@ -573,6 +663,9 @@ Object {
       "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SENSIBLE_PROPS\\".",
     ],
     Array [
+      "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/SHIELD_CHAR\\".",
+    ],
+    Array [
       "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/SHIELD_CHAR\\".",
     ],
     Array [
@@ -583,6 +676,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SHIELD_CHAR\\".",
+    ],
+    Array [
+      "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/SIGNALS\\".",
     ],
     Array [
       "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/SIGNALS\\".",
@@ -597,6 +693,9 @@ Object {
       "🚫 - Service \\"SIGNALS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SIGNALS\\".",
     ],
     Array [
+      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/SOCKET_TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/SOCKET_TIMEOUT\\".",
     ],
     Array [
@@ -607,6 +706,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/SOCKET_TIMEOUT\\".",
+    ],
+    Array [
+      "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/STRINGIFYERS\\".",
     ],
     Array [
       "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/STRINGIFYERS\\".",
@@ -621,6 +723,9 @@ Object {
       "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/STRINGIFYERS\\".",
     ],
     Array [
+      "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/TIMEOUT\\".",
+    ],
+    Array [
       "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/TIMEOUT\\".",
     ],
     Array [
@@ -633,10 +738,19 @@ Object {
       "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/TIMEOUT\\".",
     ],
     Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/handlers/getPing\\".",
+    ],
+    Array [
       "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/handlers/getPing\\".",
     ],
     Array [
+      "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cors/dist/handlers/getPing\\".",
+    ],
+    Array [
       "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getPing\\".",
+    ],
+    Array [
+      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/handlers/optionsWithCORS\\".",
     ],
     Array [
       "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/handlers/optionsWithCORS\\".",
@@ -645,7 +759,7 @@ Object {
       "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/optionsWithCORS\\".",
     ],
     Array [
-      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/handlers/optionsWithCORS\\".",
+      "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/readDir\\".",
     ],
     Array [
       "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/readDir\\".",
@@ -660,6 +774,9 @@ Object {
       "🚫 - Service \\"readDir\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/readDir\\".",
     ],
     Array [
+      "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/readFile\\".",
+    ],
+    Array [
       "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/readFile\\".",
     ],
     Array [
@@ -670,6 +787,9 @@ Object {
     ],
     Array [
       "🚫 - Service \\"readFile\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/readFile\\".",
+    ],
+    Array [
+      "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/services/uniqueId\\".",
     ],
     Array [
       "🚫 - Service \\"uniqueId\\" not found in \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/services/uniqueId\\".",
@@ -721,6 +841,18 @@ Object {
     ],
     Array [
       "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMessages\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMessages.ts\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMinutes\\".",
+    ],
+    Array [
+      "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMinutes.ts\\".",
     ],
     Array [
       "🛂 - Dynamic import of \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho\\".",
@@ -789,6 +921,12 @@ Object {
       "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/getTime.ts\\".",
     ],
     Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMessages\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMessages.ts\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMinutes\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/handleMinutes.ts\\".",
+    ],
+    Array [
       "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
     ],
     Array [
@@ -817,6 +955,9 @@ Object {
     ],
     Array [
       "🛂 - Resolving \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BASE_URL\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook/dist/services/BASE_URL\\".",
+    ],
+    Array [
+      "🛂 - Resolving \\"@whook/aws-lambda\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-aws-lambda/dist/index\\".",
     ],
     Array [
       "🛂 - Resolving \\"@whook/cli\\" to \\"/home/nfroidure/nfroidure/whook/packages/whook-cli/dist/index\\".",
