@@ -18,6 +18,10 @@ export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema>
     },
   };
 
+/* Architecture Note #3.4.3: getTime
+
+Returns the server time.
+*/
 export const definition: APIHandlerDefinition = {
   path: '/time',
   method: 'get',

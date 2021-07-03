@@ -4,7 +4,7 @@ exports[`API should always have the same amount of basic authenticated endpoints
 
 exports[`API should always have the same amount of bearer authenticated endpoints 1`] = `
 Array [
-  "get /diag",
+  "get /diagnostic",
   "get /openAPI",
 ]
 `;
@@ -12,7 +12,7 @@ Array [
 exports[`API should always have the same amount of endpoints 1`] = `
 Array [
   "get /delay",
-  "get /diag",
+  "get /diagnostic",
   "get /openAPI",
   "get /ping",
   "get /time",
@@ -28,7 +28,7 @@ Array [
   "get /time",
   "get /{pathParam1}/{pathParam2}",
   "options /delay",
-  "options /diag",
+  "options /diagnostic",
   "options /echo",
   "options /openAPI",
   "options /ping",
@@ -47,7 +47,7 @@ Array [
 exports[`API should always have the same amount of publicly documented endpoints 1`] = `
 Array [
   "get /delay",
-  "get /diag",
+  "get /diagnostic",
   "get /openAPI",
   "get /ping",
   "get /time",
@@ -187,7 +187,7 @@ Object {
           },
         },
       },
-      "/diag": Object {
+      "/diagnostic": Object {
         "get": Object {
           "operationId": "getDiagnostic",
           "parameters": Array [],

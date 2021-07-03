@@ -2,6 +2,11 @@ import initGenerateOpenAPISchema from './generateOpenAPISchema';
 import { PassThrough } from 'stream';
 import type { WhookCommandArgs } from '@whook/cli';
 
+/* Architecture Note #5.4: Testing
+
+In such a hard life, Whook's make it simple to
+ also test your commands.
+*/
 describe('generateOpenAPISchema', () => {
   const getOpenAPI = jest.fn();
   const log = jest.fn();

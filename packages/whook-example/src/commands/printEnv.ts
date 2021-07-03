@@ -4,6 +4,31 @@ import type { LogService } from 'common-services';
 import type { ENVService } from '@whook/whook';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 
+/* Architecture Note #5: Commands
+
+We consider to be a good practice to bind the commands
+ you write to your API code. The `src/commands` folder
+ allows you to write commands in a similar way to handlers.
+
+It leverages the dependency injection features of Whook
+ and has helpers for parsing the input parameters.
+
+You can list every available commands by running:
+```sh
+npm run whook-dev -- ls
+```
+
+Commands are a simple way to write utility scripts that leverage
+ your application setup. It allows to simply inject services
+ without worrying about their initialization.
+*/
+
+/* Architecture Note #5.1: Definition
+
+To define a command, just write its definition
+ and export it to make it available to Whook's
+ command loader.
+*/
 export const definition: WhookCommandDefinition = {
   description: 'A command printing every env values',
   example: `whook printEnv --keysOnly`,
@@ -20,11 +45,14 @@ export const definition: WhookCommandDefinition = {
   },
 };
 
+/* Architecture Note #5.2: Implementation
+
+To implement a command, just write a function that takes
+ injected services as a first argument and return the
+ command as an asynchronous function.
+*/
 export default extra(definition, autoService(initPrintEnvCommand));
 
-// Commands are a simple way to write utility scripts that leverage
-// your application setup. It allows to simply inject services
-// without worrying about their initialization.
 async function initPrintEnvCommand({
   ENV,
   log,

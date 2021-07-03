@@ -5,10 +5,19 @@ import type { LogService } from 'common-services';
 
 export default name('FILTER_API_TAGS', autoService(initFilterAPITags));
 
-// Small tweak to be able to run only parts of the API
-// by filtering endpoints via their tags. This makes of
-// this example an anylith (a monolith that can split
-// at will into micro-services)
+/* Architecture Note #4.2: filterAPITags
+
+Small tweak to be able to run only parts of the API
+ by filtering endpoints via their tags. This makes of
+ this example an anylith (a monolith that can split
+ at will into micro-services).
+
+For example, to create a server with only `system` and
+ `example` tagged endpoints, juste do this:
+```sh
+FILTER_API_TAGS=system,example npm start
+```
+*/
 async function initFilterAPITags({
   ENV,
   log = noop,

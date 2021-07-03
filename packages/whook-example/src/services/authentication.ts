@@ -19,7 +19,11 @@ export type AuthenticationData = BaseAuthenticationData & {
 type FakePayload = AuthenticationData;
 type BearerPayload = { hash: string };
 
-// A fake authentication service
+/* Architecture Note #4.1: authentication
+
+A fake authentication service you can use as a base
+ authentication service.
+*/
 async function initAuthentication({
   jwtToken,
 }: AuthenticationDependencies): Promise<

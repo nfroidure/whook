@@ -9,12 +9,25 @@ import type { WhookAPIHandlerDefinition, WhookConfigs } from '@whook/whook';
 import type { APIConfig } from '../../services/API';
 import type { JWTServiceConfig } from 'jwt-service';
 
+/* Architecture Note #2: Configuration
+
+Configuration is done for each environement in the
+ `src/config/${NODE_ENV}/config.ts` files.
+
+The `src/config/common/config.ts` one allows to add common
+ configurations for all environements.
+*/
+
 // eslint-disable-next-line
 const packageConf = require('../../../package');
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
 const NODE_ENVS = [...DEBUG_NODE_ENVS, 'uat', 'production'];
 
-// Create the custom configuration
+/* Architecture Note #2.1: Typings
+
+The configuration is typed so that you are sure you cannot
+ produce a bad configuration for your API.
+*/
 export type AppConfigs = WhookConfigs &
   WhookAuthorizationConfig &
   WhookSwaggerUIConfig &
@@ -22,11 +35,23 @@ export type AppConfigs = WhookConfigs &
   APIConfig &
   JWTServiceConfig;
 
-// Export custom handlers definitions
+/* Architecture Note #3.2.3: Typings
+
+Here we export a custom handler definition type in order
+ to allow using the various plugins installed that deal
+ with the handlers.
+*/
 export type APIHandlerDefinition = WhookAPIHandlerDefinition<
   WhookAPIOperationCORSConfig & WhookAPIOperationSwaggerConfig
 >;
 
+/* Architecture Note #2.2: Exporting
+
+Each configuration file then create a configuration object
+ and export it for the configuration service to load it.
+
+See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/CONFIGS.ts#L56).
+*/
 const CONFIG: AppConfigs = {
   BASE_ENV: {},
   API_VERSION: packageConf.version,

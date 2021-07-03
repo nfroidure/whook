@@ -3,6 +3,17 @@ import { generateOpenAPITypes as generateTypes, toSource } from 'schema2dts';
 import type { LogService } from 'common-services';
 import type { WhookCommandDefinition } from '@whook/cli';
 
+/* Architecture Note #5.3: Examples
+
+Whook's default project comes with a few sample commands.
+*/
+
+/* Architecture Note #5.3.1: Typings generator
+
+This command allows you to generate the API types that
+ helps you to write your handler in a clean and safe
+ manner.
+*/
 export const definition: WhookCommandDefinition = {
   description: 'Write openAPI types to stdout',
   example: `whook generateOpenAPITypes`,

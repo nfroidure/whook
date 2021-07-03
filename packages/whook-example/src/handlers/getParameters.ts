@@ -34,6 +34,11 @@ export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.
     },
   };
 
+/* Architecture Note #3.4.2: getParameters
+
+Here is a simple handler that just proxy the `TRANSACTIONS`
+ service which contains the currently pending transactions.
+*/
 export const definition: APIHandlerDefinition = {
   path: `/{${pathParam1Parameter.parameter.name}}/{${pathParam2Parameter.parameter.name}}`,
   method: 'get',
