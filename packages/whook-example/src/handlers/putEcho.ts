@@ -4,6 +4,12 @@ import type { LogService } from 'common-services';
 import type { WhookAPISchemaDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 
+/* Architecture Note #3.1.3: Reusable schemas
+
+This is how to declare a reusable API schema
+ to avoid having to write it several times and
+ lower your final Open API file weight.
+*/
 export const echoSchema: WhookAPISchemaDefinition<Components.Schemas.Echo> = {
   name: 'Echo',
   schema: {
@@ -18,6 +24,10 @@ export const echoSchema: WhookAPISchemaDefinition<Components.Schemas.Echo> = {
   },
 };
 
+/* Architecture Note #3.4.4: putEcho
+
+Simply outputs its input.
+*/
 export const definition: APIHandlerDefinition = {
   path: '/echo',
   method: 'put',
@@ -25,6 +35,15 @@ export const definition: APIHandlerDefinition = {
     operationId: 'putEcho',
     summary: 'Echoes what it takes.',
     tags: ['example'],
+    /* Architecture Note #3.1.3.1: Usage
+
+    To use reusable schemas, you must refer to it
+     instead of writing it inline.
+    
+    You can use it in request/response bodies,
+     inside parameters or even inside other
+     schemas as per the OpenAPI specification.
+    */
     requestBody: {
       description: 'The input sentence',
       required: true,
@@ -68,6 +87,12 @@ async function putEcho(
 
   return {
     status: 200,
+    /* Architecture Note #3.1.3.2: Typings
+
+    Schemas are converted to types so that
+     TypeScript warns you when you don't output
+     the expected data.
+    */
     body,
   };
 }

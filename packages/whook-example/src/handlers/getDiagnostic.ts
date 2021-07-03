@@ -1,8 +1,13 @@
 import { autoHandler } from 'knifecycle';
 import type { APIHandlerDefinition } from '../config/common/config';
 
+/* Architecture Note #3.4.1: getDiagnostic
+
+Here is a simple handler that just proxy the `TRANSACTIONS`
+ service which contains the currently pending transactions.
+*/
 export const definition: APIHandlerDefinition = {
-  path: '/diag',
+  path: '/diagnostic',
   method: 'get',
   operation: {
     operationId: 'getDiagnostic',

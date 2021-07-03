@@ -3,26 +3,13 @@
 exports[`runServer should authenticate users 1`] = `
 Object {
   "data": Object {
-    "transactions": Object {
-      "1": Object {
-        "errored": false,
-        "id": "1",
-        "ip": "127.0.0.1",
-        "method": "GET",
-        "protocol": "http",
-        "reqHeaders": Object {
-          "accept": "application/json, text/plain, */*",
-          "authorization": "Bearer eyJ...xZ0",
-          "connection": "close",
-          "host": "localhost:9999",
-          "user-agent": "__avoid_axios_version__",
-        },
-        "startInBytes": 370,
-        "startOutBytes": 0,
-        "startTime": 1390694400000,
-        "url": "/v4/diag",
-      },
+    "error": "bad_handler",
+    "error_debug_data": Object {
+      "guruMeditation": "1",
     },
+    "error_description": "No endpoint found at that path (\\"get\\", \\"/v4/diag\\")",
+    "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
+    "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
   },
   "debugCalls": Array [
     Array [
@@ -32,38 +19,48 @@ Object {
       "⏳ - Created a delay:",
       30000,
     ],
+    Array [
+      "❌ - No handler found for: ",
+      "get",
+      Array [
+        "v4",
+        "diag",
+      ],
+    ],
   ],
   "headers": Object {
-    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
-    "access-control-allow-origin": "*",
+    "cache-control": "private",
     "connection": "close",
     "content-type": "application/json",
     "date": undefined,
     "transaction-id": "1",
     "transfer-encoding": "chunked",
-    "vary": "Origin",
-    "x-authenticated": "{\\"scope\\":\\"admin\\",\\"userId\\":\\"1\\",\\"applicationId\\":\\"1\\",\\"iat\\":1390694400,\\"exp\\":1390867200,\\"nbf\\":1390694400}",
   },
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":370,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Bearer eyJ...xZ0\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":370,\\"endOutBytes\\":894,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Authenticated\\":\\"{\\\\\\"scope\\\\\\":\\\\\\"admin\\\\\\",\\\\\\"userId\\\\\\":\\\\\\"1\\\\\\",\\\\\\"applicationId\\\\\\":\\\\\\"1\\\\\\",\\\\\\"iat\\\\\\":1390694400,\\\\\\"exp\\\\\\":1390867200,\\\\\\"nbf\\\\\\":1390694400}\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"Origin\\"},\\"operationId\\":\\"getDiagnostic\\"}",
+      "{\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":370,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Bearer eyJ...xZ0\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":370,\\"endOutBytes\\":530,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
+    ],
+    Array [
+      "ERROR",
+      "{\\"guruMeditation\\":\\"1\\",\\"request\\":\\"http://localhost:9999/v4/diag\\",\\"verb\\":\\"GET\\",\\"status\\":404,\\"code\\":\\"E_NOT_FOUND\\",\\"stack\\":\\"YHTTPError[404]: E_NOT_FOUND (get, v4,diag, /home/whoiam/projects/whook/packages/whook-http-transaction/src/index.ts:346:46\\\\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)\\",\\"details\\":[\\"get\\",[\\"v4\\",\\"diag\\"],\\"/v4/diag\\"]}",
     ],
   ],
-  "status": 200,
+  "status": 404,
 }
 `;
 
 exports[`runServer should fail with bad fake tokens 1`] = `
 Object {
   "data": Object {
-    "error": "invalid_fake_token",
+    "error": "bad_handler",
     "error_debug_data": Object {
       "guruMeditation": "2",
     },
-    "error_description": "The provided token (\\"e-admin\\") do not match",
+    "error_description": "No endpoint found at that path (\\"get\\", \\"/v4/diag\\")",
+    "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
+    "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
   },
   "debugCalls": Array [
     Array [
@@ -73,27 +70,31 @@ Object {
       "⏳ - Created a delay:",
       30000,
     ],
+    Array [
+      "❌ - No handler found for: ",
+      "get",
+      Array [
+        "v4",
+        "diag",
+      ],
+    ],
   ],
   "headers": Object {
-    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
-    "access-control-allow-origin": "*",
     "cache-control": "private",
     "connection": "close",
     "content-type": "application/json",
     "date": undefined,
     "transaction-id": "2",
     "transfer-encoding": "chunked",
-    "vary": "Origin",
   },
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":588,\\"statusCode\\":400,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"Origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"getDiagnostic\\"}",
+      "{\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":530,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
     ],
   ],
-  "status": 400,
+  "status": 404,
 }
 `;
 

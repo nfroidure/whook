@@ -37,6 +37,11 @@ export const FAKE_MECHANISM = {
   },
 };
 
+/* Architecture Note #4.4: MECHANISMS
+
+A service aimed to provide implementations for the
+ various supported auth mechanisms.
+*/
 export default name('MECHANISMS', autoService(initMechanisms));
 
 async function initMechanisms({ ENV, log }) {

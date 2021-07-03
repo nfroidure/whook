@@ -221,6 +221,7 @@ Mr Bean
           "eslint": "^7.23.0",
           "eslint-plugin-prettier": "^3.3.1",
           "jest": "^26.6.3",
+          "jsarch": "^4.0.1",
           "openapi-schema-validator": "^8.0.0",
           "parse-gitignore": "^1.0.1",
           "prettier": "^2.2.1",
@@ -297,6 +298,7 @@ Mr Bean
         "private": true,
         "scripts": Object {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+          "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
           "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
           "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
           "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
@@ -476,6 +478,7 @@ Mr Bean
           "eslint": "^7.23.0",
           "eslint-plugin-prettier": "^3.3.1",
           "jest": "^26.6.3",
+          "jsarch": "^4.0.1",
           "openapi-schema-validator": "^8.0.0",
           "parse-gitignore": "^1.0.1",
           "prettier": "^2.2.1",
@@ -552,6 +555,7 @@ Mr Bean
         "private": true,
         "scripts": Object {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+          "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
           "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
           "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
           "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
@@ -716,6 +720,7 @@ Mr Bean
           "eslint": "^7.23.0",
           "eslint-plugin-prettier": "^3.3.1",
           "jest": "^26.6.3",
+          "jsarch": "^4.0.1",
           "openapi-schema-validator": "^8.0.0",
           "parse-gitignore": "^1.0.1",
           "prettier": "^2.2.1",
@@ -792,6 +797,7 @@ Mr Bean
         "private": true,
         "scripts": Object {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+          "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
           "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
           "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
           "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",

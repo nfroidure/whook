@@ -24,7 +24,8 @@
       "eslint",
       "babel",
       "jest",
-      "typescript"
+      "typescript",
+      "jsarch"
     ],
     "data": {
       "childPackage": true,
@@ -43,6 +44,7 @@
   },
   "scripts": {
     "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+    "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "npm run compile && NODE_ENV=${NODE_ENV:-development} node bin/build",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
@@ -114,6 +116,7 @@
     "eslint": "^7.23.0",
     "eslint-plugin-prettier": "^3.3.1",
     "jest": "^26.6.3",
+    "jsarch": "^4.0.1",
     "metapak": "^4.0.2",
     "metapak-nfroidure": "11.0.7",
     "openapi-schema-validator": "^8.0.0",
@@ -229,5 +232,12 @@
       "<rootDir>/src"
     ],
     "testEnvironment": "node"
+  },
+  "jsarch": {
+    "parserOptions": {
+      "plugins": [
+        "typescript"
+      ]
+    }
   }
 }

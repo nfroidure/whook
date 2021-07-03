@@ -1,6 +1,12 @@
 import COMMON_CONFIG from '../common/config';
 import type { AppConfigs } from '../common/config';
 
+/* Architecture Note #2.3: Overriding
+
+Finally the configuration file for a given environnment
+ may reuse or override the custom configuration file
+ like here for the development configuration.
+*/
 const CONFIG: AppConfigs = {
   ...COMMON_CONFIG,
   DEV_ACCESS_TOKEN: 'admin|1|1',

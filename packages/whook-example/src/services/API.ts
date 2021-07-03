@@ -25,8 +25,12 @@ export type APIDependencies = APIConfig & {
 
 export default name('API', autoService(initAPI));
 
-// The API service is where you put your handlers
-// altogether to form the final API
+/* Architecture Note #3: API
+Whook is all about APIs.
+
+The API service defined here is where you put
+ your handlers altogether to build the final API.
+*/
 async function initAPI({
   ENV,
   CONFIG,
@@ -78,11 +82,20 @@ async function initAPI({
     ],
   };
 
-  // You can apply transformations to your API like
-  // here for CORS support (OPTIONS method handling)
+  /* Architecture Note #3.3: Plugins
+
+  You can apply transformations to your API like
+   here for CORS support (OPTIONS method handling).
+  */
   return augmentAPIWithCORS(await augmentAPIWithFakeAuth({ ENV }, API));
 }
 
+/* Architecture Note #3.3.1: Custom transformations
+
+The API definition is a JSON serializable object, you
+ can then reshape it the way you want. Here, we set a
+ fake auth mecanism to help in development environment.
+*/
 async function augmentAPIWithFakeAuth(
   { ENV }: { ENV: APIEnv },
   API: OpenAPIV3.Document,
