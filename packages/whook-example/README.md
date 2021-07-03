@@ -55,6 +55,12 @@ Create a new endpoint / service / provider or command:
 npx whook create
 ```
 
+Play with the REPL:
+
+```sh
+npm run whook-repl
+```
+
 List available commands:
 
 ```sh
