@@ -7,8 +7,10 @@ import type {
   CheckApplicationService,
 } from './oAuth2Granters';
 import type { BaseAuthenticationData } from '@whook/authorization';
+import type { OAuth2Options } from '..';
 
 export type OAuth2ClientCredentialsGranterDependencies = {
+  OAUTH2: OAuth2Options;
   checkApplication: CheckApplicationService;
   log?: LogService;
 };
@@ -33,6 +35,7 @@ export default autoService(initOAuth2ClientCredentialsGranter);
 // Client Credentials Grant
 // https://tools.ietf.org/html/rfc6749#section-4.4
 async function initOAuth2ClientCredentialsGranter({
+  OAUTH2,
   checkApplication,
   log = noop,
 }: OAuth2ClientCredentialsGranterDependencies): Promise<OAuth2ClientCredentialsGranterService> {
@@ -53,7 +56,11 @@ async function initOAuth2ClientCredentialsGranter({
 
       return {
         ...authenticationData,
-        scope: demandedScope,
+        scope: demandedScope
+          ? demandedScope
+          : OAUTH2.defaultToClientScope
+          ? authenticationData.scope
+          : '',
       };
     };
 

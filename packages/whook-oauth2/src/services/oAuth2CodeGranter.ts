@@ -85,7 +85,7 @@ async function initOAuth2CodeGranter({
       }
 
       // This check is not really necessary atm but it acts
-      // as a reminde that this grant type could be used
+      // as a reminder that this grant type could be used
       // without authenticating the client. In this
       // scenario, the authenticationData should be deducted
       // from the clientId and the code given in parameters

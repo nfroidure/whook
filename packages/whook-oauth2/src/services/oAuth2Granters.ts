@@ -249,6 +249,7 @@ export type OAuth2GranterService<
 
 export type OAuth2Options = {
   authenticateURL: string;
+  defaultToClientScope?: boolean;
 };
 
 export type OAuth2Config = {
