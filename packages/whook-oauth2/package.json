@@ -1,6 +1,6 @@
 {
   "name": "@whook/oauth2",
-  "version": "8.1.1",
+  "version": "8.2.0",
   "description": "OAuth2 implementation for Whook servers",
   "main": "dist/index",
   "module": "dist/index.mjs",
