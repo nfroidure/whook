@@ -593,7 +593,7 @@ describe('initHTTPRouter', () => {
             info: API.info,
             paths: {
               '/lol': {
-                get: {},
+                get: {} as never,
               },
             },
           },
@@ -627,7 +627,7 @@ describe('initHTTPRouter', () => {
             info: API.info,
             paths: {
               lol: {
-                get: {},
+                get: {} as never,
               },
             },
           },
@@ -664,7 +664,7 @@ describe('initHTTPRouter', () => {
               '/{lol}': {
                 get: {
                   operationId: 'lol',
-                },
+                } as never,
               },
             },
           },
@@ -731,7 +731,7 @@ describe('initHTTPRouter', () => {
                       },
                     } as unknown as OpenAPIV3.ParameterObject,
                   ],
-                },
+                } as never,
               },
             },
           },
@@ -772,7 +772,7 @@ describe('initHTTPRouter', () => {
                       in: 'query',
                     } as unknown as OpenAPIV3.ParameterObject,
                   ],
-                },
+                } as never,
               },
             },
           },
@@ -815,7 +815,7 @@ describe('initHTTPRouter', () => {
                       },
                     } as unknown as OpenAPIV3.ParameterObject,
                   ],
-                },
+                } as never,
               },
             },
           },

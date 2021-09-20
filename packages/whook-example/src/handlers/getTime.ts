@@ -1,4 +1,5 @@
 import { autoHandler } from 'knifecycle';
+import { refersTo } from '@whook/whook';
 import type { WhookAPISchemaDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 import type { TimeService } from 'common-services';
@@ -34,9 +35,7 @@ export const definition: APIHandlerDefinition = {
         description: 'Server current date',
         content: {
           'application/json': {
-            schema: {
-              $ref: `#/components/schemas/${timeSchema.name}`,
-            },
+            schema: refersTo(timeSchema),
           },
         },
       },

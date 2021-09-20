@@ -1,4 +1,5 @@
 import initGetOpenAPI from './getOpenAPI';
+import type { OpenAPIV3 } from 'openapi-types';
 
 describe('getOpenAPI', () => {
   const API = {
@@ -24,7 +25,7 @@ describe('getOpenAPI', () => {
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  };
+  } as unknown as OpenAPIV3.Document;
 
   const APIWithParameters = {
     openapi: '3.0.0',
@@ -68,7 +69,7 @@ describe('getOpenAPI', () => {
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  };
+  } as unknown as OpenAPIV3.Document;
 
   it('should work', async () => {
     const getOpenAPI = await initGetOpenAPI({

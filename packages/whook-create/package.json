@@ -75,11 +75,11 @@
   "dependencies": {
     "@whook/cli": "^8.1.1",
     "@whook/example": "^8.2.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "common-services": "^9.0.1",
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "fs-extra": "^10.0.0",
-    "inquirer": "^8.1.0",
+    "inquirer": "^8.1.5",
     "knifecycle": "^11.1.1",
     "ora": "^5.4.0",
     "yerror": "^6.0.1"

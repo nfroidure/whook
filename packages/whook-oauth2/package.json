@@ -51,8 +51,8 @@
     "common-services": "^9.0.1",
     "cookie": "^0.4.1",
     "knifecycle": "^11.1.1",
-    "openapi-types": "^9.0.3",
-    "type-fest": "^1.2.0",
+    "openapi-types": "^9.3.0",
+    "type-fest": "^2.3.3",
     "yerror": "^6.0.1",
     "yhttperror": "^6.0.1"
   },

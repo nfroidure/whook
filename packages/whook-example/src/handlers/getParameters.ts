@@ -1,4 +1,5 @@
 import { autoHandler } from 'knifecycle';
+import { refersTo } from '@whook/whook';
 import type { WhookAPIParameterDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 
@@ -10,7 +11,7 @@ export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.
       in: 'path',
       name: 'pathParam1',
       required: true,
-      description: 'Duration in milliseconds',
+      description: 'A number param',
       schema: {
         type: 'number',
       },
@@ -47,12 +48,8 @@ export const definition: APIHandlerDefinition = {
     summary: 'An handler intended to test parameters.',
     tags: ['example'],
     parameters: [
-      {
-        $ref: `#/components/parameters/${pathParam1Parameter.name}`,
-      },
-      {
-        $ref: `#/components/parameters/${pathParam2Parameter.name}`,
-      },
+      refersTo(pathParam1Parameter),
+      refersTo(pathParam2Parameter),
       {
         in: 'header',
         name: 'aHeader',

@@ -1,4 +1,5 @@
 import { autoHandler } from 'knifecycle';
+import { refersTo } from '@whook/whook';
 import YHTTPError from 'yhttperror';
 import type { LogService } from 'common-services';
 import type { WhookAPISchemaDefinition } from '@whook/whook';
@@ -49,9 +50,7 @@ export const definition: APIHandlerDefinition = {
       required: true,
       content: {
         'application/json': {
-          schema: {
-            $ref: `#/components/schemas/${echoSchema.name}`,
-          },
+          schema: refersTo(echoSchema),
           example: {
             echo: 'Repeat this!',
           },
@@ -63,9 +62,7 @@ export const definition: APIHandlerDefinition = {
         description: 'The actual echo',
         content: {
           'application/json': {
-            schema: {
-              $ref: `#/components/schemas/${echoSchema.name}`,
-            },
+            schema: refersTo(echoSchema),
           },
         },
       },

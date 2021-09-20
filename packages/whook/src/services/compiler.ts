@@ -3,7 +3,7 @@ import { noop } from '../libs/utils';
 import { autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { BuildOptions } from 'knifecycle/dist/build';
-import { ImporterService } from '..';
+import type { ImporterService } from '..';
 
 export const DEFAULT_BUILD_OPTIONS: BuildOptions = { modules: 'commonjs' };
 

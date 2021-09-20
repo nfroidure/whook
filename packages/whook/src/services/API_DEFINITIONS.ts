@@ -74,24 +74,53 @@ export type WhookAPIHandlerDefinition<
   operation: WhookAPIOperation<T> & U;
 };
 
-export type WhookAPISchemaDefinition<T = JsonValue> = {
+export type WhookAPISchemaDefinition<
+  T extends JsonValue | OpenAPIV3.ReferenceObject | void | unknown = unknown,
+> = {
   name: string;
   schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
   example?: T;
-  examples?: T[];
+  examples?: Record<string, T>;
 };
 
-export type WhookAPIParameterDefinition<T = JsonValue> = {
+export type WhookAPIParameterDefinition<
+  T extends JsonValue | OpenAPIV3.ReferenceObject | void | unknown = unknown,
+> = {
   name: string;
   parameter: OpenAPIV3.ParameterObject;
   example?: T;
-  examples?: T[];
+  examples?: Record<string, T>;
+};
+
+export type WhookAPIExampleDefinition<
+  T extends JsonValue | OpenAPIV3.ReferenceObject,
+> = {
+  name: string;
+  value: T;
+};
+
+export type WhookAPIHeaderDefinition = {
+  name: string;
+  header: OpenAPIV3.HeaderObject | OpenAPIV3.ReferenceObject;
+};
+
+export type WhookAPIResponseDefinition = {
+  name: string;
+  response: OpenAPIV3.ResponseObject | OpenAPIV3.ReferenceObject;
+};
+
+export type WhookAPIRequestBodyDefinition = {
+  name: string;
+  requestBody: OpenAPIV3.RequestBodyObject | OpenAPIV3.ReferenceObject;
 };
 
 export type WhookAPIHandlerModule = {
   [name: string]:
-    | WhookAPISchemaDefinition
-    | WhookAPIParameterDefinition
+    | WhookAPISchemaDefinition<never>
+    | WhookAPIParameterDefinition<never>
+    | WhookAPIHeaderDefinition
+    | WhookAPIResponseDefinition
+    | WhookAPIRequestBodyDefinition
     | WhookAPIHandlerDefinition;
   definition: WhookAPIHandlerDefinition;
 };
@@ -276,7 +305,7 @@ async function initAPIDefinitions({
           ...Object.keys(module)
             .filter((key) => key.endsWith('Schema'))
             .reduce((addedSchemas, key) => {
-              const schema = module[key] as WhookAPISchemaDefinition;
+              const schema = module[key] as WhookAPISchemaDefinition<never>;
 
               if (schemas[schema.name]) {
                 log(
@@ -298,7 +327,9 @@ async function initAPIDefinitions({
           ...Object.keys(module)
             .filter((key) => key.endsWith('Parameter'))
             .reduce((addedParameters, key) => {
-              const parameter = module[key] as WhookAPIParameterDefinition;
+              const parameter = module[
+                key
+              ] as WhookAPIParameterDefinition<never>;
 
               if (addedParameters[parameter.name]) {
                 log(
@@ -310,6 +341,81 @@ async function initAPIDefinitions({
               return {
                 ...addedParameters,
                 [parameter.name]: parameter.parameter,
+              };
+            }, {}),
+        }),
+        {},
+      ),
+      headers: handlersModules.reduce<{
+        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.HeaderObject;
+      }>(
+        (headers, { module }) => ({
+          ...headers,
+          ...Object.keys(module)
+            .filter((key) => key.endsWith('Header'))
+            .reduce((addedHeaders, key) => {
+              const header = module[key] as WhookAPIHeaderDefinition;
+
+              if (addedHeaders[header.name]) {
+                log(
+                  'warning',
+                  `⚠️ - Overriding an existing header ("${header.name}").`,
+                );
+              }
+
+              return {
+                ...addedHeaders,
+                [header.name]: header.header,
+              };
+            }, {}),
+        }),
+        {},
+      ),
+      requestBodies: handlersModules.reduce<{
+        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
+      }>(
+        (requestBodies, { module }) => ({
+          ...requestBodies,
+          ...Object.keys(module)
+            .filter((key) => key.endsWith('RequestBody'))
+            .reduce((addedRequestBodies, key) => {
+              const requestBody = module[key] as WhookAPIRequestBodyDefinition;
+
+              if (addedRequestBodies[requestBody.name]) {
+                log(
+                  'warning',
+                  `⚠️ - Overriding an existing request body ("${requestBody.name}").`,
+                );
+              }
+
+              return {
+                ...addedRequestBodies,
+                [requestBody.name]: requestBody.requestBody,
+              };
+            }, {}),
+        }),
+        {},
+      ),
+      responses: handlersModules.reduce<{
+        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.ResponseObject;
+      }>(
+        (responses, { module }) => ({
+          ...responses,
+          ...Object.keys(module)
+            .filter((key) => key.endsWith('Response'))
+            .reduce((addedResponses, key) => {
+              const response = module[key] as WhookAPIResponseDefinition;
+
+              if (addedResponses[response.name]) {
+                log(
+                  'warning',
+                  `⚠️ - Overriding an existing response ("${response.name}").`,
+                );
+              }
+
+              return {
+                ...addedResponses,
+                [response.name]: response.response,
               };
             }, {}),
         }),

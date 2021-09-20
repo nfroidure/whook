@@ -68,6 +68,7 @@ exports[`API should work 1`] = `
 Object {
   "API": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "duration": Object {
           "description": "Duration in milliseconds",
@@ -79,7 +80,7 @@ Object {
           },
         },
         "pathParam1": Object {
-          "description": "Duration in milliseconds",
+          "description": "A number param",
           "in": "path",
           "name": "pathParam1",
           "required": true,
@@ -100,6 +101,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "Echo": Object {
           "additionalProperties": false,
