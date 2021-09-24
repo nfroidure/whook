@@ -1,4 +1,4 @@
-import { initAutoload, noop, WhookOperation } from '@whook/whook';
+import { initAutoload, noop, cleanupOpenAPI } from '@whook/whook';
 import Knifecycle, {
   SPECIAL_PROPS,
   wrapInitializer,
@@ -11,6 +11,7 @@ import {
   getOpenAPIOperations,
 } from '@whook/http-router';
 import type { WhookBuildConstantsService } from '@whook/whook';
+import type { WhookRawOperation } from '@whook/http-router';
 import type {
   Injector,
   Autoloader,
@@ -59,18 +60,16 @@ export default alsoInject(
       }>
     > => {
       let API: OpenAPIV3.Document;
-      let OPERATION_APIS: WhookOperation<WhookAPIOperationAWSLambdaConfig>[];
+      let OPERATION_APIS: WhookRawOperation<WhookAPIOperationAWSLambdaConfig>[];
       const getAPIOperation = (() => {
         return async (serviceName) => {
           // eslint-disable-next-line
           API = API || (await $injector(['API'])).API;
+
           // eslint-disable-next-line
           OPERATION_APIS =
             OPERATION_APIS ||
-            (await dereferenceOpenAPIOperations(
-              API,
-              getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API),
-            ));
+            getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API);
 
           const OPERATION = OPERATION_APIS.find(
             (operation) =>
@@ -87,12 +86,30 @@ export default alsoInject(
             throw new YError('E_OPERATION_NOT_FOUND', serviceName);
           }
 
-          // TODO: Do a better cleanup of all unuseful resources
-          return {
+          // eslint-disable-next-line
+          const OPERATION_API = cleanupOpenAPI({
             ...API,
             paths: {
               [OPERATION.path]: {
-                [OPERATION.method]: OPERATION,
+                [OPERATION.method]: API.paths[OPERATION.path][OPERATION.method],
+              },
+            },
+          });
+
+          return {
+            ...OPERATION_API,
+            paths: {
+              [OPERATION.path]: {
+                [OPERATION.method]: (
+                  await dereferenceOpenAPIOperations(OPERATION_API, [
+                    {
+                      path: OPERATION.path,
+                      method: OPERATION.method,
+                      ...OPERATION_API.paths[OPERATION.path][OPERATION.method],
+                      parameters: OPERATION.parameters,
+                    },
+                  ])
+                )[0],
               },
             },
           };

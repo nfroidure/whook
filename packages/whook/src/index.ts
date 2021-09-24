@@ -2,6 +2,12 @@ import Knifecycle, { constant } from 'knifecycle';
 import debug from 'debug';
 import { noop, identity, compose, pipe } from './libs/utils';
 import {
+  COMPONENTS_TYPES,
+  cleanupOpenAPI,
+  collectRefs,
+  refersTo,
+} from './libs/openapi';
+import {
   initLogService,
   initTimeService,
   initRandomService,
@@ -72,6 +78,10 @@ import type {
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookAPISchemaDefinition,
+  WhookAPIExampleDefinition,
+  WhookAPIHeaderDefinition,
+  WhookAPIResponseDefinition,
+  WhookAPIRequestBodyDefinition,
   WhookAPIHandlerModule,
 } from './services/API_DEFINITIONS';
 import type {
@@ -121,6 +131,10 @@ export type {
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookAPISchemaDefinition,
+  WhookAPIExampleDefinition,
+  WhookAPIHeaderDefinition,
+  WhookAPIResponseDefinition,
+  WhookAPIRequestBodyDefinition,
   WhookAPIHandlerModule,
   WhookAPIOperationConfig,
   WhookServiceMap,
@@ -187,6 +201,10 @@ export {
   initCompiler,
   DEFAULT_COMPILER_OPTIONS,
   DEFAULT_BUILD_OPTIONS,
+  COMPONENTS_TYPES,
+  cleanupOpenAPI,
+  collectRefs,
+  refersTo,
 };
 
 export type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;

@@ -3,7 +3,7 @@ import { getOpenAPIOperations } from '@whook/http-router';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
-import { WhookAPIOperationSwaggerConfig } from '..';
+import type { WhookAPIOperationSwaggerConfig } from '..';
 
 export default autoHandler(getOpenAPI);
 

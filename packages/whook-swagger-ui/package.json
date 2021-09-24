@@ -69,11 +69,11 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/whook": "^8.1.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "ecstatic": "^4.1.4",
     "knifecycle": "^11.1.1",
-    "openapi-types": "^9.0.3",
-    "swagger-ui-dist": "^3.49.0"
+    "openapi-types": "^9.3.0",
+    "swagger-ui-dist": "^3.52.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.14",

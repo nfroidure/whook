@@ -48,6 +48,10 @@ import {
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
 } from './libs/constants';
+import type {
+  WhookRawOperation,
+  SupportedSecurityScheme,
+} from './libs/openAPIUtils';
 import type { JsonValue } from 'type-fest';
 import type { Provider } from 'knifecycle';
 import type { Transform, Readable } from 'stream';
@@ -85,6 +89,8 @@ export type {
   ErrorHandlerConfig,
   BodySpec,
   ResponseSpec,
+  WhookRawOperation,
+  SupportedSecurityScheme,
 };
 export {
   OPEN_API_METHODS,

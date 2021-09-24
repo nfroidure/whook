@@ -4,6 +4,7 @@ exports[`initAPIDefinitions should work with a disabled handler at the same path
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "userId": Object {
           "in": "path",
@@ -13,6 +14,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "User": Object {
           "properties": Object {
@@ -91,6 +94,7 @@ exports[`initAPIDefinitions should work with a few handlers 1`] = `
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "userId": Object {
           "in": "path",
@@ -100,6 +104,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "User": Object {
           "properties": Object {
@@ -195,6 +201,7 @@ exports[`initAPIDefinitions should work with a few handlers in different plugins
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "userId": Object {
           "in": "path",
@@ -204,6 +211,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "User": Object {
           "properties": Object {
@@ -302,6 +311,7 @@ exports[`initAPIDefinitions should work with a few handlers in different plugins
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "userId": Object {
           "in": "path",
@@ -311,6 +321,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "User": Object {
           "properties": Object {
@@ -409,6 +421,7 @@ exports[`initAPIDefinitions should work with a few handlers in different plugins
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "userId": Object {
           "in": "path",
@@ -418,6 +431,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "User": Object {
           "properties": Object {
@@ -516,6 +531,7 @@ exports[`initAPIDefinitions should work with a filtered handler 1`] = `
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "userId": Object {
           "in": "path",
@@ -525,6 +541,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "User": Object {
           "properties": Object {
@@ -603,6 +621,7 @@ exports[`initAPIDefinitions should work with a several handlers at the same path
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {
         "userId": Object {
           "in": "path",
@@ -612,6 +631,8 @@ Object {
           },
         },
       },
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {
         "User": Object {
           "properties": Object {
@@ -709,7 +730,10 @@ exports[`initAPIDefinitions should work with no handlers 1`] = `
 Object {
   "API_DEFINITIONS": Object {
     "components": Object {
+      "headers": Object {},
       "parameters": Object {},
+      "requestBodies": Object {},
+      "responses": Object {},
       "schemas": Object {},
     },
     "paths": Object {},

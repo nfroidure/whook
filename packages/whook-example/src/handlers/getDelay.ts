@@ -1,4 +1,5 @@
 import { autoHandler } from 'knifecycle';
+import { refersTo } from '@whook/whook';
 import type { WhookAPIParameterDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 import type { DelayService } from 'common-services';
@@ -63,9 +64,7 @@ export const definition: APIHandlerDefinition = {
       To use reusable parameters, you must refer to it
        instead of writing it inline.
       */
-      {
-        $ref: `#/components/parameters/${durationParameter.name}`,
-      },
+      refersTo(durationParameter),
     ],
     responses: {
       204: {
