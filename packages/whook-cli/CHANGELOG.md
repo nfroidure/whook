@@ -1,3 +1,12 @@
+# [8.3.0](https://github.com/nfroidure/whook/compare/v8.2.0...v8.3.0) (2021-09-24)
+
+
+### Features
+
+* **libs:** add tools to deal with OpenAPI data ([9241cf7](https://github.com/nfroidure/whook/commit/9241cf7347ae64d04fd8b26c429662051bf37a07))
+
+
+
 ## [8.1.1](https://github.com/nfroidure/whook/compare/v8.1.0...v8.1.1) (2021-06-08)
 
 

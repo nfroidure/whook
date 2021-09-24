@@ -1,6 +1,6 @@
 {
   "name": "@whook/cli",
-  "version": "8.1.1",
+  "version": "8.3.0",
   "description": "The Whook server CLI",
   "keywords": [
     "whook",
@@ -78,7 +78,7 @@
   "dependencies": {
     "@types/fs-extra": "^9.0.10",
     "@types/inquirer": "^7.3.1",
-    "@whook/whook": "^8.1.1",
+    "@whook/whook": "^8.3.0",
     "ajv": "^8.6.3",
     "ajv-formats": "^2.1.0",
     "camelcase": "^6.2.0",
