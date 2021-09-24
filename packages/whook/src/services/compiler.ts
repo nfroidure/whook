@@ -1,6 +1,7 @@
 import path from 'path';
 import { noop } from '../libs/utils';
 import { autoService } from 'knifecycle';
+import { nodeExternalsPlugin } from 'esbuild-node-externals';
 import type { LogService } from 'common-services';
 import type { BuildOptions } from 'knifecycle/dist/build';
 import type { ImporterService } from '..';
@@ -14,6 +15,7 @@ export type FullWhookCompilerOptions = {
   ignoredModules: string[];
   mainFields?: string[];
   target: string;
+  excludeNodeModules?: boolean;
 };
 export type WhookCompilerOptions = Partial<FullWhookCompilerOptions>;
 export type WhookCompilerConfig = {
@@ -23,6 +25,7 @@ export type WhookCompilerConfig = {
   BUILD_OPTIONS?: BuildOptions;
 };
 export type WhookCompilerDependencies = WhookCompilerConfig & {
+  PROJECT_DIR: string;
   NODE_ENV: string;
   importer: ImporterService<any>;
   log?: LogService;
@@ -40,6 +43,7 @@ export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
 };
 
 async function initCompiler({
+  PROJECT_DIR,
   NODE_ENV,
   DEBUG_NODE_ENVS,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
@@ -61,6 +65,29 @@ async function initCompiler({
     };
     const basePath = path.dirname(entryPoint);
     const outFile = basePath + '/index.js';
+    const absoluteToProjectsRelativePlugin = {
+      name: 'absolute-to-projects-relative',
+      setup(build) {
+        build.onResolve(
+          {
+            filter: new RegExp(
+              '^' + (PROJECT_DIR + '/node_modules/').replace(/\//g, '\\/'),
+            ),
+          },
+          (args) => {
+            const newPath = args.path.replace(
+              PROJECT_DIR + '/node_modules/',
+              '',
+            );
+
+            return {
+              path: newPath,
+              external: true,
+            };
+          },
+        );
+      },
+    };
     const result = await build({
       entryPoints: [entryPoint],
       bundle: true,
@@ -76,6 +103,9 @@ async function initCompiler({
       define: {
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
       },
+      plugins: compilerOptions.excludeNodeModules
+        ? [absoluteToProjectsRelativePlugin, nodeExternalsPlugin()]
+        : [],
       external: compilerOptions.externalModules.concat(
         compilerOptions.ignoredModules,
       ),
