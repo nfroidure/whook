@@ -1,3 +1,12 @@
+# [8.4.0](https://github.com/nfroidure/whook/compare/v8.3.0...v8.4.0) (2021-09-24)
+
+
+### Features
+
+* **compiler:** allow to exclude node_modules from the build ([9d4bf19](https://github.com/nfroidure/whook/commit/9d4bf19771fbad4c1feeae84e0bfe15ea73319be))
+
+
+
 # [8.3.0](https://github.com/nfroidure/whook/compare/v8.2.0...v8.3.0) (2021-09-24)
 
 
