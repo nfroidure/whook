@@ -14,7 +14,8 @@
         "*.plan",
         "*.tfstate.d",
         "*.credentials.json",
-        ".nx/cache"
+        ".nx/cache",
+        "lambda_layer.zip"
       ],
       "rootPackage": true
     }
