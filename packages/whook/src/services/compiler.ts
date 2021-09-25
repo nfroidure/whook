@@ -1,7 +1,6 @@
 import path from 'path';
 import { noop } from '../libs/utils';
 import { autoService } from 'knifecycle';
-import { nodeExternalsPlugin } from 'esbuild-node-externals';
 import type { LogService } from 'common-services';
 import type { BuildOptions } from 'knifecycle/dist/build';
 import type { ImporterService } from '..';
@@ -52,6 +51,7 @@ async function initCompiler({
   log = noop,
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
   const { build } = await importer('esbuild');
+  const { nodeExternalsPlugin } = await importer('esbuild-node-externals');
 
   return async function compiler(
     entryPoint: string,

@@ -1,5 +1,6 @@
 import path from 'path';
 import * as esbuild from 'esbuild';
+import * as esbuildNodeExternals from 'esbuild-node-externals';
 import initCompiler from './compiler';
 
 describe('Compiler', () => {
@@ -17,7 +18,8 @@ describe('Compiler', () => {
   });
 
   test('should work with external modules', async () => {
-    importer.mockResolvedValue(esbuild);
+    importer.mockResolvedValueOnce(esbuild);
+    importer.mockResolvedValueOnce(esbuildNodeExternals);
 
     const compiler = await initCompiler({
       PROJECT_DIR,
@@ -37,7 +39,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       Object {
-        "contentsLength": 121905,
+        "contentsLength": 90265,
         "logCalls": Array [],
         "mappingsLength": 0,
       }
@@ -45,7 +47,8 @@ describe('Compiler', () => {
   });
 
   test('should work with code only', async () => {
-    importer.mockResolvedValue(esbuild);
+    importer.mockResolvedValueOnce(esbuild);
+    importer.mockResolvedValueOnce(esbuildNodeExternals);
 
     const compiler = await initCompiler({
       PROJECT_DIR,
@@ -65,7 +68,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       Object {
-        "contentsLength": 5066,
+        "contentsLength": 5024,
         "logCalls": Array [],
         "mappingsLength": 0,
       }
