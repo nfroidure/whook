@@ -71,6 +71,17 @@ data "external" "envvars" {
   working_dir = ".."
 }
 
+resource "aws_lambda_layer_version" "lambda_layer" {
+  filename            = "../lambda_layer.zip"
+  layer_name          = "api-lambda-layer"
+  description         = "A layer with all lambdas node modules"
+  source_code_hash    = filebase64sha256("../lambda_layer.zip")
+  # You may replace the above by the following to avoid pushing
+  # a new layer when the package lock did not change
+  # source_code_hash    = filebase64sha256("../package-lock.json")
+  compatible_runtimes = ["nodejs20.x"]
+}
+
 data "archive_file" "lambdas" {
   for_each    = data.external.lambdas.result
   type        = "zip"
@@ -88,6 +99,7 @@ resource "aws_lambda_function" "lambda_function" {
   source_code_hash = data.archive_file.lambdas[each.key].output_base64sha256
   memory_size      = split("|", each.value)[3]
   timeout          = split("|", each.value)[2]
+  layers           = [aws_lambda_layer_version.lambda_layer.arn]
   environment {
     variables = zipmap(
       keys(data.external.envvars.result),

@@ -17,8 +17,9 @@ describe('commands should work', () => {
 ",
   "stdout": "
 
-# Provided by "@whook/example": 1 commands
+# Provided by "@whook/example": 2 commands
 - printEnv: A command printing every env values
+- terraformValues: A command printing lambdas informations for Terraform
 
 
 # Provided by "@whook/whook": 8 commands

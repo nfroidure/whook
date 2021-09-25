@@ -13,7 +13,7 @@ import type {
 import type { ExecException } from 'child_process';
 import type { LogService } from 'common-services';
 import type { AppEnvVars } from 'application-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { WhookAWSLambdaBaseCronConfiguration } from '../config/common/config.js';
 
 export const definition: WhookCommandDefinition = {
@@ -61,7 +61,7 @@ async function initTerraformValuesCommand({
   args,
   execAsync = _execAsync,
 }: {
-  API: OpenAPIV3.Document;
+  API: OpenAPIV3_1.Document;
   CONFIG: WhookConfig;
   BASE_PATH: string;
   ENV: AppEnvVars;
@@ -154,7 +154,7 @@ async function initTerraformValuesCommand({
                 [configuration.path]: {
                   ...(currentPaths[configuration.path] || {}),
                   [configuration.method.toLowerCase()]: {
-                    ...((API.paths[configuration.path] || {})[
+                    ...((API.paths?.[configuration.path] || {})[
                       configuration.method.toLowerCase()
                     ] || {}),
                     operationId: configuration.qualifiedOperationId,
