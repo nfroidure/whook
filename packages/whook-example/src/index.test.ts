@@ -100,9 +100,9 @@ describe('runProcess', () => {
   test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
-  debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-  logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs)
-}).toMatchInlineSnapshot(`
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
+    }).toMatchInlineSnapshot(`
 {
   "debugCalls": [
     [
@@ -113,6 +113,15 @@ describe('runProcess', () => {
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
@@ -514,6 +523,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/cors".",
     ],
     [
@@ -667,6 +679,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/cors".",
     ],
     [
@@ -692,6 +707,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/cors".",
@@ -1147,6 +1165,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/BUFFER_LIMIT.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/COERCION_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DECODERS.js".",
     ],
     [
@@ -1174,7 +1195,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PARSERS.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/QUERY_PARSER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/REDUCED_FILES_SUFFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SHIELD_CHAR.js".",
@@ -1503,7 +1530,7 @@ describe('runProcess', () => {
       "🎙️ - HTTP Server listening at "http://localhost:9999".",
     ],
     [
-      "🏭 - Initializing the HANDLERS service with 10 handlers wrapped by 2 wrappers.",
+      "🏭 - Initializing the HANDLERS service with 11 handlers wrapped by 2 wrappers.",
     ],
     [
       "🏭 - Initializing the WRAPPERS service.",

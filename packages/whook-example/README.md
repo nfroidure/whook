@@ -114,6 +114,12 @@ Create a new workspace for each `APP_ENV`:
 ../.bin/terraform workspace new staging
 ```
 
+Build the lambdas layer:
+
+```sh
+NODE_ENV=production bin/lambda_layer.sh
+```
+
 Plan the deployment:
 
 ```sh

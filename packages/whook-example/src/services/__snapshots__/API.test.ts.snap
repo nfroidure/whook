@@ -24,6 +24,8 @@ exports[`API should always have the same amount of endpoints 1`] = `
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /consumer/messages",
+  "post /cron/minutes",
   "put /echo",
 ]
 `;
@@ -68,6 +70,8 @@ exports[`API should always have the same amount of publicly documented endpoints
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /consumer/messages",
+  "post /cron/minutes",
   "put /echo",
 ]
 `;
@@ -224,7 +228,6 @@ exports[`API should work 1`] = `
             "system",
           ],
           "x-whook": {
-            "enabled": false,
             "private": true,
             "type": "consumer",
           },

@@ -1,20 +1,23 @@
 import { extra, autoService } from 'knifecycle';
-import { readArgs, identity } from '@whook/whook';
-import { getOpenAPIOperations } from '@whook/http-router';
 import { YError } from 'yerror';
 import { exec } from 'child_process';
 import crypto from 'crypto';
-import type {
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookConfig,
-  WhookAPIHandlerDefinition,
+import {
+  readArgs,
+  identity,
+  type WhookOpenAPI,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookConfig,
+  type WhookAPIHandlerDefinition,
+  WhookAPIHandlerConfig,
 } from '@whook/whook';
-import type { ExecException } from 'child_process';
-import type { LogService } from 'common-services';
-import type { AppEnvVars } from 'application-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { WhookAWSLambdaBaseCronConfiguration } from '../config/common/config.js';
+import { type ExecException } from 'child_process';
+import { type LogService } from 'common-services';
+import { type AppEnvVars } from 'application-services';
+import { type WhookAWSLambdaBaseCronConfiguration } from '../config/common/config.js';
+import { pathItemToOperationMap } from 'ya-open-api-types';
+import { AppEnv } from '../index.js';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command printing lambdas informations for Terraform',
@@ -52,6 +55,7 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initTerraformValuesCommand));
 
 async function initTerraformValuesCommand({
+  APP_ENV,
   API,
   CONFIG,
   BASE_PATH,
@@ -61,7 +65,8 @@ async function initTerraformValuesCommand({
   args,
   execAsync = _execAsync,
 }: {
-  API: OpenAPIV3_1.Document;
+  APP_ENV: AppEnv;
+  API: WhookOpenAPI;
   CONFIG: WhookConfig;
   BASE_PATH: string;
   ENV: AppEnvVars;
@@ -80,36 +85,45 @@ async function initTerraformValuesCommand({
       pathsIndex: number;
       lambdaType: string;
     }>(definition.arguments, args);
-    const allOperations =
-      await getOpenAPIOperations<
-        WhookAPIHandlerDefinition['operation']['x-whook']
-      >(API);
-    const configurations = allOperations.map((operation) => {
+    const definitions: WhookAPIHandlerDefinition[] = [];
+
+    for (const [path, pathItem] of Object.entries(API.paths || {})) {
+      for (const [method, operation] of Object.entries(
+        pathItemToOperationMap(pathItem || {}),
+      )) {
+        definitions.push({
+          path,
+          method,
+          operation,
+          config: { type: 'http', ...((operation['x-whook'] as object) || {}) },
+        } as unknown as WhookAPIHandlerDefinition);
+      }
+    }
+
+    const configurations = definitions.map((definition) => {
       const whookConfiguration =
-        operation['x-whook'] ||
+        definition.config ||
         ({
           type: 'http',
-        } as WhookAPIHandlerDefinition['operation']['x-whook']);
+        } as WhookAPIHandlerConfig);
       const configuration = {
         type: whookConfiguration?.type || 'http',
         timeout: (whookConfiguration?.timeout || 10).toString(),
         memory: (whookConfiguration?.memory || 128).toString(),
         contentHandling: 'CONVERT_TO_TEXT',
-        description: operation.summary || '',
-        enabled: whookConfiguration?.disabled ? 'false' : 'true',
-        operationId: operation.operationId,
-        sourceOperationId: operation.operationId,
+        description: definition.operation.summary || '',
+        enabled:
+          whookConfiguration?.environments &&
+          !whookConfiguration?.environments.includes(APP_ENV)
+            ? 'false'
+            : 'true',
+        operationId: definition.operation.operationId,
+        sourceOperationId: definition.operation.operationId,
         suffix: whookConfiguration?.suffix || '',
         ...Object.keys(whookConfiguration || {}).reduce(
           (accConfigurations, key) => ({
             ...accConfigurations,
-            [key]: (
-              (
-                whookConfiguration as NonNullable<
-                  WhookAPIHandlerDefinition['operation']['x-whook']
-                >
-              )[key] as string
-            ).toString(),
+            [key]: (whookConfiguration[key] as string).toString(),
           }),
           {},
         ),
@@ -123,15 +137,15 @@ async function initTerraformValuesCommand({
         })),
       };
       const qualifiedOperationId =
-        (configuration.sourceOperationId || operation.operationId) +
+        (configuration.sourceOperationId || definition.operation.operationId) +
         (configuration.suffix || '');
 
       return {
         qualifiedOperationId,
-        method: operation.method.toUpperCase(),
-        path: BASE_PATH + operation.path,
+        method: definition.method.toUpperCase(),
+        path: BASE_PATH + definition.path,
         resourceName: buildPartName(
-          (BASE_PATH + operation.path).split('/').filter(identity),
+          (BASE_PATH + definition.path).split('/').filter(identity),
         ),
         ...configuration,
       };

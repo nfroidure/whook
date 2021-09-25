@@ -9,9 +9,9 @@ describe('commands should work', () => {
     );
 
     expect({
-  stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-  stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/')
-}).toMatchInlineSnapshot(`
+      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+    }).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.

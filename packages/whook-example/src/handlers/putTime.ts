@@ -15,6 +15,7 @@ export const definition = {
   path: '/time',
   method: 'put',
   config: {
+    type: 'http',
     environments: ['local'],
   },
   operation: {
