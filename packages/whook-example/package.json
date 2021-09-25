@@ -20,7 +20,8 @@
         ".terraform",
         "*.plan",
         "*.tfstate.d",
-        "*.credentials.json"
+        "*.credentials.json",
+        "lambda_layer.zip"
       ],
       "bundleFiles": [
         "bin",

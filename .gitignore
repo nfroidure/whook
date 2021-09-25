@@ -137,3 +137,4 @@ builds
 *.tfstate.d
 *.credentials.json
 .nx
+lambda_layer.zip
