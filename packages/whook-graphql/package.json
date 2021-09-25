@@ -1,6 +1,6 @@
 {
   "name": "@whook/graphql",
-  "version": "8.4.0",
+  "version": "8.4.1",
   "description": "GraphQL implementation for Whook servers",
   "keywords": [
     "whook",
@@ -69,7 +69,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/http-transaction": "^8.3.0",
-    "@whook/whook": "^8.4.0",
+    "@whook/whook": "^8.4.1",
     "apollo-server-core": "^2.25.0",
     "apollo-server-env": "^3.1.0",
     "common-services": "^9.0.1",
@@ -92,7 +92,7 @@
     "@types/jest": "^26.0.22",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
-    "@whook/authorization": "^8.4.0",
+    "@whook/authorization": "^8.4.1",
     "axios": "^0.21.4",
     "babel-plugin-knifecycle": "^5.0.1",
     "eslint": "^7.23.0",

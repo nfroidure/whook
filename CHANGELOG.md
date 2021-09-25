@@ -1,3 +1,12 @@
+## [8.4.1](https://github.com/nfroidure/whook/compare/v8.4.0...v8.4.1) (2021-09-25)
+
+
+### Bug Fixes
+
+* **compile:** avoid direct import of dev deps ([8db9dbe](https://github.com/nfroidure/whook/commit/8db9dbe00ce30146adbce27a2020a35477677399))
+
+
+
 # [8.4.0](https://github.com/nfroidure/whook/compare/v8.3.0...v8.4.0) (2021-09-24)
 
 
