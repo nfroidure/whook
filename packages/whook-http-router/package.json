@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-router",
-  "version": "8.3.0",
+  "version": "8.4.2",
   "description": "The Whook base HTTP router",
   "keywords": [
     "whook",

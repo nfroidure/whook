@@ -1,3 +1,12 @@
+## [8.4.2](https://github.com/nfroidure/whook/compare/v8.4.1...v8.4.2) (2021-09-26)
+
+
+### Features
+
+* **@whook/cors:** add an error wrapper for CORS ([081a1cc](https://github.com/nfroidure/whook/commit/081a1cc1d2b87a96a082a9002477c021cf445518))
+
+
+
 ## [8.4.1](https://github.com/nfroidure/whook/compare/v8.4.0...v8.4.1) (2021-09-25)
 
 
