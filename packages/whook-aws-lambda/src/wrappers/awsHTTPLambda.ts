@@ -30,8 +30,7 @@ import {
 } from '@whook/http-router';
 import stream from 'stream';
 import qs from 'qs';
-import { noop, compose } from '@whook/whook';
-import { lowerCaseHeaders } from '@whook/cors';
+import { noop, compose, lowerCaseHeaders } from '@whook/whook';
 import type {
   ServiceInitializer,
   Dependencies,

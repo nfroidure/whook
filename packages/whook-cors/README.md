@@ -13,15 +13,15 @@
 
 [//]: # (::contents:start)
 
-This  [Whook](https://github.com/nfroidure/whook) wrapper provides
- CORS support by adding it to your OpenAPI file and creating the
- handlers that runs the OPTIONS method when you cannot do it at
- the proxy/gateway level.
+This [Whook](https://github.com/nfroidure/whook) wrapper provides CORS support
+by adding it to your OpenAPI file and creating the handlers that runs the
+OPTIONS method when you cannot do it at the proxy/gateway level.
 
 ## Usage
 
-To use this module, simply add it to your `WRAPPERS` service
- (usually in `src/services/WRAPPERS.ts`):
+To use this module, simply add it to your `WRAPPERS` service (usually in
+`src/services/WRAPPERS.ts`):
+
 ```diff
 import { service } from 'knifecycle';
 + import { wrapHandlerWithCors } from '@whook/cors';
@@ -38,6 +38,7 @@ async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
 ```
 
 And add the CORS config (usually in `src/config/common/config.js`):
+
 ```diff
 + import type {
 +   CORSConfig,
@@ -78,7 +79,30 @@ export type APIHandlerDefinition = WhookAPIHandlerDefinition<
 export default CONFIG;
 ```
 
+You should also use the wrapped error handler:
+
+```diff
++ import { initErrorHandlerWithCORS } from '@whook/cors';
+
+// ...
+
+export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
+    $: T = new Knifecycle() as T,
+  ): Promise<T> {
+
+//...
+
++  // Add the CORS wrapped error handler
++  $.register(initErrorHandlerWithCORS);
+
+  return $;
+}
+```
+
+Alternatively, you could wrape your custom error handler with the `wrap
+
 Finally, you must adapt the API service to handle CORS options:
+
 ```diff
 + import { augmentAPIWithCORS } from '@whook/cors';
 
@@ -102,7 +126,7 @@ async function initAPI({
 ```
 
 To see a real example have a look at the
- [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example).
+[`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example).
 
 [//]: # (::contents:end)
 

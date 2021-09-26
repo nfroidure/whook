@@ -29,18 +29,22 @@ Object {
     ],
   ],
   "headers": Object {
+    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "access-control-allow-origin": "*",
     "cache-control": "private",
     "connection": "close",
     "content-type": "application/json",
     "date": undefined,
     "transaction-id": "1",
     "transfer-encoding": "chunked",
+    "vary": "origin",
   },
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":370,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Bearer eyJ...xZ0\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":370,\\"endOutBytes\\":530,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
+      "{\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":370,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Bearer eyJ...xZ0\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":370,\\"endOutBytes\\":780,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
     ],
     Array [
       "ERROR",
@@ -80,18 +84,22 @@ Object {
     ],
   ],
   "headers": Object {
+    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "access-control-allow-origin": "*",
     "cache-control": "private",
     "connection": "close",
     "content-type": "application/json",
     "date": undefined,
     "transaction-id": "2",
     "transfer-encoding": "chunked",
+    "vary": "origin",
   },
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":530,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
+      "{\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":780,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
     ],
   ],
   "status": 404,
@@ -124,14 +132,14 @@ Object {
     "date": undefined,
     "transaction-id": "0",
     "transfer-encoding": "chunked",
-    "vary": "Origin",
+    "vary": "origin",
     "x-node-env": "test",
   },
   "logErrorCalls": Array [],
   "logInfoCalls": Array [
     Array [
       "CALL",
-      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":146,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":146,\\"endOutBytes\\":447,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Node-ENV\\":\\"test\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"Origin\\"},\\"operationId\\":\\"getPing\\"}",
+      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":146,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":146,\\"endOutBytes\\":447,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Node-ENV\\":\\"test\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"origin\\"},\\"operationId\\":\\"getPing\\"}",
     ],
   ],
   "status": 200,
@@ -864,6 +872,9 @@ Object {
   "logInfoCalls": Array [
     Array [
       "JWT service initialized!",
+    ],
+    Array [
+      "🕱 -Wrapping the error handler for CORS.",
     ],
   ],
 }

@@ -68,6 +68,7 @@ import type {
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
   ErrorHandlerConfig,
+  ErrorHandlerDependencies,
   WhookErrorHandler,
 } from './services/errorHandler';
 import type { ValidateFunction } from 'ajv';
@@ -84,6 +85,7 @@ function identity<T>(x: T): T {
 
 export type {
   WhookErrorHandler,
+  ErrorHandlerDependencies,
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
   ErrorHandlerConfig,

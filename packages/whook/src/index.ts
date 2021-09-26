@@ -7,6 +7,7 @@ import {
   collectRefs,
   refersTo,
 } from './libs/openapi';
+import { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers';
 import {
   initLogService,
   initTimeService,
@@ -205,6 +206,8 @@ export {
   cleanupOpenAPI,
   collectRefs,
   refersTo,
+  mergeVaryHeaders,
+  lowerCaseHeaders,
 };
 
 export type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;

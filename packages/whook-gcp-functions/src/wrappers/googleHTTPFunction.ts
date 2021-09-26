@@ -28,8 +28,7 @@ import {
   getBody,
   sendBody,
 } from '@whook/http-router';
-import { noop, compose, identity } from '@whook/whook';
-import { lowerCaseHeaders } from '@whook/cors';
+import { noop, compose, identity, lowerCaseHeaders } from '@whook/whook';
 import stream from 'stream';
 import type { WhookQueryStringParser } from '@whook/http-router';
 import type { ServiceInitializer, Dependencies, Service } from 'knifecycle';

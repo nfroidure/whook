@@ -2,7 +2,7 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS';
 import { wrapInitializer, alsoInject } from 'knifecycle';
-import { identity } from '@whook/whook';
+import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
 import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type {
   WhookResponse,
@@ -11,6 +11,12 @@ import type {
   WhookAPIHandlerDefinition,
 } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
+import initErrorHandlerWithCORS, {
+  wrapErrorHandlerForCORS,
+  isGetter,
+} from './services/errorHandler';
+
+export { initErrorHandlerWithCORS, wrapErrorHandlerForCORS };
 
 // Ensures a deterministic canonical operation
 const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
@@ -54,19 +60,6 @@ export function wrapHandlerWithCORS<D, S extends WhookHandler>(
   return wrapInitializer(async (services, handler) => {
     return handleWithCORS.bind(null, services, handler);
   }, augmentedInitializer);
-}
-
-function isGetter(obj: unknown, prop: string): boolean {
-  if (typeof obj[prop] === 'undefined' || obj[prop] === null) {
-    // Property not defined in obj, should be safe to write this property
-    return false;
-  }
-  try {
-    return !!Object.getOwnPropertyDescriptor(obj, prop)['get'];
-  } catch (err) {
-    // Error while getting the descriptor, should be only a get
-    return true;
-  }
 }
 
 async function handleWithCORS<
@@ -215,37 +208,3 @@ export async function augmentAPIWithCORS(
 }
 
 export { initOptionsWithCORS };
-
-function mergeVaryHeaders(
-  baseHeader: string | string[],
-  addedValue: string,
-): string {
-  const baseHeaderValues = (
-    baseHeader instanceof Array ? baseHeader : [baseHeader]
-  )
-    .map((value) =>
-      value
-        .split(',')
-        .filter(identity)
-        .map((v) => v.trim().toLowerCase()),
-    )
-    .reduce((allValues, values) => [...allValues, ...values], []);
-
-  if (baseHeaderValues.includes('*')) {
-    return '*';
-  }
-
-  return [...new Set([...baseHeaderValues, addedValue])].join(', ');
-}
-
-export function lowerCaseHeaders<T>(
-  object: Record<string, T>,
-): Record<string, T> {
-  return Object.keys(object).reduce(
-    (finalObject, key) => ({
-      ...finalObject,
-      [key.toLowerCase()]: object[key],
-    }),
-    {},
-  );
-}

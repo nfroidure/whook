@@ -7,6 +7,7 @@ import {
   initAPIDefinitions,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
+import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import type { DependencyDeclaration, Dependencies } from 'knifecycle';
 
@@ -168,6 +169,9 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
   $.register(
     constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook', '@whook/cors']),
   );
+
+  // Add the CORS wrapped error handler
+  $.register(initErrorHandlerWithCORS);
 
   return $;
 }

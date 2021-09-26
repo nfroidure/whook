@@ -57,7 +57,8 @@
     "@whook/http-router": "^8.3.0",
     "@whook/whook": "^8.4.1",
     "knifecycle": "^11.1.1",
-    "openapi-types": "^9.3.0"
+    "openapi-types": "^9.3.0",
+    "yhttperror": "^6.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.14",
