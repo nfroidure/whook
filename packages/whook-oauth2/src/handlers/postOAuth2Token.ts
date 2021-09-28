@@ -2,6 +2,7 @@ import { autoHandler } from 'knifecycle';
 import { camelCaseObjectProperties } from './getOAuth2Authorize';
 import { noop } from '@whook/whook';
 import YError from 'yerror';
+import { refersTo } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService, TimeService } from 'common-services';
 import type {
@@ -121,18 +122,10 @@ export const tokenBodySchema: WhookAPISchemaDefinition = {
   name: 'TokenRequestBody',
   schema: {
     oneOf: [
-      {
-        $ref: `#/components/schemas/${passwordTokenRequestBodySchema.name}`,
-      },
-      {
-        $ref: `#/components/schemas/${authorizationCodeTokenRequestBodySchema.name}`,
-      },
-      {
-        $ref: `#/components/schemas/${clientCredentialsTokenRequestBodySchema.name}`,
-      },
-      {
-        $ref: `#/components/schemas/${refreshTokenRequestBodySchema.name}`,
-      },
+      refersTo(passwordTokenRequestBodySchema),
+      refersTo(authorizationCodeTokenRequestBodySchema),
+      refersTo(clientCredentialsTokenRequestBodySchema),
+      refersTo(refreshTokenRequestBodySchema),
     ],
   } as OpenAPIV3.SchemaObject,
 };
@@ -150,14 +143,10 @@ export const definition: WhookAPIHandlerDefinition = {
       required: true,
       content: {
         'application/x-www-form-urlencoded': {
-          schema: {
-            $ref: `#/components/schemas/${tokenBodySchema.name}`,
-          },
+          schema: refersTo(tokenBodySchema),
         },
         'application/json': {
-          schema: {
-            $ref: `#/components/schemas/${tokenBodySchema.name}`,
-          },
+          schema: refersTo(tokenBodySchema),
         },
       },
     },
