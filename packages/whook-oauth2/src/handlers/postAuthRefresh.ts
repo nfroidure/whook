@@ -1,5 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import YHTTPError from 'yhttperror';
+import { refersTo } from '@whook/whook';
 import initPostOauth2Token from './postOAuth2Token';
 import { AUTH_API_PREFIX } from '../services/authCookies';
 import type {
@@ -36,11 +37,7 @@ export const definition: WhookAPIHandlerDefinition = {
     'x-whook': {
       disabled: true,
     },
-    parameters: [
-      {
-        $ref: `#/components/parameters/${authCookieHeaderParameter.name}`,
-      },
-    ],
+    parameters: [refersTo(authCookieHeaderParameter)],
     requestBody: {
       required: true,
       content: {

@@ -1,6 +1,7 @@
 import { autoHandler } from 'knifecycle';
 import camelCase from 'camelcase';
 import YError from 'yerror';
+import { refersTo } from '@whook/whook';
 import type {
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
@@ -89,21 +90,11 @@ export const definition: WhookAPIHandlerDefinition = {
  as defined per the OAuth2 RFC.`,
     tags: ['oauth2'],
     parameters: [
-      {
-        $ref: `#/components/parameters/${responseTypeParameter.name}`,
-      },
-      {
-        $ref: `#/components/parameters/${clientIdParameter.name}`,
-      },
-      {
-        $ref: `#/components/parameters/${redirectURIParameter.name}`,
-      },
-      {
-        $ref: `#/components/parameters/${scopeParameter.name}`,
-      },
-      {
-        $ref: `#/components/parameters/${stateParameter.name}`,
-      },
+      refersTo(responseTypeParameter),
+      refersTo(clientIdParameter),
+      refersTo(redirectURIParameter),
+      refersTo(scopeParameter),
+      refersTo(stateParameter),
     ],
     responses: {
       '302': {
