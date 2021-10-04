@@ -32,7 +32,7 @@
     "lerna": "lerna",
     "lint": "lerna run lint",
     "metapak": "metapak",
-    "postinstall": "lerna bootstrap --hoist && npm run compile && lerna link && npm run lerna -- run types",
+    "postinstall": "lerna bootstrap --hoist && npm run compile && lerna link && npm run lerna -- run types && lerna run --parallel genPackagelock",
     "postmetapak": "lerna run metapak",
     "precz": "npm t && npm run lint && npm run compile && npm run lerna -- run types && npm run metapak -- -s",
     "prettier": "lerna run prettier",

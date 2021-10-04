@@ -198,6 +198,7 @@
     "compile:mjs": "babel --env-name=mjs --out-file-extension=.mjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
     "cover": "npm run jest -- --coverage",
     "doc": "echo \"# API\" > API.md; jsdoc2md 'dist/**/*.js' >> API.md && git add API.md",
+    "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
