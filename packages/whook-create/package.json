@@ -49,6 +49,7 @@
     "cover": "npm run jest -- --coverage",
     "debug": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node --inspect bin/dev",
     "dev": "NODE_ENV=${NODE_ENV:-development} DESTROY_SOCKETS=1 babel-node bin/dev",
+    "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",

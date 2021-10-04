@@ -53,6 +53,7 @@
     "cover": "npm run jest -- --coverage",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
     "doc": "echo \"# API\" > API.md; jsdoc2md 'dist/**/*.js' >> API.md && git add API.md",
+    "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
