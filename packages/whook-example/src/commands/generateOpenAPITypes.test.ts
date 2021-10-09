@@ -37,6 +37,7 @@ describe('generateOpenAPITypes', () => {
       outstream.once('end', () => resolve(buffer.toString()));
     });
     const generateOpenAPITypes = await initGenerateOpenAPITypes({
+      NODE_ENV: 'development',
       instream,
       outstream,
       log,
