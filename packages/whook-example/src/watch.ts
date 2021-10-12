@@ -72,18 +72,21 @@ export async function restartDevServer(): Promise<void> {
   const { runServer, prepareEnvironment, prepareServer } = await import('.');
 
   const {
+    NODE_ENV,
     PROJECT_SRC,
     $instance: _instance,
     delay: _delay,
     getOpenAPI,
     log: _log,
   } = (await runServer(prepareEnvironment, prepareServer, [
+    'NODE_ENV',
     'PROJECT_SRC',
     '$instance',
     'delay',
     'getOpenAPI',
     'log',
   ])) as {
+    NODE_ENV: string;
     PROJECT_SRC: string;
     $instance: Knifecycle<Dependencies>;
     delay: DelayService;
@@ -113,6 +116,7 @@ export async function restartDevServer(): Promise<void> {
     const bridge = new PassThrough();
     const openAPITypesGenerationPromise = (
       await initGenerateOpenAPITypes({
+        NODE_ENV,
         instream,
         outstream: bridge,
         log,

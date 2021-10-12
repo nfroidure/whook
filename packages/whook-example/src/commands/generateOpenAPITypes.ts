@@ -28,10 +28,12 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initGenerateOpenAPITypes));
 
 async function initGenerateOpenAPITypes({
+  NODE_ENV,
   instream = process.stdin,
   outstream = process.stdout,
   log,
 }: {
+  NODE_ENV: string;
   instream: NodeJS.ReadableStream;
   outstream: NodeJS.WritableStream;
   log: LogService;
@@ -48,7 +50,11 @@ async function initGenerateOpenAPITypes({
       instream.once('end', () => resolve(buffer.toString()));
     });
 
-    const typesDefs = toSource(await generateTypes(JSON.parse(openAPI)));
+    const typesDefs = toSource(
+      await generateTypes(JSON.parse(openAPI), 'API', {
+        generateUnusedSchemas: NODE_ENV === 'development',
+      }),
+    );
 
     log('warning', '📇 - Writing types...');
     await new Promise((resolve, reject) => {
