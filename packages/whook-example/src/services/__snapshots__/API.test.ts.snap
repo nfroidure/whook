@@ -101,8 +101,49 @@ Object {
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
+      "requestBodies": Object {
+        "Echo": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/Echo",
+              },
+            },
+          },
+          "required": true,
+        },
+      },
+      "responses": Object {
+        "Diagnostic": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "properties": Object {
+                  "transactions": Object {
+                    "additionalProperties": true,
+                    "type": "object",
+                  },
+                },
+                "required": Array [
+                  "transactions",
+                ],
+                "type": "object",
+              },
+            },
+          },
+          "description": "Diagnostic",
+        },
+        "Echo": Object {
+          "content": Object {
+            "application/json": Object {
+              "schema": Object {
+                "$ref": "#/components/schemas/Echo",
+              },
+            },
+          },
+          "description": "Echo response",
+        },
+      },
       "schemas": Object {
         "Echo": Object {
           "additionalProperties": false,
@@ -140,7 +181,7 @@ Object {
       "title": "@whook/example",
       "version": "1.1.0",
     },
-    "openapi": "3.0.2",
+    "openapi": "3.0.3",
     "paths": Object {
       "/delay": Object {
         "get": Object {
@@ -196,23 +237,7 @@ Object {
           "parameters": Array [],
           "responses": Object {
             "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
-                    "properties": Object {
-                      "transactions": Object {
-                        "additionalProperties": true,
-                        "type": "object",
-                      },
-                    },
-                    "required": Array [
-                      "transactions",
-                    ],
-                    "type": "object",
-                  },
-                },
-              },
-              "description": "Diagnostic",
+              "$ref": "#/components/responses/Diagnostic",
             },
           },
           "security": Array [
@@ -278,29 +303,11 @@ Object {
         "put": Object {
           "operationId": "putEcho",
           "requestBody": Object {
-            "content": Object {
-              "application/json": Object {
-                "example": Object {
-                  "echo": "Repeat this!",
-                },
-                "schema": Object {
-                  "$ref": "#/components/schemas/Echo",
-                },
-              },
-            },
-            "description": "The input sentence",
-            "required": true,
+            "$ref": "#/components/requestBodies/Echo",
           },
           "responses": Object {
             "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
-                    "$ref": "#/components/schemas/Echo",
-                  },
-                },
-              },
-              "description": "The actual echo",
+              "$ref": "#/components/responses/Echo",
             },
           },
           "summary": "Echoes what it takes.",

@@ -63,7 +63,7 @@ describe('getDelay', () => {
           ],
         ],
         "response": Object {
-          "status": 200,
+          "status": 204,
         },
       }
     `);

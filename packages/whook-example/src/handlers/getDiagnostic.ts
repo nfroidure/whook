@@ -1,5 +1,28 @@
+import { refersTo } from '@whook/whook';
 import { autoHandler } from 'knifecycle';
+import type { WhookAPIResponseDefinition } from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
+
+export const diagnosticResponse: WhookAPIResponseDefinition = {
+  name: 'Diagnostic',
+  response: {
+    description: 'Diagnostic',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          required: ['transactions'],
+          properties: {
+            transactions: {
+              type: 'object',
+              additionalProperties: true,
+            },
+          },
+        },
+      },
+    },
+  },
+};
 
 /* Architecture Note #3.4.1: getDiagnostic
 
@@ -20,23 +43,7 @@ export const definition: APIHandlerDefinition = {
     tags: ['system'],
     parameters: [],
     responses: {
-      200: {
-        description: 'Diagnostic',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'object',
-              required: ['transactions'],
-              properties: {
-                transactions: {
-                  type: 'object',
-                  additionalProperties: true,
-                },
-              },
-            },
-          },
-        },
-      },
+      200: refersTo(diagnosticResponse),
     },
   },
 };
@@ -46,7 +53,7 @@ export default autoHandler(getDiagnostic);
 async function getDiagnostic({
   TRANSACTIONS,
 }: {
-  TRANSACTIONS: API.GetDiagnostic.Responses.$200['transactions'];
+  TRANSACTIONS: Components.Responses.Diagnostic<number>['body'];
 }): Promise<API.GetDiagnostic.Output> {
   return {
     status: 200,

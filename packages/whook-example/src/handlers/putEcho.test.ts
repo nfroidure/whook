@@ -1,23 +1,32 @@
-import initPutEcho, { definition } from './putEcho';
+import initPutEcho, { echoSchema } from './putEcho';
 import YError from 'yerror';
-import type { OpenAPIV3 } from 'openapi-types';
 
 describe('putEcho', () => {
   const log = jest.fn();
+
+  beforeEach(() => {
+    log.mockReset();
+  });
 
   it('should work', async () => {
     const putEcho = await initPutEcho({
       log,
     });
     const response = await putEcho({
-      body: (definition.operation.requestBody as OpenAPIV3.RequestBodyObject)
-        .content['application/json'].example,
+      body: echoSchema.example,
     });
 
     expect({
       response,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
       Object {
+        "logCalls": Array [
+          Array [
+            "warning",
+            "📢 - Echoing \\"Repeat this!\\"",
+          ],
+        ],
         "response": Object {
           "body": Object {
             "echo": "Repeat this!",
@@ -26,9 +35,6 @@ describe('putEcho', () => {
         },
       }
     `);
-    expect({
-      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
   });
 
   it('should fail when crossing the red line ;)', async () => {
@@ -45,17 +51,16 @@ describe('putEcho', () => {
       expect({
         errorCode: err.code,
         errorParams: err.params,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
         Object {
           "errorCode": "E_MUST_NOT_BE_NAMED",
           "errorParams": Array [
             "Big up to Lord Voldemort!",
           ],
+          "logCalls": Array [],
         }
       `);
-      expect({
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
     }
   });
 });

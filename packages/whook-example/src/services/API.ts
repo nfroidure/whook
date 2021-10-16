@@ -43,7 +43,7 @@ async function initAPI({
   log('debug', '🦄 - Initializing the API service!');
 
   const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+    openapi: '3.0.3',
     info: {
       version: API_VERSION,
       title: CONFIG.name,
