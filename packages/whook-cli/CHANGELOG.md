@@ -1,3 +1,13 @@
+# [8.5.0](https://github.com/nfroidure/whook/compare/v8.4.2...v8.5.0) (2021-10-18)
+
+
+### Features
+
+* **openapi:** full oas3 components support ([7bf5b96](https://github.com/nfroidure/whook/commit/7bf5b966ba33f54f664c16519a28fd9965a7ead7))
+* **types:** build API types despite not used yet in dev mode ([d529a84](https://github.com/nfroidure/whook/commit/d529a8445fd46040dbf23d39c2f649346db9cad7))
+
+
+
 ## [8.4.2](https://github.com/nfroidure/whook/compare/v8.4.1...v8.4.2) (2021-09-26)
 
 
