@@ -108,7 +108,7 @@ async function getDelay(
    `headers` properties.
   */
   return {
-    status: 200,
+    status: 204,
   };
 }
 

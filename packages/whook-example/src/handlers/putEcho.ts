@@ -2,7 +2,11 @@ import { autoHandler } from 'knifecycle';
 import { refersTo } from '@whook/whook';
 import YHTTPError from 'yhttperror';
 import type { LogService } from 'common-services';
-import type { WhookAPISchemaDefinition } from '@whook/whook';
+import type {
+  WhookAPISchemaDefinition,
+  WhookAPIResponseDefinition,
+  WhookAPIRequestBodyDefinition,
+} from '@whook/whook';
 import type { APIHandlerDefinition } from '../config/common/config';
 
 /* Architecture Note #3.1.3: Reusable schemas
@@ -10,9 +14,17 @@ import type { APIHandlerDefinition } from '../config/common/config';
 This is how to declare a reusable API schema
  to avoid having to write it several times and
  lower your final Open API file weight.
+
+You simply have to export a variable finishing with
+ the `Schema` suffix and assign it the
+ `WhookAPISchemaDefinition` type to be guided
+ when creating it.
 */
 export const echoSchema: WhookAPISchemaDefinition<Components.Schemas.Echo> = {
   name: 'Echo',
+  example: {
+    echo: 'Repeat this!',
+  },
   schema: {
     type: 'object',
     required: ['echo'],
@@ -20,6 +32,52 @@ export const echoSchema: WhookAPISchemaDefinition<Components.Schemas.Echo> = {
     properties: {
       echo: {
         type: 'string',
+      },
+    },
+  },
+};
+
+/* Architecture Note #3.1.4: Reusable responses
+
+This is how to declare a reusable API response
+ to avoid having to write it several times and
+ lower your final Open API file weight.
+
+You simply have to export a variable finishing with
+ the `Response` suffix and assign it the
+ `WhookAPIResponseDefinition` type to be guided
+ when creating it.
+*/
+export const echoResponse: WhookAPIResponseDefinition = {
+  name: 'Echo',
+  response: {
+    description: 'Echo response',
+    content: {
+      'application/json': {
+        schema: refersTo(echoSchema),
+      },
+    },
+  },
+};
+
+/* Architecture Note #3.1.4: Reusable request bodies
+
+This is how to declare a reusable API request body
+ to avoid having to write it several times and
+ lower your final Open API file weight.
+
+You simply have to export a variable finishing with
+ the `RequestBody` suffix and assign it the
+ `WhookAPIRequestBodyDefinition` type to be guided
+ when creating it.
+*/
+export const echoRequestBody: WhookAPIRequestBodyDefinition = {
+  name: 'Echo',
+  requestBody: {
+    required: true,
+    content: {
+      'application/json': {
+        schema: refersTo(echoSchema),
       },
     },
   },
@@ -45,27 +103,9 @@ export const definition: APIHandlerDefinition = {
      inside parameters or even inside other
      schemas as per the OpenAPI specification.
     */
-    requestBody: {
-      description: 'The input sentence',
-      required: true,
-      content: {
-        'application/json': {
-          schema: refersTo(echoSchema),
-          example: {
-            echo: 'Repeat this!',
-          },
-        },
-      },
-    },
+    requestBody: refersTo(echoRequestBody),
     responses: {
-      200: {
-        description: 'The actual echo',
-        content: {
-          'application/json': {
-            schema: refersTo(echoSchema),
-          },
-        },
-      },
+      200: refersTo(echoResponse),
     },
   },
 };

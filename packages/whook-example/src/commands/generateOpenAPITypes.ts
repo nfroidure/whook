@@ -38,7 +38,7 @@ async function initGenerateOpenAPITypes({
   outstream: NodeJS.WritableStream;
   log: LogService;
 }): Promise<() => Promise<void>> {
-  return async function generateOpenAPITypes() {
+  return async function generateOpenAPITypes(): Promise<void> {
     log('warning', '📥 - Retrieving API schema...');
 
     const openAPI: string = await new Promise((resolve, reject) => {
@@ -51,7 +51,8 @@ async function initGenerateOpenAPITypes({
     });
 
     const typesDefs = toSource(
-      await generateTypes(JSON.parse(openAPI), 'API', {
+      await generateTypes(JSON.parse(openAPI), {
+        baseName: 'API',
         generateUnusedSchemas: NODE_ENV === 'development',
       }),
     );

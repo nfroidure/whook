@@ -1,7 +1,7 @@
 import initGetDiagnostic from './getDiagnostic';
 
 describe('getDiagnostic', () => {
-  const TRANSACTIONS = {};
+  const TRANSACTIONS = {} as Components.Responses.Diagnostic<number>['body'];
 
   it('should work', async () => {
     const getDiagnostic = await initGetDiagnostic({

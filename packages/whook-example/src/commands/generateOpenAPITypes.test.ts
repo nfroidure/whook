@@ -70,30 +70,29 @@ describe('generateOpenAPITypes', () => {
         ],
         "output": "declare namespace API {
           export namespace GetPing {
+              export type Output = Responses.$200;
               export type Input = {};
-              export type Output = {
-                  readonly status: 200;
-                  readonly headers?: NonNullable<{
-                      [pattern: string]: (NonNullable<string> | NonNullable<NonNullable<string>[]>);
-                  }>;
-                  readonly body: Responses.$200;
-              };
               export namespace Responses {
-                  export type $200 = Components.Schemas.ApiResponses.GetPing.Response200.Schema0;
+                  export type $200 = Components.Responses.getPingResponse200<200>;
               }
           }
       }
       declare namespace Components {
+          export namespace Responses {
+              type getPingResponse200<S extends number> = {
+                  readonly status: S;
+                  readonly headers?: {
+                      readonly [name: string]: unknown;
+                  };
+                  readonly body: Components.Schemas.ResponsesgetPingResponse200Body0;
+              };
+          }
+      }
+      declare namespace Components {
           export namespace Schemas {
-              export namespace ApiResponses {
-                  export namespace GetPing {
-                      export namespace Response200 {
-                          export type Schema0 = NonNullable<{
-                              pong?: \\"pong\\";
-                          }>;
-                      }
-                  }
-              }
+              export type ResponsesgetPingResponse200Body0 = NonNullable<{
+                  pong?: \\"pong\\";
+              }>;
           }
       }",
         "result": undefined,

@@ -226,7 +226,7 @@ Mr Bean
           "parse-gitignore": "^1.0.1",
           "prettier": "^2.2.1",
           "rimraf": "^3.0.2",
-          "schema2dts": "^2.2.1",
+          "schema2dts": "^3.0.0",
           "typescript": "^4.2.4",
         },
         "engines": Object {
@@ -485,7 +485,7 @@ Mr Bean
           "parse-gitignore": "^1.0.1",
           "prettier": "^2.2.1",
           "rimraf": "^3.0.2",
-          "schema2dts": "^2.2.1",
+          "schema2dts": "^3.0.0",
           "typescript": "^4.2.4",
         },
         "engines": Object {
@@ -729,7 +729,7 @@ Mr Bean
           "parse-gitignore": "^1.0.1",
           "prettier": "^2.2.1",
           "rimraf": "^3.0.2",
-          "schema2dts": "^2.2.1",
+          "schema2dts": "^3.0.0",
           "typescript": "^4.2.4",
         },
         "engines": Object {
