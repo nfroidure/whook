@@ -1,6 +1,6 @@
 {
   "name": "@whook/aws-lambda",
-  "version": "8.5.0",
+  "version": "8.5.1",
   "description": "Build and deploy to AWS Lambda with Whook.",
   "main": "dist/index",
   "module": "dist/index.mjs",
@@ -46,11 +46,11 @@
   "dependencies": {
     "@types/aws-lambda": "^8.10.83",
     "@types/bytes": "^3.1.1",
-    "@whook/cli": "^8.5.0",
-    "@whook/cors": "^8.5.0",
+    "@whook/cli": "^8.5.1",
+    "@whook/cors": "^8.5.1",
     "@whook/http-router": "^8.5.0",
     "@whook/http-transaction": "^8.5.0",
-    "@whook/whook": "^8.5.0",
+    "@whook/whook": "^8.5.1",
     "ajv": "^8.6.3",
     "ajv-formats": "^2.1.1",
     "bytes": "^3.1.0",

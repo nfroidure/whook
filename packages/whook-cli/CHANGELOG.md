@@ -1,3 +1,12 @@
+## [8.5.1](https://github.com/nfroidure/whook/compare/v8.5.0...v8.5.1) (2021-10-25)
+
+
+### Bug Fixes
+
+* **libs:** fix open api parsing ([166b4a4](https://github.com/nfroidure/whook/commit/166b4a4db49ff5e0465b1519a6025844d5b961fe))
+
+
+
 # [8.5.0](https://github.com/nfroidure/whook/compare/v8.4.2...v8.5.0) (2021-10-18)
 
 
