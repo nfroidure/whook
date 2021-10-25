@@ -78,7 +78,7 @@ export function collectRefs(
     for (const item of node) {
       seenRefs = collectRefs(rootNode, item, seenRefs);
     }
-  } else if (typeof node === 'object') {
+  } else if (node !== null && typeof node === 'object') {
     const keys = Object.keys(node);
 
     if (typeof node.$ref === 'string' && !seenRefs.includes(node.$ref)) {
