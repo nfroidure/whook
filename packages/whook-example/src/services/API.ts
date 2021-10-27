@@ -9,7 +9,6 @@ export type APIEnv = {
   DEV_MODE?: string;
 };
 export type APIConfig = {
-  ENV?: APIEnv;
   CONFIG: WhookConfig;
   BASE_URL?: string;
   BASE_PATH?: string;

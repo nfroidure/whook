@@ -1,13 +1,5 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
-import type { WhookAuthorizationConfig } from '@whook/authorization';
-import type {
-  WhookAPIOperationSwaggerConfig,
-  WhookSwaggerUIConfig,
-} from '@whook/swagger-ui';
-import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
-import type { WhookAPIHandlerDefinition, WhookConfigs } from '@whook/whook';
-import type { APIConfig } from '../../services/API';
-import type { JWTServiceConfig } from 'jwt-service';
+import type { WhookConfigs } from '@whook/whook';
 
 /* Architecture Note #2: Configuration
 
@@ -23,28 +15,6 @@ const packageConf = require('../../../package');
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
 const NODE_ENVS = [...DEBUG_NODE_ENVS, 'uat', 'production'];
 
-/* Architecture Note #2.1: Typings
-
-The configuration is typed so that you are sure you cannot
- produce a bad configuration for your API.
-*/
-export type AppConfigs = WhookConfigs &
-  WhookAuthorizationConfig &
-  WhookSwaggerUIConfig &
-  WhookCORSConfig &
-  APIConfig &
-  JWTServiceConfig;
-
-/* Architecture Note #3.2.3: Typings
-
-Here we export a custom handler definition type in order
- to allow using the various plugins installed that deal
- with the handlers.
-*/
-export type APIHandlerDefinition = WhookAPIHandlerDefinition<
-  WhookAPIOperationCORSConfig & WhookAPIOperationSwaggerConfig
->;
-
 /* Architecture Note #2.2: Exporting
 
 Each configuration file then create a configuration object
@@ -52,11 +22,10 @@ Each configuration file then create a configuration object
 
 See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/CONFIGS.ts#L56).
 */
-const CONFIG: AppConfigs = {
+const CONFIG: Omit<WhookConfigs, 'HOST'> = {
   BASE_ENV: {},
   API_VERSION: packageConf.version,
   BASE_PATH: `/v${packageConf.version.split('.')[0]}`,
-  HOST: 'localhost',
   CONFIG: {
     name: packageConf.name,
     description: packageConf.description || '',

@@ -18,7 +18,7 @@ export type WhookSwaggerUIEnv = {
 };
 export type WhookSwaggerUIConfig = {
   DEV_ACCESS_TOKEN?: string;
-  BASE_PATH: string;
+  BASE_PATH?: string;
   HOST?: string;
   PORT?: number;
 };
@@ -51,7 +51,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
     [
       'ENV',
       '?DEV_ACCESS_TOKEN',
-      'BASE_PATH',
+      '?BASE_PATH',
       'HOST',
       'PORT',
       'importer',
@@ -65,7 +65,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
       {
         ENV,
         DEV_ACCESS_TOKEN,
-        BASE_PATH,
+        BASE_PATH = '',
         HOST,
         PORT,
         log = noop,

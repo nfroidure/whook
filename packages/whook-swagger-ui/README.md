@@ -54,29 +54,49 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 }
 ```
 
-And add the SwaggerUI config (usually in `src/config/common/config.js`):
+Declare this module types in your `src/whook.d.ts` type
+ definitions:
 ```diff
 + import type {
 +   WhookAPIOperationSwaggerConfig,
 +   WhookSwaggerUIConfig,
 + } from '@whook/swagger-ui';
 
-// ...
+declare module '@whook/whook' {
 
-export type AppConfigs = WhookConfigs &
-  CORSConfig &
-+  WhookSwaggerUIConfig &
-  APIConfig;
-
-const CONFIG: AppConfigs = {
   // ...
+
+  export interface WhookConfigs
+-    extends WhookBaseConfigs {}
++    extends WhookBaseConfigs, WhookSwaggerUIConfig {}
+
+  // ...
+
+  export interface WhookAPIHandlerDefinition<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    U extends {
+      [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
+    } = unknown,
+  > extends WhookBaseAPIHandlerDefinition<T, U> {
+    operation: U & WhookAPIOperation<
+        T &
++      WhookAPIOperationSwaggerConfig &
+      WhookAPIOperationCORSConfig
+    >;
+  }
+
+}
+```
+
+And add the SwaggerUI config (usually in `src/config/common/config.js`):
+```diff
+import type { WhookConfigs } from '@whook/whook';
+
+const CONFIG: WhookConfigs = {
+  // ...
+  BASE_PATH: 'v4',
 };
 
-// Export custom handlers definitions
-export type APIHandlerDefinition = WhookAPIHandlerDefinition<
-  WhookAPIOperationCORSConfig &
-+  WhookAPIOperationSwaggerConfig
->;
 
 export default CONFIG;
 ```

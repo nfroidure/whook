@@ -64,34 +64,61 @@ export type WhookBuildConfig = {
   BUILD_OPTIONS?: BuildOptions;
   BUILD_PARALLELISM?: number;
 };
-export type WhookAPIOperationAWSLambdaConfig<
-  T extends {
-    type?:
-      | 'http'
-      | 'cron'
-      | 'consumer'
-      | 'transformer'
-      | 'kafka'
-      | 's3'
-      | 'log';
-  } = {
-    type?:
-      | 'http'
-      | 'cron'
-      | 'consumer'
-      | 'transformer'
-      | 'kafka'
-      | 's3'
-      | 'log';
-  },
-> = {
+export type WhookAWSLambdaBaseConfiguration = {
   sourceOperationId?: string;
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
   suffix?: string;
   memory?: number;
   timeout?: number;
-} & T;
+};
+export type WhookAWSLambdaBaseHTTPConfiguration = {
+  type: 'http';
+};
+export type WhookAWSLambdaBaseCronConfiguration<
+  T extends Record<string, unknown>,
+> = {
+  type: 'cron';
+  schedules: {
+    rule: string;
+    body?: T;
+    enabled: boolean;
+  }[];
+};
+export type WhookAWSLambdaBaseConsumerConfiguration = {
+  type: 'consumer';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseTransformerConfiguration = {
+  type: 'transformer';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseKafkaConsumerConfiguration = {
+  type: 'kafka';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseLogSubscriberConfiguration = {
+  type: 'log';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseS3Configuration = {
+  type: 's3';
+  enabled: boolean;
+};
+export type WhookAWSLambdaConfiguration<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> =
+  | WhookAWSLambdaBaseHTTPConfiguration
+  | WhookAWSLambdaBaseCronConfiguration<T>
+  | WhookAWSLambdaBaseConsumerConfiguration
+  | WhookAWSLambdaBaseTransformerConfiguration
+  | WhookAWSLambdaBaseKafkaConsumerConfiguration
+  | WhookAWSLambdaBaseLogSubscriberConfiguration
+  | WhookAWSLambdaBaseS3Configuration;
+
+export type WhookAPIOperationAWSLambdaConfig<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> = WhookAWSLambdaBaseConfiguration & WhookAWSLambdaConfiguration<T>;
 
 const readFileAsync = util.promisify(fs.readFile) as (
   path: string,
@@ -354,8 +381,9 @@ async function buildAnyLambda(
   const { operationId } = operation;
 
   try {
-    const whookConfig: WhookAPIOperationAWSLambdaConfig =
-      operation['x-whook'] || {};
+    const whookConfig: WhookAPIOperationAWSLambdaConfig = operation[
+      'x-whook'
+    ] || { type: 'http' };
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
     const entryPoint = operationId;

@@ -61,6 +61,24 @@ Declare the plugin into your `index.ts` file:
   // (...)
 ```
 
+Declare this module types in your `src/whook.d.ts` type
+ definitions:
+```diff
++ import type { OAuth2Config } from '@whook/oauth2';
+
+declare module '@whook/whook' {
+
+  // ...
+
+  export interface WhookConfigs
+-    extends WhookBaseConfigs {}
++    extends WhookBaseConfigs, OAuth2Config {}
+
+  // ...
+
+}
+```
+
 Add the OAuth2 configuration to your config files:
 
 ```diff
@@ -68,14 +86,11 @@ Add the OAuth2 configuration to your config files:
 +   OAUTH2_ERRORS_DESCRIPTORS,
 +   OAuth2Config,
 + } from '@whook/oauth2';
+import type { WhookConfigs } from '@whook/whook';
 
 // ...
 
-export type AppConfigs = WhookConfigs &
-+  OAuth2Config &
-  APIConfig;
-
-const CONFIG: AppConfigs = {
+const CONFIG: WhookConfigs = {
   // ...
 +   OAUTH2: {
 +     // The SSR frontend

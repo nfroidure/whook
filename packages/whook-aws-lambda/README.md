@@ -108,34 +108,56 @@ export async function prepareBuildEnvironment(
 }
 ```
 
-And add the AWS Lambda config (usually in `src/config/common/config.js`):
-
+Declare this module types in your `src/whook.d.ts` type
+ definitions:
 ```diff
 + import type { WhookCompilerConfig } from '@whook/whook';
 + import type {
-+   WhookAPIOperationGCPFunctionConfig
++   WhookAPIOperationAWSLambdaConfig
 + } from '@whook/aws-lambda';
+
+declare module '@whook/whook' {
+
+  // ...
+
+  export interface WhookConfigs
+-    extends WhookBaseConfigs {}
++    extends WhookBaseConfigs, WhookCompilerConfig {}
+
+  // ...
+
+  export interface WhookAPIHandlerDefinition<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    U extends {
+      [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
+    } = unknown,
+  > extends WhookBaseAPIHandlerDefinition<T, U> {
+    operation: U & WhookAPIOperation<
+        T &
++       WhookAPIOperationAWSLambdaConfig<{
++         myCronBodyProp: string,
++       }> &
+      WhookAPIOperationCORSConfig
+    >;
+  }
+
+}
+```
+
+And add the AWS Lambda config (usually in `src/config/common/config.js`):
+
+```diff
+import type { WhookConfigs } from '@whook/whook';
 
 // ...
 
-export type AppConfigs = WhookConfigs &
-+  WhookCompilerConfig &
-  APIConfig;
-
-const CONFIG: AppConfigs = {
+const CONFIG: WhookConfigs = {
   // ...
 +  COMPILER_OPTIONS: {
 +    externalModules: [],
-+    ignoredModules: [],
 +    target: '14',
 +  },
 };
-
-// Export custom handlers definitions
-export type APIHandlerDefinition = WhookAPIHandlerDefinition<
-+  WhookAPIOperationAWSLambdaConfig &
-  WhookAPIOperationSwaggerConfig
->;
 
 export default CONFIG;
 ```

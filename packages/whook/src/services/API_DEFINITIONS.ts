@@ -48,73 +48,81 @@ export type WhookAPIDefinitions = {
   components: OpenAPIV3.ComponentsObject;
 };
 
-export type WhookAPIOperationConfig = {
+export interface WhookAPIOperationConfig {
   disabled?: boolean;
-};
+}
 
-export type WhookAPIOperationAddition<
-  T extends Record<string, unknown> = Record<string, never>,
-> = {
+export interface WhookAPIOperationAddition<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> {
   operationId: OpenAPIV3.OperationObject['operationId'];
   'x-whook'?: WhookAPIOperationConfig & T;
-};
+}
 
 export type WhookAPIOperation<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
 
-export type WhookAPIHandlerDefinition<
+export interface WhookBaseAPIHandlerDefinition<
   T extends Record<string, unknown> = Record<string, unknown>,
   U extends {
     [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
   } = unknown,
-> = {
+> {
   path: string;
   method: string;
   operation: WhookAPIOperation<T> & U;
-};
+}
 
-export type WhookAPISchemaDefinition<
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface WhookAPIHandlerDefinition<
+  T extends Record<string, unknown> = Record<string, unknown>,
+  U extends {
+    [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
+  } = unknown,
+> extends WhookBaseAPIHandlerDefinition<T, U> {}
+
+export interface WhookAPISchemaDefinition<
   T extends JsonValue | OpenAPIV3.ReferenceObject | void | unknown = unknown,
-> = {
+> {
   name: string;
   schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
   example?: T;
   examples?: Record<string, T>;
-};
+}
 
-export type WhookAPIParameterDefinition<
+export interface WhookAPIParameterDefinition<
   T extends JsonValue | OpenAPIV3.ReferenceObject | void | unknown = unknown,
-> = {
+> {
   name: string;
   parameter: OpenAPIV3.ParameterObject;
   example?: T;
   examples?: Record<string, T>;
-};
+}
 
-export type WhookAPIExampleDefinition<
+export interface WhookAPIExampleDefinition<
   T extends JsonValue | OpenAPIV3.ReferenceObject,
-> = {
+> {
   name: string;
   value: T;
-};
+}
 
-export type WhookAPIHeaderDefinition = {
+export interface WhookAPIHeaderDefinition {
   name: string;
   header: OpenAPIV3.HeaderObject | OpenAPIV3.ReferenceObject;
-};
+}
 
-export type WhookAPIResponseDefinition = {
+export interface WhookAPIResponseDefinition {
   name: string;
   response: OpenAPIV3.ResponseObject | OpenAPIV3.ReferenceObject;
-};
+}
 
-export type WhookAPIRequestBodyDefinition = {
+export interface WhookAPIRequestBodyDefinition {
   name: string;
   requestBody: OpenAPIV3.RequestBodyObject | OpenAPIV3.ReferenceObject;
-};
+}
 
-export type WhookAPIHandlerModule = {
+export interface WhookAPIHandlerModule {
   [name: string]:
     | WhookAPISchemaDefinition<never>
     | WhookAPIParameterDefinition<never>
@@ -123,7 +131,7 @@ export type WhookAPIHandlerModule = {
     | WhookAPIRequestBodyDefinition
     | WhookAPIHandlerDefinition;
   definition: WhookAPIHandlerDefinition;
-};
+}
 
 export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
 

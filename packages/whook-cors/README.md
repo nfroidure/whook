@@ -37,21 +37,44 @@ async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
 }
 ```
 
-And add the CORS config (usually in `src/config/common/config.js`):
-
+Declare this module types in your `src/whook.d.ts` type
+ definitions:
 ```diff
 + import type {
 +   CORSConfig,
 +   WhookAPIOperationCORSConfig,
 + } from '@whook/cors';
 
-// ...
+declare module '@whook/whook' {
 
-export type AppConfigs = WhookConfigs &
-+  CORSConfig &
-  APIConfig;
+  // ...
 
-const CONFIG: AppConfigs = {
+  export interface WhookConfigs
+-    extends WhookBaseConfigs {}
++    extends WhookBaseConfigs, CORSConfig {}
+
+  // ...
+
+  export interface WhookAPIHandlerDefinition<
+    T extends Record<string, unknown> = Record<string, unknown>,
+    U extends {
+      [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
+    } = unknown,
+  > extends WhookBaseAPIHandlerDefinition<T, U> {
+    operation: U & WhookAPIOperation<
+        T &
+      WhookAPIOperationSwaggerConfig & WhookAPIOperationCORSConfig
+    >;
+  }
+}
+```
+
+And add the CORS config (usually in `src/config/common/config.js`):
+
+```diff
+import type { WhookConfigs } from '@whook/whook';
+
+const CONFIG: WhookConfigs = {
   // ...
 +   CORS: {
 +     'Access-Control-Allow-Origin': '*',
@@ -69,12 +92,6 @@ const CONFIG: AppConfigs = {
 +     ].join(','),
 +   },
 };
-
-// Export custom handlers definitions
-export type APIHandlerDefinition = WhookAPIHandlerDefinition<
-+  WhookAPIOperationCORSConfig &
-  WhookAPIOperationSwaggerConfig
->;
 
 export default CONFIG;
 ```
@@ -127,6 +144,9 @@ async function initAPI({
 
 To see a real example have a look at the
 [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example).
+
+Note that you can define individual CORS values on the
+ handler definitions usins the `x-whook` property.
 
 [//]: # (::contents:end)
 
