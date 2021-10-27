@@ -76,6 +76,7 @@ import type {
   WhookAPIOperationAddition,
   WhookAPIOperationConfig,
   WhookAPIOperation,
+  WhookBaseAPIHandlerDefinition,
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookAPISchemaDefinition,
@@ -129,6 +130,7 @@ export type {
   WhookAPIDefinitions,
   WhookAPIOperationAddition,
   WhookAPIOperation,
+  WhookBaseAPIHandlerDefinition,
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
   WhookAPISchemaDefinition,
@@ -210,9 +212,11 @@ export {
   lowerCaseHeaders,
 };
 
-export type WhookEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
+export type WhookBaseEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface WhookEnv extends WhookBaseEnv {}
 
-export type WhookConfigs = ProcessServiceConfig &
+export type WhookBaseConfigs = ProcessServiceConfig &
   HTTPRouterConfig &
   ErrorHandlerConfig &
   HTTPServerConfig &
@@ -226,6 +230,8 @@ export type WhookConfigs = ProcessServiceConfig &
     CONFIG: WhookConfig;
   } & ObfuscatorConfig &
   WhookAPIDefinitionsConfig;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface WhookConfigs extends WhookBaseConfigs {}
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn

@@ -153,7 +153,7 @@ export type HTTPRouterConfig = {
   NODE_ENV?: string;
   DEBUG_NODE_ENVS?: string[];
   BUFFER_LIMIT?: string;
-  BASE_PATH: string;
+  BASE_PATH?: string;
 };
 export type HTTPRouterDependencies = HTTPRouterConfig & {
   NODE_ENV: string;
@@ -209,7 +209,7 @@ export default initializer(
       'NODE_ENV',
       '?DEBUG_NODE_ENVS',
       '?BUFFER_LIMIT',
-      'BASE_PATH',
+      '?BASE_PATH',
       'HANDLERS',
       'API',
       '?PARSERS',
@@ -269,7 +269,7 @@ async function initHTTPRouter({
   NODE_ENV,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
-  BASE_PATH,
+  BASE_PATH = '',
   HANDLERS,
   API,
   PARSERS = DEFAULT_PARSERS,
@@ -535,13 +535,13 @@ function _explodePath(path, parameters) {
 async function _createRouters({
   API,
   HANDLERS,
-  BASE_PATH,
+  BASE_PATH = '',
   ajv,
   log,
 }: {
   API: OpenAPIV3.Document;
   HANDLERS: WhookHandlers;
-  BASE_PATH: string;
+  BASE_PATH?: string;
   ajv: Ajv;
   log: LogService;
 }): Promise<{ [method: string]: Siso<RouteDescriptor> }> {
@@ -596,7 +596,7 @@ async function _createRouters({
 
     routers[method] = routers[method] || new Siso();
     routers[method].register(
-      _explodePath((BASE_PATH || '') + path, pathParameters),
+      _explodePath(BASE_PATH + path, pathParameters),
       _prepareRoute({ ajv }, operation, handler, ammendedParameters),
     );
   });

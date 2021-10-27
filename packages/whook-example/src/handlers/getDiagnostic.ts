@@ -1,7 +1,9 @@
 import { refersTo } from '@whook/whook';
 import { autoHandler } from 'knifecycle';
-import type { WhookAPIResponseDefinition } from '@whook/whook';
-import type { APIHandlerDefinition } from '../config/common/config';
+import type {
+  WhookAPIResponseDefinition,
+  WhookAPIHandlerDefinition,
+} from '@whook/whook';
 
 export const diagnosticResponse: WhookAPIResponseDefinition = {
   name: 'Diagnostic',
@@ -29,7 +31,7 @@ export const diagnosticResponse: WhookAPIResponseDefinition = {
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 */
-export const definition: APIHandlerDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: '/diagnostic',
   method: 'get',
   operation: {

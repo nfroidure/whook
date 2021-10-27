@@ -110,28 +110,43 @@ async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
 }
 ```
 
+Declare this module types in your `src/whook.d.ts` type
+ definitions:
+```diff
++ import type { WhookAuthorizationConfig } from '@whook/authorization';
+
+declare module '@whook/whook' {
+
+  // ...
+
+  export interface WhookConfigs
+-    extends WhookBaseConfigs {}
++    extends WhookBaseConfigs, WhookAuthorizationConfig {}
+
+  // ...
+
+}
+```
+
 Then add the config and the errors descriptors or provide your
  own (usually in `src/config/common/config.js`):
 ```diff
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 + import {
 +   AUTHORIZATION_ERRORS_DESCRIPTORS,
-+   WhookAuthorizationConfig
 + } from '@whook/authorization';
+import type { WhookConfigs } from '@whook/whook';
 
 // ...
 
-export type AppConfigs = WhookConfigs &
-+  WhookAuthorizationConfig &
-  APIConfig;
-
-const CONFIG: AppConfigs = {
+const CONFIG: WhookConfigs = {
   // ...
 -   ERRORS_DESCRIPTORS: DEFAULT_ERRORS_DESCRIPTORS,
 +   ERRORS_DESCRIPTORS: {
 +     ...DEFAULT_ERRORS_DESCRIPTORS,
 +     ...AUTHORIZATION_ERRORS_DESCRIPTORS,
 +   },
++   DEFAULT_MECHANISM: 'bearer',
   // ...
 };
 

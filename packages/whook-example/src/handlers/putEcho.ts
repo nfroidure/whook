@@ -6,8 +6,8 @@ import type {
   WhookAPISchemaDefinition,
   WhookAPIResponseDefinition,
   WhookAPIRequestBodyDefinition,
+  WhookAPIHandlerDefinition,
 } from '@whook/whook';
-import type { APIHandlerDefinition } from '../config/common/config';
 
 /* Architecture Note #3.1.3: Reusable schemas
 
@@ -87,7 +87,7 @@ export const echoRequestBody: WhookAPIRequestBodyDefinition = {
 
 Simply outputs its input.
 */
-export const definition: APIHandlerDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: '/echo',
   method: 'put',
   operation: {

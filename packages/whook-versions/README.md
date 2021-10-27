@@ -33,14 +33,31 @@ async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
 }
 ```
 
-And add the versions config and the errors descriptors or provide your
- own (usually in `src/config/common/config.js`):
+Declare this module types in your `src/whook.d.ts` type
+ definitions:
+```diff
++ import type { WhookVersionsConfig } from '@whook/versions';
+
+declare module '@whook/whook' {
+
+  // ...
+
+  export interface WhookConfigs
+-    extends WhookBaseConfigs {}
++    extends WhookBaseConfigs, WhookVersionsConfig {}
+
+  // ...
+
+}
+```
+
+And add the errors descriptors or provide your
+ own and configure the module (usually in
+ `src/config/common/config.js`):
 ```diff
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
-+ import {
-+   VERSIONS_ERRORS_DESCRIPTORS,
-+   WhookVersionsConfig
-+ } from '@whook/versions';
++ import { VERSIONS_ERRORS_DESCRIPTORS } from '@whook/versions';
+import type { WhookConfigs } from '@whook/whook';
 
 // ...
 
@@ -55,11 +72,7 @@ import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 +   },
 + ];
 
-export type AppConfigs = WhookConfigs &
-+  WhookVersionsConfig &
-  APIConfig;
-
-const CONFIG: AppConfigs = {
+const CONFIG: WhookConfigs = {
   // ...
 -   ERRORS_DESCRIPTORS: DEFAULT_ERRORS_DESCRIPTORS,
 +   ERRORS_DESCRIPTORS: {

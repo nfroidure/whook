@@ -28,7 +28,7 @@ export const definition: WhookAPIHandlerDefinition = {
     tags: ['oauth2'],
     'x-whook': {
       private: true,
-    } as WhookAPIOperationConfig,
+    },
     requestBody: {
       required: true,
       content: {

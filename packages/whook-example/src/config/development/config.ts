@@ -1,5 +1,5 @@
 import COMMON_CONFIG from '../common/config';
-import type { AppConfigs } from '../common/config';
+import type { WhookConfigs } from '@whook/whook';
 
 /* Architecture Note #2.3: Overriding
 
@@ -7,8 +7,9 @@ Finally the configuration file for a given environnment
  may reuse or override the custom configuration file
  like here for the development configuration.
 */
-const CONFIG: AppConfigs = {
+const CONFIG: WhookConfigs = {
   ...COMMON_CONFIG,
+  HOST: 'localhost',
   DEV_ACCESS_TOKEN: 'admin|1|1',
   DEFAULT_MECHANISM: 'Fake',
   // This allows you to map service names depending on

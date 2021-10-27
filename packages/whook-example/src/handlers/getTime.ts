@@ -1,7 +1,9 @@
 import { autoHandler } from 'knifecycle';
 import { refersTo } from '@whook/whook';
-import type { WhookAPISchemaDefinition } from '@whook/whook';
-import type { APIHandlerDefinition } from '../config/common/config';
+import type {
+  WhookAPISchemaDefinition,
+  WhookAPIHandlerDefinition,
+} from '@whook/whook';
 import type { TimeService } from 'common-services';
 
 export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema> =
@@ -23,7 +25,7 @@ export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema>
 
 Returns the server time.
 */
-export const definition: APIHandlerDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: '/time',
   method: 'get',
   operation: {

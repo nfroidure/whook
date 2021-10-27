@@ -1,7 +1,9 @@
 import { autoHandler } from 'knifecycle';
 import { refersTo } from '@whook/whook';
-import type { WhookAPIParameterDefinition } from '@whook/whook';
-import type { APIHandlerDefinition } from '../config/common/config';
+import type {
+  WhookAPIParameterDefinition,
+  WhookAPIHandlerDefinition,
+} from '@whook/whook';
 
 export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam1> =
   {
@@ -40,7 +42,7 @@ export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 */
-export const definition: APIHandlerDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: `/{${pathParam1Parameter.parameter.name}}/{${pathParam2Parameter.parameter.name}}`,
   method: 'get',
   operation: {

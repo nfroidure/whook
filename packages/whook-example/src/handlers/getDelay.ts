@@ -1,7 +1,9 @@
 import { autoHandler } from 'knifecycle';
 import { refersTo } from '@whook/whook';
-import type { WhookAPIParameterDefinition } from '@whook/whook';
-import type { APIHandlerDefinition } from '../config/common/config';
+import type {
+  WhookAPIParameterDefinition,
+  WhookAPIHandlerDefinition,
+} from '@whook/whook';
 import type { DelayService } from 'common-services';
 
 /* Architecture Note #3.4: Examples
@@ -45,7 +47,7 @@ For it to work, you have to export the definition, like
  here, to make it available for the API service, responsible
  for gathering all API route definitions.
 */
-export const definition: APIHandlerDefinition = {
+export const definition: WhookAPIHandlerDefinition = {
   path: '/delay',
   method: 'get',
   operation: {

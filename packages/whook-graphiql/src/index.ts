@@ -22,7 +22,7 @@ export type WhookGraphIQLOptions = {
 export type WhookGraphIQLConfig = {
   DEV_ACCESS_TOKEN?: string;
   DEV_ACCESS_MECHANISM?: string;
-  BASE_PATH: string;
+  BASE_PATH?: string;
   HOST?: string;
   PORT?: number;
   GRAPHIQL?: WhookGraphIQLOptions;
@@ -51,7 +51,7 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
     [
       '?DEV_ACCESS_TOKEN',
       '?DEV_ACCESS_MECHANISM',
-      'BASE_PATH',
+      '?BASE_PATH',
       'HOST',
       'PORT',
       '?GRAPHIQL',
@@ -66,7 +66,7 @@ export default function wrapHTTPRouterWithGraphIQL<D>(
       {
         DEV_ACCESS_TOKEN = '',
         DEV_ACCESS_MECHANISM = 'Bearer',
-        BASE_PATH,
+        BASE_PATH = '',
         HOST,
         PORT,
         GRAPHIQL = DEFAULT_GRAPHIQL,
