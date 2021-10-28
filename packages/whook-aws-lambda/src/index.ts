@@ -258,7 +258,7 @@ export async function runBuild(
       'buildInitializer',
     ]);
 
-    log('info', 'Environment initialized 🚀🌕');
+    log('info', 'AWS Lambda build Environment initialized 🚀🌕');
 
     const operations = (
       await dereferenceOpenAPIOperations(

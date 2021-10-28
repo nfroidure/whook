@@ -32,7 +32,11 @@ Add this module to your Whook plugins and tweak the 2 build functions in your
 `build.ts` main file:
 
 ```diff
-- import YError from 'yerror';
+import {
+  // (...)
+-  runBuild as runBaseBuild,
+  // (...)
+} from '@whook/whook';
 +import {
 +  runBuild as runBaseBuild,
 +  prepareBuildEnvironment as prepareBaseBuildEnvironment,
@@ -56,20 +60,6 @@ export async function prepareEnvironment(
 
   // (...)
 
-}
-
-// (...)
-
-// The `runBuild` function is intended to build the
-// project
-export async function runBuild(
-  innerPrepareEnvironment = prepareBuildEnvironment,
-): Promise<void> {
--  throw new YError('E_NO_BUILD_IMPLEMENTED');
-
-  // Usually, here you call the installed build
--  // return runBaseBuild(innerPrepareEnvironment);
-+   return runBaseBuild(innerPrepareEnvironment);
 }
 
 // (...)
