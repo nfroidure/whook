@@ -50,7 +50,9 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
   const httpTransactionCatch = jest.fn(async (err) => {
     throw HTTPError.cast(err);
   });
-  const httpTransactionEnd = jest.fn(async (_res: unknown) => undefined);
+  const httpTransactionEnd = jest.fn(
+    async (_res: unknown) => _res && undefined,
+  );
   const httpTransaction = jest.fn(async (req) => ({
     request: {
       url: req.url,
@@ -503,7 +505,7 @@ describe('initHTTPRouter', () => {
     },
   };
   const log = jest.fn();
-  const res = {};
+  const res = {} as unknown as ServerResponse;
 
   beforeEach(() => {
     log.mockReset();
@@ -511,9 +513,7 @@ describe('initHTTPRouter', () => {
 
   test('should test a valid swagger file', async () => {
     const result = new OpenAPISchemaValidator({ version: 3 }).validate(
-      // Temporar type fix due to version mismatch of OpenAPIV3
-      // between Whook and OpenAPISchemaValidator
-      API as any,
+      API as OpenAPIV3.Document,
     );
 
     assert.deepEqual(result, {
@@ -867,14 +867,11 @@ describe('initHTTPRouter', () => {
           method: 'HEAD',
           url: '/v1/users/1/avatar',
           headers: {},
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).toBeCalled();
         expect(httpTransaction).toBeCalled();
@@ -933,14 +930,11 @@ describe('initHTTPRouter', () => {
           method: 'HEAD',
           url: '/v1/users/1?extended=true',
           headers: {},
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).toBeCalled();
         expect(httpTransaction).toBeCalled();
@@ -1003,14 +997,11 @@ describe('initHTTPRouter', () => {
           headers: {
             accept: 'text/html,image/webp,image/apng,*/*;q=0.8',
           },
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).toBeCalled();
         expect(httpTransaction).toBeCalled();
@@ -1073,14 +1064,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=true',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1143,14 +1131,11 @@ describe('initHTTPRouter', () => {
             headers: {
               'x-depth': '1',
             },
-          };
+          } as unknown as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1217,14 +1202,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=true',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1289,14 +1271,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=true',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1365,14 +1344,11 @@ describe('initHTTPRouter', () => {
             headers: {
               accept: 'text/word',
             },
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1430,14 +1406,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=true',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1496,14 +1469,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=true',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1565,14 +1535,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=true',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1630,14 +1597,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=true',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1699,14 +1663,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1761,14 +1722,11 @@ describe('initHTTPRouter', () => {
             method: 'GET',
             url: '/v1/users/1?extended=lol',
             headers: {},
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -1826,14 +1784,11 @@ describe('initHTTPRouter', () => {
           method: 'GET',
           url: '/v1/users/1?extended=true',
           headers: {},
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).toBeCalled();
         expect(httpTransaction).toBeCalled();
@@ -1896,14 +1851,11 @@ describe('initHTTPRouter', () => {
           method: 'GET',
           url: '/v1/users/1?extended=true',
           headers: {},
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).toBeCalled();
         expect(httpTransaction).toBeCalled();
@@ -1963,14 +1915,11 @@ describe('initHTTPRouter', () => {
           method: 'GET',
           url: '/v1/gods/1',
           headers: {},
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).not.toBeCalled();
         expect(httpTransaction).toBeCalled();
@@ -2037,7 +1986,7 @@ describe('initHTTPRouter', () => {
             '"nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2049,10 +1998,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2112,7 +2058,10 @@ describe('initHTTPRouter', () => {
             httpTransaction,
             errorHandler,
           });
-          const req = StreamTest.v2.fromChunks(['he', 'llo']);
+          const req = StreamTest.v2.fromChunks([
+            'he',
+            'llo',
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1/avatar';
@@ -2126,10 +2075,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2188,7 +2134,7 @@ describe('initHTTPRouter', () => {
             '"nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2200,10 +2146,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2266,14 +2209,11 @@ describe('initHTTPRouter', () => {
             headers: {
               'content-type': '$%$;;;===',
             },
-          };
+          } as IncomingMessage;
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2323,7 +2263,10 @@ describe('initHTTPRouter', () => {
             httpTransaction,
             errorHandler,
           });
-          const req = StreamTest.v2.fromChunks(['he', 'llo']);
+          const req = StreamTest.v2.fromChunks([
+            'he',
+            'llo',
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1/avatar';
@@ -2334,10 +2277,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2391,7 +2331,7 @@ describe('initHTTPRouter', () => {
             '"nat',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2403,10 +2343,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2461,7 +2398,7 @@ describe('initHTTPRouter', () => {
             '"nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2472,10 +2409,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2530,7 +2464,7 @@ describe('initHTTPRouter', () => {
             '"nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2541,10 +2475,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2598,7 +2529,7 @@ describe('initHTTPRouter', () => {
             'nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2609,10 +2540,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2665,7 +2593,7 @@ describe('initHTTPRouter', () => {
           const req = StreamTest.v2.fromErroredChunks(
             new Error('E_SHIT_HIT_THE_FAN'),
             ['{ ', 'nam', 'e": "John', ' Doe" }'],
-          );
+          ) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2676,10 +2604,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2735,7 +2660,7 @@ describe('initHTTPRouter', () => {
             '"nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2746,10 +2671,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2805,7 +2727,7 @@ describe('initHTTPRouter', () => {
             '"nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2816,10 +2738,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2875,7 +2794,7 @@ describe('initHTTPRouter', () => {
             '"nam',
             'e": "John',
             ' Doe" }',
-          ]);
+          ]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -2886,10 +2805,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -2944,7 +2860,7 @@ describe('initHTTPRouter', () => {
             httpTransaction,
             errorHandler,
           });
-          const req = StreamTest.v2.fromChunks([]);
+          const req = StreamTest.v2.fromChunks([]) as IncomingMessage;
 
           req.method = 'GET';
           req.url = '/v1/users/1?extended=false';
@@ -2955,10 +2871,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -3013,7 +2926,7 @@ describe('initHTTPRouter', () => {
             httpTransaction,
             errorHandler,
           });
-          const req = StreamTest.v2.fromChunks([]);
+          const req = StreamTest.v2.fromChunks([]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';
@@ -3024,10 +2937,7 @@ describe('initHTTPRouter', () => {
 
           log.mockReset();
 
-          await httpRouter.service(
-            req as unknown as IncomingMessage,
-            res as unknown as ServerResponse,
-          );
+          await httpRouter.service(req, res);
 
           expect(handler).not.toBeCalled();
           expect(httpTransaction).toBeCalled();
@@ -3087,14 +2997,11 @@ describe('initHTTPRouter', () => {
           method: 'DELETE',
           url: '/v1/users/1/avatar',
           headers: {},
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).toBeCalled();
         expect(httpTransaction).toBeCalled();
@@ -3146,14 +3053,11 @@ describe('initHTTPRouter', () => {
           headers: {
             'content-type': 'application/json; charset=utf-8',
           },
-        };
+        } as IncomingMessage;
 
         log.mockReset();
 
-        await httpRouter.service(
-          req as unknown as IncomingMessage,
-          res as unknown as ServerResponse,
-        );
+        await httpRouter.service(req, res);
 
         expect(handler).not.toBeCalled();
         expect(httpTransaction).toBeCalled();

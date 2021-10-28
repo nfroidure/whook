@@ -49,6 +49,7 @@ import initAutoload, { HANDLER_REG_EXP } from './services/_autoload';
 import initGetPing, {
   definition as initGetPingDefinition,
 } from './handlers/getPing';
+import { runREPL } from './repl';
 import type { PortEnv } from './services/PORT';
 import type {
   HTTPServerConfig,
@@ -210,6 +211,7 @@ export {
   refersTo,
   mergeVaryHeaders,
   lowerCaseHeaders,
+  runREPL,
 };
 
 export type WhookBaseEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;

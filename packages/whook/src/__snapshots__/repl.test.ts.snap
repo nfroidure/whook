@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`runREPL should work 1`] = `
+Object {
+  "debugCalls": Array [
+    Array [
+      "👣 - Logging service initialized.",
+    ],
+    Array [
+      "📇 - Process service initialized.",
+    ],
+    Array [
+      "🖵 - Initializing the REPL service!",
+    ],
+  ],
+  "logErrorCalls": Array [
+    Array [
+      "🔂 - Running in \\"test\\" environment.",
+    ],
+  ],
+  "logInfoCalls": Array [],
+}
+`;
