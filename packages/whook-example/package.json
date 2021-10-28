@@ -85,6 +85,7 @@
     "@whook/cli": "^8.5.1",
     "@whook/cors": "^8.5.1",
     "@whook/http-router": "^8.5.0",
+    "@whook/http-server": "^8.5.0",
     "@whook/http-transaction": "^8.5.0",
     "@whook/swagger-ui": "^8.5.1",
     "@whook/whook": "^8.5.1",
