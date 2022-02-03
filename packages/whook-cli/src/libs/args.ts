@@ -5,10 +5,10 @@ import type { WhookCommandDefinitionArguments } from '../services/promptArgs';
 import type { WhookCommandArgs } from '../services/args';
 
 // TODO: Add ajv human readable error builder
-export function readArgs(
+export function readArgs<T extends Partial<WhookCommandArgs>>(
   schema: WhookCommandDefinitionArguments,
   args: WhookCommandArgs,
-): WhookCommandArgs {
+): T {
   const ajv = new Ajv({
     coerceTypes: true,
     useDefaults: true,
@@ -32,5 +32,5 @@ export function readArgs(
     throw new YError('E_BAD_ARGS', validator.errors);
   }
 
-  return cleanedArgs;
+  return cleanedArgs as T;
 }

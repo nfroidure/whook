@@ -2,7 +2,7 @@ import { extra, autoService } from 'knifecycle';
 import YError from 'yerror';
 import { readArgs } from '../libs/args';
 import { noop } from '@whook/whook';
-import type { WhookHandler, WhookResponse } from '@whook/whook';
+import type { WhookHandler } from '@whook/whook';
 import type {
   WhookCommandDefinition,
   PromptArgs,
@@ -39,7 +39,7 @@ async function initHandlerCommand({
   log = noop,
   promptArgs,
 }: {
-  $injector: Injector<WhookHandler>;
+  $injector: Injector<Record<string, WhookHandler>>;
   log?: LogService;
   promptArgs: PromptArgs;
 }): Promise<WhookCommandHandler> {
@@ -53,7 +53,7 @@ async function initHandlerCommand({
     try {
       parsedParameters = JSON.parse(handlerParameters || '{}');
     } catch (err) {
-      throw YError.wrap(err, 'E_BAD_PARAMETERS', handlerParameters);
+      throw YError.wrap(err as Error, 'E_BAD_PARAMETERS', handlerParameters);
     }
 
     log('debug', 'handler', handlerName);
@@ -63,18 +63,13 @@ async function initHandlerCommand({
     // with ajv or else
 
     try {
-      const handler: WhookHandler = (await $injector([handlerName]))[
-        handlerName
-      ];
-      const response: WhookResponse = await handler(
-        parsedParameters,
-        undefined,
-      );
+      const handler = (await $injector([handlerName]))[handlerName];
+      const response = await handler(parsedParameters, undefined);
 
       log('info', JSON.stringify(response, null, 2));
     } catch (err) {
       log('error', 'Got an error while running the handler.');
-      log('stack', err.stack);
+      log('error-stack', (err as Error).stack || 'no_stack_trace');
     }
   };
 }

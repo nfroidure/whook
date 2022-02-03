@@ -192,7 +192,7 @@ async function initObfuscator({
       return Object.keys(propValue).reduce(
         (newObject, key) => ({
           ...newObject,
-          [key]: obfuscateSensibleProps(propValue[key], key),
+          [key]: obfuscateSensibleProps(propValue[key] as JsonValue, key),
         }),
         {},
       );
@@ -216,6 +216,6 @@ async function initObfuscator({
     } else if (null === propValue) {
       return null;
     }
-    return undefined;
+    return null;
   }
 }

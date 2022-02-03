@@ -8,7 +8,6 @@
 > A wrapper for the Whook HTTP Router to provide GraphIQL for local dev
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-graphiql/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Fgraphiql.svg)](https://npmjs.org/package/@whook/graphiql)
 
 
 [//]: # (::contents:start)

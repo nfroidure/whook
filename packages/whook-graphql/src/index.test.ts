@@ -22,7 +22,7 @@ import {
   initGraphQL,
 } from '.';
 import type { WhookGraphQLFragmentService } from '.';
-import type { Knifecycle, Dependencies } from 'knifecycle';
+import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('GraphQL server', () => {
@@ -30,10 +30,10 @@ describe('GraphQL server', () => {
   const PORT = 5555;
   const HOST = 'localhost';
   const logger = {
-    info: jest.fn(),
+    output: jest.fn(),
     error: jest.fn(),
+    debug: jest.fn(),
   };
-  const debug = jest.fn();
   const time = jest.fn();
   const $autoload = jest.fn();
 
@@ -121,7 +121,6 @@ describe('GraphQL server', () => {
     $.register(constant('MECHANISMS', [BEARER_MECHANISM, BASIC_MECHANISM]));
     $.register(constant('logger', logger));
     $.register(constant('time', time));
-    $.register(constant('debug', debug));
     $.register(constant('GRAPHQL_OPTIONS', {}));
     $.register(initGraphQL);
     $.register(
@@ -136,9 +135,10 @@ describe('GraphQL server', () => {
       ),
     );
     $.register(constant('authentication', authentication));
-    [initGetGraphQL, wrapHandlerWithAuthorization(initPostGraphQL)].forEach(
-      (handlerInitializer) => $.register(handlerInitializer),
-    );
+    [
+      initGetGraphQL,
+      wrapHandlerWithAuthorization(initPostGraphQL as any),
+    ].forEach((handlerInitializer) => $.register(handlerInitializer));
 
     const helloFragment: WhookGraphQLFragmentService = {
       typeDefs: gql`
@@ -202,7 +202,7 @@ describe('GraphQL server', () => {
 
   beforeAll(async () => {
     const { $instance: _instance } = await runServer<{
-      $instance: Knifecycle<Dependencies>;
+      $instance: Knifecycle;
     }>(prepareEnvironment, prepareServer, [
       '$instance',
       'httpServer',
@@ -217,9 +217,9 @@ describe('GraphQL server', () => {
 
   beforeEach(() => {
     [
-      logger.info,
+      logger.output,
       logger.error,
-      debug,
+      logger.debug,
       time,
       $autoload,
       authentication.check,
@@ -245,7 +245,7 @@ describe('GraphQL server', () => {
             {
               hello
             }
-          `.loc.source.body,
+          `.loc?.source.body,
         },
         validateStatus: () => true,
       });
@@ -365,7 +365,7 @@ describe('GraphQL server', () => {
             {
               hello
             }
-          `.loc.source.body,
+          `.loc?.source.body,
         },
         validateStatus: () => true,
       });
@@ -420,7 +420,7 @@ describe('GraphQL server', () => {
             {
               echo(message: "YOLO!")
             }
-          `.loc.source.body,
+          `.loc?.source.body,
         },
         validateStatus: () => true,
       });
@@ -478,7 +478,7 @@ describe('GraphQL server', () => {
             query AnEcho2 {
               echo(message: "yolo2")
             }
-          `.loc.source.body,
+          `.loc?.source.body,
           operationName: 'AnEcho',
           variables: {
             msg: 'yolo',

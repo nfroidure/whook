@@ -7,7 +7,7 @@ describe('readArgs', () => {
   it('should work with no args', () => {
     const args = {
       _: ['whook'],
-    } as unknown as WhookCommandArgs;
+    } as any;
 
     readArgs(
       {
@@ -26,7 +26,7 @@ describe('readArgs', () => {
       _: ['whook'],
       name: 'getPing',
       parameters: '{}',
-    } as unknown as WhookCommandArgs;
+    } as any;
 
     readArgs(handlerCommandDefinition.arguments, args);
 
@@ -38,7 +38,7 @@ describe('readArgs', () => {
   it('should work with listed args', () => {
     const args = {
       _: ['whook', 'hey'],
-    } as unknown as WhookCommandArgs;
+    } as any;
 
     readArgs(
       {
@@ -66,7 +66,7 @@ describe('readArgs', () => {
     const args = {
       _: ['whook'],
       parameters: '{}',
-    } as unknown as WhookCommandArgs;
+    } as any;
 
     try {
       readArgs(handlerCommandDefinition.arguments, args);
@@ -74,8 +74,8 @@ describe('readArgs', () => {
     } catch (err) {
       expect({
         args,
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
       }).toMatchSnapshot();
     }
   });

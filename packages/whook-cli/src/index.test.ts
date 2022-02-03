@@ -19,7 +19,7 @@ describe('whook-cli', () => {
     const mockCWD = jest.spyOn(process, 'cwd').mockImplementation(processCWD);
     const mockExit = jest
       .spyOn(process, 'exit')
-      .mockImplementation(processExit);
+      .mockImplementation(processExit as any);
 
     jest.doMock('./services/_autoload', () => {
       return singleton(service(async () => $autoload, '$autoload'));
@@ -72,7 +72,7 @@ describe('whook-cli', () => {
     const mockCWD = jest.spyOn(process, 'cwd').mockImplementation(processCWD);
     const mockExit = jest
       .spyOn(process, 'exit')
-      .mockImplementation(processExit);
+      .mockImplementation(processExit as any);
 
     jest.doMock('./services/_autoload', () => {
       return singleton(service(async () => $autoload, '$autoload'));

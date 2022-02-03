@@ -38,7 +38,7 @@ export default function wrapHandlerForAWSKafkaConsumerLambda<
     ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSKafkaConsumerLambda.bind(
+      (initHandlerForAWSKafkaConsumerLambda as any).bind(
         null,
         initHandler,
       ) as ServiceInitializer<D, S>,
@@ -52,7 +52,7 @@ async function initHandlerForAWSKafkaConsumerLambda<D, S extends WhookHandler>(
 ): Promise<S> {
   const handler: S = await initHandler(services);
 
-  return handleForAWSKafkaConsumerLambda.bind(null, services, handler);
+  return (handleForAWSKafkaConsumerLambda as any).bind(null, services, handler);
 }
 
 async function handleForAWSKafkaConsumerLambda(
@@ -69,11 +69,11 @@ async function handleForAWSKafkaConsumerLambda(
   callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...OPERATION_API.paths[path]?.[method],
   };
   const startTime = time();
   const parameters: LambdaKafkaConsumerInput = {
@@ -99,9 +99,9 @@ async function handleForAWSKafkaConsumerLambda(
       ),
     });
 
-    callback(null);
+    callback(null as unknown as Error);
   } catch (err) {
-    const castedErr = YError.cast(err);
+    const castedErr = YError.cast(err as Error);
 
     apm('KAFKA', {
       environment: NODE_ENV,
@@ -120,6 +120,6 @@ async function handleForAWSKafkaConsumerLambda(
       ),
     });
 
-    callback(err);
+    callback(err as Error);
   }
 }

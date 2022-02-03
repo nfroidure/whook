@@ -4,7 +4,7 @@ import initArgs from './services/args';
 import initPromptArgs from './services/promptArgs';
 import initCommand from './services/command';
 import initAutoloader from './services/_autoload';
-import type { Knifecycle, Dependencies } from 'knifecycle';
+import type { Knifecycle } from 'knifecycle';
 import type {
   WhookCommandNamedArgs,
   WhookCommandArgsRest,
@@ -16,6 +16,7 @@ import type {
   WhookCommandDefinition,
   PromptArgs,
 } from './services/promptArgs';
+import type { LogService } from 'common-services';
 
 export type {
   WhookArgsTypes,
@@ -28,7 +29,7 @@ export type {
 };
 export { readArgs };
 
-export default async function run<T extends Knifecycle<Dependencies>>(
+export default async function run<T extends Knifecycle>(
   innerPrepareEnvironment: ($?: T) => Promise<T>,
 ): Promise<void> {
   try {
@@ -48,7 +49,10 @@ export default async function run<T extends Knifecycle<Dependencies>>(
     // on their prefix (maybe already the case, check that)
     $.register(constant('WRAPPERS', []));
 
-    const { command, log } = await $.run(['command', 'log']);
+    const { command, log } = await $.run<{
+      log: LogService;
+      command: () => Promise<void>;
+    }>(['command', 'log']);
 
     log('debug', 'Environment initialized 🚀🌕');
 
@@ -57,7 +61,7 @@ export default async function run<T extends Knifecycle<Dependencies>>(
     await $.destroy();
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', err.stack);
+    console.error('💀 - Cannot launch the process:', (err as Error).stack);
     process.exit(1);
   }
 }

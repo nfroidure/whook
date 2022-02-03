@@ -87,8 +87,6 @@ describe('generateOpenAPITypes', () => {
                   readonly body: Components.Schemas.ResponsesgetPingResponse200Body0;
               };
           }
-      }
-      declare namespace Components {
           export namespace Schemas {
               export type ResponsesgetPingResponse200Body0 = NonNullable<{
                   pong?: \\"pong\\";

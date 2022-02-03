@@ -1,11 +1,12 @@
 import _inquirer from 'inquirer';
 import initAuthor from './author';
+import YError from 'yerror';
 
 describe('initAuthor', () => {
   const exec = jest.fn() as any;
   const lock = {
-    take: jest.fn() as jest.Mock<undefined>,
-    release: jest.fn() as jest.Mock<undefined>,
+    take: jest.fn(),
+    release: jest.fn(),
   };
   const inquirer = { prompt: jest.fn() };
   const log = jest.fn();
@@ -88,8 +89,8 @@ describe('initAuthor', () => {
       });
     } catch (err) {
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,

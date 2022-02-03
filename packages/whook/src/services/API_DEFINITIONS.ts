@@ -67,7 +67,8 @@ export interface WhookBaseAPIHandlerDefinition<
   T extends Record<string, unknown> = Record<string, unknown>,
   U extends {
     [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-  } = unknown,
+    // eslint-disable-next-line
+  } = {},
 > {
   path: string;
   method: string;
@@ -79,7 +80,8 @@ export interface WhookAPIHandlerDefinition<
   T extends Record<string, unknown> = Record<string, unknown>,
   U extends {
     [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-  } = unknown,
+    // eslint-disable-next-line
+  } = {},
 > extends WhookBaseAPIHandlerDefinition<T, U> {}
 
 export interface WhookAPISchemaDefinition<
@@ -179,17 +181,17 @@ async function initAPIDefinitions({
       // We need to await previous modules here to ensure the
       // `seenFiles` variable is completed in order
       const accHandlersModules = await accHandlersModulesPromise;
-      let files: string[];
+      let files: string[] = [];
 
       try {
         files = await readDir(path.join(currentPath, 'handlers'));
       } catch (err) {
         // throw only if the root plugin dir doesn't exists
-        if (err.code === 'E_BAD_DIR') {
+        if ((err as YError).code === 'E_BAD_DIR') {
           try {
             await readDir(currentPath);
           } catch (err) {
-            throw new YError('E_BAD_PLUGIN_DIR');
+            throw YError.wrap(err as Error, 'E_BAD_PLUGIN_DIR');
           }
 
           files = [];
@@ -237,7 +239,12 @@ async function initAPIDefinitions({
 
       return [...accHandlersModules, ...currentHandlersModules];
     },
-    Promise.resolve([]),
+    Promise.resolve(
+      [] as {
+        file: string;
+        module: WhookAPIHandlerModule;
+      }[],
+    ),
   );
 
   const API_DEFINITIONS = {
@@ -439,7 +446,7 @@ async function _readDir(dir: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
     fs.readdir(dir, (err, files) => {
       if (err) {
-        reject(YError.wrap(err, 'E_BAD_DIR', dir));
+        reject(YError.wrap(err as Error, 'E_BAD_DIR', dir));
         return;
       }
       resolve(files);

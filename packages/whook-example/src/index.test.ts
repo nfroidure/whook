@@ -5,7 +5,7 @@ import {
   prepareEnvironment as basePrepareEnvironment,
 } from './index';
 import axios from 'axios';
-import type { Knifecycle, Dependencies } from 'knifecycle';
+import type { Knifecycle } from 'knifecycle';
 import type { JWTService } from 'jwt-service';
 import type { AuthenticationData } from './services/authentication';
 
@@ -14,19 +14,17 @@ const packageConf = require('../package');
 
 describe('runServer', () => {
   const logger = {
-    info: jest.fn(),
+    output: jest.fn(),
     error: jest.fn(),
+    debug: jest.fn(),
   };
-  const debug = jest.fn();
   const time = jest.fn();
   const exit = jest.fn();
   const PORT = 9999;
   const HOST = 'localhost';
   const BASE_PATH = '/v4';
 
-  async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
-    $?: T,
-  ): Promise<T> {
+  async function prepareEnvironment<T extends Knifecycle>($?: T): Promise<T> {
     $ = await basePrepareEnvironment($);
 
     $.register(constant('API_VERSION', packageConf.version));
@@ -45,13 +43,12 @@ describe('runServer', () => {
     $.register(constant('exit', exit));
     $.register(constant('time', time));
     $.register(constant('logger', logger));
-    $.register(constant('debug', debug));
 
     return $;
   }
   process.env.ISOLATED_ENV = '1';
 
-  let $instance: Knifecycle<Dependencies>;
+  let $instance: Knifecycle;
   let jwtToken: JWTService<AuthenticationData>;
 
   beforeAll(async () => {
@@ -71,15 +68,15 @@ describe('runServer', () => {
 
   afterEach(() => {
     time.mockReset();
-    debug.mockReset();
-    logger.info.mockReset();
+    logger.debug.mockReset();
+    logger.output.mockReset();
     logger.error.mockReset();
   });
 
   it('should work', async () => {
     expect({
-      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls.map(filterPaths).sort(sortLogs),
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls.map(filterPaths).sort(sortLogs),
       logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
@@ -102,8 +99,8 @@ describe('runServer', () => {
         date: undefined,
       },
       data,
-      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls.map(filterPaths).sort(sortLogs),
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls.map(filterPaths).sort(sortLogs),
       logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
@@ -137,8 +134,8 @@ describe('runServer', () => {
         date: undefined,
       },
       data,
-      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls.map(filterPaths).sort(sortLogs),
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls.map(filterPaths).sort(sortLogs),
       logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
@@ -164,8 +161,8 @@ describe('runServer', () => {
         date: undefined,
       },
       data,
-      debugCalls: debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls
         .map(filterPaths)
         .filter(([arg1]) => arg1 !== 'ERROR')
         .sort(sortLogs),

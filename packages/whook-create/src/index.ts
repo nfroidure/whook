@@ -61,7 +61,7 @@ export async function runCreateWhook(): Promise<void> {
     await createWhook();
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', err.stack);
+    console.error('💀 - Cannot launch the process:', (err as Error).stack);
     process.exit(1);
   }
 }

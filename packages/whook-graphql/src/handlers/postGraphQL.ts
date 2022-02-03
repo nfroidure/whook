@@ -1,6 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import HTTPError from 'yhttperror';
-import { noop } from '@whook/whook';
+import { noop, WhookHeaders } from '@whook/whook';
 import { Headers } from 'apollo-server-env';
 import { runHttpQuery } from 'apollo-server-core';
 import type {
@@ -56,7 +56,24 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(postGraphQL);
+export default autoHandler(postGraphQL) as unknown as <
+  T extends Record<string, unknown>,
+>(services: {
+  graphQL: WhookGraphQLService;
+  log: LogService;
+}) => Promise<
+  (
+    parameters: T & {
+      body: {
+        query: string;
+        variables: Record<string, unknown>;
+        operationName: string;
+        [name: string]: unknown;
+      };
+    },
+    operation: WhookOperation,
+  ) => Promise<WhookResponse<number>>
+>;
 
 async function postGraphQL<T extends Record<string, unknown>>(
   { graphQL, log = noop }: { graphQL: WhookGraphQLService; log: LogService },
@@ -100,23 +117,23 @@ async function postGraphQL<T extends Record<string, unknown>>(
         .reduce(
           (keptsHeaders, key) => ({
             ...keptsHeaders,
-            [key.toLowerCase()]: responseInit.headers[key],
+            [key.toLowerCase()]: responseInit.headers?.[key],
           }),
           {},
         ),
       body: JSON.parse(graphqlResponse),
     };
   } catch (err) {
-    if ('HttpQueryError' === err.name) {
+    if ('HttpQueryError' === (err as Error).name) {
       log('debug', '💥 - Got a GraphQL error!');
-      log('debug-stack', err.stack);
+      log('debug-stack', (err as Error).stack || 'no_stack_trace');
       return {
         body: JSON.parse((err as HttpQueryError).message),
         status: (err as HttpQueryError).statusCode,
-        headers: (err as HttpQueryError).headers,
+        headers: (err as HttpQueryError).headers as WhookHeaders,
       };
     }
 
-    throw HTTPError.cast(err, 500, 'E_GRAPH_QL');
+    throw HTTPError.cast(err as Error, 500, 'E_GRAPH_QL');
   }
 }

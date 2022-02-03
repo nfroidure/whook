@@ -45,7 +45,7 @@ export default autoService(async function initCreateWhook({
   copy: typeof _copy;
   axios?: typeof _axios;
   ora?: typeof _ora;
-  log?: LogService;
+  log: LogService;
 }): Promise<CreateWhookService> {
   return async function createWhook() {
     log('warning', "🏁️ - Starting Whook project's creation!");
@@ -158,7 +158,7 @@ ${author.name}
             'error',
             `⚠️ - Could not retrieve the \`.gitignore\` file contents from: "${GIT_IGNORE_URL}"`,
           );
-          log('stack', err.stack);
+          log('error-stack', (err as Error).stack || 'no_stack_trace');
         }),
       new Promise((resolve, reject) =>
         exec(
@@ -168,8 +168,8 @@ ${author.name}
           },
           (err, stdout, stderr) => {
             if (err) {
-              log('stack', stderr);
-              reject(YError.wrap(err));
+              log('error-stack', stderr);
+              reject(YError.wrap(err as Error));
               return;
             }
             resolve(stdout.trim());
@@ -177,7 +177,7 @@ ${author.name}
         ),
       ).catch((err) => {
         log('error', '⚠️ - Could not initialize the git project!');
-        log('stack', err.stack);
+        log('error-stack', (err as Error).stack || 'no_stack_trace');
       }),
     ]);
 
@@ -196,8 +196,8 @@ ${author.name}
           },
           (err, stdout, stderr) => {
             if (err) {
-              log('stack', stderr);
-              reject(YError.wrap(err));
+              log('error-stack', stderr);
+              reject(YError.wrap(err as Error));
               return;
             }
             resolve(stdout.trim());
@@ -213,7 +213,7 @@ ${author.name}
         symbol: '❌',
         text: 'Failed to install dependencies',
       });
-      log('stack', err.stack);
+      log('error-stack', (err as Error).stack || 'no_stack_trace');
     }
 
     log(

@@ -12,6 +12,7 @@ import type {
   DereferencedParameterObject,
   WhookOperation,
   WhookHeaders,
+  DereferencedRequestBodyObject,
 } from '@whook/http-transaction';
 import type { JsonValue } from 'type-fest';
 
@@ -53,13 +54,21 @@ export function prepareBodyValidator(
   ajv: Ajv,
   operation: WhookOperation,
 ): (operation: WhookOperation, contentType: string, value: unknown) => void {
-  if (!(operation.requestBody && operation.requestBody.content)) {
+  if (
+    !(
+      'requestBody' in operation &&
+      operation.requestBody &&
+      operation.requestBody.content
+    )
+  ) {
     return _rejectAnyRequestBody;
   }
 
   const validators = Object.keys(operation.requestBody.content).reduce(
     (validators, mediaType) => {
-      const mediaTypeObject = operation.requestBody.content[mediaType];
+      const mediaTypeObject = (
+        operation.requestBody as DereferencedRequestBodyObject
+      ).content[mediaType];
       const hasNoSchema = !mediaTypeObject.schema;
 
       if (hasNoSchema) {
@@ -80,7 +89,7 @@ export function prepareBodyValidator(
         validator = ajv.compile(mediaTypeObject.schema);
       } catch (err) {
         throw YError.wrap(
-          err,
+          err as Error,
           'E_BAD_BODY_SCHEMA',
           operation.operationId,
           mediaType,
@@ -95,7 +104,10 @@ export function prepareBodyValidator(
     {},
   );
 
-  return _validateRequestBody.bind(null, validators);
+  return _validateRequestBody.bind(
+    null,
+    validators as ValidateFunction<unknown>[],
+  );
 }
 
 function _validateRequestBody(
@@ -198,8 +210,11 @@ export function extractParametersFromSecuritySchemes(
   let hasAccessTokenApiKey = false;
 
   const securityParameters: DereferencedParameterObject[] = securitySchemes
-    .filter((securityScheme) => securityScheme.type === 'apiKey')
-    .map((securityScheme: OpenAPIV3.ApiKeySecurityScheme) => {
+    .filter(
+      (securityScheme): securityScheme is OpenAPIV3.ApiKeySecurityScheme =>
+        securityScheme.type === 'apiKey',
+    )
+    .map((securityScheme) => {
       if (securityScheme.in === 'cookie') {
         throw new YError(
           'E_UNSUPPORTED_API_KEY_SOURCE',
@@ -314,13 +329,17 @@ export function prepareParametersValidators(
       );
     }
 
+    if (!parameter.schema) {
+      throw new YError('E_NO_PARAMETER_SCHEMA', operationId, parameter.name);
+    }
+
     let validator;
 
     try {
       validator = ajv.compile(parameter.schema);
     } catch (err) {
       throw YError.wrap(
-        err,
+        err as Error,
         'E_BAD_PARAMETER_SCHEMA',
         operationId,
         parameter.name,
@@ -399,13 +418,19 @@ export function castParameters<
 
 export function castSchemaValue<
   T = boolean | boolean[] | string | string[] | number | number[],
->(schema: DereferencedParameterObject['schema'], value: string | string[]): T {
-  let castedValue: T;
+>(
+  schema: DereferencedParameterObject['schema'],
+  value: string | string[],
+): T | undefined {
+  let castedValue: T | undefined = undefined;
 
   if ('undefined' !== typeof value) {
     if ('array' === schema.type) {
       castedValue = (value as string[]).map(
-        castSchemaValue.bind(null, schema.items),
+        castSchemaValue.bind(
+          null,
+          schema.items as DereferencedParameterObject['schema'],
+        ),
       ) as unknown as T;
     } else if ('boolean' === schema.type) {
       castedValue = parseBoolean(value as string) as unknown as T;

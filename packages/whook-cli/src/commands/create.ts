@@ -197,8 +197,8 @@ import type { ${whookServices
           type: 'list',
           message: 'Give the handler method',
           choices: OPEN_API_METHODS,
-          default: [HANDLER_REG_EXP.exec(finalName)[1]].filter((maybeMethod) =>
-            OPEN_API_METHODS.includes(maybeMethod),
+          default: [(HANDLER_REG_EXP.exec(finalName) as string[])[1]].filter(
+            (maybeMethod) => OPEN_API_METHODS.includes(maybeMethod),
           )[0],
         },
         {

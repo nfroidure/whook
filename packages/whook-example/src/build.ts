@@ -2,7 +2,6 @@ import Knifecycle, { constant, alsoInject } from 'knifecycle';
 import { initBuildConstants } from '@whook/whook';
 import { prepareEnvironment } from '.';
 import YError from 'yerror';
-import type { Dependencies } from 'knifecycle';
 
 // Per convention a Whook server build file must export
 //  the following 2 functions to be composable:
@@ -20,9 +19,9 @@ export async function runBuild(
 
 // The `prepareBuildEnvironment` create the build
 //  environment
-export async function prepareBuildEnvironment<
-  T extends Knifecycle<Dependencies>,
->($: T = new Knifecycle() as T): Promise<T> {
+export async function prepareBuildEnvironment<T extends Knifecycle>(
+  $: T = new Knifecycle() as T,
+): Promise<T> {
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env

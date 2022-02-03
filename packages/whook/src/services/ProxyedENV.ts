@@ -3,6 +3,7 @@ import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '../libs/utils';
 import type { LogService } from 'common-services';
 import type { ENVService, ENVDependencies } from './ENV';
+import type { ServiceInitializer } from 'knifecycle';
 
 export type ProxyedENVConfig = {
   NODE_ENV?: string;
@@ -15,7 +16,10 @@ export type ProxyedENVDependencies = ProxyedENVConfig & {
 
 export default alsoInject<ProxyedENVDependencies, ENVDependencies, ENVService>(
   ['?log', 'NODE_ENV', '?PROXYED_ENV_VARS'],
-  wrapInitializer(wrapEnvForBuild, initEnv),
+  wrapInitializer(
+    wrapEnvForBuild,
+    initEnv as ServiceInitializer<ProxyedENVDependencies, ENVService>,
+  ),
 );
 
 /**
@@ -32,9 +36,9 @@ export default alsoInject<ProxyedENVDependencies, ENVDependencies, ENVService>(
  * A promise of an object containing the reshaped env vars.
  */
 async function wrapEnvForBuild(
-  { log = noop, NODE_ENV, PROXYED_ENV_VARS = [] },
+  { log = noop, NODE_ENV, PROXYED_ENV_VARS = [] }: ProxyedENVDependencies,
   ENV: ENVService,
-) {
+): Promise<ENVService> {
   log('debug', '♻️ -Filtering environment for build.');
 
   return PROXYED_ENV_VARS.reduce(

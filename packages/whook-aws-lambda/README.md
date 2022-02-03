@@ -8,7 +8,6 @@
 > Build and deploy to AWS Lambda with Whook.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-aws-lambda/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Faws-lambda.svg)](https://npmjs.org/package/@whook/aws-lambda)
 
 
 [//]: # (::contents:start)

@@ -57,12 +57,12 @@ async function initConfigCommand({
       query,
       default: defaultValue,
       pretty,
-    } = readArgs(definition.arguments, await promptArgs()) as {
+    } = readArgs<{
       name: string;
       query: string;
-      default: unknown;
+      default: string;
       pretty: boolean;
-    };
+    }>(definition.arguments, await promptArgs());
 
     if ('undefined' === typeof CONFIGS[name]) {
       log('error', `No config found for "${name}"`);

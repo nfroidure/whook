@@ -11,9 +11,9 @@ export const FAKE_MECHANISM = {
     applicationId: string;
     userId: string;
   } => {
-    let scope: string;
-    let applicationId: string;
-    let userId: string;
+    let scope: string | undefined;
+    let applicationId = '';
+    let userId = '';
 
     rest.replace(
       /^([^|]*)\|([^|]+)\|([^|]+)$/,

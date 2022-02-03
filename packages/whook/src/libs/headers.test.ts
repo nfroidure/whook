@@ -73,10 +73,10 @@ describe('mergeVaryHeaders', () => {
     try {
       mergeVaryHeaders('User-Agent', 'User-Agent, Cookie');
       throw new YError('E_UNEXPECTED_SUCCESS');
-    } catch (e) {
+    } catch (err) {
       expect({
-        errorCode: e.code,
-        errorParams: e.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
         Object {
           "errorCode": "E_BAD_VARY_VALUE",

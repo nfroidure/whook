@@ -48,7 +48,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
     buildResponse(),
   );
   const httpTransactionCatch = jest.fn(async (err) => {
-    throw HTTPError.cast(err);
+    throw HTTPError.cast(err as Error);
   });
   const httpTransactionEnd = jest.fn(
     async (_res: unknown) => _res && undefined,
@@ -571,7 +571,7 @@ describe('initHTTPRouter', () => {
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_BAD_OPEN_API');
+        assert.equal((err as YError).code, 'E_BAD_OPEN_API');
       }
     });
 
@@ -605,7 +605,7 @@ describe('initHTTPRouter', () => {
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_NO_OPERATION_ID');
+        assert.equal((err as YError).code, 'E_NO_OPERATION_ID');
       }
     });
 
@@ -638,7 +638,7 @@ describe('initHTTPRouter', () => {
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_BAD_PATH');
+        assert.equal((err as YError).code, 'E_BAD_PATH');
       }
     });
 
@@ -676,7 +676,7 @@ describe('initHTTPRouter', () => {
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_UNDECLARED_PATH_PARAMETER');
+        assert.equal((err as YError).code, 'E_UNDECLARED_PATH_PARAMETER');
       }
     });
 
@@ -699,7 +699,7 @@ describe('initHTTPRouter', () => {
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_NO_HANDLER');
+        assert.equal((err as YError).code, 'E_NO_HANDLER');
       }
     });
 
@@ -742,7 +742,7 @@ describe('initHTTPRouter', () => {
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_BAD_PARAMETER_NAME');
+        assert.equal((err as YError).code, 'E_BAD_PARAMETER_NAME');
       }
     });
 
@@ -783,7 +783,7 @@ describe('initHTTPRouter', () => {
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_PARAMETER_WITHOUT_SCHEMA');
+        assert.equal((err as YError).code, 'E_PARAMETER_WITHOUT_SCHEMA');
       }
     });
 
@@ -826,8 +826,16 @@ describe('initHTTPRouter', () => {
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(err.code, 'E_UNSUPPORTED_PARAMETER_DEFINITION');
-        assert.deepEqual(err.params, ['ping', 'lol', 'in', undefined]);
+        assert.equal(
+          (err as YError).code,
+          'E_UNSUPPORTED_PARAMETER_DEFINITION',
+        );
+        assert.deepEqual((err as YError).params, [
+          'ping',
+          'lol',
+          'in',
+          undefined,
+        ]);
       }
     });
   });
@@ -1219,7 +1227,7 @@ describe('initHTTPRouter', () => {
             throw new YError('E_UNEXPECTED_SUCCESS');
           } catch (err) {
             expect({
-              errorCode: err.code,
+              errorCode: (err as YError).code,
             }).toEqual({
               errorCode: 'E_STRINGIFYER_LACK',
             });

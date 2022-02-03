@@ -16,7 +16,13 @@ import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
-import type { Autoloader, Dependencies, BuildInitializer } from 'knifecycle';
+import type {
+  Autoloader,
+  Dependencies,
+  BuildInitializer,
+  Initializer,
+  Service,
+} from 'knifecycle';
 import type {
   WhookOperation,
   WhookCompilerOptions,
@@ -57,7 +63,7 @@ const cprAsync = util.promisify(cpr) as (
 ) => Promise<string[]>;
 
 const BUILD_DEFINITIONS: Record<
-  WhookAPIOperationGCPFunctionConfig['type'],
+  NonNullable<WhookAPIOperationGCPFunctionConfig['type']>,
   {
     type: string;
     wrapper: { name: string; path: string };
@@ -74,9 +80,9 @@ const BUILD_DEFINITIONS: Record<
   },
 };
 
-export async function prepareBuildEnvironment<
-  T extends Knifecycle<Dependencies>,
->($: T = new Knifecycle() as T): Promise<T> {
+export async function prepareBuildEnvironment<T extends Knifecycle>(
+  $: T = new Knifecycle() as T,
+): Promise<T> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ENV: '@whook/whook/dist/services/ProxyedENV',
@@ -115,7 +121,7 @@ export async function runBuild(
       PROJECT_DIR: string;
       compiler: WhookCompilerService;
       log: LogService;
-      $autoload: Autoloader;
+      $autoload: Autoloader<Initializer<Dependencies, Service>>;
       API: OpenAPIV3.Document;
       buildInitializer: BuildInitializer;
     } = await $.run([
@@ -170,8 +176,8 @@ export async function runBuild(
     // eslint-disable-next-line
     console.error(
       '💀 - Cannot launch the build:',
-      err.stack,
-      JSON.stringify(err.params, null, 2),
+      (err as YError).stack,
+      JSON.stringify((err as YError).params, null, 2),
     );
     process.exit(1);
   }
@@ -194,7 +200,7 @@ async function processOperations(
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
     log: LogService;
-    $autoload: Autoloader;
+    $autoload: Autoloader<Initializer<Dependencies, Service>>;
     buildInitializer: BuildInitializer;
   },
   operations: WhookOperation<WhookAPIOperationGCPFunctionConfig>[],
@@ -252,7 +258,7 @@ async function buildAnyLambda(
     BUILD_OPTIONS: BuildOptions;
     compiler: WhookCompilerService;
     log: LogService;
-    $autoload: Autoloader;
+    $autoload: Autoloader<Initializer<Dependencies, Service>>;
     buildInitializer: BuildInitializer;
   },
   operation: WhookOperation<WhookAPIOperationGCPFunctionConfig>,
@@ -317,9 +323,9 @@ async function buildAnyLambda(
     await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
   } catch (err) {
     log('error', `Error building "${operationId}"...`);
-    log('stack', err.stack);
-    log('debug', JSON.stringify(err.params, null, 2));
-    throw YError.wrap(err, 'E_LAMBDA_BUILD', operationId);
+    log('error-stack', (err as Error).stack || 'no_stack_trace');
+    log('debug', JSON.stringify((err as YError).params, null, 2));
+    throw YError.wrap(err as Error, 'E_LAMBDA_BUILD', operationId);
   }
 }
 

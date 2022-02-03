@@ -9,7 +9,7 @@ import {
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import YError from 'yerror';
-import type { Knifecycle, Dependencies } from 'knifecycle';
+import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
@@ -31,10 +31,10 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   };
   const getPing = jest.fn();
   const logger = {
-    info: jest.fn(),
+    output: jest.fn(),
     error: jest.fn(),
+    debug: jest.fn(),
   };
-  const debug = jest.fn();
   const time = jest.fn();
   const $autoload = jest.fn();
   let $instance;
@@ -67,7 +67,6 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       }),
     );
     $.register(constant('logger', logger));
-    $.register(constant('debug', debug));
 
     return $;
   }
@@ -79,7 +78,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
 
   beforeAll(async () => {
     const { $instance: _instance } = await runServer<{
-      $instance: Knifecycle<Dependencies>;
+      $instance: Knifecycle;
     }>(prepareEnvironment, prepareServer, [
       '$instance',
       'httpServer',
@@ -94,9 +93,9 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
 
   beforeEach(() => {
     getPing.mockReset();
-    logger.info.mockReset();
+    logger.output.mockReset();
     logger.error.mockReset();
-    debug.mockReset();
+    logger.debug.mockReset();
     time.mockReset();
     $autoload.mockClear();
   });

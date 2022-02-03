@@ -66,8 +66,8 @@ describe('WHOOK_PLUGINS_PATHS', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
-          errorCode: err.code,
-          errorParams: err.params,
+          errorCode: (err as YError).code,
+          errorParams: (err as YError).params,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           resolveCalls: resolve.mock.calls,
         }).toMatchSnapshot();

@@ -8,7 +8,6 @@
 > A wrapper to provide versions check support to a Whook server
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-versions/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Fversions.svg)](https://npmjs.org/package/@whook/versions)
 
 
 [//]: # (::contents:start)

@@ -32,10 +32,10 @@ describe('runServer', () => {
       },
     };
     const logger = {
-      info: jest.fn(),
+      output: jest.fn(),
       error: jest.fn(),
+      debug: jest.fn(),
     };
-    const debug = jest.fn();
 
     async function prepareEnvironment() {
       const $ = await basePrepareEnvironment();
@@ -55,7 +55,6 @@ describe('runServer', () => {
         }),
       );
       $.register(constant('logger', logger));
-      $.register(constant('debug', debug));
 
       return $;
     }
@@ -70,8 +69,8 @@ describe('runServer', () => {
     await $instance.destroy();
 
     expect({
-      debugCalls: debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls,
+      debugCalls: logger.debug.mock.calls.sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls,
       logErrorCalls: logger.error.mock.calls,
     }).toMatchSnapshot();
   });

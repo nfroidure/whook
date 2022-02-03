@@ -61,7 +61,7 @@ export function extractProduceableMediaTypes(
 
           return [...produceableMediaTypes, ...Object.keys(response.content)];
         },
-        [],
+        [] as string[],
       ),
     ),
   ];

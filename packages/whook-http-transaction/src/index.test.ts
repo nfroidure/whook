@@ -219,8 +219,8 @@ describe('initHTTPTransaction', () => {
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        expect(err.code).toEqual('E_TRANSACTION_TIMEOUT');
-        expect(err.httpCode).toEqual(504);
+        expect((err as any).code).toEqual('E_TRANSACTION_TIMEOUT');
+        expect((err as any).httpCode).toEqual(504);
         expect({
           request,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -285,8 +285,8 @@ describe('initHTTPTransaction', () => {
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        expect(err.code).toEqual('E_TRANSACTION_ID_NOT_UNIQUE');
-        expect(err.httpCode).toEqual(400);
+        expect((err as any).code).toEqual('E_TRANSACTION_ID_NOT_UNIQUE');
+        expect((err as any).httpCode).toEqual(400);
         expect({
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           timeCalls: time.mock.calls,

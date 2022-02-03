@@ -11,7 +11,6 @@ describe('authentication', () => {
   beforeAll(async () => {
     jwtToken = await initJWT({
       JWT: {
-        secret: 'my_secret',
         duration: '2h',
         tolerance: '15m',
         algorithms: ['HS256'],
@@ -58,8 +57,8 @@ describe('authentication', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect({
-            errorCode: err.code,
-            errorParams: err.params,
+            errorCode: (err as YError).code,
+            errorParams: (err as YError).params,
           }).toMatchSnapshot();
         }
       });
@@ -89,8 +88,8 @@ describe('authentication', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect({
-            errorCode: err.code,
-            errorParams: err.params,
+            errorCode: (err as YError).code,
+            errorParams: (err as YError).params,
           }).toMatchSnapshot();
         }
       });

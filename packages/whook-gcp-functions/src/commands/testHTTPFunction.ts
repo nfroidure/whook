@@ -143,7 +143,7 @@ async function initTestHTTPLambdaCommand({
     if (hasBody) {
       gcpfRequest.headers['content-type'] = `${contentType};charset=UTF-8`;
     }
-    log('info', 'GCPF_REQUEST:', gcpfRequest);
+    log('info', 'GCPF_REQUEST:', gcpfRequest as unknown as string);
 
     const response = {
       status: 0,
@@ -151,18 +151,18 @@ async function initTestHTTPLambdaCommand({
       data: '',
     };
     await new Promise<void>((resolve, reject) => {
-      const gcpfResponse: any = new stream.PassThrough();
+      const gcpfResponse = new stream.PassThrough();
 
-      gcpfResponse.set = (name: string, value: string) => {
+      (gcpfResponse as any).set = (name: string, value: string): void => {
         response.headers[name] = value;
       };
-      gcpfResponse.status = (code: number) => {
+      (gcpfResponse as any).status = (code: number): void => {
         response.status = code;
       };
 
       handler(gcpfRequest, gcpfResponse).catch(reject);
 
-      const chunks = [];
+      const chunks = [] as Buffer[];
 
       gcpfResponse.once('end', () => {
         response.data = Buffer.concat(chunks).toString();
@@ -170,7 +170,7 @@ async function initTestHTTPLambdaCommand({
       });
       gcpfResponse.once('error', reject);
       gcpfResponse.on('readable', () => {
-        let data;
+        let data: Buffer;
         while ((data = gcpfResponse.read())) {
           chunks.push(data);
         }

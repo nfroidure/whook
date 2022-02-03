@@ -8,7 +8,6 @@
 > GraphQL implementation for Whook servers
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-graphql/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Fgraphql.svg)](https://npmjs.org/package/@whook/graphql)
 
 
 [//]: # (::contents:start)

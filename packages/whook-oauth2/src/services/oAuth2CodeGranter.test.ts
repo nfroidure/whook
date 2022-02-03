@@ -31,25 +31,26 @@ describe('OAuth2CodeGranter', () => {
       scope: 'user',
     });
 
-    const authorizerResult = await oAuth2CodeGranter.authorizer.authorize({
+    const authorizerResult = await oAuth2CodeGranter.authorizer?.authorize({
       clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       redirectURI: 'https://www.example.com/oauth2/code',
       scope: 'user',
     });
-    const acknowledgerResult = await oAuth2CodeGranter.acknowledger.acknowledge(
-      {
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-        scope: 'user, admin',
-      },
-      {
-        clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-        redirectURI: 'https://www.example.com/oauth2/code',
-        scope: 'user',
-      },
-      {},
-    );
+    const acknowledgerResult =
+      await oAuth2CodeGranter.acknowledger?.acknowledge(
+        {
+          applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          scope: 'user, admin',
+        },
+        {
+          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          redirectURI: 'https://www.example.com/oauth2/code',
+          scope: 'user',
+        },
+        {},
+      );
     const authenticatorResult =
-      await oAuth2CodeGranter.authenticator.authenticate(
+      await oAuth2CodeGranter.authenticator?.authenticate(
         {
           clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
           redirectURI: 'https://www.example.com/oauth2/code',

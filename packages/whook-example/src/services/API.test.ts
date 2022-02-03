@@ -4,6 +4,7 @@ import { getOpenAPIOperations } from '@whook/http-router';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { initAPIDefinitions, initImporter } from '@whook/whook';
 import path from 'path';
+import type { WhookAPIHandlerModule } from '@whook/whook';
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;
@@ -12,7 +13,7 @@ describe('API', () => {
   let API_DEFINITIONS;
 
   beforeAll(async () => {
-    const importer = await initImporter({ log });
+    const importer = await initImporter<WhookAPIHandlerModule>({ log });
 
     API_DEFINITIONS = await initAPIDefinitions({
       PROJECT_SRC: path.join(__dirname, '..'),
@@ -50,14 +51,14 @@ describe('API', () => {
       API_DEFINITIONS,
       log,
     });
-    const securitySchemes = API.components.securitySchemes;
+    const securitySchemes = API.components?.securitySchemes || {};
     const operations = getOpenAPIOperations(API);
 
     expect(
       operations
         .filter((operation) => operation.security && operation.security.length)
         .filter((operation) =>
-          operation.security.some((operationSecurity) =>
+          (operation.security || []).some((operationSecurity) =>
             Object.keys(operationSecurity).some(
               (operationSecurityName) =>
                 !securitySchemes[operationSecurityName],

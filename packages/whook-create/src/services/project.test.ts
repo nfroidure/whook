@@ -68,8 +68,8 @@ describe('initProject', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,

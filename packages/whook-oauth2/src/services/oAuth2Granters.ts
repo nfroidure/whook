@@ -193,6 +193,54 @@ export type CheckApplicationService = {
   }>;
 };
 
+export type OAuth2GranterAuthorize<
+  AUTHORIZE_PARAMETERS extends Record<string, unknown> = Record<
+    string,
+    unknown
+  >,
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
+> = (
+  context: {
+    clientId: AUTHENTICATION_DATA['applicationId'];
+    redirectURI: string;
+    scope: AUTHENTICATION_DATA['scope'];
+  },
+  authorizeParameters?: AUTHORIZE_PARAMETERS,
+) => Promise<{
+  applicationId: AUTHENTICATION_DATA['applicationId'];
+  redirectURI: string;
+  scope: AUTHENTICATION_DATA['scope'];
+}>;
+
+export type Oauth2GranterAuthenticate<
+  GRANT_PARAMETERS extends Record<string, unknown> = Record<string, unknown>,
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
+> = (
+  grantParameters: GRANT_PARAMETERS,
+  authenticationData: AUTHENTICATION_DATA,
+) => Promise<AUTHENTICATION_DATA>;
+
+export type OAuth2GranterAcknowledge<
+  ACKNOWLEDGE_PARAMETERS extends Record<string, unknown> = Record<
+    string,
+    unknown
+  >,
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
+> = (
+  authenticationData: AUTHENTICATION_DATA,
+  acknowledgeParameters: {
+    clientId: AUTHENTICATION_DATA['applicationId'];
+    redirectURI: string;
+    scope: AUTHENTICATION_DATA['applicationId'];
+  },
+  additionalParameters: ACKNOWLEDGE_PARAMETERS,
+) => Promise<
+  AUTHENTICATION_DATA & {
+    redirectURI: string;
+    [name: string]: unknown;
+  }
+>;
+
 export type OAuth2GranterService<
   AUTHORIZE_PARAMETERS extends Record<string, unknown> = Record<
     string,
@@ -208,42 +256,24 @@ export type OAuth2GranterService<
   type: string;
   authorizer?: {
     responseType: string;
-    authorize: (
-      context: {
-        clientId: AUTHENTICATION_DATA['applicationId'];
-        redirectURI: string;
-        scope: AUTHENTICATION_DATA['scope'];
-      },
-      authorizeParameters?: AUTHORIZE_PARAMETERS,
-    ) => Promise<{
-      applicationId: AUTHENTICATION_DATA['applicationId'];
-      redirectURI: string;
-      scope: AUTHENTICATION_DATA['scope'];
-    }>;
+    authorize: OAuth2GranterAuthorize<
+      AUTHORIZE_PARAMETERS,
+      AUTHENTICATION_DATA
+    >;
   };
   acknowledger?: {
     acknowledgmentType: string;
-    acknowledge: (
-      authenticationData: AUTHENTICATION_DATA,
-      acknowledgeParameters: {
-        clientId: AUTHENTICATION_DATA['applicationId'];
-        redirectURI: string;
-        scope: AUTHENTICATION_DATA['applicationId'];
-      },
-      additionalParameters: ACKNOWLEDGE_PARAMETERS,
-    ) => Promise<
-      AUTHENTICATION_DATA & {
-        redirectURI: string;
-        [name: string]: unknown;
-      }
+    acknowledge: OAuth2GranterAcknowledge<
+      ACKNOWLEDGE_PARAMETERS,
+      AUTHENTICATION_DATA
     >;
   };
   authenticator?: {
     grantType: string;
-    authenticate: (
-      grantParameters: GRANT_PARAMETERS,
-      authenticationData: AUTHENTICATION_DATA,
-    ) => Promise<AUTHENTICATION_DATA>;
+    authenticate: Oauth2GranterAuthenticate<
+      GRANT_PARAMETERS,
+      AUTHENTICATION_DATA
+    >;
   };
 };
 

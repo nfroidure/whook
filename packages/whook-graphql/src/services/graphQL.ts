@@ -100,13 +100,19 @@ async function initGraphQL({
   const apolloServer = new WhookGraphQLService({
     ...GRAPHQL_SERVER_OPTIONS,
     typeDefs: graphQLFragments.reduce(
-      (accTypeDefs, { typeDefs }) => [...accTypeDefs, ...[].concat(typeDefs)],
+      (accTypeDefs, { typeDefs }) => [
+        ...accTypeDefs,
+        ...([] as DocumentNode[]).concat(typeDefs),
+      ],
       baseTypeDefs,
     ),
     resolvers: graphQLFragments
       .map(({ resolvers }) => resolvers)
       .reduce(
-        (accResolvers, resolvers) => [...accResolvers, ...[].concat(resolvers)],
+        (accResolvers, resolvers) => [
+          ...accResolvers,
+          ...([] as IResolvers[]).concat(resolvers || []),
+        ],
         baseResolvers,
       ),
     schemaDirectives: graphQLFragments.reduce(

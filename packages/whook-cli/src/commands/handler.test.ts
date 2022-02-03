@@ -94,8 +94,8 @@ describe('handlerCommand', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
-          errorCode: err.code,
-          errorParams: err.params,
+          errorCode: (err as YError).code,
+          errorParams: (err as YError).params,
           promptArgsCalls: promptArgs.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
@@ -126,8 +126,8 @@ describe('handlerCommand', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
-          errorCode: err.code,
-          errorParams: err.params,
+          errorCode: (err as YError).code,
+          errorParams: (err as YError).params,
           promptArgsCalls: promptArgs.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,

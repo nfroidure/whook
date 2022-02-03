@@ -111,11 +111,12 @@ async function postAuthLogin<
       },
     };
   } catch (err) {
-    const newErr = YHTTPError.wrap(err);
+    const newErr = YHTTPError.wrap(err as Error);
 
     newErr.headers = {
-      ...(err.headers || {}),
-      'Set-Cookie': authCookies.build(),
+      ...((err as YHTTPError).headers || {}),
+      // TODO: Allow string[] in YHTTPError
+      'Set-Cookie': authCookies.build() as unknown as string,
     };
 
     throw newErr;

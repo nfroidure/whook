@@ -15,6 +15,7 @@ import {
   initDelayService,
   initProcessService,
   DEFAULT_LOG_ROUTING,
+  DEFAULT_LOG_CONFIG,
 } from 'common-services';
 import initHTTPRouter, {
   OPEN_API_METHODS,
@@ -242,7 +243,7 @@ Whook exposes a `runServer` function to programmatically spawn
 */
 export async function runServer<
   D extends Dependencies,
-  T extends Knifecycle<D> = Knifecycle<D>,
+  T extends Knifecycle = Knifecycle,
 >(
   innerPrepareEnvironment: ($?: T) => Promise<T>,
   innerPrepareServer: (injectedNames: string[], $: T) => Promise<D>,
@@ -302,7 +303,7 @@ export async function runServer<
     return { ENV, log, $instance: $, ...services } as unknown as D;
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', err.stack);
+    console.error('💀 - Cannot launch the process:', (err as Error).stack);
     process.exit(1);
   }
 }
@@ -326,7 +327,7 @@ Whook exposes a `prepareServer` function to create its server
  */
 export async function prepareServer<
   D extends Dependencies,
-  T extends Knifecycle<D>,
+  T extends Knifecycle,
 >(injectedNames: string[], $: T): Promise<D> {
   /* Architecture Note #2.1: Root injections
    * We need to inject `httpServer` and `process` to bring life to our
@@ -356,7 +357,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  * @returns Promise<Knifecycle>
  * A promise of the Knifecycle instance
  */
-export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
+export async function prepareEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   /* Architecture Note #3.1: `PWD` env var
@@ -392,15 +393,14 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
    module so that you can set the `DEBUG` environment
    variable to `whook` and get debug messages in output.
    */
-  $.register(constant('debug', debug('whook')));
   $.register(
     constant('logger', {
       // eslint-disable-next-line
       error: console.error.bind(console),
       // eslint-disable-next-line
-      info: console.info.bind(console),
+      output: console.info.bind(console),
       // eslint-disable-next-line
-      warning: console.error.bind(console),
+      debug: debug('whook'),
     }),
   );
   $.register(constant('exit', process.exit));
@@ -409,6 +409,7 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
   // TODO: Remove when fixed that issue
   // https://github.com/nfroidure/knifecycle/issues/108
   $.register(constant('LOG_ROUTING', DEFAULT_LOG_ROUTING));
+  $.register(constant('LOG_CONFIG', DEFAULT_LOG_CONFIG));
 
   /* Architecture Note #3.5: Initializers
   Whook's embed a few default initializers proxied from

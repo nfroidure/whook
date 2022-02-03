@@ -8,7 +8,7 @@ If no `PORT` configuration is specified in dependencies nor in ENV,
 this service detects a free port automagically.
 */
 
-type PortFinderModule = { getPortPromise: () => Promise<number> };
+export type PortFinderModule = { getPortPromise: () => Promise<number> };
 export type PortEnv = {
   PORT?: string;
 };

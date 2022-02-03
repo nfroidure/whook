@@ -61,7 +61,7 @@ async function initWhookPluginsPaths({
 
       return modulePath;
     } catch (err) {
-      throw YError.wrap(err, 'E_BAD_WHOOK_PLUGIN', pluginName);
+      throw YError.wrap(err as Error, 'E_BAD_WHOOK_PLUGIN', pluginName);
     }
   });
 }

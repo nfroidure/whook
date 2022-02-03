@@ -1,6 +1,7 @@
-import stream from 'stream';
+import Stream from 'stream';
 import qs from 'qs';
-import { JsonValue } from 'type-fest';
+import type { JsonValue } from 'type-fest';
+import type { WhookEncoders, WhookDecoders } from '..';
 
 export const DEFAULT_DEBUG_NODE_ENVS = ['test', 'development'];
 export const DEFAULT_BUFFER_LIMIT = '500kB';
@@ -17,11 +18,11 @@ export const DEFAULT_STRINGIFYERS = {
     qs.stringify(content),
 };
 export const DEFAULT_DECODERS = {
-  'utf-8': stream.PassThrough,
-};
+  'utf-8': Stream.PassThrough,
+} as WhookDecoders<Stream.Transform>;
 export const DEFAULT_ENCODERS = {
-  'utf-8': stream.PassThrough,
-};
+  'utf-8': Stream.PassThrough,
+} as WhookEncoders<Stream.Transform>;
 
 function ensureString(maybeString: unknown): string {
   return 'undefined' === typeof maybeString

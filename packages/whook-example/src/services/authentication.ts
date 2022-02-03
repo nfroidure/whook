@@ -42,7 +42,7 @@ async function initAuthentication({
           return await jwtToken.verify((data as BearerPayload).hash);
         } catch (err) {
           throw YError.wrap(
-            err,
+            err as Error,
             'E_BAD_BEARER_TOKEN',
             type,
             (data as BearerPayload).hash,

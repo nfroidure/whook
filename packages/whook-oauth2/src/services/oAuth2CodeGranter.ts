@@ -39,79 +39,85 @@ async function initOAuth2CodeGranter({
   checkApplication,
   log = noop,
 }: OAuth2CodeGranterDependencies): Promise<OAuth2CodeGranterService> {
-  const authorizeWithCode: OAuth2CodeGranterService['authorizer']['authorize'] =
-    async ({ clientId, redirectURI, scope = '' }) => {
-      const { redirectURI: finalRedirectURI } = await checkApplication({
-        applicationId: clientId,
-        type: CODE_GRANTER_TYPE,
-        redirectURI,
-        scope,
-      });
+  const authorizeWithCode: NonNullable<
+    OAuth2CodeGranterService['authorizer']
+  >['authorize'] = async ({ clientId, redirectURI, scope = '' }) => {
+    const { redirectURI: finalRedirectURI } = await checkApplication({
+      applicationId: clientId,
+      type: CODE_GRANTER_TYPE,
+      redirectURI,
+      scope,
+    });
 
-      return {
-        applicationId: clientId,
-        redirectURI: finalRedirectURI,
-        scope,
-      };
+    return {
+      applicationId: clientId,
+      redirectURI: finalRedirectURI,
+      scope,
     };
+  };
 
   // Authorization Code Response:
   // https://tools.ietf.org/html/rfc6749#section-4.1.2
-  const acknowledgeWithCode: OAuth2CodeGranterService['acknowledger']['acknowledge'] =
-    async (
-      authenticationData,
-      { clientId, redirectURI, scope },
+  const acknowledgeWithCode: NonNullable<
+    OAuth2CodeGranterService['acknowledger']
+  >['acknowledge'] = async (
+    authenticationData,
+    { clientId, redirectURI, scope },
+    additionalParameters,
+  ) => {
+    const code = await oAuth2Code.create(
+      { ...authenticationData, applicationId: clientId, scope },
+      redirectURI,
       additionalParameters,
-    ) => {
-      const code = await oAuth2Code.create(
-        { ...authenticationData, applicationId: clientId, scope },
-        redirectURI,
-        additionalParameters,
-      );
+    );
 
-      return {
-        applicationId: clientId,
-        redirectURI,
-        scope,
-        code,
-      };
+    return {
+      applicationId: clientId,
+      redirectURI,
+      scope,
+      code,
     };
+  };
 
-  const authenticateWithCode: OAuth2CodeGranterService['authenticator']['authenticate'] =
-    async ({ code, clientId, redirectURI }, authenticationData) => {
-      // The client must be authenticated (for now, see below)
-      if (!authenticationData) {
-        throw new YError('E_UNAUTHORIZED');
-      }
+  const authenticateWithCode: NonNullable<
+    OAuth2CodeGranterService['authenticator']
+  >['authenticate'] = async (
+    { code, clientId, redirectURI },
+    authenticationData,
+  ) => {
+    // The client must be authenticated (for now, see below)
+    if (!authenticationData) {
+      throw new YError('E_UNAUTHORIZED');
+    }
 
-      // This check is not really necessary atm but it acts
-      // as a reminder that this grant type could be used
-      // without authenticating the client. In this
-      // scenario, the authenticationData should be deducted
-      // from the clientId and the code given in parameters
-      // See https://tools.ietf.org/html/rfc6749#section-4.1.3
-      if (clientId && clientId !== authenticationData.applicationId) {
-        throw new YError(
-          'E_UNAUTHORIZED',
-          clientId,
-          authenticationData.applicationId,
-        );
-      }
-
-      await checkApplication({
-        applicationId: authenticationData.applicationId,
-        type: CODE_GRANTER_TYPE,
-        scope: '',
-      });
-
-      const newAuthenticationData = await oAuth2Code.check(
-        authenticationData,
-        code,
-        redirectURI,
+    // This check is not really necessary atm but it acts
+    // as a reminder that this grant type could be used
+    // without authenticating the client. In this
+    // scenario, the authenticationData should be deducted
+    // from the clientId and the code given in parameters
+    // See https://tools.ietf.org/html/rfc6749#section-4.1.3
+    if (clientId && clientId !== authenticationData.applicationId) {
+      throw new YError(
+        'E_UNAUTHORIZED',
+        clientId,
+        authenticationData.applicationId,
       );
+    }
 
-      return newAuthenticationData;
-    };
+    await checkApplication({
+      applicationId: authenticationData.applicationId,
+      type: CODE_GRANTER_TYPE,
+      scope: '',
+    });
+
+    const newAuthenticationData = await oAuth2Code.check(
+      authenticationData,
+      code,
+      redirectURI,
+    );
+
+    return newAuthenticationData;
+  };
 
   log('debug', '👫 - OAuth2CodeGranter Service Initialized!');
 

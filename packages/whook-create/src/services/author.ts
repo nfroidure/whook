@@ -26,7 +26,7 @@ export default autoService(async function initAuthor({
     readGitProperty({ exec, log }, 'user.email'),
   ]).catch((err) => {
     log('debug', 'Could not get author from Git');
-    log('debug-stack', err.stack);
+    log('debug-stack', (err as Error).stack || 'no_stack_trace');
     return [];
   });
 
@@ -54,7 +54,7 @@ export default autoService(async function initAuthor({
     };
   } catch (err) {
     await lock.release('cli:input');
-    throw YError.wrap(err);
+    throw YError.wrap(err as Error);
   }
 });
 
@@ -69,16 +69,13 @@ async function readGitProperty(
   name: string,
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    exec(
-      `git config --get ${name}`,
-      (err: Error, stdout: string, stderr: string) => {
-        if (err) {
-          log('debug', 'STDERR:\n', stderr || '');
-          reject(YError.wrap(err));
-          return;
-        }
-        resolve(stdout.trim());
-      },
-    );
+    exec(`git config --get ${name}`, (err, stdout, stderr) => {
+      if (err) {
+        log('debug', 'STDERR:\n', stderr || '');
+        reject(YError.wrap(err as Error));
+        return;
+      }
+      resolve(stdout.trim());
+    });
   });
 }

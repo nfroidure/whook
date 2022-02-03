@@ -8,7 +8,6 @@
 > Build and deploy to GCP Cloud Functions with Whook.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-gcp-functions/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Fgcp-functions.svg)](https://npmjs.org/package/@whook/gcp-functions)
 
 
 [//]: # (::contents:start)

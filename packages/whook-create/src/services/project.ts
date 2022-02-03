@@ -53,8 +53,8 @@ export default autoService(async function initProject({
         'error',
         `Cannot create the project's directory: "${projectDirectory}"`,
       );
-      log('stack', err.stack);
-      throw YError.wrap(err, 'E_PROJECT_DIR', projectDirectory);
+      log('error-stack', (err as Error).stack || 'no_stack_trace');
+      throw YError.wrap(err as Error, 'E_PROJECT_DIR', projectDirectory);
     }
 
     return {
@@ -63,6 +63,6 @@ export default autoService(async function initProject({
     };
   } catch (err) {
     await lock.release('cli:input');
-    throw YError.cast(err);
+    throw YError.cast(err as Error);
   }
 });

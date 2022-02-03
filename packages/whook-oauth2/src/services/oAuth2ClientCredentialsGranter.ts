@@ -39,30 +39,34 @@ async function initOAuth2ClientCredentialsGranter({
   checkApplication,
   log = noop,
 }: OAuth2ClientCredentialsGranterDependencies): Promise<OAuth2ClientCredentialsGranterService> {
-  const authenticateWithClientCredentials: OAuth2ClientCredentialsGranterService['authenticator']['authenticate'] =
-    async ({ scope: demandedScope = '' }, authenticationData) => {
-      // The client must be authenticated
-      if (!authenticationData) {
-        throw new YError('E_UNAUTHORIZED');
-      }
+  const authenticateWithClientCredentials: NonNullable<
+    OAuth2ClientCredentialsGranterService['authenticator']
+  >['authenticate'] = async (
+    { scope: demandedScope = '' },
+    authenticationData,
+  ) => {
+    // The client must be authenticated
+    if (!authenticationData) {
+      throw new YError('E_UNAUTHORIZED');
+    }
 
-      // Checking the scope and availability of the demanded
-      // grant type
-      await checkApplication({
-        applicationId: authenticationData.applicationId,
-        type: 'client_credentials',
-        scope: demandedScope,
-      });
+    // Checking the scope and availability of the demanded
+    // grant type
+    await checkApplication({
+      applicationId: authenticationData.applicationId,
+      type: 'client_credentials',
+      scope: demandedScope,
+    });
 
-      return {
-        ...authenticationData,
-        scope: demandedScope
-          ? demandedScope
-          : OAUTH2.defaultToClientScope
-          ? authenticationData.scope
-          : '',
-      };
+    return {
+      ...authenticationData,
+      scope: demandedScope
+        ? demandedScope
+        : OAUTH2.defaultToClientScope
+        ? authenticationData.scope
+        : '',
     };
+  };
 
   log('debug', '👫 - OAuth2ClientCredentialsGranter Service Initialized!');
 

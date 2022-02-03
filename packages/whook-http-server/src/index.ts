@@ -78,7 +78,9 @@ async function initHTTPServer({
   httpRouter,
   log = noop,
 }: HTTPServerDependencies): Promise<HTTPServerProvider> {
-  const sockets: Set<Socket> = ENV.DESTROY_SOCKETS ? new Set() : undefined;
+  const sockets: Set<Socket> = ENV.DESTROY_SOCKETS
+    ? new Set()
+    : (undefined as unknown as Set<Socket>);
   /**
     @typedef HTTPServer
   */
@@ -91,7 +93,7 @@ async function initHTTPServer({
   });
   const fatalErrorPromise: Promise<void> = new Promise((_, reject) => {
     httpServer.once('error', (err) =>
-      reject(YError.wrap(err, 'E_HTTP_SERVER_ERROR')),
+      reject(YError.wrap(err as Error, 'E_HTTP_SERVER_ERROR')),
     );
   });
 

@@ -31,10 +31,10 @@ export default function wrapHandlerForAWSS3Lambda<D, S extends WhookHandler>(
     ['NODE_ENV', 'OPERATION_API', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSS3Lambda.bind(null, initHandler) as ServiceInitializer<
-        D,
-        S
-      >,
+      (initHandlerForAWSS3Lambda as any).bind(
+        null,
+        initHandler,
+      ) as ServiceInitializer<D, S>,
     ),
   );
 }
@@ -45,7 +45,7 @@ async function initHandlerForAWSS3Lambda<D, S extends WhookHandler>(
 ): Promise<S> {
   const handler: S = await initHandler(services);
 
-  return handleForAWSS3Lambda.bind(null, services, handler);
+  return (handleForAWSS3Lambda as any).bind(null, services, handler);
 }
 
 async function handleForAWSS3Lambda(
@@ -62,11 +62,11 @@ async function handleForAWSS3Lambda(
   callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...OPERATION_API.paths[path]?.[method],
   };
   const startTime = time();
   const parameters = {
@@ -87,9 +87,9 @@ async function handleForAWSS3Lambda(
       endTime: time(),
       recordsLength: event.Records.length,
     });
-    callback(null);
+    callback(null as unknown as Error);
   } catch (err) {
-    const castedErr = YError.cast(err);
+    const castedErr = YError.cast(err as Error);
 
     apm('S3', {
       environment: NODE_ENV,
@@ -105,6 +105,6 @@ async function handleForAWSS3Lambda(
       recordsLength: event.Records.length,
     });
 
-    callback(err);
+    callback(err as Error);
   }
 }

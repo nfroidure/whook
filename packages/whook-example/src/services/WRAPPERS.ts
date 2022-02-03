@@ -14,7 +14,10 @@ Wrappers are allowing you to override every
  to all the handlers defined in the API.
 */
 async function initWrappers(): Promise<WhookWrapper<Dependencies, Service>[]> {
-  const WRAPPERS = [wrapHandlerWithCORS, wrapHandlerWithAuthorization];
+  const WRAPPERS = [
+    wrapHandlerWithCORS,
+    wrapHandlerWithAuthorization,
+  ] as WhookWrapper<Dependencies, Service>[];
 
   return WRAPPERS;
 }

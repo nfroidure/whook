@@ -7,7 +7,7 @@ export default singleton(autoService(initArgs));
 
 export type WhookCommandNamedArgs = Record<string, WhookArgsTypes>;
 export type WhookCommandArgsRest = {
-  _?: string[];
+  _: string[];
 };
 export type WhookCommandArgs = WhookCommandArgsRest & WhookCommandNamedArgs;
 

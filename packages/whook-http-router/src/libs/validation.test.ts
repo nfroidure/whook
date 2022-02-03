@@ -140,8 +140,8 @@ describe('extractParametersFromSecuritySchemes', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
-          errorCode: err.code,
-          errorParams: err.params,
+          errorCode: (err as YError).code,
+          errorParams: (err as YError).params,
         }).toMatchSnapshot();
       }
     });
@@ -158,8 +158,8 @@ describe('extractParametersFromSecuritySchemes', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
-          errorCode: err.code,
-          errorParams: err.params,
+          errorCode: (err as YError).code,
+          errorParams: (err as YError).params,
         }).toMatchSnapshot();
       }
     });
@@ -337,7 +337,7 @@ describe('extractOperationSecurityParameters', () => {
           {
             basicAuth: ['user:delegate'],
           },
-        ],
+        ] as OpenAPIV3.OperationObject['security'],
         parameters: [],
         responses: {},
       };
@@ -368,7 +368,7 @@ describe('extractOperationSecurityParameters', () => {
           },
         },
       };
-      expect(extractOperationSecurityParameters(API, operation))
+      expect(extractOperationSecurityParameters(API, operation as any))
         .toMatchInlineSnapshot(`
         Array [
           Object {
