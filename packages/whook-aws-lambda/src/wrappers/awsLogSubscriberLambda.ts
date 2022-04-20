@@ -46,7 +46,7 @@ export default function wrapHandlerForAWSLogSubscriberLambda<
     ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSLogSubscriberLambda.bind(
+      (initHandlerForAWSLogSubscriberLambda as any).bind(
         null,
         initHandler,
       ) as ServiceInitializer<D, S>,
@@ -60,7 +60,7 @@ async function initHandlerForAWSLogSubscriberLambda<D, S extends WhookHandler>(
 ): Promise<S> {
   const handler: S = await initHandler(services);
 
-  return handleForAWSLogSubscriberLambda.bind(null, services, handler);
+  return (handleForAWSLogSubscriberLambda as any).bind(null, services, handler);
 }
 
 async function handleForAWSLogSubscriberLambda(
@@ -77,11 +77,11 @@ async function handleForAWSLogSubscriberLambda(
   callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...OPERATION_API.paths[path]?.[method],
   };
   const startTime = time();
   const parameters = {
@@ -104,9 +104,9 @@ async function handleForAWSLogSubscriberLambda(
       recordsLength: parameters.body.logEvents.length,
     });
 
-    callback(null);
+    callback(null as unknown as Error);
   } catch (err) {
-    const castedErr = YError.cast(err);
+    const castedErr = YError.cast(err as Error);
 
     apm('LOG_SUBSCRIBER', {
       environment: NODE_ENV,
@@ -122,7 +122,7 @@ async function handleForAWSLogSubscriberLambda(
       recordsLength: parameters.body.logEvents.length,
     });
 
-    callback(err);
+    callback(err as Error);
   }
 }
 

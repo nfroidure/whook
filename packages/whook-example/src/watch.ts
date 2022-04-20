@@ -7,13 +7,13 @@ import initGenerateOpenAPITypes from './commands/generateOpenAPITypes';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 import parseGitIgnore from 'parse-gitignore';
-import type { Knifecycle, Dependencies } from 'knifecycle';
+import type { Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 
-let $instance: Knifecycle<Dependencies>;
+let $instance: Knifecycle;
 let log: LogService;
 let delay: DelayService;
-let delayPromise: Promise<void>;
+let delayPromise: Promise<void> | undefined;
 let hash: string;
 
 export async function watchDevServer(): Promise<void> {
@@ -88,7 +88,7 @@ export async function restartDevServer(): Promise<void> {
   ])) as {
     NODE_ENV: string;
     PROJECT_SRC: string;
-    $instance: Knifecycle<Dependencies>;
+    $instance: Knifecycle;
     delay: DelayService;
     getOpenAPI;
     log: LogService;
@@ -159,5 +159,5 @@ function uncache(key: string, recursively = false) {
     return;
   }
 
-  uncache(module.parent.id);
+  uncache((module.parent as any).id);
 }

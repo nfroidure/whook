@@ -60,6 +60,7 @@ import type {
   WhookOperation,
   HTTPTransactionService,
   DereferencedParameterObject,
+  WhookResponse,
 } from '@whook/http-transaction';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
@@ -276,7 +277,7 @@ async function initHTTPRouter({
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
-  QUERY_PARSER = strictQs.bind(null, {}),
+  QUERY_PARSER = strictQs.bind(null, {} as Parameters<typeof strictQs>[0]),
   log = noop,
   httpTransaction,
   errorHandler,
@@ -286,9 +287,9 @@ async function initHTTPRouter({
     verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
     strict: true,
     logger: {
-      log: (...args) => log('debug', ...args),
-      warn: (...args) => log('warning', ...args),
-      error: (...args) => log('error', ...args),
+      log: (...args: string[]) => log('debug', ...args),
+      warn: (...args: string[]) => log('warning', ...args),
+      error: (...args: string[]) => log('error', ...args),
     },
   });
   addAJVFormats(ajv);
@@ -369,14 +370,14 @@ async function initHTTPRouter({
             );
           }
 
-          operation = _operation_;
+          operation = _operation_ as WhookOperation;
 
           const search = request.url.substr(
             request.url.split(SEARCH_SEPARATOR)[0].length,
           );
           const bodySpec = extractBodySpec(
             request,
-            consumableMediaTypes,
+            consumableMediaTypes || [],
             consumableCharsets,
           );
           let parameters;
@@ -384,7 +385,7 @@ async function initHTTPRouter({
           responseSpec = extractResponseSpec(
             operation,
             request,
-            produceableMediaTypes,
+            produceableMediaTypes || [],
             produceableCharsets,
           );
 
@@ -416,19 +417,29 @@ async function initHTTPRouter({
               ),
             };
 
-            applyValidators(operation, validators, parameters);
+            applyValidators(
+              operation,
+              validators as RouteDescriptor['validators'],
+              parameters,
+            );
 
-            bodyValidator(operation, bodySpec.contentType, body);
+            (bodyValidator as RouteDescriptor['bodyValidator'])(
+              operation,
+              bodySpec.contentType,
+              body,
+            );
 
             parameters = {
               ...parameters,
               ...('undefined' !== typeof body ? { body } : {}),
             };
           } catch (err) {
-            throw HTTPError.cast(err, 400);
+            throw HTTPError.cast(err as Error, 400);
           }
 
           const response = await executeHandler(operation, handler, parameters);
+
+          response.headers = response.headers || {};
 
           if (response.body) {
             response.headers['content-type'] =
@@ -441,16 +452,16 @@ async function initHTTPRouter({
             operation.responses &&
             operation.responses[response.status] &&
             operation.responses[response.status].content &&
-            operation.responses[response.status].content[
+            operation.responses[response.status].content?.[
               response.headers['content-type'] as string
             ] &&
-            operation.responses[response.status].content[
+            operation.responses[response.status].content?.[
               response.headers['content-type'] as string
             ].schema &&
-            (operation.responses[response.status].content[
+            (operation.responses[response.status].content?.[
               response.headers['content-type'] as string
             ].schema.type !== 'string' ||
-              operation.responses[response.status].content[
+              operation.responses[response.status].content?.[
                 response.headers['content-type'] as string
               ].schema.format !== 'binary');
 
@@ -469,7 +480,7 @@ async function initHTTPRouter({
             checkResponseMediaType(
               request,
               responseSpec,
-              produceableMediaTypes,
+              produceableMediaTypes || [],
             );
             checkResponseCharset(request, responseSpec, produceableCharsets);
           }
@@ -479,14 +490,21 @@ async function initHTTPRouter({
         .catch(transaction.catch)
         .catch(errorHandler.bind(null, transaction.id, responseSpec))
         .then(async (response) => {
-          if (response.body && 'head' === request.method) {
+          // We can safely assume response is not void since
+          // error handler is supposed to rethrow any catched
+          // error
+          let castedResponse = response as WhookResponse;
+
+          if (castedResponse.body && 'head' === request.method) {
             log(
               'warning',
               'Body stripped:',
-              response.body instanceof Stream ? 'Stream' : response.body,
+              castedResponse.body instanceof Stream
+                ? 'Stream'
+                : castedResponse.body,
             );
-            response = {
-              ...response,
+            castedResponse = {
+              ...castedResponse,
               body: undefined,
             };
           }
@@ -497,14 +515,14 @@ async function initHTTPRouter({
                 ENCODERS,
                 STRINGIFYERS,
               },
-              response,
+              castedResponse,
             ),
             operation ? operation.operationId : 'none',
           );
         });
     } catch (err) {
       log('error', '☢️ - Unrecovable router error...');
-      log('stack', err.stack);
+      log('error-stack', (err as Error).stack || 'no_stack_trace');
       handleFatalError(err);
     }
   }

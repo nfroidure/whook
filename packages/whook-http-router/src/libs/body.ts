@@ -42,7 +42,7 @@ export async function getBody<
   operation: WhookOperation,
   inputStream: Readable,
   bodySpec: BodySpec,
-): Promise<T> {
+): Promise<T | undefined> {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
   const requestBody = operation.requestBody
     ? (operation.requestBody as OpenAPIV3.RequestBodyObject)
@@ -65,7 +65,7 @@ export async function getBody<
   if (!bodyIsParseable) {
     return inputStream as T;
   }
-  if (!PARSERS[bodySpec.contentType]) {
+  if (!PARSERS?.[bodySpec.contentType]) {
     return Promise.reject(
       new HTTPError(500, 'E_PARSER_LACK', bodySpec.contentType),
     );
@@ -81,10 +81,16 @@ export async function getBody<
   }
 
   const body: Buffer = await new Promise((resolve, reject) => {
-    const Decoder = DECODERS[bodySpec.charset];
+    const Decoder = DECODERS?.[bodySpec.charset];
 
-    inputStream.on('error', (err) => {
-      reject(HTTPError.wrap(err, 400, 'E_REQUEST_FAILURE'));
+    if (!Decoder) {
+      return Promise.reject(
+        new HTTPError(500, 'E_DECODER_LACK', bodySpec.charset),
+      );
+    }
+
+    inputStream.on('error', (err: Error) => {
+      reject(HTTPError.wrap(err as Error, 400, 'E_REQUEST_FAILURE'));
     });
     inputStream.pipe(new Decoder()).pipe(
       new FirstChunkStream(
@@ -129,7 +135,7 @@ export async function getBody<
       }
     });
   } catch (err) {
-    throw HTTPError.wrap(err, 400, 'E_BAD_BODY', body.toString());
+    throw HTTPError.wrap(err as Error, 400, 'E_BAD_BODY', body.toString());
   }
 }
 
@@ -151,17 +157,22 @@ export async function sendBody(
     return response;
   }
 
-  if (!STRINGIFYERS[response.headers['content-type'] as string]) {
+  if (!STRINGIFYERS?.[response.headers?.['content-type'] as string]) {
     throw new YError(
       'E_STRINGIFYER_LACK',
-      response.headers['content-type'],
+      response.headers?.['content-type'],
       response,
     );
   }
 
-  const Encoder = ENCODERS['utf-8'];
+  const Encoder = ENCODERS?.['utf-8'];
+
+  if (!Encoder) {
+    throw new YError('E_ENCODER_LACK', 'utf-8');
+  }
+
   const stream = new Encoder();
-  const content = STRINGIFYERS[response.headers['content-type'] as string](
+  const content = STRINGIFYERS[response.headers?.['content-type'] as string](
     response.body as string,
   );
 
@@ -172,7 +183,7 @@ export async function sendBody(
   return {
     ...response,
     headers: {
-      'content-type': `${response.headers['content-type']}; charset=utf-8`,
+      'content-type': `${response.headers?.['content-type']}; charset=utf-8`,
       ...response.headers,
     },
     body: stream,

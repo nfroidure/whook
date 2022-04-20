@@ -8,7 +8,6 @@
 > A wrapper to provide CORS support to a Whook server
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-cors/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Fcors.svg)](https://npmjs.org/package/@whook/cors)
 
 
 [//]: # (::contents:start)

@@ -61,7 +61,7 @@ async function initCONFIGS({
     return (await importer(configPath)).default;
   } catch (err) {
     log('warning', `☢ - Could not load configuration file "${configPath}".`);
-    log('stack', err.stack);
-    throw YError.wrap(err, 'E_NO_CONFIG', configPath);
+    log('debug-stack', (err as Error).stack || 'no_stack_trace');
+    throw YError.wrap(err as Error, 'E_NO_CONFIG', configPath);
   }
 }

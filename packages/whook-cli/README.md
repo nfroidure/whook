@@ -8,7 +8,6 @@
 > The Whook server CLI
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-cli/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Fcli.svg)](https://npmjs.org/package/@whook/cli)
 
 
 [//]: # (::contents:start)

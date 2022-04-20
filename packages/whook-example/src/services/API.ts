@@ -108,15 +108,15 @@ async function augmentAPIWithFakeAuth(
     paths: Object.keys(API.paths).reduce<OpenAPIV3.PathsObject>(
       (newPathsObject, path) => ({
         ...newPathsObject,
-        [path]: Object.keys(API.paths[path]).reduce(
+        [path]: Object.keys(API.paths[path] || {}).reduce(
           (newPathItem, method) => ({
             ...newPathItem,
             [method]: {
-              ...API.paths[path][method],
-              ...(API.paths[path][method].security
+              ...API.paths[path]?.[method],
+              ...(API.paths[path]?.[method].security
                 ? {
                     security: [
-                      ...API.paths[path][method].security,
+                      ...(API.paths[path]?.[method]?.security || {}),
                       { fakeAuth: ['admin'] },
                     ],
                   }

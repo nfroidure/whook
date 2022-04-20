@@ -35,10 +35,10 @@ export default function wrapHandlerForAWSCronLambda<D, S extends WhookHandler>(
     ['NODE_ENV', 'OPERATION_API', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSCronLambda.bind(null, initHandler) as ServiceInitializer<
-        D,
-        S
-      >,
+      (initHandlerForAWSCronLambda as any).bind(
+        null,
+        initHandler,
+      ) as ServiceInitializer<D, S>,
     ),
   );
 }
@@ -49,7 +49,7 @@ async function initHandlerForAWSCronLambda<D, S extends WhookHandler>(
 ): Promise<S> {
   const handler: S = await initHandler(services);
 
-  return handleForAWSCronLambda.bind(null, services, handler);
+  return (handleForAWSCronLambda as any).bind(null, services, handler);
 }
 
 async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
@@ -66,11 +66,11 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
   callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...OPERATION_API.paths[path]?.[method],
   };
   const startTime = time();
   const parameters: LambdaCronInput<T> = {
@@ -91,9 +91,9 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
       startTime,
       endTime: time(),
     });
-    callback(null);
+    callback(null as unknown as Error);
   } catch (err) {
-    const castedErr = YError.cast(err);
+    const castedErr = YError.cast(err as Error);
 
     apm('CRON', {
       environment: NODE_ENV,
@@ -108,6 +108,6 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
       endTime: time(),
     });
 
-    callback(err);
+    callback(err as Error);
   }
 }

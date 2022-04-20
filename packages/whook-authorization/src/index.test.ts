@@ -1,6 +1,7 @@
 import { wrapHandlerWithAuthorization } from '.';
 import { handler } from 'knifecycle';
 import YError from 'yerror';
+import YHTTPError from 'yhttperror';
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
@@ -65,7 +66,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
   describe('with unauthenticated endpoints', () => {
     it('should work', async () => {
-      const noopHandler = handler(noopMock, 'getNoop');
+      const noopHandler = handler(noopMock as any, 'getNoop');
       const wrappedNoodHandlerWithAuthorization =
         wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -90,7 +91,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
-      const noopHandler = handler(noopMock, 'getNoop');
+      const noopHandler = handler(noopMock as any, 'getNoop');
       const wrappedNoodHandlerWithAuthorization =
         wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -118,7 +119,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
-      const noopHandler = handler(noopMock, 'getNoop');
+      const noopHandler = handler(noopMock as any, 'getNoop');
       const wrappedNoodHandlerWithAuthorization =
         wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -146,7 +147,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
-      const noopHandler = handler(noopMock, 'getNoop');
+      const noopHandler = handler(noopMock as any, 'getNoop');
       const wrappedNoodHandlerWithAuthorization =
         wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -174,7 +175,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
-      const noopHandler = handler(noopMock, 'getNoop');
+      const noopHandler = handler(noopMock as any, 'getNoop');
       const wrappedNoodHandlerWithAuthorization =
         wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -199,7 +200,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
-      const noopHandler = handler(noopMock, 'getNoop');
+      const noopHandler = handler(noopMock as any, 'getNoop');
       const wrappedNoodHandlerWithAuthorization =
         wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -227,7 +228,7 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
-      const noopHandler = handler(noopMock, 'getNoop');
+      const noopHandler = handler(noopMock as any, 'getNoop');
       const wrappedNoodHandlerWithAuthorization =
         wrapHandlerWithAuthorization(noopHandler);
       const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -251,7 +252,7 @@ describe('wrapHandlerWithAuthorization', () => {
   });
 
   it('should fail with no operation definition provided', async () => {
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -269,10 +270,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -281,7 +282,7 @@ describe('wrapHandlerWithAuthorization', () => {
   });
 
   it('should fail with bad operation definition provided', async () => {
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -299,10 +300,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -316,7 +317,7 @@ describe('wrapHandlerWithAuthorization', () => {
       userId: 1,
       scope: '',
     });
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -334,10 +335,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -351,7 +352,7 @@ describe('wrapHandlerWithAuthorization', () => {
       userId: 1,
       scope: '',
     });
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -370,10 +371,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -386,7 +387,7 @@ describe('wrapHandlerWithAuthorization', () => {
       new YError('E_UNEXPECTED_TOKEN_CHECK'),
     );
 
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -404,10 +405,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -420,7 +421,7 @@ describe('wrapHandlerWithAuthorization', () => {
       new YError('E_UNEXPECTED_TOKEN_CHECK'),
     );
 
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -433,10 +434,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -449,7 +450,7 @@ describe('wrapHandlerWithAuthorization', () => {
       new YError('E_UNEXPECTED_TOKEN_CHECK'),
     );
 
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -468,10 +469,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -486,7 +487,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     authentication.check.mockRejectedValue(new YError('E_UNAUTHORIZED'));
 
-    const noopHandler = handler(noopMock, 'getNoop');
+    const noopHandler = handler(noopMock as any, 'getNoop');
     const wrappedNoodHandlerWithAuthorization =
       wrapHandlerWithAuthorization(noopHandler);
     const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
@@ -504,10 +505,10 @@ describe('wrapHandlerWithAuthorization', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        httpCode: err.httpCode,
-        errorCode: err.code,
-        errorParams: err.params,
-        errorHeaders: err.headers,
+        httpCode: (err as YHTTPError).httpCode,
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
+        errorHeaders: (err as YHTTPError).headers,
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),

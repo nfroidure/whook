@@ -62,7 +62,7 @@ export default function wrapHandlerForAWSTransformerLambda<
     ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSTransformerLambda.bind(
+      (initHandlerForAWSTransformerLambda as any).bind(
         null,
         initHandler,
       ) as ServiceInitializer<D, S>,
@@ -76,7 +76,7 @@ async function initHandlerForAWSTransformerLambda<D, S extends WhookHandler>(
 ): Promise<S> {
   const handler: S = await initHandler(services);
 
-  return handleForAWSTransformerLambda.bind(null, services, handler);
+  return (handleForAWSTransformerLambda as any).bind(null, services, handler);
 }
 
 async function handleForAWSTransformerLambda(
@@ -90,14 +90,14 @@ async function handleForAWSTransformerLambda(
   handler: WhookHandler<LambdaTransformerInput, LambdaTransformerOutput>,
   event: FirehoseTransformationEvent,
   context: Context,
-  callback: (err: Error, result?: FirehoseTransformationResult) => void,
+  callback: (err: Error | null, result?: FirehoseTransformationResult) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...OPERATION_API.paths[path]?.[method],
   };
   const startTime = time();
   const parameters = {
@@ -121,7 +121,7 @@ async function handleForAWSTransformerLambda(
 
     callback(null, { records: response.body.map(encodeRecord) });
   } catch (err) {
-    const castedErr = YError.cast(err);
+    const castedErr = YError.cast(err as Error);
 
     apm('TRANSFORMER', {
       environment: NODE_ENV,
@@ -137,7 +137,7 @@ async function handleForAWSTransformerLambda(
       recordsLength: event.records.length,
     });
 
-    callback(err);
+    callback(err as Error);
   }
 }
 

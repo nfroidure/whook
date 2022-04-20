@@ -1,6 +1,7 @@
 import { autoService, singleton } from 'knifecycle';
 import _inquirer from 'inquirer';
 import { noop } from '@whook/whook';
+import type { Question } from 'inquirer';
 import type { LogService } from 'common-services';
 import type { WhookCommandArgs } from './args';
 
@@ -45,9 +46,7 @@ export type WhookCommandDefinition = {
   example: string;
   arguments: WhookCommandDefinitionArguments;
 };
-export type PromptArgs = () => Promise<{
-  [name: string]: WhookArgsTypes;
-}>;
+export type PromptArgs = () => Promise<WhookCommandArgs>;
 
 async function initPromptArgs({
   COMMAND_DEFINITION,
@@ -63,52 +62,51 @@ async function initPromptArgs({
   log('debug', '🛠 - Initializing promptArgs service');
 
   return async () => {
-    const questions = (COMMAND_DEFINITION.arguments.required || []).reduce(
-      (questions, propertyName) => {
-        if ('undefined' === typeof args[propertyName]) {
-          const propertyDefinition =
-            COMMAND_DEFINITION.arguments.properties[propertyName];
+    const questions: Question[] = (
+      COMMAND_DEFINITION.arguments.required || []
+    ).reduce<Question[]>((questions, propertyName) => {
+      if ('undefined' === typeof args[propertyName]) {
+        const propertyDefinition =
+          COMMAND_DEFINITION.arguments.properties[propertyName];
 
-          if (propertyDefinition.type === 'boolean') {
-            return [
-              ...questions,
-              {
-                name: propertyName,
-                type: 'checkbox',
-                message: propertyDefinition.description || '',
-              },
-            ];
-          }
-          if (
-            propertyDefinition.type === 'string' ||
-            propertyDefinition.type === 'number'
-          ) {
-            if (propertyDefinition.enum) {
-              return [
-                ...questions,
-                {
-                  name: propertyName,
-                  type: 'list',
-                  message: propertyDefinition.description || '',
-                  choices: propertyDefinition.enum,
-                },
-              ];
-            }
-
-            return [
-              ...questions,
-              {
-                name: propertyName,
-                type: 'input',
-                message: propertyDefinition.description || '',
-              },
-            ];
-          }
+        if (propertyDefinition.type === 'boolean') {
+          return [
+            ...questions,
+            {
+              name: propertyName,
+              type: 'checkbox',
+              message: propertyDefinition.description || '',
+            },
+          ];
         }
-        return questions;
-      },
-      [],
-    );
+        if (
+          propertyDefinition.type === 'string' ||
+          propertyDefinition.type === 'number'
+        ) {
+          if (propertyDefinition.enum) {
+            return [
+              ...questions,
+              {
+                name: propertyName,
+                type: 'list',
+                message: propertyDefinition.description || '',
+                choices: propertyDefinition.enum,
+              },
+            ];
+          }
+
+          return [
+            ...questions,
+            {
+              name: propertyName,
+              type: 'input',
+              message: propertyDefinition.description || '',
+            },
+          ];
+        }
+      }
+      return questions;
+    }, []);
 
     if (0 === questions.length) {
       return args;

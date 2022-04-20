@@ -132,7 +132,7 @@ async function getOAuth2Authorize(
     scope?: string;
     state: string;
   } & Record<string, unknown>,
-): Promise<WhookResponse> {
+): Promise<WhookResponse<302, { location: string }>> {
   const url = new URL(OAUTH2.authenticateURL);
 
   try {
@@ -145,29 +145,30 @@ async function getOAuth2Authorize(
       throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', responseType);
     }
 
-    const { applicationId, redirectURI, scope } =
-      await granter.authorizer.authorize(
-        {
-          clientId,
-          redirectURI: demandedRedirectURI,
-          scope: demandedScope,
-        },
-        camelCaseObjectProperties(authorizeParameters),
-      );
+    const { applicationId, redirectURI, scope } = await (
+      granter.authorizer as NonNullable<OAuth2GranterService['authorizer']>
+    ).authorize(
+      {
+        clientId,
+        redirectURI: demandedRedirectURI,
+        scope: demandedScope,
+      },
+      camelCaseObjectProperties(authorizeParameters),
+    );
 
     url.searchParams.set('type', responseType);
     url.searchParams.set('redirect_uri', redirectURI);
     url.searchParams.set('scope', scope);
     url.searchParams.set('client_id', applicationId);
   } catch (err) {
-    log('debug', '👫 - OAuth2 initialization error', err.code);
-    log('debug-stack', err.stack);
+    log('debug', '👫 - OAuth2 initialization error', (err as YError).code);
+    log('debug-stack', (err as Error).stack || 'no_stack_trace');
 
     url.searchParams.set('redirect_uri', demandedRedirectURI);
     setURLError(
       url,
-      err,
-      ERRORS_DESCRIPTORS[err.code] || ERRORS_DESCRIPTORS.E_OAUTH2,
+      err as YError,
+      ERRORS_DESCRIPTORS[(err as YError).code] || ERRORS_DESCRIPTORS.E_OAUTH2,
     );
   }
 

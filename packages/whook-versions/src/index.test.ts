@@ -4,6 +4,7 @@ import {
 } from './index';
 import { initGetPing, initGetPingDefinition } from '@whook/whook';
 import YError from 'yerror';
+import YHTTPError from 'yhttperror';
 
 const VERSIONS = [
   {
@@ -48,7 +49,7 @@ describe('augmentAPIWithVersionsHeaders()', () => {
 describe('wrapHandlerWithVersionChecker()', () => {
   it('should work with no version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
     const response = await handler({});
 
     expect({
@@ -58,7 +59,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
 
   it('should work with good api version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
     const response = await handler({
       xApiVersion: '1.2.3',
     });
@@ -70,7 +71,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
 
   it('should work with good app version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
     const response = await handler({
       xAppVersion: '3.6.0',
     });
@@ -82,7 +83,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
 
   it('should work with beta app version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
     const response = await handler({
       xAppVersion: '4.0.0-beta.2',
     });
@@ -94,7 +95,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
 
   it('should work with good sdk version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
     const response = await handler({
       xSdkVersion: '2.2.3',
     });
@@ -106,7 +107,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
 
   it('should fail with bad api version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
 
     try {
       await handler({
@@ -114,15 +115,19 @@ describe('wrapHandlerWithVersionChecker()', () => {
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
-      expect(err.code).toEqual('E_DEPRECATED_VERSION');
-      expect(err.params).toEqual(['X-API-Version', '2.2.3', '^1.0.0']);
-      expect(err.httpCode).toEqual(418);
+      expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
+      expect((err as YHTTPError).params).toEqual([
+        'X-API-Version',
+        '2.2.3',
+        '^1.0.0',
+      ]);
+      expect((err as YHTTPError).httpCode).toEqual(418);
     }
   });
 
   it('should fail with bad app version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
 
     try {
       await handler({
@@ -130,15 +135,19 @@ describe('wrapHandlerWithVersionChecker()', () => {
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
-      expect(err.code).toEqual('E_DEPRECATED_VERSION');
-      expect(err.params).toEqual(['X-APP-Version', '0.0.0', '>=3.6.0']);
-      expect(err.httpCode).toEqual(418);
+      expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
+      expect((err as YHTTPError).params).toEqual([
+        'X-APP-Version',
+        '0.0.0',
+        '>=3.6.0',
+      ]);
+      expect((err as YHTTPError).httpCode).toEqual(418);
     }
   });
 
   it('should fail with bad sdk version headers', async () => {
     const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
 
     try {
       await handler({
@@ -146,9 +155,13 @@ describe('wrapHandlerWithVersionChecker()', () => {
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
-      expect(err.code).toEqual('E_DEPRECATED_VERSION');
-      expect(err.params).toEqual(['X-SDK-Version', '0.2.3', '>=2.2.0']);
-      expect(err.httpCode).toEqual(418);
+      expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
+      expect((err as YHTTPError).params).toEqual([
+        'X-SDK-Version',
+        '0.2.3',
+        '>=2.2.0',
+      ]);
+      expect((err as YHTTPError).httpCode).toEqual(418);
     }
   });
 });

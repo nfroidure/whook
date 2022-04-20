@@ -48,8 +48,8 @@ describe('initCONFIGS', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         importerCalls: importer.mock.calls,
       }).toMatchSnapshot();

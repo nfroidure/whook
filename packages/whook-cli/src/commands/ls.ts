@@ -115,7 +115,7 @@ async function initLsCommand({
             'debug',
             `✅ - No commands folder found at path "${pluginPath}".`,
           );
-          log('debug-stack', err.stack);
+          log('debug-stack', (err as Error).stack || 'no_stack_trace');
           return {
             plugin: commandsSources[i],
             commands: [],
@@ -149,7 +149,7 @@ async function _readDir(dir: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
     readdir(dir, (err, files) => {
       if (err) {
-        reject(YError.wrap(err, 'E_BAD_PLUGIN_DIR', dir));
+        reject(YError.wrap(err as Error, 'E_BAD_PLUGIN_DIR', dir));
         return;
       }
       resolve(files);

@@ -36,34 +36,38 @@ async function initOAuth2RefreshTokenGranter({
   oAuth2RefreshToken,
   log = noop,
 }: OAuth2RefreshTokenGranterDependencies): Promise<OAuth2RefreshTokenGranterService> {
-  const authenticateWithRefreshToken: OAuth2RefreshTokenGranterService['authenticator']['authenticate'] =
-    async ({ refreshToken, scope: demandedScope }, authenticationData) => {
-      try {
-        // The client must be authenticated
-        if (!authenticationData) {
-          throw new YError('E_UNAUTHORIZED');
-        }
-
-        await checkApplication({
-          applicationId: authenticationData.applicationId,
-          type: 'refresh',
-          scope: demandedScope,
-        });
-
-        const newAuthenticationData = await oAuth2RefreshToken.check(
-          authenticationData,
-          refreshToken,
-          demandedScope,
-        );
-
-        return newAuthenticationData;
-      } catch (err) {
-        if (err.code === 'E_BAD_TOKEN') {
-          throw YError.wrap(err, 'E_BAD_REFRESH_TOKEN');
-        }
-        throw err;
+  const authenticateWithRefreshToken: NonNullable<
+    OAuth2RefreshTokenGranterService['authenticator']
+  >['authenticate'] = async (
+    { refreshToken, scope: demandedScope = '' },
+    authenticationData,
+  ) => {
+    try {
+      // The client must be authenticated
+      if (!authenticationData) {
+        throw new YError('E_UNAUTHORIZED');
       }
-    };
+
+      await checkApplication({
+        applicationId: authenticationData.applicationId,
+        type: 'refresh',
+        scope: demandedScope,
+      });
+
+      const newAuthenticationData = await oAuth2RefreshToken.check(
+        authenticationData,
+        refreshToken,
+        demandedScope,
+      );
+
+      return newAuthenticationData;
+    } catch (err) {
+      if ((err as YError).code === 'E_BAD_TOKEN') {
+        throw YError.wrap(err as Error, 'E_BAD_REFRESH_TOKEN');
+      }
+      throw err;
+    }
+  };
 
   log('debug', '👫 - OAuth2RefreshTokenGranter Service Initialized!');
 

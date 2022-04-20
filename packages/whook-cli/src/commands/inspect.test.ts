@@ -213,8 +213,8 @@ Object {
       throw new YError('E_UNEXPEXTED_SUCCESS');
     } catch (err) {
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
         Object {
           "errorCode": "E_NO_SERVICE_FOUND",
@@ -250,8 +250,8 @@ Object {
       throw new YError('E_UNEXPEXTED_SUCCESS');
     } catch (err) {
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
         Object {
           "errorCode": "E_NO_RESULT",

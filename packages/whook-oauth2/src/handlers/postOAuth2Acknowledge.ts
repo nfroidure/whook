@@ -4,7 +4,6 @@ import { setURLError } from './getOAuth2Authorize';
 import type {
   WhookAPIHandlerDefinition,
   WhookErrorsDescriptors,
-  WhookAPIOperationConfig,
 } from '@whook/whook';
 import type {
   CheckApplicationService,
@@ -96,7 +95,32 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(postOAuth2Acknowledge);
+export type HandlerDependencies = {
+  ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
+  oAuth2Granters: OAuth2GranterService[];
+  checkApplication: CheckApplicationService;
+  log: LogService;
+};
+type HandlerParameters<AUTHENTICATION_DATA> = {
+  authenticationData: AUTHENTICATION_DATA;
+  body: {
+    responseType: string;
+    clientId: string;
+    redirectURI: string;
+    scope: string;
+    state: string;
+    acknowledged: boolean;
+    [name: string]: unknown;
+  };
+};
+
+export default autoHandler(postOAuth2Acknowledge) as unknown as <
+  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
+>(
+  dependencies: HandlerDependencies,
+) => (
+  parameters: HandlerParameters<AUTHENTICATION_DATA>,
+) => ReturnType<typeof postOAuth2Acknowledge>;
 
 async function postOAuth2Acknowledge<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
@@ -106,12 +130,7 @@ async function postOAuth2Acknowledge<
     oAuth2Granters,
     checkApplication,
     log,
-  }: {
-    ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
-    oAuth2Granters: OAuth2GranterService[];
-    checkApplication: CheckApplicationService;
-    log: LogService;
-  },
+  }: HandlerDependencies,
   {
     authenticationData,
     body: {
@@ -123,18 +142,7 @@ async function postOAuth2Acknowledge<
       acknowledged = false,
       ...additionalParameters
     },
-  }: {
-    authenticationData: AUTHENTICATION_DATA;
-    body: {
-      responseType: string;
-      clientId: string;
-      redirectURI: string;
-      scope: string;
-      state: string;
-      acknowledged: boolean;
-      [name: string]: unknown;
-    };
-  },
+  }: HandlerParameters<AUTHENTICATION_DATA>,
 ) {
   if (!authenticationData) {
     throw new YError('E_UNAUTHORIZED');
@@ -161,7 +169,7 @@ async function postOAuth2Acknowledge<
         granter.acknowledger.acknowledgmentType === responseType,
     );
 
-    if (!granter) {
+    if (!granter || !granter.acknowledger) {
       throw new YError('E_UNKNOWN_ACKNOWLEDGOR_TYPE', responseType);
     }
 
@@ -183,13 +191,13 @@ async function postOAuth2Acknowledge<
       url.searchParams.set(snakeCase(key), additionalProperties[key] as string),
     );
   } catch (err) {
-    log('debug', '👫 - OAuth2 acknowledge error', err.code);
-    log('debug-stack', err.stack);
+    log('debug', '👫 - OAuth2 acknowledge error', (err as YError).code);
+    log('debug-stack', (err as Error).stack || 'no_stack_trace');
 
     setURLError(
       url,
-      err,
-      ERRORS_DESCRIPTORS[err.code] || ERRORS_DESCRIPTORS.E_OAUTH2,
+      err as YError,
+      ERRORS_DESCRIPTORS[(err as YError).code] || ERRORS_DESCRIPTORS.E_OAUTH2,
     );
   }
 

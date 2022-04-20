@@ -38,6 +38,6 @@ export async function loadLambda(
 
     return module.default;
   } catch (err) {
-    throw YError.wrap(err, 'E_LAMBDA_LOAD');
+    throw YError.wrap(err as Error, 'E_LAMBDA_LOAD');
   }
 }

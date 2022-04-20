@@ -477,8 +477,7 @@ Object {
   ],
   "logInfoCalls": Array [
     Array [
-      "CALL",
-      "{\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":147,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:22222\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":147,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
+      "CALL {\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"127.0.0.1\\",\\"startInBytes\\":147,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:22222\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":147,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
     ],
   ],
   "status": 200,

@@ -2,7 +2,11 @@ import YHTTPError from 'yhttperror';
 import semverSatisfies from 'semver/functions/satisfies';
 import camelCase from 'camelcase';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
-import { wrapInitializer, alsoInject } from 'knifecycle';
+import {
+  wrapInitializer,
+  alsoInject,
+  ServiceInitializerWrapper,
+} from 'knifecycle';
 import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type {
   WhookResponse,
@@ -35,17 +39,23 @@ export type VersionsConfig = {
  * @param {Function} initHandler The handler initializer
  * @returns {Function} The handler initializer wrapped
  */
-export function wrapHandlerWithVersionChecker<D, S extends WhookHandler>(
+export function wrapHandlerWithVersionChecker<D, S>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<VersionsConfig & D, S> {
   const augmentedInitializer = alsoInject<VersionsConfig, D, S>(
     ['VERSIONS'],
     initHandler,
   );
+  const initializerWrapper: ServiceInitializerWrapper<S, VersionsConfig & D> =
+    async (services: VersionsConfig, handler: S) => {
+      return handleWithVersionChecker.bind(
+        null,
+        services as VersionsConfig,
+        handler as unknown as WhookHandler,
+      ) as unknown as S;
+    };
 
-  return wrapInitializer(async (services: VersionsConfig, handler: S) => {
-    return handleWithVersionChecker.bind(null, services, handler);
-  }, augmentedInitializer);
+  return wrapInitializer(initializerWrapper, augmentedInitializer);
 }
 
 async function handleWithVersionChecker<
@@ -130,10 +140,9 @@ export async function augmentAPIWithVersionsHeaders(
   ): OpenAPIV3.PathsObject {
     return {
       ...pathsObject,
-      [path]: Object.keys(API.paths[path]).reduce<OpenAPIV3.PathItemObject>(
-        reduceMethods,
-        API.paths[path],
-      ),
+      [path]: Object.keys(
+        API.paths[path] || {},
+      ).reduce<OpenAPIV3.PathItemObject>(reduceMethods, API.paths[path] || {}),
     };
   }
 

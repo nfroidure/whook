@@ -50,7 +50,7 @@ async function initENV({
   NODE_ENV,
   PWD,
   BASE_ENV = {},
-  PROCESS_ENV = process.env,
+  PROCESS_ENV = process.env as ENVService,
   log = noop,
   readFile = _readFile,
 }: ENVDependencies): Promise<ENVService> {
@@ -86,7 +86,7 @@ async function initENV({
     ENV = { ...ENV, ...FILE_ENV };
   } catch (err) {
     log('debug', `🚫 - Could not load ".env.${NODE_ENV}" file.`);
-    log('debug-stack', err.stack);
+    log('debug-stack', (err as Error).stack || 'no_stack_trace');
   }
 
   return {

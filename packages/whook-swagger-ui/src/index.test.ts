@@ -28,10 +28,10 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     },
   };
   const logger = {
-    info: jest.fn(),
+    output: jest.fn(),
     error: jest.fn(),
+    debug: jest.fn(),
   };
-  const debug = jest.fn();
   const time = jest.fn();
   const $autoload = jest.fn(async (serviceName) => {
     throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
@@ -39,9 +39,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   let $;
 
   beforeEach(() => {
-    logger.info.mockReset();
+    logger.output.mockReset();
     logger.error.mockReset();
-    debug.mockReset();
+    logger.debug.mockReset();
     time.mockReset();
     $autoload.mockClear();
   });
@@ -75,7 +75,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       }),
     );
     $.register(constant('logger', logger));
-    $.register(constant('debug', debug));
     $.register(constant('time', time));
     $.register(constant('NODE_ENVS', ['test']));
   });
@@ -118,8 +117,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         server: undefined,
       },
       data,
-      debugCalls: debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls,
+      debugCalls: logger.debug.mock.calls.sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls,
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();
@@ -167,8 +166,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         server: undefined,
       },
       data,
-      debugCalls: debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls,
+      debugCalls: logger.debug.mock.calls.sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls,
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();
@@ -191,8 +190,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     await $instance.destroy();
 
     expect({
-      debugCalls: debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls,
+      debugCalls: logger.debug.mock.calls.sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls,
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();

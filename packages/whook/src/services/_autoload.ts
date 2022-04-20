@@ -99,7 +99,9 @@ async function initAutoload<D>({
   log = noop,
   importer,
   resolve,
-}: AutoloadDependencies<D>): Promise<Autoloader<Dependencies>> {
+}: AutoloadDependencies<D>): Promise<
+  Autoloader<Initializer<unknown, Dependencies>>
+> {
   log('debug', '🤖 - Initializing the `$autoload` service.');
 
   // Here to allow DI auto-detection since {} causes errors
@@ -135,7 +137,8 @@ async function initAutoload<D>({
         WRAPPERS = (await $injector(['WRAPPERS'])).WRAPPERS || [];
       }
       wrapHandler =
-        wrapHandler || (WRAPPERS.length ? compose(...WRAPPERS) : identity);
+        wrapHandler ||
+        (WRAPPERS?.length ? compose(...(WRAPPERS as any[])) : identity);
 
       return wrapHandler(handlerInitializer);
     };
@@ -151,7 +154,7 @@ async function initAutoload<D>({
         .SERVICE_NAME_MAP;
     }
 
-    return SERVICE_NAME_MAP[injectedName] || injectedName;
+    return SERVICE_NAME_MAP?.[injectedName] || injectedName;
   };
 
   return $autoload;
@@ -248,7 +251,7 @@ async function initAutoload<D>({
      none of the previous strategies applyed.
     */
     const modulePath = (
-      INITIALIZER_PATH_MAP[resolvedName]
+      INITIALIZER_PATH_MAP?.[resolvedName]
         ? resolve(INITIALIZER_PATH_MAP[resolvedName])
         : [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].reduce(
             (finalModulePath, basePath) => {
@@ -282,7 +285,7 @@ async function initAutoload<D>({
     In order to be able to load a service from a given path map
      one can directly specify a path to use for its resolution.
     */
-    if (INITIALIZER_PATH_MAP[resolvedName]) {
+    if (INITIALIZER_PATH_MAP?.[resolvedName]) {
       log(
         'debug',
         `📖 - Using INITIALIZER_PATH_MAP to resolve the "${resolvedName}" module path.`,

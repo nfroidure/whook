@@ -61,7 +61,7 @@ export default function wrapHandlerForAWSConsumerLambda<
     ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSConsumerLambda.bind(
+      (initHandlerForAWSConsumerLambda as any).bind(
         null,
         initHandler,
       ) as ServiceInitializer<D, S>,
@@ -75,7 +75,7 @@ async function initHandlerForAWSConsumerLambda<D, S extends WhookHandler>(
 ): Promise<S> {
   const handler: S = await initHandler(services);
 
-  return handleForAWSConsumerLambda.bind(null, services, handler);
+  return (handleForAWSConsumerLambda as any).bind(null, services, handler);
 }
 
 async function handleForAWSConsumerLambda(
@@ -97,11 +97,11 @@ async function handleForAWSConsumerLambda(
   callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
+  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...OPERATION_API.paths[path]?.[method],
   };
   const startTime = time();
   const parameters: LambdaConsumerInput = {
@@ -124,9 +124,9 @@ async function handleForAWSConsumerLambda(
       recordsLength: event.Records.length,
     });
 
-    callback(null);
+    callback(null as unknown as Error);
   } catch (err) {
-    const castedErr = YError.cast(err);
+    const castedErr = YError.cast(err as Error);
 
     apm('CONSUMER', {
       environment: NODE_ENV,
@@ -142,6 +142,6 @@ async function handleForAWSConsumerLambda(
       recordsLength: event.Records.length,
     });
 
-    callback(err);
+    callback(err as Error);
   }
 }

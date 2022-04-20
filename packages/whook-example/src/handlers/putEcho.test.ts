@@ -13,7 +13,7 @@ describe('putEcho', () => {
       log,
     });
     const response = await putEcho({
-      body: echoSchema.example,
+      body: echoSchema.example as any,
     });
 
     expect({
@@ -49,8 +49,8 @@ describe('putEcho', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
         Object {

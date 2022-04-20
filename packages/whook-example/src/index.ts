@@ -36,7 +36,7 @@ The `runServer` function is intended to run the server
 */
 export async function runServer<
   D extends Dependencies,
-  T extends Knifecycle<D> = Knifecycle<D>,
+  T extends Knifecycle = Knifecycle,
 >(
   innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
   innerPrepareServer: (
@@ -60,7 +60,7 @@ The `prepareServer` function is intended to prepare the server
 */
 export async function prepareServer<
   D extends Dependencies,
-  T extends Knifecycle<D> = Knifecycle<D>,
+  T extends Knifecycle = Knifecycle,
 >(injectedNames: DependencyDeclaration[], $: T): Promise<D> {
   /* Architecture Note #1.1.2.1: server wrappers
   
@@ -77,7 +77,7 @@ export async function prepareServer<
 
 The `prepareEnvironment` one is intended to prepare the server environment
 */
-export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
+export async function prepareEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   /* Architecture Note #4: Services

@@ -52,7 +52,7 @@ export async function flattenOpenAPI(
 
     return result;
   } catch (err) {
-    throw YError.wrap(err, 'E_BAD_OPEN_API');
+    throw YError.wrap(err as Error, 'E_BAD_OPEN_API');
   }
 }
 
@@ -77,15 +77,15 @@ export function getOpenAPIOperations<T = Record<string, unknown>>(
 ): WhookRawOperation<T>[] {
   return Object.keys(API.paths).reduce<WhookRawOperation<T>[]>(
     (operations, path) =>
-      Object.keys(API.paths[path])
+      Object.keys(API.paths?.[path] || {})
         .filter((key) => OPEN_API_METHODS.includes(key))
         .reduce<WhookRawOperation<T>[]>((operations, method) => {
           const operation = {
             path,
             method,
-            ...API.paths[path][method],
-            parameters: (API.paths[path][method].parameters || []).concat(
-              API.paths[path].parameters || [],
+            ...API.paths?.[path]?.[method],
+            parameters: (API.paths[path]?.[method].parameters || []).concat(
+              API.paths[path]?.parameters || [],
             ),
           };
 
@@ -114,7 +114,7 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
   try {
     $refs = await SwaggerParser.resolve(API);
   } catch (err) {
-    throw YError.wrap(err, 'E_BAD_OPEN_API');
+    throw YError.wrap(err as Error, 'E_BAD_OPEN_API');
   }
 
   return operations.map((operation) => {
@@ -166,38 +166,43 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
         : (operation.requestBody as OpenAPIV3.RequestBodyObject)
       : undefined;
 
-    const requestBody: DereferencedRequestBodyObject = baseRequestBody
-      ? {
-          ...baseRequestBody,
-          content: Object.keys(baseRequestBody.content).reduce(
-            (requestBodyContent, mediaType) => {
-              const mediaTypeSchema = baseRequestBody.content[mediaType].schema
-                ? (
-                    baseRequestBody.content[mediaType]
-                      .schema as OpenAPIV3.ReferenceObject
-                  ).$ref
-                  ? ($refs.get(
-                      (
-                        baseRequestBody.content[mediaType]
-                          .schema as OpenAPIV3.ReferenceObject
-                      ).$ref,
-                    ) as OpenAPIV3.SchemaObject)
-                  : (baseRequestBody.content[mediaType]
-                      .schema as OpenAPIV3.SchemaObject)
-                : undefined;
+    const requestBody: DereferencedRequestBodyObject | undefined =
+      baseRequestBody
+        ? {
+            ...baseRequestBody,
+            content: Object.keys(baseRequestBody.content || {}).reduce(
+              (requestBodyContent, mediaType) => {
+                const mediaTypeSchema = baseRequestBody.content?.[mediaType]
+                  .schema
+                  ? (
+                      baseRequestBody.content[mediaType]
+                        .schema as OpenAPIV3.ReferenceObject
+                    ).$ref
+                    ? ($refs.get(
+                        (
+                          baseRequestBody.content[mediaType]
+                            .schema as OpenAPIV3.ReferenceObject
+                        ).$ref,
+                      ) as OpenAPIV3.SchemaObject)
+                    : (baseRequestBody.content[mediaType]
+                        .schema as OpenAPIV3.SchemaObject)
+                  : undefined;
 
-              return {
-                ...requestBodyContent,
-                [mediaType]: {
-                  ...baseRequestBody.content[mediaType],
-                  schema: buildJSONSchemaFromAPISchema(API, mediaTypeSchema),
-                },
-              };
-            },
-            {},
-          ),
-        }
-      : undefined;
+                return {
+                  ...requestBodyContent,
+                  [mediaType]: {
+                    ...baseRequestBody.content?.[mediaType],
+                    schema: buildJSONSchemaFromAPISchema(
+                      API,
+                      mediaTypeSchema as OpenAPIV3.SchemaObject,
+                    ),
+                  },
+                };
+              },
+              {},
+            ),
+          }
+        : undefined;
     const responses: Record<string, DereferencedResponseObject> = Object.keys(
       operation.responses || {},
     ).reduce((allResponses, status) => {
@@ -213,7 +218,8 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
         content: responseObject.content
           ? Object.keys(responseObject.content).reduce(
               (responseObjectContent, mediaType) => {
-                const mediaTypeSchema = responseObject.content[mediaType].schema
+                const mediaTypeSchema = responseObject.content?.[mediaType]
+                  .schema
                   ? (
                       responseObject.content[mediaType]
                         .schema as OpenAPIV3.ReferenceObject
@@ -231,8 +237,11 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
                 return {
                   ...responseObjectContent,
                   [mediaType]: {
-                    ...responseObject.content[mediaType],
-                    schema: buildJSONSchemaFromAPISchema(API, mediaTypeSchema),
+                    ...responseObject.content?.[mediaType],
+                    schema: buildJSONSchemaFromAPISchema(
+                      API,
+                      mediaTypeSchema as OpenAPIV3.SchemaObject,
+                    ),
                   },
                 };
               },
@@ -252,7 +261,7 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
       parameters,
       requestBody,
       responses,
-    };
+    } as WhookOperation<T>;
   });
 }
 
@@ -263,29 +272,28 @@ export function pickupOperationSecuritySchemes(
   const securitySchemes =
     (openAPI.components && openAPI.components.securitySchemes) || {};
 
-  return (operation.security || openAPI.security || []).reduce(
-    (operationSecuritySchemes, security) => {
-      const schemeKey = Object.keys(security)[0];
+  return (operation.security || openAPI.security || []).reduce<{
+    [name: string]: SupportedSecurityScheme;
+  }>((operationSecuritySchemes, security) => {
+    const schemeKey = Object.keys(security)[0];
 
-      if (!schemeKey) {
-        return operationSecuritySchemes;
-      }
+    if (!schemeKey) {
+      return operationSecuritySchemes;
+    }
 
-      if (!securitySchemes[schemeKey]) {
-        throw new YError(
-          'E_UNDECLARED_SECURITY_SCHEME',
-          schemeKey,
-          operation.operationId,
-        );
-      }
+    if (!securitySchemes[schemeKey]) {
+      throw new YError(
+        'E_UNDECLARED_SECURITY_SCHEME',
+        schemeKey,
+        operation.operationId,
+      );
+    }
 
-      return {
-        ...operationSecuritySchemes,
-        [schemeKey]: securitySchemes[schemeKey] as SupportedSecurityScheme,
-      };
-    },
-    {},
-  ) as { [name: string]: SupportedSecurityScheme };
+    return {
+      ...operationSecuritySchemes,
+      [schemeKey]: securitySchemes[schemeKey] as SupportedSecurityScheme,
+    };
+  }, {});
 }
 
 function buildJSONSchemaFromAPISchema(

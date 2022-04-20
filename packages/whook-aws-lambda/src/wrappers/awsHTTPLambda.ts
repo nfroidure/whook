@@ -13,6 +13,7 @@ import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
 import HTTPError from 'yhttperror';
+import YError from 'yerror';
 import {
   prepareParametersValidators,
   prepareBodyValidator,
@@ -106,16 +107,16 @@ export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
     ],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSHTTPLambda.bind(null, initHandler) as ServiceInitializer<
-        D,
-        S
-      >,
+      (initHandlerForAWSHTTPLambda as any).bind(
+        null,
+        initHandler,
+      ) as ServiceInitializer<D, S>,
     ),
   );
 }
 
 async function initHandlerForAWSHTTPLambda(
-  initHandler: ServiceInitializer<unknown, WhookHandler>,
+  initHandler: ServiceInitializer<Dependencies<any>, WhookHandler>,
   {
     OPERATION_API,
     WRAPPERS,
@@ -180,7 +181,7 @@ async function initHandlerForAWSHTTPLambda(
     log,
   });
 
-  return handleForAWSHTTPLambda.bind(
+  return (handleForAWSHTTPLambda as any).bind(
     null,
     {
       OPERATION,
@@ -217,8 +218,8 @@ async function handleForAWSHTTPLambda(
     BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
     PARSED_HEADERS,
     CORS,
-    log,
-    time,
+    log = noop,
+    time = Date.now.bind(Date),
     apm,
     obfuscator,
     errorHandler,
@@ -249,7 +250,9 @@ async function handleForAWSHTTPLambda(
     JSON.stringify({
       ...event,
       body: obfuscateEventBody(obfuscator, event.body),
-      headers: obfuscator.obfuscateSensibleHeaders(event.headers),
+      headers: obfuscator.obfuscateSensibleHeaders(
+        event.headers as Record<string, string>,
+      ),
     }),
   );
 
@@ -300,7 +303,10 @@ async function handleForAWSHTTPLambda(
         ...(event.pathParameters || {}),
         ...filterQueryParameters(
           operationParameters,
-          event.multiValueQueryStringParameters || {},
+          (event.multiValueQueryStringParameters || {}) as Record<
+            string,
+            string[]
+          >,
         ),
         ...filterHeaders(operationParameters, request.headers),
       };
@@ -322,7 +328,7 @@ async function handleForAWSHTTPLambda(
         ...('undefined' !== typeof body ? { body } : {}),
       };
     } catch (err) {
-      throw HTTPError.cast(err, 400);
+      throw HTTPError.cast(err as Error, 400);
     }
 
     response = await executeHandler(operation, handler, parameters);
@@ -367,15 +373,15 @@ async function handleForAWSHTTPLambda(
     response = await errorHandler(
       event.requestContext.requestId,
       responseSpec,
-      err,
+      err as Error,
     );
 
     responseLog = {
       type: 'error',
-      code: err.code || 'E_UNEXPECTED',
+      code: (err as YError).code || 'E_UNEXPECTED',
       statusCode: response.status,
-      params: err.params || [],
-      stack: err.stack,
+      params: (err as YError).params || [],
+      stack: (err as Error).stack,
     };
 
     log('error', JSON.stringify(responseLog));
@@ -445,7 +451,7 @@ async function handleForAWSHTTPLambda(
       Object.keys(response.headers).reduce(
         (finalHeaders, headerName) => ({
           ...finalHeaders,
-          ...(PARSED_HEADERS.includes(headerName)
+          ...((PARSED_HEADERS || []).includes(headerName)
             ? {}
             : {
                 [headerName]: response.headers[headerName],
@@ -461,7 +467,7 @@ async function handleForAWSHTTPLambda(
     params: responseLog.params,
     startTime,
     endTime: time(),
-    ...PARSED_HEADERS.reduce(
+    ...(PARSED_HEADERS || []).reduce(
       (result, parsedHeader) => ({
         ...result,
         ...(response.headers[parsedHeader]
@@ -471,7 +477,7 @@ async function handleForAWSHTTPLambda(
       {},
     ),
   });
-  callback(null, awsResponse);
+  callback(null as unknown as Error, awsResponse);
 }
 
 async function awsRequestEventToRequest(
@@ -482,7 +488,7 @@ async function awsRequestEventToRequest(
   );
   const request: WhookRequest = {
     method: event.requestContext.httpMethod.toLowerCase(),
-    headers: lowerCaseHeaders(event.headers || {}),
+    headers: lowerCaseHeaders(event.headers as Record<string, string>),
     url:
       event.requestContext.path +
       (queryStringParametersNames.length
@@ -515,7 +521,7 @@ async function responseToAWSResponseEvent(
     headers: Object.keys(response.headers || {}).reduce(
       (stringHeaders, name) => ({
         ...stringHeaders,
-        ...(typeof response.headers[name] === 'string'
+        ...(typeof response.headers?.[name] === 'string'
           ? {
               [name]: response.headers[name],
             }
@@ -526,7 +532,7 @@ async function responseToAWSResponseEvent(
     multiValueHeaders: Object.keys(response.headers || {}).reduce(
       (stringHeaders, name) => ({
         ...stringHeaders,
-        ...(response.headers[name] instanceof Array
+        ...(response.headers?.[name] instanceof Array
           ? {
               [name]: response.headers[name],
             }
@@ -534,13 +540,13 @@ async function responseToAWSResponseEvent(
       }),
       {},
     ),
-    body: undefined,
+    body: undefined as unknown as string,
   };
 
   if (response.body) {
     const stream = response.body as Readable;
     const buf: Buffer = await new Promise((resolve, reject) => {
-      const chunks = [];
+      const chunks = [] as Buffer[];
 
       stream.once('end', () => resolve(Buffer.concat(chunks)));
       stream.once('error', reject);
@@ -552,10 +558,11 @@ async function responseToAWSResponseEvent(
       });
     });
     if (
-      (response.headers['content-type'] as 'string').startsWith('image/') ||
-      (response.headers['content-type'] as 'string').startsWith(
-        'application/pdf',
-      )
+      response.headers?.['content-type'] &&
+      ((response.headers['content-type'] as 'string').startsWith('image/') ||
+        (response.headers['content-type'] as 'string').startsWith(
+          'application/pdf',
+        ))
     ) {
       amazonResponse.body = buf.toString('base64');
       amazonResponse.isBase64Encoded = true;

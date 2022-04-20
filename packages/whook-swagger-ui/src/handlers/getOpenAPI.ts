@@ -48,7 +48,7 @@ function removeMutedParameters(
     }
 
     return acc.concat(parameter);
-  }, []);
+  }, [] as (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[]);
 }
 
 async function getOpenAPI(
@@ -62,7 +62,7 @@ async function getOpenAPI(
     mutedMethods?: string[];
     mutedParameters?: string[];
   },
-): Promise<WhookResponse<200, unknown, OpenAPIV3.Document>> {
+): Promise<WhookResponse<200, void, OpenAPIV3.Document>> {
   const operations = getOpenAPIOperations<WhookAPIOperationSwaggerConfig>(API);
   const $refs = await SwaggerParser.resolve(API);
 
@@ -89,7 +89,7 @@ async function getOpenAPI(
       paths[operation.path] = {
         ...paths[operation.path],
         [operation.method]: {
-          ...API.paths[operation.path][operation.method],
+          ...(API.paths[operation.path]?.[operation.method] || {}),
           ...(operation.parameters &&
             operation.parameters.length && {
               parameters: removeMutedParameters(

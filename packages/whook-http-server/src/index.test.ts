@@ -23,7 +23,7 @@ describe('initHTTPServer', () => {
       httpRouter: httpRouter as unknown as HTTPRouterService,
     });
 
-    await httpServer.dispose();
+    httpServer.dispose && (await httpServer.dispose());
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -41,7 +41,7 @@ describe('initHTTPServer', () => {
       httpRouter,
     });
 
-    await httpServer.dispose();
+    httpServer.dispose && (await httpServer.dispose());
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -66,11 +66,11 @@ describe('initHTTPServer', () => {
       await httpServer.fatalErrorPromise;
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
-      await httpServer.dispose();
+      httpServer.dispose && (await httpServer.dispose());
 
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();
@@ -91,7 +91,7 @@ describe('initHTTPServer', () => {
     try {
       httpServer.service.close = ((realClose) => async (cb) => {
         await new Promise<void>((resolve, reject) => {
-          realClose((err: Error) => {
+          realClose((err: Error | undefined) => {
             if (err) {
               reject(err);
               return;
@@ -105,12 +105,12 @@ describe('initHTTPServer', () => {
         httpServer.service.close.bind(httpServer.service),
       ) as unknown as typeof httpServer.service.close;
 
-      await httpServer.dispose();
+      httpServer.dispose && (await httpServer.dispose());
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
-        errorCode: err.code,
-        errorParams: err.params,
+        errorCode: (err as YError).code,
+        errorParams: (err as YError).params,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();
@@ -138,7 +138,7 @@ describe('initHTTPServer', () => {
       client.write('GET / HTTP/1.1\r\n\r\n');
     });
 
-    await httpServer.dispose();
+    httpServer.dispose && (await httpServer.dispose());
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -169,7 +169,7 @@ describe('initHTTPServer', () => {
       validateStatus: () => true,
     });
 
-    await httpServer.dispose();
+    httpServer.dispose && (await httpServer.dispose());
 
     expect({
       status,

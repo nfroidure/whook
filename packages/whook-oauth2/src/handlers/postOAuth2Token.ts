@@ -247,7 +247,7 @@ async function postOAuth2Token<
         granter.authenticator && granter.authenticator.grantType === grantType,
     );
 
-    if (!granter) {
+    if (!granter || !granter.authenticator) {
       throw new YError('E_UNKNOWN_AUTHENTICATOR_TYPE', grantType);
     }
 
@@ -283,9 +283,9 @@ async function postOAuth2Token<
       },
     };
   } catch (err) {
-    log('debug', '👫 - OAuth2 token issuing error', err.code);
-    log('debug-stack', err.stack);
+    log('debug', '👫 - OAuth2 token issuing error', (err as YError).code);
+    log('debug-stack', (err as Error).stack || 'no_stack_trace');
 
-    throw YError.cast(err, 'E_OAUTH2');
+    throw YError.cast(err as Error, 'E_OAUTH2');
   }
 }

@@ -63,6 +63,7 @@ export type DereferencedOperationObject = Omit<
 
 export type WhookOperation<T = Record<string, unknown>> =
   DereferencedOperationObject & {
+    operationId: string;
     path: string;
     method: string;
     'x-whook'?: T;
@@ -77,29 +78,40 @@ export type WhookRequest<H = WhookHeaders, B = JsonValue | Readable> = {
   body?: B;
 };
 
-export type WhookResponse<
+export declare type WhookResponse<
   S = number,
-  H = WhookHeaders,
-  B = JsonValue | Readable,
+  H = WhookHeaders | void,
+  B = JsonValue | Readable | void,
 > = {
   status: S;
-  headers?: H;
-  body?: B;
-};
+} & (H extends void
+  ? {
+      headers?: H;
+    }
+  : {
+      headers: H;
+    }) &
+  (B extends void
+    ? {
+        body?: B;
+      }
+    : {
+        body: B;
+      });
 
 // eslint-disable-next-line
-export interface WhookHandlerFunction<
+export type WhookHandlerFunction<
   D extends Dependencies,
   P extends Parameters,
   R extends WhookResponse,
   O = WhookOperation,
-> extends HandlerFunction<
-    D,
-    P extends Parameters<infer V> ? V : never,
-    P,
-    [O] | [],
-    R
-  > {}
+> = HandlerFunction<
+  D,
+  P extends Parameters<infer V> ? V : never,
+  P,
+  [O] | [],
+  R
+>;
 
 export interface WhookHandler<
   P = Parameters,
@@ -127,7 +139,7 @@ export type WhookHTTPTransaction = {
   transaction: {
     id: string;
     start: (buildResponse: WhookHandler) => Promise<WhookResponse>;
-    catch: (err: Error) => Promise<WhookResponse>;
+    catch: (err: Error) => Promise<void>;
     end: (response: WhookResponse, operationId?: string) => Promise<void>;
   };
 };
@@ -221,7 +233,10 @@ async function initHTTPTransaction({
   // get an empty object here and avoid
   // conflicts between instances spawned
   // with defaults
-  TRANSACTIONS = TRANSACTIONS || {};
+  const FINAL_TRANSACTIONS: Record<
+    string,
+    Record<string, JsonValue>
+  > = TRANSACTIONS || {};
 
   log('debug', '💱 - HTTP Transaction initialized.');
 
@@ -257,12 +272,12 @@ async function initHTTPTransaction({
      transactions end to end with that unique id.
     */
     const request = {
-      url: req.url,
-      method: req.method.toLowerCase(),
+      url: req.url as string,
+      method: (req.method as string).toLowerCase(),
       headers: Object.keys(req.headers).reduce(
         (finalHeaders, name) => ({
           ...finalHeaders,
-          [name]: [].concat(req.headers[name])[0],
+          [name]: _pickFirstHeaderValue(name, req.headers),
         }),
         {},
       ),
@@ -276,13 +291,16 @@ async function initHTTPTransaction({
       protocol: 'http',
       ip:
         '' +
-          ([].concat(req.headers['x-forwarded-for'])[0] || '').split(',')[0] ||
-        req.connection.remoteAddress,
+          (_pickFirstHeaderValue('x-forwarded-for', req.headers) || '').split(
+            ',',
+          )[0] ||
+        req.socket.remoteAddress ||
+        'unknown',
       startInBytes: req.socket.bytesRead,
       startOutBytes: req.socket.bytesWritten,
       startTime: time(),
-      url: req.url,
-      method: req.method,
+      url: req.url as string,
+      method: req.method as string,
       reqHeaders: obfuscator.obfuscateSensibleHeaders(request.headers),
       errored: false,
     };
@@ -292,10 +310,11 @@ async function initHTTPTransaction({
      * @memberof WhookHTTPTransaction
      * @name id
      */
-    let id: string = [].concat(req.headers['transaction-id'])[0] || uniqueId();
+    let id: string =
+      _pickFirstHeaderValue('transaction-id', req.headers) || uniqueId();
 
     // Handle bad client transaction ids
-    if (TRANSACTIONS[id]) {
+    if (FINAL_TRANSACTIONS[id]) {
       initializationPromise = Promise.reject(
         new HTTPError(400, 'E_TRANSACTION_ID_NOT_UNIQUE', id),
       );
@@ -305,7 +324,7 @@ async function initHTTPTransaction({
     }
 
     transaction.id = id;
-    TRANSACTIONS[id] = transaction;
+    FINAL_TRANSACTIONS[id] = transaction;
 
     return {
       request,
@@ -372,10 +391,10 @@ async function initHTTPTransaction({
     apm('ERROR', {
       guruMeditation: id,
       request:
-        TRANSACTIONS[id].protocol +
+        FINAL_TRANSACTIONS[id].protocol +
         '://' +
         (req.headers.host || 'localhost') +
-        TRANSACTIONS[id].url,
+        FINAL_TRANSACTIONS[id].url,
       verb: req.method,
       status: (err as YHTTPError).httpCode || 500,
       code: (err as YError).code || 'E_UNEXPECTED',
@@ -383,7 +402,7 @@ async function initHTTPTransaction({
       details: (err as YError).params || [],
     });
 
-    TRANSACTIONS[id].errored = true;
+    FINAL_TRANSACTIONS[id].errored = true;
 
     throw err;
   }
@@ -434,7 +453,7 @@ async function initHTTPTransaction({
         res.writeHead(
           response.status,
           statuses.message[response.status],
-          Object.assign({}, response.headers, { 'Transaction-Id': id }),
+          Object.assign({}, response.headers || {}, { 'Transaction-Id': id }),
         );
         if (response.body && (response.body as Readable).pipe) {
           (response.body as Readable).pipe(res);
@@ -443,35 +462,49 @@ async function initHTTPTransaction({
         }
       });
     } catch (err) {
-      TRANSACTIONS[id].errored = true;
+      FINAL_TRANSACTIONS[id].errored = true;
       apm('ERROR', {
         guruMeditation: id,
         request:
-          TRANSACTIONS[id].protocol +
+          FINAL_TRANSACTIONS[id].protocol +
           '://' +
           (req.headers.host || 'localhost') +
-          TRANSACTIONS[id].url,
+          FINAL_TRANSACTIONS[id].url,
         method: req.method,
-        stack: err.stack || err,
+        stack: (err as Error).stack || (err as string),
         operationId,
       });
     }
-    TRANSACTIONS[id].endTime = time();
-    TRANSACTIONS[id].endInBytes = req.socket.bytesRead;
-    TRANSACTIONS[id].endOutBytes = req.socket.bytesWritten;
-    TRANSACTIONS[id].statusCode = response.status;
-    TRANSACTIONS[id].resHeaders = response.headers || {};
-    TRANSACTIONS[id].operationId = operationId;
+    FINAL_TRANSACTIONS[id].endTime = time();
+    FINAL_TRANSACTIONS[id].endInBytes = req.socket.bytesRead;
+    FINAL_TRANSACTIONS[id].endOutBytes = req.socket.bytesWritten;
+    FINAL_TRANSACTIONS[id].statusCode = response.status;
+    FINAL_TRANSACTIONS[id].resHeaders = response.headers || {};
+    FINAL_TRANSACTIONS[id].operationId = operationId;
 
-    apm('CALL', TRANSACTIONS[id]);
+    apm('CALL', FINAL_TRANSACTIONS[id]);
 
-    delete TRANSACTIONS[id];
+    delete FINAL_TRANSACTIONS[id];
 
     try {
       await delay.clear(delayPromise);
     } catch (err) {
       log('debug', '❕ - Could not clear a delay.');
-      log('debug-stack', err.stack);
+      log('debug-stack', (err as Error).stack || 'no_stack_trace');
     }
   }
+}
+
+function _pickFirstHeaderValue(
+  name: string,
+  headers: IncomingMessage['headers'],
+): string | undefined {
+  const headerValues: string[] =
+    headers && typeof headers[name] === 'undefined'
+      ? []
+      : typeof headers[name] === 'string'
+      ? [headers[name] as string]
+      : (headers[name] as string[]);
+
+  return headerValues[0];
 }

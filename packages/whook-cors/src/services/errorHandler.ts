@@ -1,5 +1,5 @@
 import { initErrorHandler } from '@whook/http-router';
-import { wrapInitializer, alsoInject } from 'knifecycle';
+import { wrapInitializer, alsoInject, ServiceInitializer } from 'knifecycle';
 import { noop } from '@whook/whook';
 import YHTTPError from 'yhttperror';
 import type { LogService } from 'common-services';
@@ -17,7 +17,16 @@ export default alsoInject<
   ErrorHandlerWrapperDependencies,
   ErrorHandlerDependencies,
   WhookErrorHandler
->(['?log', 'CORS'], wrapInitializer(wrapErrorHandlerForCORS, initErrorHandler));
+>(
+  ['?log', 'CORS'],
+  wrapInitializer(
+    wrapErrorHandlerForCORS as ServiceInitializer<
+      ErrorHandlerDependencies,
+      WhookErrorHandler
+    >,
+    initErrorHandler,
+  ),
+);
 
 /**
  * Wrap the error handler service as a last chance to add CORS
@@ -47,7 +56,7 @@ export async function wrapErrorHandlerForCORS(
     err,
   ) => {
     // Test if setter is available, could produce another error if err only has a getter
-    if (!isGetter(err, 'headers')) {
+    if (!isGetter(err as unknown as Record<string, unknown>, 'headers')) {
       (err as YHTTPError).headers = {
         ...lowerCaseHeaders(CORS),
         // Ensures to not override existing CORS headers
@@ -66,13 +75,13 @@ export async function wrapErrorHandlerForCORS(
   return wrappedErrorHandler;
 }
 
-export function isGetter(obj: unknown, prop: string): boolean {
+export function isGetter(obj: Record<string, unknown>, prop: string): boolean {
   if (typeof obj[prop] === 'undefined' || obj[prop] === null) {
     // Property not defined in obj, should be safe to write this property
     return false;
   }
   try {
-    return !!Object.getOwnPropertyDescriptor(obj, prop)['get'];
+    return !!Object.getOwnPropertyDescriptor(obj, prop)?.['get'];
   } catch (err) {
     // Error while getting the descriptor, should be only a get
     return true;

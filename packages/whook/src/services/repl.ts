@@ -9,7 +9,7 @@ export default name('repl', autoProvider(initREPL));
 export type REPLService = void;
 export type REPLDependencies<S> = {
   $dispose: Disposer;
-  $injector: Injector<S>;
+  $injector: Injector<Record<string, S>>;
   log: LogService;
   stdin: typeof process.stdin;
   stdout: typeof process.stdout;

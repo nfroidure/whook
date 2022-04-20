@@ -431,7 +431,8 @@ async function initErrorHandler({
           ? errorDescriptor.status
           : undefined) ||
         (err as YHTTPError).httpCode ||
-        ERRORS_DESCRIPTORS[DEFAULT_DEFAULT_ERROR_CODE].status,
+        ERRORS_DESCRIPTORS[DEFAULT_DEFAULT_ERROR_CODE].status ||
+        500,
       headers: Object.assign({}, (err as YHTTPError).headers || {}, {
         // Avoid caching errors
         'cache-control': 'private' as const,
@@ -444,34 +445,36 @@ async function initErrorHandler({
             ? responseSpec.contentTypes[0]
             : Object.keys(STRINGIFYERS)[0],
       }),
-    };
-
-    // Here we do not respect the camelCase convention to
-    // have OAuth2 compatible errors 🤷
-    response.body = {
-      error: errorDescriptor.code,
-      error_description: replaceTemplatedValues(
-        err as YError,
-        errorDescriptor.description,
-      ),
-      error_uri: replaceTemplatedValues(err as YError, errorDescriptor.uri),
-      error_help_uri: replaceTemplatedValues(
-        err as YError,
-        errorDescriptor.help,
-      ),
-      error_params: errorDescriptor.transmittedParams
-        ? errorDescriptor.transmittedParams.map(
-            (paramIndex) => ((err as YError).params || [])[paramIndex],
-          )
-        : undefined,
-      error_debug_data: {
-        // Enjoy nerdy stuff:
-        // https://en.wikipedia.org/wiki/Guru_Meditation
-        guruMeditation: transactionId,
+      // Here we do not respect the camelCase convention to
+      // have OAuth2 compatible errors 🤷
+      body: {
+        error: errorDescriptor.code,
+        error_description: replaceTemplatedValues(
+          err as YError,
+          errorDescriptor.description as string,
+        ),
+        error_uri: replaceTemplatedValues(
+          err as YError,
+          errorDescriptor.uri as string,
+        ),
+        error_help_uri: replaceTemplatedValues(
+          err as YError,
+          errorDescriptor.help as string,
+        ),
+        error_params: errorDescriptor.transmittedParams
+          ? errorDescriptor.transmittedParams.map(
+              (paramIndex) => ((err as YError).params || [])[paramIndex],
+            )
+          : undefined,
+        error_debug_data: {
+          // Enjoy nerdy stuff:
+          // https://en.wikipedia.org/wiki/Guru_Meditation
+          guruMeditation: transactionId,
+        },
       },
     };
 
-    if (DEBUG_NODE_ENVS.includes(NODE_ENV)) {
+    if (DEBUG_NODE_ENVS.includes(NODE_ENV as string)) {
       response.body.error_debug_data.code = errorCode;
       response.body.error_debug_data.stack = err.stack;
       response.body.error_debug_data.params = (err as YError).params;
@@ -481,12 +484,12 @@ async function initErrorHandler({
   }
 }
 
-function replaceTemplatedValues(err: YError, str: string): string {
+function replaceTemplatedValues(err: YError, str: string): string | undefined {
   return str
     ? str
         .replace(/\$([0-9](:?\.[a-zA-Z0-9#@*]+)*)/g, (_, path) =>
           miniquery(path, [err.params] || []).join(', '),
         )
-        .replace(/\$code/, err.code)
+        .replace(/\$code/, (err as YError).code)
     : undefined;
 }

@@ -149,19 +149,19 @@ async function initTestHTTPLambdaCommand({
     if (hasBody) {
       awsRequest.headers['content-type'] = `${contentType};charset=UTF-8`;
     }
-    log('info', 'AWS_REQUEST:', awsRequest);
+    log('info', 'AWS_REQUEST:', awsRequest as unknown as string);
 
     const result: APIGatewayProxyResult = await new Promise(
       (resolve, reject) => {
         const handlerPromise = handler(
           awsRequest,
           {
-            succeed: (...args: unknown[]) => {
+            succeed: (...args: any[]) => {
               handlerPromise.then(resolve.bind(null, ...args));
             },
             fail: reject,
           },
-          (err: Error, ...args: unknown[]) => {
+          (err: Error, ...args: any[]) => {
             if (err) {
               reject(err);
               return;
@@ -171,6 +171,6 @@ async function initTestHTTPLambdaCommand({
         ).catch(reject);
       },
     );
-    log('info', 'SUCCESS:', result);
+    log('info', 'SUCCESS:', result as unknown as string);
   };
 }

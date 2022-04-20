@@ -88,7 +88,7 @@ export default function wrapHandlerForAWSHTTPFunction<
     ],
     reuseSpecialProps(
       initHandler,
-      initHandlerForAWSHTTPFunction.bind(
+      (initHandlerForAWSHTTPFunction as any).bind(
         null,
         initHandler,
       ) as ServiceInitializer<D, S>,
@@ -97,7 +97,7 @@ export default function wrapHandlerForAWSHTTPFunction<
 }
 
 async function initHandlerForAWSHTTPFunction(
-  initHandler: ServiceInitializer<unknown, WhookHandler>,
+  initHandler: ServiceInitializer<Dependencies<any>, WhookHandler>,
   {
     OPERATION_API,
     WRAPPERS,
@@ -125,9 +125,9 @@ async function initHandlerForAWSHTTPFunction(
     verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
     strict: true,
     logger: {
-      log: (...args) => log('debug', ...args),
-      warn: (...args) => log('warning', ...args),
-      error: (...args) => log('error', ...args),
+      log: (...args) => log?.('debug', ...args),
+      warn: (...args) => log?.('warning', ...args),
+      error: (...args) => log?.('error', ...args),
     },
     useDefaults: true,
     coerceTypes: true,
@@ -213,10 +213,10 @@ async function handleForAWSHTTPFunction(
   req,
   res,
 ) {
-  const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
+  const debugging = (DEBUG_NODE_ENVS || []).includes(NODE_ENV);
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
 
-  log(
+  log?.(
     'info',
     'GCP_FUNCTIONS_REQUEST',
     JSON.stringify({
@@ -234,7 +234,7 @@ async function handleForAWSHTTPFunction(
   let responseLog;
   let responseSpec;
 
-  log(
+  log?.(
     'debug',
     'REQUEST',
     JSON.stringify({
@@ -276,19 +276,21 @@ async function handleForAWSHTTPFunction(
         request.url.split(SEARCH_SEPARATOR)[0].length,
       );
 
-      const pathParameters = OPERATION.path
-        .split(PATH_SEPARATOR)
-        .filter(identity)
-        .map((part, index) => {
-          const matches = /^\{([\d\w]+)\}$/i.exec(part);
+      const pathParameters = (
+        OPERATION.path
+          .split(PATH_SEPARATOR)
+          .filter(identity)
+          .map((part, index) => {
+            const matches = /^\{([\d\w]+)\}$/i.exec(part);
 
-          if (matches) {
-            return {
-              name: matches[1],
-              value: parts[index],
-            };
-          }
-        })
+            if (matches) {
+              return {
+                name: matches[1],
+                value: parts[index],
+              };
+            }
+          }) as Array<{ name: string; value: string }>
+      )
         .filter(identity)
         .reduce(
           (accParameters, { name, value }) => ({
@@ -326,7 +328,7 @@ async function handleForAWSHTTPFunction(
         ...('undefined' !== typeof body ? { body } : {}),
       };
     } catch (err) {
-      throw HTTPError.cast(err, 400);
+      throw HTTPError.cast(err as Error, 400);
     }
 
     response = await executeHandler(operation, handler, parameters);
@@ -366,9 +368,9 @@ async function handleForAWSHTTPFunction(
       type: 'success',
       status: response.status,
     };
-    log('debug', JSON.stringify(responseLog));
+    log?.('debug', JSON.stringify(responseLog));
   } catch (err) {
-    const castedError = HTTPError.cast(err);
+    const castedError = HTTPError.cast(err as Error);
 
     responseLog = {
       type: 'error',
@@ -378,7 +380,7 @@ async function handleForAWSHTTPFunction(
       stack: castedError.stack,
     };
 
-    log('error', JSON.stringify(responseLog));
+    log?.('error', JSON.stringify(responseLog));
     response = {
       status: castedError.httpCode,
       headers: {
@@ -396,7 +398,7 @@ async function handleForAWSHTTPFunction(
     };
   }
 
-  log(
+  log?.(
     'debug',
     'RESPONSE',
     JSON.stringify({
@@ -441,8 +443,8 @@ async function pipeResponseInGCPFResponse(
   response: WhookResponse,
   res,
 ): Promise<void> {
-  Object.keys(response.headers).forEach((headerName) => {
-    res.set(headerName, response.headers[headerName]);
+  Object.keys(response.headers || {}).forEach((headerName) => {
+    res.set(headerName, response.headers?.[headerName]);
   });
   res.status(response.status);
 

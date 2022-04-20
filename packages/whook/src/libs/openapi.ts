@@ -9,7 +9,7 @@ import type {
 } from '../services/API_DEFINITIONS';
 import type { JsonObject, JsonValue } from 'type-fest';
 
-type ComponentType = keyof OpenAPIV3.Document['components'];
+type ComponentType = keyof NonNullable<OpenAPIV3.Document['components']>;
 
 export const COMPONENTS_TYPES: ComponentType[] = [
   'schemas',
@@ -37,18 +37,18 @@ export function cleanupOpenAPI(api: OpenAPIV3.Document): OpenAPIV3.Document {
         (cleanedComponents, componentType) => ({
           ...cleanedComponents,
           [componentType]: COMPONENTS_TYPES.includes(componentType)
-            ? Object.keys(api?.components[componentType])
+            ? Object.keys(api?.components?.[componentType] || {})
                 .filter((key) =>
                   seenRefs.includes(`#/components/${componentType}/${key}`),
                 )
                 .reduce(
                   (cleanedComponents, key) => ({
                     ...cleanedComponents,
-                    [key]: api.components[componentType][key],
+                    [key]: api.components?.[componentType]?.[key],
                   }),
                   {},
                 )
-            : api.components[componentType],
+            : api.components?.[componentType],
         }),
         {},
       ),
@@ -92,7 +92,7 @@ export function collectRefs(
       if (key === '$ref') {
         continue;
       }
-      seenRefs = collectRefs(rootNode, node[key], seenRefs);
+      seenRefs = collectRefs(rootNode, node[key] || null, seenRefs);
     }
   }
 

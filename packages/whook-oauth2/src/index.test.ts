@@ -41,7 +41,7 @@ import {
   postOAuth2TokenRefreshTokenRequestBodySchema,
 } from '.';
 import type { OAuth2Options } from '.';
-import type { Knifecycle, Dependencies } from 'knifecycle';
+import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('OAuth2 server', () => {
@@ -49,10 +49,10 @@ describe('OAuth2 server', () => {
   const PORT = 4444;
   const HOST = 'localhost';
   const logger = {
-    info: jest.fn(),
+    output: jest.fn(),
     error: jest.fn(),
+    debug: jest.fn(),
   };
-  const debug = jest.fn();
   const time = jest.fn();
   const $autoload = jest.fn();
 
@@ -167,7 +167,6 @@ describe('OAuth2 server', () => {
     $.register(constant('MECHANISMS', [BEARER_MECHANISM, BASIC_MECHANISM]));
     $.register(constant('logger', logger));
     $.register(constant('time', time));
-    $.register(constant('debug', debug));
 
     // OAuth2 Specifics
     $.register(constant('OAUTH2', OAUTH2));
@@ -202,8 +201,8 @@ describe('OAuth2 server', () => {
     $.register(constant('oAuth2Password', oAuth2Password));
     [
       initGetOAuth2Authorize,
-      wrapHandlerWithAuthorization(initPostOAuth2Acknowledge),
-      wrapHandlerWithAuthorization(initPostOAuth2Token),
+      wrapHandlerWithAuthorization(initPostOAuth2Acknowledge as any),
+      wrapHandlerWithAuthorization(initPostOAuth2Token as any),
       initOAuth2Granters,
       initOAuth2ClientCredentialsGranter,
       initOAuth2CodeGranter,
@@ -222,7 +221,7 @@ describe('OAuth2 server', () => {
 
   beforeAll(async () => {
     const { $instance: _instance } = await runServer<{
-      $instance: Knifecycle<Dependencies>;
+      $instance: Knifecycle;
     }>(prepareEnvironment, prepareServer, [
       '$instance',
       'httpServer',
@@ -236,9 +235,9 @@ describe('OAuth2 server', () => {
   });
 
   beforeEach(() => {
-    logger.info.mockReset();
+    logger.output.mockReset();
     logger.error.mockReset();
-    debug.mockReset();
+    logger.debug.mockReset();
     time.mockReset();
     $autoload.mockClear();
     [

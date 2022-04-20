@@ -47,7 +47,7 @@ describe('initREPL', () => {
 
     stdin.write('time();\n\n');
 
-    await dispose();
+    dispose && (await dispose());
 
     stdout.end();
 

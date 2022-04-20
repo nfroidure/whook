@@ -37,31 +37,32 @@ async function initOAuth2PasswordGranter({
   checkApplication,
   log = noop,
 }: OAuth2PasswordGranterDependencies): Promise<OAuth2PasswordGranterService> {
-  const authenticateWithPassword: OAuth2PasswordGranterService['authenticator']['authenticate'] =
-    async (
-      { username, password, scope: demandedScope = '' },
+  const authenticateWithPassword: NonNullable<
+    OAuth2PasswordGranterService['authenticator']
+  >['authenticate'] = async (
+    { username, password, scope: demandedScope = '' },
+    authenticationData,
+  ) => {
+    // The client must be authenticated
+    if (!authenticationData) {
+      throw new YError('E_UNAUTHORIZED');
+    }
+
+    await checkApplication({
+      applicationId: authenticationData.applicationId,
+      type: 'password',
+      scope: demandedScope,
+    });
+
+    const finalAuthenticationData = await oAuth2Password.check(
       authenticationData,
-    ) => {
-      // The client must be authenticated
-      if (!authenticationData) {
-        throw new YError('E_UNAUTHORIZED');
-      }
+      username,
+      password,
+      demandedScope,
+    );
 
-      await checkApplication({
-        applicationId: authenticationData.applicationId,
-        type: 'password',
-        scope: demandedScope,
-      });
-
-      const finalAuthenticationData = await oAuth2Password.check(
-        authenticationData,
-        username,
-        password,
-        demandedScope,
-      );
-
-      return finalAuthenticationData;
-    };
+    return finalAuthenticationData;
+  };
 
   log('debug', '👫 - OAuth2PasswordGranter Service Initialized!');
 

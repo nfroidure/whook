@@ -7,10 +7,10 @@ import { PassThrough } from 'stream';
 describe('runREPL', () => {
   it('should work', async () => {
     const logger = {
-      info: jest.fn(),
+      output: jest.fn(),
       error: jest.fn(),
+      debug: jest.fn(),
     };
-    const debug = jest.fn();
     const stdin = new PassThrough();
     const stdout = new PassThrough();
 
@@ -22,7 +22,6 @@ describe('runREPL', () => {
       $.register(constant('DEBUG_NODE_ENVS', []));
       $.register(constant('NODE_ENVS', ['test']));
       $.register(constant('logger', logger));
-      $.register(constant('debug', debug));
       $.register(constant('stdin', stdin));
       $.register(constant('stdout', stdout));
       $.register(initREPL);
@@ -36,8 +35,8 @@ describe('runREPL', () => {
     await $instance.destroy();
 
     expect({
-      debugCalls: debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.info.mock.calls,
+      debugCalls: logger.debug.mock.calls.sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls,
       logErrorCalls: logger.error.mock.calls,
     }).toMatchSnapshot();
   });

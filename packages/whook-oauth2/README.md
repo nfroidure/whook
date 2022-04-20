@@ -8,7 +8,6 @@
 > OAuth2 implementation for Whook servers
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-oauth2/LICENSE)
-[![NPM version](https://badge.fury.io/js/%40whook%2Foauth2.svg)](https://npmjs.org/package/@whook/oauth2)
 
 
 [//]: # (::contents:start)
@@ -190,7 +189,7 @@ async function initOAuth2VerifyTokenGranter({
       return newAuthenticationData;
     } catch (err) {
       if (err.code === 'E_BAD_TOKEN') {
-        throw YError.wrap(err, 'E_BAD_REFRESH_TOKEN');
+        throw YError.wrap(err as Error, 'E_BAD_REFRESH_TOKEN');
       }
       throw err;
     }

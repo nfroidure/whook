@@ -90,6 +90,6 @@ async function initTestTransformerLambdaCommand({
       ).catch(reject);
     });
 
-    log('info', 'SUCCESS:', result);
+    log('info', 'SUCCESS:', result as string);
   };
 }

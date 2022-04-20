@@ -1,11 +1,19 @@
-import { SPECIAL_PROPS, wrapInitializer, alsoInject } from 'knifecycle';
+import {
+  SPECIAL_PROPS,
+  wrapInitializer,
+  alsoInject,
+  Dependencies,
+  Service,
+} from 'knifecycle';
 import HTTPError from 'yhttperror';
+import YError from 'yerror';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import {
   parseAuthorizationHeader,
   buildWWWAuthenticateHeader,
   BEARER as BEARER_MECHANISM,
 } from 'http-auth-utils';
+import type { Mechanism } from 'http-auth-utils';
 import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type {
   WhookHandler,
@@ -13,6 +21,7 @@ import type {
   WhookErrorsDescriptors,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
+import YHTTPError from 'yhttperror';
 
 export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_OPERATION_REQUIRED: {
@@ -75,54 +84,40 @@ export type WhookAuthorizationDependencies<
  * @param {Function} initHandler The handler initializer
  * @returns {Function} The handler initializer wrapped
  */
-export function wrapHandlerWithAuthorization<
-  P extends Parameters,
-  A,
-  R extends BaseAuthenticationData,
-  WR,
-  D,
-  S extends WhookHandler<P, WR, WhookOperation>,
->(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<WhookAuthorizationDependencies<A, R> & D, S> {
-  const augmentedInitializer = alsoInject<
-    WhookAuthorizationDependencies<A, R>,
-    D,
-    S
-  >(
+export function wrapHandlerWithAuthorization(
+  initHandler: ServiceInitializer<Dependencies, Service>,
+): ServiceInitializer<Dependencies, Service> {
+  const augmentedInitializer = alsoInject(
     ['?MECHANISMS', '?DEFAULT_MECHANISM', 'authentication', 'log'],
     initHandler,
   );
 
-  return wrapInitializer(
-    async (services: WhookAuthorizationDependencies<A, R>, handler: S) => {
-      const {
-        MECHANISMS = [BEARER_MECHANISM],
-        DEFAULT_MECHANISM = BEARER_MECHANISM.type,
+  return wrapInitializer(async (services, handler) => {
+    const {
+      MECHANISMS = [BEARER_MECHANISM],
+      DEFAULT_MECHANISM = BEARER_MECHANISM.type,
+      authentication,
+      log,
+    } = services;
+
+    log(
+      'debug',
+      `🔐 - Initializing the authorization wrapper for "${
+        initHandler[SPECIAL_PROPS.NAME]
+      }".`,
+    );
+
+    return handleWithAuthorization.bind(
+      null,
+      {
+        MECHANISMS,
+        DEFAULT_MECHANISM,
         authentication,
         log,
-      } = services;
-
-      log(
-        'debug',
-        `🔐 - Initializing the authorization wrapper for "${
-          initHandler[SPECIAL_PROPS.NAME]
-        }".`,
-      );
-
-      return handleWithAuthorization.bind(
-        null,
-        {
-          MECHANISMS,
-          DEFAULT_MECHANISM,
-          authentication,
-          log,
-        },
-        handler,
-      );
-    },
-    augmentedInitializer,
-  );
+      },
+      handler,
+    );
+  }, augmentedInitializer);
 }
 
 async function handleWithAuthorization<
@@ -178,11 +173,11 @@ async function handleWithAuthorization<
   } else {
     let parsedAuthorization;
 
-    const usableMechanisms = MECHANISMS.filter((mechanism) =>
-      operation.security.find(
+    const usableMechanisms = (MECHANISMS || []).filter((mechanism) =>
+      (operation.security || []).find(
         (security) => security[`${mechanism.type.toLowerCase()}Auth`],
       ),
-    );
+    ) as Mechanism[];
 
     try {
       if (!authorization) {
@@ -199,19 +194,19 @@ async function handleWithAuthorization<
         // This code should be simplified by solving this issue
         // https://github.com/nfroidure/http-auth-utils/issues/2
         if (
-          err.code === 'E_UNKNOWN_AUTH_MECHANISM' &&
-          MECHANISMS.some(
+          (err as YError).code === 'E_UNKNOWN_AUTH_MECHANISM' &&
+          (MECHANISMS || []).some(
             (mechanism) =>
               authorization.substr(0, mechanism.type.length) === mechanism.type,
           )
         ) {
-          throw HTTPError.wrap(err, 400, 'E_UNALLOWED_AUTH_MECHANISM');
+          throw HTTPError.wrap(err as Error, 400, 'E_UNALLOWED_AUTH_MECHANISM');
         }
-        throw HTTPError.cast(err, 400);
+        throw HTTPError.cast(err as Error, 400);
       }
 
       const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
-      const requiredScopes = (operation.security.find(
+      const requiredScopes = ((operation.security || []).find(
         (security) => security[authName],
       ) || { [authName]: [] })[authName];
 
@@ -234,7 +229,7 @@ async function handleWithAuthorization<
           parsedAuthorization.data,
         );
       } catch (err) {
-        throw HTTPError.cast(err, 401);
+        throw HTTPError.cast(err as Error, 401);
       }
 
       // Check scopes
@@ -271,14 +266,14 @@ async function handleWithAuthorization<
         throw err;
       }
 
-      if (err.httpCode !== 401) {
+      if ((err as YHTTPError).httpCode !== 401) {
         throw err;
       }
 
       const firstMechanism = usableMechanisms[0];
 
-      err.headers = {
-        ...(err.headers || {}),
+      (err as YHTTPError).headers = {
+        ...((err as YHTTPError).headers || {}),
         'www-authenticate': buildWWWAuthenticateHeader(firstMechanism, {
           realm: 'Auth',
         }),
