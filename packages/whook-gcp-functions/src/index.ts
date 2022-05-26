@@ -137,7 +137,7 @@ export async function runBuild(
       'buildInitializer',
     ]);
 
-    log('info', 'Environment initialized 🚀🌕');
+    log('info', 'GCP Functions build Environment initialized 🚀🌕');
 
     const operations = (
       await dereferenceOpenAPIOperations(

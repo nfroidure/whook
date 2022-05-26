@@ -46,14 +46,16 @@ export function wrapHandlerWithVersionChecker<D, S>(
     ['VERSIONS'],
     initHandler,
   );
-  const initializerWrapper: ServiceInitializerWrapper<S, VersionsConfig & D> =
-    async (services: VersionsConfig, handler: S) => {
-      return handleWithVersionChecker.bind(
-        null,
-        services as VersionsConfig,
-        handler as unknown as WhookHandler,
-      ) as unknown as S;
-    };
+  const initializerWrapper: ServiceInitializerWrapper<
+    S,
+    VersionsConfig & D
+  > = async (services: VersionsConfig, handler: S) => {
+    return handleWithVersionChecker.bind(
+      null,
+      services as VersionsConfig,
+      handler as unknown as WhookHandler,
+    ) as unknown as S;
+  };
 
   return wrapInitializer(initializerWrapper, augmentedInitializer);
 }

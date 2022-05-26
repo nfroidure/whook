@@ -1,7 +1,11 @@
 import Knifecycle, { constant, alsoInject } from 'knifecycle';
-import { initBuildConstants } from '@whook/whook';
+import {
+  DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+  initBuildConstants,
+  runBuild as runBaseBuild,
+  prepareBuildEnvironment as prepareBaseBuildEnvironment,
+} from '@whook/whook';
 import { prepareEnvironment } from '.';
-import YError from 'yerror';
 
 // Per convention a Whook server build file must export
 //  the following 2 functions to be composable:
@@ -11,10 +15,8 @@ import YError from 'yerror';
 export async function runBuild(
   innerPrepareEnvironment = prepareBuildEnvironment,
 ): Promise<void> {
-  throw new YError('E_NO_BUILD_IMPLEMENTED');
-
   // Usually, here you call the installed build
-  // return runBaseBuild(innerPrepareEnvironment);
+  return runBaseBuild(innerPrepareEnvironment);
 }
 
 // The `prepareBuildEnvironment` create the build
@@ -25,20 +27,15 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env
-  // $ = await prepareBaseBuildEnvironment($);
+  $ = await prepareBaseBuildEnvironment($);
 
   // The build often need to know were initializers
   //  can be found to create a static build and
   //  remove the need to create an injector
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: '@whook/whook/dist/services/ProxyedENV',
-      apm: '@whook/http-transaction/dist/services/apm',
-      obfuscator: '@whook/http-transaction/dist/services/obfuscator',
-      errorHandler: '@whook/http-router/dist/services/errorHandler',
-      log: 'common-services/dist/log',
-      time: 'common-services/dist/time',
-      delay: 'common-services/dist/delay',
+      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+      // MY_SERVICE: '@my/service_module_name',
     }),
   );
 

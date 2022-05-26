@@ -56,7 +56,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "devDependencies": {
     "commitizen": "^4.2.4",
-    "conventional-changelog-cli": "^2.1.1",
+    "conventional-changelog-cli": "^2.2.2",
     "coveralls": "^3.0.4",
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^4.0.0",

@@ -51,6 +51,12 @@ import initGetPing, {
   definition as initGetPingDefinition,
 } from './handlers/getPing';
 import { runREPL } from './repl';
+import {
+  DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+  prepareBuildEnvironment,
+  runBuild,
+} from './build';
+import type { BuildOptions } from 'knifecycle/dist/build';
 import type { PortEnv } from './services/PORT';
 import type {
   HTTPServerConfig,
@@ -213,6 +219,9 @@ export {
   mergeVaryHeaders,
   lowerCaseHeaders,
   runREPL,
+  DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+  prepareBuildEnvironment,
+  runBuild,
 };
 
 export type WhookBaseEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
@@ -232,7 +241,9 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookPluginsPathsConfig & {
     CONFIG: WhookConfig;
   } & ObfuscatorConfig &
-  WhookAPIDefinitionsConfig;
+  WhookAPIDefinitionsConfig & {
+    BUILD_OPTIONS: BuildOptions;
+  };
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface WhookConfigs extends WhookBaseConfigs {}
 
