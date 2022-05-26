@@ -54,6 +54,8 @@ async function initGenerateOpenAPITypes({
       await generateTypes(JSON.parse(openAPI), {
         baseName: 'API',
         generateUnusedSchemas: NODE_ENV === 'development',
+        generateRealEnums: false,
+        exportNamespaces: false,
       }),
     );
 

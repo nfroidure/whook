@@ -79,7 +79,7 @@ describe('generateOpenAPITypes', () => {
       }
       declare namespace Components {
           export namespace Responses {
-              type getPingResponse200<S extends number> = {
+              export type getPingResponse200<S extends number> = {
                   readonly status: S;
                   readonly headers?: {
                       readonly [name: string]: unknown;
