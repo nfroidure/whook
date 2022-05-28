@@ -1,6 +1,6 @@
 {
   "name": "@whook/http-router",
-  "version": "8.5.0",
+  "version": "9.0.0",
   "description": "The Whook base HTTP router",
   "keywords": [
     "whook",
@@ -56,7 +56,7 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@types/qs": "^6.9.7",
-    "@whook/http-transaction": "^8.5.0",
+    "@whook/http-transaction": "^9.0.0",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "bytes": "^3.1.2",

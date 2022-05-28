@@ -1,3 +1,19 @@
+# [9.0.0](https://github.com/nfroidure/whook/compare/v8.5.1...v9.0.0) (2022-05-28)
+
+
+### Bug Fixes
+
+* **swagger:** fix swagger ui URL setup ([f02f4f7](https://github.com/nfroidure/whook/commit/f02f4f70d24daf38c120ff47c77ef4ed2066d08e))
+
+
+### Features
+
+* **build:** allow main static build ([f5b2be3](https://github.com/nfroidure/whook/commit/f5b2be3a77d0d44b8b24987830ad902b1f7d0772)), closes [#135](https://github.com/nfroidure/whook/issues/135)
+* **core:** move the REPL in the core ([366afae](https://github.com/nfroidure/whook/commit/366afaeb600635b4f385b4ab7ab0ff7b8e6c2365))
+* **types:** allow types overriding ([150a2c3](https://github.com/nfroidure/whook/commit/150a2c3eb6c9123cb3de23ef154e2c05078b4750))
+
+
+
 ## [8.5.1](https://github.com/nfroidure/whook/compare/v8.5.0...v8.5.1) (2021-10-25)
 
 
