@@ -859,7 +859,7 @@ Object {
       "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
     ],
     Array [
-      "💁 - Serving the public API docs: http://localhost:9999/docs?url=http%3A%2F%2Flocalhost%3A9999%2Fv4%2FopenAPI",
+      "💁 - Serving the API docs: http://localhost:9999/docs",
     ],
     Array [
       "🔂 - Running in \\"test\\" environment.",

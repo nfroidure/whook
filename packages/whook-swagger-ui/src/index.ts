@@ -10,6 +10,7 @@ import type {
 } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
+import type { IncomingMessage, ServerResponse } from 'http';
 
 export { initGetOpenAPI, getOpenAPIDefinition };
 
@@ -79,40 +80,68 @@ export default function wrapHTTPRouterWithSwaggerUI<D>(
 
       const localURL = `http://${HOST}:${PORT}`;
       const swaggerUIURL = `${localURL}/docs`;
+      const absolutePath = (await importer('swagger-ui-dist')).absolutePath();
       const publicSwaggerURL = `${localURL}${BASE_PATH || ''}${
         getOpenAPIDefinition.path
       }`;
       const staticRouter = (await importer('ecstatic')).default({
-        root: (await importer('swagger-ui-dist')).absolutePath(),
+        root: absolutePath,
         showdir: false,
         baseDir: './docs',
       });
 
-      log(
-        'warning',
-        `💁 - Serving the public API docs: ${swaggerUIURL}?url=${encodeURIComponent(
-          publicSwaggerURL,
-        )}`,
-      );
+      log('warning', `💁 - Serving the API docs: ${swaggerUIURL}`);
 
-      if (DEV_ACCESS_TOKEN) {
-        log(
-          'warning',
-          `💁 - Serving the private API docs: ${swaggerUIURL}?url=${encodeURIComponent(
-            publicSwaggerURL +
+      const initializerContent = `
+window.onload = function() {
+  //<editor-fold desc="Changeable Configuration Block">
+
+  // the following lines will be replaced by docker/configurator, when it runs in a docker-container
+  window.ui = SwaggerUIBundle({
+    urls: [{"name":"Public API","url":"${publicSwaggerURL}"}${
+        DEV_ACCESS_TOKEN
+          ? `, {"name":"Private API","url":"${
+              publicSwaggerURL +
               '?access_token=' +
-              encodeURIComponent(DEV_ACCESS_TOKEN),
-          )}`,
-        );
-      }
+              encodeURIComponent(DEV_ACCESS_TOKEN)
+            }"}`
+          : ''
+      }],
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl,
+      SwaggerUIBundle.plugins.Topbar
+    ],
+    layout: "StandaloneLayout"
+  });
+
+  //</editor-fold>
+};
+`;
 
       return {
         ...httpRouter,
         service: customHTTPRouter,
       };
 
-      async function customHTTPRouter(req, res) {
-        if (req.url.startsWith('/docs')) {
+      async function customHTTPRouter(
+        req: IncomingMessage,
+        res: ServerResponse,
+      ) {
+        if (req.url && req.url.startsWith('/docs/swagger-initializer.js')) {
+          res
+            .writeHead(200, {
+              'Content-Type': 'text/javascript',
+            })
+            .end(initializerContent);
+          return;
+        }
+        if (req.url && req.url.startsWith('/docs')) {
           return staticRouter(req, res);
         }
         return httpRouter.service(req, res);

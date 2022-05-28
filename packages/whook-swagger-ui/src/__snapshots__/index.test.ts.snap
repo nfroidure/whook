@@ -268,10 +268,7 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "💁 - Serving the public API docs: http://localhost:22224/docs?url=http%3A%2F%2Flocalhost%3A22224%2Fv1%2FopenAPI",
-    ],
-    Array [
-      "💁 - Serving the private API docs: http://localhost:22224/docs?url=http%3A%2F%2Flocalhost%3A22224%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
+      "💁 - Serving the API docs: http://localhost:22224/docs",
     ],
     Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:22224\\".",
@@ -422,10 +419,7 @@ Object {
       "🔂 - Running in \\"test\\" environment.",
     ],
     Array [
-      "💁 - Serving the public API docs: http://localhost:22222/docs?url=http%3A%2F%2Flocalhost%3A22222%2Fv1%2FopenAPI",
-    ],
-    Array [
-      "💁 - Serving the private API docs: http://localhost:22222/docs?url=http%3A%2F%2Flocalhost%3A22222%2Fv1%2FopenAPI%3Faccess_token%3Doudelali",
+      "💁 - Serving the API docs: http://localhost:22222/docs",
     ],
     Array [
       "🎙️ - HTTP Server listening at \\"http://localhost:22222\\".",
