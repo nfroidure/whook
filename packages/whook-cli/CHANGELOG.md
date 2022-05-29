@@ -1,3 +1,12 @@
+## [9.0.1](https://github.com/nfroidure/whook/compare/v9.0.0...v9.0.1) (2022-05-29)
+
+
+### Bug Fixes
+
+* **types:** fix various types issues ([3f3bd22](https://github.com/nfroidure/whook/commit/3f3bd220172d327f2d8224faf181a797ba3a3af0))
+
+
+
 # [9.0.0](https://github.com/nfroidure/whook/compare/v8.5.1...v9.0.0) (2022-05-28)
 
 
