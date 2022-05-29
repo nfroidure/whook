@@ -49,10 +49,11 @@ import initAuthCookiesService, {
   AUTH_API_PREFIX,
 } from './services/authCookies';
 import type {
-  AuthHandlersConfig,
-  AuthCookiesService,
+  AuthCookiesEnv,
   AuthCookiesConfig,
+  AuthCookiesService,
   AuthCookiesData,
+  AuthHandlersConfig,
 } from './services/authCookies';
 
 export type {
@@ -64,10 +65,11 @@ export type {
   OAuth2GranterService,
   OAuth2Options,
   OAuth2Config,
-  AuthHandlersConfig,
-  AuthCookiesService,
+  AuthCookiesEnv,
   AuthCookiesConfig,
+  AuthCookiesService,
   AuthCookiesData,
+  AuthHandlersConfig,
 };
 export {
   initGetOAuth2Authorize,

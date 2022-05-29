@@ -7,11 +7,17 @@ import {
 } from '@whook/whook';
 import { prepareEnvironment } from '.';
 
-// Per convention a Whook server build file must export
-//  the following 2 functions to be composable:
+/* Architecture Note #1.2: The build file
 
-// The `runBuild` function is intended to build the
-// project
+Per convention a Whook server build file must export
+ the following 2 functions to be composable:
+*/
+
+/* Architecture Note #1.2.1: The `runBuild` function
+
+The `runBuild` function is intended to build the
+ project.
+*/
 export async function runBuild(
   innerPrepareEnvironment = prepareBuildEnvironment,
 ): Promise<void> {
@@ -19,8 +25,11 @@ export async function runBuild(
   return runBaseBuild(innerPrepareEnvironment);
 }
 
-// The `prepareBuildEnvironment` create the build
-//  environment
+/* Architecture Note #1.2.2: The `prepareBuildEnvironment` function
+
+The `prepareBuildEnvironment` create the build
+ environment
+*/
 export async function prepareBuildEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {

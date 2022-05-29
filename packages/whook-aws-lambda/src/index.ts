@@ -25,13 +25,13 @@ import type {
 } from 'knifecycle';
 import type {
   WhookOperation,
+  WhookCompilerConfig,
   WhookCompilerOptions,
   WhookCompilerService,
 } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { CprOptions } from 'cpr';
-import type { BuildOptions } from 'knifecycle/dist/build';
 
 export type {
   LambdaConsumerInput,
@@ -66,8 +66,7 @@ export type {
 
 export const DEFAULT_BUILD_PARALLELISM = 10;
 
-export type WhookBuildConfig = {
-  BUILD_OPTIONS?: BuildOptions;
+export type WhookAWSLambdaBuildConfig = {
   BUILD_PARALLELISM?: number;
 };
 export type WhookAWSLambdaBaseConfiguration = {
@@ -237,15 +236,17 @@ export async function runBuild(
       $autoload,
       API,
       buildInitializer,
-    }: WhookBuildConfig & {
-      NODE_ENV: string;
-      PROJECT_DIR: string;
-      compiler: WhookCompilerService;
-      log: LogService;
-      $autoload: Autoloader<Initializer<Dependencies, Service>>;
-      API: OpenAPIV3.Document;
-      buildInitializer: BuildInitializer;
-    } = await $.run([
+    }: WhookAWSLambdaBuildConfig &
+      WhookAWSLambdaBuildConfig &
+      Pick<WhookCompilerConfig, 'BUILD_OPTIONS'> & {
+        NODE_ENV: string;
+        PROJECT_DIR: string;
+        compiler: WhookCompilerService;
+        log: LogService;
+        $autoload: Autoloader<Initializer<Dependencies, Service>>;
+        API: OpenAPIV3.Document;
+        buildInitializer: BuildInitializer;
+      } = await $.run([
       'NODE_ENV',
       '?BUILD_PARALLELISM',
       '?BUILD_OPTIONS',
@@ -314,16 +315,15 @@ async function processOperations(
     log,
     $autoload,
     buildInitializer,
-  }: {
-    NODE_ENV: string;
-    BUILD_PARALLELISM: number;
-    BUILD_OPTIONS: BuildOptions;
-    PROJECT_DIR: string;
-    compiler: WhookCompilerService;
-    log: LogService;
-    $autoload: Autoloader<Initializer<Dependencies, Service>>;
-    buildInitializer: BuildInitializer;
-  },
+  }: WhookAWSLambdaBuildConfig &
+    Required<Pick<WhookCompilerConfig, 'BUILD_OPTIONS'>> & {
+      NODE_ENV: string;
+      PROJECT_DIR: string;
+      compiler: WhookCompilerService;
+      log: LogService;
+      $autoload: Autoloader<Initializer<Dependencies, Service>>;
+      buildInitializer: BuildInitializer;
+    },
   operations: WhookOperation<WhookAPIOperationAWSLambdaConfig>[],
 ): Promise<void> {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
@@ -373,10 +373,9 @@ async function buildAnyLambda(
     log,
     $autoload,
     buildInitializer,
-  }: {
+  }: Required<Pick<WhookCompilerConfig, 'BUILD_OPTIONS'>> & {
     NODE_ENV: string;
     PROJECT_DIR: string;
-    BUILD_OPTIONS: BuildOptions;
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader<Initializer<Dependencies, Service>>;
@@ -454,7 +453,7 @@ async function buildAnyLambda(
 async function buildLambdaIndex(
   rootNode: { path: string },
   buildWrapper: { name: string; path: string },
-  options: BuildOptions,
+  options: NonNullable<WhookCompilerConfig['BUILD_OPTIONS']>,
 ): Promise<string> {
   return `${
     options.modules === 'commonjs'

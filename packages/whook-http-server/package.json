@@ -82,7 +82,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.0",
     "jsdoc-to-markdown": "^7.1.1",
-    "metapak": "^4.0.3",
+    "metapak": "^4.0.4",
     "metapak-nfroidure": "11.2.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",

@@ -14,17 +14,50 @@
 
 Brings GraphQL to your [Whook](https://github.com/nfroidure/whook) server!
 
-This module uses [Apollo](https://www.apollographql.com/) under the hood
- most of its concepts (modules, plugins...) applies to it.
+This module uses [Apollo](https://www.apollographql.com/) under the hood most of
+its concepts (modules, plugins...) applies to it.
 
 ## Quick setup
 
 Install the module in your project:
+
 ```sh
 npm i @whook/graphql apollo-server-core
 ```
 
+Update the types (usually in `src/whook.d.ts`):
+
+```diff
++import type {
++   WhookGraphQLEnv
++   WhookGraphQLConfig,
++} from '@whook/swagger-ui';
+
+// ...
+
+declare module '@whook/whook' {
+
+  export interface WhookEnv
+    extends WhookBaseEnv,
+    // (...)
++      WhookGraphQLEnv,
+      WhookSwaggerUIEnv {}
+
+  // ...
+
+  export interface WhookConfigs
+    extends WhookBaseConfigs,
+      // (...)
++      WhookGraphQLConfig,
+      JWTServiceConfig {}
+
+  // ...
+
+}
+```
+
 Declare the plugin into your `index.ts` file:
+
 ```diff
 +  import { gql } from 'apollo-server-core';
 +  import type { WhookGraphQLFragmentService } from '@whook/graphql';
@@ -68,9 +101,10 @@ Declare the plugin into your `index.ts` file:
   // (...)
 ```
 
-The GraphQL fragments can be declared into separated services
- for more readability, just create a service to gather them
- all (usually in `src/services/graphQLFragments.ts`):
+The GraphQL fragments can be declared into separated services for more
+readability, just create a service to gather them all (usually in
+`src/services/graphQLFragments.ts`):
+
 ```ts
 import { initializer } from 'knifecycle';
 
@@ -78,13 +112,10 @@ export default initializer(
   {
     name: 'graphQLFragments',
     type: 'service',
-    inject: [
-      'graphQLUserFragment',
-      'graphQLMessageFragment',
-    ],
+    inject: ['graphQLUserFragment', 'graphQLMessageFragment'],
     singleton: true,
   },
-  async services => Object.keys(services).map(key => services[key]),
+  async (services) => Object.keys(services).map((key) => services[key]),
 );
 ```
 

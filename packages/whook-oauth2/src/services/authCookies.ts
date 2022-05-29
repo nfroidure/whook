@@ -11,14 +11,18 @@ export type AuthHandlersConfig<
   ROOT_AUTHENTICATION_DATA: AUTHENTICATION_DATA;
 };
 
+export type AuthCookiesEnv = {
+  DEV_MODE?: string;
+};
 export type AuthCookiesConfig = {
-  ENV?: {
-    DEV_MODE?: string;
-  };
   COOKIES: {
     domain: string;
   };
   BASE_PATH?: string;
+};
+
+export type AuthCookiesDependencies = AuthCookiesConfig & {
+  ENV?: AuthCookiesEnv;
 };
 
 export type AuthCookiesData = {
@@ -40,7 +44,7 @@ async function initAuthCookies({
   ENV = {},
   COOKIES,
   BASE_PATH = '',
-}: AuthCookiesConfig): Promise<AuthCookiesService> {
+}: AuthCookiesDependencies): Promise<AuthCookiesService> {
   function build(data: Partial<AuthCookiesData> = {}, { session = true } = {}) {
     return [
       cookie.serialize('access_token', data.access_token || '', {

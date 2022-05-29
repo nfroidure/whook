@@ -5,6 +5,7 @@ import initPostGraphQL, {
   definition as postGraphQLDefinition,
 } from './handlers/postGraphQL';
 import initGraphQL, {
+  WhookGraphQLEnv,
   WhookGraphQLConfig,
   WhookGraphQLDependencies,
   WhookGraphQLService,
@@ -12,6 +13,7 @@ import initGraphQL, {
 } from './services/graphQL';
 
 export type {
+  WhookGraphQLEnv,
   WhookGraphQLConfig,
   WhookGraphQLDependencies,
   WhookGraphQLService,

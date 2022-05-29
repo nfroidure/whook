@@ -60,18 +60,29 @@ Declare the plugin into your `index.ts` file:
   // (...)
 ```
 
-Declare this module types in your `src/whook.d.ts` type
- definitions:
+Declare this module types in your `src/whook.d.ts` type definitions:
+
 ```diff
-+ import type { OAuth2Config } from '@whook/oauth2';
++import type {
++  AuthCookiesEnv,
++  OAuth2Config,
++} from '@whook/oauth2';
 
 declare module '@whook/whook' {
+
+  export interface WhookEnv
+    extends WhookBaseEnv,
+    // (...)
++      AuthCookiesEnv,
+      WhookSwaggerUIEnv {}
 
   // ...
 
   export interface WhookConfigs
 -    extends WhookBaseConfigs {}
-+    extends WhookBaseConfigs, OAuth2Config {}
++    extends WhookBaseConfigs,
++      AuthCookiesConfig,
++      OAuth2Config {}
 
   // ...
 
@@ -157,43 +168,39 @@ async function initOAuth2VerifyTokenGranter({
   jwtToken,
   pg,
   log = noop,
-}: OAuth2VerifyTokenGranterDependencies): Promise<
-  OAuth2VerifyTokenGranterService
-> {
-  const authenticateWithVerifyToken: OAuth2VerifyTokenGranterService['authenticator']['authenticate'] = async (
-    { verifyToken },
-    authenticationData,
-  ) => {
-    try {
-      // The client must be authenticated
-      if (!authenticationData) {
-        throw new YError('E_UNAUTHORIZED');
+}: OAuth2VerifyTokenGranterDependencies): Promise<OAuth2VerifyTokenGranterService> {
+  const authenticateWithVerifyToken: OAuth2VerifyTokenGranterService['authenticator']['authenticate'] =
+    async ({ verifyToken }, authenticationData) => {
+      try {
+        // The client must be authenticated
+        if (!authenticationData) {
+          throw new YError('E_UNAUTHORIZED');
+        }
+
+        const newAuthenticationData = await jwtToken.verify(verifyToken);
+
+        await checkApplication({
+          applicationId: authenticationData.applicationId,
+          type: 'verify',
+          scope: newAuthenticationData.scope,
+        });
+
+        const result = await pg.query(USER_VERIFY_QUERY, {
+          userId: newAuthenticationData.userId,
+        });
+
+        if (result.rowCount === 0) {
+          throw new YError('E_ALREADY_VERIFIED', authenticationData.userId);
+        }
+
+        return newAuthenticationData;
+      } catch (err) {
+        if (err.code === 'E_BAD_TOKEN') {
+          throw YError.wrap(err as Error, 'E_BAD_REFRESH_TOKEN');
+        }
+        throw err;
       }
-
-      const newAuthenticationData = await jwtToken.verify(verifyToken);
-
-      await checkApplication({
-        applicationId: authenticationData.applicationId,
-        type: 'verify',
-        scope: newAuthenticationData.scope,
-      });
-
-      const result = await pg.query(USER_VERIFY_QUERY, {
-        userId: newAuthenticationData.userId,
-      });
-
-      if (result.rowCount === 0) {
-        throw new YError('E_ALREADY_VERIFIED', authenticationData.userId);
-      }
-
-      return newAuthenticationData;
-    } catch (err) {
-      if (err.code === 'E_BAD_TOKEN') {
-        throw YError.wrap(err as Error, 'E_BAD_REFRESH_TOKEN');
-      }
-      throw err;
-    }
-  };
+    };
 
   log('debug', '👫 - OAuth2VerifyTokenGranter Service Initialized!');
 
@@ -213,6 +220,7 @@ For internal use, you may prefer use cookies based auth handlers like
 `postLogin`, `postLogout` and `postRefresh`.
 
 To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
+
 ```diff
 // src/production/config.ts
 +  COOKIES: {
@@ -225,8 +233,9 @@ To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
 ```
 
 Than import the `postLogin`, `postLogout` and `postRefresh` handlers like so:
+
 ```ts
-// src/handlers/postRefresh.ts 
+// src/handlers/postRefresh.ts
 import {
   initPostAuthRefresh,
   postAuthRefreshDefinition,
@@ -249,7 +258,8 @@ export const definition: WhookAPIHandlerDefinition = {
 export default initPostAuthRefresh;
 ```
 
-Additionnaly, you could create any handler in the `/auth` path in order to receive the auth cookies.
+Additionnaly, you could create any handler in the `/auth` path in order to
+receive the auth cookies.
 
 ## Customizing handlers
 
@@ -285,22 +295,29 @@ export const definition: WhookAPIHandlerDefinition = {
       content: {
         'application/json': {
           schema: {
-            ...((postOAuth2AcknowledgeDefinition.operation
-              .requestBody as OpenAPIV3.RequestBodyObject).content[
-              'application/json'
-            ].schema as OpenAPIV3.NonArraySchemaObject),
+            ...((
+              postOAuth2AcknowledgeDefinition.operation
+                .requestBody as OpenAPIV3.RequestBodyObject
+            ).content['application/json']
+              .schema as OpenAPIV3.NonArraySchemaObject),
             required: [
               'userId',
-              ...((postOAuth2AcknowledgeDefinition.operation
-                .requestBody as OpenAPIV3.RequestBodyObject).content[
-                'application/json'
-              ].schema as OpenAPIV3.NonArraySchemaObject).required,
+              ...(
+                (
+                  postOAuth2AcknowledgeDefinition.operation
+                    .requestBody as OpenAPIV3.RequestBodyObject
+                ).content['application/json']
+                  .schema as OpenAPIV3.NonArraySchemaObject
+              ).required,
             ],
             properties: {
-              ...((postOAuth2AcknowledgeDefinition.operation
-                .requestBody as OpenAPIV3.RequestBodyObject).content[
-                'application/json'
-              ].schema as OpenAPIV3.NonArraySchemaObject).properties,
+              ...(
+                (
+                  postOAuth2AcknowledgeDefinition.operation
+                    .requestBody as OpenAPIV3.RequestBodyObject
+                ).content['application/json']
+                  .schema as OpenAPIV3.NonArraySchemaObject
+              ).properties,
               userId: {
                 type: 'string',
               },

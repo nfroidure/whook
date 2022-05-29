@@ -42,6 +42,7 @@ Here we export a custom handler definition type in order
     U extends {
       [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
     } = {},
+    V extends Record<string, unknown> = Record<string, unknown>,
   > extends WhookBaseAPIHandlerDefinition<T, U> {
     operation: U &
       WhookAPIOperation<

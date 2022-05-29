@@ -16,14 +16,15 @@ export type WhookGraphQLFragmentService = {
   schemaDirectives?: ApolloServerOptions['schemaDirectives'];
 };
 
+export type WhookGraphQLEnv = {
+  DEV_MODE: string;
+};
 export type WhookGraphQLConfig = {
   GRAPHQL_SERVER_OPTIONS?: Config;
 };
 
 export type WhookGraphQLDependencies = WhookGraphQLConfig & {
-  ENV: {
-    DEV_MODE: string;
-  };
+  ENV: WhookGraphQLEnv;
   graphQLFragments: WhookGraphQLFragmentService[];
   log: LogService;
 };

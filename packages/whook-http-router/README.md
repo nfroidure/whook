@@ -27,11 +27,11 @@ This is the default implementation of the Framework but it can be
 
 <dl>
 <dt><a href="#default">default</a> ⇒ <code>Promise</code></dt>
-<dd><p>Initialize an error handler for the
-HTTP router</p>
+<dd><p>Initialize an HTTP router</p>
 </dd>
 <dt><a href="#default">default</a> ⇒ <code>Promise</code></dt>
-<dd><p>Initialize an HTTP router</p>
+<dd><p>Initialize an error handler for the
+HTTP router</p>
 </dd>
 </dl>
 
@@ -47,25 +47,11 @@ HTTP router</p>
  convenient way to iterate onto its
  operations</p>
 </dd>
+<dt><a href="#dereferenceOpenAPIOperations">dereferenceOpenAPIOperations(API, operations)</a> ⇒ <code>Object</code></dt>
+<dd><p>Dereference API operations and transform OpenAPISchemas
+ into JSONSchemas</p>
+</dd>
 </dl>
-
-<a name="default"></a>
-
-## default ⇒ <code>Promise</code>
-Initialize an error handler for the
-HTTP router
-
-**Kind**: global variable  
-**Returns**: <code>Promise</code> - A promise of a function to handle errors  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| services | <code>Object</code> | The services the server depends on |
-| services.NODE_ENV | <code>Object</code> | The injected NODE_ENV value |
-| [services.DEBUG_NODE_ENVS] | <code>Array</code> | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
-| [services.STRINGIFYERS] | <code>Object</code> | The synchronous body stringifyers |
-| [services.ERRORS_DESCRIPTORS] | <code>Object</code> | An hash of the various error descriptors |
-| [services.DEFAULT_ERROR_CODE] | <code>Object</code> | A string giving the default error code |
 
 <a name="default"></a>
 
@@ -91,6 +77,24 @@ Initialize an HTTP router
 | [services.QUERY_PARSER] | <code>Object</code> |  | A query parser with the `strict-qs` signature |
 | [services.log] | <code>function</code> | <code>noop</code> | A logging function |
 | services.httpTransaction | <code>function</code> |  | A function to create a new HTTP transaction |
+
+<a name="default"></a>
+
+## default ⇒ <code>Promise</code>
+Initialize an error handler for the
+HTTP router
+
+**Kind**: global variable  
+**Returns**: <code>Promise</code> - A promise of a function to handle errors  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| services | <code>Object</code> | The services the server depends on |
+| services.NODE_ENV | <code>Object</code> | The injected NODE_ENV value |
+| [services.DEBUG_NODE_ENVS] | <code>Array</code> | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
+| [services.STRINGIFYERS] | <code>Object</code> | The synchronous body stringifyers |
+| [services.ERRORS_DESCRIPTORS] | <code>Object</code> | An hash of the various error descriptors |
+| [services.DEFAULT_ERROR_CODE] | <code>Object</code> | A string giving the default error code |
 
 <a name="flattenOpenAPI"></a>
 
@@ -121,14 +125,27 @@ Return a OpenAPI operation in a more
 
 **Example**  
 ```js
-(
-  await getOpenAPIOperations(API)
-).map((operation) => {
-   const { path, method, operationId, parameters } = operation;
+getOpenAPIOperations(API)
+  .map((operation) => {
+    const { path, method, operationId, parameters } = operation;
 
-  // Do something with that operation
-});
+    // Do something with that operation
+  });
 ```
+<a name="dereferenceOpenAPIOperations"></a>
+
+## dereferenceOpenAPIOperations(API, operations) ⇒ <code>Object</code>
+Dereference API operations and transform OpenAPISchemas
+ into JSONSchemas
+
+**Kind**: global function  
+**Returns**: <code>Object</code> - The dereferenced OpenAPI operations  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| API | <code>Object</code> | An OpenAPI object |
+| operations | <code>Object</code> | The OpenAPI operation objects |
+
 
 # Authors
 - [Nicolas Froidure](http://insertafter.com/en/index.html)

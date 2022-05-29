@@ -59,6 +59,7 @@ declare module '@whook/whook' {
     U extends {
       [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
     } = unknown,
+    V extends Record<string, unknown> = Record<string, unknown>,
   > extends WhookBaseAPIHandlerDefinition<T, U> {
     operation: U & WhookAPIOperation<
         T &
@@ -157,6 +158,9 @@ Note that you can define individual CORS values on the
 <dd><p>A simple Whook handler that just returns a 200 OK
  HTTP response</p>
 </dd>
+<dt><a href="#default">default</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap the error handler service as a last chance to add CORS</p>
+</dd>
 </dl>
 
 ## Functions
@@ -179,6 +183,21 @@ A simple Whook handler that just returns a 200 OK
 
 **Kind**: global variable  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - The HTTP response object  
+<a name="default"></a>
+
+## default ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap the error handler service as a last chance to add CORS
+
+**Kind**: global variable  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services ENV depends on |
+| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to add it to the build env |
+| [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
 <a name="wrapHandlerWithCORS"></a>
 
 ## wrapHandlerWithCORS(initHandler) ⇒ <code>function</code>

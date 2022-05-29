@@ -103,7 +103,8 @@ Declare this module types in your `src/whook.d.ts` type
 ```diff
 + import type { WhookCompilerConfig } from '@whook/whook';
 + import type {
-+   WhookAPIOperationGCPFunctionConfig
++    WhookGCPBuildConfig,
++    WhookAPIOperationGCPFunctionConfig
 + } from '@whook/gcp-functions';
 
 declare module '@whook/whook' {
@@ -112,7 +113,9 @@ declare module '@whook/whook' {
 
   export interface WhookConfigs
 -    extends WhookBaseConfigs {}
-+    extends WhookBaseConfigs, WhookCompilerConfig {}
++    extends WhookBaseConfigs,
++      WhookGCPBuildConfig,
++      WhookCompilerConfig {}
 
   // ...
 
@@ -121,6 +124,7 @@ declare module '@whook/whook' {
     U extends {
       [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
     } = unknown,
+    V extends Record<string, unknown> = Record<string, unknown>,
   > extends WhookBaseAPIHandlerDefinition<T, U> {
     operation: U & WhookAPIOperation<
         T &

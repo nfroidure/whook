@@ -56,7 +56,6 @@ import {
   prepareBuildEnvironment,
   runBuild,
 } from './build';
-import type { BuildOptions } from 'knifecycle/dist/build';
 import type { PortEnv } from './services/PORT';
 import type {
   HTTPServerConfig,
@@ -241,9 +240,8 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookPluginsPathsConfig & {
     CONFIG: WhookConfig;
   } & ObfuscatorConfig &
-  WhookAPIDefinitionsConfig & {
-    BUILD_OPTIONS: BuildOptions;
-  };
+  WhookAPIDefinitionsConfig &
+  WhookCompilerConfig;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface WhookConfigs extends WhookBaseConfigs {}
 

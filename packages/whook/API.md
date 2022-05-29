@@ -48,10 +48,11 @@
 <dd><p>Initialize the HOST service from ENV or auto-detection if
  none specified in ENV</p>
 </dd>
-<dt><a href="#initImporter">initImporter(constants)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Allow to proxy constants directly by serializing it in the
- build, saving some computing and increasing boot time of
- the build.</p>
+<dt><a href="#initImporter">initImporter(path)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Allow to import ES modules.</p>
+</dd>
+<dt><a href="#initResolve">initResolve(path)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
+<dd><p>Allow to resolve a path with the module system.</p>
 </dd>
 </dl>
 
@@ -251,22 +252,25 @@ Initialize the HOST service from ENV or auto-detection if
 
 <a name="initImporter"></a>
 
-## initImporter(constants) ⇒ <code>Promise.&lt;Object&gt;</code>
-Allow to proxy constants directly by serializing it in the
- build, saving some computing and increasing boot time of
- the build.
+## initImporter(path) ⇒ <code>Promise.&lt;Object&gt;</code>
+Allow to import ES modules.
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the gathered constants.  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an imported module.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| constants | <code>Object</code> | The serializable constants to gather |
+| path | <code>string</code> | The module path |
 
-**Example**  
-```js
-import { initBuildConstants } from '@whook/whook';
-import { alsoInject } from 'knifecycle';
+<a name="initResolve"></a>
 
-export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
-```
+## initResolve(path) ⇒ <code>Promise.&lt;string&gt;</code>
+Allow to resolve a path with the module system.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a fully qualified module path  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | The serializable constants to gather |
+

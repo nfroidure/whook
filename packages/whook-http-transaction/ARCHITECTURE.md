@@ -5,9 +5,16 @@
 [//]: # ( )
 # Architecture Notes
 
+## Summary
+
+1. [HTTP Transactions](#1-http-transactions)
+   1. [New Transaction](#11-new-transaction)
+   2. [Transaction start](#12-transaction-start)
+   3. [Transaction errors](#13-transaction-errors)
+   4. [Transaction end](#14-transaction-end)
 
 
-## HTTP Transactions
+## 1. HTTP Transactions
 
 The `httpTransaction` service creates a new transaction
  for every single HTTP request incoming. It helps
@@ -25,11 +32,11 @@ You can simply do this by wrapping this service. See
  [`@whook/method-override`](../whook-method-override/README.md)
  for a working example.
 
-[See in context](./src/index.ts#L142-L159)
+[See in context](./src/index.ts#L161-L178)
 
 
 
-### New Transaction
+### 1.1. New Transaction
 
 The idea is to maintain a hash of each pending
  transaction. To do so, we create a transaction
@@ -42,33 +49,33 @@ Each transaction has a unique id that is either
  request header. This allows to trace
  transactions end to end with that unique id.
 
-[See in context](./src/index.ts#L240-L251)
+[See in context](./src/index.ts#L262-L273)
 
 
 
-### Transaction start
+### 1.2. Transaction start
 
 Once initiated, the transaction can be started. It
    basically spawns a promise that will be resolved
    to the actual response or rejected if the timeout
    is reached.
 
-[See in context](./src/index.ts#L332-L337)
+[See in context](./src/index.ts#L358-L363)
 
 
 
-### Transaction errors
+### 1.3. Transaction errors
 
 Here we are simply logging errors.
    It is important for debugging but also for
    ending the transaction properly if an error
    occurs.
 
-[See in context](./src/index.ts#L359-L364)
+[See in context](./src/index.ts#L385-L390)
 
 
 
-### Transaction end
+### 1.4. Transaction end
 
 We end the transaction by writing the final status
    and headers and piping the response body if any.
@@ -84,5 +91,5 @@ We end the transaction by writing the final status
    Once terminated, the transaction is removed
 from the `TRANSACTIONS` hash.
 
-[See in context](./src/index.ts#L408-L422)
+[See in context](./src/index.ts#L434-L448)
 

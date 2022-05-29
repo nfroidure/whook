@@ -302,7 +302,7 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
 export type ErrorHandlerConfig = {
   NODE_ENV?: string;
   DEBUG_NODE_ENVS: string[];
-  ERRORS_DESCRIPTORS?: WhookErrorsDescriptors;
+  ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
   DEFAULT_ERROR_CODE?: string;
 };
 export type ErrorHandlerDependencies = ErrorHandlerConfig & {
@@ -400,6 +400,12 @@ async function initErrorHandler({
   ERRORS_DESCRIPTORS = DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_ERROR_CODE = DEFAULT_DEFAULT_ERROR_CODE,
 }: ErrorHandlerDependencies): Promise<WhookErrorHandler> {
+  // Ensure we have required error descriptors
+  ERRORS_DESCRIPTORS = {
+    ...DEFAULT_ERRORS_DESCRIPTORS,
+    ...ERRORS_DESCRIPTORS,
+  };
+
   return errorHandler;
 
   /**

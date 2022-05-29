@@ -5,9 +5,71 @@
 [//]: # ( )
 # Architecture Notes
 
+## Summary
+
+1. [A Whook baked API](#1-a-whook-baked-api)
+   1. [The main file](#11-the-main-file)
+      1. [runServer](#111-runserver)
+      2. [prepareServer](#112-prepareserver)
+         1. [server wrappers](#1121-server-wrappers)
+      3. [prepareEnvironment](#113-prepareenvironment)
+         1. [Autoloader](#1131-autoloader)
+         2. [API definitions](#1132-api-definitions)
+         3. [PROJECT_SRC](#1133-project_src)
+         3. [TRANSACTIONS](#1133-transactions)
+         4. [WHOOK_PLUGINS](#1134-whook_plugins)
+   2. [The build file](#12-the-build-file)
+      1. [The `runBuild` function](#121-the-`runbuild`-function)
+      2. [The `prepareBuildEnvironment` function](#122-the-`preparebuildenvironment`-function)
+2. [Configuration](#2-configuration)
+   1. [Typings](#21-typings)
+   2. [Exporting](#22-exporting)
+   3. [Overriding](#23-overriding)
+3. [API](#3-api)
+   1. [Definition](#31-definition)
+      1. [Operation ID](#311-operation-id)
+      2. [Reusable parameters](#312-reusable-parameters)
+         1. [Usage](#3121-usage)
+      3. [Reusable schemas](#313-reusable-schemas)
+         1. [Usage](#3131-usage)
+         2. [Typings](#3132-typings)
+      4. [Reusable responses](#314-reusable-responses)
+      4. [Reusable request bodies](#314-reusable-request-bodies)
+   2. [Implementation](#32-implementation)
+      1. [Response](#321-response)
+      2. [Exportation](#322-exportation)
+      3. [Typings](#323-typings)
+   3. [Plugins](#33-plugins)
+      1. [Custom transformations](#331-custom-transformations)
+   4. [Examples](#34-examples)
+      1. [getDiagnostic](#341-getdiagnostic)
+      2. [getParameters](#342-getparameters)
+      3. [getTime](#343-gettime)
+      4. [putEcho](#344-putecho)
+   5. [Testing](#35-testing)
+      1. [Services stubs](#351-services-stubs)
+      2. [Handler initialization](#352-handler-initialization)
+      3. [Handler run](#353-handler-run)
+4. [Serving the Open API](#4-serving-the-open-api)
+4. [Services](#4-services)
+   1. [authentication](#41-authentication)
+   2. [filterAPITags](#42-filterapitags)
+   3. [jwtToken](#43-jwttoken)
+   4. [MECHANISMS](#44-mechanisms)
+   5. [QUERY_PARSER](#45-query_parser)
+   6. [WRAPPERS](#46-wrappers)
+5. [Commands](#5-commands)
+   1. [Definition](#51-definition)
+   2. [Implementation](#52-implementation)
+      1. [Injecting handlers](#521-injecting-handlers)
+   3. [Examples](#53-examples)
+      1. [Typings generator](#531-typings-generator)
+      2. [Open API generator](#532-open-api-generator)
+   4. [Testing](#54-testing)
+6. [REPL](#6-repl)
 
 
-## A Whook baked API
+## 1. A Whook baked API
 
 This API server uses the Whook engine. Thoses architecture
  notes will help you to master its features.
@@ -16,20 +78,20 @@ You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 
-[See in context](./src/index.ts#L13-L20)
+[See in context](./src/index.ts#L14-L21)
 
 
 
-### The main file
+### 1.1. The main file
 
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 
-[See in context](./src/index.ts#L22-L26)
+[See in context](./src/index.ts#L23-L27)
 
 
 
-#### runServer
+#### 1.1.1. runServer
 
 The `runServer` function is intended to run the server
  and may be proxied as is, except in some e2e test cases
@@ -37,39 +99,39 @@ The `runServer` function is intended to run the server
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L28-L35)
+[See in context](./src/index.ts#L29-L36)
 
 
 
-#### prepareServer
+#### 1.1.2. prepareServer
 
 The `prepareServer` function is intended to prepare the server
  environment. It relies on the main environment but will be
  used only by the server, not the commands or build scripts.
 
-[See in context](./src/index.ts#L54-L59)
+[See in context](./src/index.ts#L55-L60)
 
 
 
-##### server wrappers
+##### 1.1.2.1. server wrappers
 
 Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L64-L69)
+[See in context](./src/index.ts#L65-L70)
 
 
 
-#### prepareEnvironment
+#### 1.1.3. prepareEnvironment
 
 The `prepareEnvironment` one is intended to prepare the server environment
 
-[See in context](./src/index.ts#L75-L78)
+[See in context](./src/index.ts#L76-L79)
 
 
 
-##### Autoloader
+##### 1.1.3.1. Autoloader
 
 You can register any service/handler required to bootstrap
  the server env here manually, see Knifecycle for more infos
@@ -81,11 +143,11 @@ OR, like in this example, use the Whook `$autoload` service
  autoloader by creating a service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L98-L109)
+[See in context](./src/index.ts#L99-L110)
 
 
 
-##### API definitions
+##### 1.1.3.2. API definitions
 
 This service loads the API definitions directly by
  looking at your `src/handlers` folder. You can
@@ -93,21 +155,21 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L112-L119)
+[See in context](./src/index.ts#L113-L120)
 
 
 
-##### PROJECT_SRC
+##### 1.1.3.3. PROJECT_SRC
 
 You have to declare the project main file directory
  to allow autoloading features to work with it either
  in development and production (files built in `dist/`).
 
-[See in context](./src/index.ts#L122-L127)
+[See in context](./src/index.ts#L123-L128)
 
 
 
-##### TRANSACTIONS
+##### 1.1.3.3. TRANSACTIONS
 
 The Whook HTTP Transaction service, maintains an internal
  hash that handles a list of the current running HTTP
@@ -136,22 +198,49 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L130-L158)
+[See in context](./src/index.ts#L131-L159)
 
 
 
-##### WHOOK_PLUGINS
+##### 1.1.3.4. WHOOK_PLUGINS
 
 Plugins allows you to add simple features to the Whook's core,
  to add some, just add the plugin module name here.
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L161-L167)
+[See in context](./src/index.ts#L162-L168)
 
 
 
-## Configuration
+### 1.2. The build file
+
+Per convention a Whook server build file must export
+ the following 2 functions to be composable:
+
+[See in context](./src/build.ts#L10-L14)
+
+
+
+#### 1.2.1. The `runBuild` function
+
+The `runBuild` function is intended to build the
+ project.
+
+[See in context](./src/build.ts#L16-L20)
+
+
+
+#### 1.2.2. The `prepareBuildEnvironment` function
+
+The `prepareBuildEnvironment` create the build
+ environment
+
+[See in context](./src/build.ts#L28-L32)
+
+
+
+## 2. Configuration
 
 Configuration is done for each environement in the
  `src/config/${NODE_ENV}/config.ts` files.
@@ -159,31 +248,31 @@ Configuration is done for each environement in the
 The `src/config/common/config.ts` one allows to add common
  configurations for all environements.
 
-[See in context](./src/config/common/config.ts#L12-L19)
+[See in context](./src/config/common/config.ts#L4-L11)
 
 
 
-### Typings
+### 2.1. Typings
 
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/config/common/config.ts#L26-L30)
+[See in context](./src/whook.d.ts#L21-L25)
 
 
 
-### Exporting
+### 2.2. Exporting
 
 Each configuration file then create a configuration object
  and export it for the configuration service to load it.
 
 See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/CONFIGS.ts#L56).
 
-[See in context](./src/config/common/config.ts#L48-L54)
+[See in context](./src/config/common/config.ts#L18-L24)
 
 
 
-### Overriding
+### 2.3. Overriding
 
 Finally the configuration file for a given environnment
  may reuse or override the custom configuration file
@@ -193,18 +282,18 @@ Finally the configuration file for a given environnment
 
 
 
-## API
+## 3. API
 
 Whook is all about APIs.
 
 The API service defined here is where you put
  your handlers altogether to build the final API.
 
-[See in context](./src/services/API.ts#L28-L33)
+[See in context](./src/services/API.ts#L27-L32)
 
 
 
-### Definition
+### 3.1. Definition
 
 This is how to declare a new route for your API.
  The syntax is pure [Open API](https://www.openapis.org/),
@@ -215,50 +304,55 @@ For it to work, you have to export the definition, like
  here, to make it available for the API service, responsible
  for gathering all API route definitions.
 
-[See in context](./src/handlers/getDelay.ts#L36-L46)
+[See in context](./src/handlers/getDelay.ts#L39-L49)
 
 
 
-#### Operation ID
+#### 3.1.1. Operation ID
 
 The name provided as the Open API `operationId` here
 must map the handler name to link the definition
 to it (here `getDelay`).
 
-[See in context](./src/handlers/getDelay.ts#L51-L56)
+[See in context](./src/handlers/getDelay.ts#L54-L59)
 
 
 
-#### Reusable parameters
+#### 3.1.2. Reusable parameters
 
 This is how to declare a reusable API parameter
  to avoid having to write it several times and
  lower your final Open API file weight.
 
-[See in context](./src/handlers/getDelay.ts#L15-L20)
+[See in context](./src/handlers/getDelay.ts#L18-L23)
 
 
 
-##### Usage
+##### 3.1.2.1. Usage
 
 To use reusable parameters, you must refer to it
  instead of writing it inline.
 
-[See in context](./src/handlers/getDelay.ts#L61-L65)
+[See in context](./src/handlers/getDelay.ts#L64-L68)
 
 
 
-#### Reusable schemas
+#### 3.1.3. Reusable schemas
 
 This is how to declare a reusable API schema
  to avoid having to write it several times and
  lower your final Open API file weight.
 
-[See in context](./src/handlers/putEcho.ts#L7-L12)
+You simply have to export a variable finishing with
+ the `Schema` suffix and assign it the
+ `WhookAPISchemaDefinition` type to be guided
+ when creating it.
+
+[See in context](./src/handlers/putEcho.ts#L12-L22)
 
 
 
-##### Usage
+##### 3.1.3.1. Usage
 
 To use reusable schemas, you must refer to it
  instead of writing it inline.
@@ -267,21 +361,51 @@ You can use it in request/response bodies,
  inside parameters or even inside other
  schemas as per the OpenAPI specification.
 
-[See in context](./src/handlers/putEcho.ts#L38-L46)
+[See in context](./src/handlers/putEcho.ts#L97-L105)
 
 
 
-##### Typings
+##### 3.1.3.2. Typings
 
 Schemas are converted to types so that
  TypeScript warns you when you don't output
  the expected data.
 
-[See in context](./src/handlers/putEcho.ts#L90-L95)
+[See in context](./src/handlers/putEcho.ts#L127-L132)
 
 
 
-### Implementation
+#### 3.1.4. Reusable responses
+
+This is how to declare a reusable API response
+ to avoid having to write it several times and
+ lower your final Open API file weight.
+
+You simply have to export a variable finishing with
+ the `Response` suffix and assign it the
+ `WhookAPIResponseDefinition` type to be guided
+ when creating it.
+
+[See in context](./src/handlers/putEcho.ts#L40-L50)
+
+
+
+#### 3.1.4. Reusable request bodies
+
+This is how to declare a reusable API request body
+ to avoid having to write it several times and
+ lower your final Open API file weight.
+
+You simply have to export a variable finishing with
+ the `RequestBody` suffix and assign it the
+ `WhookAPIRequestBodyDefinition` type to be guided
+ when creating it.
+
+[See in context](./src/handlers/putEcho.ts#L63-L73)
+
+
+
+### 3.2. Implementation
 
 The handler implementation is here, you can notice
  the Input/Ouput types that were automatically generated
@@ -298,21 +422,21 @@ Parameters are cleaned up and checked by Whook so
  to the API contract you set in the handler's
  Open API definition above.
 
-[See in context](./src/handlers/getDelay.ts#L78-L94)
+[See in context](./src/handlers/getDelay.ts#L79-L95)
 
 
 
-#### Response
+#### 3.2.1. Response
 
 The handler's response are simple JSON serializable
  objects with a `status` and optional `body` and
  `headers` properties.
 
-[See in context](./src/handlers/getDelay.ts#L105-L110)
+[See in context](./src/handlers/getDelay.ts#L106-L111)
 
 
 
-#### Exportation
+#### 3.2.2. Exportation
 
 Here we simply tag the handler function as
  an handler Whook's will be able to use.
@@ -323,40 +447,40 @@ There is some magic here with the use of
 You can read more about it
  [here](https://github.com/nfroidure/knifecycle).
 
-[See in context](./src/handlers/getDelay.ts#L116-L126)
+[See in context](./src/handlers/getDelay.ts#L117-L127)
 
 
 
-#### Typings
+#### 3.2.3. Typings
 
 Here we export a custom handler definition type in order
  to allow using the various plugins installed that deal
  with the handlers.
 
-[See in context](./src/config/common/config.ts#L38-L43)
+[See in context](./src/whook.d.ts#L34-L39)
 
 
 
-### Plugins
+### 3.3. Plugins
 
 You can apply transformations to your API like
  here for CORS support (OPTIONS method handling).
 
-[See in context](./src/services/API.ts#L85-L89)
+[See in context](./src/services/API.ts#L84-L88)
 
 
 
-#### Custom transformations
+#### 3.3.1. Custom transformations
 
 The API definition is a JSON serializable object, you
  can then reshape it the way you want. Here, we set a
  fake auth mecanism to help in development environment.
 
-[See in context](./src/services/API.ts#L93-L98)
+[See in context](./src/services/API.ts#L92-L97)
 
 
 
-### Examples
+### 3.4. Examples
 
 The default Whook project contains a few sample
  handlers to help you grasp its principles.
@@ -364,45 +488,45 @@ The default Whook project contains a few sample
 You can keep some or just delete them and create
  yours with `npm run whook-dev -- create`.
 
-[See in context](./src/handlers/getDelay.ts#L6-L13)
+[See in context](./src/handlers/getDelay.ts#L9-L16)
 
 
 
-#### getDiagnostic
-
-Here is a simple handler that just proxy the `TRANSACTIONS`
- service which contains the currently pending transactions.
-
-[See in context](./src/handlers/getDiagnostic.ts#L4-L8)
-
-
-
-#### getParameters
+#### 3.4.1. getDiagnostic
 
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 
-[See in context](./src/handlers/getParameters.ts#L37-L41)
+[See in context](./src/handlers/getDiagnostic.ts#L29-L33)
 
 
 
-#### getTime
+#### 3.4.2. getParameters
+
+Here is a simple handler that just proxy the `TRANSACTIONS`
+ service which contains the currently pending transactions.
+
+[See in context](./src/handlers/getParameters.ts#L40-L44)
+
+
+
+#### 3.4.3. getTime
 
 Returns the server time.
 
-[See in context](./src/handlers/getTime.ts#L21-L24)
+[See in context](./src/handlers/getTime.ts#L24-L27)
 
 
 
-#### putEcho
+#### 3.4.4. putEcho
 
 Simply outputs its input.
 
-[See in context](./src/handlers/putEcho.ts#L27-L30)
+[See in context](./src/handlers/putEcho.ts#L86-L89)
 
 
 
-### Testing
+### 3.5. Testing
 
 Since the handlers do not need to deal with
  input/ouput validity, you can just write
@@ -412,7 +536,7 @@ Since the handlers do not need to deal with
 
 
 
-#### Services stubs
+#### 3.5.1. Services stubs
 
 First you need to write stubs for services,
  pass it to the handler initializer and
@@ -422,7 +546,7 @@ First you need to write stubs for services,
 
 
 
-#### Handler initialization
+#### 3.5.2. Handler initialization
 
 To get the testable handler, you first need to
  initialize it by providing mock services.
@@ -431,7 +555,7 @@ To get the testable handler, you first need to
 
 
 
-#### Handler run
+#### 3.5.3. Handler run
 
 Then run the handler and get the response.
  Here, we snapshot the response and the
@@ -446,7 +570,7 @@ Then run the handler and get the response.
 
 
 
-## Serving the Open API
+## 4. Serving the Open API
 
 Whook provides a handler to serve the final Open API
  definition.
@@ -465,7 +589,7 @@ The fact that definitions are simple objects make them
 
 
 
-## Services
+## 4. Services
 
 Whook is shipped with a lots of services aimed to
  ease your life.
@@ -480,11 +604,11 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L82-L95)
+[See in context](./src/index.ts#L83-L96)
 
 
 
-### authentication
+### 4.1. authentication
 
 A fake authentication service you can use as a base
  authentication service.
@@ -493,7 +617,7 @@ A fake authentication service you can use as a base
 
 
 
-### filterAPITags
+### 4.2. filterAPITags
 
 Small tweak to be able to run only parts of the API
  by filtering endpoints via their tags. This makes of
@@ -510,16 +634,16 @@ FILTER_API_TAGS=system,example npm start
 
 
 
-### jwtToken
+### 4.3. jwtToken
 
 A JWT token issuer service. Here, we simply reuse
  an external project and rename it by the way.
 
-[See in context](./src/services/jwtToken.ts#L6-L10)
+[See in context](./src/services/jwtToken.ts#L5-L9)
 
 
 
-### MECHANISMS
+### 4.4. MECHANISMS
 
 A service aimed to provide implementations for the
  various supported auth mechanisms.
@@ -528,7 +652,7 @@ A service aimed to provide implementations for the
 
 
 
-### QUERY_PARSER
+### 4.5. QUERY_PARSER
 
 Thanks to the DI system, you can easily customize
  Whook building blocks to match your flavor. Here,
@@ -546,7 +670,7 @@ You can navigate through the Whook's sources to
 
 
 
-### WRAPPERS
+### 4.6. WRAPPERS
 
 Wrappers are allowing you to override every
  handlers of your API with specific behaviors,
@@ -557,7 +681,7 @@ Wrappers are allowing you to override every
 
 
 
-## Commands
+## 5. Commands
 
 We consider to be a good practice to bind the commands
  you write to your API code. The `src/commands` folder
@@ -579,7 +703,7 @@ Commands are a simple way to write utility scripts that leverage
 
 
 
-### Definition
+### 5.1. Definition
 
 To define a command, just write its definition
  and export it to make it available to Whook's
@@ -589,7 +713,7 @@ To define a command, just write its definition
 
 
 
-### Implementation
+### 5.2. Implementation
 
 To implement a command, just write a function that takes
  injected services as a first argument and return the
@@ -599,7 +723,7 @@ To implement a command, just write a function that takes
 
 
 
-#### Injecting handlers
+#### 5.2.1. Injecting handlers
 
 A good thing is that you can reuse any handler into
  your commands by simply injecting it by name.
@@ -608,7 +732,7 @@ A good thing is that you can reuse any handler into
 
 
 
-### Examples
+### 5.3. Examples
 
 Whook's default project comes with a few sample commands.
 
@@ -616,7 +740,7 @@ Whook's default project comes with a few sample commands.
 
 
 
-#### Typings generator
+#### 5.3.1. Typings generator
 
 This command allows you to generate the API types that
  helps you to write your handler in a clean and safe
@@ -626,7 +750,7 @@ This command allows you to generate the API types that
 
 
 
-#### Open API generator
+#### 5.3.2. Open API generator
 
 Here, we reuse the Open API handler to generate the
  definition of the API right inside a CLI command.
@@ -635,10 +759,19 @@ Here, we reuse the Open API handler to generate the
 
 
 
-### Testing
+### 5.4. Testing
 
 In such a hard life, Whook's make it simple to
  also test your commands.
 
 [See in context](./src/commands/generateOpenAPISchema.test.ts#L5-L9)
+
+
+
+## 6. REPL
+
+Here is a simple REPL leveraging the depency injection
+ features in order to let you test things up easily.
+
+[See in context](./src/repl.ts#L4-L8)
 

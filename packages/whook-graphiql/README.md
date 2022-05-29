@@ -13,24 +13,56 @@
 [//]: # (::contents:start)
 
 This module provides the GraphIQL UI to your local
- [Whook](https://github.com/nfroidure/whook) server !
+[Whook](https://github.com/nfroidure/whook) server !
 
 ## Usage
 
-The `DEV_MODE=1` environment variable must be used
- when starting your server (`npm run dev` does it
- by default).
+The `DEV_MODE=1` environment variable must be used when starting your server
+(`npm run dev` does it by default).
 
 ## Setup
 
 Install the module:
+
 ```sh
 npm i @whook/graphiql
 ```
 
-Then, just wrap the HTTP router with this module and
- register it again with the `Knifecycle` instance inside the
- `runServer` function (usually in `src/index.ts`):
+Update the types (usually in `src/whook.d.ts`):
+
+```diff
++import type {
++   WhookGraphIQLEnv
++   WhookGraphIQLConfig,
++} from '@whook/swagger-ui';
+
+// ...
+
+declare module '@whook/whook' {
+
+  export interface WhookEnv
+    extends WhookBaseEnv,
+    // (...)
++      WhookGraphIQLEnv,
+      WhookSwaggerUIEnv {}
+
+  // ...
+
+  export interface WhookConfigs
+    extends WhookBaseConfigs,
+      // (...)
++      WhookGraphIQLConfig,
+      JWTServiceConfig {}
+
+  // ...
+
+}
+```
+
+Then, just wrap the HTTP router with this module and register it again with the
+`Knifecycle` instance inside the `runServer` function (usually in
+`src/index.ts`):
+
 ```diff
 + import initHTTPRouter from '@whook/http-router';
 + import wrapHTTPRouterWithGraphIQL from '@whook/graphiql';
