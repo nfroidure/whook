@@ -1,4 +1,4 @@
-import HTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import contentType from 'content-type';
 import preferredCharsets from 'negotiator/lib/charset';
 import preferredMediaType from 'negotiator/lib/encoding';
@@ -100,7 +100,7 @@ export function extractBodySpec(
         bodySpec.boundary = parsedContentType.parameters.boundary;
       }
     } catch (err) {
-      throw new HTTPError(
+      throw new YHTTPError(
         400,
         'E_BAD_CONTENT_TYPE',
         request.headers['content-type'],
@@ -123,7 +123,7 @@ export function checkBodyCharset(
     bodySpec.charset &&
     !consumableCharsets.includes(bodySpec.charset)
   ) {
-    throw new HTTPError(
+    throw new YHTTPError(
       406,
       'E_UNSUPPORTED_CHARSET',
       bodySpec.charset,
@@ -141,7 +141,7 @@ export function checkBodyMediaType(
     bodySpec.contentType &&
     !consumableMediaTypes.includes(bodySpec.contentType)
   ) {
-    throw new HTTPError(
+    throw new YHTTPError(
       415,
       'E_UNSUPPORTED_MEDIA_TYPE',
       bodySpec.contentType,
@@ -176,7 +176,7 @@ export function checkResponseMediaType(
   produceableMediaTypes: string[],
 ): void {
   if (0 === responseSpec.contentTypes.length) {
-    throw new HTTPError(
+    throw new YHTTPError(
       406,
       'E_UNACCEPTABLE_MEDIA_TYPE',
       request.headers.accept,
@@ -191,7 +191,7 @@ export function checkResponseCharset(
   produceableCharsets: string[],
 ): void {
   if (0 === responseSpec.charsets.length) {
-    throw new HTTPError(
+    throw new YHTTPError(
       406,
       'E_UNACCEPTABLE_CHARSET',
       request.headers['accept-charset'],
@@ -209,7 +209,7 @@ export async function executeHandler(
   const responsePromise = handler(parameters, operation);
 
   if (!(responsePromise && responsePromise.then)) {
-    throw new HTTPError(
+    throw new YHTTPError(
       500,
       'E_NO_RESPONSE_PROMISE',
       operation.operationId,
@@ -221,7 +221,7 @@ export async function executeHandler(
   const response = await responsePromise;
 
   if (!response) {
-    throw new HTTPError(
+    throw new YHTTPError(
       500,
       'E_NO_RESPONSE',
       operation.operationId,
@@ -230,7 +230,7 @@ export async function executeHandler(
     );
   }
   if ('undefined' === typeof response.status) {
-    throw new HTTPError(
+    throw new YHTTPError(
       500,
       'E_NO_RESPONSE_STATUS',
       operation.operationId,
@@ -239,7 +239,7 @@ export async function executeHandler(
     );
   }
   if ('number' !== typeof response.status) {
-    throw new HTTPError(
+    throw new YHTTPError(
       500,
       'E_NON_NUMERIC_STATUS',
       operation.operationId,

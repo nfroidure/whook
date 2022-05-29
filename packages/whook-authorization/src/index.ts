@@ -5,8 +5,8 @@ import {
   Dependencies,
   Service,
 } from 'knifecycle';
-import HTTPError from 'yhttperror';
-import YError from 'yerror';
+import { YHTTPError } from 'yhttperror';
+import { YError } from 'yerror';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import {
   parseAuthorizationHeader,
@@ -21,7 +21,6 @@ import type {
   WhookErrorsDescriptors,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
-import YHTTPError from 'yhttperror';
 
 export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_OPERATION_REQUIRED: {
@@ -145,7 +144,7 @@ async function handleWithAuthorization<
   // and the API will have a big security hole.
   // TL;DR: DO NOT remove this line!
   if (!operation) {
-    throw new HTTPError(500, 'E_OPERATION_REQUIRED');
+    throw new YHTTPError(500, 'E_OPERATION_REQUIRED');
   }
 
   const noAuth =
@@ -182,7 +181,7 @@ async function handleWithAuthorization<
     try {
       if (!authorization) {
         log('debug', '🔐 - No authorization found, locking access!');
-        throw new HTTPError(401, 'E_UNAUTHORIZED');
+        throw new YHTTPError(401, 'E_UNAUTHORIZED');
       }
       try {
         parsedAuthorization = parseAuthorizationHeader(
@@ -200,9 +199,13 @@ async function handleWithAuthorization<
               authorization.substr(0, mechanism.type.length) === mechanism.type,
           )
         ) {
-          throw HTTPError.wrap(err as Error, 400, 'E_UNALLOWED_AUTH_MECHANISM');
+          throw YHTTPError.wrap(
+            err as Error,
+            400,
+            'E_UNALLOWED_AUTH_MECHANISM',
+          );
         }
-        throw HTTPError.cast(err as Error, 400);
+        throw YHTTPError.cast(err as Error, 400);
       }
 
       const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
@@ -212,7 +215,7 @@ async function handleWithAuthorization<
 
       // If security exists, we need at least one scope
       if (!(requiredScopes && requiredScopes.length)) {
-        throw new HTTPError(
+        throw new YHTTPError(
           500,
           'E_MISCONFIGURATION',
           parsedAuthorization.type,
@@ -229,7 +232,7 @@ async function handleWithAuthorization<
           parsedAuthorization.data,
         );
       } catch (err) {
-        throw HTTPError.cast(err as Error, 401);
+        throw YHTTPError.cast(err as Error, 401);
       }
 
       // Check scopes
@@ -238,7 +241,7 @@ async function handleWithAuthorization<
           authenticationData.scope.split(',').includes(requiredScope),
         )
       ) {
-        throw new HTTPError(
+        throw new YHTTPError(
           403,
           'E_UNAUTHORIZED',
           authenticationData.scope,

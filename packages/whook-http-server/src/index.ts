@@ -1,7 +1,7 @@
 import { name, autoProvider } from 'knifecycle';
 import http from 'http';
 import ms from 'ms';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { Provider } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { HTTPRouterService } from '@whook/http-router';

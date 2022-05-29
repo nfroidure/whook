@@ -1,4 +1,4 @@
-import Knifecycle, { constant } from 'knifecycle';
+import { Knifecycle, constant } from 'knifecycle';
 import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,

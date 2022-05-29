@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('commands should work', () => {
   it('with ls', async () => {

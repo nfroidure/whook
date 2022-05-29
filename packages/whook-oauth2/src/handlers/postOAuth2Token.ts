@@ -1,7 +1,7 @@
 import { autoHandler } from 'knifecycle';
 import { camelCaseObjectProperties } from './getOAuth2Authorize';
 import { noop } from '@whook/whook';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { refersTo } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService, TimeService } from 'common-services';

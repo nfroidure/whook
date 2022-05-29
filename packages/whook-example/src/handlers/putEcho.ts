@@ -1,6 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import { refersTo } from '@whook/whook';
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import type { LogService } from 'common-services';
 import type {
   WhookAPISchemaDefinition,

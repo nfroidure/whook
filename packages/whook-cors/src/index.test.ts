@@ -4,7 +4,7 @@ import {
   augmentAPIWithCORS,
 } from '.';
 import { handler } from 'knifecycle';
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import type { Dependencies, Service } from 'knifecycle';
 import type { CORSConfig } from '.';
 import type { OpenAPIV3 } from 'openapi-types';

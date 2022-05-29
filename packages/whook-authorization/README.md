@@ -35,7 +35,7 @@ To use this wrapper, you'll have to create an `authentication`
  (usually in `src/services/authentication.ts`):
  ```ts
 import { autoService } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import {
   AuthenticationService,
   BaseAuthenticationData,

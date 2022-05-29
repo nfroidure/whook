@@ -12,8 +12,8 @@ import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
-import HTTPError from 'yhttperror';
-import YError from 'yerror';
+import { YHTTPError } from 'yhttperror';
+import { YError } from 'yerror';
 import {
   prepareParametersValidators,
   prepareBodyValidator,
@@ -328,7 +328,7 @@ async function handleForAWSHTTPLambda(
         ...('undefined' !== typeof body ? { body } : {}),
       };
     } catch (err) {
-      throw HTTPError.cast(err as Error, 400);
+      throw YHTTPError.cast(err as Error, 400);
     }
 
     response = await executeHandler(operation, handler, parameters);
@@ -354,7 +354,7 @@ async function handleForAWSHTTPLambda(
       (responseSchema.type !== 'string' || responseSchema.format !== 'binary');
 
     if (responseHasSchema && !STRINGIFYERS[response.headers['content-type']]) {
-      throw new HTTPError(
+      throw new YHTTPError(
         500,
         'E_STRINGIFYER_LACK',
         response.headers['content-type'],

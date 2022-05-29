@@ -5,7 +5,7 @@ import {
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { wrapHandlerWithAuthorization } from '@whook/authorization';
 import {
   BEARER as BEARER_MECHANISM,

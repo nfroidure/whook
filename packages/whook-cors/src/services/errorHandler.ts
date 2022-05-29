@@ -1,7 +1,7 @@
 import { initErrorHandler } from '@whook/http-router';
 import { wrapInitializer, alsoInject, ServiceInitializer } from 'knifecycle';
 import { noop } from '@whook/whook';
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import type { LogService } from 'common-services';
 import type {
   WhookErrorHandler,

@@ -1,5 +1,5 @@
 import initAuthentication from './authentication';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import initJWT from '../services/jwtToken';
 import type { AuthenticationData } from './authentication';
 import type { JWTService } from 'jwt-service';

@@ -38,7 +38,7 @@ export type WhookCompilerService = (
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],
   ignoredModules: [],
-  target: '14',
+  target: '16',
 };
 
 async function initCompiler({

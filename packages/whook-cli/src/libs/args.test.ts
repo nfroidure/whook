@@ -1,6 +1,6 @@
 import { readArgs } from './args';
 import { definition as handlerCommandDefinition } from '../commands/handler';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { WhookCommandArgs } from '..';
 
 describe('readArgs', () => {

@@ -8,7 +8,7 @@ import {
 } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router';
 import path from 'path';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type {
   Injector,
   Autoloader,

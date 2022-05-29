@@ -1,6 +1,6 @@
 import { autoService } from 'knifecycle';
 import _inquirer from 'inquirer';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { exec as _exec } from 'child_process';
 import type { LockService, LogService } from 'common-services';
 

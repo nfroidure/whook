@@ -1,5 +1,5 @@
 import initConfigCommand from './config';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('configCommand', () => {
   const CONFIGS = {

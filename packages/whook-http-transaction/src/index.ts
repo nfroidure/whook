@@ -1,5 +1,5 @@
 import { service } from 'knifecycle';
-import HTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import statuses from 'statuses';
 import ms from 'ms';
 import initObfuscatorService from './services/obfuscator';
@@ -10,8 +10,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type { Readable } from 'stream';
-import type YError from 'yerror';
-import type YHTTPError from 'yhttperror';
+import type { YError } from 'yerror';
 import type {
   ObfuscatorService,
   ObfuscatorConfig,
@@ -316,7 +315,7 @@ async function initHTTPTransaction({
     // Handle bad client transaction ids
     if (FINAL_TRANSACTIONS[id]) {
       initializationPromise = Promise.reject(
-        new HTTPError(400, 'E_TRANSACTION_ID_NOT_UNIQUE', id),
+        new YHTTPError(400, 'E_TRANSACTION_ID_NOT_UNIQUE', id),
       );
       id = uniqueId();
     } else {
@@ -364,7 +363,7 @@ async function initHTTPTransaction({
     return Promise.race([
       initializationPromise.then(async () => buildResponse()),
       delayPromise.then(async () => {
-        throw new HTTPError(504, 'E_TRANSACTION_TIMEOUT', TIMEOUT, id);
+        throw new YHTTPError(504, 'E_TRANSACTION_TIMEOUT', TIMEOUT, id);
       }),
     ]);
   }

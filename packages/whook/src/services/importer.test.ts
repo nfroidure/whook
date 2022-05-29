@@ -1,4 +1,4 @@
-import YError from 'yerror';
+import { YError } from 'yerror';
 import initImporter from './importer';
 
 describe('Importer', () => {

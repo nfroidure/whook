@@ -146,7 +146,7 @@ const CONFIG: WhookConfigs = {
   // ...
 +  COMPILER_OPTIONS: {
 +    externalModules: [],
-+    target: '14',
++    target: '16',
 +  },
 };
 

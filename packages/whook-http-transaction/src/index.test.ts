@@ -1,5 +1,5 @@
 import StreamTest from 'streamtest';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import initHTTPTransaction from './index';
 import type { WhookHandler, WhookResponse } from './index';
 import type { IncomingMessage } from 'http';

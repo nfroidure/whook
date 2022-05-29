@@ -2,7 +2,7 @@ import { loadLambda } from '../libs/utils';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import { noop } from '@whook/whook';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,

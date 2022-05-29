@@ -1,5 +1,5 @@
 import { extra, autoService } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { readArgs } from '../libs/args';
 import { noop } from '@whook/whook';
 import type { WhookHandler } from '@whook/whook';

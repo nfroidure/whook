@@ -3,8 +3,8 @@ import {
   wrapHandlerWithVersionChecker,
 } from './index';
 import { initGetPing, initGetPingDefinition } from '@whook/whook';
-import YError from 'yerror';
-import YHTTPError from 'yhttperror';
+import { YError } from 'yerror';
+import { YHTTPError } from 'yhttperror';
 
 const VERSIONS = [
   {

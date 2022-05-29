@@ -1,6 +1,6 @@
 import initLsCommand, { definition as initLsCommandDefinition } from './ls';
 import initEnvCommand, { definition as initEnvCommandDefinition } from './env';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('lsCommand', () => {
   const promptArgs = jest.fn();

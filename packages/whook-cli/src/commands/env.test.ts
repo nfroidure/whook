@@ -1,5 +1,5 @@
 import initEnvCommand from './env';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('envCommand', () => {
   const promptArgs = jest.fn();

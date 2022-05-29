@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { setURLError } from './getOAuth2Authorize';
 import type {
   WhookAPIHandlerDefinition,

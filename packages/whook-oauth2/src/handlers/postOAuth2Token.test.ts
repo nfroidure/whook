@@ -1,5 +1,5 @@
 import initPostOAuth2Token from './postOAuth2Token';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { OAuth2GranterService } from '..';
 
 describe('postOAuth2Token', () => {

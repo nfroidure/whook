@@ -3,7 +3,7 @@ import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
   isGetter,

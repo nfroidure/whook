@@ -1,5 +1,5 @@
 import initCONFIGS from './CONFIGS';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('initCONFIGS', () => {
   const log = jest.fn();

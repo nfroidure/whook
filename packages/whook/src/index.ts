@@ -1,4 +1,4 @@
-import Knifecycle, { constant } from 'knifecycle';
+import { Knifecycle, constant } from 'knifecycle';
 import debug from 'debug';
 import { noop, identity, compose, pipe } from './libs/utils';
 import {

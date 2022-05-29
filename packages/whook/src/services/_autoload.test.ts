@@ -1,6 +1,6 @@
 import initAutoload from './_autoload';
 import { service } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { identity } from '../libs/utils';
 import type { ServiceInitializer, Dependencies, Service } from 'knifecycle';
 

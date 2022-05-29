@@ -1,7 +1,7 @@
 import initGetOAuth2Authorize from './getOAuth2Authorize';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { OAuth2Options, OAuth2GranterService } from '..';
 
 describe('getOAuth2Authorize', () => {

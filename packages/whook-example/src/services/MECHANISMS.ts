@@ -1,4 +1,4 @@
-import HTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import { name, autoService } from 'knifecycle';
 import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 
@@ -26,7 +26,7 @@ export const FAKE_MECHANISM = {
     );
 
     if ('undefined' === typeof scope) {
-      throw new HTTPError(400, 'E_INVALID_FAKE_TOKEN', rest);
+      throw new YHTTPError(400, 'E_INVALID_FAKE_TOKEN', rest);
     }
 
     return {

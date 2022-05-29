@@ -4,8 +4,9 @@ import util from 'util';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import cpr from 'cpr';
-import YError from 'yerror';
-import Knifecycle, {
+import { YError } from 'yerror';
+import {
+  Knifecycle,
   SPECIAL_PROPS,
   constant,
   initInitializerBuilder,

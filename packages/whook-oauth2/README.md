@@ -129,7 +129,7 @@ validate a user subscription:
 ```ts
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { LogService } from 'common-services';
 import type { AuthenticationData } from './authentication';
 import type {

@@ -1,4 +1,4 @@
-import Knifecycle, { constant } from 'knifecycle';
+import { Knifecycle, constant } from 'knifecycle';
 import { exec as _exec } from 'child_process';
 import {
   writeFile as _writeFile,

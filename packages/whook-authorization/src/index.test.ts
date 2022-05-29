@@ -1,7 +1,7 @@
 import { wrapHandlerWithAuthorization } from '.';
 import { handler } from 'knifecycle';
-import YError from 'yerror';
-import YHTTPError from 'yhttperror';
+import { YError } from 'yerror';
+import { YHTTPError } from 'yhttperror';
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,

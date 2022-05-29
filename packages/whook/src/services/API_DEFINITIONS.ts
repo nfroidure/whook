@@ -1,6 +1,6 @@
 import { autoService, name } from 'knifecycle';
 import fs from 'fs';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import path from 'path';
 import { noop } from '../libs/utils';
 import type { LogService } from 'common-services';

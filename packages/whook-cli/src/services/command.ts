@@ -1,5 +1,5 @@
 import { autoService, singleton } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 export default singleton(autoService(initCommand));
 

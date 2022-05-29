@@ -7,8 +7,8 @@ import miniquery from 'miniquery';
 import type { WhookStringifyers } from '..';
 import type { ResponseSpec } from '../libs/utils';
 import type { WhookResponse } from '@whook/http-transaction';
-import type YError from 'yerror';
-import type YHTTPError from 'yhttperror';
+import type { YError } from 'yerror';
+import type { YHTTPError } from 'yhttperror';
 import type { OpenAPIV3 } from 'openapi-types';
 
 /* Architecture Note #2: Error handler
@@ -415,7 +415,7 @@ async function initErrorHandler({
    * A raw NodeJS HTTP incoming message
    * @param  {Object} responseSpec
    * The response specification
-   * @param  {HTTPError} err
+   * @param  {YHTTPError} err
    * The encountered error
    * @return {Promise}
    * A promise resolving when the operation

@@ -1,5 +1,5 @@
 import initInspectCommand from './inspect';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('inspectCommand', () => {
   const SERVICES = {

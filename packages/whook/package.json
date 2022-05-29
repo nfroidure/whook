@@ -101,7 +101,7 @@
     "jsarch": "^5.0.1",
     "jsdoc-to-markdown": "^7.1.1",
     "metapak": "^4.0.4",
-    "metapak-nfroidure": "11.2.1",
+    "metapak-nfroidure": "12.0.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "streamtest": "^2.0.0",
@@ -120,11 +120,11 @@
     "pkg-dir": "^5.0.0",
     "portfinder": "^1.0.28",
     "type-fest": "^2.13.0",
-    "yerror": "^6.0.2"
+    "yerror": "^6.1.1"
   },
   "contributors": [],
   "engines": {
-    "node": ">=12.19.0"
+    "node": ">=16.15.0"
   },
   "babel": {
     "presets": [
@@ -133,7 +133,7 @@
         "@babel/env",
         {
           "targets": {
-            "node": "12.19.0"
+            "node": "16.15.0"
           }
         }
       ]

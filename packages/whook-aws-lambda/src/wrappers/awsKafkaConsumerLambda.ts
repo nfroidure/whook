@@ -1,6 +1,6 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { ServiceInitializer } from 'knifecycle';
 import type {
   WhookOperation,

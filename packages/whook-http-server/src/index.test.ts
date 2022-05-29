@@ -1,7 +1,7 @@
 import initHTTPServer from './index';
 import axios from 'axios';
 import net from 'net';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { HTTPRouterService } from '@whook/http-router';
 
 describe('initHTTPServer', () => {

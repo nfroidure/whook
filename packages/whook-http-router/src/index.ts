@@ -1,8 +1,8 @@
 import bytes from 'bytes';
 import Stream from 'stream';
 import { initializer } from 'knifecycle';
-import HTTPError from 'yhttperror';
-import YError from 'yerror';
+import { YHTTPError } from 'yhttperror';
+import { YError } from 'yerror';
 import Siso from 'siso';
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
@@ -361,7 +361,7 @@ async function initHTTPRouter({
 
           if (!handler) {
             log('debug', '❌ - No handler found for: ', method, parts);
-            throw new HTTPError(
+            throw new YHTTPError(
               404,
               'E_NOT_FOUND',
               method,
@@ -434,7 +434,7 @@ async function initHTTPRouter({
               ...('undefined' !== typeof body ? { body } : {}),
             };
           } catch (err) {
-            throw HTTPError.cast(err as Error, 400);
+            throw YHTTPError.cast(err as Error, 400);
           }
 
           const response = await executeHandler(operation, handler, parameters);
@@ -469,7 +469,7 @@ async function initHTTPRouter({
             responseHasSchema &&
             !STRINGIFYERS[response.headers['content-type'] as string]
           ) {
-            throw new HTTPError(
+            throw new YHTTPError(
               500,
               'E_STRINGIFYER_LACK',
               response.headers['content-type'],

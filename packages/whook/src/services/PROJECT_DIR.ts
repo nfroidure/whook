@@ -1,6 +1,6 @@
 import pkgDir from 'pkg-dir';
 import { name, singleton, autoService } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { noop } from '../libs/utils';
 import type { LogService } from 'common-services';
 

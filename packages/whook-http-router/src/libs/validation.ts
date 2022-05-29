@@ -1,6 +1,6 @@
 import camelCase from 'camelcase';
-import YError from 'yerror';
-import HTTPError from 'yhttperror';
+import { YError } from 'yerror';
+import { YHTTPError } from 'yhttperror';
 import Stream from 'stream';
 import { pickupOperationSecuritySchemes } from './openAPIUtils';
 import Ajv from 'ajv';
@@ -120,7 +120,7 @@ function _validateRequestBody(
     (operation.requestBody as OpenAPIV3.RequestBodyObject).required &&
     'undefined' === typeof value
   ) {
-    throw new HTTPError(
+    throw new YHTTPError(
       400,
       'E_REQUIRED_REQUEST_BODY',
       operation.operationId,
@@ -133,7 +133,7 @@ function _validateRequestBody(
     return;
   }
   if ('undefined' !== typeof value && !validators[contentType](value)) {
-    throw new HTTPError(
+    throw new YHTTPError(
       400,
       'E_BAD_REQUEST_BODY',
       operation.operationId,
@@ -150,7 +150,7 @@ function _rejectAnyRequestBody(
   value: unknown,
 ): void {
   if ('undefined' !== typeof value) {
-    throw new HTTPError(
+    throw new YHTTPError(
       400,
       'E_NO_REQUEST_BODY',
       operation.operationId,
@@ -361,7 +361,7 @@ export function _validateParameter(
   value: unknown,
 ): void {
   if (parameter.required && 'undefined' === typeof value) {
-    throw new HTTPError(
+    throw new YHTTPError(
       400,
       'E_REQUIRED_PARAMETER',
       parameter.name,
@@ -370,7 +370,7 @@ export function _validateParameter(
     );
   }
   if ('undefined' !== typeof value && !validator(value)) {
-    throw new HTTPError(
+    throw new YHTTPError(
       400,
       'E_BAD_PARAMETER',
       parameter.name,
@@ -441,7 +441,7 @@ export function castSchemaValue<
     }
 
     if (schema.enum && !schema.enum.includes(castedValue)) {
-      throw new HTTPError(400, 'E_NOT_IN_ENUM', castedValue, schema.enum);
+      throw new YHTTPError(400, 'E_NOT_IN_ENUM', castedValue, schema.enum);
     }
   }
   return castedValue;

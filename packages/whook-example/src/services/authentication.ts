@@ -1,5 +1,5 @@
 import { autoService } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { JWTService } from 'jwt-service';
 import type {
   AuthenticationService,

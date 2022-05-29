@@ -1,5 +1,5 @@
 import initPutEcho, { echoSchema } from './putEcho';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('putEcho', () => {
   const log = jest.fn();

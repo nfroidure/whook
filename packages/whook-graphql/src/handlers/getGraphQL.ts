@@ -2,7 +2,7 @@ import { autoHandler } from 'knifecycle';
 import initPostGraphQL, {
   definition as postGraphQLDefinition,
 } from './postGraphQL';
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import type { WhookAPIHandlerDefinition, WhookOperation } from '@whook/whook';
 import type { AsyncReturnType } from 'type-fest';
 

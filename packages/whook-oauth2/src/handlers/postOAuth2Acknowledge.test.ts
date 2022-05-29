@@ -1,5 +1,5 @@
 import initPostOAuth2Acknowledge from './postOAuth2Acknowledge';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters';
 import type { OAuth2GranterService } from '../services/oAuth2Granters';

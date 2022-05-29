@@ -1,4 +1,4 @@
-import Knifecycle, { constant, alsoInject } from 'knifecycle';
+import { Knifecycle, constant, alsoInject } from 'knifecycle';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initBuildConstants,

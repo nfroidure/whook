@@ -1,4 +1,4 @@
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import semverSatisfies from 'semver/functions/satisfies';
 import camelCase from 'camelcase';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';

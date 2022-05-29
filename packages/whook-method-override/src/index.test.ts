@@ -8,7 +8,7 @@ import {
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 

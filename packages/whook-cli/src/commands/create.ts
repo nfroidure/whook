@@ -1,6 +1,6 @@
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import camelCase from 'camelcase';
 import { HANDLER_REG_EXP } from '@whook/whook';
 import _inquirer from 'inquirer';

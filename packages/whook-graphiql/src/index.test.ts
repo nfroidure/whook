@@ -6,7 +6,7 @@ import {
   initGetPingDefinition,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import wrapHTTPRouterWithGraphIQL from '.';
 import type { WhookGraphIQLOptions } from '.';
 import type { OpenAPIV3 } from 'openapi-types';

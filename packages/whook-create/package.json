@@ -83,7 +83,7 @@
     "inquirer": "^8.2.4",
     "knifecycle": "^12.0.4",
     "ora": "^5.4.0",
-    "yerror": "^6.0.2"
+    "yerror": "^6.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",
@@ -105,14 +105,14 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.0",
     "metapak": "^4.0.4",
-    "metapak-nfroidure": "11.2.1",
+    "metapak-nfroidure": "12.0.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "typescript": "^4.7.2"
   },
   "contributors": [],
   "engines": {
-    "node": ">=12.19.0"
+    "node": ">=16.15.0"
   },
   "files": [
     "dist",
@@ -163,7 +163,7 @@
         "@babel/env",
         {
           "targets": {
-            "node": "12.19.0"
+            "node": "16.15.0"
           }
         }
       ]

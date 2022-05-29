@@ -1,7 +1,7 @@
 import { extra, autoService, SPECIAL_PROPS } from 'knifecycle';
 import { readdir } from 'fs';
 import { readArgs } from '../libs/args';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import path from 'path';
 import os from 'os';
 import {

@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import HTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import { noop, WhookHeaders } from '@whook/whook';
 import { Headers } from 'apollo-server-env';
 import { runHttpQuery } from 'apollo-server-core';
@@ -134,6 +134,6 @@ async function postGraphQL<T extends Record<string, unknown>>(
       };
     }
 
-    throw HTTPError.cast(err as Error, 500, 'E_GRAPH_QL');
+    throw YHTTPError.cast(err as Error, 500, 'E_GRAPH_QL');
   }
 }

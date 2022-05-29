@@ -2,7 +2,7 @@ import { autoService } from 'knifecycle';
 import path from 'path';
 import _axios from 'axios';
 import _ora from 'ora';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import { exec as _exec } from 'child_process';
 import {
   writeFile as _writeFile,

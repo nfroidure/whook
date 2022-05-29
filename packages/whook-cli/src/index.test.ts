@@ -1,4 +1,4 @@
-import Knifecycle, { constant, service, singleton } from 'knifecycle';
+import { Knifecycle, constant, service, singleton } from 'knifecycle';
 
 describe('whook-cli', () => {
   const log = jest.fn();

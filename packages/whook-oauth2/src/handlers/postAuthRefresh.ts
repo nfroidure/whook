@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import { refersTo } from '@whook/whook';
 import initPostOauth2Token from './postOAuth2Token';
 import { AUTH_API_PREFIX } from '../services/authCookies';

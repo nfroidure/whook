@@ -1,5 +1,5 @@
 import initCreateWhook from './createWhook';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 // eslint-disable-next-line
 const _packageJSON = require('@whook/example/package.json');
@@ -175,7 +175,7 @@ Mr Bean
               "@babel/env",
               Object {
                 "targets": Object {
-                  "node": "12.19.0",
+                  "node": "16.15.0",
                 },
               },
             ],
@@ -187,7 +187,7 @@ Mr Bean
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
-          "@whook/http-server": "^9.0.0",
+          "@whook/http-server": "^9.0.1",
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
@@ -199,8 +199,8 @@ Mr Bean
           "openapi-types": "^11.0.1",
           "strict-qs": "^6.1.5",
           "type-fest": "^2.13.0",
-          "yerror": "^6.0.2",
-          "yhttperror": "^6.0.3",
+          "yerror": "^6.1.1",
+          "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
@@ -232,7 +232,7 @@ Mr Bean
           "typescript": "^4.7.2",
         },
         "engines": Object {
-          "node": ">=12.19.0",
+          "node": ">=16.15.0",
         },
         "eslintConfig": Object {
           "env": Object {
@@ -436,7 +436,7 @@ Mr Bean
               "@babel/env",
               Object {
                 "targets": Object {
-                  "node": "12.19.0",
+                  "node": "16.15.0",
                 },
               },
             ],
@@ -448,7 +448,7 @@ Mr Bean
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
-          "@whook/http-server": "^9.0.0",
+          "@whook/http-server": "^9.0.1",
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
@@ -460,8 +460,8 @@ Mr Bean
           "openapi-types": "^11.0.1",
           "strict-qs": "^6.1.5",
           "type-fest": "^2.13.0",
-          "yerror": "^6.0.2",
-          "yhttperror": "^6.0.3",
+          "yerror": "^6.1.1",
+          "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
@@ -493,7 +493,7 @@ Mr Bean
           "typescript": "^4.7.2",
         },
         "engines": Object {
-          "node": ">=12.19.0",
+          "node": ">=16.15.0",
         },
         "eslintConfig": Object {
           "env": Object {
@@ -682,7 +682,7 @@ Mr Bean
               "@babel/env",
               Object {
                 "targets": Object {
-                  "node": "12.19.0",
+                  "node": "16.15.0",
                 },
               },
             ],
@@ -694,7 +694,7 @@ Mr Bean
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
-          "@whook/http-server": "^9.0.0",
+          "@whook/http-server": "^9.0.1",
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
@@ -706,8 +706,8 @@ Mr Bean
           "openapi-types": "^11.0.1",
           "strict-qs": "^6.1.5",
           "type-fest": "^2.13.0",
-          "yerror": "^6.0.2",
-          "yhttperror": "^6.0.3",
+          "yerror": "^6.1.1",
+          "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
@@ -739,7 +739,7 @@ Mr Bean
           "typescript": "^4.7.2",
         },
         "engines": Object {
-          "node": ">=12.19.0",
+          "node": ">=16.15.0",
         },
         "eslintConfig": Object {
           "env": Object {

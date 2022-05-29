@@ -1,7 +1,7 @@
 import { autoService, singleton, name } from 'knifecycle';
 import { noop } from '../libs/utils';
 import path from 'path';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { LogService } from 'common-services';
 import type { ImporterService } from './importer';
 import type { JsonValue } from 'type-fest';

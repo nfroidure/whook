@@ -1,6 +1,6 @@
 import _inquirer from 'inquirer';
 import initAuthor from './author';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('initAuthor', () => {
   const exec = jest.fn() as any;

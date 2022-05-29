@@ -1,6 +1,6 @@
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import miniquery from 'miniquery';
 import { noop } from '@whook/whook';
 import type { Injector, Service } from 'knifecycle';

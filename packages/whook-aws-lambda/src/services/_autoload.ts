@@ -1,11 +1,12 @@
 import { initAutoload, noop, cleanupOpenAPI } from '@whook/whook';
-import Knifecycle, {
+import {
+  Knifecycle,
   SPECIAL_PROPS,
   wrapInitializer,
   constant,
   alsoInject,
 } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,

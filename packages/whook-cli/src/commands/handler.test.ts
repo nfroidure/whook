@@ -1,5 +1,5 @@
 import initHandlerCommand from './handler';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('handlerCommand', () => {
   const log = jest.fn();

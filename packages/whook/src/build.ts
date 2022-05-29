@@ -2,10 +2,10 @@ import fs from 'fs';
 import util from 'util';
 import path from 'path';
 import mkdirp from 'mkdirp';
-import Knifecycle, { constant, initInitializerBuilder } from 'knifecycle';
+import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
 import initCompiler from './services/compiler';
 import initBuildAutoloader from './services/_buildAutoload';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { BuildInitializer } from 'knifecycle';
 import type {
   WhookCompilerOptions,

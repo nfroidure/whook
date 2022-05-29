@@ -1,5 +1,5 @@
 import initWhookPluginsPaths from './WHOOK_PLUGINS_PATHS';
-import YError from 'yerror';
+import { YError } from 'yerror';
 
 describe('WHOOK_PLUGINS_PATHS', () => {
   const log = jest.fn();

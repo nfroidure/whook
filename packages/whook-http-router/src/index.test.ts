@@ -1,8 +1,8 @@
 /* eslint max-nested-callbacks: 0 */
 import assert from 'assert';
 import StreamTest from 'streamtest';
-import HTTPError from 'yhttperror';
-import YError from 'yerror';
+import { YHTTPError } from 'yhttperror';
+import { YError } from 'yerror';
 import initHTTPRouter from './index';
 import initErrorHandler from './services/errorHandler';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
@@ -48,7 +48,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
     buildResponse(),
   );
   const httpTransactionCatch = jest.fn(async (err) => {
-    throw HTTPError.cast(err as Error);
+    throw YHTTPError.cast(err as Error);
   });
   const httpTransactionEnd = jest.fn(
     async (_res: unknown) => _res && undefined,
@@ -1797,7 +1797,7 @@ describe('initHTTPRouter', () => {
           handler,
           HANDLERS,
         } = prepareTransaction(
-          Promise.reject(new HTTPError(501, 'E_UNAUTHORIZED')),
+          Promise.reject(new YHTTPError(501, 'E_UNAUTHORIZED')),
         );
 
         const errorHandler = await initErrorHandler({
@@ -1855,7 +1855,7 @@ describe('initHTTPRouter', () => {
       });
 
       test('should proxy error headers', async () => {
-        const handlerError = new HTTPError(501, 'E_UNAUTHORIZED');
+        const handlerError = new YHTTPError(501, 'E_UNAUTHORIZED');
 
         handlerError.headers = {
           'X-Test': 'Error header',

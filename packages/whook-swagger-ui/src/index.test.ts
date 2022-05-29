@@ -7,7 +7,7 @@ import {
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from '.';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {

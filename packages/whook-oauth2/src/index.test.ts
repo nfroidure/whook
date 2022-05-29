@@ -10,7 +10,7 @@ import {
 } from '@whook/authorization';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,

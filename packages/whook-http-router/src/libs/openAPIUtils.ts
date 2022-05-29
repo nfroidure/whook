@@ -1,6 +1,6 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { $Refs } from '@apidevtools/swagger-parser';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
   DereferencedRequestBodyObject,

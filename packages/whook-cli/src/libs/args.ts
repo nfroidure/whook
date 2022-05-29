@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { WhookCommandDefinitionArguments } from '../services/promptArgs';
 import type { WhookCommandArgs } from '../services/args';
 

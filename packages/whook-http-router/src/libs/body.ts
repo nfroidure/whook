@@ -1,7 +1,7 @@
-import HTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 import FirstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
 import type { BodySpec } from './utils';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -67,12 +67,12 @@ export async function getBody<
   }
   if (!PARSERS?.[bodySpec.contentType]) {
     return Promise.reject(
-      new HTTPError(500, 'E_PARSER_LACK', bodySpec.contentType),
+      new YHTTPError(500, 'E_PARSER_LACK', bodySpec.contentType),
     );
   }
 
   if (bodySpec.contentLength > bufferLimit) {
-    throw new HTTPError(
+    throw new YHTTPError(
       400,
       'E_REQUEST_CONTENT_TOO_LARGE',
       bodySpec.contentLength,
@@ -85,12 +85,12 @@ export async function getBody<
 
     if (!Decoder) {
       return Promise.reject(
-        new HTTPError(500, 'E_DECODER_LACK', bodySpec.charset),
+        new YHTTPError(500, 'E_DECODER_LACK', bodySpec.charset),
       );
     }
 
     inputStream.on('error', (err: Error) => {
-      reject(HTTPError.wrap(err as Error, 400, 'E_REQUEST_FAILURE'));
+      reject(YHTTPError.wrap(err as Error, 400, 'E_REQUEST_FAILURE'));
     });
     inputStream.pipe(new Decoder()).pipe(
       new FirstChunkStream(
@@ -104,7 +104,7 @@ export async function getBody<
           }
 
           reject(
-            new HTTPError(
+            new YHTTPError(
               400,
               'E_REQUEST_CONTENT_TOO_LARGE',
               chunk.length,
@@ -118,7 +118,7 @@ export async function getBody<
   });
 
   if (body.length !== bodySpec.contentLength) {
-    throw new HTTPError(
+    throw new YHTTPError(
       400,
       'E_BAD_BODY_LENGTH',
       body.length,
@@ -135,7 +135,7 @@ export async function getBody<
       }
     });
   } catch (err) {
-    throw HTTPError.wrap(err as Error, 400, 'E_BAD_BODY', body.toString());
+    throw YHTTPError.wrap(err as Error, 400, 'E_BAD_BODY', body.toString());
   }
 }
 

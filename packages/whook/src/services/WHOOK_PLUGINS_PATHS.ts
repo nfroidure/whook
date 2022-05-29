@@ -1,6 +1,6 @@
 import path from 'path';
 import { name, singleton, autoService } from 'knifecycle';
-import YError from 'yerror';
+import { YError } from 'yerror';
 import type { LogService } from 'common-services';
 import type { ResolveService } from './resolve';
 
