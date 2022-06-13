@@ -1,4 +1,5 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
+import { readFileSync } from 'fs';
 import type { WhookConfigs } from '@whook/whook';
 
 /* Architecture Note #2: Configuration
@@ -10,8 +11,7 @@ The `src/config/common/config.ts` one allows to add common
  configurations for all environements.
 */
 
-// eslint-disable-next-line
-const packageConf = require('../../../package');
+const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
 const NODE_ENVS = [...DEBUG_NODE_ENVS, 'uat', 'production'];
 
@@ -24,11 +24,11 @@ See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291
 */
 const CONFIG: Omit<WhookConfigs, 'HOST'> = {
   BASE_ENV: {},
-  API_VERSION: packageConf.version,
-  BASE_PATH: `/v${packageConf.version.split('.')[0]}`,
+  API_VERSION: _packageJSON.version,
+  BASE_PATH: `/v${_packageJSON.version.split('.')[0]}`,
   CONFIG: {
-    name: packageConf.name,
-    description: packageConf.description || '',
+    name: _packageJSON.name,
+    description: _packageJSON.description || '',
   },
   NODE_ENVS,
   DEBUG_NODE_ENVS: process.env.DEBUG ? NODE_ENVS : DEBUG_NODE_ENVS,

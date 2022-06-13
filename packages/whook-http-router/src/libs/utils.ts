@@ -1,7 +1,7 @@
 import { YHTTPError } from 'yhttperror';
 import contentType from 'content-type';
-import preferredCharsets from 'negotiator/lib/charset';
-import preferredMediaType from 'negotiator/lib/encoding';
+import preferredCharsets from 'negotiator/lib/charset.js';
+import preferredMediaType from 'negotiator/lib/encoding.js';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
   WhookRequest,

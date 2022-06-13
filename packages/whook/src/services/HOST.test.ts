@@ -1,10 +1,13 @@
+import { jest } from '@jest/globals';
 import _internalIp from 'internal-ip';
-import initHOST from './HOST';
+import initHOST from './HOST.js';
+import type { LogService } from 'common-services';
+import type { ImporterService } from './importer.js';
 
 describe('initHOST', () => {
-  const log = jest.fn();
-  const importer = jest.fn();
-  const internalIp = { v4: jest.fn() as jest.Mock & typeof _internalIp.v4 };
+  const log = jest.fn<LogService>();
+  const importer = jest.fn<ImporterService<any>>();
+  const internalIp = { v4: jest.fn<typeof _internalIp.v4>() };
 
   beforeEach(() => {
     log.mockReset();
@@ -13,7 +16,7 @@ describe('initHOST', () => {
   });
 
   it('should use the env HOST first', async () => {
-    importer.mockReturnValueOnce(internalIp);
+    importer.mockResolvedValueOnce(internalIp);
 
     const HOST = await initHOST({
       ENV: { HOST: '192.168.1.11' },
@@ -30,7 +33,7 @@ describe('initHOST', () => {
   });
 
   it('should find a HOST by itself if no env HOST', async () => {
-    importer.mockReturnValueOnce(internalIp);
+    importer.mockResolvedValueOnce(internalIp);
     internalIp.v4.mockResolvedValueOnce('192.168.1.10');
 
     const HOST = await initHOST({
@@ -48,7 +51,7 @@ describe('initHOST', () => {
   });
 
   it('should fallback to localhost', async () => {
-    importer.mockReturnValueOnce(internalIp);
+    importer.mockResolvedValueOnce(internalIp);
     internalIp.v4.mockResolvedValueOnce('');
 
     const HOST = await initHOST({

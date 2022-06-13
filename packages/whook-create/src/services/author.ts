@@ -41,7 +41,7 @@ export default autoService(async function initAuthor({
       },
       {
         name: 'authorEmail',
-        message: 'You email?',
+        message: 'Your email?',
         default: userEmail,
       },
     ])) as { authorName: string; authorEmail: string };

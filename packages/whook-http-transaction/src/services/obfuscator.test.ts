@@ -1,7 +1,9 @@
-import initObfuscator from './obfuscator';
+import { jest } from '@jest/globals';
+import initObfuscator from './obfuscator.js';
+import type { LogService } from 'common-services';
 
 describe('Obfuscator Service', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
   let obfuscator;
 
   beforeEach(() => {

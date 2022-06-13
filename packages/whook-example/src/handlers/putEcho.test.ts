@@ -1,8 +1,10 @@
-import initPutEcho, { echoSchema } from './putEcho';
+import { jest } from '@jest/globals';
+import initPutEcho, { echoSchema } from './putEcho.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
 
 describe('putEcho', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();

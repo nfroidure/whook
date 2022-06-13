@@ -8,8 +8,8 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout,
-      stderr: stderr.replace(/ ([^ ]+)\/whook\//, ' /whook/'),
+      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
     }).toMatchSnapshot();
   });
 
@@ -19,8 +19,8 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout,
-      stderr: stderr.replace(/ ([^ ]+)\/whook\//, ' /whook/'),
+      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
     }).toMatchSnapshot();
   });
 
@@ -30,8 +30,8 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout,
-      stderr: stderr.replace(/ ([^ ]+)\/whook\//, ' /whook/'),
+      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
     }).toMatchSnapshot();
   });
 });

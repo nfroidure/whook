@@ -1,4 +1,4 @@
-import initGetPing from './getPing';
+import initGetPing from './getPing.js';
 
 describe('getPing', () => {
   it('should work', async () => {

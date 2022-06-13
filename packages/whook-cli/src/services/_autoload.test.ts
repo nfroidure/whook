@@ -1,293 +1,480 @@
+import { jest } from '@jest/globals';
 import { YError } from 'yerror';
+import initAutoload from './_autoload.js';
+import { constant } from 'knifecycle';
+import type { LogService } from 'common-services';
+import type { ImporterService, ResolveService } from '@whook/whook';
+import type { Injector } from 'knifecycle';
+import type { AutoloaderWrapperDependencies } from './_autoload.js';
 
 describe('$autoload', () => {
-  const log = jest.fn();
-  const importer = jest.fn();
-  const $baseAutoload = jest.fn();
+  const PROJECT_SRC = '/home/whoiam/projects/my-whook-project/src';
+  const log = jest.fn<LogService>();
+  const importer = jest.fn<ImporterService<any>>();
+  const $injector = jest.fn<Injector<any>>();
+  const resolve = jest.fn<ResolveService>();
 
   beforeEach(() => {
     jest.resetModules();
     log.mockReset();
     importer.mockReset();
-    $baseAutoload.mockReset();
+    $injector.mockReset();
+    resolve.mockReset();
   });
 
   it('should warn with no command name', async () => {
-    jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      const _default = async () => $baseAutoload;
-
-      _default.default = _default;
-      return _default;
+    importer.mockImplementationOnce(() => {
+      throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
     });
 
-    // eslint-disable-next-line
-    const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
-      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      PROJECT_SRC,
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-      args: { _: [] },
+      args: {
+        namedArguments: {},
+        rest: [] as string[],
+        command: 'whook',
+      },
       importer,
+      $injector,
+      resolve,
       log,
-    });
+    } as AutoloaderWrapperDependencies as any);
     const { path, initializer } = await $autoload('commandHandler');
-    const command = await initializer();
+    const command = await (initializer as any)();
     const result = await command();
 
     expect({
       path,
       result,
       importerCalls: importer.mock.calls,
-      baseAutoloaderCalls: $baseAutoload.mock.calls,
+      injectorCalls: $injector.mock.calls,
+      resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "importerCalls": Array [],
+        "injectorCalls": Array [],
+        "logCalls": Array [
+          Array [
+            "debug",
+            "🤖 - Initializing the \`$autoload\` service.",
+          ],
+          Array [
+            "debug",
+            "🤖 - Wrapping the whook autoloader.",
+          ],
+          Array [
+            "warning",
+            "No command given in argument.",
+          ],
+        ],
+        "path": "command://undefined",
+        "resolveCalls": Array [],
+        "result": undefined,
+      }
+    `);
   });
 
   it('should warn with not found commands', async () => {
-    jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      const _default = async () => $baseAutoload;
-
-      _default.default = _default;
-      return _default;
-    });
     importer.mockImplementationOnce(() => {
       throw new YError('E_NO_MODULE');
     });
 
-    // eslint-disable-next-line
-    const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
-      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      PROJECT_SRC,
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-      args: { _: ['myCommand'] },
+      args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
       importer,
+      $injector,
+      resolve,
       log,
-    });
+    } as AutoloaderWrapperDependencies as any);
     const { path, initializer } = await $autoload('commandHandler');
-    const command = await initializer();
+    const command = await (initializer as any)();
     const result = await command();
 
     expect({
       path,
       result,
       importerCalls: importer.mock.calls,
-      baseAutoloaderCalls: $baseAutoload.mock.calls,
+      injectorCalls: $injector.mock.calls,
+      resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "importerCalls": Array [
+          Array [
+            "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
+          ],
+          Array [
+            "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js",
+          ],
+        ],
+        "injectorCalls": Array [],
+        "logCalls": Array [
+          Array [
+            "debug",
+            "🤖 - Initializing the \`$autoload\` service.",
+          ],
+          Array [
+            "debug",
+            "🤖 - Wrapping the whook autoloader.",
+          ],
+          Array [
+            "debug",
+            "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand.js\\".",
+          ],
+          Array [
+            "warning",
+            "Command \\"myCommand\\" not found.",
+          ],
+        ],
+        "path": "command://myCommand",
+        "resolveCalls": Array [],
+        "result": undefined,
+      }
+    `);
   });
 
   it('should work with project commands', async () => {
-    jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      const _default = async () => $baseAutoload;
-
-      _default.default = _default;
-      return _default;
-    });
-    importer.mockReturnValueOnce({
-      default: async () => async () => log('warning', 'Command called!'),
-      definition: {},
-    });
-
-    // eslint-disable-next-line
-    const initAutoload = require('./_autoload').default;
-    const $autoload = await initAutoload({
-      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
-      WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-      args: { _: ['myCommand'] },
-      importer,
-      log,
-    });
-    const { path, initializer } = await $autoload('commandHandler');
-    const command = await initializer();
-    const result = await command();
-
-    expect({
-      path,
-      result,
-      importerCalls: importer.mock.calls,
-      baseAutoloaderCalls: $baseAutoload.mock.calls,
-      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
-  });
-
-  it('should work with whook-cli commands', async () => {
-    jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      const _default = async () => $baseAutoload;
-
-      _default.default = _default;
-      return _default;
-    });
-    importer.mockImplementationOnce(() => {
-      throw new Error('ENOENT');
-    });
-    importer.mockImplementationOnce(() => ({
+    importer.mockImplementationOnce(async () => ({
       default: async () => async () => log('warning', 'Command called!'),
       definition: {},
     }));
 
-    // eslint-disable-next-line
-    const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
-      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      PROJECT_SRC,
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-      args: { _: ['myCommand'] },
+      args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
       importer,
+      $injector,
+      resolve,
       log,
-    });
+    } as AutoloaderWrapperDependencies as any);
     const { path, initializer } = await $autoload('commandHandler');
-    const command = await initializer();
+    const command = await (initializer as any)();
     const result = await command();
 
     expect({
       path,
       result,
       importerCalls: importer.mock.calls,
-      baseAutoloaderCalls: $baseAutoload.mock.calls,
+      injectorCalls: $injector.mock.calls,
+      resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "importerCalls": Array [
+          Array [
+            "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
+          ],
+        ],
+        "injectorCalls": Array [],
+        "logCalls": Array [
+          Array [
+            "debug",
+            "🤖 - Initializing the \`$autoload\` service.",
+          ],
+          Array [
+            "debug",
+            "🤖 - Wrapping the whook autoloader.",
+          ],
+          Array [
+            "warning",
+            "Command called!",
+          ],
+        ],
+        "path": "command://myCommand",
+        "resolveCalls": Array [],
+        "result": undefined,
+      }
+    `);
+  });
+
+  it('should work with whook-cli commands', async () => {
+    importer.mockImplementationOnce(() => {
+      throw new Error('ENOENT');
+    });
+    importer.mockImplementationOnce(async () => ({
+      default: async () => async () => log('warning', 'Command called!'),
+      definition: {},
+    }));
+
+    const $autoload = await initAutoload({
+      PROJECT_SRC,
+      WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
+      args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
+      importer,
+      $injector,
+      resolve,
+      log,
+    } as AutoloaderWrapperDependencies as any);
+    const { path, initializer } = await $autoload('commandHandler');
+    const command = await (initializer as any)();
+    const result = await command();
+
+    expect({
+      path,
+      result,
+      importerCalls: importer.mock.calls,
+      injectorCalls: $injector.mock.calls,
+      resolveCalls: resolve.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+    }).toMatchInlineSnapshot(`
+      Object {
+        "importerCalls": Array [
+          Array [
+            "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
+          ],
+          Array [
+            "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js",
+          ],
+        ],
+        "injectorCalls": Array [],
+        "logCalls": Array [
+          Array [
+            "debug",
+            "🤖 - Initializing the \`$autoload\` service.",
+          ],
+          Array [
+            "debug",
+            "🤖 - Wrapping the whook autoloader.",
+          ],
+          Array [
+            "debug",
+            "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand.js\\".",
+          ],
+          Array [
+            "warning",
+            "Command called!",
+          ],
+        ],
+        "path": "command://myCommand",
+        "resolveCalls": Array [],
+        "result": undefined,
+      }
+    `);
   });
 
   it('should work with bad commands', async () => {
-    jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      const _default = async () => $baseAutoload;
-
-      _default.default = _default;
-      return _default;
-    });
     importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
     importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
-    $baseAutoload.mockResolvedValueOnce({
-      initializer: async () => async () => undefined,
-      path: 'mocked://service',
-    });
 
-    // eslint-disable-next-line
-    const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
-      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      PROJECT_SRC,
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-      args: { _: ['myCommand'] },
+      args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
       importer,
+      $injector,
+      resolve,
       log,
-    });
+    } as AutoloaderWrapperDependencies as any);
     const { path, initializer } = await $autoload('commandHandler');
-    const command = await initializer();
+    const command = await (initializer as any)();
     const result = await command();
 
     expect({
       path,
       result,
       importerCalls: importer.mock.calls,
-      baseAutoloaderCalls: $baseAutoload.mock.calls,
+      injectorCalls: $injector.mock.calls,
+      resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "importerCalls": Array [
+          Array [
+            "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
+          ],
+          Array [
+            "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js",
+          ],
+        ],
+        "injectorCalls": Array [],
+        "logCalls": Array [
+          Array [
+            "debug",
+            "🤖 - Initializing the \`$autoload\` service.",
+          ],
+          Array [
+            "debug",
+            "🤖 - Wrapping the whook autoloader.",
+          ],
+          Array [
+            "debug",
+            "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand.js\\".",
+          ],
+          Array [
+            "debug",
+            "Command \\"myCommand\\" not found in \\"/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js\\".",
+          ],
+          Array [
+            "warning",
+            "Command \\"myCommand\\" not found.",
+          ],
+        ],
+        "path": "command://myCommand",
+        "resolveCalls": Array [],
+        "result": undefined,
+      }
+    `);
   });
 
   it('should delegate to whook $autoloader', async () => {
-    jest.doMock('@whook/whook/dist/services/_autoload', () => {
-      const _default = async () => $baseAutoload;
-
-      _default.default = _default;
-      return _default;
-    });
     importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
     importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
-    $baseAutoload.mockResolvedValueOnce({
-      initializer: async () => async () => undefined,
-      path: 'mocked://service',
-    });
+    $injector.mockResolvedValueOnce({});
+    $injector.mockResolvedValueOnce({});
+    resolve.mockReturnValueOnce('/initializer/path.js');
+    importer.mockImplementationOnce(async () => ({
+      default: constant('anotherService', 'a_initializer'),
+      definition: {},
+    }));
 
-    // eslint-disable-next-line
-    const initAutoload = require('./_autoload').default;
     const $autoload = await initAutoload({
-      PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+      PROJECT_SRC,
       WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-      args: { _: ['myCommand'] },
+      args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
       importer,
+      $injector,
+      resolve,
       log,
-    });
+    } as AutoloaderWrapperDependencies as any);
     const { path, initializer } = await $autoload('anotherService');
-    const command = await initializer();
-    const result = await command();
 
     expect({
       path,
-      result,
+      initializer,
       importerCalls: importer.mock.calls,
-      baseAutoloaderCalls: $baseAutoload.mock.calls,
+      injectorCalls: $injector.mock.calls,
+      resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "importerCalls": Array [
+          Array [
+            "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
+          ],
+          Array [
+            "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js",
+          ],
+          Array [
+            "/initializer/path.js",
+          ],
+        ],
+        "initializer": Object {
+          "$name": "anotherService",
+          "$singleton": true,
+          "$type": "constant",
+          "$value": "a_initializer",
+        },
+        "injectorCalls": Array [
+          Array [
+            Array [
+              "SERVICE_NAME_MAP",
+            ],
+          ],
+          Array [
+            Array [
+              "CONFIGS",
+            ],
+          ],
+        ],
+        "logCalls": Array [
+          Array [
+            "debug",
+            "🤖 - Initializing the \`$autoload\` service.",
+          ],
+          Array [
+            "debug",
+            "🤖 - Wrapping the whook autoloader.",
+          ],
+          Array [
+            "debug",
+            "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand.js\\".",
+          ],
+          Array [
+            "debug",
+            "Command \\"myCommand\\" not found in \\"/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js\\".",
+          ],
+          Array [
+            "debug",
+            "💿 - Service \\"anotherService\\" found in \\"/initializer/path.js\\".",
+          ],
+          Array [
+            "debug",
+            "💿 - Loading \\"anotherService\\" initializer from \\"/initializer/path.js\\".",
+          ],
+        ],
+        "path": "/initializer/path.js",
+        "resolveCalls": Array [
+          Array [
+            "/home/whoiam/projects/my-whook-project/src/services/anotherService",
+          ],
+        ],
+      }
+    `);
   });
 
   describe('should fail', () => {
     it('with no command handler', async () => {
-      jest.doMock('@whook/whook/dist/services/_autoload', () => {
-        const _default = async () => $baseAutoload;
-
-        _default.default = _default;
-        return _default;
-      });
-      importer.mockReturnValueOnce({});
-
-      // eslint-disable-next-line
-      const initAutoload = require('./_autoload').default;
+      importer.mockResolvedValueOnce({});
 
       try {
         await initAutoload({
-          PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+          PROJECT_SRC,
           WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-          args: { _: ['myCommand'] },
+          args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
           importer,
+          $injector,
+          resolve,
           log,
-        });
+        } as AutoloaderWrapperDependencies as any);
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
           errorParams: (err as YError).params,
           importerCalls: importer.mock.calls,
-          baseAutoloaderCalls: $baseAutoload.mock.calls,
+          injectorCalls: $injector.mock.calls,
+          resolveCalls: resolve.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchSnapshot();
       }
     });
 
     it('with no command definition', async () => {
-      jest.doMock('@whook/whook/dist/services/_autoload', () => {
-        const _default = async () => $baseAutoload;
-
-        _default.default = _default;
-        return _default;
-      });
-      importer.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: async () => undefined,
       });
 
-      // eslint-disable-next-line
-      const initAutoload = require('./_autoload').default;
-
       try {
         await initAutoload({
-          PROJECT_SRC: '/home/whoiam/projects/my-whook-project/src',
+          PROJECT_SRC,
           WHOOK_PLUGINS_PATHS: ['/var/lib/node/node_modules/@whook/whook/src'],
-          args: { _: ['myCommand'] },
+          args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
           importer,
+          $injector,
+          resolve,
           log,
-        });
+        } as AutoloaderWrapperDependencies as any);
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
           errorParams: (err as YError).params,
           importerCalls: importer.mock.calls,
-          baseAutoloaderCalls: $baseAutoload.mock.calls,
+          injectorCalls: $injector.mock.calls,
+          resolveCalls: resolve.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchSnapshot();
       }

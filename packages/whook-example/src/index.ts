@@ -7,6 +7,8 @@ import {
   initAPIDefinitions,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import type { DependencyDeclaration, Dependencies } from 'knifecycle';
@@ -126,7 +128,15 @@ export async function prepareEnvironment<T extends Knifecycle>(
    to allow autoloading features to work with it either
    in development and production (files built in `dist/`).
   */
-  $.register(constant('PROJECT_SRC', __dirname));
+  $.register(
+    constant(
+      'PROJECT_SRC',
+      // The env var is necessary only for Jest support
+      // it will be removeable when Jest will be fully
+      // ESM compatible
+      process.env.PROJECT_SRC || dirname(fileURLToPath(import.meta.url)),
+    ),
+  );
 
   /* Architecture Note #1.1.3.3: TRANSACTIONS
 

@@ -22,20 +22,20 @@
     }
   },
   "scripts": {
+    "build": "npm run lerna -- run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -k packages/whook/package.json && git add CHANGELOG.md",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
-    "compile": "lerna run compile",
     "cover": "lerna run cover",
     "coveralls": "npm run cover && cat ./packages/*/coverage/lcov.info | coveralls && rm -rf .packages/*/coverage",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
     "lerna": "lerna",
     "lint": "lerna run lint",
     "metapak": "metapak",
-    "postinstall": "lerna bootstrap --hoist && npm run compile && lerna link && npm run lerna -- run types && lerna run --parallel genPackagelock",
+    "postinstall": "lerna bootstrap --hoist && lerna link && lerna run --parallel genPackagelock",
     "postmetapak": "lerna run metapak",
-    "precz": "npm t && npm run lint && npm run compile && npm run lerna -- run types && npm run metapak -- -s",
+    "precz": "npm run lint && npm run build && npm t && npm run metapak -- -s && lerna run --parallel metapak -- -s",
     "prettier": "lerna run prettier",
-    "preversion": "npm t && npm run lint && npm run compile && npm run lerna -- run types && npm run metapak -- -s",
+    "preversion": "npm run lint && npm run build && npm t && npm run metapak -- -s && lerna run --parallel metapak -- -s",
     "test": "lerna run test",
     "version": "npm run changelog"
   },
@@ -60,7 +60,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^4.0.0",
     "metapak": "^4.0.4",
-    "metapak-nfroidure": "12.0.1"
+    "metapak-nfroidure": "12.0.6"
   },
   "contributors": [],
   "engines": {
@@ -70,6 +70,13 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "proseWrap": "always"
   },
   "files": [
     "src",

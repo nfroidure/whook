@@ -1,7 +1,7 @@
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
-} from './handlers/getOpenAPI';
+} from './handlers/getOpenAPI.js';
 import type { ProviderInitializer } from 'knifecycle';
 import type {
   HTTPRouterProvider,

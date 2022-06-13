@@ -1,9 +1,12 @@
-import initEnvCommand from './env';
+import { jest } from '@jest/globals';
+import initEnvCommand from './env.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
+import type { PromptArgs } from '../services/promptArgs.js';
 
 describe('envCommand', () => {
-  const promptArgs = jest.fn();
-  const log = jest.fn();
+  const promptArgs = jest.fn<PromptArgs>();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();
@@ -12,8 +15,11 @@ describe('envCommand', () => {
 
   it('should work', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['env'],
-      name: 'NODE_ENV',
+      command: 'whook',
+      rest: ['env'],
+      namedArguments: {
+        name: 'NODE_ENV',
+      },
     });
 
     const envCommand = await initEnvCommand({
@@ -32,9 +38,12 @@ describe('envCommand', () => {
 
   it('should work with a default value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['env'],
-      name: 'NODE_ENV',
-      default: 'lol',
+      command: 'whook',
+      rest: ['env'],
+      namedArguments: {
+        name: 'NODE_ENV',
+        default: 'lol',
+      },
     });
 
     const envCommand = await initEnvCommand({
@@ -53,8 +62,11 @@ describe('envCommand', () => {
 
   it('should fail with no value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['env'],
-      name: 'NODE_ENV',
+      command: 'whook',
+      rest: ['env'],
+      namedArguments: {
+        name: 'NODE_ENV',
+      },
     });
 
     const envCommand = await initEnvCommand({

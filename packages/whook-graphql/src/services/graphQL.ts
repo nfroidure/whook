@@ -83,11 +83,14 @@ export default autoService(initGraphQL);
  * A promise of a GraphQL service
  */
 async function initGraphQL({
-  GRAPHQL_SERVER_OPTIONS = {},
+  GRAPHQL_SERVER_OPTIONS,
   ENV,
-  graphQLFragments = [],
+  graphQLFragments,
   log = noop,
 }: WhookGraphQLDependencies): Promise<WhookGraphQLService> {
+  GRAPHQL_SERVER_OPTIONS = GRAPHQL_SERVER_OPTIONS || {};
+  graphQLFragments = graphQLFragments || [];
+
   const baseResolvers = GRAPHQL_SERVER_OPTIONS.resolvers
     ? GRAPHQL_SERVER_OPTIONS.resolvers instanceof Array
       ? (GRAPHQL_SERVER_OPTIONS.resolvers as IResolvers[])

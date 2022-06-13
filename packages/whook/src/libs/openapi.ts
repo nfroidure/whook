@@ -6,7 +6,7 @@ import type {
   WhookAPIHeaderDefinition,
   WhookAPIResponseDefinition,
   WhookAPIRequestBodyDefinition,
-} from '../services/API_DEFINITIONS';
+} from '../services/API_DEFINITIONS.js';
 import type { JsonObject, JsonValue } from 'type-fest';
 
 type ComponentType = keyof NonNullable<OpenAPIV3.Document['components']>;

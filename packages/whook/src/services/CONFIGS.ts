@@ -1,9 +1,9 @@
 import { autoService, singleton, name } from 'knifecycle';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import path from 'path';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
-import type { ImporterService } from './importer';
+import type { ImporterService } from './importer.js';
 import type { JsonValue } from 'type-fest';
 
 export type CONFIGSService = Record<string, JsonValue>;
@@ -53,7 +53,7 @@ async function initCONFIGS({
 }): Promise<CONFIGSService> {
   log('debug', `🏭 - Initializing the CONFIGS service.`);
 
-  const configPath = path.join(PROJECT_SRC, 'config', NODE_ENV, 'config');
+  const configPath = path.join(PROJECT_SRC, 'config', NODE_ENV, 'config.js');
 
   log('warning', `⚡ - Loading configurations from "${configPath}".`);
 

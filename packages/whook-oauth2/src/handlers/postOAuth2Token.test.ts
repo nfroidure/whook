@@ -1,54 +1,112 @@
-import initPostOAuth2Token from './postOAuth2Token';
+import { jest } from '@jest/globals';
+import initPostOAuth2Token from './postOAuth2Token.js';
 import { YError } from 'yerror';
-import type { OAuth2GranterService } from '..';
+import type { LogService, TimeService } from 'common-services';
+import type {
+  OAuth2GranterService,
+  OAuth2AccessTokenService,
+  OAuth2RefreshTokenService,
+} from '../index.js';
+import type { OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
+import type { OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
+import type { OAuth2PasswordGranterService } from '../services/oAuth2PasswordGranter.js';
+import type { OAuth2RefreshTokenGranterService } from '../services/oAuth2RefreshTokenGranter.js';
 
 describe('postOAuth2Token', () => {
-  const log = jest.fn();
-  const time = jest.fn();
-  const oAuth2AccessToken = { create: jest.fn(), check: jest.fn() };
-  const oAuth2RefreshToken = { create: jest.fn(), check: jest.fn() };
+  const log = jest.fn<LogService>();
+  const time = jest.fn<TimeService>();
+  const oAuth2AccessToken = {
+    create: jest.fn<OAuth2AccessTokenService['create']>(),
+    check: jest.fn<OAuth2AccessTokenService['check']>(),
+  };
+  const oAuth2RefreshToken = {
+    create: jest.fn<OAuth2RefreshTokenService['create']>(),
+    check: jest.fn<OAuth2RefreshTokenService['check']>(),
+  };
   const codeGranter = {
     type: 'code',
-    authorizer: { responseType: 'code', authorize: jest.fn() },
-    acknowledger: { acknowledgmentType: 'code', acknowledge: jest.fn() },
+    authorizer: {
+      responseType: 'code',
+      authorize:
+        jest.fn<
+          NonNullable<OAuth2CodeGranterService['authorizer']>['authorize']
+        >(),
+    },
+    acknowledger: {
+      acknowledgmentType: 'code',
+      acknowledge:
+        jest.fn<
+          NonNullable<OAuth2CodeGranterService['acknowledger']>['acknowledge']
+        >(),
+    },
     authenticator: {
       grantType: 'authorization_code',
-      authenticate: jest.fn(),
+      authenticate:
+        jest.fn<
+          NonNullable<OAuth2CodeGranterService['authenticator']>['authenticate']
+        >(),
     },
   };
   const passwordGranter = {
     type: 'password',
     authenticator: {
       grantType: 'password',
-      authenticate: jest.fn(),
+      authenticate:
+        jest.fn<
+          NonNullable<
+            OAuth2PasswordGranterService['authenticator']
+          >['authenticate']
+        >(),
     },
   };
   const clientCredentialsGranter = {
     type: 'client_credentials',
     authenticator: {
       grantType: 'client_credentials',
-      authenticate: jest.fn(),
+      authenticate:
+        jest.fn<
+          NonNullable<OAuth2CodeGranterService['authorizer']>['authorize']
+        >(),
     },
   };
   const tokenGranter = {
     type: 'token',
-    authorizer: { responseType: 'token', authorize: jest.fn() },
-    acknowledger: { acknowledgmentType: 'token', acknowledge: jest.fn() },
+    authorizer: {
+      responseType: 'token',
+      authorize:
+        jest.fn<
+          NonNullable<
+            OAuth2TokenGranterService['authenticator']
+          >['authenticate']
+        >(),
+    },
+    acknowledger: {
+      acknowledgmentType: 'token',
+      acknowledge:
+        jest.fn<
+          NonNullable<OAuth2TokenGranterService['acknowledger']>['acknowledge']
+        >(),
+    },
   };
   const refreshTokenGranter = {
     type: 'refresh',
     authenticator: {
       grantType: 'refresh',
-      authenticate: jest.fn(),
+      authenticate:
+        jest.fn<
+          NonNullable<
+            OAuth2RefreshTokenGranterService['authenticator']
+          >['authenticate']
+        >(),
     },
   };
-  const oAuth2Granters: OAuth2GranterService[] = [
+  const oAuth2Granters = [
     codeGranter,
     tokenGranter,
     passwordGranter,
     refreshTokenGranter,
     clientCredentialsGranter,
-  ];
+  ] as unknown as OAuth2GranterService[];
 
   beforeEach(() => {
     log.mockReset();
@@ -79,6 +137,8 @@ describe('postOAuth2Token', () => {
     });
     codeGranter.authorizer.authorize.mockResolvedValueOnce({
       applicationId: '',
+      redirectURI: 'http://lol',
+      scope: 'user,admin',
     });
 
     const postOAuth2Token = await initPostOAuth2Token({

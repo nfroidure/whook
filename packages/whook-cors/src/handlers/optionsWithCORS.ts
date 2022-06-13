@@ -1,11 +1,11 @@
-import { autoHandler } from 'knifecycle';
+import { handler } from 'knifecycle';
 
 /**
  * A simple Whook handler that just returns a 200 OK
  *  HTTP response
  * @returns {Promise<Object>} The HTTP response object
  */
-export default autoHandler(optionsWithCORS);
+export default handler(optionsWithCORS, 'optionsWithCORS', []);
 
 async function optionsWithCORS() {
   return {

@@ -1,10 +1,10 @@
 #! /usr/bin/env node
 
 import path from 'path';
-import run from '../dist/index.js';
+import run from '@whook/cli';
 
 const { prepareEnvironment } = await import(
-  path.join(process.cwd(), 'dist', 'index.js')
+  path.join(process.cwd(), 'src', 'index.js')
 );
 
 await run(prepareEnvironment);

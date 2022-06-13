@@ -1,7 +1,7 @@
 import {
   extractParametersFromSecuritySchemes,
   extractOperationSecurityParameters,
-} from './validation';
+} from './validation.js';
 import { YError } from 'yerror';
 import type { OpenAPIV3 } from 'openapi-types';
 

@@ -6,7 +6,7 @@ import type {
   OAuth2AccessTokenService,
   CheckApplicationService,
   OAuth2CodeService,
-} from './oAuth2Granters';
+} from './oAuth2Granters.js';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 export const IMPLICIT_GRANTER_TYPE = 'token';

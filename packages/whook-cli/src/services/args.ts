@@ -1,15 +1,17 @@
 import { autoService, singleton } from 'knifecycle';
 import parseArgs from 'yargs-parser';
 import type { LogService } from 'common-services';
-import type { WhookArgsTypes } from '..';
+import type { WhookArgsTypes } from '../index.js';
 
 export default singleton(autoService(initArgs));
 
-export type WhookCommandNamedArgs = Record<string, WhookArgsTypes>;
-export type WhookCommandArgsRest = {
-  _: string[];
+export type WhookCommandArgs<
+  T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
+> = {
+  namedArguments: T;
+  rest: string[];
+  command: string;
 };
-export type WhookCommandArgs = WhookCommandArgsRest & WhookCommandNamedArgs;
 
 async function initArgs({
   ARGS,
@@ -18,8 +20,13 @@ async function initArgs({
   ARGS: string[];
   log: LogService;
 }): Promise<WhookCommandArgs> {
-  const args = parseArgs(ARGS.slice(2));
+  const { $0, _, ...args } = parseArgs(ARGS.slice(2));
+  const finalArgs = {
+    namedArguments: args,
+    rest: _,
+    command: ARGS[1],
+  };
 
-  log('debug', '🛠 - Parsed args:', args);
-  return args as WhookCommandArgs;
+  log('debug', '🛠 - Parsed args:', finalArgs);
+  return finalArgs;
 }

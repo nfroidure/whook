@@ -1,4 +1,4 @@
-import { prepareEnvironment } from './index';
+import { prepareEnvironment } from './index.js';
 import { runREPL as runBaseREPL } from '@whook/whook';
 
 /* Architecture Note #6: REPL

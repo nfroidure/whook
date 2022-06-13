@@ -12,7 +12,7 @@ import {
   initInitializerBuilder,
 } from 'knifecycle';
 import { DEFAULT_BUILD_OPTIONS, initCompiler } from '@whook/whook';
-import initBuildAutoloader from './services/_autoload';
+import initBuildAutoloader from './services/_autoload.js';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
@@ -42,28 +42,28 @@ export type {
   LambdaSNSConsumerInput,
   LambdaSESConsumerInput,
   LambdaDynamoDBStreamConsumerInput,
-} from './wrappers/awsConsumerLambda';
+} from './wrappers/awsConsumerLambda.js';
 export type {
   LambdaCronInput,
   LambdaCronOutput,
-} from './wrappers/awsCronLambda';
+} from './wrappers/awsCronLambda.js';
 export type {
   LambdaHTTPInput,
   LambdaHTTPOutput,
-} from './wrappers/awsHTTPLambda';
+} from './wrappers/awsHTTPLambda.js';
 export type {
   LambdaKafkaConsumerInput,
   LambdaKafkaConsumerOutput,
-} from './wrappers/awsKafkaConsumerLambda';
+} from './wrappers/awsKafkaConsumerLambda.js';
 export type {
   LambdaLogSubscriberInput,
   LambdaLogSubscriberOutput,
-} from './wrappers/awsLogSubscriberLambda';
-export type { LambdaS3Input, LambdaS3Output } from './wrappers/awsS3Lambda';
+} from './wrappers/awsLogSubscriberLambda.js';
+export type { LambdaS3Input, LambdaS3Output } from './wrappers/awsS3Lambda.js';
 export type {
   LambdaTransformerInput,
   LambdaTransformerOutput,
-} from './wrappers/awsTransformerLambda';
+} from './wrappers/awsTransformerLambda.js';
 
 export const DEFAULT_BUILD_PARALLELISM = 10;
 
@@ -464,7 +464,7 @@ const ${buildWrapper.name} = pickModule(require('${buildWrapper.path}'));
 const { initialize } = require('./initialize');`
       : `import initHandler from '${rootNode.path}';
 import ${buildWrapper.name} from '${buildWrapper.path}';
-import { initialize } from './initialize';`
+import { initialize } from './initialize.js';`
   }
 
 const handlerInitializer = ${buildWrapper.name}(

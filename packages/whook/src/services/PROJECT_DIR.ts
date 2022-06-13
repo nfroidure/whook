@@ -1,13 +1,14 @@
-import pkgDir from 'pkg-dir';
 import { name, singleton, autoService } from 'knifecycle';
 import { YError } from 'yerror';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
+import _pkgDir from 'pkg-dir';
 import type { LogService } from 'common-services';
 
 export type ProjectDirConfig = {
   PWD: string;
 };
 export type ProjectDirDependencies = ProjectDirConfig & {
+  pkgDir: typeof _pkgDir;
   log?: LogService;
 };
 
@@ -33,6 +34,7 @@ export default singleton(name('PROJECT_DIR', autoService(initProjectDir)));
  */
 async function initProjectDir({
   PWD,
+  pkgDir = _pkgDir,
   log = noop,
 }: ProjectDirDependencies): Promise<string> {
   const projectDir = await pkgDir(PWD);

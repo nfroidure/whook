@@ -1,8 +1,10 @@
-import initPrintEnvCommand from './printEnv';
+import { jest } from '@jest/globals';
+import initPrintEnvCommand from './printEnv.js';
 import type { WhookCommandArgs } from '@whook/cli';
+import type { LogService } from 'common-services';
 
 describe('printEnvCommand', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();
@@ -14,14 +16,13 @@ describe('printEnvCommand', () => {
     const printEnvCommand = await initPrintEnvCommand({
       log,
       ENV: { NODE_ENV: 'test' },
-      args: Object.assign(
-        {
+      args: {
+        command: 'whook',
+        namedArguments: {
           keysOnly: true,
         },
-        {
-          _: ['printEnv'],
-        },
-      ) as unknown as WhookCommandArgs,
+        rest: ['printEnv'],
+      },
     });
     const result = await printEnvCommand();
 

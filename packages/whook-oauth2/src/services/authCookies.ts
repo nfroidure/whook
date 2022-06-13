@@ -4,6 +4,7 @@ import { autoService } from 'knifecycle';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 export const AUTH_API_PREFIX = '/auth';
+export const DEFAULT_COOKIES_ENV = {};
 
 export type AuthHandlersConfig<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
@@ -41,7 +42,7 @@ export type AuthCookiesService = {
 export default autoService(initAuthCookies);
 
 async function initAuthCookies({
-  ENV = {},
+  ENV = DEFAULT_COOKIES_ENV,
   COOKIES,
   BASE_PATH = '',
 }: AuthCookiesDependencies): Promise<AuthCookiesService> {

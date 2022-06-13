@@ -1,4 +1,4 @@
-import initGetDiagnostic from './getDiagnostic';
+import initGetDiagnostic from './getDiagnostic.js';
 
 describe('getDiagnostic', () => {
   const TRANSACTIONS = {} as Components.Responses.Diagnostic<number>['body'];

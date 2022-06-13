@@ -3,13 +3,15 @@ import path from 'path';
 import crypto from 'crypto';
 import { PassThrough } from 'stream';
 import { createWriteStream } from 'fs';
-import initGenerateOpenAPITypes from './commands/generateOpenAPITypes';
+import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 import parseGitIgnore from 'parse-gitignore';
+import { createRequire } from 'module';
 import type { Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 
+const require = createRequire(import.meta.url);
 let $instance: Knifecycle;
 let log: LogService;
 let delay: DelayService;
@@ -42,7 +44,9 @@ export async function watchDevServer(): Promise<void> {
         reject(err);
       })
       .on('all', (_event, filePath) => {
-        const absolutePath = path.join(process.cwd(), filePath);
+        const absolutePath = path
+          .join(process.cwd(), filePath)
+          .replace(/.ts$/, '.js');
 
         if (filePath.match(/package.*\.json/)) {
           for (const key in require.cache) {
@@ -69,7 +73,9 @@ export async function restartDevServer(): Promise<void> {
     await $instance.destroy();
   }
 
-  const { runServer, prepareEnvironment, prepareServer } = await import('.');
+  const { runServer, prepareEnvironment, prepareServer } = await import(
+    './index.js'
+  );
 
   const {
     NODE_ENV,

@@ -26,8 +26,8 @@ npm init @whook
 
 To test the create script:
 ```sh
-npm run compile
-npm run cli -- babel-node bin/create
+npm run build
+node bin/create.js
 ```
 
 [//]: # (::contents:end)

@@ -1,9 +1,9 @@
 import path from 'path';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import { autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
-import type { BuildOptions } from 'knifecycle/dist/build';
-import type { ImporterService } from '..';
+import type { BuildOptions } from 'knifecycle/dist/build.js';
+import type { ImporterService } from '../index.js';
 
 export const DEFAULT_BUILD_OPTIONS: BuildOptions = { modules: 'commonjs' };
 

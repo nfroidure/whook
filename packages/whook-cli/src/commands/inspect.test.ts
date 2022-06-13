@@ -1,5 +1,9 @@
-import initInspectCommand from './inspect';
+import { jest } from '@jest/globals';
+import initInspectCommand from './inspect.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
+import type { PromptArgs } from '../services/promptArgs.js';
+import type { Injector } from 'knifecycle';
 
 describe('inspectCommand', () => {
   const SERVICES = {
@@ -10,9 +14,9 @@ describe('inspectCommand', () => {
       version: '2.1.1',
     },
   };
-  const $injector = jest.fn();
-  const promptArgs = jest.fn();
-  const log = jest.fn();
+  const $injector = jest.fn<Injector<any>>();
+  const promptArgs = jest.fn<PromptArgs>();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     $injector.mockReset();
@@ -22,8 +26,11 @@ describe('inspectCommand', () => {
 
   it('should work with no query at all', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['inspect'],
-      name: 'MYSQL',
+      command: 'whook',
+      rest: ['inspect'],
+      namedArguments: {
+        name: 'MYSQL',
+      },
     });
     $injector.mockResolvedValueOnce(SERVICES);
 
@@ -56,9 +63,12 @@ describe('inspectCommand', () => {
 
   it('should work with one value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['inspect'],
-      name: 'MYSQL',
-      query: 'auth.username',
+      command: 'whook',
+      rest: ['inspect'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'auth.username',
+      },
     });
     $injector.mockResolvedValueOnce(SERVICES);
 
@@ -91,10 +101,13 @@ describe('inspectCommand', () => {
 
   it('should work with several values', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['inspect'],
-      name: 'MYSQL',
-      query: 'auth.*',
-      pretty: true,
+      command: 'whook',
+      rest: ['inspect'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'auth.*',
+        pretty: true,
+      },
     });
     $injector.mockResolvedValueOnce(SERVICES);
 
@@ -127,9 +140,12 @@ describe('inspectCommand', () => {
 
   it('should work with an unexisting config but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['inspect'],
-      name: 'DOES_NOT_EXIST',
-      default: 'v8',
+      command: 'whook',
+      rest: ['inspect'],
+      namedArguments: {
+        name: 'DOES_NOT_EXIST',
+        default: 'v8',
+      },
     });
     $injector.mockRejectedValueOnce(new YError('E_NOT_FOUND'));
 
@@ -162,10 +178,13 @@ Object {
 
   it('should work with no result but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['inspect'],
-      name: 'MYSQL',
-      query: 'nothing_here',
-      default: 'v8',
+      command: 'whook',
+      rest: ['inspect'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'nothing_here',
+        default: 'v8',
+      },
     });
     $injector.mockResolvedValueOnce(SERVICES);
 
@@ -198,8 +217,11 @@ Object {
 
   it('should fail with unexisting config name', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['inspect'],
-      name: 'DOES_NOT_EXIST',
+      command: 'whook',
+      rest: ['inspect'],
+      namedArguments: {
+        name: 'DOES_NOT_EXIST',
+      },
     });
 
     const inspectCommand = await initInspectCommand({
@@ -226,16 +248,19 @@ Object {
       expect({
         promptArgsCalls: promptArgs.mock.calls,
         injectorCalls: $injector.mock.calls,
-        logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchSnapshot();
     }
   });
 
   it('should fail with no result', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['inspect'],
-      name: 'MYSQL',
-      query: 'nothing_here',
+      command: 'whook',
+      rest: ['inspect'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'nothing_here',
+      },
     });
     $injector.mockResolvedValueOnce(SERVICES);
 
@@ -264,7 +289,7 @@ Object {
       expect({
         promptArgsCalls: promptArgs.mock.calls,
         injectorCalls: $injector.mock.calls,
-        logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchSnapshot();
     }
   });

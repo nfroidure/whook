@@ -1,13 +1,13 @@
 import { extra, autoService } from 'knifecycle';
 import { YError } from 'yerror';
-import { readArgs } from '../libs/args';
+import { readArgs } from '../libs/args.js';
 import { noop } from '@whook/whook';
 import type { WhookHandler } from '@whook/whook';
 import type {
   WhookCommandDefinition,
   PromptArgs,
   WhookCommandHandler,
-} from '../services/promptArgs';
+} from '../services/promptArgs.js';
 import type { Injector, Parameters } from 'knifecycle';
 import type { LogService } from 'common-services';
 
@@ -44,10 +44,12 @@ async function initHandlerCommand({
   promptArgs: PromptArgs;
 }): Promise<WhookCommandHandler> {
   return async () => {
-    const { name: handlerName, parameters: handlerParameters } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { name: string; parameters: string };
+    const {
+      namedArguments: { name: handlerName, parameters: handlerParameters },
+    } = readArgs<{
+      name: string;
+      parameters: string;
+    }>(definition.arguments, await promptArgs());
     let parsedParameters: Parameters;
 
     try {

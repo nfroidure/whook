@@ -1,27 +1,35 @@
 import { Knifecycle, constant } from 'knifecycle';
 import { exec as _exec } from 'child_process';
-import {
-  writeFile as _writeFile,
-  readFile as _readFile,
-  copy as _copy,
-  ensureDir as _ensureDir,
-} from 'fs-extra';
+import { default as fsExtra } from 'fs-extra';
 import debug from 'debug';
 import path from 'path';
 import inquirer from 'inquirer';
+import { createRequire } from 'module';
 import {
   initLogService,
   initLockService,
   initDelayService,
 } from 'common-services';
-import initAuthor from './services/author';
-import initProject from './services/project';
-import initCreateWhook from './services/createWhook';
-import type { CreateWhookService } from './services/createWhook';
+import initAuthor from './services/author.js';
+import initProject from './services/project.js';
+import initCreateWhook from './services/createWhook.js';
+import type { CreateWhookService } from './services/createWhook.js';
+import type { Logger } from 'common-services';
+
+const {
+  writeFile: _writeFile,
+  readFile: _readFile,
+  copy: _copy,
+  ensureDir: _ensureDir,
+} = fsExtra;
 
 export async function runCreateWhook(): Promise<void> {
   try {
     const $ = new Knifecycle();
+    // TODO: Use import.meta when Jest will support it
+    const require = createRequire(
+      path.join(process.cwd(), 'src', 'services', 'API.test.ts'),
+    );
 
     $.register(constant('CWD', process.cwd()));
     $.register(constant('inquirer', inquirer));
@@ -36,16 +44,14 @@ export async function runCreateWhook(): Promise<void> {
         path.resolve(path.dirname(require.resolve('@whook/example')), '..'),
       ),
     );
-    $.register(constant('debug', debug('whook')));
     $.register(
       constant('logger', {
         // eslint-disable-next-line
+        output: console.log.bind(console),
+        // eslint-disable-next-line
         error: console.error.bind(console),
-        // eslint-disable-next-line
-        info: console.info.bind(console),
-        // eslint-disable-next-line
-        warning: console.log.bind(console),
-      }),
+        debug: debug('whook'),
+      } as Logger),
     );
     $.register(initLogService);
     $.register(initLockService);

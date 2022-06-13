@@ -1,7 +1,9 @@
-import initAPMService from './apm';
+import { jest } from '@jest/globals';
+import initAPMService from './apm.js';
+import type { LogService } from 'common-services';
 
 describe('APM service', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();

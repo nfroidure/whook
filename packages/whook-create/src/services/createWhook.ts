@@ -1,22 +1,23 @@
 import { autoService } from 'knifecycle';
 import path from 'path';
-import _axios from 'axios';
+import { default as _axios } from 'axios';
 import _ora from 'ora';
 import { YError } from 'yerror';
 import { exec as _exec } from 'child_process';
-import {
-  writeFile as _writeFile,
-  readFile as _readFile,
-  copy as _copy,
-  readdir as _readdir,
-} from 'fs-extra';
+import { default as fsExtra } from 'fs-extra';
 import type { LogService } from 'common-services';
-import type { ProjectService } from './project';
-import type { AuthorService } from './author';
+import type { ProjectService } from './project.js';
+import type { AuthorService } from './author.js';
 
 const GIT_IGNORE_URL = 'https://www.gitignore.io/api/osx,node,linux';
 const README_REGEXP =
   /^(?:[^]*)\[\/\/\]: # \(::contents:start\)\r?\n\r?\n([^]*)\r?\n\r?\n\[\/\/\]: # \(::contents:end\)(?:[^]*)$/gm;
+const {
+  writeFile: _writeFile,
+  readFile: _readFile,
+  copy: _copy,
+  readdir: _readdir,
+} = fsExtra;
 
 export type CreateWhookService = () => Promise<void>;
 
@@ -61,8 +62,8 @@ export default autoService(async function initCreateWhook({
       license: 'SEE LICENSE',
       engines: basePackageJSON.engines,
       main: basePackageJSON.main,
-      module: basePackageJSON.module,
       types: basePackageJSON.types,
+      type: basePackageJSON.type,
       private: true,
       keywords: ['whook'],
       author: {
@@ -83,7 +84,6 @@ export default autoService(async function initCreateWhook({
       },
       eslintConfig: basePackageJSON.eslintConfig,
       prettier: basePackageJSON.prettier,
-      babel: basePackageJSON.babel,
       jest: basePackageJSON.jest,
       metapak: undefined,
     };

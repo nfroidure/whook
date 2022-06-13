@@ -6,7 +6,7 @@ import type {
   OAuth2GranterService,
   OAuth2CodeService,
   CheckApplicationService,
-} from './oAuth2Granters';
+} from './oAuth2Granters.js';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 export const CODE_GRANTER_TYPE = 'code';

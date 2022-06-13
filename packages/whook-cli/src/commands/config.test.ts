@@ -1,5 +1,8 @@
-import initConfigCommand from './config';
+import { jest } from '@jest/globals';
+import initConfigCommand from './config.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
+import type { PromptArgs } from '../services/promptArgs.js';
 
 describe('configCommand', () => {
   const CONFIGS = {
@@ -10,8 +13,8 @@ describe('configCommand', () => {
       version: '2.1.1',
     },
   };
-  const promptArgs = jest.fn();
-  const log = jest.fn();
+  const promptArgs = jest.fn<PromptArgs>();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     promptArgs.mockReset();
@@ -20,8 +23,11 @@ describe('configCommand', () => {
 
   it('should work with no query at all', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
-      name: 'MYSQL',
+      command: 'whook',
+      rest: ['config'],
+      namedArguments: {
+        name: 'MYSQL',
+      },
     });
 
     const configCommand = await initConfigCommand({
@@ -52,9 +58,12 @@ describe('configCommand', () => {
 
   it('should work with one value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
-      name: 'MYSQL',
-      query: 'auth.username',
+      command: 'whook',
+      rest: ['config'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'auth.username',
+      },
     });
 
     const configCommand = await initConfigCommand({
@@ -85,9 +94,12 @@ describe('configCommand', () => {
 
   it('should work with several values', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
-      name: 'MYSQL',
-      query: 'auth.*',
+      command: 'whook',
+      rest: ['config'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'auth.*',
+      },
     });
 
     const configCommand = await initConfigCommand({
@@ -118,9 +130,12 @@ describe('configCommand', () => {
 
   it('should work with an unexisting config but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
-      name: 'DOES_NOT_EXIST',
-      default: 'v8',
+      command: 'whook',
+      rest: ['config'],
+      namedArguments: {
+        name: 'DOES_NOT_EXIST',
+        default: 'v8',
+      },
     });
 
     const configCommand = await initConfigCommand({
@@ -151,10 +166,13 @@ Object {
 
   it('should work with no result but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
-      name: 'MYSQL',
-      query: 'nothing_here',
-      default: 'v8',
+      command: 'whook',
+      rest: ['config'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'nothing_here',
+        default: 'v8',
+      },
     });
 
     const configCommand = await initConfigCommand({
@@ -185,8 +203,11 @@ Object {
 
   it('should fail with unexisting config name', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
-      name: 'DOES_NOT_EXIST',
+      command: 'whook',
+      rest: ['config'],
+      namedArguments: {
+        name: 'DOES_NOT_EXIST',
+      },
     });
 
     const configCommand = await initConfigCommand({
@@ -212,16 +233,19 @@ Object {
       `);
       expect({
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchSnapshot();
     }
   });
 
   it('should fail with no result', async () => {
     promptArgs.mockResolvedValueOnce({
-      _: ['config'],
-      name: 'MYSQL',
-      query: 'nothing_here',
+      command: 'whook',
+      rest: ['config'],
+      namedArguments: {
+        name: 'MYSQL',
+        query: 'nothing_here',
+      },
     });
 
     const configCommand = await initConfigCommand({
@@ -248,7 +272,7 @@ Object {
       `);
       expect({
         promptArgsCalls: promptArgs.mock.calls,
-        logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
+        logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchSnapshot();
     }
   });

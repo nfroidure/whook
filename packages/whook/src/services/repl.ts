@@ -1,5 +1,5 @@
 import { autoProvider, name } from 'knifecycle';
-import { identity, noop } from '../libs/utils';
+import { identity, noop } from '../libs/utils.js';
 import repl from 'repl';
 import type { LogService } from 'common-services';
 import type { Provider, Disposer, Injector } from 'knifecycle';

@@ -1,8 +1,8 @@
-import initEnv from './ENV';
+import initEnv from './ENV.js';
 import { wrapInitializer, alsoInject } from 'knifecycle';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
-import type { ENVService, ENVDependencies } from './ENV';
+import type { ENVService, ENVDependencies } from './ENV.js';
 import type { ServiceInitializer } from 'knifecycle';
 
 export type ProxyedENVConfig = {

@@ -1,8 +1,12 @@
-import initGetOAuth2Authorize from './getOAuth2Authorize';
+import { jest } from '@jest/globals';
+import initGetOAuth2Authorize from './getOAuth2Authorize.js';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
-import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters';
+import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters.js';
 import { YError } from 'yerror';
-import type { OAuth2Options, OAuth2GranterService } from '..';
+import type { OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
+import type { OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
+import type { LogService } from 'common-services';
+import type { OAuth2Options, OAuth2GranterService } from '../index.js';
 
 describe('getOAuth2Authorize', () => {
   const OAUTH2: OAuth2Options = {
@@ -12,22 +16,54 @@ describe('getOAuth2Authorize', () => {
     ...DEFAULT_ERRORS_DESCRIPTORS,
     ...OAUTH2_ERRORS_DESCRIPTORS,
   };
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
   const codeGranter = {
     type: 'code',
-    authorizer: { responseType: 'code', authorize: jest.fn() },
-    acknowledger: { acknowledgmentType: 'code', acknowledge: jest.fn() },
+    authorizer: {
+      responseType: 'code',
+      authorize:
+        jest.fn<
+          NonNullable<OAuth2CodeGranterService['authorizer']>['authorize']
+        >(),
+    },
+    acknowledger: {
+      acknowledgmentType: 'code',
+      acknowledge:
+        jest.fn<
+          NonNullable<OAuth2CodeGranterService['acknowledger']>['acknowledge']
+        >(),
+    },
     authenticator: {
       grantType: 'authorization_code',
-      authenticate: jest.fn(),
+      authenticate:
+        jest.fn<
+          NonNullable<OAuth2CodeGranterService['authenticator']>['authenticate']
+        >(),
     },
   };
   const tokenGranter = {
     type: 'token',
-    authorizer: { responseType: 'token', authorize: jest.fn() },
-    acknowledger: { acknowledgmentType: 'token', acknowledge: jest.fn() },
+    authorizer: {
+      responseType: 'token',
+      authorize:
+        jest.fn<
+          NonNullable<
+            NonNullable<OAuth2TokenGranterService['authorizer']>['authorize']
+          >
+        >(),
+    },
+    acknowledger: {
+      acknowledgmentType: 'token',
+      acknowledge:
+        jest.fn<
+          NonNullable<OAuth2TokenGranterService['acknowledger']>['acknowledge']
+        >(),
+    },
   };
-  const oAuth2Granters: OAuth2GranterService[] = [codeGranter, tokenGranter];
+  const oAuth2Granters = [
+    codeGranter,
+    tokenGranter,
+  ] as unknown as OAuth2GranterService[];
 
   beforeEach(() => {
     log.mockReset();
@@ -46,7 +82,7 @@ describe('getOAuth2Authorize', () => {
       codeGranter.authenticator.authenticate,
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
-    ].forEach((mock) =>
+    ].forEach((mock: any) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
     codeGranter.authorizer.authorize.mockResolvedValueOnce({
@@ -99,7 +135,7 @@ describe('getOAuth2Authorize', () => {
       codeGranter.authenticator.authenticate,
       tokenGranter.authorizer.authorize,
       tokenGranter.acknowledger.acknowledge,
-    ].forEach((mock) =>
+    ].forEach((mock: any) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
 

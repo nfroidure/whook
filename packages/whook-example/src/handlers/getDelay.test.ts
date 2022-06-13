@@ -1,4 +1,6 @@
-import initGetDelay from './getDelay';
+import { jest } from '@jest/globals';
+import initGetDelay from './getDelay.js';
+import type { DelayService } from 'common-services';
 
 /* Architecture Note #3.5: Testing
 
@@ -14,8 +16,8 @@ describe('getDelay', () => {
    eventually mock their return values.
   */
   const delay = {
-    create: jest.fn(),
-    clear: jest.fn(),
+    create: jest.fn<DelayService['create']>(),
+    clear: jest.fn<DelayService['clear']>(),
   };
 
   beforeEach(() => {

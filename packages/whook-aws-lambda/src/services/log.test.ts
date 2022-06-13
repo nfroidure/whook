@@ -1,7 +1,8 @@
-import initLog from './log';
+import { jest } from '@jest/globals';
+import initLog from './log.js';
 
 describe('log service', () => {
-  const spy = jest.spyOn(console, 'log').mockImplementation();
+  const spy = jest.spyOn(console, 'log').mockImplementation(() => undefined);
 
   afterAll(() => spy.mockRestore());
 

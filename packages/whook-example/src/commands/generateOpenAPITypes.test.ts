@@ -1,11 +1,13 @@
-import initGenerateOpenAPITypes from './generateOpenAPITypes';
+import { jest } from '@jest/globals';
+import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
 import { PassThrough } from 'stream';
 import { initGetPingDefinition } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { LogService } from 'common-services';
 
 describe('generateOpenAPITypes', () => {
   const getOpenAPI = jest.fn();
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
   const API: OpenAPIV3.Document = {
     openapi: '3.0.2',
     info: {

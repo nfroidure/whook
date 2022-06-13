@@ -2,8 +2,8 @@ import { service } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import statuses from 'statuses';
 import ms from 'ms';
-import initObfuscatorService from './services/obfuscator';
-import initAPMService from './services/apm';
+import initObfuscatorService from './services/obfuscator.js';
+import initAPMService from './services/apm.js';
 import type { Parameters, HandlerFunction, Dependencies } from 'knifecycle';
 import type { LogService, TimeService, DelayService } from 'common-services';
 import type { IncomingMessage, ServerResponse } from 'http';
@@ -14,8 +14,8 @@ import type { YError } from 'yerror';
 import type {
   ObfuscatorService,
   ObfuscatorConfig,
-} from './services/obfuscator';
-import type { APMService } from './services/apm';
+} from './services/obfuscator.js';
+import type { APMService } from './services/apm.js';
 
 export type { ObfuscatorConfig, ObfuscatorService, APMService };
 export { initObfuscatorService, initAPMService };

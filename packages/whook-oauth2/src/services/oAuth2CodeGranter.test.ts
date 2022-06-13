@@ -1,11 +1,29 @@
-import initOAuth2CodeGranter from './oAuth2CodeGranter';
+import { jest } from '@jest/globals';
+import { BaseAuthenticationData } from '@whook/authorization';
+import initOAuth2CodeGranter from './oAuth2CodeGranter.js';
+import {
+  CheckApplicationService,
+  OAuth2CodeService,
+} from './oAuth2Granters.js';
 
 describe('OAuth2CodeGranter', () => {
   const oAuth2Code = {
-    create: jest.fn(),
-    check: jest.fn(),
+    create:
+      jest.fn<
+        OAuth2CodeService<
+          BaseAuthenticationData<string, string>,
+          string
+        >['create']
+      >(),
+    check:
+      jest.fn<
+        OAuth2CodeService<
+          BaseAuthenticationData<string, string>,
+          string
+        >['check']
+      >(),
   };
-  const checkApplication = jest.fn();
+  const checkApplication = jest.fn<CheckApplicationService>();
   const log = jest.fn();
 
   beforeEach(() => {
@@ -24,9 +42,13 @@ describe('OAuth2CodeGranter', () => {
 
     checkApplication.mockResolvedValue({
       redirectURI: 'https://www.example.com',
+      type: 'a_type',
+      scope: 'a_scope',
+      applicationId: 'abbacaca-abba-caca-abba-cacaabbac0c0',
     });
     oAuth2Code.create.mockResolvedValueOnce('yolo');
     oAuth2Code.check.mockResolvedValueOnce({
+      redirectURI: 'https://www.example2.com',
       applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       scope: 'user',
     });
@@ -76,6 +98,7 @@ describe('OAuth2CodeGranter', () => {
         },
         "authenticatorResult": Object {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "redirectURI": "https://www.example2.com",
           "scope": "user",
         },
         "authorizerResult": Object {

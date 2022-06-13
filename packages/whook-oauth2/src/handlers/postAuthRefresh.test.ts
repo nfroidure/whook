@@ -1,12 +1,14 @@
-import initPostAuthRefresh from './postAuthRefresh';
+import { jest } from '@jest/globals';
+import initPostAuthRefresh from './postAuthRefresh.js';
+import type { AuthCookiesService } from '../services/authCookies.js';
 
 describe('postAuthRefresh', () => {
   test('should work', async () => {
     const authCookies = {
-      parse: jest.fn(),
-      build: jest.fn(),
+      parse: jest.fn<AuthCookiesService['parse']>(),
+      build: jest.fn<AuthCookiesService['build']>(),
     };
-    const postOAuth2Token = jest.fn();
+    const postOAuth2Token = jest.fn<any>();
     const postAuthRefresh = await initPostAuthRefresh({
       ROOT_AUTHENTICATION_DATA: {
         scope: 'user',
@@ -20,7 +22,7 @@ describe('postAuthRefresh', () => {
       access_token: 'an_access_token',
       refresh_token: 'a_refresh_token',
     });
-    authCookies.build.mockReturnValueOnce('the_build_cookies');
+    authCookies.build.mockReturnValueOnce(['the_build_cookies']);
     postOAuth2Token.mockResolvedValueOnce({
       status: 200,
       body: {
@@ -87,7 +89,9 @@ describe('postAuthRefresh', () => {
             "token_type": "bearer",
           },
           "headers": Object {
-            "Set-Cookie": "the_build_cookies",
+            "Set-Cookie": Array [
+              "the_build_cookies",
+            ],
           },
           "status": 200,
         },

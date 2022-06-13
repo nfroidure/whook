@@ -12,7 +12,7 @@ import {
   initInitializerBuilder,
 } from 'knifecycle';
 import { DEFAULT_BUILD_OPTIONS, initCompiler } from '@whook/whook';
-import initBuildAutoloader from './services/_autoload';
+import initBuildAutoloader from './services/_autoload.js';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
@@ -341,7 +341,7 @@ const ${buildWrapper.name} = pickModule(require('${buildWrapper.path}'));
 const { initialize } = require('./initialize');`
       : `import initHandler from '${rootNode.path}';
 import ${buildWrapper.name} from '${buildWrapper.path}';
-import { initialize } from './initialize';`
+import { initialize } from './initialize.js';`
   }
 
 const handlerInitializer = ${buildWrapper.name}(

@@ -1,13 +1,21 @@
-import initAutoload from './_autoload';
+import { jest } from '@jest/globals';
+import initAutoload from './_autoload.js';
 import { service } from 'knifecycle';
 import { YError } from 'yerror';
-import { identity } from '../libs/utils';
-import type { ServiceInitializer, Dependencies, Service } from 'knifecycle';
+import { identity } from '../libs/utils.js';
+import type { LogService } from 'common-services';
+import type {
+  ServiceInitializer,
+  Dependencies,
+  Service,
+  Injector,
+} from 'knifecycle';
+import type { ImporterService } from './importer.js';
 
 describe('$autoload', () => {
-  const log = jest.fn();
-  const $injector = jest.fn();
-  const importer = jest.fn();
+  const log = jest.fn<LogService>();
+  const $injector = jest.fn<Injector<any>>();
+  const importer = jest.fn<ImporterService<any>>();
   const resolve = jest.fn();
 
   beforeEach(() => {
@@ -39,7 +47,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('CONFIGS');
 
@@ -70,7 +78,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('CONFIG');
 
@@ -94,7 +102,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/services/API.js',
       );
-      importer.mockImplementationOnce(() => ({
+      importer.mockImplementationOnce(async () => ({
         default: service(async () => ({ info: {} }), 'API'),
       }));
 
@@ -107,7 +115,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('API');
 
@@ -131,7 +139,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js',
       );
-      importer.mockImplementationOnce(() => ({
+      importer.mockImplementationOnce(async () => ({
         default: service(async () => ({ info: {} }), 'SERVICE_NAME_MAP'),
       }));
 
@@ -143,7 +151,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('SERVICE_NAME_MAP');
 
@@ -203,7 +211,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('HANDLERS');
 
@@ -248,7 +256,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPing');
 
@@ -293,7 +301,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPing');
 
@@ -340,7 +348,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPing');
 
@@ -382,7 +390,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPing');
 
@@ -428,7 +436,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPing');
 
@@ -455,7 +463,7 @@ describe('$autoload', () => {
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/handlers/getPing.js',
       );
-      importer.mockImplementationOnce(() => ({
+      importer.mockImplementationOnce(async () => ({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
       }));
 
@@ -467,7 +475,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPing');
 
@@ -509,7 +517,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPingWrapped');
 
@@ -551,7 +559,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
       const result = await $autoload('getPingWrapped');
 
@@ -590,7 +598,7 @@ describe('$autoload', () => {
         WRAPPERS: [],
         log,
         importer,
-        resolve,
+        resolve: resolve as unknown as RequireResolve,
       });
 
       try {
@@ -600,7 +608,7 @@ describe('$autoload', () => {
         expect({
           errorCode: (err as YError).code,
           errorParams: (err as YError).params,
-          logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
+          logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
           injectorCalls: $injector.mock.calls,
           importerCalls: importer.mock.calls,
           resolveCalls: resolve.mock.calls,

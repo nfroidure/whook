@@ -1,8 +1,13 @@
-import initCreateWhook from './createWhook';
+import { jest } from '@jest/globals';
+import initCreateWhook from './createWhook.js';
 import { YError } from 'yerror';
+import { readFileSync } from 'fs';
+import type { LogService } from 'common-services';
+import type { PathLike } from 'fs-extra';
 
-// eslint-disable-next-line
-const _packageJSON = require('@whook/example/package.json');
+const _packageJSON = JSON.parse(
+  readFileSync('../whook-example/package.json').toString(),
+);
 
 describe('initCreateWhook', () => {
   const CWD = '/home/whoiam/projects/';
@@ -28,18 +33,18 @@ describe('initCreateWhook', () => {
     name: 'super-project',
     directory: '/home/whoiam/projects/yolo',
   };
-  const writeFile = jest.fn();
-  const readFile = jest.fn();
-  const readdir = jest.fn();
-  const exec = jest.fn();
-  const copy = jest.fn();
-  const axios = jest.fn();
-  const ora = jest.fn();
+  const writeFile = jest.fn<(file: PathLike, data: Buffer) => Promise<void>>();
+  const readFile = jest.fn<(file: PathLike) => Promise<Buffer>>();
+  const readdir = jest.fn<(file: PathLike) => Promise<string[]>>();
+  const exec = jest.fn<any>();
+  const axios = jest.fn<any>();
+  const ora = jest.fn<any>();
+  const copy = jest.fn<any>();
   const oraInstance = {
-    start: jest.fn(),
-    stopAndPersist: jest.fn(),
+    start: jest.fn<any>(),
+    stopAndPersist: jest.fn<any>(),
   };
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     axios.mockReset();
@@ -73,7 +78,7 @@ Mr Bean
   });
 
   it('should work', async () => {
-    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
     readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
@@ -111,9 +116,9 @@ Mr Bean
       SOURCE_DIR,
       author,
       project,
-      writeFile,
-      readFile,
-      readdir,
+      writeFile: writeFile as any,
+      readFile: readFile as any,
+      readdir: readdir as any,
       exec: exec as any,
       copy,
       axios: axios as any,
@@ -125,62 +130,15 @@ Mr Bean
 
     expect(
       JSON.parse(
-        writeFile.mock.calls.find((call) =>
-          call[0].endsWith('package.json'),
-        )[1],
+        writeFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
       ),
     ).toMatchInlineSnapshot(`
       Object {
         "author": Object {
           "email": "wayne@warner.com",
           "name": "Wayne Campbell",
-        },
-        "babel": Object {
-          "env": Object {
-            "cjs": Object {
-              "presets": Array [
-                Array [
-                  "@babel/env",
-                  Object {
-                    "modules": "commonjs",
-                    "targets": Object {
-                      "node": "10",
-                    },
-                  },
-                ],
-              ],
-            },
-            "mjs": Object {
-              "presets": Array [
-                Array [
-                  "@babel/env",
-                  Object {
-                    "modules": false,
-                    "targets": Object {
-                      "node": "12",
-                    },
-                  },
-                ],
-              ],
-            },
-          },
-          "plugins": Array [
-            "@babel/proposal-class-properties",
-            "@babel/plugin-proposal-object-rest-spread",
-            "babel-plugin-knifecycle",
-          ],
-          "presets": Array [
-            "@babel/typescript",
-            Array [
-              "@babel/env",
-              Object {
-                "targets": Object {
-                  "node": "16.15.0",
-                },
-              },
-            ],
-          ],
-          "sourceMaps": true,
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
@@ -191,37 +149,28 @@ Mr Bean
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
-          "common-services": "^10.0.2",
+          "common-services": "^11.0.1",
           "http-auth-utils": "^3.0.3",
-          "jwt-service": "^8.0.1",
-          "knifecycle": "^12.0.4",
+          "jwt-service": "^9.0.1",
+          "knifecycle": "^13.0.0",
           "openapi-schema-validator": "^11.0.1",
           "openapi-types": "^11.0.1",
-          "strict-qs": "^6.1.5",
+          "strict-qs": "^7.0.0",
           "type-fest": "^2.13.0",
           "yerror": "^6.1.1",
           "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
-          "@babel/cli": "^7.17.10",
-          "@babel/core": "^7.18.2",
-          "@babel/eslint-parser": "^7.18.2",
-          "@babel/node": "^7.13.13",
-          "@babel/plugin-proposal-class-properties": "^7.17.12",
-          "@babel/plugin-proposal-object-rest-spread": "^7.18.0",
-          "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-          "@babel/plugin-syntax-import-meta": "^7.10.4",
-          "@babel/preset-env": "^7.18.2",
-          "@babel/preset-typescript": "^7.17.12",
-          "@babel/register": "^7.17.7",
-          "@types/jest": "^27.0.2",
-          "@typescript-eslint/eslint-plugin": "^5.26.0",
-          "@typescript-eslint/parser": "^5.26.0",
+          "@types/jest": "^28.1.1",
+          "@typescript-eslint/eslint-plugin": "^5.27.0",
+          "@typescript-eslint/parser": "^5.27.0",
           "axios": "^0.27.2",
-          "babel-plugin-knifecycle": "^5.0.3",
           "chokidar": "^3.5.1",
-          "eslint": "^8.16.0",
+          "esbuild": "^0.14.43",
+          "esbuild-jest": "^0.5.0",
+          "eslint": "^8.17.0",
+          "eslint-config-prettier": "^8.5.0",
           "eslint-plugin-prettier": "^4.0.0",
           "jest": "^28.1.0",
           "jsarch": "^5.0.1",
@@ -229,7 +178,8 @@ Mr Bean
           "prettier": "^2.6.2",
           "rimraf": "^3.0.2",
           "schema2dts": "^4.1.1",
-          "typescript": "^4.7.2",
+          "ts-node": "^10.8.1",
+          "typescript": "^4.7.3",
         },
         "engines": Object {
           "node": ">=16.15.0",
@@ -243,6 +193,7 @@ Mr Bean
           },
           "extends": Array [
             "eslint:recommended",
+            "plugin:prettier/recommended",
             "plugin:@typescript-eslint/eslint-recommended",
             "plugin:@typescript-eslint/recommended",
           ],
@@ -253,7 +204,7 @@ Mr Bean
           "parserOptions": Object {
             "ecmaVersion": 2018,
             "modules": true,
-            "sourceType": "module",
+            "sourceType": "script",
           },
           "plugins": Array [
             "prettier",
@@ -275,6 +226,12 @@ Mr Bean
             "lcov",
             "html",
           ],
+          "extensionsToTreatAsEsm": Array [
+            ".ts",
+          ],
+          "moduleNameMapper": Object {
+            "(.+)\\\\.js": "$1",
+          },
           "roots": Array [
             "<rootDir>/src",
           ],
@@ -282,13 +239,21 @@ Mr Bean
           "testPathIgnorePatterns": Array [
             "/node_modules/",
           ],
+          "transform": Object {
+            "^.+\\\\.tsx?$": Array [
+              "esbuild-jest",
+              Object {
+                "format": "esm",
+                "sourcemap": true,
+              },
+            ],
+          },
         },
         "keywords": Array [
           "whook",
         ],
         "license": "SEE LICENSE",
-        "main": "dist/index",
-        "module": "dist/index.mjs",
+        "main": "dist/index.js",
         "name": "super-project",
         "prettier": Object {
           "printWidth": 80,
@@ -301,25 +266,22 @@ Mr Bean
         "scripts": Object {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
-          "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
-          "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
-          "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
-          "compile:mjs": "babel --env-name=mjs --out-file-extension=.mjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
+          "build": "rimraf -f 'dist' && tsc --outDir dist",
           "cover": "npm run jest -- --coverage",
-          "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} babel-node --extensions '.ts,.js' --inspect bin/dev",
-          "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/dev",
+          "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
+          "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
           "genPackagelock": "npm i --package-lock-only",
-          "jest": "NODE_ENV=test jest",
+          "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
-          "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
+          "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
           "test": "npm run jest",
-          "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
-          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
+          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js",
-          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- bin/repl.js",
+          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
         },
+        "type": "module",
         "types": "dist/index.d.ts",
         "version": "0.0.0",
       }
@@ -338,7 +300,7 @@ Mr Bean
   });
 
   it('should handle network issues', async () => {
-    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
     readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
@@ -372,9 +334,9 @@ Mr Bean
       SOURCE_DIR,
       author,
       project,
-      writeFile,
-      readFile,
-      readdir,
+      writeFile: writeFile as any,
+      readFile: readFile as any,
+      readdir: readdir as any,
       exec: exec as any,
       copy,
       axios: axios as any,
@@ -386,62 +348,15 @@ Mr Bean
 
     expect(
       JSON.parse(
-        writeFile.mock.calls.find((call) =>
-          call[0].endsWith('package.json'),
-        )[1],
+        writeFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
       ),
     ).toMatchInlineSnapshot(`
       Object {
         "author": Object {
           "email": "wayne@warner.com",
           "name": "Wayne Campbell",
-        },
-        "babel": Object {
-          "env": Object {
-            "cjs": Object {
-              "presets": Array [
-                Array [
-                  "@babel/env",
-                  Object {
-                    "modules": "commonjs",
-                    "targets": Object {
-                      "node": "10",
-                    },
-                  },
-                ],
-              ],
-            },
-            "mjs": Object {
-              "presets": Array [
-                Array [
-                  "@babel/env",
-                  Object {
-                    "modules": false,
-                    "targets": Object {
-                      "node": "12",
-                    },
-                  },
-                ],
-              ],
-            },
-          },
-          "plugins": Array [
-            "@babel/proposal-class-properties",
-            "@babel/plugin-proposal-object-rest-spread",
-            "babel-plugin-knifecycle",
-          ],
-          "presets": Array [
-            "@babel/typescript",
-            Array [
-              "@babel/env",
-              Object {
-                "targets": Object {
-                  "node": "16.15.0",
-                },
-              },
-            ],
-          ],
-          "sourceMaps": true,
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
@@ -452,37 +367,28 @@ Mr Bean
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
-          "common-services": "^10.0.2",
+          "common-services": "^11.0.1",
           "http-auth-utils": "^3.0.3",
-          "jwt-service": "^8.0.1",
-          "knifecycle": "^12.0.4",
+          "jwt-service": "^9.0.1",
+          "knifecycle": "^13.0.0",
           "openapi-schema-validator": "^11.0.1",
           "openapi-types": "^11.0.1",
-          "strict-qs": "^6.1.5",
+          "strict-qs": "^7.0.0",
           "type-fest": "^2.13.0",
           "yerror": "^6.1.1",
           "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
-          "@babel/cli": "^7.17.10",
-          "@babel/core": "^7.18.2",
-          "@babel/eslint-parser": "^7.18.2",
-          "@babel/node": "^7.13.13",
-          "@babel/plugin-proposal-class-properties": "^7.17.12",
-          "@babel/plugin-proposal-object-rest-spread": "^7.18.0",
-          "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-          "@babel/plugin-syntax-import-meta": "^7.10.4",
-          "@babel/preset-env": "^7.18.2",
-          "@babel/preset-typescript": "^7.17.12",
-          "@babel/register": "^7.17.7",
-          "@types/jest": "^27.0.2",
-          "@typescript-eslint/eslint-plugin": "^5.26.0",
-          "@typescript-eslint/parser": "^5.26.0",
+          "@types/jest": "^28.1.1",
+          "@typescript-eslint/eslint-plugin": "^5.27.0",
+          "@typescript-eslint/parser": "^5.27.0",
           "axios": "^0.27.2",
-          "babel-plugin-knifecycle": "^5.0.3",
           "chokidar": "^3.5.1",
-          "eslint": "^8.16.0",
+          "esbuild": "^0.14.43",
+          "esbuild-jest": "^0.5.0",
+          "eslint": "^8.17.0",
+          "eslint-config-prettier": "^8.5.0",
           "eslint-plugin-prettier": "^4.0.0",
           "jest": "^28.1.0",
           "jsarch": "^5.0.1",
@@ -490,7 +396,8 @@ Mr Bean
           "prettier": "^2.6.2",
           "rimraf": "^3.0.2",
           "schema2dts": "^4.1.1",
-          "typescript": "^4.7.2",
+          "ts-node": "^10.8.1",
+          "typescript": "^4.7.3",
         },
         "engines": Object {
           "node": ">=16.15.0",
@@ -504,6 +411,7 @@ Mr Bean
           },
           "extends": Array [
             "eslint:recommended",
+            "plugin:prettier/recommended",
             "plugin:@typescript-eslint/eslint-recommended",
             "plugin:@typescript-eslint/recommended",
           ],
@@ -514,7 +422,7 @@ Mr Bean
           "parserOptions": Object {
             "ecmaVersion": 2018,
             "modules": true,
-            "sourceType": "module",
+            "sourceType": "script",
           },
           "plugins": Array [
             "prettier",
@@ -536,6 +444,12 @@ Mr Bean
             "lcov",
             "html",
           ],
+          "extensionsToTreatAsEsm": Array [
+            ".ts",
+          ],
+          "moduleNameMapper": Object {
+            "(.+)\\\\.js": "$1",
+          },
           "roots": Array [
             "<rootDir>/src",
           ],
@@ -543,13 +457,21 @@ Mr Bean
           "testPathIgnorePatterns": Array [
             "/node_modules/",
           ],
+          "transform": Object {
+            "^.+\\\\.tsx?$": Array [
+              "esbuild-jest",
+              Object {
+                "format": "esm",
+                "sourcemap": true,
+              },
+            ],
+          },
         },
         "keywords": Array [
           "whook",
         ],
         "license": "SEE LICENSE",
-        "main": "dist/index",
-        "module": "dist/index.mjs",
+        "main": "dist/index.js",
         "name": "super-project",
         "prettier": Object {
           "printWidth": 80,
@@ -562,25 +484,22 @@ Mr Bean
         "scripts": Object {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
-          "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
-          "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
-          "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
-          "compile:mjs": "babel --env-name=mjs --out-file-extension=.mjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
+          "build": "rimraf -f 'dist' && tsc --outDir dist",
           "cover": "npm run jest -- --coverage",
-          "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} babel-node --extensions '.ts,.js' --inspect bin/dev",
-          "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/dev",
+          "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
+          "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
           "genPackagelock": "npm i --package-lock-only",
-          "jest": "NODE_ENV=test jest",
+          "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
-          "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
+          "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
           "test": "npm run jest",
-          "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
-          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
+          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js",
-          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- bin/repl.js",
+          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
         },
+        "type": "module",
         "types": "dist/index.d.ts",
         "version": "0.0.0",
       }
@@ -599,7 +518,7 @@ Mr Bean
   });
 
   it('should handle git initialization problems', async () => {
-    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
     readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockResolvedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
@@ -618,9 +537,9 @@ Mr Bean
       SOURCE_DIR,
       author,
       project,
-      writeFile,
-      readFile,
-      readdir,
+      writeFile: writeFile as any,
+      readFile: readFile as any,
+      readdir: readdir as any,
       exec: exec as any,
       copy,
       axios: axios as any,
@@ -632,62 +551,15 @@ Mr Bean
 
     expect(
       JSON.parse(
-        writeFile.mock.calls.find((call) =>
-          call[0].endsWith('package.json'),
-        )[1],
+        writeFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
       ),
     ).toMatchInlineSnapshot(`
       Object {
         "author": Object {
           "email": "wayne@warner.com",
           "name": "Wayne Campbell",
-        },
-        "babel": Object {
-          "env": Object {
-            "cjs": Object {
-              "presets": Array [
-                Array [
-                  "@babel/env",
-                  Object {
-                    "modules": "commonjs",
-                    "targets": Object {
-                      "node": "10",
-                    },
-                  },
-                ],
-              ],
-            },
-            "mjs": Object {
-              "presets": Array [
-                Array [
-                  "@babel/env",
-                  Object {
-                    "modules": false,
-                    "targets": Object {
-                      "node": "12",
-                    },
-                  },
-                ],
-              ],
-            },
-          },
-          "plugins": Array [
-            "@babel/proposal-class-properties",
-            "@babel/plugin-proposal-object-rest-spread",
-            "babel-plugin-knifecycle",
-          ],
-          "presets": Array [
-            "@babel/typescript",
-            Array [
-              "@babel/env",
-              Object {
-                "targets": Object {
-                  "node": "16.15.0",
-                },
-              },
-            ],
-          ],
-          "sourceMaps": true,
         },
         "dependencies": Object {
           "@whook/authorization": "<current_version>",
@@ -698,37 +570,28 @@ Mr Bean
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
-          "common-services": "^10.0.2",
+          "common-services": "^11.0.1",
           "http-auth-utils": "^3.0.3",
-          "jwt-service": "^8.0.1",
-          "knifecycle": "^12.0.4",
+          "jwt-service": "^9.0.1",
+          "knifecycle": "^13.0.0",
           "openapi-schema-validator": "^11.0.1",
           "openapi-types": "^11.0.1",
-          "strict-qs": "^6.1.5",
+          "strict-qs": "^7.0.0",
           "type-fest": "^2.13.0",
           "yerror": "^6.1.1",
           "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
         "devDependencies": Object {
-          "@babel/cli": "^7.17.10",
-          "@babel/core": "^7.18.2",
-          "@babel/eslint-parser": "^7.18.2",
-          "@babel/node": "^7.13.13",
-          "@babel/plugin-proposal-class-properties": "^7.17.12",
-          "@babel/plugin-proposal-object-rest-spread": "^7.18.0",
-          "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-          "@babel/plugin-syntax-import-meta": "^7.10.4",
-          "@babel/preset-env": "^7.18.2",
-          "@babel/preset-typescript": "^7.17.12",
-          "@babel/register": "^7.17.7",
-          "@types/jest": "^27.0.2",
-          "@typescript-eslint/eslint-plugin": "^5.26.0",
-          "@typescript-eslint/parser": "^5.26.0",
+          "@types/jest": "^28.1.1",
+          "@typescript-eslint/eslint-plugin": "^5.27.0",
+          "@typescript-eslint/parser": "^5.27.0",
           "axios": "^0.27.2",
-          "babel-plugin-knifecycle": "^5.0.3",
           "chokidar": "^3.5.1",
-          "eslint": "^8.16.0",
+          "esbuild": "^0.14.43",
+          "esbuild-jest": "^0.5.0",
+          "eslint": "^8.17.0",
+          "eslint-config-prettier": "^8.5.0",
           "eslint-plugin-prettier": "^4.0.0",
           "jest": "^28.1.0",
           "jsarch": "^5.0.1",
@@ -736,7 +599,8 @@ Mr Bean
           "prettier": "^2.6.2",
           "rimraf": "^3.0.2",
           "schema2dts": "^4.1.1",
-          "typescript": "^4.7.2",
+          "ts-node": "^10.8.1",
+          "typescript": "^4.7.3",
         },
         "engines": Object {
           "node": ">=16.15.0",
@@ -750,6 +614,7 @@ Mr Bean
           },
           "extends": Array [
             "eslint:recommended",
+            "plugin:prettier/recommended",
             "plugin:@typescript-eslint/eslint-recommended",
             "plugin:@typescript-eslint/recommended",
           ],
@@ -760,7 +625,7 @@ Mr Bean
           "parserOptions": Object {
             "ecmaVersion": 2018,
             "modules": true,
-            "sourceType": "module",
+            "sourceType": "script",
           },
           "plugins": Array [
             "prettier",
@@ -782,6 +647,12 @@ Mr Bean
             "lcov",
             "html",
           ],
+          "extensionsToTreatAsEsm": Array [
+            ".ts",
+          ],
+          "moduleNameMapper": Object {
+            "(.+)\\\\.js": "$1",
+          },
           "roots": Array [
             "<rootDir>/src",
           ],
@@ -789,13 +660,21 @@ Mr Bean
           "testPathIgnorePatterns": Array [
             "/node_modules/",
           ],
+          "transform": Object {
+            "^.+\\\\.tsx?$": Array [
+              "esbuild-jest",
+              Object {
+                "format": "esm",
+                "sourcemap": true,
+              },
+            ],
+          },
         },
         "keywords": Array [
           "whook",
         ],
         "license": "SEE LICENSE",
-        "main": "dist/index",
-        "module": "dist/index.mjs",
+        "main": "dist/index.js",
         "name": "super-project",
         "prettier": Object {
           "printWidth": 80,
@@ -808,25 +687,22 @@ Mr Bean
         "scripts": Object {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
-          "build": "npm run compile && NODE_ENV=\${NODE_ENV:-development} node bin/build",
-          "compile": "rimraf -f 'dist' && npm run compile:cjs && npm run compile:mjs",
-          "compile:cjs": "babel --env-name=cjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
-          "compile:mjs": "babel --env-name=mjs --out-file-extension=.mjs --out-dir=dist --extensions '.ts,.js' --source-maps=true src",
+          "build": "rimraf -f 'dist' && tsc --outDir dist",
           "cover": "npm run jest -- --coverage",
-          "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} babel-node --extensions '.ts,.js' --inspect bin/dev",
-          "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/dev",
+          "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
+          "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
           "genPackagelock": "npm i --package-lock-only",
-          "jest": "NODE_ENV=test jest",
+          "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
           "prettier": "prettier --write 'src/**/*.ts'",
-          "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start",
+          "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
           "test": "npm run jest",
-          "types": "rimraf -f 'dist/**/*.d.ts' && tsc --project . --declaration --emitDeclarationOnly --outDir dist",
-          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 babel-node --extensions '.ts,.js' bin/watch",
+          "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- node_modules/@whook/cli/bin/whook.js",
-          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} babel-node --extensions '.ts,.js' -- bin/repl.js",
+          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
         },
+        "type": "module",
         "types": "dist/index.d.ts",
         "version": "0.0.0",
       }
@@ -845,7 +721,7 @@ Mr Bean
   });
 
   it('should fail with access problems', async () => {
-    readFile.mockResolvedValueOnce(JSON.stringify(packageJSON));
+    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
     readdir.mockResolvedValueOnce(['development', 'production']);
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
@@ -865,9 +741,9 @@ Mr Bean
         SOURCE_DIR,
         author,
         project,
-        writeFile,
-        readFile,
-        readdir,
+        writeFile: writeFile as any,
+        readFile: readFile as any,
+        readdir: readdir as any,
         exec: exec as any,
         copy,
         axios: axios as any,

@@ -16,10 +16,10 @@ import type {
   Initializer,
   ServiceInitializerWrapper,
 } from 'knifecycle';
-import type { WhookCommandArgs } from '..';
+import type { WhookCommandArgs } from '../index.js';
 import type { LogService } from 'common-services';
 
-type AutoloaderWrapperDependencies = {
+export type AutoloaderWrapperDependencies = {
   PROJECT_SRC: string;
   WHOOK_PLUGINS_PATHS: string[];
   args: WhookCommandArgs;
@@ -42,7 +42,7 @@ const initializerWrapper: ServiceInitializerWrapper<
 ): Promise<Service> => {
   log('debug', '🤖 - Wrapping the whook autoloader.');
 
-  const commandName = args._[0];
+  const commandName = args.rest[0];
   let commandModule;
 
   if (!commandName) {
@@ -57,7 +57,7 @@ const initializerWrapper: ServiceInitializerWrapper<
     };
   } else {
     for (const basePath of [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS]) {
-      const finalPath = path.join(basePath, 'commands', commandName);
+      const finalPath = path.join(basePath, 'commands', commandName + '.js');
       try {
         commandModule = await importer(finalPath);
         break;

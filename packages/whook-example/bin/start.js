@@ -1,5 +1,5 @@
 #! /usr/bin/env node
 
-const { runServer } = require('../dist/index');
+import { runServer } from '../dist/index.js';
 
-runServer();
+await runServer();

@@ -1,4 +1,4 @@
-import { loadLambda } from '../libs/utils';
+import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import { YError } from 'yerror';
@@ -8,11 +8,7 @@ import {
 } from '@whook/http-router';
 import stream from 'stream';
 import camelCase from 'camelcase';
-import type {
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCommandNamedArgs,
-} from '@whook/cli';
+import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 
@@ -68,16 +64,13 @@ async function initTestHTTPLambdaCommand({
 }) {
   return async () => {
     const {
-      name,
-      type,
-      contentType,
-      parameters: rawParameters,
-    }: WhookCommandNamedArgs = readArgs(definition.arguments, args) as {
+      namedArguments: { name, type, contentType, parameters: rawParameters },
+    } = readArgs<{
       name: string;
       type: string;
       contentType: string;
       parameters: string;
-    };
+    }>(definition.arguments, args);
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,

@@ -23,7 +23,7 @@ import type {
 } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
-import type { WhookAPIOperationAWSLambdaConfig } from '..';
+import type { WhookAPIOperationAWSLambdaConfig } from '../index.js';
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,

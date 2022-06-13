@@ -1,8 +1,10 @@
-import initCommand from './command';
+import { jest } from '@jest/globals';
+import initCommand from './command.js';
+import type { LogService } from 'common-services';
 
 describe('command', () => {
-  const log = jest.fn();
-  const commandHandler = () => log('commandHandler ran');
+  const log = jest.fn<LogService>();
+  const commandHandler = () => log('info', 'commandHandler ran');
 
   beforeEach(() => {
     log.mockReset();

@@ -1,7 +1,9 @@
-import initArgs from './args';
+import { jest } from '@jest/globals';
+import initArgs from './args.js';
+import type { LogService } from 'common-services';
 
 describe('initArgs', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();
@@ -10,7 +12,7 @@ describe('initArgs', () => {
   it('should parse args', async () => {
     const args = await initArgs({
       log,
-      ARGS: ['handler', '--name', 'getPing', '--parameters', '{}'],
+      ARGS: ['whook', 'handler', '--name', 'getPing', '--parameters', '{}'],
     });
 
     expect({

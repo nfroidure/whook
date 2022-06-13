@@ -1,6 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import { YError } from 'yerror';
-import { setURLError } from './getOAuth2Authorize';
+import { setURLError } from './getOAuth2Authorize.js';
 import type {
   WhookAPIHandlerDefinition,
   WhookErrorsDescriptors,
@@ -8,7 +8,7 @@ import type {
 import type {
   CheckApplicationService,
   OAuth2GranterService,
-} from '../services/oAuth2Granters';
+} from '../services/oAuth2Granters.js';
 import type { LogService } from 'common-services';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
@@ -95,9 +95,16 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export type HandlerDependencies = {
+export type HandlerDependencies<
+  AUTHENTICATION_DATA extends BaseAuthenticationData<string, string>,
+> = {
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
-  oAuth2Granters: OAuth2GranterService[];
+  oAuth2Granters: OAuth2GranterService<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>,
+    AUTHENTICATION_DATA
+  >[];
   checkApplication: CheckApplicationService;
   log: LogService;
 };
@@ -117,7 +124,7 @@ type HandlerParameters<AUTHENTICATION_DATA> = {
 export default autoHandler(postOAuth2Acknowledge) as unknown as <
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 >(
-  dependencies: HandlerDependencies,
+  dependencies: HandlerDependencies<AUTHENTICATION_DATA>,
 ) => (
   parameters: HandlerParameters<AUTHENTICATION_DATA>,
 ) => ReturnType<typeof postOAuth2Acknowledge>;
@@ -130,7 +137,7 @@ async function postOAuth2Acknowledge<
     oAuth2Granters,
     checkApplication,
     log,
-  }: HandlerDependencies,
+  }: HandlerDependencies<AUTHENTICATION_DATA>,
   {
     authenticationData,
     body: {
@@ -188,7 +195,10 @@ async function postOAuth2Acknowledge<
     url.searchParams.set('scope', scope);
     url.searchParams.set('state', state);
     Object.keys(additionalProperties).forEach((key) =>
-      url.searchParams.set(snakeCase(key), additionalProperties[key] as string),
+      url.searchParams.set(
+        snakeCase(key),
+        additionalProperties[key] as unknown as string,
+      ),
     );
   } catch (err) {
     log('debug', '👫 - OAuth2 acknowledge error', (err as YError).code);

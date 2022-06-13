@@ -1,8 +1,10 @@
-import initENV from './ENV';
+import { jest } from '@jest/globals';
+import initENV from './ENV.js';
+import type { LogService } from 'common-services';
 
 describe('initENV', () => {
-  const log = jest.fn();
-  const readFile = jest.fn();
+  const log = jest.fn<LogService>();
+  const readFile = jest.fn<(path: string) => Promise<Buffer>>();
 
   beforeEach(() => {
     log.mockReset();

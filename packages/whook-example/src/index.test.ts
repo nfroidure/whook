@@ -1,16 +1,24 @@
+import { jest } from '@jest/globals';
 import { constant } from 'knifecycle';
 import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
-} from './index';
-import axios from 'axios';
+} from './index.js';
+import { default as axios } from 'axios';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import type { Knifecycle } from 'knifecycle';
 import type { JWTService } from 'jwt-service';
-import type { AuthenticationData } from './services/authentication';
+import type { AuthenticationData } from './services/authentication.js';
+import type { Logger } from 'common-services';
 
-// eslint-disable-next-line
-const packageConf = require('../package');
+const _packageJSON = JSON.parse(readFileSync('package.json').toString());
+
+// This is necessary only for Jest support
+// it will be removeable when Jest will be fully
+// ESM compatible
+process.env.PROJECT_SRC = join(process.cwd(), 'src');
 
 describe('runServer', () => {
   const logger = {
@@ -27,7 +35,7 @@ describe('runServer', () => {
   async function prepareEnvironment<T extends Knifecycle>($?: T): Promise<T> {
     $ = await basePrepareEnvironment($);
 
-    $.register(constant('API_VERSION', packageConf.version));
+    $.register(constant('API_VERSION', _packageJSON.version));
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(
       constant('BASE_ENV', {
@@ -42,7 +50,7 @@ describe('runServer', () => {
     $.register(constant('NODE_ENVS', ['test']));
     $.register(constant('exit', exit));
     $.register(constant('time', time));
-    $.register(constant('logger', logger));
+    $.register(constant('logger', logger as Logger));
 
     return $;
   }
@@ -76,7 +84,10 @@ describe('runServer', () => {
   it('should work', async () => {
     expect({
       debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls
+        .map(removeIps)
+        .map(filterPaths)
+        .sort(sortLogs),
       logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
@@ -100,7 +111,10 @@ describe('runServer', () => {
       },
       data,
       debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls
+        .map(removeIps)
+        .map(filterPaths)
+        .sort(sortLogs),
       logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
@@ -135,7 +149,10 @@ describe('runServer', () => {
       },
       data,
       debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls.map(filterPaths).sort(sortLogs),
+      logInfoCalls: logger.output.mock.calls
+        .map(removeIps)
+        .map(filterPaths)
+        .sort(sortLogs),
       logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
     }).toMatchSnapshot();
   });
@@ -163,6 +180,7 @@ describe('runServer', () => {
       data,
       debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
       logInfoCalls: logger.output.mock.calls
+        .map(removeIps)
         .map(filterPaths)
         .filter(([arg1]) => arg1 !== 'ERROR')
         .sort(sortLogs),
@@ -179,9 +197,17 @@ function filterPaths(strs) {
   return strs.map((str) =>
     'string' !== typeof str
       ? str
-      : str.replace(
-          /('| |^)(\/[^/]+){1,}\/whook\//g,
-          '$1/home/whoiam/projects/whook/',
-        ),
+      : str
+          .replace(
+            /("|'| |^)(\/[^/]+){1,}\/whook\//g,
+            '$1/home/whoiam/projects/whook/',
+          )
+          .replace(/(node:internal(?:\/\w+){1,}):\d+:\d+/g, '$1:x:x'),
+  );
+}
+
+function removeIps(strs) {
+  return strs.map((str) =>
+    (str as string).replace(/(127\.0\.0\.1|::1)/gm, '_ip_'),
   );
 }

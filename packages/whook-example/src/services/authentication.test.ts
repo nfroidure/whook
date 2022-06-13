@@ -1,11 +1,13 @@
-import initAuthentication from './authentication';
+import { jest } from '@jest/globals';
+import initAuthentication from './authentication.js';
 import { YError } from 'yerror';
-import initJWT from '../services/jwtToken';
-import type { AuthenticationData } from './authentication';
+import initJWT from '../services/jwtToken.js';
+import type { AuthenticationData } from './authentication.js';
 import type { JWTService } from 'jwt-service';
+import type { TimeService } from 'common-services';
 
 describe('authentication', () => {
-  const time = jest.fn();
+  const time = jest.fn<TimeService>();
   let jwtToken: JWTService<AuthenticationData>;
 
   beforeAll(async () => {

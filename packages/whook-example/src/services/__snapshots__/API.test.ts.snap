@@ -56,14 +56,6 @@ Array [
 ]
 `;
 
-exports[`API should produce a valid OpenAPI file 1`] = `
-Object {
-  "result": Object {
-    "errors": Array [],
-  },
-}
-`;
-
 exports[`API should work 1`] = `
 Object {
   "API": Object {

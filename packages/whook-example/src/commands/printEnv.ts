@@ -63,9 +63,11 @@ async function initPrintEnvCommand({
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { keysOnly } = readArgs(definition.arguments, args) as {
+    const {
+      namedArguments: { keysOnly },
+    } = readArgs<{
       keysOnly: boolean;
-    };
+    }>(definition.arguments, args);
 
     log('info', `${JSON.stringify(keysOnly ? Object.keys(ENV) : ENV)}`);
   };

@@ -1,3 +1,3 @@
-const { runServer } = require('../src/index');
+import { runServer } from '../src/index.js';
 
-runServer();
+await runServer();

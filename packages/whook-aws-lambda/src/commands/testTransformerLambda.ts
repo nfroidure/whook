@@ -1,4 +1,4 @@
-import { loadLambda } from '../libs/utils';
+import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
@@ -59,11 +59,13 @@ async function initTestTransformerLambdaCommand({
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { name, type, event } = readArgs(definition.arguments, args) as {
+    const {
+      namedArguments: { name, type, event },
+    } = readArgs<{
       name: string;
       type: string;
       event: string;
-    };
+    }>(definition.arguments, args);
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,

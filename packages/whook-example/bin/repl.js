@@ -1,3 +1,3 @@
-const { runREPL } = require('../src/repl');
+import { runREPL } from '../src/repl.js';
 
-runREPL();
+await runREPL();

@@ -1,213 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`$autoload should delegate to whook $autoloader 1`] = `
-Object {
-  "baseAutoloaderCalls": Array [
-    Array [
-      "anotherService",
-    ],
-  ],
-  "importerCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "debug",
-      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
-    ],
-    Array [
-      "debug",
-      "Command \\"myCommand\\" not found in \\"/var/lib/node/node_modules/@whook/whook/src/commands/myCommand\\".",
-    ],
-  ],
-  "path": "mocked://service",
-  "result": undefined,
-}
-`;
-
 exports[`$autoload should fail with no command definition 1`] = `
 Object {
-  "baseAutoloaderCalls": Array [],
   "errorCode": "E_NO_COMMAND_DEFINITION",
   "errorParams": Array [
     "myCommand",
   ],
   "importerCalls": Array [
     Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
     ],
   ],
+  "injectorCalls": Array [],
   "logCalls": Array [
+    Array [
+      "debug",
+      "🤖 - Initializing the \`$autoload\` service.",
+    ],
     Array [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
     ],
   ],
+  "resolveCalls": Array [],
 }
 `;
 
 exports[`$autoload should fail with no command handler 1`] = `
 Object {
-  "baseAutoloaderCalls": Array [],
   "errorCode": "E_NO_COMMAND_HANDLER",
   "errorParams": Array [
     "myCommand",
   ],
   "importerCalls": Array [
     Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
     ],
   ],
+  "injectorCalls": Array [],
   "logCalls": Array [
+    Array [
+      "debug",
+      "🤖 - Initializing the \`$autoload\` service.",
+    ],
     Array [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
     ],
   ],
-}
-`;
-
-exports[`$autoload should warn with no command name 1`] = `
-Object {
-  "baseAutoloaderCalls": Array [],
-  "importerCalls": Array [],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "warning",
-      "No command given in argument.",
-    ],
-  ],
-  "path": "command://undefined",
-  "result": undefined,
-}
-`;
-
-exports[`$autoload should warn with not found commands 1`] = `
-Object {
-  "baseAutoloaderCalls": Array [],
-  "importerCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "debug",
-      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
-    ],
-    Array [
-      "warning",
-      "Command \\"myCommand\\" not found.",
-    ],
-  ],
-  "path": "command://myCommand",
-  "result": undefined,
-}
-`;
-
-exports[`$autoload should work with bad commands 1`] = `
-Object {
-  "baseAutoloaderCalls": Array [],
-  "importerCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "debug",
-      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
-    ],
-    Array [
-      "debug",
-      "Command \\"myCommand\\" not found in \\"/var/lib/node/node_modules/@whook/whook/src/commands/myCommand\\".",
-    ],
-    Array [
-      "warning",
-      "Command \\"myCommand\\" not found.",
-    ],
-  ],
-  "path": "command://myCommand",
-  "result": undefined,
-}
-`;
-
-exports[`$autoload should work with project commands 1`] = `
-Object {
-  "baseAutoloaderCalls": Array [],
-  "importerCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-  ],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "warning",
-      "Command called!",
-    ],
-  ],
-  "path": "command://myCommand",
-  "result": undefined,
-}
-`;
-
-exports[`$autoload should work with whook-cli commands 1`] = `
-Object {
-  "baseAutoloaderCalls": Array [],
-  "importerCalls": Array [
-    Array [
-      "/home/whoiam/projects/my-whook-project/src/commands/myCommand",
-    ],
-    Array [
-      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand",
-    ],
-  ],
-  "logCalls": Array [
-    Array [
-      "debug",
-      "🤖 - Wrapping the whook autoloader.",
-    ],
-    Array [
-      "debug",
-      "Command \\"myCommand\\" not found in \\"/home/whoiam/projects/my-whook-project/src/commands/myCommand\\".",
-    ],
-    Array [
-      "warning",
-      "Command called!",
-    ],
-  ],
-  "path": "command://myCommand",
-  "result": undefined,
+  "resolveCalls": Array [],
 }
 `;

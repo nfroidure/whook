@@ -26,7 +26,7 @@ Object {
         },
         Object {
           "default": undefined,
-          "message": "You email?",
+          "message": "Your email?",
           "name": "authorEmail",
         },
       ],
@@ -91,7 +91,7 @@ Object {
         },
         Object {
           "default": "wayne@warner.com",
-          "message": "You email?",
+          "message": "Your email?",
           "name": "authorEmail",
         },
       ],
@@ -142,7 +142,7 @@ Object {
         },
         Object {
           "default": "wayne@warner.com",
-          "message": "You email?",
+          "message": "Your email?",
           "name": "authorEmail",
         },
       ],

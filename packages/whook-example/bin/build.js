@@ -1,5 +1,5 @@
 #! /usr/bin/env node
 
-const { runBuild } = require('../dist/build');
+import { runBuild } from '../dist/build.js';
 
-runBuild();
+await runBuild();

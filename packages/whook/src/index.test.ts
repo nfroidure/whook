@@ -1,9 +1,11 @@
+import { jest } from '@jest/globals';
 import { constant } from 'knifecycle';
 import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
-} from './index';
+} from './index.js';
+import type { Logger } from 'common-services';
 
 describe('runServer', () => {
   it('should work', async () => {
@@ -54,7 +56,7 @@ describe('runServer', () => {
           getPing: jest.fn(() => ({ status: 200 })),
         }),
       );
-      $.register(constant('logger', logger));
+      $.register(constant('logger', logger as Logger));
 
       return $;
     }

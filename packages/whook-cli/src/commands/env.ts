@@ -1,11 +1,11 @@
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '../libs/args';
+import { readArgs } from '../libs/args.js';
 import { YError } from 'yerror';
 import { noop } from '@whook/whook';
 import type {
   WhookCommandDefinition,
   PromptArgs,
-} from '../services/promptArgs';
+} from '../services/promptArgs.js';
 import type { ENVService } from '@whook/whook';
 import type { LogService } from 'common-services';
 
@@ -41,10 +41,12 @@ async function initEnvCommand({
   log?: LogService;
 }) {
   return async () => {
-    const { name, default: defaultValue } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { name: string; default: unknown };
+    const {
+      namedArguments: { name, default: defaultValue },
+    } = readArgs<{
+      name: string;
+      default: any;
+    }>(definition.arguments, await promptArgs());
 
     if (
       'undefined' === typeof ENV[name] &&

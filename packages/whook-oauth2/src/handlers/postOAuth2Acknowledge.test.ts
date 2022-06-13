@@ -1,32 +1,86 @@
-import initPostOAuth2Acknowledge from './postOAuth2Acknowledge';
+import { jest } from '@jest/globals';
+import initPostOAuth2Acknowledge from './postOAuth2Acknowledge.js';
 import { YError } from 'yerror';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
-import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters';
-import type { OAuth2GranterService } from '../services/oAuth2Granters';
+import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters.js';
+import type { CheckApplicationService } from '../services/oAuth2Granters.js';
+import type { LogService } from 'common-services';
+import type { OAuth2GranterService } from '../services/oAuth2Granters.js';
 import type { BaseAuthenticationData } from '@whook/authorization';
+import type { OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
+import type { OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
+
+type CustomAuthenticationData = BaseAuthenticationData & {
+  userId: string;
+};
 
 describe('postOAuth2Acknowledge', () => {
   const ERRORS_DESCRIPTORS = {
     ...DEFAULT_ERRORS_DESCRIPTORS,
     ...OAUTH2_ERRORS_DESCRIPTORS,
   };
-  const checkApplication = jest.fn();
-  const log = jest.fn();
+  const checkApplication = jest.fn<CheckApplicationService>();
+  const log = jest.fn<LogService>();
   const codeGranter = {
     type: 'code',
-    authorizer: { responseType: 'code', authorize: jest.fn() },
-    acknowledger: { acknowledgmentType: 'code', acknowledge: jest.fn() },
+    authorizer: {
+      responseType: 'code',
+      authorize:
+        jest.fn<
+          NonNullable<
+            OAuth2CodeGranterService<CustomAuthenticationData>['authorizer']
+          >['authorize']
+        >(),
+    },
+    acknowledger: {
+      acknowledgmentType: 'code',
+      acknowledge:
+        jest.fn<
+          NonNullable<
+            OAuth2CodeGranterService<CustomAuthenticationData>['acknowledger']
+          >['acknowledge']
+        >(),
+    },
     authenticator: {
       grantType: 'authorization_code',
-      authenticate: jest.fn(),
+      authenticate:
+        jest.fn<
+          NonNullable<
+            OAuth2CodeGranterService<CustomAuthenticationData>['authenticator']
+          >['authenticate']
+        >(),
     },
   };
   const tokenGranter = {
     type: 'token',
-    authorizer: { responseType: 'token', authorize: jest.fn() },
-    acknowledger: { acknowledgmentType: 'token', acknowledge: jest.fn() },
+    authorizer: {
+      responseType: 'token',
+      authorize:
+        jest.fn<
+          NonNullable<
+            OAuth2TokenGranterService<CustomAuthenticationData>['authenticator']
+          >['authenticate']
+        >(),
+    },
+    acknowledger: {
+      acknowledgmentType: 'token',
+      acknowledge:
+        jest.fn<
+          NonNullable<
+            OAuth2TokenGranterService<CustomAuthenticationData>['acknowledger']
+          >['acknowledge']
+        >(),
+    },
   };
-  const oAuth2Granters: OAuth2GranterService[] = [codeGranter, tokenGranter];
+  const oAuth2Granters = [
+    codeGranter,
+    tokenGranter,
+  ] as unknown as OAuth2GranterService<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>,
+    CustomAuthenticationData
+  >[];
 
   beforeEach(() => {
     checkApplication.mockReset();
@@ -53,24 +107,21 @@ describe('postOAuth2Acknowledge', () => {
       applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       redirectURI: 'http://lol',
       scope: 'user',
-      userId: 1,
+      userId: '1',
     });
 
-    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge<
-      BaseAuthenticationData & {
-        userId: number;
-      }
-    >({
-      ERRORS_DESCRIPTORS,
-      oAuth2Granters,
-      checkApplication,
-      log,
-    });
+    const postOAuth2Acknowledge =
+      await initPostOAuth2Acknowledge<CustomAuthenticationData>({
+        ERRORS_DESCRIPTORS,
+        oAuth2Granters,
+        checkApplication,
+        log,
+      });
     const response = await postOAuth2Acknowledge({
       authenticationData: {
         applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         scope: 'auth',
-        userId: 1,
+        userId: '1',
       },
       body: {
         responseType: 'code',
@@ -120,21 +171,18 @@ describe('postOAuth2Acknowledge', () => {
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
 
-    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge<
-      BaseAuthenticationData & {
-        userId: number;
-      }
-    >({
-      ERRORS_DESCRIPTORS,
-      oAuth2Granters,
-      checkApplication,
-      log,
-    });
+    const postOAuth2Acknowledge =
+      await initPostOAuth2Acknowledge<CustomAuthenticationData>({
+        ERRORS_DESCRIPTORS,
+        oAuth2Granters,
+        checkApplication,
+        log,
+      });
     const response = await postOAuth2Acknowledge({
       authenticationData: {
         applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         scope: 'auth',
-        userId: 1,
+        userId: '1',
       },
       body: {
         responseType: 'yolo',

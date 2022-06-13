@@ -7,7 +7,7 @@ import type {
   WhookErrorHandler,
   ErrorHandlerDependencies,
 } from '@whook/http-router';
-import type { WhookCORSConfig } from '..';
+import type { WhookCORSConfig } from '../index.js';
 import { lowerCaseHeaders } from '@whook/whook';
 import { mergeVaryHeaders } from '@whook/whook';
 
