@@ -1,4 +1,4 @@
-import { loadLambda } from '../libs/utils';
+import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
@@ -56,12 +56,14 @@ async function initTestCronLambdaCommand({
   args: WhookCommandArgs;
 }) {
   return async () => {
-    const { name, type, date, body } = readArgs(definition.arguments, args) as {
+    const {
+      namedArguments: { name, type, date, body },
+    } = readArgs<{
       name: string;
       type: string;
       date: string;
       body: string;
-    };
+    }>(definition.arguments, args);
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,

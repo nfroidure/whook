@@ -1,8 +1,8 @@
 import { autoHandler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { refersTo } from '@whook/whook';
-import initPostOauth2Token from './postOAuth2Token';
-import { AUTH_API_PREFIX } from '../services/authCookies';
+import initPostOauth2Token from './postOAuth2Token.js';
+import { AUTH_API_PREFIX } from '../services/authCookies.js';
 import type {
   WhookAPIHandlerDefinition,
   WhookAPIParameterDefinition,
@@ -10,7 +10,7 @@ import type {
 import type {
   AuthCookiesService,
   AuthHandlersConfig,
-} from '../services/authCookies';
+} from '../services/authCookies.js';
 import type { AsyncReturnType } from 'type-fest';
 import type { BaseAuthenticationData } from '@whook/authorization';
 

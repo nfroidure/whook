@@ -1,4 +1,4 @@
-import initGetParameters from './getParameters';
+import initGetParameters from './getParameters.js';
 
 describe('getParameters', () => {
   it('should work', async () => {

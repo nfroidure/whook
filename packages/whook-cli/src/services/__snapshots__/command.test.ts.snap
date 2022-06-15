@@ -4,6 +4,7 @@ exports[`command should work 1`] = `
 Object {
   "logCalls": Array [
     Array [
+      "info",
       "commandHandler ran",
     ],
   ],

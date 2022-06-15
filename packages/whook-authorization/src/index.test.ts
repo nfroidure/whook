@@ -1,13 +1,17 @@
-import { wrapHandlerWithAuthorization } from '.';
+import { jest } from '@jest/globals';
+import { wrapHandlerWithAuthorization } from './index.js';
 import { handler } from 'knifecycle';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
+
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
 import type { Parameters, Dependencies } from 'knifecycle';
 import type { WhookOperation } from '@whook/whook';
+import type { LogService } from 'common-services';
+import type { AuthenticationService } from './index.js';
 
 describe('wrapHandlerWithAuthorization', () => {
   const noopMock = jest.fn(
@@ -15,9 +19,9 @@ describe('wrapHandlerWithAuthorization', () => {
       status: 200,
     }),
   );
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
   const authentication = {
-    check: jest.fn(),
+    check: jest.fn<AuthenticationService<any, any>['check']>(),
   };
   const NOOP_OPERATION: WhookOperation = {
     path: '/path',

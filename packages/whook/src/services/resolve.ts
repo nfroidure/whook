@@ -1,5 +1,6 @@
 import { autoService } from 'knifecycle';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
+import { createRequire } from 'module';
 import type { LogService } from 'common-services';
 
 export default autoService(initResolve);
@@ -24,6 +25,7 @@ async function initResolve({
   log: LogService;
 }): Promise<ResolveService> {
   log('debug', '🛂 - Initializing the resolve service!');
+  const require = createRequire(import.meta.url);
 
   return (
     path: Parameters<ResolveService>[0],
@@ -33,7 +35,7 @@ async function initResolve({
     // https://nodejs.org/api/esm.html#esm_import_meta_resolve_specifier_parent
     // We currently resolve and remove .(c)js on the fly to
     // give a chance to the compiler to resolve to esm modules
-    const fqPath = require.resolve(path, options).replace(/\.c?js$/, '');
+    const fqPath = require.resolve(path, options);
 
     log('debug', `🛂 - Resolving "${path}" to "${fqPath}".`);
     return fqPath;

@@ -1,13 +1,13 @@
 import { Knifecycle, constant } from 'knifecycle';
 import debug from 'debug';
-import { noop, identity, compose, pipe } from './libs/utils';
+import { noop, identity, compose, pipe } from './libs/utils.js';
 import {
   COMPONENTS_TYPES,
   cleanupOpenAPI,
   collectRefs,
   refersTo,
-} from './libs/openapi';
-import { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers';
+} from './libs/openapi.js';
+import { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers.js';
 import {
   initLogService,
   initTimeService,
@@ -30,54 +30,55 @@ import initHTTPTransaction, {
   initAPMService,
 } from '@whook/http-transaction';
 import initHTTPServer from '@whook/http-server';
-import initPort from './services/PORT';
-import initHost from './services/HOST';
-import initEnv from './services/ENV';
-import initProxyedENV from './services/ProxyedENV';
-import initBuildConstants from './services/BUILD_CONSTANTS';
-import initConfigs from './services/CONFIGS';
-import initResolve from './services/resolve';
-import initImporter from './services/importer';
-import initProjectDir from './services/PROJECT_DIR';
-import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS';
+import initPort from './services/PORT.js';
+import initHost from './services/HOST.js';
+import initEnv from './services/ENV.js';
+import initProxyedENV from './services/ProxyedENV.js';
+import initBuildConstants from './services/BUILD_CONSTANTS.js';
+import initConfigs from './services/CONFIGS.js';
+import initResolve from './services/resolve.js';
+import initImporter from './services/importer.js';
+import initProjectDir from './services/PROJECT_DIR.js';
+import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS.js';
 import initAPIDefinitions, {
   DEFAULT_IGNORED_FILES_PREFIXES,
   DEFAULT_IGNORED_FILES_SUFFIXES,
   DEFAULT_REDUCED_FILES_SUFFIXES,
   WhookAPIDefinitionsConfig,
-} from './services/API_DEFINITIONS';
-import initAutoload, { HANDLER_REG_EXP } from './services/_autoload';
+} from './services/API_DEFINITIONS.js';
+import initAutoload, { HANDLER_REG_EXP } from './services/_autoload.js';
 import initGetPing, {
   definition as initGetPingDefinition,
-} from './handlers/getPing';
-import { runREPL } from './repl';
+} from './handlers/getPing.js';
+import { runREPL } from './repl.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   prepareBuildEnvironment,
   runBuild,
-} from './build';
-import type { PortEnv } from './services/PORT';
+} from './build.js';
+import type { PortEnv } from './services/PORT.js';
 import type {
   HTTPServerConfig,
   HTTPServerProvider,
   HTTPServerService,
   HTTPServerEnv,
 } from '@whook/http-server';
-import type { HostEnv } from './services/HOST';
-import type { ENVConfig, ENVService } from './services/ENV';
-import type { ProxyedENVConfig } from './services/ProxyedENV';
-import type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS';
+import type { HostEnv } from './services/HOST.js';
+import type { ENVConfig, ENVService } from './services/ENV.js';
+import type { ProxyedENVConfig } from './services/ProxyedENV.js';
+import type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS.js';
 import type {
   CONFIGSService,
   WhookConfig,
   CONFIGSConfig,
-} from './services/CONFIGS';
-import type { ImporterService } from './services/importer';
+} from './services/CONFIGS.js';
+import type { ResolveService } from './services/resolve.js';
+import type { ImporterService } from './services/importer.js';
 import type {
   WhookPluginsService,
   WhookPluginsPathsService,
   WhookPluginsPathsConfig,
-} from './services/WHOOK_PLUGINS_PATHS';
+} from './services/WHOOK_PLUGINS_PATHS.js';
 import type {
   WhookAPIDefinitions,
   WhookAPIOperationAddition,
@@ -92,13 +93,13 @@ import type {
   WhookAPIResponseDefinition,
   WhookAPIRequestBodyDefinition,
   WhookAPIHandlerModule,
-} from './services/API_DEFINITIONS';
+} from './services/API_DEFINITIONS.js';
 import type {
   AutoloadConfig,
   WhookWrapper,
   WhookServiceMap,
   WhookInitializerMap,
-} from './services/_autoload';
+} from './services/_autoload.js';
 import type { ProcessServiceConfig } from 'common-services';
 import type {
   ErrorHandlerConfig,
@@ -121,17 +122,18 @@ import type {
   ObfuscatorService,
   APMService,
 } from '@whook/http-transaction';
-import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL';
+import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL.js';
 import type { Dependencies } from 'knifecycle';
 import initCompiler, {
   DEFAULT_COMPILER_OPTIONS,
   DEFAULT_BUILD_OPTIONS,
-} from './services/compiler';
+} from './services/compiler.js';
 import type {
   WhookCompilerOptions,
   WhookCompilerService,
   WhookCompilerConfig,
-} from './services/compiler';
+} from './services/compiler.js';
+import type { Logger } from 'common-services';
 
 export type {
   WhookAPIDefinitions,
@@ -150,6 +152,7 @@ export type {
   WhookServiceMap,
   WhookInitializerMap,
   WhookBuildConstantsService,
+  ResolveService,
   ImporterService,
   ENVService,
   WhookErrorsDescriptors,
@@ -405,12 +408,12 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(
     constant('logger', {
       // eslint-disable-next-line
-      error: console.error.bind(console),
-      // eslint-disable-next-line
       output: console.info.bind(console),
       // eslint-disable-next-line
+      error: console.error.bind(console),
+      // eslint-disable-next-line
       debug: debug('whook'),
-    }),
+    } as Logger),
   );
   $.register(constant('exit', process.exit));
 

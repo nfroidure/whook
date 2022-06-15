@@ -1,8 +1,12 @@
+import { jest } from '@jest/globals';
 import StreamTest from 'streamtest';
 import { YError } from 'yerror';
-import initHTTPTransaction from './index';
-import type { WhookHandler, WhookResponse } from './index';
+import initHTTPTransaction from './index.js';
+import type { WhookHandler, WhookResponse } from './index.js';
+import type { APMService } from './services/apm.js';
+import type { ObfuscatorService } from './services/obfuscator.js';
 import type { IncomingMessage } from 'http';
+import type { LogService, TimeService, DelayService } from 'common-services';
 
 function streamifyBody(response) {
   return Object.assign({}, response, {
@@ -11,18 +15,20 @@ function streamifyBody(response) {
 }
 
 describe('initHTTPTransaction', () => {
-  const log = jest.fn();
-  const apm = jest.fn();
-  const time = jest.fn();
-  const uniqueId = jest.fn();
+  const log = jest.fn<LogService>();
+  const apm = jest.fn<APMService>();
+  const time = jest.fn<TimeService>();
+  const uniqueId = jest.fn<() => string>();
   const delay = {
-    create: jest.fn(),
-    clear: jest.fn(),
+    create: jest.fn<DelayService['create']>(),
+    clear: jest.fn<DelayService['clear']>(),
   };
   const obfuscator = {
-    obfuscate: jest.fn(),
-    obfuscateSensibleProps: jest.fn(),
-    obfuscateSensibleHeaders: jest.fn(),
+    obfuscate: jest.fn<ObfuscatorService['obfuscate']>(),
+    obfuscateSensibleProps:
+      jest.fn<ObfuscatorService['obfuscateSensibleProps']>(),
+    obfuscateSensibleHeaders:
+      jest.fn<ObfuscatorService['obfuscateSensibleHeaders']>(),
   };
 
   beforeEach(() => {
@@ -63,7 +69,7 @@ describe('initHTTPTransaction', () => {
   });
 
   describe('httpTransaction', () => {
-    const buildResponse = jest.fn();
+    const buildResponse = jest.fn<any>();
     let res;
     let resBodyPromise;
 

@@ -1,4 +1,4 @@
-import { noop, identity, pipe, compose } from './utils';
+import { noop, identity, pipe, compose } from './utils.js';
 
 describe('noop', () => {
   it('should work', () => {

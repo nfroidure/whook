@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, handler } from 'knifecycle';
 import { refersTo } from '@whook/whook';
 import type {
   WhookAPIParameterDefinition,
@@ -103,4 +103,4 @@ async function getParameters(
   };
 }
 
-export default autoHandler(getParameters);
+export default handler(getParameters, 'getParameters');

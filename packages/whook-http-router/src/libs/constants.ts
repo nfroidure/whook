@@ -1,7 +1,7 @@
 import Stream from 'stream';
 import qs from 'qs';
 import type { JsonValue } from 'type-fest';
-import type { WhookEncoders, WhookDecoders } from '..';
+import type { WhookEncoders, WhookDecoders } from '../index.js';
 
 export const DEFAULT_DEBUG_NODE_ENVS = ['test', 'development'];
 export const DEFAULT_BUFFER_LIMIT = '500kB';

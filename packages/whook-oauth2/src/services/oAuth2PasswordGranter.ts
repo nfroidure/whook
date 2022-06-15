@@ -6,7 +6,7 @@ import type {
   OAuth2GranterService,
   OAuth2PasswordService,
   CheckApplicationService,
-} from './oAuth2Granters';
+} from './oAuth2Granters.js';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 export type OAuth2PasswordGranterDependencies = {

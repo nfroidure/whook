@@ -1,14 +1,14 @@
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
+import { default as Ajv } from 'ajv';
+import { default as addAJVFormats } from 'ajv-formats';
 import { YError } from 'yerror';
-import type { WhookCommandDefinitionArguments } from '../services/promptArgs';
-import type { WhookCommandArgs } from '../services/args';
+import type { WhookCommandDefinitionArguments } from '../services/promptArgs.js';
+import type { WhookCommandArgs } from '../services/args.js';
 
 // TODO: Add ajv human readable error builder
-export function readArgs<T extends Partial<WhookCommandArgs>>(
+export function readArgs<T extends WhookCommandArgs['namedArguments']>(
   schema: WhookCommandDefinitionArguments,
   args: WhookCommandArgs,
-): T {
+): WhookCommandArgs<T> {
   const ajv = new Ajv({
     coerceTypes: true,
     useDefaults: true,
@@ -17,20 +17,18 @@ export function readArgs<T extends Partial<WhookCommandArgs>>(
   addAJVFormats(ajv);
   const validator = ajv.compile(schema);
 
-  const {
-    _: [, ...listedArgs],
-    ...namedArgs
-  } = args;
+  const { namedArguments, rest } = args;
   const cleanedArgs = {
-    ...namedArgs,
-    ...(listedArgs.length ? { _: listedArgs } : {}),
-  } as WhookCommandArgs;
+    namedArguments,
+    rest: rest.slice(1),
+    command: rest[0],
+  };
 
-  validator(cleanedArgs);
+  validator(namedArguments);
 
   if ((validator.errors || []).length) {
     throw new YError('E_BAD_ARGS', validator.errors);
   }
 
-  return cleanedArgs as T;
+  return cleanedArgs as WhookCommandArgs<T>;
 }

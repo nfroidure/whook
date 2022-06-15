@@ -5,7 +5,7 @@ import {
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
 } from '@whook/whook';
-import { prepareEnvironment } from '.';
+import { prepareEnvironment } from './index.js';
 
 /* Architecture Note #1.2: The build file
 

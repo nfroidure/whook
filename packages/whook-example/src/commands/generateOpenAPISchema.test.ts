@@ -1,6 +1,8 @@
-import initGenerateOpenAPISchema from './generateOpenAPISchema';
+import { jest } from '@jest/globals';
+import initGenerateOpenAPISchema from './generateOpenAPISchema.js';
 import { PassThrough } from 'stream';
 import type { WhookCommandArgs } from '@whook/cli';
+import type { LogService } from 'common-services';
 
 /* Architecture Note #5.4: Testing
 
@@ -8,8 +10,8 @@ In such a hard life, Whook's make it simple to
  also test your commands.
 */
 describe('generateOpenAPISchema', () => {
-  const getOpenAPI = jest.fn();
-  const log = jest.fn();
+  const getOpenAPI = jest.fn<any>();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     getOpenAPI.mockReset();
@@ -42,14 +44,13 @@ describe('generateOpenAPISchema', () => {
       log,
       getOpenAPI,
       outstream,
-      args: Object.assign(
-        {
+      args: {
+        command: 'whook',
+        namedArguments: {
           pretty: true,
         },
-        {
-          _: ['generateOpenAPISchema'],
-        },
-      ) as unknown as WhookCommandArgs,
+        rest: ['generateOpenAPISchema'],
+      },
     });
     const result = await generateOpenAPISchema();
 

@@ -1,7 +1,7 @@
 import { autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { JsonValue } from 'type-fest';
-import type { WhookHeaders } from '..';
+import type { WhookHeaders } from '../index.js';
 
 export type SensibleValueDescriptor = {
   name: string;

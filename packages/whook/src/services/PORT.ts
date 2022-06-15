@@ -1,7 +1,9 @@
 import { autoService, name } from 'knifecycle';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
-import type { ImporterService } from '..';
+import type { ImporterService } from '../index.js';
+
+const DEFAULT_ENV = {};
 
 /* Architecture Note #7: Port detection
 If no `PORT` configuration is specified in dependencies nor in ENV,
@@ -30,7 +32,7 @@ export default name('PORT', autoService(initPort));
  * A promise of a number representing the actual port.
  */
 async function initPort({
-  ENV = {},
+  ENV = DEFAULT_ENV,
   log = noop,
   importer,
 }: {

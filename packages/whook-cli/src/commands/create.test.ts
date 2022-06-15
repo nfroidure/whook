@@ -1,7 +1,10 @@
+import { jest } from '@jest/globals';
 import _inquirer from 'inquirer';
-import initCreateCommand from './create';
+import initCreateCommand from './create.js';
 import { initGetPingDefinition } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { LogService } from 'common-services';
+import type { PromptArgs } from '../services/promptArgs.js';
 
 describe('createCommand', () => {
   const PROJECT_DIR = '/hom/whoiam/project';
@@ -19,12 +22,12 @@ describe('createCommand', () => {
     },
     tags: [{ name: 'system' }],
   };
-  const promptArgs = jest.fn();
-  const ensureDir = jest.fn();
-  const writeFile = jest.fn();
-  const pathExists = jest.fn();
-  const inquirer = { prompt: jest.fn() };
-  const log = jest.fn();
+  const promptArgs = jest.fn<PromptArgs>();
+  const ensureDir = jest.fn<any>();
+  const writeFile = jest.fn<any>();
+  const pathExists = jest.fn<any>();
+  const inquirer = { prompt: jest.fn<any>() };
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     promptArgs.mockReset();
@@ -38,9 +41,12 @@ describe('createCommand', () => {
   describe('for handlers', () => {
     it('should work with get and no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'getHandler',
-        type: 'handler',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'getHandler',
+          type: 'handler',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
@@ -78,9 +84,12 @@ describe('createCommand', () => {
 
     it('should work with an existing get and dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'getHandler',
-        type: 'handler',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'getHandler',
+          type: 'handler',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],
@@ -121,9 +130,12 @@ describe('createCommand', () => {
 
     it('should work with an existing get and dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'getHandler',
-        type: 'handler',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'getHandler',
+          type: 'handler',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],
@@ -166,9 +178,12 @@ describe('createCommand', () => {
   describe('for services', () => {
     it('should work with no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aService',
-        type: 'service',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aService',
+          type: 'service',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
@@ -200,9 +215,12 @@ describe('createCommand', () => {
 
     it('should work when existing with dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aService',
-        type: 'service',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aService',
+          type: 'service',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],
@@ -237,9 +255,12 @@ describe('createCommand', () => {
 
     it('should work when existing with dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aService',
-        type: 'service',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aService',
+          type: 'service',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],
@@ -276,9 +297,12 @@ describe('createCommand', () => {
   describe('for providers', () => {
     it('should work with no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aProvider',
-        type: 'provider',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aProvider',
+          type: 'provider',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
@@ -310,9 +334,12 @@ describe('createCommand', () => {
 
     it('should work when existing with dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aProvider',
-        type: 'provider',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aProvider',
+          type: 'provider',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],
@@ -347,9 +374,12 @@ describe('createCommand', () => {
 
     it('should work when existing with dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aProvider',
-        type: 'provider',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aProvider',
+          type: 'provider',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],
@@ -386,9 +416,12 @@ describe('createCommand', () => {
   describe('for commands', () => {
     it('should work with no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aCommand',
-        type: 'command',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aCommand',
+          type: 'command',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
@@ -423,9 +456,12 @@ describe('createCommand', () => {
 
     it('should work when existing with dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aCommand',
-        type: 'command',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aCommand',
+          type: 'command',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],
@@ -463,9 +499,12 @@ describe('createCommand', () => {
 
     it('should work when existing with dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['create'],
-        name: 'aCommand',
-        type: 'command',
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aCommand',
+          type: 'command',
+        },
       });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'NODE_ENV'],

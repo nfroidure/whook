@@ -5,9 +5,9 @@ import type { LogService } from 'common-services';
 import type {
   OAuth2GranterService,
   CheckApplicationService,
-} from './oAuth2Granters';
+} from './oAuth2Granters.js';
 import type { BaseAuthenticationData } from '@whook/authorization';
-import type { OAuth2Options } from '..';
+import type { OAuth2Options } from '../index.js';
 
 export type OAuth2ClientCredentialsGranterDependencies = {
   OAUTH2: OAuth2Options;

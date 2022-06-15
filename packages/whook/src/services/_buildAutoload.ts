@@ -1,12 +1,12 @@
-import initAutoload from './_autoload';
-import { noop } from '../libs/utils';
+import initAutoload from './_autoload.js';
+import { noop } from '../libs/utils.js';
 import {
   SPECIAL_PROPS,
   wrapInitializer,
   constant,
   alsoInject,
 } from 'knifecycle';
-import type { WhookBuildConstantsService } from '..';
+import type { WhookBuildConstantsService } from '../index.js';
 import type {
   Knifecycle,
   Injector,

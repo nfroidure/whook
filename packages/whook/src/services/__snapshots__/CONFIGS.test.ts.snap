@@ -4,11 +4,11 @@ exports[`initCONFIGS should fail with non-existing file 1`] = `
 Object {
   "errorCode": "E_NO_CONFIG",
   "errorParams": Array [
-    "/home/whoami/my-whook-project/src/config/development/config",
+    "/home/whoami/my-whook-project/src/config/development/config.js",
   ],
   "importerCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/src/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config.js",
     ],
   ],
   "logCalls": Array [
@@ -18,11 +18,11 @@ Object {
     ],
     Array [
       "warning",
-      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config\\".",
+      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config.js\\".",
     ],
     Array [
       "warning",
-      "☢ - Could not load configuration file \\"/home/whoami/my-whook-project/src/config/development/config\\".",
+      "☢ - Could not load configuration file \\"/home/whoami/my-whook-project/src/config/development/config.js\\".",
     ],
   ],
 }
@@ -37,7 +37,7 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoami/my-whook-project/src/config/development/config",
+      "/home/whoami/my-whook-project/src/config/development/config.js",
     ],
   ],
   "logCalls": Array [
@@ -47,7 +47,7 @@ Object {
     ],
     Array [
       "warning",
-      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config\\".",
+      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config.js\\".",
     ],
   ],
 }

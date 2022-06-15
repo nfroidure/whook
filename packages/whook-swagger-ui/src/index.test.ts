@@ -1,14 +1,16 @@
+import { jest } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
-import axios from 'axios';
+import { default as axios } from 'axios';
 import {
   prepareServer,
   prepareEnvironment,
   initGetPingDefinition,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
-import wrapHTTPRouterWithSwaggerUI from '.';
+import wrapHTTPRouterWithSwaggerUI from './index.js';
 import { YError } from 'yerror';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { Logger } from 'common-services';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
@@ -74,7 +76,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         })),
       }),
     );
-    $.register(constant('logger', logger));
+    $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
     $.register(constant('NODE_ENVS', ['test']));
   });
@@ -118,7 +120,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       },
       data,
       debugCalls: logger.debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls,
+      logInfoCalls: logger.output.mock.calls.map(removeIps),
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();
@@ -167,7 +169,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       },
       data,
       debugCalls: logger.debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls,
+      logInfoCalls: logger.output.mock.calls.map(removeIps),
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();
@@ -191,7 +193,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     expect({
       debugCalls: logger.debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls,
+      logInfoCalls: logger.output.mock.calls.map(removeIps),
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchSnapshot();
@@ -200,4 +202,10 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
 function sortLogs(strs1, strs2) {
   return strs1[0] > strs2[0] ? 1 : strs1[0] === strs2[0] ? 0 : -1;
+}
+
+function removeIps(strs) {
+  return strs.map((str) =>
+    (str as string).replace(/(127\.0\.0\.1|::1)/gm, '_ip_'),
+  );
 }

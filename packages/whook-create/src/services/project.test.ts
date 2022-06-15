@@ -1,13 +1,18 @@
+import { jest } from '@jest/globals';
 import _inquirer from 'inquirer';
-import initProject from './project';
+import initProject from './project.js';
 import { YError } from 'yerror';
+import type { LogService, LockService } from 'common-services';
 
 describe('initProject', () => {
   const CWD = '/home/whoiam/projects/';
-  const inquirer = { prompt: jest.fn() };
-  const lock = { take: jest.fn(), release: jest.fn() };
-  const ensureDir = jest.fn();
-  const log = jest.fn();
+  const inquirer = { prompt: jest.fn<any>() };
+  const lock = {
+    take: jest.fn<LockService<unknown>['take']>(),
+    release: jest.fn<LockService<unknown>['release']>(),
+  };
+  const ensureDir = jest.fn<any>();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     lock.take.mockReset();

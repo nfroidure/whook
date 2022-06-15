@@ -1,6 +1,6 @@
 import { extra, autoService, SPECIAL_PROPS } from 'knifecycle';
 import { readdir } from 'fs';
-import { readArgs } from '../libs/args';
+import { readArgs } from '../libs/args.js';
 import { YError } from 'yerror';
 import path from 'path';
 import os from 'os';
@@ -15,7 +15,7 @@ import type {
   WhookCommandDefinition,
   PromptArgs,
   WhookCommandHandler,
-} from '../services/promptArgs';
+} from '../services/promptArgs.js';
 import type { LogService } from 'common-services';
 import type {
   CONFIGSService,
@@ -69,7 +69,12 @@ async function initLsCommand({
   importer: ImporterService<Service>;
 }): Promise<WhookCommandHandler> {
   return async () => {
-    const { verbose } = readArgs(definition.arguments, await promptArgs());
+    const {
+      namedArguments: { verbose },
+    } = readArgs<{ verbose: boolean }>(
+      definition.arguments,
+      await promptArgs(),
+    );
     const commandsSources = [CONFIG.name || 'project', ...WHOOK_PLUGINS];
     const commandsPaths = [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS];
     const pluginsDefinitions = await Promise.all(
@@ -102,7 +107,9 @@ async function initLsCommand({
                       ),
                   ),
                 ]
-                  .map((file) => path.join(pluginPath, 'commands', file))
+                  .map((file) =>
+                    path.join(pluginPath, 'commands', file + '.js'),
+                  )
                   .map(async (file) => await importer(file)),
               )
             ).map(({ definition, default: initializer }) => ({

@@ -1,8 +1,10 @@
-import initFilterAPITags from './FILTER_API_TAGS';
+import { jest } from '@jest/globals';
+import initFilterAPITags from './FILTER_API_TAGS.js';
+import type { LogService } from 'common-services';
 
 describe('initFilterAPITags', () => {
   describe('should work', () => {
-    const log = jest.fn();
+    const log = jest.fn<LogService>();
 
     beforeEach(() => {
       log.mockClear();

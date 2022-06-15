@@ -1,8 +1,9 @@
-import initGetTime from './getTime';
+import { jest } from '@jest/globals';
+import initGetTime from './getTime.js';
 import type { TimeService } from 'common-services';
 
 describe('getTime', () => {
-  const time = jest.fn() as TimeService & jest.Mock<number>;
+  const time = jest.fn<TimeService>();
 
   it('should work', async () => {
     time.mockReturnValue(Date.parse('2014-01-26T00:00:00Z'));

@@ -1,44 +1,76 @@
-import { readArgs } from './args';
-import { definition as handlerCommandDefinition } from '../commands/handler';
+import { readArgs } from './args.js';
+import { definition as handlerCommandDefinition } from '../commands/handler.js';
 import { YError } from 'yerror';
-import { WhookCommandArgs } from '..';
+import type { WhookCommandArgs } from '../index.js';
 
 describe('readArgs', () => {
   it('should work with no args', () => {
-    const args = {
-      _: ['whook'],
-    } as any;
+    const args: WhookCommandArgs = {
+      command: 'npx',
+      namedArguments: {},
+      rest: ['whook'],
+    };
 
     readArgs(
       {
         type: 'object',
-      } as any,
+        additionalProperties: false,
+        properties: {},
+      },
       args,
     );
 
     expect({
       args,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "args": Object {
+          "command": "npx",
+          "namedArguments": Object {},
+          "rest": Array [
+            "whook",
+          ],
+        },
+      }
+    `);
   });
 
   it('should work with named args', () => {
-    const args = {
-      _: ['whook'],
-      name: 'getPing',
-      parameters: '{}',
-    } as any;
+    const args: WhookCommandArgs = {
+      command: 'npx',
+      namedArguments: {
+        name: 'getPing',
+        parameters: '{}',
+      },
+      rest: ['whook'],
+    };
 
     readArgs(handlerCommandDefinition.arguments, args);
 
     expect({
       args,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "args": Object {
+          "command": "npx",
+          "namedArguments": Object {
+            "name": "getPing",
+            "parameters": "{}",
+          },
+          "rest": Array [
+            "whook",
+          ],
+        },
+      }
+    `);
   });
 
   it('should work with listed args', () => {
-    const args = {
-      _: ['whook', 'hey'],
-    } as any;
+    const args: WhookCommandArgs = {
+      command: 'npx',
+      namedArguments: {},
+      rest: ['whook', 'hey'],
+    };
 
     readArgs(
       {
@@ -59,14 +91,28 @@ describe('readArgs', () => {
 
     expect({
       args,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      Object {
+        "args": Object {
+          "command": "npx",
+          "namedArguments": Object {},
+          "rest": Array [
+            "whook",
+            "hey",
+          ],
+        },
+      }
+    `);
   });
 
   it('should report named args errors', () => {
-    const args = {
-      _: ['whook'],
-      parameters: '{}',
-    } as any;
+    const args: WhookCommandArgs = {
+      command: 'npx',
+      namedArguments: {
+        parameters: '{}',
+      },
+      rest: ['whook'],
+    };
 
     try {
       readArgs(handlerCommandDefinition.arguments, args);
@@ -76,7 +122,33 @@ describe('readArgs', () => {
         args,
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        Object {
+          "args": Object {
+            "command": "npx",
+            "namedArguments": Object {
+              "parameters": "{}",
+            },
+            "rest": Array [
+              "whook",
+            ],
+          },
+          "errorCode": "E_BAD_ARGS",
+          "errorParams": Array [
+            Array [
+              Object {
+                "instancePath": "",
+                "keyword": "required",
+                "message": "must have required property 'name'",
+                "params": Object {
+                  "missingProperty": "name",
+                },
+                "schemaPath": "#/required",
+              },
+            ],
+          ],
+        }
+      `);
     }
   });
 });

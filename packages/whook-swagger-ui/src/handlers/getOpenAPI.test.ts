@@ -1,4 +1,4 @@
-import initGetOpenAPI from './getOpenAPI';
+import initGetOpenAPI from './getOpenAPI.js';
 import type { OpenAPIV3 } from 'openapi-types';
 
 describe('getOpenAPI', () => {

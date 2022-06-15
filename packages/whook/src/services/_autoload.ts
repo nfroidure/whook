@@ -1,4 +1,4 @@
-import { identity, noop, compose } from '../libs/utils';
+import { identity, noop, compose } from '../libs/utils.js';
 import {
   constant,
   name,
@@ -17,11 +17,11 @@ import type {
   Dependencies,
   Service,
 } from 'knifecycle';
-import type { CONFIGSService } from './CONFIGS';
+import type { CONFIGSService } from './CONFIGS.js';
 import type { LogService } from 'common-services';
 import type { WhookHandler } from '@whook/http-transaction';
-import type { ImporterService } from './importer';
-import type { ResolveService } from './resolve';
+import type { ImporterService } from './importer.js';
+import type { ResolveService } from './resolve.js';
 
 export const HANDLER_REG_EXP =
   /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;

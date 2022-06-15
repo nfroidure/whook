@@ -12,7 +12,7 @@ import type {
 import type {
   OAuth2Options,
   OAuth2GranterService,
-} from '../services/oAuth2Granters';
+} from '../services/oAuth2Granters.js';
 import type { LogService } from 'common-services';
 
 /* Architecture Note #1: OAuth2 authorize

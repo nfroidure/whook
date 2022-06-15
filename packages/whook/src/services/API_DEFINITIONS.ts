@@ -2,11 +2,11 @@ import { autoService, name } from 'knifecycle';
 import fs from 'fs';
 import { YError } from 'yerror';
 import path from 'path';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
-import type { ImporterService } from '..';
+import type { ImporterService } from '../index.js';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
 export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.ts', '.mjs'];
@@ -231,7 +231,7 @@ async function initAPIDefinitions({
             seenFiles.set(file, true);
             return true;
           })
-          .map((file) => path.join(currentPath, 'handlers', file))
+          .map((file) => path.join(currentPath, 'handlers', file + '.js'))
           .map(async (file) => ({
             file,
             module: await importer(file),

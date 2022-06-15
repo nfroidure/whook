@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import {
   runServer,
   prepareServer,
@@ -6,10 +7,11 @@ import {
 } from '@whook/whook';
 import {
   AUTHORIZATION_ERRORS_DESCRIPTORS,
+  BaseAuthenticationData,
   wrapHandlerWithAuthorization,
 } from '@whook/authorization';
 import { constant, initializer } from 'knifecycle';
-import axios from 'axios';
+import { default as axios } from 'axios';
 import { YError } from 'yerror';
 import {
   BEARER as BEARER_MECHANISM,
@@ -39,19 +41,32 @@ import {
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
   postOAuth2TokenRefreshTokenRequestBodySchema,
-} from '.';
-import type { OAuth2Options } from '.';
+} from './index.js';
+import type {
+  OAuth2Options,
+  CheckApplicationService,
+  OAuth2PasswordService,
+  OAuth2CodeService,
+  OAuth2RefreshTokenService,
+  OAuth2AccessTokenService,
+} from './index.js';
 import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { Logger } from 'common-services';
+import type { AuthenticationService } from '@whook/authorization';
+
+type CustomAuthenticationData = BaseAuthenticationData & {
+  userId: string;
+};
 
 describe('OAuth2 server', () => {
   const BASE_PATH = '/v1';
   const PORT = 4444;
   const HOST = 'localhost';
   const logger = {
-    output: jest.fn(),
-    error: jest.fn(),
-    debug: jest.fn(),
+    output: jest.fn<Logger['output']>(),
+    error: jest.fn<Logger['error']>(),
+    debug: jest.fn<Logger['debug']>(),
   };
   const time = jest.fn();
   const $autoload = jest.fn();
@@ -133,13 +148,30 @@ describe('OAuth2 server', () => {
   const OAUTH2: OAuth2Options = {
     authenticateURL: 'https://auth.example.com/sign_in',
   };
-  const authentication = { check: jest.fn() };
-  const checkApplication = jest.fn();
-  const oAuth2AccessToken = { create: jest.fn(), check: jest.fn() };
-  const oAuth2RefreshToken = { create: jest.fn(), check: jest.fn() };
-  const oAuth2ClientCredentials = { check: jest.fn() };
-  const oAuth2Code = { create: jest.fn(), check: jest.fn() };
-  const oAuth2Password = { check: jest.fn() };
+  const authentication = {
+    check:
+      jest.fn<AuthenticationService<any, CustomAuthenticationData>['check']>(),
+  };
+  const checkApplication = jest.fn<CheckApplicationService>();
+  const oAuth2AccessToken = {
+    create:
+      jest.fn<OAuth2AccessTokenService<CustomAuthenticationData>['create']>(),
+    check:
+      jest.fn<OAuth2AccessTokenService<CustomAuthenticationData>['check']>(),
+  };
+  const oAuth2RefreshToken = {
+    create:
+      jest.fn<OAuth2RefreshTokenService<CustomAuthenticationData>['create']>(),
+    check:
+      jest.fn<OAuth2RefreshTokenService<CustomAuthenticationData>['check']>(),
+  };
+  const oAuth2Code = {
+    create: jest.fn<OAuth2CodeService<CustomAuthenticationData>['create']>(),
+    check: jest.fn<OAuth2CodeService<CustomAuthenticationData>['check']>(),
+  };
+  const oAuth2Password = {
+    check: jest.fn<OAuth2PasswordService<CustomAuthenticationData>['check']>(),
+  };
 
   let $instance;
 
@@ -165,7 +197,7 @@ describe('OAuth2 server', () => {
     $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(constant('NODE_ENVS', ['test']));
     $.register(constant('MECHANISMS', [BEARER_MECHANISM, BASIC_MECHANISM]));
-    $.register(constant('logger', logger));
+    $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
 
     // OAuth2 Specifics
@@ -196,7 +228,6 @@ describe('OAuth2 server', () => {
     $.register(constant('checkApplication', checkApplication));
     $.register(constant('oAuth2AccessToken', oAuth2AccessToken));
     $.register(constant('oAuth2RefreshToken', oAuth2RefreshToken));
-    $.register(constant('oAuth2ClientCredentials', oAuth2ClientCredentials));
     $.register(constant('oAuth2Code', oAuth2Code));
     $.register(constant('oAuth2Password', oAuth2Password));
     [
@@ -245,7 +276,6 @@ describe('OAuth2 server', () => {
       oAuth2AccessToken.check,
       oAuth2RefreshToken.create,
       oAuth2RefreshToken.check,
-      oAuth2ClientCredentials.check,
       oAuth2Code.check,
       oAuth2Code.create,
       oAuth2Password.check,
@@ -260,24 +290,27 @@ describe('OAuth2 server', () => {
       [
         oAuth2AccessToken.check,
         oAuth2RefreshToken.check,
-        oAuth2ClientCredentials.check,
         oAuth2Code.check,
         oAuth2Code.create,
         oAuth2RefreshToken.check,
-      ].forEach((mock) =>
+      ].forEach((mock: any) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,oauth',
+        userId: '2',
       });
-      checkApplication.mockResolvedValueOnce(undefined);
+      checkApplication.mockResolvedValueOnce({
+        type: 'code',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
+        redirectURI: 'http://redirect.example.com/yolo',
+      });
       oAuth2Password.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,auth',
-        authentication: {
-          userId: 1,
-        },
+        userId: '1',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -312,6 +345,7 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
         Object {
@@ -330,7 +364,7 @@ describe('OAuth2 server', () => {
             "date": undefined,
             "transaction-id": "0",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
           },
           "status": 200,
         }
@@ -342,8 +376,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
@@ -356,7 +388,6 @@ describe('OAuth2 server', () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
-        oAuth2ClientCredentials.check,
         oAuth2Code.check,
         oAuth2Code.create,
         oAuth2Password.check,
@@ -366,14 +397,18 @@ describe('OAuth2 server', () => {
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,oauth',
+        userId: '2',
       });
-      checkApplication.mockResolvedValueOnce(undefined);
+      checkApplication.mockResolvedValueOnce({
+        type: 'code',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
+        redirectURI: 'http://redirect.example.com/yolo',
+      });
       oAuth2RefreshToken.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,auth',
-        authentication: {
-          userId: 1,
-        },
+        userId: '1',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -407,6 +442,7 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
         Object {
@@ -425,7 +461,7 @@ describe('OAuth2 server', () => {
             "date": undefined,
             "transaction-id": "1",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
           },
           "status": 200,
         }
@@ -437,8 +473,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
@@ -461,14 +495,13 @@ describe('OAuth2 server', () => {
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,oauth',
+        userId: '2',
       });
-      checkApplication.mockResolvedValueOnce(undefined);
-      oAuth2ClientCredentials.check.mockResolvedValueOnce({
+      checkApplication.mockResolvedValueOnce({
+        type: 'code',
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,auth',
-        authentication: {
-          userId: 1,
-        },
+        scope: 'user,oauth',
+        redirectURI: 'http://redirect.example.com/yolo',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -501,6 +534,7 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
         Object {
@@ -519,7 +553,7 @@ describe('OAuth2 server', () => {
             "date": undefined,
             "transaction-id": "2",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
           },
           "status": 200,
         }
@@ -531,8 +565,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
@@ -551,12 +583,14 @@ describe('OAuth2 server', () => {
         oAuth2RefreshToken.create,
         oAuth2Code.check,
         oAuth2Code.create,
-        oAuth2ClientCredentials.check,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       checkApplication.mockResolvedValueOnce({
+        type: 'code',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
         redirectURI:
           'https://example.com/oauth2/callback?a_param=a_param_value',
       });
@@ -604,8 +638,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
@@ -620,7 +652,6 @@ describe('OAuth2 server', () => {
         oAuth2RefreshToken.check,
         oAuth2RefreshToken.create,
         oAuth2Code.check,
-        oAuth2ClientCredentials.check,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
@@ -628,10 +659,13 @@ describe('OAuth2 server', () => {
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,oauth',
+        userId: '2',
       });
       oAuth2Code.create.mockResolvedValueOnce('a_code');
-      checkApplication.mockResolvedValueOnce(undefined);
       checkApplication.mockResolvedValueOnce({
+        type: 'code',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
@@ -660,6 +694,7 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
         Object {
@@ -670,7 +705,7 @@ describe('OAuth2 server', () => {
             "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo%3Fa_param%3Da_value&code=a_code",
             "transaction-id": "4",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
           },
           "status": 302,
         }
@@ -682,8 +717,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
@@ -695,7 +728,6 @@ describe('OAuth2 server', () => {
       [
         oAuth2AccessToken.check,
         oAuth2RefreshToken.check,
-        oAuth2ClientCredentials.check,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
@@ -703,12 +735,19 @@ describe('OAuth2 server', () => {
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,oauth',
+        userId: '2',
       });
-      checkApplication.mockResolvedValueOnce(undefined);
+      checkApplication.mockResolvedValueOnce({
+        type: 'code',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
+        redirectURI: 'http://redirect.example.com/yolo',
+      });
       oAuth2Code.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,auth',
-        userId: 1,
+        userId: '1',
+        redirectURI: 'http://redirect.example.com/yolo',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -742,6 +781,7 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
         Object {
@@ -760,7 +800,7 @@ describe('OAuth2 server', () => {
             "date": undefined,
             "transaction-id": "5",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
           },
           "status": 200,
         }
@@ -772,8 +812,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
@@ -792,12 +830,14 @@ describe('OAuth2 server', () => {
         oAuth2RefreshToken.create,
         oAuth2Code.check,
         oAuth2Code.create,
-        oAuth2ClientCredentials.check,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       checkApplication.mockResolvedValueOnce({
+        type: 'implicit',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
@@ -843,8 +883,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
@@ -859,7 +897,6 @@ describe('OAuth2 server', () => {
         oAuth2RefreshToken.create,
         oAuth2Code.check,
         oAuth2Code.create,
-        oAuth2ClientCredentials.check,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
@@ -867,13 +904,22 @@ describe('OAuth2 server', () => {
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,oauth',
+        userId: '2',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
         expiresAt: Date.parse('2010-03-07T00:00:00Z'),
       });
-      checkApplication.mockResolvedValueOnce(undefined);
       checkApplication.mockResolvedValueOnce({
+        type: 'implicit',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
+        redirectURI: 'http://redirect.example.com/yolo',
+      });
+      checkApplication.mockResolvedValueOnce({
+        type: 'implicit',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
@@ -902,6 +948,7 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
         Object {
@@ -912,7 +959,7 @@ describe('OAuth2 server', () => {
             "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&access_token=an_access_token&token_type=bearer&expires_in=86400",
             "transaction-id": "7",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
           },
           "status": 302,
         }
@@ -924,8 +971,6 @@ describe('OAuth2 server', () => {
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2ClientCredentialsCheckCalls:
-          oAuth2ClientCredentials.check.mock.calls,
         oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
         oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,

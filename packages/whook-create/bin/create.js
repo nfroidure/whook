@@ -1,5 +1,5 @@
 #! /usr/bin/env node
 
-const { runCreateWhook } = require('../dist/index');
+import { runCreateWhook } from '../dist/index.js';
 
-runCreateWhook();
+await runCreateWhook();

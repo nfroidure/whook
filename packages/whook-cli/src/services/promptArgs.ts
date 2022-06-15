@@ -3,7 +3,7 @@ import _inquirer from 'inquirer';
 import { noop } from '@whook/whook';
 import type { Question } from 'inquirer';
 import type { LogService } from 'common-services';
-import type { WhookCommandArgs } from './args';
+import type { WhookCommandArgs } from './args.js';
 
 export default singleton(autoService(initPromptArgs));
 
@@ -46,26 +46,30 @@ export type WhookCommandDefinition = {
   example: string;
   arguments: WhookCommandDefinitionArguments;
 };
-export type PromptArgs = () => Promise<WhookCommandArgs>;
+export type PromptArgs<
+  T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
+> = () => Promise<WhookCommandArgs<T>>;
 
-async function initPromptArgs({
+async function initPromptArgs<
+  T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
+>({
   COMMAND_DEFINITION,
   args,
   inquirer = _inquirer,
   log = noop,
 }: {
   COMMAND_DEFINITION: WhookCommandDefinition;
-  args: WhookCommandArgs;
+  args: WhookCommandArgs<T>;
   inquirer?: typeof _inquirer;
   log?: LogService;
-}): Promise<PromptArgs> {
+}): Promise<PromptArgs<T>> {
   log('debug', '🛠 - Initializing promptArgs service');
 
   return async () => {
     const questions: Question[] = (
       COMMAND_DEFINITION.arguments.required || []
     ).reduce<Question[]>((questions, propertyName) => {
-      if ('undefined' === typeof args[propertyName]) {
+      if ('undefined' === typeof args.namedArguments[propertyName]) {
         const propertyDefinition =
           COMMAND_DEFINITION.arguments.properties[propertyName];
 
@@ -111,10 +115,16 @@ async function initPromptArgs({
     if (0 === questions.length) {
       return args;
     }
+    const questionsResponses = (await inquirer.prompt(questions)) as Partial<
+      WhookCommandArgs<T>['namedArguments']
+    >;
 
     return {
       ...args,
-      ...(await inquirer.prompt(questions)),
+      namedArguments: {
+        ...args.namedArguments,
+        questionsResponses,
+      },
     };
   };
 }

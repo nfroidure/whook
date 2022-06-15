@@ -159,10 +159,10 @@ To build your functions :
 
 ```sh
 # Build all functions
-npm run compile && npm run build
+npm run build
 
 # Build only one function
-npm run compile && npm run build -- getPing
+npm run build -- getPing
 ```
 
 # Debug

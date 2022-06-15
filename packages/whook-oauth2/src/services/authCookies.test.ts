@@ -1,5 +1,5 @@
-import initAuthCookies from './authCookies';
-import type { AuthCookiesConfig } from './authCookies';
+import initAuthCookies from './authCookies.js';
+import type { AuthCookiesConfig } from './authCookies.js';
 
 describe('authCookies', () => {
   describe('.build()', () => {

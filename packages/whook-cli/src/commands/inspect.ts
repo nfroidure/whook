@@ -1,5 +1,5 @@
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '../libs/args';
+import { readArgs } from '../libs/args.js';
 import { YError } from 'yerror';
 import miniquery from 'miniquery';
 import { noop } from '@whook/whook';
@@ -9,7 +9,7 @@ import type {
   PromptArgs,
   WhookCommandDefinition,
   WhookCommandHandler,
-} from '../services/promptArgs';
+} from '../services/promptArgs.js';
 
 export const definition: WhookCommandDefinition = {
   description:
@@ -54,16 +54,13 @@ async function initInspectCommand({
 }): Promise<WhookCommandHandler> {
   return async () => {
     const {
-      name,
-      query,
-      default: defaultValue,
-      pretty,
-    } = readArgs(definition.arguments, await promptArgs()) as {
+      namedArguments: { name, query, default: defaultValue, pretty },
+    } = readArgs<{
       name: string;
       query: string;
-      default: unknown;
+      default: any;
       pretty: true;
-    };
+    }>(definition.arguments, await promptArgs());
     let service;
 
     try {

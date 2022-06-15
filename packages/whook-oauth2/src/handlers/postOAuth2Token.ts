@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import { camelCaseObjectProperties } from './getOAuth2Authorize';
+import { camelCaseObjectProperties } from './getOAuth2Authorize.js';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import { refersTo } from '@whook/whook';
@@ -13,7 +13,7 @@ import type {
   OAuth2GranterService,
   OAuth2AccessTokenService,
   OAuth2RefreshTokenService,
-} from '../services/oAuth2Granters';
+} from '../services/oAuth2Granters.js';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 /* Architecture Note #2: OAuth2 acknowledge

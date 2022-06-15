@@ -2,8 +2,8 @@
 
 exports[`commands should work with config 1`] = `
 Object {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config\\".
-✔ - Found the project dir \\"/home/nfroidure/nfroidure/whook/packages/whook-example\\".
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js\\".
+✔ - Found the project dir /whook/packages/whook-example\\".
 ",
   "stdout": "\\"localhost\\"
 ",
@@ -12,8 +12,8 @@ Object {
 
 exports[`commands should work with env 1`] = `
 Object {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config\\".
-✔ - Found the project dir \\"/home/nfroidure/nfroidure/whook/packages/whook-example\\".
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js\\".
+✔ - Found the project dir /whook/packages/whook-example\\".
 🖥 - Using local env.
 ",
   "stdout": "test
@@ -23,8 +23,8 @@ Object {
 
 exports[`commands should work with ls 1`] = `
 Object {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config\\".
-✔ - Found the project dir \\"/home/nfroidure/nfroidure/whook/packages/whook-example\\".
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js\\".
+✔ - Found the project dir /whook/packages/whook-example\\".
 ",
   "stdout": "
 

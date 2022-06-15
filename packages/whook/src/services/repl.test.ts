@@ -1,11 +1,14 @@
-import initREPL from './repl';
+import { jest } from '@jest/globals';
+import initREPL from './repl.js';
 import { PassThrough } from 'stream';
 import streamtest from 'streamtest';
+import type { LogService } from 'common-services';
+import type { Injector, Disposer } from 'knifecycle';
 
 describe('initREPL', () => {
-  const $injector = jest.fn();
-  const $dispose = jest.fn();
-  const log = jest.fn();
+  const $injector = jest.fn<Injector<any>>();
+  const $dispose = jest.fn<Disposer>();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     $injector.mockReset();
@@ -28,9 +31,9 @@ describe('initREPL', () => {
       $injector.mockImplementation(() => {
         resolve();
 
-        return {
+        return Promise.resolve({
           time: () => Date.parse('2020-01-01T00:00:00Z'),
-        };
+        });
       });
     });
 

@@ -1,5 +1,5 @@
 import { YError } from 'yerror';
-import { lowerCaseHeaders, mergeVaryHeaders } from './headers';
+import { lowerCaseHeaders, mergeVaryHeaders } from './headers.js';
 
 describe('lowerCaseHeaders', () => {
   test('should work with no headers', () => {

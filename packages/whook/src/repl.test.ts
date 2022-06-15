@@ -1,8 +1,10 @@
+import { jest } from '@jest/globals';
 import { constant } from 'knifecycle';
-import { prepareEnvironment as basePrepareEnvironment } from './index';
-import { runREPL } from './repl';
-import initREPL from './services/repl';
+import { prepareEnvironment as basePrepareEnvironment } from './index.js';
+import { runREPL } from './repl.js';
+import initREPL from './services/repl.js';
 import { PassThrough } from 'stream';
+import type { Logger } from 'common-services';
 
 describe('runREPL', () => {
   it('should work', async () => {
@@ -21,7 +23,7 @@ describe('runREPL', () => {
       $.register(constant('NODE_ENV', 'test'));
       $.register(constant('DEBUG_NODE_ENVS', []));
       $.register(constant('NODE_ENVS', ['test']));
-      $.register(constant('logger', logger));
+      $.register(constant('logger', logger as Logger));
       $.register(constant('stdin', stdin));
       $.register(constant('stdout', stdout));
       $.register(initREPL);

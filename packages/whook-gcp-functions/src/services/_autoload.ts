@@ -23,7 +23,7 @@ import type { WhookBuildConstantsService } from '@whook/whook';
 import type { WhookRawOperation } from '@whook/http-router';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
-import type { WhookAPIOperationGCPFunctionConfig } from '..';
+import type { WhookAPIOperationGCPFunctionConfig } from '../index.js';
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,

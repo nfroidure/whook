@@ -1,10 +1,11 @@
+import { jest } from '@jest/globals';
 import {
   runServer,
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
-import axios from 'axios';
+import { default as axios } from 'axios';
 import { YError } from 'yerror';
 import { wrapHandlerWithAuthorization } from '@whook/authorization';
 import {
@@ -20,10 +21,12 @@ import {
   initPostGraphQL,
   postGraphQLDefinition,
   initGraphQL,
-} from '.';
-import type { WhookGraphQLFragmentService } from '.';
+} from './index.js';
+import type { WhookGraphQLFragmentService } from './index.js';
 import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { AuthenticationService } from '@whook/authorization';
+import type { Logger } from 'common-services';
 
 describe('GraphQL server', () => {
   const BASE_PATH = '/v1';
@@ -79,8 +82,10 @@ describe('GraphQL server', () => {
       },
     },
   };
-  const authentication = { check: jest.fn() };
-  const context = jest.fn();
+  const authentication = {
+    check: jest.fn<AuthenticationService<any, any>['check']>(),
+  };
+  const context = jest.fn<any>();
 
   class UpperCaseDirective extends SchemaDirectiveVisitor {
     visitFieldDefinition(field) {
@@ -119,7 +124,7 @@ describe('GraphQL server', () => {
     $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(constant('NODE_ENVS', ['test']));
     $.register(constant('MECHANISMS', [BEARER_MECHANISM, BASIC_MECHANISM]));
-    $.register(constant('logger', logger));
+    $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
     $.register(constant('GRAPHQL_OPTIONS', {}));
     $.register(initGraphQL);

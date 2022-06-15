@@ -1,10 +1,14 @@
-import initHandlerCommand from './handler';
+import { jest } from '@jest/globals';
+import initHandlerCommand from './handler.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
+import type { PromptArgs } from '../services/promptArgs.js';
+import type { Injector } from 'knifecycle';
 
 describe('handlerCommand', () => {
-  const log = jest.fn();
-  const promptArgs = jest.fn();
-  const $injector = jest.fn();
+  const promptArgs = jest.fn<PromptArgs>();
+  const log = jest.fn<LogService>();
+  const $injector = jest.fn<Injector<any>>();
 
   beforeEach(() => {
     promptArgs.mockReset();
@@ -21,9 +25,12 @@ describe('handlerCommand', () => {
         }),
       });
       promptArgs.mockResolvedValueOnce({
-        _: ['handler'],
-        name: 'putEcho',
-        parameters: '{"body": {"echo": "YOLO!"} }',
+        command: 'whook',
+        rest: ['handler'],
+        namedArguments: {
+          name: 'putEcho',
+          parameters: '{"body": {"echo": "YOLO!"} }',
+        },
       });
 
       const handlerCommand = await initHandlerCommand({
@@ -49,8 +56,11 @@ describe('handlerCommand', () => {
         }),
       });
       promptArgs.mockResolvedValueOnce({
-        _: ['handler'],
-        name: 'getPing',
+        command: 'whook',
+        rest: ['handler'],
+        namedArguments: {
+          name: 'getPing',
+        },
       });
 
       const handlerCommand = await initHandlerCommand({
@@ -78,9 +88,12 @@ describe('handlerCommand', () => {
         }),
       });
       promptArgs.mockResolvedValueOnce({
-        _: ['handler'],
-        name: 'putEcho',
-        parameters: '{"body: {"echo": "YOLO!"} }',
+        command: 'whook',
+        rest: ['handler'],
+        namedArguments: {
+          name: 'putEcho',
+          parameters: '{"body: {"echo": "YOLO!"} }',
+        },
       });
 
       const handlerCommand = await initHandlerCommand({
@@ -110,9 +123,12 @@ describe('handlerCommand', () => {
         },
       });
       promptArgs.mockResolvedValueOnce({
-        _: ['handler'],
-        name: 'putEcho',
-        parameters: '{"body": {"echo": "YOLO!"} }',
+        command: 'whook',
+        rest: ['handler'],
+        namedArguments: {
+          name: 'putEcho',
+          parameters: '{"body": {"echo": "YOLO!"} }',
+        },
       });
 
       const handlerCommand = await initHandlerCommand({

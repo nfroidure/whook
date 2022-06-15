@@ -131,7 +131,7 @@ import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
-import type { AuthenticationData } from './authentication';
+import type { AuthenticationData } from './authentication.js';
 import type {
   OAuth2GranterService,
   CheckApplicationService,

@@ -40,8 +40,8 @@ DRY_RUN=1 npm run start
 # Run tests
 npm t
 
-# Compile the project
-npm run compile
+# Build the project
+npm run build
 
 # Create a new handler/service/provider
 npx whook create

@@ -1,12 +1,18 @@
-import initLsCommand, { definition as initLsCommandDefinition } from './ls';
-import initEnvCommand, { definition as initEnvCommandDefinition } from './env';
+import { jest } from '@jest/globals';
+import initLsCommand, { definition as initLsCommandDefinition } from './ls.js';
+import initEnvCommand, {
+  definition as initEnvCommandDefinition,
+} from './env.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
+import type { ImporterService } from '@whook/whook';
+import type { PromptArgs } from '../services/promptArgs.js';
 
 describe('lsCommand', () => {
-  const promptArgs = jest.fn();
-  const log = jest.fn();
-  const readDir = jest.fn();
-  const importer = jest.fn();
+  const promptArgs = jest.fn<PromptArgs>();
+  const log = jest.fn<LogService>();
+  const readDir = jest.fn<(dir: string) => Promise<string[]>>();
+  const importer = jest.fn<ImporterService<any>>();
 
   beforeEach(() => {
     promptArgs.mockReset();
@@ -18,7 +24,9 @@ describe('lsCommand', () => {
   describe('should work', () => {
     it('with no plugin', async () => {
       promptArgs.mockResolvedValueOnce({
-        _: ['ls'],
+        command: 'whook',
+        rest: ['ls'],
+        namedArguments: {},
       });
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
 
@@ -49,16 +57,18 @@ describe('lsCommand', () => {
     it('with some plugins', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
-      importer.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: initLsCommand,
         definition: initLsCommandDefinition,
       });
-      importer.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
       promptArgs.mockResolvedValueOnce({
-        _: ['ls'],
+        command: 'whook',
+        rest: ['ls'],
+        namedArguments: {},
       });
 
       const lsCommand = await initLsCommand({
@@ -88,16 +98,18 @@ describe('lsCommand', () => {
     it('with some plugins and ignored files', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env', '__snapshots__']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
-      importer.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: initLsCommand,
         definition: initLsCommandDefinition,
       });
-      importer.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
       promptArgs.mockResolvedValueOnce({
-        _: ['ls'],
+        command: 'whook',
+        rest: ['ls'],
+        namedArguments: {},
       });
 
       const lsCommand = await initLsCommand({
@@ -127,17 +139,20 @@ describe('lsCommand', () => {
     it('with some plugins and a verbose output', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
-      importer.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: initLsCommand,
         definition: initLsCommandDefinition,
       });
-      importer.mockReturnValueOnce({
+      importer.mockResolvedValueOnce({
         default: initEnvCommand,
         definition: initEnvCommandDefinition,
       });
       promptArgs.mockResolvedValueOnce({
-        _: ['ls'],
-        verbose: true,
+        command: 'whook',
+        rest: ['ls'],
+        namedArguments: {
+          verbose: true,
+        },
       });
 
       const lsCommand = await initLsCommand({

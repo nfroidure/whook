@@ -1,7 +1,7 @@
 import {
   augmentAPIWithVersionsHeaders,
   wrapHandlerWithVersionChecker,
-} from './index';
+} from './index.js';
 import { initGetPing, initGetPingDefinition } from '@whook/whook';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';

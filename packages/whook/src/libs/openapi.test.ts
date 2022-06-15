@@ -1,4 +1,4 @@
-import { collectRefs, cleanupOpenAPI } from './openapi';
+import { collectRefs, cleanupOpenAPI } from './openapi.js';
 import type { JsonObject, JsonValue } from 'type-fest';
 import type { OpenAPIV3 } from 'openapi-types';
 

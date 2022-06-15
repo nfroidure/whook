@@ -66,10 +66,10 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoiam/project/src/handlers/getUser",
+      "/home/whoiam/project/src/handlers/getUser.js",
     ],
     Array [
-      "/home/whoiam/project/src/handlers/putUser",
+      "/home/whoiam/project/src/handlers/putUser.js",
     ],
   ],
   "logCalls": Array [
@@ -177,10 +177,10 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoiam/project/src/handlers/getPing",
+      "/home/whoiam/project/src/handlers/getPing.js",
     ],
     Array [
-      "/home/whoiam/project/src/handlers/getUser",
+      "/home/whoiam/project/src/handlers/getUser.js",
     ],
   ],
   "logCalls": Array [
@@ -284,10 +284,10 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoiam/project/src/handlers/getPing",
+      "/home/whoiam/project/src/handlers/getPing.js",
     ],
     Array [
-      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
+      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
     ],
   ],
   "logCalls": Array [
@@ -394,10 +394,10 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoiam/project/src/handlers/getPing",
+      "/home/whoiam/project/src/handlers/getPing.js",
     ],
     Array [
-      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
+      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
     ],
   ],
   "logCalls": Array [
@@ -504,10 +504,10 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoiam/project/src/handlers/getPing",
+      "/home/whoiam/project/src/handlers/getPing.js",
     ],
     Array [
-      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser",
+      "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
     ],
   ],
   "logCalls": Array [
@@ -593,10 +593,10 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoiam/project/src/handlers/getUser",
+      "/home/whoiam/project/src/handlers/getUser.js",
     ],
     Array [
-      "/home/whoiam/project/src/handlers/putUser",
+      "/home/whoiam/project/src/handlers/putUser.js",
     ],
   ],
   "logCalls": Array [
@@ -706,10 +706,10 @@ Object {
   },
   "importerCalls": Array [
     Array [
-      "/home/whoiam/project/src/handlers/getUser",
+      "/home/whoiam/project/src/handlers/getUser.js",
     ],
     Array [
-      "/home/whoiam/project/src/handlers/putUser",
+      "/home/whoiam/project/src/handlers/putUser.js",
     ],
   ],
   "logCalls": Array [

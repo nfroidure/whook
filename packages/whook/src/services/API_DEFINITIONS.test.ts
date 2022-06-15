@@ -1,7 +1,10 @@
-import initAPIDefinitions from './API_DEFINITIONS';
-import { definition as getPingDefinition } from '../handlers/getPing';
+import { jest } from '@jest/globals';
+import initAPIDefinitions from './API_DEFINITIONS.js';
+import { definition as getPingDefinition } from '../handlers/getPing.js';
 import { YError } from 'yerror';
-import type { WhookAPIHandlerModule } from './API_DEFINITIONS';
+import type { LogService } from 'common-services';
+import type { WhookAPIHandlerModule } from './API_DEFINITIONS.js';
+import type { ImporterService } from './importer.js';
 
 const getUserModule: WhookAPIHandlerModule = {
   definition: {
@@ -75,9 +78,9 @@ const putUserModule: WhookAPIHandlerModule = {
 
 describe('initAPIDefinitions', () => {
   const PROJECT_SRC = '/home/whoiam/project/src';
-  const log = jest.fn();
-  const importer = jest.fn();
-  const readDir = jest.fn();
+  const log = jest.fn<LogService>();
+  const importer = jest.fn<ImporterService<any>>();
+  const readDir = jest.fn<(dir: string) => Promise<string[]>>();
 
   beforeEach(() => {
     log.mockReset();
@@ -87,7 +90,7 @@ describe('initAPIDefinitions', () => {
 
   describe('should work', () => {
     it('with no handlers', async () => {
-      readDir.mockReturnValueOnce([]);
+      readDir.mockResolvedValueOnce([]);
       importer.mockImplementationOnce(() => {
         throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
       });
@@ -108,7 +111,7 @@ describe('initAPIDefinitions', () => {
     });
 
     it('with a few handlers', async () => {
-      readDir.mockReturnValueOnce(['getPing', 'getUser']);
+      readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({
         definition: getPingDefinition,
       });
@@ -130,8 +133,8 @@ describe('initAPIDefinitions', () => {
     });
 
     it('with a few handlers in different plugins paths', async () => {
-      readDir.mockReturnValueOnce(['getPing']);
-      readDir.mockReturnValueOnce(['getUser']);
+      readDir.mockResolvedValueOnce(['getPing']);
+      readDir.mockResolvedValueOnce(['getUser']);
       importer.mockResolvedValueOnce({
         definition: getPingDefinition,
       });
@@ -154,8 +157,8 @@ describe('initAPIDefinitions', () => {
     });
 
     it('with a few handlers in different plugins paths and an overriden one', async () => {
-      readDir.mockReturnValueOnce(['getPing']);
-      readDir.mockReturnValueOnce(['getPing', 'getUser']);
+      readDir.mockResolvedValueOnce(['getPing']);
+      readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({
         definition: getPingDefinition,
       });
@@ -179,8 +182,8 @@ describe('initAPIDefinitions', () => {
     });
 
     it('with a few handlers in different plugins paths and an overriden one but with a different extension', async () => {
-      readDir.mockReturnValueOnce(['getPing.ts']);
-      readDir.mockReturnValueOnce(['getPing', 'getUser']);
+      readDir.mockResolvedValueOnce(['getPing.ts']);
+      readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({
         definition: getPingDefinition,
       });
@@ -204,7 +207,7 @@ describe('initAPIDefinitions', () => {
     });
 
     it('with a several handlers at the same path', async () => {
-      readDir.mockReturnValueOnce(['getUser', 'putUser']);
+      readDir.mockResolvedValueOnce(['getUser', 'putUser']);
       importer.mockResolvedValueOnce(getUserModule);
       importer.mockResolvedValueOnce(putUserModule);
 
@@ -236,7 +239,7 @@ describe('initAPIDefinitions', () => {
           },
         },
       };
-      readDir.mockReturnValueOnce(['getUser', 'putUser']);
+      readDir.mockResolvedValueOnce(['getUser', 'putUser']);
       importer.mockResolvedValueOnce(getUserModuleDisabled);
       importer.mockResolvedValueOnce(putUserModule);
 
@@ -266,7 +269,7 @@ describe('initAPIDefinitions', () => {
           },
         },
       };
-      readDir.mockReturnValueOnce(['getUser', 'putUser']);
+      readDir.mockResolvedValueOnce(['getUser', 'putUser']);
       importer.mockResolvedValueOnce(getUserModuleDisabled);
       importer.mockResolvedValueOnce(putUserModule);
 

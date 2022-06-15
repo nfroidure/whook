@@ -9,8 +9,8 @@ import {
   castParameters,
 } from '@whook/http-router';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
+import { default as Ajv } from 'ajv';
+import { default as addAJVFormats } from 'ajv-formats';
 import bytes from 'bytes';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';

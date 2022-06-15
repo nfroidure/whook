@@ -1,15 +1,17 @@
+import { jest } from '@jest/globals';
 import _inquirer from 'inquirer';
-import initAuthor from './author';
+import initAuthor from './author.js';
 import { YError } from 'yerror';
+import type { LogService, LockService } from 'common-services';
 
 describe('initAuthor', () => {
   const exec = jest.fn() as any;
   const lock = {
-    take: jest.fn(),
-    release: jest.fn(),
+    take: jest.fn<LockService<unknown>['take']>(),
+    release: jest.fn<LockService<unknown>['release']>(),
   };
-  const inquirer = { prompt: jest.fn() };
-  const log = jest.fn();
+  const inquirer = { prompt: jest.fn<typeof _inquirer['prompt']>() };
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     exec.mockReset();

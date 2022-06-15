@@ -1,14 +1,16 @@
-import initHTTPServer from './index';
-import axios from 'axios';
+import { jest } from '@jest/globals';
+import initHTTPServer from './index.js';
+import { default as axios } from 'axios';
 import net from 'net';
 import { YError } from 'yerror';
 import type { HTTPRouterService } from '@whook/http-router';
+import type { LogService } from 'common-services';
 
 describe('initHTTPServer', () => {
   const PORT = 7777;
   const HOST = 'localhost';
-  const log = jest.fn();
-  const httpRouter = jest.fn();
+  const log = jest.fn<LogService>();
+  const httpRouter = jest.fn<HTTPRouterService>();
 
   beforeEach(() => {
     log.mockReset();
@@ -20,7 +22,7 @@ describe('initHTTPServer', () => {
       HOST,
       PORT,
       log,
-      httpRouter: httpRouter as unknown as HTTPRouterService,
+      httpRouter,
     });
 
     httpServer.dispose && (await httpServer.dispose());

@@ -1,9 +1,11 @@
-import initPORT from './PORT';
-import initImporter from './importer';
-import type { PortFinderModule } from './PORT';
+import { jest } from '@jest/globals';
+import initPORT from './PORT.js';
+import initImporter from './importer.js';
+import type { PortFinderModule } from './PORT.js';
+import type { LogService } from 'common-services';
 
 describe('initPORT', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();
@@ -39,9 +41,13 @@ describe('initPORT', () => {
     expect(port).toBeGreaterThan(0);
     expect({
       logCalls: log.mock.calls
-        .filter((args) => 'stack' !== args[0])
+        .filter((args) => 'debug-stack' !== args[0])
         .map(([arg1, arg2, ...args]) => {
-          return [arg1, arg2.replace(/port (\d+)/, 'port ${PORT}'), ...args];
+          return [
+            arg1,
+            (arg2 || '').toString().replace(/port (\d+)/, 'port ${PORT}'),
+            ...args,
+          ];
         }),
     }).toMatchSnapshot();
   });

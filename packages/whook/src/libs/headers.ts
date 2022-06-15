@@ -1,5 +1,5 @@
 import { YError } from 'yerror';
-import { identity } from './utils';
+import { identity } from './utils.js';
 
 export function mergeVaryHeaders(
   baseHeader: string | string[],

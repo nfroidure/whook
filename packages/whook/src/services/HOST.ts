@@ -1,7 +1,9 @@
 import { autoService, name } from 'knifecycle';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
-import type { ImporterService } from '..';
+import type { ImporterService } from '../index.js';
+
+const DEFAULT_ENV = {};
 
 /* Architecture Note #6: IP detection
 If no `HOST` configuration is specified in dependencies nor in ENV,
@@ -29,7 +31,7 @@ export type HostEnv = {
  * A promise of a containing the actual host.
  */
 async function initHost({
-  ENV = {},
+  ENV = DEFAULT_ENV,
   log = noop,
   importer,
 }: {

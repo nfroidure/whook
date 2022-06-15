@@ -1,5 +1,5 @@
 import { service } from 'knifecycle';
-import strictQs from 'strict-qs';
+import { qsStrict as strictQs } from 'strict-qs';
 
 export default service(initQueryParser, 'QUERY_PARSER');
 

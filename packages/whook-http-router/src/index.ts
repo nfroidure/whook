@@ -3,16 +3,16 @@ import Stream from 'stream';
 import { initializer } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';
-import Siso from 'siso';
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
-import strictQs from 'strict-qs';
+import { Siso } from 'siso';
+import { default as Ajv } from 'ajv';
+import { default as addAJVFormats } from 'ajv-formats';
+import { qsStrict as strictQs } from 'strict-qs';
 import {
   OPEN_API_METHODS,
   flattenOpenAPI,
   getOpenAPIOperations,
   dereferenceOpenAPIOperations,
-} from './libs/openAPIUtils';
+} from './libs/openAPIUtils.js';
 import {
   prepareParametersValidators,
   applyValidators,
@@ -21,7 +21,7 @@ import {
   extractOperationSecurityParameters,
   castSchemaValue,
   castParameters,
-} from './libs/validation';
+} from './libs/validation.js';
 import {
   BodySpec,
   ResponseSpec,
@@ -32,14 +32,14 @@ import {
   executeHandler,
   extractProduceableMediaTypes,
   extractConsumableMediaTypes,
-} from './libs/utils';
-import { getBody, sendBody } from './libs/body';
+} from './libs/utils.js';
+import { getBody, sendBody } from './libs/body.js';
 import initErrorHandler, {
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-} from './services/errorHandler';
+} from './services/errorHandler.js';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -47,11 +47,11 @@ import {
   DEFAULT_STRINGIFYERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
-} from './libs/constants';
+} from './libs/constants.js';
 import type {
   WhookRawOperation,
   SupportedSecurityScheme,
-} from './libs/openAPIUtils';
+} from './libs/openAPIUtils.js';
 import type { JsonValue } from 'type-fest';
 import type { Provider } from 'knifecycle';
 import type { Transform, Readable } from 'stream';
@@ -71,7 +71,7 @@ import type {
   ErrorHandlerConfig,
   ErrorHandlerDependencies,
   WhookErrorHandler,
-} from './services/errorHandler';
+} from './services/errorHandler.js';
 import type { ValidateFunction } from 'ajv';
 
 const SEARCH_SEPARATOR = '?';

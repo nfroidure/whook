@@ -9,7 +9,7 @@ import type {
   WhookResponse,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { WhookGraphQLService } from '..';
+import type { WhookGraphQLService } from '../index.js';
 import type { HttpQueryError } from 'apollo-server-core';
 
 // Serving GraphQL over HTTP

@@ -81,10 +81,10 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoiam/whook-project/dist/commands/ls",
+      "/home/whoiam/whook-project/dist/commands/ls.js",
     ],
     Array [
-      "/home/whoiam/whook-project/dist/commands/env",
+      "/home/whoiam/whook-project/dist/commands/env.js",
     ],
   ],
 }
@@ -151,10 +151,10 @@ $ whook env --name NODE_ENV --default \\"default value\\"
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoiam/whook-project/dist/commands/ls",
+      "/home/whoiam/whook-project/dist/commands/ls.js",
     ],
     Array [
-      "/home/whoiam/whook-project/dist/commands/env",
+      "/home/whoiam/whook-project/dist/commands/env.js",
     ],
   ],
 }
@@ -214,10 +214,10 @@ Object {
   ],
   "requireCalls": Array [
     Array [
-      "/home/whoiam/whook-project/dist/commands/ls",
+      "/home/whoiam/whook-project/dist/commands/ls.js",
     ],
     Array [
-      "/home/whoiam/whook-project/dist/commands/env",
+      "/home/whoiam/whook-project/dist/commands/env.js",
     ],
   ],
 }

@@ -3,15 +3,15 @@ import util from 'util';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
-import initCompiler from './services/compiler';
-import initBuildAutoloader from './services/_buildAutoload';
+import initCompiler from './services/compiler.js';
+import initBuildAutoloader from './services/_buildAutoload.js';
 import { YError } from 'yerror';
 import type { BuildInitializer } from 'knifecycle';
 import type {
   WhookCompilerOptions,
   WhookCompilerService,
-} from './services/compiler';
-import type { BuildOptions } from 'knifecycle/dist/build';
+} from './services/compiler.js';
+import type { BuildOptions } from 'knifecycle/dist/build.js';
 import type { LogService } from 'common-services';
 
 const readFileAsync = util.promisify(fs.readFile) as (
@@ -160,7 +160,7 @@ async function buildIndex(options: BuildOptions): Promise<string> {
       ? `
 const { initialize } = require('./initialize');`
       : `
-import { initialize } from './initialize';`
+import { initialize } from './initialize.js';`
   }
 
 initialize()

@@ -2,10 +2,10 @@ import { initializer } from 'knifecycle';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_STRINGIFYERS,
-} from '../libs/constants';
+} from '../libs/constants.js';
 import miniquery from 'miniquery';
-import type { WhookStringifyers } from '..';
-import type { ResponseSpec } from '../libs/utils';
+import type { WhookStringifyers } from '../index.js';
+import type { ResponseSpec } from '../libs/utils.js';
 import type { WhookResponse } from '@whook/http-transaction';
 import type { YError } from 'yerror';
 import type { YHTTPError } from 'yhttperror';

@@ -2,8 +2,10 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { autoService, name, singleton } from 'knifecycle';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
+
+const DEFAULT_BASE_ENV = {};
 
 /* Architecture Note #4: Environment service
 The `ENV` service add a layer of configuration over just using
@@ -49,7 +51,7 @@ export type ENVDependencies = ENVConfig & {
 async function initENV({
   NODE_ENV,
   PWD,
-  BASE_ENV = {},
+  BASE_ENV = DEFAULT_BASE_ENV,
   PROCESS_ENV = process.env as ENVService,
   log = noop,
   readFile = _readFile,

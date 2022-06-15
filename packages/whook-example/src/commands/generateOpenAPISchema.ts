@@ -52,10 +52,12 @@ async function initGenerateOpenAPISchema({
   log: LogService;
 }): Promise<() => Promise<void>> {
   return async function generateOpenAPISchema() {
-    const { pretty, authenticated } = readArgs(definition.arguments, args) as {
+    const {
+      namedArguments: { pretty, authenticated },
+    } = readArgs<{
       pretty: boolean;
       authenticated: boolean;
-    };
+    }>(definition.arguments, args);
 
     log('warning', '📥 - Retrieving schema...');
     const response = await getOpenAPI({

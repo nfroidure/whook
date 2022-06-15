@@ -1,8 +1,10 @@
-import initWhookPluginsPaths from './WHOOK_PLUGINS_PATHS';
+import { jest } from '@jest/globals';
+import initWhookPluginsPaths from './WHOOK_PLUGINS_PATHS.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
 
 describe('WHOOK_PLUGINS_PATHS', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
   const resolve = jest.fn();
 
   beforeEach(() => {

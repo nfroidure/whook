@@ -1,4 +1,5 @@
-import wrapHTTPTransactionWithMethodOverride from '.';
+import { jest } from '@jest/globals';
+import wrapHTTPTransactionWithMethodOverride from './index.js';
 import initHTTPTransaction from '@whook/http-transaction';
 import {
   runServer,
@@ -7,10 +8,11 @@ import {
   initGetPingDefinition,
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
-import axios from 'axios';
+import { default as axios } from 'axios';
 import { YError } from 'yerror';
 import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { Logger } from 'common-services';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
   const BASE_PATH = '/v1';
@@ -29,7 +31,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       },
     },
   };
-  const getPing = jest.fn();
+  const getPing = jest.fn<any>();
   const logger = {
     output: jest.fn(),
     error: jest.fn(),
@@ -66,7 +68,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
         getPing,
       }),
     );
-    $.register(constant('logger', logger));
+    $.register(constant('logger', logger as Logger));
 
     return $;
   }

@@ -45,14 +45,14 @@ npx whook create --type commands
 
 To test the CLI script, go to a project (in this repo `@whook/example`):
 ```sh
-npm run compile
+npm run build
 cd ../whook-example
 
 # Debugging compiled commands
 node ../whook-cli/bin/whook.js ls
 
 # Debugging source commands
-PROJECT_SRC="$PWD/src" NODE_ENV=${NODE_ENV:-development} npm run cli -- babel-node --extensions '.ts,.js' -- ../whook-cli/bin/whook.js ls
+PROJECT_SRC="$PWD/src" NODE_ENV=${NODE_ENV:-development} npm run cli -- ts-node --esm --files -- ../whook-cli/bin/whook.js ls
 ```
 
 [//]: # (::contents:end)

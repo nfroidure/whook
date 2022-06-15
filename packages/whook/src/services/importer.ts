@@ -1,5 +1,5 @@
 import { autoService } from 'knifecycle';
-import { noop } from '../libs/utils';
+import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import type { Service } from 'knifecycle';
 import type { LogService } from 'common-services';
@@ -25,7 +25,7 @@ async function initImporter<M extends Service>({
     try {
       return await import(path);
     } catch (err) {
-      log('debug', '⚠️ - Got a runtime import error for "${path}" !');
+      log('debug', `⚠️ - Got a runtime import error for "${path}" !`);
       log('debug-stack', (err as Error).stack || 'no_stack_trace');
       throw YError.wrap(err as Error, 'E_RUNTIME_IMPORT_FAILURE', path);
     }

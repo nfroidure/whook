@@ -1,23 +1,25 @@
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '../libs/args';
+import { readArgs } from '../libs/args.js';
 import { YError } from 'yerror';
 import camelCase from 'camelcase';
 import { HANDLER_REG_EXP } from '@whook/whook';
 import _inquirer from 'inquirer';
 import path from 'path';
 import { OPEN_API_METHODS, noop } from '@whook/whook';
-import {
-  writeFile as _writeFile,
-  ensureDir as _ensureDir,
-  pathExists as _pathExists,
-} from 'fs-extra';
+import { default as fsExtra } from 'fs-extra';
 import type {
   WhookCommandHandler,
   WhookCommandDefinition,
   PromptArgs,
-} from '../services/promptArgs';
+} from '../services/promptArgs.js';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
+
+const {
+  writeFile: _writeFile,
+  ensureDir: _ensureDir,
+  pathExists: _pathExists,
+} = fsExtra;
 
 // Currently, we rely on a static list of services but
 // best would be to use TypeScript introspection and
@@ -95,10 +97,12 @@ async function initCreateCommand({
   log?: LogService;
 }): Promise<WhookCommandHandler> {
   return async () => {
-    const { type, name } = readArgs(
+    const {
+      namedArguments: { type, name },
+    } = readArgs<{ type: string; name: string }>(
       definition.arguments,
       await promptArgs(),
-    ) as { type: string; name: string };
+    );
     const finalName = camelCase(name);
 
     if (name !== finalName) {

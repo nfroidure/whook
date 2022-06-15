@@ -1,9 +1,12 @@
-import initCONFIGS from './CONFIGS';
+import { jest } from '@jest/globals';
+import initCONFIGS from './CONFIGS.js';
 import { YError } from 'yerror';
+import type { LogService } from 'common-services';
+import type { ImporterService } from './importer.js';
 
 describe('initCONFIGS', () => {
-  const log = jest.fn();
-  const importer = jest.fn();
+  const log = jest.fn<LogService>();
+  const importer = jest.fn<ImporterService<any>>();
 
   beforeEach(() => {
     log.mockReset();
@@ -28,7 +31,7 @@ describe('initCONFIGS', () => {
 
     expect({
       CONFIGS,
-      logCalls: log.mock.calls.filter((args) => 'stack' !== args[0]),
+      logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       importerCalls: importer.mock.calls,
     }).toMatchSnapshot();
   });

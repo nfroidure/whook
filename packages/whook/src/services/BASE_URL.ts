@@ -1,6 +1,6 @@
 import { autoService, name } from 'knifecycle';
-import { noop } from '../libs/utils';
-import type { WhookConfig } from './CONFIGS';
+import { noop } from '../libs/utils.js';
+import type { WhookConfig } from './CONFIGS.js';
 import type { LogService } from 'common-services';
 
 /* Architecture Note #4: Base URL

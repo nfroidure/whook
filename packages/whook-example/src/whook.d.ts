@@ -11,7 +11,7 @@ import type {
   WhookSwaggerUIEnv,
 } from '@whook/swagger-ui';
 import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
-import type { APIConfig } from './services/API';
+import type { APIConfig } from './services/API.js';
 import type { JWTServiceConfig } from 'jwt-service';
 
 declare module '@whook/whook' {

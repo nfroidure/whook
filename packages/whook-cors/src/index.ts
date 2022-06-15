@@ -1,13 +1,13 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router';
-import initOptionsWithCORS from './handlers/optionsWithCORS';
+import initOptionsWithCORS from './handlers/optionsWithCORS.js';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
 import { YHTTPError } from 'yhttperror';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
   isGetter,
-} from './services/errorHandler';
+} from './services/errorHandler.js';
 import type { ServiceInitializer, Parameters } from 'knifecycle';
 import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -207,7 +207,7 @@ export async function augmentAPIWithCORS(
     };
 
     // Must be set separately since not supported by OAS3 types atm
-    (newAPI.paths[path]?.options as any)['x-whook'] = {
+    ((newAPI.paths[path] as any).options as any)['x-whook'] = {
       ...whookConfig,
     };
 

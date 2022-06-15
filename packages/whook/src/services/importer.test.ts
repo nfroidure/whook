@@ -1,8 +1,10 @@
+import { jest } from '@jest/globals';
 import { YError } from 'yerror';
-import initImporter from './importer';
+import initImporter from './importer.js';
+import type { LogService } from 'common-services';
 
 describe('Importer', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();
@@ -66,7 +68,7 @@ describe('Importer', () => {
             ],
             Array [
               "debug",
-              "⚠️ - Got a runtime import error for \\"\${path}\\" !",
+              "⚠️ - Got a runtime import error for \\"@nowhere/anywhere\\" !",
             ],
           ],
         }

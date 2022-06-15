@@ -27,14 +27,15 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
+        "userId": "2",
       },
     ],
   ],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [],
   "oAuth2CodeCreateCalls": Array [],
   "oAuth2PasswordCheckCalls": Array [],
@@ -44,10 +45,12 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
+        "userId": "2",
       },
     ],
   ],
@@ -69,7 +72,6 @@ Object {
   ],
   "oAuth2AccessTokenCheckCalls": Array [],
   "oAuth2AccessTokenCreateCalls": Array [],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [],
   "oAuth2CodeCreateCalls": Array [],
   "oAuth2PasswordCheckCalls": Array [],
@@ -105,20 +107,22 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+        "redirectURI": "http://redirect.example.com/yolo",
         "scope": "user,auth",
-        "userId": 1,
+        "userId": "1",
       },
     ],
   ],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [
     Array [
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       "a_grant_code",
       "http://redirect.example.com/yolo",
@@ -132,11 +136,13 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+        "redirectURI": "http://redirect.example.com/yolo",
         "scope": "user,auth",
-        "userId": 1,
+        "userId": "1",
       },
     ],
   ],
@@ -164,13 +170,13 @@ Object {
   ],
   "oAuth2AccessTokenCheckCalls": Array [],
   "oAuth2AccessTokenCreateCalls": Array [],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [],
   "oAuth2CodeCreateCalls": Array [
     Array [
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
+        "userId": "2",
       },
       "http://redirect.example.com/yolo?a_param=a_value",
       Object {},
@@ -197,7 +203,6 @@ Object {
   ],
   "oAuth2AccessTokenCheckCalls": Array [],
   "oAuth2AccessTokenCreateCalls": Array [],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [],
   "oAuth2CodeCreateCalls": Array [],
   "oAuth2PasswordCheckCalls": Array [],
@@ -239,6 +244,7 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
@@ -247,7 +253,6 @@ Object {
       Object {},
     ],
   ],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [],
   "oAuth2CodeCreateCalls": Array [],
   "oAuth2PasswordCheckCalls": Array [],
@@ -283,17 +288,15 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-        "authentication": Object {
-          "userId": 1,
-        },
         "scope": "user,auth",
+        "userId": "1",
       },
     ],
   ],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [],
   "oAuth2CodeCreateCalls": Array [],
   "oAuth2PasswordCheckCalls": Array [
@@ -301,6 +304,7 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       "me@example.com",
       "udelawli",
@@ -313,13 +317,12 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-        "authentication": Object {
-          "userId": 1,
-        },
         "scope": "user,auth",
+        "userId": "1",
       },
     ],
   ],
@@ -353,17 +356,15 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-        "authentication": Object {
-          "userId": 1,
-        },
         "scope": "user,auth",
+        "userId": "1",
       },
     ],
   ],
-  "oAuth2ClientCredentialsCheckCalls": Array [],
   "oAuth2CodeCheckCalls": Array [],
   "oAuth2CodeCreateCalls": Array [],
   "oAuth2PasswordCheckCalls": Array [],
@@ -372,6 +373,7 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       "a_refresh_token",
       "user",
@@ -382,13 +384,12 @@ Object {
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
+        "userId": "2",
       },
       Object {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-        "authentication": Object {
-          "userId": 1,
-        },
         "scope": "user,auth",
+        "userId": "1",
       },
     ],
   ],

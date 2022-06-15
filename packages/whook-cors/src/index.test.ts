@@ -2,11 +2,11 @@ import {
   wrapHandlerWithCORS,
   initOptionsWithCORS,
   augmentAPIWithCORS,
-} from '.';
+} from './index.js';
 import { handler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import type { Dependencies, Service } from 'knifecycle';
-import type { CORSConfig } from '.';
+import type { CORSConfig } from './index.js';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookOperation } from '@whook/whook';
 

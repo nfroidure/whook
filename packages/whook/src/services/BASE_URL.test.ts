@@ -1,7 +1,9 @@
-import initBaseURL from './BASE_URL';
+import { jest } from '@jest/globals';
+import initBaseURL from './BASE_URL.js';
+import type { LogService } from 'common-services';
 
 describe('initBaseURL', () => {
-  const log = jest.fn();
+  const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();
