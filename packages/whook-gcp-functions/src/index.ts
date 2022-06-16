@@ -5,13 +5,14 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import cpr from 'cpr';
 import { YError } from 'yerror';
+import { createRequire } from 'module';
 import {
   Knifecycle,
   SPECIAL_PROPS,
   constant,
   initInitializerBuilder,
 } from 'knifecycle';
-import { DEFAULT_BUILD_OPTIONS, initCompiler } from '@whook/whook';
+import { initCompiler } from '@whook/whook';
 import initBuildAutoloader from './services/_autoload.js';
 import {
   dereferenceOpenAPIOperations,
@@ -26,7 +27,6 @@ import type {
 } from 'knifecycle';
 import type {
   WhookOperation,
-  WhookCompilerConfig,
   WhookCompilerOptions,
   WhookCompilerService,
 } from '@whook/whook';
@@ -62,6 +62,9 @@ const cprAsync = util.promisify(cpr) as (
   options: CprOptions,
 ) => Promise<string[]>;
 
+// TODO: Use import.meta when Jest will support it
+const require = createRequire(path.join(process.cwd(), 'src', 'index.ts'));
+
 const BUILD_DEFINITIONS: Record<
   NonNullable<WhookAPIOperationGCPFunctionConfig['type']>,
   {
@@ -74,7 +77,10 @@ const BUILD_DEFINITIONS: Record<
     type: 'HTTP',
     wrapper: {
       name: 'wrapHandlerForGoogleHTTPFunction',
-      path: path.join(__dirname, 'wrappers', 'googleHTTPFunction'),
+      path: path.join(
+        path.dirname(require.resolve('@whook/gcp-function')),
+        'wrappers/googleHTTPFunction.js',
+      ),
     },
     suffix: 'Wrapped',
   },
@@ -109,26 +115,23 @@ export async function runBuild(
     const {
       NODE_ENV,
       BUILD_PARALLELISM,
-      BUILD_OPTIONS,
       PROJECT_DIR,
       compiler,
       log,
       $autoload,
       API,
       buildInitializer,
-    }: WhookGCPBuildConfig &
-      Pick<WhookCompilerConfig, 'BUILD_OPTIONS'> & {
-        NODE_ENV: string;
-        PROJECT_DIR: string;
-        compiler: WhookCompilerService;
-        log: LogService;
-        $autoload: Autoloader<Initializer<Dependencies, Service>>;
-        API: OpenAPIV3.Document;
-        buildInitializer: BuildInitializer;
-      } = await $.run([
+    }: WhookGCPBuildConfig & {
+      NODE_ENV: string;
+      PROJECT_DIR: string;
+      compiler: WhookCompilerService;
+      log: LogService;
+      $autoload: Autoloader<Initializer<Dependencies, Service>>;
+      API: OpenAPIV3.Document;
+      buildInitializer: BuildInitializer;
+    } = await $.run([
       'NODE_ENV',
       '?BUILD_PARALLELISM',
-      '?BUILD_OPTIONS',
       'PROJECT_DIR',
       'process',
       'compiler',
@@ -162,7 +165,6 @@ export async function runBuild(
     await processOperations(
       {
         NODE_ENV,
-        BUILD_OPTIONS: BUILD_OPTIONS || DEFAULT_BUILD_OPTIONS,
         BUILD_PARALLELISM: BUILD_PARALLELISM || DEFAULT_BUILD_PARALLELISM,
         PROJECT_DIR,
         compiler,
@@ -188,13 +190,12 @@ async function processOperations(
   {
     NODE_ENV,
     BUILD_PARALLELISM,
-    BUILD_OPTIONS,
     PROJECT_DIR,
     compiler,
     log,
     $autoload,
     buildInitializer,
-  }: Required<Pick<WhookCompilerConfig, 'BUILD_OPTIONS'>> & {
+  }: {
     NODE_ENV: string;
     BUILD_PARALLELISM: number;
     PROJECT_DIR: string;
@@ -213,7 +214,6 @@ async function processOperations(
         {
           NODE_ENV,
           PROJECT_DIR,
-          BUILD_OPTIONS,
           compiler,
           log,
           $autoload,
@@ -230,7 +230,6 @@ async function processOperations(
       {
         NODE_ENV,
         BUILD_PARALLELISM,
-        BUILD_OPTIONS,
         PROJECT_DIR,
         compiler,
         log,
@@ -247,12 +246,11 @@ async function buildAnyLambda(
   {
     NODE_ENV,
     PROJECT_DIR,
-    BUILD_OPTIONS,
     compiler,
     log,
     $autoload,
     buildInitializer,
-  }: Required<Pick<WhookCompilerConfig, 'BUILD_OPTIONS'>> & {
+  }: {
     NODE_ENV: string;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
@@ -294,16 +292,11 @@ async function buildAnyLambda(
           ? `OPERATION_API>OPERATION_API_${finalEntryPoint}`
           : name,
       ),
-      BUILD_OPTIONS,
     );
-    const indexContent = await buildLambdaIndex(
-      rootNode,
-      {
-        name: buildDefinition.wrapper.name,
-        path: buildDefinition.wrapper.path,
-      },
-      BUILD_OPTIONS,
-    );
+    const indexContent = await buildLambdaIndex(rootNode, {
+      name: buildDefinition.wrapper.name,
+      path: buildDefinition.wrapper.path,
+    });
 
     await mkdirp(lambdaPath);
     await Promise.all([
@@ -331,18 +324,10 @@ async function buildAnyLambda(
 async function buildLambdaIndex(
   rootNode: { path: string },
   buildWrapper: { name: string; path: string },
-  options: NonNullable<WhookCompilerConfig['BUILD_OPTIONS']>,
 ): Promise<string> {
-  return `${
-    options.modules === 'commonjs'
-      ? `const pickModule = (m) => { return m && m.default || m; }
-const initHandler = pickModule(require('${rootNode.path}'));
-const ${buildWrapper.name} = pickModule(require('${buildWrapper.path}'));
-const { initialize } = require('./initialize');`
-      : `import initHandler from '${rootNode.path}';
+  return `import initHandler from '${rootNode.path}';
 import ${buildWrapper.name} from '${buildWrapper.path}';
-import { initialize } from './initialize.js';`
-  }
+import { initialize } from './initialize.js';
 
 const handlerInitializer = ${buildWrapper.name}(
     initHandler
@@ -351,11 +336,7 @@ const handlerInitializer = ${buildWrapper.name}(
 const handlerPromise = initialize()
   .then(handlerInitializer);
 
-${
-  options.modules === 'commonjs'
-    ? 'module.exports = {}; module.exports.default = '
-    : 'export default '
-}function handler (req, res) {
+  export default function handler (req, res) {
   return handlerPromise
   .then(handler => handler(req, res));
 };

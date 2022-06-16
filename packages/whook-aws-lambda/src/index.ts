@@ -5,13 +5,14 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import cpr from 'cpr';
 import { YError } from 'yerror';
+import { createRequire } from 'module';
 import {
   Knifecycle,
   SPECIAL_PROPS,
   constant,
   initInitializerBuilder,
 } from 'knifecycle';
-import { DEFAULT_BUILD_OPTIONS, initCompiler } from '@whook/whook';
+import { initCompiler } from '@whook/whook';
 import initBuildAutoloader from './services/_autoload.js';
 import {
   dereferenceOpenAPIOperations,
@@ -26,7 +27,6 @@ import type {
 } from 'knifecycle';
 import type {
   WhookOperation,
-  WhookCompilerConfig,
   WhookCompilerOptions,
   WhookCompilerService,
 } from '@whook/whook';
@@ -141,6 +141,9 @@ const cprAsync = util.promisify(cpr) as (
   options: CprOptions,
 ) => Promise<string[]>;
 
+// TODO: Use import.meta when Jest will support it
+const require = createRequire(path.join(process.cwd(), 'src', 'index.ts'));
+
 const BUILD_DEFINITIONS: Record<
   WhookAPIOperationAWSLambdaConfig['type'],
   {
@@ -153,7 +156,10 @@ const BUILD_DEFINITIONS: Record<
     type: 'HTTP',
     wrapper: {
       name: 'wrapHandlerForAWSHTTPLambda',
-      path: path.join(__dirname, 'wrappers', 'awsHTTPLambda'),
+      path: path.join(
+        path.dirname(require.resolve('@whook/aws-lambda')),
+        'wrappers/awsHTTPLambda.js',
+      ),
     },
     suffix: 'Wrapped',
   },
@@ -161,42 +167,61 @@ const BUILD_DEFINITIONS: Record<
     type: 'Transformer',
     wrapper: {
       name: 'wrapHandlerForAWSTransformerLambda',
-      path: path.join(__dirname, 'wrappers', 'awsTransformerLambda'),
+
+      path: path.join(
+        path.dirname(require.resolve('@whook/aws-lambda')),
+        'wrappers/awsTransformerLambda.js',
+      ),
     },
   },
   cron: {
     type: 'Cron',
     wrapper: {
       name: 'wrapHandlerForAWSCronLambda',
-      path: path.join(__dirname, 'wrappers', 'awsCronLambda'),
+      path: path.join(
+        path.dirname(require.resolve('@whook/aws-lambda')),
+        'wrappers/awsCronLambda.js',
+      ),
     },
   },
   consumer: {
     type: 'Consumer',
     wrapper: {
       name: 'wrapHandlerForAWSConsumerLambda',
-      path: path.join(__dirname, 'wrappers', 'awsConsumerLambda'),
+      path: path.join(
+        path.dirname(require.resolve('@whook/aws-lambda')),
+        'wrappers/awsConsumerLambda.js',
+      ),
     },
   },
   kafka: {
     type: 'Kafka',
     wrapper: {
       name: 'wrapHandlerForAWSKafkaConsumerLambda',
-      path: path.join(__dirname, 'wrappers', 'awsKafkaConsumerLambda'),
+      path: path.join(
+        path.dirname(require.resolve('@whook/aws-lambda')),
+        'wrappers/awsKafkaConsumerLambda.js',
+      ),
     },
   },
   s3: {
     type: 'S3',
     wrapper: {
       name: 'wrapHandlerForAWSS3Lambda',
-      path: path.join(__dirname, 'wrappers', 'awsS3Lambda'),
+      path: path.join(
+        path.dirname(require.resolve('@whook/aws-lambda')),
+        'wrappers/awsS3Lambda.js',
+      ),
     },
   },
   log: {
     type: 'Log',
     wrapper: {
       name: 'wrapHandlerForAWSLogSubscriberLambda',
-      path: path.join(__dirname, 'wrappers', 'awsLogSubscriberLambda'),
+      path: path.join(
+        path.dirname(require.resolve('@whook/aws-lambda')),
+        'wrappers/awsLogSubscriberLambda.js',
+      ),
     },
   },
 };
@@ -207,7 +232,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ENV: '@whook/whook/dist/services/ProxyedENV',
-      log: __dirname + '/services/log',
+      log: '@whook/aws-lambda/services/log',
       time: 'common-services/dist/time',
       delay: 'common-services/dist/delay',
     }),
@@ -230,7 +255,6 @@ export async function runBuild(
     const {
       NODE_ENV,
       BUILD_PARALLELISM,
-      BUILD_OPTIONS,
       PROJECT_DIR,
       compiler,
       log,
@@ -238,8 +262,7 @@ export async function runBuild(
       API,
       buildInitializer,
     }: WhookAWSLambdaBuildConfig &
-      WhookAWSLambdaBuildConfig &
-      Pick<WhookCompilerConfig, 'BUILD_OPTIONS'> & {
+      WhookAWSLambdaBuildConfig & {
         NODE_ENV: string;
         PROJECT_DIR: string;
         compiler: WhookCompilerService;
@@ -250,7 +273,6 @@ export async function runBuild(
       } = await $.run([
       'NODE_ENV',
       '?BUILD_PARALLELISM',
-      '?BUILD_OPTIONS',
       'PROJECT_DIR',
       'process',
       'compiler',
@@ -284,7 +306,6 @@ export async function runBuild(
     await processOperations(
       {
         NODE_ENV,
-        BUILD_OPTIONS: BUILD_OPTIONS || DEFAULT_BUILD_OPTIONS,
         BUILD_PARALLELISM: BUILD_PARALLELISM || DEFAULT_BUILD_PARALLELISM,
         PROJECT_DIR,
         compiler,
@@ -310,21 +331,19 @@ async function processOperations(
   {
     NODE_ENV,
     BUILD_PARALLELISM,
-    BUILD_OPTIONS,
     PROJECT_DIR,
     compiler,
     log,
     $autoload,
     buildInitializer,
-  }: WhookAWSLambdaBuildConfig &
-    Required<Pick<WhookCompilerConfig, 'BUILD_OPTIONS'>> & {
-      NODE_ENV: string;
-      PROJECT_DIR: string;
-      compiler: WhookCompilerService;
-      log: LogService;
-      $autoload: Autoloader<Initializer<Dependencies, Service>>;
-      buildInitializer: BuildInitializer;
-    },
+  }: WhookAWSLambdaBuildConfig & {
+    NODE_ENV: string;
+    PROJECT_DIR: string;
+    compiler: WhookCompilerService;
+    log: LogService;
+    $autoload: Autoloader<Initializer<Dependencies, Service>>;
+    buildInitializer: BuildInitializer;
+  },
   operations: WhookOperation<WhookAPIOperationAWSLambdaConfig>[],
 ): Promise<void> {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
@@ -335,7 +354,6 @@ async function processOperations(
         {
           NODE_ENV,
           PROJECT_DIR,
-          BUILD_OPTIONS,
           compiler,
           log,
           $autoload,
@@ -352,7 +370,6 @@ async function processOperations(
       {
         NODE_ENV,
         BUILD_PARALLELISM,
-        BUILD_OPTIONS,
         PROJECT_DIR,
         compiler,
         log,
@@ -369,12 +386,11 @@ async function buildAnyLambda(
   {
     NODE_ENV,
     PROJECT_DIR,
-    BUILD_OPTIONS,
     compiler,
     log,
     $autoload,
     buildInitializer,
-  }: Required<Pick<WhookCompilerConfig, 'BUILD_OPTIONS'>> & {
+  }: {
     NODE_ENV: string;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
@@ -399,7 +415,7 @@ async function buildAnyLambda(
     log('warning', `Building ${operationType} "${finalEntryPoint}"...`);
     const buildDefinition = BUILD_DEFINITIONS[operationType];
     // eslint-disable-next-line
-    const applyWrapper = require(buildDefinition.wrapper.path).default;
+    const applyWrapper = (await import(buildDefinition.wrapper.path)).default;
     const rootNode = await $autoload(
       entryPoint + (buildDefinition.suffix || ''),
     );
@@ -417,16 +433,11 @@ async function buildAnyLambda(
           ? `OPERATION_API>OPERATION_API_${finalEntryPoint}`
           : name,
       ),
-      BUILD_OPTIONS,
     );
-    const indexContent = await buildLambdaIndex(
-      rootNode,
-      {
-        name: buildDefinition.wrapper.name,
-        path: buildDefinition.wrapper.path,
-      },
-      BUILD_OPTIONS,
-    );
+    const indexContent = await buildLambdaIndex(rootNode, {
+      name: buildDefinition.wrapper.name,
+      path: buildDefinition.wrapper.path,
+    });
 
     await mkdirp(lambdaPath);
     await Promise.all([
@@ -454,18 +465,10 @@ async function buildAnyLambda(
 async function buildLambdaIndex(
   rootNode: { path: string },
   buildWrapper: { name: string; path: string },
-  options: NonNullable<WhookCompilerConfig['BUILD_OPTIONS']>,
 ): Promise<string> {
-  return `${
-    options.modules === 'commonjs'
-      ? `const pickModule = (m) => { return m && m.default || m; }
-const initHandler = pickModule(require('${rootNode.path}'));
-const ${buildWrapper.name} = pickModule(require('${buildWrapper.path}'));
-const { initialize } = require('./initialize');`
-      : `import initHandler from '${rootNode.path}';
+  return `import initHandler from '${rootNode.path}';
 import ${buildWrapper.name} from '${buildWrapper.path}';
-import { initialize } from './initialize.js';`
-  }
+import { initialize } from './initialize.js';
 
 const handlerInitializer = ${buildWrapper.name}(
     initHandler
@@ -473,11 +476,8 @@ const handlerInitializer = ${buildWrapper.name}(
 
 const handlerPromise = initialize()
   .then(handlerInitializer);
-${
-  options.modules === 'commonjs'
-    ? 'module.exports = {}; module.exports.default = '
-    : 'export default '
-}function handler (event, context, callback) {
+
+export default function handler (event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false;
   return handlerPromise
   .then(handler => handler(event, context, callback));

@@ -69,7 +69,7 @@
     "apollo-server-core": "^2.25.0",
     "apollo-server-env": "^3.1.0",
     "common-services": "^11.0.1",
-    "knifecycle": "^13.0.0",
+    "knifecycle": "^14.0.0",
     "openapi-types": "^11.0.1",
     "type-fest": "^2.13.0",
     "yhttperror": "^6.1.1"

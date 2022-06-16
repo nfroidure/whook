@@ -11,7 +11,6 @@ import type {
   WhookCompilerOptions,
   WhookCompilerService,
 } from './services/compiler.js';
-import type { BuildOptions } from 'knifecycle/dist/build.js';
 import type { LogService } from 'common-services';
 
 const readFileAsync = util.promisify(fs.readFile) as (
@@ -66,14 +65,12 @@ export async function runBuild(
     const $ = await aPrepareBuildEnvironment();
     const {
       PROJECT_DIR,
-      BUILD_OPTIONS,
       COMPILER_OPTIONS,
       compiler,
       log,
       buildInitializer,
     }: {
       PROJECT_DIR: string;
-      BUILD_OPTIONS: BuildOptions;
       COMPILER_OPTIONS: WhookCompilerOptions;
       compiler: WhookCompilerService;
       log: LogService;
@@ -82,7 +79,6 @@ export async function runBuild(
       'CONFIGS',
       '$autoload',
       'PROJECT_DIR',
-      'BUILD_OPTIONS',
       'process',
       'compiler',
       'log',
@@ -92,11 +88,11 @@ export async function runBuild(
     log('info', 'Build environment initialized 🚀🌕');
 
     const distPath = path.join(PROJECT_DIR, 'dist');
-    const initializerContent = await buildInitializer(
-      ['httpServer', 'process'],
-      BUILD_OPTIONS,
-    );
-    const indexContent = await buildIndex(BUILD_OPTIONS);
+    const initializerContent = await buildInitializer([
+      'httpServer',
+      'process',
+    ]);
+    const indexContent = await buildIndex();
 
     await mkdirp(distPath);
     await Promise.all([
@@ -154,16 +150,11 @@ async function ensureFileAsync(
   return await writeFileAsync(path, content, encoding);
 }
 
-async function buildIndex(options: BuildOptions): Promise<string> {
-  return `${
-    options.modules === 'commonjs'
-      ? `
-const { initialize } = require('./initialize');`
-      : `
-import { initialize } from './initialize.js';`
-  }
+async function buildIndex(): Promise<string> {
+  return `
+import { initialize } from './initialize.js';
 
-initialize()
+await initialize();
 
-  `;
+`;
 }

@@ -124,10 +124,7 @@ import type {
 } from '@whook/http-transaction';
 import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL.js';
 import type { Dependencies } from 'knifecycle';
-import initCompiler, {
-  DEFAULT_COMPILER_OPTIONS,
-  DEFAULT_BUILD_OPTIONS,
-} from './services/compiler.js';
+import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
 import type {
   WhookCompilerOptions,
   WhookCompilerService,
@@ -213,7 +210,6 @@ export {
   HANDLER_REG_EXP,
   initCompiler,
   DEFAULT_COMPILER_OPTIONS,
-  DEFAULT_BUILD_OPTIONS,
   COMPONENTS_TYPES,
   cleanupOpenAPI,
   collectRefs,

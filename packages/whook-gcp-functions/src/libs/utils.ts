@@ -19,14 +19,13 @@ export async function loadLambda(
     'builds',
     target,
     operationId,
-    type,
+    type + '.js',
   );
 
   log('debug', `⛏️ - Loading lambda module at path "${modulePath}".`);
 
   try {
-    // eslint-disable-next-line
-    const module = require(modulePath);
+    const module = await import(modulePath);
 
     if (!module) {
       throw new YError('E_MODULE_NOT_FOUND', module);

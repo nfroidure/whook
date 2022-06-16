@@ -2,10 +2,13 @@ import path from 'path';
 import { noop } from '../libs/utils.js';
 import { autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
-import type { BuildOptions } from 'knifecycle/dist/build.js';
 import type { ImporterService } from '../index.js';
 
-export const DEFAULT_BUILD_OPTIONS: BuildOptions = { modules: 'commonjs' };
+export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
+  externalModules: [],
+  ignoredModules: [],
+  target: '16',
+};
 
 export default autoService(initCompiler);
 
@@ -21,7 +24,6 @@ export type WhookCompilerConfig = {
   NODE_ENV?: string;
   DEBUG_NODE_ENVS: string[];
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  BUILD_OPTIONS?: BuildOptions;
 };
 export type WhookCompilerDependencies = WhookCompilerConfig & {
   PROJECT_DIR: string;
@@ -35,18 +37,11 @@ export type WhookCompilerService = (
   options?: WhookCompilerOptions,
 ) => Promise<WhookCompilationResult>;
 
-export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
-  externalModules: [],
-  ignoredModules: [],
-  target: '16',
-};
-
 async function initCompiler({
   PROJECT_DIR,
   NODE_ENV,
   DEBUG_NODE_ENVS,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
-  BUILD_OPTIONS = DEFAULT_BUILD_OPTIONS,
   importer,
   log = noop,
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
@@ -90,16 +85,28 @@ async function initCompiler({
     };
     const result = await build({
       entryPoints: [entryPoint],
-      bundle: true,
-      write: false,
-      platform: BUILD_OPTIONS.modules === true ? 'neutral' : 'node',
-      target: 'node' + compilerOptions.target,
       outfile: outFile,
       sourcemap: debugging,
+      bundle: true,
+      write: false,
       // Let's keep build readable
       minify: false,
       // To keep Knifecycle initializers names untouched
       keepNames: true,
+      platform: 'node',
+      target: 'esnext',
+      format: 'esm',
+      // TODO: Remove when issue is addressed
+      // https://github.com/evanw/esbuild/issues/1921#issuecomment-1152991694
+      banner: {
+        js: `
+// Built with \`@whook\`, do not edit in place!
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
+`,
+      },
       define: {
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
       },
@@ -110,7 +117,6 @@ async function initCompiler({
         compilerOptions.ignoredModules,
       ),
       logLevel: debugging ? 'warning' : 'silent',
-      mainFields: compilerOptions.mainFields,
     });
 
     const data = {

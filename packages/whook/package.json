@@ -70,7 +70,8 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "peerDependencies": {
-    "esbuild": "^0.14.43"
+    "esbuild": "^0.14.43",
+    "esbuild-node-externals": "^1.4.1"
   },
   "devDependencies": {
     "@types/jest": "^28.1.1",
@@ -101,7 +102,7 @@
     "debug": "^4.3.4",
     "dotenv": "^16.0.1",
     "internal-ip": "^6.2.0",
-    "knifecycle": "^13.0.0",
+    "knifecycle": "^14.0.0",
     "openapi-types": "^11.0.1",
     "pkg-dir": "^5.0.0",
     "portfinder": "^1.0.28",

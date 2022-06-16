@@ -54,7 +54,7 @@
     "@whook/http-transaction": "^9.0.1",
     "@whook/whook": "^9.0.1",
     "common-services": "^11.0.1",
-    "knifecycle": "^13.0.0",
+    "knifecycle": "^14.0.0",
     "openapi-types": "^11.0.1"
   },
   "devDependencies": {

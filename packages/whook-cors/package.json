@@ -54,7 +54,7 @@
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/http-router": "^9.0.1",
     "@whook/whook": "^9.0.1",
-    "knifecycle": "^13.0.0",
+    "knifecycle": "^14.0.0",
     "openapi-types": "^11.0.1",
     "yhttperror": "^6.1.1"
   },

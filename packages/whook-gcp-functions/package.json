@@ -57,7 +57,7 @@
     "camelcase": "^6.3.0",
     "common-services": "^11.0.1",
     "cpr": "3.0.1",
-    "knifecycle": "^13.0.0",
+    "knifecycle": "^14.0.0",
     "mkdirp": "^1.0.4",
     "openapi-types": "^11.0.1",
     "qs": "^6.10.3",

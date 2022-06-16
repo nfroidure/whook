@@ -6,6 +6,8 @@ import {
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
 } from '@whook/whook';
 import { prepareEnvironment } from './index.js';
+import pkgDir from 'pkg-dir';
+import type { WhookCompilerOptions } from '@whook/whook';
 
 /* Architecture Note #1.2: The build file
 
@@ -51,6 +53,11 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   // Finally, some constants can be serialized instead of being
   //  initialized in the target build saving some time at boot
   $.register(alsoInject(['API_DEFINITIONS'], initBuildConstants));
+
+  // Needed to avoid a dead lock
+  // TODO: Remove when fixed that issue
+  // https://github.com/nfroidure/knifecycle/issues/108
+  $.register(constant('pkgDir', pkgDir));
 
   return $;
 }

@@ -82,7 +82,7 @@
     "common-services": "^11.0.1",
     "fs-extra": "^10.1.0",
     "inquirer": "^8.2.4",
-    "knifecycle": "^13.0.0",
+    "knifecycle": "^14.0.0",
     "miniquery": "^1.1.2",
     "openapi-types": "^11.0.1",
     "yargs-parser": "^20.2.9",

@@ -66,7 +66,7 @@
   "dependencies": {
     "@whook/whook": "^9.0.1",
     "apollo-server-module-graphiql": "^1.4.0",
-    "knifecycle": "^13.0.0",
+    "knifecycle": "^14.0.0",
     "openapi-types": "^11.0.1"
   },
   "devDependencies": {

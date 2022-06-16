@@ -11,7 +11,6 @@ describe('Compiler', () => {
   const PROJECT_DIR = '/home/whoami/my_project';
   const DEBUG_NODE_ENVS = [];
   const COMPILER_OPTIONS = {};
-  const BUILD_OPTIONS = { modules: 'commonjs' as const };
   const log = jest.fn<LogService>();
   const importer = jest.fn<ImporterService<unknown>>();
 
@@ -29,7 +28,6 @@ describe('Compiler', () => {
       NODE_ENV,
       DEBUG_NODE_ENVS,
       COMPILER_OPTIONS,
-      BUILD_OPTIONS,
       importer,
       log,
     });
@@ -58,7 +56,6 @@ describe('Compiler', () => {
       NODE_ENV,
       DEBUG_NODE_ENVS,
       COMPILER_OPTIONS: { ...COMPILER_OPTIONS, excludeNodeModules: true },
-      BUILD_OPTIONS,
       importer,
       log,
     });
