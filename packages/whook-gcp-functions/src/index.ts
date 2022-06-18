@@ -92,7 +92,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ENV: '@whook/whook/dist/services/ProxyedENV',
-      log: __dirname + '/services/log',
+      log: '@whook/gcp-functions/dist/services/log',
       time: 'common-services/dist/time',
       delay: 'common-services/dist/delay',
     }),
@@ -195,9 +195,8 @@ async function processOperations(
     log,
     $autoload,
     buildInitializer,
-  }: {
+  }: WhookGCPBuildConfig & {
     NODE_ENV: string;
-    BUILD_PARALLELISM: number;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
     log: LogService;
@@ -263,8 +262,9 @@ async function buildAnyLambda(
   const { operationId } = operation;
 
   try {
-    const whookConfig: WhookAPIOperationGCPFunctionConfig =
-      operation['x-whook'] || {};
+    const whookConfig: WhookAPIOperationGCPFunctionConfig = operation[
+      'x-whook'
+    ] || { type: 'http' };
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
     const entryPoint = operationId;
@@ -274,7 +274,7 @@ async function buildAnyLambda(
     log('warning', `Building ${operationType} "${finalEntryPoint}"...`);
     const buildDefinition = BUILD_DEFINITIONS[operationType];
     // eslint-disable-next-line
-    const applyWrapper = require(buildDefinition.wrapper.path).default;
+    const applyWrapper = (await import(buildDefinition.wrapper.path)).default;
     const rootNode = await $autoload(
       entryPoint + (buildDefinition.suffix || ''),
     );
