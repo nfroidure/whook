@@ -21,15 +21,14 @@ You can find a complete setup with a Terraform deployment example in
 
 ## Quick setup
 
-Install this module and its peer dependencies :
+Install this module:
 
 ```sh
 npm i @whook/gcp-functions;
-npm i --save-dev @whook/http-transaction esbuild
 ```
 
 Add this module to your Whook plugins and tweak the 2 build functions in your
-`build.ts` main file:
+`src/build.ts` main file:
 
 ```diff
 import {
@@ -155,7 +154,7 @@ export default CONFIG;
 
 # Build
 
-To build your functions :
+To build your functions:
 
 ```sh
 # Build all functions
@@ -175,10 +174,10 @@ your `WHOOK_PLUGINS` list. It provides you some commands like the
 npx whook testHTTPFunction --name getPing
 ```
 
-To get more insights when errors happens:
+To get more insights when some errors happens:
 
 ```sh
-npm run whook-dev -- testHTTPFunction --name getPing
+DEBUG=whook npm run whook-dev -- testHTTPFunction --name getPing
 ```
 
 ## Deployment

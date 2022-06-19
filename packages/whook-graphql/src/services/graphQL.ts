@@ -17,7 +17,7 @@ export type WhookGraphQLFragmentService = {
 };
 
 export type WhookGraphQLEnv = {
-  DEV_MODE: string;
+  DEV_MODE?: string;
 };
 export type WhookGraphQLConfig = {
   GRAPHQL_SERVER_OPTIONS?: Config;

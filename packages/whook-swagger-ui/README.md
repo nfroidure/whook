@@ -13,24 +13,25 @@
 [//]: # (::contents:start)
 
 This module provides the GraphIQL UI to your local
- [Whook](https://github.com/nfroidure/whook) server !
+[Whook](https://github.com/nfroidure/whook) server !
 
 ## Usage
 
-The `DEV_MODE=1` environment variable must be used
- when starting your server (`npm run dev` does it
- by default).
+The `DEV_MODE=1` environment variable must be used when starting your server
+(`npm run dev` does it by default).
 
 ## Setup
 
 Install the module:
+
 ```sh
 npm i @whook/swagger-ui
 ```
 
-To use it, just wrap the HTTP router with this module and
- register it again with the `Knifecycle` instance inside the
- `runServer` function (usually in `src/index.ts`):
+To use it, just wrap the HTTP router with this module and override its
+registration with the `Knifecycle` instance inside the `runServer` function
+(usually in `src/index.ts`):
+
 ```diff
 + import initHTTPRouter from '@whook/http-router';
 + import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
@@ -53,11 +54,11 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 }
 ```
 
-Declare this module types in your `src/whook.d.ts` type
- definitions:
+Declare this module types in your `src/whook.d.ts` type definitions:
+
 ```diff
 +import type {
-+   WhookSwaggerUIEnv
++   WhookSwaggerUIEnv,
 +   WhookAPIOperationSwaggerConfig,
 +   WhookSwaggerUIConfig,
 +} from '@whook/swagger-ui';
@@ -69,7 +70,7 @@ declare module '@whook/whook' {
     // (...)
 +      WhookGraphIQLEnv,
       WhookSwaggerUIEnv {}
-    
+
   // ...
 
   export interface WhookConfigs
@@ -96,6 +97,7 @@ declare module '@whook/whook' {
 ```
 
 And add the SwaggerUI config (usually in `src/config/common/config.js`):
+
 ```diff
 import type { WhookConfigs } from '@whook/whook';
 

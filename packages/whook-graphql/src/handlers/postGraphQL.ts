@@ -1,12 +1,13 @@
 import { autoHandler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import { noop, WhookHeaders } from '@whook/whook';
+import { noop } from '@whook/whook';
 import { Headers } from 'apollo-server-env';
 import { runHttpQuery } from 'apollo-server-core';
 import type {
   WhookAPIHandlerDefinition,
   WhookOperation,
   WhookResponse,
+  WhookHeaders,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type { WhookGraphQLService } from '../index.js';

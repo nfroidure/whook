@@ -18,7 +18,7 @@ This module provides the GraphIQL UI to your local
 ## Usage
 
 The `DEV_MODE=1` environment variable must be used when starting your server
-(`npm run dev` does it by default).
+(the `npm run dev` script of default Whook projects does it by default).
 
 ## Setup
 
@@ -32,9 +32,9 @@ Update the types (usually in `src/whook.d.ts`):
 
 ```diff
 +import type {
-+   WhookGraphIQLEnv
++   WhookGraphIQLEnv,
 +   WhookGraphIQLConfig,
-+} from '@whook/swagger-ui';
++} from '@whook/graphiql';
 
 // ...
 

@@ -19,18 +19,21 @@ authenticate and allow client applications to act on behalf of them.
 
 ![Code Flow Overview](./code_flow_overview.svg)
 
-The module provides :
+The module provides:
 
-- 3 handlers : the 2 OAuth2 standard endpoints (`getOAuth2authorize` and
-  `postOAuth2Tokentoken`) plus the `postOAuth2Acknowledge` to be used by the SSR
-  frontend,
-- the 5 OAuth2 standard grant types implemented through plug and play services.
-  You can create your own granter services to create additional grant types.
+- 2 OAuth2 handlers implementing the 2 OAuth2 standard endpoints
+  (`getOAuth2authorize`, `postOAuth2Tokentoken`) to be used by OAuth2 client
+  applications,
+- 4 authentication endpoints to be used by the authorization server directly to
+  authenticate users (`postAuthLogin`, `postAuthRefresh`, `postAuthLogout`) and
+  acknowledge the client requests (`postOAuth2Acknowledge`),
+- 5 OAuth2 services implementing the standard grant types. You can create your
+  own granter services to create additional grant types.
 
 This module requires you to implement some services it relies on:
 
 - `oAuth2AccessToken` that generates and checks the `access_token` and the
-  `oAuth2RefreshToken` for the `refresh_token` both have the same interface,
+  `oAuth2RefreshToken` for the `refresh_token`, both have the same interface,
 - `checkApplication` service that is supposed to check whether an application
   can be used or not for a given grant type, a given scope and redirect URI,
 - `oAuth2PasswordService` aimed to check the `password` grant type with your own
@@ -48,7 +51,7 @@ Install the module in your project:
 npm i @whook/oauth2
 ```
 
-Declare the plugin into your `index.ts` file:
+Declare the plugin into your `src/index.ts` file:
 
 ```diff
   // (...)
@@ -123,7 +126,7 @@ The `oAuth2Granters` service gather the various granters services you can use in
 your application but you can write your own that uses a subset or a superset of
 these granters.
 
-Here, for example an handler that implement a verify token mechanism in order to
+Here, for example a handler that implement a verify token mechanism in order to
 validate a user subscription:
 
 ```ts
@@ -259,15 +262,16 @@ export default initPostAuthRefresh;
 ```
 
 Additionnaly, you could create any handler in the `/auth` path in order to
-receive the auth cookies.
+receive the auth cookies. For example, you may want to serve user profiles
+there.
 
 ## Customizing handlers
 
 The endpoints definitions are designed to support the standard OAuth2
 definitions but can be easily overriden.
 
-You will have to protect the `postOAuth2Acknowledge` with your own security
-mechanism :
+You will also have to protect the `postOAuth2Acknowledge` with your own security
+mechanism:
 
 ```ts
 import {
@@ -283,6 +287,7 @@ export const definition: WhookAPIHandlerDefinition = {
   ...postOAuth2AcknowledgeDefinition,
   operation: {
     ...postOAuth2AcknowledgeDefinition.operation,
+    // Complete the definition to protect the endpoint
     security: [
       {
         bearerAuth: ['user'],
@@ -331,7 +336,7 @@ export const definition: WhookAPIHandlerDefinition = {
 ```
 
 You will probably need to also protect the `postOAuth2Token` endpoint with your
-own security mecanism :
+own security mecanism:
 
 ```ts
 // In a `src/handlers/postOAuth2Token.ts` fileimport {

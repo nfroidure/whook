@@ -20,20 +20,20 @@ You can find a complete setup with a Terraform deployment example in
 
 ## Quick setup
 
-Install this module and its peer dependencies :
+Install this module:
 
 ```sh
 npm i @whook/aws-lambda;
-npm i --save-dev @whook/http-transaction esbuild
 ```
 
 Add this module to your Whook plugins and tweak the 2 build functions in your
-`build.ts` main file:
+`src/build.ts` main file:
 
 ```diff
 import {
   // (...)
 -  runBuild as runBaseBuild,
+-  prepareBuildEnvironment as prepareBaseBuildEnvironment,
   // (...)
 } from '@whook/whook';
 +import {
@@ -155,7 +155,7 @@ export default CONFIG;
 
 # Build
 
-To build your functions :
+To build your functions:
 
 ```sh
 # Build all functions
@@ -167,7 +167,7 @@ npm run build -- getPing
 
 # Debug
 
-You can easily test your function builds by adding `@whook/aws-lambda` to your
+You can easily test your functions builds by adding `@whook/aws-lambda` to your
 `WHOOK_PLUGINS` list. It provides you some commands like the `testHTTPLambda`
 one:
 
@@ -175,10 +175,10 @@ one:
 npx whook testHTTPLambda --name getPing
 ```
 
-To get more insights when errors happens:
+To get more insights when some errors happens:
 
 ```sh
-npm run whook-dev -- testHTTPLambda --name getPing
+DEBUG=whook npm run whook-dev -- testHTTPLambda --name getPing
 ```
 
 ## Deployment

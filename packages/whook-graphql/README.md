@@ -14,12 +14,12 @@
 
 Brings GraphQL to your [Whook](https://github.com/nfroidure/whook) server!
 
-This module uses [Apollo](https://www.apollographql.com/) under the hood most of
+This module uses [Apollo](https://www.apollographql.com/) under the hood. Most of
 its concepts (modules, plugins...) applies to it.
 
 ## Quick setup
 
-Install the module in your project:
+Install the module and its dependencies in your project:
 
 ```sh
 npm i @whook/graphql apollo-server-core
@@ -29,9 +29,9 @@ Update the types (usually in `src/whook.d.ts`):
 
 ```diff
 +import type {
-+   WhookGraphQLEnv
++   WhookGraphQLEnv,
 +   WhookGraphQLConfig,
-+} from '@whook/swagger-ui';
++} from '@whook/graphql';
 
 // ...
 
@@ -56,7 +56,7 @@ declare module '@whook/whook' {
 }
 ```
 
-Declare the plugin into your `index.ts` file:
+Declare the plugin into your `src/index.ts` file:
 
 ```diff
 +  import { gql } from 'apollo-server-core';
