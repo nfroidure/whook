@@ -23,7 +23,7 @@ async function initArgs({
   const { $0, _, ...args } = parseArgs(ARGS.slice(2));
   const finalArgs = {
     namedArguments: args,
-    rest: _,
+    rest: _.map((arg) => arg.toString()),
     command: ARGS[1],
   };
 

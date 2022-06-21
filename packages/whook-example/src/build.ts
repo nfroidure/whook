@@ -6,8 +6,7 @@ import {
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
 } from '@whook/whook';
 import { prepareEnvironment } from './index.js';
-import pkgDir from 'pkg-dir';
-import type { WhookCompilerOptions } from '@whook/whook';
+import { packageDirectory } from 'pkg-dir';
 
 /* Architecture Note #1.2: The build file
 
@@ -57,7 +56,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   // Needed to avoid a dead lock
   // TODO: Remove when fixed that issue
   // https://github.com/nfroidure/knifecycle/issues/108
-  $.register(constant('pkgDir', pkgDir));
+  $.register(constant('pkgDir', packageDirectory));
 
   return $;
 }

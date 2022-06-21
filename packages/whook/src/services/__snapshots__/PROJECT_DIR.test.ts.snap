@@ -14,7 +14,9 @@ Object {
   ],
   "pkgDirCalls": Array [
     Array [
-      "/home/whoiam/documents",
+      Object {
+        "cwd": "/home/whoiam/documents",
+      },
     ],
   ],
 }
@@ -31,7 +33,9 @@ Object {
   ],
   "pkgDirCalls": Array [
     Array [
-      "/home/whoiam/projects/my-whook/project/src/lol",
+      Object {
+        "cwd": "/home/whoiam/projects/my-whook/project/src/lol",
+      },
     ],
   ],
 }

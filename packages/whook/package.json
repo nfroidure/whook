@@ -70,7 +70,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "peerDependencies": {
-    "esbuild": "^0.14.43",
+    "esbuild": "^0.14.46",
     "esbuild-node-externals": "^1.4.1"
   },
   "devDependencies": {
@@ -78,7 +78,7 @@
     "@types/streamtest": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
-    "esbuild": "^0.14.43",
+    "esbuild": "^0.14.46",
     "esbuild-jest": "^0.5.0",
     "esbuild-node-externals": "^1.4.1",
     "eslint": "^8.17.0",
@@ -88,7 +88,7 @@
     "jsarch": "^5.0.1",
     "jsdoc-to-markdown": "^7.1.1",
     "metapak": "^4.0.4",
-    "metapak-nfroidure": "12.0.6",
+    "metapak-nfroidure": "12.1.0",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "streamtest": "^2.0.0",
@@ -101,12 +101,12 @@
     "common-services": "^11.0.1",
     "debug": "^4.3.4",
     "dotenv": "^16.0.1",
-    "internal-ip": "^6.2.0",
+    "internal-ip": "^7.0.0",
     "knifecycle": "^14.0.0",
-    "openapi-types": "^11.0.1",
-    "pkg-dir": "^5.0.0",
+    "openapi-types": "^12.0.0",
+    "pkg-dir": "^6.0.1",
     "portfinder": "^1.0.28",
-    "type-fest": "^2.13.0",
+    "type-fest": "^2.13.1",
     "yerror": "^6.1.1"
   },
   "contributors": [],

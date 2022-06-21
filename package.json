@@ -32,10 +32,10 @@
     "lint": "lerna run lint",
     "metapak": "metapak",
     "postinstall": "lerna bootstrap --hoist && lerna link && lerna run --parallel genPackagelock",
-    "postmetapak": "lerna run metapak",
-    "precz": "npm run lint && npm run build && npm t && npm run metapak -- -s && lerna run --parallel metapak -- -s",
+    "postmetapak": "npm run lerna -- run metapak",
+    "precz": "npm run lint && npm run build && npm t && npm run metapak -- -s && npm run lerna -- run --parallel metapak -- -- -s",
     "prettier": "lerna run prettier",
-    "preversion": "npm run lint && npm run build && npm t && npm run metapak -- -s && lerna run --parallel metapak -- -s",
+    "preversion": "npm run lint && npm run build && npm t && npm run metapak -- -s && npm run lerna -- run --parallel metapak -- -- -s",
     "test": "lerna run test",
     "version": "npm run changelog"
   },
@@ -60,7 +60,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^4.0.0",
     "metapak": "^4.0.4",
-    "metapak-nfroidure": "12.0.6"
+    "metapak-nfroidure": "12.1.0"
   },
   "contributors": [],
   "engines": {

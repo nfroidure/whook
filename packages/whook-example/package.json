@@ -44,7 +44,6 @@
     "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf -f 'dist' && tsc --outDir dist",
-    "postbuild": "PROJECT_SRC=\"$PWD/src\" NODE_ENV=${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "cover": "npm run jest -- --coverage",
     "debug": "NODE_ENV=${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=${DEBUG:-whook} ts-node --esm --inspect bin/dev",
@@ -53,6 +52,7 @@
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
+    "postbuild": "PROJECT_SRC=\"$PWD/src\" NODE_ENV=${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "start": "PROJECT_SRC=\"$PWD/dist\" NODE_ENV=${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
@@ -88,10 +88,10 @@
     "http-auth-utils": "^3.0.3",
     "jwt-service": "^9.0.1",
     "knifecycle": "^14.0.0",
-    "openapi-schema-validator": "^11.0.1",
-    "openapi-types": "^11.0.1",
+    "openapi-schema-validator": "^12.0.0",
+    "openapi-types": "^12.0.0",
     "strict-qs": "^7.0.0",
-    "type-fest": "^2.13.0",
+    "type-fest": "^2.13.1",
     "yerror": "^6.1.1",
     "yhttperror": "^6.1.1"
   },
@@ -101,22 +101,22 @@
     "@typescript-eslint/parser": "^5.27.0",
     "axios": "^0.27.2",
     "chokidar": "^3.5.1",
-    "esbuild": "^0.14.43",
-    "esbuild-node-externals": "^1.4.1",
+    "esbuild": "^0.14.46",
     "esbuild-jest": "^0.5.0",
+    "esbuild-node-externals": "^1.4.1",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.0",
     "jsarch": "^5.0.1",
     "metapak": "^4.0.4",
-    "metapak-nfroidure": "12.0.6",
+    "metapak-nfroidure": "12.1.0",
     "parse-gitignore": "^1.0.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "schema2dts": "^4.1.1",
-    "typescript": "^4.7.3",
-    "ts-node": "^10.8.1"
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   },
   "contributors": [],
   "engines": {
@@ -188,6 +188,7 @@
       ]
     },
     "moduleNameMapper": {
+      "#(.*)": "<rootDir>/../../node_modules/$1",
       "(.+)\\.js": "$1"
     },
     "extensionsToTreatAsEsm": [

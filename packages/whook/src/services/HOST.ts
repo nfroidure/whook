@@ -37,7 +37,7 @@ async function initHost({
 }: {
   ENV?: HostEnv;
   log?: LogService;
-  importer: ImporterService<{ v4: () => Promise<string> }>;
+  importer: ImporterService<{ internalIpV4: () => Promise<string> }>;
 }): Promise<string> {
   log('debug', `🏭 - Initializing the HOST service.`);
 
@@ -45,7 +45,7 @@ async function initHost({
     log('warning', `♻️ - Using ENV host "${ENV.HOST}"`);
     return ENV.HOST;
   }
-  const host = await (await importer('internal-ip')).v4();
+  const host = await (await importer('internal-ip')).internalIpV4();
 
   if (!host) {
     log(
