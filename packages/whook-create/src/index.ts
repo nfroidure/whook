@@ -28,7 +28,8 @@ export async function runCreateWhook(): Promise<void> {
     const $ = new Knifecycle();
     // TODO: Use import.meta when Jest will support it
     const require = createRequire(
-      path.join(process.cwd(), 'src', 'services', 'API.test.ts'),
+      import.meta.url ||
+        path.join(process.cwd(), 'src', 'services', 'API.test.ts'),
     );
 
     $.register(constant('CWD', process.cwd()));
