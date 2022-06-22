@@ -1,3 +1,13 @@
+## [10.0.1](https://github.com/nfroidure/whook/compare/v10.0.0...v10.0.1) (2022-06-22)
+
+
+### Bug Fixes
+
+* **ci:** fix dependency tree ([fd9f2b8](https://github.com/nfroidure/whook/commit/fd9f2b83bef38f081269602c22afa2ef303c5bfd))
+* **ci:** fix the tests ([4c5d22a](https://github.com/nfroidure/whook/commit/4c5d22a00494aef2fd1ee48e547c93b5247fd425))
+
+
+
 # [10.0.0](https://github.com/nfroidure/whook/compare/v9.0.1...v10.0.0) (2022-06-22)
 
 
