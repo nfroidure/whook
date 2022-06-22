@@ -64,6 +64,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
+    "@whook/http-router": "^10.0.0",
     "@whook/whook": "^10.0.0",
     "axios": "^0.27.2",
     "ecstatic": "^4.1.4",
@@ -75,8 +76,6 @@
     "@types/jest": "^28.1.1",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
-    "@whook/http-router": "^10.0.0",
-    "@whook/whook": "^9.0.1",
     "esbuild": "^0.14.46",
     "esbuild-jest": "^0.5.0",
     "eslint": "^8.17.0",
