@@ -1,3 +1,15 @@
+# [10.0.0](https://github.com/nfroidure/whook/compare/v9.0.1...v10.0.0) (2022-06-22)
+
+
+### Bug Fixes
+
+* **build:** fix gcp functions build ([8070ed5](https://github.com/nfroidure/whook/commit/8070ed5f2fc633c79722897743e307eeebd35e84))
+* **build:** fix the AWS Lambda / GCP Functions builds ([bd22ec4](https://github.com/nfroidure/whook/commit/bd22ec41bf5a92865a760ed5b3547a31c70c5bd1))
+* **docs:** fix various doc issues ([105ce77](https://github.com/nfroidure/whook/commit/105ce7738745dd6eaeb20210e2fa1cf160fd2d69))
+* **tests:** fix preversion tests ([b010ed2](https://github.com/nfroidure/whook/commit/b010ed2cc1a712d0bfb25e3a9956e8769dd1567a))
+
+
+
 ## [9.0.1](https://github.com/nfroidure/whook/compare/v9.0.0...v9.0.1) (2022-05-29)
 
 

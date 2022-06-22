@@ -1,6 +1,6 @@
 {
   "name": "@whook/graphiql",
-  "version": "9.0.1",
+  "version": "10.0.0",
   "description": "A wrapper for the Whook HTTP Router to provide GraphIQL for local dev",
   "keywords": [
     "whook",
@@ -64,7 +64,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^9.0.1",
+    "@whook/whook": "^10.0.0",
     "apollo-server-module-graphiql": "^1.4.0",
     "knifecycle": "^14.0.0",
     "openapi-types": "^12.0.0"
@@ -73,7 +73,7 @@
     "@types/jest": "^28.1.1",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
-    "@whook/http-router": "^9.0.1",
+    "@whook/http-router": "^10.0.0",
     "axios": "^0.27.2",
     "esbuild": "^0.14.46",
     "esbuild-jest": "^0.5.0",
