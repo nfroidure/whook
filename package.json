@@ -35,7 +35,7 @@
     "postmetapak": "npm run lerna -- run metapak",
     "precz": "npm run lint && npm run build && npm t && npm run metapak -- -s && npm run lerna -- run --parallel metapak -- -- -s",
     "prettier": "lerna run prettier",
-    "preversion": "npm run lint && npm run build && npm t && npm run metapak -- -s && npm run lerna -- run --parallel metapak -- -- -s",
+    "preversion": "npm run lint && NODE_ENV=test npm run build && npm t && npm run metapak -- -s && npm run lerna -- run --parallel metapak -- -- -s",
     "test": "lerna run test",
     "version": "npm run changelog"
   },
