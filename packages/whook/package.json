@@ -1,6 +1,6 @@
 {
   "name": "@whook/whook",
-  "version": "10.0.1",
+  "version": "10.0.2",
   "description": "Build strong and efficient REST web services.",
   "type": "module",
   "main": "dist/index.js",
@@ -96,9 +96,9 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@whook/http-router": "^10.0.1",
-    "@whook/http-server": "^10.0.1",
-    "@whook/http-transaction": "^10.0.1",
+    "@whook/http-router": "^10.0.2",
+    "@whook/http-server": "^10.0.2",
+    "@whook/http-transaction": "^10.0.2",
     "common-services": "^11.0.1",
     "debug": "^4.3.4",
     "dotenv": "^16.0.1",

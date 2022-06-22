@@ -1,3 +1,12 @@
+## [10.0.2](https://github.com/nfroidure/whook/compare/v10.0.1...v10.0.2) (2022-06-22)
+
+
+### Bug Fixes
+
+* **@whook/create:** fix the whook project initialization ([30cfd5b](https://github.com/nfroidure/whook/commit/30cfd5b6b0ce6262de7ab01f1b222844e83a5eae))
+
+
+
 ## [10.0.1](https://github.com/nfroidure/whook/compare/v10.0.0...v10.0.1) (2022-06-22)
 
 
