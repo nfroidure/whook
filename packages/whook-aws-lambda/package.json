@@ -2,6 +2,7 @@
   "name": "@whook/aws-lambda",
   "version": "10.0.1",
   "description": "Build and deploy to AWS Lambda with Whook.",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "metapak": {
@@ -168,6 +169,5 @@
     "metapak": "metapak",
     "prettier": "prettier --write 'src/**/*.ts'",
     "test": "npm run jest"
-  },
-  "type": "module"
+  }
 }

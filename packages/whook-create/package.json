@@ -2,6 +2,12 @@
   "name": "@whook/create",
   "version": "10.0.1",
   "description": "Kickstart a new Whook server",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "create": "bin/create.js"
+  },
   "keywords": [
     "whook",
     "knifecycle",
@@ -12,11 +18,6 @@
     "service",
     "creator"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "create": "bin/create.js"
-  },
   "metapak": {
     "configs": [
       "main",
@@ -167,6 +168,5 @@
     "extensionsToTreatAsEsm": [
       ".ts"
     ]
-  },
-  "type": "module"
+  }
 }

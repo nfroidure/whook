@@ -2,6 +2,9 @@
   "name": "@whook/method-override",
   "version": "10.0.1",
   "description": "A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "whook",
     "knifecycle",
@@ -11,8 +14,6 @@
     "web",
     "wrapper"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "metapak": {
     "configs": [
       "main",
@@ -160,6 +161,5 @@
     "metapak": "metapak",
     "prettier": "prettier --write 'src/**/*.ts'",
     "test": "npm run jest"
-  },
-  "type": "module"
+  }
 }

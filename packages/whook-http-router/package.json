@@ -2,6 +2,9 @@
   "name": "@whook/http-router",
   "version": "10.0.1",
   "description": "The Whook base HTTP router",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "whook",
     "knifecycle",
@@ -12,9 +15,6 @@
     "service",
     "router"
   ],
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "metapak": {
     "configs": [
       "main",

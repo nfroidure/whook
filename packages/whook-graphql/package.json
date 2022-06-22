@@ -2,6 +2,9 @@
   "name": "@whook/graphql",
   "version": "10.0.1",
   "description": "GraphQL implementation for Whook servers",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "whook",
     "knifecycle",
@@ -12,8 +15,6 @@
     "wrapper",
     "swagger"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "metapak": {
     "configs": [
       "main",
@@ -168,6 +169,5 @@
     "extensionsToTreatAsEsm": [
       ".ts"
     ]
-  },
-  "type": "module"
+  }
 }

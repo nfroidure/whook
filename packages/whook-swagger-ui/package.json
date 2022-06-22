@@ -2,6 +2,9 @@
   "name": "@whook/swagger-ui",
   "version": "10.0.1",
   "description": "A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "whook",
     "knifecycle",
@@ -12,8 +15,6 @@
     "wrapper",
     "swagger"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "metapak": {
     "configs": [
       "main",
@@ -163,6 +164,5 @@
     "extensionsToTreatAsEsm": [
       ".ts"
     ]
-  },
-  "type": "module"
+  }
 }

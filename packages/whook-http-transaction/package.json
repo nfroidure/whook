@@ -2,6 +2,9 @@
   "name": "@whook/http-transaction",
   "version": "10.0.1",
   "description": "Isolated HTTP Transactions for the Whook framework",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "whook",
     "knifecycle",
@@ -12,8 +15,6 @@
     "service",
     "transaction"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "metapak": {
     "configs": [
       "main",
@@ -176,6 +177,5 @@
         "typescript"
       ]
     }
-  },
-  "type": "module"
+  }
 }

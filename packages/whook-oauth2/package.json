@@ -2,6 +2,7 @@
   "name": "@whook/oauth2",
   "version": "10.0.1",
   "description": "OAuth2 implementation for Whook servers",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "metapak": {
@@ -158,6 +159,5 @@
     "metapak": "metapak",
     "prettier": "prettier --write 'src/**/*.ts'",
     "test": "npm run jest"
-  },
-  "type": "module"
+  }
 }

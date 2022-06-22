@@ -140,7 +140,32 @@ ${author.name}
       ),
       writeFile(
         path.join(project.directory, 'package.json'),
-        JSON.stringify(finalPackageJSON),
+        JSON.stringify(finalPackageJSON, null, 2),
+      ),
+      writeFile(
+        path.join(project.directory, 'tsconfig.json'),
+        JSON.stringify(
+          {
+            compilerOptions: {
+              module: 'Node16',
+              moduleResolution: 'Node16',
+              target: 'es2022',
+              noImplicitAny: false,
+              removeComments: false,
+              preserveConstEnums: true,
+              allowSyntheticDefaultImports: true,
+              esModuleInterop: true,
+              strict: true,
+              declaration: true,
+              outDir: 'dist',
+              sourceMap: true,
+            },
+            include: ['src/**/*.ts'],
+            exclude: ['node_modules'],
+          },
+          null,
+          2,
+        ),
       ),
       writeFile(
         path.join(project.directory, 'LICENSE'),
