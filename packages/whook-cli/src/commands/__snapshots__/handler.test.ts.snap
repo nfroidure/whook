@@ -1,126 +1,126 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`handlerCommand should fail with a failing handler 1`] = `
-Object {
+{
   "errorCode": "E_UNEXPECTED_SUCCESS",
-  "errorParams": Array [],
-  "injectorCalls": Array [
-    Array [
-      Array [
+  "errorParams": [],
+  "injectorCalls": [
+    [
+      [
         "putEcho",
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "handler",
       "putEcho",
     ],
-    Array [
+    [
       "debug",
       "parameters",
-      Object {
-        "body": Object {
+      {
+        "body": {
           "echo": "YOLO!",
         },
       },
     ],
-    Array [
+    [
       "error",
       "Got an error while running the handler.",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
 }
 `;
 
 exports[`handlerCommand should fail with non JSON parameters 1`] = `
-Object {
+{
   "errorCode": "E_BAD_PARAMETERS",
-  "errorParams": Array [
-    "{\\"body: {\\"echo\\": \\"YOLO!\\"} }",
+  "errorParams": [
+    "{"body: {"echo": "YOLO!"} }",
     "Unexpected token e in JSON at position 10",
   ],
-  "injectorCalls": Array [],
-  "logCalls": Array [],
-  "promptArgsCalls": Array [
-    Array [],
+  "injectorCalls": [],
+  "logCalls": [],
+  "promptArgsCalls": [
+    [],
   ],
 }
 `;
 
 exports[`handlerCommand should work with all parameters 1`] = `
-Object {
-  "injectorCalls": Array [
-    Array [
-      Array [
+{
+  "injectorCalls": [
+    [
+      [
         "putEcho",
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "handler",
       "putEcho",
     ],
-    Array [
+    [
       "debug",
       "parameters",
-      Object {
-        "body": Object {
+      {
+        "body": {
           "echo": "YOLO!",
         },
       },
     ],
-    Array [
+    [
       "info",
       "{
-  \\"status\\": 200,
-  \\"body\\": {
-    \\"echo\\": \\"YOLO!\\"
+  "status": 200,
+  "body": {
+    "echo": "YOLO!"
   }
 }",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
 }
 `;
 
 exports[`handlerCommand should work with handler only 1`] = `
-Object {
-  "injectorCalls": Array [
-    Array [
-      Array [
+{
+  "injectorCalls": [
+    [
+      [
         "getPing",
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "handler",
       "getPing",
     ],
-    Array [
+    [
       "debug",
       "parameters",
-      Object {},
+      {},
     ],
-    Array [
+    [
       "info",
       "{
-  \\"status\\": 200
+  "status": 200
 }",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
 }
 `;

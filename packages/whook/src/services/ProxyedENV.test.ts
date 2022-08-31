@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initEnv from './ProxyedENV.js';
 import type { LogService } from 'common-services';
 
@@ -35,31 +35,31 @@ DB_HOST = 'localhost'
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       readFileCalls: readFile.mock.calls,
     }).toMatchInlineSnapshot(`
-      Object {
-        "ENV": Object {
+      {
+        "ENV": {
           "DB_PASSWORD": "oudelali",
           "NODE_ENV": "development",
         },
-        "logCalls": Array [
-          Array [
+        "logCalls": [
+          [
             "debug",
             "♻️ - Loading the environment service.",
           ],
-          Array [
+          [
             "warning",
             "🖥 - Using local env.",
           ],
-          Array [
+          [
             "warning",
-            "💾 - Using .env file at \\"/home/whoami/my-whook-project/.env.development\\".",
+            "💾 - Using .env file at "/home/whoami/my-whook-project/.env.development".",
           ],
-          Array [
+          [
             "debug",
             "♻️ -Filtering environment for build.",
           ],
         ],
-        "readFileCalls": Array [
-          Array [
+        "readFileCalls": [
+          [
             "/home/whoami/my-whook-project/.env.development",
           ],
         ],

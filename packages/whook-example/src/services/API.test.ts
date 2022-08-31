@@ -1,8 +1,14 @@
-import { jest } from '@jest/globals';
+import {
+  describe,
+  it,
+  beforeAll,
+  beforeEach,
+  jest,
+  expect,
+} from '@jest/globals';
 import initAPI from './API.js';
 import FULL_CONFIG from '../config/test/config.js';
 import { getOpenAPIOperations } from '@whook/http-router';
-import { default as OpenAPISchemaValidator } from 'openapi-schema-validator';
 import { initAPIDefinitions, initImporter } from '@whook/whook';
 import path from 'path';
 import { createRequire } from 'module';

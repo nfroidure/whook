@@ -7,7 +7,7 @@ import {
   alsoInject,
   ServiceInitializerWrapper,
 } from 'knifecycle';
-import type { ServiceInitializer, Parameters } from 'knifecycle';
+import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
 import type {
   WhookResponse,
   WhookHandler,
@@ -39,7 +39,7 @@ export type VersionsConfig = {
  * @param {Function} initHandler The handler initializer
  * @returns {Function} The handler initializer wrapped
  */
-export function wrapHandlerWithVersionChecker<D, S>(
+export function wrapHandlerWithVersionChecker<D extends Dependencies<any>, S>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<VersionsConfig & D, S> {
   const augmentedInitializer = alsoInject<VersionsConfig, D, S>(

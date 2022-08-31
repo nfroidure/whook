@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`authentication .check() with a bad auth type should fail 1`] = `
-Object {
+{
   "errorCode": "E_UNEXPECTED_AUTH_TYPE",
-  "errorParams": Array [
+  "errorParams": [
     "yolo",
   ],
 }
 `;
 
 exports[`authentication .check() with bearer type should fail with a bad token 1`] = `
-Object {
+{
   "errorCode": "E_BAD_BEARER_TOKEN",
-  "errorParams": Array [
+  "errorParams": [
     "bearer",
     "lol",
   ],
@@ -20,8 +20,8 @@ Object {
 `;
 
 exports[`authentication .check() with bearer type should work with a good token 1`] = `
-Object {
-  "result": Object {
+{
+  "result": {
     "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
     "exp": 396151200,
     "iat": 396144000,
@@ -33,8 +33,8 @@ Object {
 `;
 
 exports[`authentication .check() with fake type should work with fakedata 1`] = `
-Object {
-  "result": Object {
+{
+  "result": {
     "applicationId": "1",
     "scope": "user",
     "userId": "1",

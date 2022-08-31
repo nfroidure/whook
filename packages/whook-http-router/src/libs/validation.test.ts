@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import {
   extractParametersFromSecuritySchemes,
   extractOperationSecurityParameters,
@@ -205,7 +206,7 @@ describe('extractOperationSecurityParameters', () => {
       };
       expect(
         extractOperationSecurityParameters(API, operation),
-      ).toMatchInlineSnapshot(`Array []`);
+      ).toMatchInlineSnapshot(`[]`);
     });
 
     it('with the bearer security scheme', () => {
@@ -250,19 +251,19 @@ describe('extractOperationSecurityParameters', () => {
       };
       expect(extractOperationSecurityParameters(API, operation))
         .toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "in": "header",
             "name": "authorization",
-            "schema": Object {
+            "schema": {
               "pattern": "((b|B)earer) .*",
               "type": "string",
             },
           },
-          Object {
+          {
             "in": "query",
             "name": "access_token",
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
@@ -312,11 +313,11 @@ describe('extractOperationSecurityParameters', () => {
       };
       expect(extractOperationSecurityParameters(API, operation))
         .toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "in": "header",
             "name": "authorization",
-            "schema": Object {
+            "schema": {
               "pattern": "((b|B)asic) .*",
               "type": "string",
             },
@@ -370,19 +371,19 @@ describe('extractOperationSecurityParameters', () => {
       };
       expect(extractOperationSecurityParameters(API, operation as any))
         .toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "in": "header",
             "name": "authorization",
-            "schema": Object {
+            "schema": {
               "pattern": "((b|B)earer|(b|B)asic) .*",
               "type": "string",
             },
           },
-          Object {
+          {
             "in": "query",
             "name": "access_token",
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },

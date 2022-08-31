@@ -1,7 +1,7 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
   WhookOperation,
   APMService,
@@ -25,11 +25,11 @@ export type LambdaKafkaConsumerInput = { body: MSKEvent['records'] };
 export type LambdaKafkaConsumerOutput = WhookResponse<
   number,
   WhookHeaders,
-  void
+  unknown
 >;
 
 export default function wrapHandlerForAWSKafkaConsumerLambda<
-  D,
+  D extends Dependencies<any>,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -46,10 +46,10 @@ export default function wrapHandlerForAWSKafkaConsumerLambda<
   );
 }
 
-async function initHandlerForAWSKafkaConsumerLambda<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
+async function initHandlerForAWSKafkaConsumerLambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);
 
   return (handleForAWSKafkaConsumerLambda as any).bind(null, services, handler);

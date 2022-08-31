@@ -1,19 +1,24 @@
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { ApolloServerBase, gql } from 'apollo-server-core';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import type { WhookOperation } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type { Config, GraphQLOptions } from 'apollo-server-core';
+import type { GraphQLSchema } from 'graphql';
 
 type DocumentNode = ReturnType<typeof gql>;
 type ElementOf<A> = A extends (infer T)[] ? T : never;
 type IResolvers = ElementOf<Config['resolvers']>;
-type ApolloServerOptions = Config;
+type DirectiveTransformer = (
+  schema: GraphQLSchema,
+  directiveName: string,
+) => GraphQLSchema;
 
 export type WhookGraphQLFragmentService = {
   typeDefs: DocumentNode | DocumentNode[];
   resolvers?: IResolvers;
-  schemaDirectives?: ApolloServerOptions['schemaDirectives'];
+  schemaDirectives?: Record<string, DirectiveTransformer>;
 };
 
 export type WhookGraphQLEnv = {
@@ -29,22 +34,19 @@ export type WhookGraphQLDependencies = WhookGraphQLConfig & {
   log: LogService;
 };
 
-export class WhookGraphQLService extends ApolloServerBase {
+export class WhookGraphQLService<
+  // The type of the argument to the `context` function for this integration.
+  ContextFunctionParams = any,
+> extends ApolloServerBase<ContextFunctionParams> {
   // If you feel tempted to add an option to this constructor. Please consider
   // another place, since the documentation becomes much more complicated when
   // the constructor is not longer shared between all integration
-  constructor(options: Config) {
-    if (process.env.ENGINE_API_KEY || options.engine) {
-      options.engine = {
-        sendReportsImmediately: true,
-        ...(typeof options.engine !== 'boolean' ? options.engine : {}),
-      };
-    }
+  constructor(options: Config<ContextFunctionParams>) {
     super(options);
   }
 
   async waitStart(): Promise<void> {
-    await super.willStart();
+    await super.start();
   }
 
   // This translates the arguments from the middleware into graphQL options It
@@ -91,6 +93,7 @@ async function initGraphQL({
   GRAPHQL_SERVER_OPTIONS = GRAPHQL_SERVER_OPTIONS || {};
   graphQLFragments = graphQLFragments || [];
 
+  // Gather fragments
   const baseResolvers = GRAPHQL_SERVER_OPTIONS.resolvers
     ? GRAPHQL_SERVER_OPTIONS.resolvers instanceof Array
       ? (GRAPHQL_SERVER_OPTIONS.resolvers as IResolvers[])
@@ -101,30 +104,36 @@ async function initGraphQL({
       ? (GRAPHQL_SERVER_OPTIONS.typeDefs as DocumentNode[])
       : [GRAPHQL_SERVER_OPTIONS.typeDefs as DocumentNode]
     : [];
+  const directives = graphQLFragments.reduce(
+    (accSchemaDirectives, { schemaDirectives }) => ({
+      ...accSchemaDirectives,
+      ...schemaDirectives,
+    }),
+    {},
+  );
+
   const apolloServer = new WhookGraphQLService({
     ...GRAPHQL_SERVER_OPTIONS,
-    typeDefs: graphQLFragments.reduce(
-      (accTypeDefs, { typeDefs }) => [
-        ...accTypeDefs,
-        ...([] as DocumentNode[]).concat(typeDefs),
-      ],
-      baseTypeDefs,
-    ),
-    resolvers: graphQLFragments
-      .map(({ resolvers }) => resolvers)
-      .reduce(
-        (accResolvers, resolvers) => [
-          ...accResolvers,
-          ...([] as IResolvers[]).concat(resolvers || []),
-        ],
-        baseResolvers,
-      ),
-    schemaDirectives: graphQLFragments.reduce(
-      (accSchemaDirectives, { schemaDirectives }) => ({
-        ...accSchemaDirectives,
-        ...schemaDirectives,
+    schema: Object.keys(directives).reduce(
+      (finalSchema, name) => directives[name](finalSchema, name),
+      makeExecutableSchema({
+        typeDefs: graphQLFragments.reduce(
+          (accTypeDefs, { typeDefs }) => [
+            ...accTypeDefs,
+            ...([] as DocumentNode[]).concat(typeDefs),
+          ],
+          baseTypeDefs,
+        ),
+        resolvers: graphQLFragments
+          .map(({ resolvers }) => resolvers)
+          .reduce(
+            (accResolvers, resolvers) => [
+              ...accResolvers,
+              ...([] as IResolvers[]).concat(resolvers || []),
+            ],
+            baseResolvers,
+          ),
       }),
-      GRAPHQL_SERVER_OPTIONS.schemaDirectives,
     ),
     introspection: GRAPHQL_SERVER_OPTIONS.introspection || !!ENV.DEV_MODE,
   });

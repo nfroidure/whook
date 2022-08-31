@@ -1,3 +1,4 @@
+import { describe, it } from '@jest/globals';
 import initLogService from './log.js';
 
 describe('initLogService', () => {

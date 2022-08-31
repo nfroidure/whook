@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`wrapHTTPTransactionWithMethodOverride should let normal methods pass 1`] = `
-Object {
+{
   "data": "",
-  "getPingCalls": Array [
-    Array [
-      Object {},
-      Object {
+  "getPingCalls": [
+    [
+      {},
+      {
         "method": "get",
         "operationId": "getPing",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/ping",
         "requestBody": undefined,
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "additionalProperties": false,
-                  "definitions": Object {},
-                  "properties": Object {
-                    "pong": Object {
-                      "enum": Array [
+                  "definitions": {},
+                  "properties": {
+                    "pong": {
+                      "enum": [
                         "pong",
                       ],
                       "type": "string",
@@ -35,13 +35,13 @@ Object {
           },
         },
         "summary": "Checks API's availability.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "headers": Object {
+  "headers": {
     "connection": "close",
     "date": undefined,
     "transaction-id": "1",
@@ -52,27 +52,27 @@ Object {
 `;
 
 exports[`wrapHTTPTransactionWithMethodOverride should override methods 1`] = `
-Object {
+{
   "data": "",
-  "getPingCalls": Array [
-    Array [
-      Object {},
-      Object {
+  "getPingCalls": [
+    [
+      {},
+      {
         "method": "get",
         "operationId": "getPing",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/ping",
         "requestBody": undefined,
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "additionalProperties": false,
-                  "definitions": Object {},
-                  "properties": Object {
-                    "pong": Object {
-                      "enum": Array [
+                  "definitions": {},
+                  "properties": {
+                    "pong": {
+                      "enum": [
                         "pong",
                       ],
                       "type": "string",
@@ -86,13 +86,13 @@ Object {
           },
         },
         "summary": "Checks API's availability.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "headers": Object {
+  "headers": {
     "connection": "close",
     "date": undefined,
     "transaction-id": "0",

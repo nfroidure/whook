@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initGetOAuth2Authorize from './getOAuth2Authorize.js';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters.js';
@@ -106,8 +106,8 @@ describe('getOAuth2Authorize', () => {
     });
 
     expect(response).toMatchInlineSnapshot(`
-      Object {
-        "headers": Object {
+      {
+        "headers": {
           "location": "https://auth.example.com/sign_in?type=code&redirect_uri=http%3A%2F%2Flol&scope=user&client_id=abbacaca-abba-caca-abba-cacaabbacaca&state=bancal",
         },
         "status": 302,
@@ -154,8 +154,8 @@ describe('getOAuth2Authorize', () => {
     });
 
     expect(response).toMatchInlineSnapshot(`
-      Object {
-        "headers": Object {
+      {
+        "headers": {
           "location": "https://auth.example.com/sign_in?redirect_uri=https%3A%2F%2Fwww.example.com&error=unsupported_response_type&error_decription=The+type+%22yolo%22+is+not+supported.&state=bancal",
         },
         "status": 302,

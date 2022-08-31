@@ -1,7 +1,7 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
   APMService,
   WhookOperation,
@@ -28,7 +28,10 @@ export type LambdaCronInput<T extends JsonObject = JsonObject> = {
 };
 export type LambdaCronOutput = WhookResponse<number, WhookHeaders, void>;
 
-export default function wrapHandlerForAWSCronLambda<D, S extends WhookHandler>(
+export default function wrapHandlerForAWSCronLambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & CronWrapperDependencies, S> {
   return alsoInject<CronWrapperDependencies, D, S>(
@@ -43,10 +46,10 @@ export default function wrapHandlerForAWSCronLambda<D, S extends WhookHandler>(
   );
 }
 
-async function initHandlerForAWSCronLambda<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
+async function initHandlerForAWSCronLambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);
 
   return (handleForAWSCronLambda as any).bind(null, services, handler);

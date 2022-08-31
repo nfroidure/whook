@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
 import { default as axios } from 'axios';
 import {
@@ -124,13 +124,14 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
         'last-modified': undefined,
         server: undefined,
       },
+
       data,
     }).toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
+      {
+        "data": {
           "ping": "pong",
         },
-        "headers": Object {
+        "headers": {
           "connection": "close",
           "content-type": "application/json",
           "date": undefined,
@@ -193,19 +194,19 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
         server: undefined,
       },
     }).toMatchInlineSnapshot(`
-Object {
-  "headers": Object {
-    "connection": "close",
-    "content-type": "text/html",
-    "date": undefined,
-    "etag": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-    "transfer-encoding": "chunked",
-  },
-  "status": 200,
-}
-`);
+      {
+        "headers": {
+          "connection": "close",
+          "content-type": "text/html",
+          "date": undefined,
+          "etag": undefined,
+          "last-modified": undefined,
+          "server": undefined,
+          "transfer-encoding": "chunked",
+        },
+        "status": 200,
+      }
+    `);
     expect({
       data,
       debugCalls: logger.debug.mock.calls.sort(sortLogs),

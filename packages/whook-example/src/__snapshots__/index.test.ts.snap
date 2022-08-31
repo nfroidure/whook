@@ -1,34 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`runServer should authenticate users 1`] = `
-Object {
-  "data": Object {
+{
+  "data": {
     "error": "bad_handler",
-    "error_debug_data": Object {
+    "error_debug_data": {
       "guruMeditation": "1",
     },
-    "error_description": "No endpoint found at that path (\\"get\\", \\"/v4/diag\\")",
+    "error_description": "No endpoint found at that path ("get", "/v4/diag")",
     "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
     "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
   },
-  "debugCalls": Array [
-    Array [
+  "debugCalls": [
+    [
       "⏳ - Cleared a delay",
     ],
-    Array [
+    [
       "⏳ - Created a delay:",
       30000,
     ],
-    Array [
+    [
       "❌ - No handler found for: ",
       "get",
-      Array [
+      [
         "v4",
         "diag",
       ],
     ],
   ],
-  "headers": Object {
+  "headers": {
     "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
     "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
     "access-control-allow-origin": "*",
@@ -40,13 +40,13 @@ Object {
     "transfer-encoding": "chunked",
     "vary": "origin",
   },
-  "logErrorCalls": Array [],
-  "logInfoCalls": Array [
-    Array [
-      "CALL {\\"id\\":\\"1\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"_ip_\\",\\"startInBytes\\":370,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Bearer eyJ...xZ0\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":370,\\"endOutBytes\\":780,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
+  "logErrorCalls": [],
+  "logInfoCalls": [
+    [
+      "CALL {"id":"1","protocol":"http","ip":"_ip_","startInBytes":370,"startOutBytes":0,"startTime":1390694400000,"url":"/v4/diag","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","authorization":"Bearer eyJ...xZ0","user-agent":"__avoid_axios_version__","host":"localhost:9999","connection":"close"},"errored":true,"endTime":1390694400000,"endInBytes":370,"endOutBytes":780,"statusCode":404,"resHeaders":{"content-type":"application/json","access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,DELETE,OPTIONS","access-control-allow-headers":"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent","vary":"origin","cache-control":"private"},"operationId":"none"}",
     ],
-    Array [
-      "ERROR {\\"guruMeditation\\":\\"1\\",\\"request\\":\\"http://localhost:9999/v4/diag\\",\\"verb\\":\\"GET\\",\\"status\\":404,\\"code\\":\\"E_NOT_FOUND\\",\\"stack\\":\\"YHTTPError[404]: E_NOT_FOUND (get, v4,diag, /home/whoiam/projects/whook/packages/whook-http-transaction/src/index.ts:364:46\\\\n    at processTicksAndRejections (node:internal/process/task_queues:x:x)\\",\\"details\\":[\\"get\\",[\\"v4\\",\\"diag\\"],\\"/v4/diag\\"]}",
+    [
+      "ERROR {"guruMeditation":"1","request":"http://localhost:9999/v4/diag","verb":"GET","status":404,"code":"E_NOT_FOUND","stack":"YHTTPError[404]: E_NOT_FOUND (get, v4,diag, /home/whoiam/projects/whook/packages/whook-http-transaction/src/index.ts:364:46\\n    at processTicksAndRejections (node:internal/process/task_queues:x:x)","details":["get",["v4","diag"],"/v4/diag"]}",
     ],
   ],
   "status": 404,
@@ -54,34 +54,34 @@ Object {
 `;
 
 exports[`runServer should fail with bad fake tokens 1`] = `
-Object {
-  "data": Object {
+{
+  "data": {
     "error": "bad_handler",
-    "error_debug_data": Object {
+    "error_debug_data": {
       "guruMeditation": "2",
     },
-    "error_description": "No endpoint found at that path (\\"get\\", \\"/v4/diag\\")",
+    "error_description": "No endpoint found at that path ("get", "/v4/diag")",
     "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
     "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
   },
-  "debugCalls": Array [
-    Array [
+  "debugCalls": [
+    [
       "⏳ - Cleared a delay",
     ],
-    Array [
+    [
       "⏳ - Created a delay:",
       30000,
     ],
-    Array [
+    [
       "❌ - No handler found for: ",
       "get",
-      Array [
+      [
         "v4",
         "diag",
       ],
     ],
   ],
-  "headers": Object {
+  "headers": {
     "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
     "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
     "access-control-allow-origin": "*",
@@ -93,13 +93,13 @@ Object {
     "transfer-encoding": "chunked",
     "vary": "origin",
   },
-  "logErrorCalls": Array [],
-  "logInfoCalls": Array [
-    Array [
-      "CALL {\\"id\\":\\"2\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"_ip_\\",\\"startInBytes\\":175,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/diag\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"authorization\\":\\"Fa...n\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":true,\\"endTime\\":1390694400000,\\"endInBytes\\":175,\\"endOutBytes\\":780,\\"statusCode\\":404,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"origin\\",\\"cache-control\\":\\"private\\"},\\"operationId\\":\\"none\\"}",
+  "logErrorCalls": [],
+  "logInfoCalls": [
+    [
+      "CALL {"id":"2","protocol":"http","ip":"_ip_","startInBytes":175,"startOutBytes":0,"startTime":1390694400000,"url":"/v4/diag","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","authorization":"Fa...n","user-agent":"__avoid_axios_version__","host":"localhost:9999","connection":"close"},"errored":true,"endTime":1390694400000,"endInBytes":175,"endOutBytes":780,"statusCode":404,"resHeaders":{"content-type":"application/json","access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,DELETE,OPTIONS","access-control-allow-headers":"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent","vary":"origin","cache-control":"private"},"operationId":"none"}",
     ],
-    Array [
-      "ERROR {\\"guruMeditation\\":\\"2\\",\\"request\\":\\"http://localhost:9999/v4/diag\\",\\"verb\\":\\"GET\\",\\"status\\":404,\\"code\\":\\"E_NOT_FOUND\\",\\"stack\\":\\"YHTTPError[404]: E_NOT_FOUND (get, v4,diag, /home/whoiam/projects/whook/packages/whook-http-transaction/src/index.ts:364:46\\\\n    at processTicksAndRejections (node:internal/process/task_queues:x:x)\\",\\"details\\":[\\"get\\",[\\"v4\\",\\"diag\\"],\\"/v4/diag\\"]}",
+    [
+      "ERROR {"guruMeditation":"2","request":"http://localhost:9999/v4/diag","verb":"GET","status":404,"code":"E_NOT_FOUND","stack":"YHTTPError[404]: E_NOT_FOUND (get, v4,diag, /home/whoiam/projects/whook/packages/whook-http-transaction/src/index.ts:364:46\\n    at processTicksAndRejections (node:internal/process/task_queues:x:x)","details":["get",["v4","diag"],"/v4/diag"]}",
     ],
   ],
   "status": 404,
@@ -107,23 +107,23 @@ Object {
 `;
 
 exports[`runServer should ping 1`] = `
-Object {
-  "data": Object {
+{
+  "data": {
     "pong": "pong",
   },
-  "debugCalls": Array [
-    Array [
+  "debugCalls": [
+    [
       "⏳ - Cleared a delay",
     ],
-    Array [
+    [
       "⏳ - Created a delay:",
       30000,
     ],
-    Array [
+    [
       "🔓 - Public endpoint detected, letting the call pass through!",
     ],
   ],
-  "headers": Object {
+  "headers": {
     "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
     "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
     "access-control-allow-origin": "*",
@@ -135,10 +135,10 @@ Object {
     "vary": "origin",
     "x-node-env": "test",
   },
-  "logErrorCalls": Array [],
-  "logInfoCalls": Array [
-    Array [
-      "CALL {\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"_ip_\\",\\"startInBytes\\":146,\\"startOutBytes\\":0,\\"startTime\\":1390694400000,\\"url\\":\\"/v4/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:9999\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1390694400000,\\"endInBytes\\":146,\\"endOutBytes\\":447,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\",\\"X-Node-ENV\\":\\"test\\",\\"access-control-allow-origin\\":\\"*\\",\\"access-control-allow-methods\\":\\"GET,POST,PUT,DELETE,OPTIONS\\",\\"access-control-allow-headers\\":\\"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent\\",\\"vary\\":\\"origin\\"},\\"operationId\\":\\"getPing\\"}",
+  "logErrorCalls": [],
+  "logInfoCalls": [
+    [
+      "CALL {"id":"0","protocol":"http","ip":"_ip_","startInBytes":146,"startOutBytes":0,"startTime":1390694400000,"url":"/v4/ping","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","user-agent":"__avoid_axios_version__","host":"localhost:9999","connection":"close"},"errored":false,"endTime":1390694400000,"endInBytes":146,"endOutBytes":447,"statusCode":200,"resHeaders":{"content-type":"application/json","X-Node-ENV":"test","access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,DELETE,OPTIONS","access-control-allow-headers":"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent","vary":"origin"},"operationId":"getPing"}",
     ],
   ],
   "status": 200,
@@ -146,733 +146,733 @@ Object {
 `;
 
 exports[`runServer should work 1`] = `
-Object {
-  "debugCalls": Array [
-    Array [
+{
+  "debugCalls": [
+    [
       "Error: ENOENT: no such file or directory, open '/home/whoiam/projects/whook/packages/whook-example/.env.test'",
     ],
-    Array [
+    [
       "⌛ - Delay service initialized.",
     ],
-    Array [
+    [
       "♻️ - Loading the environment service.",
     ],
-    Array [
+    [
       "❤️ - Initializing the APM service.",
     ],
-    Array [
-      "➰ - Plugin \\"@whook/cli\\" resolved to \\"/home/whoiam/projects/whook/packages/whook-cli/dist\\".",
+    [
+      "➰ - Plugin "@whook/cli" resolved to "/home/whoiam/projects/whook/packages/whook-cli/dist".",
     ],
-    Array [
-      "➰ - Plugin \\"@whook/cors\\" resolved to \\"/home/whoiam/projects/whook/packages/whook-cors/dist\\".",
+    [
+      "➰ - Plugin "@whook/cors" resolved to "/home/whoiam/projects/whook/packages/whook-cors/dist".",
     ],
-    Array [
-      "➰ - Plugin \\"@whook/whook\\" resolved to \\"/home/whoiam/projects/whook/dist\\".",
+    [
+      "➰ - Plugin "@whook/whook" resolved to "/home/whoiam/projects/whook/dist".",
     ],
-    Array [
-      "🈁 - Generated the BASE_URL constant \\"http://localhost:9999\\".",
+    [
+      "🈁 - Generated the BASE_URL constant "http://localhost:9999".",
     ],
-    Array [
+    [
       "🈁 - Generating the API_DEFINITIONS",
     ],
-    Array [
-      "🈁 - Handler module at \\"/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js\\" exports no definition!",
+    [
+      "🈁 - Handler module at "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js" exports no definition!",
     ],
-    Array [
+    [
       "🏭 - Initializing the CONFIGS service.",
     ],
-    Array [
+    [
       "👣 - Logging service initialized.",
     ],
-    Array [
+    [
       "💱 - HTTP Transaction initialized.",
     ],
-    Array [
-      "💿 - Loading \\"API\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts\\".",
+    [
+      "💿 - Loading "API" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
-    Array [
-      "💿 - Loading \\"BASE_URL\\" initializer from \\"/home/whoiam/projects/whook/dist/services/BASE_URL.js\\".",
+    [
+      "💿 - Loading "BASE_URL" initializer from "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
     ],
-    Array [
-      "💿 - Loading \\"FILTER_API_TAGS\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
+    [
+      "💿 - Loading "FILTER_API_TAGS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
     ],
-    Array [
-      "💿 - Loading \\"MECHANISMS\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
+    [
+      "💿 - Loading "MECHANISMS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
-    Array [
-      "💿 - Loading \\"QUERY_PARSER\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
+    [
+      "💿 - Loading "QUERY_PARSER" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
-    Array [
-      "💿 - Loading \\"WRAPPERS\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
+    [
+      "💿 - Loading "WRAPPERS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
     ],
-    Array [
-      "💿 - Loading \\"authentication\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts\\".",
+    [
+      "💿 - Loading "authentication" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
-    Array [
-      "💿 - Loading \\"getDelayWrapped\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
+    [
+      "💿 - Loading "getDelayWrapped" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
     ],
-    Array [
-      "💿 - Loading \\"getDiagnosticWrapped\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
+    [
+      "💿 - Loading "getDiagnosticWrapped" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
     ],
-    Array [
-      "💿 - Loading \\"getOpenAPIWrapped\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
+    [
+      "💿 - Loading "getOpenAPIWrapped" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
     ],
-    Array [
-      "💿 - Loading \\"getParametersWrapped\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
+    [
+      "💿 - Loading "getParametersWrapped" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
     ],
-    Array [
-      "💿 - Loading \\"getPingWrapped\\" initializer from \\"/home/whoiam/projects/whook/dist/handlers/getPing.js\\".",
+    [
+      "💿 - Loading "getPingWrapped" initializer from "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
     ],
-    Array [
-      "💿 - Loading \\"getTimeWrapped\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    [
+      "💿 - Loading "getTimeWrapped" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
-    Array [
-      "💿 - Loading \\"jwtToken\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts\\".",
+    [
+      "💿 - Loading "jwtToken" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
-    Array [
-      "💿 - Loading \\"optionsWithCORSWrapped\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js\\".",
+    [
+      "💿 - Loading "optionsWithCORSWrapped" initializer from "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
     ],
-    Array [
-      "💿 - Loading \\"putEchoWrapped\\" initializer from \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
+    [
+      "💿 - Loading "putEchoWrapped" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
-    Array [
-      "💿 - Service \\"API\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts\\".",
+    [
+      "💿 - Service "API" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
-    Array [
-      "💿 - Service \\"BASE_URL\\" found in \\"/home/whoiam/projects/whook/dist/services/BASE_URL.js\\".",
+    [
+      "💿 - Service "BASE_URL" found in "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
     ],
-    Array [
-      "💿 - Service \\"FILTER_API_TAGS\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
+    [
+      "💿 - Service "FILTER_API_TAGS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
     ],
-    Array [
-      "💿 - Service \\"MECHANISMS\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
+    [
+      "💿 - Service "MECHANISMS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
-    Array [
-      "💿 - Service \\"QUERY_PARSER\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
+    [
+      "💿 - Service "QUERY_PARSER" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
-    Array [
-      "💿 - Service \\"WRAPPERS\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
+    [
+      "💿 - Service "WRAPPERS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
     ],
-    Array [
-      "💿 - Service \\"authentication\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts\\".",
+    [
+      "💿 - Service "authentication" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
-    Array [
-      "💿 - Service \\"getDelayWrapped\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
+    [
+      "💿 - Service "getDelayWrapped" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
     ],
-    Array [
-      "💿 - Service \\"getDiagnosticWrapped\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
+    [
+      "💿 - Service "getDiagnosticWrapped" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
     ],
-    Array [
-      "💿 - Service \\"getOpenAPIWrapped\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
+    [
+      "💿 - Service "getOpenAPIWrapped" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
     ],
-    Array [
-      "💿 - Service \\"getParametersWrapped\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
+    [
+      "💿 - Service "getParametersWrapped" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
     ],
-    Array [
-      "💿 - Service \\"getPingWrapped\\" found in \\"/home/whoiam/projects/whook/dist/handlers/getPing.js\\".",
+    [
+      "💿 - Service "getPingWrapped" found in "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
     ],
-    Array [
-      "💿 - Service \\"getTimeWrapped\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    [
+      "💿 - Service "getTimeWrapped" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
-    Array [
-      "💿 - Service \\"jwtToken\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts\\".",
+    [
+      "💿 - Service "jwtToken" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
-    Array [
-      "💿 - Service \\"optionsWithCORSWrapped\\" found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js\\".",
+    [
+      "💿 - Service "optionsWithCORSWrapped" found in "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
     ],
-    Array [
-      "💿 - Service \\"putEchoWrapped\\" found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
+    [
+      "💿 - Service "putEchoWrapped" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
-    Array [
+    [
       "📇 - Process service initialized.",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"getDelay\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "getDelay".",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"getDiagnostic\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "getDiagnostic".",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"getOpenAPI\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "getOpenAPI".",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"getParameters\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "getParameters".",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"getPing\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "getPing".",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"getTime\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "getTime".",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"optionsWithCORS\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "optionsWithCORS".",
     ],
-    Array [
-      "🔐 - Initializing the authorization wrapper for \\"putEcho\\".",
+    [
+      "🔐 - Initializing the authorization wrapper for "putEcho".",
     ],
-    Array [
+    [
       "🔧 - Initializing auth mechanisms",
     ],
-    Array [
+    [
       "🕶️ - Initializing the obfuscator service.",
     ],
-    Array [
+    [
       "🚦 - HTTP Router initialized.",
     ],
-    Array [
-      "🚫 - Could not load \\".env.test\\" file.",
+    [
+      "🚫 - Could not load ".env.test" file.",
     ],
-    Array [
-      "🚫 - Service \\"BASE_URL\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/BASE_URL\\".",
+    [
+      "🚫 - Service "BASE_URL" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/BASE_URL".",
     ],
-    Array [
-      "🚫 - Service \\"BASE_URL\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL\\".",
+    [
+      "🚫 - Service "BASE_URL" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL".",
     ],
-    Array [
-      "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/whoiam/projects/whook/dist/services/BUFFER_LIMIT\\".",
+    [
+      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/dist/services/BUFFER_LIMIT".",
     ],
-    Array [
-      "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/BUFFER_LIMIT\\".",
+    [
+      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/BUFFER_LIMIT".",
     ],
-    Array [
-      "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT\\".",
+    [
+      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT".",
     ],
-    Array [
-      "🚫 - Service \\"BUFFER_LIMIT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT\\".",
+    [
+      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT".",
     ],
-    Array [
-      "🚫 - Service \\"DECODERS\\" not found in \\"/home/whoiam/projects/whook/dist/services/DECODERS\\".",
+    [
+      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/dist/services/DECODERS".",
     ],
-    Array [
-      "🚫 - Service \\"DECODERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/DECODERS\\".",
+    [
+      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DECODERS".",
     ],
-    Array [
-      "🚫 - Service \\"DECODERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS\\".",
+    [
+      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS".",
     ],
-    Array [
-      "🚫 - Service \\"DECODERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS\\".",
+    [
+      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE\\".",
+    [
+      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_ERROR_CODE\\".",
+    [
+      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_ERROR_CODE".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE\\".",
+    [
+      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_ERROR_CODE\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE\\".",
+    [
+      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/whoiam/projects/whook/dist/services/DEFAULT_MECHANISM\\".",
+    [
+      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/dist/services/DEFAULT_MECHANISM".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_MECHANISM\\".",
+    [
+      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_MECHANISM".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM\\".",
+    [
+      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM".",
     ],
-    Array [
-      "🚫 - Service \\"DEFAULT_MECHANISM\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_MECHANISM\\".",
+    [
+      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_MECHANISM".",
     ],
-    Array [
-      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/whoiam/projects/whook/dist/services/DEV_ACCESS_TOKEN\\".",
+    [
+      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/dist/services/DEV_ACCESS_TOKEN".",
     ],
-    Array [
-      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN\\".",
+    [
+      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN".",
     ],
-    Array [
-      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN\\".",
+    [
+      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN".",
     ],
-    Array [
-      "🚫 - Service \\"DEV_ACCESS_TOKEN\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/DEV_ACCESS_TOKEN\\".",
+    [
+      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DEV_ACCESS_TOKEN".",
     ],
-    Array [
-      "🚫 - Service \\"ENCODERS\\" not found in \\"/home/whoiam/projects/whook/dist/services/ENCODERS\\".",
+    [
+      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/dist/services/ENCODERS".",
     ],
-    Array [
-      "🚫 - Service \\"ENCODERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/ENCODERS\\".",
+    [
+      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/ENCODERS".",
     ],
-    Array [
-      "🚫 - Service \\"ENCODERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/ENCODERS\\".",
+    [
+      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/ENCODERS".",
     ],
-    Array [
-      "🚫 - Service \\"ENCODERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS\\".",
+    [
+      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_PREFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"IGNORED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME\\".",
+    [
+      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/JWT_SECRET_ENV_NAME\\".",
+    [
+      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/JWT_SECRET_ENV_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME\\".",
+    [
+      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"JWT_SECRET_ENV_NAME\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME\\".",
+    [
+      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT\\".",
+    [
+      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/KEEP_ALIVE_TIMEOUT\\".",
+    [
+      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/KEEP_ALIVE_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/KEEP_ALIVE_TIMEOUT\\".",
+    [
+      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/KEEP_ALIVE_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"KEEP_ALIVE_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT\\".",
+    [
+      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/whoiam/projects/whook/dist/services/MAX_CLEAR_CHARS\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_CHARS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_CHARS\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_CHARS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_CHARS\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_CHARS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_CHARS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_CHARS\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_CHARS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_RATIO\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_RATIO".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CLEAR_RATIO\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO\\".",
+    [
+      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/whoiam/projects/whook/dist/services/MAX_CONNECTIONS\\".",
+    [
+      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/dist/services/MAX_CONNECTIONS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CONNECTIONS\\".",
+    [
+      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CONNECTIONS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CONNECTIONS\\".",
+    [
+      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CONNECTIONS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_CONNECTIONS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CONNECTIONS\\".",
+    [
+      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CONNECTIONS".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/whoiam/projects/whook/dist/services/MAX_HEADERS_COUNT\\".",
+    [
+      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/dist/services/MAX_HEADERS_COUNT".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_HEADERS_COUNT\\".",
+    [
+      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_HEADERS_COUNT".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_HEADERS_COUNT\\".",
+    [
+      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_HEADERS_COUNT".",
     ],
-    Array [
-      "🚫 - Service \\"MAX_HEADERS_COUNT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT\\".",
+    [
+      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT".",
     ],
-    Array [
-      "🚫 - Service \\"PARSERS\\" not found in \\"/home/whoiam/projects/whook/dist/services/PARSERS\\".",
+    [
+      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/dist/services/PARSERS".",
     ],
-    Array [
-      "🚫 - Service \\"PARSERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/PARSERS\\".",
+    [
+      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PARSERS".",
     ],
-    Array [
-      "🚫 - Service \\"PARSERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS\\".",
+    [
+      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS".",
     ],
-    Array [
-      "🚫 - Service \\"PARSERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS\\".",
+    [
+      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/whoiam/projects/whook/dist/services/PROCESS_ENV\\".",
+    [
+      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/dist/services/PROCESS_ENV".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_ENV\\".",
+    [
+      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_ENV".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_ENV\\".",
+    [
+      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_ENV".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_ENV\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_ENV\\".",
+    [
+      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_ENV".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/whoiam/projects/whook/dist/services/PROCESS_NAME\\".",
+    [
+      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/dist/services/PROCESS_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_NAME\\".",
+    [
+      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME\\".",
+    [
+      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"PROCESS_NAME\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME\\".",
+    [
+      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME".",
     ],
-    Array [
-      "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/whoiam/projects/whook/dist/services/PROTOCOL\\".",
+    [
+      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/dist/services/PROTOCOL".",
     ],
-    Array [
-      "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROTOCOL\\".",
+    [
+      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROTOCOL".",
     ],
-    Array [
-      "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROTOCOL\\".",
+    [
+      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROTOCOL".",
     ],
-    Array [
-      "🚫 - Service \\"PROTOCOL\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL\\".",
+    [
+      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL".",
     ],
-    Array [
-      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/REDUCED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/REDUCED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"REDUCED_FILES_SUFFIXES\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES\\".",
+    [
+      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS\\".",
+    [
+      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_HEADERS\\".",
+    [
+      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_HEADERS".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS\\".",
+    [
+      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_HEADERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_HEADERS\\".",
+    [
+      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_HEADERS".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/whoiam/projects/whook/dist/services/SENSIBLE_PROPS\\".",
+    [
+      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/dist/services/SENSIBLE_PROPS".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_PROPS\\".",
+    [
+      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_PROPS".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_PROPS\\".",
+    [
+      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_PROPS".",
     ],
-    Array [
-      "🚫 - Service \\"SENSIBLE_PROPS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_PROPS\\".",
+    [
+      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_PROPS".",
     ],
-    Array [
-      "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/whoiam/projects/whook/dist/services/SHIELD_CHAR\\".",
+    [
+      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/dist/services/SHIELD_CHAR".",
     ],
-    Array [
-      "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/SHIELD_CHAR\\".",
+    [
+      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SHIELD_CHAR".",
     ],
-    Array [
-      "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR\\".",
+    [
+      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR".",
     ],
-    Array [
-      "🚫 - Service \\"SHIELD_CHAR\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR\\".",
+    [
+      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR".",
     ],
-    Array [
-      "🚫 - Service \\"SIGNALS\\" not found in \\"/home/whoiam/projects/whook/dist/services/SIGNALS\\".",
+    [
+      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/dist/services/SIGNALS".",
     ],
-    Array [
-      "🚫 - Service \\"SIGNALS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/SIGNALS\\".",
+    [
+      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SIGNALS".",
     ],
-    Array [
-      "🚫 - Service \\"SIGNALS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS\\".",
+    [
+      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS".",
     ],
-    Array [
-      "🚫 - Service \\"SIGNALS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS\\".",
+    [
+      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS".",
     ],
-    Array [
-      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/dist/services/SOCKET_TIMEOUT\\".",
+    [
+      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/SOCKET_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/SOCKET_TIMEOUT\\".",
+    [
+      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SOCKET_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/SOCKET_TIMEOUT\\".",
+    [
+      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SOCKET_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"SOCKET_TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/SOCKET_TIMEOUT\\".",
+    [
+      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SOCKET_TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/whoiam/projects/whook/dist/services/STRINGIFYERS\\".",
+    [
+      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/dist/services/STRINGIFYERS".",
     ],
-    Array [
-      "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/STRINGIFYERS\\".",
+    [
+      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/STRINGIFYERS".",
     ],
-    Array [
-      "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS\\".",
+    [
+      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS".",
     ],
-    Array [
-      "🚫 - Service \\"STRINGIFYERS\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS\\".",
+    [
+      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS".",
     ],
-    Array [
-      "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/dist/services/TIMEOUT\\".",
+    [
+      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/TIMEOUT\\".",
+    [
+      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT\\".",
+    [
+      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"TIMEOUT\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT\\".",
+    [
+      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT".",
     ],
-    Array [
-      "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing\\".",
+    [
+      "🚫 - Service "getPingWrapped" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing".",
     ],
-    Array [
-      "🚫 - Service \\"getPingWrapped\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing\\".",
+    [
+      "🚫 - Service "getPingWrapped" not found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing".",
     ],
-    Array [
-      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/whoiam/projects/whook/dist/handlers/optionsWithCORS\\".",
+    [
+      "🚫 - Service "optionsWithCORSWrapped" not found in "/home/whoiam/projects/whook/dist/handlers/optionsWithCORS".",
     ],
-    Array [
-      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/handlers/optionsWithCORS\\".",
+    [
+      "🚫 - Service "optionsWithCORSWrapped" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/handlers/optionsWithCORS".",
     ],
-    Array [
-      "🚫 - Service \\"optionsWithCORSWrapped\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS\\".",
+    [
+      "🚫 - Service "optionsWithCORSWrapped" not found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS".",
     ],
-    Array [
-      "🚫 - Service \\"readDir\\" not found in \\"/home/whoiam/projects/whook/dist/services/readDir\\".",
+    [
+      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/dist/services/readDir".",
     ],
-    Array [
-      "🚫 - Service \\"readDir\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/readDir\\".",
+    [
+      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/readDir".",
     ],
-    Array [
-      "🚫 - Service \\"readDir\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/readDir\\".",
+    [
+      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/readDir".",
     ],
-    Array [
-      "🚫 - Service \\"readDir\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/readDir\\".",
+    [
+      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/readDir".",
     ],
-    Array [
-      "🚫 - Service \\"readFile\\" not found in \\"/home/whoiam/projects/whook/dist/services/readFile\\".",
+    [
+      "🚫 - Service "readFile" not found in "/home/whoiam/projects/whook/dist/services/readFile".",
     ],
-    Array [
-      "🚫 - Service \\"readFile\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/readFile\\".",
+    [
+      "🚫 - Service "readFile" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/readFile".",
     ],
-    Array [
-      "🚫 - Service \\"readFile\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/readFile\\".",
+    [
+      "🚫 - Service "readFile" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/readFile".",
     ],
-    Array [
-      "🚫 - Service \\"readFile\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/readFile\\".",
+    [
+      "🚫 - Service "readFile" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/readFile".",
     ],
-    Array [
-      "🚫 - Service \\"uniqueId\\" not found in \\"/home/whoiam/projects/whook/dist/services/uniqueId\\".",
+    [
+      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/dist/services/uniqueId".",
     ],
-    Array [
-      "🚫 - Service \\"uniqueId\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cli/dist/services/uniqueId\\".",
+    [
+      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/uniqueId".",
     ],
-    Array [
-      "🚫 - Service \\"uniqueId\\" not found in \\"/home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId\\".",
+    [
+      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId".",
     ],
-    Array [
-      "🚫 - Service \\"uniqueId\\" not found in \\"/home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId\\".",
+    [
+      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/dist/handlers/getPing.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/dist/handlers/getPing.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/dist/services/BASE_URL.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/config/test/config.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/config/test/config.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.js\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.js".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts\\".",
+    [
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"ecstatic\\".",
+    [
+      "🛂 - Dynamic import of "ecstatic".",
     ],
-    Array [
-      "🛂 - Dynamic import of \\"swagger-ui-dist\\".",
+    [
+      "🛂 - Dynamic import of "swagger-ui-dist".",
     ],
-    Array [
+    [
       "🛂 - Initializing the importer!",
     ],
-    Array [
+    [
       "🛂 - Initializing the resolve service!",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/dist/handlers/getPing.js\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/dist/services/BASE_URL.js\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts\\".",
+    [
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
-    Array [
-      "🛂 - Resolving \\"@whook/cli\\" to \\"/home/whoiam/projects/whook/packages/whook-cli/dist/index.js\\".",
+    [
+      "🛂 - Resolving "@whook/cli" to "/home/whoiam/projects/whook/packages/whook-cli/dist/index.js".",
     ],
-    Array [
-      "🛂 - Resolving \\"@whook/cors\\" to \\"/home/whoiam/projects/whook/packages/whook-cors/dist/index.js\\".",
+    [
+      "🛂 - Resolving "@whook/cors" to "/home/whoiam/projects/whook/packages/whook-cors/dist/index.js".",
     ],
-    Array [
-      "🛂 - Resolving \\"@whook/whook\\" to \\"/home/whoiam/projects/whook/dist/index.js\\".",
+    [
+      "🛂 - Resolving "@whook/whook" to "/home/whoiam/projects/whook/dist/index.js".",
     ],
-    Array [
+    [
       "🤖 - Initializing the \`$autoload\` service.",
     ],
-    Array [
+    [
       "🦄 - Initializing the API service!",
     ],
   ],
-  "logErrorCalls": Array [
-    Array [
+  "logErrorCalls": [
+    [
       "On air 🚀🌕",
     ],
-    Array [
+    [
       "⚠️ - Using fake auth mechanism!",
     ],
-    Array [
-      "⚡ - Loading configurations from \\"/home/whoiam/projects/whook/packages/whook-example/src/config/test/config.js\\".",
+    [
+      "⚡ - Loading configurations from "/home/whoiam/projects/whook/packages/whook-example/src/config/test/config.js".",
     ],
-    Array [
-      "✔ - Found the project dir \\"/home/whoiam/projects/whook/packages/whook-example\\".",
+    [
+      "✔ - Found the project dir "/home/whoiam/projects/whook/packages/whook-example".",
     ],
-    Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:9999\\".",
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:9999".",
     ],
-    Array [
+    [
       "💁 - Serving the API docs: http://localhost:9999/docs",
     ],
-    Array [
-      "🔂 - Running in \\"test\\" environment.",
+    [
+      "🔂 - Running in "test" environment.",
     ],
-    Array [
+    [
       "🖥 - Using an isolated env.",
     ],
   ],
-  "logInfoCalls": Array [
-    Array [
+  "logInfoCalls": [
+    [
       "JWT service initialized!",
     ],
-    Array [
+    [
       "🕱 -Wrapping the error handler for CORS.",
     ],
   ],

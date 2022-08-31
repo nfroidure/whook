@@ -1,3 +1,4 @@
+import { describe, test, expect } from '@jest/globals';
 import initAuthCookies from './authCookies.js';
 import type { AuthCookiesConfig } from './authCookies.js';
 
@@ -20,7 +21,7 @@ describe('authCookies', () => {
       });
 
       expect(result).toMatchInlineSnapshot(`
-        Array [
+        [
           "access_token=a_access_token; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
           "refresh_token=a_refresh_token; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
         ]
@@ -44,7 +45,7 @@ describe('authCookies', () => {
       });
 
       expect(result).toMatchInlineSnapshot(`
-        Array [
+        [
           "access_token=; Max-Age=0; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
           "refresh_token=; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
         ]
@@ -65,7 +66,7 @@ describe('authCookies', () => {
 
       const result = await authCookies.parse('');
 
-      expect(result).toMatchInlineSnapshot(`Object {}`);
+      expect(result).toMatchInlineSnapshot(`{}`);
     });
     test('should work with cookies', async () => {
       const ENV = {};
@@ -83,7 +84,7 @@ describe('authCookies', () => {
       );
 
       expect(result).toMatchInlineSnapshot(`
-        Object {
+        {
           "access_token": "a_access_token",
           "refresh_token": "a_refresh_token",
         }

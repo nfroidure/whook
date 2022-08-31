@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WHOOK_PLUGINS_PATHS should fail with unexisting plugin 1`] = `
-Object {
+{
   "errorCode": "E_BAD_WHOOK_PLUGIN",
-  "errorParams": Array [
+  "errorParams": [
     "@whook/unreal",
   ],
-  "logCalls": Array [],
-  "resolveCalls": Array [
-    Array [
+  "logCalls": [],
+  "resolveCalls": [
+    [
       "@whook/unreal",
-      Object {
-        "paths": Array [
+      {
+        "paths": [
           "/home/whoami/my-whook-project/src",
         ],
       },
@@ -21,42 +21,42 @@ Object {
 `;
 
 exports[`WHOOK_PLUGINS_PATHS should work with no plugin at all 1`] = `
-Object {
-  "WHOOK_PLUGINS_PATHS": Array [],
-  "logCalls": Array [],
-  "resolveCalls": Array [],
+{
+  "WHOOK_PLUGINS_PATHS": [],
+  "logCalls": [],
+  "resolveCalls": [],
 }
 `;
 
 exports[`WHOOK_PLUGINS_PATHS should work with some plugins 1`] = `
-Object {
-  "WHOOK_PLUGINS_PATHS": Array [
+{
+  "WHOOK_PLUGINS_PATHS": [
     "/var/lib/node/node_modules/@whook",
     "/var/lib/node/node_modules/@whook",
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "➰ - Plugin \\"@whook/cli\\" resolved to \\"/var/lib/node/node_modules/@whook\\".",
+      "➰ - Plugin "@whook/cli" resolved to "/var/lib/node/node_modules/@whook".",
     ],
-    Array [
+    [
       "debug",
-      "➰ - Plugin \\"@whook/whook\\" resolved to \\"/var/lib/node/node_modules/@whook\\".",
+      "➰ - Plugin "@whook/whook" resolved to "/var/lib/node/node_modules/@whook".",
     ],
   ],
-  "resolveCalls": Array [
-    Array [
+  "resolveCalls": [
+    [
       "@whook/cli",
-      Object {
-        "paths": Array [
+      {
+        "paths": [
           "/home/whoami/my-whook-project/src",
         ],
       },
     ],
-    Array [
+    [
       "@whook/whook",
-      Object {
-        "paths": Array [
+      {
+        "paths": [
           "/home/whoami/my-whook-project/src",
         ],
       },

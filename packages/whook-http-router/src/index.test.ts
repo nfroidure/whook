@@ -1,12 +1,11 @@
 /* eslint max-nested-callbacks: 0 */
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import assert from 'assert';
 import StreamTest from 'streamtest';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';
 import initHTTPRouter from './index.js';
 import initErrorHandler from './services/errorHandler.js';
-import { default as OpenAPISchemaValidator } from 'openapi-schema-validator';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
   HTTPTransactionService,
@@ -45,7 +44,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
       : result
       ? Promise.resolve(result)
       : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
-  ) as WhookHandler & jest.Mock;
+  ) as WhookHandler & ReturnType<typeof jest.fn>;
   const httpTransactionStart = jest.fn(async (buildResponse) =>
     buildResponse(),
   );

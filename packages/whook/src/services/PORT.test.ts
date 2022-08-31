@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initPORT from './PORT.js';
 import initImporter from './importer.js';
 import type { PortFinderModule } from './PORT.js';
@@ -22,7 +22,7 @@ describe('initPORT', () => {
     expect({
       port,
     }).toMatchInlineSnapshot(`
-      Object {
+      {
         "port": 1337,
       }
     `);

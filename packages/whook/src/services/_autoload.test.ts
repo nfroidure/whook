@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initAutoload from './_autoload.js';
 import { service } from 'knifecycle';
 import { YError } from 'yerror';

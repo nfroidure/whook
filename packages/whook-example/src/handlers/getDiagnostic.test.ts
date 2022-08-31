@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import initGetDiagnostic from './getDiagnostic.js';
 
 describe('getDiagnostic', () => {
@@ -12,10 +13,10 @@ describe('getDiagnostic', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "body": Object {
-            "transactions": Object {},
+      {
+        "response": {
+          "body": {
+            "transactions": {},
           },
           "status": 200,
         },

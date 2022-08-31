@@ -1,5 +1,5 @@
 import { wrapInitializer, alsoInject } from 'knifecycle';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type { HTTPTransactionService } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type { WhookHTTPTransaction } from '@whook/http-transaction';
@@ -11,7 +11,9 @@ import type { ServerResponse, IncomingMessage } from 'http';
  * @param {Function} initHandler The handler initializer
  * @returns {Function} The handler initializer wrapped
  */
-export default function wrapHTTPTransactionWithMethodOverride<D>(
+export default function wrapHTTPTransactionWithMethodOverride<
+  D extends Dependencies<any>,
+>(
   initHTTPTransaction: ServiceInitializer<D, HTTPTransactionService>,
 ): ServiceInitializer<D & { log: LogService }, HTTPTransactionService> {
   const augmentedInitializer = alsoInject<

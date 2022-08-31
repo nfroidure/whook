@@ -1,53 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`OAuth2 server with the client credentials flow should produce new tokens 2`] = `
-Object {
-  "authenticationCheckCalls": Array [
-    Array [
+{
+  "authenticationCheckCalls": [
+    [
       "basic",
-      Object {
+      {
         "hash": "YWxpOm9wZW5fc2VzYW1l",
         "password": "open_sesame",
         "username": "ali",
       },
     ],
   ],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
         "type": "client_credentials",
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
         "userId": "2",
       },
     ],
   ],
-  "oAuth2CodeCheckCalls": Array [],
-  "oAuth2CodeCreateCalls": Array [],
-  "oAuth2PasswordCheckCalls": Array [],
-  "oAuth2RefreshTokenCheckCalls": Array [],
-  "oAuth2RefreshTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2CodeCheckCalls": [],
+  "oAuth2CodeCreateCalls": [],
+  "oAuth2PasswordCheckCalls": [],
+  "oAuth2RefreshTokenCheckCalls": [],
+  "oAuth2RefreshTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
         "userId": "2",
@@ -58,11 +58,11 @@ Object {
 `;
 
 exports[`OAuth2 server with the code flow should build the authorization redirection 2`] = `
-Object {
-  "authenticationCheckCalls": Array [],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+{
+  "authenticationCheckCalls": [],
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "redirectURI": "https://example.com/oauth2/callback?a_param=a_param_value",
         "scope": "user",
@@ -70,46 +70,46 @@ Object {
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [],
-  "oAuth2CodeCheckCalls": Array [],
-  "oAuth2CodeCreateCalls": Array [],
-  "oAuth2PasswordCheckCalls": Array [],
-  "oAuth2RefreshTokenCheckCalls": Array [],
-  "oAuth2RefreshTokenCreateCalls": Array [],
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [],
+  "oAuth2CodeCheckCalls": [],
+  "oAuth2CodeCreateCalls": [],
+  "oAuth2PasswordCheckCalls": [],
+  "oAuth2RefreshTokenCheckCalls": [],
+  "oAuth2RefreshTokenCreateCalls": [],
 }
 `;
 
 exports[`OAuth2 server with the code flow should produce new tokens 2`] = `
-Object {
-  "authenticationCheckCalls": Array [
-    Array [
+{
+  "authenticationCheckCalls": [
+    [
       "basic",
-      Object {
+      {
         "hash": "YWxpOm9wZW5fc2VzYW1l",
         "password": "open_sesame",
         "username": "ali",
       },
     ],
   ],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "",
         "type": "code",
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "redirectURI": "http://redirect.example.com/yolo",
         "scope": "user,auth",
@@ -117,9 +117,9 @@ Object {
       },
     ],
   ],
-  "oAuth2CodeCheckCalls": Array [
-    Array [
-      Object {
+  "oAuth2CodeCheckCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
@@ -128,17 +128,17 @@ Object {
       "http://redirect.example.com/yolo",
     ],
   ],
-  "oAuth2CodeCreateCalls": Array [],
-  "oAuth2PasswordCheckCalls": Array [],
-  "oAuth2RefreshTokenCheckCalls": Array [],
-  "oAuth2RefreshTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2CodeCreateCalls": [],
+  "oAuth2PasswordCheckCalls": [],
+  "oAuth2RefreshTokenCheckCalls": [],
+  "oAuth2RefreshTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "redirectURI": "http://redirect.example.com/yolo",
         "scope": "user,auth",
@@ -150,50 +150,50 @@ Object {
 `;
 
 exports[`OAuth2 server with the code flow should redirect with a code 2`] = `
-Object {
-  "authenticationCheckCalls": Array [
-    Array [
+{
+  "authenticationCheckCalls": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "",
         "type": "root",
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [],
-  "oAuth2CodeCheckCalls": Array [],
-  "oAuth2CodeCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [],
+  "oAuth2CodeCheckCalls": [],
+  "oAuth2CodeCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
         "userId": "2",
       },
       "http://redirect.example.com/yolo?a_param=a_value",
-      Object {},
+      {},
     ],
   ],
-  "oAuth2PasswordCheckCalls": Array [],
-  "oAuth2RefreshTokenCheckCalls": Array [],
-  "oAuth2RefreshTokenCreateCalls": Array [],
+  "oAuth2PasswordCheckCalls": [],
+  "oAuth2RefreshTokenCheckCalls": [],
+  "oAuth2RefreshTokenCreateCalls": [],
 }
 `;
 
 exports[`OAuth2 server with the implicit flow should build the authorization redirection 2`] = `
-Object {
-  "authenticationCheckCalls": Array [],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+{
+  "authenticationCheckCalls": [],
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "redirectURI": "http://redirect.example.com/yolo",
         "scope": "user",
@@ -201,36 +201,36 @@ Object {
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [],
-  "oAuth2CodeCheckCalls": Array [],
-  "oAuth2CodeCreateCalls": Array [],
-  "oAuth2PasswordCheckCalls": Array [],
-  "oAuth2RefreshTokenCheckCalls": Array [],
-  "oAuth2RefreshTokenCreateCalls": Array [],
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [],
+  "oAuth2CodeCheckCalls": [],
+  "oAuth2CodeCreateCalls": [],
+  "oAuth2PasswordCheckCalls": [],
+  "oAuth2RefreshTokenCheckCalls": [],
+  "oAuth2RefreshTokenCreateCalls": [],
 }
 `;
 
 exports[`OAuth2 server with the implicit flow should redirect with a token 2`] = `
-Object {
-  "authenticationCheckCalls": Array [
-    Array [
+{
+  "authenticationCheckCalls": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "",
         "type": "root",
       },
     ],
-    Array [
-      Object {
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "redirectURI": "http://redirect.example.com/yolo?a_param=a_value",
         "scope": "user",
@@ -238,70 +238,70 @@ Object {
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
       },
-      Object {},
+      {},
     ],
   ],
-  "oAuth2CodeCheckCalls": Array [],
-  "oAuth2CodeCreateCalls": Array [],
-  "oAuth2PasswordCheckCalls": Array [],
-  "oAuth2RefreshTokenCheckCalls": Array [],
-  "oAuth2RefreshTokenCreateCalls": Array [],
+  "oAuth2CodeCheckCalls": [],
+  "oAuth2CodeCreateCalls": [],
+  "oAuth2PasswordCheckCalls": [],
+  "oAuth2RefreshTokenCheckCalls": [],
+  "oAuth2RefreshTokenCreateCalls": [],
 }
 `;
 
 exports[`OAuth2 server with the password flow should produce new tokens 2`] = `
-Object {
-  "authenticationCheckCalls": Array [
-    Array [
+{
+  "authenticationCheckCalls": [
+    [
       "basic",
-      Object {
+      {
         "hash": "YWxpOm9wZW5fc2VzYW1l",
         "password": "open_sesame",
         "username": "ali",
       },
     ],
   ],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
         "type": "password",
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,auth",
         "userId": "1",
       },
     ],
   ],
-  "oAuth2CodeCheckCalls": Array [],
-  "oAuth2CodeCreateCalls": Array [],
-  "oAuth2PasswordCheckCalls": Array [
-    Array [
-      Object {
+  "oAuth2CodeCheckCalls": [],
+  "oAuth2CodeCreateCalls": [],
+  "oAuth2PasswordCheckCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
@@ -311,15 +311,15 @@ Object {
       "user",
     ],
   ],
-  "oAuth2RefreshTokenCheckCalls": Array [],
-  "oAuth2RefreshTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2RefreshTokenCheckCalls": [],
+  "oAuth2RefreshTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,auth",
         "userId": "1",
@@ -330,47 +330,47 @@ Object {
 `;
 
 exports[`OAuth2 server with the refresh token flow should produce new tokens 2`] = `
-Object {
-  "authenticationCheckCalls": Array [
-    Array [
+{
+  "authenticationCheckCalls": [
+    [
       "basic",
-      Object {
+      {
         "hash": "YWxpOm9wZW5fc2VzYW1l",
         "password": "open_sesame",
         "username": "ali",
       },
     ],
   ],
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
         "type": "refresh",
       },
     ],
   ],
-  "oAuth2AccessTokenCheckCalls": Array [],
-  "oAuth2AccessTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2AccessTokenCheckCalls": [],
+  "oAuth2AccessTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,auth",
         "userId": "1",
       },
     ],
   ],
-  "oAuth2CodeCheckCalls": Array [],
-  "oAuth2CodeCreateCalls": Array [],
-  "oAuth2PasswordCheckCalls": Array [],
-  "oAuth2RefreshTokenCheckCalls": Array [
-    Array [
-      Object {
+  "oAuth2CodeCheckCalls": [],
+  "oAuth2CodeCreateCalls": [],
+  "oAuth2PasswordCheckCalls": [],
+  "oAuth2RefreshTokenCheckCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
@@ -379,14 +379,14 @@ Object {
       "user",
     ],
   ],
-  "oAuth2RefreshTokenCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2RefreshTokenCreateCalls": [
+    [
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,oauth",
         "userId": "2",
       },
-      Object {
+      {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user,auth",
         "userId": "1",

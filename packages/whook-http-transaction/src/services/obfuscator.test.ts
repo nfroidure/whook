@@ -1,4 +1,11 @@
-import { jest } from '@jest/globals';
+import {
+  describe,
+  it,
+  beforeEach,
+  beforeAll,
+  jest,
+  expect,
+} from '@jest/globals';
 import initObfuscator from './obfuscator.js';
 import type { LogService } from 'common-services';
 
@@ -45,7 +52,7 @@ describe('Obfuscator Service', () => {
   describe('obfuscateSensibleHeaders()', () => {
     it('should work with no headers', () => {
       expect(obfuscator.obfuscateSensibleHeaders({})).toMatchInlineSnapshot(
-        `Object {}`,
+        `{}`,
       );
     });
 
@@ -57,7 +64,7 @@ describe('Obfuscator Service', () => {
           'user-agent': 'yolo browser',
         }),
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "Authorization": "Bearer 🛡",
           "Cookie": "s...o",
           "user-agent": "yolo browser",
@@ -71,7 +78,7 @@ describe('Obfuscator Service', () => {
           'user-agent': 'yolo browser',
         }),
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "user-agent": "yolo browser",
         }
       `);
@@ -83,7 +90,7 @@ describe('Obfuscator Service', () => {
           Authorization: undefined,
         }),
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "Authorization": "🛡",
         }
       `);
@@ -96,7 +103,7 @@ describe('Obfuscator Service', () => {
             'refresh_token=XdJ2%2BXmU0GLqB9bOfFOKWzg4ixn%2BfmJlWEHb%2FPXFrN4MHmteVfAC1WNMVCbSwT9M%2FbkJmIgdFXvDvEMDvZw0elIRvClwjaLVXgQqGSbtbkMTSv%2BtvvdnqIrfYRSuwhX2v5YqvUJsKk1RmxRekOyq5gthUutdT8iHc0PMdKiojm0UTdEq3Jzefc70BhdXnjDH9uQJMb5JfuzZKbx994yk9NdQMnjYUC4Fo6i0SFqPtLGi4mxnOp8Rug5Zm11tdej9sA4UXPsITx%2BhKkdVEm0J%2BqXVeCD7kD7Ybuw%2Bno%2FcxNwSCYy7WFPG6VNTAWPP9jctqWYCICiDjYNgFM0IoikCNQ%3D%3D; Domain=app.diagrams-technologies.com; Path=/v0/auth; HttpOnly; Secure; SameSite=Strict',
         }),
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "Set-Cookie": "refresh_token=XdJ...%3D; Domain=app.diagrams-technologies.com; Path=/v0/auth; HttpOnly; Secure; SameSite=Strict",
         }
       `);
@@ -105,9 +112,7 @@ describe('Obfuscator Service', () => {
 
   describe('obfuscateSensibleProps()', () => {
     it('should work with no props', () => {
-      expect(obfuscator.obfuscateSensibleProps({})).toMatchInlineSnapshot(
-        `Object {}`,
-      );
+      expect(obfuscator.obfuscateSensibleProps({})).toMatchInlineSnapshot(`{}`);
     });
 
     it('should work with some sensible props', () => {
@@ -117,7 +122,7 @@ describe('Obfuscator Service', () => {
           password: 'yolo#!123',
         }),
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "password": "y...3",
           "username": "marco@po.lo",
         }
@@ -130,7 +135,7 @@ describe('Obfuscator Service', () => {
           username: 'jean',
         }),
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "username": "jean",
         }
       `);
@@ -163,6 +168,7 @@ describe('Obfuscator Service', () => {
             'X-Forwarded-Port': '443',
             'X-Forwarded-Proto': 'https',
           },
+
           multiValueHeaders: {
             Accept: ['application/json, text/plain, */*'],
             'Accept-Encoding': ['gzip, deflate, sdch, br'],
@@ -170,6 +176,7 @@ describe('Obfuscator Service', () => {
             Authorization: [
               'Bearer 4233508cf986867e0dead433a3c02028573b37b8121ef37c2b2111b8cdcf1d38b9b43871a0d8cdd4c457c18d1af29f16fbda329cf4c887449edaaa25cd52f5cd39c8c68e7ca7aa65d8b9df28793be8d3f07de0ef382f5bf62ccc1f45e9790eab1f0f378dece69f4c57b46af431becb8dfcfb0881070ebdebd22c57ff086e4908',
             ],
+
             'CloudFront-Forwarded-Proto': ['https'],
             'CloudFront-Is-Desktop-Viewer': ['false'],
             'CloudFront-Is-Mobile-Viewer': ['true'],
@@ -183,15 +190,18 @@ describe('Obfuscator Service', () => {
             'User-Agent': [
               'Mozilla/5.0 (Linux; Android 5.0.2; SM-G360F Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.83 Mobile Safari/537.36',
             ],
+
             'X-Forwarded-Port': ['443'],
             'X-Forwarded-Proto': ['https'],
           },
+
           queryStringParameters: null,
           multiValueQueryStringParameters: null,
           pathParameters: {
             userId: '15419',
             viewId: '3257',
           },
+
           stageVariables: null,
           requestContext: {
             resourceId: '8m3dw9',
@@ -220,16 +230,18 @@ describe('Obfuscator Service', () => {
                 'Mozilla/5.0 (Linux; Android 5.0.2; SM-G360F Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.83 Mobile Safari/537.36',
               user: null,
             },
+
             domainName: 'api.example.com',
             apiId: 'gxwjtgp8bf',
           },
+
           body: '{"contents":{"name":"lol ","password":"disabled"}}',
           isBase64Encoded: false,
         }),
       ).toMatchInlineSnapshot(`
-        Object {
-          "body": "{\\"contents\\":{\\"name\\":\\"lol \\",\\"password\\":\\"disabled\\"}}",
-          "headers": Object {
+        {
+          "body": "{"contents":{"name":"lol ","password":"disabled"}}",
+          "headers": {
             "Accept": "application/json, text/plain, */*",
             "Accept-Encoding": "gzip, deflate, sdch, br",
             "Accept-Language": "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4",
@@ -250,74 +262,74 @@ describe('Obfuscator Service', () => {
           },
           "httpMethod": "PUT",
           "isBase64Encoded": false,
-          "multiValueHeaders": Object {
-            "Accept": Array [
+          "multiValueHeaders": {
+            "Accept": [
               "application/json, text/plain, */*",
             ],
-            "Accept-Encoding": Array [
+            "Accept-Encoding": [
               "gzip, deflate, sdch, br",
             ],
-            "Accept-Language": Array [
+            "Accept-Language": [
               "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4",
             ],
-            "Authorization": Array [
+            "Authorization": [
               "Bearer 423...908",
             ],
-            "CloudFront-Forwarded-Proto": Array [
+            "CloudFront-Forwarded-Proto": [
               "https",
             ],
-            "CloudFront-Is-Desktop-Viewer": Array [
+            "CloudFront-Is-Desktop-Viewer": [
               "false",
             ],
-            "CloudFront-Is-Mobile-Viewer": Array [
+            "CloudFront-Is-Mobile-Viewer": [
               "true",
             ],
-            "CloudFront-Is-SmartTV-Viewer": Array [
+            "CloudFront-Is-SmartTV-Viewer": [
               "false",
             ],
-            "CloudFront-Is-Tablet-Viewer": Array [
+            "CloudFront-Is-Tablet-Viewer": [
               "false",
             ],
-            "CloudFront-Viewer-Country": Array [
+            "CloudFront-Viewer-Country": [
               "FR",
             ],
-            "Host": Array [
+            "Host": [
               "api.example.com",
             ],
-            "Referer": Array [
+            "Referer": [
               "https://app.example.com/views/3257/edit",
             ],
-            "User-Agent": Array [
+            "User-Agent": [
               "Mozilla/5.0 (Linux; Android 5.0.2; SM-G360F Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.83 Mobile Safari/537.36",
             ],
-            "X-Forwarded-Port": Array [
+            "X-Forwarded-Port": [
               "443",
             ],
-            "X-Forwarded-Proto": Array [
+            "X-Forwarded-Proto": [
               "https",
             ],
-            "content-type": Array [
+            "content-type": [
               "application/json;charset=UTF-8",
             ],
-            "origin": Array [
+            "origin": [
               "https://app.example.com",
             ],
           },
           "multiValueQueryStringParameters": null,
           "path": "/v1/users/15419/views/3257",
-          "pathParameters": Object {
+          "pathParameters": {
             "userId": "15419",
             "viewId": "3257",
           },
           "queryStringParameters": null,
-          "requestContext": Object {
+          "requestContext": {
             "accountId": "812957082909",
             "apiId": "gxwjtgp8bf",
             "domainName": "api.example.com",
             "domainPrefix": "api",
             "extendedRequestId": "S-D5rG9QFiAFnVg=",
             "httpMethod": "PUT",
-            "identity": Object {
+            "identity": {
               "accessKey": null,
               "accountId": null,
               "caller": null,

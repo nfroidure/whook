@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`commands should work with config 1`] = `
-Object {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js\\".
-✔ - Found the project dir /whook/packages/whook-example\\".
+{
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js".
+✔ - Found the project dir /whook/packages/whook-example".
 ",
-  "stdout": "\\"localhost\\"
+  "stdout": ""localhost"
 ",
 }
 `;
 
 exports[`commands should work with env 1`] = `
-Object {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js\\".
-✔ - Found the project dir /whook/packages/whook-example\\".
+{
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js".
+✔ - Found the project dir /whook/packages/whook-example".
 🖥 - Using local env.
 ",
   "stdout": "test
@@ -22,19 +22,19 @@ Object {
 `;
 
 exports[`commands should work with ls 1`] = `
-Object {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js\\".
-✔ - Found the project dir /whook/packages/whook-example\\".
+{
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/test/config.js".
+✔ - Found the project dir /whook/packages/whook-example".
 ",
   "stdout": "
 
-# Provided by \\"@whook/example\\": 3 commands
+# Provided by "@whook/example": 3 commands
 - generateOpenAPISchema: Write openAPI schema to stdout
 - generateOpenAPITypes: Write openAPI types to stdout
 - printEnv: A command printing every env values
 
 
-# Provided by \\"@whook/cli\\": 6 commands
+# Provided by "@whook/cli": 6 commands
 - config: A simple program that returns the queryed config value
 - create: A command helping to create new Whook files easily
 - env: A command printing env values
@@ -43,10 +43,10 @@ Object {
 - ls: Print available commands
 
 
-# Provided by \\"@whook/whook\\": none
+# Provided by "@whook/whook": none
 
 
-# Provided by \\"@whook/cors\\": none
+# Provided by "@whook/cors": none
 ",
 }
 `;

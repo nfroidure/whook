@@ -1,7 +1,7 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
   WhookOperation,
   APMService,
@@ -52,7 +52,7 @@ type ConsumerWrapperDependencies = {
 };
 
 export default function wrapHandlerForAWSConsumerLambda<
-  D,
+  D extends Dependencies<any>,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -69,10 +69,10 @@ export default function wrapHandlerForAWSConsumerLambda<
   );
 }
 
-async function initHandlerForAWSConsumerLambda<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
+async function initHandlerForAWSConsumerLambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);
 
   return (handleForAWSConsumerLambda as any).bind(null, services, handler);

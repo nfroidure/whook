@@ -1,9 +1,10 @@
+import { describe, test, expect } from '@jest/globals';
 import { YError } from 'yerror';
 import { lowerCaseHeaders, mergeVaryHeaders } from './headers.js';
 
 describe('lowerCaseHeaders', () => {
   test('should work with no headers', () => {
-    expect(lowerCaseHeaders({})).toMatchInlineSnapshot(`Object {}`);
+    expect(lowerCaseHeaders({})).toMatchInlineSnapshot(`{}`);
   });
   test('should work with actual headers', () => {
     expect(
@@ -12,7 +13,7 @@ describe('lowerCaseHeaders', () => {
         Authorization: 'bearer test',
       }),
     ).toMatchInlineSnapshot(`
-      Object {
+      {
         "authorization": "bearer test",
         "content-type": "application-json",
       }
@@ -78,9 +79,9 @@ describe('mergeVaryHeaders', () => {
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "errorCode": "E_BAD_VARY_VALUE",
-          "errorParams": Array [
+          "errorParams": [
             "User-Agent, Cookie",
           ],
         }

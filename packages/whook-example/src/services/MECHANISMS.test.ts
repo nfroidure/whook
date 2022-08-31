@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initMechanisms, { FAKE_MECHANISM } from './MECHANISMS.js';
 import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 import type { LogService } from 'common-services';

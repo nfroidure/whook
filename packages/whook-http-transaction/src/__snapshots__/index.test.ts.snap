@@ -1,100 +1,100 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initHTTPTransaction httpTransaction should fail on timeout 1`] = `
-Object {
-  "apmCalls": Array [],
-  "delayClearCalls": Array [],
-  "delayCreateCalls": Array [
-    Array [
+{
+  "apmCalls": [],
+  "delayClearCalls": [],
+  "delayCreateCalls": [
+    [
       30000,
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "💱 - HTTP Transaction initialized.",
     ],
   ],
-  "obfuscateCalls": Array [],
-  "obfuscateSensibleHeadersCalls": Array [
-    Array [
-      Object {
+  "obfuscateCalls": [],
+  "obfuscateSensibleHeadersCalls": [
+    [
+      {
         "x-forwarded-for": "127.0.0.1",
       },
     ],
   ],
-  "obfuscateSensiblePropsCalls": Array [],
-  "request": Object {
-    "body": Object {
-      "connection": Object {
+  "obfuscateSensiblePropsCalls": [],
+  "request": {
+    "body": {
+      "connection": {
         "encrypted": true,
       },
-      "headers": Object {
+      "headers": {
         "x-forwarded-for": "127.0.0.1",
       },
       "ip": "127.0.0.1",
       "method": "GET",
-      "socket": Object {
+      "socket": {
         "bytesRead": 16,
         "bytesWritten": 64,
       },
       "ts": 1000000,
       "url": "/v1/users/1?extended=true",
     },
-    "headers": Object {
+    "headers": {
       "x-forwarded-for": "127.0.0.1",
     },
     "method": "get",
     "url": "/v1/users/1?extended=true",
   },
-  "timeCalls": Array [
-    Array [],
+  "timeCalls": [
+    [],
   ],
-  "uniqueIdCalls": Array [
-    Array [],
+  "uniqueIdCalls": [
+    [],
   ],
 }
 `;
 
 exports[`initHTTPTransaction httpTransaction should fail with non-unique transaction id 1`] = `
-Object {
-  "delayClearCalls": Array [],
-  "delayCreateCalls": Array [
-    Array [
+{
+  "delayClearCalls": [],
+  "delayCreateCalls": [
+    [
       30000,
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "💱 - HTTP Transaction initialized.",
     ],
   ],
-  "obfuscateCalls": Array [],
-  "obfuscateSensibleHeadersCalls": Array [
-    Array [
-      Object {
+  "obfuscateCalls": [],
+  "obfuscateSensibleHeadersCalls": [
+    [
+      {
         "transaction-id": "lol",
         "x-forwarded-for": "127.0.0.1",
       },
     ],
   ],
-  "obfuscateSensiblePropsCalls": Array [],
-  "timeCalls": Array [
-    Array [],
+  "obfuscateSensiblePropsCalls": [],
+  "timeCalls": [
+    [],
   ],
-  "uniqueIdCalls": Array [
-    Array [],
+  "uniqueIdCalls": [
+    [],
   ],
 }
 `;
 
 exports[`initHTTPTransaction httpTransaction should work 1`] = `
-Object {
-  "apmCalls": Array [
-    Array [
+{
+  "apmCalls": [
+    [
       "CALL",
-      Object {
+      {
         "endInBytes": 16,
         "endOutBytes": 64,
         "endTime": 1326585600000,
@@ -105,7 +105,7 @@ Object {
         "operationId": "theOperationId",
         "protocol": "http",
         "reqHeaders": undefined,
-        "resHeaders": Object {
+        "resHeaders": {
           "Content-Type": "application/json",
         },
         "startInBytes": 16,
@@ -116,82 +116,82 @@ Object {
       },
     ],
   ],
-  "buildResponseCalls": Array [
-    Array [],
+  "buildResponseCalls": [
+    [],
   ],
-  "delayClearCalls": Array [
-    Array [
+  "delayClearCalls": [
+    [
       Promise {},
     ],
   ],
-  "delayCreateCalls": Array [
-    Array [
+  "delayCreateCalls": [
+    [
       30000,
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "💱 - HTTP Transaction initialized.",
     ],
   ],
-  "obfuscateCalls": Array [],
-  "obfuscateSensibleHeadersCalls": Array [
-    Array [
-      Object {
+  "obfuscateCalls": [],
+  "obfuscateSensibleHeadersCalls": [
+    [
+      {
         "x-forwarded-for": "127.0.0.1",
       },
     ],
   ],
-  "obfuscateSensiblePropsCalls": Array [],
-  "request": Object {
-    "body": Object {
-      "connection": Object {
+  "obfuscateSensiblePropsCalls": [],
+  "request": {
+    "body": {
+      "connection": {
         "encrypted": true,
       },
-      "headers": Object {
+      "headers": {
         "x-forwarded-for": "127.0.0.1",
       },
       "ip": "127.0.0.1",
       "method": "GET",
-      "socket": Object {
+      "socket": {
         "bytesRead": 16,
         "bytesWritten": 64,
       },
       "ts": 1000000,
       "url": "/v1/users/1?extended=true",
     },
-    "headers": Object {
+    "headers": {
       "x-forwarded-for": "127.0.0.1",
     },
     "method": "get",
     "url": "/v1/users/1?extended=true",
   },
-  "timeCalls": Array [
-    Array [],
-    Array [],
+  "timeCalls": [
+    [],
+    [],
   ],
-  "uniqueIdCalls": Array [
-    Array [],
+  "uniqueIdCalls": [
+    [],
   ],
 }
 `;
 
 exports[`initHTTPTransaction should work 1`] = `
-Object {
-  "apmCalls": Array [],
-  "delayClearCalls": Array [],
-  "delayCreateCalls": Array [],
-  "logCalls": Array [
-    Array [
+{
+  "apmCalls": [],
+  "delayClearCalls": [],
+  "delayCreateCalls": [],
+  "logCalls": [
+    [
       "debug",
       "💱 - HTTP Transaction initialized.",
     ],
   ],
-  "obfuscateCalls": Array [],
-  "obfuscateSensibleHeadersCalls": Array [],
-  "obfuscateSensiblePropsCalls": Array [],
-  "timeCalls": Array [],
-  "uniqueIdCalls": Array [],
+  "obfuscateCalls": [],
+  "obfuscateSensibleHeadersCalls": [],
+  "obfuscateSensiblePropsCalls": [],
+  "timeCalls": [],
+  "uniqueIdCalls": [],
 }
 `;

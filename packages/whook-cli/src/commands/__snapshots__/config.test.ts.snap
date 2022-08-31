@@ -1,111 +1,111 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`configCommand should fail with no result 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "error",
-      "Could not find any results for \\"nothing_here\\".",
+      "Could not find any results for "nothing_here".",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
 }
 `;
 
 exports[`configCommand should fail with unexisting config name 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "error",
-      "No config found for \\"DOES_NOT_EXIST\\"",
+      "No config found for "DOES_NOT_EXIST"",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
 }
 `;
 
 exports[`configCommand should work with an unexisting config but a default value 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "error",
-      "No config found for \\"DOES_NOT_EXIST\\"",
+      "No config found for "DOES_NOT_EXIST"",
     ],
-    Array [
+    [
       "info",
-      "\\"v8\\"",
+      ""v8"",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
 }
 `;
 
 exports[`configCommand should work with no query at all 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "info",
-      "{\\"auth\\":{\\"username\\":\\"root\\"},\\"version\\":\\"2.1.1\\"}",
+      "{"auth":{"username":"root"},"version":"2.1.1"}",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
 }
 `;
 
 exports[`configCommand should work with no result but a default value 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "error",
-      "Could not find any results for \\"nothing_here\\".",
+      "Could not find any results for "nothing_here".",
     ],
-    Array [
+    [
       "info",
-      "\\"v8\\"",
+      ""v8"",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
 }
 `;
 
 exports[`configCommand should work with one value 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "info",
-      "\\"root\\"",
+      ""root"",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
 }
 `;
 
 exports[`configCommand should work with several values 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "info",
-      "\\"root\\"",
+      ""root"",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
 }

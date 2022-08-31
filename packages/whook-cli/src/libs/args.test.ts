@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import { readArgs } from './args.js';
 import { definition as handlerCommandDefinition } from '../commands/handler.js';
 import { YError } from 'yerror';
@@ -23,11 +24,11 @@ describe('readArgs', () => {
     expect({
       args,
     }).toMatchInlineSnapshot(`
-      Object {
-        "args": Object {
+      {
+        "args": {
           "command": "npx",
-          "namedArguments": Object {},
-          "rest": Array [
+          "namedArguments": {},
+          "rest": [
             "whook",
           ],
         },
@@ -50,14 +51,14 @@ describe('readArgs', () => {
     expect({
       args,
     }).toMatchInlineSnapshot(`
-      Object {
-        "args": Object {
+      {
+        "args": {
           "command": "npx",
-          "namedArguments": Object {
+          "namedArguments": {
             "name": "getPing",
             "parameters": "{}",
           },
-          "rest": Array [
+          "rest": [
             "whook",
           ],
         },
@@ -92,11 +93,11 @@ describe('readArgs', () => {
     expect({
       args,
     }).toMatchInlineSnapshot(`
-      Object {
-        "args": Object {
+      {
+        "args": {
           "command": "npx",
-          "namedArguments": Object {},
-          "rest": Array [
+          "namedArguments": {},
+          "rest": [
             "whook",
             "hey",
           ],
@@ -123,24 +124,24 @@ describe('readArgs', () => {
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
-        Object {
-          "args": Object {
+        {
+          "args": {
             "command": "npx",
-            "namedArguments": Object {
+            "namedArguments": {
               "parameters": "{}",
             },
-            "rest": Array [
+            "rest": [
               "whook",
             ],
           },
           "errorCode": "E_BAD_ARGS",
-          "errorParams": Array [
-            Array [
-              Object {
+          "errorParams": [
+            [
+              {
                 "instancePath": "",
                 "keyword": "required",
                 "message": "must have required property 'name'",
-                "params": Object {
+                "params": {
                   "missingProperty": "name",
                 },
                 "schemaPath": "#/required",

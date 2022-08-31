@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initPostOAuth2Acknowledge from './postOAuth2Acknowledge.js';
 import { YError } from 'yerror';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
@@ -135,9 +135,9 @@ describe('postOAuth2Acknowledge', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "headers": Object {
+      {
+        "response": {
+          "headers": {
             "location": "https://www.example.com/?client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&redirect_uri=http%3A%2F%2Flol&user_id=1",
           },
           "status": 302,
@@ -196,9 +196,9 @@ describe('postOAuth2Acknowledge', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "headers": Object {
+      {
+        "response": {
+          "headers": {
             "location": "https://www.example.com/?error=unsupported_response_type&error_decription=Type+%22yolo%22+not+supported.",
           },
           "status": 302,

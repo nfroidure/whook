@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import { collectRefs, cleanupOpenAPI } from './openapi.js';
 import type { JsonObject, JsonValue } from 'type-fest';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -128,7 +129,7 @@ describe('collectRefs', () => {
         sampleAPI.paths as unknown as JsonValue,
       ),
     ).toMatchInlineSnapshot(`
-      Array [
+      [
         "#/components/parameters/duration",
         "#/components/schemas/Recursive",
         "#/components/schemas/Echo",
@@ -141,53 +142,53 @@ describe('collectRefs', () => {
 describe('cleanupOpenAPI', () => {
   it('should remove unused refs in an OpenAPI document', () => {
     expect(cleanupOpenAPI(sampleAPI)).toMatchInlineSnapshot(`
-      Object {
-        "components": Object {
-          "parameters": Object {
-            "duration": Object {
+      {
+        "components": {
+          "parameters": {
+            "duration": {
               "description": "Duration in milliseconds",
               "in": "query",
               "name": "duration",
               "required": true,
-              "schema": Object {
+              "schema": {
                 "type": "number",
               },
             },
           },
-          "schemas": Object {
-            "AString": Object {
+          "schemas": {
+            "AString": {
               "type": "string",
             },
-            "Echo": Object {
+            "Echo": {
               "additionalProperties": false,
-              "properties": Object {
-                "echo": Object {
+              "properties": {
+                "echo": {
                   "$ref": "#/components/schemas/AString",
                 },
               },
-              "required": Array [
+              "required": [
                 "echo",
               ],
               "type": "object",
             },
-            "Recursive": Object {
+            "Recursive": {
               "additionalProperties": false,
-              "properties": Object {
-                "child": Object {
+              "properties": {
+                "child": {
                   "$ref": "#/components/schemas/Recursive",
                 },
               },
-              "required": Array [],
+              "required": [],
               "type": "object",
             },
           },
-          "securitySchemes": Object {
-            "bearerAuth": Object {
+          "securitySchemes": {
+            "bearerAuth": {
               "description": "Bearer authentication with a user API token",
               "scheme": "bearer",
               "type": "http",
             },
-            "fakeAuth": Object {
+            "fakeAuth": {
               "description": "A fake authentication for development purpose.",
               "in": "header",
               "name": "Authorization",
@@ -195,26 +196,26 @@ describe('cleanupOpenAPI', () => {
             },
           },
         },
-        "info": Object {
+        "info": {
           "description": "A basic Whook server",
           "title": "@whook/example",
           "version": "8.2.0",
         },
         "openapi": "3.0.2",
-        "paths": Object {
-          "/delay": Object {
-            "get": Object {
+        "paths": {
+          "/delay": {
+            "get": {
               "operationId": "getDelay",
-              "parameters": Array [
-                Object {
+              "parameters": [
+                {
                   "$ref": "#/components/parameters/duration",
                 },
               ],
-              "responses": Object {
-                "204": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
+              "responses": {
+                "204": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
                         "$ref": "#/components/schemas/Recursive",
                       },
                     },
@@ -223,21 +224,21 @@ describe('cleanupOpenAPI', () => {
                 },
               },
               "summary": "Answer after a given delay.",
-              "tags": Array [
+              "tags": [
                 "example",
               ],
             },
           },
-          "/echo": Object {
-            "put": Object {
+          "/echo": {
+            "put": {
               "operationId": "putEcho",
-              "requestBody": Object {
-                "content": Object {
-                  "application/json": Object {
-                    "example": Object {
+              "requestBody": {
+                "content": {
+                  "application/json": {
+                    "example": {
                       "echo": "Repeat this!",
                     },
-                    "schema": Object {
+                    "schema": {
                       "$ref": "#/components/schemas/Echo",
                     },
                   },
@@ -245,11 +246,11 @@ describe('cleanupOpenAPI', () => {
                 "description": "The input sentence",
                 "required": true,
               },
-              "responses": Object {
-                "200": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
+              "responses": {
+                "200": {
+                  "content": {
+                    "application/json": {
+                      "schema": {
                         "$ref": "#/components/schemas/Echo",
                       },
                     },
@@ -258,19 +259,19 @@ describe('cleanupOpenAPI', () => {
                 },
               },
               "summary": "Echoes what it takes.",
-              "tags": Array [
+              "tags": [
                 "example",
               ],
             },
           },
         },
-        "servers": Array [
-          Object {
+        "servers": [
+          {
             "url": "http://localhost:8001/v8",
           },
         ],
-        "tags": Array [
-          Object {
+        "tags": [
+          {
             "name": "system",
           },
         ],

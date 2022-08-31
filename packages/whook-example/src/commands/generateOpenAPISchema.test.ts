@@ -1,7 +1,6 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPISchema from './generateOpenAPISchema.js';
 import { PassThrough } from 'stream';
-import type { WhookCommandArgs } from '@whook/cli';
 import type { LogService } from 'common-services';
 
 /* Architecture Note #5.4: Testing
@@ -62,34 +61,34 @@ describe('generateOpenAPISchema', () => {
     }).toMatchInlineSnapshot(
       {},
       `
-      Object {
-        "getOpenAPICalls": Array [
-          Array [
-            Object {
+      {
+        "getOpenAPICalls": [
+          [
+            {
               "authenticated": true,
-              "mutedMethods": Array [
+              "mutedMethods": [
                 "options",
               ],
-              "mutedParameters": Array [],
+              "mutedParameters": [],
             },
           ],
         ],
-        "logCalls": Array [
-          Array [
+        "logCalls": [
+          [
             "warning",
             "📥 - Retrieving schema...",
           ],
-          Array [
+          [
             "warning",
             "📇 - Writing Open API schema...",
           ],
         ],
         "output": "{
-        \\"openapi\\": \\"3.0.2\\",
-        \\"info\\": {
-          \\"version\\": \\"0.0.0\\",
-          \\"title\\": \\"api\\",
-          \\"description\\": \\"The API\\"
+        "openapi": "3.0.2",
+        "info": {
+          "version": "0.0.0",
+          "title": "api",
+          "description": "The API"
         }
       }",
         "result": undefined,

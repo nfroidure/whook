@@ -1,6 +1,5 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initPrintEnvCommand from './printEnv.js';
-import type { WhookCommandArgs } from '@whook/cli';
 import type { LogService } from 'common-services';
 
 describe('printEnvCommand', () => {

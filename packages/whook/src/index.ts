@@ -57,6 +57,7 @@ import {
   runBuild,
 } from './build.js';
 import type { PortEnv } from './services/PORT.js';
+import type { LogService } from 'common-services';
 import type {
   HTTPServerConfig,
   HTTPServerProvider,
@@ -342,9 +343,9 @@ export async function prepareServer<
    *  server. We also inject `log` for logging purpose and custom other
    *  injected name that were required upfront.
    */
-  const { log, ...services } = await $.run([
-    ...new Set([...injectedNames, 'log', 'httpServer', 'process']),
-  ]);
+  const { log, ...services } = await $.run<{
+    log: LogService;
+  }>([...new Set([...injectedNames, 'log', 'httpServer', 'process'])]);
 
   log('warning', 'On air 🚀🌕');
 

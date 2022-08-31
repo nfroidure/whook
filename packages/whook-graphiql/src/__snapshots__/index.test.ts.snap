@@ -1,196 +1,196 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`wrapHTTPRouterWithGraphIQL should be bypassed with no debug env 1`] = `
-Object {
-  "autoloaderCalls": Array [
-    Array [
+{
+  "autoloaderCalls": [
+    [
       "MAX_HEADERS_COUNT",
     ],
-    Array [
+    [
       "KEEP_ALIVE_TIMEOUT",
     ],
-    Array [
+    [
       "SOCKET_TIMEOUT",
     ],
-    Array [
+    [
       "MAX_CONNECTIONS",
     ],
-    Array [
+    [
       "PROCESS_NAME",
     ],
-    Array [
+    [
       "SIGNALS",
     ],
-    Array [
+    [
       "BUFFER_LIMIT",
     ],
-    Array [
+    [
       "PARSERS",
     ],
-    Array [
+    [
       "STRINGIFYERS",
     ],
-    Array [
+    [
       "DECODERS",
     ],
-    Array [
+    [
       "ENCODERS",
     ],
-    Array [
+    [
       "QUERY_PARSER",
     ],
-    Array [
+    [
       "DEV_ACCESS_MECHANISM",
     ],
-    Array [
+    [
       "TIMEOUT",
     ],
-    Array [
+    [
       "TRANSACTIONS",
     ],
-    Array [
+    [
       "uniqueId",
     ],
-    Array [
+    [
       "ERRORS_DESCRIPTORS",
     ],
-    Array [
+    [
       "DEFAULT_ERROR_CODE",
     ],
-    Array [
+    [
       "SHIELD_CHAR",
     ],
-    Array [
+    [
       "MAX_CLEAR_CHARS",
     ],
-    Array [
+    [
       "MAX_CLEAR_RATIO",
     ],
-    Array [
+    [
       "SENSIBLE_PROPS",
     ],
-    Array [
+    [
       "SENSIBLE_HEADERS",
     ],
   ],
-  "debugCalls": Array [
-    Array [
+  "debugCalls": [
+    [
       "⌛ - Delay service initialized.",
     ],
-    Array [
+    [
       "⏳ - Cancelling pending timeouts:",
       0,
     ],
-    Array [
+    [
       "✅ - Closing HTTP server.",
     ],
-    Array [
+    [
       "✔️ - HTTP server closed!",
     ],
-    Array [
+    [
       "❤️ - Initializing the APM service.",
     ],
-    Array [
+    [
       "👣 - Logging service initialized.",
     ],
-    Array [
+    [
       "💱 - HTTP Transaction initialized.",
     ],
-    Array [
+    [
       "📇 - Process service initialized.",
     ],
-    Array [
+    [
       "🕶️ - Initializing the obfuscator service.",
     ],
-    Array [
+    [
       "🚦 - HTTP Router initialized.",
     ],
   ],
-  "logErrorCalls": Array [
-    Array [
-      "🔂 - Running in \\"test\\" environment.",
+  "logErrorCalls": [
+    [
+      "🔂 - Running in "test" environment.",
     ],
-    Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:11112\\".",
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:11112".",
     ],
-    Array [
+    [
       "On air 🚀🌕",
     ],
   ],
-  "logInfoCalls": Array [],
+  "logInfoCalls": [],
 }
 `;
 
 exports[`wrapHTTPRouterWithGraphIQL should serve GraphIQL HTML 2`] = `
-Object {
-  "autoloaderCalls": Array [
-    Array [
+{
+  "autoloaderCalls": [
+    [
       "MAX_HEADERS_COUNT",
     ],
-    Array [
+    [
       "KEEP_ALIVE_TIMEOUT",
     ],
-    Array [
+    [
       "SOCKET_TIMEOUT",
     ],
-    Array [
+    [
       "MAX_CONNECTIONS",
     ],
-    Array [
+    [
       "PROCESS_NAME",
     ],
-    Array [
+    [
       "SIGNALS",
     ],
-    Array [
+    [
       "BUFFER_LIMIT",
     ],
-    Array [
+    [
       "PARSERS",
     ],
-    Array [
+    [
       "STRINGIFYERS",
     ],
-    Array [
+    [
       "DECODERS",
     ],
-    Array [
+    [
       "ENCODERS",
     ],
-    Array [
+    [
       "QUERY_PARSER",
     ],
-    Array [
+    [
       "DEV_ACCESS_MECHANISM",
     ],
-    Array [
+    [
       "TIMEOUT",
     ],
-    Array [
+    [
       "TRANSACTIONS",
     ],
-    Array [
+    [
       "uniqueId",
     ],
-    Array [
+    [
       "ERRORS_DESCRIPTORS",
     ],
-    Array [
+    [
       "DEFAULT_ERROR_CODE",
     ],
-    Array [
+    [
       "SHIELD_CHAR",
     ],
-    Array [
+    [
       "MAX_CLEAR_CHARS",
     ],
-    Array [
+    [
       "MAX_CLEAR_RATIO",
     ],
-    Array [
+    [
       "SENSIBLE_PROPS",
     ],
-    Array [
+    [
       "SENSIBLE_HEADERS",
     ],
   ],
@@ -198,9 +198,9 @@ Object {
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset=\\"utf-8\\" />
+  <meta charset="utf-8" />
   <title>GraphiQL</title>
-  <meta name=\\"robots\\" content=\\"noindex\\" />
+  <meta name="robots" content="noindex" />
   <style>
     html, body {
       height: 100%;
@@ -209,12 +209,12 @@ Object {
       width: 100%;
     }
   </style>
-  <link href=\\"//unpkg.com/graphiql@0.11.11/graphiql.css\\" rel=\\"stylesheet\\" />
-  <script src=\\"//unpkg.com/react@15.6.1/dist/react.min.js\\"></script>
-  <script src=\\"//unpkg.com/react-dom@15.6.1/dist/react-dom.min.js\\"></script>
-  <script src=\\"//unpkg.com/graphiql@0.11.11/graphiql.min.js\\"></script>
+  <link href="//unpkg.com/graphiql@0.11.11/graphiql.css" rel="stylesheet" />
+  <script src="//unpkg.com/react@15.6.1/dist/react.min.js"></script>
+  <script src="//unpkg.com/react-dom@15.6.1/dist/react-dom.min.js"></script>
+  <script src="//unpkg.com/graphiql@0.11.11/graphiql.min.js"></script>
   
-  <script src=\\"//cdn.jsdelivr.net/fetch/2.0.1/fetch.min.js\\"></script>
+  <script src="//cdn.jsdelivr.net/fetch/2.0.1/fetch.min.js"></script>
   
   
 
@@ -326,52 +326,52 @@ Object {
   </script>
 </body>
 </html>",
-  "debugCalls": Array [
-    Array [
+  "debugCalls": [
+    [
       "⌛ - Delay service initialized.",
     ],
-    Array [
+    [
       "⏳ - Cancelling pending timeouts:",
       0,
     ],
-    Array [
+    [
       "✅ - Closing HTTP server.",
     ],
-    Array [
+    [
       "✔️ - HTTP server closed!",
     ],
-    Array [
+    [
       "❤️ - Initializing the APM service.",
     ],
-    Array [
+    [
       "👣 - Logging service initialized.",
     ],
-    Array [
+    [
       "💱 - HTTP Transaction initialized.",
     ],
-    Array [
+    [
       "📇 - Process service initialized.",
     ],
-    Array [
+    [
       "🕶️ - Initializing the obfuscator service.",
     ],
-    Array [
+    [
       "🚦 - HTTP Router initialized.",
     ],
   ],
-  "logErrorCalls": Array [
-    Array [
-      "🔂 - Running in \\"test\\" environment.",
+  "logErrorCalls": [
+    [
+      "🔂 - Running in "test" environment.",
     ],
-    Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:11113\\".",
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:11113".",
     ],
-    Array [
+    [
       "On air 🚀🌕",
     ],
   ],
-  "logInfoCalls": Array [
-    Array [
+  "logInfoCalls": [
+    [
       "🕸️ - Serving the GraphIQL UI. http://localhost:11113/graphiql",
     ],
   ],
@@ -379,135 +379,135 @@ Object {
 `;
 
 exports[`wrapHTTPRouterWithGraphIQL should work 2`] = `
-Object {
-  "autoloaderCalls": Array [
-    Array [
+{
+  "autoloaderCalls": [
+    [
       "MAX_HEADERS_COUNT",
     ],
-    Array [
+    [
       "KEEP_ALIVE_TIMEOUT",
     ],
-    Array [
+    [
       "SOCKET_TIMEOUT",
     ],
-    Array [
+    [
       "MAX_CONNECTIONS",
     ],
-    Array [
+    [
       "PROCESS_NAME",
     ],
-    Array [
+    [
       "SIGNALS",
     ],
-    Array [
+    [
       "BUFFER_LIMIT",
     ],
-    Array [
+    [
       "PARSERS",
     ],
-    Array [
+    [
       "STRINGIFYERS",
     ],
-    Array [
+    [
       "DECODERS",
     ],
-    Array [
+    [
       "ENCODERS",
     ],
-    Array [
+    [
       "QUERY_PARSER",
     ],
-    Array [
+    [
       "DEV_ACCESS_MECHANISM",
     ],
-    Array [
+    [
       "TIMEOUT",
     ],
-    Array [
+    [
       "TRANSACTIONS",
     ],
-    Array [
+    [
       "uniqueId",
     ],
-    Array [
+    [
       "ERRORS_DESCRIPTORS",
     ],
-    Array [
+    [
       "DEFAULT_ERROR_CODE",
     ],
-    Array [
+    [
       "SHIELD_CHAR",
     ],
-    Array [
+    [
       "MAX_CLEAR_CHARS",
     ],
-    Array [
+    [
       "MAX_CLEAR_RATIO",
     ],
-    Array [
+    [
       "SENSIBLE_PROPS",
     ],
-    Array [
+    [
       "SENSIBLE_HEADERS",
     ],
   ],
-  "debugCalls": Array [
-    Array [
+  "debugCalls": [
+    [
       "⌛ - Delay service initialized.",
     ],
-    Array [
+    [
       "⏳ - Cancelling pending timeouts:",
       0,
     ],
-    Array [
+    [
       "⏳ - Cleared a delay",
     ],
-    Array [
+    [
       "⏳ - Created a delay:",
       30000,
     ],
-    Array [
+    [
       "✅ - Closing HTTP server.",
     ],
-    Array [
+    [
       "✔️ - HTTP server closed!",
     ],
-    Array [
+    [
       "❤️ - Initializing the APM service.",
     ],
-    Array [
+    [
       "👣 - Logging service initialized.",
     ],
-    Array [
+    [
       "💱 - HTTP Transaction initialized.",
     ],
-    Array [
+    [
       "📇 - Process service initialized.",
     ],
-    Array [
+    [
       "🕶️ - Initializing the obfuscator service.",
     ],
-    Array [
+    [
       "🚦 - HTTP Router initialized.",
     ],
   ],
-  "logErrorCalls": Array [
-    Array [
-      "🔂 - Running in \\"test\\" environment.",
+  "logErrorCalls": [
+    [
+      "🔂 - Running in "test" environment.",
     ],
-    Array [
-      "🎙️ - HTTP Server listening at \\"http://localhost:11111\\".",
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:11111".",
     ],
-    Array [
+    [
       "On air 🚀🌕",
     ],
   ],
-  "logInfoCalls": Array [
-    Array [
+  "logInfoCalls": [
+    [
       "🕸️ - Serving the GraphIQL UI. http://localhost:11111/graphiql",
     ],
-    Array [
-      "CALL {\\"id\\":\\"0\\",\\"protocol\\":\\"http\\",\\"ip\\":\\"_ip_\\",\\"startInBytes\\":147,\\"startOutBytes\\":0,\\"startTime\\":1267833600000,\\"url\\":\\"/v1/ping\\",\\"method\\":\\"GET\\",\\"reqHeaders\\":{\\"accept\\":\\"application/json, text/plain, */*\\",\\"user-agent\\":\\"__avoid_axios_version__\\",\\"host\\":\\"localhost:11111\\",\\"connection\\":\\"close\\"},\\"errored\\":false,\\"endTime\\":1267833600000,\\"endInBytes\\":147,\\"endOutBytes\\":179,\\"statusCode\\":200,\\"resHeaders\\":{\\"content-type\\":\\"application/json\\"},\\"operationId\\":\\"getPing\\"}",
+    [
+      "CALL {"id":"0","protocol":"http","ip":"_ip_","startInBytes":147,"startOutBytes":0,"startTime":1267833600000,"url":"/v1/ping","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","user-agent":"__avoid_axios_version__","host":"localhost:11111","connection":"close"},"errored":false,"endTime":1267833600000,"endInBytes":147,"endOutBytes":179,"statusCode":200,"resHeaders":{"content-type":"application/json"},"operationId":"getPing"}",
     ],
   ],
 }

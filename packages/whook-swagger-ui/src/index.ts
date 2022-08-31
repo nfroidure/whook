@@ -2,7 +2,7 @@ import { wrapInitializer, alsoInject } from 'knifecycle';
 import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
 } from './handlers/getOpenAPI.js';
-import type { ProviderInitializer } from 'knifecycle';
+import type { ProviderInitializer, Dependencies } from 'knifecycle';
 import type {
   HTTPRouterProvider,
   HTTPRouterService,
@@ -41,7 +41,9 @@ export type WhookAPIOperationSwaggerConfig = {
  * @param {Function} initHTTPRouter The `httpRouter` initializer
  * @returns {Function} The `httpRouter` initializer wrapped
  */
-export default function wrapHTTPRouterWithSwaggerUI<D>(
+export default function wrapHTTPRouterWithSwaggerUI<
+  D extends Dependencies<any>,
+>(
   initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
 ): ProviderInitializer<D & WhookSwaggerUIDependencies, HTTPRouterService> {
   const augmentedInitializer = alsoInject<

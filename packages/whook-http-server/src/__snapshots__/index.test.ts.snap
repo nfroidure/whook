@@ -1,57 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initHTTPServer should close even with opened sockets when using DESTROY_SOCKETS 1`] = `
-Object {
-  "httpRouterCalls": Array [],
-  "logCalls": Array [],
+{
+  "httpRouterCalls": [],
+  "logCalls": [],
 }
 `;
 
 exports[`initHTTPServer should proxy server close errors 1`] = `
-Object {
+{
   "errorCode": "E_ERROR",
-  "errorParams": Array [],
-  "httpRouterCalls": Array [],
-  "logCalls": Array [],
+  "errorParams": [],
+  "httpRouterCalls": [],
+  "logCalls": [],
 }
 `;
 
 exports[`initHTTPServer should proxy server fatal errors 1`] = `
-Object {
+{
   "errorCode": "E_HTTP_SERVER_ERROR",
-  "errorParams": Array [],
-  "httpRouterCalls": Array [],
-  "logCalls": Array [],
+  "errorParams": [],
+  "httpRouterCalls": [],
+  "logCalls": [],
 }
 `;
 
 exports[`initHTTPServer should serve the router 1`] = `
-Object {
-  "logCalls": Array [],
+{
+  "logCalls": [],
   "status": 200,
 }
 `;
 
 exports[`initHTTPServer should work with instantly destroyed connections 1`] = `
-Object {
-  "httpRouterCalls": Array [],
-  "logCalls": Array [],
+{
+  "httpRouterCalls": [],
+  "logCalls": [],
 }
 `;
 
 exports[`initHTTPServer should work with keepalive connections 1`] = `
-Object {
-  "httpRouterCalls": Array [],
-  "logCalls": Array [
-    Array [
+{
+  "httpRouterCalls": [],
+  "logCalls": [
+    [
       "warning",
-      "🎙️ - HTTP Server listening at \\"http://localhost:7777\\".",
+      "🎙️ - HTTP Server listening at "http://localhost:7777".",
     ],
-    Array [
+    [
       "debug",
       "✅ - Closing HTTP server.",
     ],
-    Array [
+    [
       "debug",
       "✔️ - HTTP server closed!",
     ],

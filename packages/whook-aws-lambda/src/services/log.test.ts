@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, afterAll, jest, expect } from '@jest/globals';
 import initLog from './log.js';
 
 describe('log service', () => {
@@ -12,8 +12,8 @@ describe('log service', () => {
     log('info', 'A test log !');
 
     expect(spy.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "info",
           "A test log !",
         ],

@@ -1,7 +1,7 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
   APMService,
   WhookOperation,
@@ -24,7 +24,10 @@ type S3WrapperDependencies = {
 export type LambdaS3Input = { body: S3Event['Records'] };
 export type LambdaS3Output = WhookResponse<number, WhookHeaders, void>;
 
-export default function wrapHandlerForAWSS3Lambda<D, S extends WhookHandler>(
+export default function wrapHandlerForAWSS3Lambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & S3WrapperDependencies, S> {
   return alsoInject<S3WrapperDependencies, D, S>(
@@ -39,10 +42,10 @@ export default function wrapHandlerForAWSS3Lambda<D, S extends WhookHandler>(
   );
 }
 
-async function initHandlerForAWSS3Lambda<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
+async function initHandlerForAWSS3Lambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);
 
   return (handleForAWSS3Lambda as any).bind(null, services, handler);

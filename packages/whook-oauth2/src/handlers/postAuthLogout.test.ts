@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, jest, expect } from '@jest/globals';
 import initPostAuthLogout from './postAuthLogout.js';
 import type { AuthCookiesService } from '../services/authCookies.js';
 
@@ -19,13 +19,13 @@ describe('postAuthLogout', () => {
       response,
       authCookiesBuildCalls: authCookies.build.mock.calls,
     }).toMatchInlineSnapshot(`
-      Object {
-        "authCookiesBuildCalls": Array [
-          Array [],
+      {
+        "authCookiesBuildCalls": [
+          [],
         ],
-        "response": Object {
-          "headers": Object {
-            "Set-Cookie": Array [
+        "response": {
+          "headers": {
+            "Set-Cookie": [
               "the_build_cookies",
             ],
           },

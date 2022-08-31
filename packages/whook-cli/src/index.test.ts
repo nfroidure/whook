@@ -1,10 +1,16 @@
-import { jest } from '@jest/globals';
-import { Knifecycle, constant, service, singleton } from 'knifecycle';
+import {
+  describe,
+  it,
+  beforeEach,
+  afterEach,
+  jest,
+  expect,
+} from '@jest/globals';
+import { Knifecycle, constant, service } from 'knifecycle';
 import run from './index.js';
 import { initImporter, initResolve } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { Autoloader, Initializer } from 'knifecycle';
-import type { ImporterService, ResolveService } from '@whook/whook';
+import type { ImporterService } from '@whook/whook';
 
 describe('whook-cli', () => {
   const log = jest.fn<LogService>();
@@ -80,26 +86,26 @@ describe('whook-cli', () => {
       errorCalls: consoleError.mock.calls.map(([arg1]) => [arg1]),
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      Object {
-        "cwdCalls": Array [
-          Array [],
+      {
+        "cwdCalls": [
+          [],
         ],
-        "errorCalls": Array [],
-        "exitCalls": Array [],
-        "logCalls": Array [
-          Array [
+        "errorCalls": [],
+        "exitCalls": [],
+        "logCalls": [
+          [
             "debug",
             "🛂 - Initializing the importer!",
           ],
-          Array [
+          [
             "debug",
             "🛂 - Initializing the resolve service!",
           ],
-          Array [
+          [
             "debug",
             "Environment initialized 🚀🌕",
           ],
-          Array [
+          [
             "warning",
             "Command ran!",
           ],
@@ -152,32 +158,32 @@ describe('whook-cli', () => {
       errorCalls: consoleError.mock.calls.map(([arg1]) => [arg1]),
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      Object {
-        "cwdCalls": Array [
-          Array [],
+      {
+        "cwdCalls": [
+          [],
         ],
-        "errorCalls": Array [],
-        "exitCalls": Array [
-          Array [
+        "errorCalls": [],
+        "exitCalls": [
+          [
             1,
           ],
         ],
-        "logCalls": Array [
-          Array [
+        "logCalls": [
+          [
             "debug",
             "🛂 - Initializing the importer!",
           ],
-          Array [
+          [
             "debug",
             "🛂 - Initializing the resolve service!",
           ],
-          Array [
+          [
             "debug",
             "Environment initialized 🚀🌕",
           ],
-          Array [
+          [
             "error",
-            "💀 - Command failed! Add \\"DEBUG=whook\\" for more context.",
+            "💀 - Command failed! Add "DEBUG=whook" for more context.",
           ],
         ],
       }
