@@ -1,3 +1,19 @@
+## [10.0.3](https://github.com/nfroidure/whook/compare/v10.0.2...v10.0.3) (2022-09-01)
+
+
+### Bug Fixes
+
+* **core:** fix dependencies ([6d29053](https://github.com/nfroidure/whook/commit/6d29053f7f77bdd8abf7d31216155751b226ff6d))
+* **types:** fix types for TypeScript 4.8 ([d327e79](https://github.com/nfroidure/whook/commit/d327e79e1268d350f94fe0db89a3656088500496)), closes [#121](https://github.com/nfroidure/whook/issues/121)
+
+
+### BREAKING CHANGES
+
+* **types:** Updated apollo-server to the latest major version. It led to some changes in the
+way directives are provided into GraphQL fragments.
+
+
+
 ## [10.0.2](https://github.com/nfroidure/whook/compare/v10.0.1...v10.0.2) (2022-06-22)
 
 
