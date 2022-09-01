@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import { YError } from 'yerror';
 import initImporter from './importer.js';
 import type { LogService } from 'common-services';
@@ -21,15 +21,15 @@ describe('Importer', () => {
       result: typeof result,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      Object {
-        "logCalls": Array [
-          Array [
+      {
+        "logCalls": [
+          [
             "debug",
             "🛂 - Initializing the importer!",
           ],
-          Array [
+          [
             "debug",
-            "🛂 - Dynamic import of \\"@whook/http-server\\".",
+            "🛂 - Dynamic import of "@whook/http-server".",
           ],
         ],
         "result": "object",
@@ -51,24 +51,24 @@ describe('Importer', () => {
         errorParams: (err as YError).params,
         logCalls: log.mock.calls.filter(([type]) => !type.startsWith('debug-')),
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "errorCode": "E_RUNTIME_IMPORT_FAILURE",
-          "errorParams": Array [
+          "errorParams": [
             "@nowhere/anywhere",
             "Cannot find module '@nowhere/anywhere' from 'src/services/importer.ts'",
           ],
-          "logCalls": Array [
-            Array [
+          "logCalls": [
+            [
               "debug",
               "🛂 - Initializing the importer!",
             ],
-            Array [
+            [
               "debug",
-              "🛂 - Dynamic import of \\"@nowhere/anywhere\\".",
+              "🛂 - Dynamic import of "@nowhere/anywhere".",
             ],
-            Array [
+            [
               "debug",
-              "⚠️ - Got a runtime import error for \\"@nowhere/anywhere\\" !",
+              "⚠️ - Got a runtime import error for "@nowhere/anywhere" !",
             ],
           ],
         }

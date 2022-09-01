@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initFilterAPITags from './FILTER_API_TAGS.js';
 import type { LogService } from 'common-services';
 
@@ -16,7 +16,7 @@ describe('initFilterAPITags', () => {
         log,
       });
 
-      expect(FILTER_API_TAGS).toMatchInlineSnapshot(`Array []`);
+      expect(FILTER_API_TAGS).toMatchInlineSnapshot(`[]`);
       expect({
         logCalls: log.mock.calls,
       }).toMatchSnapshot();
@@ -28,7 +28,7 @@ describe('initFilterAPITags', () => {
         log,
       });
 
-      expect(FILTER_API_TAGS).toMatchInlineSnapshot(`Array []`);
+      expect(FILTER_API_TAGS).toMatchInlineSnapshot(`[]`);
       expect({
         logCalls: log.mock.calls,
       }).toMatchSnapshot();
@@ -39,7 +39,7 @@ describe('initFilterAPITags', () => {
         log,
       });
 
-      expect(FILTER_API_TAGS).toMatchInlineSnapshot(`Array []`);
+      expect(FILTER_API_TAGS).toMatchInlineSnapshot(`[]`);
       expect({
         logCalls: log.mock.calls,
       }).toMatchSnapshot();

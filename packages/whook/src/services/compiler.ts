@@ -8,6 +8,7 @@ export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],
   ignoredModules: [],
   target: '16',
+  format: 'esm',
 };
 
 export default autoService(initCompiler);
@@ -17,6 +18,7 @@ export type FullWhookCompilerOptions = {
   ignoredModules: string[];
   mainFields?: string[];
   target: string;
+  format: 'esm' | 'cjs';
   excludeNodeModules?: boolean;
 };
 export type WhookCompilerOptions = Partial<FullWhookCompilerOptions>;
@@ -94,18 +96,23 @@ async function initCompiler({
       // To keep Knifecycle initializers names untouched
       keepNames: true,
       platform: 'node',
-      target: 'esnext',
-      format: 'esm',
-      // TODO: Remove when issue is addressed
-      // https://github.com/evanw/esbuild/issues/1921#issuecomment-1152991694
+      target: 'node' + compilerOptions.target,
+      format: compilerOptions.format,
       banner: {
         js: `
-// Built with \`@whook\`, do not edit in place!
+        // Built with \`@whook\`, do not edit in place!
+        
+        ${
+          // TODO: Remove when issue is addressed
+          // https://github.com/evanw/esbuild/issues/1921#issuecomment-1152991694
+          compilerOptions.format === 'esm'
+            ? `
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-
-`,
+`
+            : ''
+        }`,
       },
       define: {
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV),

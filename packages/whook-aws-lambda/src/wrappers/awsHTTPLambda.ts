@@ -84,7 +84,10 @@ const SEARCH_SEPARATOR = '?';
 const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
-export default function wrapHandlerForAWSHTTPLambda<D, S extends WhookHandler>(
+export default function wrapHandlerForAWSHTTPLambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & HTTPWrapperDependencies, S> {
   return alsoInject<HTTPWrapperDependencies, D, S>(

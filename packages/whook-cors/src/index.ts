@@ -8,7 +8,7 @@ import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
   isGetter,
 } from './services/errorHandler.js';
-import type { ServiceInitializer, Parameters } from 'knifecycle';
+import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
 import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 
@@ -45,7 +45,10 @@ export type WhookAPIOperationCORSConfig = {
  * @param {Function} initHandler The handler initializer
  * @returns {Function} The handler initializer wrapped
  */
-export function wrapHandlerWithCORS<D, S extends WhookHandler>(
+export function wrapHandlerWithCORS<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<D & WhookCORSConfig, S> {
   const augmentedInitializer = alsoInject<WhookCORSConfig, D, S>(

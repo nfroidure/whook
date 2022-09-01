@@ -1,25 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initAPIDefinitions should work with a disabled handler at the same path 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {
-        "userId": Object {
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
           "in": "path",
           "name": "userId",
-          "schema": Object {
+          "schema": {
             "type": "number",
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {
-        "User": Object {
-          "properties": Object {
-            "name": Object {
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
               "type": "string",
             },
           },
@@ -27,29 +27,29 @@ Object {
         },
       },
     },
-    "paths": Object {
-      "/users/{userId}": Object {
-        "put": Object {
+    "paths": {
+      "/users/{userId}": {
+        "put": {
           "operationId": "putUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "requestBody": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
             },
           },
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -57,33 +57,33 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
       },
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/project/src/handlers/getUser.js",
     ],
-    Array [
+    [
       "/home/whoiam/project/src/handlers/putUser.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
-    Array [
+    [
       "debug",
-      "⏳ - Ignored handler \\"getUser\\" since disabled by its definition!",
+      "⏳ - Ignored handler "getUser" since disabled by its definition!",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
   ],
@@ -91,25 +91,25 @@ Object {
 `;
 
 exports[`initAPIDefinitions should work with a few handlers 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {
-        "userId": Object {
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
           "in": "path",
           "name": "userId",
-          "schema": Object {
+          "schema": {
             "type": "number",
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {
-        "User": Object {
-          "properties": Object {
-            "name": Object {
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
               "type": "string",
             },
           },
@@ -117,19 +117,19 @@ Object {
         },
       },
     },
-    "paths": Object {
-      "/ping": Object {
-        "get": Object {
+    "paths": {
+      "/ping": {
+        "get": {
           "operationId": "getPing",
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "additionalProperties": false,
-                    "properties": Object {
-                      "pong": Object {
-                        "enum": Array [
+                    "properties": {
+                      "pong": {
+                        "enum": [
                           "pong",
                         ],
                         "type": "string",
@@ -143,24 +143,24 @@ Object {
             },
           },
           "summary": "Checks API's availability.",
-          "tags": Array [
+          "tags": [
             "system",
           ],
         },
       },
-      "/users/{userId}": Object {
-        "get": Object {
+      "/users/{userId}": {
+        "get": {
           "operationId": "getUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -168,29 +168,29 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
       },
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/project/src/handlers/getPing.js",
     ],
-    Array [
+    [
       "/home/whoiam/project/src/handlers/getUser.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
   ],
@@ -198,25 +198,25 @@ Object {
 `;
 
 exports[`initAPIDefinitions should work with a few handlers in different plugins paths 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {
-        "userId": Object {
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
           "in": "path",
           "name": "userId",
-          "schema": Object {
+          "schema": {
             "type": "number",
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {
-        "User": Object {
-          "properties": Object {
-            "name": Object {
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
               "type": "string",
             },
           },
@@ -224,19 +224,19 @@ Object {
         },
       },
     },
-    "paths": Object {
-      "/ping": Object {
-        "get": Object {
+    "paths": {
+      "/ping": {
+        "get": {
           "operationId": "getPing",
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "additionalProperties": false,
-                    "properties": Object {
-                      "pong": Object {
-                        "enum": Array [
+                    "properties": {
+                      "pong": {
+                        "enum": [
                           "pong",
                         ],
                         "type": "string",
@@ -250,24 +250,24 @@ Object {
             },
           },
           "summary": "Checks API's availability.",
-          "tags": Array [
+          "tags": [
             "system",
           ],
         },
       },
-      "/users/{userId}": Object {
-        "get": Object {
+      "/users/{userId}": {
+        "get": {
           "operationId": "getUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -275,32 +275,32 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
       },
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/project/src/handlers/getPing.js",
     ],
-    Array [
+    [
       "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
-    Array [
+    [
       "/home/whoiam/project/node_modules/@whook/dist/handlers",
     ],
   ],
@@ -308,25 +308,25 @@ Object {
 `;
 
 exports[`initAPIDefinitions should work with a few handlers in different plugins paths and an overriden one 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {
-        "userId": Object {
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
           "in": "path",
           "name": "userId",
-          "schema": Object {
+          "schema": {
             "type": "number",
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {
-        "User": Object {
-          "properties": Object {
-            "name": Object {
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
               "type": "string",
             },
           },
@@ -334,19 +334,19 @@ Object {
         },
       },
     },
-    "paths": Object {
-      "/ping": Object {
-        "get": Object {
+    "paths": {
+      "/ping": {
+        "get": {
           "operationId": "getPing",
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "additionalProperties": false,
-                    "properties": Object {
-                      "pong": Object {
-                        "enum": Array [
+                    "properties": {
+                      "pong": {
+                        "enum": [
                           "pong",
                         ],
                         "type": "string",
@@ -360,24 +360,24 @@ Object {
             },
           },
           "summary": "Checks API's availability.",
-          "tags": Array [
+          "tags": [
             "system",
           ],
         },
       },
-      "/users/{userId}": Object {
-        "get": Object {
+      "/users/{userId}": {
+        "get": {
           "operationId": "getUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -385,32 +385,32 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
       },
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/project/src/handlers/getPing.js",
     ],
-    Array [
+    [
       "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
-    Array [
+    [
       "/home/whoiam/project/node_modules/@whook/dist/handlers",
     ],
   ],
@@ -418,25 +418,25 @@ Object {
 `;
 
 exports[`initAPIDefinitions should work with a few handlers in different plugins paths and an overriden one but with a different extension 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {
-        "userId": Object {
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
           "in": "path",
           "name": "userId",
-          "schema": Object {
+          "schema": {
             "type": "number",
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {
-        "User": Object {
-          "properties": Object {
-            "name": Object {
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
               "type": "string",
             },
           },
@@ -444,19 +444,19 @@ Object {
         },
       },
     },
-    "paths": Object {
-      "/ping": Object {
-        "get": Object {
+    "paths": {
+      "/ping": {
+        "get": {
           "operationId": "getPing",
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "additionalProperties": false,
-                    "properties": Object {
-                      "pong": Object {
-                        "enum": Array [
+                    "properties": {
+                      "pong": {
+                        "enum": [
                           "pong",
                         ],
                         "type": "string",
@@ -470,24 +470,24 @@ Object {
             },
           },
           "summary": "Checks API's availability.",
-          "tags": Array [
+          "tags": [
             "system",
           ],
         },
       },
-      "/users/{userId}": Object {
-        "get": Object {
+      "/users/{userId}": {
+        "get": {
           "operationId": "getUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -495,32 +495,32 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
       },
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/project/src/handlers/getPing.js",
     ],
-    Array [
+    [
       "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
-    Array [
+    [
       "/home/whoiam/project/node_modules/@whook/dist/handlers",
     ],
   ],
@@ -528,25 +528,25 @@ Object {
 `;
 
 exports[`initAPIDefinitions should work with a filtered handler 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {
-        "userId": Object {
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
           "in": "path",
           "name": "userId",
-          "schema": Object {
+          "schema": {
             "type": "number",
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {
-        "User": Object {
-          "properties": Object {
-            "name": Object {
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
               "type": "string",
             },
           },
@@ -554,29 +554,29 @@ Object {
         },
       },
     },
-    "paths": Object {
-      "/users/{userId}": Object {
-        "put": Object {
+    "paths": {
+      "/users/{userId}": {
+        "put": {
           "operationId": "putUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "requestBody": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
             },
           },
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -584,33 +584,33 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
       },
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/project/src/handlers/getUser.js",
     ],
-    Array [
+    [
       "/home/whoiam/project/src/handlers/putUser.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
-    Array [
+    [
       "debug",
-      "⏳ - Ignored handler \\"getUser\\" via its tags (\\"other\\" not found in \\"user\\")!",
+      "⏳ - Ignored handler "getUser" via its tags ("other" not found in "user")!",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
   ],
@@ -618,25 +618,25 @@ Object {
 `;
 
 exports[`initAPIDefinitions should work with a several handlers at the same path 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {
-        "userId": Object {
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
           "in": "path",
           "name": "userId",
-          "schema": Object {
+          "schema": {
             "type": "number",
           },
         },
       },
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {
-        "User": Object {
-          "properties": Object {
-            "name": Object {
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
               "type": "string",
             },
           },
@@ -644,20 +644,20 @@ Object {
         },
       },
     },
-    "paths": Object {
-      "/users/{userId}": Object {
-        "get": Object {
+    "paths": {
+      "/users/{userId}": {
+        "get": {
           "operationId": "getUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -665,31 +665,31 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
-        "put": Object {
+        "put": {
           "operationId": "putUser",
-          "parameters": Array [
-            Object {
+          "parameters": [
+            {
               "$ref": "#/components/parameters/userId",
             },
           ],
-          "requestBody": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/User",
                 },
               },
             },
           },
-          "responses": Object {
-            "200": Object {
-              "content": Object {
-                "application/json": Object {
-                  "schema": Object {
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
                     "$ref": "#/components/schemas/User",
                   },
                 },
@@ -697,29 +697,29 @@ Object {
               "description": "The user",
             },
           },
-          "tags": Array [
+          "tags": [
             "user",
           ],
         },
       },
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/project/src/handlers/getUser.js",
     ],
-    Array [
+    [
       "/home/whoiam/project/src/handlers/putUser.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
   ],
@@ -727,26 +727,26 @@ Object {
 `;
 
 exports[`initAPIDefinitions should work with no handlers 1`] = `
-Object {
-  "API_DEFINITIONS": Object {
-    "components": Object {
-      "headers": Object {},
-      "parameters": Object {},
-      "requestBodies": Object {},
-      "responses": Object {},
-      "schemas": Object {},
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {},
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {},
     },
-    "paths": Object {},
+    "paths": {},
   },
-  "importerCalls": Array [],
-  "logCalls": Array [
-    Array [
+  "importerCalls": [],
+  "logCalls": [
+    [
       "debug",
       "🈁 - Generating the API_DEFINITIONS",
     ],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/project/src/handlers",
     ],
   ],

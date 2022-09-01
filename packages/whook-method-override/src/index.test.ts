@@ -1,4 +1,12 @@
-import { jest } from '@jest/globals';
+import {
+  describe,
+  it,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  jest,
+  expect,
+} from '@jest/globals';
 import wrapHTTPTransactionWithMethodOverride from './index.js';
 import initHTTPTransaction from '@whook/http-transaction';
 import {

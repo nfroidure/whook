@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, jest, expect } from '@jest/globals';
 import initPostAuthLogin from './postAuthLogin.js';
 import type { AuthCookiesService } from '../services/authCookies.js';
 
@@ -42,28 +42,28 @@ describe('postAuthLogin', () => {
       authCookiesBuildCalls: authCookies.build.mock.calls,
       postOAuth2TokenCalls: postOAuth2Token.mock.calls,
     }).toMatchInlineSnapshot(`
-      Object {
-        "authCookiesBuildCalls": Array [
-          Array [
-            Object {
+      {
+        "authCookiesBuildCalls": [
+          [
+            {
               "access_token": "an_access_token",
               "expiration_date": "2020-02-02T20:22:02Z",
               "expires_in": 3600,
               "token_type": "bearer",
             },
-            Object {
+            {
               "session": true,
             },
           ],
         ],
-        "postOAuth2TokenCalls": Array [
-          Array [
-            Object {
-              "authenticationData": Object {
+        "postOAuth2TokenCalls": [
+          [
+            {
+              "authenticationData": {
                 "applicationId": "root_app_id",
                 "scope": "user",
               },
-              "body": Object {
+              "body": {
                 "grant_type": "password",
                 "password": "a_password",
                 "scope": "user",
@@ -72,15 +72,15 @@ describe('postAuthLogin', () => {
             },
           ],
         ],
-        "response": Object {
-          "body": Object {
+        "response": {
+          "body": {
             "access_token": "an_access_token",
             "expiration_date": "2020-02-02T20:22:02Z",
             "expires_in": 3600,
             "token_type": "bearer",
           },
-          "headers": Object {
-            "Set-Cookie": Array [
+          "headers": {
+            "Set-Cookie": [
               "the_build_cookies",
             ],
           },

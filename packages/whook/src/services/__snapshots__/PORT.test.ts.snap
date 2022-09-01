@@ -1,42 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initPORT should find a port by itself if no env port 1`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "debug",
       "🛂 - Initializing the importer!",
     ],
-    Array [
+    [
       "debug",
       "🏭 - Initializing the PORT service.",
     ],
-    Array [
+    [
       "debug",
-      "🛂 - Dynamic import of \\"portfinder\\".",
+      "🛂 - Dynamic import of "portfinder".",
     ],
-    Array [
+    [
       "warning",
-      "✔ - Found a free port \\"8000\\"",
+      "✔ - Found a free port "8000"",
     ],
   ],
 }
 `;
 
 exports[`initPORT should use the env port first 2`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "debug",
       "🛂 - Initializing the importer!",
     ],
-    Array [
+    [
       "debug",
       "🏭 - Initializing the PORT service.",
     ],
-    Array [
+    [
       "warning",
-      "♻️ - Using ENV port \\"1337\\"",
+      "♻️ - Using ENV port "1337"",
     ],
   ],
 }

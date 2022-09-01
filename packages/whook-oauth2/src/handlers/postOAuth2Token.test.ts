@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initPostOAuth2Token from './postOAuth2Token.js';
 import { YError } from 'yerror';
 import type { LogService, TimeService } from 'common-services';
@@ -196,9 +196,9 @@ describe('postOAuth2Token', () => {
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "errorCode": "E_UNKNOWN_AUTHENTICATOR_TYPE",
-          "errorParams": Array [
+          "errorParams": [
             "yolo",
           ],
         }

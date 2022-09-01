@@ -26,7 +26,10 @@ import type { ResolveService } from './resolve.js';
 export const HANDLER_REG_EXP =
   /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
 
-export interface WhookWrapper<D, S extends WhookHandler> {
+export interface WhookWrapper<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+> {
   (initializer: Initializer<S, D>): Initializer<S, D>;
 }
 /* Architecture Note #5.7.1: WhookServiceMap
@@ -44,17 +47,18 @@ export type AutoloadConfig = {
   INITIALIZER_PATH_MAP?: WhookInitializerMap;
   PROJECT_SRC?: string;
 };
-export type AutoloadDependencies<D> = AutoloadConfig & {
-  PROJECT_SRC: string;
-  CONFIGS?: CONFIGSService;
-  WRAPPERS?: WhookWrapper<D, WhookHandler>[];
-  $injector: Injector<Service>;
-  importer: ImporterService<{
-    default: Initializer<Service, Dependencies>;
-  }>;
-  resolve: ResolveService;
-  log?: LogService;
-};
+export type AutoloadDependencies<D extends Dependencies<any>> =
+  AutoloadConfig & {
+    PROJECT_SRC: string;
+    CONFIGS?: CONFIGSService;
+    WRAPPERS?: WhookWrapper<D, WhookHandler>[];
+    $injector: Injector<Service>;
+    importer: ImporterService<{
+      default: Initializer<Service, Dependencies>;
+    }>;
+    resolve: ResolveService;
+    log?: LogService;
+  };
 
 /* Architecture Note #5: `$autoload` service
 The default Whook autoloader provides a simple way to
@@ -88,7 +92,7 @@ export default singleton(name('$autoload', autoService(initAutoload)));
  * @return {Promise<Function>}
  * A promise of the autoload function.
  */
-async function initAutoload<D>({
+async function initAutoload<D extends Dependencies<any>>({
   PROJECT_SRC,
   WHOOK_PLUGINS_PATHS = [],
   $injector,

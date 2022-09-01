@@ -9,7 +9,7 @@ import type {
   APMService,
   WhookHandler,
 } from '@whook/whook';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
@@ -37,7 +37,7 @@ type LogSubscriberWrapperDependencies = {
 // Allow to subscribe to AWS logs
 // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html
 export default function wrapHandlerForAWSLogSubscriberLambda<
-  D,
+  D extends Dependencies<any>,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -54,10 +54,10 @@ export default function wrapHandlerForAWSLogSubscriberLambda<
   );
 }
 
-async function initHandlerForAWSLogSubscriberLambda<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
+async function initHandlerForAWSLogSubscriberLambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);
 
   return (handleForAWSLogSubscriberLambda as any).bind(null, services, handler);

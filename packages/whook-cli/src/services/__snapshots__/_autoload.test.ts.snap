@@ -1,53 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`$autoload should fail with no command definition 1`] = `
-Object {
+{
   "errorCode": "E_NO_COMMAND_DEFINITION",
-  "errorParams": Array [
+  "errorParams": [
     "myCommand",
   ],
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
     ],
   ],
-  "injectorCalls": Array [],
-  "logCalls": Array [
-    Array [
+  "injectorCalls": [],
+  "logCalls": [
+    [
       "debug",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
-    Array [
+    [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
     ],
   ],
-  "resolveCalls": Array [],
+  "resolveCalls": [],
 }
 `;
 
 exports[`$autoload should fail with no command handler 1`] = `
-Object {
+{
   "errorCode": "E_NO_COMMAND_HANDLER",
-  "errorParams": Array [
+  "errorParams": [
     "myCommand",
   ],
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
     ],
   ],
-  "injectorCalls": Array [],
-  "logCalls": Array [
-    Array [
+  "injectorCalls": [],
+  "logCalls": [
+    [
       "debug",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
-    Array [
+    [
       "debug",
       "🤖 - Wrapping the whook autoloader.",
     ],
   ],
-  "resolveCalls": Array [],
+  "resolveCalls": [],
 }
 `;

@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, jest, expect } from '@jest/globals';
 import initGetTime from './getTime.js';
 import type { TimeService } from 'common-services';
 
@@ -16,9 +16,9 @@ describe('getTime', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "body": Object {
+      {
+        "response": {
+          "body": {
             "currentDate": "2014-01-26T00:00:00.000Z",
           },
           "status": 200,

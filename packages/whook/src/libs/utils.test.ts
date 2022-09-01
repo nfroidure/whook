@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import { noop, identity, pipe, compose } from './utils.js';
 
 describe('noop', () => {

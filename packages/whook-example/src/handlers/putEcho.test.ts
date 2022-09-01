@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initPutEcho, { echoSchema } from './putEcho.js';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
@@ -22,15 +22,15 @@ describe('putEcho', () => {
       response,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      Object {
-        "logCalls": Array [
-          Array [
+      {
+        "logCalls": [
+          [
             "warning",
-            "📢 - Echoing \\"Repeat this!\\"",
+            "📢 - Echoing "Repeat this!"",
           ],
         ],
-        "response": Object {
-          "body": Object {
+        "response": {
+          "body": {
             "echo": "Repeat this!",
           },
           "status": 200,
@@ -55,12 +55,12 @@ describe('putEcho', () => {
         errorParams: (err as YError).params,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "errorCode": "E_MUST_NOT_BE_NAMED",
-          "errorParams": Array [
+          "errorParams": [
             "Big up to Lord Voldemort!",
           ],
-          "logCalls": Array [],
+          "logCalls": [],
         }
       `);
     }

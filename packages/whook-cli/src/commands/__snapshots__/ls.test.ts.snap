@@ -1,89 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`lsCommand should work with no plugin 1`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "debug",
-      "✅ - No commands folder found at path \\"/home/whoiam/whook-project/dist\\".",
+      "✅ - No commands folder found at path "/home/whoiam/whook-project/dist".",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"My Super project!\\": none",
+# Provided by "My Super project!": none",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/whook-project/dist/commands",
     ],
   ],
-  "requireCalls": Array [],
+  "requireCalls": [],
   "result": undefined,
 }
 `;
 
 exports[`lsCommand should work with some plugins 1`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "debug",
-      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/lol/dist\\".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
     ],
-    Array [
+    [
       "debug",
-      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/cli/dist\\".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"project\\": 2 commands",
+# Provided by "project": 2 commands",
     ],
-    Array [
+    [
       "info",
       "- ls: Print available commands",
     ],
-    Array [
+    [
       "info",
       "- env: A command printing env values",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"@whook/cli\\": none",
+# Provided by "@whook/cli": none",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"@whook/whook\\": none",
+# Provided by "@whook/whook": none",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/whook-project/dist/commands",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/@whook/cli/dist/commands",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/@whook/lol/dist/commands",
     ],
   ],
-  "requireCalls": Array [
-    Array [
+  "requireCalls": [
+    [
       "/home/whoiam/whook-project/dist/commands/ls.js",
     ],
-    Array [
+    [
       "/home/whoiam/whook-project/dist/commands/env.js",
     ],
   ],
@@ -91,69 +91,69 @@ Object {
 `;
 
 exports[`lsCommand should work with some plugins and a verbose output 1`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "debug",
-      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/lol/dist\\".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
     ],
-    Array [
+    [
       "debug",
-      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/cli/dist\\".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"My Super project!\\": 2 commands
+# Provided by "My Super project!": 2 commands
 ",
     ],
-    Array [
+    [
       "info",
       "- ls: Print available commands
 $ whook ls
 ",
     ],
-    Array [
+    [
       "info",
       "- env: A command printing env values
-$ whook env --name NODE_ENV --default \\"default value\\"
+$ whook env --name NODE_ENV --default "default value"
 ",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"@whook/cli\\": none
+# Provided by "@whook/cli": none
 ",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"@whook/whook\\": none
+# Provided by "@whook/whook": none
 ",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/whook-project/dist/commands",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/@whook/cli/dist/commands",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/@whook/lol/dist/commands",
     ],
   ],
-  "requireCalls": Array [
-    Array [
+  "requireCalls": [
+    [
       "/home/whoiam/whook-project/dist/commands/ls.js",
     ],
-    Array [
+    [
       "/home/whoiam/whook-project/dist/commands/env.js",
     ],
   ],
@@ -161,62 +161,62 @@ $ whook env --name NODE_ENV --default \\"default value\\"
 `;
 
 exports[`lsCommand should work with some plugins and ignored files 1`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "debug",
-      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/lol/dist\\".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
     ],
-    Array [
+    [
       "debug",
-      "✅ - No commands folder found at path \\"/var/lib/node/node_modules/@whook/cli/dist\\".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"project\\": 2 commands",
+# Provided by "project": 2 commands",
     ],
-    Array [
+    [
       "info",
       "- ls: Print available commands",
     ],
-    Array [
+    [
       "info",
       "- env: A command printing env values",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"@whook/cli\\": none",
+# Provided by "@whook/cli": none",
     ],
-    Array [
+    [
       "info",
       "
 
-# Provided by \\"@whook/whook\\": none",
+# Provided by "@whook/whook": none",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
-  "readDirCalls": Array [
-    Array [
+  "readDirCalls": [
+    [
       "/home/whoiam/whook-project/dist/commands",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/@whook/cli/dist/commands",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/@whook/lol/dist/commands",
     ],
   ],
-  "requireCalls": Array [
-    Array [
+  "requireCalls": [
+    [
       "/home/whoiam/whook-project/dist/commands/ls.js",
     ],
-    Array [
+    [
       "/home/whoiam/whook-project/dist/commands/env.js",
     ],
   ],

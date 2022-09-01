@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initLsCommand, { definition as initLsCommandDefinition } from './ls.js';
 import initEnvCommand, {
   definition as initEnvCommandDefinition,

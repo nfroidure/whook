@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, jest, expect } from '@jest/globals';
 import { constant } from 'knifecycle';
 import { prepareEnvironment as basePrepareEnvironment } from './index.js';
 import { runREPL } from './repl.js';

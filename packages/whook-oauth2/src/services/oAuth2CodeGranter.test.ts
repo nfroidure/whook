@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { BaseAuthenticationData } from '@whook/authorization';
 import initOAuth2CodeGranter from './oAuth2CodeGranter.js';
 import {
@@ -89,19 +89,19 @@ describe('OAuth2CodeGranter', () => {
       acknowledgerResult,
       authenticatorResult,
     }).toMatchInlineSnapshot(`
-      Object {
-        "acknowledgerResult": Object {
+      {
+        "acknowledgerResult": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "code": "yolo",
           "redirectURI": "https://www.example.com/oauth2/code",
           "scope": "user",
         },
-        "authenticatorResult": Object {
+        "authenticatorResult": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "redirectURI": "https://www.example2.com",
           "scope": "user",
         },
-        "authorizerResult": Object {
+        "authorizerResult": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "redirectURI": "https://www.example.com",
           "scope": "user",

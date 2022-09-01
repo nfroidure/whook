@@ -1,33 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`OAuth2CodeGranter should work with a complete valid flow 2`] = `
-Object {
-  "checkApplicationCalls": Array [
-    Array [
-      Object {
+{
+  "checkApplicationCalls": [
+    [
+      {
         "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
         "redirectURI": "https://www.example.com/oauth2/code",
         "scope": "user",
         "type": "code",
       },
     ],
-    Array [
-      Object {
+    [
+      {
         "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
         "scope": "",
         "type": "code",
       },
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "👫 - OAuth2CodeGranter Service Initialized!",
     ],
   ],
-  "oAuth2CodeCheckCalls": Array [
-    Array [
-      Object {
+  "oAuth2CodeCheckCalls": [
+    [
+      {
         "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
         "scope": "user",
       },
@@ -35,14 +35,14 @@ Object {
       "https://www.example.com/oauth2/code",
     ],
   ],
-  "oAuth2CodeCreateCalls": Array [
-    Array [
-      Object {
+  "oAuth2CodeCreateCalls": [
+    [
+      {
         "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
         "scope": "user",
       },
       "https://www.example.com/oauth2/code",
-      Object {},
+      {},
     ],
   ],
 }

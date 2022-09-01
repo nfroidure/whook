@@ -8,7 +8,7 @@ import type {
   APMService,
   WhookHandler,
 } from '@whook/whook';
-import type { ServiceInitializer } from 'knifecycle';
+import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
@@ -53,7 +53,7 @@ export type LambdaTransformerOutput = WhookResponse<
 // See https://aws.amazon.com/fr/blogs/compute/amazon-kinesis-firehose-data-transformation-with-aws-lambda/
 // See https://docs.aws.amazon.com/firehose/latest/dev/data-transformation.html
 export default function wrapHandlerForAWSTransformerLambda<
-  D,
+  D extends Dependencies<any>,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -70,10 +70,10 @@ export default function wrapHandlerForAWSTransformerLambda<
   );
 }
 
-async function initHandlerForAWSTransformerLambda<D, S extends WhookHandler>(
-  initHandler: ServiceInitializer<D, S>,
-  services: D,
-): Promise<S> {
+async function initHandlerForAWSTransformerLambda<
+  D extends Dependencies<any>,
+  S extends WhookHandler,
+>(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);
 
   return (handleForAWSTransformerLambda as any).bind(null, services, handler);

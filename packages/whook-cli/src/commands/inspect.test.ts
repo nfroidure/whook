@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initInspectCommand from './inspect.js';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
@@ -44,11 +44,11 @@ describe('inspectCommand', () => {
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
-      Object {
-        "output": Array [
-          Array [
+      {
+        "output": [
+          [
             "info",
-            "{\\"auth\\":{\\"username\\":\\"root\\"},\\"version\\":\\"2.1.1\\"}",
+            "{"auth":{"username":"root"},"version":"2.1.1"}",
           ],
         ],
       }
@@ -82,11 +82,11 @@ describe('inspectCommand', () => {
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
-      Object {
-        "output": Array [
-          Array [
+      {
+        "output": [
+          [
             "info",
-            "\\"root\\"",
+            ""root"",
           ],
         ],
       }
@@ -121,11 +121,11 @@ describe('inspectCommand', () => {
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
-      Object {
-        "output": Array [
-          Array [
+      {
+        "output": [
+          [
             "info",
-            "\\"root\\"",
+            ""root"",
           ],
         ],
       }
@@ -159,15 +159,15 @@ describe('inspectCommand', () => {
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
-Object {
-  "output": Array [
-    Array [
-      "info",
-      "\\"v8\\"",
-    ],
-  ],
-}
-`);
+      {
+        "output": [
+          [
+            "info",
+            ""v8"",
+          ],
+        ],
+      }
+    `);
     expect({
       result,
       promptArgsCalls: promptArgs.mock.calls,
@@ -198,11 +198,11 @@ Object {
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
-      Object {
-        "output": Array [
-          Array [
+      {
+        "output": [
+          [
             "info",
-            "\\"v8\\"",
+            ""v8"",
           ],
         ],
       }
@@ -238,9 +238,9 @@ Object {
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "errorCode": "E_NO_SERVICE_FOUND",
-          "errorParams": Array [
+          "errorParams": [
             "DOES_NOT_EXIST",
           ],
         }
@@ -278,9 +278,9 @@ Object {
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "errorCode": "E_NO_RESULT",
-          "errorParams": Array [
+          "errorParams": [
             "MYSQL",
             "nothing_here",
           ],

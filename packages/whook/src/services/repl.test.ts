@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initREPL from './repl.js';
 import { PassThrough } from 'stream';
 import streamtest from 'streamtest';
@@ -60,28 +60,28 @@ describe('initREPL', () => {
       injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      Object {
-        "disposeCalls": Array [
-          Array [],
+      {
+        "disposeCalls": [
+          [],
         ],
-        "injectorCalls": Array [
-          Array [
-            Array [
+        "injectorCalls": [
+          [
+            [
               "time;",
             ],
           ],
         ],
-        "logCalls": Array [
-          Array [
+        "logCalls": [
+          [
             "debug",
             "🖵 - Initializing the REPL service!",
           ],
         ],
         "text": "
           _      ____             __     ___  _______  __ 
-          | | /| / / /  ___  ___  / /__  / _ \\\\/ __/ _ \\\\/ / 
-          | |/ |/ / _ \\\\/ _ \\\\/ _ \\\\/  '_/ / , _/ _// ___/ /__
-          |__/|__/_//_/\\\\___/\\\\___/_/\\\\_\\\\ /_/|_/___/_/  /____/
+          | | /| / / /  ___  ___  / /__  / _ \\/ __/ _ \\/ / 
+          | |/ |/ / _ \\/ _ \\/ _ \\/  '_/ / , _/ _// ___/ /__
+          |__/|__/_//_/\\___/\\___/_/\\_\\ /_/|_/___/_/  /____/
 
                  Inject services with \`.inject\`.
                  > .inject log

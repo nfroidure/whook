@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import initGetParameters from './getParameters.js';
 
 describe('getParameters', () => {
@@ -12,12 +13,12 @@ describe('getParameters', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "body": Object {
+      {
+        "response": {
+          "body": {
             "aHeader": true,
             "pathParam1": 2,
-            "pathParam2": Array [
+            "pathParam2": [
               "a",
               "b",
             ],

@@ -3,7 +3,7 @@ import * as GraphiQL from 'apollo-server-module-graphiql';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
 import type { HTTPRouterService, HTTPRouterProvider } from '@whook/whook';
-import type { ProviderInitializer } from 'knifecycle';
+import type { ProviderInitializer, Dependencies } from 'knifecycle';
 import type { LogService } from 'common-services';
 
 const DEFAULT_GRAPHIQL = {
@@ -40,7 +40,7 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
  * @param {Function} initHTTPRouter The `httpRouter` initializer
  * @returns {Function} The `httpRouter` initializer wrapped
  */
-export default function wrapHTTPRouterWithGraphIQL<D>(
+export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies<any>>(
   initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
 ): ProviderInitializer<WhookGraphIQLDependencies & D, HTTPRouterService> {
   const augmentedInitializer = alsoInject<

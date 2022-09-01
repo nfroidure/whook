@@ -1,29 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initProject should fail with access problems 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/home/whoiam/projects/yolo",
     ],
   ],
   "errorCode": "E_PROJECT_DIR",
-  "errorParams": Array [
+  "errorParams": [
     "/home/whoiam/projects/yolo",
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
+  "inquirerPromptCalls": [
+    [
+      [
+        {
           "default": "new-whook-project",
           "message": "What's this new project name",
           "name": "projectName",
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "default": "/home/whoiam/projects/super-project",
           "message": "Provide the project's directory",
           "name": "projectDirectory",
@@ -31,52 +31,52 @@ Object {
       ],
     ],
   ],
-  "lockReleaseCalls": Array [
-    Array [
+  "lockReleaseCalls": [
+    [
       "cli:input",
     ],
-    Array [
-      "cli:input",
-    ],
-  ],
-  "lockTakeCalls": Array [
-    Array [
+    [
       "cli:input",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "lockTakeCalls": [
+    [
+      "cli:input",
+    ],
+  ],
+  "logCalls": [
+    [
       "debug",
       "🏁 - Initializing project...",
     ],
-    Array [
+    [
       "error",
-      "Cannot create the project's directory: \\"/home/whoiam/projects/yolo\\"",
+      "Cannot create the project's directory: "/home/whoiam/projects/yolo"",
     ],
   ],
 }
 `;
 
 exports[`initProject should work 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/home/whoiam/projects/yolo",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
+  "inquirerPromptCalls": [
+    [
+      [
+        {
           "default": "new-whook-project",
           "message": "What's this new project name",
           "name": "projectName",
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "default": "/home/whoiam/projects/super-project",
           "message": "Provide the project's directory",
           "name": "projectDirectory",
@@ -84,23 +84,23 @@ Object {
       ],
     ],
   ],
-  "lockReleaseCalls": Array [
-    Array [
+  "lockReleaseCalls": [
+    [
       "cli:input",
     ],
   ],
-  "lockTakeCalls": Array [
-    Array [
+  "lockTakeCalls": [
+    [
       "cli:input",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🏁 - Initializing project...",
     ],
   ],
-  "project": Object {
+  "project": {
     "directory": "/home/whoiam/projects/yolo",
     "name": "super-project",
   },

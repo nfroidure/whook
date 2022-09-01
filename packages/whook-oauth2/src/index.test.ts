@@ -1,4 +1,12 @@
-import { jest } from '@jest/globals';
+import {
+  describe,
+  it,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  jest,
+  expect,
+} from '@jest/globals';
 import {
   runServer,
   prepareServer,
@@ -348,8 +356,8 @@ describe('OAuth2 server', () => {
 
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
+        {
+          "data": {
             "access_token": "an_access_token",
             "expiration_date": "2010-03-07T00:00:00.000Z",
             "expires_in": 86400,
@@ -358,13 +366,13 @@ describe('OAuth2 server', () => {
             "refresh_token_expires_in": 5364748800,
             "token_type": "bearer",
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "0",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
           },
           "status": 200,
         }
@@ -445,8 +453,8 @@ describe('OAuth2 server', () => {
 
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
+        {
+          "data": {
             "access_token": "an_access_token",
             "expiration_date": "2010-03-07T00:00:00.000Z",
             "expires_in": 86400,
@@ -455,13 +463,13 @@ describe('OAuth2 server', () => {
             "refresh_token_expires_in": 5364748800,
             "token_type": "bearer",
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "1",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
           },
           "status": 200,
         }
@@ -537,8 +545,8 @@ describe('OAuth2 server', () => {
 
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
+        {
+          "data": {
             "access_token": "an_access_token",
             "expiration_date": "2010-03-07T00:00:00.000Z",
             "expires_in": 86400,
@@ -547,13 +555,13 @@ describe('OAuth2 server', () => {
             "refresh_token_expires_in": 5364748800,
             "token_type": "bearer",
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "2",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
           },
           "status": 200,
         }
@@ -617,11 +625,12 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "data": "",
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "date": undefined,
             "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fexample.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
@@ -697,15 +706,15 @@ describe('OAuth2 server', () => {
 
         data,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "data": "",
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "date": undefined,
             "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo%3Fa_param%3Da_value&code=a_code",
             "transaction-id": "4",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
           },
           "status": 302,
         }
@@ -784,8 +793,8 @@ describe('OAuth2 server', () => {
 
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
+        {
+          "data": {
             "access_token": "an_access_token",
             "expiration_date": "2010-03-07T00:00:00.000Z",
             "expires_in": 86400,
@@ -794,13 +803,13 @@ describe('OAuth2 server', () => {
             "refresh_token_expires_in": 5364748800,
             "token_type": "bearer",
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "5",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
           },
           "status": 200,
         }
@@ -862,11 +871,12 @@ describe('OAuth2 server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "data": "",
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "date": undefined,
             "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
@@ -951,15 +961,15 @@ describe('OAuth2 server', () => {
 
         data,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "data": "",
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "date": undefined,
             "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&access_token=an_access_token&token_type=bearer&expires_in=86400",
             "transaction-id": "7",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\",\\"userId\\":\\"2\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
           },
           "status": 302,
         }

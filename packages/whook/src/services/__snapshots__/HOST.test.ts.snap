@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initHOST should fallback to localhost 2`] = `
-Object {
-  "internalIpV4Calls": Array [
-    Array [],
+{
+  "internalIpV4Calls": [
+    [],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🏭 - Initializing the HOST service.",
     ],
-    Array [
+    [
       "warning",
-      "🚫 - Could not detect any host. Fallbacking to \\"localhost\\".",
+      "🚫 - Could not detect any host. Fallbacking to "localhost".",
     ],
   ],
-  "requireCalls": Array [
-    Array [
+  "requireCalls": [
+    [
       "internal-ip",
     ],
   ],
@@ -24,22 +24,22 @@ Object {
 `;
 
 exports[`initHOST should find a HOST by itself if no env HOST 2`] = `
-Object {
-  "internalIpV4Calls": Array [
-    Array [],
+{
+  "internalIpV4Calls": [
+    [],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🏭 - Initializing the HOST service.",
     ],
-    Array [
+    [
       "warning",
-      "✔ - Using detected host \\"192.168.1.10\\".",
+      "✔ - Using detected host "192.168.1.10".",
     ],
   ],
-  "requireCalls": Array [
-    Array [
+  "requireCalls": [
+    [
       "internal-ip",
     ],
   ],
@@ -47,18 +47,18 @@ Object {
 `;
 
 exports[`initHOST should use the env HOST first 2`] = `
-Object {
-  "internalIpV4Calls": Array [],
-  "logCalls": Array [
-    Array [
+{
+  "internalIpV4Calls": [],
+  "logCalls": [
+    [
       "debug",
       "🏭 - Initializing the HOST service.",
     ],
-    Array [
+    [
       "warning",
-      "♻️ - Using ENV host \\"192.168.1.11\\"",
+      "♻️ - Using ENV host "192.168.1.11"",
     ],
   ],
-  "requireCalls": Array [],
+  "requireCalls": [],
 }
 `;

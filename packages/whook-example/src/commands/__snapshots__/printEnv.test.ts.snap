@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`printEnvCommand should work 1`] = `
-Object {
-  "logCalls": Array [
-    Array [
+{
+  "logCalls": [
+    [
       "info",
-      "[\\"NODE_ENV\\"]",
+      "["NODE_ENV"]",
     ],
   ],
   "result": undefined,

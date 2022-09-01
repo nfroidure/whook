@@ -1,4 +1,12 @@
-import { jest } from '@jest/globals';
+import {
+  describe,
+  it,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  jest,
+  expect,
+} from '@jest/globals';
 import {
   runServer,
   prepareServer,
@@ -13,7 +21,7 @@ import {
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
 import { gql } from 'apollo-server-core';
-import { SchemaDirectiveVisitor } from 'graphql-tools';
+// import { SchemaDirectiveVisitor } from '@graphql-tools/schema';
 import { defaultFieldResolver } from 'graphql';
 import {
   initGetGraphQL,
@@ -22,6 +30,7 @@ import {
   postGraphQLDefinition,
   initGraphQL,
 } from './index.js';
+import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import type { WhookGraphQLFragmentService } from './index.js';
 import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -87,17 +96,34 @@ describe('GraphQL server', () => {
   };
   const context = jest.fn<any>();
 
-  class UpperCaseDirective extends SchemaDirectiveVisitor {
-    visitFieldDefinition(field) {
-      const { resolve = defaultFieldResolver } = field;
-      field.resolve = async function (...args) {
-        const result = await resolve.apply(this, args);
-        if (typeof result === 'string') {
-          return result.toUpperCase();
+  function upperDirectiveTransformer(schema, directiveName: string) {
+    return mapSchema(schema, {
+      // Executes once for each object field in the schema
+      [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
+        // Check whether this field has the specified directive
+        const upperDirective = getDirective(
+          schema,
+          fieldConfig,
+          directiveName,
+        )?.[0];
+
+        if (upperDirective) {
+          // Get this field's original resolver
+          const { resolve = defaultFieldResolver } = fieldConfig;
+
+          // Replace the original resolver with a function that *first* calls
+          // the original resolver, then converts its result to upper case
+          fieldConfig.resolve = async function (source, args, context, info) {
+            const result = await resolve(source, args, context, info);
+            if (typeof result === 'string') {
+              return result.toUpperCase();
+            }
+            return result;
+          };
+          return fieldConfig;
         }
-        return result;
-      };
-    }
+      },
+    });
   }
 
   let $instance;
@@ -177,7 +203,7 @@ describe('GraphQL server', () => {
         directive @upper on FIELD_DEFINITION
       `,
       schemaDirectives: {
-        upper: UpperCaseDirective,
+        upper: upperDirectiveTransformer,
       },
     };
     $.register(
@@ -262,21 +288,22 @@ describe('GraphQL server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
-            "data": Object {
+        {
+          "data": {
+            "data": {
               "hello": "HELLO WORLD!",
             },
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "0",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
           },
           "status": 200,
         }
@@ -316,32 +343,27 @@ describe('GraphQL server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
-            "errors": Array [
-              Object {
-                "extensions": Object {
+        {
+          "data": {
+            "errors": [
+              {
+                "extensions": {
                   "code": "GRAPHQL_PARSE_FAILED",
                 },
-                "locations": Array [
-                  Object {
-                    "column": 13,
-                    "line": 4,
-                  },
-                ],
                 "message": "Syntax Error: Expected Name, found <EOF>.",
               },
             ],
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "1",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
           },
           "status": 400,
         }
@@ -382,21 +404,22 @@ describe('GraphQL server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
-            "data": Object {
+        {
+          "data": {
+            "data": {
               "hello": "HELLO WORLD!",
             },
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "2",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
           },
           "status": 200,
         }
@@ -437,21 +460,22 @@ describe('GraphQL server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
-            "data": Object {
+        {
+          "data": {
+            "data": {
               "echo": "Echoing: YOLO!!",
             },
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "3",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
           },
           "status": 200,
         }
@@ -499,21 +523,22 @@ describe('GraphQL server', () => {
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
         },
+
         data,
       }).toMatchInlineSnapshot(`
-        Object {
-          "data": Object {
-            "data": Object {
+        {
+          "data": {
+            "data": {
               "echo": "Echoing: yolo!",
             },
           },
-          "headers": Object {
+          "headers": {
             "connection": "close",
             "content-type": "application/json",
             "date": undefined,
             "transaction-id": "4",
             "transfer-encoding": "chunked",
-            "x-authenticated": "{\\"applicationId\\":\\"acdc41ce-acdc-41ce-acdc-41ceacdc41ce\\",\\"scope\\":\\"user,oauth\\"}",
+            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
           },
           "status": 200,
         }

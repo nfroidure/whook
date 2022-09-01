@@ -1,214 +1,214 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`wrapHandlerWithAuthorization should fail with access_token disabled 1`] = `
-Object {
-  "authenticationChecks": Array [],
+{
+  "authenticationChecks": [],
   "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": Object {
-    "www-authenticate": "Bearer realm=\\"Auth\\"",
+  "errorHeaders": {
+    "www-authenticate": "Bearer realm="Auth"",
   },
-  "errorParams": Array [],
+  "errorParams": [],
   "httpCode": 401,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
-    Array [
+    [
       "debug",
       "🔐 - No authorization found, locking access!",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization should fail with bad operation definition provided 1`] = `
-Object {
-  "authenticationChecks": Array [],
+{
+  "authenticationChecks": [],
   "errorCode": "E_MISCONFIGURATION",
-  "errorHeaders": Object {},
-  "errorParams": Array [
+  "errorHeaders": {},
+  "errorParams": [
     "Bearer",
-    Array [],
+    [],
     "noopHandler",
   ],
   "httpCode": 500,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization should fail with no authorization at all for secured endpoints 1`] = `
-Object {
-  "authenticationChecks": Array [],
+{
+  "authenticationChecks": [],
   "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": Object {
-    "www-authenticate": "Bearer realm=\\"Auth\\"",
+  "errorHeaders": {
+    "www-authenticate": "Bearer realm="Auth"",
   },
-  "errorParams": Array [],
+  "errorParams": [],
   "httpCode": 401,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
-    Array [
+    [
       "debug",
       "🔐 - No authorization found, locking access!",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization should fail with no operation definition provided 1`] = `
-Object {
-  "authenticationChecks": Array [],
+{
+  "authenticationChecks": [],
   "errorCode": "E_OPERATION_REQUIRED",
-  "errorHeaders": Object {},
-  "errorParams": Array [],
+  "errorHeaders": {},
+  "errorParams": [],
   "httpCode": 500,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization should fail with not supported auth 1`] = `
-Object {
-  "authenticationChecks": Array [],
+{
+  "authenticationChecks": [],
   "errorCode": "E_UNKNOWN_AUTH_MECHANISM",
-  "errorHeaders": Object {},
-  "errorParams": Array [
+  "errorHeaders": {},
+  "errorParams": [
     "Whatever yolo",
   ],
   "httpCode": 400,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization should fail with unallowed mechanisms 1`] = `
-Object {
-  "authenticationChecks": Array [],
+{
+  "authenticationChecks": [],
   "errorCode": "E_UNALLOWED_AUTH_MECHANISM",
-  "errorHeaders": Object {},
-  "errorParams": Array [
+  "errorHeaders": {},
+  "errorParams": [
     "Basic yolo",
   ],
   "httpCode": 400,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization should fail without right scopes 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
+{
+  "authenticationChecks": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
   "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": Object {},
-  "errorParams": Array [
+  "errorHeaders": {},
+  "errorParams": [
     "",
-    Array [
+    [
       "user",
       "admin",
     ],
   ],
   "httpCode": 403,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization should proxy authentication errors 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
+{
+  "authenticationChecks": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
   "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": Object {
-    "www-authenticate": "Bearer realm=\\"Auth\\"",
+  "errorHeaders": {
+    "www-authenticate": "Bearer realm="Auth"",
   },
-  "errorParams": Array [],
+  "errorParams": [],
   "httpCode": 401,
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [],
+  "noopMockCalls": [],
 }
 `;
 
 exports[`wrapHandlerWithAuthorization with authenticated and restricted endpoints should work with access tokens and good authentication check 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
+{
+  "authenticationChecks": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [
-    Array [
-      Object {
-        "authentication": Object {
+  "noopMockCalls": [
+    [
+      {
+        "authentication": {
           "check": [MockFunction] {
-            "calls": Array [
-              Array [
+            "calls": [
+              [
                 "bearer",
-                Object {
+                {
                   "hash": "yolo",
                 },
               ],
             ],
-            "results": Array [
-              Object {
+            "results": [
+              {
                 "type": "return",
                 "value": Promise {},
               },
@@ -216,57 +216,57 @@ Object {
           },
         },
         "log": [MockFunction] {
-          "calls": Array [
-            Array [
+          "calls": [
+            [
               "debug",
-              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+              "🔐 - Initializing the authorization wrapper for "getNoop".",
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
           ],
         },
       },
-      Object {
+      {
         "access_token": "yolo",
         "authenticated": true,
-        "authenticationData": Object {
+        "authenticationData": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "scope": "user,admin",
           "userId": 1,
         },
       },
-      Object {
+      {
         "method": "get",
         "operationId": "noopHandler",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/path",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Sucessfully did nothing!",
           },
         },
-        "security": Array [
-          Object {
-            "bearerAuth": Array [
+        "security": [
+          {
+            "bearerAuth": [
               "user",
               "admin",
             ],
           },
         ],
         "summary": "Does nothing.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "response": Object {
-    "headers": Object {
-      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
     },
     "status": 200,
   },
@@ -274,36 +274,36 @@ Object {
 `;
 
 exports[`wrapHandlerWithAuthorization with authenticated and restricted endpoints should work with bearer tokens and good authentication check 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
+{
+  "authenticationChecks": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [
-    Array [
-      Object {
-        "authentication": Object {
+  "noopMockCalls": [
+    [
+      {
+        "authentication": {
           "check": [MockFunction] {
-            "calls": Array [
-              Array [
+            "calls": [
+              [
                 "bearer",
-                Object {
+                {
                   "hash": "yolo",
                 },
               ],
             ],
-            "results": Array [
-              Object {
+            "results": [
+              {
                 "type": "return",
                 "value": Promise {},
               },
@@ -311,57 +311,57 @@ Object {
           },
         },
         "log": [MockFunction] {
-          "calls": Array [
-            Array [
+          "calls": [
+            [
               "debug",
-              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+              "🔐 - Initializing the authorization wrapper for "getNoop".",
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
           ],
         },
       },
-      Object {
+      {
         "authenticated": true,
-        "authenticationData": Object {
+        "authenticationData": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "scope": "user,admin",
           "userId": 1,
         },
         "authorization": "Bearer yolo",
       },
-      Object {
+      {
         "method": "get",
         "operationId": "noopHandler",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/path",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Sucessfully did nothing!",
           },
         },
-        "security": Array [
-          Object {
-            "bearerAuth": Array [
+        "security": [
+          {
+            "bearerAuth": [
               "user",
               "admin",
             ],
           },
         ],
         "summary": "Does nothing.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "response": Object {
-    "headers": Object {
-      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
     },
     "status": 200,
   },
@@ -369,36 +369,36 @@ Object {
 `;
 
 exports[`wrapHandlerWithAuthorization with authenticated but not restricted endpoints should work with Bearer tokens and good authentication check 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
+{
+  "authenticationChecks": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [
-    Array [
-      Object {
-        "authentication": Object {
+  "noopMockCalls": [
+    [
+      {
+        "authentication": {
           "check": [MockFunction] {
-            "calls": Array [
-              Array [
+            "calls": [
+              [
                 "bearer",
-                Object {
+                {
                   "hash": "yolo",
                 },
               ],
             ],
-            "results": Array [
-              Object {
+            "results": [
+              {
                 "type": "return",
                 "value": Promise {},
               },
@@ -406,58 +406,58 @@ Object {
           },
         },
         "log": [MockFunction] {
-          "calls": Array [
-            Array [
+          "calls": [
+            [
               "debug",
-              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+              "🔐 - Initializing the authorization wrapper for "getNoop".",
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
           ],
         },
       },
-      Object {
+      {
         "authenticated": true,
-        "authenticationData": Object {
+        "authenticationData": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "scope": "user,admin",
           "userId": 1,
         },
         "authorization": "Bearer yolo",
       },
-      Object {
+      {
         "method": "get",
         "operationId": "noopHandler",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/path",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Sucessfully did nothing!",
           },
         },
-        "security": Array [
-          Object {},
-          Object {
-            "bearerAuth": Array [
+        "security": [
+          {},
+          {
+            "bearerAuth": [
               "user",
               "admin",
             ],
           },
         ],
         "summary": "Does nothing.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "response": Object {
-    "headers": Object {
-      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
     },
     "status": 200,
   },
@@ -465,36 +465,36 @@ Object {
 `;
 
 exports[`wrapHandlerWithAuthorization with authenticated but not restricted endpoints should work with access tokens and good authentication check 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
+{
+  "authenticationChecks": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [
-    Array [
-      Object {
-        "authentication": Object {
+  "noopMockCalls": [
+    [
+      {
+        "authentication": {
           "check": [MockFunction] {
-            "calls": Array [
-              Array [
+            "calls": [
+              [
                 "bearer",
-                Object {
+                {
                   "hash": "yolo",
                 },
               ],
             ],
-            "results": Array [
-              Object {
+            "results": [
+              {
                 "type": "return",
                 "value": Promise {},
               },
@@ -502,58 +502,58 @@ Object {
           },
         },
         "log": [MockFunction] {
-          "calls": Array [
-            Array [
+          "calls": [
+            [
               "debug",
-              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+              "🔐 - Initializing the authorization wrapper for "getNoop".",
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
           ],
         },
       },
-      Object {
+      {
         "access_token": "yolo",
         "authenticated": true,
-        "authenticationData": Object {
+        "authenticationData": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "scope": "user,admin",
           "userId": 1,
         },
       },
-      Object {
+      {
         "method": "get",
         "operationId": "noopHandler",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/path",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Sucessfully did nothing!",
           },
         },
-        "security": Array [
-          Object {},
-          Object {
-            "bearerAuth": Array [
+        "security": [
+          {},
+          {
+            "bearerAuth": [
               "user",
               "admin",
             ],
           },
         ],
         "summary": "Does nothing.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "response": Object {
-    "headers": Object {
-      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
     },
     "status": 200,
   },
@@ -561,36 +561,36 @@ Object {
 `;
 
 exports[`wrapHandlerWithAuthorization with authenticated but not restricted endpoints should work with bearer tokens and good authentication check 1`] = `
-Object {
-  "authenticationChecks": Array [
-    Array [
+{
+  "authenticationChecks": [
+    [
       "bearer",
-      Object {
+      {
         "hash": "yolo",
       },
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
   ],
-  "noopMockCalls": Array [
-    Array [
-      Object {
-        "authentication": Object {
+  "noopMockCalls": [
+    [
+      {
+        "authentication": {
           "check": [MockFunction] {
-            "calls": Array [
-              Array [
+            "calls": [
+              [
                 "bearer",
-                Object {
+                {
                   "hash": "yolo",
                 },
               ],
             ],
-            "results": Array [
-              Object {
+            "results": [
+              {
                 "type": "return",
                 "value": Promise {},
               },
@@ -598,58 +598,58 @@ Object {
           },
         },
         "log": [MockFunction] {
-          "calls": Array [
-            Array [
+          "calls": [
+            [
               "debug",
-              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+              "🔐 - Initializing the authorization wrapper for "getNoop".",
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
           ],
         },
       },
-      Object {
+      {
         "authenticated": true,
-        "authenticationData": Object {
+        "authenticationData": {
           "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
           "scope": "user,admin",
           "userId": 1,
         },
         "authorization": "bearer yolo",
       },
-      Object {
+      {
         "method": "get",
         "operationId": "noopHandler",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/path",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Sucessfully did nothing!",
           },
         },
-        "security": Array [
-          Object {},
-          Object {
-            "bearerAuth": Array [
+        "security": [
+          {},
+          {
+            "bearerAuth": [
               "user",
               "admin",
             ],
           },
         ],
         "summary": "Does nothing.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "response": Object {
-    "headers": Object {
-      "X-Authenticated": "{\\"applicationId\\":\\"abbacaca-abba-caca-abba-cacaabbacaca\\",\\"userId\\":1,\\"scope\\":\\"user,admin\\"}",
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
     },
     "status": 200,
   },
@@ -657,146 +657,146 @@ Object {
 `;
 
 exports[`wrapHandlerWithAuthorization with authenticated but not restricted endpoints should work with no authentication at all 1`] = `
-Object {
-  "authenticationChecks": Array [],
-  "logCalls": Array [
-    Array [
+{
+  "authenticationChecks": [],
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
-    Array [
+    [
       "debug",
       "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
     ],
   ],
-  "noopMockCalls": Array [
-    Array [
-      Object {
-        "authentication": Object {
+  "noopMockCalls": [
+    [
+      {
+        "authentication": {
           "check": [MockFunction],
         },
         "log": [MockFunction] {
-          "calls": Array [
-            Array [
+          "calls": [
+            [
               "debug",
-              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+              "🔐 - Initializing the authorization wrapper for "getNoop".",
             ],
-            Array [
+            [
               "debug",
               "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
-            Object {
+            {
               "type": "return",
               "value": undefined,
             },
           ],
         },
       },
-      Object {
+      {
         "authenticated": false,
       },
-      Object {
+      {
         "method": "get",
         "operationId": "noopHandler",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/path",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Sucessfully did nothing!",
           },
         },
-        "security": Array [
-          Object {},
-          Object {
-            "bearerAuth": Array [
+        "security": [
+          {},
+          {
+            "bearerAuth": [
               "user",
               "admin",
             ],
           },
         ],
         "summary": "Does nothing.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "response": Object {
+  "response": {
     "status": 200,
   },
 }
 `;
 
 exports[`wrapHandlerWithAuthorization with unauthenticated endpoints should work 1`] = `
-Object {
-  "authenticationChecks": Array [],
-  "logCalls": Array [
-    Array [
+{
+  "authenticationChecks": [],
+  "logCalls": [
+    [
       "debug",
-      "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+      "🔐 - Initializing the authorization wrapper for "getNoop".",
     ],
-    Array [
+    [
       "debug",
       "🔓 - Public endpoint detected, letting the call pass through!",
     ],
   ],
-  "noopMockCalls": Array [
-    Array [
-      Object {
-        "authentication": Object {
+  "noopMockCalls": [
+    [
+      {
+        "authentication": {
           "check": [MockFunction],
         },
         "log": [MockFunction] {
-          "calls": Array [
-            Array [
+          "calls": [
+            [
               "debug",
-              "🔐 - Initializing the authorization wrapper for \\"getNoop\\".",
+              "🔐 - Initializing the authorization wrapper for "getNoop".",
             ],
-            Array [
+            [
               "debug",
               "🔓 - Public endpoint detected, letting the call pass through!",
             ],
           ],
-          "results": Array [
-            Object {
+          "results": [
+            {
               "type": "return",
               "value": undefined,
             },
-            Object {
+            {
               "type": "return",
               "value": undefined,
             },
           ],
         },
       },
-      Object {
+      {
         "aParameter": 1,
         "authenticated": false,
       },
-      Object {
+      {
         "method": "get",
         "operationId": "noopHandler",
-        "parameters": Array [],
+        "parameters": [],
         "path": "/path",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Sucessfully did nothing!",
           },
         },
         "summary": "Does nothing.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
     ],
   ],
-  "response": Object {
+  "response": {
     "status": 200,
   },
 }

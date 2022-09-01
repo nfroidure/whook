@@ -1,107 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`augmentAPIWithCORS() should work 1`] = `
-Object {
-  "components": Object {
-    "parameters": Object {
-      "full": Object {
+{
+  "components": {
+    "parameters": {
+      "full": {
         "in": "query",
         "name": "full",
         "required": true,
-        "schema": Object {
+        "schema": {
           "type": "boolean",
         },
       },
-      "retry": Object {
+      "retry": {
         "in": "query",
         "name": "retry",
         "required": false,
-        "schema": Object {
+        "schema": {
           "type": "boolean",
         },
       },
-      "userId": Object {
+      "userId": {
         "in": "path",
         "name": "userId",
         "required": true,
-        "schema": Object {
+        "schema": {
           "type": "number",
         },
       },
     },
-    "schemas": Object {
-      "user": Object {
+    "schemas": {
+      "user": {
         "additionalProperties": true,
         "type": "object",
       },
     },
-    "securitySchemes": Object {
-      "oAuth2": Object {
-        "flows": Object {},
+    "securitySchemes": {
+      "oAuth2": {
+        "flows": {},
         "type": "oauth2",
       },
     },
   },
-  "info": Object {
+  "info": {
     "description": "A sample OpenAPI file for testing purpose.",
     "title": "Sample OpenAPI",
     "version": "1.0.0",
   },
   "openapi": "3.0.2",
-  "paths": Object {
-    "/crons/tokens": Object {
-      "post": Object {
+  "paths": {
+    "/crons/tokens": {
+      "post": {
         "operationId": "ping",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Pong",
           },
         },
         "summary": "Checks API's availability.",
-        "x-whook": Object {
+        "x-whook": {
           "type": "cron",
         },
       },
     },
-    "/ping": Object {
-      "get": Object {
+    "/ping": {
+      "get": {
         "operationId": "getPing",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Pong",
           },
         },
         "summary": "Checks API's availability.",
       },
-      "options": Object {
+      "options": {
         "operationId": "optionsPing",
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "Ping options",
           },
         },
         "summary": "Provides ping options.",
       },
     },
-    "/users/{userid}": Object {
-      "get": Object {
+    "/users/{userid}": {
+      "get": {
         "operationId": "getUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "$ref": "#/components/parameters/userId",
           },
-          Object {
+          {
             "$ref": "#/components/parameters/full",
           },
-          Object {
+          {
             "$ref": "#/components/parameters/retry",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/user",
                 },
               },
@@ -109,77 +109,77 @@ Object {
             "description": "The user",
           },
         },
-        "security": Array [
-          Object {
-            "oAuth2": Array [
+        "security": [
+          {
+            "oAuth2": [
               "user",
             ],
           },
         ],
         "summary": "Return a user.",
       },
-      "head": Object {
+      "head": {
         "operationId": "getUser",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "$ref": "#/components/parameters/userId",
           },
-          Object {
+          {
             "$ref": "#/components/parameters/full",
           },
-          Object {
+          {
             "$ref": "#/components/parameters/retry",
           },
         ],
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "The user",
           },
         },
-        "security": Array [
-          Object {
-            "oAuth2": Array [
+        "security": [
+          {
+            "oAuth2": [
               "user",
             ],
           },
         ],
         "summary": "Return a user.",
       },
-      "options": Object {
+      "options": {
         "operationId": "optionsWithCORS",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "$ref": "#/components/parameters/userId",
           },
-          Object {
+          {
             "in": "query",
             "name": "full",
             "required": false,
-            "schema": Object {
+            "schema": {
               "type": "boolean",
             },
           },
-          Object {
+          {
             "$ref": "#/components/parameters/retry",
           },
-          Object {
+          {
             "in": "query",
             "name": "access_token",
-            "schema": Object {
+            "schema": {
               "type": "string",
             },
           },
         ],
-        "responses": Object {
-          "200": Object {
+        "responses": {
+          "200": {
             "description": "CORS sent.",
           },
         },
         "summary": "Enable OPTIONS for CORS",
-        "tags": Array [
+        "tags": [
           "CORS",
         ],
-        "x-whook": Object {
+        "x-whook": {
           "private": true,
           "sourceOperationId": "getUser",
           "suffix": "CORS",

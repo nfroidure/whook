@@ -2,7 +2,10 @@ import { name, autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { JsonValue } from 'type-fest';
 
-export type APMService<T = string> = (type: T, data: JsonValue) => void;
+export type APMService<T extends string = string> = (
+  type: T,
+  data: JsonValue,
+) => void;
 
 export default name('apm', autoService(initAPM));
 
@@ -18,7 +21,7 @@ const noop = () => undefined;
  * @return {Promise<Object>}
  * A promise of the apm service.
  */
-async function initAPM<T = string>({
+async function initAPM<T extends string = string>({
   log = noop,
 }: {
   log: LogService;

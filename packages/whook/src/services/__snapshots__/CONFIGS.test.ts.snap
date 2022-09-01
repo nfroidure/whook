@@ -1,53 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initCONFIGS should fail with non-existing file 1`] = `
-Object {
+{
   "errorCode": "E_NO_CONFIG",
-  "errorParams": Array [
+  "errorParams": [
     "/home/whoami/my-whook-project/src/config/development/config.js",
   ],
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoami/my-whook-project/src/config/development/config.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🏭 - Initializing the CONFIGS service.",
     ],
-    Array [
+    [
       "warning",
-      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config.js\\".",
+      "⚡ - Loading configurations from "/home/whoami/my-whook-project/src/config/development/config.js".",
     ],
-    Array [
+    [
       "warning",
-      "☢ - Could not load configuration file \\"/home/whoami/my-whook-project/src/config/development/config.js\\".",
+      "☢ - Could not load configuration file "/home/whoami/my-whook-project/src/config/development/config.js".",
     ],
   ],
 }
 `;
 
 exports[`initCONFIGS should work with existing configs 1`] = `
-Object {
-  "CONFIGS": Object {
-    "CONFIG": Object {
+{
+  "CONFIGS": {
+    "CONFIG": {
       "testConfig": "test",
     },
   },
-  "importerCalls": Array [
-    Array [
+  "importerCalls": [
+    [
       "/home/whoami/my-whook-project/src/config/development/config.js",
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "debug",
       "🏭 - Initializing the CONFIGS service.",
     ],
-    Array [
+    [
       "warning",
-      "⚡ - Loading configurations from \\"/home/whoami/my-whook-project/src/config/development/config.js\\".",
+      "⚡ - Loading configurations from "/home/whoami/my-whook-project/src/config/development/config.js".",
     ],
   ],
 }

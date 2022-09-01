@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
 import { PassThrough } from 'stream';
 import { initGetPingDefinition } from '@whook/whook';
@@ -58,14 +58,14 @@ describe('generateOpenAPITypes', () => {
     }).toMatchInlineSnapshot(
       {},
       `
-      Object {
-        "getOpenAPICalls": Array [],
-        "logCalls": Array [
-          Array [
+      {
+        "getOpenAPICalls": [],
+        "logCalls": [
+          [
             "warning",
             "📥 - Retrieving API schema...",
           ],
-          Array [
+          [
             "warning",
             "📇 - Writing types...",
           ],
@@ -91,7 +91,7 @@ describe('generateOpenAPITypes', () => {
           }
           export namespace Schemas {
               export type ResponsesgetPingResponse200Body0 = NonNullable<{
-                  pong?: \\"pong\\";
+                  pong?: "pong";
               }>;
           }
       }",

@@ -1,49 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`initCreateWhook should fail with access problems 2`] = `
-Object {
-  "copyCalls": Array [
-    Array [
+{
+  "copyCalls": [
+    [
       "/var/lib/node/node_modules/whook-example",
       "/home/whoiam/projects/yolo",
-      Object {
+      {
         "filter": [Function],
       },
     ],
   ],
-  "execCalls": Array [
-    Array [
+  "execCalls": [
+    [
       "git init",
-      Object {
+      {
         "cwd": "/home/whoiam/projects/yolo",
       },
       [Function],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
   ],
-  "oraCalls": Array [],
-  "oraStartCalls": Array [],
-  "oraStopAndPersistCalls": Array [],
-  "readFileCalls": Array [
-    Array [
+  "oraCalls": [],
+  "oraStartCalls": [],
+  "oraStopAndPersistCalls": [],
+  "readFileCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/package.json",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
-  "readdirCalls": Array [
-    Array [
+  "readdirCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/src/config",
     ],
   ],
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
 
@@ -54,202 +54,201 @@ Wayne Campbell
 
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.development",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.production",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/package.json",
       "{
-  \\"name\\": \\"super-project\\",
-  \\"description\\": \\"A new Whook project\\",
-  \\"version\\": \\"0.0.0\\",
-  \\"license\\": \\"SEE LICENSE\\",
-  \\"engines\\": {
-    \\"node\\": \\">=16.15.0\\"
+  "name": "super-project",
+  "description": "A new Whook project",
+  "version": "0.0.0",
+  "license": "SEE LICENSE",
+  "engines": {
+    "node": ">=16.15.0"
   },
-  \\"main\\": \\"dist/index.js\\",
-  \\"types\\": \\"dist/index.d.ts\\",
-  \\"type\\": \\"module\\",
-  \\"private\\": true,
-  \\"keywords\\": [
-    \\"whook\\"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "private": true,
+  "keywords": [
+    "whook"
   ],
-  \\"author\\": {
-    \\"name\\": \\"Wayne Campbell\\",
-    \\"email\\": \\"wayne@warner.com\\"
+  "author": {
+    "name": "Wayne Campbell",
+    "email": "wayne@warner.com"
   },
-  \\"scripts\\": {
-    \\"apitypes\\": \\"npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts\\",
-    \\"architecture\\": \\"jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md\\",
-    \\"build\\": \\"rimraf -f 'dist' && tsc --outDir dist\\",
-    \\"cover\\": \\"npm run jest -- --coverage\\",
-    \\"debug\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev\\",
-    \\"dev\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js\\",
-    \\"genPackagelock\\": \\"npm i --package-lock-only\\",
-    \\"jest\\": \\"NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest\\",
-    \\"lint\\": \\"eslint 'src/**/*.ts'\\",
-    \\"postbuild\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js\\",
-    \\"prettier\\": \\"prettier --write 'src/**/*.ts'\\",
-    \\"start\\": \\"PROJECT_SRC=\\\\\\"$PWD/dist\\\\\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js\\",
-    \\"test\\": \\"NODE_ENV=test npm run build && npm run jest\\",
-    \\"watch\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js\\",
-    \\"whook\\": \\"NODE_ENV=\${NODE_ENV:-development} whook\\",
-    \\"whook-dev\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js\\",
-    \\"whook-repl\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js\\"
+  "scripts": {
+    "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+    "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
+    "build": "rimraf -f 'dist' && tsc --outDir dist",
+    "cover": "npm run jest -- --coverage",
+    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "genPackagelock": "npm i --package-lock-only",
+    "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
+    "lint": "eslint 'src/**/*.ts'",
+    "postbuild": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
+    "test": "NODE_ENV=test npm run build && npm run jest",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
   },
-  \\"files\\": [
-    \\"bin\\",
-    \\"dist\\",
-    \\"src\\",
-    \\"LICENSE\\",
-    \\"README.md\\",
-    \\"CHANGELOG.md\\"
+  "files": [
+    "bin",
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
   ],
-  \\"dependencies\\": {
-    \\"@whook/authorization\\": \\"<current_version>\\",
-    \\"@whook/cli\\": \\"<current_version>\\",
-    \\"@whook/cors\\": \\"<current_version>\\",
-    \\"@whook/http-router\\": \\"<current_version>\\",
-    \\"@whook/http-server\\": \\"^10.0.2\\",
-    \\"@whook/http-transaction\\": \\"<current_version>\\",
-    \\"@whook/swagger-ui\\": \\"<current_version>\\",
-    \\"@whook/whook\\": \\"<current_version>\\",
-    \\"common-services\\": \\"^11.0.1\\",
-    \\"http-auth-utils\\": \\"^3.0.3\\",
-    \\"jwt-service\\": \\"^9.0.1\\",
-    \\"knifecycle\\": \\"^14.0.0\\",
-    \\"openapi-schema-validator\\": \\"^12.0.0\\",
-    \\"openapi-types\\": \\"^12.0.0\\",
-    \\"strict-qs\\": \\"^7.0.0\\",
-    \\"type-fest\\": \\"^2.13.1\\",
-    \\"yerror\\": \\"^6.1.1\\",
-    \\"yhttperror\\": \\"^6.1.1\\"
+  "dependencies": {
+    "@whook/authorization": "<current_version>",
+    "@whook/cli": "<current_version>",
+    "@whook/cors": "<current_version>",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "^10.0.2",
+    "@whook/http-transaction": "<current_version>",
+    "@whook/swagger-ui": "<current_version>",
+    "@whook/whook": "<current_version>",
+    "common-services": "^11.1.0",
+    "http-auth-utils": "^3.0.3",
+    "jwt-service": "^9.0.2",
+    "knifecycle": "^14.1.0",
+    "openapi-schema-validator": "^12.0.0",
+    "openapi-types": "^12.0.2",
+    "strict-qs": "^7.0.0",
+    "type-fest": "^2.19.0",
+    "yerror": "^6.1.1",
+    "yhttperror": "^6.1.1"
   },
-  \\"devDependencies\\": {
-    \\"@types/jest\\": \\"^28.1.1\\",
-    \\"@typescript-eslint/eslint-plugin\\": \\"^5.27.0\\",
-    \\"@typescript-eslint/parser\\": \\"^5.27.0\\",
-    \\"axios\\": \\"^0.27.2\\",
-    \\"chokidar\\": \\"^3.5.1\\",
-    \\"esbuild\\": \\"^0.14.46\\",
-    \\"esbuild-jest\\": \\"^0.5.0\\",
-    \\"esbuild-node-externals\\": \\"^1.4.1\\",
-    \\"eslint\\": \\"^8.17.0\\",
-    \\"eslint-config-prettier\\": \\"^8.5.0\\",
-    \\"eslint-plugin-prettier\\": \\"^4.0.0\\",
-    \\"jest\\": \\"^28.1.0\\",
-    \\"jsarch\\": \\"^5.0.1\\",
-    \\"parse-gitignore\\": \\"^1.0.1\\",
-    \\"prettier\\": \\"^2.6.2\\",
-    \\"rimraf\\": \\"^3.0.2\\",
-    \\"schema2dts\\": \\"^4.1.1\\",
-    \\"ts-node\\": \\"^10.8.1\\",
-    \\"typescript\\": \\"^4.7.3\\"
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.0",
+    "@typescript-eslint/parser": "^5.36.0",
+    "axios": "^0.27.2",
+    "chokidar": "^3.5.1",
+    "esbuild": "^0.15.6",
+    "esbuild-jest": "^0.5.0",
+    "esbuild-node-externals": "^1.5.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.0.1",
+    "jsarch": "^6.0.0",
+    "parse-gitignore": "^1.0.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "schema2dts": "^4.1.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.8.2"
   },
-  \\"eslintConfig\\": {
-    \\"extends\\": [
-      \\"eslint:recommended\\",
-      \\"plugin:prettier/recommended\\",
-      \\"plugin:@typescript-eslint/eslint-recommended\\",
-      \\"plugin:@typescript-eslint/recommended\\"
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
     ],
-    \\"parserOptions\\": {
-      \\"ecmaVersion\\": 2018,
-      \\"sourceType\\": \\"script\\",
-      \\"modules\\": true
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "script",
+      "modules": true
     },
-    \\"env\\": {
-      \\"es6\\": true,
-      \\"node\\": true,
-      \\"jest\\": true,
-      \\"mocha\\": true
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
     },
-    \\"plugins\\": [
-      \\"prettier\\"
+    "plugins": [
+      "prettier"
     ],
-    \\"rules\\": {
-      \\"prettier/prettier\\": \\"error\\"
+    "rules": {
+      "prettier/prettier": "error"
     },
-    \\"parser\\": \\"@typescript-eslint/parser\\",
-    \\"ignorePatterns\\": [
-      \\"*.d.ts\\"
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": [
+      "*.d.ts"
     ]
   },
-  \\"prettier\\": {
-    \\"semi\\": true,
-    \\"printWidth\\": 80,
-    \\"singleQuote\\": true,
-    \\"trailingComma\\": \\"all\\",
-    \\"proseWrap\\": \\"always\\"
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "proseWrap": "always"
   },
-  \\"jest\\": {
-    \\"coverageReporters\\": [
-      \\"lcov\\",
-      \\"html\\"
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "html"
     ],
-    \\"testPathIgnorePatterns\\": [
-      \\"/node_modules/\\"
+    "testPathIgnorePatterns": [
+      "/node_modules/"
     ],
-    \\"roots\\": [
-      \\"<rootDir>/src\\"
+    "roots": [
+      "<rootDir>/src"
     ],
-    \\"testEnvironment\\": \\"node\\",
-    \\"transform\\": {
-      \\"^.+\\\\\\\\.tsx?$\\": [
-        \\"esbuild-jest\\",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\\\.tsx?$": [
+        "esbuild-jest",
         {
-          \\"sourcemap\\": true,
-          \\"format\\": \\"esm\\"
+          "sourcemap": true,
+          "format": "esm"
         }
       ]
     },
-    \\"moduleNameMapper\\": {
-      \\"#(.*)\\": \\"<rootDir>/../../node_modules/$1\\",
-      \\"(.+)\\\\\\\\.js\\": \\"$1\\"
+    "moduleNameMapper": {
+      "#(.*)": "<rootDir>/../../node_modules/$1",
+      "(.+)\\\\.js": "$1"
     },
-    \\"extensionsToTreatAsEsm\\": [
-      \\".ts\\"
+    "extensionsToTreatAsEsm": [
+      ".ts"
     ]
   }
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/tsconfig.json",
       "{
-  \\"compilerOptions\\": {
-    \\"module\\": \\"Node16\\",
-    \\"moduleResolution\\": \\"Node16\\",
-    \\"target\\": \\"es2022\\",
-    \\"noImplicitAny\\": false,
-    \\"removeComments\\": false,
-    \\"preserveConstEnums\\": true,
-    \\"allowSyntheticDefaultImports\\": true,
-    \\"esModuleInterop\\": true,
-    \\"strict\\": true,
-    \\"declaration\\": true,
-    \\"outDir\\": \\"dist\\",
-    \\"sourceMap\\": true
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "target": "es2022",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true
   },
-  \\"include\\": [
-    \\"src/**/*.ts\\"
+  "include": [
+    "src/**/*.ts"
   ],
-  \\"exclude\\": [
-    \\"node_modules\\"
+  "exclude": [
+    "node_modules"
   ]
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.gitignore",
       "node_modules",
     ],
@@ -258,94 +257,94 @@ Wayne Campbell
 `;
 
 exports[`initCreateWhook should handle git initialization problems 2`] = `
-Object {
-  "copyCalls": Array [
-    Array [
+{
+  "copyCalls": [
+    [
       "/var/lib/node/node_modules/whook-example",
       "/home/whoiam/projects/yolo",
-      Object {
+      {
         "filter": [Function],
       },
     ],
   ],
-  "execCalls": Array [
-    Array [
+  "execCalls": [
+    [
       "git init",
-      Object {
+      {
         "cwd": "/home/whoiam/projects/yolo",
       },
       [Function],
     ],
-    Array [
+    [
       "npm i",
-      Object {
+      {
         "cwd": "/home/whoiam/projects/yolo",
       },
       [Function],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
-    Array [
+    [
       "error",
       "⚠️ - Could not initialize the git project!",
     ],
-    Array [
+    [
       "warning",
       "✔️ - Project created!",
     ],
-    Array [
+    [
       "warning",
       "➕ - Run \`cd yolo\` to enter the project.",
     ],
-    Array [
+    [
       "warning",
       "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
-    Array [
+    [
       "warning",
       "➕ - And finally run \`npm run watch\` to start dev!",
     ],
   ],
-  "oraCalls": Array [
-    Array [
-      Object {
+  "oraCalls": [
+    [
+      {
         "text": "Installing dependencies...",
       },
     ],
   ],
-  "oraStartCalls": Array [
-    Array [],
+  "oraStartCalls": [
+    [],
   ],
-  "oraStopAndPersistCalls": Array [
-    Array [
-      Object {
+  "oraStopAndPersistCalls": [
+    [
+      {
         "symbol": "✔️",
         "text": "Installed dependencies",
       },
     ],
   ],
-  "readFileCalls": Array [
-    Array [
+  "readFileCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/package.json",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
-  "readdirCalls": Array [
-    Array [
+  "readdirCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/package.json",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
 
@@ -356,202 +355,201 @@ Wayne Campbell
 
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.development",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.production",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/package.json",
       "{
-  \\"name\\": \\"super-project\\",
-  \\"description\\": \\"A new Whook project\\",
-  \\"version\\": \\"0.0.0\\",
-  \\"license\\": \\"SEE LICENSE\\",
-  \\"engines\\": {
-    \\"node\\": \\">=16.15.0\\"
+  "name": "super-project",
+  "description": "A new Whook project",
+  "version": "0.0.0",
+  "license": "SEE LICENSE",
+  "engines": {
+    "node": ">=16.15.0"
   },
-  \\"main\\": \\"dist/index.js\\",
-  \\"types\\": \\"dist/index.d.ts\\",
-  \\"type\\": \\"module\\",
-  \\"private\\": true,
-  \\"keywords\\": [
-    \\"whook\\"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "private": true,
+  "keywords": [
+    "whook"
   ],
-  \\"author\\": {
-    \\"name\\": \\"Wayne Campbell\\",
-    \\"email\\": \\"wayne@warner.com\\"
+  "author": {
+    "name": "Wayne Campbell",
+    "email": "wayne@warner.com"
   },
-  \\"scripts\\": {
-    \\"apitypes\\": \\"npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts\\",
-    \\"architecture\\": \\"jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md\\",
-    \\"build\\": \\"rimraf -f 'dist' && tsc --outDir dist\\",
-    \\"cover\\": \\"npm run jest -- --coverage\\",
-    \\"debug\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev\\",
-    \\"dev\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js\\",
-    \\"genPackagelock\\": \\"npm i --package-lock-only\\",
-    \\"jest\\": \\"NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest\\",
-    \\"lint\\": \\"eslint 'src/**/*.ts'\\",
-    \\"postbuild\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js\\",
-    \\"prettier\\": \\"prettier --write 'src/**/*.ts'\\",
-    \\"start\\": \\"PROJECT_SRC=\\\\\\"$PWD/dist\\\\\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js\\",
-    \\"test\\": \\"NODE_ENV=test npm run build && npm run jest\\",
-    \\"watch\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js\\",
-    \\"whook\\": \\"NODE_ENV=\${NODE_ENV:-development} whook\\",
-    \\"whook-dev\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js\\",
-    \\"whook-repl\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js\\"
+  "scripts": {
+    "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+    "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
+    "build": "rimraf -f 'dist' && tsc --outDir dist",
+    "cover": "npm run jest -- --coverage",
+    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "genPackagelock": "npm i --package-lock-only",
+    "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
+    "lint": "eslint 'src/**/*.ts'",
+    "postbuild": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
+    "test": "NODE_ENV=test npm run build && npm run jest",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
   },
-  \\"files\\": [
-    \\"bin\\",
-    \\"dist\\",
-    \\"src\\",
-    \\"LICENSE\\",
-    \\"README.md\\",
-    \\"CHANGELOG.md\\"
+  "files": [
+    "bin",
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
   ],
-  \\"dependencies\\": {
-    \\"@whook/authorization\\": \\"<current_version>\\",
-    \\"@whook/cli\\": \\"<current_version>\\",
-    \\"@whook/cors\\": \\"<current_version>\\",
-    \\"@whook/http-router\\": \\"<current_version>\\",
-    \\"@whook/http-server\\": \\"^10.0.2\\",
-    \\"@whook/http-transaction\\": \\"<current_version>\\",
-    \\"@whook/swagger-ui\\": \\"<current_version>\\",
-    \\"@whook/whook\\": \\"<current_version>\\",
-    \\"common-services\\": \\"^11.0.1\\",
-    \\"http-auth-utils\\": \\"^3.0.3\\",
-    \\"jwt-service\\": \\"^9.0.1\\",
-    \\"knifecycle\\": \\"^14.0.0\\",
-    \\"openapi-schema-validator\\": \\"^12.0.0\\",
-    \\"openapi-types\\": \\"^12.0.0\\",
-    \\"strict-qs\\": \\"^7.0.0\\",
-    \\"type-fest\\": \\"^2.13.1\\",
-    \\"yerror\\": \\"^6.1.1\\",
-    \\"yhttperror\\": \\"^6.1.1\\"
+  "dependencies": {
+    "@whook/authorization": "<current_version>",
+    "@whook/cli": "<current_version>",
+    "@whook/cors": "<current_version>",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "^10.0.2",
+    "@whook/http-transaction": "<current_version>",
+    "@whook/swagger-ui": "<current_version>",
+    "@whook/whook": "<current_version>",
+    "common-services": "^11.1.0",
+    "http-auth-utils": "^3.0.3",
+    "jwt-service": "^9.0.2",
+    "knifecycle": "^14.1.0",
+    "openapi-schema-validator": "^12.0.0",
+    "openapi-types": "^12.0.2",
+    "strict-qs": "^7.0.0",
+    "type-fest": "^2.19.0",
+    "yerror": "^6.1.1",
+    "yhttperror": "^6.1.1"
   },
-  \\"devDependencies\\": {
-    \\"@types/jest\\": \\"^28.1.1\\",
-    \\"@typescript-eslint/eslint-plugin\\": \\"^5.27.0\\",
-    \\"@typescript-eslint/parser\\": \\"^5.27.0\\",
-    \\"axios\\": \\"^0.27.2\\",
-    \\"chokidar\\": \\"^3.5.1\\",
-    \\"esbuild\\": \\"^0.14.46\\",
-    \\"esbuild-jest\\": \\"^0.5.0\\",
-    \\"esbuild-node-externals\\": \\"^1.4.1\\",
-    \\"eslint\\": \\"^8.17.0\\",
-    \\"eslint-config-prettier\\": \\"^8.5.0\\",
-    \\"eslint-plugin-prettier\\": \\"^4.0.0\\",
-    \\"jest\\": \\"^28.1.0\\",
-    \\"jsarch\\": \\"^5.0.1\\",
-    \\"parse-gitignore\\": \\"^1.0.1\\",
-    \\"prettier\\": \\"^2.6.2\\",
-    \\"rimraf\\": \\"^3.0.2\\",
-    \\"schema2dts\\": \\"^4.1.1\\",
-    \\"ts-node\\": \\"^10.8.1\\",
-    \\"typescript\\": \\"^4.7.3\\"
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.0",
+    "@typescript-eslint/parser": "^5.36.0",
+    "axios": "^0.27.2",
+    "chokidar": "^3.5.1",
+    "esbuild": "^0.15.6",
+    "esbuild-jest": "^0.5.0",
+    "esbuild-node-externals": "^1.5.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.0.1",
+    "jsarch": "^6.0.0",
+    "parse-gitignore": "^1.0.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "schema2dts": "^4.1.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.8.2"
   },
-  \\"eslintConfig\\": {
-    \\"extends\\": [
-      \\"eslint:recommended\\",
-      \\"plugin:prettier/recommended\\",
-      \\"plugin:@typescript-eslint/eslint-recommended\\",
-      \\"plugin:@typescript-eslint/recommended\\"
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
     ],
-    \\"parserOptions\\": {
-      \\"ecmaVersion\\": 2018,
-      \\"sourceType\\": \\"script\\",
-      \\"modules\\": true
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "script",
+      "modules": true
     },
-    \\"env\\": {
-      \\"es6\\": true,
-      \\"node\\": true,
-      \\"jest\\": true,
-      \\"mocha\\": true
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
     },
-    \\"plugins\\": [
-      \\"prettier\\"
+    "plugins": [
+      "prettier"
     ],
-    \\"rules\\": {
-      \\"prettier/prettier\\": \\"error\\"
+    "rules": {
+      "prettier/prettier": "error"
     },
-    \\"parser\\": \\"@typescript-eslint/parser\\",
-    \\"ignorePatterns\\": [
-      \\"*.d.ts\\"
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": [
+      "*.d.ts"
     ]
   },
-  \\"prettier\\": {
-    \\"semi\\": true,
-    \\"printWidth\\": 80,
-    \\"singleQuote\\": true,
-    \\"trailingComma\\": \\"all\\",
-    \\"proseWrap\\": \\"always\\"
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "proseWrap": "always"
   },
-  \\"jest\\": {
-    \\"coverageReporters\\": [
-      \\"lcov\\",
-      \\"html\\"
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "html"
     ],
-    \\"testPathIgnorePatterns\\": [
-      \\"/node_modules/\\"
+    "testPathIgnorePatterns": [
+      "/node_modules/"
     ],
-    \\"roots\\": [
-      \\"<rootDir>/src\\"
+    "roots": [
+      "<rootDir>/src"
     ],
-    \\"testEnvironment\\": \\"node\\",
-    \\"transform\\": {
-      \\"^.+\\\\\\\\.tsx?$\\": [
-        \\"esbuild-jest\\",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\\\.tsx?$": [
+        "esbuild-jest",
         {
-          \\"sourcemap\\": true,
-          \\"format\\": \\"esm\\"
+          "sourcemap": true,
+          "format": "esm"
         }
       ]
     },
-    \\"moduleNameMapper\\": {
-      \\"#(.*)\\": \\"<rootDir>/../../node_modules/$1\\",
-      \\"(.+)\\\\\\\\.js\\": \\"$1\\"
+    "moduleNameMapper": {
+      "#(.*)": "<rootDir>/../../node_modules/$1",
+      "(.+)\\\\.js": "$1"
     },
-    \\"extensionsToTreatAsEsm\\": [
-      \\".ts\\"
+    "extensionsToTreatAsEsm": [
+      ".ts"
     ]
   }
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/tsconfig.json",
       "{
-  \\"compilerOptions\\": {
-    \\"module\\": \\"Node16\\",
-    \\"moduleResolution\\": \\"Node16\\",
-    \\"target\\": \\"es2022\\",
-    \\"noImplicitAny\\": false,
-    \\"removeComments\\": false,
-    \\"preserveConstEnums\\": true,
-    \\"allowSyntheticDefaultImports\\": true,
-    \\"esModuleInterop\\": true,
-    \\"strict\\": true,
-    \\"declaration\\": true,
-    \\"outDir\\": \\"dist\\",
-    \\"sourceMap\\": true
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "target": "es2022",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true
   },
-  \\"include\\": [
-    \\"src/**/*.ts\\"
+  "include": [
+    "src/**/*.ts"
   ],
-  \\"exclude\\": [
-    \\"node_modules\\"
+  "exclude": [
+    "node_modules"
   ]
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.gitignore",
       "node_modules",
     ],
@@ -560,126 +558,126 @@ Wayne Campbell
 `;
 
 exports[`initCreateWhook should handle network issues 2`] = `
-Object {
-  "copyCalls": Array [
-    Array [
+{
+  "copyCalls": [
+    [
       "/var/lib/node/node_modules/whook-example",
       "/home/whoiam/projects/yolo",
-      Object {
+      {
         "filter": [Function],
       },
     ],
   ],
-  "execCalls": Array [
-    Array [
+  "execCalls": [
+    [
       "git init",
-      Object {
+      {
         "cwd": "/home/whoiam/projects/yolo",
       },
       [Function],
     ],
-    Array [
+    [
       "npm i",
-      Object {
+      {
         "cwd": "/home/whoiam/projects/yolo",
       },
       [Function],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/package.json\\" => \\"/home/whoiam/projects/yolo/package.json (\\"..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/package.json" => "/home/whoiam/projects/yolo/package.json ("..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/package-lock.json\\" => \\"/home/whoiam/projects/yolo/package-lock.json (\\"..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/package-lock.json" => "/home/whoiam/projects/yolo/package-lock.json ("..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/LICENSE\\" => \\"/home/whoiam/projects/yolo/LICENSE (\\"..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/LICENSE" => "/home/whoiam/projects/yolo/LICENSE ("..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/dist/index.js\\" => \\"/home/whoiam/projects/yolo/dist/index.js (\\"../..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/dist/index.js" => "/home/whoiam/projects/yolo/dist/index.js ("../..").",
     ],
-    Array [
+    [
       "debug",
-      "Moving \\"/var/lib/node/node_modules/whook-example/src/index.js\\" => \\"/home/whoiam/projects/yolo/src/index.js\\".",
+      "Moving "/var/lib/node/node_modules/whook-example/src/index.js" => "/home/whoiam/projects/yolo/src/index.js".",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/coverage/index.html\\" => \\"/home/whoiam/projects/yolo/coverage/index.html (\\"../..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/coverage/index.html" => "/home/whoiam/projects/yolo/coverage/index.html ("../..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/node_modules/whook/index.js\\" => \\"/home/whoiam/projects/yolo/node_modules/whook/index.js (\\"../../..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js" => "/home/whoiam/projects/yolo/node_modules/whook/index.js ("../../..").",
     ],
-    Array [
+    [
       "error",
       "⚠️ - Could not initialize the git project!",
     ],
-    Array [
+    [
       "error",
-      "⚠️ - Could not retrieve the \`.gitignore\` file contents from: \\"https://www.gitignore.io/api/osx,node,linux\\"",
+      "⚠️ - Could not retrieve the \`.gitignore\` file contents from: "https://www.gitignore.io/api/osx,node,linux"",
     ],
-    Array [
+    [
       "warning",
       "✔️ - Project created!",
     ],
-    Array [
+    [
       "warning",
       "➕ - Run \`cd yolo\` to enter the project.",
     ],
-    Array [
+    [
       "warning",
       "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
-    Array [
+    [
       "warning",
       "➕ - And finally run \`npm run watch\` to start dev!",
     ],
   ],
-  "oraCalls": Array [
-    Array [
-      Object {
+  "oraCalls": [
+    [
+      {
         "text": "Installing dependencies...",
       },
     ],
   ],
-  "oraStartCalls": Array [
-    Array [],
+  "oraStartCalls": [
+    [],
   ],
-  "oraStopAndPersistCalls": Array [
-    Array [
-      Object {
+  "oraStopAndPersistCalls": [
+    [
+      {
         "symbol": "✔️",
         "text": "Installed dependencies",
       },
     ],
   ],
-  "readFileCalls": Array [
-    Array [
+  "readFileCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/package.json",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
-  "readdirCalls": Array [
-    Array [
+  "readdirCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/package.json",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
 
@@ -690,198 +688,197 @@ Wayne Campbell
 
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.development",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.production",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/package.json",
       "{
-  \\"name\\": \\"super-project\\",
-  \\"description\\": \\"A new Whook project\\",
-  \\"version\\": \\"0.0.0\\",
-  \\"license\\": \\"SEE LICENSE\\",
-  \\"engines\\": {
-    \\"node\\": \\">=16.15.0\\"
+  "name": "super-project",
+  "description": "A new Whook project",
+  "version": "0.0.0",
+  "license": "SEE LICENSE",
+  "engines": {
+    "node": ">=16.15.0"
   },
-  \\"main\\": \\"dist/index.js\\",
-  \\"types\\": \\"dist/index.d.ts\\",
-  \\"type\\": \\"module\\",
-  \\"private\\": true,
-  \\"keywords\\": [
-    \\"whook\\"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "private": true,
+  "keywords": [
+    "whook"
   ],
-  \\"author\\": {
-    \\"name\\": \\"Wayne Campbell\\",
-    \\"email\\": \\"wayne@warner.com\\"
+  "author": {
+    "name": "Wayne Campbell",
+    "email": "wayne@warner.com"
   },
-  \\"scripts\\": {
-    \\"apitypes\\": \\"npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts\\",
-    \\"architecture\\": \\"jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md\\",
-    \\"build\\": \\"rimraf -f 'dist' && tsc --outDir dist\\",
-    \\"cover\\": \\"npm run jest -- --coverage\\",
-    \\"debug\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev\\",
-    \\"dev\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js\\",
-    \\"genPackagelock\\": \\"npm i --package-lock-only\\",
-    \\"jest\\": \\"NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest\\",
-    \\"lint\\": \\"eslint 'src/**/*.ts'\\",
-    \\"postbuild\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js\\",
-    \\"prettier\\": \\"prettier --write 'src/**/*.ts'\\",
-    \\"start\\": \\"PROJECT_SRC=\\\\\\"$PWD/dist\\\\\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js\\",
-    \\"test\\": \\"NODE_ENV=test npm run build && npm run jest\\",
-    \\"watch\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js\\",
-    \\"whook\\": \\"NODE_ENV=\${NODE_ENV:-development} whook\\",
-    \\"whook-dev\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js\\",
-    \\"whook-repl\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js\\"
+  "scripts": {
+    "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+    "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
+    "build": "rimraf -f 'dist' && tsc --outDir dist",
+    "cover": "npm run jest -- --coverage",
+    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "genPackagelock": "npm i --package-lock-only",
+    "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
+    "lint": "eslint 'src/**/*.ts'",
+    "postbuild": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
+    "test": "NODE_ENV=test npm run build && npm run jest",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
   },
-  \\"files\\": [
-    \\"bin\\",
-    \\"dist\\",
-    \\"src\\",
-    \\"LICENSE\\",
-    \\"README.md\\",
-    \\"CHANGELOG.md\\"
+  "files": [
+    "bin",
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
   ],
-  \\"dependencies\\": {
-    \\"@whook/authorization\\": \\"<current_version>\\",
-    \\"@whook/cli\\": \\"<current_version>\\",
-    \\"@whook/cors\\": \\"<current_version>\\",
-    \\"@whook/http-router\\": \\"<current_version>\\",
-    \\"@whook/http-server\\": \\"^10.0.2\\",
-    \\"@whook/http-transaction\\": \\"<current_version>\\",
-    \\"@whook/swagger-ui\\": \\"<current_version>\\",
-    \\"@whook/whook\\": \\"<current_version>\\",
-    \\"common-services\\": \\"^11.0.1\\",
-    \\"http-auth-utils\\": \\"^3.0.3\\",
-    \\"jwt-service\\": \\"^9.0.1\\",
-    \\"knifecycle\\": \\"^14.0.0\\",
-    \\"openapi-schema-validator\\": \\"^12.0.0\\",
-    \\"openapi-types\\": \\"^12.0.0\\",
-    \\"strict-qs\\": \\"^7.0.0\\",
-    \\"type-fest\\": \\"^2.13.1\\",
-    \\"yerror\\": \\"^6.1.1\\",
-    \\"yhttperror\\": \\"^6.1.1\\"
+  "dependencies": {
+    "@whook/authorization": "<current_version>",
+    "@whook/cli": "<current_version>",
+    "@whook/cors": "<current_version>",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "^10.0.2",
+    "@whook/http-transaction": "<current_version>",
+    "@whook/swagger-ui": "<current_version>",
+    "@whook/whook": "<current_version>",
+    "common-services": "^11.1.0",
+    "http-auth-utils": "^3.0.3",
+    "jwt-service": "^9.0.2",
+    "knifecycle": "^14.1.0",
+    "openapi-schema-validator": "^12.0.0",
+    "openapi-types": "^12.0.2",
+    "strict-qs": "^7.0.0",
+    "type-fest": "^2.19.0",
+    "yerror": "^6.1.1",
+    "yhttperror": "^6.1.1"
   },
-  \\"devDependencies\\": {
-    \\"@types/jest\\": \\"^28.1.1\\",
-    \\"@typescript-eslint/eslint-plugin\\": \\"^5.27.0\\",
-    \\"@typescript-eslint/parser\\": \\"^5.27.0\\",
-    \\"axios\\": \\"^0.27.2\\",
-    \\"chokidar\\": \\"^3.5.1\\",
-    \\"esbuild\\": \\"^0.14.46\\",
-    \\"esbuild-jest\\": \\"^0.5.0\\",
-    \\"esbuild-node-externals\\": \\"^1.4.1\\",
-    \\"eslint\\": \\"^8.17.0\\",
-    \\"eslint-config-prettier\\": \\"^8.5.0\\",
-    \\"eslint-plugin-prettier\\": \\"^4.0.0\\",
-    \\"jest\\": \\"^28.1.0\\",
-    \\"jsarch\\": \\"^5.0.1\\",
-    \\"parse-gitignore\\": \\"^1.0.1\\",
-    \\"prettier\\": \\"^2.6.2\\",
-    \\"rimraf\\": \\"^3.0.2\\",
-    \\"schema2dts\\": \\"^4.1.1\\",
-    \\"ts-node\\": \\"^10.8.1\\",
-    \\"typescript\\": \\"^4.7.3\\"
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.0",
+    "@typescript-eslint/parser": "^5.36.0",
+    "axios": "^0.27.2",
+    "chokidar": "^3.5.1",
+    "esbuild": "^0.15.6",
+    "esbuild-jest": "^0.5.0",
+    "esbuild-node-externals": "^1.5.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.0.1",
+    "jsarch": "^6.0.0",
+    "parse-gitignore": "^1.0.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "schema2dts": "^4.1.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.8.2"
   },
-  \\"eslintConfig\\": {
-    \\"extends\\": [
-      \\"eslint:recommended\\",
-      \\"plugin:prettier/recommended\\",
-      \\"plugin:@typescript-eslint/eslint-recommended\\",
-      \\"plugin:@typescript-eslint/recommended\\"
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
     ],
-    \\"parserOptions\\": {
-      \\"ecmaVersion\\": 2018,
-      \\"sourceType\\": \\"script\\",
-      \\"modules\\": true
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "script",
+      "modules": true
     },
-    \\"env\\": {
-      \\"es6\\": true,
-      \\"node\\": true,
-      \\"jest\\": true,
-      \\"mocha\\": true
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
     },
-    \\"plugins\\": [
-      \\"prettier\\"
+    "plugins": [
+      "prettier"
     ],
-    \\"rules\\": {
-      \\"prettier/prettier\\": \\"error\\"
+    "rules": {
+      "prettier/prettier": "error"
     },
-    \\"parser\\": \\"@typescript-eslint/parser\\",
-    \\"ignorePatterns\\": [
-      \\"*.d.ts\\"
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": [
+      "*.d.ts"
     ]
   },
-  \\"prettier\\": {
-    \\"semi\\": true,
-    \\"printWidth\\": 80,
-    \\"singleQuote\\": true,
-    \\"trailingComma\\": \\"all\\",
-    \\"proseWrap\\": \\"always\\"
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "proseWrap": "always"
   },
-  \\"jest\\": {
-    \\"coverageReporters\\": [
-      \\"lcov\\",
-      \\"html\\"
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "html"
     ],
-    \\"testPathIgnorePatterns\\": [
-      \\"/node_modules/\\"
+    "testPathIgnorePatterns": [
+      "/node_modules/"
     ],
-    \\"roots\\": [
-      \\"<rootDir>/src\\"
+    "roots": [
+      "<rootDir>/src"
     ],
-    \\"testEnvironment\\": \\"node\\",
-    \\"transform\\": {
-      \\"^.+\\\\\\\\.tsx?$\\": [
-        \\"esbuild-jest\\",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\\\.tsx?$": [
+        "esbuild-jest",
         {
-          \\"sourcemap\\": true,
-          \\"format\\": \\"esm\\"
+          "sourcemap": true,
+          "format": "esm"
         }
       ]
     },
-    \\"moduleNameMapper\\": {
-      \\"#(.*)\\": \\"<rootDir>/../../node_modules/$1\\",
-      \\"(.+)\\\\\\\\.js\\": \\"$1\\"
+    "moduleNameMapper": {
+      "#(.*)": "<rootDir>/../../node_modules/$1",
+      "(.+)\\\\.js": "$1"
     },
-    \\"extensionsToTreatAsEsm\\": [
-      \\".ts\\"
+    "extensionsToTreatAsEsm": [
+      ".ts"
     ]
   }
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/tsconfig.json",
       "{
-  \\"compilerOptions\\": {
-    \\"module\\": \\"Node16\\",
-    \\"moduleResolution\\": \\"Node16\\",
-    \\"target\\": \\"es2022\\",
-    \\"noImplicitAny\\": false,
-    \\"removeComments\\": false,
-    \\"preserveConstEnums\\": true,
-    \\"allowSyntheticDefaultImports\\": true,
-    \\"esModuleInterop\\": true,
-    \\"strict\\": true,
-    \\"declaration\\": true,
-    \\"outDir\\": \\"dist\\",
-    \\"sourceMap\\": true
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "target": "es2022",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true
   },
-  \\"include\\": [
-    \\"src/**/*.ts\\"
+  "include": [
+    "src/**/*.ts"
   ],
-  \\"exclude\\": [
-    \\"node_modules\\"
+  "exclude": [
+    "node_modules"
   ]
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
     ],
@@ -890,118 +887,118 @@ Wayne Campbell
 `;
 
 exports[`initCreateWhook should work 2`] = `
-Object {
-  "copyCalls": Array [
-    Array [
+{
+  "copyCalls": [
+    [
       "/var/lib/node/node_modules/whook-example",
       "/home/whoiam/projects/yolo",
-      Object {
+      {
         "filter": [Function],
       },
     ],
   ],
-  "execCalls": Array [
-    Array [
+  "execCalls": [
+    [
       "git init",
-      Object {
+      {
         "cwd": "/home/whoiam/projects/yolo",
       },
       [Function],
     ],
-    Array [
+    [
       "npm i",
-      Object {
+      {
         "cwd": "/home/whoiam/projects/yolo",
       },
       [Function],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "🏁️ - Starting Whook project's creation!",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/package.json\\" => \\"/home/whoiam/projects/yolo/package.json (\\"..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/package.json" => "/home/whoiam/projects/yolo/package.json ("..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/package-lock.json\\" => \\"/home/whoiam/projects/yolo/package-lock.json (\\"..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/package-lock.json" => "/home/whoiam/projects/yolo/package-lock.json ("..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/LICENSE\\" => \\"/home/whoiam/projects/yolo/LICENSE (\\"..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/LICENSE" => "/home/whoiam/projects/yolo/LICENSE ("..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/dist/index.js\\" => \\"/home/whoiam/projects/yolo/dist/index.js (\\"../..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/dist/index.js" => "/home/whoiam/projects/yolo/dist/index.js ("../..").",
     ],
-    Array [
+    [
       "debug",
-      "Moving \\"/var/lib/node/node_modules/whook-example/src/index.js\\" => \\"/home/whoiam/projects/yolo/src/index.js\\".",
+      "Moving "/var/lib/node/node_modules/whook-example/src/index.js" => "/home/whoiam/projects/yolo/src/index.js".",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/coverage/index.html\\" => \\"/home/whoiam/projects/yolo/coverage/index.html (\\"../..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/coverage/index.html" => "/home/whoiam/projects/yolo/coverage/index.html ("../..").",
     ],
-    Array [
+    [
       "debug",
-      "Discarding \\"/var/lib/node/node_modules/whook-example/node_modules/whook/index.js\\" => \\"/home/whoiam/projects/yolo/node_modules/whook/index.js (\\"../../..\\").",
+      "Discarding "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js" => "/home/whoiam/projects/yolo/node_modules/whook/index.js ("../../..").",
     ],
-    Array [
+    [
       "warning",
       "✔️ - Project created!",
     ],
-    Array [
+    [
       "warning",
       "➕ - Run \`cd yolo\` to enter the project.",
     ],
-    Array [
+    [
       "warning",
       "➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.",
     ],
-    Array [
+    [
       "warning",
       "➕ - And finally run \`npm run watch\` to start dev!",
     ],
   ],
-  "oraCalls": Array [
-    Array [
-      Object {
+  "oraCalls": [
+    [
+      {
         "text": "Installing dependencies...",
       },
     ],
   ],
-  "oraStartCalls": Array [
-    Array [],
+  "oraStartCalls": [
+    [],
   ],
-  "oraStopAndPersistCalls": Array [
-    Array [
-      Object {
+  "oraStopAndPersistCalls": [
+    [
+      {
         "symbol": "✔️",
         "text": "Installed dependencies",
       },
     ],
   ],
-  "readFileCalls": Array [
-    Array [
+  "readFileCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/package.json",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
-  "readdirCalls": Array [
-    Array [
+  "readdirCalls": [
+    [
       "/var/lib/node/node_modules/whook-example/package.json",
     ],
-    Array [
+    [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
 
@@ -1012,202 +1009,201 @@ Wayne Campbell
 
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.development",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.env.production",
       "JWT_SECRET=oudelali
 ",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/package.json",
       "{
-  \\"name\\": \\"super-project\\",
-  \\"description\\": \\"A new Whook project\\",
-  \\"version\\": \\"0.0.0\\",
-  \\"license\\": \\"SEE LICENSE\\",
-  \\"engines\\": {
-    \\"node\\": \\">=16.15.0\\"
+  "name": "super-project",
+  "description": "A new Whook project",
+  "version": "0.0.0",
+  "license": "SEE LICENSE",
+  "engines": {
+    "node": ">=16.15.0"
   },
-  \\"main\\": \\"dist/index.js\\",
-  \\"types\\": \\"dist/index.d.ts\\",
-  \\"type\\": \\"module\\",
-  \\"private\\": true,
-  \\"keywords\\": [
-    \\"whook\\"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "private": true,
+  "keywords": [
+    "whook"
   ],
-  \\"author\\": {
-    \\"name\\": \\"Wayne Campbell\\",
-    \\"email\\": \\"wayne@warner.com\\"
+  "author": {
+    "name": "Wayne Campbell",
+    "email": "wayne@warner.com"
   },
-  \\"scripts\\": {
-    \\"apitypes\\": \\"npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts\\",
-    \\"architecture\\": \\"jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md\\",
-    \\"build\\": \\"rimraf -f 'dist' && tsc --outDir dist\\",
-    \\"cover\\": \\"npm run jest -- --coverage\\",
-    \\"debug\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev\\",
-    \\"dev\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js\\",
-    \\"genPackagelock\\": \\"npm i --package-lock-only\\",
-    \\"jest\\": \\"NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest\\",
-    \\"lint\\": \\"eslint 'src/**/*.ts'\\",
-    \\"postbuild\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js\\",
-    \\"prettier\\": \\"prettier --write 'src/**/*.ts'\\",
-    \\"start\\": \\"PROJECT_SRC=\\\\\\"$PWD/dist\\\\\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js\\",
-    \\"test\\": \\"NODE_ENV=test npm run build && npm run jest\\",
-    \\"watch\\": \\"NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js\\",
-    \\"whook\\": \\"NODE_ENV=\${NODE_ENV:-development} whook\\",
-    \\"whook-dev\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js\\",
-    \\"whook-repl\\": \\"PROJECT_SRC=\\\\\\"$PWD/src\\\\\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js\\"
+  "scripts": {
+    "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
+    "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
+    "build": "rimraf -f 'dist' && tsc --outDir dist",
+    "cover": "npm run jest -- --coverage",
+    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "genPackagelock": "npm i --package-lock-only",
+    "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
+    "lint": "eslint 'src/**/*.ts'",
+    "postbuild": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
+    "test": "NODE_ENV=test npm run build && npm run jest",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
   },
-  \\"files\\": [
-    \\"bin\\",
-    \\"dist\\",
-    \\"src\\",
-    \\"LICENSE\\",
-    \\"README.md\\",
-    \\"CHANGELOG.md\\"
+  "files": [
+    "bin",
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
   ],
-  \\"dependencies\\": {
-    \\"@whook/authorization\\": \\"<current_version>\\",
-    \\"@whook/cli\\": \\"<current_version>\\",
-    \\"@whook/cors\\": \\"<current_version>\\",
-    \\"@whook/http-router\\": \\"<current_version>\\",
-    \\"@whook/http-server\\": \\"^10.0.2\\",
-    \\"@whook/http-transaction\\": \\"<current_version>\\",
-    \\"@whook/swagger-ui\\": \\"<current_version>\\",
-    \\"@whook/whook\\": \\"<current_version>\\",
-    \\"common-services\\": \\"^11.0.1\\",
-    \\"http-auth-utils\\": \\"^3.0.3\\",
-    \\"jwt-service\\": \\"^9.0.1\\",
-    \\"knifecycle\\": \\"^14.0.0\\",
-    \\"openapi-schema-validator\\": \\"^12.0.0\\",
-    \\"openapi-types\\": \\"^12.0.0\\",
-    \\"strict-qs\\": \\"^7.0.0\\",
-    \\"type-fest\\": \\"^2.13.1\\",
-    \\"yerror\\": \\"^6.1.1\\",
-    \\"yhttperror\\": \\"^6.1.1\\"
+  "dependencies": {
+    "@whook/authorization": "<current_version>",
+    "@whook/cli": "<current_version>",
+    "@whook/cors": "<current_version>",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "^10.0.2",
+    "@whook/http-transaction": "<current_version>",
+    "@whook/swagger-ui": "<current_version>",
+    "@whook/whook": "<current_version>",
+    "common-services": "^11.1.0",
+    "http-auth-utils": "^3.0.3",
+    "jwt-service": "^9.0.2",
+    "knifecycle": "^14.1.0",
+    "openapi-schema-validator": "^12.0.0",
+    "openapi-types": "^12.0.2",
+    "strict-qs": "^7.0.0",
+    "type-fest": "^2.19.0",
+    "yerror": "^6.1.1",
+    "yhttperror": "^6.1.1"
   },
-  \\"devDependencies\\": {
-    \\"@types/jest\\": \\"^28.1.1\\",
-    \\"@typescript-eslint/eslint-plugin\\": \\"^5.27.0\\",
-    \\"@typescript-eslint/parser\\": \\"^5.27.0\\",
-    \\"axios\\": \\"^0.27.2\\",
-    \\"chokidar\\": \\"^3.5.1\\",
-    \\"esbuild\\": \\"^0.14.46\\",
-    \\"esbuild-jest\\": \\"^0.5.0\\",
-    \\"esbuild-node-externals\\": \\"^1.4.1\\",
-    \\"eslint\\": \\"^8.17.0\\",
-    \\"eslint-config-prettier\\": \\"^8.5.0\\",
-    \\"eslint-plugin-prettier\\": \\"^4.0.0\\",
-    \\"jest\\": \\"^28.1.0\\",
-    \\"jsarch\\": \\"^5.0.1\\",
-    \\"parse-gitignore\\": \\"^1.0.1\\",
-    \\"prettier\\": \\"^2.6.2\\",
-    \\"rimraf\\": \\"^3.0.2\\",
-    \\"schema2dts\\": \\"^4.1.1\\",
-    \\"ts-node\\": \\"^10.8.1\\",
-    \\"typescript\\": \\"^4.7.3\\"
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.36.0",
+    "@typescript-eslint/parser": "^5.36.0",
+    "axios": "^0.27.2",
+    "chokidar": "^3.5.1",
+    "esbuild": "^0.15.6",
+    "esbuild-jest": "^0.5.0",
+    "esbuild-node-externals": "^1.5.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.0.1",
+    "jsarch": "^6.0.0",
+    "parse-gitignore": "^1.0.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "schema2dts": "^4.1.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.8.2"
   },
-  \\"eslintConfig\\": {
-    \\"extends\\": [
-      \\"eslint:recommended\\",
-      \\"plugin:prettier/recommended\\",
-      \\"plugin:@typescript-eslint/eslint-recommended\\",
-      \\"plugin:@typescript-eslint/recommended\\"
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
     ],
-    \\"parserOptions\\": {
-      \\"ecmaVersion\\": 2018,
-      \\"sourceType\\": \\"script\\",
-      \\"modules\\": true
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "script",
+      "modules": true
     },
-    \\"env\\": {
-      \\"es6\\": true,
-      \\"node\\": true,
-      \\"jest\\": true,
-      \\"mocha\\": true
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
     },
-    \\"plugins\\": [
-      \\"prettier\\"
+    "plugins": [
+      "prettier"
     ],
-    \\"rules\\": {
-      \\"prettier/prettier\\": \\"error\\"
+    "rules": {
+      "prettier/prettier": "error"
     },
-    \\"parser\\": \\"@typescript-eslint/parser\\",
-    \\"ignorePatterns\\": [
-      \\"*.d.ts\\"
+    "parser": "@typescript-eslint/parser",
+    "ignorePatterns": [
+      "*.d.ts"
     ]
   },
-  \\"prettier\\": {
-    \\"semi\\": true,
-    \\"printWidth\\": 80,
-    \\"singleQuote\\": true,
-    \\"trailingComma\\": \\"all\\",
-    \\"proseWrap\\": \\"always\\"
+  "prettier": {
+    "semi": true,
+    "printWidth": 80,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "proseWrap": "always"
   },
-  \\"jest\\": {
-    \\"coverageReporters\\": [
-      \\"lcov\\",
-      \\"html\\"
+  "jest": {
+    "coverageReporters": [
+      "lcov",
+      "html"
     ],
-    \\"testPathIgnorePatterns\\": [
-      \\"/node_modules/\\"
+    "testPathIgnorePatterns": [
+      "/node_modules/"
     ],
-    \\"roots\\": [
-      \\"<rootDir>/src\\"
+    "roots": [
+      "<rootDir>/src"
     ],
-    \\"testEnvironment\\": \\"node\\",
-    \\"transform\\": {
-      \\"^.+\\\\\\\\.tsx?$\\": [
-        \\"esbuild-jest\\",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\\\.tsx?$": [
+        "esbuild-jest",
         {
-          \\"sourcemap\\": true,
-          \\"format\\": \\"esm\\"
+          "sourcemap": true,
+          "format": "esm"
         }
       ]
     },
-    \\"moduleNameMapper\\": {
-      \\"#(.*)\\": \\"<rootDir>/../../node_modules/$1\\",
-      \\"(.+)\\\\\\\\.js\\": \\"$1\\"
+    "moduleNameMapper": {
+      "#(.*)": "<rootDir>/../../node_modules/$1",
+      "(.+)\\\\.js": "$1"
     },
-    \\"extensionsToTreatAsEsm\\": [
-      \\".ts\\"
+    "extensionsToTreatAsEsm": [
+      ".ts"
     ]
   }
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/tsconfig.json",
       "{
-  \\"compilerOptions\\": {
-    \\"module\\": \\"Node16\\",
-    \\"moduleResolution\\": \\"Node16\\",
-    \\"target\\": \\"es2022\\",
-    \\"noImplicitAny\\": false,
-    \\"removeComments\\": false,
-    \\"preserveConstEnums\\": true,
-    \\"allowSyntheticDefaultImports\\": true,
-    \\"esModuleInterop\\": true,
-    \\"strict\\": true,
-    \\"declaration\\": true,
-    \\"outDir\\": \\"dist\\",
-    \\"sourceMap\\": true
+  "compilerOptions": {
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "target": "es2022",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true
   },
-  \\"include\\": [
-    \\"src/**/*.ts\\"
+  "include": [
+    "src/**/*.ts"
   ],
-  \\"exclude\\": [
-    \\"node_modules\\"
+  "exclude": [
+    "node_modules"
   ]
 }",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
     ],
-    Array [
+    [
       "/home/whoiam/projects/yolo/.gitignore",
       "node_modules",
     ],

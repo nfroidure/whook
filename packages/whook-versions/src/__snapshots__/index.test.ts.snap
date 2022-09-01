@@ -1,71 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`augmentAPIWithVersionsHeaders() should work 1`] = `
-Object {
-  "components": Object {
-    "parameters": Object {
-      "xApiVersion": Object {
+{
+  "components": {
+    "parameters": {
+      "xApiVersion": {
         "example": "1.1.2-beta.1",
         "in": "header",
         "name": "X-API-Version",
         "required": false,
-        "schema": Object {
-          "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
+        "schema": {
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
           "type": "string",
         },
       },
-      "xAppVersion": Object {
+      "xAppVersion": {
         "example": "1.1.2-beta.1",
         "in": "header",
         "name": "X-APP-Version",
         "required": false,
-        "schema": Object {
-          "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
+        "schema": {
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
           "type": "string",
         },
       },
-      "xSdkVersion": Object {
+      "xSdkVersion": {
         "example": "1.1.2-beta.1",
         "in": "header",
         "name": "X-SDK-Version",
         "required": false,
-        "schema": Object {
-          "pattern": "^(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)\\\\.(0|[1-9]\\\\d*)(?:-((?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\\\.(?:0|[1-9]\\\\d*|\\\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\\+([0-9a-zA-Z-]+(?:\\\\.[0-9a-zA-Z-]+)*))?$",
+        "schema": {
+          "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
           "type": "string",
         },
       },
     },
   },
-  "info": Object {
+  "info": {
     "description": "A sample Swagger file for testing purpose.",
     "title": "Sample Swagger",
     "version": "1.0.0",
   },
   "openapi": "3.0.2",
-  "paths": Object {
-    "/ping": Object {
-      "get": Object {
+  "paths": {
+    "/ping": {
+      "get": {
         "operationId": "getPing",
-        "parameters": Array [
-          Object {
+        "parameters": [
+          {
             "$ref": "#/components/parameters/xApiVersion",
           },
-          Object {
+          {
             "$ref": "#/components/parameters/xSdkVersion",
           },
-          Object {
+          {
             "$ref": "#/components/parameters/xAppVersion",
           },
         ],
-        "responses": Object {
-          "200": Object {
-            "content": Object {
-              "application/json": Object {
-                "schema": Object {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "additionalProperties": false,
-                  "properties": Object {
-                    "pong": Object {
-                      "enum": Array [
+                  "properties": {
+                    "pong": {
+                      "enum": [
                         "pong",
                       ],
                       "type": "string",
@@ -79,7 +79,7 @@ Object {
           },
         },
         "summary": "Checks API's availability.",
-        "tags": Array [
+        "tags": [
           "system",
         ],
       },
@@ -89,12 +89,12 @@ Object {
 `;
 
 exports[`wrapHandlerWithVersionChecker() should work with beta app version headers 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
+{
+  "response": {
+    "body": {
       "pong": "pong",
     },
-    "headers": Object {
+    "headers": {
       "X-Node-ENV": "test",
     },
     "status": 200,
@@ -103,12 +103,12 @@ Object {
 `;
 
 exports[`wrapHandlerWithVersionChecker() should work with good api version headers 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
+{
+  "response": {
+    "body": {
       "pong": "pong",
     },
-    "headers": Object {
+    "headers": {
       "X-Node-ENV": "test",
     },
     "status": 200,
@@ -117,12 +117,12 @@ Object {
 `;
 
 exports[`wrapHandlerWithVersionChecker() should work with good app version headers 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
+{
+  "response": {
+    "body": {
       "pong": "pong",
     },
-    "headers": Object {
+    "headers": {
       "X-Node-ENV": "test",
     },
     "status": 200,
@@ -131,12 +131,12 @@ Object {
 `;
 
 exports[`wrapHandlerWithVersionChecker() should work with good sdk version headers 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
+{
+  "response": {
+    "body": {
       "pong": "pong",
     },
-    "headers": Object {
+    "headers": {
       "X-Node-ENV": "test",
     },
     "status": 200,
@@ -145,12 +145,12 @@ Object {
 `;
 
 exports[`wrapHandlerWithVersionChecker() should work with no version headers 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
+{
+  "response": {
+    "body": {
       "pong": "pong",
     },
-    "headers": Object {
+    "headers": {
       "X-Node-ENV": "test",
     },
     "status": 200,

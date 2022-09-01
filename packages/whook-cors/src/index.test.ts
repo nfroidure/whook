@@ -1,3 +1,4 @@
+import { describe, it, expect } from '@jest/globals';
 import {
   wrapHandlerWithCORS,
   initOptionsWithCORS,
@@ -51,9 +52,9 @@ describe('wrapHandlerWithCORS', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "headers": Object {
+      {
+        "response": {
+          "headers": {
             "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
             "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
             "access-control-allow-origin": "*",
@@ -91,9 +92,9 @@ describe('wrapHandlerWithCORS', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "headers": Object {
+      {
+        "response": {
+          "headers": {
             "access-control-allow-credentials": "true",
             "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
             "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
@@ -131,9 +132,9 @@ describe('wrapHandlerWithCORS', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      Object {
-        "response": Object {
-          "headers": Object {
+      {
+        "response": {
+          "headers": {
             "access-control-allow-credentials": "true",
             "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
             "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
@@ -167,8 +168,8 @@ describe('wrapHandlerWithCORS', () => {
       expect({
         headers: (err as YHTTPError).headers,
       }).toMatchInlineSnapshot(`
-        Object {
-          "headers": Object {
+        {
+          "headers": {
             "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
             "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
             "access-control-allow-origin": "*",

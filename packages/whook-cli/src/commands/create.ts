@@ -7,6 +7,7 @@ import _inquirer from 'inquirer';
 import path from 'path';
 import { OPEN_API_METHODS, noop } from '@whook/whook';
 import { default as fsExtra } from 'fs-extra';
+import type { Answers } from 'inquirer';
 import type {
   WhookCommandHandler,
   WhookCommandDefinition,
@@ -215,7 +216,7 @@ import type { ${whookServices
           type: 'input',
           message: 'Give the handler description',
         },
-      ] as _inquirer.Answers[];
+      ] as Answers[];
       if (API.tags && API.tags.length) {
         baseQuestions = [
           ...baseQuestions,

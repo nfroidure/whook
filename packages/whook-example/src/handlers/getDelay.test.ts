@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGetDelay from './getDelay.js';
 import type { DelayService } from 'common-services';
 
@@ -57,14 +57,14 @@ describe('getDelay', () => {
       delayCreateCalls: delay.create.mock.calls,
       delayClearCalls: delay.clear.mock.calls,
     }).toMatchInlineSnapshot(`
-      Object {
-        "delayClearCalls": Array [],
-        "delayCreateCalls": Array [
-          Array [
+      {
+        "delayClearCalls": [],
+        "delayCreateCalls": [
+          [
             1000,
           ],
         ],
-        "response": Object {
+        "response": {
           "status": 204,
         },
       }

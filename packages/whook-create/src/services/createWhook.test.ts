@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initCreateWhook from './createWhook.js';
 import { YError } from 'yerror';
 import { readFileSync } from 'fs';
@@ -135,12 +135,12 @@ Mr Bean
           ?.toString() || '',
       ),
     ).toMatchInlineSnapshot(`
-      Object {
-        "author": Object {
+      {
+        "author": {
           "email": "wayne@warner.com",
           "name": "Wayne Campbell",
         },
-        "dependencies": Object {
+        "dependencies": {
           "@whook/authorization": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
@@ -149,72 +149,71 @@ Mr Bean
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
-          "common-services": "^11.0.1",
+          "common-services": "^11.1.0",
           "http-auth-utils": "^3.0.3",
-          "jwt-service": "^9.0.1",
-          "knifecycle": "^14.0.0",
+          "jwt-service": "^9.0.2",
+          "knifecycle": "^14.1.0",
           "openapi-schema-validator": "^12.0.0",
-          "openapi-types": "^12.0.0",
+          "openapi-types": "^12.0.2",
           "strict-qs": "^7.0.0",
-          "type-fest": "^2.13.1",
+          "type-fest": "^2.19.0",
           "yerror": "^6.1.1",
           "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
-        "devDependencies": Object {
-          "@types/jest": "^28.1.1",
-          "@typescript-eslint/eslint-plugin": "^5.27.0",
-          "@typescript-eslint/parser": "^5.27.0",
+        "devDependencies": {
+          "@typescript-eslint/eslint-plugin": "^5.36.0",
+          "@typescript-eslint/parser": "^5.36.0",
           "axios": "^0.27.2",
           "chokidar": "^3.5.1",
-          "esbuild": "^0.14.46",
+          "esbuild": "^0.15.6",
           "esbuild-jest": "^0.5.0",
-          "esbuild-node-externals": "^1.4.1",
-          "eslint": "^8.17.0",
+          "esbuild-node-externals": "^1.5.0",
+          "eslint": "^8.23.0",
           "eslint-config-prettier": "^8.5.0",
-          "eslint-plugin-prettier": "^4.0.0",
-          "jest": "^28.1.0",
-          "jsarch": "^5.0.1",
+          "eslint-plugin-prettier": "^4.2.1",
+          "jest": "^29.0.1",
+          "jsarch": "^6.0.0",
           "parse-gitignore": "^1.0.1",
-          "prettier": "^2.6.2",
+          "prettier": "^2.7.1",
           "rimraf": "^3.0.2",
           "schema2dts": "^4.1.1",
           "ts-node": "^10.8.1",
-          "typescript": "^4.7.3",
+          "typescript": "^4.8.2",
         },
-        "engines": Object {
+        "engines": {
           "node": ">=16.15.0",
         },
-        "eslintConfig": Object {
-          "env": Object {
+        "eslintConfig": {
+          "env": {
             "es6": true,
             "jest": true,
             "mocha": true,
             "node": true,
           },
-          "extends": Array [
+          "extends": [
             "eslint:recommended",
             "plugin:prettier/recommended",
             "plugin:@typescript-eslint/eslint-recommended",
             "plugin:@typescript-eslint/recommended",
           ],
-          "ignorePatterns": Array [
+          "ignorePatterns": [
             "*.d.ts",
           ],
           "parser": "@typescript-eslint/parser",
-          "parserOptions": Object {
+          "parserOptions": {
             "ecmaVersion": 2018,
             "modules": true,
             "sourceType": "script",
           },
-          "plugins": Array [
+          "plugins": [
             "prettier",
           ],
-          "rules": Object {
+          "rules": {
             "prettier/prettier": "error",
           },
         },
-        "files": Array [
+        "files": [
           "bin",
           "dist",
           "src",
@@ -222,42 +221,42 @@ Mr Bean
           "README.md",
           "CHANGELOG.md",
         ],
-        "jest": Object {
-          "coverageReporters": Array [
+        "jest": {
+          "coverageReporters": [
             "lcov",
             "html",
           ],
-          "extensionsToTreatAsEsm": Array [
+          "extensionsToTreatAsEsm": [
             ".ts",
           ],
-          "moduleNameMapper": Object {
+          "moduleNameMapper": {
             "#(.*)": "<rootDir>/../../node_modules/$1",
-            "(.+)\\\\.js": "$1",
+            "(.+)\\.js": "$1",
           },
-          "roots": Array [
+          "roots": [
             "<rootDir>/src",
           ],
           "testEnvironment": "node",
-          "testPathIgnorePatterns": Array [
+          "testPathIgnorePatterns": [
             "/node_modules/",
           ],
-          "transform": Object {
-            "^.+\\\\.tsx?$": Array [
+          "transform": {
+            "^.+\\.tsx?$": [
               "esbuild-jest",
-              Object {
+              {
                 "format": "esm",
                 "sourcemap": true,
               },
             ],
           },
         },
-        "keywords": Array [
+        "keywords": [
           "whook",
         ],
         "license": "SEE LICENSE",
         "main": "dist/index.js",
         "name": "super-project",
-        "prettier": Object {
+        "prettier": {
           "printWidth": 80,
           "proseWrap": "always",
           "semi": true,
@@ -265,7 +264,7 @@ Mr Bean
           "trailingComma": "all",
         },
         "private": true,
-        "scripts": Object {
+        "scripts": {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
           "build": "rimraf -f 'dist' && tsc --outDir dist",
@@ -275,14 +274,14 @@ Mr Bean
           "genPackagelock": "npm i --package-lock-only",
           "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
-          "postbuild": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
+          "postbuild": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
           "prettier": "prettier --write 'src/**/*.ts'",
-          "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
+          "start": "PROJECT_SRC="$PWD/dist" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
           "test": "NODE_ENV=test npm run build && npm run jest",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
-          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
+          "whook-dev": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+          "whook-repl": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
         },
         "type": "module",
         "types": "dist/index.d.ts",
@@ -356,12 +355,12 @@ Mr Bean
           ?.toString() || '',
       ),
     ).toMatchInlineSnapshot(`
-      Object {
-        "author": Object {
+      {
+        "author": {
           "email": "wayne@warner.com",
           "name": "Wayne Campbell",
         },
-        "dependencies": Object {
+        "dependencies": {
           "@whook/authorization": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
@@ -370,72 +369,71 @@ Mr Bean
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
-          "common-services": "^11.0.1",
+          "common-services": "^11.1.0",
           "http-auth-utils": "^3.0.3",
-          "jwt-service": "^9.0.1",
-          "knifecycle": "^14.0.0",
+          "jwt-service": "^9.0.2",
+          "knifecycle": "^14.1.0",
           "openapi-schema-validator": "^12.0.0",
-          "openapi-types": "^12.0.0",
+          "openapi-types": "^12.0.2",
           "strict-qs": "^7.0.0",
-          "type-fest": "^2.13.1",
+          "type-fest": "^2.19.0",
           "yerror": "^6.1.1",
           "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
-        "devDependencies": Object {
-          "@types/jest": "^28.1.1",
-          "@typescript-eslint/eslint-plugin": "^5.27.0",
-          "@typescript-eslint/parser": "^5.27.0",
+        "devDependencies": {
+          "@typescript-eslint/eslint-plugin": "^5.36.0",
+          "@typescript-eslint/parser": "^5.36.0",
           "axios": "^0.27.2",
           "chokidar": "^3.5.1",
-          "esbuild": "^0.14.46",
+          "esbuild": "^0.15.6",
           "esbuild-jest": "^0.5.0",
-          "esbuild-node-externals": "^1.4.1",
-          "eslint": "^8.17.0",
+          "esbuild-node-externals": "^1.5.0",
+          "eslint": "^8.23.0",
           "eslint-config-prettier": "^8.5.0",
-          "eslint-plugin-prettier": "^4.0.0",
-          "jest": "^28.1.0",
-          "jsarch": "^5.0.1",
+          "eslint-plugin-prettier": "^4.2.1",
+          "jest": "^29.0.1",
+          "jsarch": "^6.0.0",
           "parse-gitignore": "^1.0.1",
-          "prettier": "^2.6.2",
+          "prettier": "^2.7.1",
           "rimraf": "^3.0.2",
           "schema2dts": "^4.1.1",
           "ts-node": "^10.8.1",
-          "typescript": "^4.7.3",
+          "typescript": "^4.8.2",
         },
-        "engines": Object {
+        "engines": {
           "node": ">=16.15.0",
         },
-        "eslintConfig": Object {
-          "env": Object {
+        "eslintConfig": {
+          "env": {
             "es6": true,
             "jest": true,
             "mocha": true,
             "node": true,
           },
-          "extends": Array [
+          "extends": [
             "eslint:recommended",
             "plugin:prettier/recommended",
             "plugin:@typescript-eslint/eslint-recommended",
             "plugin:@typescript-eslint/recommended",
           ],
-          "ignorePatterns": Array [
+          "ignorePatterns": [
             "*.d.ts",
           ],
           "parser": "@typescript-eslint/parser",
-          "parserOptions": Object {
+          "parserOptions": {
             "ecmaVersion": 2018,
             "modules": true,
             "sourceType": "script",
           },
-          "plugins": Array [
+          "plugins": [
             "prettier",
           ],
-          "rules": Object {
+          "rules": {
             "prettier/prettier": "error",
           },
         },
-        "files": Array [
+        "files": [
           "bin",
           "dist",
           "src",
@@ -443,42 +441,42 @@ Mr Bean
           "README.md",
           "CHANGELOG.md",
         ],
-        "jest": Object {
-          "coverageReporters": Array [
+        "jest": {
+          "coverageReporters": [
             "lcov",
             "html",
           ],
-          "extensionsToTreatAsEsm": Array [
+          "extensionsToTreatAsEsm": [
             ".ts",
           ],
-          "moduleNameMapper": Object {
+          "moduleNameMapper": {
             "#(.*)": "<rootDir>/../../node_modules/$1",
-            "(.+)\\\\.js": "$1",
+            "(.+)\\.js": "$1",
           },
-          "roots": Array [
+          "roots": [
             "<rootDir>/src",
           ],
           "testEnvironment": "node",
-          "testPathIgnorePatterns": Array [
+          "testPathIgnorePatterns": [
             "/node_modules/",
           ],
-          "transform": Object {
-            "^.+\\\\.tsx?$": Array [
+          "transform": {
+            "^.+\\.tsx?$": [
               "esbuild-jest",
-              Object {
+              {
                 "format": "esm",
                 "sourcemap": true,
               },
             ],
           },
         },
-        "keywords": Array [
+        "keywords": [
           "whook",
         ],
         "license": "SEE LICENSE",
         "main": "dist/index.js",
         "name": "super-project",
-        "prettier": Object {
+        "prettier": {
           "printWidth": 80,
           "proseWrap": "always",
           "semi": true,
@@ -486,7 +484,7 @@ Mr Bean
           "trailingComma": "all",
         },
         "private": true,
-        "scripts": Object {
+        "scripts": {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
           "build": "rimraf -f 'dist' && tsc --outDir dist",
@@ -496,14 +494,14 @@ Mr Bean
           "genPackagelock": "npm i --package-lock-only",
           "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
-          "postbuild": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
+          "postbuild": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
           "prettier": "prettier --write 'src/**/*.ts'",
-          "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
+          "start": "PROJECT_SRC="$PWD/dist" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
           "test": "NODE_ENV=test npm run build && npm run jest",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
-          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
+          "whook-dev": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+          "whook-repl": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
         },
         "type": "module",
         "types": "dist/index.d.ts",
@@ -562,12 +560,12 @@ Mr Bean
           ?.toString() || '',
       ),
     ).toMatchInlineSnapshot(`
-      Object {
-        "author": Object {
+      {
+        "author": {
           "email": "wayne@warner.com",
           "name": "Wayne Campbell",
         },
-        "dependencies": Object {
+        "dependencies": {
           "@whook/authorization": "<current_version>",
           "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
@@ -576,72 +574,71 @@ Mr Bean
           "@whook/http-transaction": "<current_version>",
           "@whook/swagger-ui": "<current_version>",
           "@whook/whook": "<current_version>",
-          "common-services": "^11.0.1",
+          "common-services": "^11.1.0",
           "http-auth-utils": "^3.0.3",
-          "jwt-service": "^9.0.1",
-          "knifecycle": "^14.0.0",
+          "jwt-service": "^9.0.2",
+          "knifecycle": "^14.1.0",
           "openapi-schema-validator": "^12.0.0",
-          "openapi-types": "^12.0.0",
+          "openapi-types": "^12.0.2",
           "strict-qs": "^7.0.0",
-          "type-fest": "^2.13.1",
+          "type-fest": "^2.19.0",
           "yerror": "^6.1.1",
           "yhttperror": "^6.1.1",
         },
         "description": "A new Whook project",
-        "devDependencies": Object {
-          "@types/jest": "^28.1.1",
-          "@typescript-eslint/eslint-plugin": "^5.27.0",
-          "@typescript-eslint/parser": "^5.27.0",
+        "devDependencies": {
+          "@typescript-eslint/eslint-plugin": "^5.36.0",
+          "@typescript-eslint/parser": "^5.36.0",
           "axios": "^0.27.2",
           "chokidar": "^3.5.1",
-          "esbuild": "^0.14.46",
+          "esbuild": "^0.15.6",
           "esbuild-jest": "^0.5.0",
-          "esbuild-node-externals": "^1.4.1",
-          "eslint": "^8.17.0",
+          "esbuild-node-externals": "^1.5.0",
+          "eslint": "^8.23.0",
           "eslint-config-prettier": "^8.5.0",
-          "eslint-plugin-prettier": "^4.0.0",
-          "jest": "^28.1.0",
-          "jsarch": "^5.0.1",
+          "eslint-plugin-prettier": "^4.2.1",
+          "jest": "^29.0.1",
+          "jsarch": "^6.0.0",
           "parse-gitignore": "^1.0.1",
-          "prettier": "^2.6.2",
+          "prettier": "^2.7.1",
           "rimraf": "^3.0.2",
           "schema2dts": "^4.1.1",
           "ts-node": "^10.8.1",
-          "typescript": "^4.7.3",
+          "typescript": "^4.8.2",
         },
-        "engines": Object {
+        "engines": {
           "node": ">=16.15.0",
         },
-        "eslintConfig": Object {
-          "env": Object {
+        "eslintConfig": {
+          "env": {
             "es6": true,
             "jest": true,
             "mocha": true,
             "node": true,
           },
-          "extends": Array [
+          "extends": [
             "eslint:recommended",
             "plugin:prettier/recommended",
             "plugin:@typescript-eslint/eslint-recommended",
             "plugin:@typescript-eslint/recommended",
           ],
-          "ignorePatterns": Array [
+          "ignorePatterns": [
             "*.d.ts",
           ],
           "parser": "@typescript-eslint/parser",
-          "parserOptions": Object {
+          "parserOptions": {
             "ecmaVersion": 2018,
             "modules": true,
             "sourceType": "script",
           },
-          "plugins": Array [
+          "plugins": [
             "prettier",
           ],
-          "rules": Object {
+          "rules": {
             "prettier/prettier": "error",
           },
         },
-        "files": Array [
+        "files": [
           "bin",
           "dist",
           "src",
@@ -649,42 +646,42 @@ Mr Bean
           "README.md",
           "CHANGELOG.md",
         ],
-        "jest": Object {
-          "coverageReporters": Array [
+        "jest": {
+          "coverageReporters": [
             "lcov",
             "html",
           ],
-          "extensionsToTreatAsEsm": Array [
+          "extensionsToTreatAsEsm": [
             ".ts",
           ],
-          "moduleNameMapper": Object {
+          "moduleNameMapper": {
             "#(.*)": "<rootDir>/../../node_modules/$1",
-            "(.+)\\\\.js": "$1",
+            "(.+)\\.js": "$1",
           },
-          "roots": Array [
+          "roots": [
             "<rootDir>/src",
           ],
           "testEnvironment": "node",
-          "testPathIgnorePatterns": Array [
+          "testPathIgnorePatterns": [
             "/node_modules/",
           ],
-          "transform": Object {
-            "^.+\\\\.tsx?$": Array [
+          "transform": {
+            "^.+\\.tsx?$": [
               "esbuild-jest",
-              Object {
+              {
                 "format": "esm",
                 "sourcemap": true,
               },
             ],
           },
         },
-        "keywords": Array [
+        "keywords": [
           "whook",
         ],
         "license": "SEE LICENSE",
         "main": "dist/index.js",
         "name": "super-project",
-        "prettier": Object {
+        "prettier": {
           "printWidth": 80,
           "proseWrap": "always",
           "semi": true,
@@ -692,7 +689,7 @@ Mr Bean
           "trailingComma": "all",
         },
         "private": true,
-        "scripts": Object {
+        "scripts": {
           "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
           "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
           "build": "rimraf -f 'dist' && tsc --outDir dist",
@@ -702,14 +699,14 @@ Mr Bean
           "genPackagelock": "npm i --package-lock-only",
           "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
-          "postbuild": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
+          "postbuild": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
           "prettier": "prettier --write 'src/**/*.ts'",
-          "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
+          "start": "PROJECT_SRC="$PWD/dist" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
           "test": "NODE_ENV=test npm run build && npm run jest",
           "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
           "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-          "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
-          "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
+          "whook-dev": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
+          "whook-repl": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js",
         },
         "type": "module",
         "types": "dist/index.d.ts",
@@ -768,9 +765,9 @@ Mr Bean
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
       }).toMatchInlineSnapshot(`
-        Object {
+        {
           "errorCode": "E_ACCESS",
-          "errorParams": Array [],
+          "errorParams": [],
         }
       `);
       expect({

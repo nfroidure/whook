@@ -103,7 +103,9 @@ export function refersTo<T>(
   resource:
     | WhookAPISchemaDefinition<T>
     | WhookAPIParameterDefinition<T>
-    | WhookAPIExampleDefinition<T>
+    | WhookAPIExampleDefinition<
+        T extends JsonValue | OpenAPIV3.ReferenceObject ? T : never
+      >
     | WhookAPIHeaderDefinition
     | WhookAPIResponseDefinition
     | WhookAPIRequestBodyDefinition,

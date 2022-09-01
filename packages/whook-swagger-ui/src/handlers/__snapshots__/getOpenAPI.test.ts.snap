@@ -1,40 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getOpenAPI should show every endpoints when authenticated 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
-      "info": Object {
+{
+  "response": {
+    "body": {
+      "info": {
         "title": "test",
         "version": "<already_tested>",
       },
       "openapi": "3.0.0",
-      "paths": Object {
-        "/time": Object {
-          "get": Object {
-            "tags": Array [
+      "paths": {
+        "/time": {
+          "get": {
+            "tags": [
               "public",
             ],
-            "x-whook": Object {
+            "x-whook": {
               "memx": 2,
               "tx": 18,
             },
           },
-          "put": Object {
-            "tags": Array [
+          "put": {
+            "tags": [
               "private",
             ],
-            "x-whook": Object {
+            "x-whook": {
               "private": true,
             },
           },
         },
       },
-      "tags": Array [
-        Object {
+      "tags": [
+        {
           "name": "public",
         },
-        Object {
+        {
           "name": "private",
         },
       ],
@@ -45,29 +45,29 @@ Object {
 `;
 
 exports[`getOpenAPI should work 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
-      "info": Object {
+{
+  "response": {
+    "body": {
+      "info": {
         "title": "test",
         "version": "<already_tested>",
       },
       "openapi": "3.0.0",
-      "paths": Object {
-        "/time": Object {
-          "get": Object {
-            "tags": Array [
+      "paths": {
+        "/time": {
+          "get": {
+            "tags": [
               "public",
             ],
             "x-whook": undefined,
           },
         },
       },
-      "tags": Array [
-        Object {
+      "tags": [
+        {
           "name": "public",
         },
-        Object {
+        {
           "name": "private",
         },
       ],
@@ -78,43 +78,43 @@ Object {
 `;
 
 exports[`getOpenAPI should work with muted paramerter 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
-      "components": Object {
-        "parameters": Object {
-          "xRefToRemove": Object {
+{
+  "response": {
+    "body": {
+      "components": {
+        "parameters": {
+          "xRefToRemove": {
             "in": "header",
             "name": "X-Ref-To-Remove",
           },
         },
       },
-      "info": Object {
+      "info": {
         "title": "test",
         "version": "<already_tested>",
       },
       "openapi": "3.0.0",
-      "paths": Object {
-        "/time": Object {
-          "get": Object {
-            "parameters": Array [
-              Object {
+      "paths": {
+        "/time": {
+          "get": {
+            "parameters": [
+              {
                 "in": "query",
                 "name": "queryParam",
               },
             ],
-            "tags": Array [
+            "tags": [
               "public",
             ],
             "x-whook": undefined,
           },
         },
       },
-      "tags": Array [
-        Object {
+      "tags": [
+        {
           "name": "public",
         },
-        Object {
+        {
           "name": "private",
         },
       ],

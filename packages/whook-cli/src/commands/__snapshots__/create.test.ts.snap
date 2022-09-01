@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`createCommand for commands should work when existing with dependencies and erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/commands",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -35,40 +35,40 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "message": "Give the command description",
           "name": "description",
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/commands/aCommand.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { extra, autoService } from 'knifecycle';
 import {
@@ -85,7 +85,7 @@ import type { LogService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {
   description: 'yolo',
-  example: \`whook aCommand --param \\"value\\"\`,
+  example: \`whook aCommand --param "value"\`,
   arguments: {
     type: 'object',
     additionalProperties: false,
@@ -129,17 +129,17 @@ async function initACommandCommand({
 `;
 
 exports[`createCommand for commands should work when existing with dependencies but no erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/commands",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -163,54 +163,54 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "message": "Give the command description",
           "name": "description",
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/commands/aCommand.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [],
+  "writeFileCalls": [],
 }
 `;
 
 exports[`createCommand for commands should work with no dependencies 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/commands",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -234,27 +234,27 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "message": "Give the command description",
           "name": "description",
         },
       ],
     ],
   ],
-  "logCalls": Array [],
-  "pathExistsCalls": Array [
-    Array [
+  "logCalls": [],
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/commands/aCommand.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { extra, autoService } from 'knifecycle';
 import {
@@ -270,7 +270,7 @@ import type {
 
 export const definition: WhookCommandDefinition = {
   description: 'yolo',
-  example: \`whook aCommand --param \\"value\\"\`,
+  example: \`whook aCommand --param "value"\`,
   arguments: {
     type: 'object',
     additionalProperties: false,
@@ -308,17 +308,17 @@ async function initACommandCommand({
 `;
 
 exports[`createCommand for handlers should work with an existing get and dependencies and erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/handlers",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -342,10 +342,10 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+    [
+      [
+        {
+          "choices": [
             "options",
             "head",
             "get",
@@ -360,18 +360,18 @@ Object {
           "name": "method",
           "type": "list",
         },
-        Object {
+        {
           "message": "Give the handler path",
           "name": "path",
           "type": "input",
         },
-        Object {
+        {
           "message": "Give the handler description",
           "name": "description",
           "type": "input",
         },
-        Object {
-          "choices": Array [
+        {
+          "choices": [
             "system",
           ],
           "message": "Assing one or more tags to the handler",
@@ -380,32 +380,32 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
 import type { WhookAPIHandlerDefinition } from '@whook/whook';
@@ -470,17 +470,17 @@ async function getHandler({
 `;
 
 exports[`createCommand for handlers should work with an existing get and dependencies but no erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/handlers",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -504,10 +504,10 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+    [
+      [
+        {
+          "choices": [
             "options",
             "head",
             "get",
@@ -522,18 +522,18 @@ Object {
           "name": "method",
           "type": "list",
         },
-        Object {
+        {
           "message": "Give the handler path",
           "name": "path",
           "type": "input",
         },
-        Object {
+        {
           "message": "Give the handler description",
           "name": "description",
           "type": "input",
         },
-        Object {
-          "choices": Array [
+        {
+          "choices": [
             "system",
           ],
           "message": "Assing one or more tags to the handler",
@@ -542,46 +542,46 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [],
+  "writeFileCalls": [],
 }
 `;
 
 exports[`createCommand for handlers should work with get and no dependencies 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/handlers",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -605,10 +605,10 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+    [
+      [
+        {
+          "choices": [
             "options",
             "head",
             "get",
@@ -623,18 +623,18 @@ Object {
           "name": "method",
           "type": "list",
         },
-        Object {
+        {
           "message": "Give the handler path",
           "name": "path",
           "type": "input",
         },
-        Object {
+        {
           "message": "Give the handler description",
           "name": "description",
           "type": "input",
         },
-        Object {
-          "choices": Array [
+        {
+          "choices": [
             "system",
           ],
           "message": "Assing one or more tags to the handler",
@@ -644,18 +644,18 @@ Object {
       ],
     ],
   ],
-  "logCalls": Array [],
-  "pathExistsCalls": Array [
-    Array [
+  "logCalls": [],
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
 import type { WhookAPIHandlerDefinition } from '@whook/whook';
@@ -711,17 +711,17 @@ async function getHandler(_: HandlerDependencies, {
 `;
 
 exports[`createCommand for providers should work when existing with dependencies and erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/services",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -745,32 +745,32 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/services/aProvider.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/services/aProvider.ts",
       "import { autoProvider, Provider } from 'knifecycle';
 import type { LogService } from 'common-services';
@@ -810,17 +810,17 @@ async function initAProvider({
 `;
 
 exports[`createCommand for providers should work when existing with dependencies but no erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/services",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -844,46 +844,46 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/services/aProvider.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [],
+  "writeFileCalls": [],
 }
 `;
 
 exports[`createCommand for providers should work with no dependencies 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/services",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -908,18 +908,18 @@ Object {
       ],
     ],
   ],
-  "logCalls": Array [],
-  "pathExistsCalls": Array [
-    Array [
+  "logCalls": [],
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/services/aProvider.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/services/aProvider.ts",
       "import { autoProvider, Provider } from 'knifecycle';
 
@@ -950,17 +950,17 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
 `;
 
 exports[`createCommand for services should work when existing with dependencies and erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/services",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -984,32 +984,32 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/services/aService.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/services/aService.ts",
       "import { autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
@@ -1039,17 +1039,17 @@ async function initAService({
 `;
 
 exports[`createCommand for services should work when existing with dependencies but no erase allowed 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/services",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -1073,46 +1073,46 @@ Object {
         },
       ],
     ],
-    Array [
-      Array [
-        Object {
+    [
+      [
+        {
           "name": "Erase ?",
           "type": "confirm",
         },
       ],
     ],
   ],
-  "logCalls": Array [
-    Array [
+  "logCalls": [
+    [
       "warning",
       "⚠️ - The file already exists !",
     ],
   ],
-  "pathExistsCalls": Array [
-    Array [
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/services/aService.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [],
+  "writeFileCalls": [],
 }
 `;
 
 exports[`createCommand for services should work with no dependencies 1`] = `
-Object {
-  "ensureDirCalls": Array [
-    Array [
+{
+  "ensureDirCalls": [
+    [
       "/hom/whoiam/project/src/services",
     ],
   ],
-  "inquirerPromptCalls": Array [
-    Array [
-      Array [
-        Object {
-          "choices": Array [
+  "inquirerPromptCalls": [
+    [
+      [
+        {
+          "choices": [
             "time",
             "log",
             "random",
@@ -1137,18 +1137,18 @@ Object {
       ],
     ],
   ],
-  "logCalls": Array [],
-  "pathExistsCalls": Array [
-    Array [
+  "logCalls": [],
+  "pathExistsCalls": [
+    [
       "/hom/whoiam/project/src/services/aService.ts",
     ],
   ],
-  "promptArgsCalls": Array [
-    Array [],
+  "promptArgsCalls": [
+    [],
   ],
   "result": undefined,
-  "writeFileCalls": Array [
-    Array [
+  "writeFileCalls": [
+    [
       "/hom/whoiam/project/src/services/aService.ts",
       "import { autoService } from 'knifecycle';
 

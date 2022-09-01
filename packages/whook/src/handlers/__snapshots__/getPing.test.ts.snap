@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`getPing should work 1`] = `
-Object {
-  "response": Object {
-    "body": Object {
+{
+  "response": {
+    "body": {
       "pong": "pong",
     },
-    "headers": Object {
+    "headers": {
       "X-Node-ENV": "test",
     },
     "status": 200,

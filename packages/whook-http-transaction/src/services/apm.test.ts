@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initAPMService from './apm.js';
 import type { LogService } from 'common-services';
 
@@ -19,16 +19,16 @@ describe('APM service', () => {
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      Object {
-        "logCalls": Array [
-          Array [
+      {
+        "logCalls": [
+          [
             "debug",
             "❤️ - Initializing the APM service.",
           ],
-          Array [
+          [
             "info",
             "CALL",
-            "{\\"id\\":\\"callid\\"}",
+            "{"id":"callid"}",
           ],
         ],
       }

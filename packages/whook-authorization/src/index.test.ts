@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { wrapHandlerWithAuthorization } from './index.js';
 import { handler } from 'knifecycle';
 import { YError } from 'yerror';

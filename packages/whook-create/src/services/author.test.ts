@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initAuthor from './author.js';
 import { YError } from 'yerror';
