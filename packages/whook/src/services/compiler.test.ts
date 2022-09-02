@@ -19,7 +19,7 @@ describe('Compiler', () => {
     importer.mockReset();
   });
 
-  test.skip('should work with external modules', async () => {
+  test('should work with external modules', async () => {
     importer.mockResolvedValueOnce(esbuild);
     importer.mockResolvedValueOnce(esbuildNodeExternals);
 
@@ -32,22 +32,22 @@ describe('Compiler', () => {
       log,
     });
 
-    const result = await compiler(path.join(__dirname, 'compiler'));
+    const result = await compiler(path.join('src', 'services', 'compiler.ts'));
 
     expect({
       contentsLength: result?.contents?.length,
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      Object {
-        "contentsLength": 90869,
-        "logCalls": Array [],
+      {
+        "contentsLength": 46381,
+        "logCalls": [],
         "mappingsLength": 0,
       }
     `);
   });
 
-  test.skip('should work with code only', async () => {
+  test('should work with code only', async () => {
     importer.mockResolvedValueOnce(esbuild);
     importer.mockResolvedValueOnce(esbuildNodeExternals);
 
@@ -60,16 +60,48 @@ describe('Compiler', () => {
       log,
     });
 
-    const result = await compiler(path.join(__dirname, 'compiler'));
+    const result = await compiler(path.join('src', 'services', 'compiler.ts'));
 
     expect({
       contentsLength: result?.contents?.length,
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      Object {
-        "contentsLength": 4948,
-        "logCalls": Array [],
+      {
+        "contentsLength": 3446,
+        "logCalls": [],
+        "mappingsLength": 0,
+      }
+    `);
+  });
+
+  test('should work with commonjs', async () => {
+    importer.mockResolvedValueOnce(esbuild);
+    importer.mockResolvedValueOnce(esbuildNodeExternals);
+
+    const compiler = await initCompiler({
+      PROJECT_DIR,
+      NODE_ENV,
+      DEBUG_NODE_ENVS,
+      COMPILER_OPTIONS: {
+        ...COMPILER_OPTIONS,
+        excludeNodeModules: true,
+        format: 'cjs',
+      },
+      importer,
+      log,
+    });
+
+    const result = await compiler(path.join('src', 'services', 'compiler.ts'));
+
+    expect({
+      contentsLength: result?.contents?.length,
+      mappingsLength: result?.mappings?.length,
+      logCalls: log.mock.calls,
+    }).toMatchInlineSnapshot(`
+      {
+        "contentsLength": 4758,
+        "logCalls": [],
         "mappingsLength": 0,
       }
     `);

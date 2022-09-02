@@ -61,7 +61,10 @@ async function initCompiler({
       ...options,
     };
     const basePath = path.dirname(entryPoint);
-    const outFile = basePath + '/index.js';
+    const outFile = path.join(
+      basePath,
+      `index.${compilerOptions.format === 'cjs' ? 'cjs' : 'mjs'}`,
+    );
     const absoluteToProjectsRelativePlugin = {
       name: 'absolute-to-projects-relative',
       setup(build) {
@@ -128,9 +131,10 @@ const require = createRequire(import.meta.url);
 
     const data = {
       contents:
-        result.outputFiles.find((file) => file.path === outFile)?.text || '',
+        result.outputFiles.find((file) => file.path.endsWith(outFile))?.text ||
+        '',
       mappings:
-        result.outputFiles.find((file) => file.path === outFile + '.map')
+        result.outputFiles.find((file) => file.path.endsWith(outFile + '.map'))
           ?.text || '',
     };
 
