@@ -486,22 +486,33 @@ export default function handler (event, context, callback) {
 }
 
 async function buildFinalLambda(
-  { compiler, log }: { compiler: WhookCompilerService; log: LogService },
+  {
+    compiler,
+    log,
+  }: {
+    compiler: WhookCompilerService;
+    log: LogService;
+  },
   lambdaPath: string,
   whookConfig: WhookAPIOperationAWSLambdaConfig,
 ): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
-  const { contents, mappings } = await compiler(
+  const { contents, mappings, extension } = await compiler(
     entryPoint,
     whookConfig.compilerOptions,
   );
 
   await Promise.all([
-    ensureFileAsync({ log }, `${lambdaPath}/index.js`, contents, 'utf-8'),
+    ensureFileAsync(
+      { log },
+      path.join(lambdaPath, `/index${extension}`),
+      contents,
+      'utf-8',
+    ),
     mappings
       ? ensureFileAsync(
           { log },
-          `${lambdaPath}/index.js.map`,
+          path.join(lambdaPath, `/index${extension}.map`),
           mappings,
           'utf-8',
         )

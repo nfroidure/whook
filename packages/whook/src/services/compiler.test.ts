@@ -35,12 +35,14 @@ describe('Compiler', () => {
     const result = await compiler(path.join('src', 'services', 'compiler.ts'));
 
     expect({
+      extension: result.extension,
       contentsLength: result?.contents?.length,
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       {
-        "contentsLength": 46381,
+        "contentsLength": 46414,
+        "extension": ".mjs",
         "logCalls": [],
         "mappingsLength": 0,
       }
@@ -63,12 +65,14 @@ describe('Compiler', () => {
     const result = await compiler(path.join('src', 'services', 'compiler.ts'));
 
     expect({
+      extension: result.extension,
       contentsLength: result?.contents?.length,
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       {
-        "contentsLength": 3446,
+        "contentsLength": 3479,
+        "extension": ".mjs",
         "logCalls": [],
         "mappingsLength": 0,
       }
@@ -95,12 +99,14 @@ describe('Compiler', () => {
     const result = await compiler(path.join('src', 'services', 'compiler.ts'));
 
     expect({
+      extension: result.extension,
       contentsLength: result?.contents?.length,
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       {
-        "contentsLength": 4758,
+        "contentsLength": 4791,
+        "extension": ".cjs",
         "logCalls": [],
         "mappingsLength": 0,
       }

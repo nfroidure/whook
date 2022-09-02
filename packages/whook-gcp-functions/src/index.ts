@@ -349,17 +349,22 @@ async function buildFinalLambda(
   whookConfig: WhookAPIOperationGCPFunctionConfig,
 ): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
-  const { contents, mappings } = await compiler(
+  const { extension, contents, mappings } = await compiler(
     entryPoint,
     whookConfig.compilerOptions,
   );
 
   await Promise.all([
-    ensureFileAsync({ log }, `${lambdaPath}/index.js`, contents, 'utf-8'),
+    ensureFileAsync(
+      { log },
+      path.join(lambdaPath, `/index${extension}`),
+      contents,
+      'utf-8',
+    ),
     mappings
       ? ensureFileAsync(
           { log },
-          `${lambdaPath}/index.js.map`,
+          path.join(lambdaPath, `/index${extension}.map`),
           mappings,
           'utf-8',
         )

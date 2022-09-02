@@ -33,7 +33,12 @@ export type WhookCompilerDependencies = WhookCompilerConfig & {
   importer: ImporterService<any>;
   log?: LogService;
 };
-type WhookCompilationResult = { contents: string; mappings: string };
+export type WhookCompilationResult = {
+  contents: string;
+  mappings: string;
+  extension: string;
+};
+
 export type WhookCompilerService = (
   entryPoint: string,
   options?: WhookCompilerOptions,
@@ -60,11 +65,9 @@ async function initCompiler({
       ...COMPILER_OPTIONS,
       ...options,
     };
+    const extension = compilerOptions.format === 'cjs' ? '.cjs' : '.mjs';
     const basePath = path.dirname(entryPoint);
-    const outFile = path.join(
-      basePath,
-      `index.${compilerOptions.format === 'cjs' ? 'cjs' : 'mjs'}`,
-    );
+    const outFile = path.join(basePath, `index${extension}`);
     const absoluteToProjectsRelativePlugin = {
       name: 'absolute-to-projects-relative',
       setup(build) {
@@ -130,6 +133,7 @@ const require = createRequire(import.meta.url);
     });
 
     const data = {
+      extension,
       contents:
         result.outputFiles.find((file) => file.path.endsWith(outFile))?.text ||
         '',
