@@ -1,3 +1,12 @@
+## [10.0.4](https://github.com/nfroidure/whook/compare/v10.0.3...v10.0.4) (2022-09-02)
+
+
+### Features
+
+* **build:** index extension depending on format ([06b5e62](https://github.com/nfroidure/whook/commit/06b5e62d611ea525422abc09506ecd2926eeb738))
+
+
+
 ## [10.0.3](https://github.com/nfroidure/whook/compare/v10.0.2...v10.0.3) (2022-09-01)
 
 

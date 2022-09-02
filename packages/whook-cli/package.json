@@ -1,6 +1,6 @@
 {
   "name": "@whook/cli",
-  "version": "10.0.3",
+  "version": "10.0.4",
   "description": "The Whook server CLI",
   "type": "module",
   "main": "dist/index.js",
@@ -75,7 +75,7 @@
   "dependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^9.0.1",
-    "@whook/whook": "^10.0.3",
+    "@whook/whook": "^10.0.4",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "camelcase": "^7.0.0",
