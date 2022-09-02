@@ -1,3 +1,12 @@
+## [10.0.5](https://github.com/nfroidure/whook/compare/v10.0.4...v10.0.5) (2022-09-02)
+
+
+### Bug Fixes
+
+* **build:** fix compiler build ([d6486e7](https://github.com/nfroidure/whook/commit/d6486e71905c31cf1d2e92d5ccf57f6fa68bf706))
+
+
+
 ## [10.0.4](https://github.com/nfroidure/whook/compare/v10.0.3...v10.0.4) (2022-09-02)
 
 
