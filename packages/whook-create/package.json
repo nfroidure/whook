@@ -72,9 +72,9 @@
     "common-services": "^11.1.0",
     "debug": "^4.3.4",
     "fs-extra": "^10.1.0",
-    "inquirer": "^9.0.0",
+    "inquirer": "^9.1.1",
     "knifecycle": "^14.1.0",
-    "ora": "^6.1.0",
+    "ora": "^6.1.2",
     "yerror": "^6.1.1"
   },
   "devDependencies": {

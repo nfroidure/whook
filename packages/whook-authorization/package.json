@@ -55,7 +55,7 @@
   "dependencies": {
     "@whook/whook": "^10.0.3",
     "common-services": "^11.1.0",
-    "http-auth-utils": "^3.0.3",
+    "http-auth-utils": "^3.0.4",
     "knifecycle": "^14.1.0",
     "yerror": "^6.1.1",
     "yhttperror": "^6.1.1"

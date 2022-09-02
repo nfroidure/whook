@@ -63,7 +63,7 @@
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "http-auth-utils": "^3.0.3",
+    "http-auth-utils": "^3.0.4",
     "jest": "^29.0.1",
     "jsdoc-to-markdown": "^7.1.1",
     "metapak": "^4.0.4",
