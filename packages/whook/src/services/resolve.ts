@@ -1,6 +1,5 @@
 import { autoService } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { createRequire } from 'module';
 import type { LogService } from 'common-services';
 
 export default autoService(initResolve);
@@ -25,7 +24,11 @@ async function initResolve({
   log: LogService;
 }): Promise<ResolveService> {
   log('debug', '🛂 - Initializing the resolve service!');
-  const require = createRequire(import.meta.url);
+  // createRequire function can be injected by the compiler
+  // and produce a reference error (duplicate identifier)
+  // By importing it in the service directly, we avoid this potential error
+  const module = await import('node:module');
+  const require = module.default.createRequire(import.meta.url);
 
   return (
     path: Parameters<ResolveService>[0],
