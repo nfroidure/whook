@@ -16,7 +16,7 @@ import {
   initGetPingDefinition,
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
-import { default as axios } from 'axios';
+import axios from 'axios';
 import { YError } from 'yerror';
 import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -114,7 +114,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
     getPing.mockResolvedValueOnce({ status: 200 });
 
-    const { status, headers, data } = await axios({
+    const { status, headers, data } = await axios.default({
       method: 'post',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: {
@@ -140,7 +140,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
     getPing.mockResolvedValueOnce({ status: 200 });
 
-    const { status, headers, data } = await axios({
+    const { status, headers, data } = await axios.default({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: { 'user-agent': '__avoid_axios_version__' },

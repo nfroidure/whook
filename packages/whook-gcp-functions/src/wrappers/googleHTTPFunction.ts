@@ -9,8 +9,8 @@ import {
   castParameters,
 } from '@whook/http-router';
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
-import { default as Ajv } from 'ajv';
-import { default as addAJVFormats } from 'ajv-formats';
+import Ajv from 'ajv';
+import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
 import { YHTTPError } from 'yhttperror';
 import {
@@ -121,7 +121,7 @@ async function initHandlerForAWSHTTPFunction(
   const produceableCharsets = Object.keys(ENCODERS);
   const consumableMediaTypes = extractConsumableMediaTypes(OPERATION);
   const produceableMediaTypes = extractProduceableMediaTypes(OPERATION);
-  const ajv = new Ajv({
+  const ajv = new Ajv.default({
     verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
     strict: true,
     logger: {
@@ -132,7 +132,7 @@ async function initHandlerForAWSHTTPFunction(
     useDefaults: true,
     coerceTypes: true,
   });
-  addAJVFormats(ajv);
+  addAJVFormats.default(ajv);
   const ammendedParameters = extractOperationSecurityParameters(
     OPERATION_API,
     OPERATION,

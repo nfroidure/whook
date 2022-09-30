@@ -1,5 +1,5 @@
-import { default as Ajv } from 'ajv';
-import { default as addAJVFormats } from 'ajv-formats';
+import Ajv from 'ajv';
+import addAJVFormats from 'ajv-formats';
 import { YError } from 'yerror';
 import type { WhookCommandDefinitionArguments } from '../services/promptArgs.js';
 import type { WhookCommandArgs } from '../services/args.js';
@@ -9,12 +9,12 @@ export function readArgs<T extends WhookCommandArgs['namedArguments']>(
   schema: WhookCommandDefinitionArguments,
   args: WhookCommandArgs,
 ): WhookCommandArgs<T> {
-  const ajv = new Ajv({
+  const ajv = new Ajv.default({
     coerceTypes: true,
     useDefaults: true,
     strict: true,
   });
-  addAJVFormats(ajv);
+  addAJVFormats.default(ajv);
   const validator = ajv.compile(schema);
 
   const { namedArguments, rest } = args;

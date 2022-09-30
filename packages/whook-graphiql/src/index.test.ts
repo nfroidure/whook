@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
-import { default as axios } from 'axios';
+import axios from 'axios';
 import {
   prepareServer,
   prepareEnvironment,
@@ -105,7 +105,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios({
+    const { status, headers, data } = await axios.default({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}${initGetPingDefinition.path}`,
       headers: { 'user-agent': '__avoid_axios_version__' },
@@ -174,7 +174,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios({
+    const { status, headers, data } = await axios.default({
       method: 'get',
       url: `http://${HOST}:${PORT + 2}${GRAPHIQL.path}`,
       headers: { 'user-agent': '__avoid_axios_version__' },

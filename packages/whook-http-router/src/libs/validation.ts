@@ -3,7 +3,7 @@ import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
 import Stream from 'stream';
 import { pickupOperationSecuritySchemes } from './openAPIUtils.js';
-import { default as Ajv } from 'ajv';
+import Ajv from 'ajv';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import type { ValidateFunction } from 'ajv';
 import type { SupportedSecurityScheme } from './openAPIUtils.js';
@@ -51,7 +51,7 @@ export function applyValidators(
 }
 
 export function prepareBodyValidator(
-  ajv: Ajv,
+  ajv: Ajv.default,
   operation: WhookOperation,
 ): (operation: WhookOperation, contentType: string, value: unknown) => void {
   if (
@@ -286,7 +286,7 @@ export function extractParametersFromSecuritySchemes(
 }
 
 export function prepareParametersValidators(
-  ajv: Ajv,
+  ajv: Ajv.default,
   operationId: string,
   parameters: OpenAPIV3.ParameterObject[],
 ): { [name: string]: ValidateFunction } {

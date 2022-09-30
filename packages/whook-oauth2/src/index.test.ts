@@ -19,7 +19,7 @@ import {
   wrapHandlerWithAuthorization,
 } from '@whook/authorization';
 import { constant, initializer } from 'knifecycle';
-import { default as axios } from 'axios';
+import axios from 'axios';
 import { YError } from 'yerror';
 import {
   BEARER as BEARER_MECHANISM,
@@ -329,7 +329,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -427,7 +427,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -520,7 +520,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -603,7 +603,7 @@ describe('OAuth2 server', () => {
           'https://example.com/oauth2/callback?a_param=a_param_value',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'get',
         url: `http://${HOST}:${PORT}${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`,
         params: {
@@ -678,7 +678,7 @@ describe('OAuth2 server', () => {
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2AcknowledgeDefinition.path}`,
         headers: {
@@ -767,7 +767,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -850,7 +850,7 @@ describe('OAuth2 server', () => {
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'get',
         url: `http://${HOST}:${PORT}${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`,
         params: {
@@ -933,7 +933,7 @@ describe('OAuth2 server', () => {
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2AcknowledgeDefinition.path}`,
         headers: {

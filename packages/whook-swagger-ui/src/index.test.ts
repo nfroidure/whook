@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
-import { default as axios } from 'axios';
+import axios from 'axios';
 import {
   prepareServer,
   prepareEnvironment,
@@ -99,7 +99,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios({
+    const { status, headers, data } = await axios.default({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: { 'user-agent': '__avoid_axios_version__' },
@@ -148,7 +148,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios({
+    const { status, headers, data } = await axios.default({
       method: 'get',
       url: `http://${HOST}:${PORT + 2}/docs`,
       headers: { 'user-agent': '__avoid_axios_version__' },

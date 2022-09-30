@@ -1,6 +1,6 @@
 import { autoService } from 'knifecycle';
 import path from 'path';
-import { default as _axios } from 'axios';
+import _axios from 'axios';
 import _ora from 'ora';
 import { YError } from 'yerror';
 import { exec as _exec } from 'child_process';
@@ -31,7 +31,7 @@ export default autoService(async function initCreateWhook({
   readdir = _readdir,
   exec = _exec,
   copy = _copy,
-  axios = _axios,
+  axios = _axios.default,
   ora = _ora,
   log,
 }: {
@@ -44,7 +44,7 @@ export default autoService(async function initCreateWhook({
   readdir: typeof _readdir;
   exec: typeof _exec;
   copy: typeof _copy;
-  axios?: typeof _axios;
+  axios?: typeof _axios.default;
   ora?: typeof _ora;
   log: LogService;
 }): Promise<CreateWhookService> {

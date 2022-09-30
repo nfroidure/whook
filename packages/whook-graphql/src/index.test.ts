@@ -13,7 +13,7 @@ import {
   prepareEnvironment as basePrepareEnvironment,
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
-import { default as axios } from 'axios';
+import axios from 'axios';
 import { YError } from 'yerror';
 import { wrapHandlerWithAuthorization } from '@whook/authorization';
 import {
@@ -265,7 +265,7 @@ describe('GraphQL server', () => {
         scope: 'user,oauth',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postGraphQLDefinition.path}`,
         headers: {
@@ -321,7 +321,7 @@ describe('GraphQL server', () => {
         scope: 'user,oauth',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postGraphQLDefinition.path}`,
         headers: {
@@ -381,7 +381,7 @@ describe('GraphQL server', () => {
         scope: 'user,oauth',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'get',
         url: `http://${HOST}:${PORT}${BASE_PATH}${getGraphQLDefinition.path}`,
         headers: {
@@ -437,7 +437,7 @@ describe('GraphQL server', () => {
         scope: 'user,oauth',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postGraphQLDefinition.path}`,
         headers: {
@@ -493,7 +493,7 @@ describe('GraphQL server', () => {
         scope: 'user,oauth',
       });
 
-      const { status, headers, data } = await axios({
+      const { status, headers, data } = await axios.default({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postGraphQLDefinition.path}`,
         headers: {

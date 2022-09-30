@@ -13,6 +13,7 @@ const DEFAULT_EVENT: MSKEvent = {
     'ingestion-bench-1': [
       {
         key: 'none',
+        headers: [],
         topic: 'tropic',
         partition: 1,
         offset: 0,
@@ -23,6 +24,7 @@ const DEFAULT_EVENT: MSKEvent = {
       },
       {
         key: 'none',
+        headers: [],
         topic: 'tropic',
         partition: 1,
         offset: 1,

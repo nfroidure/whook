@@ -4,8 +4,8 @@ import { initializer } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';
 import { Siso } from 'siso';
-import { default as Ajv } from 'ajv';
-import { default as addAJVFormats } from 'ajv-formats';
+import Ajv from 'ajv';
+import addAJVFormats from 'ajv-formats';
 import { qsStrict as strictQs } from 'strict-qs';
 import {
   OPEN_API_METHODS,
@@ -283,7 +283,7 @@ async function initHTTPRouter({
   errorHandler,
 }: HTTPRouterDependencies): Promise<HTTPRouterProvider> {
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
-  const ajv = new Ajv({
+  const ajv = new Ajv.default({
     verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
     strict: true,
     logger: {
@@ -292,7 +292,7 @@ async function initHTTPRouter({
       error: (...args: string[]) => log('error', ...args),
     },
   });
-  addAJVFormats(ajv);
+  addAJVFormats.default(ajv);
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
   const defaultResponseSpec = {
@@ -560,7 +560,7 @@ async function _createRouters({
   API: OpenAPIV3.Document;
   HANDLERS: WhookHandlers;
   BASE_PATH?: string;
-  ajv: Ajv;
+  ajv: Ajv.default;
   log: LogService;
 }): Promise<{ [method: string]: Siso<RouteDescriptor> }> {
   const routers = {};
@@ -623,7 +623,7 @@ async function _createRouters({
 }
 
 function _prepareRoute(
-  { ajv }: { ajv: Ajv },
+  { ajv }: { ajv: Ajv.default },
   operation: WhookOperation,
   handler: WhookHandler,
   ammendedParameters: DereferencedParameterObject[] = [],

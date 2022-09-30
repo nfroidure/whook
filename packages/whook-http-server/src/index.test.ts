@@ -1,6 +1,6 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initHTTPServer from './index.js';
-import { default as axios } from 'axios';
+import axios from 'axios';
 import net from 'net';
 import { YError } from 'yerror';
 import type { HTTPRouterService } from '@whook/http-router';
@@ -165,7 +165,7 @@ describe('initHTTPServer', () => {
       }) as unknown as HTTPRouterService,
     });
 
-    const { status } = await axios({
+    const { status } = await axios.default({
       method: 'get',
       url: `http://${HOST}:${PORT}/`,
       validateStatus: () => true,
