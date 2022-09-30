@@ -1,3 +1,13 @@
+## [10.0.6](https://github.com/nfroidure/whook/compare/v10.0.5...v10.0.6) (2022-09-30)
+
+
+### Bug Fixes
+
+* **types:** fix types, again ([b6a1d03](https://github.com/nfroidure/whook/commit/b6a1d030ac21e9c119f1f195ed2ab589001a1df3))
+* **whook:** avoid duplicate createRequire from resolve service ([93b4850](https://github.com/nfroidure/whook/commit/93b4850fde974f6be5afc2da862f34385a9be187))
+
+
+
 ## [10.0.5](https://github.com/nfroidure/whook/compare/v10.0.4...v10.0.5) (2022-09-02)
 
 
