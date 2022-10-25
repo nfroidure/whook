@@ -55,8 +55,8 @@ export async function wrapErrorHandlerForCORS(
     responseSpec,
     err,
   ) => {
-    // Test if setter is available, could produce another error if err only has a getter
-    if (!isGetter(err as unknown as Record<string, unknown>, 'headers')) {
+    try {
+      // Try to set custom headers, could fail if err only has a getter
       (err as YHTTPError).headers = {
         ...lowerCaseHeaders(CORS),
         // Ensures to not override existing CORS headers
@@ -68,22 +68,11 @@ export async function wrapErrorHandlerForCORS(
           'Origin',
         ),
       };
+    } catch (_err) {
+      // Silent error
     }
     return errorHandler(transactionId, responseSpec, err);
   };
 
   return wrappedErrorHandler;
-}
-
-export function isGetter(obj: Record<string, unknown>, prop: string): boolean {
-  if (typeof obj[prop] === 'undefined' || obj[prop] === null) {
-    // Property not defined in obj, should be safe to write this property
-    return false;
-  }
-  try {
-    return !!Object.getOwnPropertyDescriptor(obj, prop)?.['get'];
-  } catch (err) {
-    // Error while getting the descriptor, should be only a get
-    return true;
-  }
 }

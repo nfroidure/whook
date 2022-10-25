@@ -6,7 +6,6 @@ import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
 import { YHTTPError } from 'yhttperror';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
-  isGetter,
 } from './services/errorHandler.js';
 import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
 import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
@@ -102,12 +101,14 @@ async function handleWithCORS(
       },
     };
   } catch (err) {
-    // Test if setter is available, could produce another error if err only has a getter
-    if (!isGetter(err as unknown as Record<string, unknown>, 'headers')) {
+    try {
+      // Try to set custom headers, could fail if err only has a getter
       (err as YHTTPError).headers = {
         ...finalCORS,
         vary: 'Origin',
       };
+    } catch (_err) {
+      // Silent error
     }
     throw err;
   }
