@@ -2,14 +2,14 @@ import { initErrorHandler } from '@whook/http-router';
 import { wrapInitializer, alsoInject, ServiceInitializer } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YHTTPError } from 'yhttperror';
+import { lowerCaseHeaders } from '@whook/whook';
+import { mergeVaryHeaders } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type {
   WhookErrorHandler,
   ErrorHandlerDependencies,
 } from '@whook/http-router';
 import type { WhookCORSConfig } from '../index.js';
-import { lowerCaseHeaders } from '@whook/whook';
-import { mergeVaryHeaders } from '@whook/whook';
 
 type ErrorHandlerWrapperDependencies = WhookCORSConfig & { log?: LogService };
 
@@ -55,8 +55,8 @@ export async function wrapErrorHandlerForCORS(
     responseSpec,
     err,
   ) => {
-    // Test if setter is available, could produce another error if err only has a getter
-    if (!isGetter(err as unknown as Record<string, unknown>, 'headers')) {
+    try {
+      // Try to set custom headers, could fail if err only has a getter
       (err as YHTTPError).headers = {
         ...lowerCaseHeaders(CORS),
         // Ensures to not override existing CORS headers
@@ -68,22 +68,12 @@ export async function wrapErrorHandlerForCORS(
           'Origin',
         ),
       };
+    } catch (err) {
+      log('debug', '🤷 - Unable to set custom headers to the catched error!');
+      log('debug-stack', (err as YHTTPError)?.stack || 'no_stack');
     }
     return errorHandler(transactionId, responseSpec, err);
   };
 
   return wrappedErrorHandler;
-}
-
-export function isGetter(obj: Record<string, unknown>, prop: string): boolean {
-  if (typeof obj[prop] === 'undefined' || obj[prop] === null) {
-    // Property not defined in obj, should be safe to write this property
-    return false;
-  }
-  try {
-    return !!Object.getOwnPropertyDescriptor(obj, prop)?.['get'];
-  } catch (err) {
-    // Error while getting the descriptor, should be only a get
-    return true;
-  }
 }
