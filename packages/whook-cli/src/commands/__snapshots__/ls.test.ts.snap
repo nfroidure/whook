@@ -32,11 +32,11 @@ exports[`lsCommand should work with some plugins 1`] = `
   "logCalls": [
     [
       "debug",
-      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
     ],
     [
       "debug",
-      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
     ],
     [
       "info",
@@ -95,11 +95,11 @@ exports[`lsCommand should work with some plugins and a verbose output 1`] = `
   "logCalls": [
     [
       "debug",
-      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
     ],
     [
       "debug",
-      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
     ],
     [
       "info",
@@ -165,11 +165,11 @@ exports[`lsCommand should work with some plugins and ignored files 1`] = `
   "logCalls": [
     [
       "debug",
-      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
     ],
     [
       "debug",
-      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/cli/dist".",
+      "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
     ],
     [
       "info",

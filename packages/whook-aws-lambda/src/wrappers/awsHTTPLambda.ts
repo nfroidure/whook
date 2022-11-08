@@ -434,12 +434,12 @@ async function handleForAWSHTTPLambda(
   apm('CALL', {
     id: event.requestContext.requestId,
     transactionId:
-      request.headers['x-transaction-id'] &&
+      (request.headers['x-transaction-id'] &&
       new RegExp(uuidPattern).test(
         request.headers['x-transaction-id'] as string,
       )
         ? event.headers['x-transaction-id']
-        : event.requestContext.requestId,
+        : event.requestContext.requestId) || 'no_id',
     environment: NODE_ENV,
     method: event.requestContext.httpMethod,
     resourcePath: event.requestContext.resourcePath,
@@ -465,7 +465,7 @@ async function handleForAWSHTTPLambda(
     ),
     bodyLength: awsResponse.body ? awsResponse.body.length : 0,
     type: responseLog.type,
-    stack: responseLog.stack,
+    stack: responseLog.stack || 'no_stack',
     code: responseLog.code,
     params: responseLog.params,
     startTime,

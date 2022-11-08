@@ -105,7 +105,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios.default({
+    const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}${initGetPingDefinition.path}`,
       headers: { 'user-agent': '__avoid_axios_version__' },
@@ -140,6 +140,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
           "server": undefined,
           "transaction-id": "0",
           "transfer-encoding": "chunked",
+          Symbol(defaults): null,
         },
         "status": 200,
       }
@@ -174,7 +175,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       ['$instance', 'httpServer', 'process'],
       $,
     );
-    const { status, headers, data } = await axios.default({
+    const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT + 2}${GRAPHIQL.path}`,
       headers: { 'user-agent': '__avoid_axios_version__' },
@@ -203,6 +204,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
           "last-modified": undefined,
           "server": undefined,
           "transfer-encoding": "chunked",
+          Symbol(defaults): null,
         },
         "status": 200,
       }

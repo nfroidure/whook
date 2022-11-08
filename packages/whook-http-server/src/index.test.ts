@@ -165,7 +165,7 @@ describe('initHTTPServer', () => {
       }) as unknown as HTTPRouterService,
     });
 
-    const { status } = await axios.default({
+    const { status } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}/`,
       validateStatus: () => true,

@@ -129,7 +129,7 @@ async function handleForAWSTransformerLambda(
       lambdaName: OPERATION.operationId,
       parameters: { body: ':EventRecord' },
       type: 'error',
-      stack: castedErr.stack,
+      stack: castedErr.stack || 'no_stack',
       code: castedErr.code,
       params: castedErr.params,
       startTime,

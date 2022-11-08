@@ -1,15 +1,16 @@
-import { autoService } from 'knifecycle';
-import { noop } from '@whook/whook';
-import { ApolloServerBase, gql } from 'apollo-server-core';
+import { autoProvider } from 'knifecycle';
+import { noop, WhookOperation } from '@whook/whook';
+import { ApolloServer } from '@apollo/server';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import type { WhookOperation } from '@whook/whook';
+import type { Provider } from 'knifecycle';
 import type { LogService } from 'common-services';
-import type { Config, GraphQLOptions } from 'apollo-server-core';
-import type { GraphQLSchema } from 'graphql';
+import type { ApolloServerOptions } from '@apollo/server';
+import type { GraphQLSchema, DocumentNode } from 'graphql';
 
-type DocumentNode = ReturnType<typeof gql>;
 type ElementOf<A> = A extends (infer T)[] ? T : never;
-type IResolvers = ElementOf<Config['resolvers']>;
+type IResolvers = ElementOf<
+  ApolloServerOptions<WhookGraphQLContext>['resolvers']
+>;
 type DirectiveTransformer = (
   schema: GraphQLSchema,
   directiveName: string,
@@ -21,12 +22,20 @@ export type WhookGraphQLFragmentService = {
   schemaDirectives?: Record<string, DirectiveTransformer>;
 };
 
+export type BaseWhookGraphQLContext = {
+  operation: WhookOperation;
+  requestContext: Record<string, unknown>;
+};
+
+export type WhookGraphQLContext = BaseWhookGraphQLContext;
+
 export type WhookGraphQLEnv = {
   DEV_MODE?: string;
 };
 export type WhookGraphQLConfig = {
-  GRAPHQL_SERVER_OPTIONS?: Config;
+  GRAPHQL_SERVER_OPTIONS?: Partial<ApolloServerOptions<WhookGraphQLContext>>;
 };
+export type WhookGraphQLService = ApolloServer<WhookGraphQLContext>;
 
 export type WhookGraphQLDependencies = WhookGraphQLConfig & {
   ENV: WhookGraphQLEnv;
@@ -34,36 +43,7 @@ export type WhookGraphQLDependencies = WhookGraphQLConfig & {
   log: LogService;
 };
 
-export class WhookGraphQLService<
-  // The type of the argument to the `context` function for this integration.
-  ContextFunctionParams = any,
-> extends ApolloServerBase<ContextFunctionParams> {
-  // If you feel tempted to add an option to this constructor. Please consider
-  // another place, since the documentation becomes much more complicated when
-  // the constructor is not longer shared between all integration
-  constructor(options: Config<ContextFunctionParams>) {
-    super(options);
-  }
-
-  async waitStart(): Promise<void> {
-    await super.start();
-  }
-
-  // This translates the arguments from the middleware into graphQL options It
-  // provides typings for the integration specific behavior, ideally this would
-  // be propagated with a generic to the super class
-  createGraphQLServerOptions<U>({
-    operation,
-    requestContext,
-  }: {
-    operation: WhookOperation;
-    requestContext: U;
-  }): Promise<GraphQLOptions> {
-    return super.graphQLServerOptions({ operation, requestContext });
-  }
-}
-
-export default autoService(initGraphQL);
+export default autoProvider(initGraphQL);
 
 /**
  * Initialize the GraphQL service
@@ -89,7 +69,7 @@ async function initGraphQL({
   ENV,
   graphQLFragments,
   log = noop,
-}: WhookGraphQLDependencies): Promise<WhookGraphQLService> {
+}: WhookGraphQLDependencies): Promise<Provider<WhookGraphQLService>> {
   GRAPHQL_SERVER_OPTIONS = GRAPHQL_SERVER_OPTIONS || {};
   graphQLFragments = graphQLFragments || [];
 
@@ -112,7 +92,12 @@ async function initGraphQL({
     {},
   );
 
-  const apolloServer = new WhookGraphQLService({
+  const apolloServer = new ApolloServer({
+    includeStacktraceInErrorResponses:
+      GRAPHQL_SERVER_OPTIONS.includeStacktraceInErrorResponses ||
+      !!ENV.DEV_MODE,
+    introspection: GRAPHQL_SERVER_OPTIONS.introspection || !!ENV.DEV_MODE,
+    stopOnTerminationSignals: false, // Handled by Whook
     ...GRAPHQL_SERVER_OPTIONS,
     schema: Object.keys(directives).reduce(
       (finalSchema, name) => directives[name](finalSchema, name),
@@ -135,12 +120,17 @@ async function initGraphQL({
           ),
       }),
     ),
-    introspection: GRAPHQL_SERVER_OPTIONS.introspection || !!ENV.DEV_MODE,
-  });
+  } as ApolloServerOptions<WhookGraphQLContext>);
 
-  await apolloServer.waitStart();
+  await apolloServer.start();
 
   log('debug', '🕸️ - Initializing the GraphQL Service');
 
-  return apolloServer;
+  return {
+    service: apolloServer,
+    dispose: async () => {
+      log('debug', '🕸️ - Stopping the GraphQL Service');
+      await apolloServer.stop();
+    },
+  };
 }
