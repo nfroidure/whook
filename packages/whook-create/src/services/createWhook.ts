@@ -31,7 +31,7 @@ export default autoService(async function initCreateWhook({
   readdir = _readdir,
   exec = _exec,
   copy = _copy,
-  axios = _axios.default,
+  axios = _axios,
   ora = _ora,
   log,
 }: {
@@ -44,7 +44,7 @@ export default autoService(async function initCreateWhook({
   readdir: typeof _readdir;
   exec: typeof _exec;
   copy: typeof _copy;
-  axios?: typeof _axios.default;
+  axios?: typeof _axios;
   ora?: typeof _ora;
   log: LogService;
 }): Promise<CreateWhookService> {

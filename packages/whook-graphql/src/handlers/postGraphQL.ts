@@ -1,8 +1,7 @@
 import { autoHandler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { noop } from '@whook/whook';
-import { Headers } from 'apollo-server-env';
-import { runHttpQuery } from 'apollo-server-core';
+import { HTTPGraphQLRequest } from '@apollo/server';
 import type {
   WhookAPIHandlerDefinition,
   WhookOperation,
@@ -11,10 +10,21 @@ import type {
 } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type { WhookGraphQLService } from '../index.js';
-import type { HttpQueryError } from 'apollo-server-core';
+import type {
+  BaseWhookGraphQLContext,
+  WhookGraphQLContext,
+} from '../services/graphQL.js';
 
 // Serving GraphQL over HTTP
 // https://graphql.org/learn/serving-over-http/
+
+export type WhookGraphQLContextFunction = (
+  baseContext: BaseWhookGraphQLContext,
+) => Promise<WhookGraphQLContext>;
+
+const DEFAULT_GRAPHQL_CONTEXT_FUNCTION: WhookGraphQLContextFunction = async (
+  baseContext: BaseWhookGraphQLContext,
+) => baseContext;
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/graphql',
@@ -60,6 +70,7 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(postGraphQL) as unknown as <
   T extends Record<string, unknown>,
 >(services: {
+  GRAPHQL_SERVER_CONTEXT_FUNCTION?: WhookGraphQLContext;
   graphQL: WhookGraphQLService;
   log: LogService;
 }) => Promise<
@@ -77,7 +88,15 @@ export default autoHandler(postGraphQL) as unknown as <
 >;
 
 async function postGraphQL<T extends Record<string, unknown>>(
-  { graphQL, log = noop }: { graphQL: WhookGraphQLService; log: LogService },
+  {
+    graphQL,
+    graphQLContextFunction = DEFAULT_GRAPHQL_CONTEXT_FUNCTION,
+    log = noop,
+  }: {
+    graphQLContextFunction?: WhookGraphQLContextFunction;
+    graphQL: WhookGraphQLService;
+    log: LogService;
+  },
   {
     body,
     ...requestContext
@@ -92,46 +111,57 @@ async function postGraphQL<T extends Record<string, unknown>>(
   operation: WhookOperation,
 ): Promise<WhookResponse<number>> {
   try {
-    const options = await graphQL.createGraphQLServerOptions({
-      requestContext,
-      operation,
+    const headers = new Map<string, string>();
+
+    headers.set('content-type', 'application/json');
+
+    const httpGraphQLRequest: HTTPGraphQLRequest = {
+      method: 'POST',
+      headers,
+      search: '',
+      body,
+    };
+
+    const httpGraphQLResponse = await graphQL.executeHTTPGraphQLRequest({
+      httpGraphQLRequest,
+      context: async () =>
+        graphQLContextFunction({
+          operation,
+          requestContext,
+        }),
     });
-    const { responseInit, graphqlResponse } = await runHttpQuery(
-      [requestContext, operation],
-      {
-        options,
-        method: operation.method.toUpperCase(),
-        query: body,
-        request: {
-          url: operation.path,
-          method: operation.method.toUpperCase(),
-          headers: new Headers({}),
-        },
-      },
-    );
+    let responseBody = '';
+
+    if (httpGraphQLResponse.body.kind === 'complete') {
+      responseBody = httpGraphQLResponse.body.string;
+    } else {
+      for await (const chunk of httpGraphQLResponse.body.asyncIterator) {
+        responseBody += chunk;
+      }
+    }
 
     return {
-      status: 200,
+      status: httpGraphQLResponse.status || 200,
       // Remove content related headers and lowercase them
-      headers: Object.keys(responseInit.headers || {})
+      headers: Object.keys(httpGraphQLResponse.headers || {})
         .filter((key) => !/content-\w+/i.test(key))
         .reduce(
           (keptsHeaders, key) => ({
             ...keptsHeaders,
-            [key.toLowerCase()]: responseInit.headers?.[key],
+            [key.toLowerCase()]: httpGraphQLResponse.headers?.[key],
           }),
           {},
         ),
-      body: JSON.parse(graphqlResponse),
+      body: JSON.parse(responseBody),
     };
   } catch (err) {
     if ('HttpQueryError' === (err as Error).name) {
       log('debug', '💥 - Got a GraphQL error!');
       log('debug-stack', (err as Error).stack || 'no_stack_trace');
       return {
-        body: JSON.parse((err as HttpQueryError).message),
-        status: (err as HttpQueryError).statusCode,
-        headers: (err as HttpQueryError).headers as WhookHeaders,
+        body: JSON.parse((err as Error).message),
+        status: (err as any).statusCode,
+        headers: (err as any).headers as WhookHeaders,
       };
     }
 

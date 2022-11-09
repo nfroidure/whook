@@ -4,12 +4,15 @@ import initGetGraphQL, {
 import initPostGraphQL, {
   definition as postGraphQLDefinition,
 } from './handlers/postGraphQL.js';
-import initGraphQL, {
+import initGraphQL from './services/graphQL.js';
+import type { WhookGraphQLContextFunction } from './handlers/postGraphQL.js';
+import type {
   WhookGraphQLEnv,
   WhookGraphQLConfig,
   WhookGraphQLDependencies,
   WhookGraphQLService,
   WhookGraphQLFragmentService,
+  WhookGraphQLContext,
 } from './services/graphQL.js';
 
 export type {
@@ -18,6 +21,8 @@ export type {
   WhookGraphQLDependencies,
   WhookGraphQLService,
   WhookGraphQLFragmentService,
+  WhookGraphQLContext,
+  WhookGraphQLContextFunction,
 };
 export {
   initGetGraphQL,

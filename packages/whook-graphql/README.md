@@ -65,10 +65,7 @@ Declare the plugin into your `src/index.ts` file:
 
 +  // Add the Apollo Server configuration
 +  $.register(constant('GRAPHQL_SERVER_OPTIONS', {
-+    context: ({ operation, requestContext }) => ({
-+      operationId: operation.operationId,
-+      authenticationData: requestContext.authenticationData,
-+    }),
++    csrfPrevention: true,
 +  }));
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty

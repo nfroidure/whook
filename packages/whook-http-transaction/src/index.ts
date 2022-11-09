@@ -394,10 +394,10 @@ async function initHTTPTransaction({
         '://' +
         (req.headers.host || 'localhost') +
         FINAL_TRANSACTIONS[id].url,
-      verb: req.method,
+      verb: req.method as string,
       status: (err as YHTTPError).httpCode || 500,
       code: (err as YError).code || 'E_UNEXPECTED',
-      stack: err.stack,
+      stack: err.stack || 'none',
       details: (err as YError).params || [],
     });
 
@@ -469,8 +469,8 @@ async function initHTTPTransaction({
           '://' +
           (req.headers.host || 'localhost') +
           FINAL_TRANSACTIONS[id].url,
-        method: req.method,
-        stack: (err as Error).stack || (err as string),
+        method: req.method as string,
+        stack: (err as Error).stack || (err as string) || 'none',
         operationId,
       });
     }

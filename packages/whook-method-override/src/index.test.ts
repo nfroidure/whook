@@ -114,7 +114,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
     getPing.mockResolvedValueOnce({ status: 200 });
 
-    const { status, headers, data } = await axios.default({
+    const { status, headers, data } = await axios({
       method: 'post',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: {
@@ -140,7 +140,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
     getPing.mockResolvedValueOnce({ status: 200 });
 
-    const { status, headers, data } = await axios.default({
+    const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: { 'user-agent': '__avoid_axios_version__' },

@@ -103,7 +103,7 @@ describe('runServer', () => {
   it('should ping', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
 
-    const { status, headers, data } = await axios.default({
+    const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/ping`,
       headers: { 'user-agent': '__avoid_axios_version__' },
@@ -130,7 +130,7 @@ describe('runServer', () => {
   it('should authenticate users', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
 
-    const { status, headers, data } = await axios.default({
+    const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
       headers: {
@@ -168,7 +168,7 @@ describe('runServer', () => {
   it('should fail with bad fake tokens', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
 
-    const { status, headers, data } = await axios.default({
+    const { status, headers, data } = await axios({
       method: 'get',
       url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
       headers: {

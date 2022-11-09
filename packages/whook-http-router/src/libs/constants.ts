@@ -9,7 +9,7 @@ export const DEFAULT_PARSERS = {
   'application/json': (content: string): JsonValue => JSON.parse(content),
   'text/plain': (content: string): JsonValue => content,
   'application/x-www-form-urlencoded': (content: string): JsonValue =>
-    qs.parse(content),
+    qs.parse(content) as JsonValue,
 };
 export const DEFAULT_STRINGIFYERS = {
   'application/json': (content: JsonValue): string => JSON.stringify(content),

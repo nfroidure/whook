@@ -329,7 +329,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -373,6 +373,7 @@ describe('OAuth2 server', () => {
             "transaction-id": "0",
             "transfer-encoding": "chunked",
             "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+            Symbol(defaults): null,
           },
           "status": 200,
         }
@@ -427,7 +428,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -470,6 +471,7 @@ describe('OAuth2 server', () => {
             "transaction-id": "1",
             "transfer-encoding": "chunked",
             "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+            Symbol(defaults): null,
           },
           "status": 200,
         }
@@ -520,7 +522,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -562,6 +564,7 @@ describe('OAuth2 server', () => {
             "transaction-id": "2",
             "transfer-encoding": "chunked",
             "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+            Symbol(defaults): null,
           },
           "status": 200,
         }
@@ -603,7 +606,7 @@ describe('OAuth2 server', () => {
           'https://example.com/oauth2/callback?a_param=a_param_value',
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'get',
         url: `http://${HOST}:${PORT}${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`,
         params: {
@@ -636,6 +639,7 @@ describe('OAuth2 server', () => {
             "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fexample.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
             "transaction-id": "3",
             "transfer-encoding": "chunked",
+            Symbol(defaults): null,
           },
           "status": 302,
         }
@@ -678,7 +682,7 @@ describe('OAuth2 server', () => {
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2AcknowledgeDefinition.path}`,
         headers: {
@@ -715,6 +719,7 @@ describe('OAuth2 server', () => {
             "transaction-id": "4",
             "transfer-encoding": "chunked",
             "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+            Symbol(defaults): null,
           },
           "status": 302,
         }
@@ -767,7 +772,7 @@ describe('OAuth2 server', () => {
         expiresAt: Date.parse('2180-03-06T00:00:00Z'),
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
         headers: {
@@ -810,6 +815,7 @@ describe('OAuth2 server', () => {
             "transaction-id": "5",
             "transfer-encoding": "chunked",
             "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+            Symbol(defaults): null,
           },
           "status": 200,
         }
@@ -850,7 +856,7 @@ describe('OAuth2 server', () => {
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'get',
         url: `http://${HOST}:${PORT}${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`,
         params: {
@@ -882,6 +888,7 @@ describe('OAuth2 server', () => {
             "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
             "transaction-id": "6",
             "transfer-encoding": "chunked",
+            Symbol(defaults): null,
           },
           "status": 302,
         }
@@ -933,7 +940,7 @@ describe('OAuth2 server', () => {
         redirectURI: 'http://redirect.example.com/yolo',
       });
 
-      const { status, headers, data } = await axios.default({
+      const { status, headers, data } = await axios({
         method: 'post',
         url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2AcknowledgeDefinition.path}`,
         headers: {
@@ -970,6 +977,7 @@ describe('OAuth2 server', () => {
             "transaction-id": "7",
             "transfer-encoding": "chunked",
             "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+            Symbol(defaults): null,
           },
           "status": 302,
         }
