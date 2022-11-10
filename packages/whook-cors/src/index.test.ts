@@ -1,4 +1,4 @@
-import { describe, it, expect } from '@jest/globals';
+import { jest, describe, it, expect } from '@jest/globals';
 import {
   wrapHandlerWithCORS,
   initOptionsWithCORS,
@@ -10,6 +10,7 @@ import type { Dependencies, Service } from 'knifecycle';
 import type { CORSConfig } from './index.js';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookOperation } from '@whook/whook';
+import type { LogService } from 'common-services';
 
 describe('wrapHandlerWithCORS', () => {
   const CORS: CORSConfig = {
@@ -39,6 +40,7 @@ describe('wrapHandlerWithCORS', () => {
     },
     'x-whook': {},
   };
+  const log = jest.fn<LogService>();
 
   it('should work', async () => {
     const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
@@ -46,13 +48,16 @@ describe('wrapHandlerWithCORS', () => {
     );
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,
+      log,
     });
     const response = await wrappedHandler({}, OPERATION);
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       {
+        "logCalls": [],
         "response": {
           "headers": {
             "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
@@ -72,6 +77,7 @@ describe('wrapHandlerWithCORS', () => {
     );
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,
+      log,
     });
     const response = await wrappedHandler(
       {},
@@ -91,8 +97,10 @@ describe('wrapHandlerWithCORS', () => {
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       {
+        "logCalls": [],
         "response": {
           "headers": {
             "access-control-allow-credentials": "true",
@@ -113,6 +121,7 @@ describe('wrapHandlerWithCORS', () => {
     );
     const wrappedHandler = await wrappedOptionsWithCORS({
       CORS,
+      log,
     });
     const response = await wrappedHandler(
       {},
@@ -131,8 +140,10 @@ describe('wrapHandlerWithCORS', () => {
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
       {
+        "logCalls": [],
         "response": {
           "headers": {
             "access-control-allow-credentials": "true",
@@ -159,6 +170,7 @@ describe('wrapHandlerWithCORS', () => {
     );
     const wrappedHandler = await wrappedGetError({
       CORS,
+      log,
     });
 
     try {

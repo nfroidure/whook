@@ -6,11 +6,11 @@ import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
 import { YHTTPError } from 'yhttperror';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
-  isGetter,
 } from './services/errorHandler.js';
 import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
 import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { LogService } from 'common-services';
 
 export { initErrorHandlerWithCORS, wrapErrorHandlerForCORS };
 
@@ -27,6 +27,9 @@ export type CORSConfig = {
 };
 export type WhookCORSConfig = {
   CORS: CORSConfig;
+};
+export type WhookCORSDependencies = WhookCORSConfig & {
+  log: LogService;
 };
 export type WhookAPIOperationCORSConfig = {
   cors?:
@@ -50,14 +53,14 @@ export function wrapHandlerWithCORS<
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & WhookCORSConfig, S> {
-  const augmentedInitializer = alsoInject<WhookCORSConfig, D, S>(
+): ServiceInitializer<D & WhookCORSDependencies, S> {
+  const augmentedInitializer = alsoInject<WhookCORSDependencies, D, S>(
     ['CORS'],
     initHandler,
   );
 
   const initializerWrapper = async (
-    services: D & WhookCORSConfig,
+    services: D & WhookCORSDependencies,
     handler: S,
   ) => {
     const wrappedHandler = handleWithCORS.bind(
@@ -73,7 +76,7 @@ export function wrapHandlerWithCORS<
 }
 
 async function handleWithCORS(
-  { CORS }: WhookCORSConfig,
+  { CORS, log }: WhookCORSDependencies,
   handler: WhookHandler,
   parameters: Parameters,
   operation: WhookOperation<WhookAPIOperationCORSConfig>,
@@ -102,12 +105,15 @@ async function handleWithCORS(
       },
     };
   } catch (err) {
-    // Test if setter is available, could produce another error if err only has a getter
-    if (!isGetter(err as unknown as Record<string, unknown>, 'headers')) {
+    try {
+      // Try to set custom headers, could fail if err only has a getter
       (err as YHTTPError).headers = {
         ...finalCORS,
         vary: 'Origin',
       };
+    } catch (err) {
+      log('debug', '🤷 - Unable to set custom headers to the catched error!');
+      log('debug-stack', (err as YHTTPError)?.stack || 'no_stack');
     }
     throw err;
   }
