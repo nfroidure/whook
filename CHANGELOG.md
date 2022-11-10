@@ -1,3 +1,12 @@
+# [11.0.0](https://github.com/nfroidure/whook/compare/v10.0.6...v11.0.0) (2022-11-10)
+
+
+### Bug Fixes
+
+* **cors:** fix only getter on headers ([726758e](https://github.com/nfroidure/whook/commit/726758ef14240d1b381e843930bf4d82c3738aed))
+
+
+
 ## [10.0.6](https://github.com/nfroidure/whook/compare/v10.0.5...v10.0.6) (2022-09-30)
 
 
