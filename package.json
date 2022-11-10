@@ -58,7 +58,7 @@
     "conventional-changelog-cli": "^2.2.2",
     "coveralls": "^3.0.4",
     "cz-conventional-changelog": "^3.3.0",
-    "lerna": "^4.0.0",
+    "lerna": "^6.0.3",
     "metapak": "^4.0.4",
     "metapak-nfroidure": "12.3.0"
   },
