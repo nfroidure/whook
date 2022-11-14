@@ -1,3 +1,7 @@
+## [11.0.1](https://github.com/nfroidure/whook/compare/v11.0.0...v11.0.1) (2022-11-14)
+
+
+
 # [11.0.0](https://github.com/nfroidure/whook/compare/v10.0.6...v11.0.0) (2022-11-10)
 
 
