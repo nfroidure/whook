@@ -90,8 +90,8 @@ Wayne Campbell
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf -f 'dist' && tsc --outDir dist",
     "cover": "npm run jest -- --coverage",
-    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
-    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --logError bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/dev.js",
     "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
@@ -99,10 +99,11 @@ Wayne Campbell
     "prettier": "prettier --write 'src/**/*.ts'",
     "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
-    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
-    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/repl.js"
   },
   "files": [
     "bin",
@@ -391,8 +392,8 @@ Wayne Campbell
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf -f 'dist' && tsc --outDir dist",
     "cover": "npm run jest -- --coverage",
-    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
-    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --logError bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/dev.js",
     "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
@@ -400,10 +401,11 @@ Wayne Campbell
     "prettier": "prettier --write 'src/**/*.ts'",
     "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
-    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
-    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/repl.js"
   },
   "files": [
     "bin",
@@ -724,8 +726,8 @@ Wayne Campbell
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf -f 'dist' && tsc --outDir dist",
     "cover": "npm run jest -- --coverage",
-    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
-    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --logError bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/dev.js",
     "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
@@ -733,10 +735,11 @@ Wayne Campbell
     "prettier": "prettier --write 'src/**/*.ts'",
     "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
-    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
-    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/repl.js"
   },
   "files": [
     "bin",
@@ -1045,8 +1048,8 @@ Wayne Campbell
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf -f 'dist' && tsc --outDir dist",
     "cover": "npm run jest -- --coverage",
-    "debug": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --inspect bin/dev",
-    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/dev.js",
+    "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --logError bin/dev",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/dev.js",
     "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
@@ -1054,10 +1057,11 @@ Wayne Campbell
     "prettier": "prettier --write 'src/**/*.ts'",
     "start": "PROJECT_SRC=\\"$PWD/dist\\" NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
-    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --files bin/watch.js",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
-    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/whook.js",
-    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/repl.js"
+    "whook-dev": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} ts-node --esm --logError --files -- bin/whook.js",
+    "whook-repl": "PROJECT_SRC=\\"$PWD/src\\" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --logError --files -- bin/repl.js"
   },
   "files": [
     "bin",

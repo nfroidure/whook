@@ -1,6 +1,8 @@
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
+import { DEFAULT_COMPILER_OPTIONS } from '@whook/whook';
+import type { WhookCompilerOptions } from '@whook/whook';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { LogService, TimeService } from 'common-services';
 
@@ -45,12 +47,14 @@ export default extra(definition, autoService(initTestCronLambdaCommand));
 async function initTestCronLambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
+  COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log,
   time,
   args,
 }: {
   NODE_ENV: string;
   PROJECT_DIR: string;
+  COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;
   time: TimeService;
   args: WhookCommandArgs;
@@ -64,11 +68,13 @@ async function initTestCronLambdaCommand({
       date: string;
       body: string;
     }>(definition.arguments, args);
+    const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,
       name,
       type,
+      extension,
     );
 
     const result = await new Promise((resolve, reject) => {

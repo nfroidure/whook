@@ -1,6 +1,8 @@
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
+import { DEFAULT_COMPILER_OPTIONS } from '@whook/whook';
+import type { WhookCompilerOptions } from '@whook/whook';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { LogService } from 'common-services';
 
@@ -35,11 +37,13 @@ export default extra(definition, autoService(initTestConsumerLambdaCommand));
 async function initTestConsumerLambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
+  COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log,
   args,
 }: {
   NODE_ENV: string;
   PROJECT_DIR: string;
+  COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;
   args: WhookCommandArgs;
 }) {
@@ -51,11 +55,13 @@ async function initTestConsumerLambdaCommand({
       type: string;
       event: string;
     }>(definition.arguments, args);
+    const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,
       name,
       type,
+      extension,
     );
     const parsedEvent = JSON.parse(event);
     const result = await new Promise((resolve, reject) => {

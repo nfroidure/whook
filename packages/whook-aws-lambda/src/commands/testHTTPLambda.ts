@@ -1,7 +1,7 @@
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
-import { noop } from '@whook/whook';
+import { DEFAULT_COMPILER_OPTIONS, noop } from '@whook/whook';
 import { YError } from 'yerror';
 import {
   dereferenceOpenAPIOperations,
@@ -10,6 +10,7 @@ import {
 import { v4 as randomUUID } from 'uuid';
 import camelCase from 'camelcase';
 import { extractOperationSecurityParameters } from '@whook/http-router';
+import type { WhookCompilerOptions } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -53,6 +54,7 @@ export default extra(definition, autoService(initTestHTTPLambdaCommand));
 async function initTestHTTPLambdaCommand({
   NODE_ENV,
   PROJECT_DIR,
+  COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   API,
   time,
   log = noop,
@@ -60,6 +62,7 @@ async function initTestHTTPLambdaCommand({
 }: {
   NODE_ENV: string;
   PROJECT_DIR: string;
+  COMPILER_OPTIONS?: WhookCompilerOptions;
   API: OpenAPIV3.Document;
   time: TimeService;
   log: LogService;
@@ -74,11 +77,13 @@ async function initTestHTTPLambdaCommand({
       contentType: string;
       parameters: string;
     }>(definition.arguments, args);
+    const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
       { PROJECT_DIR, log },
       NODE_ENV,
       name,
       type,
+      extension,
     );
     const OPERATION = (
       await dereferenceOpenAPIOperations(

@@ -13,13 +13,14 @@ export async function loadLambda(
   target: string,
   operationId: string,
   type: string,
+  extension = '.mjs',
 ): Promise<any> {
   const modulePath = path.join(
     PROJECT_DIR,
     'builds',
     target,
     operationId,
-    type + '.js',
+    type + extension,
   );
 
   log('debug', `⛏️ - Loading lambda module at path "${modulePath}".`);
