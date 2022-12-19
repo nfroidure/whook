@@ -78,7 +78,7 @@ const BUILD_DEFINITIONS: Record<
     wrapper: {
       name: 'wrapHandlerForGoogleHTTPFunction',
       path: path.join(
-        path.dirname(require.resolve('@whook/gcp-function')),
+        path.dirname(require.resolve('@whook/gcp-functions')),
         'wrappers/googleHTTPFunction.js',
       ),
     },
