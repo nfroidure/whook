@@ -58,7 +58,7 @@ export const definition: WhookCommandDefinition = {
     required: ['name'],
     properties: {
       name: {
-        description: 'Name of the lamda to run',
+        description: 'Name of the lambda to run',
         type: 'string',
       },
       type: {

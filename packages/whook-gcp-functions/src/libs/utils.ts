@@ -2,7 +2,7 @@ import { YError } from 'yerror';
 import path from 'path';
 import type { LogService } from 'common-services';
 
-export async function loadLambda(
+export async function loadFunction(
   {
     PROJECT_DIR,
     log,
@@ -13,16 +13,17 @@ export async function loadLambda(
   target: string,
   operationId: string,
   type: string,
+  extension = '.mjs',
 ): Promise<any> {
   const modulePath = path.join(
     PROJECT_DIR,
     'builds',
     target,
     operationId,
-    type + '.js',
+    type + extension,
   );
 
-  log('debug', `⛏️ - Loading lambda module at path "${modulePath}".`);
+  log('debug', `⛏️ - Loading function module at path "${modulePath}".`);
 
   try {
     const module = await import(modulePath);

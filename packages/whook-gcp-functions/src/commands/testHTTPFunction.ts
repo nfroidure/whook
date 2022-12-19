@@ -1,4 +1,4 @@
-import { loadLambda } from '../libs/utils.js';
+import { loadFunction } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '@whook/cli';
 import { YError } from 'yerror';
@@ -8,6 +8,8 @@ import {
 } from '@whook/http-router';
 import stream from 'stream';
 import camelCase from 'camelcase';
+import { DEFAULT_COMPILER_OPTIONS } from '@whook/whook';
+import type { WhookCompilerOptions } from '@whook/whook';
 import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -16,19 +18,19 @@ const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
 
 export const definition: WhookCommandDefinition = {
-  description: 'A command for testing AWS HTTP lambda',
-  example: `whook testHTTPLambda --name getPing`,
+  description: 'A command for testing GCP HTTP function',
+  example: `whook testHTTPFunction --name getPing`,
   arguments: {
     type: 'object',
     additionalProperties: false,
     required: ['name'],
     properties: {
       name: {
-        description: 'Name of the lamda to run',
+        description: 'Name of the function to run',
         type: 'string',
       },
       type: {
-        description: 'Type of lambda to test',
+        description: 'Type of function to test',
         type: 'string',
         enum: ['main', 'index'],
         default: 'index',
@@ -47,17 +49,19 @@ export const definition: WhookCommandDefinition = {
   },
 };
 
-export default extra(definition, autoService(initTestHTTPLambdaCommand));
+export default extra(definition, autoService(initTestHTTPFunctionCommand));
 
-async function initTestHTTPLambdaCommand({
+async function initTestHTTPFunctionCommand({
   NODE_ENV,
   PROJECT_DIR,
+  COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   API,
   log,
   args,
 }: {
   NODE_ENV: string;
   PROJECT_DIR: string;
+  COMPILER_OPTIONS?: WhookCompilerOptions;
   API: OpenAPIV3.Document;
   log: LogService;
   args: WhookCommandArgs;
@@ -71,11 +75,13 @@ async function initTestHTTPLambdaCommand({
       contentType: string;
       parameters: string;
     }>(definition.arguments, args);
-    const handler = await loadLambda(
+    const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
+    const handler = await loadFunction(
       { PROJECT_DIR, log },
       NODE_ENV,
       name,
       type,
+      extension,
     );
     const OPERATION = (
       await dereferenceOpenAPIOperations(API, getOpenAPIOperations(API))
