@@ -56,7 +56,7 @@
     "@whook/whook": "^11.0.1",
     "common-services": "^12.0.0",
     "knifecycle": "^14.1.0",
-    "openapi-types": "^12.0.2"
+    "openapi-types": "^12.1.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.0",

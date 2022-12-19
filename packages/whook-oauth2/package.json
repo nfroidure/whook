@@ -46,13 +46,13 @@
     "@types/cookie": "^0.5.1",
     "@whook/authorization": "^11.0.1",
     "@whook/whook": "^11.0.1",
-    "camelcase": "^7.0.0",
+    "camelcase": "^7.0.1",
     "common-services": "^12.0.0",
     "cookie": "^0.5.0",
     "knifecycle": "^14.1.0",
-    "openapi-types": "^12.0.2",
-    "type-fest": "^3.1.0",
-    "yerror": "^6.2.0",
+    "openapi-types": "^12.1.0",
+    "type-fest": "^3.4.0",
+    "yerror": "^6.2.1",
     "yhttperror": "^6.1.1"
   },
   "devDependencies": {
