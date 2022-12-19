@@ -6,7 +6,7 @@ import {
   constant,
   alsoInject,
 } from 'knifecycle';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
@@ -141,7 +141,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       return $autoload(serviceName);
     } catch (err) {
       log('error', `Build error while loading "${serviceName}".`);
-      log('error-stack', (err as Error).stack || 'no_stack_trace');
+      log('error-stack', printStackTrace(err));
       throw err;
     }
   };

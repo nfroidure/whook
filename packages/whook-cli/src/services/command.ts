@@ -1,5 +1,5 @@
 import { autoService, singleton } from 'knifecycle';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 
 export default singleton(autoService(initCommand));
 
@@ -9,7 +9,7 @@ async function initCommand({ commandHandler, log }) {
       await commandHandler();
     } catch (err) {
       if ((err as YError).code === 'E_BAD_ARGS') {
-        log('error-stack', (err as Error).stack || 'no_stack_trace');
+        log('error-stack', printStackTrace(err));
         if ((err as YError).params[0][0].keyword === 'required') {
           if ((err as YError).params[0][0].params.missingProperty) {
             log(

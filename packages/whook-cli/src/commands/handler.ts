@@ -1,5 +1,5 @@
 import { extra, autoService } from 'knifecycle';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import { readArgs } from '../libs/args.js';
 import { noop } from '@whook/whook';
 import type { WhookHandler } from '@whook/whook';
@@ -71,7 +71,7 @@ async function initHandlerCommand({
       log('info', JSON.stringify(response, null, 2));
     } catch (err) {
       log('error', 'Got an error while running the handler.');
-      log('error-stack', (err as Error).stack || 'no_stack_trace');
+      log('error-stack', printStackTrace(err));
     }
   };
 }

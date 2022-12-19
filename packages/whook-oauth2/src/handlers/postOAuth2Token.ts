@@ -284,7 +284,10 @@ async function postOAuth2Token<
     };
   } catch (err) {
     log('debug', '👫 - OAuth2 token issuing error', (err as YError).code);
-    log('debug-stack', (err as Error).stack || 'no_stack_trace');
+    log(
+      'error-stack',
+      (err as Error)?.stack || (err as string) || 'no_stack_trace',
+    );
 
     throw YError.cast(err as Error, 'E_OAUTH2');
   }

@@ -1,6 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import camelCase from 'camelcase';
-import { YError } from 'yerror';
+import { YError, printStackTrace } from 'yerror';
 import { refersTo } from '@whook/whook';
 import type {
   WhookAPIHandlerDefinition,
@@ -162,7 +162,7 @@ async function getOAuth2Authorize(
     url.searchParams.set('client_id', applicationId);
   } catch (err) {
     log('debug', '👫 - OAuth2 initialization error', (err as YError).code);
-    log('debug-stack', (err as Error).stack || 'no_stack_trace');
+    log('error-stack', printStackTrace(err));
 
     url.searchParams.set('redirect_uri', demandedRedirectURI);
     setURLError(

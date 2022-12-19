@@ -17,6 +17,7 @@ import type {
   ServiceInitializerWrapper,
 } from 'knifecycle';
 import type { LogService } from 'common-services';
+import { printStackTrace } from 'yerror';
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
@@ -80,7 +81,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       return $autoload(serviceName);
     } catch (err) {
       log('error', `Build error while loading "${serviceName}".`);
-      log('error-stack', (err as Error).stack || 'no_stack_trace');
+      log('error-stack', printStackTrace(err));
       throw err;
     }
   };

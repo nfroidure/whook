@@ -4,7 +4,7 @@ import util from 'util';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import cpr from 'cpr';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import { createRequire } from 'module';
 import {
   Knifecycle,
@@ -315,7 +315,7 @@ async function buildAnyLambda(
     await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
   } catch (err) {
     log('error', `Error building "${operationId}"...`);
-    log('error-stack', (err as Error).stack || 'no_stack_trace');
+    log('error-stack', printStackTrace(err));
     log('debug', JSON.stringify((err as YError).params, null, 2));
     throw YError.wrap(err as Error, 'E_LAMBDA_BUILD', operationId);
   }

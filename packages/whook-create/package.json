@@ -75,7 +75,7 @@
     "inquirer": "^9.1.4",
     "knifecycle": "^14.1.0",
     "ora": "^6.1.2",
-    "yerror": "^6.1.1"
+    "yerror": "^6.2.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.0",

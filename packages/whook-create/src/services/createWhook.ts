@@ -2,7 +2,7 @@ import { autoService } from 'knifecycle';
 import path from 'path';
 import _axios from 'axios';
 import _ora from 'ora';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import { exec as _exec } from 'child_process';
 import { default as fsExtra } from 'fs-extra';
 import type { LogService } from 'common-services';
@@ -183,7 +183,7 @@ ${author.name}
             'error',
             `⚠️ - Could not retrieve the \`.gitignore\` file contents from: "${GIT_IGNORE_URL}"`,
           );
-          log('error-stack', (err as Error).stack || 'no_stack_trace');
+          log('error-stack', printStackTrace(err));
         }),
       new Promise((resolve, reject) =>
         exec(
@@ -202,7 +202,7 @@ ${author.name}
         ),
       ).catch((err) => {
         log('error', '⚠️ - Could not initialize the git project!');
-        log('error-stack', (err as Error).stack || 'no_stack_trace');
+        log('error-stack', printStackTrace(err));
       }),
     ]);
 
@@ -238,7 +238,7 @@ ${author.name}
         symbol: '❌',
         text: 'Failed to install dependencies',
       });
-      log('error-stack', (err as Error).stack || 'no_stack_trace');
+      log('error-stack', printStackTrace(err));
     }
 
     log(

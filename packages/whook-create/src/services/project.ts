@@ -2,7 +2,7 @@ import { autoService } from 'knifecycle';
 import { default as fsExtra } from 'fs-extra';
 import path from 'path';
 import _inquirer from 'inquirer';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import type { LockService, LogService } from 'common-services';
 
 const { ensureDir: _ensureDir } = fsExtra;
@@ -54,7 +54,7 @@ export default autoService(async function initProject({
         'error',
         `Cannot create the project's directory: "${projectDirectory}"`,
       );
-      log('error-stack', (err as Error).stack || 'no_stack_trace');
+      log('error-stack', printStackTrace(err));
       throw YError.wrap(err as Error, 'E_PROJECT_DIR', projectDirectory);
     }
 

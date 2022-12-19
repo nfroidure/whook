@@ -140,7 +140,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
           "server": undefined,
           "transaction-id": "0",
           "transfer-encoding": "chunked",
-          Symbol(defaults): null,
         },
         "status": 200,
       }
@@ -204,7 +203,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
           "last-modified": undefined,
           "server": undefined,
           "transfer-encoding": "chunked",
-          Symbol(defaults): null,
         },
         "status": 200,
       }

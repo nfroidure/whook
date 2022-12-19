@@ -60,7 +60,7 @@
     "openapi-types": "^12.0.2",
     "statuses": "^2.0.1",
     "type-fest": "^3.1.0",
-    "yerror": "^6.1.1",
+    "yerror": "^6.2.0",
     "yhttperror": "^6.1.1"
   },
   "devDependencies": {

@@ -389,7 +389,6 @@ describe('GraphQL server', () => {
               "transaction-id": "0",
               "transfer-encoding": "chunked",
               "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
-              Symbol(defaults): null,
             },
             "status": 200,
           },
@@ -621,7 +620,6 @@ describe('GraphQL server', () => {
               "transaction-id": "1",
               "transfer-encoding": "chunked",
               "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
-              Symbol(defaults): null,
             },
             "status": 400,
           },
@@ -919,9 +917,14 @@ describe('GraphQL server', () => {
           ],
           "response": {
             "data": {
-              "data": {
-                "hello": "HELLO WORLD!",
-              },
+              "errors": [
+                {
+                  "extensions": {
+                    "code": "BAD_REQUEST",
+                  },
+                  "message": "\`operationName\` in a POST body must be a string if provided.",
+                },
+              ],
             },
             "headers": {
               "connection": "close",
@@ -930,9 +933,8 @@ describe('GraphQL server', () => {
               "transaction-id": "2",
               "transfer-encoding": "chunked",
               "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
-              Symbol(defaults): null,
             },
-            "status": 200,
+            "status": 400,
           },
         }
       `);
@@ -1316,7 +1318,6 @@ describe('GraphQL server', () => {
               "transaction-id": "3",
               "transfer-encoding": "chunked",
               "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
-              Symbol(defaults): null,
             },
             "status": 200,
           },
@@ -1786,7 +1787,6 @@ describe('GraphQL server', () => {
               "transaction-id": "4",
               "transfer-encoding": "chunked",
               "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth"}",
-              Symbol(defaults): null,
             },
             "status": 200,
           },

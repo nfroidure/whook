@@ -63,7 +63,7 @@
     "openapi-types": "^12.0.2",
     "qs": "^6.11.0",
     "strict-qs": "^7.0.1",
-    "yerror": "^6.1.1"
+    "yerror": "^6.2.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.0",

@@ -262,7 +262,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should serve Swagger HTML 1`] = `
     "etag": undefined,
     "last-modified": undefined,
     "server": undefined,
-    Symbol(defaults): null,
   },
   "logErrorCalls": [
     [
@@ -414,7 +413,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should work 1`] = `
     "server": undefined,
     "transaction-id": "0",
     "transfer-encoding": "chunked",
-    Symbol(defaults): null,
   },
   "logErrorCalls": [
     [
@@ -432,7 +430,7 @@ exports[`wrapHTTPRouterWithSwaggerUI should work 1`] = `
   ],
   "logInfoCalls": [
     [
-      "CALL {"id":"0","protocol":"http","ip":"_ip_","startInBytes":183,"startOutBytes":0,"startTime":1267833600000,"url":"/v1/ping","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","user-agent":"__avoid_axios_version__","accept-encoding":"gzip, deflate, br","host":"localhost:22222","connection":"close"},"errored":false,"endTime":1267833600000,"endInBytes":183,"endOutBytes":179,"statusCode":200,"resHeaders":{"content-type":"application/json"},"operationId":"getPing"}",
+      "CALL {"id":"0","protocol":"http","ip":"_ip_","startInBytes":193,"startOutBytes":0,"startTime":1267833600000,"url":"/v1/ping","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","user-agent":"__avoid_axios_version__","accept-encoding":"gzip, compress, deflate, br","host":"localhost:22222","connection":"close"},"errored":false,"endTime":1267833600000,"endInBytes":193,"endOutBytes":179,"statusCode":200,"resHeaders":{"content-type":"application/json"},"operationId":"getPing"}",
     ],
   ],
   "status": 200,

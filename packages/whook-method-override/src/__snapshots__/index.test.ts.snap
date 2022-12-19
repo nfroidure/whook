@@ -46,7 +46,6 @@ exports[`wrapHTTPTransactionWithMethodOverride should let normal methods pass 1`
     "date": undefined,
     "transaction-id": "1",
     "transfer-encoding": "chunked",
-    Symbol(defaults): null,
   },
   "status": 200,
 }
@@ -98,7 +97,6 @@ exports[`wrapHTTPTransactionWithMethodOverride should override methods 1`] = `
     "date": undefined,
     "transaction-id": "0",
     "transfer-encoding": "chunked",
-    Symbol(defaults): null,
   },
   "status": 200,
 }

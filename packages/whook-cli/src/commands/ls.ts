@@ -8,6 +8,7 @@ import {
   DEFAULT_IGNORED_FILES_PREFIXES,
   DEFAULT_IGNORED_FILES_SUFFIXES,
   DEFAULT_REDUCED_FILES_SUFFIXES,
+  identity,
   noop,
 } from '@whook/whook';
 import type { Service } from 'knifecycle';
@@ -110,12 +111,29 @@ async function initLsCommand({
                   .map((file) =>
                     path.join(pluginPath, 'commands', file + '.js'),
                   )
-                  .map(async (file) => await importer(file)),
+                  .map(async (file) => {
+                    try {
+                      return await importer(file);
+                    } catch (err) {
+                      log(
+                        'error',
+                        `🔴 - Got an error while loading a command file: ${file}`,
+                      );
+                      log(
+                        'error-stack',
+                        (err as Error)?.stack ||
+                          (err as string) ||
+                          'no_stack_trace',
+                      );
+                    }
+                  }),
               )
-            ).map(({ definition, default: initializer }) => ({
-              definition,
-              name: initializer[SPECIAL_PROPS.NAME].replace(/Command$/, ''),
-            })),
+            )
+              .filter(identity)
+              .map(({ definition, default: initializer }) => ({
+                definition,
+                name: initializer[SPECIAL_PROPS.NAME].replace(/Command$/, ''),
+              })),
           };
         } catch (err) {
           log(

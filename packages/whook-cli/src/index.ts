@@ -13,6 +13,7 @@ import type {
   PromptArgs,
 } from './services/promptArgs.js';
 import type { LogService } from 'common-services';
+import { printStackTrace } from 'yerror';
 
 export type {
   WhookArgsTypes,
@@ -56,7 +57,7 @@ export default async function run<T extends Knifecycle>(
     } catch (err) {
       failed = true;
       log('error', '💀 - Command failed! Add "DEBUG=whook" for more context.');
-      log('error-stack', (err as Error).stack || 'no_stack');
+      log('error-stack', printStackTrace(err));
     }
 
     await $.destroy();

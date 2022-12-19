@@ -2,7 +2,7 @@ import bytes from 'bytes';
 import Stream from 'stream';
 import { initializer } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import { Siso } from 'siso';
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
@@ -522,7 +522,7 @@ async function initHTTPRouter({
         });
     } catch (err) {
       log('error', '☢️ - Unrecovable router error...');
-      log('error-stack', (err as Error).stack || 'no_stack_trace');
+      log('error-stack', printStackTrace(err));
       handleFatalError(err);
     }
   }

@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Build strong and efficient REST web services.",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "metapak": {
     "configs": [
       "main",
@@ -31,7 +34,6 @@
     "lerna": "lerna",
     "lint": "lerna run lint",
     "metapak": "metapak",
-    "postinstall": "lerna bootstrap --hoist && lerna link && lerna run --parallel genPackagelock",
     "postmetapak": "npm run lerna -- run metapak",
     "precz": "npm run lint && npm run build && npm t && npm run metapak -- -s && npm run lerna -- run --parallel metapak -- -- -s",
     "prettier": "lerna run prettier",
@@ -58,7 +60,7 @@
     "conventional-changelog-cli": "^2.2.2",
     "coveralls": "^3.0.4",
     "cz-conventional-changelog": "^3.3.0",
-    "lerna": "^4.0.0",
+    "lerna": "^6.1.0",
     "metapak": "^4.0.4",
     "metapak-nfroidure": "12.3.0"
   },
