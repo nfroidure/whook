@@ -50,7 +50,10 @@ import type {
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { Readable } from 'stream';
-import type { DereferencedParameterObject } from '@whook/http-transaction';
+import {
+  DereferencedParameterObject,
+  pickAllHeaderValues,
+} from '@whook/http-transaction';
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -85,7 +88,7 @@ const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
 export default function wrapHandlerForAWSHTTPLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -119,7 +122,7 @@ export default function wrapHandlerForAWSHTTPLambda<
 }
 
 async function initHandlerForAWSHTTPLambda(
-  initHandler: ServiceInitializer<Dependencies<any>, WhookHandler>,
+  initHandler: ServiceInitializer<Dependencies, WhookHandler>,
   {
     OPERATION_API,
     WRAPPERS,
@@ -434,15 +437,16 @@ async function handleForAWSHTTPLambda(
     }),
   );
 
+  const transactionId =
+    pickAllHeaderValues('x-transaction-id', request.headers).filter((value) =>
+      new RegExp(uuidPattern).test(value),
+    )[0] ||
+    event.requestContext.requestId ||
+    'no_id';
+
   apm('CALL', {
     id: event.requestContext.requestId,
-    transactionId:
-      (request.headers['x-transaction-id'] &&
-      new RegExp(uuidPattern).test(
-        request.headers['x-transaction-id'] as string,
-      )
-        ? event.headers['x-transaction-id']
-        : event.requestContext.requestId) || 'no_id',
+    transactionId,
     environment: NODE_ENV,
     method: event.requestContext.httpMethod,
     resourcePath: event.requestContext.resourcePath,
@@ -494,7 +498,10 @@ async function awsRequestEventToRequest(
   );
   const request: WhookRequest = {
     method: event.requestContext.httpMethod.toLowerCase(),
-    headers: lowerCaseHeaders(event.headers as Record<string, string>),
+    headers: lowerCaseHeaders({
+      ...event.headers,
+      ...event.multiValueHeaders,
+    }) as Record<string, string | string[]>,
     url:
       event.requestContext.path +
       (queryStringParametersNames.length

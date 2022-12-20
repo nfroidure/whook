@@ -189,7 +189,7 @@ The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project automatically from the installed whook plugins.
 
-[See in context](./src/services/_autoload.ts#L63-L67)
+[See in context](./src/services/_autoload.ts#L59-L63)
 
 
 
@@ -202,7 +202,7 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.ts#L192-L199)
+[See in context](./src/services/_autoload.ts#L188-L195)
 
 
 
@@ -212,7 +212,7 @@ We cannot inject the `WRAPPERS` in the auto loader when
  it is dynamically loaded so giving a second chance here
  for `WRAPPERS` to be set.
 
-[See in context](./src/services/_autoload.ts#L130-L134)
+[See in context](./src/services/_autoload.ts#L126-L130)
 
 
 
@@ -239,7 +239,7 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing this during the auto
  loader initialization.
 
-[See in context](./src/services/_autoload.ts#L114-L118)
+[See in context](./src/services/_autoload.ts#L110-L114)
 
 
 
@@ -276,7 +276,7 @@ In such a hard life, Whook's make it simple to
 First of all the autoloader looks for constants in the
  previously loaded `CONFIGS` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L207-L210)
+[See in context](./src/services/_autoload.ts#L203-L206)
 
 
 
@@ -285,7 +285,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L225-L228)
+[See in context](./src/services/_autoload.ts#L221-L224)
 
 
 
@@ -294,7 +294,7 @@ Here, we build the handlers map needed by the router by injecting every
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.ts#L253-L256)
+[See in context](./src/services/_autoload.ts#L249-L252)
 
 
 
@@ -302,7 +302,7 @@ Finally, we either require the handler/service module if
 
 Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L39-L41)
+[See in context](./src/services/_autoload.ts#L36-L38)
 
 
 
@@ -311,7 +311,7 @@ Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
 In order to be able to substituate easily a service per another
  one can specify a mapping between a service and its substitution.
 
-[See in context](./src/services/_autoload.ts#L179-L182)
+[See in context](./src/services/_autoload.ts#L175-L178)
 
 
 
@@ -319,7 +319,7 @@ In order to be able to substituate easily a service per another
 
 Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L35-L37)
+[See in context](./src/services/_autoload.ts#L32-L34)
 
 
 
@@ -328,7 +328,7 @@ Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L288-L291)
+[See in context](./src/services/_autoload.ts#L284-L287)
 
 
 

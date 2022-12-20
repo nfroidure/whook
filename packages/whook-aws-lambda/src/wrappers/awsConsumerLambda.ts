@@ -52,7 +52,7 @@ type ConsumerWrapperDependencies = {
 };
 
 export default function wrapHandlerForAWSConsumerLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -70,7 +70,7 @@ export default function wrapHandlerForAWSConsumerLambda<
 }
 
 async function initHandlerForAWSConsumerLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);

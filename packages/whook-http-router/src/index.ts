@@ -7,6 +7,7 @@ import { Siso } from 'siso';
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import { qsStrict as strictQs } from 'strict-qs';
+import { pickFirstHeaderValue } from '@whook/http-transaction';
 import {
   OPEN_API_METHODS,
   flattenOpenAPI,
@@ -446,6 +447,10 @@ async function initHTTPRouter({
               response.headers['content-type'] || responseSpec.contentTypes[0];
           }
 
+          const responseContentType =
+            pickFirstHeaderValue('content-type', response.headers || {}) ||
+            'text/plain';
+
           // Check the stringifyer only when a schema is
           // specified and it is not a binary one
           const responseHasSchema =
@@ -453,22 +458,17 @@ async function initHTTPRouter({
             operation.responses[response.status] &&
             operation.responses[response.status].content &&
             operation.responses[response.status].content?.[
-              response.headers['content-type'] as string
+              responseContentType
             ] &&
-            operation.responses[response.status].content?.[
-              response.headers['content-type'] as string
-            ].schema &&
-            (operation.responses[response.status].content?.[
-              response.headers['content-type'] as string
-            ].schema.type !== 'string' ||
+            operation.responses[response.status].content?.[responseContentType]
+              .schema &&
+            (operation.responses[response.status].content?.[responseContentType]
+              .schema.type !== 'string' ||
               operation.responses[response.status].content?.[
-                response.headers['content-type'] as string
+                responseContentType
               ].schema.format !== 'binary');
 
-          if (
-            responseHasSchema &&
-            !STRINGIFYERS[response.headers['content-type'] as string]
-          ) {
+          if (responseHasSchema && !STRINGIFYERS[responseContentType]) {
             throw new YHTTPError(
               500,
               'E_STRINGIFYER_LACK',

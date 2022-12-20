@@ -2,7 +2,11 @@ import { YHTTPError } from 'yhttperror';
 import FirstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
 import { YError } from 'yerror';
-import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
+import {
+  pickFirstHeaderValue,
+  WhookOperation,
+  WhookResponse,
+} from '@whook/http-transaction';
 import type { BodySpec } from './utils.js';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
@@ -157,7 +161,11 @@ export async function sendBody(
     return response;
   }
 
-  if (!STRINGIFYERS?.[response.headers?.['content-type'] as string]) {
+  const responseContentType =
+    pickFirstHeaderValue('content-type', response.headers || {}) ||
+    'text/plain';
+
+  if (!STRINGIFYERS?.[responseContentType]) {
     throw new YError(
       'E_STRINGIFYER_LACK',
       response.headers?.['content-type'],
@@ -172,9 +180,7 @@ export async function sendBody(
   }
 
   const stream = new Encoder();
-  const content = STRINGIFYERS[response.headers?.['content-type'] as string](
-    response.body as string,
-  );
+  const content = STRINGIFYERS[responseContentType](response.body as string);
 
   stream.write(content);
 

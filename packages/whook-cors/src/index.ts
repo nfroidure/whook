@@ -50,7 +50,7 @@ export type WhookAPIOperationCORSConfig = {
  * @returns {Function} The handler initializer wrapped
  */
 export function wrapHandlerWithCORS<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,

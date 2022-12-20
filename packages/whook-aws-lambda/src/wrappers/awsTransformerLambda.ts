@@ -53,7 +53,7 @@ export type LambdaTransformerOutput = WhookResponse<
 // See https://aws.amazon.com/fr/blogs/compute/amazon-kinesis-firehose-data-transformation-with-aws-lambda/
 // See https://docs.aws.amazon.com/firehose/latest/dev/data-transformation.html
 export default function wrapHandlerForAWSTransformerLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -71,7 +71,7 @@ export default function wrapHandlerForAWSTransformerLambda<
 }
 
 async function initHandlerForAWSTransformerLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);

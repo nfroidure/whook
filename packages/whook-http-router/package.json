@@ -54,7 +54,9 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
+    "@types/content-type": "^1.1.5",
     "@types/qs": "^6.9.7",
+    "@types/negotiator": "^0.6.1",
     "@whook/http-transaction": "^11.0.1",
     "ajv": "^8.11.2",
     "ajv-formats": "^2.1.1",

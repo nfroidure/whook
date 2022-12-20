@@ -39,7 +39,7 @@ export type VersionsConfig = {
  * @param {Function} initHandler The handler initializer
  * @returns {Function} The handler initializer wrapped
  */
-export function wrapHandlerWithVersionChecker<D extends Dependencies<any>, S>(
+export function wrapHandlerWithVersionChecker<D extends Dependencies, S>(
   initHandler: ServiceInitializer<D, S>,
 ): ServiceInitializer<VersionsConfig & D, S> {
   const augmentedInitializer = alsoInject<VersionsConfig, D, S>(

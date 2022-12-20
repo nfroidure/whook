@@ -41,7 +41,7 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
  * @param {Function} initHTTPRouter The `httpRouter` initializer
  * @returns {Function} The `httpRouter` initializer wrapped
  */
-export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies<any>>(
+export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
   initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
 ): ProviderInitializer<WhookGraphIQLDependencies & D, HTTPRouterService> {
   const augmentedInitializer = alsoInject<

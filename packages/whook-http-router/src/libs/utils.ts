@@ -2,12 +2,15 @@ import { YHTTPError } from 'yhttperror';
 import contentType from 'content-type';
 import preferredCharsets from 'negotiator/lib/charset.js';
 import preferredMediaType from 'negotiator/lib/encoding.js';
+import { YError } from 'yerror';
 import type { OpenAPIV3 } from 'openapi-types';
-import type {
+import {
   WhookRequest,
   WhookHandler,
   WhookOperation,
   WhookResponse,
+  pickFirstHeaderValue,
+  pickAllHeaderValues,
 } from '@whook/http-transaction';
 import type { Parameters } from 'knifecycle';
 
@@ -72,35 +75,58 @@ export function extractBodySpec(
   consumableMediaTypes: string[],
   consumableCharsets: string[],
 ): BodySpec {
+  const contentLengthValues = pickAllHeaderValues(
+    'content-length',
+    request.headers,
+  );
   const bodySpec: BodySpec = {
     contentType: '',
-    contentLength: request.headers['content-length']
-      ? Number(request.headers['content-length'])
+    contentLength: contentLengthValues.length
+      ? Number(contentLengthValues[0])
       : 0,
     charset: 'utf-8',
   };
 
   if (request.headers['content-type']) {
-    try {
-      const parsedContentType = parseContentType(
-        request.headers['content-type'],
-      );
+    const baseContentType = pickFirstHeaderValue(
+      'content-type',
+      request.headers,
+    );
 
-      bodySpec.contentType = parsedContentType.type;
-      if (
-        parsedContentType.parameters &&
-        parsedContentType.parameters.charset
-      ) {
-        bodySpec.charset = parsedContentType.parameters.charset.toLowerCase();
-      }
-      if (
-        parsedContentType.parameters &&
-        parsedContentType.parameters.boundary
-      ) {
-        bodySpec.boundary = parsedContentType.parameters.boundary;
+    try {
+      if (typeof baseContentType === 'string') {
+        const parsedContentType = parseContentType(baseContentType);
+
+        bodySpec.contentType = parsedContentType.type;
+        if (
+          parsedContentType.parameters &&
+          parsedContentType.parameters.charset
+        ) {
+          if (
+            ['utf-8', 'utf8'].includes(
+              parsedContentType.parameters.charset.toLowerCase(),
+            )
+          ) {
+            bodySpec.charset = 'utf-8';
+          } else {
+            throw new YError(
+              'E_UNSUPPORTED_CHARSET',
+              parsedContentType.parameters.charset,
+            );
+          }
+        }
+        if (
+          parsedContentType.parameters &&
+          parsedContentType.parameters.boundary
+        ) {
+          bodySpec.boundary = parsedContentType.parameters.boundary;
+        }
+      } else {
+        throw new YError('E_EMPTY_CONTENT_TYPE');
       }
     } catch (err) {
-      throw new YHTTPError(
+      throw YHTTPError.wrap(
+        err as Error,
         400,
         'E_BAD_CONTENT_TYPE',
         request.headers['content-type'],
@@ -156,10 +182,13 @@ export function extractResponseSpec(
   supportedMediaTypes: string[],
   supportedCharsets: string[],
 ): ResponseSpec {
-  const accept = (request.headers.accept as string) || '*';
+  const accept = pickFirstHeaderValue('accept', request.headers) || '*';
   const responseSpec: ResponseSpec = {
     charsets: request.headers['accept-charset']
-      ? preferredCharsets(request.headers['accept-charset'], supportedCharsets)
+      ? preferredCharsets(
+          pickFirstHeaderValue('accept-charset', request.headers),
+          supportedCharsets,
+        )
       : supportedCharsets,
     contentTypes: preferredMediaType(
       accept.replace(/(^|,)\*\/\*($|,|;)/g, '$1*$2'),

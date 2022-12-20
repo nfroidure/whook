@@ -66,7 +66,7 @@ const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
 
 export default function wrapHandlerForAWSHTTPFunction<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -98,7 +98,7 @@ export default function wrapHandlerForAWSHTTPFunction<
 }
 
 async function initHandlerForAWSHTTPFunction(
-  initHandler: ServiceInitializer<Dependencies<any>, WhookHandler>,
+  initHandler: ServiceInitializer<Dependencies, WhookHandler>,
   {
     OPERATION_API,
     WRAPPERS,

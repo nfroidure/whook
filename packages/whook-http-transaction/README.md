@@ -34,6 +34,12 @@ This service is intended to build those objects from Node HTTP ones
 <dt><a href="#initHTTPTransaction">initHTTPTransaction(services)</a> ⇒ <code><a href="#WhookHTTPTransaction">Promise.&lt;WhookHTTPTransaction&gt;</a></code></dt>
 <dd><p>Instantiate the httpTransaction service</p>
 </dd>
+<dt><a href="#pickFirstHeaderValue">pickFirstHeaderValue(name, headers)</a> ⇒ <code>string</code></dt>
+<dd><p>Pick the first header value if exists</p>
+</dd>
+<dt><a href="#pickAllHeaderValues">pickAllHeaderValues(name, headers)</a> ⇒ <code>Array</code></dt>
+<dd><p>Pick header values</p>
+</dd>
 <dt><a href="#initAPM">initAPM(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Application monitoring service that simply log stringified contents.</p>
 </dd>
@@ -91,6 +97,32 @@ transaction created in an array.
 | --- | --- | --- |
 | req | <code>HTTPRequest</code> | A raw NodeJS HTTP incoming message |
 | res | <code>HTTPResponse</code> | A raw NodeJS HTTP response |
+
+<a name="pickFirstHeaderValue"></a>
+
+## pickFirstHeaderValue(name, headers) ⇒ <code>string</code>
+Pick the first header value if exists
+
+**Kind**: global function  
+**Returns**: <code>string</code> - The value if defined.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The header name |
+| headers | <code>Object</code> | The headers map |
+
+<a name="pickAllHeaderValues"></a>
+
+## pickAllHeaderValues(name, headers) ⇒ <code>Array</code>
+Pick header values
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - The values in an array.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | The header name |
+| headers | <code>Object</code> | The headers map |
 
 <a name="initAPM"></a>
 

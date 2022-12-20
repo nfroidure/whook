@@ -41,9 +41,7 @@ export type WhookAPIOperationSwaggerConfig = {
  * @param {Function} initHTTPRouter The `httpRouter` initializer
  * @returns {Function} The `httpRouter` initializer wrapped
  */
-export default function wrapHTTPRouterWithSwaggerUI<
-  D extends Dependencies<any>,
->(
+export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
   initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
 ): ProviderInitializer<D & WhookSwaggerUIDependencies, HTTPRouterService> {
   const augmentedInitializer = alsoInject<

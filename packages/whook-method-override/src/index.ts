@@ -1,4 +1,5 @@
 import { wrapInitializer, alsoInject } from 'knifecycle';
+import { pickFirstHeaderValue } from '@whook/http-transaction';
 import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type { HTTPTransactionService } from '@whook/whook';
 import type { LogService } from 'common-services';
@@ -12,7 +13,7 @@ import type { ServerResponse, IncomingMessage } from 'http';
  * @returns {Function} The handler initializer wrapped
  */
 export default function wrapHTTPTransactionWithMethodOverride<
-  D extends Dependencies<any>,
+  D extends Dependencies,
 >(
   initHTTPTransaction: ServiceInitializer<D, HTTPTransactionService>,
 ): ServiceInitializer<D & { log: LogService }, HTTPTransactionService> {
@@ -36,14 +37,16 @@ export default function wrapHTTPTransactionWithMethodOverride<
         res: ServerResponse,
       ): Promise<WhookHTTPTransaction> => {
         const { request, transaction } = await httpTransaction(req, res);
+        const xHTTPMethodOverride = pickFirstHeaderValue(
+          'x-http-method-override',
+          request.headers,
+        );
 
         return {
           request: {
             ...request,
-            method: request.headers['x-http-method-override']
-              ? (
-                  request.headers['x-http-method-override'] as string
-                ).toLowerCase()
+            method: xHTTPMethodOverride
+              ? xHTTPMethodOverride.toLowerCase()
               : request.method,
             headers: Object.keys(request.headers)
               .filter((headerName) => 'x-http-method-override' === headerName)

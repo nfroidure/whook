@@ -4,13 +4,13 @@ import statuses from 'statuses';
 import ms from 'ms';
 import initObfuscatorService from './services/obfuscator.js';
 import initAPMService from './services/apm.js';
+import { printStackTrace, YError } from 'yerror';
 import type { Parameters, HandlerFunction, Dependencies } from 'knifecycle';
 import type { LogService, TimeService, DelayService } from 'common-services';
 import type { IncomingMessage, ServerResponse } from 'http';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type { Readable } from 'stream';
-import { printStackTrace, YError } from 'yerror';
 import type {
   ObfuscatorService,
   ObfuscatorConfig,
@@ -276,7 +276,7 @@ async function initHTTPTransaction({
       headers: Object.keys(req.headers).reduce(
         (finalHeaders, name) => ({
           ...finalHeaders,
-          [name]: _pickFirstHeaderValue(name, req.headers),
+          [name]: req.headers[name],
         }),
         {},
       ),
@@ -290,7 +290,7 @@ async function initHTTPTransaction({
       protocol: 'http',
       ip:
         '' +
-          (_pickFirstHeaderValue('x-forwarded-for', req.headers) || '').split(
+          (pickFirstHeaderValue('x-forwarded-for', req.headers) || '').split(
             ',',
           )[0] ||
         req.socket.remoteAddress ||
@@ -310,7 +310,7 @@ async function initHTTPTransaction({
      * @name id
      */
     let id: string =
-      _pickFirstHeaderValue('transaction-id', req.headers) || uniqueId();
+      pickFirstHeaderValue('transaction-id', req.headers) || uniqueId();
 
     // Handle bad client transaction ids
     if (FINAL_TRANSACTIONS[id]) {
@@ -494,10 +494,37 @@ async function initHTTPTransaction({
   }
 }
 
-function _pickFirstHeaderValue(
+/**
+ * Pick the first header value if exists
+ * @function
+ * @param  {string} name
+ * The header name
+ * @param  {Object} headers
+ * The headers map
+ * @return {string}
+ * The value if defined.
+ */
+export function pickFirstHeaderValue(
   name: string,
   headers: IncomingMessage['headers'],
 ): string | undefined {
+  return pickAllHeaderValues(name, headers)[0];
+}
+
+/**
+ * Pick header values
+ * @function
+ * @param  {string} name
+ * The header name
+ * @param  {Object} headers
+ * The headers map
+ * @return {Array}
+ * The values in an array.
+ */
+export function pickAllHeaderValues(
+  name: string,
+  headers: IncomingMessage['headers'],
+): string[] {
   const headerValues: string[] =
     headers && typeof headers[name] === 'undefined'
       ? []
@@ -505,5 +532,5 @@ function _pickFirstHeaderValue(
       ? [headers[name] as string]
       : (headers[name] as string[]);
 
-  return headerValues[0];
+  return headerValues;
 }

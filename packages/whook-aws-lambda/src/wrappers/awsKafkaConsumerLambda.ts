@@ -29,7 +29,7 @@ export type LambdaKafkaConsumerOutput = WhookResponse<
 >;
 
 export default function wrapHandlerForAWSKafkaConsumerLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -47,7 +47,7 @@ export default function wrapHandlerForAWSKafkaConsumerLambda<
 }
 
 async function initHandlerForAWSKafkaConsumerLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);

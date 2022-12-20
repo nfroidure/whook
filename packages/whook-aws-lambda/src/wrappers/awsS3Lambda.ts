@@ -25,7 +25,7 @@ export type LambdaS3Input = { body: S3Event['Records'] };
 export type LambdaS3Output = WhookResponse<number, WhookHeaders, void>;
 
 export default function wrapHandlerForAWSS3Lambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -43,7 +43,7 @@ export default function wrapHandlerForAWSS3Lambda<
 }
 
 async function initHandlerForAWSS3Lambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);

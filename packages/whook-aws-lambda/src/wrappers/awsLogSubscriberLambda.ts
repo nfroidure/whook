@@ -37,7 +37,7 @@ type LogSubscriberWrapperDependencies = {
 // Allow to subscribe to AWS logs
 // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html
 export default function wrapHandlerForAWSLogSubscriberLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(
   initHandler: ServiceInitializer<D, S>,
@@ -55,7 +55,7 @@ export default function wrapHandlerForAWSLogSubscriberLambda<
 }
 
 async function initHandlerForAWSLogSubscriberLambda<
-  D extends Dependencies<any>,
+  D extends Dependencies,
   S extends WhookHandler,
 >(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
   const handler: S = await initHandler(services);
