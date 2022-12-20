@@ -13,7 +13,7 @@ import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
 import { YHTTPError } from 'yhttperror';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import {
   prepareParametersValidators,
   prepareBodyValidator,
@@ -381,10 +381,10 @@ async function handleForAWSHTTPLambda(
 
     responseLog = {
       type: 'error',
-      code: (err as YError).code || 'E_UNEXPECTED',
+      code: (err as YError)?.code || 'E_UNEXPECTED',
       statusCode: response.status,
-      params: (err as YError).params || [],
-      stack: (err as Error).stack,
+      params: (err as YError)?.params || [],
+      stack: printStackTrace(err),
     };
 
     log('error', JSON.stringify(responseLog));

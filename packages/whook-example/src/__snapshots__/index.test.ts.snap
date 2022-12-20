@@ -161,9 +161,6 @@ exports[`runServer should work 1`] = `
       "❤️ - Initializing the APM service.",
     ],
     [
-      "➰ - Plugin "@whook/cli" resolved to "/home/whoiam/projects/whook/packages/whook-cli/dist".",
-    ],
-    [
       "➰ - Plugin "@whook/cors" resolved to "/home/whoiam/projects/whook/packages/whook-cors/dist".",
     ],
     [
@@ -323,16 +320,10 @@ exports[`runServer should work 1`] = `
       "🚫 - Could not load ".env.test" file.",
     ],
     [
-      "🚫 - Service "BASE_URL" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/BASE_URL".",
-    ],
-    [
       "🚫 - Service "BASE_URL" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL".",
     ],
     [
       "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/dist/services/BUFFER_LIMIT".",
-    ],
-    [
-      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/BUFFER_LIMIT".",
     ],
     [
       "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT".",
@@ -344,9 +335,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/dist/services/DECODERS".",
     ],
     [
-      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DECODERS".",
-    ],
-    [
       "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS".",
     ],
     [
@@ -354,9 +342,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE".",
-    ],
-    [
-      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_ERROR_CODE".",
     ],
     [
       "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE".",
@@ -368,9 +353,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/dist/services/DEFAULT_MECHANISM".",
     ],
     [
-      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEFAULT_MECHANISM".",
-    ],
-    [
       "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM".",
     ],
     [
@@ -378,9 +360,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/dist/services/DEV_ACCESS_TOKEN".",
-    ],
-    [
-      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/DEV_ACCESS_TOKEN".",
     ],
     [
       "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN".",
@@ -392,9 +371,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/dist/services/ENCODERS".",
     ],
     [
-      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/ENCODERS".",
-    ],
-    [
       "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/ENCODERS".",
     ],
     [
@@ -402,9 +378,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES".",
-    ],
-    [
-      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_PREFIXES".",
     ],
     [
       "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES".",
@@ -416,9 +389,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/IGNORED_FILES_SUFFIXES".",
-    ],
-    [
       "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES".",
     ],
     [
@@ -426,9 +396,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME".",
-    ],
-    [
-      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/JWT_SECRET_ENV_NAME".",
     ],
     [
       "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME".",
@@ -440,9 +407,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT".",
     ],
     [
-      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/KEEP_ALIVE_TIMEOUT".",
-    ],
-    [
       "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/KEEP_ALIVE_TIMEOUT".",
     ],
     [
@@ -450,9 +414,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_CHARS".",
-    ],
-    [
-      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_CHARS".",
     ],
     [
       "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_CHARS".",
@@ -464,9 +425,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO".",
     ],
     [
-      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CLEAR_RATIO".",
-    ],
-    [
       "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO".",
     ],
     [
@@ -474,9 +432,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/dist/services/MAX_CONNECTIONS".",
-    ],
-    [
-      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_CONNECTIONS".",
     ],
     [
       "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CONNECTIONS".",
@@ -488,9 +443,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/dist/services/MAX_HEADERS_COUNT".",
     ],
     [
-      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/MAX_HEADERS_COUNT".",
-    ],
-    [
       "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_HEADERS_COUNT".",
     ],
     [
@@ -498,9 +450,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/dist/services/PARSERS".",
-    ],
-    [
-      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PARSERS".",
     ],
     [
       "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS".",
@@ -512,9 +461,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/dist/services/PROCESS_ENV".",
     ],
     [
-      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_ENV".",
-    ],
-    [
       "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_ENV".",
     ],
     [
@@ -522,9 +468,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/dist/services/PROCESS_NAME".",
-    ],
-    [
-      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROCESS_NAME".",
     ],
     [
       "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME".",
@@ -536,9 +479,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/dist/services/PROTOCOL".",
     ],
     [
-      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/PROTOCOL".",
-    ],
-    [
       "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROTOCOL".",
     ],
     [
@@ -546,9 +486,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES".",
-    ],
-    [
-      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/REDUCED_FILES_SUFFIXES".",
     ],
     [
       "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES".",
@@ -560,9 +497,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS".",
     ],
     [
-      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_HEADERS".",
-    ],
-    [
       "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS".",
     ],
     [
@@ -570,9 +504,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/dist/services/SENSIBLE_PROPS".",
-    ],
-    [
-      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SENSIBLE_PROPS".",
     ],
     [
       "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_PROPS".",
@@ -584,9 +515,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/dist/services/SHIELD_CHAR".",
     ],
     [
-      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SHIELD_CHAR".",
-    ],
-    [
       "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR".",
     ],
     [
@@ -594,9 +522,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/dist/services/SIGNALS".",
-    ],
-    [
-      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SIGNALS".",
     ],
     [
       "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS".",
@@ -608,9 +533,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/SOCKET_TIMEOUT".",
     ],
     [
-      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/SOCKET_TIMEOUT".",
-    ],
-    [
       "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SOCKET_TIMEOUT".",
     ],
     [
@@ -618,9 +540,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/dist/services/STRINGIFYERS".",
-    ],
-    [
-      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/STRINGIFYERS".",
     ],
     [
       "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS".",
@@ -632,16 +551,10 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/TIMEOUT".",
     ],
     [
-      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/TIMEOUT".",
-    ],
-    [
       "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT".",
     ],
     [
       "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT".",
-    ],
-    [
-      "🚫 - Service "getPingWrapped" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/handlers/getPing".",
     ],
     [
       "🚫 - Service "getPingWrapped" not found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing".",
@@ -650,16 +563,10 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "optionsWithCORSWrapped" not found in "/home/whoiam/projects/whook/dist/handlers/optionsWithCORS".",
     ],
     [
-      "🚫 - Service "optionsWithCORSWrapped" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/handlers/optionsWithCORS".",
-    ],
-    [
       "🚫 - Service "optionsWithCORSWrapped" not found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS".",
     ],
     [
       "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/dist/services/readDir".",
-    ],
-    [
-      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/readDir".",
     ],
     [
       "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/readDir".",
@@ -671,9 +578,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "readFile" not found in "/home/whoiam/projects/whook/dist/services/readFile".",
     ],
     [
-      "🚫 - Service "readFile" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/readFile".",
-    ],
-    [
       "🚫 - Service "readFile" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/readFile".",
     ],
     [
@@ -681,9 +585,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/dist/services/uniqueId".",
-    ],
-    [
-      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-cli/dist/services/uniqueId".",
     ],
     [
       "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId".",
@@ -825,9 +726,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
-    ],
-    [
-      "🛂 - Resolving "@whook/cli" to "/home/whoiam/projects/whook/packages/whook-cli/dist/index.js".",
     ],
     [
       "🛂 - Resolving "@whook/cors" to "/home/whoiam/projects/whook/packages/whook-cors/dist/index.js".",

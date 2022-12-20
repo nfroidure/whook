@@ -2,6 +2,7 @@ import { initErrorHandler } from '@whook/http-router';
 import { wrapInitializer, alsoInject, ServiceInitializer } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YHTTPError } from 'yhttperror';
+import { printStackTrace } from 'yerror';
 import { lowerCaseHeaders } from '@whook/whook';
 import { mergeVaryHeaders } from '@whook/whook';
 import type { LogService } from 'common-services';
@@ -70,7 +71,7 @@ export async function wrapErrorHandlerForCORS(
       };
     } catch (err) {
       log('debug', '🤷 - Unable to set custom headers to the catched error!');
-      log('debug-stack', (err as YHTTPError)?.stack || 'no_stack');
+      log('debug-stack', printStackTrace(err));
     }
     return errorHandler(transactionId, responseSpec, err);
   };

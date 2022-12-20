@@ -30,7 +30,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
 
     it('with some plugins', async () => {
       resolve.mockImplementationOnce(
-        () => '/var/lib/node/node_modules/@whook/cli',
+        () => '/var/lib/node/node_modules/@whook/graphql',
       );
       resolve.mockImplementationOnce(
         () => '/var/lib/node/node_modules/@whook/whook',
@@ -38,7 +38,7 @@ describe('WHOOK_PLUGINS_PATHS', () => {
 
       const WHOOK_PLUGINS_PATHS = await initWhookPluginsPaths({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS: ['@whook/cli', '@whook/whook'],
+        WHOOK_PLUGINS: ['@whook/graphql', '@whook/whook'],
         resolve: resolve as unknown as RequireResolve,
         log,
       });

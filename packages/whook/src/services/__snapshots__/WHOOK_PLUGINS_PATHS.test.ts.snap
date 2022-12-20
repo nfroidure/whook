@@ -37,7 +37,7 @@ exports[`WHOOK_PLUGINS_PATHS should work with some plugins 1`] = `
   "logCalls": [
     [
       "debug",
-      "➰ - Plugin "@whook/cli" resolved to "/var/lib/node/node_modules/@whook".",
+      "➰ - Plugin "@whook/graphql" resolved to "/var/lib/node/node_modules/@whook".",
     ],
     [
       "debug",
@@ -46,7 +46,7 @@ exports[`WHOOK_PLUGINS_PATHS should work with some plugins 1`] = `
   ],
   "resolveCalls": [
     [
-      "@whook/cli",
+      "@whook/graphql",
       {
         "paths": [
           "/home/whoami/my-whook-project/src",

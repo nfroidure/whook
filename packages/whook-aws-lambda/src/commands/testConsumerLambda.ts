@@ -1,9 +1,11 @@
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '@whook/cli';
-import { DEFAULT_COMPILER_OPTIONS } from '@whook/whook';
-import type { WhookCompilerOptions } from '@whook/whook';
-import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
+import { DEFAULT_COMPILER_OPTIONS, readArgs } from '@whook/whook';
+import type {
+  WhookCommandArgs,
+  WhookCommandDefinition,
+  WhookCompilerOptions,
+} from '@whook/whook';
 import type { LogService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {

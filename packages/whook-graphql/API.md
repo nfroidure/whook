@@ -1,10 +1,10 @@
 # API
-<a name="default"></a>
+<a name="initGraphQL"></a>
 
-## default ⇒ <code>Promise</code>
+## initGraphQL(services, ENV, [graphQLFragments]) ⇒ <code>Promise</code>
 Initialize the GraphQL service
 
-**Kind**: global variable  
+**Kind**: global function  
 **Returns**: <code>Promise</code> - A promise of a GraphQL service  
 
 | Param | Type | Default | Description |

@@ -28,22 +28,19 @@ exports[`commands should work with ls 1`] = `
 ",
   "stdout": "
 
-# Provided by "@whook/example": 3 commands
-- generateOpenAPISchema: Write openAPI schema to stdout
-- generateOpenAPITypes: Write openAPI types to stdout
+# Provided by "@whook/example": 1 commands
 - printEnv: A command printing every env values
 
 
-# Provided by "@whook/cli": 6 commands
+# Provided by "@whook/whook": 8 commands
 - config: A simple program that returns the queryed config value
 - create: A command helping to create new Whook files easily
 - env: A command printing env values
+- generateOpenAPISchema: Write openAPI schema to stdout
+- generateOpenAPITypes: Write openAPI types to stdout
 - handler: Runs the given server handler for testing purpose
 - inspect: A simple program that returns the result of the injected service
 - ls: Print available commands
-
-
-# Provided by "@whook/whook": none
 
 
 # Provided by "@whook/cors": none

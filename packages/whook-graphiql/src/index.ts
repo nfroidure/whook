@@ -2,6 +2,7 @@ import url from 'url';
 import * as GraphiQL from 'apollo-server-module-graphiql';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
+import { printStackTrace } from 'yerror';
 import type { HTTPRouterService, HTTPRouterProvider } from '@whook/whook';
 import type { ProviderInitializer, Dependencies } from 'knifecycle';
 import type { LogService } from 'common-services';
@@ -112,7 +113,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies<any>>(
             },
             (error) => {
               res.statusCode = 500;
-              res.write(error.stack);
+              res.write(printStackTrace(error));
               res.end();
             },
           );

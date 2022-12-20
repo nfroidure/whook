@@ -1,6 +1,6 @@
 import { autoService } from 'knifecycle';
 import _inquirer from 'inquirer';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import { exec as _exec } from 'child_process';
 import type { LockService, LogService } from 'common-services';
 
@@ -26,7 +26,7 @@ export default autoService(async function initAuthor({
     readGitProperty({ exec, log }, 'user.email'),
   ]).catch((err) => {
     log('debug', 'Could not get author from Git');
-    log('debug-stack', (err as Error).stack || 'no_stack_trace');
+    log('debug-stack', printStackTrace(err));
     return [];
   });
 

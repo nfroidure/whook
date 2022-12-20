@@ -1,5 +1,6 @@
 import { autoHandler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
+import { printStackTrace } from 'yerror';
 import { noop } from '@whook/whook';
 import { HTTPGraphQLRequest } from '@apollo/server';
 import type {
@@ -157,7 +158,7 @@ async function postGraphQL<T extends Record<string, unknown>>(
   } catch (err) {
     if ('HttpQueryError' === (err as Error).name) {
       log('debug', '💥 - Got a GraphQL error!');
-      log('debug-stack', (err as Error).stack || 'no_stack_trace');
+      log('debug-stack', printStackTrace(err));
       return {
         body: JSON.parse((err as Error).message),
         status: (err as any).statusCode,

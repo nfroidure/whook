@@ -4,7 +4,6 @@ import initPostGraphQL, {
 } from './postGraphQL.js';
 import { YHTTPError } from 'yhttperror';
 import type { WhookAPIHandlerDefinition, WhookOperation } from '@whook/whook';
-import type { AsyncReturnType } from 'type-fest';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: postGraphQLDefinition.path,
@@ -61,7 +60,7 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(getGraphQL);
 
 async function getGraphQL<T extends Record<string, unknown>>(
-  { postGraphQL }: { postGraphQL: AsyncReturnType<typeof initPostGraphQL> },
+  { postGraphQL }: { postGraphQL: Awaited<ReturnType<typeof initPostGraphQL>> },
   {
     query,
     variables = '{}',
@@ -73,7 +72,7 @@ async function getGraphQL<T extends Record<string, unknown>>(
     operationName: string;
   },
   operation: WhookOperation,
-): Promise<AsyncReturnType<AsyncReturnType<typeof initPostGraphQL>>> {
+): Promise<Awaited<ReturnType<Awaited<ReturnType<typeof initPostGraphQL>>>>> {
   const deserializedVariables = deserialize(variables, 'variables');
 
   return await postGraphQL(

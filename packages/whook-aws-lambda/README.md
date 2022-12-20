@@ -50,10 +50,9 @@ export async function prepareEnvironment(
   // (...)
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
--  $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
+-  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
 +  $.register(constant('WHOOK_PLUGINS', [
 +    '@whook/aws-lambda',
-+    '@whook/cli',
 +    '@whook/whook',
 +  ]));
 

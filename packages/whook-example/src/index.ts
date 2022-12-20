@@ -176,9 +176,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   
   You can also avoid Whook defaults by leaving it empty.
   */
-  $.register(
-    constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook', '@whook/cors']),
-  );
+  $.register(constant('WHOOK_PLUGINS', ['@whook/whook', '@whook/cors']));
 
   // Add the CORS wrapped error handler
   $.register(initErrorHandlerWithCORS);

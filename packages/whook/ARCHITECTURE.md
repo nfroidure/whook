@@ -23,7 +23,12 @@
 5. [`$autoload` service](#5-`$autoload`-service)
    1. [Configuration auto loading](#51-configuration-auto-loading)
    2. [Wrappers auto loading support](#52-wrappers-auto-loading-support)
+      1. [Injecting handlers](#521-injecting-handlers)
+   3. [Examples](#53-examples)
    3. [API auto loading](#53-api-auto-loading)
+      1. [Typings generator](#531-typings-generator)
+      2. [Open API generator](#532-open-api-generator)
+   4. [Testing](#54-testing)
    4. [Constants](#54-constants)
    5. [Handlers map](#55-handlers-map)
    6. [Service/handler loading](#56-service/handler-loading)
@@ -35,6 +40,7 @@
 7. [Port detection](#7-port-detection)
 8. [Project dir](#8-project-dir)
 9. [Plugins paths](#9-plugins-paths)
+10. [Commands](#10-commands)
 10. [API definitions loader](#10-api-definitions-loader)
 
 
@@ -44,7 +50,7 @@ Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L248-L252)
+[See in context](./src/index.ts#L265-L269)
 
 
 
@@ -57,7 +63,7 @@ Whook exposes a `prepareServer` function to create its server
  containing the bootstrapped environment and allowing
  to complete and run the server.
 
-[See in context](./src/index.ts#L320-L327)
+[See in context](./src/index.ts#L337-L344)
 
 
 
@@ -67,7 +73,7 @@ Whook exposes a `prepareServer` function to create its server
  *  server. We also inject `log` for logging purpose and custom other
  *  injected name that were required upfront.
 
-[See in context](./src/index.ts#L341-L345)
+[See in context](./src/index.ts#L358-L362)
 
 
 
@@ -79,7 +85,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server.
 
-[See in context](./src/index.ts#L355-L361)
+[See in context](./src/index.ts#L372-L378)
 
 
 
@@ -89,7 +95,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L372-L376)
+[See in context](./src/index.ts#L389-L393)
 
 
 
@@ -98,7 +104,7 @@ The Whook server heavily rely on the process working directory
 Whook has different behaviors depending on the `NODE_ENV` value
  consider setting it to production before shipping.
 
-[See in context](./src/index.ts#L386-L389)
+[See in context](./src/index.ts#L403-L406)
 
 
 
@@ -107,7 +113,7 @@ Whook has different behaviors depending on the `NODE_ENV` value
 Whook need to know where to look up for things like
  commands / handlers etc...
 
-[See in context](./src/index.ts#L393-L396)
+[See in context](./src/index.ts#L410-L413)
 
 
 
@@ -118,7 +124,7 @@ Whook's default logger write to the NodeJS default console
  module so that you can set the `DEBUG` environment
  variable to `whook` and get debug messages in output.
 
-[See in context](./src/index.ts#L399-L404)
+[See in context](./src/index.ts#L416-L421)
 
 
 
@@ -129,7 +135,7 @@ Whook's embed a few default initializers proxied from
  `src/services` folder. It can be wrapped or overriden,
  at will, later in project's main file.
 
-[See in context](./src/index.ts#L423-L428)
+[See in context](./src/index.ts#L440-L445)
 
 
 
@@ -152,7 +158,7 @@ The `ENV` service add a layer of configuration over just using
  It is up to you to decide upstream if you set them via the
  `process.env.NODE_ENV` and `process.cwd()` values or not.
 
-[See in context](./src/services/ENV.ts#L8-L14)
+[See in context](./src/services/ENV.ts#L11-L17)
 
 
 
@@ -163,7 +169,7 @@ Per default, Whook takes the process environment as is
  AWS Lambda or Google Cloud Functions one can isolate
  the process env when building.
 
-[See in context](./src/services/ENV.ts#L61-L66)
+[See in context](./src/services/ENV.ts#L64-L69)
 
 
 
@@ -173,7 +179,7 @@ You may need to keep some secrets out of your Git
  history. Whook uses `dotenv` to provide your such
  ability.
 
-[See in context](./src/services/ENV.ts#L74-L78)
+[See in context](./src/services/ENV.ts#L77-L81)
 
 
 
@@ -183,7 +189,7 @@ The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project automatically from the installed whook plugins.
 
-[See in context](./src/services/_autoload.ts#L59-L63)
+[See in context](./src/services/_autoload.ts#L63-L67)
 
 
 
@@ -196,7 +202,7 @@ Loading the configuration files is done according to the `NODE_ENV`
 Let's load the configuration files as a convenient way
  to create constants on the fly
 
-[See in context](./src/services/_autoload.ts#L188-L195)
+[See in context](./src/services/_autoload.ts#L192-L199)
 
 
 
@@ -206,7 +212,24 @@ We cannot inject the `WRAPPERS` in the auto loader when
  it is dynamically loaded so giving a second chance here
  for `WRAPPERS` to be set.
 
-[See in context](./src/services/_autoload.ts#L126-L130)
+[See in context](./src/services/_autoload.ts#L130-L134)
+
+
+
+#### 5.2.1. Injecting handlers
+
+A good thing is that you can reuse any handler into
+ your commands by simply injecting it by name.
+
+[See in context](./src/commands/generateOpenAPISchema.ts#L39-L43)
+
+
+
+### 5.3. Examples
+
+Whook's default project comes with a few sample commands.
+
+[See in context](./src/commands/generateOpenAPITypes.ts#L6-L9)
 
 
 
@@ -216,7 +239,35 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing this during the auto
  loader initialization.
 
-[See in context](./src/services/_autoload.ts#L110-L114)
+[See in context](./src/services/_autoload.ts#L114-L118)
+
+
+
+#### 5.3.1. Typings generator
+
+This command allows you to generate the API types that
+ helps you to write your handler in a clean and safe
+ manner.
+
+[See in context](./src/commands/generateOpenAPITypes.ts#L11-L16)
+
+
+
+#### 5.3.2. Open API generator
+
+Here, we reuse the Open API handler to generate the
+ definition of the API right inside a CLI command.
+
+[See in context](./src/commands/generateOpenAPISchema.ts#L8-L12)
+
+
+
+### 5.4. Testing
+
+In such a hard life, Whook's make it simple to
+ also test your commands.
+
+[See in context](./src/commands/generateOpenAPISchema.test.ts#L6-L10)
 
 
 
@@ -225,7 +276,7 @@ We cannot inject the `API` in the auto loader since
 First of all the autoloader looks for constants in the
  previously loaded `CONFIGS` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L203-L206)
+[See in context](./src/services/_autoload.ts#L207-L210)
 
 
 
@@ -234,7 +285,7 @@ First of all the autoloader looks for constants in the
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L221-L224)
+[See in context](./src/services/_autoload.ts#L225-L228)
 
 
 
@@ -243,7 +294,7 @@ Here, we build the handlers map needed by the router by injecting every
 Finally, we either require the handler/service module if
  none of the previous strategies applyed.
 
-[See in context](./src/services/_autoload.ts#L249-L252)
+[See in context](./src/services/_autoload.ts#L253-L256)
 
 
 
@@ -251,7 +302,7 @@ Finally, we either require the handler/service module if
 
 Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L36-L38)
+[See in context](./src/services/_autoload.ts#L39-L41)
 
 
 
@@ -260,7 +311,7 @@ Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
 In order to be able to substituate easily a service per another
  one can specify a mapping between a service and its substitution.
 
-[See in context](./src/services/_autoload.ts#L175-L178)
+[See in context](./src/services/_autoload.ts#L179-L182)
 
 
 
@@ -268,7 +319,7 @@ In order to be able to substituate easily a service per another
 
 Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L32-L34)
+[See in context](./src/services/_autoload.ts#L35-L37)
 
 
 
@@ -277,7 +328,7 @@ Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L284-L287)
+[See in context](./src/services/_autoload.ts#L288-L291)
 
 
 
@@ -286,7 +337,7 @@ In order to be able to load a service from a given path map
 If no `HOST` configuration is specified in dependencies nor in ENV,
  this service detects the machine host automagically.
 
-[See in context](./src/services/HOST.ts#L6-L9)
+[See in context](./src/services/HOST.ts#L8-L11)
 
 
 
@@ -295,7 +346,7 @@ If no `HOST` configuration is specified in dependencies nor in ENV,
 If no `PORT` configuration is specified in dependencies nor in ENV,
 this service detects a free port automagically.
 
-[See in context](./src/services/PORT.ts#L6-L9)
+[See in context](./src/services/PORT.ts#L8-L11)
 
 
 
@@ -305,7 +356,7 @@ Whook needs to know the directory of the project under
  which he is running. It then uses this service to
  automatically detect it.
 
-[See in context](./src/services/PROJECT_DIR.ts#L14-L19)
+[See in context](./src/services/PROJECT_DIR.ts#L15-L20)
 
 
 
@@ -317,6 +368,34 @@ Whook auto loader can look for initializers in a list of
  located allowing one to use services/handlers from it.
 
 [See in context](./src/services/WHOOK_PLUGINS_PATHS.ts#L7-L13)
+
+
+
+## 10. Commands
+
+Whook's commands are CLI tools that you may need to create and
+ use with your Whook's projects.
+
+By doing so, it provides you a convenient way to reuse your
+Whook's project configuration, services and handlers easily
+ in you day to day command line programs.
+
+To test this project, go to a project (in this repo
+ `@whook/example`) and run:
+
+```sh
+cd packages/whook
+npm run build
+cd ../whook-example
+
+# Debugging compiled commands
+node ../whook/bin/whook.js ls
+
+# Debugging source commands
+PROJECT_SRC="$PWD/src" NODE_ENV=${NODE_ENV:-development} npm run cli -- ts-node --esm --files -- ../whook/bin/whook.js ls
+```
+
+[See in context](./src/cli.ts#L10-L34)
 
 
 

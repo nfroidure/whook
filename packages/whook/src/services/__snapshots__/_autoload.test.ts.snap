@@ -263,7 +263,7 @@ exports[`$autoload should work for handlers in sub plugins 1`] = `
 {
   "importerCalls": [
     [
-      "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js",
+      "/var/lib/node/node_modules/@whook/whook/dist/handlers/getPing.js",
     ],
   ],
   "injectorCalls": [
@@ -284,11 +284,11 @@ exports[`$autoload should work for handlers in sub plugins 1`] = `
     ],
     [
       "debug",
-      "💿 - Service "getPing" found in "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js".",
+      "💿 - Service "getPing" found in "/var/lib/node/node_modules/@whook/whook/dist/handlers/getPing.js".",
     ],
     [
       "debug",
-      "💿 - Loading "getPing" initializer from "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js".",
+      "💿 - Loading "getPing" initializer from "/var/lib/node/node_modules/@whook/whook/dist/handlers/getPing.js".",
     ],
   ],
   "resolveCalls": [
@@ -296,13 +296,13 @@ exports[`$autoload should work for handlers in sub plugins 1`] = `
       "/home/whoami/my-whook-project/src/handlers/getPing",
     ],
     [
-      "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing",
+      "/var/lib/node/node_modules/@whook/whook/dist/handlers/getPing",
     ],
   ],
   "result": {
     "initializer": [Function],
     "name": "getPing",
-    "path": "/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js",
+    "path": "/var/lib/node/node_modules/@whook/whook/dist/handlers/getPing.js",
   },
 }
 `;

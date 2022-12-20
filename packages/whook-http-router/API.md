@@ -1,19 +1,10 @@
 # API
-## Members
-
-<dl>
-<dt><a href="#default">default</a> ⇒ <code>Promise</code></dt>
-<dd><p>Initialize an HTTP router</p>
-</dd>
-<dt><a href="#default">default</a> ⇒ <code>Promise</code></dt>
-<dd><p>Initialize an error handler for the
-HTTP router</p>
-</dd>
-</dl>
-
 ## Functions
 
 <dl>
+<dt><a href="#initHTTPRouter">initHTTPRouter(services)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Initialize an HTTP router</p>
+</dd>
 <dt><a href="#flattenOpenAPI">flattenOpenAPI(API)</a> ⇒ <code>Object</code></dt>
 <dd><p>Flatten the inputed OpenAPI file
  object</p>
@@ -27,14 +18,18 @@ HTTP router</p>
 <dd><p>Dereference API operations and transform OpenAPISchemas
  into JSONSchemas</p>
 </dd>
+<dt><a href="#initErrorHandler">initErrorHandler(services)</a> ⇒ <code>Promise</code></dt>
+<dd><p>Initialize an error handler for the
+HTTP router</p>
+</dd>
 </dl>
 
-<a name="default"></a>
+<a name="initHTTPRouter"></a>
 
-## default ⇒ <code>Promise</code>
+## initHTTPRouter(services) ⇒ <code>Promise</code>
 Initialize an HTTP router
 
-**Kind**: global variable  
+**Kind**: global function  
 **Returns**: <code>Promise</code> - A promise of a function to handle HTTP requests.  
 
 | Param | Type | Default | Description |
@@ -54,23 +49,19 @@ Initialize an HTTP router
 | [services.log] | <code>function</code> | <code>noop</code> | A logging function |
 | services.httpTransaction | <code>function</code> |  | A function to create a new HTTP transaction |
 
-<a name="default"></a>
+<a name="initHTTPRouter..httpRouter"></a>
 
-## default ⇒ <code>Promise</code>
-Initialize an error handler for the
-HTTP router
+### initHTTPRouter~httpRouter(req, res) ⇒ <code>Promise</code>
+Handle an HTTP incoming message
 
-**Kind**: global variable  
-**Returns**: <code>Promise</code> - A promise of a function to handle errors  
+**Kind**: inner method of [<code>initHTTPRouter</code>](#initHTTPRouter)  
+**Returns**: <code>Promise</code> - A promise resolving when the operation
+ completes  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| services | <code>Object</code> | The services the server depends on |
-| services.NODE_ENV | <code>Object</code> | The injected NODE_ENV value |
-| [services.DEBUG_NODE_ENVS] | <code>Array</code> | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
-| [services.STRINGIFYERS] | <code>Object</code> | The synchronous body stringifyers |
-| [services.ERRORS_DESCRIPTORS] | <code>Object</code> | An hash of the various error descriptors |
-| [services.DEFAULT_ERROR_CODE] | <code>Object</code> | A string giving the default error code |
+| req | <code>HTTPRequest</code> | A raw NodeJS HTTP incoming message |
+| res | <code>HTTPResponse</code> | A raw NodeJS HTTP response |
 
 <a name="flattenOpenAPI"></a>
 
@@ -121,4 +112,38 @@ Dereference API operations and transform OpenAPISchemas
 | --- | --- | --- |
 | API | <code>Object</code> | An OpenAPI object |
 | operations | <code>Object</code> | The OpenAPI operation objects |
+
+<a name="initErrorHandler"></a>
+
+## initErrorHandler(services) ⇒ <code>Promise</code>
+Initialize an error handler for the
+HTTP router
+
+**Kind**: global function  
+**Returns**: <code>Promise</code> - A promise of a function to handle errors  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| services | <code>Object</code> | The services the server depends on |
+| services.NODE_ENV | <code>Object</code> | The injected NODE_ENV value |
+| [services.DEBUG_NODE_ENVS] | <code>Array</code> | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
+| [services.STRINGIFYERS] | <code>Object</code> | The synchronous body stringifyers |
+| [services.ERRORS_DESCRIPTORS] | <code>Object</code> | An hash of the various error descriptors |
+| [services.DEFAULT_ERROR_CODE] | <code>Object</code> | A string giving the default error code |
+
+<a name="initErrorHandler..errorHandler"></a>
+
+### initErrorHandler~errorHandler(transactionId, responseSpec, err) ⇒ <code>Promise</code>
+Handle an HTTP transaction error and
+map it to a serializable response
+
+**Kind**: inner method of [<code>initErrorHandler</code>](#initErrorHandler)  
+**Returns**: <code>Promise</code> - A promise resolving when the operation
+ completes  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| transactionId | <code>String</code> | A raw NodeJS HTTP incoming message |
+| responseSpec | <code>Object</code> | The response specification |
+| err | <code>YHTTPError</code> | The encountered error |
 

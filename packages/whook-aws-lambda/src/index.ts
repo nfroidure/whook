@@ -320,7 +320,7 @@ export async function runBuild(
     // eslint-disable-next-line
     console.error(
       '💀 - Cannot launch the build:',
-      (err as Error).stack,
+      printStackTrace(err),
       JSON.stringify((err as YError).params, null, 2),
     );
     process.exit(1);

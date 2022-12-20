@@ -1,7 +1,7 @@
 import { autoService, singleton, name } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import path from 'path';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import type { LogService } from 'common-services';
 import type { ImporterService } from './importer.js';
 import type { JsonValue } from 'type-fest';
@@ -61,7 +61,7 @@ async function initCONFIGS({
     return (await importer(configPath)).default;
   } catch (err) {
     log('warning', `☢ - Could not load configuration file "${configPath}".`);
-    log('debug-stack', (err as Error).stack || 'no_stack_trace');
+    log('debug-stack', printStackTrace(err));
     throw YError.wrap(err as Error, 'E_NO_CONFIG', configPath);
   }
 }

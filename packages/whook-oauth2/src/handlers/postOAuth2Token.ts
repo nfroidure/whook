@@ -1,7 +1,7 @@
 import { autoHandler } from 'knifecycle';
 import { camelCaseObjectProperties } from './getOAuth2Authorize.js';
 import { noop } from '@whook/whook';
-import { YError } from 'yerror';
+import { YError, printStackTrace } from 'yerror';
 import { refersTo } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService, TimeService } from 'common-services';
@@ -284,10 +284,7 @@ async function postOAuth2Token<
     };
   } catch (err) {
     log('debug', '👫 - OAuth2 token issuing error', (err as YError).code);
-    log(
-      'error-stack',
-      (err as Error)?.stack || (err as string) || 'no_stack_trace',
-    );
+    log('error-stack', printStackTrace(err));
 
     throw YError.cast(err as Error, 'E_OAUTH2');
   }

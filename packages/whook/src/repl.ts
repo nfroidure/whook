@@ -1,3 +1,4 @@
+import { printStackTrace } from 'yerror';
 import type { Knifecycle, Dependencies } from 'knifecycle';
 
 export async function runREPL<
@@ -16,7 +17,7 @@ export async function runREPL<
     return { $instance: $, ...services } as unknown as D;
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', (err as Error).stack);
+    console.error('💀 - Cannot launch the process:', printStackTrace(err));
     process.exit(1);
   }
 }

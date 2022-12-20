@@ -50,6 +50,7 @@ export type WhookAPIDefinitions = {
 
 export interface WhookAPIOperationConfig {
   disabled?: boolean;
+  private?: boolean;
 }
 
 export interface WhookAPIOperationAddition<

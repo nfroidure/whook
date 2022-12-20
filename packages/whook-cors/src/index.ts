@@ -3,6 +3,7 @@ import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS.js';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
+import { printStackTrace } from 'yerror';
 import { YHTTPError } from 'yhttperror';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
@@ -113,7 +114,7 @@ async function handleWithCORS(
       };
     } catch (err) {
       log('debug', '🤷 - Unable to set custom headers to the catched error!');
-      log('debug-stack', (err as YHTTPError)?.stack || 'no_stack');
+      log('debug-stack', printStackTrace(err));
     }
     throw err;
   }

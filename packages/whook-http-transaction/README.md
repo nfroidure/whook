@@ -31,7 +31,7 @@ This service is intended to build those objects from Node HTTP ones
 ## Functions
 
 <dl>
-<dt><a href="#default">default(services)</a> ⇒ <code><a href="#WhookHTTPTransaction">Promise.&lt;WhookHTTPTransaction&gt;</a></code></dt>
+<dt><a href="#initHTTPTransaction">initHTTPTransaction(services)</a> ⇒ <code><a href="#WhookHTTPTransaction">Promise.&lt;WhookHTTPTransaction&gt;</a></code></dt>
 <dd><p>Instantiate the httpTransaction service</p>
 </dd>
 <dt><a href="#initAPM">initAPM(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
@@ -49,9 +49,9 @@ This service is intended to build those objects from Node HTTP ones
 <dd></dd>
 </dl>
 
-<a name="default"></a>
+<a name="initHTTPTransaction"></a>
 
-## default(services) ⇒ [<code>Promise.&lt;WhookHTTPTransaction&gt;</code>](#WhookHTTPTransaction)
+## initHTTPTransaction(services) ⇒ [<code>Promise.&lt;WhookHTTPTransaction&gt;</code>](#WhookHTTPTransaction)
 Instantiate the httpTransaction service
 
 **Kind**: global function  
@@ -78,6 +78,20 @@ const httpTransaction = await initHTTPTransaction({
   time: Date.now.bind(Date),
 });
 ```
+<a name="initHTTPTransaction..httpTransaction"></a>
+
+### initHTTPTransaction~httpTransaction(req, res) ⇒ <code>Array</code>
+Create a new HTTP transaction
+
+**Kind**: inner method of [<code>initHTTPTransaction</code>](#initHTTPTransaction)  
+**Returns**: <code>Array</code> - The normalized request and the HTTP
+transaction created in an array.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| req | <code>HTTPRequest</code> | A raw NodeJS HTTP incoming message |
+| res | <code>HTTPResponse</code> | A raw NodeJS HTTP response |
+
 <a name="initAPM"></a>
 
 ## initAPM(services) ⇒ <code>Promise.&lt;Object&gt;</code>
