@@ -174,6 +174,10 @@ ${author.name}
       axios({
         method: 'get',
         url: GIT_IGNORE_URL,
+        // TEMPFIX: https://github.com/axios/axios/issues/5346
+        headers: {
+          'Accept-Encoding': 'gzip,deflate,compress',
+        },
       })
         .then((response) =>
           writeFile(path.join(project.directory, '.gitignore'), response.data),
