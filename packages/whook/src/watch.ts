@@ -9,7 +9,6 @@ import { readFile } from 'fs';
 import { promisify } from 'util';
 import parseGitIgnore from 'parse-gitignore';
 import { createRequire } from 'module';
-import { printStackTrace } from 'yerror';
 import type { Dependencies, Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 
@@ -49,8 +48,12 @@ export async function watchDevServer<T extends Dependencies>(
       parseGitIgnore((await promisify(readFile)('.gitignore')).toString()),
     );
   } catch (err) {
-    log('debug', '🤷 - Cannot find/parse .gitignore');
-    log('debug-stack', printStackTrace(err));
+    // TODO: requires a deeper integration of Knifecycle to
+    // start with a silo containing only the environment
+    // and then another one for the server. It would allow
+    // to wrap the chokidar wat into a service too.
+    // log('debug', '🤷 - Cannot find/parse .gitignore');
+    // log('debug-stack', printStackTrace(err));
   }
 
   await restartDevServer({ injectedNames, afterRestartEnd });
