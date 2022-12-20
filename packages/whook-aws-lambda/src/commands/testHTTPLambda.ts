@@ -125,7 +125,19 @@ async function initTestHTTPLambdaCommand({
       headers: ammendedParameters
         .filter((p) => p.in === 'header')
         .reduce((headerParameters, p) => {
-          headerParameters[p.name] = parameters[camelCase(p.name)];
+          headerParameters[p.name] =
+            parameters[camelCase(p.name)] instanceof Array
+              ? parameters[camelCase(p.name)][0]
+              : parameters[camelCase(p.name)];
+          return headerParameters;
+        }, {}),
+      multiValueHeaders: ammendedParameters
+        .filter((p) => p.in === 'header')
+        .reduce((headerParameters, p) => {
+          headerParameters[p.name] =
+            parameters[camelCase(p.name)] instanceof Array
+              ? parameters[camelCase(p.name)]
+              : [parameters[camelCase(p.name)]];
           return headerParameters;
         }, {}),
       body: hasBody

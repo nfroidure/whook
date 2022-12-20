@@ -1,4 +1,4 @@
-import { autoHandler, handler } from 'knifecycle';
+import { handler } from 'knifecycle';
 import { refersTo } from '@whook/whook';
 import type {
   WhookAPIParameterDefinition,
@@ -19,13 +19,29 @@ export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.
       },
     },
   };
+
 export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam2> =
   {
     name: 'pathParam2',
-    example: ['item1', 'item2'],
+    example: 'item',
     parameter: {
       in: 'path',
       name: 'pathParam2',
+      required: true,
+      description: 'A string item',
+      schema: {
+        type: 'string',
+      },
+    },
+  };
+
+export const queryParamParameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.QueryParam> =
+  {
+    name: 'queryParam',
+    example: ['item1', 'item2'],
+    parameter: {
+      in: 'query',
+      name: 'queryParam',
       required: true,
       description: 'A list of items',
       schema: {
@@ -52,11 +68,22 @@ export const definition: WhookAPIHandlerDefinition = {
     parameters: [
       refersTo(pathParam1Parameter),
       refersTo(pathParam2Parameter),
+      refersTo(queryParamParameter),
       {
         in: 'header',
         name: 'aHeader',
         schema: {
           type: 'boolean',
+        },
+      },
+      {
+        in: 'header',
+        name: 'aMultiHeader',
+        schema: {
+          type: 'array',
+          items: {
+            type: 'number',
+          },
         },
       },
     ],
@@ -71,10 +98,19 @@ export const definition: WhookAPIHandlerDefinition = {
                 aHeader: {
                   type: 'boolean',
                 },
+                aMultiHeader: {
+                  type: 'array',
+                  items: {
+                    type: 'number',
+                  },
+                },
                 pathParam1: {
                   type: 'number',
                 },
                 pathParam2: {
+                  type: 'string',
+                },
+                queryParam: {
                   type: 'array',
                   items: {
                     type: 'string',
@@ -91,14 +127,22 @@ export const definition: WhookAPIHandlerDefinition = {
 
 async function getParameters(
   _,
-  { aHeader, pathParam1, pathParam2 }: API.GetParameters.Input,
+  {
+    aHeader,
+    aMultiHeader,
+    pathParam1,
+    pathParam2,
+    queryParam,
+  }: API.GetParameters.Input,
 ): Promise<API.GetParameters.Output> {
   return {
     status: 200,
     body: {
       aHeader,
+      aMultiHeader,
       pathParam1,
       pathParam2,
+      queryParam,
     },
   };
 }

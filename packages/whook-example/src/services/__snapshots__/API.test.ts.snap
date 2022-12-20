@@ -81,9 +81,18 @@ exports[`API should work 1`] = `
           },
         },
         "pathParam2": {
-          "description": "A list of items",
+          "description": "A string item",
           "in": "path",
           "name": "pathParam2",
+          "required": true,
+          "schema": {
+            "type": "string",
+          },
+        },
+        "queryParam": {
+          "description": "A list of items",
+          "in": "query",
+          "name": "queryParam",
           "required": true,
           "schema": {
             "items": {
@@ -468,10 +477,23 @@ exports[`API should work 1`] = `
               "$ref": "#/components/parameters/pathParam2",
             },
             {
+              "$ref": "#/components/parameters/queryParam",
+            },
+            {
               "in": "header",
               "name": "aHeader",
               "schema": {
                 "type": "boolean",
+              },
+            },
+            {
+              "in": "header",
+              "name": "aMultiHeader",
+              "schema": {
+                "items": {
+                  "type": "number",
+                },
+                "type": "array",
               },
             },
           ],
@@ -484,10 +506,19 @@ exports[`API should work 1`] = `
                       "aHeader": {
                         "type": "boolean",
                       },
+                      "aMultiHeader": {
+                        "items": {
+                          "type": "number",
+                        },
+                        "type": "array",
+                      },
                       "pathParam1": {
                         "type": "number",
                       },
                       "pathParam2": {
+                        "type": "string",
+                      },
+                      "queryParam": {
                         "items": {
                           "type": "string",
                         },
@@ -514,6 +545,18 @@ exports[`API should work 1`] = `
             },
             {
               "$ref": "#/components/parameters/pathParam2",
+            },
+            {
+              "description": "A list of items",
+              "in": "query",
+              "name": "queryParam",
+              "required": false,
+              "schema": {
+                "items": {
+                  "type": "string",
+                },
+                "type": "array",
+              },
             },
           ],
           "responses": {

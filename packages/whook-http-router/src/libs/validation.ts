@@ -3,6 +3,10 @@ import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
 import Stream from 'stream';
 import { pickupOperationSecuritySchemes } from './openAPIUtils.js';
+import {
+  pickAllHeaderValues,
+  pickFirstHeaderValue,
+} from '@whook/http-transaction';
 import Ajv from 'ajv';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import type { ValidateFunction } from 'ajv';
@@ -405,11 +409,17 @@ export function castParameters<
   return (parameters || []).reduce((filteredValues, parameter) => {
     const parameterName =
       parameter.in === 'header' ? camelCase(parameter.name) : parameter.name;
+    const parameterValue =
+      parameter.in !== 'header'
+        ? values[parameterName]
+        : parameter.schema?.type === 'array'
+        ? pickAllHeaderValues(parameterName, values)
+        : pickFirstHeaderValue(parameterName, values);
 
-    if (values[parameterName]) {
+    if (parameterValue) {
       filteredValues[parameterName] = castSchemaValue(
         parameter.schema,
-        values[parameterName],
+        parameterValue,
       );
     }
     return filteredValues;

@@ -6,8 +6,10 @@ describe('getParameters', () => {
     const getParameters = await initGetParameters({});
     const response = await getParameters({
       pathParam1: 2,
-      pathParam2: ['a', 'b'],
+      pathParam2: 'a',
+      queryParam: ['a', 'b'],
       aHeader: true,
+      aMultiHeader: [1, 2],
     });
 
     expect({
@@ -17,8 +19,13 @@ describe('getParameters', () => {
         "response": {
           "body": {
             "aHeader": true,
+            "aMultiHeader": [
+              1,
+              2,
+            ],
             "pathParam1": 2,
-            "pathParam2": [
+            "pathParam2": "a",
+            "queryParam": [
               "a",
               "b",
             ],
