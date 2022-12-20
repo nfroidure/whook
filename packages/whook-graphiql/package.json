@@ -43,7 +43,6 @@
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "cover": "npm run jest -- --coverage",
     "doc": "echo \"# API\" > API.md; jsdoc2md 'dist/**/*.js' >> API.md && git add API.md",
-    "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
@@ -68,7 +67,8 @@
     "@whook/whook": "^11.0.1",
     "apollo-server-module-graphiql": "^1.4.0",
     "knifecycle": "^14.1.0",
-    "openapi-types": "^12.1.0"
+    "openapi-types": "^12.1.0",
+    "yerror": "^6.2.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.0",
@@ -157,6 +157,7 @@
       ]
     },
     "moduleNameMapper": {
+      "#(.*)": "<rootDir>/../../node_modules/$1",
       "(.+)\\.js": "$1"
     },
     "extensionsToTreatAsEsm": [

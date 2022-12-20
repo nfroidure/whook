@@ -1,5 +1,6 @@
 import { autoHandler } from 'knifecycle';
-import type { WhookResponse, WhookAPIHandlerDefinition } from '../index.js';
+import type { WhookAPIHandlerDefinition } from '../services/API_DEFINITIONS.js';
+import type { WhookResponse } from '@whook/http-transaction';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/ping',

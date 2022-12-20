@@ -10,7 +10,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type { Readable } from 'stream';
-import type { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import type {
   ObfuscatorService,
   ObfuscatorConfig,
@@ -397,7 +397,7 @@ async function initHTTPTransaction({
       verb: req.method as string,
       status: (err as YHTTPError).httpCode || 500,
       code: (err as YError).code || 'E_UNEXPECTED',
-      stack: err.stack || 'none',
+      stack: printStackTrace(err),
       details: (err as YError).params || [],
     });
 
@@ -470,7 +470,7 @@ async function initHTTPTransaction({
           (req.headers.host || 'localhost') +
           FINAL_TRANSACTIONS[id].url,
         method: req.method as string,
-        stack: (err as Error).stack || (err as string) || 'none',
+        stack: printStackTrace(err),
         operationId,
       });
     }
@@ -489,7 +489,7 @@ async function initHTTPTransaction({
       await delay.clear(delayPromise);
     } catch (err) {
       log('debug', '❕ - Could not clear a delay.');
-      log('debug-stack', (err as Error).stack || 'no_stack_trace');
+      log('debug-stack', printStackTrace(err));
     }
   }
 }

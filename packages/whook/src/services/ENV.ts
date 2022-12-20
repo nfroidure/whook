@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { autoService, name, singleton } from 'knifecycle';
 import { noop } from '../libs/utils.js';
+import { printStackTrace } from 'yerror';
 import type { LogService } from 'common-services';
 
 const DEFAULT_BASE_ENV = {};
@@ -88,7 +89,7 @@ async function initENV({
     ENV = { ...ENV, ...FILE_ENV };
   } catch (err) {
     log('debug', `🚫 - Could not load ".env.${NODE_ENV}" file.`);
-    log('debug-stack', (err as Error).stack || 'no_stack_trace');
+    log('debug-stack', printStackTrace(err));
   }
 
   return {

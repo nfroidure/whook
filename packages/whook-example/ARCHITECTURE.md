@@ -61,12 +61,8 @@
 5. [Commands](#5-commands)
    1. [Definition](#51-definition)
    2. [Implementation](#52-implementation)
-      1. [Injecting handlers](#521-injecting-handlers)
-   3. [Examples](#53-examples)
-      1. [Typings generator](#531-typings-generator)
-      2. [Open API generator](#532-open-api-generator)
-   4. [Testing](#54-testing)
 6. [REPL](#6-repl)
+7. [Watch server](#7-watch-server)
 
 
 ## 1. A Whook baked API
@@ -78,7 +74,7 @@ You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 
-[See in context](./src/index.ts#L14-L21)
+[See in context](./src/index.ts#L16-L23)
 
 
 
@@ -87,7 +83,7 @@ You can see a view of the full architecture document
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 
-[See in context](./src/index.ts#L23-L27)
+[See in context](./src/index.ts#L25-L29)
 
 
 
@@ -99,7 +95,7 @@ The `runServer` function is intended to run the server
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L29-L36)
+[See in context](./src/index.ts#L31-L38)
 
 
 
@@ -109,7 +105,7 @@ The `prepareServer` function is intended to prepare the server
  environment. It relies on the main environment but will be
  used only by the server, not the commands or build scripts.
 
-[See in context](./src/index.ts#L55-L60)
+[See in context](./src/index.ts#L57-L62)
 
 
 
@@ -119,7 +115,7 @@ Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L65-L70)
+[See in context](./src/index.ts#L67-L72)
 
 
 
@@ -127,7 +123,7 @@ Add here any logic bound to the server only
 
 The `prepareEnvironment` one is intended to prepare the server environment
 
-[See in context](./src/index.ts#L76-L79)
+[See in context](./src/index.ts#L78-L81)
 
 
 
@@ -143,7 +139,7 @@ OR, like in this example, use the Whook `$autoload` service
  autoloader by creating a service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L99-L110)
+[See in context](./src/index.ts#L101-L112)
 
 
 
@@ -155,7 +151,7 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L113-L120)
+[See in context](./src/index.ts#L115-L122)
 
 
 
@@ -165,7 +161,7 @@ You have to declare the project main file directory
  to allow autoloading features to work with it either
  in development and production (files built in `dist/`).
 
-[See in context](./src/index.ts#L123-L128)
+[See in context](./src/index.ts#L125-L130)
 
 
 
@@ -198,7 +194,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L131-L159)
+[See in context](./src/index.ts#L141-L169)
 
 
 
@@ -209,7 +205,7 @@ Plugins allows you to add simple features to the Whook's core,
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L162-L168)
+[See in context](./src/index.ts#L172-L178)
 
 
 
@@ -218,7 +214,7 @@ You can also avoid Whook defaults by leaving it empty.
 Per convention a Whook server build file must export
  the following 2 functions to be composable:
 
-[See in context](./src/build.ts#L10-L14)
+[See in context](./src/build.ts#L11-L15)
 
 
 
@@ -227,7 +223,7 @@ Per convention a Whook server build file must export
 The `runBuild` function is intended to build the
  project.
 
-[See in context](./src/build.ts#L16-L20)
+[See in context](./src/build.ts#L17-L21)
 
 
 
@@ -236,7 +232,7 @@ The `runBuild` function is intended to build the
 The `prepareBuildEnvironment` create the build
  environment
 
-[See in context](./src/build.ts#L28-L32)
+[See in context](./src/build.ts#L29-L33)
 
 
 
@@ -248,7 +244,7 @@ Configuration is done for each environement in the
 The `src/config/common/config.ts` one allows to add common
  configurations for all environements.
 
-[See in context](./src/config/common/config.ts#L4-L11)
+[See in context](./src/config/common/config.ts#L5-L12)
 
 
 
@@ -532,7 +528,7 @@ Since the handlers do not need to deal with
  input/ouput validity, you can just write
  tests for the business logic.
 
-[See in context](./src/handlers/getDelay.test.ts#L3-L8)
+[See in context](./src/handlers/getDelay.test.ts#L5-L10)
 
 
 
@@ -542,7 +538,7 @@ First you need to write stubs for services,
  pass it to the handler initializer and
  eventually mock their return values.
 
-[See in context](./src/handlers/getDelay.test.ts#L10-L15)
+[See in context](./src/handlers/getDelay.test.ts#L12-L17)
 
 
 
@@ -551,7 +547,7 @@ First you need to write stubs for services,
 To get the testable handler, you first need to
  initialize it by providing mock services.
 
-[See in context](./src/handlers/getDelay.test.ts#L29-L33)
+[See in context](./src/handlers/getDelay.test.ts#L31-L35)
 
 
 
@@ -566,7 +562,7 @@ Then run the handler and get the response.
   responses. It embed only the data structure,
   no method or other OOP noisy things.
 
-[See in context](./src/handlers/getDelay.test.ts#L38-L48)
+[See in context](./src/handlers/getDelay.test.ts#L40-L50)
 
 
 
@@ -604,7 +600,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L83-L96)
+[See in context](./src/index.ts#L85-L98)
 
 
 
@@ -699,7 +695,7 @@ Commands are a simple way to write utility scripts that leverage
  your application setup. It allows to simply inject services
  without worrying about their initialization.
 
-[See in context](./src/commands/printEnv.ts#L7-L24)
+[See in context](./src/commands/printEnv.ts#L10-L27)
 
 
 
@@ -709,7 +705,7 @@ To define a command, just write its definition
  and export it to make it available to Whook's
  command loader.
 
-[See in context](./src/commands/printEnv.ts#L26-L31)
+[See in context](./src/commands/printEnv.ts#L29-L34)
 
 
 
@@ -719,52 +715,7 @@ To implement a command, just write a function that takes
  injected services as a first argument and return the
  command as an asynchronous function.
 
-[See in context](./src/commands/printEnv.ts#L48-L53)
-
-
-
-#### 5.2.1. Injecting handlers
-
-A good thing is that you can reuse any handler into
- your commands by simply injecting it by name.
-
-[See in context](./src/commands/generateOpenAPISchema.ts#L39-L43)
-
-
-
-### 5.3. Examples
-
-Whook's default project comes with a few sample commands.
-
-[See in context](./src/commands/generateOpenAPITypes.ts#L6-L9)
-
-
-
-#### 5.3.1. Typings generator
-
-This command allows you to generate the API types that
- helps you to write your handler in a clean and safe
- manner.
-
-[See in context](./src/commands/generateOpenAPITypes.ts#L11-L16)
-
-
-
-#### 5.3.2. Open API generator
-
-Here, we reuse the Open API handler to generate the
- definition of the API right inside a CLI command.
-
-[See in context](./src/commands/generateOpenAPISchema.ts#L8-L12)
-
-
-
-### 5.4. Testing
-
-In such a hard life, Whook's make it simple to
- also test your commands.
-
-[See in context](./src/commands/generateOpenAPISchema.test.ts#L5-L9)
+[See in context](./src/commands/printEnv.ts#L51-L56)
 
 
 
@@ -774,4 +725,17 @@ Here is a simple REPL leveraging the depency injection
  features in order to let you test things up easily.
 
 [See in context](./src/repl.ts#L4-L8)
+
+
+
+## 7. Watch server
+
+The watch command allows you to reload the server
+ when updating the code for a better dev experience.
+
+You can add hooks to add need behaviors to the
+ watch server like here with a prettier run after
+ each restart.
+
+[See in context](./src/watch.ts#L8-L16)
 

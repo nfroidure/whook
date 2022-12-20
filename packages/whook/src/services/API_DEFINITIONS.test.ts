@@ -107,7 +107,32 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {},
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {},
+            },
+            "paths": {},
+          },
+          "importerCalls": [],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+          ],
+        }
+      `);
     });
 
     it('with a few handlers', async () => {
@@ -129,7 +154,112 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {
+                "userId": {
+                  "in": "path",
+                  "name": "userId",
+                  "schema": {
+                    "type": "number",
+                  },
+                },
+              },
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "paths": {
+              "/ping": {
+                "get": {
+                  "operationId": "getPing",
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "pong": {
+                                "enum": [
+                                  "pong",
+                                ],
+                                "type": "string",
+                              },
+                            },
+                            "type": "object",
+                          },
+                        },
+                      },
+                      "description": "Pong",
+                    },
+                  },
+                  "summary": "Checks API's availability.",
+                  "tags": [
+                    "system",
+                  ],
+                },
+              },
+              "/users/{userId}": {
+                "get": {
+                  "operationId": "getUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+              },
+            },
+          },
+          "importerCalls": [
+            [
+              "/home/whoiam/project/src/handlers/getPing.js",
+            ],
+            [
+              "/home/whoiam/project/src/handlers/getUser.js",
+            ],
+          ],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+          ],
+        }
+      `);
     });
 
     it('with a few handlers in different plugins paths', async () => {
@@ -153,7 +283,115 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {
+                "userId": {
+                  "in": "path",
+                  "name": "userId",
+                  "schema": {
+                    "type": "number",
+                  },
+                },
+              },
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "paths": {
+              "/ping": {
+                "get": {
+                  "operationId": "getPing",
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "pong": {
+                                "enum": [
+                                  "pong",
+                                ],
+                                "type": "string",
+                              },
+                            },
+                            "type": "object",
+                          },
+                        },
+                      },
+                      "description": "Pong",
+                    },
+                  },
+                  "summary": "Checks API's availability.",
+                  "tags": [
+                    "system",
+                  ],
+                },
+              },
+              "/users/{userId}": {
+                "get": {
+                  "operationId": "getUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+              },
+            },
+          },
+          "importerCalls": [
+            [
+              "/home/whoiam/project/src/handlers/getPing.js",
+            ],
+            [
+              "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+            ],
+          ],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+            [
+              "/home/whoiam/project/node_modules/@whook/dist/handlers",
+            ],
+          ],
+        }
+      `);
     });
 
     it('with a few handlers in different plugins paths and an overriden one', async () => {
@@ -178,7 +416,115 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {
+                "userId": {
+                  "in": "path",
+                  "name": "userId",
+                  "schema": {
+                    "type": "number",
+                  },
+                },
+              },
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "paths": {
+              "/ping": {
+                "get": {
+                  "operationId": "getPing",
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "pong": {
+                                "enum": [
+                                  "pong",
+                                ],
+                                "type": "string",
+                              },
+                            },
+                            "type": "object",
+                          },
+                        },
+                      },
+                      "description": "Pong",
+                    },
+                  },
+                  "summary": "Checks API's availability.",
+                  "tags": [
+                    "system",
+                  ],
+                },
+              },
+              "/users/{userId}": {
+                "get": {
+                  "operationId": "getUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+              },
+            },
+          },
+          "importerCalls": [
+            [
+              "/home/whoiam/project/src/handlers/getPing.js",
+            ],
+            [
+              "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+            ],
+          ],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+            [
+              "/home/whoiam/project/node_modules/@whook/dist/handlers",
+            ],
+          ],
+        }
+      `);
     });
 
     it('with a few handlers in different plugins paths and an overriden one but with a different extension', async () => {
@@ -203,7 +549,115 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {
+                "userId": {
+                  "in": "path",
+                  "name": "userId",
+                  "schema": {
+                    "type": "number",
+                  },
+                },
+              },
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "paths": {
+              "/ping": {
+                "get": {
+                  "operationId": "getPing",
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "additionalProperties": false,
+                            "properties": {
+                              "pong": {
+                                "enum": [
+                                  "pong",
+                                ],
+                                "type": "string",
+                              },
+                            },
+                            "type": "object",
+                          },
+                        },
+                      },
+                      "description": "Pong",
+                    },
+                  },
+                  "summary": "Checks API's availability.",
+                  "tags": [
+                    "system",
+                  ],
+                },
+              },
+              "/users/{userId}": {
+                "get": {
+                  "operationId": "getUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+              },
+            },
+          },
+          "importerCalls": [
+            [
+              "/home/whoiam/project/src/handlers/getPing.js",
+            ],
+            [
+              "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+            ],
+          ],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+            [
+              "/home/whoiam/project/node_modules/@whook/dist/handlers",
+            ],
+          ],
+        }
+      `);
     });
 
     it('with a several handlers at the same path', async () => {
@@ -223,7 +677,114 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {
+                "userId": {
+                  "in": "path",
+                  "name": "userId",
+                  "schema": {
+                    "type": "number",
+                  },
+                },
+              },
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "paths": {
+              "/users/{userId}": {
+                "get": {
+                  "operationId": "getUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+                "put": {
+                  "operationId": "putUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "requestBody": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/User",
+                        },
+                      },
+                    },
+                  },
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+              },
+            },
+          },
+          "importerCalls": [
+            [
+              "/home/whoiam/project/src/handlers/getUser.js",
+            ],
+            [
+              "/home/whoiam/project/src/handlers/putUser.js",
+            ],
+          ],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+          ],
+        }
+      `);
     });
 
     it('with a disabled handler at the same path', async () => {
@@ -255,7 +816,95 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {
+                "userId": {
+                  "in": "path",
+                  "name": "userId",
+                  "schema": {
+                    "type": "number",
+                  },
+                },
+              },
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "paths": {
+              "/users/{userId}": {
+                "put": {
+                  "operationId": "putUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "requestBody": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/User",
+                        },
+                      },
+                    },
+                  },
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+              },
+            },
+          },
+          "importerCalls": [
+            [
+              "/home/whoiam/project/src/handlers/getUser.js",
+            ],
+            [
+              "/home/whoiam/project/src/handlers/putUser.js",
+            ],
+          ],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+            [
+              "debug",
+              "⏳ - Ignored handler "getUser" since disabled by its definition!",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+          ],
+        }
+      `);
     });
 
     it('with a filtered handler', async () => {
@@ -286,7 +935,95 @@ describe('initAPIDefinitions', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+        {
+          "API_DEFINITIONS": {
+            "components": {
+              "headers": {},
+              "parameters": {
+                "userId": {
+                  "in": "path",
+                  "name": "userId",
+                  "schema": {
+                    "type": "number",
+                  },
+                },
+              },
+              "requestBodies": {},
+              "responses": {},
+              "schemas": {
+                "User": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "paths": {
+              "/users/{userId}": {
+                "put": {
+                  "operationId": "putUser",
+                  "parameters": [
+                    {
+                      "$ref": "#/components/parameters/userId",
+                    },
+                  ],
+                  "requestBody": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/User",
+                        },
+                      },
+                    },
+                  },
+                  "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/User",
+                          },
+                        },
+                      },
+                      "description": "The user",
+                    },
+                  },
+                  "tags": [
+                    "user",
+                  ],
+                },
+              },
+            },
+          },
+          "importerCalls": [
+            [
+              "/home/whoiam/project/src/handlers/getUser.js",
+            ],
+            [
+              "/home/whoiam/project/src/handlers/putUser.js",
+            ],
+          ],
+          "logCalls": [
+            [
+              "debug",
+              "🈁 - Generating the API_DEFINITIONS",
+            ],
+            [
+              "debug",
+              "⏳ - Ignored handler "getUser" via its tags ("other" not found in "user")!",
+            ],
+          ],
+          "readDirCalls": [
+            [
+              "/home/whoiam/project/src/handlers",
+            ],
+          ],
+        }
+      `);
     });
   });
 });

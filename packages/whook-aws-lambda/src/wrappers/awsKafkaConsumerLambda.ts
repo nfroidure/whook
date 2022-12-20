@@ -1,6 +1,6 @@
 import { reuseSpecialProps, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
   WhookOperation,
@@ -109,7 +109,7 @@ async function handleForAWSKafkaConsumerLambda(
       lambdaName: OPERATION.operationId,
       parameters: { body: ':MSKEventRecord' },
       type: 'error',
-      stack: castedErr.stack || 'no_stack',
+      stack: printStackTrace(castedErr),
       code: castedErr.code,
       params: castedErr.params,
       startTime,

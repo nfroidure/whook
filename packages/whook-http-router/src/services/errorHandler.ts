@@ -7,7 +7,7 @@ import miniquery from 'miniquery';
 import type { WhookStringifyers } from '../index.js';
 import type { ResponseSpec } from '../libs/utils.js';
 import type { WhookResponse } from '@whook/http-transaction';
-import type { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import type { YHTTPError } from 'yhttperror';
 import type { OpenAPIV3 } from 'openapi-types';
 
@@ -482,7 +482,7 @@ async function initErrorHandler({
 
     if (DEBUG_NODE_ENVS.includes(NODE_ENV as string)) {
       response.body.error_debug_data.code = errorCode;
-      response.body.error_debug_data.stack = err.stack;
+      response.body.error_debug_data.stack = printStackTrace(err);
       response.body.error_debug_data.params = (err as YError).params;
     }
 

@@ -1,8 +1,11 @@
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '@whook/cli';
+import { readArgs } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { ENVService } from '@whook/whook';
-import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
+import type {
+  WhookCommandArgs,
+  WhookCommandDefinition,
+  ENVService,
+} from '@whook/whook';
 
 /* Architecture Note #5: Commands
 

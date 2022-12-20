@@ -1,5 +1,6 @@
 import { Knifecycle, constant } from 'knifecycle';
 import debug from 'debug';
+import { printStackTrace } from 'yerror';
 import { noop, identity, compose, pipe } from './libs/utils.js';
 import {
   COMPONENTS_TYPES,
@@ -56,6 +57,15 @@ import {
   prepareBuildEnvironment,
   runBuild,
 } from './build.js';
+import runCLI from './cli.js';
+import { readArgs } from './libs/args.js';
+import type { WhookCommandArgs } from './services/args.js';
+import type {
+  WhookArgsTypes,
+  WhookCommandHandler,
+  WhookCommandDefinition,
+  PromptArgs,
+} from './services/promptArgs.js';
 import type { PortEnv } from './services/PORT.js';
 import type { LogService } from 'common-services';
 import type {
@@ -183,6 +193,11 @@ export type {
   WhookCompilerConfig,
   WhookCompilerOptions,
   WhookCompilerService,
+  WhookArgsTypes,
+  WhookCommandHandler,
+  WhookCommandDefinition,
+  PromptArgs,
+  WhookCommandArgs,
 };
 export {
   noop,
@@ -221,6 +236,8 @@ export {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   prepareBuildEnvironment,
   runBuild,
+  readArgs,
+  runCLI,
 };
 
 export type WhookBaseEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
@@ -312,7 +329,7 @@ export async function runServer<
     return { ENV, log, $instance: $, ...services } as unknown as D;
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', (err as Error).stack);
+    console.error('💀 - Cannot launch the process:', printStackTrace(err));
     process.exit(1);
   }
 }

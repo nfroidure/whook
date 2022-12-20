@@ -57,8 +57,8 @@ Declare the plugin into your `src/index.ts` file:
   // (...)
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
--  $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
-+  $.register(constant('WHOOK_PLUGINS', ['@whook/oauth2', '@whook/cli', '@whook/whook']));
+-  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
++  $.register(constant('WHOOK_PLUGINS', ['@whook/oauth2', '@whook/whook']));
 
   // (...)
 ```

@@ -69,8 +69,8 @@ Declare the plugin into your `src/index.ts` file:
 +  }));
 
   // Setup your own whook plugins or avoid whook defaults by leaving it empty
--  $.register(constant('WHOOK_PLUGINS', ['@whook/cli', '@whook/whook']));
-+  $.register(constant('WHOOK_PLUGINS', ['@whook/graphql', '@whook/cli', '@whook/whook']));
+-  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
++  $.register(constant('WHOOK_PLUGINS', ['@whook/graphql', '@whook/whook']));
 
 +  // Declare the GraphQL schema fragments
 +  const helloFragment: WhookGraphQLFragmentService = {
@@ -121,12 +121,12 @@ See [this repository tests](./src/intex.test.ts) for more examples.
 [//]: # (::contents:end)
 
 # API
-<a name="default"></a>
+<a name="initGraphQL"></a>
 
-## default ⇒ <code>Promise</code>
+## initGraphQL(services, ENV, [graphQLFragments]) ⇒ <code>Promise</code>
 Initialize the GraphQL service
 
-**Kind**: global variable  
+**Kind**: global function  
 **Returns**: <code>Promise</code> - A promise of a GraphQL service  
 
 | Param | Type | Default | Description |

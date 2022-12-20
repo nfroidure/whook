@@ -49,7 +49,6 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/cli": "^11.0.1",
     "@whook/cors": "^11.0.1",
     "@whook/http-router": "^11.0.1",
     "@whook/whook": "^11.0.1",
@@ -150,6 +149,7 @@
       ]
     },
     "moduleNameMapper": {
+      "#(.*)": "<rootDir>/../../node_modules/$1",
       "(.+)\\.js": "$1"
     },
     "extensionsToTreatAsEsm": [
@@ -161,7 +161,6 @@
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "cover": "npm run jest -- --coverage",
     "doc": "echo \"# API\" > API.md; jsdoc2md 'dist/**/*.js' >> API.md && git add API.md",
-    "genPackagelock": "npm i --package-lock-only",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",

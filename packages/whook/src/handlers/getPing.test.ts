@@ -10,6 +10,18 @@ describe('getPing', () => {
 
     expect({
       response,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+      {
+        "response": {
+          "body": {
+            "pong": "pong",
+          },
+          "headers": {
+            "X-Node-ENV": "test",
+          },
+          "status": 200,
+        },
+      }
+    `);
   });
 });

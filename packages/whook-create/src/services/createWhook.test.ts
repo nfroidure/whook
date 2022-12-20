@@ -17,7 +17,6 @@ describe('initCreateWhook', () => {
     dependencies: {
       ..._packageJSON.dependencies,
       '@whook/authorization': '<current_version>',
-      '@whook/cli': '<current_version>',
       '@whook/cors': '<current_version>',
       '@whook/http-router': '<current_version>',
       '@whook/http-server': '<current_version>',
@@ -143,7 +142,6 @@ Mr Bean
         },
         "dependencies": {
           "@whook/authorization": "<current_version>",
-          "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
           "@whook/http-server": "<current_version>",
@@ -273,7 +271,6 @@ Mr Bean
           "cover": "npm run jest -- --coverage",
           "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --logError bin/dev",
           "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/dev.js",
-          "genPackagelock": "npm i --package-lock-only",
           "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
           "postbuild": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
@@ -365,7 +362,6 @@ Mr Bean
         },
         "dependencies": {
           "@whook/authorization": "<current_version>",
-          "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
           "@whook/http-server": "<current_version>",
@@ -495,7 +491,6 @@ Mr Bean
           "cover": "npm run jest -- --coverage",
           "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --logError bin/dev",
           "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/dev.js",
-          "genPackagelock": "npm i --package-lock-only",
           "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
           "postbuild": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",
@@ -572,7 +567,6 @@ Mr Bean
         },
         "dependencies": {
           "@whook/authorization": "<current_version>",
-          "@whook/cli": "<current_version>",
           "@whook/cors": "<current_version>",
           "@whook/http-router": "<current_version>",
           "@whook/http-server": "<current_version>",
@@ -702,7 +696,6 @@ Mr Bean
           "cover": "npm run jest -- --coverage",
           "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} ts-node --esm --logError bin/dev",
           "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 ts-node --esm --logError --files bin/dev.js",
-          "genPackagelock": "npm i --package-lock-only",
           "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
           "lint": "eslint 'src/**/*.ts'",
           "postbuild": "PROJECT_SRC="$PWD/src" NODE_ENV=\${NODE_ENV:-development} ts-node --esm --files -- bin/build.js",

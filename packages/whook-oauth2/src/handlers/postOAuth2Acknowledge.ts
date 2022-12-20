@@ -1,5 +1,5 @@
 import { autoHandler } from 'knifecycle';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import { setURLError } from './getOAuth2Authorize.js';
 import type {
   WhookAPIHandlerDefinition,
@@ -202,7 +202,7 @@ async function postOAuth2Acknowledge<
     );
   } catch (err) {
     log('debug', '👫 - OAuth2 acknowledge error', (err as YError).code);
-    log('debug-stack', (err as Error).stack || 'no_stack_trace');
+    log('debug-stack', printStackTrace(err));
 
     setURLError(
       url,

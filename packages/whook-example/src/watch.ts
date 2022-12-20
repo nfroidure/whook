@@ -1,169 +1,38 @@
-import chokidar from 'chokidar';
-import path from 'path';
-import crypto from 'crypto';
-import { PassThrough } from 'stream';
-import { createWriteStream } from 'fs';
-import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
-import { readFile } from 'fs';
+import { exec } from 'child_process';
 import { promisify } from 'util';
-import parseGitIgnore from 'parse-gitignore';
-import { createRequire } from 'module';
-import type { Knifecycle } from 'knifecycle';
-import type { DelayService, LogService } from 'common-services';
+import { watchDevServer as baseWatchDevServer } from '@whook/whook/dist/watch.js';
+import { printStackTrace } from 'yerror';
 
-const require = createRequire(import.meta.url);
-let $instance: Knifecycle;
-let log: LogService;
-let delay: DelayService;
-let delayPromise: Promise<void> | undefined;
-let hash: string;
+const doExec = promisify(exec);
 
-export async function watchDevServer(): Promise<void> {
-  let ignored = ['node_modules', '*.d.ts', '.git'];
+/* Architecture Note #7: Watch server
 
-  try {
-    ignored = ignored.concat(
-      parseGitIgnore((await promisify(readFile)('.gitignore')).toString()),
-    );
-  } catch (err) {
-    // cannot find/parse .gitignore
-  }
+The watch command allows you to reload the server
+ when updating the code for a better dev experience.
 
-  await restartDevServer();
+You can add hooks to add need behaviors to the
+ watch server like here with a prettier run after
+ each restart.
+*/
 
-  await new Promise<void>((resolve, reject) => {
-    chokidar
-      .watch(['**/*.ts', 'package*.json'], {
-        ignored,
-        ignoreInitial: true,
-      })
-      .once('ready', () => {
-        resolve();
-      })
-      .once('error', (err: Error) => {
-        reject(err);
-      })
-      .on('all', (_event, filePath) => {
-        const absolutePath = path
-          .join(process.cwd(), filePath)
-          .replace(/.ts$/, '.js');
-
-        if (filePath.match(/package.*\.json/)) {
-          for (const key in require.cache) {
-            uncache(key);
-          }
-        } else {
-          uncache(absolutePath, true);
+export async function watchDevServer() {
+  await baseWatchDevServer({
+    injectedNames: ['PROJECT_SRC', 'log'],
+    afterRestartEnd: async ({ PROJECT_SRC, log }, { apiChanged }) => {
+      if (apiChanged) {
+        try {
+          const { stdout } = await doExec(
+            "node ../../node_modules/prettier/bin-prettier.js --write 'src/openAPISchema.d.ts'",
+            // Could be `PROJECT_DIR` but seems to fail, replace after resolving
+            // this issue: https://github.com/nfroidure/knifecycle/issues/108
+            { cwd: PROJECT_SRC + '/..' },
+          );
+          log('warning', '🔧 - Formatted the type file!', stdout);
+        } catch (err) {
+          log('error', '🔧 - Could not format the type file!');
+          log('error-stack', printStackTrace(err));
         }
-
-        if (delay) {
-          if (!delayPromise) {
-            delayPromise = delay.create(2000);
-            restartDevServer();
-          }
-        }
-      });
+      }
+    },
   });
-}
-
-export async function restartDevServer(): Promise<void> {
-  if ($instance) {
-    log('warning', '➡️ - Changes detected : Will restart the server soon...');
-    await delayPromise;
-    await $instance.destroy();
-  }
-
-  const { runServer, prepareEnvironment, prepareServer } = await import(
-    './index.js'
-  );
-
-  const {
-    NODE_ENV,
-    PROJECT_SRC,
-    $instance: _instance,
-    delay: _delay,
-    getOpenAPI,
-    log: _log,
-  } = (await runServer(prepareEnvironment, prepareServer, [
-    'NODE_ENV',
-    'PROJECT_SRC',
-    '$instance',
-    'delay',
-    'getOpenAPI',
-    'log',
-  ])) as {
-    NODE_ENV: string;
-    PROJECT_SRC: string;
-    $instance: Knifecycle;
-    delay: DelayService;
-    getOpenAPI;
-    log: LogService;
-  };
-
-  $instance = _instance;
-  delay = _delay;
-  log = _log;
-
-  delayPromise = undefined;
-
-  const response = await getOpenAPI({
-    authenticated: true,
-    mutedMethods: ['options'],
-    mutedParameters: [],
-  });
-  const openAPIData = JSON.stringify(response.body);
-  const newHash = crypto.createHash('md5').update(openAPIData).digest('hex');
-
-  if (hash !== newHash) {
-    hash = newHash;
-    log('warning', '🦄 - API Changed : Generating API types...');
-
-    const instream = new PassThrough();
-    const bridge = new PassThrough();
-    const openAPITypesGenerationPromise = (
-      await initGenerateOpenAPITypes({
-        NODE_ENV,
-        instream,
-        outstream: bridge,
-        log,
-      })
-    )();
-
-    const writeStream = createWriteStream(
-      path.join(PROJECT_SRC, 'openAPISchema.d.ts'),
-    );
-    const writeStreamCompletionPromise = new Promise((resolve, reject) => {
-      writeStream.once('finish', resolve);
-      writeStream.once('error', reject);
-    });
-
-    bridge.pipe(writeStream);
-
-    instream.write(openAPIData);
-    instream.end();
-
-    await Promise.all([
-      openAPITypesGenerationPromise,
-      writeStreamCompletionPromise,
-    ]);
-    log('warning', '🦄 - API types generated!');
-  }
-}
-
-function uncache(key: string, recursively = false) {
-  const module = require.cache[key];
-
-  if (!module) {
-    return;
-  }
-
-  if (!key.endsWith('.node')) {
-    delete require.cache[key];
-  }
-
-  if (!recursively) {
-    return;
-  }
-
-  uncache((module.parent as any).id);
 }

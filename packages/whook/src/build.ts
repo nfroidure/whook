@@ -5,7 +5,7 @@ import mkdirp from 'mkdirp';
 import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
 import initCompiler from './services/compiler.js';
 import initBuildAutoloader from './services/_buildAutoload.js';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import type { BuildInitializer } from 'knifecycle';
 import type {
   WhookCompilerOptions,
@@ -122,8 +122,8 @@ export async function runBuild(
     // eslint-disable-next-line
     console.error(
       '💀 - Cannot launch the build:',
-      (err as Error).stack,
-      JSON.stringify((err as YError).params, null, 2),
+      printStackTrace(err),
+      JSON.stringify((err as YError)?.params, null, 2),
     );
     process.exit(1);
   }

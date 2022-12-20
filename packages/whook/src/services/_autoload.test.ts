@@ -418,7 +418,8 @@ describe('$autoload', () => {
         throw new YError('E_BAD_MODULE');
       });
       resolve.mockImplementationOnce(
-        () => '/var/lib/node/node_modules/@whook/cli/dist/handlers/getPing.js',
+        () =>
+          '/var/lib/node/node_modules/@whook/whook/dist/handlers/getPing.js',
       );
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -427,7 +428,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [
-          '/var/lib/node/node_modules/@whook/cli/dist',
+          '/var/lib/node/node_modules/@whook/whook/dist',
           '/var/lib/node/node_modules/@whook/lol/dist',
         ],
         $injector,

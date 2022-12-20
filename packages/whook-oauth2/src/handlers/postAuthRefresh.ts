@@ -11,7 +11,6 @@ import type {
   AuthCookiesService,
   AuthHandlersConfig,
 } from '../services/authCookies.js';
-import type { AsyncReturnType } from 'type-fest';
 import type { BaseAuthenticationData } from '@whook/authorization';
 
 export const authCookieHeaderParameter: WhookAPIParameterDefinition<string> = {
@@ -85,7 +84,7 @@ async function postAuthRefresh<
     postOAuth2Token,
   }: AuthHandlersConfig<AUTHENTICATION_DATA> & {
     authCookies: AuthCookiesService;
-    postOAuth2Token: AsyncReturnType<typeof initPostOauth2Token>;
+    postOAuth2Token: Awaited<ReturnType<typeof initPostOauth2Token>>;
   },
   {
     body,

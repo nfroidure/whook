@@ -1,7 +1,6 @@
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '@whook/cli';
-import { DEFAULT_COMPILER_OPTIONS, noop } from '@whook/whook';
+import { DEFAULT_COMPILER_OPTIONS, noop, readArgs } from '@whook/whook';
 import { YError } from 'yerror';
 import {
   dereferenceOpenAPIOperations,
@@ -10,9 +9,12 @@ import {
 import { v4 as randomUUID } from 'uuid';
 import camelCase from 'camelcase';
 import { extractOperationSecurityParameters } from '@whook/http-router';
-import type { WhookCompilerOptions } from '@whook/whook';
+import type {
+  WhookCommandArgs,
+  WhookCommandDefinition,
+  WhookCompilerOptions,
+} from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
-import type { WhookCommandArgs, WhookCommandDefinition } from '@whook/cli';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookAPIOperationAWSLambdaConfig } from '../index.js';
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';

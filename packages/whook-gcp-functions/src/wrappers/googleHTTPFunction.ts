@@ -1,3 +1,4 @@
+import { printStackTrace } from 'yerror';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -377,7 +378,7 @@ async function handleForAWSHTTPFunction(
       code: castedError.code,
       statusCode: castedError.httpCode,
       params: castedError.params || [],
-      stack: castedError.stack,
+      stack: printStackTrace(castedError),
     };
 
     log?.('error', JSON.stringify(responseLog));
