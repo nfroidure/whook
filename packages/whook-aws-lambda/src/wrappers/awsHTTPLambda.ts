@@ -256,6 +256,9 @@ async function handleForAWSHTTPLambda(
       headers: obfuscator.obfuscateSensibleHeaders(
         event.headers as Record<string, string>,
       ),
+      multiValueHeaders: obfuscator.obfuscateSensibleHeaders(
+        event.multiValueHeaders as Record<string, string[]>,
+      ),
     }),
   );
 
