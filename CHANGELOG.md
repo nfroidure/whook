@@ -1,3 +1,30 @@
+# [12.0.0](https://github.com/nfroidure/whook/compare/v11.0.1...v12.0.0) (2022-12-30)
+
+
+### Bug Fixes
+
+* **@whook/create:** fix axios issue for brotli compression ([d3da046](https://github.com/nfroidure/whook/commit/d3da046bf3501f031f169f9c5fd3e2b12d1a0432))
+* **@whook/server:** fix multi headers parsing support ([a38cf72](https://github.com/nfroidure/whook/commit/a38cf72b2f12a64fc213820a8aa7761fd7c0e5aa))
+* **@whook/whook:** fix the CLI prompt ([7cd31b6](https://github.com/nfroidure/whook/commit/7cd31b6d19bc3f7fd833445c4a447cd5e6039dcd))
+* **core:** fix AWS built Lambda loader ([3ee5e9c](https://github.com/nfroidure/whook/commit/3ee5e9c445e156ce71072abca0721a34bea8e496))
+* **gcp:** fix GCP functions tests ([795346d](https://github.com/nfroidure/whook/commit/795346d4a34b4f5f2ce9602dadccfb3e8d7810de))
+* **gcp:** fix GCP module name ([e2834ae](https://github.com/nfroidure/whook/commit/e2834aeeca79d78551bad17661cfc277c04deae6))
+* **security:** also obfuscate newly added multi valued headers ([0eedbc1](https://github.com/nfroidure/whook/commit/0eedbc1003e91140f16e23372027b4a924286181))
+* **watch:** fix log access in watch files ([0e0be03](https://github.com/nfroidure/whook/commit/0e0be03bd2c93f26e05a30b8cb6251f4d60a4c3c))
+
+
+### Code Refactoring
+
+* **@whook/cli:** remove the @whook/cli package ([f8ef0aa](https://github.com/nfroidure/whook/commit/f8ef0aa2b3eb640c94c48f21b4f321a5bf17209f)), closes [#81](https://github.com/nfroidure/whook/issues/81)
+
+
+### BREAKING CHANGES
+
+* **@whook/cli:** Just replace all import from the @whook/cli package by the @whook/whook one and
+change the watch server code per the new shorter and customizable one.
+
+
+
 ## [11.0.1](https://github.com/nfroidure/whook/compare/v11.0.0...v11.0.1) (2022-11-14)
 
 
