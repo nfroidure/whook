@@ -115,6 +115,7 @@ async function initPromptArgs<
     if (0 === questions.length) {
       return args;
     }
+
     const questionsResponses = (await inquirer.prompt(questions)) as Partial<
       WhookCommandArgs<T>['namedArguments']
     >;
@@ -123,7 +124,7 @@ async function initPromptArgs<
       ...args,
       namedArguments: {
         ...args.namedArguments,
-        questionsResponses,
+        ...questionsResponses,
       },
     };
   };
