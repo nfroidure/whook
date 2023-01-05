@@ -1,6 +1,6 @@
 {
   "name": "@whook/whook",
-  "version": "12.0.1",
+  "version": "12.0.2",
   "description": "Build strong and efficient REST web services.",
   "type": "module",
   "main": "dist/index.js",
@@ -77,8 +77,8 @@
     "esbuild-node-externals": "^1.5.0"
   },
   "devDependencies": {
-    "@types/inquirer": "^9.0.3",
     "@types/fs-extra": "^9.0.13",
+    "@types/inquirer": "^9.0.3",
     "@types/streamtest": "^1.2.0",
     "@types/yargs-parser": "^21.0.0",
     "@typescript-eslint/eslint-plugin": "^5.36.0",

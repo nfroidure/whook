@@ -1,3 +1,12 @@
+## [12.0.2](https://github.com/nfroidure/whook/compare/v12.0.1...v12.0.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* **dependencies:** remove typings from deps ([c87ba0d](https://github.com/nfroidure/whook/commit/c87ba0df04251f541941753d79c1a8b69c624f1b))
+
+
+
 ## [12.0.1](https://github.com/nfroidure/whook/compare/v12.0.0...v12.0.1) (2023-01-05)
 
 

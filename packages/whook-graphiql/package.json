@@ -1,6 +1,6 @@
 {
   "name": "@whook/graphiql",
-  "version": "12.0.1",
+  "version": "12.0.2",
   "description": "A wrapper for the Whook HTTP Router to provide GraphIQL for local dev",
   "type": "module",
   "main": "dist/index.js",
@@ -64,7 +64,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^12.0.1",
+    "@whook/whook": "^12.0.2",
     "apollo-server-module-graphiql": "^1.4.0",
     "knifecycle": "^14.1.0",
     "openapi-types": "^12.1.0",
