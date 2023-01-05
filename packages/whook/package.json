@@ -77,6 +77,8 @@
     "esbuild-node-externals": "^1.5.0"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.3",
+    "@types/fs-extra": "^9.0.13",
     "@types/streamtest": "^1.2.0",
     "@types/yargs-parser": "^21.0.0",
     "@typescript-eslint/eslint-plugin": "^5.36.0",
@@ -98,8 +100,6 @@
     "typescript": "^4.8.2"
   },
   "dependencies": {
-    "@types/fs-extra": "^9.0.13",
-    "@types/inquirer": "^9.0.3",
     "@whook/http-router": "^12.0.1",
     "@whook/http-server": "^12.0.1",
     "@whook/http-transaction": "^12.0.1",
