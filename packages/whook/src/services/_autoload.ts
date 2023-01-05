@@ -18,10 +18,12 @@ import type {
   Service,
 } from 'knifecycle';
 import type { CONFIGSService } from './CONFIGS.js';
-import type { LogService } from 'common-services';
+import type {
+  ResolveService,
+  ImporterService,
+  LogService,
+} from 'common-services';
 import type { WhookHandler } from '@whook/http-transaction';
-import type { ImporterService } from './importer.js';
-import type { ResolveService } from './resolve.js';
 
 export const HANDLER_REG_EXP =
   /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;

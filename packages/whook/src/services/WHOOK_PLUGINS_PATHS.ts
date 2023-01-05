@@ -1,8 +1,7 @@
 import path from 'path';
 import { name, singleton, autoService } from 'knifecycle';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type { ResolveService } from './resolve.js';
+import type { ResolveService, LogService } from 'common-services';
 
 /* Architecture Note #9: Plugins paths
 

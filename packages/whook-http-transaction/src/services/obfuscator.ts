@@ -50,12 +50,12 @@ const DEFAULT_SENSIBLE_HEADERS: SensibleValueDescriptor[] = [
 const DEFAULT_SENSIBLE_PROPS: SensibleValueDescriptor[] = [
   {
     name: 'access_token',
-    pattern: /^(Bearer |Basic )(.*)$/i,
+    pattern: /^(.*)$/i,
     clearIndices: [0],
   },
   {
     name: 'refresh_token',
-    pattern: /^(Bearer |Basic )(.*)$/i,
+    pattern: /^(.*)$/i,
     clearIndices: [0],
   },
   {

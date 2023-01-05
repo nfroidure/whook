@@ -61,8 +61,8 @@
     "coveralls": "^3.0.4",
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^6.1.0",
-    "metapak": "^4.0.4",
-    "metapak-nfroidure": "12.3.0"
+    "metapak": "^4.0.6",
+    "metapak-nfroidure": "13.0.0"
   },
   "contributors": [],
   "engines": {

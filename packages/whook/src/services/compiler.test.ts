@@ -3,8 +3,7 @@ import path from 'path';
 import * as esbuild from 'esbuild';
 import * as esbuildNodeExternals from 'esbuild-node-externals';
 import initCompiler from './compiler.js';
-import type { LogService } from 'common-services';
-import type { ImporterService } from './importer.js';
+import type { ImporterService, LogService } from 'common-services';
 
 describe('Compiler', () => {
   const NODE_ENV = 'production';

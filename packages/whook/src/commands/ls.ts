@@ -11,9 +11,8 @@ import type {
   PromptArgs,
   WhookCommandHandler,
 } from '../services/promptArgs.js';
-import type { LogService } from 'common-services';
+import type { ImporterService, LogService } from 'common-services';
 import type { CONFIGSService } from '../services/CONFIGS.js';
-import type { ImporterService } from '../services/importer.js';
 import type {
   WhookPluginsService,
   WhookPluginsPathsService,

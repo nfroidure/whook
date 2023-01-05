@@ -2,8 +2,7 @@ import { autoService, singleton, name } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import path from 'path';
 import { printStackTrace, YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type { ImporterService } from './importer.js';
+import type { ImporterService, LogService } from 'common-services';
 import type { JsonValue } from 'type-fest';
 
 export type CONFIGSService = Record<string, JsonValue>;

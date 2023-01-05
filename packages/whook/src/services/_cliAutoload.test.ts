@@ -2,9 +2,11 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { YError } from 'yerror';
 import initAutoload from './_cliAutoload.js';
 import { constant } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { ImporterService } from './importer.js';
-import type { ResolveService } from './resolve.js';
+import type {
+  ResolveService,
+  ImporterService,
+  LogService,
+} from 'common-services';
 import type { Injector } from 'knifecycle';
 import type { AutoloaderWrapperDependencies } from './_cliAutoload.js';
 

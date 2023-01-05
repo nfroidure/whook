@@ -1,8 +1,7 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initCONFIGS from './CONFIGS.js';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type { ImporterService } from './importer.js';
+import type { ImporterService, LogService } from 'common-services';
 
 describe('initCONFIGS', () => {
   const log = jest.fn<LogService>();

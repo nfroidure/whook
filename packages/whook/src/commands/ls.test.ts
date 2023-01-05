@@ -4,8 +4,7 @@ import initEnvCommand, {
   definition as initEnvCommandDefinition,
 } from './env.js';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type { ImporterService } from '../services/importer.js';
+import type { ImporterService, LogService } from 'common-services';
 import type { PromptArgs } from '../services/promptArgs.js';
 
 describe('lsCommand', () => {

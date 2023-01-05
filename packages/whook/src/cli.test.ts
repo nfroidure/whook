@@ -8,11 +8,10 @@ import {
 } from '@jest/globals';
 import { Knifecycle, constant, service } from 'knifecycle';
 import run from './cli.js';
-import initImporter from './services/importer.js';
+import { initImporterService } from 'common-services';
 import { createRequire } from 'module';
 import path from 'path';
-import type { LogService } from 'common-services';
-import type { ImporterService } from './services/importer.js';
+import type { ImporterService, LogService } from 'common-services';
 
 // TODO: Use import.meta when Jest will support it
 const require = createRequire(path.join(process.cwd(), 'src', 'index.ts'));
@@ -49,7 +48,7 @@ describe('whook-cli', () => {
   it('should run commands', async () => {
     const PROJECT_DIR = '/home/whoiam/projects/my-cool-project';
     const PROJECT_SRC = '/home/whoiam/projects/my-cool-project/src';
-    const baseImporter = await initImporter({ log });
+    const baseImporter = await initImporterService({ log });
     const importer = jest.fn<ImporterService<unknown>>((path: string) => {
       return baseImporter(path);
     });
@@ -115,7 +114,7 @@ describe('whook-cli', () => {
   it('should exit when erroring', async () => {
     const PROJECT_DIR = '/home/whoiam/projects/my-cool-project';
     const PROJECT_SRC = '/home/whoiam/projects/my-cool-project/src';
-    const baseImporter = await initImporter({ log });
+    const baseImporter = await initImporterService({ log });
     const importer = jest.fn<ImporterService<unknown>>((path: string) => {
       return baseImporter(path);
     });

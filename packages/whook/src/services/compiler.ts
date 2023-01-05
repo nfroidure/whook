@@ -1,8 +1,7 @@
 import path from 'path';
 import { noop } from '../libs/utils.js';
 import { autoService } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { ImporterService } from '../index.js';
+import type { ImporterService, LogService } from 'common-services';
 
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],

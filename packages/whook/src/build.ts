@@ -40,6 +40,8 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   delay: 'common-services/dist/delay',
   random: 'common-services/dist/random',
   process: 'common-services/dist/process',
+  importer: 'common-services/dist/importer',
+  resolve: 'common-services/dist/resolve',
   httpRouter: '@whook/http-router/dist/index',
   httpTransaction: '@whook/http-transaction/dist/index',
   httpServer: '@whook/http-server/dist/index',

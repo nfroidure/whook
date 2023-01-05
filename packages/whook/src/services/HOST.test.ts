@@ -1,8 +1,7 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { internalIpV4 } from 'internal-ip';
 import initHOST from './HOST.js';
-import type { LogService } from 'common-services';
-import type { ImporterService } from './importer.js';
+import type { ImporterService, LogService } from 'common-services';
 
 describe('initHOST', () => {
   const log = jest.fn<LogService>();

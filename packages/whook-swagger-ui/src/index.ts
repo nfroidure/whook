@@ -3,12 +3,8 @@ import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
 } from './handlers/getOpenAPI.js';
 import type { ProviderInitializer, Dependencies } from 'knifecycle';
-import type {
-  HTTPRouterProvider,
-  HTTPRouterService,
-  ImporterService,
-} from '@whook/whook';
-import type { LogService } from 'common-services';
+import type { HTTPRouterProvider, HTTPRouterService } from '@whook/whook';
+import type { ImporterService, LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
 import type { IncomingMessage, ServerResponse } from 'http';
 

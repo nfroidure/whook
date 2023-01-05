@@ -9,7 +9,6 @@ import {
 } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import { printStackTrace, YError } from 'yerror';
-import type { ImporterService } from './importer.js';
 import type {
   Autoloader,
   Service,
@@ -17,7 +16,7 @@ import type {
   Initializer,
   ServiceInitializerWrapper,
 } from 'knifecycle';
-import type { LogService } from 'common-services';
+import type { ImporterService, LogService } from 'common-services';
 import type { WhookCommandArgs } from './args.js';
 
 export type AutoloaderWrapperDependencies = {

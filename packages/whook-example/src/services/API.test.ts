@@ -9,7 +9,8 @@ import {
 import initAPI from './API.js';
 import FULL_CONFIG from '../config/test/config.js';
 import { getOpenAPIOperations } from '@whook/http-router';
-import { initAPIDefinitions, initImporter } from '@whook/whook';
+import { initAPIDefinitions } from '@whook/whook';
+import { initImporterService } from 'common-services';
 import path from 'path';
 import { createRequire } from 'module';
 import type { LogService } from 'common-services';
@@ -26,7 +27,7 @@ describe('API', () => {
   let API_DEFINITIONS;
 
   beforeAll(async () => {
-    const importer = await initImporter<WhookAPIHandlerModule>({ log });
+    const importer = await initImporterService<WhookAPIHandlerModule>({ log });
 
     API_DEFINITIONS = await initAPIDefinitions({
       PROJECT_SRC: path.join(process.cwd(), 'src'),

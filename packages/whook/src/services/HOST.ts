@@ -1,7 +1,6 @@
 import { autoService, name } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import type { LogService } from 'common-services';
-import type { ImporterService } from '../index.js';
+import type { ImporterService, LogService } from 'common-services';
 
 const DEFAULT_ENV = {};
 

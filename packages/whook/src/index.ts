@@ -15,6 +15,8 @@ import {
   initRandomService,
   initDelayService,
   initProcessService,
+  initResolveService,
+  initImporterService,
   DEFAULT_LOG_ROUTING,
   DEFAULT_LOG_CONFIG,
 } from 'common-services';
@@ -37,8 +39,6 @@ import initEnv from './services/ENV.js';
 import initProxyedENV from './services/ProxyedENV.js';
 import initBuildConstants from './services/BUILD_CONSTANTS.js';
 import initConfigs from './services/CONFIGS.js';
-import initResolve from './services/resolve.js';
-import initImporter from './services/importer.js';
 import initProjectDir from './services/PROJECT_DIR.js';
 import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS.js';
 import initAPIDefinitions, {
@@ -83,8 +83,6 @@ import type {
   WhookConfig,
   CONFIGSConfig,
 } from './services/CONFIGS.js';
-import type { ResolveService } from './services/resolve.js';
-import type { ImporterService } from './services/importer.js';
 import type {
   WhookPluginsService,
   WhookPluginsPathsService,
@@ -160,8 +158,6 @@ export type {
   WhookServiceMap,
   WhookInitializerMap,
   WhookBuildConstantsService,
-  ResolveService,
-  ImporterService,
   ENVService,
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
@@ -212,8 +208,6 @@ export {
   DEFAULT_REDUCED_FILES_SUFFIXES,
   initAPIDefinitions,
   initBuildConstants,
-  initResolve,
-  initImporter,
   initEnv,
   initProxyedENV,
   initPort,
@@ -395,10 +389,10 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(constant('PWD', PWD));
 
   // Resolve
-  $.register(initResolve);
+  $.register(initResolveService);
 
   // Importer
-  $.register(initImporter);
+  $.register(initImporterService);
 
   /* Architecture Note #3.2: `NODE_ENV` env var
   Whook has different behaviors depending on the `NODE_ENV` value

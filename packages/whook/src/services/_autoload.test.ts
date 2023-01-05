@@ -3,14 +3,13 @@ import initAutoload from './_autoload.js';
 import { service } from 'knifecycle';
 import { YError } from 'yerror';
 import { identity } from '../libs/utils.js';
-import type { LogService } from 'common-services';
+import type { ImporterService, LogService } from 'common-services';
 import type {
   ServiceInitializer,
   Dependencies,
   Service,
   Injector,
 } from 'knifecycle';
-import type { ImporterService } from './importer.js';
 
 describe('$autoload', () => {
   const log = jest.fn<LogService>();
