@@ -10,7 +10,7 @@ describe('initAuthor', () => {
     take: jest.fn<LockService<unknown>['take']>(),
     release: jest.fn<LockService<unknown>['release']>(),
   };
-  const inquirer = { prompt: jest.fn<typeof _inquirer['prompt']>() };
+  const inquirer = { prompt: jest.fn<(typeof _inquirer)['prompt']>() };
   const log = jest.fn<LogService>();
 
   beforeEach(() => {

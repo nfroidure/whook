@@ -66,7 +66,7 @@ export interface AuthenticationService<A, R extends BaseAuthenticationData> {
 }
 
 export type WhookAuthorizationConfig = {
-  MECHANISMS?: typeof BEARER_MECHANISM[];
+  MECHANISMS?: (typeof BEARER_MECHANISM)[];
   DEFAULT_MECHANISM?: string;
 };
 

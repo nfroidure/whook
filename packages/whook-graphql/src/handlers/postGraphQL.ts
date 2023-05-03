@@ -2,7 +2,7 @@ import { autoHandler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace } from 'yerror';
 import { noop } from '@whook/whook';
-import { HTTPGraphQLRequest } from '@apollo/server';
+import { HTTPGraphQLRequest, HeaderMap } from '@apollo/server';
 import type {
   WhookAPIHandlerDefinition,
   WhookOperation,
@@ -112,7 +112,7 @@ async function postGraphQL<T extends Record<string, unknown>>(
   operation: WhookOperation,
 ): Promise<WhookResponse<number>> {
   try {
-    const headers = new Map<string, string>();
+    const headers = new HeaderMap();
 
     headers.set('content-type', 'application/json');
 

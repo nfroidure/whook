@@ -10,6 +10,7 @@ import type { LogService } from 'common-services';
 import type { MSKEvent } from 'aws-lambda';
 
 const DEFAULT_EVENT: MSKEvent = {
+  bootstrapServers: '',
   eventSource: 'aws:kafka',
   eventSourceArn:
     'arn:aws:kafka:eu-west-3:765225263528:cluster/production/abbacaca-abba-caca-abba-cacaabbacaca-2',
