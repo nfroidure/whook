@@ -159,7 +159,10 @@ Contributors are very welcome to help pushing Whook forward!
 Clone this project's repository and run:
 
 ```sh
-npm it
+npm i
+npm run build
+npm run metapak
+npm t
 ```
 
 The repository is based on LernaJS that allows to host several NPM
@@ -168,6 +171,12 @@ it only proxies the packages commands.
 
 Install those [VSCode extensions](https://insertafter.com/en/blog/my_vscode_configuration.html)
 to get a smooth developer experience.
+
+For commiting run:
+
+```sh
+npm run cz
+```
 
 ## Publishing
 

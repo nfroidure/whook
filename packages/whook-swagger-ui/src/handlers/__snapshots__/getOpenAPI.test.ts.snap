@@ -67,9 +67,6 @@ exports[`getOpenAPI should work 1`] = `
         {
           "name": "public",
         },
-        {
-          "name": "private",
-        },
       ],
     },
     "status": 200,
@@ -113,9 +110,6 @@ exports[`getOpenAPI should work with muted paramerter 1`] = `
       "tags": [
         {
           "name": "public",
-        },
-        {
-          "name": "private",
         },
       ],
     },
