@@ -23,6 +23,10 @@ describe('getOpenAPI', () => {
           tags: ['private'],
           'x-whook': { private: true },
         },
+        delete: {
+          tags: ['public', 'destroyed'],
+          'x-whook': { private: true },
+        },
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
@@ -114,12 +118,35 @@ describe('getOpenAPI', () => {
     }).toMatchSnapshot();
   });
 
-  it('should work with muted paramerter', async () => {
+  it('should work with muted parameter', async () => {
     const getOpenAPI = await initGetOpenAPI({
       API: APIWithParameters,
     });
     const response = await getOpenAPI({
       mutedParameters: ['X-Ref-To-Remove', 'parameterToRemove'],
+    });
+
+    expect({
+      response: {
+        ...response,
+        body: {
+          ...response.body,
+          info: {
+            ...response.body.info,
+            version: '<already_tested>',
+          },
+        },
+      },
+    }).toMatchSnapshot();
+  });
+
+  it('should work with muted tags', async () => {
+    const getOpenAPI = await initGetOpenAPI({
+      API,
+    });
+    const response = await getOpenAPI({
+      mutedTags: ['public', 'unexisted tag'],
+      authenticated: true,
     });
 
     expect({

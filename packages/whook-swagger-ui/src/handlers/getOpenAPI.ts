@@ -40,10 +40,12 @@ async function getOpenAPI(
     authenticated = false,
     mutedMethods = ['options'],
     mutedParameters = [],
+    mutedTags = [],
   }: {
     authenticated?: boolean;
     mutedMethods?: string[];
     mutedParameters?: string[];
+    mutedTags?: string[];
   },
 ): Promise<WhookResponse<200, void, OpenAPIV3.Document>> {
   const operations = getOpenAPIOperations<WhookAPIOperationSwaggerConfig>(API);
@@ -64,9 +66,12 @@ async function getOpenAPI(
       if (mutedMethods.includes(operation.method)) {
         return paths;
       }
+      if (operation.tags?.every((tag) => mutedTags.includes(tag))) {
+        return paths;
+      }
       if (operation.tags) {
         operation.tags.forEach((tag) => {
-          tagIsPresent[tag] = true;
+          tagIsPresent[tag] = !mutedTags.includes(tag);
         });
       }
 
@@ -87,6 +92,7 @@ async function getOpenAPI(
             : {
                 'x-whook': undefined,
               }),
+          tags: operation.tags?.filter((tag) => !mutedTags.includes(tag)) || [],
         },
       };
 
