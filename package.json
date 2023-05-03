@@ -64,7 +64,13 @@
     "metapak": "^4.0.6",
     "metapak-nfroidure": "13.0.0"
   },
-  "contributors": [],
+  "contributors": [
+    {
+      "name": "Vincent Da Silva",
+      "email": "dasilva.vincent.pro2@gmail.com",
+      "url": "https://dasilvavincent.github.io/PortFolio/"
+    }
+  ],
   "engines": {
     "node": ">=16.15.0"
   },

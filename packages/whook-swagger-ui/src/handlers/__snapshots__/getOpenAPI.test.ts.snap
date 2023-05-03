@@ -11,6 +11,15 @@ exports[`getOpenAPI should show every endpoints when authenticated 1`] = `
       "openapi": "3.0.0",
       "paths": {
         "/time": {
+          "delete": {
+            "tags": [
+              "public",
+              "destroyed",
+            ],
+            "x-whook": {
+              "private": true,
+            },
+          },
           "get": {
             "tags": [
               "public",
@@ -74,7 +83,7 @@ exports[`getOpenAPI should work 1`] = `
 }
 `;
 
-exports[`getOpenAPI should work with muted paramerter 1`] = `
+exports[`getOpenAPI should work with muted parameter 1`] = `
 {
   "response": {
     "body": {
@@ -110,6 +119,46 @@ exports[`getOpenAPI should work with muted paramerter 1`] = `
       "tags": [
         {
           "name": "public",
+        },
+      ],
+    },
+    "status": 200,
+  },
+}
+`;
+
+exports[`getOpenAPI should work with muted tags 1`] = `
+{
+  "response": {
+    "body": {
+      "info": {
+        "title": "test",
+        "version": "<already_tested>",
+      },
+      "openapi": "3.0.0",
+      "paths": {
+        "/time": {
+          "delete": {
+            "tags": [
+              "destroyed",
+            ],
+            "x-whook": {
+              "private": true,
+            },
+          },
+          "put": {
+            "tags": [
+              "private",
+            ],
+            "x-whook": {
+              "private": true,
+            },
+          },
+        },
+      },
+      "tags": [
+        {
+          "name": "private",
         },
       ],
     },

@@ -189,6 +189,7 @@ NODE_ENV=cli npm run lerna  -- publish
 
 # Authors
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
+- [Vincent Da Silva](https://dasilvavincent.github.io/PortFolio/)
 
 # License
 [MIT](https://github.com/nfroidure/whook/blob/master/LICENSE)
