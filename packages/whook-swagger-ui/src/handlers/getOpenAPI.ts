@@ -34,26 +34,6 @@ export const definition: WhookAPIHandlerDefinition<WhookAPIOperationSwaggerConfi
     },
   } as WhookAPIHandlerDefinition;
 
-function removeMutedParameters(
-  parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,
-  mutedParameters: string[],
-  $refs: SwaggerParser.$Refs,
-) {
-  return parameters.reduce((acc, parameter) => {
-    const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject).$ref
-      ? ($refs.get(
-          (parameter as OpenAPIV3.ReferenceObject).$ref,
-        ) as OpenAPIV3.ParameterObject)
-      : (parameter as OpenAPIV3.ParameterObject);
-
-    if (mutedParameters.includes(dereferencedParameter.name)) {
-      return acc;
-    }
-
-    return acc.concat(parameter);
-  }, [] as (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[]);
-}
-
 async function getOpenAPI(
   { API }: { API: OpenAPIV3.Document },
   {
@@ -74,10 +54,6 @@ async function getOpenAPI(
   const CLEANED_API = {
     ...API,
     paths: operations.reduce((paths, operation) => {
-      if (operation.tags)
-        operation.tags.forEach((tag) => {
-          tagIsPresent[tag] = true;
-        });
       if (
         operation['x-whook'] &&
         operation['x-whook'].private &&
@@ -87,6 +63,11 @@ async function getOpenAPI(
       }
       if (mutedMethods.includes(operation.method)) {
         return paths;
+      }
+      if (operation.tags) {
+        operation.tags.forEach((tag) => {
+          tagIsPresent[tag] = true;
+        });
       }
 
       paths[operation.path] = {
@@ -118,4 +99,24 @@ async function getOpenAPI(
     status: 200,
     body: CLEANED_API,
   };
+}
+
+function removeMutedParameters(
+  parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,
+  mutedParameters: string[],
+  $refs: SwaggerParser.$Refs,
+) {
+  return parameters.reduce((acc, parameter) => {
+    const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject).$ref
+      ? ($refs.get(
+          (parameter as OpenAPIV3.ReferenceObject).$ref,
+        ) as OpenAPIV3.ParameterObject)
+      : (parameter as OpenAPIV3.ParameterObject);
+
+    if (mutedParameters.includes(dereferencedParameter.name)) {
+      return acc;
+    }
+
+    return acc.concat(parameter);
+  }, [] as (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[]);
 }

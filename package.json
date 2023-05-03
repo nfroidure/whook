@@ -4,7 +4,7 @@
   "description": "Build strong and efficient REST web services.",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "./packages/*"
   ],
   "metapak": {
     "configs": [
