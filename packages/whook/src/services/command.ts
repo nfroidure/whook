@@ -1,7 +1,7 @@
-import { autoService, singleton } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 
-export default singleton(autoService(initCommand));
+export default autoService(initCommand);
 
 async function initCommand({ commandHandler, log }) {
   return async function commandRunner() {

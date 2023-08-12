@@ -7,13 +7,7 @@ exports[`$autoload should fail with unexisting handlers 1`] = `
     "getPing",
   ],
   "importerCalls": [],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -39,13 +33,7 @@ exports[`$autoload should work for API 1`] = `
       "/home/whoami/my-whook-project/src/services/API.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -80,13 +68,7 @@ exports[`$autoload should work for SERVICE_NAME_MAP 1`] = `
       "/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -117,13 +99,7 @@ exports[`$autoload should work for SERVICE_NAME_MAP 1`] = `
 exports[`$autoload should work for a config constant 1`] = `
 {
   "importerCalls": [],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -148,39 +124,24 @@ exports[`$autoload should work for a config constant 1`] = `
 
 exports[`$autoload should work for configs 1`] = `
 {
-  "importerCalls": [
-    [
-      "/home/whoami/my-whook-project/src/services/CONFIGS.js",
-    ],
-  ],
+  "importerCalls": [],
   "injectorCalls": [],
   "logCalls": [
     [
       "debug",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
-    [
-      "debug",
-      "💿 - Service "CONFIGS" found in "/home/whoami/my-whook-project/src/services/CONFIGS.js".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "CONFIGS" initializer from "/home/whoami/my-whook-project/src/services/CONFIGS.js".",
-    ],
   ],
-  "resolveCalls": [
-    [
-      "/home/whoami/my-whook-project/src/services/CONFIGS",
-    ],
-  ],
+  "resolveCalls": [],
   "result": {
     "initializer": {
-      "CONFIG": {
-        "testConfig": "test",
-      },
+      "$name": "SERVICE_NAME_MAP",
+      "$singleton": true,
+      "$type": "constant",
+      "$value": {},
     },
-    "name": "CONFIGS",
-    "path": "/home/whoami/my-whook-project/src/services/CONFIGS.js",
+    "name": "SERVICE_NAME_MAP",
+    "path": "internal://SERVICE_NAME_MAP",
   },
 }
 `;
@@ -192,13 +153,7 @@ exports[`$autoload should work for handlers 1`] = `
       "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -235,11 +190,6 @@ exports[`$autoload should work for handlers hash 1`] = `
   "injectorCalls": [
     [
       [
-        "CONFIGS",
-      ],
-    ],
-    [
-      [
         "API",
       ],
     ],
@@ -266,13 +216,7 @@ exports[`$autoload should work for handlers in sub plugins 1`] = `
       "/var/lib/node/node_modules/@whook/whook/dist/handlers/getPing.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -314,13 +258,7 @@ exports[`$autoload should work for name mapped handlers 1`] = `
       "/home/whoami/my-whook-project/src/handlers/getPingMock.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -352,25 +290,14 @@ exports[`$autoload should work for name mapped handlers 1`] = `
 }
 `;
 
-exports[`$autoload should work for name mapped handlers with dynamic SERVICE_NAME_MAP 1`] = `
+exports[`$autoload should work for name mapped handlers 2`] = `
 {
   "importerCalls": [
     [
       "/home/whoami/my-whook-project/src/handlers/getPingMock.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "SERVICE_NAME_MAP",
-      ],
-    ],
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -409,13 +336,7 @@ exports[`$autoload should work for path mapped handlers 1`] = `
       "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -454,18 +375,7 @@ exports[`$autoload should work for wrapped handlers 1`] = `
       "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-    [
-      [
-        "WRAPPERS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -500,18 +410,7 @@ exports[`$autoload should work with empty wrappers 1`] = `
       "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-    [
-      [
-        "WRAPPERS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",
@@ -546,13 +445,7 @@ exports[`$autoload should work with no wrappers 1`] = `
       "/home/whoami/my-whook-project/src/handlers/getPing.js",
     ],
   ],
-  "injectorCalls": [
-    [
-      [
-        "CONFIGS",
-      ],
-    ],
-  ],
+  "injectorCalls": [],
   "logCalls": [
     [
       "debug",

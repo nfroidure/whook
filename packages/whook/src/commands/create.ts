@@ -26,7 +26,7 @@ const {
 // Currently, we rely on a static list of services but
 // best would be to use TypeScript introspection and
 // the autoloader to allow to retrieve a dynamic list
-// of constants from the CONFIGS service, the WhookConfigs
+// of constants from the APP_CONFIG service, the AppConfig
 // type and the autoloader service.
 const commonServicesTypes = {
   time: 'TimeService',
@@ -48,7 +48,7 @@ const whookServicesTypes = {
   API_DEFINITIONS: 'DelayService',
   ENV: 'ENVService',
   APM: 'APMService',
-  CONFIGS: 'CONFIGSService',
+  APP_CONFIG: 'AppConfig',
 };
 const allTypes = {
   ...commonServicesTypes,

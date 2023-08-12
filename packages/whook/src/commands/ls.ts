@@ -12,7 +12,7 @@ import type {
   WhookCommandHandler,
 } from '../services/promptArgs.js';
 import type { ImporterService, LogService } from 'common-services';
-import type { CONFIGSService } from '../services/CONFIGS.js';
+import type { AppConfig } from 'application-services';
 import type {
   WhookPluginsService,
   WhookPluginsPathsService,
@@ -54,7 +54,7 @@ async function initLsCommand({
   EOL = os.EOL,
   importer,
 }: {
-  CONFIG: CONFIGSService;
+  CONFIG: AppConfig;
   PROJECT_SRC: string;
   IGNORED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_PREFIXES?: string[];

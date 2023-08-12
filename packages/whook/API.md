@@ -20,8 +20,8 @@
  build, saving some computing and increasing boot time of
  the build.</p>
 </dd>
-<dt><a href="#initCONFIGS">initCONFIGS(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Initialize the CONFIGS service according to the NODE_ENV</p>
+<dt><a href="#initAPP_CONFIG">initAPP_CONFIG(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Initialize the APP_CONFIG service according to the NODE_ENV</p>
 </dd>
 <dt><a href="#initENV">initENV(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Initialize the ENV service using process env plus dotenv files</p>
@@ -137,17 +137,17 @@ import { alsoInject } from 'knifecycle';
 
 export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
 ```
-<a name="initCONFIGS"></a>
+<a name="initAPP_CONFIG"></a>
 
-## initCONFIGS(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Initialize the CONFIGS service according to the NODE_ENV
+## initAPP_CONFIG(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Initialize the APP_CONFIG service according to the NODE_ENV
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a an object the actual configuration properties.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services CONFIGS depends on |
+| services | <code>Object</code> |  | The services APP_CONFIG depends on |
 | services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
 | services.PROJECT_SRC | <code>Object</code> |  | The project source directory |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |

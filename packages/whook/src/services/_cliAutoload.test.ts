@@ -336,8 +336,6 @@ describe('$autoload', () => {
     importer.mockImplementationOnce(() => {
       throw new Error('ENOENT');
     });
-    $injector.mockResolvedValueOnce({});
-    $injector.mockResolvedValueOnce({});
     resolve.mockReturnValueOnce('/initializer/path.js');
     importer.mockImplementationOnce(async () => ({
       default: constant('anotherService', 'a_initializer'),
@@ -363,70 +361,59 @@ describe('$autoload', () => {
       resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "importerCalls": [
-          [
-            "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
-          ],
-          [
-            "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js",
-          ],
-          [
-            "/initializer/path.js",
-          ],
-        ],
-        "initializer": {
-          "$name": "anotherService",
-          "$singleton": true,
-          "$type": "constant",
-          "$value": "a_initializer",
-        },
-        "injectorCalls": [
-          [
-            [
-              "SERVICE_NAME_MAP",
-            ],
-          ],
-          [
-            [
-              "CONFIGS",
-            ],
-          ],
-        ],
-        "logCalls": [
-          [
-            "debug",
-            "🤖 - Initializing the \`$autoload\` service.",
-          ],
-          [
-            "debug",
-            "🤖 - Wrapping the whook autoloader.",
-          ],
-          [
-            "debug",
-            "Command "myCommand" not found in "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js".",
-          ],
-          [
-            "debug",
-            "Command "myCommand" not found in "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js".",
-          ],
-          [
-            "debug",
-            "💿 - Service "anotherService" found in "/initializer/path.js".",
-          ],
-          [
-            "debug",
-            "💿 - Loading "anotherService" initializer from "/initializer/path.js".",
-          ],
-        ],
-        "path": "/initializer/path.js",
-        "resolveCalls": [
-          [
-            "/home/whoiam/projects/my-whook-project/src/services/anotherService",
-          ],
-        ],
-      }
-    `);
+{
+  "importerCalls": [
+    [
+      "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js",
+    ],
+    [
+      "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js",
+    ],
+    [
+      "/initializer/path.js",
+    ],
+  ],
+  "initializer": {
+    "$name": "anotherService",
+    "$singleton": true,
+    "$type": "constant",
+    "$value": "a_initializer",
+  },
+  "injectorCalls": [],
+  "logCalls": [
+    [
+      "debug",
+      "🤖 - Initializing the \`$autoload\` service.",
+    ],
+    [
+      "debug",
+      "🤖 - Wrapping the whook autoloader.",
+    ],
+    [
+      "debug",
+      "Command "myCommand" not found in "/home/whoiam/projects/my-whook-project/src/commands/myCommand.js".",
+    ],
+    [
+      "debug",
+      "Command "myCommand" not found in "/var/lib/node/node_modules/@whook/whook/src/commands/myCommand.js".",
+    ],
+    [
+      "debug",
+      "💿 - Service "anotherService" found in "/initializer/path.js".",
+    ],
+    [
+      "debug",
+      "💿 - Loading "anotherService" initializer from "/initializer/path.js".",
+    ],
+  ],
+  "path": "/initializer/path.js",
+  "resolveCalls": [
+    [
+      "/home/whoiam/projects/my-whook-project/src/services/anotherService",
+    ],
+  ],
+}
+`);
   });
 
   describe('should fail', () => {

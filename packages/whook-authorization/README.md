@@ -118,7 +118,7 @@ declare module '@whook/whook' {
 
   // ...
 
-  export interface WhookConfigs
+  export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs, WhookAuthorizationConfig {}
 
@@ -130,15 +130,16 @@ declare module '@whook/whook' {
 Then add the config and the errors descriptors or provide your
  own (usually in `src/config/common/config.js`):
 ```diff
+// ...
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 + import {
 +   AUTHORIZATION_ERRORS_DESCRIPTORS,
 + } from '@whook/authorization';
-import type { WhookConfigs } from '@whook/whook';
+import type { AppConfig } from 'application-services';
 
 // ...
 
-const CONFIG: WhookConfigs = {
+const CONFIG: AppConfig = {
   // ...
 -   ERRORS_DESCRIPTORS: DEFAULT_ERRORS_DESCRIPTORS,
 +   ERRORS_DESCRIPTORS: {

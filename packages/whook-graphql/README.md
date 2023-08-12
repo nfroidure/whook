@@ -35,17 +35,18 @@ Update the types (usually in `src/whook.d.ts`):
 
 // ...
 
-declare module '@whook/whook' {
+declare module 'application-services' {
 
-  export interface WhookEnv
-    extends WhookBaseEnv,
-    // (...)
+  export interface AppEnvVars
+    extends BaseAppEnvVars,
+      WhookBaseEnv,
+      // (...)
 +      WhookGraphQLEnv,
       WhookSwaggerUIEnv {}
 
-  // ...
+  // (...)
 
-  export interface WhookConfigs
+  export interface AppConfig
     extends WhookBaseConfigs,
       // (...)
 +      WhookGraphQLConfig,

@@ -27,29 +27,21 @@ describe('$autoload', () => {
 
   describe('should work', () => {
     it('for configs', async () => {
-      resolve.mockReturnValueOnce(
-        '/home/whoami/my-whook-project/src/services/CONFIGS.js',
-      );
-      importer.mockResolvedValueOnce({
-        default: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          testConfig: 'test',
+        },
         log,
         importer,
         resolve: resolve as unknown as RequireResolve,
       });
-      const result = await $autoload('CONFIGS');
+      const result = await $autoload('SERVICE_NAME_MAP');
 
       expect({
         result,
@@ -61,20 +53,17 @@ describe('$autoload', () => {
     });
 
     it('for a config constant', async () => {
-      $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-
       const $autoload = await initAutoload({
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         WRAPPERS: [],
         log,
         importer,
@@ -92,13 +81,6 @@ describe('$autoload', () => {
     });
 
     it('for API', async () => {
-      $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/services/API.js',
       );
@@ -110,8 +92,13 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         WRAPPERS: [],
         log,
         importer,
@@ -129,13 +116,6 @@ describe('$autoload', () => {
     });
 
     it('for SERVICE_NAME_MAP', async () => {
-      $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
       resolve.mockReturnValueOnce(
         '/home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js',
       );
@@ -149,6 +129,11 @@ describe('$autoload', () => {
         $injector,
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
+        APP_CONFIG: {
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         log,
         importer,
         resolve: resolve as unknown as RequireResolve,
@@ -165,13 +150,6 @@ describe('$autoload', () => {
     });
 
     it('for handlers hash', async () => {
-      $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
       $injector.mockResolvedValueOnce({
         API: {
           openapi: '3.0.2',
@@ -206,8 +184,13 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         WRAPPERS: [],
         log,
         importer,
@@ -231,13 +214,6 @@ describe('$autoload', () => {
 
     it('for handlers', async () => {
       $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
       resolve.mockReturnValueOnce(
@@ -251,7 +227,55 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
+        INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
+        WRAPPERS: [],
+        log,
+        importer,
+        resolve: resolve as unknown as RequireResolve,
+      });
+      const result = await $autoload('getPing');
+
+      expect({
+        result,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        injectorCalls: $injector.mock.calls,
+        importerCalls: importer.mock.calls,
+        resolveCalls: resolve.mock.calls,
+      }).toMatchSnapshot();
+    });
+
+    it('for name mapped handlers', async () => {
+      $injector.mockResolvedValueOnce({
+        API: { info: {} },
+      });
+      resolve.mockReturnValueOnce(
+        '/home/whoami/my-whook-project/src/handlers/getPingMock.js',
+      );
+      importer.mockResolvedValueOnce({
+        default: service(
+          async () => async () => ({ status: 200 }),
+          'getPingMock',
+        ),
+      });
+
+      const $autoload = await initAutoload({
+        PROJECT_SRC: '/home/whoami/my-whook-project/src',
+        WHOOK_PLUGINS_PATHS: [],
+        $injector,
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {
+            getPing: 'getPingMock',
+          },
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
         log,
@@ -271,63 +295,6 @@ describe('$autoload', () => {
 
     it('for name mapped handlers', async () => {
       $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
-        API: { info: {} },
-      });
-      resolve.mockReturnValueOnce(
-        '/home/whoami/my-whook-project/src/handlers/getPingMock.js',
-      );
-      importer.mockResolvedValueOnce({
-        default: service(
-          async () => async () => ({ status: 200 }),
-          'getPingMock',
-        ),
-      });
-
-      const $autoload = await initAutoload({
-        PROJECT_SRC: '/home/whoami/my-whook-project/src',
-        WHOOK_PLUGINS_PATHS: [],
-        $injector,
-        SERVICE_NAME_MAP: {
-          getPing: 'getPingMock',
-        },
-        INITIALIZER_PATH_MAP: {},
-        WRAPPERS: [],
-        log,
-        importer,
-        resolve: resolve as unknown as RequireResolve,
-      });
-      const result = await $autoload('getPing');
-
-      expect({
-        result,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        injectorCalls: $injector.mock.calls,
-        importerCalls: importer.mock.calls,
-        resolveCalls: resolve.mock.calls,
-      }).toMatchSnapshot();
-    });
-
-    it('for name mapped handlers with dynamic SERVICE_NAME_MAP', async () => {
-      $injector.mockResolvedValueOnce({
-        SERVICE_NAME_MAP: {
-          getPing: 'getPingMock',
-        },
-      });
-      $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
       resolve.mockReturnValueOnce(
@@ -345,6 +312,14 @@ describe('$autoload', () => {
         WHOOK_PLUGINS_PATHS: [],
         $injector,
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {
+            getPing: 'getPingMock',
+          },
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         WRAPPERS: [],
         log,
         importer,
@@ -363,13 +338,6 @@ describe('$autoload', () => {
 
     it('for path mapped handlers', async () => {
       $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
       resolve.mockReturnValueOnce(
@@ -383,9 +351,14 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {
           getPing: '/home/whoami/my-other-project/src/handlers/getPing.js',
+        },
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
         },
         WRAPPERS: [],
         log,
@@ -404,13 +377,6 @@ describe('$autoload', () => {
     });
 
     it('for handlers in sub plugins', async () => {
-      $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
@@ -432,8 +398,13 @@ describe('$autoload', () => {
           '/var/lib/node/node_modules/@whook/lol/dist',
         ],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         WRAPPERS: [],
         log,
         importer,
@@ -452,13 +423,6 @@ describe('$autoload', () => {
 
     it('with no wrappers', async () => {
       $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
       resolve.mockReturnValueOnce(
@@ -472,8 +436,13 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         log,
         importer,
         resolve: resolve as unknown as RequireResolve,
@@ -491,13 +460,6 @@ describe('$autoload', () => {
 
     it('with empty wrappers', async () => {
       $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
         WRAPPERS: [],
       });
       $injector.mockResolvedValueOnce({
@@ -514,8 +476,13 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         log,
         importer,
         resolve: resolve as unknown as RequireResolve,
@@ -533,16 +500,6 @@ describe('$autoload', () => {
 
     it('for wrapped handlers', async () => {
       $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
-        WRAPPERS: [identity],
-      });
-      $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
       resolve.mockReturnValueOnce(
@@ -556,8 +513,14 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        WRAPPERS: [identity],
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         log,
         importer,
         resolve: resolve as unknown as RequireResolve,
@@ -577,13 +540,6 @@ describe('$autoload', () => {
   describe('should fail', () => {
     it('with unexisting handlers', async () => {
       $injector.mockResolvedValueOnce({
-        CONFIGS: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
-      });
-      $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
       resolve.mockImplementationOnce(() => {
@@ -594,8 +550,13 @@ describe('$autoload', () => {
         PROJECT_SRC: '/home/whoami/my-whook-project/src',
         WHOOK_PLUGINS_PATHS: [],
         $injector,
-        SERVICE_NAME_MAP: {},
         INITIALIZER_PATH_MAP: {},
+        APP_CONFIG: {
+          SERVICE_NAME_MAP: {},
+          CONFIG: {
+            testConfig: 'test',
+          },
+        },
         WRAPPERS: [],
         log,
         importer,

@@ -4,9 +4,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should be bypassed with no debug env 1`] = 
 {
   "autoloaderCalls": [
     [
-      "MAX_HEADERS_COUNT",
-    ],
-    [
       "KEEP_ALIVE_TIMEOUT",
     ],
     [
@@ -14,12 +11,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should be bypassed with no debug env 1`] = 
     ],
     [
       "MAX_CONNECTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
     ],
     [
       "BUFFER_LIMIT",
@@ -46,15 +37,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should be bypassed with no debug env 1`] = 
       "TRANSACTIONS",
     ],
     [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
-    ],
-    [
       "SHIELD_CHAR",
     ],
     [
@@ -68,6 +50,24 @@ exports[`wrapHTTPRouterWithSwaggerUI should be bypassed with no debug env 1`] = 
     ],
     [
       "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
     ],
   ],
   "debugCalls": [
@@ -122,9 +122,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should serve Swagger HTML 1`] = `
 {
   "autoloaderCalls": [
     [
-      "MAX_HEADERS_COUNT",
-    ],
-    [
       "KEEP_ALIVE_TIMEOUT",
     ],
     [
@@ -132,12 +129,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should serve Swagger HTML 1`] = `
     ],
     [
       "MAX_CONNECTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
     ],
     [
       "BUFFER_LIMIT",
@@ -164,15 +155,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should serve Swagger HTML 1`] = `
       "TRANSACTIONS",
     ],
     [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
-    ],
-    [
       "SHIELD_CHAR",
     ],
     [
@@ -186,6 +168,24 @@ exports[`wrapHTTPRouterWithSwaggerUI should serve Swagger HTML 1`] = `
     ],
     [
       "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
     ],
   ],
   "data": "<!-- HTML for static distribution bundle build -->
@@ -280,9 +280,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should work 1`] = `
 {
   "autoloaderCalls": [
     [
-      "MAX_HEADERS_COUNT",
-    ],
-    [
       "KEEP_ALIVE_TIMEOUT",
     ],
     [
@@ -290,12 +287,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should work 1`] = `
     ],
     [
       "MAX_CONNECTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
     ],
     [
       "BUFFER_LIMIT",
@@ -322,15 +313,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should work 1`] = `
       "TRANSACTIONS",
     ],
     [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
-    ],
-    [
       "SHIELD_CHAR",
     ],
     [
@@ -344,6 +326,24 @@ exports[`wrapHTTPRouterWithSwaggerUI should work 1`] = `
     ],
     [
       "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
     ],
   ],
   "data": {

@@ -4,7 +4,7 @@ import { wrapHandlerWithAuthorization } from '@whook/authorization';
 import type { Service, Dependencies } from 'knifecycle';
 import type { WhookWrapper } from '@whook/whook';
 
-export default service(initWrappers, 'WRAPPERS');
+export default service(initWrappers, 'WRAPPERS', [], true);
 
 /* Architecture Note #4.6: WRAPPERS
 

@@ -1,9 +1,12 @@
 import { name, autoService } from 'knifecycle';
 import { noop, identity } from '@whook/whook';
-import type { ENVService } from '@whook/whook';
 import type { LogService } from 'common-services';
 
 export default name('FILTER_API_TAGS', autoService(initFilterAPITags));
+
+export type FilterAPITagsEnvVars = {
+  FILTER_API_TAGS?: string;
+};
 
 /* Architecture Note #4.2: filterAPITags
 
@@ -22,7 +25,7 @@ async function initFilterAPITags({
   ENV,
   log = noop,
 }: {
-  ENV: ENVService;
+  ENV: FilterAPITagsEnvVars;
   log: LogService;
 }): Promise<string[]> {
   const FILTER_API_TAGS = (ENV.FILTER_API_TAGS || '')

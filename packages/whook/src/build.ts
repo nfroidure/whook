@@ -27,7 +27,7 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   ENV: '@whook/whook/dist/services/ProxyedENV',
   BASE_URL: '@whook/whook/dist/services/BASE_URL',
   API_DEFINITIONS: '@whook/whook/dist/services/API_DEFINITIONS',
-  CONFIGS: '@whook/whook/dist/services/CONFIGS',
+  APP_CONFIG: '@whook/whook/dist/services/APP_CONFIG',
   PORT: '@whook/whook/dist/services/PORT',
   HOST: '@whook/whook/dist/services/HOST',
   PROJECT_DIR: '@whook/whook/dist/services/PROJECT_DIR',
@@ -78,7 +78,7 @@ export async function runBuild(
       log: LogService;
       buildInitializer: BuildInitializer;
     } = await $.run([
-      'CONFIGS',
+      'APP_CONFIG',
       '$autoload',
       'PROJECT_DIR',
       'process',

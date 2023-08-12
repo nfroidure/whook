@@ -298,7 +298,6 @@ export default initializer(
       'oAuth2RefreshTokenGranter',
       'oAuth2TokenGranter',
     ],
-    singleton: true,
   },
   async (services) => Object.keys(services).map((key) => services[key]),
 );

@@ -63,17 +63,20 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 +   WhookSwaggerUIConfig,
 +} from '@whook/swagger-ui';
 
-declare module '@whook/whook' {
+// ...
 
-  export interface WhookEnv
-    extends WhookBaseEnv,
-    // (...)
+declare module 'application-services' {
+
+  export interface AppEnvVars
+    extends BaseAppEnvVars,
+      WhookBaseEnv,
+      // (...)
 +      WhookGraphIQLEnv,
       WhookSwaggerUIEnv {}
 
-  // ...
+  // (...)
 
-  export interface WhookConfigs
+  export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs, WhookSwaggerUIConfig {}
 
@@ -99,9 +102,10 @@ declare module '@whook/whook' {
 And add the SwaggerUI config (usually in `src/config/common/config.js`):
 
 ```diff
-import type { WhookConfigs } from '@whook/whook';
+// ...
+import type { AppConfig } from 'application-services';
 
-const CONFIG: WhookConfigs = {
+const CONFIG: AppConfig = {
   // ...
   BASE_PATH: 'v4',
 };

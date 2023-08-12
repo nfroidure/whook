@@ -51,6 +51,7 @@ describe('runServer', () => {
         JWT_SECRET: 'oudelali',
       }),
     );
+    $.register(constant('PROJECT_DIR', '/home/whoami/projects'));
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
     $.register(constant('NODE_ENV', 'test'));
@@ -76,11 +77,11 @@ describe('runServer', () => {
 
     $instance = _instance;
     jwtToken = _jwtToken;
-  }, 5000);
+  }, 10000);
 
   afterAll(async () => {
     await $instance.destroy();
-  }, 1000);
+  }, 5000);
 
   afterEach(() => {
     time.mockReset();

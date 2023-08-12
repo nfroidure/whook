@@ -4,9 +4,6 @@ exports[`wrapHTTPRouterWithGraphIQL should be bypassed with no debug env 1`] = `
 {
   "autoloaderCalls": [
     [
-      "MAX_HEADERS_COUNT",
-    ],
-    [
       "KEEP_ALIVE_TIMEOUT",
     ],
     [
@@ -14,12 +11,6 @@ exports[`wrapHTTPRouterWithGraphIQL should be bypassed with no debug env 1`] = `
     ],
     [
       "MAX_CONNECTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
     ],
     [
       "BUFFER_LIMIT",
@@ -40,22 +31,10 @@ exports[`wrapHTTPRouterWithGraphIQL should be bypassed with no debug env 1`] = `
       "QUERY_PARSER",
     ],
     [
-      "DEV_ACCESS_MECHANISM",
-    ],
-    [
       "TIMEOUT",
     ],
     [
       "TRANSACTIONS",
-    ],
-    [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
     ],
     [
       "SHIELD_CHAR",
@@ -71,6 +50,27 @@ exports[`wrapHTTPRouterWithGraphIQL should be bypassed with no debug env 1`] = `
     ],
     [
       "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "DEV_ACCESS_MECHANISM",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
     ],
   ],
   "debugCalls": [
@@ -122,9 +122,6 @@ exports[`wrapHTTPRouterWithGraphIQL should serve GraphIQL HTML 2`] = `
 {
   "autoloaderCalls": [
     [
-      "MAX_HEADERS_COUNT",
-    ],
-    [
       "KEEP_ALIVE_TIMEOUT",
     ],
     [
@@ -132,12 +129,6 @@ exports[`wrapHTTPRouterWithGraphIQL should serve GraphIQL HTML 2`] = `
     ],
     [
       "MAX_CONNECTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
     ],
     [
       "BUFFER_LIMIT",
@@ -158,22 +149,10 @@ exports[`wrapHTTPRouterWithGraphIQL should serve GraphIQL HTML 2`] = `
       "QUERY_PARSER",
     ],
     [
-      "DEV_ACCESS_MECHANISM",
-    ],
-    [
       "TIMEOUT",
     ],
     [
       "TRANSACTIONS",
-    ],
-    [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
     ],
     [
       "SHIELD_CHAR",
@@ -189,6 +168,27 @@ exports[`wrapHTTPRouterWithGraphIQL should serve GraphIQL HTML 2`] = `
     ],
     [
       "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "DEV_ACCESS_MECHANISM",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
     ],
   ],
   "data": "
@@ -376,9 +376,6 @@ exports[`wrapHTTPRouterWithGraphIQL should work 2`] = `
 {
   "autoloaderCalls": [
     [
-      "MAX_HEADERS_COUNT",
-    ],
-    [
       "KEEP_ALIVE_TIMEOUT",
     ],
     [
@@ -386,12 +383,6 @@ exports[`wrapHTTPRouterWithGraphIQL should work 2`] = `
     ],
     [
       "MAX_CONNECTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
     ],
     [
       "BUFFER_LIMIT",
@@ -412,22 +403,10 @@ exports[`wrapHTTPRouterWithGraphIQL should work 2`] = `
       "QUERY_PARSER",
     ],
     [
-      "DEV_ACCESS_MECHANISM",
-    ],
-    [
       "TIMEOUT",
     ],
     [
       "TRANSACTIONS",
-    ],
-    [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
     ],
     [
       "SHIELD_CHAR",
@@ -443,6 +422,27 @@ exports[`wrapHTTPRouterWithGraphIQL should work 2`] = `
     ],
     [
       "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "DEV_ACCESS_MECHANISM",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
     ],
   ],
   "debugCalls": [

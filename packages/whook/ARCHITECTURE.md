@@ -274,7 +274,7 @@ In such a hard life, Whook's make it simple to
 ### 5.4. Constants
 
 First of all the autoloader looks for constants in the
- previously loaded `CONFIGS` configurations hash.
+ previously loaded `APP_CONFIG` configurations hash.
 
 [See in context](./src/services/_autoload.ts#L203-L206)
 

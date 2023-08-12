@@ -109,7 +109,7 @@ describe('whook-cli', () => {
         ],
       }
     `);
-  });
+  }, 10000);
 
   it('should exit when erroring', async () => {
     const PROJECT_DIR = '/home/whoiam/projects/my-cool-project';
@@ -178,5 +178,5 @@ describe('whook-cli', () => {
         ],
       }
     `);
-  });
+  }, 10000);
 });

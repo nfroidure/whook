@@ -10,6 +10,7 @@ import {
 } from './libs/openapi.js';
 import { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers.js';
 import {
+  NodeEnv,
   initLogService,
   initTimeService,
   initRandomService,
@@ -20,6 +21,12 @@ import {
   DEFAULT_LOG_ROUTING,
   DEFAULT_LOG_CONFIG,
 } from 'common-services';
+import {
+  initAppConfigService,
+  initEnvService,
+  initProcessEnvService,
+  initProjectDirService,
+} from 'application-services';
 import initHTTPRouter, {
   OPEN_API_METHODS,
   DEFAULT_ERROR_URI,
@@ -35,10 +42,8 @@ import initHTTPTransaction, {
 import initHTTPServer from '@whook/http-server';
 import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
-import initEnv from './services/ENV.js';
 import initProxyedENV from './services/ProxyedENV.js';
 import initBuildConstants from './services/BUILD_CONSTANTS.js';
-import initConfigs from './services/CONFIGS.js';
 import initProjectDir from './services/PROJECT_DIR.js';
 import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS.js';
 import initAPIDefinitions, {
@@ -67,7 +72,6 @@ import type {
   PromptArgs,
 } from './services/promptArgs.js';
 import type { PortEnv } from './services/PORT.js';
-import type { LogService } from 'common-services';
 import type {
   HTTPServerConfig,
   HTTPServerProvider,
@@ -75,14 +79,8 @@ import type {
   HTTPServerEnv,
 } from '@whook/http-server';
 import type { HostEnv } from './services/HOST.js';
-import type { ENVConfig, ENVService } from './services/ENV.js';
 import type { ProxyedENVConfig } from './services/ProxyedENV.js';
 import type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS.js';
-import type {
-  CONFIGSService,
-  WhookConfig,
-  CONFIGSConfig,
-} from './services/CONFIGS.js';
 import type {
   WhookPluginsService,
   WhookPluginsPathsService,
@@ -109,7 +107,8 @@ import type {
   WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload.js';
-import type { ProcessServiceConfig } from 'common-services';
+import type { Logger, LogService, ProcessServiceConfig } from 'common-services';
+import type { ENVConfig, AppEnvVars } from 'application-services';
 import type {
   ErrorHandlerConfig,
   WhookErrorsDescriptors,
@@ -131,6 +130,7 @@ import type {
   ObfuscatorService,
   APMService,
 } from '@whook/http-transaction';
+export type { WhookConfig } from './services/BASE_URL.js';
 import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL.js';
 import type { Dependencies } from 'knifecycle';
 import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
@@ -139,7 +139,6 @@ import type {
   WhookCompilerService,
   WhookCompilerConfig,
 } from './services/compiler.js';
-import type { Logger } from 'common-services';
 
 export type {
   WhookAPIDefinitions,
@@ -158,7 +157,6 @@ export type {
   WhookServiceMap,
   WhookInitializerMap,
   WhookBuildConstantsService,
-  ENVService,
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
   HTTPServerConfig,
@@ -169,8 +167,6 @@ export type {
   APMService,
   WhookPluginsService,
   WhookPluginsPathsService,
-  CONFIGSService,
-  WhookConfig,
   WhookOperation,
   WhookRequest,
   WhookHeaders,
@@ -208,7 +204,6 @@ export {
   DEFAULT_REDUCED_FILES_SUFFIXES,
   initAPIDefinitions,
   initBuildConstants,
-  initEnv,
   initProxyedENV,
   initPort,
   initHost,
@@ -235,8 +230,6 @@ export {
 };
 
 export type WhookBaseEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface WhookEnv extends WhookBaseEnv {}
 
 export type WhookBaseConfigs = ProcessServiceConfig &
   HTTPRouterConfig &
@@ -245,16 +238,12 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   HTTPTransactionConfig &
   AutoloadConfig &
   BaseURLConfig &
-  CONFIGSConfig &
   ENVConfig &
   ProcessServiceConfig &
-  WhookPluginsPathsConfig & {
-    CONFIG: WhookConfig;
-  } & ObfuscatorConfig &
+  WhookPluginsPathsConfig &
+  ObfuscatorConfig &
   WhookAPIDefinitionsConfig &
   WhookCompilerConfig;
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface WhookConfigs extends WhookBaseConfigs {}
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
@@ -397,12 +386,14 @@ export async function prepareEnvironment<T extends Knifecycle>(
   // Importer
   $.register(initImporterService);
 
-  /* Architecture Note #3.2: `NODE_ENV` env var
-  Whook has different behaviors depending on the `NODE_ENV` value
-   consider setting it to production before shipping.
+  /* Architecture Note #3.2: `NODE_ENV`/`APP_ENV` env var
+  Whook has different behaviors depending on their values.
+   Consider setting it to production before shipping.
    */
   const NODE_ENV = process.env.NODE_ENV || 'development';
-  $.register(constant('NODE_ENV', NODE_ENV));
+
+  $.register(constant('PROCESS_ENV', process.env as unknown as AppEnvVars));
+  $.register(constant('NODE_ENV', NODE_ENV as NodeEnv));
   $.register(constant('APP_ENV', NODE_ENV));
 
   /* Architecture Note #3.3: `WHOOK_PLUGINS` and `PROJECT_SRC`
@@ -442,6 +433,9 @@ export async function prepareEnvironment<T extends Knifecycle>(
    at will, later in project's main file.
    */
   [
+    initProcessEnvService,
+    initProjectDirService,
+    initWhookPluginsPaths,
     initLogService,
     initTimeService,
     initRandomService,
@@ -451,13 +445,21 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initHTTPTransaction,
     initHTTPServer,
     initErrorHandler,
-    initEnv,
-    initConfigs,
-    initWhookPluginsPaths,
+    initEnvService,
     initProjectDir,
     initObfuscatorService,
     initAPMService,
   ].forEach($.register.bind($));
+
+  /* Architecture Note #5.1: Configuration auto loading
+    Loading the configuration files is done according to the `APP_ENV`
+     environment variable. It basically requires a configuration hash
+     where the keys are Knifecycle constants.
+
+    Let's load the configuration files as a convenient way
+     to create constants on the fly
+    */
+  $.register(initAppConfigService);
 
   return $;
 }

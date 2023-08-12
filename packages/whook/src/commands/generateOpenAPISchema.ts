@@ -35,12 +35,12 @@ export const definition: WhookCommandDefinition = {
 
 export default extra(definition, autoService(initGenerateOpenAPISchema));
 
-async function initGenerateOpenAPISchema({
-  /* Architecture Note #5.2.1: Injecting handlers
+/* Architecture Note #5.2.1: Injecting handlers
   
   A good thing is that you can reuse any handler into
    your commands by simply injecting it by name.
   */
+async function initGenerateOpenAPISchema({
   getOpenAPI,
   outstream = process.stdout,
   args,

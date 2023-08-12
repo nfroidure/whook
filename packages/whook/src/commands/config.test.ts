@@ -5,7 +5,7 @@ import type { LogService } from 'common-services';
 import type { PromptArgs } from '../services/promptArgs.js';
 
 describe('configCommand', () => {
-  const CONFIGS = {
+  const APP_CONFIG = {
     MYSQL: {
       auth: {
         username: 'root',
@@ -32,7 +32,7 @@ describe('configCommand', () => {
 
     const configCommand = await initConfigCommand({
       log,
-      CONFIGS,
+      APP_CONFIG,
       promptArgs,
     });
     const result = await configCommand();
@@ -81,7 +81,7 @@ describe('configCommand', () => {
 
     const configCommand = await initConfigCommand({
       log,
-      CONFIGS,
+      APP_CONFIG,
       promptArgs,
     });
     const result = await configCommand();
@@ -130,7 +130,7 @@ describe('configCommand', () => {
 
     const configCommand = await initConfigCommand({
       log,
-      CONFIGS,
+      APP_CONFIG,
       promptArgs,
     });
     const result = await configCommand();
@@ -179,7 +179,7 @@ describe('configCommand', () => {
 
     const configCommand = await initConfigCommand({
       log,
-      CONFIGS,
+      APP_CONFIG,
       promptArgs,
     });
     const result = await configCommand();
@@ -233,7 +233,7 @@ describe('configCommand', () => {
 
     const configCommand = await initConfigCommand({
       log,
-      CONFIGS,
+      APP_CONFIG,
       promptArgs,
     });
     const result = await configCommand();
@@ -285,7 +285,7 @@ describe('configCommand', () => {
 
     const configCommand = await initConfigCommand({
       log,
-      CONFIGS,
+      APP_CONFIG,
       promptArgs,
     });
 
@@ -335,7 +335,7 @@ describe('configCommand', () => {
 
     const configCommand = await initConfigCommand({
       log,
-      CONFIGS,
+      APP_CONFIG,
       promptArgs,
     });
 

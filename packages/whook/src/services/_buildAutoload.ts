@@ -16,8 +16,8 @@ import type {
   Service,
   ServiceInitializerWrapper,
 } from 'knifecycle';
-import type { LogService } from 'common-services';
 import { printStackTrace } from 'yerror';
+import type { LogService } from 'common-services';
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
@@ -57,8 +57,17 @@ const initializerWrapper: ServiceInitializerWrapper<
     }
 
     try {
-      // TODO: add initializer map to knifecycle public API
-      const initializer = ($instance as any)._initializers.get(serviceName);
+      let initializer;
+
+      try {
+        initializer = $instance._getInitializer(serviceName);
+      } catch (err) {
+        log(
+          'debug',
+          `🤖 - Direct initializer access failure from the Knifecycle instance: "${serviceName}".`,
+        );
+        log('debug-stack', printStackTrace(err as Error));
+      }
 
       if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
         log(

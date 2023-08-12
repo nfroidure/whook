@@ -71,17 +71,20 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 +  OAuth2Config,
 +} from '@whook/oauth2';
 
-declare module '@whook/whook' {
+// ...
 
-  export interface WhookEnv
-    extends WhookBaseEnv,
-    // (...)
+declare module 'application-services' {
+
+  export interface AppEnvVars
+    extends BaseAppEnvVars,
+      WhookBaseEnv,
+      // (...)
 +      AuthCookiesEnv,
       WhookSwaggerUIEnv {}
 
-  // ...
+  // (...)
 
-  export interface WhookConfigs
+  export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs,
 +      AuthCookiesConfig,
@@ -95,15 +98,16 @@ declare module '@whook/whook' {
 Add the OAuth2 configuration to your config files:
 
 ```diff
+// ...
 + import {
 +   OAUTH2_ERRORS_DESCRIPTORS,
 +   OAuth2Config,
 + } from '@whook/oauth2';
-import type { WhookConfigs } from '@whook/whook';
+import type { AppConfig } from 'application-services';
 
 // ...
 
-const CONFIG: WhookConfigs = {
+const CONFIG: AppConfig = {
   // ...
 +   OAUTH2: {
 +     // The SSR frontend

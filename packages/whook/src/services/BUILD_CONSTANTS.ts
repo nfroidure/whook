@@ -1,7 +1,7 @@
 import { service } from 'knifecycle';
 import type { JsonValue } from 'type-fest';
 
-export default service(initBuildConstants, 'BUILD_CONSTANTS', []);
+export default service(initBuildConstants, 'BUILD_CONSTANTS', [], true);
 
 export type WhookBuildConstantsService = Record<string, JsonValue>;
 
