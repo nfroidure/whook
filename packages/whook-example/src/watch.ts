@@ -22,7 +22,7 @@ export async function watchDevServer() {
       if (apiChanged) {
         try {
           const { stdout } = await doExec(
-            "node ../../node_modules/prettier/bin-prettier.js --write 'src/openAPISchema.d.ts'",
+            "node ../../node_modules/prettier/bin/prettier.cjs --write 'src/openAPISchema.d.ts'",
             // Could be `PROJECT_DIR` but seems to fail, replace after resolving
             // this issue: https://github.com/nfroidure/knifecycle/issues/108
             { cwd: PROJECT_SRC + '/..' },
@@ -30,7 +30,7 @@ export async function watchDevServer() {
           log('warning', '🔧 - Formatted the type file!', stdout);
         } catch (err) {
           log('error', '🔧 - Could not format the type file!');
-          log('error-stack', printStackTrace(err));
+          log('error-stack', printStackTrace(err as Error));
         }
       }
     },

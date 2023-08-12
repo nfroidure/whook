@@ -7,7 +7,7 @@
 # @whook/whook
 > Build strong and efficient REST web services.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-whook/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-whook/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -302,4 +302,4 @@ Auto detect the Whook WHOOK_PLUGINS_PATHS
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-whook/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-whook/LICENSE)

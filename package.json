@@ -1,11 +1,4 @@
 {
-  "name": "whook",
-  "version": "0.0.0",
-  "description": "Build strong and efficient REST web services.",
-  "private": true,
-  "workspaces": [
-    "./packages/*"
-  ],
   "metapak": {
     "configs": [
       "main",
@@ -24,6 +17,13 @@
       "rootPackage": true
     }
   },
+  "name": "whook",
+  "version": "0.0.0",
+  "description": "Build strong and efficient REST web services.",
+  "private": true,
+  "workspaces": [
+    "./packages/*"
+  ],
   "scripts": {
     "build": "npm run lerna -- run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -k packages/whook/package.json && git add CHANGELOG.md",
@@ -56,13 +56,13 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "devDependencies": {
-    "commitizen": "^4.2.5",
-    "conventional-changelog-cli": "^2.2.2",
+    "commitizen": "^4.3.0",
+    "conventional-changelog-cli": "^3.0.0",
     "coveralls": "^3.0.4",
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^6.1.0",
-    "metapak": "^4.0.6",
-    "metapak-nfroidure": "13.0.0"
+    "metapak": "^5.1.3",
+    "metapak-nfroidure": "15.0.1"
   },
   "contributors": [
     {
@@ -72,7 +72,7 @@
     }
   ],
   "engines": {
-    "node": ">=16.15.0"
+    "node": ">=18.16.0"
   },
   "config": {
     "commitizen": {

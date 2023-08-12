@@ -70,6 +70,7 @@ export async function prepareServer<
    For example, here we add a Swagger UI page for
    development purpose.
   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as any);
 
   return await prepareBaseServer(injectedNames, $);

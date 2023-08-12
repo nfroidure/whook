@@ -38,19 +38,23 @@ function removeMutedParameters(
   mutedParameters: string[],
   $refs: SwaggerParser.$Refs,
 ) {
-  return parameters.reduce((acc, parameter) => {
-    const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject).$ref
-      ? ($refs.get(
-          (parameter as OpenAPIV3.ReferenceObject).$ref,
-        ) as OpenAPIV3.ParameterObject)
-      : (parameter as OpenAPIV3.ParameterObject);
+  return parameters.reduce(
+    (acc, parameter) => {
+      const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
+        .$ref
+        ? ($refs.get(
+            (parameter as OpenAPIV3.ReferenceObject).$ref,
+          ) as OpenAPIV3.ParameterObject)
+        : (parameter as OpenAPIV3.ParameterObject);
 
-    if (mutedParameters.includes(dereferencedParameter.name)) {
-      return acc;
-    }
+      if (mutedParameters.includes(dereferencedParameter.name)) {
+        return acc;
+      }
 
-    return acc.concat(parameter);
-  }, [] as (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[]);
+      return acc.concat(parameter);
+    },
+    [] as (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[],
+  );
 }
 
 async function getOpenAPI(

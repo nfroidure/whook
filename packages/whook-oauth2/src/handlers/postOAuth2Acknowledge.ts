@@ -202,7 +202,7 @@ async function postOAuth2Acknowledge<
     );
   } catch (err) {
     log('debug', '👫 - OAuth2 acknowledge error', (err as YError).code);
-    log('debug-stack', printStackTrace(err));
+    log('debug-stack', printStackTrace(err as Error));
 
     setURLError(
       url,

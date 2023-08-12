@@ -7,7 +7,7 @@
 # @whook/create
 > Kickstart a new Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-create/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-create/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -36,4 +36,4 @@ node bin/create.js
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-create/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-create/LICENSE)

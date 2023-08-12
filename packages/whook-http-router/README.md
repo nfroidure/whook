@@ -7,7 +7,7 @@
 # @whook/http-router
 > The Whook base HTTP router
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-http-router/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-http-router/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -176,4 +176,4 @@ map it to a serializable response
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-http-router/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-http-router/LICENSE)

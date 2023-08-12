@@ -13,11 +13,7 @@ exports[`runREPL should work 1`] = `
       "🖵 - Initializing the REPL service!",
     ],
   ],
-  "logErrorCalls": [
-    [
-      "🔂 - Running in "test" environment.",
-    ],
-  ],
+  "logErrorCalls": [],
   "logInfoCalls": [],
 }
 `;

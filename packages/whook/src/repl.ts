@@ -17,7 +17,10 @@ export async function runREPL<
     return { $instance: $, ...services } as unknown as D;
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', printStackTrace(err));
+    console.error(
+      '💀 - Cannot launch the process:',
+      printStackTrace(err as Error),
+    );
     process.exit(1);
   }
 }

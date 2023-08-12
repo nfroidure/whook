@@ -20,7 +20,7 @@ async function initArgs({
   ARGS: string[];
   log: LogService;
 }): Promise<WhookCommandArgs> {
-  const { $0, _, ...args } = parseArgs(ARGS.slice(2));
+  const { _, ...args } = parseArgs(ARGS.slice(2));
   const finalArgs = {
     namedArguments: args,
     rest: _.map((arg) => arg.toString()),

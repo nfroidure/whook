@@ -7,7 +7,7 @@
 # @whook/oauth2
 > OAuth2 implementation for Whook servers
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-oauth2/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-oauth2/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -417,4 +417,4 @@ export const responseTypeParameter = {
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-oauth2/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-oauth2/LICENSE)

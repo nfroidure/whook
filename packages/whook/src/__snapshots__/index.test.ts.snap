@@ -40,9 +40,6 @@ exports[`runServer should work 1`] = `
   ],
   "logErrorCalls": [
     [
-      "🔂 - Running in "test" environment.",
-    ],
-    [
       "🎙️ - HTTP Server listening at "http://localhost:8888".",
     ],
     [

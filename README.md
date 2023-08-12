@@ -7,8 +7,8 @@
 # whook
 > Build strong and efficient REST web services.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/LICENSE)
-[![Coverage Status](https://coveralls.io/repos/github/nfroidure/whook/badge.svg?branch=master)](https://coveralls.io/github/nfroidure/whook?branch=master)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/nfroidure/whook/badge.svg?branch=main)](https://coveralls.io/github/nfroidure/whook?branch=main)
 
 
 [//]: # (::contents:start)
@@ -192,4 +192,4 @@ NODE_ENV=cli npm run lerna  -- publish
 - [Vincent Da Silva](https://dasilvavincent.github.io/PortFolio/)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/LICENSE)

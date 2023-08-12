@@ -760,9 +760,6 @@ exports[`runServer should work 1`] = `
       "💁 - Serving the API docs: http://localhost:9999/docs",
     ],
     [
-      "🔂 - Running in "test" environment.",
-    ],
-    [
       "🖥 - Using an isolated env.",
     ],
   ],

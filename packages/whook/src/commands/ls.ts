@@ -117,7 +117,7 @@ async function initLsCommand({
                         'error',
                         `🔴 - Got an error while loading a command file: ${file}`,
                       );
-                      log('error-stack', printStackTrace(err));
+                      log('error-stack', printStackTrace(err as Error));
                     }
                   }),
               )
@@ -133,7 +133,7 @@ async function initLsCommand({
             'debug',
             `✅ - No commands folder found at path "${pluginPath}".`,
           );
-          log('debug-stack', printStackTrace(err));
+          log('debug-stack', printStackTrace(err as Error));
           return {
             plugin: commandsSources[i],
             commands: [],

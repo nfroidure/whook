@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { DEFAULT_COMPILER_OPTIONS, noop, readArgs } from '@whook/whook';

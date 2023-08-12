@@ -162,7 +162,7 @@ async function getOAuth2Authorize(
     url.searchParams.set('client_id', applicationId);
   } catch (err) {
     log('debug', '👫 - OAuth2 initialization error', (err as YError).code);
-    log('error-stack', printStackTrace(err));
+    log('error-stack', printStackTrace(err as Error));
 
     url.searchParams.set('redirect_uri', demandedRedirectURI);
     setURLError(

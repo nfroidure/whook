@@ -7,7 +7,7 @@
 # @whook/versions
 > A wrapper to provide versions check support to a Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-versions/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-versions/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -129,4 +129,4 @@ Augment an OpenAPI with versions headers added.
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-versions/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-versions/LICENSE)

@@ -7,7 +7,7 @@
 # @whook/cors
 > A wrapper to provide CORS support to a Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-cors/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-cors/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -211,4 +211,4 @@ Wrap the error handler service as a last chance to add CORS
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-cors/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-cors/LICENSE)

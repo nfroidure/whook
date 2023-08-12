@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { initAutoload, noop, cleanupOpenAPI } from '@whook/whook';
 import {
   Knifecycle,
@@ -141,7 +142,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       return $autoload(serviceName);
     } catch (err) {
       log('error', `Build error while loading "${serviceName}".`);
-      log('error-stack', printStackTrace(err));
+      log('error-stack', printStackTrace(err as Error));
       throw err;
     }
   };

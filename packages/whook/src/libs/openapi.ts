@@ -64,9 +64,12 @@ export function splitRef(ref: string): string[] {
 }
 
 export function resolve<T>(root: JsonObject, parts: string[]): T {
-  return parts.reduce((curSchema, part) => {
-    return curSchema[part];
-  }, root as unknown as T) as T;
+  return parts.reduce(
+    (curSchema, part) => {
+      return curSchema[part];
+    },
+    root as unknown as T,
+  ) as T;
 }
 
 export function collectRefs(

@@ -331,7 +331,7 @@ async function initHTTPTransaction({
         id,
         start: startTransaction.bind(
           null,
-          { id, req, res, delayPromise },
+          { id, delayPromise },
           initializationPromise,
         ),
         catch: catchTransaction.bind(null, { id, req, res }),
@@ -397,7 +397,7 @@ async function initHTTPTransaction({
       verb: req.method as string,
       status: (err as YHTTPError).httpCode || 500,
       code: (err as YError).code || 'E_UNEXPECTED',
-      stack: printStackTrace(err),
+      stack: printStackTrace(err as Error),
       details: (err as YError).params || [],
     });
 
@@ -470,7 +470,7 @@ async function initHTTPTransaction({
           (req.headers.host || 'localhost') +
           FINAL_TRANSACTIONS[id].url,
         method: req.method as string,
-        stack: printStackTrace(err),
+        stack: printStackTrace(err as Error),
         operationId,
       });
     }
@@ -489,7 +489,7 @@ async function initHTTPTransaction({
       await delay.clear(delayPromise);
     } catch (err) {
       log('debug', '❕ - Could not clear a delay.');
-      log('debug-stack', printStackTrace(err));
+      log('debug-stack', printStackTrace(err as Error));
     }
   }
 }

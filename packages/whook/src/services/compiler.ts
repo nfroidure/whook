@@ -1,6 +1,7 @@
 import path from 'path';
 import { noop } from '../libs/utils.js';
 import { autoService } from 'knifecycle';
+import type { Service } from 'knifecycle';
 import type { ImporterService, LogService } from 'common-services';
 
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
@@ -29,7 +30,7 @@ export type WhookCompilerConfig = {
 export type WhookCompilerDependencies = WhookCompilerConfig & {
   PROJECT_DIR: string;
   NODE_ENV: string;
-  importer: ImporterService<any>;
+  importer: ImporterService<Service>;
   log?: LogService;
 };
 export type WhookCompilationResult = {

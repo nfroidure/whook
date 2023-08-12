@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { printStackTrace } from 'yerror';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
@@ -173,7 +174,7 @@ async function initHandlerForAWSHTTPFunction(
       log,
       time,
       ...services,
-    },
+    } as unknown as HTTPWrapperDependencies & { CORS: CORSConfig },
     {
       consumableMediaTypes,
       produceableMediaTypes,
@@ -181,7 +182,6 @@ async function initHandlerForAWSHTTPFunction(
       produceableCharsets,
       validators,
       bodyValidator,
-      ammendedParameters,
     },
     handler,
   );

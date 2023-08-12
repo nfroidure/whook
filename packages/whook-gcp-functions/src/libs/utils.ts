@@ -14,6 +14,7 @@ export async function loadFunction(
   operationId: string,
   type: string,
   extension = '.mjs',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const modulePath = path.join(
     PROJECT_DIR,

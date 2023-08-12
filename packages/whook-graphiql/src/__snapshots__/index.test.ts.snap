@@ -108,9 +108,6 @@ exports[`wrapHTTPRouterWithGraphIQL should be bypassed with no debug env 1`] = `
   ],
   "logErrorCalls": [
     [
-      "🔂 - Running in "test" environment.",
-    ],
-    [
       "🎙️ - HTTP Server listening at "http://localhost:11112".",
     ],
     [
@@ -361,9 +358,6 @@ exports[`wrapHTTPRouterWithGraphIQL should serve GraphIQL HTML 2`] = `
   ],
   "logErrorCalls": [
     [
-      "🔂 - Running in "test" environment.",
-    ],
-    [
       "🎙️ - HTTP Server listening at "http://localhost:11113".",
     ],
     [
@@ -492,9 +486,6 @@ exports[`wrapHTTPRouterWithGraphIQL should work 2`] = `
     ],
   ],
   "logErrorCalls": [
-    [
-      "🔂 - Running in "test" environment.",
-    ],
     [
       "🎙️ - HTTP Server listening at "http://localhost:11111".",
     ],

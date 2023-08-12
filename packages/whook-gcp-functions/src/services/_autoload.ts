@@ -108,6 +108,7 @@ const initializerWrapper: ServiceInitializerWrapper<
   return async (serviceName) => {
     try {
       // TODO: add initializer map to knifecycle public API
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const initializer = ($instance as any)._initializers.get(serviceName);
 
       if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
@@ -140,10 +141,11 @@ const initializerWrapper: ServiceInitializerWrapper<
       return $autoload(serviceName);
     } catch (err) {
       log('error', `Build error while loading "${serviceName}".`);
-      log('error-stack', printStackTrace(err));
+      log('error-stack', printStackTrace(err as Error));
       throw err;
     }
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
 /**
@@ -162,5 +164,6 @@ const initializerWrapper: ServiceInitializerWrapper<
  */
 export default alsoInject(
   ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   wrapInitializer(initializerWrapper as any, initAutoload),
 );

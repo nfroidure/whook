@@ -15,6 +15,7 @@ describe('putEcho', () => {
       log,
     });
     const response = await putEcho({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       body: echoSchema.example as any,
     });
 

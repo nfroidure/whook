@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { internalIpV4 } from 'internal-ip';
 import initHOST from './HOST.js';

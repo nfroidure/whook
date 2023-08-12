@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { YError } from 'yerror';
 import initProjectDir from './PROJECT_DIR.js';

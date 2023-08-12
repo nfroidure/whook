@@ -1,25 +1,4 @@
 {
-  "name": "@whook/whook",
-  "version": "12.0.2",
-  "description": "Build strong and efficient REST web services.",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "whook": "bin/whook.js"
-  },
-  "keywords": [
-    "whook",
-    "knifecycle",
-    "REST",
-    "HTTP",
-    "OpenAPI",
-    "web",
-    "service",
-    "handler",
-    "server",
-    "framework"
-  ],
   "metapak": {
     "configs": [
       "main",
@@ -44,9 +23,30 @@
       ]
     }
   },
+  "name": "@whook/whook",
+  "version": "12.0.2",
+  "description": "Build strong and efficient REST web services.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "whook": "bin/whook.js"
+  },
+  "keywords": [
+    "whook",
+    "knifecycle",
+    "REST",
+    "HTTP",
+    "OpenAPI",
+    "web",
+    "service",
+    "handler",
+    "server",
+    "framework"
+  ],
   "scripts": {
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
-    "build": "rimraf -f 'dist' && tsc --outDir dist",
+    "build": "rimraf 'dist' && tsc --outDir dist",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "cover": "npm run jest -- --coverage",
@@ -56,7 +56,9 @@
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
     "prettier": "prettier --write 'src/**/*.ts'",
-    "test": "npm run jest"
+    "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
+    "test": "npm run jest",
+    "type-check": "tsc --pretty --noEmit"
   },
   "author": {
     "name": "Nicolas Froidure",
@@ -77,54 +79,58 @@
     "esbuild-node-externals": "^1.5.0"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.76",
+    "@swc/helpers": "^0.5.1",
+    "@swc/jest": "^0.2.28",
     "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^9.0.3",
+    "@types/mkdirp": "^1.0.2",
     "@types/streamtest": "^1.2.0",
     "@types/yargs-parser": "^21.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.36.0",
-    "@typescript-eslint/parser": "^5.36.0",
-    "esbuild": "^0.15.6",
-    "esbuild-jest": "^0.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
     "esbuild-node-externals": "^1.5.0",
-    "eslint": "^8.23.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "jest": "^29.0.1",
-    "jsarch": "^6.0.0",
-    "jsdoc-to-markdown": "^7.1.1",
-    "metapak": "^4.0.6",
-    "metapak-nfroidure": "13.0.0",
-    "prettier": "^2.7.1",
-    "rimraf": "^3.0.2",
+    "eslint": "^8.46.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.6.2",
+    "jsarch": "^6.0.1",
+    "jsdoc-to-markdown": "^8.0.0",
+    "metapak": "^5.1.3",
+    "metapak-nfroidure": "15.0.1",
+    "prettier": "^3.0.1",
+    "rimraf": "^5.0.1",
     "streamtest": "^2.0.0",
-    "typescript": "^4.8.2"
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "@whook/http-router": "^12.0.1",
     "@whook/http-server": "^12.0.1",
     "@whook/http-transaction": "^12.0.1",
-    "ajv": "^8.11.2",
+    "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
-    "camelcase": "^7.0.1",
-    "common-services": "^12.1.0",
+    "camelcase": "^8.0.0",
+    "common-services": "^13.0.0",
     "debug": "^4.3.4",
-    "dotenv": "^16.0.3",
-    "fs-extra": "^11.1.0",
-    "inquirer": "^9.1.4",
-    "internal-ip": "^7.0.0",
-    "knifecycle": "^14.1.0",
+    "dotenv": "^16.3.1",
+    "fs-extra": "^11.1.1",
+    "inquirer": "^9.2.10",
+    "internal-ip": "^8.0.0",
+    "knifecycle": "^15.0.1",
     "miniquery": "^1.1.2",
-    "openapi-types": "^12.1.0",
+    "mkdirp": "^3.0.1",
+    "openapi-types": "^12.1.3",
     "pkg-dir": "^7.0.0",
     "portfinder": "^1.0.32",
-    "schema2dts": "^4.1.4",
-    "type-fest": "^3.4.0",
+    "schema2dts": "^5.0.0",
+    "type-fest": "^4.2.0",
     "yargs-parser": "^21.1.1",
-    "yerror": "^6.2.1"
+    "yerror": "^8.0.0"
   },
   "contributors": [],
   "engines": {
-    "node": ">=16.15.0"
+    "node": ">=18.16.0"
   },
   "jest": {
     "coverageReporters": [
@@ -140,11 +146,8 @@
     "testEnvironment": "node",
     "transform": {
       "^.+\\.tsx?$": [
-        "esbuild-jest",
-        {
-          "sourcemap": true,
-          "format": "esm"
-        }
+        "@swc/jest",
+        {}
       ]
     },
     "moduleNameMapper": {
@@ -153,7 +156,8 @@
     },
     "extensionsToTreatAsEsm": [
       ".ts"
-    ]
+    ],
+    "prettierPath": null
   },
   "eslintConfig": {
     "extends": [

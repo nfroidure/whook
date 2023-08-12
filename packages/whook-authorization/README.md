@@ -7,7 +7,7 @@
 # @whook/authorization
 > A wrapper to provide authorization support to a Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-authorization/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-authorization/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -176,4 +176,4 @@ Wrap an handler initializer to check client's authorizations.
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-authorization/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-authorization/LICENSE)

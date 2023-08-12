@@ -108,9 +108,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should be bypassed with no debug env 1`] = 
   ],
   "logErrorCalls": [
     [
-      "🔂 - Running in "test" environment.",
-    ],
-    [
       "🎙️ - HTTP Server listening at "http://localhost:22223".",
     ],
     [
@@ -265,9 +262,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should serve Swagger HTML 1`] = `
   },
   "logErrorCalls": [
     [
-      "🔂 - Running in "test" environment.",
-    ],
-    [
       "💁 - Serving the API docs: http://localhost:22224/docs",
     ],
     [
@@ -415,9 +409,6 @@ exports[`wrapHTTPRouterWithSwaggerUI should work 1`] = `
     "transfer-encoding": "chunked",
   },
   "logErrorCalls": [
-    [
-      "🔂 - Running in "test" environment.",
-    ],
     [
       "💁 - Serving the API docs: http://localhost:22222/docs",
     ],

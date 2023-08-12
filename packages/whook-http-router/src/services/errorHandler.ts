@@ -482,7 +482,7 @@ async function initErrorHandler({
 
     if (DEBUG_NODE_ENVS.includes(NODE_ENV as string)) {
       response.body.error_debug_data.code = errorCode;
-      response.body.error_debug_data.stack = printStackTrace(err);
+      response.body.error_debug_data.stack = printStackTrace(err as Error);
       response.body.error_debug_data.params = (err as YError).params;
     }
 

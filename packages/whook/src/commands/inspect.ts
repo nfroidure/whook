@@ -58,7 +58,7 @@ async function initInspectCommand({
     } = readArgs<{
       name: string;
       query: string;
-      default: any;
+      default: string;
       pretty: true;
     }>(definition.arguments, await promptArgs());
     let service;

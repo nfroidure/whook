@@ -7,7 +7,7 @@
 # @whook/method-override
 > A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-method-override/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-method-override/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -49,4 +49,4 @@ export async function prepareEnvironment(
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-method-override/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-method-override/LICENSE)

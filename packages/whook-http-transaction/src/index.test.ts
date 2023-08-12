@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import StreamTest from 'streamtest';
 import { YError } from 'yerror';

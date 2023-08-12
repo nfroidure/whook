@@ -7,7 +7,7 @@
 # @whook/example
 > A basic Whook server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-example/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-example/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -98,4 +98,4 @@ DEBUG=knifecycle npm run dev
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-example/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-example/LICENSE)

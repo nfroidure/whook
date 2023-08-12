@@ -154,9 +154,11 @@ async function initTestHTTPFunctionCommand({
     await new Promise<void>((resolve, reject) => {
       const gcpfResponse = new stream.PassThrough();
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (gcpfResponse as any).set = (name: string, value: string): void => {
         response.headers[name] = value;
       };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (gcpfResponse as any).status = (code: number): void => {
         response.status = code;
       };

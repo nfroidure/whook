@@ -140,6 +140,7 @@ async function initAutoload<D extends Dependencies>({
       }
       wrapHandler =
         wrapHandler ||
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (WRAPPERS?.length ? compose(...(WRAPPERS as any[])) : identity);
 
       return wrapHandler(handlerInitializer);

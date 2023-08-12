@@ -3,12 +3,12 @@ import initHandlerCommand from './handler.js';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
 import type { PromptArgs } from '../services/promptArgs.js';
-import type { Injector } from 'knifecycle';
+import type { Injector, Service } from 'knifecycle';
 
 describe('handlerCommand', () => {
   const promptArgs = jest.fn<PromptArgs>();
   const log = jest.fn<LogService>();
-  const $injector = jest.fn<Injector<any>>();
+  const $injector = jest.fn<Injector<Service>>();
 
   beforeEach(() => {
     promptArgs.mockReset();

@@ -3,7 +3,7 @@ import initInspectCommand from './inspect.js';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
 import type { PromptArgs } from '../services/promptArgs.js';
-import type { Injector } from 'knifecycle';
+import type { Injector, Service } from 'knifecycle';
 
 describe('inspectCommand', () => {
   const SERVICES = {
@@ -14,7 +14,7 @@ describe('inspectCommand', () => {
       version: '2.1.1',
     },
   };
-  const $injector = jest.fn<Injector<any>>();
+  const $injector = jest.fn<Injector<Service>>();
   const promptArgs = jest.fn<PromptArgs>();
   const log = jest.fn<LogService>();
 

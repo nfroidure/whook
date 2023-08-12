@@ -26,7 +26,7 @@ export default autoService(async function initAuthor({
     readGitProperty({ exec, log }, 'user.email'),
   ]).catch((err) => {
     log('debug', 'Could not get author from Git');
-    log('debug-stack', printStackTrace(err));
+    log('debug-stack', printStackTrace(err as Error));
     return [];
   });
 

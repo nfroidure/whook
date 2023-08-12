@@ -158,11 +158,11 @@ async function postGraphQL<T extends Record<string, unknown>>(
   } catch (err) {
     if ('HttpQueryError' === (err as Error).name) {
       log('debug', '💥 - Got a GraphQL error!');
-      log('debug-stack', printStackTrace(err));
+      log('debug-stack', printStackTrace(err as Error));
       return {
         body: JSON.parse((err as Error).message),
-        status: (err as any).statusCode,
-        headers: (err as any).headers as WhookHeaders,
+        status: (err as { statusCode: number }).statusCode,
+        headers: (err as YHTTPError).headers as WhookHeaders,
       };
     }
 

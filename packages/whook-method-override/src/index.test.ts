@@ -39,6 +39,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       },
     },
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getPing = jest.fn<any>();
   const logger = {
     output: jest.fn(),

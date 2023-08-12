@@ -53,7 +53,7 @@ export async function watchDevServer<T extends Dependencies>(
     // and then another one for the server. It would allow
     // to wrap the chokidar wat into a service too.
     // log('debug', '🤷 - Cannot find/parse .gitignore');
-    // log('debug-stack', printStackTrace(err));
+    // log('debug-stack', printStackTrace(err as Error));
   }
 
   await restartDevServer({ injectedNames, afterRestartEnd });

@@ -95,14 +95,14 @@ window.onload = function() {
   // the following lines will be replaced by docker/configurator, when it runs in a docker-container
   window.ui = SwaggerUIBundle({
     urls: [{"name":"Public API","url":"${publicSwaggerURL}"}${
-        DEV_ACCESS_TOKEN
-          ? `, {"name":"Private API","url":"${
-              publicSwaggerURL +
-              '?access_token=' +
-              encodeURIComponent(DEV_ACCESS_TOKEN)
-            }"}`
-          : ''
-      }],
+      DEV_ACCESS_TOKEN
+        ? `, {"name":"Private API","url":"${
+            publicSwaggerURL +
+            '?access_token=' +
+            encodeURIComponent(DEV_ACCESS_TOKEN)
+          }"}`
+        : ''
+    }],
     dom_id: '#swagger-ui',
     deepLinking: true,
     presets: [

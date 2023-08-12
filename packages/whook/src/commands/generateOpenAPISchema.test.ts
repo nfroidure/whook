@@ -9,6 +9,7 @@ In such a hard life, Whook's make it simple to
  also test your commands.
 */
 describe('generateOpenAPISchema', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getOpenAPI = jest.fn<any>();
   const log = jest.fn<LogService>();
 

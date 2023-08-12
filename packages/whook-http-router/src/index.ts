@@ -54,6 +54,7 @@ import type {
   SupportedSecurityScheme,
 } from './libs/openAPIUtils.js';
 import type { JsonValue } from 'type-fest';
+import type { QSParameter } from 'strict-qs';
 import type { Provider } from 'knifecycle';
 import type { Transform, Readable } from 'stream';
 import type {
@@ -411,7 +412,10 @@ async function initHTTPRouter({
 
             parameters = {
               ...pathParameters,
-              ...QUERY_PARSER(retroCompatibleQueryParameters as any, search),
+              ...QUERY_PARSER(
+                retroCompatibleQueryParameters as unknown as QSParameter[],
+                search,
+              ),
               ...castParameters(
                 headersParameters,
                 filterHeaders(headersParameters, request.headers),
@@ -522,7 +526,7 @@ async function initHTTPRouter({
         });
     } catch (err) {
       log('error', '☢️ - Unrecovable router error...');
-      log('error-stack', printStackTrace(err));
+      log('error-stack', printStackTrace(err as Error));
       handleFatalError(err);
     }
   }

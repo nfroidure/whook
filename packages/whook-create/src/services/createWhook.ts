@@ -128,15 +128,14 @@ ${author.name}
 `,
         ),
       ),
-      ...(
-        await readdir(path.join(SOURCE_DIR, 'src', 'config'))
-      ).map((environment) =>
-        environment === 'common'
-          ? Promise.resolve()
-          : writeFile(
-              path.join(project.directory, `.env.${environment}`),
-              'JWT_SECRET=oudelali\n',
-            ),
+      ...(await readdir(path.join(SOURCE_DIR, 'src', 'config'))).map(
+        (environment) =>
+          environment === 'common'
+            ? Promise.resolve()
+            : writeFile(
+                path.join(project.directory, `.env.${environment}`),
+                'JWT_SECRET=oudelali\n',
+              ),
       ),
       writeFile(
         path.join(project.directory, 'package.json'),
@@ -187,7 +186,7 @@ ${author.name}
             'error',
             `⚠️ - Could not retrieve the \`.gitignore\` file contents from: "${GIT_IGNORE_URL}"`,
           );
-          log('error-stack', printStackTrace(err));
+          log('error-stack', printStackTrace(err as Error));
         }),
       new Promise((resolve, reject) =>
         exec(
@@ -206,7 +205,7 @@ ${author.name}
         ),
       ).catch((err) => {
         log('error', '⚠️ - Could not initialize the git project!');
-        log('error-stack', printStackTrace(err));
+        log('error-stack', printStackTrace(err as Error));
       }),
     ]);
 
@@ -242,7 +241,7 @@ ${author.name}
         symbol: '❌',
         text: 'Failed to install dependencies',
       });
-      log('error-stack', printStackTrace(err));
+      log('error-stack', printStackTrace(err as Error));
     }
 
     log(

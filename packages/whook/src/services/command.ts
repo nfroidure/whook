@@ -9,7 +9,7 @@ async function initCommand({ commandHandler, log }) {
       await commandHandler();
     } catch (err) {
       if ((err as YError).code === 'E_BAD_ARGS') {
-        log('error-stack', printStackTrace(err));
+        log('error-stack', printStackTrace(err as Error));
         if ((err as YError).params[0][0].keyword === 'required') {
           if ((err as YError).params[0][0].params.missingProperty) {
             log(

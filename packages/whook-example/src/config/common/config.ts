@@ -13,7 +13,6 @@ The `src/config/common/config.ts` one allows to add common
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
-const NODE_ENVS = [...DEBUG_NODE_ENVS, 'uat', 'production'];
 
 /* Architecture Note #2.2: Exporting
 
@@ -30,8 +29,7 @@ const CONFIG: Omit<WhookConfigs, 'HOST'> = {
     name: _packageJSON.name,
     description: _packageJSON.description || '',
   },
-  NODE_ENVS,
-  DEBUG_NODE_ENVS: process.env.DEBUG ? NODE_ENVS : DEBUG_NODE_ENVS,
+  DEBUG_NODE_ENVS: DEBUG_NODE_ENVS,
   SERVICE_NAME_MAP: {},
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,

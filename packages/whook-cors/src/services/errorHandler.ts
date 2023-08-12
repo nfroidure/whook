@@ -71,7 +71,7 @@ export async function wrapErrorHandlerForCORS(
       };
     } catch (err) {
       log('debug', '🤷 - Unable to set custom headers to the catched error!');
-      log('debug-stack', printStackTrace(err));
+      log('debug-stack', printStackTrace(err as Error));
     }
     return errorHandler(transactionId, responseSpec, err);
   };

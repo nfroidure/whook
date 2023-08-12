@@ -1,7 +1,7 @@
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
-import mkdirp from 'mkdirp';
+import { mkdirp } from 'mkdirp';
 import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
 import initCompiler from './services/compiler.js';
 import initBuildAutoloader from './services/_buildAutoload.js';
@@ -124,7 +124,7 @@ export async function runBuild(
     // eslint-disable-next-line
     console.error(
       '💀 - Cannot launch the build:',
-      printStackTrace(err),
+      printStackTrace(err as Error),
       JSON.stringify((err as YError)?.params, null, 2),
     );
     process.exit(1);

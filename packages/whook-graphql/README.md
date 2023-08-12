@@ -7,7 +7,7 @@
 # @whook/graphql
 > GraphQL implementation for Whook servers
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-graphql/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-graphql/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -144,4 +144,4 @@ Initialize the GraphQL service
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-graphql/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-graphql/LICENSE)

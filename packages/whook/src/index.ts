@@ -323,7 +323,10 @@ export async function runServer<
     return { ENV, log, $instance: $, ...services } as unknown as D;
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', printStackTrace(err));
+    console.error(
+      '💀 - Cannot launch the process:',
+      printStackTrace(err as Error),
+    );
     process.exit(1);
   }
 }
@@ -400,6 +403,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
    */
   const NODE_ENV = process.env.NODE_ENV || 'development';
   $.register(constant('NODE_ENV', NODE_ENV));
+  $.register(constant('APP_ENV', NODE_ENV));
 
   /* Architecture Note #3.3: `WHOOK_PLUGINS` and `PROJECT_SRC`
   Whook need to know where to look up for things like

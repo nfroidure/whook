@@ -7,7 +7,7 @@
 # @whook/swagger-ui
 > A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-swagger-ui/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-swagger-ui/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -118,4 +118,4 @@ export default CONFIG;
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-swagger-ui/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-swagger-ui/LICENSE)

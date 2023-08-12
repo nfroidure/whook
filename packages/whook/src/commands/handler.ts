@@ -71,7 +71,7 @@ async function initHandlerCommand({
       log('info', JSON.stringify(response, null, 2));
     } catch (err) {
       log('error', 'Got an error while running the handler.');
-      log('error-stack', printStackTrace(err));
+      log('error-stack', printStackTrace(err as Error));
     }
   };
 }

@@ -82,6 +82,7 @@ export interface WhookAPIHandlerDefinition<
     [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
     // eslint-disable-next-line
   } = {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   V extends Record<string, unknown> = Record<string, unknown>,
 > extends WhookBaseAPIHandlerDefinition<T, U> {}
 

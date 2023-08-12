@@ -7,7 +7,7 @@
 # @whook/graphiql
 > A wrapper for the Whook HTTP Router to provide GraphIQL for local dev
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-graphiql/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-graphiql/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -93,4 +93,4 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-graphiql/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-graphiql/LICENSE)

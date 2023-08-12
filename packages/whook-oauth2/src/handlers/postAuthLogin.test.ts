@@ -7,6 +7,7 @@ describe('postAuthLogin', () => {
     const authCookies = {
       build: jest.fn<AuthCookiesService['build']>(),
     };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const postOAuth2Token = jest.fn<any>();
     const postAuthLogin = await initPostAuthLogin({
       ROOT_AUTHENTICATION_DATA: {

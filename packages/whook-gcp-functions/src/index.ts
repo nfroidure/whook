@@ -2,7 +2,7 @@
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
-import mkdirp from 'mkdirp';
+import { mkdirp } from 'mkdirp';
 import cpr from 'cpr';
 import { printStackTrace, YError } from 'yerror';
 import { createRequire } from 'module';
@@ -179,7 +179,7 @@ export async function runBuild(
     // eslint-disable-next-line
     console.error(
       '💀 - Cannot launch the build:',
-      printStackTrace(err),
+      printStackTrace(err as Error),
       JSON.stringify((err as YError)?.params, null, 2),
     );
     process.exit(1);
@@ -315,7 +315,7 @@ async function buildAnyLambda(
     await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
   } catch (err) {
     log('error', `Error building "${operationId}"...`);
-    log('error-stack', printStackTrace(err));
+    log('error-stack', printStackTrace(err as Error));
     log('debug', JSON.stringify((err as YError).params, null, 2));
     throw YError.wrap(err as Error, 'E_LAMBDA_BUILD', operationId);
   }

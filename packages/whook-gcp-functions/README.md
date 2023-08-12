@@ -7,7 +7,7 @@
 # @whook/gcp-functions
 > Build and deploy to GCP Cloud Functions with Whook.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-gcp-functions/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-gcp-functions/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -194,4 +194,4 @@ There is a complete example on how to deploy your functions
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-gcp-functions/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-gcp-functions/LICENSE)

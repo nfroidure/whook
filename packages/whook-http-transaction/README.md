@@ -7,7 +7,7 @@
 # @whook/http-transaction
 > Isolated HTTP Transactions for the Whook framework
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-http-transaction/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-http-transaction/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -222,4 +222,4 @@ End the transaction
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-http-transaction/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-http-transaction/LICENSE)

@@ -66,7 +66,7 @@ export default async function runCLI<T extends Knifecycle>(
     } catch (err) {
       failed = true;
       log('error', '💀 - Command failed! Add "DEBUG=whook" for more context.');
-      log('error-stack', printStackTrace(err));
+      log('error-stack', printStackTrace(err as Error));
     }
 
     await $.destroy();
@@ -76,7 +76,10 @@ export default async function runCLI<T extends Knifecycle>(
     }
   } catch (err) {
     // eslint-disable-next-line
-    console.error('💀 - Cannot launch the process:', printStackTrace(err));
+    console.error(
+      '💀 - Cannot launch the process:',
+      printStackTrace(err as Error),
+    );
     process.exit(1);
   }
 }

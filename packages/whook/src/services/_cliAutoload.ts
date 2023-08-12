@@ -63,7 +63,7 @@ const initializerWrapper: ServiceInitializerWrapper<
         break;
       } catch (err) {
         log('debug', `Command "${commandName}" not found in "${finalPath}".`);
-        log('debug-stack', printStackTrace(err));
+        log('debug-stack', printStackTrace(err as Error));
       }
     }
   }
@@ -107,5 +107,6 @@ const initializerWrapper: ServiceInitializerWrapper<
 
 export default alsoInject(
   ['args', 'PROJECT_SRC', 'WHOOK_PLUGINS_PATHS', 'log', 'importer'],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   wrapInitializer(initializerWrapper as any, initAutoload),
 );

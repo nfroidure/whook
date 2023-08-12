@@ -39,13 +39,13 @@ describe('Compiler', () => {
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      {
-        "contentsLength": 46710,
-        "extension": ".mjs",
-        "logCalls": [],
-        "mappingsLength": 0,
-      }
-    `);
+{
+  "contentsLength": 47891,
+  "extension": ".mjs",
+  "logCalls": [],
+  "mappingsLength": 0,
+}
+`);
   });
 
   test('should work with code only', async () => {
@@ -69,13 +69,13 @@ describe('Compiler', () => {
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      {
-        "contentsLength": 3479,
-        "extension": ".mjs",
-        "logCalls": [],
-        "mappingsLength": 0,
-      }
-    `);
+{
+  "contentsLength": 3699,
+  "extension": ".mjs",
+  "logCalls": [],
+  "mappingsLength": 0,
+}
+`);
   });
 
   test('should work with commonjs', async () => {
@@ -103,12 +103,12 @@ describe('Compiler', () => {
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      {
-        "contentsLength": 4791,
-        "extension": ".cjs",
-        "logCalls": [],
-        "mappingsLength": 0,
-      }
-    `);
+{
+  "contentsLength": 5297,
+  "extension": ".cjs",
+  "logCalls": [],
+  "mappingsLength": 0,
+}
+`);
   });
 });

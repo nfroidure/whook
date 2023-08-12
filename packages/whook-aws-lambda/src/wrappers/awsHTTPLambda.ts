@@ -113,6 +113,7 @@ export default function wrapHandlerForAWSHTTPLambda<
     ],
     reuseSpecialProps(
       initHandler,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (initHandlerForAWSHTTPLambda as any).bind(
         null,
         initHandler,
@@ -187,6 +188,7 @@ async function initHandlerForAWSHTTPLambda(
     log,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (handleForAWSHTTPLambda as any).bind(
     null,
     {
@@ -390,7 +392,7 @@ async function handleForAWSHTTPLambda(
       code: (err as YError)?.code || 'E_UNEXPECTED',
       statusCode: response.status,
       params: (err as YError)?.params || [],
-      stack: printStackTrace(err),
+      stack: printStackTrace(err as Error),
     };
 
     log('error', JSON.stringify(responseLog));

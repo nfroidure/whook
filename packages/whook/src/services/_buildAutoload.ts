@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import initAutoload from './_autoload.js';
 import { noop } from '../libs/utils.js';
 import {
@@ -9,7 +10,6 @@ import {
 import type { WhookBuildConstantsService } from '../index.js';
 import type {
   Knifecycle,
-  Injector,
   Autoloader,
   Initializer,
   Dependencies,
@@ -81,7 +81,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       return $autoload(serviceName);
     } catch (err) {
       log('error', `Build error while loading "${serviceName}".`);
-      log('error-stack', printStackTrace(err));
+      log('error-stack', printStackTrace(err as Error));
       throw err;
     }
   };

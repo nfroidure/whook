@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initGetOAuth2Authorize from './getOAuth2Authorize.js';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';

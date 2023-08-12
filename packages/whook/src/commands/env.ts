@@ -45,7 +45,7 @@ async function initEnvCommand({
       namedArguments: { name, default: defaultValue },
     } = readArgs<{
       name: string;
-      default: any;
+      default: string;
     }>(definition.arguments, await promptArgs());
 
     if (

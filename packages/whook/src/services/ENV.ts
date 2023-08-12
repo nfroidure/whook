@@ -89,7 +89,7 @@ async function initENV({
     ENV = { ...ENV, ...FILE_ENV };
   } catch (err) {
     log('debug', `🚫 - Could not load ".env.${NODE_ENV}" file.`);
-    log('debug-stack', printStackTrace(err));
+    log('debug-stack', printStackTrace(err as Error));
   }
 
   return {

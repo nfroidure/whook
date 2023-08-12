@@ -7,7 +7,7 @@
 # @whook/http-server
 > The Whook base HTTP server
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/master/packages/whook-http-server/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/packages/whook-http-server/LICENSE)
 
 
 [//]: # (::contents:start)
@@ -70,4 +70,4 @@ Initialize an HTTP server
 - [Nicolas Froidure](http://insertafter.com/en/index.html)
 
 # License
-[MIT](https://github.com/nfroidure/whook/blob/master/packages/whook-http-server/LICENSE)
+[MIT](https://github.com/nfroidure/whook/blob/main/packages/whook-http-server/LICENSE)

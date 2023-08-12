@@ -114,7 +114,7 @@ async function handleWithCORS(
       };
     } catch (err) {
       log('debug', '🤷 - Unable to set custom headers to the catched error!');
-      log('debug-stack', printStackTrace(err));
+      log('debug-stack', printStackTrace(err as Error));
     }
     throw err;
   }
@@ -131,6 +131,7 @@ export async function augmentAPIWithCORS(
 ): Promise<OpenAPIV3.Document> {
   // Temporar type fix due to version mismatch of OpenAPIV3
   // between Whook and SwaggerParser
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const $refs = await SwaggerParser.resolve(API as any);
 
   return Object.keys(API.paths).reduce((newAPI, path) => {
@@ -217,6 +218,7 @@ export async function augmentAPIWithCORS(
     };
 
     // Must be set separately since not supported by OAS3 types atm
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ((newAPI.paths[path] as any).options as any)['x-whook'] = {
       ...whookConfig,
     };

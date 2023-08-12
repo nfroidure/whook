@@ -284,7 +284,7 @@ async function postOAuth2Token<
     };
   } catch (err) {
     log('debug', '👫 - OAuth2 token issuing error', (err as YError).code);
-    log('error-stack', printStackTrace(err));
+    log('error-stack', printStackTrace(err as Error));
 
     throw YError.cast(err as Error, 'E_OAUTH2');
   }

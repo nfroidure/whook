@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initCONFIGS from './CONFIGS.js';
 import { YError } from 'yerror';

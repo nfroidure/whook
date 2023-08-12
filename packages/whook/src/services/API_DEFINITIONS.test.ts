@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initAPIDefinitions from './API_DEFINITIONS.js';
 import { definition as getPingDefinition } from '../handlers/getPing.js';
