@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/cors",
-  "version": "12.0.2",
+  "version": "13.0.0",
   "description": "A wrapper to provide CORS support to a Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -53,8 +53,8 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@whook/http-router": "^12.0.1",
-    "@whook/whook": "^12.0.2",
+    "@whook/http-router": "^13.0.0",
+    "@whook/whook": "^13.0.0",
     "knifecycle": "^16.0.1",
     "openapi-types": "^12.1.3",
     "yhttperror": "^8.0.0"

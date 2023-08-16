@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/http-transaction",
-  "version": "12.0.1",
+  "version": "13.0.0",
   "description": "Isolated HTTP Transactions for the Whook framework",
   "type": "module",
   "main": "dist/index.js",
