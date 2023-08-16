@@ -228,7 +228,6 @@ describe('OAuth2 server', () => {
             'postOAuth2Acknowledge',
             'postOAuth2Token',
           ],
-          singleton: true,
         },
         async (services) => services,
       ),

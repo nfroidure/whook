@@ -6,7 +6,7 @@ import type {
   WhookCommandDefinition,
   PromptArgs,
 } from '../services/promptArgs.js';
-import type { ENVService } from '../services/ENV.js';
+import type { AppEnvVars } from 'application-services';
 import type { LogService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {
@@ -36,7 +36,7 @@ async function initEnvCommand({
   promptArgs,
   log = noop,
 }: {
-  ENV: ENVService;
+  ENV: AppEnvVars;
   promptArgs: PromptArgs;
   log?: LogService;
 }) {

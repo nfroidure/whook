@@ -1,6 +1,5 @@
 import { autoService, name } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import type { WhookConfig } from './CONFIGS.js';
 import type { LogService } from 'common-services';
 
 /* Architecture Note #4: Base URL
@@ -9,6 +8,12 @@ The `BASE_URL` service is intended to provide a base URL where
  injecting it but it is useful to have a usable URL while
  debugging production environnement.
 */
+
+export type WhookConfig = {
+  name: string;
+  description?: string;
+  baseURL?: string;
+};
 
 export type BaseURLEnv = {
   DEV_MODE?: string;

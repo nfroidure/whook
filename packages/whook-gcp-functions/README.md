@@ -99,24 +99,29 @@ export async function prepareBuildEnvironment(
 Declare this module types in your `src/whook.d.ts` type
  definitions:
 ```diff
+// ...
 + import type { WhookCompilerConfig } from '@whook/whook';
 + import type {
 +    WhookGCPBuildConfig,
 +    WhookAPIOperationGCPFunctionConfig
 + } from '@whook/gcp-functions';
 
-declare module '@whook/whook' {
+declare module 'application-services' {
 
   // ...
 
-  export interface WhookConfigs
+  export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs,
 +      WhookGCPBuildConfig,
 +      WhookCompilerConfig {}
 
   // ...
+}
 
+// ...
+
+declare module '@whook/whook' {
   export interface WhookAPIHandlerDefinition<
     T extends Record<string, unknown> = Record<string, unknown>,
     U extends {
@@ -130,17 +135,17 @@ declare module '@whook/whook' {
       WhookAPIOperationCORSConfig
     >;
   }
-
 }
 ```
 And add the GCP Functions config (usually in `src/config/common/config.js`):
 
 ```diff
-import type { WhookConfigs } from '@whook/whook';
+// ...
+import type { AppConfig } from 'application-services';
 
 // ...
 
-const CONFIG: WhookConfigs = {
+const CONFIG: AppConfig = {
   // ...
 +  COMPILER_OPTIONS: {
 +    externalModules: [],

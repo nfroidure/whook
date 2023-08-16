@@ -43,7 +43,7 @@ exports[`runServer should authenticate users 1`] = `
   "logErrorCalls": [],
   "logInfoCalls": [
     [
-      "CALL {"id":"1","protocol":"http","ip":"_ip_","startInBytes":416,"startOutBytes":0,"startTime":1390694400000,"url":"/v4/diag","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","authorization":"Bearer eyJ...xZ0","user-agent":"__avoid_axios_version__","accept-encoding":"gzip, compress, deflate, br","host":"localhost:9999","connection":"close"},"errored":true,"endTime":1390694400000,"endInBytes":416,"endOutBytes":780,"statusCode":404,"resHeaders":{"content-type":"application/json","access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,DELETE,OPTIONS","access-control-allow-headers":"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent","vary":"origin","cache-control":"private"},"operationId":"none"}",
+      "CALL {"id":"1","protocol":"http","ip":"_ip_","startInBytes":416,"startOutBytes":0,"startTime":1390694400000,"url":"/v4/diag","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","authorization":"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzY29wZSI6ImFkbWluIiwidXNlcklkIjoiMSIsImFwcGxpY2F0aW9uSWQiOiIxIiwiaWF0IjoxMzkwNjk0NDAwLCJleHAiOjEzOTA4NjcyMDAsIm5iZiI6MTM5MDY5NDQwMH0.cFAZ3Bsah35MrPbbOvTBv20Lr9tHiar9QBwBkDqVxZ0","user-agent":"__avoid_axios_version__","accept-encoding":"gzip, compress, deflate, br","host":"localhost:9999","connection":"close"},"errored":true,"endTime":1390694400000,"endInBytes":416,"endOutBytes":780,"statusCode":404,"resHeaders":{"content-type":"application/json","access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,DELETE,OPTIONS","access-control-allow-headers":"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent","vary":"origin","cache-control":"private"},"operationId":"none"}",
     ],
     [
       "ERROR {"guruMeditation":"1","request":"http://localhost:9999/v4/diag","verb":"GET","status":404,"code":"E_NOT_FOUND","stack":"YHTTPError[404]: E_NOT_FOUND (get, v4,diag, /home/whoiam/projects/whook/packages/whook-http-transaction/src/index.ts:364:46\\n    at processTicksAndRejections (node:internal/process/task_queues:x:x)","details":["get",["v4","diag"],"/v4/diag"]}",
@@ -96,7 +96,7 @@ exports[`runServer should fail with bad fake tokens 1`] = `
   "logErrorCalls": [],
   "logInfoCalls": [
     [
-      "CALL {"id":"2","protocol":"http","ip":"_ip_","startInBytes":221,"startOutBytes":0,"startTime":1390694400000,"url":"/v4/diag","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","authorization":"Fa...n","user-agent":"__avoid_axios_version__","accept-encoding":"gzip, compress, deflate, br","host":"localhost:9999","connection":"close"},"errored":true,"endTime":1390694400000,"endInBytes":221,"endOutBytes":780,"statusCode":404,"resHeaders":{"content-type":"application/json","access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,DELETE,OPTIONS","access-control-allow-headers":"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent","vary":"origin","cache-control":"private"},"operationId":"none"}",
+      "CALL {"id":"2","protocol":"http","ip":"_ip_","startInBytes":221,"startOutBytes":0,"startTime":1390694400000,"url":"/v4/diag","method":"GET","reqHeaders":{"accept":"application/json, text/plain, */*","authorization":"Fake e-admin","user-agent":"__avoid_axios_version__","accept-encoding":"gzip, compress, deflate, br","host":"localhost:9999","connection":"close"},"errored":true,"endTime":1390694400000,"endInBytes":221,"endOutBytes":780,"statusCode":404,"resHeaders":{"content-type":"application/json","access-control-allow-origin":"*","access-control-allow-methods":"GET,POST,PUT,DELETE,OPTIONS","access-control-allow-headers":"Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent","vary":"origin","cache-control":"private"},"operationId":"none"}",
     ],
     [
       "ERROR {"guruMeditation":"2","request":"http://localhost:9999/v4/diag","verb":"GET","status":404,"code":"E_NOT_FOUND","stack":"YHTTPError[404]: E_NOT_FOUND (get, v4,diag, /home/whoiam/projects/whook/packages/whook-http-transaction/src/index.ts:364:46\\n    at processTicksAndRejections (node:internal/process/task_queues:x:x)","details":["get",["v4","diag"],"/v4/diag"]}",
@@ -149,7 +149,10 @@ exports[`runServer should work 1`] = `
 {
   "debugCalls": [
     [
-      "Error: ENOENT: no such file or directory, open '/home/whoiam/projects/whook/packages/whook-example/.env.test'",
+      "Error: ENOENT: no such file or directory, open '/home/whoami/projects/.env.app.local'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, open '/home/whoami/projects/.env.node.test'",
     ],
     [
       "⌛ - Delay service initialized.",
@@ -176,13 +179,19 @@ exports[`runServer should work 1`] = `
       "🈁 - Handler module at "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js" exports no definition!",
     ],
     [
-      "🏭 - Initializing the CONFIGS service.",
+      "🏭 - Initializing the APP_CONFIG service.",
     ],
     [
       "👣 - Logging service initialized.",
     ],
     [
       "💱 - HTTP Transaction initialized.",
+    ],
+    [
+      "💾 - Trying to load .env file at "/home/whoami/projects/.env.app.local".",
+    ],
+    [
+      "💾 - Trying to load .env file at "/home/whoami/projects/.env.node.test".",
     ],
     [
       "💿 - Loading "API" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
@@ -198,9 +207,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "💿 - Loading "QUERY_PARSER" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
-    ],
-    [
-      "💿 - Loading "WRAPPERS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
     ],
     [
       "💿 - Loading "authentication" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -246,9 +252,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "💿 - Service "QUERY_PARSER" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
-    ],
-    [
-      "💿 - Service "WRAPPERS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
     ],
     [
       "💿 - Service "authentication" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -317,7 +320,10 @@ exports[`runServer should work 1`] = `
       "🚦 - HTTP Router initialized.",
     ],
     [
-      "🚫 - Could not load ".env.test" file.",
+      "🚫 - No file found at "/home/whoami/projects/.env.app.local".",
+    ],
+    [
+      "🚫 - No file found at "/home/whoami/projects/.env.node.test".",
     ],
     [
       "🚫 - Service "BASE_URL" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL".",
@@ -348,24 +354,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE".",
-    ],
-    [
-      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/dist/services/DEFAULT_MECHANISM".",
-    ],
-    [
-      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM".",
-    ],
-    [
-      "🚫 - Service "DEFAULT_MECHANISM" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_MECHANISM".",
-    ],
-    [
-      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/dist/services/DEV_ACCESS_TOKEN".",
-    ],
-    [
-      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN".",
-    ],
-    [
-      "🚫 - Service "DEV_ACCESS_TOKEN" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DEV_ACCESS_TOKEN".",
     ],
     [
       "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/dist/services/ENCODERS".",
@@ -413,15 +401,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT".",
     ],
     [
-      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_CHARS".",
-    ],
-    [
-      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_CHARS".",
-    ],
-    [
-      "🚫 - Service "MAX_CLEAR_CHARS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_CHARS".",
-    ],
-    [
       "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO".",
     ],
     [
@@ -458,15 +437,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS".",
     ],
     [
-      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/dist/services/PROCESS_ENV".",
-    ],
-    [
-      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_ENV".",
-    ],
-    [
-      "🚫 - Service "PROCESS_ENV" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_ENV".",
-    ],
-    [
       "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/dist/services/PROCESS_NAME".",
     ],
     [
@@ -492,24 +462,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES".",
-    ],
-    [
-      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/dist/services/SENSIBLE_HEADERS".",
-    ],
-    [
-      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS".",
-    ],
-    [
-      "🚫 - Service "SENSIBLE_HEADERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_HEADERS".",
-    ],
-    [
-      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/dist/services/SENSIBLE_PROPS".",
-    ],
-    [
-      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SENSIBLE_PROPS".",
-    ],
-    [
-      "🚫 - Service "SENSIBLE_PROPS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SENSIBLE_PROPS".",
     ],
     [
       "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/dist/services/SHIELD_CHAR".",
@@ -608,7 +560,7 @@ exports[`runServer should work 1`] = `
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/config/test/config.js".",
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/config/local/config.js".",
     ],
     [
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.js".",
@@ -657,9 +609,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
     ],
     [
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -719,9 +668,6 @@ exports[`runServer should work 1`] = `
       "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
     [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/WRAPPERS.ts".",
-    ],
-    [
       "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
     [
@@ -748,16 +694,19 @@ exports[`runServer should work 1`] = `
       "⚠️ - Using fake auth mechanism!",
     ],
     [
-      "⚡ - Loading configurations from "/home/whoiam/projects/whook/packages/whook-example/src/config/test/config.js".",
-    ],
-    [
-      "✔ - Found the project dir "/home/whoiam/projects/whook/packages/whook-example".",
+      "⚡ - Loading configurations from "/home/whoiam/projects/whook/packages/whook-example/src/config/local/config.js".",
     ],
     [
       "🎙️ - HTTP Server listening at "http://localhost:9999".",
     ],
     [
       "💁 - Serving the API docs: http://localhost:9999/docs",
+    ],
+    [
+      "🔂 - Running with "local" application environment.",
+    ],
+    [
+      "🔂 - Running with "test" node environment.",
     ],
     [
       "🖥 - Using an isolated env.",

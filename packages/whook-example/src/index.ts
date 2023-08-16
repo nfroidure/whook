@@ -7,11 +7,17 @@ import {
   initAPIDefinitions,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
+import initWrappers from './services/WRAPPERS.js';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
+import { extractAppEnv } from 'application-services';
 import type { DependencyDeclaration, Dependencies } from 'knifecycle';
+
+const APP_ENVS = ['local', 'production'] as const;
+
+export type AppEnv = (typeof APP_ENVS)[number];
 
 /* Architecture Note #1: A Whook baked API
 This API server uses the Whook engine. Thoses architecture
@@ -139,6 +145,12 @@ export async function prepareEnvironment<T extends Knifecycle>(
     ),
   );
 
+  $.register(
+    constant(
+      'APP_ENV',
+      extractAppEnv<AppEnv>(process.env.APP_ENV, ['local', 'production']),
+    ),
+  );
   /* Architecture Note #1.1.3.3: TRANSACTIONS
 
   The Whook HTTP Transaction service, maintains an internal
@@ -178,6 +190,13 @@ export async function prepareEnvironment<T extends Knifecycle>(
   You can also avoid Whook defaults by leaving it empty.
   */
   $.register(constant('WHOOK_PLUGINS', ['@whook/whook', '@whook/cors']));
+
+  /* Architecture Note #5.2: Wrappers auto loading support
+  We cannot inject the `WRAPPERS` in the auto loader when
+   it is dynamically loaded so giving a second chance here
+   for `WRAPPERS` to be set.
+  */
+  $.register(initWrappers);
 
   // Add the CORS wrapped error handler
   $.register(initErrorHandlerWithCORS);

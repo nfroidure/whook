@@ -13,24 +13,31 @@ import type {
 import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
 import type { APIConfig } from './services/API.js';
 import type { JWTServiceConfig } from 'jwt-service';
+import type { BaseAppEnvVars } from 'application-services';
 
-declare module '@whook/whook' {
+declare module 'application-services' {
   // Eventually override the process env type here
-  export interface WhookEnv extends WhookBaseEnv, WhookSwaggerUIEnv {}
+  export interface AppEnvVars
+    extends BaseAppEnvVars,
+      WhookBaseEnv,
+      WhookSwaggerUIEnv {
+    DRY_RUN?: string;
+  }
 
   /* Architecture Note #2.1: Typings
 
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 */
-  export interface WhookConfigs
+  export interface AppConfig
     extends WhookBaseConfigs,
       WhookAuthorizationConfig,
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
       JWTServiceConfig {}
-
+}
+declare module '@whook/whook' {
   /* Architecture Note #3.2.3: Typings
 
 Here we export a custom handler definition type in order

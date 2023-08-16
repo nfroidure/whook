@@ -1,6 +1,6 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 import { readFileSync } from 'fs';
-import type { WhookConfigs } from '@whook/whook';
+import type { AppConfig } from 'application-services';
 
 /* Architecture Note #2: Configuration
 
@@ -19,9 +19,9 @@ const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
 Each configuration file then create a configuration object
  and export it for the configuration service to load it.
 
-See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/CONFIGS.ts#L56).
+See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/APP_CONFIG.ts#L56).
 */
-const CONFIG: Omit<WhookConfigs, 'HOST'> = {
+const CONFIG: Omit<AppConfig, 'HOST'> = {
   BASE_ENV: {},
   API_VERSION: _packageJSON.version,
   BASE_PATH: `/v${_packageJSON.version.split('.')[0]}`,

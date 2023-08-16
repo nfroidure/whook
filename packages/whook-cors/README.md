@@ -44,16 +44,20 @@ Declare this module types in your `src/whook.d.ts` type
 +   WhookAPIOperationCORSConfig,
 + } from '@whook/cors';
 
-declare module '@whook/whook' {
+declare module 'application-services' {
 
   // ...
 
-  export interface WhookConfigs
+  export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs, CORSConfig {}
 
   // ...
+}
 
+// ...
+
+declare module '@whook/whook' {
   export interface WhookAPIHandlerDefinition<
     T extends Record<string, unknown> = Record<string, unknown>,
     U extends {
@@ -72,9 +76,10 @@ declare module '@whook/whook' {
 And add the CORS config (usually in `src/config/common/config.js`):
 
 ```diff
-import type { WhookConfigs } from '@whook/whook';
+// ...
+import type { AppConfig } from 'application-services';
 
-const CONFIG: WhookConfigs = {
+const CONFIG: AppConfig = {
   // ...
 +   CORS: {
 +     'Access-Control-Allow-Origin': '*',

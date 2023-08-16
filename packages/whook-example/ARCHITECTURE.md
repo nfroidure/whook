@@ -262,7 +262,7 @@ The configuration is typed so that you are sure you cannot
 Each configuration file then create a configuration object
  and export it for the configuration service to load it.
 
-See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/CONFIGS.ts#L56).
+See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/APP_CONFIG.ts#L56).
 
 [See in context](./src/config/common/config.ts#L18-L24)
 

@@ -1,8 +1,8 @@
-import initEnv from './ENV.js';
+import { initEnvService } from 'application-services';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
-import type { ENVService, ENVDependencies } from './ENV.js';
+import type { AppEnvVars, ENVDependencies } from 'application-services';
 import type { ServiceInitializer } from 'knifecycle';
 
 export type ProxyedENVConfig = {
@@ -14,11 +14,16 @@ export type ProxyedENVDependencies = ProxyedENVConfig & {
   log?: LogService;
 };
 
-export default alsoInject<ProxyedENVDependencies, ENVDependencies, ENVService>(
+export default alsoInject<
+  ProxyedENVDependencies,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ENVDependencies<any>,
+  AppEnvVars
+>(
   ['?log', 'NODE_ENV', '?PROXYED_ENV_VARS'],
   wrapInitializer(
     wrapEnvForBuild,
-    initEnv as ServiceInitializer<ProxyedENVDependencies, ENVService>,
+    initEnvService as ServiceInitializer<ProxyedENVDependencies, AppEnvVars>,
   ),
 );
 
@@ -37,8 +42,8 @@ export default alsoInject<ProxyedENVDependencies, ENVDependencies, ENVService>(
  */
 async function wrapEnvForBuild(
   { log = noop, NODE_ENV, PROXYED_ENV_VARS = [] }: ProxyedENVDependencies,
-  ENV: ENVService,
-): Promise<ENVService> {
+  ENV: AppEnvVars,
+): Promise<AppEnvVars> {
   log('debug', '♻️ -Filtering environment for build.');
 
   return PROXYED_ENV_VARS.reduce(

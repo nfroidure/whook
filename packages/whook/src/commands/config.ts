@@ -3,7 +3,7 @@ import { readArgs } from '../libs/args.js';
 import { YError } from 'yerror';
 import miniquery from 'miniquery';
 import { noop } from '../libs/utils.js';
-import type { CONFIGSService } from '../services/CONFIGS.js';
+import type { AppConfig } from 'application-services';
 import type { LogService } from 'common-services';
 import type {
   PromptArgs,
@@ -43,11 +43,11 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initConfigCommand));
 
 async function initConfigCommand({
-  CONFIGS,
+  APP_CONFIG,
   promptArgs,
   log = noop,
 }: {
-  CONFIGS: CONFIGSService;
+  APP_CONFIG: AppConfig;
   promptArgs: PromptArgs;
   log?: LogService;
 }): Promise<WhookCommandHandler> {
@@ -61,7 +61,7 @@ async function initConfigCommand({
       pretty: boolean;
     }>(definition.arguments, await promptArgs());
 
-    if ('undefined' === typeof CONFIGS[name]) {
+    if ('undefined' === typeof APP_CONFIG[name]) {
       log('error', `No config found for "${name}"`);
       if ('undefined' === typeof defaultValue) {
         throw new YError('E_NO_CONFIG', name);
@@ -70,7 +70,9 @@ async function initConfigCommand({
       return;
     }
 
-    const results = query ? miniquery(query, [CONFIGS[name]]) : [CONFIGS[name]];
+    const results = query
+      ? miniquery(query, [APP_CONFIG[name]])
+      : [APP_CONFIG[name]];
 
     if (!results.length) {
       log('error', `Could not find any results for "${query}".`);

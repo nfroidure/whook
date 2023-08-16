@@ -1,5 +1,5 @@
 import COMMON_CONFIG from '../common/config.js';
-import type { WhookConfigs } from '@whook/whook';
+import type { AppConfig } from 'application-services';
 
 /* Architecture Note #2.3: Overriding
 
@@ -7,8 +7,9 @@ Finally the configuration file for a given environnment
  may reuse or override the custom configuration file
  like here for the development configuration.
 */
-const CONFIG: WhookConfigs = {
-  ...COMMON_CONFIG,
+const CONFIG: AppConfig = {
+  // This is breaking type checking...
+  ...(COMMON_CONFIG as AppConfig),
   HOST: 'localhost',
   DEV_ACCESS_TOKEN: 'admin|1|1',
   DEFAULT_MECHANISM: 'Fake',

@@ -17,7 +17,7 @@ import type {
   Dependencies,
   Service,
 } from 'knifecycle';
-import type { CONFIGSService } from './CONFIGS.js';
+import type { AppConfig } from 'application-services';
 import type {
   ResolveService,
   ImporterService,
@@ -27,6 +27,7 @@ import type { WhookHandler } from '@whook/http-transaction';
 
 export const HANDLER_REG_EXP =
   /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
+const DEFAULT_INITIALIZER_PATH_MAP = {};
 
 export interface WhookWrapper<D extends Dependencies, S extends WhookHandler> {
   (initializer: Initializer<S, D>): Initializer<S, D>;
@@ -41,15 +42,14 @@ Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
 export type WhookInitializerMap = { [name: string]: string };
 
 export type AutoloadConfig = {
-  WHOOK_PLUGINS_PATHS?: string[];
   SERVICE_NAME_MAP?: WhookServiceMap;
-  INITIALIZER_PATH_MAP?: WhookInitializerMap;
-  PROJECT_SRC?: string;
 };
 export type AutoloadDependencies<D extends Dependencies> = AutoloadConfig & {
   PROJECT_SRC: string;
-  CONFIGS?: CONFIGSService;
+  APP_CONFIG?: AppConfig;
   WRAPPERS?: WhookWrapper<D, WhookHandler>[];
+  INITIALIZER_PATH_MAP?: WhookInitializerMap;
+  WHOOK_PLUGINS_PATHS?: string[];
   $injector: Injector<Service>;
   importer: ImporterService<{
     default: Initializer<Service, Dependencies>;
@@ -71,43 +71,52 @@ export default singleton(name('$autoload', autoService(initAutoload)));
  * The services `$autoload` depends on
  * @param  {Object}   services.PROJECT_SRC
  * The project source directory
- * @param  {Object}   services.WHOOK_PLUGINS_PATHS
- * The plugins paths to load services from
- * @param  {Object}   services.$injector
- * An injector for internal dynamic services loading
- * @param  {Object}   [services.SERVICE_NAME_MAP={}]
- * An optional object to map services names to other names
- * @param  {Object}   [services.INITIALIZER_PATH_MAP={}]
- * An optional object to map non-autoloadable initializers
+ * @param  {Array}    [services.APP_CONFIG]
+ * Optional APP_CONFIG object to inject
  * @param  {Array}    [services.WRAPPERS]
  * An optional list of wrappers to inject
- * @param  {Array}    [services.CONFIGS]
- * Optional CONFIGS object to inject
- * @param  {Object}   [services.log=noop]
- * An optional logging service
+ * @param  {Object}    [services.INITIALIZER_PATH_MAP]
+ * An optional map of paths mapping initializers
+ * @param  {Array}   services.WHOOK_PLUGINS_PATHS
+ * The plugins paths to load services from
+ * @param  {Object}   services.$injector
+ * An optional object to map services names to other names
  * @param  {Object}   services.importer
  * A service allowing to dynamically import ES modules
+ * @param  {Object}   services.resolve
+ * A service allowing to dynamically resolve ES modules
+ * @param  {Object}   [services.log=noop]
+ * An optional logging service
  * @return {Promise<Function>}
  * A promise of the autoload function.
  */
 async function initAutoload<D extends Dependencies>({
   PROJECT_SRC,
-  WHOOK_PLUGINS_PATHS = [],
-  $injector,
-  SERVICE_NAME_MAP = undefined,
-  INITIALIZER_PATH_MAP = undefined,
+  APP_CONFIG = undefined,
   WRAPPERS = undefined,
-  CONFIGS = undefined,
-  log = noop,
+  INITIALIZER_PATH_MAP = DEFAULT_INITIALIZER_PATH_MAP,
+  WHOOK_PLUGINS_PATHS = [],
   importer,
+  $injector,
   resolve,
+  log = noop,
 }: AutoloadDependencies<D>): Promise<
   Autoloader<Initializer<unknown, Dependencies>>
 > {
   log('debug', '🤖 - Initializing the `$autoload` service.');
 
-  // Here to allow DI auto-detection since {} causes errors
-  INITIALIZER_PATH_MAP = INITIALIZER_PATH_MAP || {};
+  // Service map is not injected but taken from the
+  // configuration
+  const SERVICE_NAME_MAP = (
+    APP_CONFIG && APP_CONFIG.SERVICE_NAME_MAP ? APP_CONFIG.SERVICE_NAME_MAP : {}
+  ) as NonNullable<AutoloadConfig['SERVICE_NAME_MAP']>;
+
+  const wrapHandler = (
+    WRAPPERS?.length
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        compose(...(WRAPPERS as any[]))
+      : identity
+  ) as WhookWrapper<D, WhookHandler>;
 
   /* Architecture Note #5.3: API auto loading
   We cannot inject the `API` in the auto loader since
@@ -124,41 +133,6 @@ async function initAutoload<D extends Dependencies>({
       return API;
     };
   })();
-
-  /* Architecture Note #5.2: Wrappers auto loading support
-  We cannot inject the `WRAPPERS` in the auto loader when
-   it is dynamically loaded so giving a second chance here
-   for `WRAPPERS` to be set.
-  */
-  const doWrapHandler = ((WRAPPERS) => {
-    let wrapHandler;
-
-    return async (handlerInitializer) => {
-      if (!WRAPPERS) {
-        // eslint-disable-next-line
-        WRAPPERS = (await $injector(['WRAPPERS'])).WRAPPERS || [];
-      }
-      wrapHandler =
-        wrapHandler ||
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (WRAPPERS?.length ? compose(...(WRAPPERS as any[])) : identity);
-
-      return wrapHandler(handlerInitializer);
-    };
-  })(WRAPPERS);
-
-  const mapInjectedName = async (injectedName) => {
-    if ('SERVICE_NAME_MAP' === injectedName) {
-      return injectedName;
-    }
-    if (!SERVICE_NAME_MAP) {
-      // eslint-disable-next-line
-      SERVICE_NAME_MAP = (await $injector(['SERVICE_NAME_MAP']))
-        .SERVICE_NAME_MAP;
-    }
-
-    return SERVICE_NAME_MAP?.[injectedName] || injectedName;
-  };
 
   return $autoload;
 
@@ -179,7 +153,9 @@ async function initAutoload<D extends Dependencies>({
     In order to be able to substituate easily a service per another
      one can specify a mapping between a service and its substitution.
     */
-    const resolvedName = await mapInjectedName(injectedName);
+    const resolvedName = SERVICE_NAME_MAP[injectedName]
+      ? SERVICE_NAME_MAP[injectedName]
+      : injectedName;
 
     if (resolvedName !== injectedName) {
       log(
@@ -188,32 +164,17 @@ async function initAutoload<D extends Dependencies>({
       );
     }
 
-    /* Architecture Note #5.1: Configuration auto loading
-    Loading the configuration files is done according to the `NODE_ENV`
-     environment variable. It basically requires a configuration hash
-     where the keys are Knifecycle constants.
-
-    Let's load the configuration files as a convenient way
-     to create constants on the fly
-    */
-    if ('CONFIGS' !== resolvedName) {
-      if (!CONFIGS) {
-        // eslint-disable-next-line
-        CONFIGS = (await $injector(['CONFIGS'])).CONFIGS;
-      }
-    }
-
     /* Architecture Note #5.4: Constants
     First of all the autoloader looks for constants in the
-     previously loaded `CONFIGS` configurations hash.
+     previously loaded `APP_CONFIG` configurations hash.
     */
-    if (CONFIGS && CONFIGS[resolvedName]) {
+    if (APP_CONFIG && APP_CONFIG[resolvedName]) {
       return {
         name: resolvedName,
         path: 'internal://' + resolvedName,
         initializer: constant(
           resolvedName,
-          CONFIGS[resolvedName],
+          APP_CONFIG[resolvedName],
         ) as Initializer<Service, Dependencies>,
       };
     }
@@ -241,7 +202,6 @@ async function initAutoload<D extends Dependencies>({
             name: 'HANDLERS',
             inject: handlerNames,
             type: 'service',
-            singleton: true,
           },
           async (HANDLERS) => HANDLERS,
         ),
@@ -314,7 +274,13 @@ async function initAutoload<D extends Dependencies>({
       name: resolvedName,
       path: modulePath,
       initializer: isWrappedHandler
-        ? name(resolvedName, await doWrapHandler(resolvedInitializer))
+        ? name(
+            resolvedName,
+            wrapHandler(resolvedInitializer) as ProviderInitializer<
+              Dependencies,
+              Service
+            >,
+          )
         : injectedName !== resolvedName
         ? name(
             injectedName,

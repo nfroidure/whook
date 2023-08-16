@@ -24,7 +24,7 @@ describe('envCommand', () => {
 
     const envCommand = await initEnvCommand({
       log,
-      ENV: { NODE_ENV: 'test' },
+      ENV: { NODE_ENV: '1' },
       promptArgs,
     });
     const result = await envCommand();
@@ -34,19 +34,19 @@ describe('envCommand', () => {
       promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [
-          [
-            "info",
-            "test",
-          ],
-        ],
-        "promptArgsCalls": [
-          [],
-        ],
-        "result": undefined,
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "info",
+      "1",
+    ],
+  ],
+  "promptArgsCalls": [
+    [],
+  ],
+  "result": undefined,
+}
+`);
   });
 
   it('should work with a default value', async () => {

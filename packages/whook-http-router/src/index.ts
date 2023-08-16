@@ -224,7 +224,6 @@ export default initializer(
       'httpTransaction',
       'errorHandler',
     ],
-    singleton: true,
   },
   initHTTPRouter,
 );
