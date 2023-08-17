@@ -15,10 +15,6 @@ import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv } from 'application-services';
 import type { DependencyDeclaration, Dependencies } from 'knifecycle';
 
-const APP_ENVS = ['local', 'production'] as const;
-
-export type AppEnv = (typeof APP_ENVS)[number];
-
 /* Architecture Note #1: A Whook baked API
 This API server uses the Whook engine. Thoses architecture
  notes will help you to master its features.
@@ -27,6 +23,10 @@ You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 */
+
+const APP_ENVS = ['local', 'test', 'production'] as const;
+
+export type AppEnv = (typeof APP_ENVS)[number];
 
 /* Architecture Note #1.1: The main file
 
@@ -146,10 +146,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   );
 
   $.register(
-    constant(
-      'APP_ENV',
-      extractAppEnv<AppEnv>(process.env.APP_ENV, ['local', 'production']),
-    ),
+    constant('APP_ENV', extractAppEnv<AppEnv>(process.env.APP_ENV, APP_ENVS)),
   );
   /* Architecture Note #1.1.3.3: TRANSACTIONS
 

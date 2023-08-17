@@ -96,7 +96,9 @@ describe('lsCommand', () => {
       });
 
       const lsCommand = await initLsCommand({
-        CONFIG: {},
+        CONFIG: {
+          name: '',
+        },
         PROJECT_SRC: '/home/whoiam/whook-project/dist',
         WHOOK_PLUGINS: ['@whook/graphql', '@whook/whook'],
         WHOOK_PLUGINS_PATHS: [
@@ -198,7 +200,9 @@ describe('lsCommand', () => {
       });
 
       const lsCommand = await initLsCommand({
-        CONFIG: {},
+        CONFIG: {
+          name: '',
+        },
         PROJECT_SRC: '/home/whoiam/whook-project/dist',
         WHOOK_PLUGINS: ['@whook/graphql', '@whook/whook'],
         WHOOK_PLUGINS_PATHS: [

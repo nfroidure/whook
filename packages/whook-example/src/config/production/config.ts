@@ -2,8 +2,7 @@ import COMMON_CONFIG from '../common/config.js';
 import type { AppConfig } from 'application-services';
 
 const CONFIG: AppConfig = {
-  // This is breaking type checking...
-  ...(COMMON_CONFIG as AppConfig),
+  ...COMMON_CONFIG,
   HOST: 'api.example.com',
 };
 

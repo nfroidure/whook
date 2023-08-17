@@ -25,6 +25,15 @@ import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookAPIOperationGCPFunctionConfig } from '../index.js';
 
+const KNIFECYCLE_UNBUILDABLE = [
+  '$dispose',
+  '$autoload',
+  '$injector',
+  '$instance',
+  '$siloContext',
+  '$fatalError',
+];
+
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
   Dependencies
@@ -51,6 +60,19 @@ const initializerWrapper: ServiceInitializerWrapper<
   let OPERATION_APIS: WhookRawOperation<WhookAPIOperationGCPFunctionConfig>[];
   const getAPIOperation = (() => {
     return async (serviceName) => {
+      if (KNIFECYCLE_UNBUILDABLE.includes(serviceName)) {
+        log(
+          'warning',
+          `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${KNIFECYCLE_UNBUILDABLE.join(
+            ', ',
+          )}) can give unpredictable results!`,
+        );
+        return {
+          initializer: constant(serviceName, undefined),
+          path: `constant://${serviceName}`,
+        };
+      }
+
       // eslint-disable-next-line
       API = API || (await $injector(['API'])).API;
       // eslint-disable-next-line
@@ -107,9 +129,17 @@ const initializerWrapper: ServiceInitializerWrapper<
 
   return async (serviceName) => {
     try {
-      // TODO: add initializer map to knifecycle public API
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const initializer = ($instance as any)._initializers.get(serviceName);
+      let initializer;
+
+      try {
+        initializer = $instance._getInitializer(serviceName);
+      } catch (err) {
+        log(
+          'debug',
+          `🤖 - Direct initializer access failure from the Knifecycle instance: "${serviceName}".`,
+        );
+        log('debug-stack', printStackTrace(err as Error));
+      }
 
       if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
         log(

@@ -55,6 +55,8 @@ describe('runServer', () => {
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
     $.register(constant('NODE_ENV', 'test'));
+    $.register(constant('APP_ENV', 'local'));
+    $.register(constant('BASE_URL', 'http://api.localhost'));
     $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(constant('NODE_ENVS', ['test']));
     $.register(constant('exit', exit));

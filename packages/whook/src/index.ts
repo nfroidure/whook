@@ -44,7 +44,6 @@ import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
 import initProxyedENV from './services/ProxyedENV.js';
 import initBuildConstants from './services/BUILD_CONSTANTS.js';
-import initProjectDir from './services/PROJECT_DIR.js';
 import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS.js';
 import initAPIDefinitions, {
   DEFAULT_IGNORED_FILES_PREFIXES,
@@ -425,6 +424,9 @@ export async function prepareEnvironment<T extends Knifecycle>(
   // https://github.com/nfroidure/knifecycle/issues/108
   $.register(constant('LOG_ROUTING', DEFAULT_LOG_ROUTING));
   $.register(constant('LOG_CONFIG', DEFAULT_LOG_CONFIG));
+  $.register(
+    constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
+  );
 
   /* Architecture Note #3.5: Initializers
   Whook's embed a few default initializers proxied from
@@ -446,7 +448,6 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initHTTPServer,
     initErrorHandler,
     initEnvService,
-    initProjectDir,
     initObfuscatorService,
     initAPMService,
   ].forEach($.register.bind($));

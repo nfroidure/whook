@@ -27,14 +27,18 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   ENV: '@whook/whook/dist/services/ProxyedENV',
   BASE_URL: '@whook/whook/dist/services/BASE_URL',
   API_DEFINITIONS: '@whook/whook/dist/services/API_DEFINITIONS',
-  APP_CONFIG: '@whook/whook/dist/services/APP_CONFIG',
   PORT: '@whook/whook/dist/services/PORT',
   HOST: '@whook/whook/dist/services/HOST',
-  PROJECT_DIR: '@whook/whook/dist/services/PROJECT_DIR',
   WHOOK_PLUGINS_PATHS: '@whook/whook/dist/services/WHOOK_PLUGINS_PATHS',
+  httpRouter: '@whook/http-router/dist/index',
+  httpTransaction: '@whook/http-transaction/dist/index',
+  httpServer: '@whook/http-server/dist/index',
   apm: '@whook/http-transaction/dist/services/apm',
   obfuscator: '@whook/http-transaction/dist/services/obfuscator',
   errorHandler: '@whook/http-router/dist/services/errorHandler',
+  APP_CONFIG: 'application-services/dist/services/APP_CONFIG',
+  PROJECT_DIR: 'application-services/dist/services/PROJECT_DIR',
+  PROCESS_ENV: 'application-services/dist/services/PROCESS_ENV',
   log: 'common-services/dist/log',
   time: 'common-services/dist/time',
   delay: 'common-services/dist/delay',
@@ -42,9 +46,6 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   process: 'common-services/dist/process',
   importer: 'common-services/dist/importer',
   resolve: 'common-services/dist/resolve',
-  httpRouter: '@whook/http-router/dist/index',
-  httpTransaction: '@whook/http-transaction/dist/index',
-  httpServer: '@whook/http-server/dist/index',
 };
 
 export async function prepareBuildEnvironment<T extends Knifecycle>(
@@ -66,12 +67,14 @@ export async function runBuild(
   try {
     const $ = await aPrepareBuildEnvironment();
     const {
+      APP_ENV,
       PROJECT_DIR,
       COMPILER_OPTIONS,
       compiler,
       log,
       buildInitializer,
     }: {
+      APP_ENV: string;
       PROJECT_DIR: string;
       COMPILER_OPTIONS: WhookCompilerOptions;
       compiler: WhookCompilerService;
@@ -80,6 +83,7 @@ export async function runBuild(
     } = await $.run([
       'APP_CONFIG',
       '$autoload',
+      'APP_ENV',
       'PROJECT_DIR',
       'process',
       'compiler',
@@ -90,6 +94,7 @@ export async function runBuild(
     log('info', 'Build environment initialized 🚀🌕');
 
     const distPath = path.join(PROJECT_DIR, 'dist');
+    const buildPath = path.join(PROJECT_DIR, 'builds', APP_ENV);
     const initializerContent = await buildInitializer([
       'httpServer',
       'process',
@@ -97,24 +102,25 @@ export async function runBuild(
     const indexContent = await buildIndex();
 
     await mkdirp(distPath);
+    await mkdirp(buildPath);
     await Promise.all([
       ensureFileAsync(
         { log },
-        path.join(distPath, 'initialize.js'),
+        path.join(buildPath, 'initialize.js'),
         initializerContent,
       ),
-      ensureFileAsync({ log }, path.join(distPath, 'main.js'), indexContent),
+      ensureFileAsync({ log }, path.join(buildPath, 'main.js'), indexContent),
     ]);
 
-    const entryPoint = `${distPath}/main.js`;
+    const entryPoint = `${buildPath}/main.js`;
     const { contents, mappings } = await compiler(entryPoint, COMPILER_OPTIONS);
 
     await Promise.all([
-      ensureFileAsync({ log }, `${distPath}/start.js`, contents, 'utf-8'),
+      ensureFileAsync({ log }, `${buildPath}/start.js`, contents, 'utf-8'),
       mappings
         ? ensureFileAsync(
             { log },
-            `${distPath}/start.js.map`,
+            `${buildPath}/start.js.map`,
             mappings,
             'utf-8',
           )

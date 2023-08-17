@@ -35,7 +35,6 @@ describe('$autoload', () => {
         WRAPPERS: [],
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          testConfig: 'test',
         },
         log,
         importer,
@@ -63,7 +62,7 @@ describe('$autoload', () => {
           CONFIG: {
             testConfig: 'test',
           },
-        },
+        } as any,
         WRAPPERS: [],
         log,
         importer,
@@ -95,9 +94,6 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         WRAPPERS: [],
         log,
@@ -129,11 +125,7 @@ describe('$autoload', () => {
         $injector,
         INITIALIZER_PATH_MAP: {},
         WRAPPERS: [],
-        APP_CONFIG: {
-          CONFIG: {
-            testConfig: 'test',
-          },
-        },
+        APP_CONFIG: {},
         log,
         importer,
         resolve: resolve as unknown as RequireResolve,
@@ -187,9 +179,6 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         WRAPPERS: [],
         log,
@@ -230,9 +219,6 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         WRAPPERS: [],
         log,
@@ -271,9 +257,6 @@ describe('$autoload', () => {
         APP_CONFIG: {
           SERVICE_NAME_MAP: {
             getPing: 'getPingMock',
-          },
-          CONFIG: {
-            testConfig: 'test',
           },
         },
         INITIALIZER_PATH_MAP: {},
@@ -315,9 +298,6 @@ describe('$autoload', () => {
         APP_CONFIG: {
           SERVICE_NAME_MAP: {
             getPing: 'getPingMock',
-          },
-          CONFIG: {
-            testConfig: 'test',
           },
         },
         WRAPPERS: [],
@@ -356,9 +336,6 @@ describe('$autoload', () => {
         },
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         WRAPPERS: [],
         log,
@@ -401,9 +378,6 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         WRAPPERS: [],
         log,
@@ -439,9 +413,6 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         log,
         importer,
@@ -479,9 +450,6 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         log,
         importer,
@@ -517,9 +485,6 @@ describe('$autoload', () => {
         WRAPPERS: [identity],
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         log,
         importer,
@@ -553,9 +518,6 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
           SERVICE_NAME_MAP: {},
-          CONFIG: {
-            testConfig: 'test',
-          },
         },
         WRAPPERS: [],
         log,

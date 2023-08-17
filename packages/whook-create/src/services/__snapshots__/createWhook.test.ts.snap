@@ -36,6 +36,9 @@ exports[`initCreateWhook should fail with access problems 2`] = `
     [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
   ],
   "readdirCalls": [
     [
@@ -55,7 +58,7 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.development",
+      "/home/whoiam/projects/yolo/.env.local",
       "JWT_SECRET=oudelali
 ",
     ],
@@ -122,10 +125,10 @@ Wayne Campbell
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^3.0.0",
+    "application-services": "^3.0.1",
     "common-services": "^14.0.0",
     "http-auth-utils": "^5.0.1",
-    "jwt-service": "^10.0.1",
+    "jwt-service": "^10.0.2",
     "knifecycle": "^16.0.1",
     "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
@@ -250,6 +253,14 @@ Wayne Campbell
     [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
     [
       "/home/whoiam/projects/yolo/.gitignore",
@@ -337,6 +348,9 @@ exports[`initCreateWhook should handle git initialization problems 2`] = `
     [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
   ],
   "readdirCalls": [
     [
@@ -344,6 +358,9 @@ exports[`initCreateWhook should handle git initialization problems 2`] = `
     ],
     [
       "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
     ],
   ],
   "writeFileCalls": [
@@ -359,7 +376,7 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.development",
+      "/home/whoiam/projects/yolo/.env.local",
       "JWT_SECRET=oudelali
 ",
     ],
@@ -426,10 +443,10 @@ Wayne Campbell
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^3.0.0",
+    "application-services": "^3.0.1",
     "common-services": "^14.0.0",
     "http-auth-utils": "^5.0.1",
-    "jwt-service": "^10.0.1",
+    "jwt-service": "^10.0.2",
     "knifecycle": "^16.0.1",
     "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
@@ -554,6 +571,14 @@ Wayne Campbell
     [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
     [
       "/home/whoiam/projects/yolo/.gitignore",
@@ -673,6 +698,9 @@ exports[`initCreateWhook should handle network issues 2`] = `
     [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
   ],
   "readdirCalls": [
     [
@@ -680,6 +708,9 @@ exports[`initCreateWhook should handle network issues 2`] = `
     ],
     [
       "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
     ],
   ],
   "writeFileCalls": [
@@ -695,7 +726,7 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.development",
+      "/home/whoiam/projects/yolo/.env.local",
       "JWT_SECRET=oudelali
 ",
     ],
@@ -762,10 +793,10 @@ Wayne Campbell
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^3.0.0",
+    "application-services": "^3.0.1",
     "common-services": "^14.0.0",
     "http-auth-utils": "^5.0.1",
-    "jwt-service": "^10.0.1",
+    "jwt-service": "^10.0.2",
     "knifecycle": "^16.0.1",
     "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
@@ -890,6 +921,14 @@ Wayne Campbell
     [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
   ],
 }
@@ -997,6 +1036,9 @@ exports[`initCreateWhook should work 2`] = `
     [
       "/var/lib/node/node_modules/whook-example/README.md",
     ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
   ],
   "readdirCalls": [
     [
@@ -1004,6 +1046,9 @@ exports[`initCreateWhook should work 2`] = `
     ],
     [
       "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
     ],
   ],
   "writeFileCalls": [
@@ -1019,7 +1064,7 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.development",
+      "/home/whoiam/projects/yolo/.env.local",
       "JWT_SECRET=oudelali
 ",
     ],
@@ -1086,10 +1131,10 @@ Wayne Campbell
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^3.0.0",
+    "application-services": "^3.0.1",
     "common-services": "^14.0.0",
     "http-auth-utils": "^5.0.1",
-    "jwt-service": "^10.0.1",
+    "jwt-service": "^10.0.2",
     "knifecycle": "^16.0.1",
     "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
@@ -1214,6 +1259,14 @@ Wayne Campbell
     [
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
     [
       "/home/whoiam/projects/yolo/.gitignore",

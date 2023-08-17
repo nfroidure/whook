@@ -54,14 +54,14 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initTestHTTPFunctionCommand));
 
 async function initTestHTTPFunctionCommand({
-  NODE_ENV,
+  APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   API,
   log,
   args,
 }: {
-  NODE_ENV: string;
+  APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   API: OpenAPIV3.Document;
@@ -79,8 +79,7 @@ async function initTestHTTPFunctionCommand({
     }>(definition.arguments, args);
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadFunction(
-      { PROJECT_DIR, log },
-      NODE_ENV,
+      { APP_ENV, PROJECT_DIR, log },
       name,
       type,
       extension,

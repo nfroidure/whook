@@ -19,6 +19,15 @@ import type {
 import { printStackTrace } from 'yerror';
 import type { LogService } from 'common-services';
 
+const KNIFECYCLE_UNBUILDABLE = [
+  '$dispose',
+  '$autoload',
+  '$injector',
+  '$instance',
+  '$siloContext',
+  '$fatalError',
+];
+
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
   Dependencies
@@ -42,7 +51,13 @@ const initializerWrapper: ServiceInitializerWrapper<
   log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
 
   return async (serviceName) => {
-    if (['$instance', '$inject', '$fatalError'].includes(serviceName)) {
+    if (KNIFECYCLE_UNBUILDABLE.includes(serviceName)) {
+      log(
+        'warning',
+        `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${KNIFECYCLE_UNBUILDABLE.join(
+          ', ',
+        )}) can give unpredictable results!`,
+      );
       return {
         initializer: constant(serviceName, undefined),
         path: `constant://${serviceName}`,

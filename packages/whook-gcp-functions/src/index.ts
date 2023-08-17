@@ -12,7 +12,7 @@ import {
   constant,
   initInitializerBuilder,
 } from 'knifecycle';
-import { initCompiler } from '@whook/whook';
+import { DEFAULT_BUILD_INITIALIZER_PATH_MAP, initCompiler } from '@whook/whook';
 import initBuildAutoloader from './services/_autoload.js';
 import {
   dereferenceOpenAPIOperations,
@@ -91,10 +91,8 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
 ): Promise<T> {
   $.register(
     constant('INITIALIZER_PATH_MAP', {
-      ENV: '@whook/whook/dist/services/ProxyedENV',
+      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
       log: '@whook/gcp-functions/dist/services/log',
-      time: 'common-services/dist/time',
-      delay: 'common-services/dist/delay',
     }),
   );
   $.register(initInitializerBuilder);
@@ -113,7 +111,7 @@ export async function runBuild(
     const handlerName = process.argv[2];
     const $ = await aPrepareBuildEnvironment();
     const {
-      NODE_ENV,
+      APP_ENV,
       BUILD_PARALLELISM,
       PROJECT_DIR,
       compiler,
@@ -122,7 +120,7 @@ export async function runBuild(
       API,
       buildInitializer,
     }: WhookGCPBuildConfig & {
-      NODE_ENV: string;
+      APP_ENV: string;
       PROJECT_DIR: string;
       compiler: WhookCompilerService;
       log: LogService;
@@ -130,7 +128,7 @@ export async function runBuild(
       API: OpenAPIV3.Document;
       buildInitializer: BuildInitializer;
     } = await $.run([
-      'NODE_ENV',
+      'APP_ENV',
       '?BUILD_PARALLELISM',
       'PROJECT_DIR',
       'process',
@@ -164,7 +162,7 @@ export async function runBuild(
     log('warning', `${operations.length} operations to process.`);
     await processOperations(
       {
-        NODE_ENV,
+        APP_ENV,
         BUILD_PARALLELISM: BUILD_PARALLELISM || DEFAULT_BUILD_PARALLELISM,
         PROJECT_DIR,
         compiler,
@@ -188,7 +186,7 @@ export async function runBuild(
 
 async function processOperations(
   {
-    NODE_ENV,
+    APP_ENV,
     BUILD_PARALLELISM,
     PROJECT_DIR,
     compiler,
@@ -196,7 +194,7 @@ async function processOperations(
     $autoload,
     buildInitializer,
   }: WhookGCPBuildConfig & {
-    NODE_ENV: string;
+    APP_ENV: string;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
     log: LogService;
@@ -211,7 +209,7 @@ async function processOperations(
     operations.slice(0, BUILD_PARALLELISM).map((operation) =>
       buildAnyLambda(
         {
-          NODE_ENV,
+          APP_ENV,
           PROJECT_DIR,
           compiler,
           log,
@@ -227,7 +225,7 @@ async function processOperations(
     log('info', operationsLeft.length, ' operations left.');
     return processOperations(
       {
-        NODE_ENV,
+        APP_ENV,
         BUILD_PARALLELISM,
         PROJECT_DIR,
         compiler,
@@ -243,14 +241,14 @@ async function processOperations(
 
 async function buildAnyLambda(
   {
-    NODE_ENV,
+    APP_ENV,
     PROJECT_DIR,
     compiler,
     log,
     $autoload,
     buildInitializer,
   }: {
-    NODE_ENV: string;
+    APP_ENV: string;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
     log: LogService;
@@ -281,7 +279,7 @@ async function buildAnyLambda(
     const lambdaPath = path.join(
       PROJECT_DIR,
       'builds',
-      NODE_ENV,
+      APP_ENV,
       finalEntryPoint,
     );
     const finalHandlerInitializer = applyWrapper(rootNode.initializer);
