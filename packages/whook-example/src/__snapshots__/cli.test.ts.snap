@@ -3,7 +3,6 @@
 exports[`commands should work with config 1`] = `
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
-✔ - Found the project dir /whook/packages/whook-example".
 ",
   "stdout": ""localhost"
 ",
@@ -13,7 +12,6 @@ exports[`commands should work with config 1`] = `
 exports[`commands should work with env 1`] = `
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
-✔ - Found the project dir /whook/packages/whook-example".
 🔂 - Running with "test" node environment.
 🔂 - Running with "local" application environment.
 ",
@@ -25,7 +23,6 @@ exports[`commands should work with env 1`] = `
 exports[`commands should work with ls 1`] = `
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
-✔ - Found the project dir /whook/packages/whook-example".
 ",
   "stdout": "
 

@@ -100,6 +100,7 @@ export default autoService(async function initCreateWhook({
               path.join(SOURCE_DIR, 'package-lock.json'),
               path.join(SOURCE_DIR, 'LICENSE'),
               path.join(SOURCE_DIR, 'README.md'),
+              path.join(SOURCE_DIR, 'src/watch.ts'),
             ].includes(src)
           ) {
             log(
@@ -141,6 +142,12 @@ ${author.name}
         path.join(project.directory, 'package.json'),
         JSON.stringify(finalPackageJSON, null, 2),
       ),
+      readFile(path.join(SOURCE_DIR, 'src/watch.ts')).then((data) => {
+        return writeFile(
+          path.join(SOURCE_DIR, 'src/watch.ts'),
+          data.toString().replace('../../', './'),
+        );
+      }),
       writeFile(
         path.join(project.directory, 'tsconfig.json'),
         JSON.stringify(

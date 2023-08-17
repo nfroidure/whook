@@ -5,12 +5,13 @@ import type { LogService } from 'common-services';
 export async function loadLambda(
   {
     PROJECT_DIR,
+    APP_ENV,
     log,
   }: {
     PROJECT_DIR: string;
+    APP_ENV: string;
     log: LogService;
   },
-  target: string,
   operationId: string,
   type: string,
   extension = '.mjs',
@@ -19,7 +20,7 @@ export async function loadLambda(
   const modulePath = path.join(
     PROJECT_DIR,
     'builds',
-    target,
+    APP_ENV,
     operationId,
     type + extension,
   );

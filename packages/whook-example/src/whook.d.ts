@@ -14,12 +14,16 @@ import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
 import type { APIConfig } from './services/API.js';
 import type { JWTServiceConfig } from 'jwt-service';
 import type { BaseAppEnvVars } from 'application-services';
+import type { JWTEnvVars } from 'jwt-service';
+import type { FilterAPITagsEnvVars } from './services/FILTER_API_TAGS.ts';
 
 declare module 'application-services' {
   // Eventually override the process env type here
   export interface AppEnvVars
     extends BaseAppEnvVars,
       WhookBaseEnv,
+      JWTEnvVars,
+      FilterAPITagsEnvVars,
       WhookSwaggerUIEnv {
     DRY_RUN?: string;
   }
@@ -37,6 +41,7 @@ The configuration is typed so that you are sure you cannot
       APIConfig,
       JWTServiceConfig {}
 }
+
 declare module '@whook/whook' {
   /* Architecture Note #3.2.3: Typings
 

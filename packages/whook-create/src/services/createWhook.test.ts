@@ -9,6 +9,26 @@ import type { PathLike } from 'fs-extra';
 const _packageJSON = JSON.parse(
   readFileSync('../whook-example/package.json').toString(),
 );
+const FILE_CONTENTS = {
+  'README.md': `
+# test
+> yolo
+
+[//]: # (::contents:start)
+
+YOLO
+
+[//]: # (::contents:end)
+
+# Authors
+Mr Bean
+`,
+  'watch.ts': `
+the watch.ts file contents
+ with'../../' replaced so
+ equal to './'!
+`,
+};
 
 describe('initCreateWhook', () => {
   const CWD = '/home/whoiam/projects/';
@@ -60,27 +80,23 @@ describe('initCreateWhook', () => {
     oraInstance.start.mockReset();
     oraInstance.start.mockReturnValue(oraInstance);
     oraInstance.stopAndPersist.mockReset();
-    readFile.mockResolvedValue(
-      Buffer.from(`
-# test
-> yolo
+    readFile.mockImplementation(async (file) => {
+      if (file.toString().endsWith('package.json')) {
+        return Buffer.from(JSON.stringify(packageJSON));
+      }
+      const key = Object.keys(FILE_CONTENTS).find((key) =>
+        file.toString().endsWith(key),
+      );
 
-[//]: # (::contents:start)
-
-YOLO
-
-[//]: # (::contents:end)
-
-# Authors
-Mr Bean
-
-    `),
-    );
+      if (key) {
+        return Buffer.from(FILE_CONTENTS[key]);
+      }
+      return Buffer.from('NO_FILE_CONTENTS');
+    });
   });
 
   it('should work', async () => {
-    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
-    readdir.mockResolvedValueOnce(['development', 'production']);
+    readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
         [
@@ -149,10 +165,10 @@ Mr Bean
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^3.0.0",
+    "application-services": "^3.0.1",
     "common-services": "^14.0.0",
     "http-auth-utils": "^5.0.1",
-    "jwt-service": "^10.0.1",
+    "jwt-service": "^10.0.2",
     "knifecycle": "^16.0.1",
     "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
@@ -306,8 +322,7 @@ Mr Bean
   });
 
   it('should handle network issues', async () => {
-    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
-    readdir.mockResolvedValueOnce(['development', 'production']);
+    readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
         [
@@ -372,10 +387,10 @@ Mr Bean
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^3.0.0",
+    "application-services": "^3.0.1",
     "common-services": "^14.0.0",
     "http-auth-utils": "^5.0.1",
-    "jwt-service": "^10.0.1",
+    "jwt-service": "^10.0.2",
     "knifecycle": "^16.0.1",
     "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
@@ -529,8 +544,7 @@ Mr Bean
   });
 
   it('should handle git initialization problems', async () => {
-    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
-    readdir.mockResolvedValueOnce(['development', 'production']);
+    readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockResolvedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
       data: 'node_modules',
@@ -580,10 +594,10 @@ Mr Bean
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^3.0.0",
+    "application-services": "^3.0.1",
     "common-services": "^14.0.0",
     "http-auth-utils": "^5.0.1",
-    "jwt-service": "^10.0.1",
+    "jwt-service": "^10.0.2",
     "knifecycle": "^16.0.1",
     "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
@@ -737,8 +751,7 @@ Mr Bean
   });
 
   it('should fail with access problems', async () => {
-    readFile.mockResolvedValueOnce(Buffer.from(JSON.stringify(packageJSON)));
-    readdir.mockResolvedValueOnce(['development', 'production']);
+    readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
       data: 'node_modules',

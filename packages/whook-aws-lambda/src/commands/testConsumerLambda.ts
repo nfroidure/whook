@@ -37,13 +37,13 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initTestConsumerLambdaCommand));
 
 async function initTestConsumerLambdaCommand({
-  NODE_ENV,
+  APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log,
   args,
 }: {
-  NODE_ENV: string;
+  APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;
@@ -59,8 +59,11 @@ async function initTestConsumerLambdaCommand({
     }>(definition.arguments, args);
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
-      { PROJECT_DIR, log },
-      NODE_ENV,
+      {
+        APP_ENV,
+        PROJECT_DIR,
+        log,
+      },
       name,
       type,
       extension,

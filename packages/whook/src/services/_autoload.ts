@@ -17,7 +17,6 @@ import type {
   Dependencies,
   Service,
 } from 'knifecycle';
-import type { AppConfig } from 'application-services';
 import type {
   ResolveService,
   ImporterService,
@@ -46,7 +45,7 @@ export type AutoloadConfig = {
 };
 export type AutoloadDependencies<D extends Dependencies> = AutoloadConfig & {
   PROJECT_SRC: string;
-  APP_CONFIG?: AppConfig;
+  APP_CONFIG?: AutoloadConfig;
   WRAPPERS?: WhookWrapper<D, WhookHandler>[];
   INITIALIZER_PATH_MAP?: WhookInitializerMap;
   WHOOK_PLUGINS_PATHS?: string[];

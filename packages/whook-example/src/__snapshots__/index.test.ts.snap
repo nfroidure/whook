@@ -170,9 +170,6 @@ exports[`runServer should work 1`] = `
       "➰ - Plugin "@whook/whook" resolved to "/home/whoiam/projects/whook/dist".",
     ],
     [
-      "🈁 - Generated the BASE_URL constant "http://localhost:9999".",
-    ],
-    [
       "🈁 - Generating the API_DEFINITIONS",
     ],
     [
@@ -195,9 +192,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "💿 - Loading "API" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
-    ],
-    [
-      "💿 - Loading "BASE_URL" initializer from "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
     ],
     [
       "💿 - Loading "FILTER_API_TAGS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
@@ -240,9 +234,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "💿 - Service "API" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
-    ],
-    [
-      "💿 - Service "BASE_URL" found in "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
     ],
     [
       "💿 - Service "FILTER_API_TAGS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
@@ -324,9 +315,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🚫 - No file found at "/home/whoami/projects/.env.node.test".",
-    ],
-    [
-      "🚫 - Service "BASE_URL" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/BASE_URL".",
     ],
     [
       "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/dist/services/BUFFER_LIMIT".",
@@ -446,15 +434,6 @@ exports[`runServer should work 1`] = `
       "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME".",
     ],
     [
-      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/dist/services/PROTOCOL".",
-    ],
-    [
-      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROTOCOL".",
-    ],
-    [
-      "🚫 - Service "PROTOCOL" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PROTOCOL".",
-    ],
-    [
       "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES".",
     ],
     [
@@ -551,9 +530,6 @@ exports[`runServer should work 1`] = `
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
-    ],
-    [
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
     ],
     [
@@ -630,9 +606,6 @@ exports[`runServer should work 1`] = `
     ],
     [
       "🛂 - Resolving "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/dist/services/BASE_URL.js".",
     ],
     [
       "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
@@ -714,7 +687,7 @@ exports[`runServer should work 1`] = `
   ],
   "logInfoCalls": [
     [
-      "JWT service initialized!",
+      "🔒 - JWT service initialized!",
     ],
     [
       "🕱 -Wrapping the error handler for CORS.",

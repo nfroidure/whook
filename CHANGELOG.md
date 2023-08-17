@@ -1,6 +1,80 @@
 # [13.0.0](https://github.com/nfroidure/whook/compare/v12.1.0...v13.0.0) (2023-08-16)
 
+### Breaking changes
 
+Update modules of your project, especially the ones who depends on
+ `yerror`, `yhttperror`, `knifecycle` and `schema2dts`. Beware that
+ the versions match to avoid any problem:
+```sh
+## Example of listing YError dependents module and its versions
+npm ls yerror
+```
+
+The `CONFIGS` service has been renamed `APP_CONFIG` and now comes from
+ the `application-services` module so you will probably have to change
+ it everywhere you use it and install that new dependency.
+
+`NODE_ENV` now only accept Node accepted values (`development`,
+ `production` and `test`). So if you refers to the old
+ `NODE_ENVS` config values anywhere, you may drop it.
+ If you still need to refer to Node Envs, use the enum
+ type provided by `common-services`.
+
+To specify your deployment target, use `APP_ENV` instead (
+ see the [related `whook-example` code](https://github.com/nfroidure/whook/blob/2126f07fea694dc7963e79dd91056e57eaec52bd/packages/whook-example/src/index.ts#L148-L153)).
+
+You will probably have to rename the `src/config/development` folder
+ to `src/config/local` to match the `APP_ENV` accepted values (`local`
+ per default, but you can [choose it there](https://github.com/nfroidure/whook/blob/ffdc441236771ec28eff40a2574e5b4327e6fe2f/packages/whook-example/src/index.ts#L18), we recommend to have
+ at least `local`, `test` and `production` targets, maybe also `uat`
+ or `staging`).
+
+Change the typings too in the `whook.d.ts` file to match the new ones
+ especially the `application-services` ones that now replace some of
+ the old Whook types to be used in other projects (Whook's ENVService
+ becomes `application-services` `AppEnvVars`).
+
+The `WRAPPERS` service needs to be registered explicitly and to
+ be a singleton, see `whook-example` `src/index.ts` and
+ `src/services/HANDLERS.ts`.
+
+In a general manner, `whook` embed the latest version of `knifecycle`
+ that explicitely requires singletons to depends on singletons only.
+ You will probably have to set some services as singleton or to
+ avoid singleton for services that ain't really singletons.
+
+Also, the watch command changed a bit, you can get inspiration
+ [here](https://github.com/nfroidure/whook/blob/8bc933a321455a0607d48959ec4e2557c61deaf3/packages/whook-example/src/watch.ts#L25)
+ to fix the prettier path.
+
+Once done, you can try to run `npm run watch`. If lucky, you're all
+ set!
+
+You can fix the various type errors until you can run the
+ project. If you meet errors in the dependencies injections,
+ you can debug by using the REPL and adding verbose logs:
+```sh
+DEBUG='knifecycle|whook' npm run whook-repl
+
+# In the REPL:
+# > .inject myService
+```
+
+### Known issues
+
+Here are issues we'll continue investigating and patch asap:
+
+- the build actually work for `@whook/aws-lambda` but is not
+ tested for GCP functions. We want to allow building the
+ server too to be able to improve the startup speed but there
+ is still some work to be done in the coming weeks. It will be
+ the next minor version.
+- the watch server does not work as expected since ESM has no
+ cache similar to the plain old require one... there is a path
+ toward it but in the meanwhile, using a watch command in
+ conjunction with the npm run dev command should work nicely
+ since we now use the `swc` compiler which is faster than `tsc`.
+ That said, only the build do types checking now.
 
 ## [12.0.2](https://github.com/nfroidure/whook/compare/v12.0.1...v12.0.2) (2023-01-05)
 
