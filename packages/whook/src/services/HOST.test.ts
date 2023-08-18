@@ -29,7 +29,22 @@ describe('initHOST', () => {
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       requireCalls: importer.mock.calls,
       internalIpV4Calls: internalIp.internalIpV4.mock.calls,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "internalIpV4Calls": [],
+  "logCalls": [
+    [
+      "debug",
+      "🏭 - Initializing the HOST service.",
+    ],
+    [
+      "warning",
+      "♻️ - Using ENV host "192.168.1.11"",
+    ],
+  ],
+  "requireCalls": [],
+}
+`);
   });
 
   it('should find a HOST by itself if no env HOST', async () => {
@@ -47,7 +62,28 @@ describe('initHOST', () => {
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       requireCalls: importer.mock.calls,
       internalIpV4Calls: internalIp.internalIpV4.mock.calls,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "internalIpV4Calls": [
+    [],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🏭 - Initializing the HOST service.",
+    ],
+    [
+      "warning",
+      "✔ - Using detected host "192.168.1.10".",
+    ],
+  ],
+  "requireCalls": [
+    [
+      "internal-ip",
+    ],
+  ],
+}
+`);
   });
 
   it('should fallback to localhost', async () => {
@@ -65,6 +101,27 @@ describe('initHOST', () => {
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       requireCalls: importer.mock.calls,
       internalIpV4Calls: internalIp.internalIpV4.mock.calls,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "internalIpV4Calls": [
+    [],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🏭 - Initializing the HOST service.",
+    ],
+    [
+      "warning",
+      "🚫 - Could not detect any host. Fallbacking to "localhost".",
+    ],
+  ],
+  "requireCalls": [
+    [
+      "internal-ip",
+    ],
+  ],
+}
+`);
   });
 });

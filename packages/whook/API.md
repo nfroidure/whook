@@ -20,34 +20,27 @@
  build, saving some computing and increasing boot time of
  the build.</p>
 </dd>
-<dt><a href="#initAPP_CONFIG">initAPP_CONFIG(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Initialize the APP_CONFIG service according to the NODE_ENV</p>
-</dd>
-<dt><a href="#initENV">initENV(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Initialize the ENV service using process env plus dotenv files</p>
+<dt><a href="#initHandlers">initHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>Initialize the Whook handlers used byt the router
+ to know which handler to run for a given open API
+ operation id.</p>
 </dd>
 <dt><a href="#initHost">initHost(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
 <dd><p>Initialize the HOST service from ENV or auto-detection if
  none specified in ENV</p>
 </dd>
-<dt><a href="#initImporter">initImporter(path)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Allow to import ES modules.</p>
-</dd>
 <dt><a href="#initPort">initPort(services)</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
 <dd><p>Initialize the PORT service from ENV or auto-detection if
  none specified in ENV</p>
 </dd>
-<dt><a href="#initProjectDir">initProjectDir(services)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
-<dd><p>Auto detect the Whook PROJECT_DIR</p>
-</dd>
 <dt><a href="#wrapEnvForBuild">wrapEnvForBuild(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the ENV service in order to filter ENV vars for the build</p>
 </dd>
-<dt><a href="#initResolve">initResolve(path)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
-<dd><p>Allow to resolve a path with the module system.</p>
-</dd>
 <dt><a href="#initWhookPluginsPaths">initWhookPluginsPaths(services)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
 <dd><p>Auto detect the Whook WHOOK_PLUGINS_PATHS</p>
+</dd>
+<dt><a href="#initWrappers">initWrappers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>A simple passthrough service proxing the WRAPPERS.</p>
 </dd>
 </dl>
 
@@ -137,37 +130,22 @@ import { alsoInject } from 'knifecycle';
 
 export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
 ```
-<a name="initAPP_CONFIG"></a>
+<a name="initHandlers"></a>
 
-## initAPP_CONFIG(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Initialize the APP_CONFIG service according to the NODE_ENV
+## initHandlers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
+Initialize the Whook handlers used byt the router
+ to know which handler to run for a given open API
+ operation id.
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a an object the actual configuration properties.  
+**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `HANDLERS` hash.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services APP_CONFIG depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
-| services.PROJECT_SRC | <code>Object</code> |  | The project source directory |
+| services | <code>Object</code> |  | The services `HANDLERS` depends on |
+| services.WRAPPERS | <code>Array</code> |  | An optional list of wrappers to inject |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
-
-<a name="initENV"></a>
-
-## initENV(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Initialize the ENV service using process env plus dotenv files
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the actual env vars.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services ENV depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to look for `.env.${NODE_ENV}` env file |
-| services.PWD | <code>Object</code> |  | The process current working directory |
-| [services.BASE_ENV] | <code>Object</code> | <code>{}</code> | An optional base environment |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.HANDLERS | <code>Object</code> |  | The rest is a hash of handlers mapped by their operation id |
 
 <a name="initHost"></a>
 
@@ -185,18 +163,6 @@ Initialize the HOST service from ENV or auto-detection if
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
-<a name="initImporter"></a>
-
-## initImporter(path) ⇒ <code>Promise.&lt;Object&gt;</code>
-Allow to import ES modules.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an imported module.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>string</code> | The module path |
-
 <a name="initPort"></a>
 
 ## initPort(services) ⇒ <code>Promise.&lt;Number&gt;</code>
@@ -213,20 +179,6 @@ Initialize the PORT service from ENV or auto-detection if
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
-<a name="initProjectDir"></a>
-
-## initProjectDir(services) ⇒ <code>Promise.&lt;string&gt;</code>
-Auto detect the Whook PROJECT_DIR
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a number representing the actual port.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services PROJECT_DIR depends on |
-| services.PWD | <code>Object</code> |  | The process working directory |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
 <a name="wrapEnvForBuild"></a>
 
 ## wrapEnvForBuild(services) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -238,21 +190,8 @@ Wrap the ENV service in order to filter ENV vars for the build
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services ENV depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to add it to the build env |
 | [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
-<a name="initResolve"></a>
-
-## initResolve(path) ⇒ <code>Promise.&lt;string&gt;</code>
-Allow to resolve a path with the module system.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a fully qualified module path  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>string</code> | The serializable constants to gather |
 
 <a name="initWhookPluginsPaths"></a>
 
@@ -268,4 +207,19 @@ Auto detect the Whook WHOOK_PLUGINS_PATHS
 | services.WHOOK_PLUGINS | <code>Array.&lt;String&gt;</code> |  | The active whook plugins list |
 | services.PROJECT_SRC | <code>String</code> |  | The project source directory |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrappers"></a>
+
+## initWrappers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
+A simple passthrough service proxing the WRAPPERS.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `HANDLERS` hash.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services `WRAPPERS` depends on |
+| [services.HANDLERS_WRAPPERS] | <code>Array</code> |  | The global wrappers names to wrap the handlers with |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.WRAPPERS | <code>Object</code> |  | The dependencies must all be injected wrappers |
 

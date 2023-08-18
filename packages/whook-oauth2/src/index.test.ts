@@ -13,13 +13,14 @@ import {
   prepareServer,
   prepareEnvironment as basePrepareEnvironment,
   DEFAULT_ERRORS_DESCRIPTORS,
+  initWrappers,
+  initHandlers,
 } from '@whook/whook';
 import {
   AUTHORIZATION_ERRORS_DESCRIPTORS,
-  BaseAuthenticationData,
-  wrapHandlerWithAuthorization,
+  initWrapHandlerWithAuthorization,
 } from '@whook/authorization';
-import { constant, initializer } from 'knifecycle';
+import { alsoInject, constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import { YError } from 'yerror';
 import {
@@ -62,7 +63,10 @@ import type {
 import type { Knifecycle } from 'knifecycle';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { Logger } from 'common-services';
-import type { AuthenticationService } from '@whook/authorization';
+import type {
+  AuthenticationService,
+  BaseAuthenticationData,
+} from '@whook/authorization';
 
 type CustomAuthenticationData = BaseAuthenticationData & {
   userId: string;
@@ -199,15 +203,25 @@ describe('OAuth2 server', () => {
     );
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
-    $.register(constant('ENV', {}));
-    $.register(constant('NODE_ENV', 'test'));
+    $.register(constant('APP_ENV', 'local'));
+    $.register(
+      constant('ENV', {
+        NODE_ENV: 'test',
+      }),
+    );
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
     $.register(constant('DEBUG_NODE_ENVS', []));
-    $.register(constant('NODE_ENVS', ['test']));
     $.register(constant('MECHANISMS', [BEARER_MECHANISM, BASIC_MECHANISM]));
     $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
+
+    // Auth
+    const HANDLERS_WRAPPERS = ['wrapHandlerWithAuthorization'];
+
+    $.register(initWrapHandlerWithAuthorization);
+    $.register(alsoInject(HANDLERS_WRAPPERS, initWrappers));
+    $.register(constant('HANDLERS_WRAPPERS', HANDLERS_WRAPPERS));
 
     // OAuth2 Specifics
     $.register(constant('OAUTH2', OAUTH2));
@@ -219,17 +233,9 @@ describe('OAuth2 server', () => {
       }),
     );
     $.register(
-      initializer(
-        {
-          name: 'HANDLERS',
-          type: 'service',
-          inject: [
-            'getOAuth2Authorize',
-            'postOAuth2Acknowledge',
-            'postOAuth2Token',
-          ],
-        },
-        async (services) => services,
+      alsoInject(
+        ['getOAuth2Authorize', 'postOAuth2Acknowledge', 'postOAuth2Token'],
+        initHandlers,
       ),
     );
     $.register(constant('authentication', authentication));
@@ -240,15 +246,15 @@ describe('OAuth2 server', () => {
     $.register(constant('oAuth2Password', oAuth2Password));
     [
       initGetOAuth2Authorize,
-      wrapHandlerWithAuthorization(initPostOAuth2Acknowledge as any),
-      wrapHandlerWithAuthorization(initPostOAuth2Token as any),
+      initPostOAuth2Acknowledge,
+      initPostOAuth2Token,
       initOAuth2Granters,
       initOAuth2ClientCredentialsGranter,
       initOAuth2CodeGranter,
       initOAuth2PasswordGranter,
       initOAuth2RefreshTokenGranter,
       initOAuth2TokenGranter,
-    ].forEach((handlerInitializer) => $.register(handlerInitializer));
+    ].forEach((handlerInitializer) => $.register(handlerInitializer as any));
 
     return $;
   }
@@ -352,31 +358,39 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": {
-            "access_token": "an_access_token",
-            "expiration_date": "2010-03-07T00:00:00.000Z",
-            "expires_in": 86400,
-            "refresh_token": "a_refresh_token",
-            "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-            "refresh_token_expires_in": 5364748800,
-            "token_type": "bearer",
-          },
-          "headers": {
-            "connection": "close",
-            "content-type": "application/json",
-            "date": undefined,
-            "transaction-id": "0",
-            "transfer-encoding": "chunked",
-            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-          },
-          "status": 200,
-        }
-      `);
+{
+  "data": {
+    "access_token": "an_access_token",
+    "expiration_date": "2010-03-07T00:00:00.000Z",
+    "expires_in": 86400,
+    "refresh_token": "a_refresh_token",
+    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+    "refresh_token_expires_in": 5364748800,
+    "token_type": "bearer",
+  },
+  "headers": {
+    "connection": undefined,
+    "content-type": "application/json",
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "server": undefined,
+    "transaction-id": "0",
+    "transfer-encoding": "chunked",
+    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+  },
+  "status": 200,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -449,31 +463,39 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": {
-            "access_token": "an_access_token",
-            "expiration_date": "2010-03-07T00:00:00.000Z",
-            "expires_in": 86400,
-            "refresh_token": "a_refresh_token",
-            "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-            "refresh_token_expires_in": 5364748800,
-            "token_type": "bearer",
-          },
-          "headers": {
-            "connection": "close",
-            "content-type": "application/json",
-            "date": undefined,
-            "transaction-id": "1",
-            "transfer-encoding": "chunked",
-            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-          },
-          "status": 200,
-        }
-      `);
+{
+  "data": {
+    "access_token": "an_access_token",
+    "expiration_date": "2010-03-07T00:00:00.000Z",
+    "expires_in": 86400,
+    "refresh_token": "a_refresh_token",
+    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+    "refresh_token_expires_in": 5364748800,
+    "token_type": "bearer",
+  },
+  "headers": {
+    "connection": undefined,
+    "content-type": "application/json",
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "server": undefined,
+    "transaction-id": "1",
+    "transfer-encoding": "chunked",
+    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+  },
+  "status": 200,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -541,31 +563,39 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": {
-            "access_token": "an_access_token",
-            "expiration_date": "2010-03-07T00:00:00.000Z",
-            "expires_in": 86400,
-            "refresh_token": "a_refresh_token",
-            "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-            "refresh_token_expires_in": 5364748800,
-            "token_type": "bearer",
-          },
-          "headers": {
-            "connection": "close",
-            "content-type": "application/json",
-            "date": undefined,
-            "transaction-id": "2",
-            "transfer-encoding": "chunked",
-            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-          },
-          "status": 200,
-        }
-      `);
+{
+  "data": {
+    "access_token": "an_access_token",
+    "expiration_date": "2010-03-07T00:00:00.000Z",
+    "expires_in": 86400,
+    "refresh_token": "a_refresh_token",
+    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+    "refresh_token_expires_in": 5364748800,
+    "token_type": "bearer",
+  },
+  "headers": {
+    "connection": undefined,
+    "content-type": "application/json",
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "server": undefined,
+    "transaction-id": "2",
+    "transfer-encoding": "chunked",
+    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+  },
+  "status": 200,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -624,22 +654,30 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": "",
-          "headers": {
-            "connection": "close",
-            "date": undefined,
-            "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fexample.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
-            "transaction-id": "3",
-            "transfer-encoding": "chunked",
-          },
-          "status": 302,
-        }
-      `);
+{
+  "data": "",
+  "headers": {
+    "connection": undefined,
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fexample.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
+    "server": undefined,
+    "transaction-id": "3",
+    "transfer-encoding": "chunked",
+  },
+  "status": 302,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -702,23 +740,31 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": "",
-          "headers": {
-            "connection": "close",
-            "date": undefined,
-            "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo%3Fa_param%3Da_value&code=a_code",
-            "transaction-id": "4",
-            "transfer-encoding": "chunked",
-            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-          },
-          "status": 302,
-        }
-      `);
+{
+  "data": "",
+  "headers": {
+    "connection": undefined,
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo%3Fa_param%3Da_value&code=a_code",
+    "server": undefined,
+    "transaction-id": "4",
+    "transfer-encoding": "chunked",
+    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+  },
+  "status": 302,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -789,31 +835,39 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": {
-            "access_token": "an_access_token",
-            "expiration_date": "2010-03-07T00:00:00.000Z",
-            "expires_in": 86400,
-            "refresh_token": "a_refresh_token",
-            "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-            "refresh_token_expires_in": 5364748800,
-            "token_type": "bearer",
-          },
-          "headers": {
-            "connection": "close",
-            "content-type": "application/json",
-            "date": undefined,
-            "transaction-id": "5",
-            "transfer-encoding": "chunked",
-            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-          },
-          "status": 200,
-        }
-      `);
+{
+  "data": {
+    "access_token": "an_access_token",
+    "expiration_date": "2010-03-07T00:00:00.000Z",
+    "expires_in": 86400,
+    "refresh_token": "a_refresh_token",
+    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+    "refresh_token_expires_in": 5364748800,
+    "token_type": "bearer",
+  },
+  "headers": {
+    "connection": undefined,
+    "content-type": "application/json",
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "server": undefined,
+    "transaction-id": "5",
+    "transfer-encoding": "chunked",
+    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+  },
+  "status": 200,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -870,22 +924,30 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": "",
-          "headers": {
-            "connection": "close",
-            "date": undefined,
-            "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
-            "transaction-id": "6",
-            "transfer-encoding": "chunked",
-          },
-          "status": 302,
-        }
-      `);
+{
+  "data": "",
+  "headers": {
+    "connection": undefined,
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
+    "server": undefined,
+    "transaction-id": "6",
+    "transfer-encoding": "chunked",
+  },
+  "status": 302,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -957,23 +1019,31 @@ describe('OAuth2 server', () => {
           ...headers,
           // Erasing the Date header that may be added by Axios :/
           date: undefined,
+          etag: undefined,
+          'last-modified': undefined,
+          server: undefined,
+          connection: undefined,
+          'keep-alive': undefined,
         },
-
         data,
       }).toMatchInlineSnapshot(`
-        {
-          "data": "",
-          "headers": {
-            "connection": "close",
-            "date": undefined,
-            "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&access_token=an_access_token&token_type=bearer&expires_in=86400",
-            "transaction-id": "7",
-            "transfer-encoding": "chunked",
-            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-          },
-          "status": 302,
-        }
-      `);
+{
+  "data": "",
+  "headers": {
+    "connection": undefined,
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&access_token=an_access_token&token_type=bearer&expires_in=86400",
+    "server": undefined,
+    "transaction-id": "7",
+    "transfer-encoding": "chunked",
+    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+  },
+  "status": 302,
+}
+`);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,

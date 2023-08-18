@@ -12,28 +12,28 @@
 
 [//]: # (::contents:start)
 
-This [Whook](https://github.com/nfroidure/whook) wrapper ties
- authentication with only two kinds of input:
+This [Whook](https://github.com/nfroidure/whook) wrapper ties authentication
+with only two kinds of input:
+
 - the `authorization` header which allows several mechanisms to be used
   including custom ones (this module is using
-  [`http-auth-utils`](https://www.npmjs.com/package/http-auth-utils)
-  under the hood). This is the recommended way to authenticate with
-  a server.
+  [`http-auth-utils`](https://www.npmjs.com/package/http-auth-utils) under the
+  hood). This is the recommended way to authenticate with a server.
 - the `access_token` defined by the
-  [RFC6750](https://tools.ietf.org/html/rfc6750#page-6) that allows
-  providing the token via query parameters for convenience (mostly
-  for development purpose). Note that you can disable it by setting
-  the `DEFAULT_MECHANISM` constant to an empty string.
+  [RFC6750](https://tools.ietf.org/html/rfc6750#page-6) that allows providing
+  the token via query parameters for convenience (mostly for development
+  purpose). Note that you can disable it by setting the `DEFAULT_MECHANISM`
+  constant to an empty string.
 
-Note that the form-encoded body parameter defined by the bearer
- authentication RFC is volontarily not supported since nowadays
- everyone uses JSON and there is no situations where one could
- not set the token in headers.
+Note that the form-encoded body parameter defined by the bearer authentication
+RFC is volontarily not supported since nowadays everyone uses JSON and there is
+no situations where one could not set the token in headers.
 
-To use this wrapper, you'll have to create an `authentication`
- service. Here is a simple unique token based implementation
- (usually in `src/services/authentication.ts`):
- ```ts
+To use this wrapper, you'll have to create an `authentication` service. Here is
+a simple unique token based implementation (usually in
+`src/services/authentication.ts`):
+
+```ts
 import { autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import {
@@ -87,48 +87,45 @@ async function initAuthentication({
 }
 ```
 
-The properties added next to the `scopes` one will be passed to
- the wrapped handlers and an `authenticated` property will also
- be added in order for handlers to know if the client were
- authenticated.
+The properties added next to the `scopes` one will be passed to the wrapped
+handlers and an `authenticated` property will also be added in order for
+handlers to know if the client were authenticated.
 
-Then, simply add it to your `WRAPPERS` service (usually in
- `src/services/WRAPPERS.ts`):
-```diff
-import { service } from 'knifecycle';
-import type { WhookWrapper } from '@whook/whook';
-+ import { wrapHandlerWithAuthorization } from '@whook/authorization';
-
-export default service(initWrappers, 'WRAPPERS');
-
-async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
--   const WRAPPERS = [];
-+   const WRAPPERS = [wrapHandlerWithAuthorization];
-
-  return WRAPPERS;
-}
+Then, simply install this plugin:
+```sh
+npm i @whook/authorization;
 ```
 
-Declare this module types in your `src/whook.d.ts` type
- definitions:
+Declare this module types in your `src/whook.d.ts` type definitions:
+
 ```diff
 + import type { WhookAuthorizationConfig } from '@whook/authorization';
 
-declare module '@whook/whook' {
+// ...
+
+declare module 'application-services' {
 
   // ...
 
   export interface AppConfig
--    extends WhookBaseConfigs {}
-+    extends WhookBaseConfigs, WhookAuthorizationConfig {}
+    extends WhookBaseConfigs,
+      WhookAuthorizationConfig,
+      WhookSwaggerUIConfig,
+      WhookCORSConfig,
+      APIConfig,
+  export interface AppConfig
+    extends WhookBaseConfigs,
++    WhookAuthorizationConfig,
+    JWTServiceConfig {}
 
   // ...
 
 }
 ```
 
-Then add the config and the errors descriptors or provide your
- own (usually in `src/config/common/config.js`):
+Then add the config and the errors descriptors or provide your own (usually in
+`src/config/common/config.js`):
+
 ```diff
 // ...
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
@@ -153,24 +150,54 @@ const CONFIG: AppConfig = {
 export default CONFIG;
 ```
 
+And finally declare this plugin in the `src/index.ts` file
+ of your project:
+```diff
+
+  // ...
+
+  $.register(
+    constant('HANDLERS_WRAPPERS', [
+      'wrapHandlerWithCORS',
++      'wrapHandlerWithAuthorization',
+    ]),
+  );
+
+  // ...
+
+  $.register(
+    constant('WHOOK_PLUGINS', [
+      '@whook/whook',
+      '@whook/cors',
++      '@whook/authorization',
+    ]),
+  );
+
+  // ...
+```
+
 To see a complete usage of this wrapper, you may have a look at the
- [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
- project.
+[`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example)
+project.
 
 [//]: # (::contents:end)
 
 # API
-<a name="wrapHandlerWithAuthorization"></a>
+<a name="initWrapHandlerWithAuthorization"></a>
 
-## wrapHandlerWithAuthorization(initHandler) ⇒ <code>function</code>
-Wrap an handler initializer to check client's authorizations.
+## initWrapHandlerWithAuthorization(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to check client's authorizations.
 
 **Kind**: global function  
-**Returns**: <code>function</code> - The handler initializer wrapped  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| initHandler | <code>function</code> | The handler initializer |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services ENV depends on |
+| [services.MECHANISMS] | <code>Array</code> |  | The list of supported auth mechanisms |
+| [services.DEFAULT_MECHANISM] | <code>string</code> |  | The default authentication mechanism |
+| services.authentication | <code>Object</code> |  | The authentication service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 
 # Authors

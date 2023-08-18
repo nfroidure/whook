@@ -1,5 +1,7 @@
 import { autoService, extra } from 'knifecycle';
 import { generateOpenAPITypes as generateTypes, toSource } from 'schema2dts';
+import { NodeEnv } from 'application-services';
+import type { AppEnvVars } from 'application-services';
 import type { LogService } from 'common-services';
 import type { WhookCommandDefinition } from '../services/promptArgs.js';
 
@@ -28,12 +30,12 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initGenerateOpenAPITypes));
 
 async function initGenerateOpenAPITypes({
-  NODE_ENV,
+  ENV,
   instream = process.stdin,
   outstream = process.stdout,
   log,
 }: {
-  NODE_ENV: string;
+  ENV: AppEnvVars;
   instream: NodeJS.ReadableStream;
   outstream: NodeJS.WritableStream;
   log: LogService;
@@ -53,7 +55,7 @@ async function initGenerateOpenAPITypes({
     const typesDefs = toSource(
       await generateTypes(JSON.parse(openAPI), {
         baseName: 'API',
-        generateUnusedSchemas: NODE_ENV === 'development',
+        generateUnusedSchemas: ENV.NODE_ENV === NodeEnv.Development,
         generateRealEnums: false,
         exportNamespaces: false,
       }),

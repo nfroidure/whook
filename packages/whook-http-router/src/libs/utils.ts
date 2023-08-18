@@ -3,26 +3,28 @@ import contentType from 'content-type';
 import preferredCharsets from 'negotiator/lib/charset.js';
 import preferredMediaType from 'negotiator/lib/encoding.js';
 import { YError } from 'yerror';
-import type { OpenAPIV3 } from 'openapi-types';
 import {
+  pickFirstHeaderValue,
+  pickAllHeaderValues,
+} from '@whook/http-transaction';
+import type { OpenAPIV3 } from 'openapi-types';
+import type {
   WhookRequest,
   WhookHandler,
   WhookOperation,
   WhookResponse,
-  pickFirstHeaderValue,
-  pickAllHeaderValues,
 } from '@whook/http-transaction';
 import type { Parameters } from 'knifecycle';
 
 const { parse: parseContentType } = contentType;
 
-export type BodySpec = {
+export type WhookBodySpec = {
   contentType: string;
   contentLength: number;
   charset: 'utf-8';
   boundary?: string;
 };
-export type ResponseSpec = {
+export type WhookResponseSpec = {
   contentTypes: string[];
   charsets: string[];
 };
@@ -74,12 +76,12 @@ export function extractBodySpec(
   request: WhookRequest,
   consumableMediaTypes: string[],
   consumableCharsets: string[],
-): BodySpec {
+): WhookBodySpec {
   const contentLengthValues = pickAllHeaderValues(
     'content-length',
     request.headers,
   );
-  const bodySpec: BodySpec = {
+  const bodySpec: WhookBodySpec = {
     contentType: '',
     contentLength: contentLengthValues.length
       ? Number(contentLengthValues[0])
@@ -141,7 +143,7 @@ export function extractBodySpec(
 }
 
 export function checkBodyCharset(
-  bodySpec: BodySpec,
+  bodySpec: WhookBodySpec,
   consumableCharsets: string[],
 ): void {
   if (
@@ -159,7 +161,7 @@ export function checkBodyCharset(
 }
 
 export function checkBodyMediaType(
-  bodySpec: BodySpec,
+  bodySpec: WhookBodySpec,
   consumableMediaTypes: string[],
 ): void {
   if (
@@ -181,9 +183,9 @@ export function extractResponseSpec(
   request: WhookRequest,
   supportedMediaTypes: string[],
   supportedCharsets: string[],
-): ResponseSpec {
+): WhookResponseSpec {
   const accept = pickFirstHeaderValue('accept', request.headers) || '*';
-  const responseSpec: ResponseSpec = {
+  const responseSpec: WhookResponseSpec = {
     charsets: request.headers['accept-charset']
       ? preferredCharsets(
           pickFirstHeaderValue('accept-charset', request.headers),
@@ -201,7 +203,7 @@ export function extractResponseSpec(
 
 export function checkResponseMediaType(
   request: WhookRequest,
-  responseSpec: ResponseSpec,
+  responseSpec: WhookResponseSpec,
   produceableMediaTypes: string[],
 ): void {
   if (0 === responseSpec.contentTypes.length) {
@@ -216,7 +218,7 @@ export function checkResponseMediaType(
 
 export function checkResponseCharset(
   request: WhookRequest,
-  responseSpec: ResponseSpec,
+  responseSpec: WhookResponseSpec,
   produceableCharsets: string[],
 ): void {
   if (0 === responseSpec.charsets.length) {

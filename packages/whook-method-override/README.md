@@ -12,9 +12,9 @@
 
 [//]: # (::contents:start)
 
-To use this [Whook](https://github.com/nfroidure/whook) module, simply
- override the httpTransaction service into your main file (usually
- in `src/index.ts`):
+To use this [Whook](https://github.com/nfroidure/whook) module, simply override
+the httpTransaction service into your main file (usually in `src/index.ts`):
+
 ```diff
 +import initHTTPTransaction from '@whook/http-transaction';
 +import wrapHTTPTransactionWithMethodOverride from '@whook/method-override';
@@ -29,9 +29,9 @@ export async function prepareEnvironment(
 
   // (...)
 
-+  // Add method override to the server 
++  // Add method override to the server
 +  $.register(
-+    wrapHTTPRouterWithSwaggerUI(initHTTPTransaction),
++    wrapHTTPTransactionWithMethodOverride(initHTTPTransaction),
 +  );
 
   return $;

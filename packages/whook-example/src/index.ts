@@ -1,3 +1,4 @@
+import { env } from 'node:process';
 import { Knifecycle, constant } from 'knifecycle';
 import {
   runServer as runBaseServer,
@@ -7,7 +8,6 @@ import {
   initAPIDefinitions,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
-import initWrappers from './services/WRAPPERS.js';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { initErrorHandlerWithCORS } from '@whook/cors';
@@ -141,13 +141,11 @@ export async function prepareEnvironment<T extends Knifecycle>(
       // The env var is necessary only for Jest support
       // it will be removeable when Jest will be fully
       // ESM compatible
-      process.env.PROJECT_SRC || dirname(fileURLToPath(import.meta.url)),
+      env.PROJECT_SRC || dirname(fileURLToPath(import.meta.url)),
     ),
   );
 
-  $.register(
-    constant('APP_ENV', extractAppEnv<AppEnv>(process.env.APP_ENV, APP_ENVS)),
-  );
+  $.register(constant('APP_ENV', extractAppEnv<AppEnv>(env.APP_ENV, APP_ENVS)));
   /* Architecture Note #1.1.3.3: TRANSACTIONS
 
   The Whook HTTP Transaction service, maintains an internal
@@ -179,6 +177,24 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(constant('TRANSACTIONS', {}));
 
+  /* Architecture Note #4.6: WRAPPERS
+
+  Wrappers are allowing you to override every
+   handlers of your API with specific behaviors,
+   here we add CORS and HTTP authorization support
+   to all the handlers defined in the API.
+  
+  Beware that the order here matters, you will
+   want CORS to be applied to the authorization
+   wrapper responses.
+  */
+  $.register(
+    constant('HANDLERS_WRAPPERS', [
+      'wrapHandlerWithCORS',
+      'wrapHandlerWithAuthorization',
+    ]),
+  );
+
   /* Architecture Note #1.1.3.4: WHOOK_PLUGINS
   
   Plugins allows you to add simple features to the Whook's core,
@@ -186,14 +202,13 @@ export async function prepareEnvironment<T extends Knifecycle>(
   
   You can also avoid Whook defaults by leaving it empty.
   */
-  $.register(constant('WHOOK_PLUGINS', ['@whook/whook', '@whook/cors']));
-
-  /* Architecture Note #5.2: Wrappers auto loading support
-  We cannot inject the `WRAPPERS` in the auto loader when
-   it is dynamically loaded so giving a second chance here
-   for `WRAPPERS` to be set.
-  */
-  $.register(initWrappers);
+  $.register(
+    constant('WHOOK_PLUGINS', [
+      '@whook/whook',
+      '@whook/cors',
+      '@whook/authorization',
+    ]),
+  );
 
   // Add the CORS wrapped error handler
   $.register(initErrorHandlerWithCORS);

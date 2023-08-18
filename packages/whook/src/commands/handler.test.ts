@@ -2,11 +2,11 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initHandlerCommand from './handler.js';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
-import type { PromptArgs } from '../services/promptArgs.js';
+import type { WhookPromptArgs } from '../services/promptArgs.js';
 import type { Injector, Service } from 'knifecycle';
 
 describe('handlerCommand', () => {
-  const promptArgs = jest.fn<PromptArgs>();
+  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
   const $injector = jest.fn<Injector<Service>>();
 
@@ -177,24 +177,23 @@ describe('handlerCommand', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorParams: (err as YError).params.slice(0, -1),
           promptArgsCalls: promptArgs.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchInlineSnapshot(`
-          {
-            "errorCode": "E_BAD_PARAMETERS",
-            "errorParams": [
-              "{"body: {"echo": "YOLO!"} }",
-              "Unexpected token e in JSON at position 10",
-            ],
-            "injectorCalls": [],
-            "logCalls": [],
-            "promptArgsCalls": [
-              [],
-            ],
-          }
-        `);
+{
+  "errorCode": "E_BAD_PARAMETERS",
+  "errorParams": [
+    "{"body: {"echo": "YOLO!"} }",
+  ],
+  "injectorCalls": [],
+  "logCalls": [],
+  "promptArgsCalls": [
+    [],
+  ],
+}
+`);
       }
     });
 

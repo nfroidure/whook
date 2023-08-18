@@ -1,3 +1,4 @@
+import { argv, cwd, exit, stderr } from 'node:process';
 import { constant } from 'knifecycle';
 import initArgs from './services/args.js';
 import initPromptArgs from './services/promptArgs.js';
@@ -41,8 +42,8 @@ export default async function runCLI<T extends Knifecycle>(
     const $ = await innerPrepareEnvironment();
 
     $.register(constant('PROCESS_NAME', 'whook-cli'));
-    $.register(constant('PWD', process.cwd()));
-    $.register(constant('ARGS', process.argv));
+    $.register(constant('PWD', cwd()));
+    $.register(constant('ARGS', argv));
     $.register(initArgs);
     $.register(initPromptArgs);
     $.register(initCommand);
@@ -72,14 +73,13 @@ export default async function runCLI<T extends Knifecycle>(
     await $.destroy();
 
     if (failed) {
-      process.exit(1);
+      exit(1);
     }
   } catch (err) {
     // eslint-disable-next-line
-    console.error(
-      '💀 - Cannot launch the process:',
-      printStackTrace(err as Error),
+    stderr.write(
+      `💀 - Cannot launch the process: ${printStackTrace(err as Error)}`,
     );
-    process.exit(1);
+    exit(1);
   }
 }

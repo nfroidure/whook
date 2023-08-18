@@ -4,13 +4,13 @@ import ms from 'ms';
 import { YError } from 'yerror';
 import type { Provider } from 'knifecycle';
 import type { LogService } from 'common-services';
-import type { HTTPRouterService } from '@whook/http-router';
+import type { WhookHTTPRouterService } from '@whook/http-router';
 import type { Socket } from 'net';
 
-export type HTTPServerEnv = {
+export type WhookHTTPServerEnv = {
   DESTROY_SOCKETS?: string;
 };
-export type HTTPServerConfig = {
+export type WhookHTTPServerConfig = {
   HOST?: string;
   PORT?: number;
   MAX_HEADERS_COUNT?: number;
@@ -18,15 +18,15 @@ export type HTTPServerConfig = {
   SOCKET_TIMEOUT?: number;
   MAX_CONNECTIONS?: number;
 };
-export type HTTPServerDependencies = HTTPServerConfig & {
-  ENV?: HTTPServerEnv;
+export type WhookHTTPServerDependencies = WhookHTTPServerConfig & {
+  ENV?: WhookHTTPServerEnv;
   HOST: string;
   PORT: number;
-  httpRouter: HTTPRouterService;
+  httpRouter: WhookHTTPRouterService;
   log?: LogService;
 };
-export type HTTPServerService = http.Server;
-export type HTTPServerProvider = Provider<HTTPServerService>;
+export type WhookHTTPServerService = http.Server;
+export type WhookHTTPServerProvider = Provider<WhookHTTPServerService>;
 
 function noop() {
   return undefined;
@@ -77,7 +77,7 @@ async function initHTTPServer({
   MAX_CONNECTIONS = Infinity,
   httpRouter,
   log = noop,
-}: HTTPServerDependencies): Promise<HTTPServerProvider> {
+}: WhookHTTPServerDependencies): Promise<WhookHTTPServerProvider> {
   const sockets: Set<Socket> = ENV.DESTROY_SOCKETS
     ? new Set()
     : (undefined as unknown as Set<Socket>);

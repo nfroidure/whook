@@ -15,17 +15,18 @@ export type WhookConfig = {
   baseURL?: string;
 };
 
-export type BaseURLEnv = {
+export type WhookBaseURL = string;
+export type WhookBaseURLEnv = {
   DEV_MODE?: string;
 };
-export type BaseURLConfig = {
+export type WhookBaseURLConfig = {
   CONFIG: WhookConfig;
   PROTOCOL?: string;
   HOST?: string;
   PORT?: number;
 };
-export type BaseURLDependencies = BaseURLConfig & {
-  ENV: BaseURLEnv;
+export type WhookBaseURLDependencies = WhookBaseURLConfig & {
+  ENV: WhookBaseURLEnv;
   HOST: string;
   PORT: number;
   log?: LogService;
@@ -60,7 +61,7 @@ async function initBaseURL({
   HOST,
   PORT,
   log = noop,
-}: BaseURLDependencies): Promise<string> {
+}: WhookBaseURLDependencies): Promise<WhookBaseURL> {
   const BASE_URL =
     CONFIG.baseURL && !ENV.DEV_MODE
       ? CONFIG.baseURL

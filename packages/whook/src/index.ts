@@ -1,39 +1,31 @@
 import { Knifecycle, constant } from 'knifecycle';
-import debug from 'debug';
+import { cwd, exit, stdout, stderr } from 'node:process';
 import { printStackTrace } from 'yerror';
-import { noop, identity, compose, pipe } from './libs/utils.js';
 import {
-  COMPONENTS_TYPES,
-  cleanupOpenAPI,
-  collectRefs,
-  refersTo,
-} from './libs/openapi.js';
-import { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers.js';
-import {
-  NodeEnv,
+  DEFAULT_LOG_ROUTING,
+  DEFAULT_LOG_CONFIG,
   initLogService,
   initTimeService,
   initRandomService,
   initDelayService,
-  initProcessService,
   initResolveService,
   initImporterService,
-  DEFAULT_LOG_ROUTING,
-  DEFAULT_LOG_CONFIG,
+  type LogService,
 } from 'common-services';
 import {
   initAppConfigService,
   initEnvService,
+  initProcessService,
   initProcessEnvService,
   initProjectDirService,
 } from 'application-services';
-import initHTTPRouter, {
+import initHTTPRouter, { initErrorHandler } from '@whook/http-router';
+export {
   OPEN_API_METHODS,
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-  initErrorHandler,
 } from '@whook/http-router';
 import initHTTPTransaction, {
   initObfuscatorService,
@@ -42,16 +34,19 @@ import initHTTPTransaction, {
 import initHTTPServer from '@whook/http-server';
 import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
-import initProxyedENV from './services/ProxyedENV.js';
+import initProxyedENV from './services/PROXYED_ENV.js';
 import initBuildConstants from './services/BUILD_CONSTANTS.js';
 import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS.js';
-import initAPIDefinitions, {
+import initAPIDefinitions from './services/API_DEFINITIONS.js';
+export {
   DEFAULT_IGNORED_FILES_PREFIXES,
   DEFAULT_IGNORED_FILES_SUFFIXES,
   DEFAULT_REDUCED_FILES_SUFFIXES,
-  WhookAPIDefinitionsConfig,
+  type WhookAPIDefinitionsConfig,
 } from './services/API_DEFINITIONS.js';
-import initAutoload, { HANDLER_REG_EXP } from './services/_autoload.js';
+import initLoggerService from './services/logger.js';
+import initExitService from './services/exit.js';
+import initAutoload from './services/_autoload.js';
 import initGetPing, {
   definition as initGetPingDefinition,
 } from './handlers/getPing.js';
@@ -61,31 +56,38 @@ import {
   prepareBuildEnvironment,
   runBuild,
 } from './build.js';
+import { HANDLER_REG_EXP } from './services/HANDLERS.js';
+import { WRAPPER_REG_EXP } from './services/WRAPPERS.js';
 import runCLI from './cli.js';
 import { readArgs } from './libs/args.js';
-import type { WhookCommandArgs } from './services/args.js';
-import type {
+import type { Dependencies } from 'knifecycle';
+
+export type { WhookBaseEnv, WhookBaseConfigs } from './types.js';
+export { DEFAULT_BUILD_INITIALIZER_PATH_MAP } from './build.js';
+export type { WhookCommandArgs } from './services/args.js';
+export type {
   WhookArgsTypes,
   WhookCommandHandler,
   WhookCommandDefinition,
-  PromptArgs,
+  WhookPromptArgs,
 } from './services/promptArgs.js';
-import type { PortEnv } from './services/PORT.js';
-import type {
-  HTTPServerConfig,
-  HTTPServerProvider,
-  HTTPServerService,
-  HTTPServerEnv,
+export type { WhookPort, WhookPortEnv } from './services/PORT.js';
+export type {
+  WhookHTTPServerEnv,
+  WhookHTTPServerConfig,
+  WhookHTTPServerDependencies,
+  WhookHTTPServerService,
+  WhookHTTPServerProvider,
 } from '@whook/http-server';
-import type { HostEnv } from './services/HOST.js';
-import type { ProxyedENVConfig } from './services/ProxyedENV.js';
-import type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS.js';
-import type {
+export type { WhookHost, WhookHostEnv } from './services/HOST.js';
+export type { WhookProxyedENVConfig } from './services/PROXYED_ENV.js';
+export type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS.js';
+export type {
   WhookPluginsService,
   WhookPluginsPathsService,
   WhookPluginsPathsConfig,
 } from './services/WHOOK_PLUGINS_PATHS.js';
-import type {
+export type {
   WhookAPIDefinitions,
   WhookAPIOperationAddition,
   WhookAPIOperationConfig,
@@ -100,149 +102,98 @@ import type {
   WhookAPIRequestBodyDefinition,
   WhookAPIHandlerModule,
 } from './services/API_DEFINITIONS.js';
-import type {
-  AutoloadConfig,
-  WhookWrapper,
+export type {
+  WhookAutoloadConfig,
+  WhookAutoloadDependencies,
   WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload.js';
-import type { Logger, LogService, ProcessServiceConfig } from 'common-services';
-import type { ENVConfig, AppEnvVars } from 'application-services';
-import type {
-  ErrorHandlerConfig,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
-  HTTPRouterConfig,
-  HTTPRouterProvider,
-  HTTPRouterService,
-} from '@whook/http-router';
-import type {
-  WhookOperation,
-  WhookRequest,
-  WhookHeaders,
-  WhookResponse,
-  WhookHandler,
-  WhookHandlerFunction,
-  HTTPTransactionConfig,
-  HTTPTransactionService,
-  ObfuscatorConfig,
-  ObfuscatorService,
-  APMService,
-} from '@whook/http-transaction';
-export type { WhookConfig } from './services/BASE_URL.js';
-import type { BaseURLConfig, BaseURLEnv } from './services/BASE_URL.js';
-import type { Dependencies } from 'knifecycle';
-import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
-import type {
-  WhookCompilerOptions,
-  WhookCompilerService,
-  WhookCompilerConfig,
-} from './services/compiler.js';
-
+export type { LogService } from 'common-services';
 export type {
-  WhookAPIDefinitions,
-  WhookAPIOperationAddition,
-  WhookAPIOperation,
-  WhookBaseAPIHandlerDefinition,
-  WhookAPIHandlerDefinition,
-  WhookAPIParameterDefinition,
-  WhookAPISchemaDefinition,
-  WhookAPIExampleDefinition,
-  WhookAPIHeaderDefinition,
-  WhookAPIResponseDefinition,
-  WhookAPIRequestBodyDefinition,
-  WhookAPIHandlerModule,
-  WhookAPIOperationConfig,
-  WhookServiceMap,
-  WhookInitializerMap,
-  WhookBuildConstantsService,
+  ProcessEnvConfig,
+  ProcessServiceConfig,
+} from 'application-services';
+export type {
+  WhookErrorHandler,
+  WhookErrorHandlerDependencies,
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
-  HTTPServerConfig,
-  HTTPServerProvider,
-  HTTPServerService,
-  ObfuscatorConfig,
-  ObfuscatorService,
-  APMService,
-  WhookPluginsService,
-  WhookPluginsPathsService,
+  WhookErrorHandlerConfig,
+  WhookHandlerName,
+  WhookHandlersService,
+  WhookQueryStringParser,
+  WhookHTTPRouterConfig,
+  WhookHTTPRouterProvider,
+  WhookHTTPRouterService,
+} from '@whook/http-router';
+export type {
   WhookOperation,
   WhookRequest,
   WhookHeaders,
   WhookResponse,
   WhookHandler,
   WhookHandlerFunction,
-  WhookWrapper,
-  ProxyedENVConfig,
-  HTTPTransactionService,
-  HTTPTransactionConfig,
-  HTTPRouterConfig,
-  HTTPRouterProvider,
-  HTTPRouterService,
-  PortEnv,
-  HostEnv,
-  WhookCompilerConfig,
-  WhookCompilerOptions,
-  WhookCompilerService,
-  WhookArgsTypes,
-  WhookCommandHandler,
-  WhookCommandDefinition,
-  PromptArgs,
-  WhookCommandArgs,
-};
+  WhookHTTPTransactionConfig,
+  WhookHTTPTransactionService,
+  WhookObfuscatorConfig,
+  WhookObfuscatorService,
+  WhookAPMService,
+} from '@whook/http-transaction';
+export type {
+  WhookBaseURL,
+  WhookBaseURLConfig,
+  WhookBaseURLEnv,
+  WhookBaseURLDependencies,
+  WhookConfig,
+} from './services/BASE_URL.js';
+import initCompiler from './services/compiler.js';
 export {
-  noop,
-  identity,
-  compose,
-  pipe,
+  DEFAULT_COMPILER_OPTIONS,
+  type WhookCompilerOptions,
+  type WhookCompilerService,
+  type WhookCompilerConfig,
+} from './services/compiler.js';
+import initWrappers from './services/WRAPPERS.js';
+export {
+  WRAPPER_REG_EXP,
+  type WhookWrapper,
+  type WhookWrapperName,
+  type WhookWrappersService,
+  type WhookWrappersConfig,
+  type WhookWrappersDependencies,
+} from './services/WRAPPERS.js';
+import initHandlers from './services/HANDLERS.js';
+export {
+  HANDLER_REG_EXP,
+  applyWrappers,
+  type WhookHandlersDependencies,
+} from './services/HANDLERS.js';
+export {
+  COMPONENTS_TYPES,
+  cleanupOpenAPI,
+  collectRefs,
+  refersTo,
+} from './libs/openapi.js';
+export { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers.js';
+export { noop, identity, compose, pipe } from './libs/utils.js';
+export {
   initGetPing,
   initGetPingDefinition,
   initAutoload,
-  DEFAULT_IGNORED_FILES_PREFIXES,
-  DEFAULT_IGNORED_FILES_SUFFIXES,
-  DEFAULT_REDUCED_FILES_SUFFIXES,
   initAPIDefinitions,
   initBuildConstants,
   initProxyedENV,
   initPort,
   initHost,
-  OPEN_API_METHODS,
-  DEFAULT_ERROR_URI,
-  DEFAULT_HELP_URI,
-  DEFAULT_ERRORS_DESCRIPTORS,
-  DEFAULT_DEFAULT_ERROR_CODE,
-  HANDLER_REG_EXP,
   initCompiler,
-  DEFAULT_COMPILER_OPTIONS,
-  COMPONENTS_TYPES,
-  cleanupOpenAPI,
-  collectRefs,
-  refersTo,
-  mergeVaryHeaders,
-  lowerCaseHeaders,
+  initWrappers,
+  initHandlers,
   runREPL,
-  DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   prepareBuildEnvironment,
   runBuild,
   readArgs,
   runCLI,
 };
-
-export type WhookBaseEnv = HTTPServerEnv & BaseURLEnv & HostEnv & PortEnv;
-
-export type WhookBaseConfigs = ProcessServiceConfig &
-  HTTPRouterConfig &
-  ErrorHandlerConfig &
-  HTTPServerConfig &
-  HTTPTransactionConfig &
-  AutoloadConfig &
-  BaseURLConfig &
-  ENVConfig &
-  ProcessServiceConfig &
-  WhookPluginsPathsConfig &
-  ObfuscatorConfig &
-  WhookAPIDefinitionsConfig &
-  WhookCompilerConfig;
 
 /* Architecture Note #1: Server run
 Whook exposes a `runServer` function to programmatically spawn
@@ -274,10 +225,15 @@ export async function runServer<
       const MERMAID_GRAPH_CONFIG = {
         classes: {
           handlers: 'fill:#e7cdd2,stroke:#ebd4cb,stroke-width:1px;',
+          wrappers: 'fill:#e7cda2,stroke:#ebd4cb,stroke-width:1px;',
           config: 'fill:#d4cdcc,stroke:#ebd4cb,stroke-width:1px;',
           others: 'fill:#ebd4cb,stroke:#000,stroke-width:1px;',
         },
         styles: [
+          {
+            pattern: WRAPPER_REG_EXP,
+            className: 'wrappers',
+          },
           {
             pattern: HANDLER_REG_EXP,
             className: 'handlers',
@@ -297,25 +253,28 @@ export async function runServer<
             template: '$0(($0))',
           },
           {
+            pattern: WRAPPER_REG_EXP,
+            template: '$0(($0))',
+          },
+          {
             pattern: CONFIG_REG_EXP,
             template: '$0{$0}',
           },
         ],
       };
       log('warning', '🌵 - Mermaid graph generated, shutting down now!');
-      process.stdout.write($.toMermaidGraph(MERMAID_GRAPH_CONFIG));
+      stdout.write($.toMermaidGraph(MERMAID_GRAPH_CONFIG));
       await $.destroy();
       return {} as D;
     }
 
     return { ENV, log, $instance: $, ...services } as unknown as D;
   } catch (err) {
-    // eslint-disable-next-line
-    console.error(
-      '💀 - Cannot launch the process:',
-      printStackTrace(err as Error),
+    stderr.write(
+      `'💀 - Cannot launch the process: ${printStackTrace(err as Error)}`,
     );
-    process.exit(1);
+    exit(1);
+    return {} as D;
   }
 }
 
@@ -376,7 +335,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
    to dynamically load contents. We are making it available to
    the DI system as a constant.
    */
-  const PWD = process.cwd();
+  const PWD = cwd();
   $.register(constant('PWD', PWD));
 
   // Resolve
@@ -389,11 +348,6 @@ export async function prepareEnvironment<T extends Knifecycle>(
   Whook has different behaviors depending on their values.
    Consider setting it to production before shipping.
    */
-  const NODE_ENV = process.env.NODE_ENV || 'development';
-
-  $.register(constant('PROCESS_ENV', process.env as unknown as AppEnvVars));
-  $.register(constant('NODE_ENV', NODE_ENV as NodeEnv));
-  $.register(constant('APP_ENV', NODE_ENV));
 
   /* Architecture Note #3.3: `WHOOK_PLUGINS` and `PROJECT_SRC`
   Whook need to know where to look up for things like
@@ -401,23 +355,8 @@ export async function prepareEnvironment<T extends Knifecycle>(
    */
   $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
 
-  /* Architecture Note #3.4: Logging
-  Whook's default logger write to the NodeJS default console
-   except for debugging messages where it uses the `debug`
-   module so that you can set the `DEBUG` environment
-   variable to `whook` and get debug messages in output.
-   */
-  $.register(
-    constant('logger', {
-      // eslint-disable-next-line
-      output: console.info.bind(console),
-      // eslint-disable-next-line
-      error: console.error.bind(console),
-      // eslint-disable-next-line
-      debug: debug('whook'),
-    } as Logger),
-  );
-  $.register(constant('exit', process.exit));
+  $.register(initLoggerService);
+  $.register(initExitService);
 
   // Needed to avoid a dead lock
   // TODO: Remove when fixed that issue
@@ -425,7 +364,9 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(constant('LOG_ROUTING', DEFAULT_LOG_ROUTING));
   $.register(constant('LOG_CONFIG', DEFAULT_LOG_CONFIG));
   $.register(
-    constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
+    constant('INITIALIZER_PATH_MAP', {
+      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+    }),
   );
 
   /* Architecture Note #3.5: Initializers

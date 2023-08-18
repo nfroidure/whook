@@ -133,12 +133,11 @@ Initialize the GraphQL service
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the server depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
+| services.ENV | <code>Object</code> |  | The injected ENV value |
 | [services.GRAPHQL_SERVER_OPTIONS] | <code>Object</code> \| <code>function</code> |  | The GraphQL options to pass to the server |
 | ENV | <code>String</code> |  | The process environment |
 | [graphQLFragments] | <code>String</code> |  | Fragments of GraphQL schemas/resolvers declaration |
 | [services.log] | <code>function</code> | <code>noop</code> | A logging function |
-| [services.time] | <code>function</code> |  | A function returning the current timestamp |
 
 
 # Authors

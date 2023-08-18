@@ -28,7 +28,24 @@ describe('initPORT', () => {
     `);
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "logCalls": [
+    [
+      "debug",
+      "🛂 - Initializing the importer!",
+    ],
+    [
+      "debug",
+      "🏭 - Initializing the PORT service.",
+    ],
+    [
+      "warning",
+      "♻️ - Using ENV port "1337"",
+    ],
+  ],
+}
+`);
   });
 
   it('should find a port by itself if no env port', async () => {
@@ -49,6 +66,27 @@ describe('initPORT', () => {
             ...args,
           ];
         }),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "logCalls": [
+    [
+      "debug",
+      "🛂 - Initializing the importer!",
+    ],
+    [
+      "debug",
+      "🏭 - Initializing the PORT service.",
+    ],
+    [
+      "debug",
+      "🛂 - Dynamic import of "portfinder".",
+    ],
+    [
+      "warning",
+      "✔ - Found a free port "8000"",
+    ],
+  ],
+}
+`);
   });
 });

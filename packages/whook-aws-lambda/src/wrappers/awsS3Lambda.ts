@@ -1,65 +1,79 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
-  APMService,
+  WhookAPMService,
   WhookOperation,
   WhookHandler,
   WhookHeaders,
   WhookResponse,
+  WhookWrapper,
 } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { S3Event, Context } from 'aws-lambda';
-
-type S3WrapperDependencies = {
-  NODE_ENV: string;
-  OPERATION_API: OpenAPIV3.Document;
-  apm: APMService;
-  time?: TimeService;
-  log?: LogService;
-};
+import type { AppEnvVars } from 'application-services';
 
 export type LambdaS3Input = { body: S3Event['Records'] };
 export type LambdaS3Output = WhookResponse<number, WhookHeaders, void>;
 
-export default function wrapHandlerForAWSS3Lambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & S3WrapperDependencies, S> {
-  return alsoInject<S3WrapperDependencies, D, S>(
-    ['NODE_ENV', 'OPERATION_API', 'apm', '?time', '?log'],
-    reuseSpecialProps(
-      initHandler,
-      (initHandlerForAWSS3Lambda as any).bind(
-        null,
-        initHandler,
-      ) as ServiceInitializer<D, S>,
-    ),
-  );
-}
+export type WhookWrapS3LambdaDependencies = {
+  ENV: AppEnvVars;
+  OPERATION_API: OpenAPIV3.Document;
+  apm: WhookAPMService;
+  time?: TimeService;
+  log?: LogService;
+};
 
-async function initHandlerForAWSS3Lambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
-  const handler: S = await initHandler(services);
+/**
+ * Wrap an handler to make it work with a S3 AWS Lambda.
+ * @param  {Object}   services
+ * The services the wrapper depends on
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.OPERATION_API
+ * An OpenAPI definitition for that handler
+ * @param  {Object}   services.apm
+ * An application monitoring service
+ * @param  {Object}   [services.time]
+ * An optional time service
+ * @param  {Object}   [services.log=noop]
+ * An optional logging service
+ * @return {Promise<Object>}
+ * A promise of an object containing the reshaped env vars.
+ */
 
-  return (handleForAWSS3Lambda as any).bind(null, services, handler);
+async function initWrapHandlerForS3Lambda<S extends WhookHandler>({
+  ENV,
+  OPERATION_API,
+  apm,
+  time = Date.now.bind(Date),
+  log = noop,
+}: WhookWrapS3LambdaDependencies): Promise<WhookWrapper<S>> {
+  log('debug', '📥 - Initializing the AWS Lambda S3 wrapper.');
+
+  const wrapper = async (handler: S): Promise<S> => {
+    const wrappedHandler = handleForAWSS3Lambda.bind(
+      null,
+      { ENV, OPERATION_API, apm, time, log },
+      handler as WhookHandler<LambdaS3Input, LambdaS3Output>,
+    );
+
+    return wrappedHandler as unknown as S;
+  };
+
+  return wrapper;
 }
 
 async function handleForAWSS3Lambda(
   {
-    NODE_ENV,
+    ENV,
     OPERATION_API,
     apm,
-    time = Date.now.bind(Date),
-    log = noop,
-  }: S3WrapperDependencies,
+    time,
+    log,
+  }: Required<WhookWrapS3LambdaDependencies>,
   handler: WhookHandler<LambdaS3Input, LambdaS3Output>,
   event: S3Event,
   context: Context,
@@ -82,7 +96,7 @@ async function handleForAWSS3Lambda(
     await handler(parameters, OPERATION);
 
     apm('S3', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':S3EventRecord' },
@@ -96,7 +110,7 @@ async function handleForAWSS3Lambda(
     const castedErr = YError.cast(err as Error);
 
     apm('S3', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':S3EventRecord' },
@@ -112,3 +126,5 @@ async function handleForAWSS3Lambda(
     callback(err as Error);
   }
 }
+
+export default autoService(initWrapHandlerForS3Lambda);

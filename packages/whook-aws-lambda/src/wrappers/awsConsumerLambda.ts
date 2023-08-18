@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
   WhookOperation,
-  APMService,
+  WhookAPMService,
   WhookHandler,
   WhookHeaders,
   WhookResponse,
+  WhookWrapper,
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -20,6 +20,7 @@ import type {
   SESEvent,
   DynamoDBStreamEvent,
 } from 'aws-lambda';
+import type { AppEnvVars } from 'application-services';
 
 export type LambdaKinesisStreamConsumerInput = {
   body: KinesisStreamEvent['Records'];
@@ -44,49 +45,62 @@ export type LambdaConsumerInput =
   | LambdaDynamoDBStreamConsumerInput;
 export type LambdaConsumerOutput = WhookResponse<number, WhookHeaders, void>;
 
-type ConsumerWrapperDependencies = {
-  NODE_ENV: string;
+export type WhookWrapConsumerLambdaDependencies = {
+  ENV: AppEnvVars;
   OPERATION_API: OpenAPIV3.Document;
-  apm: APMService;
+  apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
 };
 
-export default function wrapHandlerForAWSConsumerLambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & ConsumerWrapperDependencies, S> {
-  return alsoInject<ConsumerWrapperDependencies, D, S>(
-    ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
-    reuseSpecialProps(
-      initHandler,
-      (initHandlerForAWSConsumerLambda as any).bind(
-        null,
-        initHandler,
-      ) as ServiceInitializer<D, S>,
-    ),
-  );
-}
+/**
+ * Wrap an handler to make it work with a consumer AWS Lambda.
+ * @param  {Object}   services
+ * The services the wrapper depends on
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.OPERATION_API
+ * An OpenAPI definitition for that handler
+ * @param  {Object}   services.apm
+ * An application monitoring service
+ * @param  {Object}   [services.time]
+ * An optional time service
+ * @param  {Object}   [services.log=noop]
+ * An optional logging service
+ * @return {Promise<Object>}
+ * A promise of an object containing the reshaped env vars.
+ */
 
-async function initHandlerForAWSConsumerLambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
-  const handler: S = await initHandler(services);
+async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
+  ENV,
+  OPERATION_API,
+  apm,
+  time = Date.now.bind(Date),
+  log = noop,
+}: WhookWrapConsumerLambdaDependencies): Promise<WhookWrapper<S>> {
+  log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
-  return (handleForAWSConsumerLambda as any).bind(null, services, handler);
+  const wrapper = async (handler: S): Promise<S> => {
+    const wrappedHandler = handleForAWSConsumerLambda.bind(
+      null,
+      { ENV, OPERATION_API, apm, time, log },
+      handler as any,
+    );
+
+    return wrappedHandler as unknown as S;
+  };
+
+  return wrapper;
 }
 
 async function handleForAWSConsumerLambda(
   {
-    NODE_ENV,
+    ENV,
     OPERATION_API,
     apm,
-    time = Date.now.bind(Date),
-    log = noop,
-  }: ConsumerWrapperDependencies,
+    time,
+    log,
+  }: Required<WhookWrapConsumerLambdaDependencies>,
   handler: WhookHandler<LambdaConsumerInput, LambdaConsumerOutput>,
   event:
     | KinesisStreamEvent
@@ -115,7 +129,7 @@ async function handleForAWSConsumerLambda(
     await handler(parameters, OPERATION);
 
     apm('CONSUMER', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':EventRecord' },
@@ -130,7 +144,7 @@ async function handleForAWSConsumerLambda(
     const castedErr = YError.cast(err as Error);
 
     apm('CONSUMER', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':EventRecord' },
@@ -146,3 +160,5 @@ async function handleForAWSConsumerLambda(
     callback(err as Error);
   }
 }
+
+export default autoService(initWrapHandlerForConsumerLambda);

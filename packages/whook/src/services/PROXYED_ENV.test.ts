@@ -1,6 +1,6 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import initEnv from './ProxyedENV.js';
-import { NodeEnv } from 'common-services';
+import initEnv from './PROXYED_ENV.js';
+import { NodeEnv } from 'application-services';
 import type { LogService } from 'common-services';
 
 describe('initEnv', () => {
@@ -23,10 +23,12 @@ DB_HOST = 'localhost'
 
     const ENV = await initEnv({
       PROXYED_ENV_VARS: ['DB_PASSWORD'],
-      NODE_ENV: NodeEnv.Development,
       APP_ENV: 'local',
       BASE_ENV: { ['KEY_BASE_ENV' as NodeEnv]: 'test' },
-      PROCESS_ENV: { ['KEY_PROCESS_ENV' as NodeEnv]: 'test' },
+      PROCESS_ENV: {
+        ['KEY_PROCESS_ENV' as NodeEnv]: 'test',
+        NODE_ENV: NodeEnv.Test,
+      },
       PROJECT_DIR: '/home/whoami/my-whook-project',
       log,
       readFile,
@@ -40,7 +42,7 @@ DB_HOST = 'localhost'
 {
   "ENV": {
     "DB_PASSWORD": "oudelali",
-    "NODE_ENV": "development",
+    "NODE_ENV": "test",
   },
   "logCalls": [
     [
@@ -53,7 +55,7 @@ DB_HOST = 'localhost'
     ],
     [
       "debug",
-      "💾 - Trying to load .env file at "/home/whoami/my-whook-project/.env.node.development".",
+      "💾 - Trying to load .env file at "/home/whoami/my-whook-project/.env.node.test".",
     ],
     [
       "debug",
@@ -61,7 +63,7 @@ DB_HOST = 'localhost'
     ],
     [
       "warning",
-      "🖬 - Loaded .env file at "/home/whoami/my-whook-project/.env.node.development".",
+      "🖬 - Loaded .env file at "/home/whoami/my-whook-project/.env.node.test".",
     ],
     [
       "debug",
@@ -69,7 +71,7 @@ DB_HOST = 'localhost'
     ],
     [
       "warning",
-      "🔂 - Running with "development" node environment.",
+      "🔂 - Running with "test" node environment.",
     ],
     [
       "warning",
@@ -82,7 +84,7 @@ DB_HOST = 'localhost'
   ],
   "readFileCalls": [
     [
-      "/home/whoami/my-whook-project/.env.node.development",
+      "/home/whoami/my-whook-project/.env.node.test",
     ],
     [
       "/home/whoami/my-whook-project/.env.app.local",

@@ -6,7 +6,7 @@ import { noop } from '../libs/utils.js';
 import type { Injector, Service } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type {
-  PromptArgs,
+  WhookPromptArgs,
   WhookCommandDefinition,
   WhookCommandHandler,
 } from '../services/promptArgs.js';
@@ -49,7 +49,7 @@ async function initInspectCommand({
   log = noop,
 }: {
   $injector: Injector<Service>;
-  promptArgs: PromptArgs;
+  promptArgs: WhookPromptArgs;
   log?: LogService;
 }): Promise<WhookCommandHandler> {
   return async () => {

@@ -8,21 +8,21 @@ import { mergeVaryHeaders } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type {
   WhookErrorHandler,
-  ErrorHandlerDependencies,
+  WhookErrorHandlerDependencies,
 } from '@whook/http-router';
-import type { WhookCORSConfig } from '../index.js';
+import type { WhookCORSConfig } from '../wrappers/wrapHandlerWithCORS.js';
 
 type ErrorHandlerWrapperDependencies = WhookCORSConfig & { log?: LogService };
 
 export default alsoInject<
   ErrorHandlerWrapperDependencies,
-  ErrorHandlerDependencies,
+  WhookErrorHandlerDependencies,
   WhookErrorHandler
 >(
   ['?log', 'CORS'],
   wrapInitializer(
     wrapErrorHandlerForCORS as ServiceInitializer<
-      ErrorHandlerDependencies,
+      WhookErrorHandlerDependencies,
       WhookErrorHandler
     >,
     initErrorHandler,
@@ -32,11 +32,9 @@ export default alsoInject<
 /**
  * Wrap the error handler service as a last chance to add CORS
  * @param  {Object}   services
- * The services ENV depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value to add it to the build env
- * @param  {Object}   [services.PROXYED_ENV_VARS={}]
- * A list of environment variable names to proxy
+ * The services depended on
+ * @param  {Object}   services.CORS
+ * A CORS object to be added to errors responses
  * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
@@ -46,10 +44,10 @@ export async function wrapErrorHandlerForCORS(
   {
     log = noop,
     CORS,
-  }: ErrorHandlerWrapperDependencies & ErrorHandlerDependencies,
+  }: ErrorHandlerWrapperDependencies & WhookErrorHandlerDependencies,
   errorHandler: WhookErrorHandler,
 ): Promise<WhookErrorHandler> {
-  log('info', '🕱 -Wrapping the error handler for CORS.');
+  log('warning', '🕱 -Wrapping the error handler for CORS.');
 
   const wrappedErrorHandler: WhookErrorHandler = async (
     transactionId,

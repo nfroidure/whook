@@ -3,7 +3,10 @@ import * as GraphiQL from 'apollo-server-module-graphiql';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace } from 'yerror';
-import type { HTTPRouterService, HTTPRouterProvider } from '@whook/whook';
+import type {
+  WhookHTTPRouterService,
+  WhookHTTPRouterProvider,
+} from '@whook/whook';
 import type { ProviderInitializer, Dependencies } from 'knifecycle';
 import type { LogService } from 'common-services';
 
@@ -42,12 +45,12 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
  * @returns {Function} The `httpRouter` initializer wrapped
  */
 export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
-  initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
-): ProviderInitializer<WhookGraphIQLDependencies & D, HTTPRouterService> {
+  initHTTPRouter: ProviderInitializer<D, WhookHTTPRouterService>,
+): ProviderInitializer<WhookGraphIQLDependencies & D, WhookHTTPRouterService> {
   const augmentedInitializer = alsoInject<
     WhookGraphIQLDependencies,
     D,
-    HTTPRouterService
+    WhookHTTPRouterService
   >(
     [
       '?DEV_ACCESS_TOKEN',
@@ -74,7 +77,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
         ENV,
         log = noop,
       }: WhookGraphIQLDependencies,
-      httpRouter: HTTPRouterProvider,
+      httpRouter: WhookHTTPRouterProvider,
     ) => {
       if (!ENV.DEV_MODE) {
         return httpRouter;
@@ -83,7 +86,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
       const localURL = `http://${HOST}:${PORT}`;
       const urlGraphiql = `${localURL}${GRAPHIQL.path}`;
 
-      log('info', '🕸️ - Serving the GraphIQL UI.', urlGraphiql);
+      log('warning', '🕸️ - Serving the GraphIQL UI.', urlGraphiql);
 
       return {
         ...httpRouter,

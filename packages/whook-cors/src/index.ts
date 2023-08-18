@@ -1,124 +1,28 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { extractOperationSecurityParameters } from '@whook/http-router';
 import initOptionsWithCORS from './handlers/optionsWithCORS.js';
-import { wrapInitializer, alsoInject } from 'knifecycle';
-import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
-import { printStackTrace } from 'yerror';
-import { YHTTPError } from 'yhttperror';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
 } from './services/errorHandler.js';
-import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
-import type { WhookResponse, WhookHandler, WhookOperation } from '@whook/whook';
+import initWrapHandlerWithCORS from './wrappers/wrapHandlerWithCORS.js';
+import type { WhookOperation } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
-import type { LogService } from 'common-services';
 
-export { initErrorHandlerWithCORS, wrapErrorHandlerForCORS };
+export type {
+  CORSConfig,
+  WhookCORSConfig,
+  WhookCORSDependencies,
+  WhookAPIOperationCORSConfig,
+} from './wrappers/wrapHandlerWithCORS.js';
+
+export {
+  initWrapHandlerWithCORS,
+  initErrorHandlerWithCORS,
+  wrapErrorHandlerForCORS,
+};
 
 // Ensures a deterministic canonical operation
 const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
-
-export type CORSConfig = {
-  'Access-Control-Allow-Origin': string;
-  'Access-Control-Allow-Headers': string;
-  'Access-Control-Expose-Headers'?: string;
-  'Access-Control-Allow-Methods'?: string;
-  'Access-Control-Max-Age'?: string;
-  'Access-Control-Allow-Credentials'?: 'true';
-};
-export type WhookCORSConfig = {
-  CORS: CORSConfig;
-};
-export type WhookCORSDependencies = WhookCORSConfig & {
-  log: LogService;
-};
-export type WhookAPIOperationCORSConfig = {
-  cors?:
-    | {
-        type: 'merge';
-        value: Partial<CORSConfig>;
-      }
-    | {
-        type: 'replace';
-        value: CORSConfig;
-      };
-};
-
-/**
- * Wrap an handler initializer to append CORS to response.
- * @param {Function} initHandler The handler initializer
- * @returns {Function} The handler initializer wrapped
- */
-export function wrapHandlerWithCORS<
-  D extends Dependencies,
-  S extends WhookHandler,
->(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & WhookCORSDependencies, S> {
-  const augmentedInitializer = alsoInject<WhookCORSDependencies, D, S>(
-    ['CORS'],
-    initHandler,
-  );
-
-  const initializerWrapper = async (
-    services: D & WhookCORSDependencies,
-    handler: S,
-  ) => {
-    const wrappedHandler = handleWithCORS.bind(
-      null,
-      services,
-      handler,
-    ) as unknown as S;
-
-    return wrappedHandler;
-  };
-
-  return wrapInitializer(initializerWrapper, augmentedInitializer);
-}
-
-async function handleWithCORS(
-  { CORS, log }: WhookCORSDependencies,
-  handler: WhookHandler,
-  parameters: Parameters,
-  operation: WhookOperation<WhookAPIOperationCORSConfig>,
-): Promise<WhookResponse> {
-  const operationCORSConfig = operation['x-whook']?.cors;
-  const finalCORS = lowerCaseHeaders(
-    operationCORSConfig && operationCORSConfig.type === 'replace'
-      ? operationCORSConfig.value
-      : operationCORSConfig && operationCORSConfig.type === 'merge'
-      ? {
-          ...CORS,
-          ...operationCORSConfig.value,
-        }
-      : CORS,
-  );
-
-  try {
-    const response = await handler(parameters, operation);
-
-    return {
-      ...response,
-      headers: {
-        ...(response.headers || {}),
-        ...finalCORS,
-        vary: mergeVaryHeaders((response.headers || {}).vary || '', 'Origin'),
-      },
-    };
-  } catch (err) {
-    try {
-      // Try to set custom headers, could fail if err only has a getter
-      (err as YHTTPError).headers = {
-        ...finalCORS,
-        vary: 'Origin',
-      };
-    } catch (err) {
-      log('debug', '🤷 - Unable to set custom headers to the catched error!');
-      log('debug-stack', printStackTrace(err as Error));
-    }
-    throw err;
-  }
-}
 
 /**
  * Augment an OpenAPI to also serve OPTIONS methods with

@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { initAutoload, noop, cleanupOpenAPI } from '@whook/whook';
 import {
-  Knifecycle,
   SPECIAL_PROPS,
+  UNBUILDABLE_SERVICES,
+  Knifecycle,
   wrapInitializer,
   constant,
   alsoInject,
@@ -11,6 +13,8 @@ import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
 } from '@whook/http-router';
+import initHandler from './HANDLER.js';
+import initWrapHandlerForGoogleHTTPFunction from '../wrappers/wrapHandlerForGoogleHTTPFunction.js';
 import type {
   Injector,
   Autoloader,
@@ -21,18 +25,30 @@ import type {
 } from 'knifecycle';
 import type { WhookBuildConstantsService } from '@whook/whook';
 import type { WhookRawOperation } from '@whook/http-router';
-import type { LogService } from 'common-services';
+import type { LogService, ResolveService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookAPIOperationGCPFunctionConfig } from '../index.js';
 
-const KNIFECYCLE_UNBUILDABLE = [
-  '$dispose',
-  '$autoload',
-  '$injector',
-  '$instance',
-  '$siloContext',
-  '$fatalError',
-];
+export type WhookGoogleFunctionsAutoloadDependencies = {
+  BUILD_CONSTANTS?: WhookBuildConstantsService;
+  $injector: Injector<Service>;
+  $instance: Knifecycle;
+  resolve: ResolveService;
+  log?: LogService;
+};
+
+export const GCP_WRAPPERS: Record<
+  Required<WhookAPIOperationGCPFunctionConfig>['type'],
+  {
+    name: string;
+    initializer: Initializer<Service, Dependencies>;
+  }
+> = {
+  http: {
+    name: 'wrapHandlerForGoogleHTTPFunction',
+    initializer: initWrapHandlerForGoogleHTTPFunction as any,
+  },
+};
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
@@ -42,13 +58,9 @@ const initializerWrapper: ServiceInitializerWrapper<
     BUILD_CONSTANTS = {},
     $injector,
     $instance,
+    resolve,
     log = noop,
-  }: {
-    BUILD_CONSTANTS?: WhookBuildConstantsService;
-    $injector: Injector<Service>;
-    $instance: Knifecycle;
-    log: LogService;
-  },
+  }: WhookGoogleFunctionsAutoloadDependencies,
   $autoload: Autoloader<Initializer<Dependencies, Service>>,
 ): Promise<
   (serviceName: string) => Promise<{
@@ -58,21 +70,16 @@ const initializerWrapper: ServiceInitializerWrapper<
 > => {
   let API: OpenAPIV3.Document;
   let OPERATION_APIS: WhookRawOperation<WhookAPIOperationGCPFunctionConfig>[];
-  const getAPIOperation = (() => {
+  const getAPIOperation: (
+    serviceName: string,
+  ) => Promise<
+    [
+      Required<WhookAPIOperationGCPFunctionConfig>['type'],
+      string,
+      OpenAPIV3.Document,
+    ]
+  > = (() => {
     return async (serviceName) => {
-      if (KNIFECYCLE_UNBUILDABLE.includes(serviceName)) {
-        log(
-          'warning',
-          `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${KNIFECYCLE_UNBUILDABLE.join(
-            ', ',
-          )}) can give unpredictable results!`,
-        );
-        return {
-          initializer: constant(serviceName, undefined),
-          path: `constant://${serviceName}`,
-        };
-      }
-
       // eslint-disable-next-line
       API = API || (await $injector(['API'])).API;
       // eslint-disable-next-line
@@ -96,7 +103,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       }
 
       // eslint-disable-next-line
-      const OPERATION_API = cleanupOpenAPI({
+      const OPERATION_API: OpenAPIV3.Document = cleanupOpenAPI({
         ...API,
         paths: {
           [OPERATION.path]: {
@@ -105,29 +112,46 @@ const initializerWrapper: ServiceInitializerWrapper<
         },
       });
 
-      return {
-        ...OPERATION_API,
-        paths: {
-          [OPERATION.path]: {
-            [OPERATION.method]: (
-              await dereferenceOpenAPIOperations(OPERATION_API, [
-                {
-                  path: OPERATION.path,
-                  method: OPERATION.method,
-                  ...OPERATION_API.paths[OPERATION.path]?.[OPERATION.method],
-                  parameters: OPERATION.parameters,
-                },
-              ])
-            )[0],
+      return [
+        OPERATION['x-whook']?.type || 'http',
+        OPERATION.operationId as string,
+        {
+          ...OPERATION_API,
+          paths: {
+            [OPERATION.path]: {
+              [OPERATION.method]: (
+                await dereferenceOpenAPIOperations(OPERATION_API, [
+                  {
+                    path: OPERATION.path,
+                    method: OPERATION.method,
+                    ...OPERATION_API.paths[OPERATION.path]?.[OPERATION.method],
+                    parameters: OPERATION.parameters,
+                  },
+                ])
+              )[0],
+            },
           },
         },
-      };
+      ];
     };
   })();
 
   log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
 
   return async (serviceName) => {
+    if (UNBUILDABLE_SERVICES.includes(serviceName)) {
+      log(
+        'warning',
+        `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${UNBUILDABLE_SERVICES.join(
+          ', ',
+        )}) can give unpredictable results!`,
+      );
+      return {
+        initializer: constant(serviceName, undefined),
+        path: `constant://${serviceName}`,
+      };
+    }
+
     try {
       let initializer;
 
@@ -153,11 +177,50 @@ const initializerWrapper: ServiceInitializerWrapper<
       }
 
       if (serviceName.startsWith('OPERATION_API_')) {
-        const OPERATION_API = await getAPIOperation(serviceName);
+        const [, , OPERATION_API] = await getAPIOperation(serviceName);
 
         return {
           initializer: constant(serviceName, OPERATION_API),
           path: `api://${serviceName}`,
+        };
+      }
+
+      if (serviceName.startsWith('OPERATION_WRAPPER_')) {
+        const [type] = await getAPIOperation(serviceName);
+
+        return {
+          initializer: alsoInject(
+            [
+              `OPERATION_API>${serviceName.replace(
+                'OPERATION_WRAPPER_',
+                'OPERATION_API_',
+              )}`,
+            ],
+            GCP_WRAPPERS[type].initializer as any,
+          ) as any,
+          path: resolve(
+            `@whook/gcp-functions/dist/wrappers/${GCP_WRAPPERS[type].name}`,
+          ),
+        };
+      }
+
+      if (serviceName.startsWith('OPERATION_HANDLER_')) {
+        const [, operationId] = await getAPIOperation(serviceName);
+
+        return {
+          name: serviceName,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          initializer: alsoInject(
+            [
+              `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
+                'OPERATION_HANDLER_',
+                '',
+              )}`,
+              `baseHandler>${operationId}`,
+            ],
+            initHandler,
+          ) as any,
+          path: resolve('@whook/gcp-functions/dist/services/HANDLER'),
         };
       }
 
@@ -170,7 +233,7 @@ const initializerWrapper: ServiceInitializerWrapper<
 
       return $autoload(serviceName);
     } catch (err) {
-      log('error', `Build error while loading "${serviceName}".`);
+      log('error', `💥 - Build error while loading "${serviceName}".`);
       log('error-stack', printStackTrace(err as Error));
       throw err;
     }
@@ -179,14 +242,16 @@ const initializerWrapper: ServiceInitializerWrapper<
 }) as any;
 
 /**
- * Wrap the _autoload service in order to build AWS
- *  Lambda compatible code.
+ * Wrap the _autoload service in order to build for GCP
+ *  Functions compatible code.
  * @param  {Object}   services
  * The services ENV depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value to add it to the build env
- * @param  {Object}   [services.PROXYED_ENV_VARS={}]
- * A list of environment variable names to proxy
+ * @param  {Object}   [services.BUILD_CONSTANTS]
+ * Service whose contents should be considered as constants
+ * @param  {Object}   $instance
+ * A Knifecycle instance
+ * @param  {Object}   $injector
+ * The Knifecycle injector
  * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}

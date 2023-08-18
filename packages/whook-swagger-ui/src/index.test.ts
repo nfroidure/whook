@@ -62,8 +62,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       ),
     );
     $.register(constant('BASE_PATH', BASE_PATH));
+    $.register(constant('APP_ENV', 'local'));
     $.register(constant('API', API));
-    $.register(constant('NODE_ENV', 'test'));
     $.register(constant('DEV_ACCESS_TOKEN', 'oudelali'));
     $.register(constant('HOST', HOST));
     $.register(constant('WRAPPERS', []));
@@ -78,20 +78,19 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     );
     $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
-    $.register(constant('NODE_ENVS', ['test']));
   });
 
   it('should work', async () => {
     $.register(constant('PORT', PORT));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(constant('CONFIG', {}));
-    $.register(constant('NODE_ENV', 'test'));
-    $.register(constant('DEBUG_NODE_ENVS', ['test']));
     $.register(
       constant('ENV', {
+        NODE_ENV: 'test',
         DEV_MODE: '1',
       }),
     );
+    $.register(constant('DEBUG_NODE_ENVS', ['test']));
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
@@ -108,6 +107,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     await $instance.destroy();
 
+    expect(data).toBeDefined();
+    expect(logger.output.mock.calls.length).toEqual(1);
     expect({
       status,
       headers: {
@@ -117,13 +118,156 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         etag: undefined,
         'last-modified': undefined,
         server: undefined,
+        connection: undefined,
+        'keep-alive': undefined,
       },
-      data,
       debugCalls: logger.debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls.map(removeIps),
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "autoloaderCalls": [
+    [
+      "KEEP_ALIVE_TIMEOUT",
+    ],
+    [
+      "SOCKET_TIMEOUT",
+    ],
+    [
+      "MAX_CONNECTIONS",
+    ],
+    [
+      "BUFFER_LIMIT",
+    ],
+    [
+      "PARSERS",
+    ],
+    [
+      "STRINGIFYERS",
+    ],
+    [
+      "DECODERS",
+    ],
+    [
+      "ENCODERS",
+    ],
+    [
+      "QUERY_PARSER",
+    ],
+    [
+      "TIMEOUT",
+    ],
+    [
+      "TRANSACTIONS",
+    ],
+    [
+      "SHIELD_CHAR",
+    ],
+    [
+      "MAX_CLEAR_CHARS",
+    ],
+    [
+      "MAX_CLEAR_RATIO",
+    ],
+    [
+      "SENSIBLE_PROPS",
+    ],
+    [
+      "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
+    ],
+  ],
+  "debugCalls": [
+    [
+      "⌛ - Delay service initialized.",
+    ],
+    [
+      "⏳ - Cancelling pending timeouts:",
+      0,
+    ],
+    [
+      "⏳ - Cleared a delay",
+    ],
+    [
+      "⏳ - Created a delay:",
+      30000,
+    ],
+    [
+      "✅ - Closing HTTP server.",
+    ],
+    [
+      "✔️ - HTTP server closed!",
+    ],
+    [
+      "❤️ - Initializing the APM service.",
+    ],
+    [
+      "👣 - Logging service initialized.",
+    ],
+    [
+      "💱 - HTTP Transaction initialized.",
+    ],
+    [
+      "📇 - Process service initialized.",
+    ],
+    [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    [
+      "🚦 - HTTP Router initialized.",
+    ],
+    [
+      "🛂 - Dynamic import of "ecstatic".",
+    ],
+    [
+      "🛂 - Dynamic import of "swagger-ui-dist".",
+    ],
+    [
+      "🛂 - Initializing the importer!",
+    ],
+  ],
+  "headers": {
+    "connection": undefined,
+    "content-type": "application/json",
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "server": undefined,
+    "transaction-id": "0",
+    "transfer-encoding": "chunked",
+  },
+  "logErrorCalls": [
+    [
+      "💁 - Serving the API docs: http://localhost:22222/docs",
+    ],
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:22222".",
+    ],
+    [
+      "On air 🚀🌕",
+    ],
+  ],
+  "status": 200,
+}
+`);
   });
 
   it('should serve Swagger HTML', async () => {
@@ -134,13 +278,13 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         localURL: `http://${HOST}:${PORT + 2}`,
       }),
     );
-    $.register(constant('NODE_ENV', 'test'));
-    $.register(constant('DEBUG_NODE_ENVS', ['test']));
     $.register(
       constant('ENV', {
+        NODE_ENV: 'test',
         DEV_MODE: '1',
       }),
     );
+    $.register(constant('DEBUG_NODE_ENVS', ['test']));
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
@@ -157,6 +301,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     await $instance.destroy();
 
+    expect(data).toBeDefined();
+    expect(logger.output.mock.calls.length).toEqual(0);
     expect({
       status,
       headers: {
@@ -166,21 +312,160 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
         etag: undefined,
         'last-modified': undefined,
         server: undefined,
+        connection: undefined,
+        'keep-alive': undefined,
       },
-      data,
       debugCalls: logger.debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls.map(removeIps),
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "autoloaderCalls": [
+    [
+      "KEEP_ALIVE_TIMEOUT",
+    ],
+    [
+      "SOCKET_TIMEOUT",
+    ],
+    [
+      "MAX_CONNECTIONS",
+    ],
+    [
+      "BUFFER_LIMIT",
+    ],
+    [
+      "PARSERS",
+    ],
+    [
+      "STRINGIFYERS",
+    ],
+    [
+      "DECODERS",
+    ],
+    [
+      "ENCODERS",
+    ],
+    [
+      "QUERY_PARSER",
+    ],
+    [
+      "TIMEOUT",
+    ],
+    [
+      "TRANSACTIONS",
+    ],
+    [
+      "SHIELD_CHAR",
+    ],
+    [
+      "MAX_CLEAR_CHARS",
+    ],
+    [
+      "MAX_CLEAR_RATIO",
+    ],
+    [
+      "SENSIBLE_PROPS",
+    ],
+    [
+      "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
+    ],
+  ],
+  "debugCalls": [
+    [
+      "⌛ - Delay service initialized.",
+    ],
+    [
+      "⏳ - Cancelling pending timeouts:",
+      0,
+    ],
+    [
+      "✅ - Closing HTTP server.",
+    ],
+    [
+      "✔️ - HTTP server closed!",
+    ],
+    [
+      "❤️ - Initializing the APM service.",
+    ],
+    [
+      "👣 - Logging service initialized.",
+    ],
+    [
+      "💱 - HTTP Transaction initialized.",
+    ],
+    [
+      "📇 - Process service initialized.",
+    ],
+    [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    [
+      "🚦 - HTTP Router initialized.",
+    ],
+    [
+      "🛂 - Dynamic import of "ecstatic".",
+    ],
+    [
+      "🛂 - Dynamic import of "swagger-ui-dist".",
+    ],
+    [
+      "🛂 - Initializing the importer!",
+    ],
+  ],
+  "headers": {
+    "cache-control": "max-age=3600",
+    "connection": undefined,
+    "content-length": "734",
+    "content-type": "text/html",
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "server": undefined,
+  },
+  "logErrorCalls": [
+    [
+      "💁 - Serving the API docs: http://localhost:22224/docs",
+    ],
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:22224".",
+    ],
+    [
+      "On air 🚀🌕",
+    ],
+  ],
+  "status": 200,
+}
+`);
   });
 
   it('should be bypassed with no debug env', async () => {
     $.register(constant('PORT', PORT + 1));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
-    $.register(constant('NODE_ENV', 'test'));
+    $.register(
+      constant('ENV', {
+        NODE_ENV: 'test',
+      }),
+    );
     $.register(constant('DEBUG_NODE_ENVS', []));
-    $.register(constant('ENV', {}));
 
     time.mockReturnValue(new Date('2012-01-15T00:00:00Z').getTime());
 
@@ -191,21 +476,130 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     await $instance.destroy();
 
+    expect(logger.output.mock.calls.length).toEqual(0);
     expect({
       debugCalls: logger.debug.mock.calls.sort(sortLogs),
-      logInfoCalls: logger.output.mock.calls.map(removeIps),
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "autoloaderCalls": [
+    [
+      "KEEP_ALIVE_TIMEOUT",
+    ],
+    [
+      "SOCKET_TIMEOUT",
+    ],
+    [
+      "MAX_CONNECTIONS",
+    ],
+    [
+      "BUFFER_LIMIT",
+    ],
+    [
+      "PARSERS",
+    ],
+    [
+      "STRINGIFYERS",
+    ],
+    [
+      "DECODERS",
+    ],
+    [
+      "ENCODERS",
+    ],
+    [
+      "QUERY_PARSER",
+    ],
+    [
+      "TIMEOUT",
+    ],
+    [
+      "TRANSACTIONS",
+    ],
+    [
+      "SHIELD_CHAR",
+    ],
+    [
+      "MAX_CLEAR_CHARS",
+    ],
+    [
+      "MAX_CLEAR_RATIO",
+    ],
+    [
+      "SENSIBLE_PROPS",
+    ],
+    [
+      "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
+    ],
+  ],
+  "debugCalls": [
+    [
+      "⌛ - Delay service initialized.",
+    ],
+    [
+      "⏳ - Cancelling pending timeouts:",
+      0,
+    ],
+    [
+      "✅ - Closing HTTP server.",
+    ],
+    [
+      "✔️ - HTTP server closed!",
+    ],
+    [
+      "❤️ - Initializing the APM service.",
+    ],
+    [
+      "👣 - Logging service initialized.",
+    ],
+    [
+      "💱 - HTTP Transaction initialized.",
+    ],
+    [
+      "📇 - Process service initialized.",
+    ],
+    [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    [
+      "🚦 - HTTP Router initialized.",
+    ],
+    [
+      "🛂 - Initializing the importer!",
+    ],
+  ],
+  "logErrorCalls": [
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:22223".",
+    ],
+    [
+      "On air 🚀🌕",
+    ],
+  ],
+}
+`);
   });
 });
 
 function sortLogs(strs1, strs2) {
   return strs1[0] > strs2[0] ? 1 : strs1[0] === strs2[0] ? 0 : -1;
-}
-
-function removeIps(strs) {
-  return strs.map((str) =>
-    (str as string).replace(/(127\.0\.0\.1|::1)/gm, '_ip_'),
-  );
 }

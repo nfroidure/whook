@@ -90,6 +90,12 @@ exports[`augmentAPIWithVersionsHeaders() should work 1`] = `
 
 exports[`wrapHandlerWithVersionChecker() should work with beta app version headers 1`] = `
 {
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the version checker wrapper.",
+    ],
+  ],
   "response": {
     "body": {
       "pong": "pong",
@@ -104,6 +110,12 @@ exports[`wrapHandlerWithVersionChecker() should work with beta app version heade
 
 exports[`wrapHandlerWithVersionChecker() should work with good api version headers 1`] = `
 {
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the version checker wrapper.",
+    ],
+  ],
   "response": {
     "body": {
       "pong": "pong",
@@ -118,6 +130,12 @@ exports[`wrapHandlerWithVersionChecker() should work with good api version heade
 
 exports[`wrapHandlerWithVersionChecker() should work with good app version headers 1`] = `
 {
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the version checker wrapper.",
+    ],
+  ],
   "response": {
     "body": {
       "pong": "pong",
@@ -132,6 +150,12 @@ exports[`wrapHandlerWithVersionChecker() should work with good app version heade
 
 exports[`wrapHandlerWithVersionChecker() should work with good sdk version headers 1`] = `
 {
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the version checker wrapper.",
+    ],
+  ],
   "response": {
     "body": {
       "pong": "pong",
@@ -146,6 +170,12 @@ exports[`wrapHandlerWithVersionChecker() should work with good sdk version heade
 
 exports[`wrapHandlerWithVersionChecker() should work with no version headers 1`] = `
 {
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the version checker wrapper.",
+    ],
+  ],
   "response": {
     "body": {
       "pong": "pong",

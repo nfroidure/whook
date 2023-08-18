@@ -3,7 +3,7 @@ import { readArgs } from '../libs/args.js';
 import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import camelCase from 'camelcase';
-import { HANDLER_REG_EXP } from '../services/_autoload.js';
+import { HANDLER_REG_EXP } from '../services/HANDLERS.js';
 import _inquirer from 'inquirer';
 import path from 'path';
 import { OPEN_API_METHODS } from '@whook/http-router';
@@ -12,7 +12,7 @@ import type { Answers } from 'inquirer';
 import type {
   WhookCommandHandler,
   WhookCommandDefinition,
-  PromptArgs,
+  WhookPromptArgs,
 } from '../services/promptArgs.js';
 import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
@@ -33,25 +33,33 @@ const commonServicesTypes = {
   log: 'LogService',
   random: 'RandomService',
   delay: 'DelayService',
+  codeGenerator: 'CodeGeneratorService',
+  counter: 'CounterService',
+  importer: 'ImporterService',
+  lock: 'LockService',
+  resolve: 'ResolveService',
+};
+const applicationServicesTypes = {
+  PROJECT_DIR: 'ProjectDirService',
+  ENV: 'AppEnvVars',
+  APP_CONFIG: 'AppConfig',
   process: 'ProcessService',
 };
 const whookSimpleTypes = {
-  HOST: 'string',
-  PORT: 'number',
-  PROJECT_DIR: 'string',
   PROJECT_SRC: 'string',
-  NODE_ENV: 'string',
   DEBUG_NODE_ENVS: 'string[]',
   WHOOK_PLUGINS_PATHS: 'string[]',
 };
 const whookServicesTypes = {
-  API_DEFINITIONS: 'DelayService',
-  ENV: 'ENVService',
+  BASE_URL: 'WhookBaseURL',
+  HOST: 'WhookHost',
+  PORT: 'WhookPort',
+  API_DEFINITIONS: 'WhookAPIDefinitions',
   APM: 'APMService',
-  APP_CONFIG: 'AppConfig',
 };
 const allTypes = {
   ...commonServicesTypes,
+  ...applicationServicesTypes,
   ...whookSimpleTypes,
   ...whookServicesTypes,
 };
@@ -92,7 +100,7 @@ async function initCreateCommand({
   PROJECT_DIR: string;
   API: OpenAPIV3.Document;
   inquirer: typeof _inquirer;
-  promptArgs: PromptArgs;
+  promptArgs: WhookPromptArgs;
   writeFile: typeof _writeFile;
   ensureDir: typeof _ensureDir;
   pathExists: typeof _pathExists;
@@ -126,6 +134,7 @@ async function initCreateCommand({
         message: 'Which services do you want to use?',
         choices: [
           ...Object.keys(commonServicesTypes),
+          ...Object.keys(applicationServicesTypes),
           ...Object.keys(whookSimpleTypes),
           ...Object.keys(whookServicesTypes),
         ],
@@ -139,7 +148,9 @@ async function initCreateCommand({
         type: allTypes[name],
       }))
       .concat(
-        type === 'command' ? [{ name: 'promptArgs', type: 'PromptArgs' }] : [],
+        type === 'command'
+          ? [{ name: 'promptArgs', type: 'WhookPromptArgs' }]
+          : [],
       );
     const parametersDeclaration = servicesTypes.length
       ? `{${servicesTypes
@@ -162,6 +173,9 @@ async function initCreateCommand({
     const commonServices = services.filter(
       (service) => commonServicesTypes[service],
     );
+    const applicationServices = services.filter(
+      (service) => applicationServicesTypes[service],
+    );
     const whookServices = services.filter(
       (service) => whookServicesTypes[service],
     );
@@ -172,7 +186,7 @@ import {
   readArgs,
 } from '@whook/whook';
 import type {
-  PromptArgs,
+  WhookPromptArgs,
   WhookCommandArgs,
   WhookCommandDefinition,
   WhookCommandHandler,
@@ -184,6 +198,13 @@ import type {
 import type { ${commonServices
             .map((name) => commonServicesTypes[name])
             .join(', ')} } from 'common-services';`
+        : ''
+    }${
+      applicationServices.length
+        ? `
+import type { ${applicationServices
+            .map((name) => applicationServicesTypes[name])
+            .join(', ')} } from 'application-services';`
         : ''
     }${
       whookServices.length

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { printStackTrace } from 'yerror';
+import { YError, printStackTrace } from 'yerror';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -10,7 +10,7 @@ import {
   extractOperationSecurityParameters,
   castParameters,
 } from '@whook/http-router';
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
@@ -30,15 +30,14 @@ import {
   getBody,
   sendBody,
 } from '@whook/http-router';
-import { noop, compose, identity, lowerCaseHeaders } from '@whook/whook';
+import { noop, identity, lowerCaseHeaders } from '@whook/whook';
 import stream from 'stream';
 import type { WhookQueryStringParser } from '@whook/http-router';
-import type { ServiceInitializer, Dependencies, Service } from 'knifecycle';
 import type {
   WhookRequest,
   WhookResponse,
   WhookHandler,
-  ObfuscatorService,
+  WhookObfuscatorService,
   WhookOperation,
   WhookWrapper,
 } from '@whook/whook';
@@ -46,90 +45,91 @@ import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { Readable } from 'stream';
 import type { CORSConfig } from '@whook/cors';
+import type { AppEnvVars } from 'application-services';
 
-type HTTPWrapperDependencies = {
-  NODE_ENV: string;
+const SEARCH_SEPARATOR = '?';
+const PATH_SEPARATOR = '/';
+
+export type WhookWrapHTTPFunctionDependencies = {
+  CORS: CORSConfig;
+  ENV: AppEnvVars;
   DEBUG_NODE_ENVS?: string[];
-  OPERATION: WhookOperation;
   DECODERS?: typeof DEFAULT_DECODERS;
   ENCODERS?: typeof DEFAULT_ENCODERS;
   PARSERS?: typeof DEFAULT_PARSERS;
   STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
   QUERY_PARSER: WhookQueryStringParser;
   BUFFER_LIMIT?: string;
-  obfuscator: ObfuscatorService;
+  obfuscator: WhookObfuscatorService;
   time?: TimeService;
   log?: LogService;
-  WRAPPERS: WhookWrapper<Dependencies, Service>[];
+  OPERATION_API: OpenAPIV3.Document;
 };
 
-const SEARCH_SEPARATOR = '?';
-const PATH_SEPARATOR = '/';
+/**
+ * Wrap an handler to make it work with GCP Functions.
+ * @param  {Object}   services
+ * The services the wrapper depends on
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.OPERATION_API
+ * An OpenAPI definitition for that handler
+ * @param  {Object}   services.CORS
+ * The CORS for the server
+ * @param  {Object}   [services.time]
+ * An optional time service
+ * @param  {Object}   [services.log=noop]
+ * An optional logging service
+ * @return {Promise<Object>}
+ * A promise of an object containing the reshaped env vars.
+ */
 
-export default function wrapHandlerForAWSHTTPFunction<
-  D extends Dependencies,
-  S extends WhookHandler,
->(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & HTTPWrapperDependencies, S> {
-  return alsoInject<HTTPWrapperDependencies, D, S>(
-    [
-      'OPERATION_API',
-      'WRAPPERS',
-      '?DEBUG_NODE_ENVS',
-      'NODE_ENV',
-      '?DECODERS',
-      '?ENCODERS',
-      '?PARSERS',
-      '?STRINGIFYERS',
-      '?BUFFER_LIMIT',
-      'QUERY_PARSER',
-      'obfuscator',
-      '?log',
-      '?time',
-    ],
-    reuseSpecialProps(
-      initHandler,
-      (initHandlerForAWSHTTPFunction as any).bind(
-        null,
-        initHandler,
-      ) as ServiceInitializer<D, S>,
-    ),
-  );
-}
+async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
+  OPERATION_API,
+  ENV,
+  DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
+  CORS,
+  DECODERS = DEFAULT_DECODERS,
+  ENCODERS = DEFAULT_ENCODERS,
+  PARSERS = DEFAULT_PARSERS,
+  STRINGIFYERS = DEFAULT_STRINGIFYERS,
+  BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
+  QUERY_PARSER,
+  obfuscator,
+  log = noop,
+}: WhookWrapHTTPFunctionDependencies): Promise<WhookWrapper<S>> {
+  log('debug', '📥 - Initializing the AWS Lambda cron wrapper.');
 
-async function initHandlerForAWSHTTPFunction(
-  initHandler: ServiceInitializer<Dependencies, WhookHandler>,
-  {
-    OPERATION_API,
-    WRAPPERS,
-    NODE_ENV,
-    DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
-    DECODERS = DEFAULT_DECODERS,
-    ENCODERS = DEFAULT_ENCODERS,
-    log = noop,
-    time = Date.now.bind(Date),
-    ...services
-  },
-) {
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
-  const OPERATION: WhookOperation = {
+  const pathObject = OPERATION_API.paths[path];
+
+  if (typeof pathObject === 'undefined' || '$ref' in pathObject) {
+    throw new YError('E_BAD_OPERATION', 'pathObject', pathObject);
+  }
+
+  const method = Object.keys(pathObject)[0];
+  const operationObject = pathObject[method];
+
+  if (typeof operationObject === 'undefined' || '$ref' in operationObject) {
+    throw new YError('E_BAD_OPERATION', 'operationObject', operationObject);
+  }
+
+  const operation: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...operationObject,
   };
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
-  const consumableMediaTypes = extractConsumableMediaTypes(OPERATION);
-  const produceableMediaTypes = extractProduceableMediaTypes(OPERATION);
+  const consumableMediaTypes = extractConsumableMediaTypes(operation);
+  const produceableMediaTypes = extractProduceableMediaTypes(operation);
   const ajv = new Ajv.default({
-    verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
+    verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
     strict: true,
     logger: {
-      log: (...args) => log?.('debug', ...args),
-      warn: (...args) => log?.('warning', ...args),
-      error: (...args) => log?.('error', ...args),
+      log: (...args: string[]) => log?.('debug', ...args),
+      warn: (...args: string[]) => log?.('warning', ...args),
+      error: (...args: string[]) => log?.('error', ...args),
     },
     useDefaults: true,
     coerceTypes: true,
@@ -137,71 +137,67 @@ async function initHandlerForAWSHTTPFunction(
   addAJVFormats.default(ajv);
   const ammendedParameters = extractOperationSecurityParameters(
     OPERATION_API,
-    OPERATION,
+    operation,
   );
   const validators = prepareParametersValidators(
     ajv,
-    OPERATION.operationId,
-    ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]).concat(
+    operation.operationId,
+    ((operation.parameters || []) as OpenAPIV3.ParameterObject[]).concat(
       ammendedParameters,
     ),
   );
-  const bodyValidator = prepareBodyValidator(ajv, OPERATION);
-  const applyWrappers = compose(...WRAPPERS) as WhookWrapper<
-    Dependencies,
-    Service
-  >;
+  const bodyValidator = prepareBodyValidator(ajv, operation);
+  const wrapper = async (handler: S): Promise<S> => {
+    const wrappedHandler = handleForAWSHTTPFunction.bind(
+      null,
+      {
+        ENV,
+        DEBUG_NODE_ENVS,
+        CORS,
+        DECODERS,
+        ENCODERS,
+        PARSERS,
+        STRINGIFYERS,
+        BUFFER_LIMIT,
+        QUERY_PARSER,
+        obfuscator,
+        log,
+      },
+      {
+        consumableMediaTypes,
+        produceableMediaTypes,
+        consumableCharsets,
+        produceableCharsets,
+        validators,
+        bodyValidator,
+        operation,
+      },
+      handler as any,
+    );
 
-  const handler = await (
-    applyWrappers(initHandler) as ServiceInitializer<Dependencies, Service>
-  )({
-    OPERATION,
-    DEBUG_NODE_ENVS,
-    NODE_ENV,
-    ...services,
-    time,
-    log,
-  });
+    return wrappedHandler as unknown as S;
+  };
 
-  return handleForAWSHTTPFunction.bind(
-    null,
-    {
-      OPERATION,
-      NODE_ENV,
-      DEBUG_NODE_ENVS,
-      DECODERS,
-      ENCODERS,
-      log,
-      time,
-      ...services,
-    } as unknown as HTTPWrapperDependencies & { CORS: CORSConfig },
-    {
-      consumableMediaTypes,
-      produceableMediaTypes,
-      consumableCharsets,
-      produceableCharsets,
-      validators,
-      bodyValidator,
-    },
-    handler,
-  );
+  return wrapper;
 }
 
 async function handleForAWSHTTPFunction(
   {
-    OPERATION,
-    DEBUG_NODE_ENVS,
-    NODE_ENV,
-    ENCODERS,
-    DECODERS,
-    PARSERS = DEFAULT_PARSERS,
-    STRINGIFYERS = DEFAULT_STRINGIFYERS,
-    BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
-    QUERY_PARSER,
+    ENV,
+    DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
     CORS,
-    log,
+    DECODERS,
+    ENCODERS,
+    PARSERS,
+    STRINGIFYERS,
+    BUFFER_LIMIT,
+    QUERY_PARSER,
     obfuscator,
-  }: HTTPWrapperDependencies & { CORS: CORSConfig },
+    log,
+  }: Omit<
+    Required<WhookWrapHTTPFunctionDependencies>,
+    'time' | 'OPERATION_API'
+  >,
   {
     consumableMediaTypes,
     produceableMediaTypes,
@@ -209,12 +205,27 @@ async function handleForAWSHTTPFunction(
     produceableCharsets,
     validators,
     bodyValidator,
+    operation,
+  }: {
+    consumableMediaTypes: string[];
+    produceableMediaTypes: string[];
+    consumableCharsets: string[];
+    produceableCharsets: string[];
+    validators: {
+      [name: string]: Ajv.ValidateFunction<unknown>;
+    };
+    bodyValidator: (
+      operation: WhookOperation,
+      contentType: string,
+      value: unknown,
+    ) => void;
+    operation: WhookOperation;
   },
   handler: WhookHandler,
   req,
   res,
 ) {
-  const debugging = (DEBUG_NODE_ENVS || []).includes(NODE_ENV);
+  const debugging = (DEBUG_NODE_ENVS || []).includes(ENV.NODE_ENV);
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
 
   log?.(
@@ -246,7 +257,6 @@ async function handleForAWSHTTPFunction(
   );
 
   try {
-    const operation = OPERATION;
     const bodySpec = extractBodySpec(
       request,
       consumableMediaTypes,
@@ -278,7 +288,7 @@ async function handleForAWSHTTPFunction(
       );
 
       const pathParameters = (
-        OPERATION.path
+        operation.path
           .split(PATH_SEPARATOR)
           .filter(identity)
           .map((part, index) => {
@@ -302,7 +312,7 @@ async function handleForAWSHTTPFunction(
         );
 
       // TODO: Update strictQS to handle OpenAPI 3
-      const retroCompatibleQueryParameters = (OPERATION.parameters || [])
+      const retroCompatibleQueryParameters = (operation.parameters || [])
         .filter((p) => p.in === 'query')
         .map((p) => ({ ...p, ...p.schema }));
 
@@ -468,3 +478,5 @@ function obfuscateEventBody(obfuscator, rawBody) {
   }
   return rawBody;
 }
+
+export default autoService(initWrapHandlerForGoogleHTTPFunction);

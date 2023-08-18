@@ -1,5 +1,6 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 import { readFileSync } from 'fs';
+import { NodeEnv } from 'application-services';
 import type { AppConfig } from 'application-services';
 
 /* Architecture Note #2: Configuration
@@ -29,7 +30,7 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     name: _packageJSON.name,
     description: _packageJSON.description || '',
   },
-  DEBUG_NODE_ENVS: DEBUG_NODE_ENVS,
+  DEBUG_NODE_ENVS: process.env.DEBUG ? Object.keys(NodeEnv) : DEBUG_NODE_ENVS,
   SERVICE_NAME_MAP: {},
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,

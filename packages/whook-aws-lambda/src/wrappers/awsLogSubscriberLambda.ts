@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import zlib from 'zlib';
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
 import type {
   WhookHeaders,
   WhookResponse,
   WhookOperation,
-  APMService,
+  WhookAPMService,
   WhookHandler,
+  WhookWrapper,
 } from '@whook/whook';
-import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
@@ -19,6 +19,7 @@ import type {
   CloudWatchLogsDecodedData,
   Context,
 } from 'aws-lambda';
+import type { AppEnvVars } from 'application-services';
 
 export type LambdaLogSubscriberInput = { body: CloudWatchLogsDecodedData };
 export type LambdaLogSubscriberOutput = WhookResponse<
@@ -27,52 +28,71 @@ export type LambdaLogSubscriberOutput = WhookResponse<
   void
 >;
 
-type LogSubscriberWrapperDependencies = {
-  NODE_ENV: string;
+// Allow to subscribe to AWS logs
+// See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html
+
+export type WhookWrapLogSubscriberLambdaDependencies = {
+  ENV: AppEnvVars;
   OPERATION_API: OpenAPIV3.Document;
-  apm: APMService;
+  apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
 };
 
-// Allow to subscribe to AWS logs
-// See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html
-export default function wrapHandlerForAWSLogSubscriberLambda<
-  D extends Dependencies,
-  S extends WhookHandler,
+/**
+ * Wrap an handler to make it work with a log subscriber AWS Lambda.
+ * @param  {Object}   services
+ * The services the wrapper depends on
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.OPERATION_API
+ * An OpenAPI definitition for that handler
+ * @param  {Object}   services.apm
+ * An application monitoring service
+ * @param  {Object}   [services.time]
+ * An optional time service
+ * @param  {Object}   [services.log=noop]
+ * An optional logging service
+ * @return {Promise<Object>}
+ * A promise of an object containing the reshaped env vars.
+ */
+
+async function initWrapHandlerForLogSubscriberLambda<S extends WhookHandler>({
+  ENV,
+  OPERATION_API,
+  apm,
+  time = Date.now.bind(Date),
+  log = noop,
+}: WhookWrapLogSubscriberLambdaDependencies): Promise<WhookWrapper<S>> {
+  log('debug', '📥 - Initializing the AWS Lambda log subscriber wrapper.');
+
+  const wrapper = async (handler: S): Promise<S> => {
+    const wrappedHandler = handleForAWSLogSubscriberLambda.bind(
+      null,
+      { ENV, OPERATION_API, apm, time, log },
+      handler as WhookHandler<
+        LambdaLogSubscriberInput,
+        LambdaLogSubscriberOutput
+      >,
+    );
+
+    return wrappedHandler as unknown as S;
+  };
+
+  return wrapper;
+}
+
+async function handleForAWSLogSubscriberLambda<
+  S extends WhookHandler<LambdaLogSubscriberInput, LambdaLogSubscriberOutput>,
 >(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & LogSubscriberWrapperDependencies, S> {
-  return alsoInject<LogSubscriberWrapperDependencies, D, S>(
-    ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
-    reuseSpecialProps(
-      initHandler,
-      (initHandlerForAWSLogSubscriberLambda as any).bind(
-        null,
-        initHandler,
-      ) as ServiceInitializer<D, S>,
-    ),
-  );
-}
-
-async function initHandlerForAWSLogSubscriberLambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
-  const handler: S = await initHandler(services);
-
-  return (handleForAWSLogSubscriberLambda as any).bind(null, services, handler);
-}
-
-async function handleForAWSLogSubscriberLambda(
   {
-    NODE_ENV,
+    ENV,
     OPERATION_API,
     apm,
-    time = Date.now.bind(Date),
-    log = noop,
-  }: LogSubscriberWrapperDependencies,
-  handler: WhookHandler<LambdaLogSubscriberInput, LambdaLogSubscriberOutput>,
+    time,
+    log,
+  }: Required<WhookWrapLogSubscriberLambdaDependencies>,
+  handler: S,
   event: CloudWatchLogsEvent,
   context: Context,
   callback: (err: Error) => void,
@@ -95,7 +115,7 @@ async function handleForAWSLogSubscriberLambda(
     await handler(parameters, OPERATION);
 
     apm('LOG_SUBSCRIBER', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':LogRecord' },
@@ -110,7 +130,7 @@ async function handleForAWSLogSubscriberLambda(
     const castedErr = YError.cast(err as Error);
 
     apm('LOG_SUBSCRIBER', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':LogRecord' },
@@ -162,3 +182,5 @@ function gzip(data: Buffer): Promise<Buffer> {
     });
   });
 }
+
+export default autoService(initWrapHandlerForLogSubscriberLambda);

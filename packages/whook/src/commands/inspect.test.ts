@@ -2,7 +2,7 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initInspectCommand from './inspect.js';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
-import type { PromptArgs } from '../services/promptArgs.js';
+import type { WhookPromptArgs } from '../services/promptArgs.js';
 import type { Injector, Service } from 'knifecycle';
 
 describe('inspectCommand', () => {
@@ -15,7 +15,7 @@ describe('inspectCommand', () => {
     },
   };
   const $injector = jest.fn<Injector<Service>>();
-  const promptArgs = jest.fn<PromptArgs>();
+  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
 
   beforeEach(() => {

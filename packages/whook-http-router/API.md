@@ -35,7 +35,7 @@ Initialize an HTTP router
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the server depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value |
+| services.ENV | <code>Object</code> |  | The injected ENV value |
 | [services.DEBUG_NODE_ENVS] | <code>Array</code> |  | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
 | [services.BUFFER_LIMIT] | <code>String</code> |  | The maximum bufferisation before parsing the  request body |
 | [services.BASE_PATH] | <code>String</code> |  | API base path |
@@ -125,7 +125,7 @@ HTTP router
 | Param | Type | Description |
 | --- | --- | --- |
 | services | <code>Object</code> | The services the server depends on |
-| services.NODE_ENV | <code>Object</code> | The injected NODE_ENV value |
+| services.ENV | <code>Object</code> | The app ENV |
 | [services.DEBUG_NODE_ENVS] | <code>Array</code> | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
 | [services.STRINGIFYERS] | <code>Object</code> | The synchronous body stringifyers |
 | [services.ERRORS_DESCRIPTORS] | <code>Object</code> | An hash of the various error descriptors |

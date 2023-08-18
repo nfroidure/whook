@@ -3,7 +3,10 @@ import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
 } from './handlers/getOpenAPI.js';
 import type { ProviderInitializer, Dependencies } from 'knifecycle';
-import type { HTTPRouterProvider, HTTPRouterService } from '@whook/whook';
+import type {
+  WhookHTTPRouterProvider,
+  WhookHTTPRouterService,
+} from '@whook/http-router';
 import type { ImporterService, LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
 import type { IncomingMessage, ServerResponse } from 'http';
@@ -38,12 +41,12 @@ export type WhookAPIOperationSwaggerConfig = {
  * @returns {Function} The `httpRouter` initializer wrapped
  */
 export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
-  initHTTPRouter: ProviderInitializer<D, HTTPRouterService>,
-): ProviderInitializer<D & WhookSwaggerUIDependencies, HTTPRouterService> {
+  initHTTPRouter: ProviderInitializer<D, WhookHTTPRouterService>,
+): ProviderInitializer<D & WhookSwaggerUIDependencies, WhookHTTPRouterService> {
   const augmentedInitializer = alsoInject<
     WhookSwaggerUIDependencies,
     D,
-    HTTPRouterService
+    WhookHTTPRouterService
   >(
     [
       'ENV',
@@ -68,7 +71,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
         log = noop,
         importer,
       }: WhookSwaggerUIDependencies,
-      httpRouter: HTTPRouterProvider,
+      httpRouter: WhookHTTPRouterProvider,
     ) => {
       if (!ENV.DEV_MODE) {
         return httpRouter;

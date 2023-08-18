@@ -2,7 +2,10 @@ import { name, autoService } from 'knifecycle';
 import type { LogService } from 'common-services';
 import type { JsonValue } from 'type-fest';
 
-export type APMService<T extends string = string> = (
+export type WhookAPMDependencies = {
+  log: LogService;
+};
+export type WhookAPMService<T extends string = string> = (
   type: T,
   data: JsonValue,
 ) => void;
@@ -23,9 +26,7 @@ const noop = () => undefined;
  */
 async function initAPM<T extends string = string>({
   log = noop,
-}: {
-  log: LogService;
-}): Promise<APMService<T>> {
+}: WhookAPMDependencies): Promise<WhookAPMService<T>> {
   log('debug', '❤️ - Initializing the APM service.');
 
   return (type, data) => log('info', type, JSON.stringify(data));

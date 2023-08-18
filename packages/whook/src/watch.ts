@@ -9,6 +9,7 @@ import { readFile } from 'fs';
 import { promisify } from 'util';
 import parseGitIgnore from 'parse-gitignore';
 import { createRequire } from 'module';
+import { AppEnvVars } from 'application-services';
 import type { Dependencies, Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 
@@ -20,7 +21,7 @@ let delayPromise: Promise<void> | undefined;
 let hash: string;
 
 export type WatchServerDependencies = {
-  NODE_ENV: string;
+  ENV: AppEnvVars;
   PROJECT_SRC: string;
   $instance: Knifecycle;
   delay: DelayService;
@@ -108,7 +109,7 @@ export async function restartDevServer<T extends Dependencies>({
   );
 
   const {
-    NODE_ENV,
+    ENV,
     PROJECT_SRC,
     $instance: _instance,
     delay: _delay,
@@ -123,7 +124,7 @@ export async function restartDevServer<T extends Dependencies>({
       ...new Set([
         ...injectedNames,
 
-        'NODE_ENV',
+        'ENV',
         'PROJECT_SRC',
         '$instance',
         'delay',
@@ -156,7 +157,7 @@ export async function restartDevServer<T extends Dependencies>({
     const bridge = new PassThrough();
     const openAPITypesGenerationPromise = (
       await initGenerateOpenAPITypes({
-        NODE_ENV,
+        ENV,
         instream,
         outstream: bridge,
         log,
@@ -185,7 +186,7 @@ export async function restartDevServer<T extends Dependencies>({
   if (afterRestartEnd) {
     await afterRestartEnd(
       {
-        NODE_ENV,
+        ENV,
         PROJECT_SRC,
         $instance,
         delay,

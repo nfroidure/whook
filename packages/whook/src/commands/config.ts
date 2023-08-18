@@ -6,7 +6,7 @@ import { noop } from '../libs/utils.js';
 import type { AppConfig } from 'application-services';
 import type { LogService } from 'common-services';
 import type {
-  PromptArgs,
+  WhookPromptArgs,
   WhookCommandDefinition,
   WhookCommandHandler,
 } from '../services/promptArgs.js';
@@ -48,7 +48,7 @@ async function initConfigCommand({
   log = noop,
 }: {
   APP_CONFIG: AppConfig;
-  promptArgs: PromptArgs;
+  promptArgs: WhookPromptArgs;
   log?: LogService;
 }): Promise<WhookCommandHandler> {
   return async () => {

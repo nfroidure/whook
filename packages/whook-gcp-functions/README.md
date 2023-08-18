@@ -27,38 +27,39 @@ Install this module:
 npm i @whook/gcp-functions;
 ```
 
-Add this module to your Whook plugins and tweak the 2 build functions in your
+Add the plugin to the `src/index.ts` main file:
+
+```diff
+
+  // ...
+
+  $.register(
+    constant('WHOOK_PLUGINS', [
+      '@whook/whook',
++      '@whook/gcp-functions',
+      '@whook/cors',
+    ]),
+  );
+
+  // ...
+```
+
+Tweak the 2 build functions in your
 `src/build.ts` main file:
 
 ```diff
 import {
   // (...)
+-  DEFAULT_INITIALIZER_PATH_MAP,
 -  runBuild as runBaseBuild,
+-  prepareBuildEnvironment as prepareBaseBuildEnvironment,
   // (...)
 } from '@whook/whook';
 +import {
++  DEFAULT_BUILD_INITIALIZER_PATH_MAP,
 +  runBuild as runBaseBuild,
 +  prepareBuildEnvironment as prepareBaseBuildEnvironment,
 +} from '@whook/gcp-functions';
-
-// (...)
-
-export async function prepareEnvironment(
-  $: Knifecycle = new Knifecycle(),
-): Promise<Knifecycle> {
-
-  // (...)
-
-  // Setup your own whook plugins or avoid whook defaults by leaving it empty
--  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
-+  $.register(constant('WHOOK_PLUGINS', [
-+    '@whook/gcp-functions',
-+    '@whook/whook',
-+  ]));
-
-  // (...)
-
-}
 
 // (...)
 
@@ -76,18 +77,14 @@ export async function prepareBuildEnvironment(
 +  // Calling the GCP specific build env
 +  $ = await prepareBaseBuildEnvironment($);
 
-
   // The build often need to know were initializers
   //  can be found to create a static build and
   //  remove the need to create an injector
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       // (...)
-      obfuscator: '@whook/http-transaction/dist/services/obfuscator',
--      log: 'common-services/dist/log',
-+      log: '@whook/gcp-functions/dist/services/log',
-      time: 'common-services/dist/time',
-      delay: 'common-services/dist/delay',
+-      ...DEFAULT_INITIALIZER_PATH_MAP,
++      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
     }),
   );
 
@@ -96,8 +93,8 @@ export async function prepareBuildEnvironment(
 }
 ```
 
-Declare this module types in your `src/whook.d.ts` type
- definitions:
+Declare this module types in your `src/whook.d.ts` type definitions:
+
 ```diff
 // ...
 + import type { WhookCompilerConfig } from '@whook/whook';
@@ -137,6 +134,7 @@ declare module '@whook/whook' {
   }
 }
 ```
+
 And add the GCP Functions config (usually in `src/config/common/config.js`):
 
 ```diff
@@ -194,6 +192,23 @@ There is a complete example on how to deploy your functions
 [//]: # (::contents:end)
 
 # API
+<a name="initWrapHandlerForHTTPFunction"></a>
+
+## initWrapHandlerForHTTPFunction(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to make it work with cron AWS Lambda.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services the wrapper depends on |
+| services.ENV | <code>Object</code> |  | The process environment |
+| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.apm | <code>Object</code> |  | An application monitoring service |
+| [services.time] | <code>Object</code> |  | An optional time service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
 
 # Authors
 - [Nicolas Froidure](http://insertafter.com/en/index.html)

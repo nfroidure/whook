@@ -65,13 +65,16 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     );
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
-    $.register(constant('ENV', {}));
-    $.register(constant('NODE_ENV', 'test'));
+    $.register(constant('APP_ENV', 'local'));
+    $.register(
+      constant('ENV', {
+        NODE_ENV: 'test',
+      }),
+    );
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
     $.register(constant('WRAPPERS', []));
     $.register(constant('DEBUG_NODE_ENVS', []));
-    $.register(constant('NODE_ENVS', ['test']));
     $.register(
       constant('HANDLERS', {
         getPing,
@@ -131,6 +134,11 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
         ...headers,
         // Erasing the Date header that may be added by Axios :/
         date: undefined,
+        etag: undefined,
+        'last-modified': undefined,
+        server: undefined,
+        connection: undefined,
+        'keep-alive': undefined,
       },
       data,
       getPingCalls: getPing.mock.calls,
@@ -154,6 +162,11 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
         ...headers,
         // Erasing the Date header that may be added by Axios :/
         date: undefined,
+        etag: undefined,
+        'last-modified': undefined,
+        server: undefined,
+        connection: undefined,
+        'keep-alive': undefined,
       },
       data,
       getPingCalls: getPing.mock.calls,

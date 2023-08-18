@@ -3,6 +3,7 @@ import { noop } from '../libs/utils.js';
 import { autoService } from 'knifecycle';
 import type { Service } from 'knifecycle';
 import type { ImporterService, LogService } from 'common-services';
+import type { AppEnvVars } from 'application-services';
 
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],
@@ -23,13 +24,12 @@ export type FullWhookCompilerOptions = {
 };
 export type WhookCompilerOptions = Partial<FullWhookCompilerOptions>;
 export type WhookCompilerConfig = {
-  NODE_ENV?: string;
   DEBUG_NODE_ENVS: string[];
   COMPILER_OPTIONS?: WhookCompilerOptions;
 };
 export type WhookCompilerDependencies = WhookCompilerConfig & {
   PROJECT_DIR: string;
-  NODE_ENV: string;
+  ENV: AppEnvVars;
   importer: ImporterService<Service>;
   log?: LogService;
 };
@@ -46,7 +46,7 @@ export type WhookCompilerService = (
 
 async function initCompiler({
   PROJECT_DIR,
-  NODE_ENV,
+  ENV,
   DEBUG_NODE_ENVS,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   importer,
@@ -59,7 +59,7 @@ async function initCompiler({
     entryPoint: string,
     options: WhookCompilerOptions = {},
   ): Promise<WhookCompilationResult> {
-    const debugging = DEBUG_NODE_ENVS.includes(NODE_ENV);
+    const debugging = DEBUG_NODE_ENVS.includes(ENV.NODE_ENV);
     const compilerOptions: FullWhookCompilerOptions = {
       ...DEFAULT_COMPILER_OPTIONS,
       ...COMPILER_OPTIONS,
@@ -121,7 +121,7 @@ const require = createRequire(import.meta.url);
         }`,
       },
       define: {
-        'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
+        'process.env.NODE_ENV': JSON.stringify(ENV.NODE_ENV),
       },
       plugins: compilerOptions.excludeNodeModules
         ? [absoluteToProjectsRelativePlugin, nodeExternalsPlugin()]

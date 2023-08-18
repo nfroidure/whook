@@ -24,8 +24,8 @@ import {
   castParameters,
 } from './libs/validation.js';
 import {
-  BodySpec,
-  ResponseSpec,
+  type WhookBodySpec,
+  type WhookResponseSpec,
   extractBodySpec,
   extractResponseSpec,
   checkResponseCharset,
@@ -60,7 +60,7 @@ import type { Transform, Readable } from 'stream';
 import type {
   WhookHandler,
   WhookOperation,
-  HTTPTransactionService,
+  WhookHTTPTransactionService,
   DereferencedParameterObject,
   WhookResponse,
 } from '@whook/http-transaction';
@@ -70,11 +70,12 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import type {
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
-  ErrorHandlerConfig,
-  ErrorHandlerDependencies,
+  WhookErrorHandlerConfig,
+  WhookErrorHandlerDependencies,
   WhookErrorHandler,
 } from './services/errorHandler.js';
 import type { ValidateFunction } from 'ajv';
+import type { AppEnvVars } from 'application-services';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
@@ -88,12 +89,12 @@ function identity<T>(x: T): T {
 
 export type {
   WhookErrorHandler,
-  ErrorHandlerDependencies,
+  WhookErrorHandlerDependencies,
   WhookErrorsDescriptors,
   WhookErrorDescriptor,
-  ErrorHandlerConfig,
-  BodySpec,
-  ResponseSpec,
+  WhookErrorHandlerConfig,
+  WhookBodySpec,
+  WhookResponseSpec,
   WhookRawOperation,
   SupportedSecurityScheme,
 };
@@ -135,8 +136,15 @@ export type WhookQueryStringParser = (
   definitions: Parameters<typeof strictQs>[1],
   query: Parameters<typeof strictQs>[2],
 ) => ReturnType<typeof strictQs>;
-export type WhookHandlers = { [name: string]: WhookHandler };
-export type WhookParser = (content: string, bodySpec?: BodySpec) => JsonValue;
+export type WhookHandlerName = string;
+export type WhookHandlersService<T extends WhookHandler> = Record<
+  WhookHandlerName,
+  T
+>;
+export type WhookParser = (
+  content: string,
+  bodySpec?: WhookBodySpec,
+) => JsonValue;
 export type WhookParsers = { [name: string]: WhookParser };
 export type WhookStringifyer = (content: string) => string;
 export type WhookStringifyers = { [name: string]: WhookStringifyer };
@@ -152,29 +160,29 @@ export type WhookDecoder<T extends Transform> = {
 export type WhookDecoders<T extends Transform> = {
   [name: string]: WhookDecoder<T>;
 };
-export type HTTPRouterConfig = {
-  NODE_ENV?: string;
+export type WhookHTTPRouterConfig = {
   DEBUG_NODE_ENVS?: string[];
   BUFFER_LIMIT?: string;
   BASE_PATH?: string;
 };
-export type HTTPRouterDependencies = HTTPRouterConfig & {
-  NODE_ENV: string;
-  HANDLERS: WhookHandlers;
-  API: OpenAPIV3.Document;
-  PARSERS?: WhookParsers;
-  STRINGIFYERS?: WhookStringifyers;
-  DECODERS?: WhookEncoders<Transform>;
-  ENCODERS?: WhookDecoders<Transform>;
-  QUERY_PARSER?: WhookQueryStringParser;
-  log?: LogService;
-  httpTransaction: HTTPTransactionService;
-  errorHandler: WhookErrorHandler;
-};
-export interface HTTPRouterService {
+export type WhookHTTPRouterDependencies<T extends WhookHandler> =
+  WhookHTTPRouterConfig & {
+    ENV: AppEnvVars;
+    HANDLERS: WhookHandlersService<T>;
+    API: OpenAPIV3.Document;
+    PARSERS?: WhookParsers;
+    STRINGIFYERS?: WhookStringifyers;
+    DECODERS?: WhookEncoders<Transform>;
+    ENCODERS?: WhookDecoders<Transform>;
+    QUERY_PARSER?: WhookQueryStringParser;
+    log?: LogService;
+    httpTransaction: WhookHTTPTransactionService;
+    errorHandler: WhookErrorHandler;
+  };
+export interface WhookHTTPRouterService {
   (req: IncomingMessage, res: ServerResponse): Promise<void>;
 }
-export type HTTPRouterProvider = Provider<HTTPRouterService>;
+export type WhookHTTPRouterProvider = Provider<WhookHTTPRouterService>;
 
 type RouteDescriptor = {
   handler: WhookHandler;
@@ -209,7 +217,7 @@ export default initializer(
     name: 'httpRouter',
     type: 'provider',
     inject: [
-      'NODE_ENV',
+      'ENV',
       '?DEBUG_NODE_ENVS',
       '?BUFFER_LIMIT',
       '?BASE_PATH',
@@ -232,8 +240,8 @@ export default initializer(
  * Initialize an HTTP router
  * @param  {Object}   services
  * The services the server depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value
+ * @param  {Object}   services.ENV
+ * The injected ENV value
  * @param  {Array}   [services.DEBUG_NODE_ENVS]
  * The environnement that activate debugging
  *  (prints stack trace in HTTP errors responses)
@@ -267,8 +275,8 @@ export default initializer(
  * @return {Promise}
  * A promise of a function to handle HTTP requests.
  */
-async function initHTTPRouter({
-  NODE_ENV,
+async function initHTTPRouter<T extends WhookHandler>({
+  ENV,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   BASE_PATH = '',
@@ -282,10 +290,10 @@ async function initHTTPRouter({
   log = noop,
   httpTransaction,
   errorHandler,
-}: HTTPRouterDependencies): Promise<HTTPRouterProvider> {
+}: WhookHTTPRouterDependencies<T>): Promise<WhookHTTPRouterProvider> {
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
   const ajv = new Ajv.default({
-    verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
+    verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
     strict: true,
     logger: {
       log: (...args: string[]) => log('debug', ...args),
@@ -301,7 +309,13 @@ async function initHTTPRouter({
     charsets: produceableCharsets,
   };
 
-  const routers = await _createRouters({ API, HANDLERS, BASE_PATH, ajv, log });
+  const routers = await _createRouters<T>({
+    API,
+    HANDLERS,
+    BASE_PATH,
+    ajv,
+    log,
+  });
 
   let handleFatalError;
   const fatalErrorPromise: Promise<void> = new Promise((resolve, reject) => {
@@ -553,7 +567,7 @@ function _explodePath(path, parameters) {
     });
 }
 
-async function _createRouters({
+async function _createRouters<T extends WhookHandler>({
   API,
   HANDLERS,
   BASE_PATH = '',
@@ -561,7 +575,7 @@ async function _createRouters({
   log,
 }: {
   API: OpenAPIV3.Document;
-  HANDLERS: WhookHandlers;
+  HANDLERS: WhookHandlersService<T>;
   BASE_PATH?: string;
   ajv: Ajv.default;
   log: LogService;

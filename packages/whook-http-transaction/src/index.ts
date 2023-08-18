@@ -2,8 +2,10 @@ import { service } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import statuses from 'statuses';
 import ms from 'ms';
-import initObfuscatorService from './services/obfuscator.js';
-import initAPMService from './services/apm.js';
+import initObfuscatorService, {
+  type WhookObfuscatorService,
+} from './services/obfuscator.js';
+import initAPMService, { type WhookAPMService } from './services/apm.js';
 import { printStackTrace, YError } from 'yerror';
 import type { Parameters, HandlerFunction, Dependencies } from 'knifecycle';
 import type { LogService, TimeService, DelayService } from 'common-services';
@@ -11,13 +13,14 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type { Readable } from 'stream';
-import type {
-  ObfuscatorService,
-  ObfuscatorConfig,
+export type {
+  WhookObfuscatorDependencies,
+  WhookSensibleValueDescriptor,
+  WhookObfuscatorService,
+  WhookObfuscatorConfig,
 } from './services/obfuscator.js';
-import type { APMService } from './services/apm.js';
+export type { WhookAPMDependencies, WhookAPMService } from './services/apm.js';
 
-export type { ObfuscatorConfig, ObfuscatorService, APMService };
 export { initObfuscatorService, initAPMService };
 
 export type DereferencedMediaTypeObject = Omit<
@@ -120,15 +123,15 @@ export interface WhookHandler<
   (parameters?: P, operation?: O): Promise<R>;
 }
 
-export type HTTPTransactionConfig = {
+export type WhookHTTPTransactionConfig = {
   TIMEOUT?: number;
   TRANSACTIONS?: Record<string, Record<string, JsonValue>>;
 };
-export type HTTPTransactionDependencies = HTTPTransactionConfig & {
-  obfuscator: ObfuscatorService;
+export type HTTPTransactionDependencies = WhookHTTPTransactionConfig & {
+  obfuscator: WhookObfuscatorService;
   delay: DelayService;
   log?: LogService;
-  apm?: APMService;
+  apm?: WhookAPMService;
   time?: TimeService;
   uniqueId?: () => string;
 };
@@ -143,7 +146,7 @@ export type WhookHTTPTransaction = {
   };
 };
 
-export type HTTPTransactionService = (
+export type WhookHTTPTransactionService = (
   req: IncomingMessage,
   res: ServerResponse,
 ) => Promise<WhookHTTPTransaction>;
@@ -212,9 +215,10 @@ export default service(initHTTPTransaction, 'httpTransaction', [
  * A promise of the httpTransaction function
  * @example
  * import initHTTPTransaction from '@whook/http-transaction';
+ * import { log } from 'node:console';
  *
  * const httpTransaction = await initHTTPTransaction({
- *   log: console.log.bind(console),
+ *   log,
  *   time: Date.now.bind(Date),
  * });
  */
@@ -227,7 +231,7 @@ async function initHTTPTransaction({
   time = Date.now.bind(Date),
   delay,
   uniqueId = createIncrementor(),
-}: HTTPTransactionDependencies): Promise<HTTPTransactionService> {
+}: HTTPTransactionDependencies): Promise<WhookHTTPTransactionService> {
   // Not using default value to always
   // get an empty object here and avoid
   // conflicts between instances spawned

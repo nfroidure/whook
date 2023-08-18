@@ -46,7 +46,7 @@ export type WhookCommandDefinition = {
   example: string;
   arguments: WhookCommandDefinitionArguments;
 };
-export type PromptArgs<
+export type WhookPromptArgs<
   T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
 > = () => Promise<WhookCommandArgs<T>>;
 
@@ -62,7 +62,7 @@ async function initPromptArgs<
   args: WhookCommandArgs<T>;
   inquirer?: typeof _inquirer;
   log?: LogService;
-}): Promise<PromptArgs<T>> {
+}): Promise<WhookPromptArgs<T>> {
   log('debug', '🛠 - Initializing promptArgs service');
 
   return async () => {

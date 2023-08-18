@@ -1,20 +1,9 @@
-import { YHTTPError } from 'yhttperror';
-import semverSatisfies from 'semver/functions/satisfies.js';
 import camelCase from 'camelcase';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
-import {
-  wrapInitializer,
-  alsoInject,
-  ServiceInitializerWrapper,
-} from 'knifecycle';
-import type { ServiceInitializer, Parameters, Dependencies } from 'knifecycle';
-import type {
-  WhookResponse,
-  WhookHandler,
-  WhookOperation,
-  WhookErrorsDescriptors,
-} from '@whook/whook';
+import initWrapHandlerWithVersionChecker from './wrappers/wrapHandlerWithVersionChecker.js';
+import type { WhookErrorsDescriptors } from '@whook/whook';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { VersionDescriptor } from './wrappers/wrapHandlerWithVersionChecker.js';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_DEPRECATED_VERSION: {
@@ -26,69 +15,13 @@ export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   },
 };
 
-export type VersionDescriptor = {
-  header: string;
-  rule: string;
-};
-export type VersionsConfig = {
-  VERSIONS: VersionDescriptor[];
-};
+export { initWrapHandlerWithVersionChecker };
 
-/**
- * Wrap an handler initializer to check versions headers.
- * @param {Function} initHandler The handler initializer
- * @returns {Function} The handler initializer wrapped
- */
-export function wrapHandlerWithVersionChecker<D extends Dependencies, S>(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<VersionsConfig & D, S> {
-  const augmentedInitializer = alsoInject<VersionsConfig, D, S>(
-    ['VERSIONS'],
-    initHandler,
-  );
-  const initializerWrapper: ServiceInitializerWrapper<
-    S,
-    VersionsConfig & D
-  > = async (services: VersionsConfig, handler: S) => {
-    return handleWithVersionChecker.bind(
-      null,
-      services as VersionsConfig,
-      handler as unknown as WhookHandler,
-    ) as unknown as S;
-  };
-
-  return wrapInitializer(initializerWrapper, augmentedInitializer);
-}
-
-async function handleWithVersionChecker<
-  R extends WhookResponse,
-  O extends WhookOperation,
-  P extends Parameters,
->(
-  { VERSIONS }: VersionsConfig,
-  handler: WhookHandler<P, R, O>,
-  parameters: P,
-  operation: O,
-): Promise<R> {
-  VERSIONS.forEach((version) => {
-    const value = parameters[camelCase(version.header)];
-
-    if (
-      'undefined' !== typeof value &&
-      !semverSatisfies(value, version.rule, { includePrerelease: true })
-    ) {
-      throw new YHTTPError(
-        418,
-        'E_DEPRECATED_VERSION',
-        version.header,
-        value,
-        version.rule,
-      );
-    }
-  });
-
-  return await handler(parameters, operation);
-}
+export type {
+  VersionDescriptor,
+  VersionsConfig,
+  VersionsCheckerDependencies,
+} from './wrappers/wrapHandlerWithVersionChecker.js';
 
 // TODO: This is here to do things fast but a proper way to
 // do this would be to change the handlers signature so that

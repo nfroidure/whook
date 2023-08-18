@@ -2,25 +2,13 @@
 ## Functions
 
 <dl>
-<dt><a href="#wrapHandlerWithVersionChecker">wrapHandlerWithVersionChecker(initHandler)</a> ⇒ <code>function</code></dt>
-<dd><p>Wrap an handler initializer to check versions headers.</p>
-</dd>
 <dt><a href="#augmentAPIWithVersionsHeaders">augmentAPIWithVersionsHeaders(API, VERSIONS)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Augment an OpenAPI with versions headers added.</p>
 </dd>
+<dt><a href="#initWrapHandlerWithVersionChecker">initWrapHandlerWithVersionChecker(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap an handler to append CORS to response.</p>
+</dd>
 </dl>
-
-<a name="wrapHandlerWithVersionChecker"></a>
-
-## wrapHandlerWithVersionChecker(initHandler) ⇒ <code>function</code>
-Wrap an handler initializer to check versions headers.
-
-**Kind**: global function  
-**Returns**: <code>function</code> - The handler initializer wrapped  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| initHandler | <code>function</code> | The handler initializer |
 
 <a name="augmentAPIWithVersionsHeaders"></a>
 
@@ -34,4 +22,18 @@ Augment an OpenAPI with versions headers added.
 | --- | --- | --- |
 | API | <code>Object</code> | The OpenAPI object |
 | VERSIONS | <code>Object</code> | The versions configurations |
+
+<a name="initWrapHandlerWithVersionChecker"></a>
+
+## initWrapHandlerWithVersionChecker(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to append CORS to response.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services ENV depends on |
+| services.VERSIONS | <code>Object</code> |  | A VERSIONS object with the versions configuration |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 

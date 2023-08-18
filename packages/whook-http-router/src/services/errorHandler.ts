@@ -4,12 +4,13 @@ import {
   DEFAULT_STRINGIFYERS,
 } from '../libs/constants.js';
 import miniquery from 'miniquery';
-import type { WhookStringifyers } from '../index.js';
-import type { ResponseSpec } from '../libs/utils.js';
-import type { WhookResponse } from '@whook/http-transaction';
 import { printStackTrace, YError } from 'yerror';
+import type { WhookStringifyers } from '../index.js';
+import type { WhookResponseSpec } from '../libs/utils.js';
+import type { WhookResponse } from '@whook/http-transaction';
 import type { YHTTPError } from 'yhttperror';
 import type { OpenAPIV3 } from 'openapi-types';
+import type { AppEnvVars } from 'application-services';
 
 /* Architecture Note #2: Error handler
 
@@ -299,20 +300,20 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
   },
 };
 
-export type ErrorHandlerConfig = {
-  NODE_ENV?: string;
+export type WhookErrorHandlerConfig = {
   DEBUG_NODE_ENVS: string[];
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
   DEFAULT_ERROR_CODE?: string;
 };
-export type ErrorHandlerDependencies = ErrorHandlerConfig & {
+export type WhookErrorHandlerDependencies = WhookErrorHandlerConfig & {
+  ENV: AppEnvVars;
   STRINGIFYERS?: WhookStringifyers;
 };
 
 export interface WhookErrorHandler {
   (
     transactionId: string,
-    responseSpec: ResponseSpec,
+    responseSpec: WhookResponseSpec,
     err: Error,
   ): Promise<WhookErrorResponse>;
 }
@@ -364,7 +365,7 @@ export default initializer(
     name: 'errorHandler',
     type: 'service',
     inject: [
-      'NODE_ENV',
+      'ENV',
       '?DEBUG_NODE_ENVS',
       '?STRINGIFYERS',
       '?ERRORS_DESCRIPTORS',
@@ -379,8 +380,8 @@ export default initializer(
  * HTTP router
  * @param  {Object}   services
  * The services the server depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value
+ * @param  {Object}   services.ENV
+ * The app ENV
  * @param  {Array}   [services.DEBUG_NODE_ENVS]
  * The environnement that activate debugging
  *  (prints stack trace in HTTP errors responses)
@@ -394,12 +395,12 @@ export default initializer(
  * A promise of a function to handle errors
  */
 async function initErrorHandler({
-  NODE_ENV,
+  ENV,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   ERRORS_DESCRIPTORS = DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_ERROR_CODE = DEFAULT_DEFAULT_ERROR_CODE,
-}: ErrorHandlerDependencies): Promise<WhookErrorHandler> {
+}: WhookErrorHandlerDependencies): Promise<WhookErrorHandler> {
   // Ensure we have required error descriptors
   ERRORS_DESCRIPTORS = {
     ...DEFAULT_ERRORS_DESCRIPTORS,
@@ -423,7 +424,7 @@ async function initErrorHandler({
    */
   async function errorHandler(
     transactionId: string,
-    responseSpec: ResponseSpec,
+    responseSpec: WhookResponseSpec,
     err: Error | YError | YHTTPError,
   ) {
     const errorCode = (err as YError).code || DEFAULT_ERROR_CODE;
@@ -480,7 +481,7 @@ async function initErrorHandler({
       },
     };
 
-    if (DEBUG_NODE_ENVS.includes(NODE_ENV as string)) {
+    if (DEBUG_NODE_ENVS.includes(ENV.NODE_ENV)) {
       response.body.error_debug_data.code = errorCode;
       response.body.error_debug_data.stack = printStackTrace(err as Error);
       response.body.error_debug_data.params = (err as YError).params;

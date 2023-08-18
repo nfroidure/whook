@@ -2,28 +2,29 @@ import { initEnvService } from 'application-services';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
-import type { AppEnvVars, ENVDependencies } from 'application-services';
+import type { AppEnvVars, ProcessEnvDependencies } from 'application-services';
 import type { ServiceInitializer } from 'knifecycle';
 
-export type ProxyedENVConfig = {
-  NODE_ENV?: string;
+export type WhookProxyedENVConfig = {
   PROXYED_ENV_VARS?: string[];
 };
-export type ProxyedENVDependencies = ProxyedENVConfig & {
-  NODE_ENV: string;
+export type WhookProxyedENVDependencies = WhookProxyedENVConfig & {
   log?: LogService;
 };
 
 export default alsoInject<
-  ProxyedENVDependencies,
+  WhookProxyedENVDependencies,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ENVDependencies<any>,
+  ProcessEnvDependencies<any>,
   AppEnvVars
 >(
-  ['?log', 'NODE_ENV', '?PROXYED_ENV_VARS'],
+  ['?log', '?PROXYED_ENV_VARS'],
   wrapInitializer(
     wrapEnvForBuild,
-    initEnvService as ServiceInitializer<ProxyedENVDependencies, AppEnvVars>,
+    initEnvService as ServiceInitializer<
+      WhookProxyedENVDependencies,
+      AppEnvVars
+    >,
   ),
 );
 
@@ -31,8 +32,6 @@ export default alsoInject<
  * Wrap the ENV service in order to filter ENV vars for the build
  * @param  {Object}   services
  * The services ENV depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value to add it to the build env
  * @param  {Object}   [services.PROXYED_ENV_VARS={}]
  * A list of environment variable names to proxy
  * @param  {Object}   [services.log=noop]
@@ -41,7 +40,7 @@ export default alsoInject<
  * A promise of an object containing the reshaped env vars.
  */
 async function wrapEnvForBuild(
-  { log = noop, NODE_ENV, PROXYED_ENV_VARS = [] }: ProxyedENVDependencies,
+  { log = noop, PROXYED_ENV_VARS = [] }: WhookProxyedENVDependencies,
   ENV: AppEnvVars,
 ): Promise<AppEnvVars> {
   log('debug', '♻️ -Filtering environment for build.');
@@ -52,7 +51,7 @@ async function wrapEnvForBuild(
       [name]: ENV[name] || GATHERED_ENV[name],
     }),
     {
-      NODE_ENV,
+      NODE_ENV: ENV.NODE_ENV,
     },
   );
 }
