@@ -38,7 +38,7 @@ import type { AuthenticationService } from '@whook/authorization';
 import type { WhookGraphQLContextFunction } from './index.js';
 import type { Logger, TimeService } from 'common-services';
 
-describe.skip('GraphQL server', () => {
+describe('GraphQL server', () => {
   const BASE_PATH = '/v1';
   const PORT = 5555;
   const HOST = 'localhost';
@@ -144,14 +144,15 @@ describe.skip('GraphQL server', () => {
         async () => $autoload,
       ),
     );
+    $.register(constant('PROJECT_DIR', '/home/whoami/projects'));
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
     $.register(constant('ENV', {}));
     $.register(constant('NODE_ENV', 'test'));
+    $.register(constant('APP_ENV', 'test'));
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
     $.register(constant('DEBUG_NODE_ENVS', []));
-    $.register(constant('NODE_ENVS', ['test']));
     $.register(constant('MECHANISMS', [BEARER_MECHANISM, BASIC_MECHANISM]));
     $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
@@ -163,7 +164,6 @@ describe.skip('GraphQL server', () => {
           name: 'HANDLERS',
           type: 'service',
           inject: ['getGraphQL', 'postGraphQL'],
-          singleton: true,
         },
         async (services) => services,
       ),

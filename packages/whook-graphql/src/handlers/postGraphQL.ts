@@ -141,31 +141,41 @@ async function postGraphQL<T extends Record<string, unknown>>(
       }
     }
 
-    return {
+    const response = {
       status: httpGraphQLResponse.status || 200,
-      // Remove content related headers and lowercase them
-      headers: Object.keys(httpGraphQLResponse.headers || {})
-        .filter((key) => !/content-\w+/i.test(key))
-        .reduce(
-          (keptsHeaders, key) => ({
-            ...keptsHeaders,
-            [key.toLowerCase()]: httpGraphQLResponse.headers?.[key],
-          }),
-          {},
-        ),
+      headers: _cleanupGraphQLHeaders(httpGraphQLResponse.headers || {}),
       body: JSON.parse(responseBody),
     };
+
+    return response;
   } catch (err) {
     if ('HttpQueryError' === (err as Error).name) {
       log('debug', '💥 - Got a GraphQL error!');
       log('debug-stack', printStackTrace(err as Error));
+
       return {
         body: JSON.parse((err as Error).message),
         status: (err as { statusCode: number }).statusCode,
-        headers: (err as YHTTPError).headers as WhookHeaders,
+        headers: _cleanupGraphQLHeaders(
+          ((err as YHTTPError).headers as unknown as HeaderMap) || {},
+        ),
       };
     }
 
     throw YHTTPError.cast(err as Error, 500, 'E_GRAPH_QL');
   }
+}
+
+// Remove content related headers and lowercase them
+// Also remove identity symbol that ain't valid header
+function _cleanupGraphQLHeaders(headers: HeaderMap): WhookHeaders {
+  return Object.keys(headers || {})
+    .filter((key) => key !== '__identity' && !/content-\w+/i.test(key))
+    .reduce(
+      (keptsHeaders, key) => ({
+        ...keptsHeaders,
+        [key.toLowerCase()]: headers?.[key],
+      }),
+      {},
+    );
 }
