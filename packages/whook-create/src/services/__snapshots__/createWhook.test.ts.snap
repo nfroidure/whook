@@ -58,13 +58,30 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.local",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.local",
+      "# Loaded when APP_ENV=local
+
+# For JWT signing
+JWT_SECRET=oudelali
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.production",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.production",
+      "# Loaded when APP_ENV=production
+
+# For JWT signing
+JWT_SECRET=oudelali
+",
+    ],
+    [
+      "/home/whoiam/projects/yolo/.env.node.development",
+      "# Loaded when NODE_ENV=development
+
+# Allow to kill the process with still open sockets
+DESTROY_SOCKETS=1'
+
+# Common env var to get dev outputs
+DEV_MODE=1 
 ",
     ],
     [
@@ -255,7 +272,7 @@ Wayne Campbell
       "Copyright Wayne Campbell, all rights reserved.",
     ],
     [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "/home/whoiam/projects/yolo/src/watch.ts",
       "
 the watch.ts file contents
  with'./' replaced so
@@ -264,7 +281,12 @@ the watch.ts file contents
     ],
     [
       "/home/whoiam/projects/yolo/.gitignore",
-      "node_modules",
+      "node_modules
+
+# Whook's files
+builds/
+.env*
+",
     ],
   ],
 }
@@ -376,13 +398,30 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.local",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.local",
+      "# Loaded when APP_ENV=local
+
+# For JWT signing
+JWT_SECRET=oudelali
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.production",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.production",
+      "# Loaded when APP_ENV=production
+
+# For JWT signing
+JWT_SECRET=oudelali
+",
+    ],
+    [
+      "/home/whoiam/projects/yolo/.env.node.development",
+      "# Loaded when NODE_ENV=development
+
+# Allow to kill the process with still open sockets
+DESTROY_SOCKETS=1'
+
+# Common env var to get dev outputs
+DEV_MODE=1 
 ",
     ],
     [
@@ -573,7 +612,7 @@ Wayne Campbell
       "Copyright Wayne Campbell, all rights reserved.",
     ],
     [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "/home/whoiam/projects/yolo/src/watch.ts",
       "
 the watch.ts file contents
  with'./' replaced so
@@ -582,7 +621,12 @@ the watch.ts file contents
     ],
     [
       "/home/whoiam/projects/yolo/.gitignore",
-      "node_modules",
+      "node_modules
+
+# Whook's files
+builds/
+.env*
+",
     ],
   ],
 }
@@ -654,7 +698,7 @@ exports[`initCreateWhook should handle network issues 2`] = `
     ],
     [
       "error",
-      "⚠️ - Could not retrieve the \`.gitignore\` file contents from: "https://www.gitignore.io/api/osx,node,linux"",
+      "⚠️ - Could not retrieve the \`.gitignore\` file contents from: "https://www.toptal.com/developers/gitignore/api/osx,node,linux"",
     ],
     [
       "warning",
@@ -726,13 +770,30 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.local",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.local",
+      "# Loaded when APP_ENV=local
+
+# For JWT signing
+JWT_SECRET=oudelali
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.production",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.production",
+      "# Loaded when APP_ENV=production
+
+# For JWT signing
+JWT_SECRET=oudelali
+",
+    ],
+    [
+      "/home/whoiam/projects/yolo/.env.node.development",
+      "# Loaded when NODE_ENV=development
+
+# Allow to kill the process with still open sockets
+DESTROY_SOCKETS=1'
+
+# Common env var to get dev outputs
+DEV_MODE=1 
 ",
     ],
     [
@@ -923,7 +984,7 @@ Wayne Campbell
       "Copyright Wayne Campbell, all rights reserved.",
     ],
     [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "/home/whoiam/projects/yolo/src/watch.ts",
       "
 the watch.ts file contents
  with'./' replaced so
@@ -1064,13 +1125,30 @@ Wayne Campbell
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.local",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.local",
+      "# Loaded when APP_ENV=local
+
+# For JWT signing
+JWT_SECRET=oudelali
 ",
     ],
     [
-      "/home/whoiam/projects/yolo/.env.production",
-      "JWT_SECRET=oudelali
+      "/home/whoiam/projects/yolo/.env.app.production",
+      "# Loaded when APP_ENV=production
+
+# For JWT signing
+JWT_SECRET=oudelali
+",
+    ],
+    [
+      "/home/whoiam/projects/yolo/.env.node.development",
+      "# Loaded when NODE_ENV=development
+
+# Allow to kill the process with still open sockets
+DESTROY_SOCKETS=1'
+
+# Common env var to get dev outputs
+DEV_MODE=1 
 ",
     ],
     [
@@ -1261,7 +1339,7 @@ Wayne Campbell
       "Copyright Wayne Campbell, all rights reserved.",
     ],
     [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+      "/home/whoiam/projects/yolo/src/watch.ts",
       "
 the watch.ts file contents
  with'./' replaced so
@@ -1270,7 +1348,12 @@ the watch.ts file contents
     ],
     [
       "/home/whoiam/projects/yolo/.gitignore",
-      "node_modules",
+      "node_modules
+
+# Whook's files
+builds/
+.env*
+",
     ],
   ],
 }

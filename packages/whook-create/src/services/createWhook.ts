@@ -9,7 +9,8 @@ import type { LogService } from 'common-services';
 import type { ProjectService } from './project.js';
 import type { AuthorService } from './author.js';
 
-const GIT_IGNORE_URL = 'https://www.gitignore.io/api/osx,node,linux';
+const GIT_IGNORE_URL =
+  'https://www.toptal.com/developers/gitignore/api/osx,node,linux';
 const README_REGEXP =
   /^(?:[^]*)\[\/\/\]: # \(::contents:start\)\r?\n\r?\n([^]*)\r?\n\r?\n\[\/\/\]: # \(::contents:end\)(?:[^]*)$/gm;
 const {
@@ -134,9 +135,24 @@ ${author.name}
           environment === 'common'
             ? Promise.resolve()
             : writeFile(
-                path.join(project.directory, `.env.${environment}`),
-                'JWT_SECRET=oudelali\n',
+                path.join(project.directory, `.env.app.${environment}`),
+                `# Loaded when APP_ENV=${environment}
+
+# For JWT signing
+JWT_SECRET=oudelali
+`,
               ),
+      ),
+      writeFile(
+        path.join(project.directory, '.env.node.development'),
+        `# Loaded when NODE_ENV=development
+
+# Allow to kill the process with still open sockets
+DESTROY_SOCKETS=1'
+
+# Common env var to get dev outputs
+DEV_MODE=1 
+`,
       ),
       writeFile(
         path.join(project.directory, 'package.json'),
@@ -144,7 +160,7 @@ ${author.name}
       ),
       readFile(path.join(SOURCE_DIR, 'src/watch.ts')).then((data) => {
         return writeFile(
-          path.join(SOURCE_DIR, 'src/watch.ts'),
+          path.join(project.directory, 'src/watch.ts'),
           data.toString().replace('../../', './'),
         );
       }),
@@ -186,7 +202,15 @@ ${author.name}
         },
       })
         .then((response) =>
-          writeFile(path.join(project.directory, '.gitignore'), response.data),
+          writeFile(
+            path.join(project.directory, '.gitignore'),
+            `${response.data.toString()}
+
+# Whook's files
+builds/
+.env*
+`,
+          ),
         )
         .catch((err) => {
           log(
