@@ -1,3 +1,14 @@
+# [13.1.0](https://github.com/nfroidure/whook/compare/v13.0.0...v13.1.0) (2023-08-20)
+
+
+### Bug Fixes
+
+* **@whook/graphql:** fix GraphQL modules ([0357eac](https://github.com/nfroidure/whook/commit/0357eac99fa02b9eb50f11597b03b27935213d80))
+* **build:** add changelog and fix the build ([b9717bb](https://github.com/nfroidure/whook/commit/b9717bb252adb56a57632a7d2f2fc6d666b4004e))
+* **build:** fix build env ([0c164f5](https://github.com/nfroidure/whook/commit/0c164f592a0dc57952b10a8c0804d03d00ece8d1)), closes [#135](https://github.com/nfroidure/whook/issues/135)
+
+
+
 # [13.0.0](https://github.com/nfroidure/whook/compare/v12.1.0...v13.0.0) (2023-08-16)
 
 ### Breaking changes
