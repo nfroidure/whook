@@ -80,6 +80,7 @@ const initializerWrapper: ServiceInitializerWrapper<
     ]
   > = (() => {
     return async (serviceName) => {
+      const cleanedName = serviceName.split('_').pop();
       // eslint-disable-next-line
       API = API || (await $injector(['API'])).API;
       // eslint-disable-next-line
@@ -89,16 +90,15 @@ const initializerWrapper: ServiceInitializerWrapper<
 
       const OPERATION = OPERATION_APIS.find(
         (operation) =>
-          serviceName ===
+          cleanedName ===
           (((operation['x-whook'] || {}).sourceOperationId &&
-            'OPERATION_API_' +
-              (operation['x-whook'] || {}).sourceOperationId) ||
-            'OPERATION_API_' + operation.operationId) +
+            (operation['x-whook'] || {}).sourceOperationId) ||
+            operation.operationId) +
             ((operation['x-whook'] || {}).suffix || ''),
       );
 
       if (!OPERATION) {
-        log('error', '💥 - Unable to find a lambda operation definition!');
+        log('error', '💥 - Unable to find a function operation definition!');
         throw new YError('E_OPERATION_NOT_FOUND', serviceName);
       }
 
