@@ -18,26 +18,40 @@ OPTIONS method when you cannot do it at the proxy/gateway level.
 
 ## Usage
 
-To use this module, simply add it to your `WRAPPERS` service (usually in
-`src/services/WRAPPERS.ts`):
+To use this plugin, simply install it:
 
-```diff
-import { service } from 'knifecycle';
-+ import { wrapHandlerWithCors } from '@whook/cors';
-import type { WhookWrapper } from '@whook/whook';
-
-export default service(initWrappers, 'WRAPPERS');
-
-async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
--  const WRAPPERS = [];
-+  const WRAPPERS = [wrapHandlerWithCors];
-
-  return WRAPPERS;
-}
+```sh
+npm i @whook/cors;
 ```
 
-Declare this module types in your `src/whook.d.ts` type
- definitions:
+Declare it in the `src/index.ts` file of your project:
+
+```diff
+
+  // ...
+
+  $.register(
+    constant('HANDLERS_WRAPPERS', [
++      'wrapHandlerWithCORS',
+      'wrapHandlerWithAuthorization',
+    ]),
+  );
+
+  // ...
+
+  $.register(
+    constant('WHOOK_PLUGINS', [
+      '@whook/whook',
++      '@whook/cors',
+      '@whook/authorization',
+    ]),
+  );
+
+  // ...
+```
+
+Declare types in your `src/whook.d.ts` definition:
+
 ```diff
 + import type {
 +   CORSConfig,
@@ -121,8 +135,6 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
 }
 ```
 
-Alternatively, you could wrape your custom error handler with the `wrap
-
 Finally, you must adapt the API service to handle CORS options:
 
 ```diff
@@ -150,8 +162,8 @@ async function initAPI({
 To see a real example have a look at the
 [`@whook/example`](https://github.com/nfroidure/whook/tree/master/packages/whook-example).
 
-Note that you can define individual CORS values on the
- handler definitions usins the `x-whook` property.
+Note that you can define individual CORS values on the handler definitions usins
+the `x-whook` property.
 
 [//]: # (::contents:end)
 
@@ -159,9 +171,6 @@ Note that you can define individual CORS values on the
 ## Functions
 
 <dl>
-<dt><a href="#wrapHandlerWithCORS">wrapHandlerWithCORS(initHandler)</a> ⇒ <code>function</code></dt>
-<dd><p>Wrap an handler initializer to append CORS to response.</p>
-</dd>
 <dt><a href="#augmentAPIWithCORS">augmentAPIWithCORS(API)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Augment an OpenAPI to also serve OPTIONS methods with
  the CORS added.</p>
@@ -169,19 +178,10 @@ Note that you can define individual CORS values on the
 <dt><a href="#wrapErrorHandlerForCORS">wrapErrorHandlerForCORS(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the error handler service as a last chance to add CORS</p>
 </dd>
+<dt><a href="#initWrapHandlerWithCORS">initWrapHandlerWithCORS(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap an handler to append CORS to response.</p>
+</dd>
 </dl>
-
-<a name="wrapHandlerWithCORS"></a>
-
-## wrapHandlerWithCORS(initHandler) ⇒ <code>function</code>
-Wrap an handler initializer to append CORS to response.
-
-**Kind**: global function  
-**Returns**: <code>function</code> - The handler initializer wrapped  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| initHandler | <code>function</code> | The handler initializer |
 
 <a name="augmentAPIWithCORS"></a>
 
@@ -206,9 +206,22 @@ Wrap the error handler service as a last chance to add CORS
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services depended on |
+| services.CORS | <code>Object</code> |  | A CORS object to be added to errors responses |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapHandlerWithCORS"></a>
+
+## initWrapHandlerWithCORS(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to append CORS to response.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services ENV depends on |
-| services.NODE_ENV | <code>Object</code> |  | The injected NODE_ENV value to add it to the build env |
-| [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
+| services.CORS | <code>Object</code> |  | A CORS object to be added to errors responses |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 

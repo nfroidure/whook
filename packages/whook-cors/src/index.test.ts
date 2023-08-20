@@ -1,18 +1,18 @@
-import { jest, describe, it, expect } from '@jest/globals';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import {
-  wrapHandlerWithCORS,
+  initWrapHandlerWithCORS,
   initOptionsWithCORS,
   augmentAPIWithCORS,
 } from './index.js';
 import { handler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import type { Dependencies, Service } from 'knifecycle';
 import type { CORSConfig } from './index.js';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookOperation } from '@whook/whook';
 import type { LogService } from 'common-services';
 
-describe('wrapHandlerWithCORS', () => {
+describe('initWrapHandlerWithCORS', () => {
   const CORS: CORSConfig = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
@@ -42,43 +42,50 @@ describe('wrapHandlerWithCORS', () => {
   };
   const log = jest.fn<LogService>();
 
+  beforeEach(() => {
+    log.mockReset();
+  });
+
   it('should work', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
-      initOptionsWithCORS,
-    );
-    const wrappedHandler = await wrappedOptionsWithCORS({
+    const baseHandler = await initOptionsWithCORS({});
+    const wrapper = await initWrapHandlerWithCORS({
       CORS,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
     const response = await wrappedHandler({}, OPERATION);
 
     expect({
       response,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [],
-        "response": {
-          "headers": {
-            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
-            "access-control-allow-origin": "*",
-            "vary": "origin",
-          },
-          "status": 200,
-        },
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the CORS wrapper.",
+    ],
+  ],
+  "response": {
+    "headers": {
+      "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+      "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "vary": "origin",
+    },
+    "status": 200,
+  },
+}
+`);
   });
 
   it('should work with replace custom CORS', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
-      initOptionsWithCORS,
-    );
-    const wrappedHandler = await wrappedOptionsWithCORS({
+    const baseHandler = await initOptionsWithCORS({});
+    const wrapper = await initWrapHandlerWithCORS({
       CORS,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
     const response = await wrappedHandler(
       {},
       {
@@ -99,30 +106,34 @@ describe('wrapHandlerWithCORS', () => {
       response,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [],
-        "response": {
-          "headers": {
-            "access-control-allow-credentials": "true",
-            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
-            "access-control-allow-origin": "*",
-            "vary": "origin",
-          },
-          "status": 200,
-        },
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the CORS wrapper.",
+    ],
+  ],
+  "response": {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+      "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "vary": "origin",
+    },
+    "status": 200,
+  },
+}
+`);
   });
 
   it('should work with merge custom CORS', async () => {
-    const wrappedOptionsWithCORS = wrapHandlerWithCORS<Dependencies, Service>(
-      initOptionsWithCORS,
-    );
-    const wrappedHandler = await wrappedOptionsWithCORS({
+    const baseHandler = await initOptionsWithCORS({});
+    const wrapper = await initWrapHandlerWithCORS({
       CORS,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
     const response = await wrappedHandler(
       {},
       {
@@ -142,53 +153,61 @@ describe('wrapHandlerWithCORS', () => {
       response,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [],
-        "response": {
-          "headers": {
-            "access-control-allow-credentials": "true",
-            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
-            "access-control-allow-origin": "*",
-            "vary": "origin",
-          },
-          "status": 200,
-        },
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "debug",
+      "📥 - Initializing the CORS wrapper.",
+    ],
+  ],
+  "response": {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+      "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+      "access-control-allow-origin": "*",
+      "vary": "origin",
+    },
+    "status": 200,
+  },
+}
+`);
   });
 
   it('should add CORS to errors', async () => {
-    const wrappedGetError = wrapHandlerWithCORS<Dependencies, Service>(
-      handler(
-        async function getError() {
-          throw new Error();
-        },
-        'getError',
-        [],
-      ),
-    );
-    const wrappedHandler = await wrappedGetError({
+    const baseHandler = await handler(
+      async function getError() {
+        throw new YHTTPError(400, 'E_ERROR');
+      },
+      'getError',
+      [],
+    )({});
+    const wrapper = await initWrapHandlerWithCORS({
       CORS,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler({}, OPERATION);
-      throw new Error('E_UNEXPECTED_SUCCESS');
+      throw new YHTTPError(500, 'E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
+        errorCode: (err as YHTTPError).code,
+        errorParams: (err as YHTTPError).params,
         headers: (err as YHTTPError).headers,
       }).toMatchInlineSnapshot(`
-        {
-          "headers": {
-            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
-            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
-            "access-control-allow-origin": "*",
-            "vary": "Origin",
-          },
-        }
-      `);
+{
+  "errorCode": "E_ERROR",
+  "errorParams": [],
+  "headers": {
+    "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "access-control-allow-origin": "*",
+    "vary": "Origin",
+  },
+}
+`);
     }
   });
 });

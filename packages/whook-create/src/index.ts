@@ -1,3 +1,5 @@
+import { exit, stderr, cwd } from 'node:process';
+import { info, error } from 'node:console';
 import { Knifecycle, constant } from 'knifecycle';
 import { exec as _exec } from 'child_process';
 import { default as fsExtra } from 'fs-extra';
@@ -27,13 +29,13 @@ const {
 export async function runCreateWhook(): Promise<void> {
   try {
     const $ = new Knifecycle();
+
     // TODO: Use import.meta when Jest will support it
     const require = createRequire(
-      import.meta.url ||
-        path.join(process.cwd(), 'src', 'services', 'API.test.ts'),
+      import.meta.url || path.join(cwd(), 'src', 'services', 'API.test.ts'),
     );
 
-    $.register(constant('CWD', process.cwd()));
+    $.register(constant('CWD', cwd()));
     $.register(constant('inquirer', inquirer));
     $.register(constant('exec', _exec));
     $.register(constant('writeFile', _writeFile));
@@ -48,10 +50,8 @@ export async function runCreateWhook(): Promise<void> {
     );
     $.register(
       constant('logger', {
-        // eslint-disable-next-line
-        output: console.log.bind(console),
-        // eslint-disable-next-line
-        error: console.error.bind(console),
+        output: info,
+        error: error,
         debug: debug('whook'),
       } as Logger),
     );
@@ -68,11 +68,9 @@ export async function runCreateWhook(): Promise<void> {
 
     await createWhook();
   } catch (err) {
-    // eslint-disable-next-line
-    console.error(
-      '💀 - Cannot launch the process:',
-      printStackTrace(err as Error),
+    stderr.write(
+      `💀 - Cannot launch the process: ${printStackTrace(err as Error)}`,
     );
-    process.exit(1);
+    exit(1);
   }
 }

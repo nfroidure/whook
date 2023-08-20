@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
-import { wrapHandlerWithAuthorization } from './index.js';
+import { initWrapHandlerWithAuthorization } from './index.js';
 import { handler } from 'knifecycle';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
-
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
@@ -73,12 +72,12 @@ describe('wrapHandlerWithAuthorization', () => {
   describe('with unauthenticated endpoints', () => {
     it('should work', async () => {
       const noopHandler = handler(noopMock as any, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization =
-        wrapHandlerWithAuthorization(noopHandler);
-      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      const baseHandler = await noopHandler({});
+      const wrapper = await initWrapHandlerWithAuthorization({
         authentication,
         log,
       });
+      const wrappedHandler = await wrapper(baseHandler as any);
       const response = await wrappedHandler({ aParameter: 1 }, NOOP_OPERATION);
 
       expect({
@@ -86,7 +85,48 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+    [
+      "debug",
+      "🔓 - Public endpoint detected, letting the call pass through!",
+    ],
+  ],
+  "noopMockCalls": [
+    [
+      {},
+      {
+        "aParameter": 1,
+        "authenticated": false,
+      },
+      {
+        "method": "get",
+        "operationId": "noopHandler",
+        "parameters": [],
+        "path": "/path",
+        "responses": {
+          "200": {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "summary": "Does nothing.",
+        "tags": [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "response": {
+    "status": 200,
+  },
+}
+`);
     });
   });
 
@@ -97,13 +137,14 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
+
       const noopHandler = handler(noopMock as any, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization =
-        wrapHandlerWithAuthorization(noopHandler);
-      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      const baseHandler = await noopHandler({});
+      const wrapper = await initWrapHandlerWithAuthorization({
         authentication,
         log,
       });
+      const wrappedHandler = await wrapper(baseHandler as any);
       const response = await wrappedHandler(
         {
           authorization: 'bearer yolo',
@@ -116,7 +157,68 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [
+    [
+      "bearer",
+      {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [
+    [
+      {},
+      {
+        "authenticated": true,
+        "authenticationData": {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
+        "authorization": "bearer yolo",
+      },
+      {
+        "method": "get",
+        "operationId": "noopHandler",
+        "parameters": [],
+        "path": "/path",
+        "responses": {
+          "200": {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": [
+          {},
+          {
+            "bearerAuth": [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+    },
+    "status": 200,
+  },
+}
+`);
     });
 
     it('should work with Bearer tokens and good authentication check', async () => {
@@ -125,13 +227,14 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
+
       const noopHandler = handler(noopMock as any, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization =
-        wrapHandlerWithAuthorization(noopHandler);
-      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      const baseHandler = await noopHandler({});
+      const wrapper = await initWrapHandlerWithAuthorization({
         authentication,
         log,
       });
+      const wrappedHandler = await wrapper(baseHandler as any);
       const response = await wrappedHandler(
         {
           authorization: 'Bearer yolo',
@@ -144,7 +247,68 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [
+    [
+      "bearer",
+      {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [
+    [
+      {},
+      {
+        "authenticated": true,
+        "authenticationData": {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
+        "authorization": "Bearer yolo",
+      },
+      {
+        "method": "get",
+        "operationId": "noopHandler",
+        "parameters": [],
+        "path": "/path",
+        "responses": {
+          "200": {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": [
+          {},
+          {
+            "bearerAuth": [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+    },
+    "status": 200,
+  },
+}
+`);
     });
 
     it('should work with access tokens and good authentication check', async () => {
@@ -153,13 +317,14 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
+
       const noopHandler = handler(noopMock as any, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization =
-        wrapHandlerWithAuthorization(noopHandler);
-      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      const baseHandler = await noopHandler({});
+      const wrapper = await initWrapHandlerWithAuthorization({
         authentication,
         log,
       });
+      const wrappedHandler = await wrapper(baseHandler as any);
       const response = await wrappedHandler(
         {
           access_token: 'yolo',
@@ -172,7 +337,68 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [
+    [
+      "bearer",
+      {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [
+    [
+      {},
+      {
+        "access_token": "yolo",
+        "authenticated": true,
+        "authenticationData": {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
+      },
+      {
+        "method": "get",
+        "operationId": "noopHandler",
+        "parameters": [],
+        "path": "/path",
+        "responses": {
+          "200": {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": [
+          {},
+          {
+            "bearerAuth": [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+    },
+    "status": 200,
+  },
+}
+`);
     });
 
     it('should work with no authentication at all', async () => {
@@ -181,13 +407,14 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
+
       const noopHandler = handler(noopMock as any, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization =
-        wrapHandlerWithAuthorization(noopHandler);
-      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      const baseHandler = await noopHandler({});
+      const wrapper = await initWrapHandlerWithAuthorization({
         authentication,
         log,
       });
+      const wrappedHandler = await wrapper(baseHandler as any);
       const response = await wrappedHandler({}, NOOP_AUTHENTICATED_OPERATION);
 
       expect({
@@ -195,7 +422,56 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+    [
+      "debug",
+      "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
+    ],
+  ],
+  "noopMockCalls": [
+    [
+      {},
+      {
+        "authenticated": false,
+      },
+      {
+        "method": "get",
+        "operationId": "noopHandler",
+        "parameters": [],
+        "path": "/path",
+        "responses": {
+          "200": {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": [
+          {},
+          {
+            "bearerAuth": [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "response": {
+    "status": 200,
+  },
+}
+`);
     });
   });
 
@@ -206,13 +482,14 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
+
       const noopHandler = handler(noopMock as any, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization =
-        wrapHandlerWithAuthorization(noopHandler);
-      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      const baseHandler = await noopHandler({});
+      const wrapper = await initWrapHandlerWithAuthorization({
         authentication,
         log,
       });
+      const wrappedHandler = await wrapper(baseHandler as any);
       const response = await wrappedHandler(
         {
           authorization: 'Bearer yolo',
@@ -225,7 +502,67 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [
+    [
+      "bearer",
+      {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [
+    [
+      {},
+      {
+        "authenticated": true,
+        "authenticationData": {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
+        "authorization": "Bearer yolo",
+      },
+      {
+        "method": "get",
+        "operationId": "noopHandler",
+        "parameters": [],
+        "path": "/path",
+        "responses": {
+          "200": {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+    },
+    "status": 200,
+  },
+}
+`);
     });
 
     it('should work with access tokens and good authentication check', async () => {
@@ -234,13 +571,14 @@ describe('wrapHandlerWithAuthorization', () => {
         userId: 1,
         scope: 'user,admin',
       });
+
       const noopHandler = handler(noopMock as any, 'getNoop');
-      const wrappedNoodHandlerWithAuthorization =
-        wrapHandlerWithAuthorization(noopHandler);
-      const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+      const baseHandler = await noopHandler({});
+      const wrapper = await initWrapHandlerWithAuthorization({
         authentication,
         log,
       });
+      const wrappedHandler = await wrapper(baseHandler as any);
       const response = await wrappedHandler(
         {
           access_token: 'yolo',
@@ -253,18 +591,78 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [
+    [
+      "bearer",
+      {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [
+    [
+      {},
+      {
+        "access_token": "yolo",
+        "authenticated": true,
+        "authenticationData": {
+          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+          "scope": "user,admin",
+          "userId": 1,
+        },
+      },
+      {
+        "method": "get",
+        "operationId": "noopHandler",
+        "parameters": [],
+        "path": "/path",
+        "responses": {
+          "200": {
+            "description": "Sucessfully did nothing!",
+          },
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "user",
+              "admin",
+            ],
+          },
+        ],
+        "summary": "Does nothing.",
+        "tags": [
+          "system",
+        ],
+      },
+    ],
+  ],
+  "response": {
+    "headers": {
+      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+    },
+    "status": 200,
+  },
+}
+`);
     });
   });
 
   it('should fail with no operation definition provided', async () => {
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler(
@@ -283,18 +681,33 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "errorCode": "E_OPERATION_REQUIRED",
+  "errorHeaders": {},
+  "errorParams": [],
+  "httpCode": 500,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 
   it('should fail with bad operation definition provided', async () => {
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler(
@@ -313,7 +726,26 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "errorCode": "E_MISCONFIGURATION",
+  "errorHeaders": {},
+  "errorParams": [
+    "Bearer",
+    [],
+    "noopHandler",
+  ],
+  "httpCode": 500,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 
@@ -323,13 +755,14 @@ describe('wrapHandlerWithAuthorization', () => {
       userId: 1,
       scope: '',
     });
+
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler(
@@ -348,7 +781,35 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [
+    [
+      "bearer",
+      {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": {},
+  "errorParams": [
+    "",
+    [
+      "user",
+      "admin",
+    ],
+  ],
+  "httpCode": 403,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 
@@ -358,14 +819,15 @@ describe('wrapHandlerWithAuthorization', () => {
       userId: 1,
       scope: '',
     });
+
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       MECHANISMS: [BASIC_MECHANISM, BEARER_MECHANISM],
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler(
@@ -384,7 +846,24 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "errorCode": "E_UNALLOWED_AUTH_MECHANISM",
+  "errorHeaders": {},
+  "errorParams": [
+    "Basic yolo",
+  ],
+  "httpCode": 400,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 
@@ -394,12 +873,12 @@ describe('wrapHandlerWithAuthorization', () => {
     );
 
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler(
@@ -418,7 +897,24 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "errorCode": "E_UNKNOWN_AUTH_MECHANISM",
+  "errorHeaders": {},
+  "errorParams": [
+    "Whatever yolo",
+  ],
+  "httpCode": 400,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 
@@ -428,12 +924,12 @@ describe('wrapHandlerWithAuthorization', () => {
     );
 
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler({}, NOOP_RESTRICTED_OPERATION);
@@ -447,7 +943,28 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": {
+    "www-authenticate": "Bearer realm="Auth"",
+  },
+  "errorParams": [],
+  "httpCode": 401,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+    [
+      "debug",
+      "🔐 - No authorization found, locking access!",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 
@@ -457,13 +974,13 @@ describe('wrapHandlerWithAuthorization', () => {
     );
 
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       DEFAULT_MECHANISM: '',
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler(
@@ -482,7 +999,28 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [],
+  "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": {
+    "www-authenticate": "Bearer realm="Auth"",
+  },
+  "errorParams": [],
+  "httpCode": 401,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+    [
+      "debug",
+      "🔐 - No authorization found, locking access!",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 
@@ -494,12 +1032,12 @@ describe('wrapHandlerWithAuthorization', () => {
     authentication.check.mockRejectedValue(new YError('E_UNAUTHORIZED'));
 
     const noopHandler = handler(noopMock as any, 'getNoop');
-    const wrappedNoodHandlerWithAuthorization =
-      wrapHandlerWithAuthorization(noopHandler);
-    const wrappedHandler = await wrappedNoodHandlerWithAuthorization({
+    const baseHandler = await noopHandler({});
+    const wrapper = await initWrapHandlerWithAuthorization({
       authentication,
       log,
     });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
       await wrappedHandler(
@@ -518,7 +1056,31 @@ describe('wrapHandlerWithAuthorization', () => {
         noopMockCalls: noopMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "authenticationChecks": [
+    [
+      "bearer",
+      {
+        "hash": "yolo",
+      },
+    ],
+  ],
+  "errorCode": "E_UNAUTHORIZED",
+  "errorHeaders": {
+    "www-authenticate": "Bearer realm="Auth"",
+  },
+  "errorParams": [],
+  "httpCode": 401,
+  "logCalls": [
+    [
+      "debug",
+      "🔐 - Initializing the authorization wrapper.",
+    ],
+  ],
+  "noopMockCalls": [],
+}
+`);
     }
   });
 });

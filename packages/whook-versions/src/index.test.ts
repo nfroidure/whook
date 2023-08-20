@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect } from '@jest/globals';
+import { jest, describe, it, expect, beforeEach } from '@jest/globals';
 import {
   augmentAPIWithVersionsHeaders,
-  wrapHandlerWithVersionChecker,
+  initWrapHandlerWithVersionChecker,
 } from './index.js';
 import { initGetPing, initGetPingDefinition } from '@whook/whook';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
+import { NodeEnv } from 'application-services';
+import type { AppEnvVars } from 'application-services';
 
 const VERSIONS = [
   {
@@ -23,7 +25,7 @@ const VERSIONS = [
   },
 ];
 
-const NODE_ENV = 'test';
+const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Test };
 
 describe('augmentAPIWithVersionsHeaders()', () => {
   it('should work', async () => {
@@ -49,70 +51,117 @@ describe('augmentAPIWithVersionsHeaders()', () => {
 });
 
 describe('wrapHandlerWithVersionChecker()', () => {
+  const log = jest.fn();
+
+  beforeEach(() => {
+    log.mockReset();
+  });
+
   it('should work with no version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
-    const response = await handler({});
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
+    const response = await wrappedHandler({});
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work with good api version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
-    const response = await handler({
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
+    const response = await wrappedHandler({
       xApiVersion: '1.2.3',
     });
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work with good app version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
-    const response = await handler({
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
+    const response = await wrappedHandler({
       xAppVersion: '3.6.0',
     });
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work with beta app version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
-    const response = await handler({
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
+    const response = await wrappedHandler({
       xAppVersion: '4.0.0-beta.2',
     });
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should work with good sdk version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
-    const response = await handler({
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
+    const response = await wrappedHandler({
       xSdkVersion: '2.2.3',
     });
 
     expect({
       response,
+      logCalls: log.mock.calls,
     }).toMatchSnapshot();
   });
 
   it('should fail with bad api version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
-      await handler({
+      await wrappedHandler({
         xApiVersion: '2.2.3',
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
@@ -128,11 +177,17 @@ describe('wrapHandlerWithVersionChecker()', () => {
   });
 
   it('should fail with bad app version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
-      await handler({
+      await wrappedHandler({
         xAppVersion: '0.0.0',
       });
       throw new YError('E_UNEXPECTED_SUCCESS');
@@ -148,11 +203,17 @@ describe('wrapHandlerWithVersionChecker()', () => {
   });
 
   it('should fail with bad sdk version headers', async () => {
-    const initWrappedHandler = wrapHandlerWithVersionChecker(initGetPing);
-    const handler: any = await initWrappedHandler({ NODE_ENV, VERSIONS });
+    const baseHandler = await initGetPing({
+      ENV,
+    });
+    const wrapper = await initWrapHandlerWithVersionChecker({
+      VERSIONS,
+      log,
+    });
+    const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
-      await handler({
+      await wrappedHandler({
         xSdkVersion: '0.2.3',
       });
       throw new YError('E_UNEXPECTED_SUCCESS');

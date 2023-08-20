@@ -8,11 +8,11 @@ import { identity, noop } from '../libs/utils.js';
 import type { Service } from 'knifecycle';
 import type {
   WhookCommandDefinition,
-  PromptArgs,
+  WhookPromptArgs,
   WhookCommandHandler,
 } from '../services/promptArgs.js';
 import type { ImporterService, LogService } from 'common-services';
-import type { WhookConfig } from '../index.js';
+import type { WhookConfig } from '../services/BASE_URL.js';
 import type {
   WhookPluginsService,
   WhookPluginsPathsService,
@@ -63,7 +63,7 @@ async function initLsCommand({
   WHOOK_PLUGINS_PATHS: WhookPluginsPathsService;
   readDir?: typeof _readDir;
   log?: LogService;
-  promptArgs: PromptArgs;
+  promptArgs: WhookPromptArgs;
   EOL?: typeof os.EOL;
   importer: ImporterService<Service>;
 }): Promise<WhookCommandHandler> {

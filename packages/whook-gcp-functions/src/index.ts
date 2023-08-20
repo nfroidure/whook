@@ -1,18 +1,15 @@
-/* eslint global-require:0 */
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
 import { mkdirp } from 'mkdirp';
+import { argv, exit, stderr } from 'node:process';
 import cpr from 'cpr';
 import { printStackTrace, YError } from 'yerror';
-import { createRequire } from 'module';
+import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
 import {
-  Knifecycle,
-  SPECIAL_PROPS,
-  constant,
-  initInitializerBuilder,
-} from 'knifecycle';
-import { DEFAULT_BUILD_INITIALIZER_PATH_MAP, initCompiler } from '@whook/whook';
+  DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+  initCompiler,
+} from '@whook/whook';
 import initBuildAutoloader from './services/_autoload.js';
 import {
   dereferenceOpenAPIOperations,
@@ -35,6 +32,10 @@ import type { LogService } from 'common-services';
 import type { CprOptions } from 'cpr';
 
 export const DEFAULT_BUILD_PARALLELISM = 10;
+export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
+  ...BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+  log: '@whook/gcp-functions/dist/services/log',
+};
 
 export type WhookGCPBuildConfig = {
   BUILD_PARALLELISM?: number;
@@ -62,38 +63,11 @@ const cprAsync = util.promisify(cpr) as (
   options: CprOptions,
 ) => Promise<string[]>;
 
-// TODO: Use import.meta when Jest will support it
-const require = createRequire(path.join(process.cwd(), 'src', 'index.ts'));
-
-const BUILD_DEFINITIONS: Record<
-  NonNullable<WhookAPIOperationGCPFunctionConfig['type']>,
-  {
-    type: string;
-    wrapper: { name: string; path: string };
-    suffix?: string;
-  }
-> = {
-  http: {
-    type: 'HTTP',
-    wrapper: {
-      name: 'wrapHandlerForGoogleHTTPFunction',
-      path: path.join(
-        path.dirname(require.resolve('@whook/gcp-functions')),
-        'wrappers/googleHTTPFunction.js',
-      ),
-    },
-    suffix: 'Wrapped',
-  },
-};
-
 export async function prepareBuildEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   $.register(
-    constant('INITIALIZER_PATH_MAP', {
-      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-      log: '@whook/gcp-functions/dist/services/log',
-    }),
+    constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
   );
   $.register(initInitializerBuilder);
   $.register(initBuildAutoloader);
@@ -108,7 +82,7 @@ export async function runBuild(
   aPrepareBuildEnvironment: typeof prepareBuildEnvironment,
 ): Promise<void> {
   try {
-    const handlerName = process.argv[2];
+    const handlerName = argv[2];
     const $ = await aPrepareBuildEnvironment();
     const {
       APP_ENV,
@@ -159,7 +133,8 @@ export async function runBuild(
       return true;
     });
 
-    log('warning', `${operations.length} operations to process.`);
+    log('warning', `📃 - ${operations.length} operations to process.`);
+
     await processOperations(
       {
         APP_ENV,
@@ -174,13 +149,10 @@ export async function runBuild(
     );
     await $.destroy();
   } catch (err) {
-    // eslint-disable-next-line
-    console.error(
-      '💀 - Cannot launch the build:',
-      printStackTrace(err as Error),
-      JSON.stringify((err as YError)?.params, null, 2),
+    stderr.write(
+      `💀 - Cannot launch the build:' ${printStackTrace(err as Error)}`,
     );
-    process.exit(1);
+    exit(1);
   }
 }
 
@@ -213,7 +185,6 @@ async function processOperations(
           PROJECT_DIR,
           compiler,
           log,
-          $autoload,
           buildInitializer,
         },
         operation,
@@ -222,7 +193,7 @@ async function processOperations(
   );
 
   if (operationsLeft.length) {
-    log('info', operationsLeft.length, ' operations left.');
+    log('info', `📃 - ${operationsLeft.length} operations left.`);
     return processOperations(
       {
         APP_ENV,
@@ -236,7 +207,7 @@ async function processOperations(
       operationsLeft,
     );
   }
-  log('info', 'No more operations.');
+  log('info', '🤷 - No more operations.');
 }
 
 async function buildAnyLambda(
@@ -245,14 +216,12 @@ async function buildAnyLambda(
     PROJECT_DIR,
     compiler,
     log,
-    $autoload,
     buildInitializer,
   }: {
     APP_ENV: string;
     PROJECT_DIR: string;
     compiler: WhookCompilerService;
     log: LogService;
-    $autoload: Autoloader<Initializer<Dependencies, Service>>;
     buildInitializer: BuildInitializer;
   },
   operation: WhookOperation<WhookAPIOperationGCPFunctionConfig>,
@@ -265,36 +234,25 @@ async function buildAnyLambda(
     ] || { type: 'http' };
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
-    const entryPoint = operationId;
     const finalEntryPoint =
       (sourceOperationId ? sourceOperationId : operationId) +
       ((operation['x-whook'] || {}).suffix || '');
-    log('warning', `Building ${operationType} "${finalEntryPoint}"...`);
-    const buildDefinition = BUILD_DEFINITIONS[operationType];
-    // eslint-disable-next-line
-    const applyWrapper = (await import(buildDefinition.wrapper.path)).default;
-    const rootNode = await $autoload(
-      entryPoint + (buildDefinition.suffix || ''),
-    );
+
+    log('warning', `🏗 - Building ${operationType} "${finalEntryPoint}"...`);
+
     const lambdaPath = path.join(
       PROJECT_DIR,
       'builds',
       APP_ENV,
       finalEntryPoint,
     );
-    const finalHandlerInitializer = applyWrapper(rootNode.initializer);
 
-    const initializerContent = await buildInitializer(
-      finalHandlerInitializer[SPECIAL_PROPS.INJECT].map((name) =>
-        name === 'OPERATION_API'
-          ? `OPERATION_API>OPERATION_API_${finalEntryPoint}`
-          : name,
-      ),
+    const initializerContent = await buildInitializer([
+      `OPERATION_HANDLER_${finalEntryPoint}`,
+    ]);
+    const indexContent = await buildLambdaIndex(
+      `OPERATION_HANDLER_${finalEntryPoint}`,
     );
-    const indexContent = await buildLambdaIndex(rootNode, {
-      name: buildDefinition.wrapper.name,
-      path: buildDefinition.wrapper.path,
-    });
 
     await mkdirp(lambdaPath);
     await Promise.all([
@@ -314,29 +272,19 @@ async function buildAnyLambda(
   } catch (err) {
     log('error', `Error building "${operationId}"...`);
     log('error-stack', printStackTrace(err as Error));
-    log('debug', JSON.stringify((err as YError).params, null, 2));
     throw YError.wrap(err as Error, 'E_LAMBDA_BUILD', operationId);
   }
 }
 
-async function buildLambdaIndex(
-  rootNode: { path: string },
-  buildWrapper: { name: string; path: string },
-): Promise<string> {
-  return `import initHandler from '${rootNode.path}';
-import ${buildWrapper.name} from '${buildWrapper.path}';
+async function buildLambdaIndex(name: string): Promise<string> {
+  return `// Automatically generated by \`@whook/gcp-functions\`
 import { initialize } from './initialize.js';
 
-const handlerInitializer = ${buildWrapper.name}(
-    initHandler
-);
+const initializationPromise = initialize();
 
-const handlerPromise = initialize()
-  .then(handlerInitializer);
-
-  export default function handler (req, res) {
-  return handlerPromise
-  .then(handler => handler(req, res));
+export default function handler (req, res) {
+  return initializationPromise
+    .then(services => services['${name}'](req, res));
 };
 `;
 }

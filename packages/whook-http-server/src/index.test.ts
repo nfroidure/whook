@@ -3,14 +3,14 @@ import initHTTPServer from './index.js';
 import axios from 'axios';
 import net from 'net';
 import { YError } from 'yerror';
-import type { HTTPRouterService } from '@whook/http-router';
+import type { WhookHTTPRouterService } from '@whook/http-router';
 import type { LogService } from 'common-services';
 
 describe('initHTTPServer', () => {
   const PORT = 7777;
   const HOST = 'localhost';
   const log = jest.fn<LogService>();
-  const httpRouter = jest.fn<HTTPRouterService>();
+  const httpRouter = jest.fn<WhookHTTPRouterService>();
 
   beforeEach(() => {
     log.mockReset();
@@ -162,7 +162,7 @@ describe('initHTTPServer', () => {
           'Access-Control-Allow-Headers': 'Content-Type',
         });
         res.end();
-      }) as unknown as HTTPRouterService,
+      }) as unknown as WhookHTTPRouterService,
     });
 
     const { status } = await axios({

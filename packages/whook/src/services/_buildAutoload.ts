@@ -2,12 +2,13 @@
 import initAutoload from './_autoload.js';
 import { noop } from '../libs/utils.js';
 import {
+  UNBUILDABLE_SERVICES,
   SPECIAL_PROPS,
   wrapInitializer,
   constant,
   alsoInject,
 } from 'knifecycle';
-import type { WhookBuildConstantsService } from '../index.js';
+import type { WhookBuildConstantsService } from '../services/BUILD_CONSTANTS.js';
 import type {
   Knifecycle,
   Autoloader,
@@ -18,15 +19,6 @@ import type {
 } from 'knifecycle';
 import { printStackTrace } from 'yerror';
 import type { LogService } from 'common-services';
-
-const KNIFECYCLE_UNBUILDABLE = [
-  '$dispose',
-  '$autoload',
-  '$injector',
-  '$instance',
-  '$siloContext',
-  '$fatalError',
-];
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
@@ -51,20 +43,13 @@ const initializerWrapper: ServiceInitializerWrapper<
   log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
 
   return async (serviceName) => {
-    if (KNIFECYCLE_UNBUILDABLE.includes(serviceName)) {
+    if (UNBUILDABLE_SERVICES.includes(serviceName)) {
       log(
         'warning',
-        `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${KNIFECYCLE_UNBUILDABLE.join(
+        `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${UNBUILDABLE_SERVICES.join(
           ', ',
         )}) can give unpredictable results!`,
       );
-      return {
-        initializer: constant(serviceName, undefined),
-        path: `constant://${serviceName}`,
-      };
-    }
-
-    if (serviceName === 'HANDLERS') {
       return {
         initializer: constant(serviceName, undefined),
         path: `constant://${serviceName}`,
@@ -116,10 +101,12 @@ const initializerWrapper: ServiceInitializerWrapper<
  *  Lambda compatible code.
  * @param  {Object}   services
  * The services ENV depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value to add it to the build env
- * @param  {Object}   [services.PROXYED_ENV_VARS={}]
- * A list of environment variable names to proxy
+ * @param  {Object}   [services.BUILD_CONSTANTS]
+ * The injected BUILD_CONSTANTS value to add it to the build env
+ * @param  {Object}   $instance
+ * A Knifecycle instance
+ * @param  {Object}   $injector
+ * The Knifecycle injector
  * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}

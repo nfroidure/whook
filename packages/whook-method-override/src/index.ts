@@ -1,9 +1,11 @@
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { pickFirstHeaderValue } from '@whook/http-transaction';
 import type { ServiceInitializer, Dependencies } from 'knifecycle';
-import type { HTTPTransactionService } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { WhookHTTPTransaction } from '@whook/http-transaction';
+import type {
+  WhookHTTPTransaction,
+  WhookHTTPTransactionService,
+} from '@whook/http-transaction';
 import type { ServerResponse, IncomingMessage } from 'http';
 
 /**
@@ -15,18 +17,18 @@ import type { ServerResponse, IncomingMessage } from 'http';
 export default function wrapHTTPTransactionWithMethodOverride<
   D extends Dependencies,
 >(
-  initHTTPTransaction: ServiceInitializer<D, HTTPTransactionService>,
-): ServiceInitializer<D & { log: LogService }, HTTPTransactionService> {
+  initHTTPTransaction: ServiceInitializer<D, WhookHTTPTransactionService>,
+): ServiceInitializer<D & { log: LogService }, WhookHTTPTransactionService> {
   const augmentedInitializer = alsoInject<
     { log: LogService },
     D,
-    HTTPTransactionService
+    WhookHTTPTransactionService
   >(['log'], initHTTPTransaction);
 
   return wrapInitializer(
     async (
       services: { log: LogService } & D,
-      httpTransaction: HTTPTransactionService,
+      httpTransaction: WhookHTTPTransactionService,
     ) => {
       services.log(
         'debug',

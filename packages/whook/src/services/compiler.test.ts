@@ -3,10 +3,12 @@ import path from 'path';
 import * as esbuild from 'esbuild';
 import * as esbuildNodeExternals from 'esbuild-node-externals';
 import initCompiler from './compiler.js';
+import { NodeEnv } from 'application-services';
+import type { AppEnvVars } from 'application-services';
 import type { ImporterService, LogService } from 'common-services';
 
 describe('Compiler', () => {
-  const NODE_ENV = 'production';
+  const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Production };
   const PROJECT_DIR = '/home/whoami/my_project';
   const DEBUG_NODE_ENVS = [];
   const COMPILER_OPTIONS = {};
@@ -24,7 +26,7 @@ describe('Compiler', () => {
 
     const compiler = await initCompiler({
       PROJECT_DIR,
-      NODE_ENV,
+      ENV,
       DEBUG_NODE_ENVS,
       COMPILER_OPTIONS,
       importer,
@@ -40,7 +42,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
 {
-  "contentsLength": 41955,
+  "contentsLength": 48299,
   "extension": ".mjs",
   "logCalls": [],
   "mappingsLength": 0,
@@ -54,7 +56,7 @@ describe('Compiler', () => {
 
     const compiler = await initCompiler({
       PROJECT_DIR,
-      NODE_ENV,
+      ENV,
       DEBUG_NODE_ENVS,
       COMPILER_OPTIONS: { ...COMPILER_OPTIONS, excludeNodeModules: true },
       importer,
@@ -70,7 +72,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
 {
-  "contentsLength": 3699,
+  "contentsLength": 3702,
   "extension": ".mjs",
   "logCalls": [],
   "mappingsLength": 0,
@@ -84,7 +86,7 @@ describe('Compiler', () => {
 
     const compiler = await initCompiler({
       PROJECT_DIR,
-      NODE_ENV,
+      ENV,
       DEBUG_NODE_ENVS,
       COMPILER_OPTIONS: {
         ...COMPILER_OPTIONS,
@@ -104,7 +106,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
 {
-  "contentsLength": 5297,
+  "contentsLength": 5300,
   "extension": ".cjs",
   "logCalls": [],
   "mappingsLength": 0,

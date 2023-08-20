@@ -25,7 +25,13 @@ describe('WHOOK_PLUGINS_PATHS', () => {
         WHOOK_PLUGINS_PATHS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         resolveCalls: resolve.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "WHOOK_PLUGINS_PATHS": [],
+  "logCalls": [],
+  "resolveCalls": [],
+}
+`);
     });
 
     it('with some plugins', async () => {
@@ -47,7 +53,42 @@ describe('WHOOK_PLUGINS_PATHS', () => {
         WHOOK_PLUGINS_PATHS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         resolveCalls: resolve.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+{
+  "WHOOK_PLUGINS_PATHS": [
+    "/var/lib/node/node_modules/@whook",
+    "/var/lib/node/node_modules/@whook",
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "➰ - Plugin "@whook/graphql" resolved to "/var/lib/node/node_modules/@whook".",
+    ],
+    [
+      "debug",
+      "➰ - Plugin "@whook/whook" resolved to "/var/lib/node/node_modules/@whook".",
+    ],
+  ],
+  "resolveCalls": [
+    [
+      "@whook/graphql",
+      {
+        "paths": [
+          "/home/whoami/my-whook-project/src",
+        ],
+      },
+    ],
+    [
+      "@whook/whook",
+      {
+        "paths": [
+          "/home/whoami/my-whook-project/src",
+        ],
+      },
+    ],
+  ],
+}
+`);
     });
   });
 
@@ -72,7 +113,25 @@ describe('WHOOK_PLUGINS_PATHS', () => {
           errorParams: (err as YError).params,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           resolveCalls: resolve.mock.calls,
-        }).toMatchSnapshot();
+        }).toMatchInlineSnapshot(`
+{
+  "errorCode": "E_BAD_WHOOK_PLUGIN",
+  "errorParams": [
+    "@whook/unreal",
+  ],
+  "logCalls": [],
+  "resolveCalls": [
+    [
+      "@whook/unreal",
+      {
+        "paths": [
+          "/home/whoami/my-whook-project/src",
+        ],
+      },
+    ],
+  ],
+}
+`);
       }
     });
   });

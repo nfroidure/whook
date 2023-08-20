@@ -44,13 +44,17 @@ describe('runServer', () => {
 
       $.register(constant('BASE_PATH', BASE_PATH));
       $.register(constant('API', API));
-      $.register(constant('ENV', {}));
-      $.register(constant('NODE_ENV', 'test'));
+      $.register(constant('APP_ENV', 'local'));
+      $.register(
+        constant('ENV', {
+          NODE_ENV: 'test',
+          JWT_SECRET: 'lol',
+        }),
+      );
       $.register(constant('PORT', PORT));
       $.register(constant('HOST', HOST));
       $.register(constant('WRAPPERS', []));
       $.register(constant('DEBUG_NODE_ENVS', []));
-      $.register(constant('NODE_ENVS', ['test']));
       $.register(
         constant('HANDLERS', {
           getPing: jest.fn(() => ({ status: 200 })),

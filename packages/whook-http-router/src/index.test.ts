@@ -5,15 +5,17 @@ import StreamTest from 'streamtest';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';
 import initHTTPRouter from './index.js';
+import { NodeEnv } from 'application-services';
 import initErrorHandler from './services/errorHandler.js';
 import type { OpenAPIV3 } from 'openapi-types';
 import type {
-  HTTPTransactionService,
+  WhookHTTPTransactionService,
   WhookHandler,
   WhookResponse,
 } from '@whook/http-transaction';
 import type { IncomingMessage, ServerResponse } from 'http';
 import type { LogService } from 'common-services';
+import type { AppEnvVars } from 'application-services';
 
 function waitResponse(response, raw = true) {
   return new Promise((resolve, reject) => {
@@ -78,7 +80,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
   };
   return {
     HANDLERS,
-    httpTransaction: httpTransaction as unknown as HTTPTransactionService,
+    httpTransaction: httpTransaction as unknown as WhookHTTPTransactionService,
     httpTransactionStart,
     httpTransactionCatch,
     httpTransactionEnd,
@@ -87,7 +89,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
 }
 
 describe('initHTTPRouter', () => {
-  const NODE_ENV = 'test';
+  const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Test };
   const DEBUG_NODE_ENVS = ['test'];
   const BASE_PATH = '/v1';
   const API: OpenAPIV3.Document = {
@@ -525,12 +527,12 @@ describe('initHTTPRouter', () => {
   test('should work', async () => {
     const { httpTransaction, HANDLERS } = prepareTransaction();
     const errorHandler = await initErrorHandler({
-      NODE_ENV,
+      ENV,
       DEBUG_NODE_ENVS,
       ERRORS_DESCRIPTORS: {},
     });
     const httpRouter = await initHTTPRouter({
-      NODE_ENV,
+      ENV,
       DEBUG_NODE_ENVS,
       HANDLERS,
       API,
@@ -552,13 +554,13 @@ describe('initHTTPRouter', () => {
       try {
         const { httpTransaction, HANDLERS } = prepareTransaction();
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
 
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API: {
@@ -585,13 +587,13 @@ describe('initHTTPRouter', () => {
       try {
         const { httpTransaction, HANDLERS } = prepareTransaction();
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
 
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API: {
@@ -619,14 +621,14 @@ describe('initHTTPRouter', () => {
     test('when operation path is bad', async () => {
       try {
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API: {
@@ -654,13 +656,13 @@ describe('initHTTPRouter', () => {
       try {
         const { httpTransaction, handler } = prepareTransaction();
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
 
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS: {
             lol: handler,
@@ -693,12 +695,12 @@ describe('initHTTPRouter', () => {
       try {
         const { httpTransaction } = prepareTransaction();
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS: {},
           API,
@@ -716,14 +718,14 @@ describe('initHTTPRouter', () => {
     test('when an operation has no name', async () => {
       try {
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API: {
@@ -760,14 +762,14 @@ describe('initHTTPRouter', () => {
     test('when an operation has no schema', async () => {
       try {
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API: {
@@ -802,14 +804,14 @@ describe('initHTTPRouter', () => {
     test('when an operation has no in value', async () => {
       try {
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
 
         await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API: {
@@ -871,12 +873,12 @@ describe('initHTTPRouter', () => {
         });
 
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,
@@ -935,12 +937,12 @@ describe('initHTTPRouter', () => {
           },
         });
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,
@@ -1000,12 +1002,12 @@ describe('initHTTPRouter', () => {
           },
         });
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,
@@ -1071,12 +1073,12 @@ describe('initHTTPRouter', () => {
             },
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1137,12 +1139,12 @@ describe('initHTTPRouter', () => {
             body: StreamTest.v2.fromChunks(['he', 'llo']),
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1209,13 +1211,13 @@ describe('initHTTPRouter', () => {
             },
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             STRINGIFYERS: {},
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             STRINGIFYERS: {},
             HANDLERS,
@@ -1279,13 +1281,13 @@ describe('initHTTPRouter', () => {
             'application/json': (content: string) => JSON.stringify(content),
           };
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             STRINGIFYERS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1352,12 +1354,12 @@ describe('initHTTPRouter', () => {
             },
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1418,12 +1420,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction(null);
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1482,12 +1484,12 @@ describe('initHTTPRouter', () => {
           } = prepareTransaction(Promise.resolve());
 
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1549,12 +1551,12 @@ describe('initHTTPRouter', () => {
             }),
           );
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1612,12 +1614,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction(Promise.resolve({}));
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1678,12 +1680,12 @@ describe('initHTTPRouter', () => {
           } = prepareTransaction();
 
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1739,12 +1741,12 @@ describe('initHTTPRouter', () => {
           } = prepareTransaction();
 
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -1802,12 +1804,12 @@ describe('initHTTPRouter', () => {
         );
 
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,
@@ -1870,12 +1872,12 @@ describe('initHTTPRouter', () => {
           HANDLERS,
         } = prepareTransaction(Promise.reject(handlerError));
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,
@@ -1935,12 +1937,12 @@ describe('initHTTPRouter', () => {
         } = prepareTransaction();
 
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,
@@ -2006,12 +2008,12 @@ describe('initHTTPRouter', () => {
             },
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2084,12 +2086,12 @@ describe('initHTTPRouter', () => {
             body: StreamTest.v2.fromChunks(['he', 'llo']),
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2156,12 +2158,12 @@ describe('initHTTPRouter', () => {
             },
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2231,12 +2233,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction(Promise.resolve({}));
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2292,12 +2294,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction(Promise.resolve({}));
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2356,12 +2358,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2424,12 +2426,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2491,12 +2493,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2557,12 +2559,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2624,12 +2626,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2689,12 +2691,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2757,12 +2759,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2825,12 +2827,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2898,12 +2900,12 @@ describe('initHTTPRouter', () => {
             },
           });
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -2964,12 +2966,12 @@ describe('initHTTPRouter', () => {
             HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
           const httpRouter = await initHTTPRouter({
-            NODE_ENV,
+            ENV,
             DEBUG_NODE_ENVS,
             HANDLERS,
             API,
@@ -3033,12 +3035,12 @@ describe('initHTTPRouter', () => {
           headers: {},
         });
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,
@@ -3088,12 +3090,12 @@ describe('initHTTPRouter', () => {
           HANDLERS,
         } = prepareTransaction();
         const errorHandler = await initErrorHandler({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
         const httpRouter = await initHTTPRouter({
-          NODE_ENV,
+          ENV,
           DEBUG_NODE_ENVS,
           HANDLERS,
           API,

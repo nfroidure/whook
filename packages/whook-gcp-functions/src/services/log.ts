@@ -1,4 +1,4 @@
 import { service } from 'knifecycle';
+import { log } from 'node:console';
 
-// eslint-disable-next-line
-export default service(async () => console.log.bind(console), 'log');
+export default service(async () => log, 'log');

@@ -5,7 +5,7 @@ import { noop } from '../libs/utils.js';
 import type { WhookHandler } from '@whook/http-transaction';
 import type {
   WhookCommandDefinition,
-  PromptArgs,
+  WhookPromptArgs,
   WhookCommandHandler,
 } from '../services/promptArgs.js';
 import type { Injector, Parameters } from 'knifecycle';
@@ -41,7 +41,7 @@ async function initHandlerCommand({
 }: {
   $injector: Injector<Record<string, WhookHandler>>;
   log?: LogService;
-  promptArgs: PromptArgs;
+  promptArgs: WhookPromptArgs;
 }): Promise<WhookCommandHandler> {
   return async () => {
     const {

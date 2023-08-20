@@ -1,26 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type { ServiceInitializer, Dependencies } from 'knifecycle';
 import type {
   WhookOperation,
-  APMService,
+  WhookAPMService,
   WhookHandler,
   WhookResponse,
   WhookHeaders,
+  WhookWrapper,
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { MSKEvent, Context } from 'aws-lambda';
-
-type KafkaConsumerWrapperDependencies = {
-  NODE_ENV: string;
-  OPERATION_API: OpenAPIV3.Document;
-  apm: APMService;
-  time?: TimeService;
-  log?: LogService;
-};
+import type { AppEnvVars } from 'application-services';
 
 export type LambdaKafkaConsumerInput = { body: MSKEvent['records'] };
 export type LambdaKafkaConsumerOutput = WhookResponse<
@@ -29,41 +22,62 @@ export type LambdaKafkaConsumerOutput = WhookResponse<
   unknown
 >;
 
-export default function wrapHandlerForAWSKafkaConsumerLambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & KafkaConsumerWrapperDependencies, S> {
-  return alsoInject<KafkaConsumerWrapperDependencies, D, S>(
-    ['OPERATION_API', 'NODE_ENV', 'apm', '?time', '?log'],
-    reuseSpecialProps(
-      initHandler,
-      (initHandlerForAWSKafkaConsumerLambda as any).bind(
-        null,
-        initHandler,
-      ) as ServiceInitializer<D, S>,
-    ),
-  );
-}
+export type WhookWrapKafkaLambdaDependencies = {
+  ENV: AppEnvVars;
+  OPERATION_API: OpenAPIV3.Document;
+  apm: WhookAPMService;
+  time?: TimeService;
+  log?: LogService;
+};
 
-async function initHandlerForAWSKafkaConsumerLambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(initHandler: ServiceInitializer<D, S>, services: D): Promise<S> {
-  const handler: S = await initHandler(services);
+/**
+ * Wrap an handler to make it work with a kafka AWS Lambda.
+ * @param  {Object}   services
+ * The services the wrapper depends on
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.OPERATION_API
+ * An OpenAPI definitition for that handler
+ * @param  {Object}   services.apm
+ * An application monitoring service
+ * @param  {Object}   [services.time]
+ * An optional time service
+ * @param  {Object}   [services.log=noop]
+ * An optional logging service
+ * @return {Promise<Object>}
+ * A promise of an object containing the reshaped env vars.
+ */
 
-  return (handleForAWSKafkaConsumerLambda as any).bind(null, services, handler);
+async function initWrapHandlerForKafkaLambda<S extends WhookHandler>({
+  ENV,
+  OPERATION_API,
+  apm,
+  time = Date.now.bind(Date),
+  log = noop,
+}: WhookWrapKafkaLambdaDependencies): Promise<WhookWrapper<S>> {
+  log('debug', '📥 - Initializing the AWS Lambda kafka wrapper.');
+
+  const wrapper = async (handler: S): Promise<S> => {
+    const wrappedHandler = handleForAWSKafkaConsumerLambda.bind(
+      null,
+      { ENV, OPERATION_API, apm, time, log },
+      handler as any,
+    );
+
+    return wrappedHandler as unknown as S;
+  };
+
+  return wrapper;
 }
 
 async function handleForAWSKafkaConsumerLambda(
   {
-    NODE_ENV,
+    ENV,
     OPERATION_API,
     apm,
-    time = Date.now.bind(Date),
-    log = noop,
-  }: KafkaConsumerWrapperDependencies,
+    time,
+    log,
+  }: Required<WhookWrapKafkaLambdaDependencies>,
   handler: WhookHandler<LambdaKafkaConsumerInput, LambdaKafkaConsumerOutput>,
   event: MSKEvent,
   context: Context,
@@ -87,7 +101,7 @@ async function handleForAWSKafkaConsumerLambda(
     await handler(parameters, OPERATION);
 
     apm('KAFKA', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':MSKEventRecord' },
@@ -105,7 +119,7 @@ async function handleForAWSKafkaConsumerLambda(
     const castedErr = YError.cast(err as Error);
 
     apm('KAFKA', {
-      environment: NODE_ENV,
+      environment: ENV.NODE_ENV,
       triggerTime: startTime,
       lambdaName: OPERATION.operationId,
       parameters: { body: ':MSKEventRecord' },
@@ -124,3 +138,5 @@ async function handleForAWSKafkaConsumerLambda(
     callback(err as Error);
   }
 }
+
+export default autoService(initWrapHandlerForKafkaLambda);

@@ -78,9 +78,10 @@ Instantiate the httpTransaction service
 **Example**  
 ```js
 import initHTTPTransaction from '@whook/http-transaction';
+import { log } from 'node:console';
 
 const httpTransaction = await initHTTPTransaction({
-  log: console.log.bind(console),
+  log,
   time: Date.now.bind(Date),
 });
 ```
@@ -158,10 +159,11 @@ Obfuscate sensible informations.
 ```js
 import { initObfuscator } from '@whook/http-transaction';
 import { alsoInject } from 'knifecycle';
+import { log } from 'node:console';
 
 const obfuscator = await initObfuscator();
 
-console.log(obfuscator('my very secret information!));
+log(obfuscator('my very secret information!));
 // my ...on!
 ```
 <a name="WhookHTTPTransaction"></a>

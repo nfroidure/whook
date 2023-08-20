@@ -2,7 +2,8 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initConfigCommand from './config.js';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
-import type { PromptArgs } from '../services/promptArgs.js';
+import type { WhookPromptArgs } from '../services/promptArgs.js';
+import type { AppConfig } from 'application-services';
 
 describe('configCommand', () => {
   const APP_CONFIG = {
@@ -12,8 +13,8 @@ describe('configCommand', () => {
       },
       version: '2.1.1',
     },
-  };
-  const promptArgs = jest.fn<PromptArgs>();
+  } as AppConfig;
+  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
 
   beforeEach(() => {

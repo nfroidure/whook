@@ -1,6 +1,7 @@
 import { autoHandler } from 'knifecycle';
 import type { WhookAPIHandlerDefinition } from '../services/API_DEFINITIONS.js';
 import type { WhookResponse } from '@whook/http-transaction';
+import type { AppEnvVars } from 'application-services';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/ping',
@@ -34,14 +35,14 @@ export const definition: WhookAPIHandlerDefinition = {
 export default autoHandler(getPing);
 
 async function getPing({
-  NODE_ENV,
+  ENV,
 }: {
-  NODE_ENV: string;
+  ENV: AppEnvVars;
 }): Promise<WhookResponse<200, { 'X-Node-ENV': string }, { pong: 'pong' }>> {
   return {
     status: 200,
     headers: {
-      'X-Node-ENV': NODE_ENV,
+      'X-Node-ENV': ENV.NODE_ENV,
     },
     body: {
       pong: 'pong',

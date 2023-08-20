@@ -1,11 +1,12 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initEnvCommand from './env.js';
 import { YError } from 'yerror';
+import { NodeEnv } from 'application-services';
 import type { LogService } from 'common-services';
-import type { PromptArgs } from '../services/promptArgs.js';
+import type { WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('envCommand', () => {
-  const promptArgs = jest.fn<PromptArgs>();
+  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
 
   beforeEach(() => {
@@ -24,7 +25,7 @@ describe('envCommand', () => {
 
     const envCommand = await initEnvCommand({
       log,
-      ENV: { NODE_ENV: '1' },
+      ENV: { NODE_ENV: NodeEnv.Development },
       promptArgs,
     });
     const result = await envCommand();
@@ -38,7 +39,7 @@ describe('envCommand', () => {
   "logCalls": [
     [
       "info",
-      "1",
+      "development",
     ],
   ],
   "promptArgsCalls": [
@@ -54,14 +55,16 @@ describe('envCommand', () => {
       command: 'whook',
       rest: ['env'],
       namedArguments: {
-        name: 'NODE_ENV',
-        default: 'lol',
+        name: 'APP_ENV',
+        default: 'local',
       },
     });
 
     const envCommand = await initEnvCommand({
       log,
-      ENV: {},
+      ENV: {
+        NODE_ENV: NodeEnv.Test,
+      },
       promptArgs,
     });
     const result = await envCommand();
@@ -71,19 +74,19 @@ describe('envCommand', () => {
       promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [
-          [
-            "info",
-            "lol",
-          ],
-        ],
-        "promptArgsCalls": [
-          [],
-        ],
-        "result": undefined,
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "info",
+      "local",
+    ],
+  ],
+  "promptArgsCalls": [
+    [],
+  ],
+  "result": undefined,
+}
+`);
   });
 
   it('should fail with no value', async () => {
@@ -91,13 +94,15 @@ describe('envCommand', () => {
       command: 'whook',
       rest: ['env'],
       namedArguments: {
-        name: 'NODE_ENV',
+        name: 'APP_ENV',
       },
     });
 
     const envCommand = await initEnvCommand({
       log,
-      ENV: {},
+      ENV: {
+        NODE_ENV: NodeEnv.Production,
+      },
       promptArgs,
     });
 
@@ -111,17 +116,17 @@ describe('envCommand', () => {
         promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-        {
-          "errorCode": "E_NO_ENV_VALUE",
-          "errorParams": [
-            "NODE_ENV",
-          ],
-          "logCalls": [],
-          "promptArgsCalls": [
-            [],
-          ],
-        }
-      `);
+{
+  "errorCode": "E_NO_ENV_VALUE",
+  "errorParams": [
+    "APP_ENV",
+  ],
+  "logCalls": [],
+  "promptArgsCalls": [
+    [],
+  ],
+}
+`);
     }
   });
 });

@@ -50,8 +50,8 @@
       1. [Services stubs](#351-services-stubs)
       2. [Handler initialization](#352-handler-initialization)
       3. [Handler run](#353-handler-run)
-4. [Serving the Open API](#4-serving-the-open-api)
 4. [Services](#4-services)
+4. [Serving the Open API](#4-serving-the-open-api)
    1. [authentication](#41-authentication)
    2. [filterAPITags](#42-filterapitags)
    3. [jwtToken](#43-jwttoken)
@@ -60,6 +60,7 @@
    6. [WRAPPERS](#46-wrappers)
 5. [Commands](#5-commands)
    1. [Definition](#51-definition)
+   2. [Wrappers auto loading support](#52-wrappers-auto-loading-support)
    2. [Implementation](#52-implementation)
 6. [REPL](#6-repl)
 7. [Watch server](#7-watch-server)
@@ -74,7 +75,7 @@ You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 
-[See in context](./src/index.ts#L16-L23)
+[See in context](./src/index.ts#L19-L26)
 
 
 
@@ -83,7 +84,7 @@ You can see a view of the full architecture document
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 
-[See in context](./src/index.ts#L25-L29)
+[See in context](./src/index.ts#L32-L36)
 
 
 
@@ -95,7 +96,7 @@ The `runServer` function is intended to run the server
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L31-L38)
+[See in context](./src/index.ts#L38-L45)
 
 
 
@@ -105,7 +106,7 @@ The `prepareServer` function is intended to prepare the server
  environment. It relies on the main environment but will be
  used only by the server, not the commands or build scripts.
 
-[See in context](./src/index.ts#L57-L62)
+[See in context](./src/index.ts#L64-L69)
 
 
 
@@ -115,7 +116,7 @@ Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L67-L72)
+[See in context](./src/index.ts#L74-L79)
 
 
 
@@ -123,7 +124,7 @@ Add here any logic bound to the server only
 
 The `prepareEnvironment` one is intended to prepare the server environment
 
-[See in context](./src/index.ts#L78-L81)
+[See in context](./src/index.ts#L86-L89)
 
 
 
@@ -139,7 +140,7 @@ OR, like in this example, use the Whook `$autoload` service
  autoloader by creating a service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L101-L112)
+[See in context](./src/index.ts#L109-L120)
 
 
 
@@ -151,7 +152,7 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L115-L122)
+[See in context](./src/index.ts#L123-L130)
 
 
 
@@ -161,7 +162,7 @@ You have to declare the project main file directory
  to allow autoloading features to work with it either
  in development and production (files built in `dist/`).
 
-[See in context](./src/index.ts#L125-L130)
+[See in context](./src/index.ts#L133-L138)
 
 
 
@@ -194,7 +195,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L141-L169)
+[See in context](./src/index.ts#L150-L178)
 
 
 
@@ -205,7 +206,7 @@ Plugins allows you to add simple features to the Whook's core,
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L172-L178)
+[See in context](./src/index.ts#L181-L187)
 
 
 
@@ -244,7 +245,7 @@ Configuration is done for each environement in the
 The `src/config/common/config.ts` one allows to add common
  configurations for all environements.
 
-[See in context](./src/config/common/config.ts#L5-L12)
+[See in context](./src/config/common/config.ts#L6-L13)
 
 
 
@@ -253,7 +254,7 @@ The `src/config/common/config.ts` one allows to add common
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/whook.d.ts#L21-L25)
+[See in context](./src/whook.d.ts#L31-L35)
 
 
 
@@ -274,7 +275,7 @@ Finally the configuration file for a given environnment
  may reuse or override the custom configuration file
  like here for the development configuration.
 
-[See in context](./src/config/development/config.ts#L4-L9)
+[See in context](./src/config/local/config.ts#L4-L9)
 
 
 
@@ -453,7 +454,7 @@ Here we export a custom handler definition type in order
  to allow using the various plugins installed that deal
  with the handlers.
 
-[See in context](./src/whook.d.ts#L34-L39)
+[See in context](./src/whook.d.ts#L46-L51)
 
 
 
@@ -502,7 +503,7 @@ Here is a simple handler that just proxy the `TRANSACTIONS`
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 
-[See in context](./src/handlers/getParameters.ts#L40-L44)
+[See in context](./src/handlers/getParameters.ts#L56-L60)
 
 
 
@@ -566,6 +567,25 @@ Then run the handler and get the response.
 
 
 
+## 4. Services
+
+Whook is shipped with a lots of services aimed to
+ ease your life.
+
+Handlers, services, commands can use services for their
+ own needs. In fact handlers are services too so that
+ you can reuse an handler inside another (for example to
+ create a bulk API endpoint and run each handlers into it).
+
+Whook's service can come from:
+- the Whook's base environment
+- the plugins services (found in the `@whook/{plugin}/src/services` folder)
+- the project services (in the `src/services` folder)
+
+[See in context](./src/index.ts#L93-L106)
+
+
+
 ## 4. Serving the Open API
 
 Whook provides a handler to serve the final Open API
@@ -582,25 +602,6 @@ The fact that definitions are simple objects make them
  default definition of this endpoint.
 
 [See in context](./src/handlers/getOpenAPI.ts#L6-L20)
-
-
-
-## 4. Services
-
-Whook is shipped with a lots of services aimed to
- ease your life.
-
-Handlers, services, commands can use services for their
- own needs. In fact handlers are services too so that
- you can reuse an handler inside another (for example to
- create a bulk API endpoint and run each handlers into it).
-
-Whook's service can come from:
-- the Whook's base environment
-- the plugins services (found in the `@whook/{plugin}/src/services` folder)
-- the project services (in the `src/services` folder)
-
-[See in context](./src/index.ts#L85-L98)
 
 
 
@@ -626,7 +627,7 @@ For example, to create a server with only `system` and
 FILTER_API_TAGS=system,example npm start
 ```
 
-[See in context](./src/services/FILTER_API_TAGS.ts#L8-L20)
+[See in context](./src/services/FILTER_API_TAGS.ts#L11-L23)
 
 
 
@@ -695,7 +696,7 @@ Commands are a simple way to write utility scripts that leverage
  your application setup. It allows to simply inject services
  without worrying about their initialization.
 
-[See in context](./src/commands/printEnv.ts#L10-L27)
+[See in context](./src/commands/printEnv.ts#L7-L24)
 
 
 
@@ -705,7 +706,17 @@ To define a command, just write its definition
  and export it to make it available to Whook's
  command loader.
 
-[See in context](./src/commands/printEnv.ts#L29-L34)
+[See in context](./src/commands/printEnv.ts#L26-L31)
+
+
+
+### 5.2. Wrappers auto loading support
+
+We cannot inject the `WRAPPERS` in the auto loader when
+ it is dynamically loaded so giving a second chance here
+ for `WRAPPERS` to be set.
+
+[See in context](./src/index.ts#L190-L194)
 
 
 
@@ -715,7 +726,7 @@ To implement a command, just write a function that takes
  injected services as a first argument and return the
  command as an asynchronous function.
 
-[See in context](./src/commands/printEnv.ts#L51-L56)
+[See in context](./src/commands/printEnv.ts#L48-L53)
 
 
 

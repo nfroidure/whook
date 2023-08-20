@@ -19,10 +19,13 @@ describe('runREPL', () => {
     async function prepareEnvironment() {
       const $ = await basePrepareEnvironment();
 
-      $.register(constant('ENV', {}));
-      $.register(constant('NODE_ENV', 'test'));
+      $.register(
+        constant('ENV', {
+          NODE_ENV: 'test',
+        }),
+      );
       $.register(constant('DEBUG_NODE_ENVS', []));
-      $.register(constant('NODE_ENVS', ['test']));
+      $.register(constant('APP_ENV', 'local'));
       $.register(constant('logger', logger as Logger));
       $.register(constant('stdin', stdin));
       $.register(constant('stdout', stdout));

@@ -2,12 +2,9 @@ import { YHTTPError } from 'yhttperror';
 import FirstChunkStream from 'first-chunk-stream';
 import Stream from 'stream';
 import { YError } from 'yerror';
-import {
-  pickFirstHeaderValue,
-  WhookOperation,
-  WhookResponse,
-} from '@whook/http-transaction';
-import type { BodySpec } from './utils.js';
+import { pickFirstHeaderValue } from '@whook/http-transaction';
+import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
+import type { WhookBodySpec } from './utils.js';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type {
@@ -45,7 +42,7 @@ export async function getBody<
   },
   operation: WhookOperation,
   inputStream: Readable,
-  bodySpec: BodySpec,
+  bodySpec: WhookBodySpec,
 ): Promise<T | undefined> {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
   const requestBody = operation.requestBody

@@ -2,6 +2,7 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
 import { PassThrough } from 'stream';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
+import { NodeEnv } from 'application-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 
@@ -39,7 +40,7 @@ describe('generateOpenAPITypes', () => {
       outstream.once('end', () => resolve(buffer.toString()));
     });
     const generateOpenAPITypes = await initGenerateOpenAPITypes({
-      NODE_ENV: 'development',
+      ENV: { NODE_ENV: NodeEnv.Development },
       instream,
       outstream,
       log,

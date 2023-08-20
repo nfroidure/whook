@@ -4,8 +4,8 @@ import StreamTest from 'streamtest';
 import { YError } from 'yerror';
 import initHTTPTransaction from './index.js';
 import type { WhookHandler, WhookResponse } from './index.js';
-import type { APMService } from './services/apm.js';
-import type { ObfuscatorService } from './services/obfuscator.js';
+import type { WhookAPMService } from './services/apm.js';
+import type { WhookObfuscatorService } from './services/obfuscator.js';
 import type { IncomingMessage } from 'http';
 import type { LogService, TimeService, DelayService } from 'common-services';
 
@@ -17,7 +17,7 @@ function streamifyBody(response) {
 
 describe('initHTTPTransaction', () => {
   const log = jest.fn<LogService>();
-  const apm = jest.fn<APMService>();
+  const apm = jest.fn<WhookAPMService>();
   const time = jest.fn<TimeService>();
   const uniqueId = jest.fn<() => string>();
   const delay = {
@@ -25,11 +25,11 @@ describe('initHTTPTransaction', () => {
     clear: jest.fn<DelayService['clear']>(),
   };
   const obfuscator = {
-    obfuscate: jest.fn<ObfuscatorService['obfuscate']>(),
+    obfuscate: jest.fn<WhookObfuscatorService['obfuscate']>(),
     obfuscateSensibleProps:
-      jest.fn<ObfuscatorService['obfuscateSensibleProps']>(),
+      jest.fn<WhookObfuscatorService['obfuscateSensibleProps']>(),
     obfuscateSensibleHeaders:
-      jest.fn<ObfuscatorService['obfuscateSensibleHeaders']>(),
+      jest.fn<WhookObfuscatorService['obfuscateSensibleHeaders']>(),
   };
 
   beforeEach(() => {

@@ -11,8 +11,9 @@ If no `HOST` configuration is specified in dependencies nor in ENV,
 
 export default name('HOST', autoService(initHost));
 
-export type HostEnv = {
-  HOST?: string;
+export type WhookHost = string;
+export type WhookHostEnv = {
+  HOST?: WhookHost;
 };
 
 /**
@@ -34,10 +35,10 @@ async function initHost({
   log = noop,
   importer,
 }: {
-  ENV?: HostEnv;
+  ENV?: WhookHostEnv;
   log?: LogService;
   importer: ImporterService<{ internalIpV4: () => Promise<string> }>;
-}): Promise<string> {
+}): Promise<WhookHost> {
   log('debug', `🏭 - Initializing the HOST service.`);
 
   if ('undefined' !== typeof ENV.HOST) {

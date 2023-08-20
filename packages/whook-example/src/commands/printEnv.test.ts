@@ -1,5 +1,6 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initPrintEnvCommand from './printEnv.js';
+import { NodeEnv } from 'application-services';
 import type { LogService } from 'common-services';
 
 describe('printEnvCommand', () => {
@@ -14,7 +15,7 @@ describe('printEnvCommand', () => {
     // See : https://stackoverflow.com/questions/56349619/ts2352-declare-object-with-dynamic-properties-and-one-property-with-specific-t
     const printEnvCommand = await initPrintEnvCommand({
       log,
-      ENV: { NODE_ENV: 'test' },
+      ENV: { NODE_ENV: NodeEnv.Test },
       args: {
         command: 'whook',
         namedArguments: {

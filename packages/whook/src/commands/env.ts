@@ -4,7 +4,7 @@ import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import type {
   WhookCommandDefinition,
-  PromptArgs,
+  WhookPromptArgs,
 } from '../services/promptArgs.js';
 import type { AppEnvVars } from 'application-services';
 import type { LogService } from 'common-services';
@@ -37,7 +37,7 @@ async function initEnvCommand({
   log = noop,
 }: {
   ENV: AppEnvVars;
-  promptArgs: PromptArgs;
+  promptArgs: WhookPromptArgs;
   log?: LogService;
 }) {
   return async () => {

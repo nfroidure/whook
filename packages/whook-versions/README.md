@@ -15,25 +15,41 @@
 This [Whook](https://github.com/nfroidure/whook)'s wrapper simply answer
  to any HTTP call with a unsupported version header with a 418 HTTP error.
 
-To use this module, simply add it to your `WRAPPERS` service
- (usually in `src/services/WRAPPERS.ts`):
-```diff
-import { service } from 'knifecycle';
-+ import { wrapHandlerWithVersions } from '@whook/versions';
-import type { WhookWrapper } from '@whook/whook';
 
-export default service(initWrappers, 'WRAPPERS');
+To use this plugin, simply install it:
 
-async function initWrappers(): Promise<WhookWrapper<any, any>[]> {
--  const WRAPPERS = [];
-+  const WRAPPERS = [wrapHandlerWithVersions];
-
-  return WRAPPERS;
-}
+```sh
+npm i @whook/versions;
 ```
 
-Declare this module types in your `src/whook.d.ts` type
- definitions:
+Declare it in the `src/index.ts` file of your project:
+
+```diff
+
+  // ...
+
+  $.register(
+    constant('HANDLERS_WRAPPERS', [
++      'wrapHandlerWithVersionChecker',
+      'wrapHandlerWithAuthorization',
+    ]),
+  );
+
+  // ...
+
+  $.register(
+    constant('WHOOK_PLUGINS', [
+      '@whook/whook',
++      '@whook/versions',
+      '@whook/authorization',
+    ]),
+  );
+
+  // ...
+```
+
+Declare types in your `src/whook.d.ts` definition:
+
 ```diff
 // ...
 + import type { WhookVersionsConfig } from '@whook/versions';
@@ -95,25 +111,13 @@ export default CONFIG;
 ## Functions
 
 <dl>
-<dt><a href="#wrapHandlerWithVersionChecker">wrapHandlerWithVersionChecker(initHandler)</a> ⇒ <code>function</code></dt>
-<dd><p>Wrap an handler initializer to check versions headers.</p>
-</dd>
 <dt><a href="#augmentAPIWithVersionsHeaders">augmentAPIWithVersionsHeaders(API, VERSIONS)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Augment an OpenAPI with versions headers added.</p>
 </dd>
+<dt><a href="#initWrapHandlerWithVersionChecker">initWrapHandlerWithVersionChecker(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap an handler to append CORS to response.</p>
+</dd>
 </dl>
-
-<a name="wrapHandlerWithVersionChecker"></a>
-
-## wrapHandlerWithVersionChecker(initHandler) ⇒ <code>function</code>
-Wrap an handler initializer to check versions headers.
-
-**Kind**: global function  
-**Returns**: <code>function</code> - The handler initializer wrapped  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| initHandler | <code>function</code> | The handler initializer |
 
 <a name="augmentAPIWithVersionsHeaders"></a>
 
@@ -127,6 +131,20 @@ Augment an OpenAPI with versions headers added.
 | --- | --- | --- |
 | API | <code>Object</code> | The OpenAPI object |
 | VERSIONS | <code>Object</code> | The versions configurations |
+
+<a name="initWrapHandlerWithVersionChecker"></a>
+
+## initWrapHandlerWithVersionChecker(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to append CORS to response.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services ENV depends on |
+| services.VERSIONS | <code>Object</code> |  | A VERSIONS object with the versions configuration |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 
 # Authors

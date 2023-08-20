@@ -5,10 +5,10 @@ import initEnvCommand, {
 } from './env.js';
 import { YError } from 'yerror';
 import type { ImporterService, LogService } from 'common-services';
-import type { PromptArgs } from '../services/promptArgs.js';
+import type { WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('lsCommand', () => {
-  const promptArgs = jest.fn<PromptArgs>();
+  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
   const readDir = jest.fn<(dir: string) => Promise<string[]>>();
   const importer = jest.fn<ImporterService<unknown>>();

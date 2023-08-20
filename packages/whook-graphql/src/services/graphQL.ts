@@ -49,8 +49,8 @@ export default autoProvider(initGraphQL);
  * Initialize the GraphQL service
  * @param  {Object}   services
  * The services the server depends on
- * @param  {Object}   services.NODE_ENV
- * The injected NODE_ENV value
+ * @param  {Object}   services.ENV
+ * The injected ENV value
  * @param  {Object|Function}   [services.GRAPHQL_SERVER_OPTIONS]
  * The GraphQL options to pass to the server
  * @param  {String}   ENV
@@ -59,8 +59,6 @@ export default autoProvider(initGraphQL);
  * Fragments of GraphQL schemas/resolvers declaration
  * @param  {Function} [services.log=noop]
  * A logging function
- * @param  {Function} [services.time]
- * A function returning the current timestamp
  * @return {Promise}
  * A promise of a GraphQL service
  */

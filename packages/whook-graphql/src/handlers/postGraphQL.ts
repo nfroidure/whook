@@ -10,7 +10,7 @@ import type {
   WhookHeaders,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { WhookGraphQLService } from '../index.js';
+import type { WhookGraphQLService } from '../services/graphQL.js';
 import type {
   BaseWhookGraphQLContext,
   WhookGraphQLContext,

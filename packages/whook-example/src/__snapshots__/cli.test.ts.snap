@@ -42,6 +42,9 @@ exports[`commands should work with ls 1`] = `
 
 
 # Provided by "@whook/cors": none
+
+
+# Provided by "@whook/authorization": none
 ",
 }
 `;

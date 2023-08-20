@@ -1,13 +1,17 @@
 # API
-<a name="wrapHandlerWithAuthorization"></a>
+<a name="initWrapHandlerWithAuthorization"></a>
 
-## wrapHandlerWithAuthorization(initHandler) ⇒ <code>function</code>
-Wrap an handler initializer to check client's authorizations.
+## initWrapHandlerWithAuthorization(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to check client's authorizations.
 
 **Kind**: global function  
-**Returns**: <code>function</code> - The handler initializer wrapped  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| initHandler | <code>function</code> | The handler initializer |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services ENV depends on |
+| [services.MECHANISMS] | <code>Array</code> |  | The list of supported auth mechanisms |
+| [services.DEFAULT_MECHANISM] | <code>string</code> |  | The default authentication mechanism |
+| services.authentication | <code>Object</code> |  | The authentication service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 

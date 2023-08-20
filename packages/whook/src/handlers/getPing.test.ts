@@ -1,10 +1,11 @@
 import { describe, it, expect } from '@jest/globals';
 import initGetPing from './getPing.js';
+import { NodeEnv } from 'application-services';
 
 describe('getPing', () => {
   it('should work', async () => {
     const getPing = await initGetPing({
-      NODE_ENV: 'test',
+      ENV: { NODE_ENV: NodeEnv.Test },
     });
     const response = await getPing({});
 

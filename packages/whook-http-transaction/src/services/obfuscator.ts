@@ -3,22 +3,22 @@ import type { LogService } from 'common-services';
 import type { JsonValue } from 'type-fest';
 import type { WhookHeaders } from '../index.js';
 
-export type SensibleValueDescriptor = {
+export type WhookSensibleValueDescriptor = {
   name: string;
   pattern: RegExp;
   clearIndices: number[];
 };
-export type ObfuscatorConfig = {
+export type WhookObfuscatorConfig = {
   SHIELD_CHAR?: string;
   MAX_CLEAR_CHARS?: number;
   MAX_CLEAR_RATIO?: number;
-  SENSIBLE_PROPS?: SensibleValueDescriptor[];
-  SENSIBLE_HEADERS?: SensibleValueDescriptor[];
+  SENSIBLE_PROPS?: WhookSensibleValueDescriptor[];
+  SENSIBLE_HEADERS?: WhookSensibleValueDescriptor[];
 };
-export type ObfuscatorDependencies = {
+export type WhookObfuscatorDependencies = {
   log?: LogService;
-} & ObfuscatorConfig;
-export type ObfuscatorService = {
+} & WhookObfuscatorConfig;
+export type WhookObfuscatorService = {
   obfuscate: (secret: string) => string;
   obfuscateSensibleProps: (
     propValue: JsonValue,
@@ -34,7 +34,7 @@ const noop = () => undefined;
 const DEFAULT_MAX_CLEAR_CHARS = 6;
 const DEFAULT_MAX_CLEAR_RATIO = 4;
 const DEFAULT_SHIELD_CHAR = '🛡';
-const DEFAULT_SENSIBLE_HEADERS: SensibleValueDescriptor[] = [
+const DEFAULT_SENSIBLE_HEADERS: WhookSensibleValueDescriptor[] = [
   {
     name: 'authorization',
     pattern: /^(Bearer |Basic )(.*)$/i,
@@ -47,7 +47,7 @@ const DEFAULT_SENSIBLE_HEADERS: SensibleValueDescriptor[] = [
     clearIndices: [0, 2],
   },
 ];
-const DEFAULT_SENSIBLE_PROPS: SensibleValueDescriptor[] = [
+const DEFAULT_SENSIBLE_PROPS: WhookSensibleValueDescriptor[] = [
   {
     name: 'access_token',
     pattern: /^(.*)$/i,
@@ -90,10 +90,11 @@ const DEFAULT_SENSIBLE_PROPS: SensibleValueDescriptor[] = [
  * @example
  * import { initObfuscator } from '@whook/http-transaction';
  * import { alsoInject } from 'knifecycle';
+ * import { log } from 'node:console';
  *
  * const obfuscator = await initObfuscator();
  *
- * console.log(obfuscator('my very secret information!));
+ * log(obfuscator('my very secret information!));
  * // my ...on!
  */
 async function initObfuscator({
@@ -103,7 +104,7 @@ async function initObfuscator({
   SENSIBLE_PROPS = DEFAULT_SENSIBLE_PROPS,
   SENSIBLE_HEADERS = DEFAULT_SENSIBLE_HEADERS,
   log = noop,
-}: ObfuscatorDependencies): Promise<ObfuscatorService> {
+}: WhookObfuscatorDependencies): Promise<WhookObfuscatorService> {
   log('debug', '🕶️ - Initializing the obfuscator service.');
 
   return {

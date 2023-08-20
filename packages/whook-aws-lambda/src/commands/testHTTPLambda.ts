@@ -15,6 +15,7 @@ import type {
   WhookCommandDefinition,
   WhookCompilerOptions,
 } from '@whook/whook';
+import type { AppEnvVars } from 'application-services';
 import type { LogService, TimeService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookAPIOperationAWSLambdaConfig } from '../index.js';
@@ -55,7 +56,7 @@ export const definition: WhookCommandDefinition = {
 export default extra(definition, autoService(initTestHTTPLambdaCommand));
 
 async function initTestHTTPLambdaCommand({
-  NODE_ENV,
+  ENV,
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
@@ -64,7 +65,7 @@ async function initTestHTTPLambdaCommand({
   log = noop,
   args,
 }: {
-  NODE_ENV: string;
+  ENV: AppEnvVars;
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
@@ -154,7 +155,7 @@ async function initTestHTTPLambdaCommand({
             return parameters[name];
           }),
         resourcePath: '/v1' + OPERATION.path,
-        stage: NODE_ENV,
+        stage: ENV.NODE_ENV,
         requestTimeEpoch: time(),
         requestId: randomUUID(),
         httpMethod: OPERATION.method.toUpperCase(),

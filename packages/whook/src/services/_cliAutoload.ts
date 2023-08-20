@@ -58,6 +58,7 @@ const initializerWrapper: ServiceInitializerWrapper<
   } else {
     for (const basePath of [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS]) {
       const finalPath = path.join(basePath, 'commands', commandName + '.js');
+
       try {
         commandModule = await importer(finalPath);
         break;

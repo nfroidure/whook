@@ -8,7 +8,7 @@ import {
   extractOperationSecurityParameters,
   castParameters,
 } from '@whook/http-router';
-import { reuseSpecialProps, alsoInject } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
@@ -31,20 +31,15 @@ import {
 } from '@whook/http-router';
 import stream from 'stream';
 import qs from 'qs';
-import { noop, compose, lowerCaseHeaders } from '@whook/whook';
-import type {
-  ServiceInitializer,
-  Dependencies,
-  Service,
-  Parameters,
-} from 'knifecycle';
+import { noop, lowerCaseHeaders } from '@whook/whook';
+import type { Parameters } from 'knifecycle';
 import type {
   WhookRequest,
   WhookResponse,
   WhookHandler,
-  ObfuscatorService,
+  WhookObfuscatorService,
   WhookOperation,
-  APMService,
+  WhookAPMService,
   WhookWrapper,
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
@@ -61,24 +56,7 @@ import type {
 } from 'aws-lambda';
 import type { CORSConfig } from '@whook/cors';
 import type { WhookErrorHandler } from '@whook/http-router';
-
-type HTTPWrapperDependencies = {
-  NODE_ENV: string;
-  DEBUG_NODE_ENVS?: string[];
-  OPERATION: WhookOperation;
-  DECODERS?: typeof DEFAULT_DECODERS;
-  ENCODERS?: typeof DEFAULT_ENCODERS;
-  PARSED_HEADERS?: string[];
-  PARSERS?: typeof DEFAULT_PARSERS;
-  STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
-  BUFFER_LIMIT?: string;
-  apm: APMService;
-  obfuscator: ObfuscatorService;
-  errorHandler: WhookErrorHandler;
-  time?: TimeService;
-  log?: LogService;
-  WRAPPERS: WhookWrapper<Dependencies, Service>[];
-};
+import type { AppEnvVars } from 'application-services';
 
 export type LambdaHTTPInput = Parameters;
 export type LambdaHTTPOutput = WhookResponse;
@@ -87,74 +65,93 @@ const SEARCH_SEPARATOR = '?';
 const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
-export default function wrapHandlerForAWSHTTPLambda<
-  D extends Dependencies,
-  S extends WhookHandler,
->(
-  initHandler: ServiceInitializer<D, S>,
-): ServiceInitializer<D & HTTPWrapperDependencies, S> {
-  return alsoInject<HTTPWrapperDependencies, D, S>(
-    [
-      'OPERATION_API',
-      'WRAPPERS',
-      '?DEBUG_NODE_ENVS',
-      'NODE_ENV',
-      '?DECODERS',
-      '?ENCODERS',
-      '?PARSED_HEADERS',
-      '?PARSERS',
-      '?STRINGIFYERS',
-      '?BUFFER_LIMIT',
-      'apm',
-      'obfuscator',
-      'errorHandler',
-      '?log',
-      '?time',
-    ],
-    reuseSpecialProps(
-      initHandler,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (initHandlerForAWSHTTPLambda as any).bind(
-        null,
-        initHandler,
-      ) as ServiceInitializer<D, S>,
-    ),
-  );
-}
+export type WhookWrapConsumerLambdaDependencies = {
+  OPERATION_API: OpenAPIV3.Document;
+  ENV: AppEnvVars;
+  DEBUG_NODE_ENVS?: string[];
+  DECODERS?: typeof DEFAULT_DECODERS;
+  ENCODERS?: typeof DEFAULT_ENCODERS;
+  PARSED_HEADERS?: string[];
+  PARSERS?: typeof DEFAULT_PARSERS;
+  STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
+  BUFFER_LIMIT?: string;
+  CORS: CORSConfig;
+  apm: WhookAPMService;
+  obfuscator: WhookObfuscatorService;
+  errorHandler: WhookErrorHandler;
+  time?: TimeService;
+  log?: LogService;
+};
 
-async function initHandlerForAWSHTTPLambda(
-  initHandler: ServiceInitializer<Dependencies, WhookHandler>,
-  {
-    OPERATION_API,
-    WRAPPERS,
-    NODE_ENV,
-    DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
-    DECODERS = DEFAULT_DECODERS,
-    ENCODERS = DEFAULT_ENCODERS,
-    PARSED_HEADERS = [],
-    log = noop,
-    time = Date.now.bind(Date),
-    ...services
-  },
-) {
+/**
+ * Wrap an handler to make it work with a consumer AWS Lambda.
+ * @param  {Object}   services
+ * The services the wrapper depends on
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.OPERATION_API
+ * An OpenAPI definitition for that handler
+ * @param  {Object}   services.CORS
+ * The CORS for the server
+ * @param  {Object}   services.apm
+ * An application monitoring service
+ * @param  {Object}   [services.time]
+ * An optional time service
+ * @param  {Object}   [services.log=noop]
+ * An optional logging service
+ * @return {Promise<Object>}
+ * A promise of an object containing the reshaped env vars.
+ */
+
+async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
+  OPERATION_API,
+  ENV,
+  CORS,
+  DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
+  DECODERS = DEFAULT_DECODERS,
+  ENCODERS = DEFAULT_ENCODERS,
+  PARSERS = DEFAULT_PARSERS,
+  STRINGIFYERS = DEFAULT_STRINGIFYERS,
+  BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
+  PARSED_HEADERS = [],
+  apm,
+  obfuscator,
+  errorHandler,
+  log = noop,
+  time = Date.now.bind(Date),
+}: WhookWrapConsumerLambdaDependencies): Promise<WhookWrapper<S>> {
+  log('debug', '📥 - Initializing the AWS LAmbda consumer wrapper.');
+
   const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path])[0];
-  const OPERATION: WhookOperation = {
+  const pathObject = OPERATION_API.paths[path];
+
+  if (typeof pathObject === 'undefined' || '$ref' in pathObject) {
+    throw new YError('E_BAD_OPERATION', 'pathObject', pathObject);
+  }
+
+  const method = Object.keys(pathObject)[0];
+  const operationObject = pathObject[method];
+
+  if (typeof operationObject === 'undefined' || '$ref' in operationObject) {
+    throw new YError('E_BAD_OPERATION', 'operationObject', operationObject);
+  }
+
+  const operation: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path][method],
+    ...operationObject,
   };
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
-  const consumableMediaTypes = extractConsumableMediaTypes(OPERATION);
-  const produceableMediaTypes = extractProduceableMediaTypes(OPERATION);
+  const consumableMediaTypes = extractConsumableMediaTypes(operation);
+  const produceableMediaTypes = extractProduceableMediaTypes(operation);
   const ajv = new Ajv.default({
-    verbose: DEBUG_NODE_ENVS.includes(NODE_ENV),
+    verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
     strict: true,
     logger: {
-      log: (...args) => log('debug', ...args),
-      warn: (...args) => log('warning', ...args),
-      error: (...args) => log('error', ...args),
+      log: (...args: string[]) => log('debug', ...args),
+      warn: (...args: string[]) => log('warning', ...args),
+      error: (...args: string[]) => log('error', ...args),
     },
     useDefaults: true,
     coerceTypes: true,
@@ -162,76 +159,73 @@ async function initHandlerForAWSHTTPLambda(
   addAJVFormats.default(ajv);
   const ammendedParameters = extractOperationSecurityParameters(
     OPERATION_API,
-    OPERATION,
+    operation,
   );
   const validators = prepareParametersValidators(
     ajv,
-    OPERATION.operationId,
-    ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[]).concat(
+    operation.operationId,
+    ((operation.parameters || []) as OpenAPIV3.ParameterObject[]).concat(
       ammendedParameters,
     ),
   );
-  const bodyValidator = prepareBodyValidator(ajv, OPERATION);
-  const applyWrappers = compose(...WRAPPERS) as WhookWrapper<
-    Dependencies,
-    Service
-  >;
+  const bodyValidator = prepareBodyValidator(ajv, operation);
 
-  const handler = await (
-    applyWrappers(initHandler) as ServiceInitializer<Dependencies, Service>
-  )({
-    OPERATION,
-    DEBUG_NODE_ENVS,
-    NODE_ENV,
-    ...services,
-    time,
-    log,
-  });
+  const wrapper = async (handler: S): Promise<S> => {
+    const wrappedHandler = handleForAWSHTTPLambda.bind(
+      null,
+      {
+        ENV,
+        CORS,
+        DECODERS,
+        ENCODERS,
+        PARSED_HEADERS,
+        PARSERS,
+        STRINGIFYERS,
+        BUFFER_LIMIT,
+        apm,
+        obfuscator,
+        errorHandler,
+        log,
+        time,
+      },
+      {
+        consumableMediaTypes,
+        produceableMediaTypes,
+        consumableCharsets,
+        produceableCharsets,
+        validators,
+        bodyValidator,
+        ammendedParameters,
+        operation,
+      },
+      handler,
+    );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (handleForAWSHTTPLambda as any).bind(
-    null,
-    {
-      OPERATION,
-      NODE_ENV,
-      DEBUG_NODE_ENVS,
-      DECODERS,
-      ENCODERS,
-      PARSED_HEADERS,
-      log,
-      time,
-      ...services,
-    },
-    {
-      consumableMediaTypes,
-      produceableMediaTypes,
-      consumableCharsets,
-      produceableCharsets,
-      validators,
-      bodyValidator,
-      ammendedParameters,
-    },
-    handler,
-  );
+    return wrappedHandler as unknown as S;
+  };
+
+  return wrapper;
 }
 
 async function handleForAWSHTTPLambda(
   {
-    OPERATION,
-    NODE_ENV,
-    ENCODERS,
-    DECODERS,
-    PARSERS = DEFAULT_PARSERS,
-    STRINGIFYERS = DEFAULT_STRINGIFYERS,
-    BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
-    PARSED_HEADERS,
+    ENV,
     CORS,
-    log = noop,
-    time = Date.now.bind(Date),
+    DECODERS,
+    ENCODERS,
+    PARSED_HEADERS,
+    PARSERS,
+    STRINGIFYERS,
+    BUFFER_LIMIT,
     apm,
-    obfuscator,
     errorHandler,
-  }: HTTPWrapperDependencies & { CORS: CORSConfig },
+    obfuscator,
+    log,
+    time,
+  }: Omit<
+    Required<WhookWrapConsumerLambdaDependencies>,
+    'OPERATION_API' | 'DEBUG_NODE_ENVS'
+  >,
   {
     consumableMediaTypes,
     produceableMediaTypes,
@@ -240,6 +234,22 @@ async function handleForAWSHTTPLambda(
     validators,
     bodyValidator,
     ammendedParameters,
+    operation,
+  }: {
+    consumableMediaTypes: string[];
+    produceableMediaTypes: string[];
+    consumableCharsets: string[];
+    produceableCharsets: string[];
+    validators: {
+      [name: string]: Ajv.ValidateFunction<unknown>;
+    };
+    bodyValidator: (
+      operation: WhookOperation,
+      contentType: string,
+      value: unknown,
+    ) => void;
+    ammendedParameters: DereferencedParameterObject[];
+    operation: WhookOperation;
   },
   handler: WhookHandler<LambdaHTTPInput, LambdaHTTPOutput>,
   event: APIGatewayProxyEvent,
@@ -248,7 +258,7 @@ async function handleForAWSHTTPLambda(
 ) {
   const startTime = time();
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
-  const operationParameters = (OPERATION.parameters || []).concat(
+  const operationParameters = (operation.parameters || []).concat(
     ammendedParameters,
   );
 
@@ -284,7 +294,6 @@ async function handleForAWSHTTPLambda(
   );
 
   try {
-    const operation = OPERATION;
     const bodySpec = extractBodySpec(
       request,
       consumableMediaTypes,
@@ -449,14 +458,14 @@ async function handleForAWSHTTPLambda(
   apm('CALL', {
     id: event.requestContext.requestId,
     transactionId,
-    environment: NODE_ENV,
+    environment: ENV.NODE_ENV,
     method: event.requestContext.httpMethod,
     resourcePath: event.requestContext.resourcePath,
     path: event.requestContext.path,
     userAgent:
       event.requestContext.identity && event.requestContext.identity.userAgent,
     triggerTime: event.requestContext.requestTimeEpoch,
-    lambdaName: OPERATION.operationId,
+    lambdaName: operation.operationId,
     parameters: obfuscator.obfuscateSensibleProps(parameters),
     status: response.status,
     headers: obfuscator.obfuscateSensibleHeaders(
@@ -618,3 +627,5 @@ function filterQueryParameters(
       return filteredHeaders;
     }, {});
 }
+
+export default autoService(initWrapHandlerForConsumerLambda);
