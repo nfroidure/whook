@@ -14,7 +14,8 @@
       "testsFiles": "'src/**/*.test.ts'",
       "distFiles": "'dist/**/*.js'",
       "ignore": [
-        "dist"
+        "dist",
+        "builds"
       ],
       "bundleFiles": [
         "bin",
@@ -82,6 +83,7 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "^16.1.1",
+    "@whook/aws-lambda": "^16.1.1",
     "@whook/cors": "^16.1.1",
     "@whook/http-router": "^16.1.1",
     "@whook/http-server": "^16.1.1",

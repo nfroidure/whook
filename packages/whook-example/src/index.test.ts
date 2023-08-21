@@ -216,7 +216,62 @@ describe('runServer', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
+<<<<<<< HEAD
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+=======
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/BUFFER_LIMIT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DECODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DEFAULT_ERROR_CODE.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/ENCODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/HTTP_SERVER_OPTIONS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_PREFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/JWT_SECRET_ENV_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/MAX_CLEAR_RATIO.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PARSERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PROCESS_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/REDUCED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SHIELD_CHAR.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SIGNALS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/STRINGIFYERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/TIMEOUT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/uniqueId.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js'",
+>>>>>>> 22d682f5 (feat(@whook/example): add AWS build to @whook/example)
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
@@ -369,6 +424,12 @@ describe('runServer', () => {
       "✅ - Module path of "getTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
     [
+      "✅ - Module path of "handleMessages" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts".",
+    ],
+    [
+      "✅ - Module path of "handleMinutes" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts".",
+    ],
+    [
       "✅ - Module path of "jwtToken" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
@@ -388,6 +449,9 @@ describe('runServer', () => {
     ],
     [
       "➰ - Plugin "@whook/authorization" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-authorization/dist" with "wrappers" types.",
+    ],
+    [
+      "➰ - Plugin "@whook/aws-lambda" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist" with "commands, services, wrappers" types.",
     ],
     [
       "➰ - Plugin "@whook/cors" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-cors/dist" with "handlers, services, wrappers" types.",
@@ -411,6 +475,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/cors".",
     ],
     [
@@ -421,6 +488,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "DECODERS" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/cors".",
@@ -435,6 +505,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/cors".",
     ],
     [
@@ -445,6 +518,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "ENCODERS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "ENCODERS" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "ENCODERS" module path in "@whook/cors".",
@@ -462,6 +538,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/cors".",
     ],
     [
@@ -472,6 +551,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/cors".",
@@ -486,6 +568,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/cors".",
     ],
     [
@@ -498,6 +583,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/cors".",
     ],
     [
@@ -508,6 +596,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/cors".",
@@ -525,6 +616,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "PARSERS" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "PARSERS" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "PARSERS" module path in "@whook/cors".",
     ],
     [
@@ -535,6 +629,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/cors".",
@@ -552,6 +649,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/cors".",
     ],
     [
@@ -562,6 +662,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/cors".",
@@ -576,6 +679,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "SIGNALS" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "SIGNALS" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "SIGNALS" module path in "@whook/cors".",
     ],
     [
@@ -588,6 +694,9 @@ describe('runServer', () => {
       "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/authorization".",
     ],
     [
+      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/aws-lambda".",
+    ],
+    [
       "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/cors".",
     ],
     [
@@ -598,6 +707,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "TIMEOUT" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "TIMEOUT" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "TIMEOUT" module path in "@whook/cors".",
@@ -633,6 +745,12 @@ describe('runServer', () => {
       "🍀 - Trying to find "getTime" module path in "__project__".",
     ],
     [
+      "🍀 - Trying to find "handleMessages" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "handleMinutes" module path in "__project__".",
+    ],
+    [
       "🍀 - Trying to find "jwtToken" module path in "__project__".",
     ],
     [
@@ -649,6 +767,9 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "uniqueId" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "uniqueId" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "uniqueId" module path in "@whook/cors".",
@@ -723,6 +844,12 @@ describe('runServer', () => {
       "💿 - Loading "getTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
     [
+      "💿 - Loading "handleMessages" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts".",
+    ],
+    [
+      "💿 - Loading "handleMinutes" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts".",
+    ],
+    [
       "💿 - Loading "jwtToken" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
@@ -769,6 +896,12 @@ describe('runServer', () => {
     ],
     [
       "💿 - Service "getTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+    ],
+    [
+      "💿 - Service "handleMessages" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts".",
+    ],
+    [
+      "💿 - Service "handleMinutes" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts".",
     ],
     [
       "💿 - Service "jwtToken" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
@@ -913,6 +1046,57 @@ describe('runServer', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/BUFFER_LIMIT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DECODERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DEFAULT_ERROR_CODE.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/ENCODERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/HTTP_SERVER_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_PREFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/IGNORED_FILES_SUFFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/JWT_SECRET_ENV_NAME.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/MAX_CLEAR_RATIO.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PARSERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/PROCESS_NAME.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/REDUCED_FILES_SUFFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SHIELD_CHAR.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/SIGNALS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/STRINGIFYERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/TIMEOUT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/uniqueId.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js".",
@@ -1137,6 +1321,18 @@ describe('runServer', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
     [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMessages.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/handleMinutes.ts".",
+    ],
+    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
     [
@@ -1187,7 +1383,7 @@ describe('runServer', () => {
       "🎙️ - HTTP Server listening at "http://localhost:9999".",
     ],
     [
-      "🏭 - Initializing the HANDLERS service with 8 handlers wrapped by 2 wrappers.",
+      "🏭 - Initializing the HANDLERS service with 10 handlers wrapped by 2 wrappers.",
     ],
     [
       "🏭 - Initializing the HANDLERS service.",
