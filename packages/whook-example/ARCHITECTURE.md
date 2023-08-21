@@ -255,7 +255,7 @@ Per convention a Whook server build file must export
 The `runBuild` function is intended to build the
  project.
 
-[See in context](./src/build.ts#L15-L19)
+[See in context](./src/build.ts#L17-L21)
 
 
 
@@ -264,7 +264,7 @@ The `runBuild` function is intended to build the
 The `prepareBuildEnvironment` create the build
  environment
 
-[See in context](./src/build.ts#L27-L31)
+[See in context](./src/build.ts#L29-L33)
 
 
 
@@ -284,7 +284,7 @@ The `src/config/common/config.ts` one allows to add common
 
 Whook provides several types you may extend here.
 
-[See in context](./src/whook.d.ts#L26-L29)
+[See in context](./src/whook.d.ts#L31-L34)
 
 
 
@@ -292,7 +292,7 @@ Whook provides several types you may extend here.
 
 The process environment can be typed by extending this type.
 
-[See in context](./src/whook.d.ts#L32-L35)
+[See in context](./src/whook.d.ts#L37-L40)
 
 
 
@@ -301,7 +301,7 @@ The process environment can be typed by extending this type.
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/whook.d.ts#L43-L47)
+[See in context](./src/whook.d.ts#L48-L52)
 
 
 
@@ -311,7 +311,7 @@ Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the handlers.
 
-[See in context](./src/whook.d.ts#L59-L64)
+[See in context](./src/whook.d.ts#L67-L72)
 
 
 
@@ -319,7 +319,7 @@ Here we export a custom API handler config type in order
 
 Here we export a main config to type AppEnv.
 
-[See in context](./src/whook.d.ts#L70-L73)
+[See in context](./src/whook.d.ts#L79-L82)
 
 
 
@@ -519,7 +519,7 @@ Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the handlers.
 
-[See in context](./src/whook.d.ts#L81-L86)
+[See in context](./src/whook.d.ts#L90-L95)
 
 
 

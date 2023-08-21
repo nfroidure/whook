@@ -415,6 +415,15 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
       "⌛ - Delay service initialized.",
     ],
     [
@@ -518,6 +527,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/whook".",
@@ -673,6 +685,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/whook".",
     ],
     [
@@ -698,6 +713,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/whook".",
@@ -1273,6 +1291,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/BUFFER_LIMIT.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/COERCION_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/DECODERS.js".",
     ],
     [
@@ -1300,7 +1321,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/PARSERS.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/QUERY_PARSER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/REDUCED_FILES_SUFFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/SHIELD_CHAR.js".",
