@@ -116,14 +116,14 @@ declare namespace Components {
       readonly headers?: {
         readonly [name: string]: unknown;
       };
-      readonly body?: NonNullable<unknown>;
+      readonly body?: unknown;
     };
     export type handleMinutesResponse200<S extends number> = {
       readonly status: S;
       readonly headers?: {
         readonly [name: string]: unknown;
       };
-      readonly body?: NonNullable<unknown>;
+      readonly body?: unknown;
     };
     export type Diagnostic<S extends number> = {
       readonly status: S;
@@ -169,29 +169,18 @@ declare namespace Components {
     };
   }
   export namespace Schemas {
-<<<<<<< HEAD
     export type TimeSchema = {
       currentDate?: string;
+    };
+    export type ExampleSchema = {
+      foo?: string;
+      bar?: string;
     };
     export type Echo = {
       echo: string;
     };
     export type ResponsesDiagnosticBody0 = {
       transactions: {
-=======
-    export type TimeSchema = NonNullable<{
-      currentDate?: NonNullable<string>;
-    }>;
-    export type ExampleSchema = NonNullable<{
-      foo?: NonNullable<string>;
-      bar?: NonNullable<string>;
-    }>;
-    export type Echo = NonNullable<{
-      echo: NonNullable<string>;
-    }>;
-    export type ResponsesDiagnosticBody0 = NonNullable<{
-      transactions: NonNullable<{
->>>>>>> 22d682f5 (feat(@whook/example): add AWS build to @whook/example)
         [pattern: string]: unknown;
       };
     };
