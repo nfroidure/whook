@@ -36,6 +36,16 @@ describe('commands should work', () => {
 
 
 # Provided by "@whook/authorization": none
+
+
+# Provided by "@whook/aws-lambda": 7 commands
+- testConsumerLambda: A command for testing AWS consumer lambda
+- testCronLambda: A command for testing AWS cron lambda
+- testHTTPLambda: A command for testing AWS HTTP lambda
+- testKafkaConsumerLambda: A command for testing AWS lambda Kafka consumers
+- testS3Lambda: A command for testing AWS consumer lambda
+- testS3Lambda: A command for testing AWS consumer lambda
+- testTransformerLambda: A command for testing AWS lambda transformers
 ",
 }
 `);
