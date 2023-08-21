@@ -76,6 +76,18 @@ npm run dev -- ls
 npx whook ls
 ```
 
+## Deploying with AWS Lambda
+
+### Pushing to S3
+
+First of all, push the lambdas to S3. If you prefer to use it with your own architecture later, you can stop at that step:
+
+```sh
+NODE_ENV=production APP_ENV=staging npm run build
+APP_ENV=staging bin/lambdas_zip.sh
+APP_ENV=staging bin/lambdas_push.sh
+```
+
 Generate API types:
 
 ```sh
@@ -100,6 +112,19 @@ Debug `knifecycle` internals (dependency injection issues):
 
 ```sh
 DEBUG=knifecycle npm run dev
+```
+
+Debug built lambdas:
+
+```sh
+## HTTP
+APP_ENV=staging npx whook testHTTPLambda --name putEcho \
+ --parameters '{ "body": { "echo": "Hey!" } }'
+## Cron
+APP_ENV=staging npx whook testCronLambda --name handleMinutes
+## Consumer
+APP_ENV=staging npx whook testConsumerLambda --name handleMessages \
+ --event '{ "Records": [{ "test": "test" }] }'
 ```
 
 [//]: # (::contents:end)

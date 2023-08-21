@@ -14,7 +14,8 @@
       "testsFiles": "'src/**/*.test.ts'",
       "distFiles": "'dist/**/*.js'",
       "ignore": [
-        "dist"
+        "dist",
+        "builds"
       ],
       "bundleFiles": [
         "bin",
@@ -79,6 +80,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/authorization": "^18.1.0",
+    "@whook/aws-lambda": "^18.1.0",
     "@whook/cors": "^18.1.0",
     "@whook/swagger-ui": "^18.1.0",
     "@whook/whook": "^18.1.0",
