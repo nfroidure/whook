@@ -78,6 +78,52 @@ APP_ENV=staging bin/lambdas_zip.sh
 APP_ENV=staging bin/lambdas_push.sh
 ```
 
+### Deploy with Terraform
+
+Otherwise, here is a full step by step setup for you.
+
+First install Terraform:
+
+```sh
+wget https://releases.hashicorp.com/terraform/1.2.2/terraform_1.2.2_linux_amd64.zip
+mkdir .bin
+unzip -d .bin terraform_1.2.2_linux_amd64.zip
+rm terraform_1.2.2_linux_amd64.zip
+```
+
+Then initialize the Terraform configuration:
+
+```sh
+cd ./terraform
+../.bin/terraform init;
+```
+
+Create a new workspace for each `APP_ENV`:
+
+```sh
+../.bin/terraform workspace new staging
+```
+
+Plan the deployment:
+
+```sh
+../.bin/terraform plan -out=terraform.plan -var "node_env=${NODE_ENV}"
+```
+
+Apply changes:
+
+```sh
+../.bin/terraform apply -var "node_env=${NODE_ENV}" terraform.plan
+```
+
+Finally retrieve the API URL and add and enjoy!
+
+```sh
+../.bin/terraform output api_url
+curl "$(.bin/terraform output api_url)staging/v3/ping"
+# {"pong":"pong"}
+```
+
 Generate API types:
 
 ```sh

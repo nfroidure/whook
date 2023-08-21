@@ -15,7 +15,12 @@
       "distFiles": "'dist/**/*.js'",
       "ignore": [
         "dist",
-        "builds"
+        "builds",
+        ".bin",
+        ".terraform",
+        "*.plan",
+        "*.tfstate.d",
+        "*.credentials.json"
       ],
       "bundleFiles": [
         "bin",
