@@ -1,3 +1,12 @@
+# [13.1.0](https://github.com/nfroidure/whook/compare/v13.1.1...v13.1.0) (2023-08-21)
+
+
+### Bug Fixes
+
+* **@whook/gcp-functions:** fix functions build ([473cc54](https://github.com/nfroidure/whook/commit/473cc54a0028fd402f705604e3dd7fd7968d2ede))
+
+
+
 # [13.1.0](https://github.com/nfroidure/whook/compare/v13.0.0...v13.1.0) (2023-08-20)
 
 

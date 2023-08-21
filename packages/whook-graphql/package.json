@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/graphql",
-  "version": "13.1.0",
+  "version": "13.1.2",
   "description": "GraphQL implementation for Whook servers",
   "type": "module",
   "main": "dist/index.js",
@@ -82,7 +82,7 @@
     "@swc/jest": "^0.2.29",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
-    "@whook/authorization": "^13.1.0",
+    "@whook/authorization": "^13.1.2",
     "axios": "^1.4.0",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",

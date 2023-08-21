@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/example",
-  "version": "13.1.0",
+  "version": "13.1.2",
   "description": "A basic Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -79,8 +79,8 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^13.1.0",
-    "@whook/cors": "^13.1.0",
+    "@whook/authorization": "^13.1.2",
+    "@whook/cors": "^13.1.2",
     "@whook/http-router": "^13.1.0",
     "@whook/http-server": "^13.1.0",
     "@whook/http-transaction": "^13.1.0",

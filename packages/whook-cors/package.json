@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/cors",
-  "version": "13.1.0",
+  "version": "13.1.2",
   "description": "A wrapper to provide CORS support to a Whook server",
   "type": "module",
   "main": "dist/index.js",

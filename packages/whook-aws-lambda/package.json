@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/aws-lambda",
-  "version": "13.1.0",
+  "version": "13.1.2",
   "description": "Build and deploy to AWS Lambda with Whook.",
   "type": "module",
   "main": "dist/index.js",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@types/aws-lambda": "^8.10.109",
     "@types/bytes": "^3.1.1",
-    "@whook/cors": "^13.1.0",
+    "@whook/cors": "^13.1.2",
     "@whook/http-router": "^13.1.0",
     "@whook/http-transaction": "^13.1.0",
     "@whook/whook": "^13.1.0",
