@@ -92,6 +92,13 @@ Debug `knifecycle` internals (dependency injection issues):
 DEBUG=knifecycle npm run dev
 ```
 
+## Testing the GCP Functions
+
+```sh
+JWT_SECRET=lol APP_ENV=local npx whook testHTTPFunction --name putEcho \
+ --parameters '{ "body": { "echo": "Hey!" } }'
+```
+
 [//]: # (::contents:end)
 
 # Authors
