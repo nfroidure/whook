@@ -1,3 +1,12 @@
+# [13.1.0](https://github.com/nfroidure/whook/compare/v13.1.2...v13.1.0) (2023-08-21)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** no wrappers for non http lambdas ([685b717](https://github.com/nfroidure/whook/commit/685b717632919b329e9a9d2cf6862f36bf90aeef))
+
+
+
 # [13.1.0](https://github.com/nfroidure/whook/compare/v13.1.1...v13.1.0) (2023-08-21)
 
 
