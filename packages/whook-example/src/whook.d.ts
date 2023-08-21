@@ -72,7 +72,8 @@ Here we export a custom handler definition type in order
         T &
           WhookAPIOperationGCPFunctionConfig &
           WhookAPIOperationSwaggerConfig &
-          WhookAPIOperationCORSConfig & { // TODO: Add those properties to Whook GCP Functions?
+          WhookAPIOperationCORSConfig & {
+            // TODO: Add those properties to Whook GCP Functions?
             private?: boolean;
             memory?: number;
             timeout?: number;

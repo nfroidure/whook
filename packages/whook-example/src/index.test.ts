@@ -333,64 +333,64 @@ describe('runServer', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/handlers/optionsWithCORS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/BUFFER_LIMIT.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/DECODERS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/DEFAULT_ERROR_CODE.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/ENCODERS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/HTTP_SERVER_OPTIONS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/IGNORED_FILES_PREFIXES.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/IGNORED_FILES_SUFFIXES.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/JWT_SECRET_ENV_NAME.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/MAX_CLEAR_RATIO.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/PARSERS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/PROCESS_NAME.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/REDUCED_FILES_SUFFIXES.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/SHIELD_CHAR.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/SIGNALS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/STRINGIFYERS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/TIMEOUT.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/uniqueId.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/wrappers/wrapHandlerWithAuthorization.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/wrappers/wrapHandlerWithCORS.js'",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
       "⌛ - Delay service initialized.",
