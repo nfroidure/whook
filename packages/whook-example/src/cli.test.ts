@@ -32,6 +32,10 @@ describe('commands should work', () => {
 - ls: Print available commands
 
 
+# Provided by "@whook/gcp-functions": 1 commands
+- testHTTPFunction: A command for testing GCP HTTP function
+
+
 # Provided by "@whook/cors": none
 
 
