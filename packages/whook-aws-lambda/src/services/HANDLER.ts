@@ -11,6 +11,8 @@ export type WhookHandlerDependencies<T extends WhookHandler> = {
   log?: LogService;
 };
 
+export const DEFAULT_WRAPPERS = [];
+
 export default name('HANDLER', autoService(initHandler));
 
 /**
@@ -27,7 +29,7 @@ export default name('HANDLER', autoService(initHandler));
  * A promise of the `HANDLERS` hash.
  */
 async function initHandler<T extends WhookHandler>({
-  WRAPPERS,
+  WRAPPERS = DEFAULT_WRAPPERS,
   mainWrapper,
   baseHandler,
   log = noop,

@@ -235,7 +235,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       }
 
       if (serviceName.startsWith('OPERATION_HANDLER_')) {
-        const [, operationId] = await getAPIOperation(serviceName);
+        const [type, operationId] = await getAPIOperation(serviceName);
 
         return {
           name: serviceName,
@@ -246,6 +246,11 @@ const initializerWrapper: ServiceInitializerWrapper<
                 'OPERATION_HANDLER_',
                 '',
               )}`,
+              // Only inject wrappers for HTTP handlers and
+              // eventually inject other ones
+              ...(type !== 'http'
+                ? [`?WRAPPERS>${type.toUpperCase()}_WRAPPERS`]
+                : []),
               `baseHandler>${operationId}`,
             ],
             initHandler,
