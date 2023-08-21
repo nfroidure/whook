@@ -54,7 +54,6 @@ import type {
   APIGatewayProxyResult,
   Context,
 } from 'aws-lambda';
-import type { CORSConfig } from '@whook/cors';
 import type { WhookErrorHandler } from '@whook/http-router';
 import type { AppEnvVars } from 'application-services';
 
@@ -75,7 +74,6 @@ export type WhookWrapConsumerLambdaDependencies = {
   PARSERS?: typeof DEFAULT_PARSERS;
   STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
   BUFFER_LIMIT?: string;
-  CORS: CORSConfig;
   apm: WhookAPMService;
   obfuscator: WhookObfuscatorService;
   errorHandler: WhookErrorHandler;
@@ -87,14 +85,30 @@ export type WhookWrapConsumerLambdaDependencies = {
  * Wrap an handler to make it work with a consumer AWS Lambda.
  * @param  {Object}   services
  * The services the wrapper depends on
- * @param  {Object}   services.ENV
- * The process environment
  * @param  {Object}   services.OPERATION_API
  * An OpenAPI definitition for that handler
- * @param  {Object}   services.CORS
- * The CORS for the server
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.DEBUG_NODE_ENVS
+ * The NODE_ENV values that trigger debugging
+ * @param  {Object}   services.DECODERS
+ * Request body decoders available
+ * @param  {Object}   services.ENCODERS
+ * Response body encoders available
+ * @param  {Object}   services.PARSED_HEADERS
+ * A list of headers that should be parsed as JSON
+ * @param  {Object}   services.PARSERS
+ * Request body parsers available
+ * @param  {Object}   services.STRINGIFYERS
+ * Response body stringifyers available
+ * @param  {Object}   services.BUFFER_LIMIT
+ * The buffer size limit
  * @param  {Object}   services.apm
  * An application monitoring service
+ * @param  {Object}   services.obfuscator
+ * A service to hide sensible values
+ * @param  {Object}   services.errorHandler
+ * A service that changes any error to Whook response
  * @param  {Object}   [services.time]
  * An optional time service
  * @param  {Object}   [services.log=noop]
@@ -106,7 +120,6 @@ export type WhookWrapConsumerLambdaDependencies = {
 async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
   OPERATION_API,
   ENV,
-  CORS,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
@@ -175,7 +188,6 @@ async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
       null,
       {
         ENV,
-        CORS,
         DECODERS,
         ENCODERS,
         PARSED_HEADERS,
@@ -210,7 +222,6 @@ async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
 async function handleForAWSHTTPLambda(
   {
     ENV,
-    CORS,
     DECODERS,
     ENCODERS,
     PARSED_HEADERS,
@@ -410,7 +421,6 @@ async function handleForAWSHTTPLambda(
       ...response,
       headers: {
         ...response.headers,
-        ...lowerCaseHeaders(CORS),
         'content-type': 'application/json',
       },
     };

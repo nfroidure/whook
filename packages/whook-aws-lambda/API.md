@@ -3,9 +3,7 @@
 
 <dl>
 <dt><a href="#initHandler">initHandler(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
-<dd><p>Initialize the Whook handlers used byt the router
- to know which handler to run for a given open API
- operation id.</p>
+<dd><p>Initialize one Whook handler</p>
 </dd>
 <dt><a href="#initWrapHandlerForConsumerLambda">initWrapHandlerForConsumerLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap an handler to make it work with a consumer AWS Lambda.</p>
@@ -33,9 +31,7 @@
 <a name="initHandler"></a>
 
 ## initHandler(services) ⇒ <code>Promise.&lt;function()&gt;</code>
-Initialize the Whook handlers used byt the router
- to know which handler to run for a given open API
- operation id.
+Initialize one Whook handler
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `HANDLERS` hash.  
@@ -92,9 +88,18 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
-| services.ENV | <code>Object</code> |  | The process environment |
 | services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.ENV | <code>Object</code> |  | The process environment |
+| services.DEBUG_NODE_ENVS | <code>Object</code> |  | The NODE_ENV values that trigger debugging |
+| services.DECODERS | <code>Object</code> |  | Request body decoders available |
+| services.ENCODERS | <code>Object</code> |  | Response body encoders available |
+| services.PARSED_HEADERS | <code>Object</code> |  | A list of headers that should be parsed as JSON |
+| services.PARSERS | <code>Object</code> |  | Request body parsers available |
+| services.STRINGIFYERS | <code>Object</code> |  | Response body stringifyers available |
+| services.BUFFER_LIMIT | <code>Object</code> |  | The buffer size limit |
 | services.apm | <code>Object</code> |  | An application monitoring service |
+| services.obfuscator | <code>Object</code> |  | A service to hide sensible values |
+| services.errorHandler | <code>Object</code> |  | A service that changes any error to Whook response |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 

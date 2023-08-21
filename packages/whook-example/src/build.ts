@@ -47,6 +47,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
       ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
       // MY_SERVICE: '@my/service_module_name',
       jwtToken: 'jwt-service/dist/index',
+      errorHandler: '@whook/cors/dist/services/errorHandler',
     }),
   );
 

@@ -135,6 +135,20 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
 }
 ```
 
+According to the kind of build you use, you may also declare it in your
+`src/build.ts` file:
+
+```diff
+  $.register(
+    constant('INITIALIZER_PATH_MAP', {
+      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+      // MY_SERVICE: '@my/service_module_name',
+      jwtToken: 'jwt-service/dist/index',
++      errorHandler: '@whook/cors/dist/services/errorHandler',
+    }),
+  );
+```
+
 Finally, you must adapt the API service to handle CORS options:
 
 ```diff

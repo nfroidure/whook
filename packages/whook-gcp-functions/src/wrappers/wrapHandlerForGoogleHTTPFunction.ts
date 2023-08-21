@@ -40,18 +40,18 @@ import type {
   WhookObfuscatorService,
   WhookOperation,
   WhookWrapper,
+  WhookErrorHandler,
 } from '@whook/whook';
-import type { TimeService, LogService } from 'common-services';
+import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { Readable } from 'stream';
-import type { CORSConfig } from '@whook/cors';
 import type { AppEnvVars } from 'application-services';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
 
 export type WhookWrapHTTPFunctionDependencies = {
-  CORS: CORSConfig;
+  OPERATION_API: OpenAPIV3.Document;
   ENV: AppEnvVars;
   DEBUG_NODE_ENVS?: string[];
   DECODERS?: typeof DEFAULT_DECODERS;
@@ -61,23 +61,36 @@ export type WhookWrapHTTPFunctionDependencies = {
   QUERY_PARSER: WhookQueryStringParser;
   BUFFER_LIMIT?: string;
   obfuscator: WhookObfuscatorService;
-  time?: TimeService;
+  errorHandler: WhookErrorHandler;
   log?: LogService;
-  OPERATION_API: OpenAPIV3.Document;
 };
 
 /**
  * Wrap an handler to make it work with GCP Functions.
  * @param  {Object}   services
  * The services the wrapper depends on
- * @param  {Object}   services.ENV
- * The process environment
  * @param  {Object}   services.OPERATION_API
  * An OpenAPI definitition for that handler
- * @param  {Object}   services.CORS
- * The CORS for the server
- * @param  {Object}   [services.time]
- * An optional time service
+ * @param  {Object}   services.ENV
+ * The process environment
+ * @param  {Object}   services.DEBUG_NODE_ENVS
+ * The NODE_ENV values that trigger debugging
+ * @param  {Object}   services.DECODERS
+ * Request body decoders available
+ * @param  {Object}   services.ENCODERS
+ * Response body encoders available
+ * @param  {Object}   services.PARSERS
+ * Request body parsers available
+ * @param  {Object}   services.STRINGIFYERS
+ * Response body stringifyers available
+ * @param  {Object}   services.BUFFER_LIMIT
+ * The buffer size limit
+ * @param  {Object}   services.QUERY_PARSER
+ * The query parser to use
+ * @param  {Object}   services.obfuscator
+ * A service to hide sensible values
+ * @param  {Object}   services.errorHandler
+ * A service that changes any error to Whook response
  * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
@@ -88,7 +101,6 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
   OPERATION_API,
   ENV,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
-  CORS,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
   PARSERS = DEFAULT_PARSERS,
@@ -96,6 +108,7 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   QUERY_PARSER,
   obfuscator,
+  errorHandler,
   log = noop,
 }: WhookWrapHTTPFunctionDependencies): Promise<WhookWrapper<S>> {
   log('debug', '📥 - Initializing the AWS Lambda cron wrapper.');
@@ -151,9 +164,6 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
     const wrappedHandler = handleForAWSHTTPFunction.bind(
       null,
       {
-        ENV,
-        DEBUG_NODE_ENVS,
-        CORS,
         DECODERS,
         ENCODERS,
         PARSERS,
@@ -161,6 +171,7 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
         BUFFER_LIMIT,
         QUERY_PARSER,
         obfuscator,
+        errorHandler,
         log,
       },
       {
@@ -183,9 +194,6 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
 
 async function handleForAWSHTTPFunction(
   {
-    ENV,
-    DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
-    CORS,
     DECODERS,
     ENCODERS,
     PARSERS,
@@ -193,10 +201,11 @@ async function handleForAWSHTTPFunction(
     BUFFER_LIMIT,
     QUERY_PARSER,
     obfuscator,
+    errorHandler,
     log,
   }: Omit<
     Required<WhookWrapHTTPFunctionDependencies>,
-    'time' | 'OPERATION_API'
+    'time' | 'OPERATION_API' | 'ENV' | 'DEBUG_NODE_ENVS'
   >,
   {
     consumableMediaTypes,
@@ -225,7 +234,6 @@ async function handleForAWSHTTPFunction(
   req,
   res,
 ) {
-  const debugging = (DEBUG_NODE_ENVS || []).includes(ENV.NODE_ENV);
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
 
   log?.(
@@ -381,30 +389,22 @@ async function handleForAWSHTTPFunction(
     };
     log?.('debug', JSON.stringify(responseLog));
   } catch (err) {
-    const castedError = YHTTPError.cast(err as Error);
-
+    response = await errorHandler('none', responseSpec, err as Error);
     responseLog = {
       type: 'error',
-      code: castedError.code,
-      statusCode: castedError.httpCode,
-      params: castedError.params || [],
-      stack: printStackTrace(castedError),
+      code: (err as YError)?.code || 'E_UNEXPECTED',
+      statusCode: response.status,
+      params: (err as YError)?.params || [],
+      stack: printStackTrace(err as Error),
     };
 
     log?.('error', JSON.stringify(responseLog));
+
     response = {
-      status: castedError.httpCode,
+      ...response,
       headers: {
-        ...lowerCaseHeaders(CORS),
-        ...(castedError.headers ?? {}),
+        ...response.headers,
         'content-type': 'application/json',
-      },
-      body: {
-        error: {
-          code: castedError.code,
-          stack: debugging ? responseLog.stack : undefined,
-          params: debugging ? responseLog.params : undefined,
-        },
       },
     };
   }
