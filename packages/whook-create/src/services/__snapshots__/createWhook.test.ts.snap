@@ -128,6 +128,7 @@ DEV_MODE=1
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^18.1.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.2",
@@ -138,6 +139,7 @@ DEV_MODE=1
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
+    "js-yaml": "^4.1.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
@@ -434,6 +436,7 @@ DEV_MODE=1
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^18.1.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.2",
@@ -444,6 +447,7 @@ DEV_MODE=1
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
+    "js-yaml": "^4.1.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
@@ -778,6 +782,7 @@ DEV_MODE=1
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^18.1.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.2",
@@ -788,6 +793,7 @@ DEV_MODE=1
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
+    "js-yaml": "^4.1.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
@@ -1105,6 +1111,7 @@ DEV_MODE=1
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^18.1.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.2",
@@ -1115,6 +1122,7 @@ DEV_MODE=1
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
+    "js-yaml": "^4.1.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",

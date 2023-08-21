@@ -2,6 +2,8 @@ import {
   type WhookBaseAPIHandlerConfig,
   type WhookBaseEnv,
   type WhookBaseConfigs,
+  type WhookProxyedENVConfig,
+  type WhookCompilerConfig,
 } from '@whook/whook';
 import {
   type WhookAuthorizationConfig,
@@ -17,11 +19,14 @@ import {
   type WhookCORSConfig,
 } from '@whook/cors';
 import { type APIConfig } from './services/API.js';
-import { type JWTServiceConfig } from 'jwt-service';
+import { type JWTServiceConfig, type JWTEnvVars } from 'jwt-service';
 import { type BaseAppEnvVars, type TimeMockConfig } from 'application-services';
-import { type JWTEnvVars } from 'jwt-service';
 import { type FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
 import { type AppEnv } from './index.ts';
+import {
+  type WhookAPIOperationGCPFunctionConfig,
+  type WhookGCPBuildConfig,
+} from '@whook/gcp-functions';
 
 /* Architecture Note #2.1: Typings
 
@@ -51,6 +56,9 @@ declare module 'application-services' {
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
+      WhookProxyedENVConfig,
+      WhookCompilerConfig,
+      WhookGCPBuildConfig,
       JWTServiceConfig,
       TimeMockConfig {}
 }
@@ -65,6 +73,7 @@ declare module '@whook/whook' {
   export interface WhookAPIHandlerConfig
     extends WhookBaseAPIHandlerConfig,
       WhookAPIOperationSwaggerConfig,
+      WhookAPIOperationGCPFunctionConfig,
       WhookAPIOperationCORSConfig {}
 
   /* Architecture Note #2.1.3: WhookMain
