@@ -39,6 +39,13 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
       description: 'The provided token ("$0") do not match',
     },
   },
+  OPEN_API_TYPES_CONFIG: {
+    baseName: 'API',
+    generateUnusedSchemas: false,
+    generateRealEnums: false,
+    exportNamespaces: false,
+    brandedTypes: [],
+  },
   JWT: {
     duration: '2d',
     tolerance: '2h',

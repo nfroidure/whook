@@ -12,6 +12,10 @@ const CONFIG: AppConfig = {
   HOST: 'localhost',
   DEV_ACCESS_TOKEN: 'admin|1|1',
   DEFAULT_MECHANISM: 'Fake',
+  OPEN_API_TYPES_CONFIG: {
+    ...COMMON_CONFIG.OPEN_API_TYPES_CONFIG,
+    generateUnusedSchemas: true,
+  },
   // This allows you to map service names depending on
   // the targetted environment. Here, for dev, we don't send SMS
   // but instead log them in the console.
