@@ -12,13 +12,18 @@
 
 [//]: # (::contents:start)
 
-The [Whook](https://github.com/nfroidure/whook)'s `httpServer` service
- is responsible for instanciating the NodeJS HTTP Server and handling
- its start/shutdown.
+The [Whook](https://github.com/nfroidure/whook)'s `httpServer` service is
+responsible for instanciating the NodeJS HTTP Server and handling its
+start/shutdown.
 
-It can be easily replaced by any other HTTP server (an HTTPS one for
- instance if you cannot use a gateway or a proxy to handle HTTPS
- connections).
+It can be easily replaced by any other HTTP server (an HTTPS one for instance if
+you cannot use a gateway or a proxy to handle HTTPS connections).
+
+The server takes in charge graceful shutdown by awaiting connections to be
+closed before shutting down which can take a long time (basically if a browser
+is still maintaining an open socket with it). You can short circuit this
+behavior, basically for development, by setting the `DESTROY_SOCKETS=1`
+environment variable.
 
 [//]: # (::contents:end)
 

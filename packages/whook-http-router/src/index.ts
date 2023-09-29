@@ -514,8 +514,8 @@ async function initHTTPRouter<T extends WhookHandler>({
 
           if (castedResponse.body && 'head' === request.method) {
             log(
-              'warning',
-              'Body stripped:',
+              'debug',
+              '💇 - Body stripped:',
               castedResponse.body instanceof Stream
                 ? 'Stream'
                 : castedResponse.body,
@@ -545,7 +545,10 @@ async function initHTTPRouter<T extends WhookHandler>({
   }
 }
 
-function _explodePath(path, parameters) {
+function _explodePath(
+  path: string,
+  parameters: DereferencedParameterObject[],
+): (string | DereferencedParameterObject)[] {
   return path
     .split(PATH_SEPARATOR)
     .filter(identity)
@@ -631,7 +634,10 @@ async function _createRouters<T extends WhookHandler>({
 
     routers[method] = routers[method] || new Siso();
     routers[method].register(
-      _explodePath(BASE_PATH + path, pathParameters),
+      _explodePath(
+        BASE_PATH + path,
+        pathParameters as unknown[] as DereferencedParameterObject[],
+      ),
       _prepareRoute({ ajv }, operation, handler, ammendedParameters),
     );
   });
