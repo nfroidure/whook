@@ -1,3 +1,12 @@
+# [13.2.0](https://github.com/nfroidure/whook/compare/v13.1.3...v13.2.0) (2023-09-29)
+
+
+### Features
+
+* **config:** add API types configuration to base config ([749b6da](https://github.com/nfroidure/whook/commit/749b6daac03c436b213cdd8392bb1b989a484e8e))
+
+
+
 # [13.1.0](https://github.com/nfroidure/whook/compare/v13.1.2...v13.1.0) (2023-08-21)
 
 

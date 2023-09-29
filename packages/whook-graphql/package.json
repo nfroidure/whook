@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/graphql",
-  "version": "13.1.2",
+  "version": "13.2.0",
   "description": "GraphQL implementation for Whook servers",
   "type": "module",
   "main": "dist/index.js",
@@ -67,8 +67,8 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@apollo/server": "^4.9.1",
-    "@whook/http-transaction": "^13.1.0",
-    "@whook/whook": "^13.1.0",
+    "@whook/http-transaction": "^13.2.0",
+    "@whook/whook": "^13.2.0",
     "common-services": "^15.0.0",
     "knifecycle": "^17.0.1",
     "openapi-types": "^12.1.3",
@@ -82,7 +82,7 @@
     "@swc/jest": "^0.2.29",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
-    "@whook/authorization": "^13.1.2",
+    "@whook/authorization": "^13.2.0",
     "axios": "^1.4.0",
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
