@@ -12,6 +12,7 @@ import { createRequire } from 'module';
 import { AppEnvVars } from 'application-services';
 import type { Dependencies, Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
+import type { OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
 
 const require = createRequire(import.meta.url);
 let $instance: Knifecycle;
@@ -20,7 +21,7 @@ let delay: DelayService;
 let delayPromise: Promise<void> | undefined;
 let hash: string;
 
-export type WatchServerDependencies = {
+export type WatchServerDependencies = OpenAPITypesConfig & {
   ENV: AppEnvVars;
   PROJECT_SRC: string;
   $instance: Knifecycle;
@@ -189,6 +190,7 @@ export async function restartDevServer<T extends Dependencies>({
     await afterRestartEnd(
       {
         ENV,
+        OPEN_API_TYPES_CONFIG,
         PROJECT_SRC,
         $instance,
         delay,
