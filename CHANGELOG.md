@@ -1,3 +1,12 @@
+## [13.2.1](https://github.com/nfroidure/whook/compare/v13.2.0...v13.2.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* **watch:** fix the watch injection ([e2817e5](https://github.com/nfroidure/whook/commit/e2817e51621846d5809742ab44b846dd3d1124ed))
+
+
+
 # [13.2.0](https://github.com/nfroidure/whook/compare/v13.1.3...v13.2.0) (2023-09-29)
 
 
