@@ -12,18 +12,21 @@
 
 [//]: # (::contents:start)
 
-[Whook](https://github.com/nfroidure/whook) takes a very unusual direction
- when it comes to dealing with HTTP transactions. It makes requests and
- responses serializable to:
-- only work with functions that take request and return responses (
- allowing your handlers to be pure functions),
-- have [easily unit testable](https://github.com/nfroidure/whook/blob/e7470fed860a8e1644b15625c9db4dd8198b70a6/packages/whook-example/src/handlers/putEcho.test.js)
- handlers thanks to concise snapshots.
+[Whook](https://github.com/nfroidure/whook) takes a very unusual direction when
+it comes to dealing with HTTP transactions. It makes requests and responses
+serializable (thanks to `WhookRequest` and `WhookResponse` types) to:
 
-This service is intended to build those objects from Node HTTP ones
- before passing them to the handlers. It also keeps track of running
- queries and ensure it is well handled by the server before releasing
- it.
+- only work with functions that take request and return responses ( allowing
+  your handlers to be pure functions),
+- have
+  [easily unit testable](https://github.com/nfroidure/whook/blob/e7470fed860a8e1644b15625c9db4dd8198b70a6/packages/whook-example/src/handlers/putEcho.test.js)
+  handlers thanks to concise snapshots.
+
+This service is intended to build those litteral objects from Node HTTP ones
+(famously known as req/res) before passing them to the handlers. It also keeps
+track of running queries and ensure it is well handled by the server before
+releasing it. If not, the transaction is resolved with an error response (for
+timeouts or when an error were catched).
 
 [//]: # (::contents:end)
 
