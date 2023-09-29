@@ -144,8 +144,6 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
       warn: (...args: string[]) => log?.('warning', ...args),
       error: (...args: string[]) => log?.('error', ...args),
     },
-    useDefaults: true,
-    coerceTypes: true,
   });
   addAJVFormats.default(ajv);
   const ammendedParameters = extractOperationSecurityParameters(
