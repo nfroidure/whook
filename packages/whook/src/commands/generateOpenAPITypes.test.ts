@@ -2,13 +2,20 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
 import { PassThrough } from 'stream';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
-import { NodeEnv } from 'application-services';
+import type { OpenAPITypesGenerationOptions } from 'schema2dts';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
 
 describe('generateOpenAPITypes', () => {
   const getOpenAPI = jest.fn();
   const log = jest.fn<LogService>();
+  const OPEN_API_TYPES_CONFIG: OpenAPITypesGenerationOptions = {
+    baseName: 'API',
+    generateUnusedSchemas: true,
+    generateRealEnums: false,
+    exportNamespaces: false,
+    brandedTypes: [],
+  };
   const API: OpenAPIV3.Document = {
     openapi: '3.0.2',
     info: {
@@ -40,7 +47,7 @@ describe('generateOpenAPITypes', () => {
       outstream.once('end', () => resolve(buffer.toString()));
     });
     const generateOpenAPITypes = await initGenerateOpenAPITypes({
-      ENV: { NODE_ENV: NodeEnv.Development },
+      OPEN_API_TYPES_CONFIG,
       instream,
       outstream,
       log,

@@ -110,6 +110,7 @@ export async function restartDevServer<T extends Dependencies>({
 
   const {
     ENV,
+    OPEN_API_TYPES_CONFIG,
     PROJECT_SRC,
     $instance: _instance,
     delay: _delay,
@@ -125,6 +126,7 @@ export async function restartDevServer<T extends Dependencies>({
         ...injectedNames,
 
         'ENV',
+        'OPEN_API_TYPES_CONFIG',
         'PROJECT_SRC',
         '$instance',
         'delay',
@@ -157,7 +159,7 @@ export async function restartDevServer<T extends Dependencies>({
     const bridge = new PassThrough();
     const openAPITypesGenerationPromise = (
       await initGenerateOpenAPITypes({
-        ENV,
+        OPEN_API_TYPES_CONFIG,
         instream,
         outstream: bridge,
         log,

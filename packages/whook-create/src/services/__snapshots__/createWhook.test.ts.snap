@@ -173,7 +173,7 @@ DEV_MODE=1
     "parse-gitignore": "^1.0.1",
     "prettier": "^3.0.2",
     "rimraf": "^5.0.1",
-    "schema2dts": "^5.0.1",
+    "schema2dts": "^5.1.0",
     "ts-node": "^10.8.1",
     "typescript": "^5.1.6"
   },
@@ -513,7 +513,7 @@ DEV_MODE=1
     "parse-gitignore": "^1.0.1",
     "prettier": "^3.0.2",
     "rimraf": "^5.0.1",
-    "schema2dts": "^5.0.1",
+    "schema2dts": "^5.1.0",
     "ts-node": "^10.8.1",
     "typescript": "^5.1.6"
   },
@@ -885,7 +885,7 @@ DEV_MODE=1
     "parse-gitignore": "^1.0.1",
     "prettier": "^3.0.2",
     "rimraf": "^5.0.1",
-    "schema2dts": "^5.0.1",
+    "schema2dts": "^5.1.0",
     "ts-node": "^10.8.1",
     "typescript": "^5.1.6"
   },
@@ -1240,7 +1240,7 @@ DEV_MODE=1
     "parse-gitignore": "^1.0.1",
     "prettier": "^3.0.2",
     "rimraf": "^5.0.1",
-    "schema2dts": "^5.0.1",
+    "schema2dts": "^5.1.0",
     "ts-node": "^10.8.1",
     "typescript": "^5.1.6"
   },

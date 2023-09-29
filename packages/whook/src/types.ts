@@ -25,6 +25,7 @@ import type {
   ProcessEnvConfig,
   ProcessServiceConfig,
 } from 'application-services';
+import type { OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
 
 export type WhookBaseEnv = WhookHTTPServerEnv &
   WhookBaseURLEnv &
@@ -44,4 +45,5 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookObfuscatorConfig &
   WhookAPIDefinitionsConfig &
   WhookCompilerConfig &
-  WhookWrappersConfig;
+  WhookWrappersConfig &
+  OpenAPITypesConfig;
