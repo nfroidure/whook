@@ -1,12 +1,12 @@
 import { Knifecycle, constant, alsoInject } from 'knifecycle';
+import { prepareEnvironment } from './index.js';
+import { packageDirectory } from 'pkg-dir';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initBuildConstants,
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
 } from '@whook/whook';
-import { prepareEnvironment } from './index.js';
-import { packageDirectory } from 'pkg-dir';
 
 /* Architecture Note #1.2: The build file
 

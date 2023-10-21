@@ -21,7 +21,7 @@ To run the server in production:
 
 ```sh
 npm it
-NODE_ENV=production npm start
+NODE_ENV=production APP_ENV=production npm start
 ```
 
 You can understand deeply this repository and Whook's internal by simply reading
