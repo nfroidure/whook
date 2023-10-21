@@ -22,7 +22,7 @@ its concepts (modules, plugins...) applies to it.
 Install the module and its dependencies in your project:
 
 ```sh
-npm i @whook/graphql apollo-server-core
+npm i @whook/graphql graphql-tag
 ```
 
 Update the types (usually in `src/whook.d.ts`):
@@ -60,7 +60,7 @@ declare module 'application-services' {
 Declare the plugin into your `src/index.ts` file:
 
 ```diff
-+  import { gql } from 'apollo-server-core';
++  import { gql } from 'graphql-tag';
 +  import type { WhookGraphQLFragmentService } from '@whook/graphql';
   // (...)
 
