@@ -68,7 +68,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/example": "^13.2.1",
-    "axios": "^1.4.0",
+    "axios": "^1.5.1",
     "common-services": "^15.0.0",
     "debug": "^4.3.4",
     "fs-extra": "^11.1.1",

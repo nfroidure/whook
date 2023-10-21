@@ -8,7 +8,6 @@
 > Build strong and efficient REST web services.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nfroidure/whook/blob/main/LICENSE)
-[![Coverage Status](https://coveralls.io/repos/github/nfroidure/whook/badge.svg?branch=main)](https://coveralls.io/github/nfroidure/whook?branch=main)
 
 
 [//]: # (::contents:start)

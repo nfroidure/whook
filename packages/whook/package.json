@@ -125,7 +125,7 @@
     "pkg-dir": "^7.0.0",
     "portfinder": "^1.0.32",
     "schema2dts": "^5.1.0",
-    "type-fest": "^4.2.0",
+    "type-fest": "^4.5.0",
     "yargs-parser": "^21.1.1",
     "yerror": "^8.0.0"
   },

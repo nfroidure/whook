@@ -30,7 +30,6 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -k packages/whook/package.json && git add CHANGELOG.md",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "cover": "lerna run cover",
-    "coveralls": "npm run cover && cat ./packages/*/coverage/lcov.info | coveralls && rm -rf .packages/*/coverage",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
     "lerna": "lerna",
     "lint": "lerna run lint",
@@ -59,7 +58,6 @@
   "devDependencies": {
     "commitizen": "^4.3.0",
     "conventional-changelog-cli": "^4.1.0",
-    "coveralls": "^3.0.4",
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^7.4.1",
     "metapak": "^5.1.7",

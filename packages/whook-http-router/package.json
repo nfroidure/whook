@@ -73,7 +73,7 @@
     "qs": "^6.11.2",
     "siso": "^6.0.1",
     "strict-qs": "^8.0.1",
-    "type-fest": "^4.2.0",
+    "type-fest": "^4.5.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0"
   },
@@ -84,7 +84,7 @@
     "@swc/jest": "^0.2.29",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
-    "axios": "^1.4.0",
+    "axios": "^1.5.1",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
