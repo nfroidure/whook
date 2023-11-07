@@ -359,9 +359,6 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(initLoggerService);
   $.register(initExitService);
 
-  // Needed to avoid a dead lock
-  // TODO: Remove when fixed that issue
-  // https://github.com/nfroidure/knifecycle/issues/108
   $.register(constant('LOG_ROUTING', DEFAULT_LOG_ROUTING));
   $.register(constant('LOG_CONFIG', DEFAULT_LOG_CONFIG));
   $.register(
