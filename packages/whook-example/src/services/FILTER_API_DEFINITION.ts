@@ -1,10 +1,17 @@
 import { name, autoService } from 'knifecycle';
 import { noop, identity } from '@whook/whook';
 import type { LogService } from 'common-services';
+import type {
+  WhookAPIHandlerDefinition,
+  WhookAPIDefinitionFilter,
+} from '@whook/whook';
 
-export default name('FILTER_API_TAGS', autoService(initFilterAPITags));
+export default name(
+  'FILTER_API_DEFINITION',
+  autoService(initFilterAPIDefinition),
+);
 
-export type FilterAPITagsEnvVars = {
+export type FilterAPIDefinitionEnvVars = {
   FILTER_API_TAGS?: string;
 };
 
@@ -21,20 +28,25 @@ For example, to create a server with only `system` and
 FILTER_API_TAGS=system,example npm start
 ```
 */
-async function initFilterAPITags({
+async function initFilterAPIDefinition({
   ENV,
   log = noop,
 }: {
-  ENV: FilterAPITagsEnvVars;
+  ENV: FilterAPIDefinitionEnvVars;
   log: LogService;
-}): Promise<string[]> {
+}): Promise<WhookAPIDefinitionFilter> {
   const FILTER_API_TAGS = (ENV.FILTER_API_TAGS || '')
     .split(',')
     .filter(identity);
 
   if (FILTER_API_TAGS.length > 0) {
     log('warning', `⏳ - Filtering API with (${FILTER_API_TAGS}) tags!`);
+    return (definition: WhookAPIHandlerDefinition) => {
+      return !FILTER_API_TAGS.some((tag) =>
+        (definition.operation.tags || []).includes(tag),
+      );
+    };
   }
 
-  return FILTER_API_TAGS;
+  return () => false;
 }

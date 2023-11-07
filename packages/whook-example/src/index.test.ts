@@ -133,7 +133,7 @@ describe('runServer', () => {
       "💿 - Loading "API" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
-      "💿 - Loading "FILTER_API_TAGS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
+      "💿 - Loading "FILTER_API_DEFINITION" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "💿 - Loading "MECHANISMS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
@@ -181,7 +181,7 @@ describe('runServer', () => {
       "💿 - Service "API" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
-      "💿 - Service "FILTER_API_TAGS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
+      "💿 - Service "FILTER_API_DEFINITION" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "💿 - Service "MECHANISMS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
@@ -580,7 +580,7 @@ describe('runServer', () => {
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
+      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
@@ -640,7 +640,7 @@ describe('runServer', () => {
       "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_TAGS.ts".",
+      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
