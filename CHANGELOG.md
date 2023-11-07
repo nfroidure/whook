@@ -1,3 +1,13 @@
+# [14.0.0](https://github.com/nfroidure/whook/compare/v13.2.2...v14.0.0) (2023-11-07)
+
+
+### Features
+
+* **@whook/whook:** add a customizable build directory ([7f42eea](https://github.com/nfroidure/whook/commit/7f42eeafc33e92ecb94ce6d8de85a48743f30ced))
+* **@whook/whook:** allow to filter the API ([6597207](https://github.com/nfroidure/whook/commit/6597207b7a0e177b81f7d0a18e0c79ba67e38f5d)), closes [#170](https://github.com/nfroidure/whook/issues/170)
+
+
+
 ## [13.2.1](https://github.com/nfroidure/whook/compare/v13.2.0...v13.2.1) (2023-09-29)
 
 
