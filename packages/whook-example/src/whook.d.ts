@@ -15,7 +15,7 @@ import type { APIConfig } from './services/API.js';
 import type { JWTServiceConfig } from 'jwt-service';
 import type { BaseAppEnvVars } from 'application-services';
 import type { JWTEnvVars } from 'jwt-service';
-import type { FilterAPITagsEnvVars } from './services/FILTER_API_TAGS.ts';
+import type { FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
 
 declare module 'application-services' {
   // Eventually override the process env type here
@@ -23,7 +23,7 @@ declare module 'application-services' {
     extends BaseAppEnvVars,
       WhookBaseEnv,
       JWTEnvVars,
-      FilterAPITagsEnvVars,
+      FilterAPIDefinitionEnvVars,
       WhookSwaggerUIEnv {
     DRY_RUN?: string;
   }

@@ -924,7 +924,8 @@ describe('initAPIDefinitions', () => {
 
       const API_DEFINITIONS = await initAPIDefinitions({
         PROJECT_SRC,
-        FILTER_API_TAGS: ['user'],
+        FILTER_API_DEFINITION: (definition) =>
+          !(definition.operation.tags || []).includes('user'),
         log,
         readDir,
         importer,
@@ -936,94 +937,94 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {
-                "userId": {
-                  "in": "path",
-                  "name": "userId",
-                  "schema": {
-                    "type": "number",
-                  },
-                },
-              },
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {
-                "User": {
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
+              "type": "string",
             },
-            "paths": {
-              "/users/{userId}": {
-                "put": {
-                  "operationId": "putUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "requestBody": {
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/User",
-                        },
-                      },
-                    },
-                  },
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
-                  },
-                  "tags": [
-                    "user",
-                  ],
+          },
+          "type": "object",
+        },
+      },
+    },
+    "paths": {
+      "/users/{userId}": {
+        "put": {
+          "operationId": "putUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
                 },
               },
             },
           },
-          "importerCalls": [
-            [
-              "/home/whoiam/project/src/handlers/getUser.js",
-            ],
-            [
-              "/home/whoiam/project/src/handlers/putUser.js",
-            ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
           ],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
-            [
-              "debug",
-              "⏳ - Ignored handler "getUser" via its tags ("other" not found in "user")!",
-            ],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
-          ],
-        }
-      `);
+        },
+      },
+    },
+  },
+  "importerCalls": [
+    [
+      "/home/whoiam/project/src/handlers/getUser.js",
+    ],
+    [
+      "/home/whoiam/project/src/handlers/putUser.js",
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+    [
+      "debug",
+      "⏳ - Ignored handler "getUser" via the API definition filter!",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "/home/whoiam/project/src/handlers",
+    ],
+  ],
+}
+`);
     });
   });
 });

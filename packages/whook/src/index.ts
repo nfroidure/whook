@@ -43,6 +43,7 @@ export {
   DEFAULT_IGNORED_FILES_SUFFIXES,
   DEFAULT_REDUCED_FILES_SUFFIXES,
   type WhookAPIDefinitionsConfig,
+  type WhookAPIDefinitionFilter,
 } from './services/API_DEFINITIONS.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';

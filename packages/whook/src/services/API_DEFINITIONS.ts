@@ -32,7 +32,7 @@ export type WhookAPIDefinitionsConfig = {
   REDUCED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_PREFIXES?: string[];
-  FILTER_API_TAGS?: string[];
+  FILTER_API_DEFINITION?: WhookAPIDefinitionFilter;
 };
 
 export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
@@ -126,6 +126,12 @@ export interface WhookAPIRequestBodyDefinition {
   requestBody: OpenAPIV3.RequestBodyObject | OpenAPIV3.ReferenceObject;
 }
 
+export interface WhookAPIDefinitionFilter<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> {
+  (definition: WhookAPIHandlerDefinition<T>): boolean;
+}
+
 export interface WhookAPIHandlerModule {
   [name: string]:
     | WhookAPISchemaDefinition<never>
@@ -136,6 +142,8 @@ export interface WhookAPIHandlerModule {
     | WhookAPIHandlerDefinition;
   definition: WhookAPIHandlerDefinition;
 }
+
+export const DEFAULT_API_DEFINITION_FILTER = () => false;
 
 export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
 
@@ -151,9 +159,8 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  * The files suffixes the autoloader must ignore
  * @param  {Object}   [services.IGNORED_FILES_PREFIXES]
  * The files prefixes the autoloader must ignore
- * @param  {Object}   [services.FILTER_API_TAGS]
- * Allows to only keep the endpoints taggeds with
- *  the given tags
+ * @param  {Object}   [services.FILTER_API_DEFINITION]
+ * Allows to filter endpoints if the custom function returns true
  * @param  {Object}   services.importer
  * A service allowing to dynamically import ES modules
  * @param  {Object}   [services.log=noop]
@@ -167,7 +174,7 @@ async function initAPIDefinitions({
   IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
   IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
   REDUCED_FILES_SUFFIXES = DEFAULT_REDUCED_FILES_SUFFIXES,
-  FILTER_API_TAGS = [],
+  FILTER_API_DEFINITION = DEFAULT_API_DEFINITION_FILTER,
   importer,
   log = noop,
   readDir = _readDir,
@@ -273,21 +280,10 @@ async function initAPIDefinitions({
           return paths;
         }
 
-        const operationTags =
-          (definition && definition.operation && definition.operation.tags) ||
-          [];
-
-        if (
-          FILTER_API_TAGS.length > 0 &&
-          operationTags.every((tag) => !FILTER_API_TAGS.includes(tag))
-        ) {
+        if (FILTER_API_DEFINITION(definition)) {
           log(
             'debug',
-            `⏳ - Ignored handler "${
-              definition.operation.operationId
-            }" via its tags ("${operationTags.join(
-              ',',
-            )}" not found in "${FILTER_API_TAGS.join(',')}")!`,
+            `⏳ - Ignored handler "${definition.operation.operationId}" via the API definition filter!`,
           );
           return paths;
         }
