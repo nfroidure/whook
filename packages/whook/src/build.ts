@@ -4,7 +4,7 @@ import util from 'util';
 import path from 'path';
 import { mkdirp } from 'mkdirp';
 import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
-import initCompiler from './services/compiler.js';
+import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
 import initProxyedENV from './services/PROXYED_ENV.js';
 import initBuildAutoloader from './services/_buildAutoload.js';
 import { printStackTrace } from 'yerror';
@@ -25,6 +25,7 @@ const writeFileAsync = util.promisify(fs.writeFile) as (
   encoding: string,
 ) => Promise<void>;
 
+export const DEFAULT_BUILD_DIR = 'server';
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   $fatalError: 'knifecycle/dist/fatalError',
   BASE_URL: '@whook/whook/dist/services/BASE_URL',
@@ -63,6 +64,8 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $.register(
     constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
   );
+  $.register(constant('BUILD_DIR', DEFAULT_BUILD_DIR));
+  $.register(constant('COMPILER_OPTIONS', DEFAULT_COMPILER_OPTIONS));
 
   return $;
 }
@@ -75,6 +78,7 @@ export async function runBuild(
     const {
       APP_ENV,
       PROJECT_DIR,
+      BUILD_DIR,
       COMPILER_OPTIONS,
       compiler,
       log,
@@ -82,25 +86,26 @@ export async function runBuild(
     }: {
       APP_ENV: string;
       PROJECT_DIR: string;
+      BUILD_DIR: string;
       COMPILER_OPTIONS: WhookCompilerOptions;
       compiler: WhookCompilerService;
       log: LogService;
       buildInitializer: BuildInitializer;
     } = await $.run([
-      'APP_CONFIG',
-      '$autoload',
       'APP_ENV',
       'PROJECT_DIR',
-      'process',
+      'BUILD_DIR',
+      'COMPILER_OPTIONS',
       'compiler',
       'log',
       'buildInitializer',
+      'process',
     ]);
 
     log('info', 'Build environment initialized 🚀🌕');
 
     const distPath = path.join(PROJECT_DIR, 'dist');
-    const buildPath = path.join(PROJECT_DIR, 'builds', APP_ENV);
+    const buildPath = path.join(PROJECT_DIR, 'builds', APP_ENV, BUILD_DIR);
     const initializerContent = await buildInitializer([
       'httpServer',
       'process',

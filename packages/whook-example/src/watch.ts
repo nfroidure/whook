@@ -17,15 +17,13 @@ You can add hooks to add need behaviors to the
 
 export async function watchDevServer() {
   await baseWatchDevServer({
-    injectedNames: ['PROJECT_SRC', 'log'],
-    afterRestartEnd: async ({ PROJECT_SRC, log }, { apiChanged }) => {
+    injectedNames: ['PROJECT_DIR', 'log'],
+    afterRestartEnd: async ({ PROJECT_DIR, log }, { apiChanged }) => {
       if (apiChanged) {
         try {
           const { stdout } = await doExec(
             "node ../../node_modules/prettier/bin/prettier.cjs --write 'src/openAPISchema.d.ts'",
-            // Could be `PROJECT_DIR` but seems to fail, replace after resolving
-            // this issue: https://github.com/nfroidure/knifecycle/issues/108
-            { cwd: PROJECT_SRC + '/..' },
+            { cwd: PROJECT_DIR },
           );
           log('warning', '🔧 - Formatted the type file!', stdout);
         } catch (err) {

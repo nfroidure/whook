@@ -1,6 +1,5 @@
 import { Knifecycle, constant, alsoInject } from 'knifecycle';
 import { prepareEnvironment } from './index.js';
-import { packageDirectory } from 'pkg-dir';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initBuildConstants,
@@ -54,11 +53,6 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   // Finally, some constants can be serialized instead of being
   //  initialized in the target build saving some time at boot
   $.register(alsoInject(['API_DEFINITIONS'], initBuildConstants));
-
-  // Needed to avoid a dead lock
-  // TODO: Remove when fixed that issue
-  // https://github.com/nfroidure/knifecycle/issues/108
-  $.register(constant('pkgDir', packageDirectory));
 
   return $;
 }
