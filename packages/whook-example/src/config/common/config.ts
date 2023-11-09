@@ -45,6 +45,7 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     generateRealEnums: false,
     exportNamespaces: false,
     brandedTypes: [],
+    tuplesFromFixedArraysLengthLimit: 5,
   },
   JWT: {
     duration: '2d',

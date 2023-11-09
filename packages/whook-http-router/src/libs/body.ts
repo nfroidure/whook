@@ -100,7 +100,7 @@ export async function getBody<
         },
         async (chunk) => {
           if (bufferLimit >= chunk.length) {
-            resolve(chunk);
+            resolve(Buffer.from(chunk));
             return chunk;
           }
 

@@ -68,11 +68,11 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/example": "^14.0.0",
-    "axios": "^1.5.1",
+    "axios": "^1.6.1",
     "common-services": "^15.0.0",
     "debug": "^4.3.4",
     "fs-extra": "^11.1.1",
-    "inquirer": "^9.2.10",
+    "inquirer": "^9.2.12",
     "knifecycle": "^17.0.1",
     "ora": "^7.0.1",
     "yerror": "^8.0.0"

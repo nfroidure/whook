@@ -15,6 +15,7 @@ describe('generateOpenAPITypes', () => {
     generateRealEnums: false,
     exportNamespaces: false,
     brandedTypes: [],
+    tuplesFromFixedArraysLengthLimit: 5,
   };
   const API: OpenAPIV3.Document = {
     openapi: '3.0.2',
