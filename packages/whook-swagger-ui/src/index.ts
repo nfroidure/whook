@@ -102,7 +102,8 @@ window.onload = function() {
         ? `, {"name":"Private API","url":"${
             publicSwaggerURL +
             '?access_token=' +
-            encodeURIComponent(DEV_ACCESS_TOKEN)
+            encodeURIComponent(DEV_ACCESS_TOKEN) +
+            '&displayOperationId=true'
           }"}`
         : ''
     }],
