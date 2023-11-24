@@ -10,6 +10,8 @@ import type {
 import type { ImporterService, LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
 import type { IncomingMessage, ServerResponse } from 'http';
+import type { SwaggerUIOptions } from 'swagger-ui';
+import type { Jsonify } from 'type-fest';
 
 export { initGetOpenAPI, getOpenAPIDefinition };
 
@@ -21,6 +23,7 @@ export type WhookSwaggerUIConfig = {
   BASE_PATH?: string;
   HOST?: string;
   PORT?: number;
+  SWAGGER_UI_CONFIG?: Omit<Jsonify<SwaggerUIOptions>, 'dom_id' | 'urls'>;
 };
 export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   ENV: WhookSwaggerUIEnv;
@@ -33,6 +36,13 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
 export type WhookAPIOperationSwaggerConfig = {
   private?: boolean;
 };
+
+export const DEFAULT_SWAGGER_UI_CONFIG: WhookSwaggerUIConfig['SWAGGER_UI_CONFIG'] =
+  {
+    deepLinking: true,
+    layout: 'StandaloneLayout',
+    displayOperationId: true,
+  };
 
 /**
  * Wraps the `httpRouter` initializer to also serve the
@@ -54,6 +64,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
       '?BASE_PATH',
       'HOST',
       'PORT',
+      '?SWAGGER_UI_CONFIG',
       'importer',
       '?log',
     ],
@@ -68,8 +79,9 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
         BASE_PATH = '',
         HOST,
         PORT,
-        log = noop,
+        SWAGGER_UI_CONFIG = DEFAULT_SWAGGER_UI_CONFIG,
         importer,
+        log = noop,
       }: WhookSwaggerUIDependencies,
       httpRouter: WhookHTTPRouterProvider,
     ) => {
@@ -96,28 +108,31 @@ window.onload = function() {
   //<editor-fold desc="Changeable Configuration Block">
 
   // the following lines will be replaced by docker/configurator, when it runs in a docker-container
-  window.ui = SwaggerUIBundle({
-    urls: [{"name":"Public API","url":"${publicSwaggerURL}"}${
-      DEV_ACCESS_TOKEN
-        ? `, {"name":"Private API","url":"${
-            publicSwaggerURL +
-            '?access_token=' +
-            encodeURIComponent(DEV_ACCESS_TOKEN)
-          }"}`
-        : ''
-    }],
-    dom_id: '#swagger-ui',
-    deepLinking: true,
-    presets: [
-      SwaggerUIBundle.presets.apis,
-      SwaggerUIStandalonePreset
-    ],
-    plugins: [
-      SwaggerUIBundle.plugins.DownloadUrl,
-      SwaggerUIBundle.plugins.Topbar
-    ],
-    layout: "StandaloneLayout"
-  });
+  window.ui = SwaggerUIBundle(
+    Object.assign(
+      {
+        urls: [{"name":"Public API","url":"${publicSwaggerURL}"}${
+          DEV_ACCESS_TOKEN
+            ? `, {"name":"Private API","url":"${
+                publicSwaggerURL +
+                '?access_token=' +
+                encodeURIComponent(DEV_ACCESS_TOKEN)
+              }"}`
+            : ''
+        }],
+        dom_id: '#swagger-ui',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl,
+          SwaggerUIBundle.plugins.Topbar
+        ],
+      },
+      ${JSON.stringify(SWAGGER_UI_CONFIG)}
+    )
+  );
 
   //</editor-fold>
 };

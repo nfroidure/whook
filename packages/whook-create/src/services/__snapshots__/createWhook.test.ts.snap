@@ -151,7 +151,7 @@ DEV_MODE=1
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.1",
-    "type-fest": "^4.7.1",
+    "type-fest": "^4.8.2",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0"
   },
@@ -491,7 +491,7 @@ DEV_MODE=1
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.1",
-    "type-fest": "^4.7.1",
+    "type-fest": "^4.8.2",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0"
   },
@@ -863,7 +863,7 @@ DEV_MODE=1
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.1",
-    "type-fest": "^4.7.1",
+    "type-fest": "^4.8.2",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0"
   },
@@ -1218,7 +1218,7 @@ DEV_MODE=1
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.1",
-    "type-fest": "^4.7.1",
+    "type-fest": "^4.8.2",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0"
   },

@@ -1,6 +1,7 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
 import { readFileSync } from 'fs';
 import { NodeEnv } from 'application-services';
+import { DEFAULT_SWAGGER_UI_CONFIG } from '@whook/swagger-ui';
 import type { AppConfig } from 'application-services';
 
 /* Architecture Note #2: Configuration
@@ -66,6 +67,10 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
       'Keep-Alive',
       'User-Agent',
     ].join(','),
+  },
+  SWAGGER_UI_CONFIG: {
+    ...DEFAULT_SWAGGER_UI_CONFIG,
+    defaultModelRendering: 'model',
   },
 };
 

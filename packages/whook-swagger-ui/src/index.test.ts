@@ -185,6 +185,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "DEFAULT_ERROR_CODE",
     ],
     [
+      "SWAGGER_UI_CONFIG",
+    ],
+    [
       "PROCESS_NAME",
     ],
     [
@@ -379,6 +382,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "DEFAULT_ERROR_CODE",
     ],
     [
+      "SWAGGER_UI_CONFIG",
+    ],
+    [
       "PROCESS_NAME",
     ],
     [
@@ -440,6 +446,224 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     "keep-alive": undefined,
     "last-modified": undefined,
     "server": undefined,
+  },
+  "logErrorCalls": [
+    [
+      "💁 - Serving the API docs: http://localhost:22224/docs",
+    ],
+    [
+      "🎙️ - HTTP Server listening at "http://localhost:22224".",
+    ],
+    [
+      "On air 🚀🌕",
+    ],
+  ],
+  "status": 200,
+}
+`);
+  });
+
+  it('should serve Swagger Initializer', async () => {
+    $.register(constant('PORT', PORT + 2));
+    $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
+    $.register(
+      constant('CONFIG', {
+        localURL: `http://${HOST}:${PORT + 2}`,
+      }),
+    );
+    $.register(
+      constant('ENV', {
+        NODE_ENV: 'test',
+        DEV_MODE: '1',
+      }),
+    );
+    $.register(
+      constant('SWAGGER_UI_CONFIG', {
+        layout: 'StandaloneLayout',
+      }),
+    );
+    $.register(constant('DEBUG_NODE_ENVS', ['test']));
+
+    time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
+
+    const { $instance } = await prepareServer(
+      ['$instance', 'httpServer', 'process'],
+      $,
+    );
+    const { status, headers, data } = await axios({
+      method: 'get',
+      url: `http://${HOST}:${PORT + 2}/docs/swagger-initializer.js`,
+      headers: { 'user-agent': '__avoid_axios_version__' },
+      validateStatus: () => true,
+    });
+
+    await $instance.destroy();
+
+    expect(data).toMatchInlineSnapshot(`
+"
+window.onload = function() {
+  //<editor-fold desc="Changeable Configuration Block">
+
+  // the following lines will be replaced by docker/configurator, when it runs in a docker-container
+  window.ui = SwaggerUIBundle(
+    Object.assign(
+      {
+        urls: [{"name":"Public API","url":"http://localhost:22224/v1/openAPI"}, {"name":"Private API","url":"http://localhost:22224/v1/openAPI?access_token=oudelali"}],
+        dom_id: '#swagger-ui',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl,
+          SwaggerUIBundle.plugins.Topbar
+        ],
+      },
+      {"layout":"StandaloneLayout"}
+    )
+  );
+
+  //</editor-fold>
+};
+"
+`);
+    expect(logger.output.mock.calls.length).toEqual(0);
+    expect({
+      status,
+      headers: {
+        ...headers,
+        // Erasing the Date header that may be added by Axios :/
+        date: undefined,
+        etag: undefined,
+        'last-modified': undefined,
+        server: undefined,
+        connection: undefined,
+        'keep-alive': undefined,
+      },
+      debugCalls: logger.debug.mock.calls.sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls,
+      autoloaderCalls: $autoload.mock.calls,
+    }).toMatchInlineSnapshot(`
+{
+  "autoloaderCalls": [
+    [
+      "KEEP_ALIVE_TIMEOUT",
+    ],
+    [
+      "SOCKET_TIMEOUT",
+    ],
+    [
+      "MAX_CONNECTIONS",
+    ],
+    [
+      "BUFFER_LIMIT",
+    ],
+    [
+      "PARSERS",
+    ],
+    [
+      "STRINGIFYERS",
+    ],
+    [
+      "DECODERS",
+    ],
+    [
+      "ENCODERS",
+    ],
+    [
+      "QUERY_PARSER",
+    ],
+    [
+      "TIMEOUT",
+    ],
+    [
+      "TRANSACTIONS",
+    ],
+    [
+      "SHIELD_CHAR",
+    ],
+    [
+      "MAX_CLEAR_CHARS",
+    ],
+    [
+      "MAX_CLEAR_RATIO",
+    ],
+    [
+      "SENSIBLE_PROPS",
+    ],
+    [
+      "SENSIBLE_HEADERS",
+    ],
+    [
+      "uniqueId",
+    ],
+    [
+      "ERRORS_DESCRIPTORS",
+    ],
+    [
+      "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "PROCESS_NAME",
+    ],
+    [
+      "SIGNALS",
+    ],
+    [
+      "MAX_HEADERS_COUNT",
+    ],
+  ],
+  "debugCalls": [
+    [
+      "⌛ - Delay service initialized.",
+    ],
+    [
+      "⏳ - Cancelling pending timeouts:",
+      0,
+    ],
+    [
+      "✅ - Closing HTTP server.",
+    ],
+    [
+      "✔️ - HTTP server closed!",
+    ],
+    [
+      "❤️ - Initializing the APM service.",
+    ],
+    [
+      "👣 - Logging service initialized.",
+    ],
+    [
+      "💱 - HTTP Transaction initialized.",
+    ],
+    [
+      "📇 - Process service initialized.",
+    ],
+    [
+      "🕶️ - Initializing the obfuscator service.",
+    ],
+    [
+      "🚦 - HTTP Router initialized.",
+    ],
+    [
+      "🛂 - Dynamic import of "ecstatic".",
+    ],
+    [
+      "🛂 - Dynamic import of "swagger-ui-dist".",
+    ],
+    [
+      "🛂 - Initializing the importer!",
+    ],
+  ],
+  "headers": {
+    "connection": undefined,
+    "content-type": "text/javascript",
+    "date": undefined,
+    "etag": undefined,
+    "keep-alive": undefined,
+    "last-modified": undefined,
+    "server": undefined,
+    "transfer-encoding": "chunked",
   },
   "logErrorCalls": [
     [
@@ -540,6 +764,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "SWAGGER_UI_CONFIG",
     ],
     [
       "PROCESS_NAME",
