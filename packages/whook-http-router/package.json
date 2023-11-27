@@ -73,7 +73,7 @@
     "qs": "^6.11.2",
     "siso": "^6.0.1",
     "strict-qs": "^8.0.1",
-    "type-fest": "^4.7.1",
+    "type-fest": "^4.8.2",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0"
   },

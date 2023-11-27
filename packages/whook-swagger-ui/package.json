@@ -66,13 +66,15 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
+    "@types/swagger-ui": "3.52.4",
     "@whook/http-router": "^14.0.0",
     "@whook/whook": "^14.0.0",
     "axios": "^1.6.1",
     "ecstatic": "^4.1.4",
     "knifecycle": "^17.0.1",
     "openapi-types": "^12.1.3",
-    "swagger-ui-dist": "^5.9.3"
+    "swagger-ui-dist": "^5.9.3",
+    "type-fest": "^4.8.2"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",
