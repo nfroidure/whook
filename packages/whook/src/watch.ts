@@ -7,7 +7,7 @@ import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
 import initGetOpenAPI from './handlers/getOpenAPI.js';
 import { readFile } from 'fs';
 import { promisify } from 'util';
-import parseGitIgnore from 'parse-gitignore';
+import ignore from 'ignore';
 import { createRequire } from 'module';
 import { AppEnvVars } from 'application-services';
 import type { Dependencies, Knifecycle } from 'knifecycle';
@@ -43,12 +43,14 @@ export async function watchDevServer<T extends Dependencies>(
     injectedNames: [],
   },
 ): Promise<void> {
-  let ignored = ['node_modules', '*.d.ts', '.git'];
+  let ignoreFilter;
 
   try {
-    ignored = ignored.concat(
-      parseGitIgnore((await promisify(readFile)('.gitignore')).toString()),
-    );
+    ignoreFilter = ignore
+      .default()
+      .add(['node_modules', '*.d.ts', '.git'])
+      .add((await promisify(readFile)('.gitignore')).toString())
+      .createFilter();
   } catch (err) {
     // TODO: requires a deeper integration of Knifecycle to
     // start with a silo containing only the environment
@@ -63,7 +65,7 @@ export async function watchDevServer<T extends Dependencies>(
   await new Promise<void>((resolve, reject) => {
     chokidar
       .watch(['**/*.ts', 'package*.json'], {
-        ignored,
+        ignored: ignoreFilter,
         ignoreInitial: true,
       })
       .once('ready', () => {
