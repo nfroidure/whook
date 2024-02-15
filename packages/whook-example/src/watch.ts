@@ -25,7 +25,7 @@ export async function watchDevServer() {
             "node ../../node_modules/prettier/bin/prettier.cjs --write 'src/openAPISchema.d.ts'",
             { cwd: PROJECT_DIR },
           );
-          log('warning', '🔧 - Formatted the type file!', stdout);
+          log('warning', '🔧 - Formatted the type file!', stdout.trim());
         } catch (err) {
           log('error', '🔧 - Could not format the type file!');
           log('error-stack', printStackTrace(err as Error));
