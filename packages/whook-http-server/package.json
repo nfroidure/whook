@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/http-server",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "description": "The Whook base HTTP server",
   "type": "module",
   "main": "dist/index.js",
@@ -53,7 +53,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/http-router": "^14.0.0",
+    "@whook/http-router": "^15.0.0",
     "knifecycle": "^17.0.1",
     "ms": "^2.1.3",
     "yerror": "^8.0.0"

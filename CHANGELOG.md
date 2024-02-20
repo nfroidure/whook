@@ -1,3 +1,21 @@
+# [15.0.0](https://github.com/nfroidure/whook/compare/v14.0.0...v15.0.0) (2024-02-20)
+
+
+### Bug Fixes
+
+* **@whook/example:** fix the watch output ([5b43590](https://github.com/nfroidure/whook/commit/5b43590f0a8cf6b0a6064d6f3c8ed50b8d3aa3e3))
+* **@whook/oauth2:** fix the cookies options ([66afe54](https://github.com/nfroidure/whook/commit/66afe54b19502833c113b751ac4dc9a3a136291f)), closes [#175](https://github.com/nfroidure/whook/issues/175)
+* **core:** fix CI ([ea2bbda](https://github.com/nfroidure/whook/commit/ea2bbda1975db90605657e18dbb440630b496b64))
+* **core:** try to fix CI with new package lock ([8179534](https://github.com/nfroidure/whook/commit/8179534e82dbc124defc98ae9048ffc2e7a638f7))
+* **watch:** fix git ignore parsing ([392e53f](https://github.com/nfroidure/whook/commit/392e53f9dba23e2fa59b89de09989fa751b01b1c))
+
+
+### Features
+
+* **swaggerUI:** add displayOperationId option in swaggerUI ([5eb1347](https://github.com/nfroidure/whook/commit/5eb1347b129f966fff520658b0d9848be1391e24))
+
+
+
 # [14.0.0](https://github.com/nfroidure/whook/compare/v13.2.2...v14.0.0) (2023-11-07)
 
 

@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/http-router",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "description": "The Whook base HTTP router",
   "type": "module",
   "main": "dist/index.js",
@@ -57,7 +57,7 @@
     "@types/content-type": "^1.1.8",
     "@types/negotiator": "^0.6.3",
     "@types/qs": "^6.9.10",
-    "@whook/http-transaction": "^14.0.0",
+    "@whook/http-transaction": "^15.0.0",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "application-services": "^5.0.0",
