@@ -446,11 +446,11 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   });
 
   it('should serve Swagger Initializer', async () => {
-    $.register(constant('PORT', PORT + 2));
+    $.register(constant('PORT', PORT + 3));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(
       constant('CONFIG', {
-        localURL: `http://${HOST}:${PORT + 2}`,
+        localURL: `http://${HOST}:${PORT + 3}`,
       }),
     );
     $.register(
@@ -474,7 +474,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     );
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT + 2}/docs/swagger-initializer.js`,
+      url: `http://${HOST}:${PORT + 3}/docs/swagger-initializer.js`,
       headers: { 'user-agent': '__avoid_axios_version__' },
       validateStatus: () => true,
     });
@@ -490,7 +490,7 @@ window.onload = function() {
   window.ui = SwaggerUIBundle(
     Object.assign(
       {
-        urls: [{"name":"Public API","url":"http://localhost:22224/v1/openAPI"}, {"name":"Private API","url":"http://localhost:22224/v1/openAPI?access_token=oudelali"}],
+        urls: [{"name":"Public API","url":"http://localhost:22225/v1/openAPI"}, {"name":"Private API","url":"http://localhost:22225/v1/openAPI?access_token=oudelali"}],
         dom_id: '#swagger-ui',
         presets: [
           SwaggerUIBundle.presets.apis,
@@ -640,10 +640,10 @@ window.onload = function() {
   },
   "logErrorCalls": [
     [
-      "💁 - Serving the API docs: http://localhost:22224/docs",
+      "💁 - Serving the API docs: http://localhost:22225/docs",
     ],
     [
-      "🎙️ - HTTP Server listening at "http://localhost:22224".",
+      "🎙️ - HTTP Server listening at "http://localhost:22225".",
     ],
     [
       "On air 🚀🌕",
