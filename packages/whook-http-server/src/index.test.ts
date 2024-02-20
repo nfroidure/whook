@@ -56,7 +56,9 @@ describe('initHTTPServer', () => {
       ENV: {
         DESTROY_SOCKETS: '1',
       },
-      MAX_CONNECTIONS: 4,
+      HTTP_SERVER_OPTIONS: {
+        maxConnections: 4,
+      },
       HOST,
       PORT,
       httpRouter,
@@ -84,7 +86,9 @@ describe('initHTTPServer', () => {
       ENV: {
         DESTROY_SOCKETS: '1',
       },
-      MAX_CONNECTIONS: 4,
+      HTTP_SERVER_OPTIONS: {
+        maxConnections: 4,
+      },
       HOST,
       PORT,
       httpRouter,

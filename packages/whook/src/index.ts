@@ -75,6 +75,7 @@ export type {
 export type { WhookPort, WhookPortEnv } from './services/PORT.js';
 export type {
   WhookHTTPServerEnv,
+  WhookHTTPServerOptions,
   WhookHTTPServerConfig,
   WhookHTTPServerDependencies,
   WhookHTTPServerService,

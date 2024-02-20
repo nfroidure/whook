@@ -128,15 +128,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 {
   "autoloaderCalls": [
     [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    [
-      "SOCKET_TIMEOUT",
-    ],
-    [
-      "MAX_CONNECTIONS",
-    ],
-    [
       "BUFFER_LIMIT",
     ],
     [
@@ -194,7 +185,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "SIGNALS",
     ],
     [
-      "MAX_HEADERS_COUNT",
+      "HTTP_SERVER_OPTIONS",
     ],
   ],
   "debugCalls": [
@@ -325,15 +316,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 {
   "autoloaderCalls": [
     [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    [
-      "SOCKET_TIMEOUT",
-    ],
-    [
-      "MAX_CONNECTIONS",
-    ],
-    [
       "BUFFER_LIMIT",
     ],
     [
@@ -391,7 +373,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "SIGNALS",
     ],
     [
-      "MAX_HEADERS_COUNT",
+      "HTTP_SERVER_OPTIONS",
     ],
   ],
   "debugCalls": [
@@ -547,15 +529,6 @@ window.onload = function() {
 {
   "autoloaderCalls": [
     [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    [
-      "SOCKET_TIMEOUT",
-    ],
-    [
-      "MAX_CONNECTIONS",
-    ],
-    [
       "BUFFER_LIMIT",
     ],
     [
@@ -610,7 +583,7 @@ window.onload = function() {
       "SIGNALS",
     ],
     [
-      "MAX_HEADERS_COUNT",
+      "HTTP_SERVER_OPTIONS",
     ],
   ],
   "debugCalls": [
@@ -709,15 +682,6 @@ window.onload = function() {
 {
   "autoloaderCalls": [
     [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    [
-      "SOCKET_TIMEOUT",
-    ],
-    [
-      "MAX_CONNECTIONS",
-    ],
-    [
       "BUFFER_LIMIT",
     ],
     [
@@ -775,7 +739,7 @@ window.onload = function() {
       "SIGNALS",
     ],
     [
-      "MAX_HEADERS_COUNT",
+      "HTTP_SERVER_OPTIONS",
     ],
   ],
   "debugCalls": [

@@ -154,15 +154,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 {
   "autoloaderCalls": [
     [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    [
-      "SOCKET_TIMEOUT",
-    ],
-    [
-      "MAX_CONNECTIONS",
-    ],
-    [
       "BUFFER_LIMIT",
     ],
     [
@@ -220,7 +211,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "SIGNALS",
     ],
     [
-      "MAX_HEADERS_COUNT",
+      "HTTP_SERVER_OPTIONS",
     ],
   ],
   "debugCalls": [
@@ -347,15 +338,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 {
   "autoloaderCalls": [
     [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    [
-      "SOCKET_TIMEOUT",
-    ],
-    [
-      "MAX_CONNECTIONS",
-    ],
-    [
       "BUFFER_LIMIT",
     ],
     [
@@ -413,7 +395,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "SIGNALS",
     ],
     [
-      "MAX_HEADERS_COUNT",
+      "HTTP_SERVER_OPTIONS",
     ],
   ],
   "data": "
@@ -624,15 +606,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 {
   "autoloaderCalls": [
     [
-      "KEEP_ALIVE_TIMEOUT",
-    ],
-    [
-      "SOCKET_TIMEOUT",
-    ],
-    [
-      "MAX_CONNECTIONS",
-    ],
-    [
       "BUFFER_LIMIT",
     ],
     [
@@ -690,7 +663,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "SIGNALS",
     ],
     [
-      "MAX_HEADERS_COUNT",
+      "HTTP_SERVER_OPTIONS",
     ],
   ],
   "debugCalls": [

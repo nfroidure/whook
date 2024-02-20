@@ -10,13 +10,20 @@ import type { Socket } from 'net';
 export type WhookHTTPServerEnv = {
   DESTROY_SOCKETS?: string;
 };
+export type WhookHTTPServerOptions = Pick<
+  http.Server,
+  | 'timeout'
+  | 'headersTimeout'
+  | 'requestTimeout'
+  | 'keepAliveTimeout'
+  | 'maxConnections'
+  | 'maxHeadersCount'
+  | 'maxRequestsPerSocket'
+>;
 export type WhookHTTPServerConfig = {
   HOST?: string;
   PORT?: number;
-  MAX_HEADERS_COUNT?: number;
-  KEEP_ALIVE_TIMEOUT?: number;
-  SOCKET_TIMEOUT?: number;
-  MAX_CONNECTIONS?: number;
+  HTTP_SERVER_OPTIONS?: Partial<WhookHTTPServerOptions>;
 };
 export type WhookHTTPServerDependencies = WhookHTTPServerConfig & {
   ENV?: WhookHTTPServerEnv;
@@ -33,6 +40,15 @@ function noop() {
 }
 
 const DEFAULT_ENV = {};
+const DEFAULT_HTTP_SERVER_OPTIONS: WhookHTTPServerOptions = {
+  maxHeadersCount: 800,
+  requestTimeout: ms('5m'),
+  headersTimeout: ms('1m'),
+  maxRequestsPerSocket: 0,
+  timeout: ms('2m'),
+  keepAliveTimeout: ms('5m'),
+  maxConnections: 0,
+};
 
 export default name('httpServer', autoProvider(initHTTPServer));
 
@@ -47,18 +63,12 @@ export default name('httpServer', autoProvider(initHTTPServer));
  * @param  {String}   services.ENV.DESTROY_SOCKETS
  * Whether the server sockets whould be destroyed or if the
  *  server should wait while sockets are kept alive
+ * @param  {Object}   [services.HTTP_SERVER_OPTIONS]
+ * See https://nodejs.org/docs/latest/api/http.html#class-httpserver
  * @param  {String}   services.HOST
  * The server host
  * @param  {Number}   services.PORT
  * The server port
- * @param  {Number}   [services.MAX_HEADERS_COUNT]
- * The https://nodejs.org/api/http.html#http_server_maxheaderscount
- * @param  {Number}   [services.KEEP_ALIVE_TIMEOUT]
- * See https://nodejs.org/api/http.html#http_server_keepalivetimeout
- * @param  {Number}   [services.MAX_CONNECTIONS]
- * See https://nodejs.org/api/net.html#net_server_maxconnections
- * @param  {Number}   [services.SOCKET_TIMEOUT]
- * See https://nodejs.org/api/http.html#http_server_timeout
  * @param  {Function} services.httpRouter
  * The function to run with the req/res tuple
  * @param  {Function} [services.log=noop]
@@ -69,15 +79,17 @@ export default name('httpServer', autoProvider(initHTTPServer));
  */
 async function initHTTPServer({
   ENV = DEFAULT_ENV,
+  HTTP_SERVER_OPTIONS = DEFAULT_HTTP_SERVER_OPTIONS,
   HOST,
   PORT,
-  MAX_HEADERS_COUNT = 800,
-  KEEP_ALIVE_TIMEOUT = ms('5m'),
-  SOCKET_TIMEOUT = ms('2m'),
-  MAX_CONNECTIONS = Infinity,
   httpRouter,
   log = noop,
 }: WhookHTTPServerDependencies): Promise<WhookHTTPServerProvider> {
+  const FINAL_HTTP_SERVER_OPTIONS: WhookHTTPServerOptions = {
+    ...DEFAULT_HTTP_SERVER_OPTIONS,
+    ...HTTP_SERVER_OPTIONS,
+  };
+
   const sockets: Set<Socket> = ENV.DESTROY_SOCKETS
     ? new Set()
     : (undefined as unknown as Set<Socket>);
@@ -97,14 +109,14 @@ async function initHTTPServer({
     );
   });
 
-  httpServer.timeout = SOCKET_TIMEOUT;
-  httpServer.keepAliveTimeout = KEEP_ALIVE_TIMEOUT;
-  httpServer.maxHeadersCount = MAX_HEADERS_COUNT;
-  httpServer.maxConnections = MAX_CONNECTIONS;
-
-  if ('undefined' !== typeof MAX_CONNECTIONS) {
-    httpServer.maxConnections = MAX_CONNECTIONS;
-  }
+  httpServer.maxHeadersCount = FINAL_HTTP_SERVER_OPTIONS.maxHeadersCount;
+  httpServer.requestTimeout = FINAL_HTTP_SERVER_OPTIONS.requestTimeout;
+  httpServer.headersTimeout = FINAL_HTTP_SERVER_OPTIONS.headersTimeout;
+  httpServer.maxRequestsPerSocket =
+    FINAL_HTTP_SERVER_OPTIONS.maxRequestsPerSocket;
+  httpServer.timeout = FINAL_HTTP_SERVER_OPTIONS.timeout;
+  httpServer.keepAliveTimeout = FINAL_HTTP_SERVER_OPTIONS.keepAliveTimeout;
+  httpServer.maxConnections = FINAL_HTTP_SERVER_OPTIONS.maxConnections;
 
   if (ENV.DESTROY_SOCKETS) {
     httpServer.on('connection', (socket) => {

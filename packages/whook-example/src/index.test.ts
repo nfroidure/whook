@@ -292,6 +292,18 @@ describe('runServer', () => {
       "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS".",
     ],
     [
+      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/dist/services/HTTP_SERVER_OPTIONS".",
+    ],
+    [
+      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/HTTP_SERVER_OPTIONS".",
+    ],
+    [
+      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/HTTP_SERVER_OPTIONS".",
+    ],
+    [
+      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/HTTP_SERVER_OPTIONS".",
+    ],
+    [
       "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES".",
     ],
     [
@@ -328,18 +340,6 @@ describe('runServer', () => {
       "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME".",
     ],
     [
-      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/KEEP_ALIVE_TIMEOUT".",
-    ],
-    [
-      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/KEEP_ALIVE_TIMEOUT".",
-    ],
-    [
-      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/KEEP_ALIVE_TIMEOUT".",
-    ],
-    [
-      "🚫 - Service "KEEP_ALIVE_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/KEEP_ALIVE_TIMEOUT".",
-    ],
-    [
       "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO".",
     ],
     [
@@ -350,30 +350,6 @@ describe('runServer', () => {
     ],
     [
       "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO".",
-    ],
-    [
-      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/dist/services/MAX_CONNECTIONS".",
-    ],
-    [
-      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/MAX_CONNECTIONS".",
-    ],
-    [
-      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CONNECTIONS".",
-    ],
-    [
-      "🚫 - Service "MAX_CONNECTIONS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CONNECTIONS".",
-    ],
-    [
-      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/dist/services/MAX_HEADERS_COUNT".",
-    ],
-    [
-      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/MAX_HEADERS_COUNT".",
-    ],
-    [
-      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_HEADERS_COUNT".",
-    ],
-    [
-      "🚫 - Service "MAX_HEADERS_COUNT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_HEADERS_COUNT".",
     ],
     [
       "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/dist/services/PARSERS".",
@@ -434,18 +410,6 @@ describe('runServer', () => {
     ],
     [
       "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS".",
-    ],
-    [
-      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/SOCKET_TIMEOUT".",
-    ],
-    [
-      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/SOCKET_TIMEOUT".",
-    ],
-    [
-      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SOCKET_TIMEOUT".",
-    ],
-    [
-      "🚫 - Service "SOCKET_TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SOCKET_TIMEOUT".",
     ],
     [
       "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/dist/services/STRINGIFYERS".",
