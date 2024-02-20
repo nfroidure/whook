@@ -49,7 +49,6 @@ import initAuthCookiesService, {
   AUTH_API_PREFIX,
 } from './services/authCookies.js';
 import type {
-  AuthCookiesEnv,
   AuthCookiesConfig,
   AuthCookiesService,
   AuthCookiesData,
@@ -65,7 +64,6 @@ export type {
   OAuth2GranterService,
   OAuth2Options,
   OAuth2Config,
-  AuthCookiesEnv,
   AuthCookiesConfig,
   AuthCookiesService,
   AuthCookiesData,

@@ -67,20 +67,12 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
 +import type {
-+  AuthCookiesEnv,
 +  OAuth2Config,
 +} from '@whook/oauth2';
 
 // ...
 
 declare module 'application-services' {
-
-  export interface AppEnvVars
-    extends BaseAppEnvVars,
-      WhookBaseEnv,
-      // (...)
-+      AuthCookiesEnv,
-      WhookSwaggerUIEnv {}
 
   // (...)
 

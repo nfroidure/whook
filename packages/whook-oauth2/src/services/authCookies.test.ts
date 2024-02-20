@@ -5,13 +5,11 @@ import type { AuthCookiesConfig } from './authCookies.js';
 describe('authCookies', () => {
   describe('.build()', () => {
     test('should work with new auth data', async () => {
-      const ENV = {};
       const COOKIES: AuthCookiesConfig['COOKIES'] = {
         domain: 'api.example.com',
       };
 
       const authCookies = await initAuthCookies({
-        ENV,
         COOKIES,
       });
 
@@ -29,13 +27,11 @@ describe('authCookies', () => {
     });
 
     test('should allow to reset auth data', async () => {
-      const ENV = {};
       const COOKIES: AuthCookiesConfig['COOKIES'] = {
         domain: 'api.example.com',
       };
 
       const authCookies = await initAuthCookies({
-        ENV,
         COOKIES,
       });
 
@@ -52,15 +48,14 @@ describe('authCookies', () => {
       `);
     });
   });
+
   describe('.parse()', () => {
     test('should work with no cookies', async () => {
-      const ENV = {};
       const COOKIES: AuthCookiesConfig['COOKIES'] = {
         domain: 'api.example.com',
       };
 
       const authCookies = await initAuthCookies({
-        ENV,
         COOKIES,
       });
 
@@ -68,14 +63,13 @@ describe('authCookies', () => {
 
       expect(result).toMatchInlineSnapshot(`{}`);
     });
+
     test('should work with cookies', async () => {
-      const ENV = {};
       const COOKIES: AuthCookiesConfig['COOKIES'] = {
         domain: 'api.example.com',
       };
 
       const authCookies = await initAuthCookies({
-        ENV,
         COOKIES,
       });
 

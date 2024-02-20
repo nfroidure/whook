@@ -1,10 +1,10 @@
 import ms from 'ms';
-import cookie from 'cookie';
+import cookie, { CookieSerializeOptions } from 'cookie';
 import { autoService } from 'knifecycle';
 import type { BaseAuthenticationData } from '@whook/authorization';
+import { Jsonify } from 'type-fest';
 
 export const AUTH_API_PREFIX = '/auth';
-export const DEFAULT_COOKIES_ENV = {};
 
 export type AuthHandlersConfig<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
@@ -12,19 +12,12 @@ export type AuthHandlersConfig<
   ROOT_AUTHENTICATION_DATA: AUTHENTICATION_DATA;
 };
 
-export type AuthCookiesEnv = {
-  DEV_MODE?: string;
-};
 export type AuthCookiesConfig = {
-  COOKIES: {
-    domain: string;
-  };
+  COOKIES: Jsonify<Omit<CookieSerializeOptions, 'maxAge' | 'path' | 'expires'>>;
   BASE_PATH?: string;
 };
 
-export type AuthCookiesDependencies = AuthCookiesConfig & {
-  ENV?: AuthCookiesEnv;
-};
+export type AuthCookiesDependencies = AuthCookiesConfig;
 
 export type AuthCookiesData = {
   refresh_token: string;
@@ -42,7 +35,6 @@ export type AuthCookiesService = {
 export default autoService(initAuthCookies);
 
 async function initAuthCookies({
-  ENV = DEFAULT_COOKIES_ENV,
   COOKIES,
   BASE_PATH = '',
 }: AuthCookiesDependencies): Promise<AuthCookiesService> {
@@ -51,17 +43,17 @@ async function initAuthCookies({
       cookie.serialize('access_token', data.access_token || '', {
         path: BASE_PATH + AUTH_API_PREFIX,
         httpOnly: true,
-        domain: ENV.DEV_MODE ? undefined : COOKIES.domain,
-        secure: !ENV.DEV_MODE,
-        ...(ENV.DEV_MODE ? {} : { sameSite: true }),
+        sameSite: true,
+        secure: true,
+        ...COOKIES,
         ...(data.access_token ? {} : { maxAge: 0 }),
       }),
       cookie.serialize('refresh_token', data.refresh_token || '', {
         path: BASE_PATH + AUTH_API_PREFIX,
         httpOnly: true,
-        domain: ENV.DEV_MODE ? undefined : COOKIES.domain,
-        secure: !ENV.DEV_MODE,
-        ...(ENV.DEV_MODE ? {} : { sameSite: true }),
+        sameSite: true,
+        secure: true,
+        ...COOKIES,
         ...(session ? {} : { maxAge: Math.round(ms('100y') / 1000) }),
       }),
     ];
