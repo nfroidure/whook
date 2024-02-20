@@ -44,8 +44,8 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
     null === result
       ? undefined
       : result
-      ? Promise.resolve(result)
-      : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+        ? Promise.resolve(result)
+        : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
   ) as WhookHandler & ReturnType<typeof jest.fn>;
   const httpTransactionStart = jest.fn(async (buildResponse: () => void) =>
     buildResponse(),

@@ -63,8 +63,8 @@ async function initOAuth2ClientCredentialsGranter({
       scope: demandedScope
         ? demandedScope
         : OAUTH2.defaultToClientScope
-        ? authenticationData.scope
-        : '',
+          ? authenticationData.scope
+          : '',
     };
   };
 

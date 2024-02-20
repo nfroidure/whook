@@ -1,11 +1,12 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initEnv from './PROXYED_ENV.js';
 import { NodeEnv } from 'application-services';
+import { readFile as _readFile } from 'node:fs/promises';
 import type { LogService } from 'common-services';
 
 describe('initEnv', () => {
   const log = jest.fn<LogService>();
-  const readFile = jest.fn<(path: string) => Promise<Buffer>>();
+  const readFile = jest.fn<typeof _readFile>();
 
   beforeEach(() => {
     log.mockReset();
@@ -31,7 +32,7 @@ DB_HOST = 'localhost'
       },
       PROJECT_DIR: '/home/whoami/my-whook-project',
       log,
-      readFile,
+      readFile: readFile as typeof _readFile,
     });
 
     expect({
@@ -50,8 +51,16 @@ DB_HOST = 'localhost'
       "♻️ - Loading the environment service.",
     ],
     [
+      "warning",
+      "🔴 - Running with "local" application environment.",
+    ],
+    [
       "debug",
       "🖥 - Using the process env.",
+    ],
+    [
+      "warning",
+      "🔂 - Running with "test" node environment.",
     ],
     [
       "debug",
@@ -68,14 +77,6 @@ DB_HOST = 'localhost'
     [
       "debug",
       "🚫 - No file found at "/home/whoami/my-whook-project/.env.app.local".",
-    ],
-    [
-      "warning",
-      "🔂 - Running with "test" node environment.",
-    ],
-    [
-      "warning",
-      "🔂 - Running with "local" application environment.",
     ],
     [
       "debug",

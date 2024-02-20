@@ -118,14 +118,14 @@ export function refersTo<T>(
       (resource as WhookAPISchemaDefinition<T>).schema
         ? 'schemas'
         : (resource as WhookAPIParameterDefinition<T>).parameter
-        ? 'parameters'
-        : (resource as WhookAPIHeaderDefinition).header
-        ? 'headers'
-        : (resource as WhookAPIResponseDefinition).response
-        ? 'responses'
-        : (resource as WhookAPIRequestBodyDefinition).requestBody
-        ? 'requestBodies'
-        : 'examples'
+          ? 'parameters'
+          : (resource as WhookAPIHeaderDefinition).header
+            ? 'headers'
+            : (resource as WhookAPIResponseDefinition).response
+              ? 'responses'
+              : (resource as WhookAPIRequestBodyDefinition).requestBody
+                ? 'requestBodies'
+                : 'examples'
     }/${resource.name}`,
   };
 }

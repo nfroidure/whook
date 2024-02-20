@@ -11,7 +11,34 @@ describe('commands should work', () => {
     expect({
       stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
       stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+",
+  "stdout": "
+
+# Provided by "@whook/example": 1 commands
+- printEnv: A command printing every env values
+
+
+# Provided by "@whook/whook": 8 commands
+- config: A simple program that returns the queryed config value
+- create: A command helping to create new Whook files easily
+- env: A command printing env values
+- generateOpenAPISchema: Write openAPI schema to stdout
+- generateOpenAPITypes: Write openAPI types to stdout
+- handler: Runs the given server handler for testing purpose
+- inspect: A simple program that returns the result of the injected service
+- ls: Print available commands
+
+
+# Provided by "@whook/cors": none
+
+
+# Provided by "@whook/authorization": none
+",
+}
+`);
   });
 
   it('with env', async () => {
@@ -22,7 +49,16 @@ describe('commands should work', () => {
     expect({
       stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
       stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+🔴 - Running with "local" application environment.
+🔂 - Running with "test" node environment.
+",
+  "stdout": "test
+",
+}
+`);
   });
 
   it('with config', async () => {
@@ -33,7 +69,14 @@ describe('commands should work', () => {
     expect({
       stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
       stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+{
+  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+",
+  "stdout": ""localhost"
+",
+}
+`);
   });
 });
 

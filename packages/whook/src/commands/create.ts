@@ -307,8 +307,8 @@ import type { ${whookServices
       ['service', 'provider'].includes(type)
         ? 'services'
         : type === 'handler'
-        ? 'handlers'
-        : 'commands',
+          ? 'handlers'
+          : 'commands',
     );
     await ensureDir(fileDir);
     const filePath = path.join(fileDir, `${name}.ts`);

@@ -533,8 +533,8 @@ export function pickAllHeaderValues(
     headers && typeof headers[name] === 'undefined'
       ? []
       : typeof headers[name] === 'string'
-      ? [headers[name] as string]
-      : (headers[name] as string[]);
+        ? [headers[name] as string]
+        : (headers[name] as string[]);
 
   return headerValues;
 }

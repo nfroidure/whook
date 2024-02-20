@@ -153,15 +153,15 @@ async function initObfuscator({
     return 'string' !== typeof value
       ? obfuscate('')
       : pattern.test(value)
-      ? value.replace(pattern, (...args) => {
-          return args
-            .slice(1, -2)
-            .map((value, index) =>
-              clearIndices.includes(index) ? value : obfuscate(value),
-            )
-            .join('');
-        })
-      : obfuscate(value);
+        ? value.replace(pattern, (...args) => {
+            return args
+              .slice(1, -2)
+              .map((value, index) =>
+                clearIndices.includes(index) ? value : obfuscate(value),
+              )
+              .join('');
+          })
+        : obfuscate(value);
   }
 
   function obfuscateSensibleHeaders(headers: WhookHeaders): WhookHeaders {

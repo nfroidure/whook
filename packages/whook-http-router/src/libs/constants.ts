@@ -28,6 +28,6 @@ function ensureString(maybeString: unknown): string {
   return 'undefined' === typeof maybeString
     ? ''
     : 'string' === typeof maybeString
-    ? maybeString
-    : JSON.stringify(maybeString);
+      ? maybeString
+      : JSON.stringify(maybeString);
 }

@@ -413,8 +413,8 @@ export function castParameters<
       parameter.in !== 'header'
         ? values[parameterName]
         : parameter.schema?.type === 'array'
-        ? pickAllHeaderValues(parameterName, values)
-        : pickFirstHeaderValue(parameterName, values);
+          ? pickAllHeaderValues(parameterName, values)
+          : pickFirstHeaderValue(parameterName, values);
 
     if (parameterValue) {
       filteredValues[parameterName] = castSchemaValue(

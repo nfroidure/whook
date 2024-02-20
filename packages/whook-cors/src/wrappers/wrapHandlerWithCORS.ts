@@ -75,11 +75,11 @@ async function handleWithCORS(
     operationCORSConfig && operationCORSConfig.type === 'replace'
       ? operationCORSConfig.value
       : operationCORSConfig && operationCORSConfig.type === 'merge'
-      ? {
-          ...CORS,
-          ...operationCORSConfig.value,
-        }
-      : CORS,
+        ? {
+            ...CORS,
+            ...operationCORSConfig.value,
+          }
+        : CORS,
   );
 
   try {
