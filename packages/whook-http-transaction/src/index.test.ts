@@ -6,7 +6,7 @@ import initHTTPTransaction from './index.js';
 import type { WhookHandler, WhookResponse } from './index.js';
 import type { WhookAPMService } from './services/apm.js';
 import type { WhookObfuscatorService } from './services/obfuscator.js';
-import type { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'node:http';
 import type { LogService, TimeService, DelayService } from 'common-services';
 
 function streamifyBody(response) {

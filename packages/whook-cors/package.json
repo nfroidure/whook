@@ -71,8 +71,8 @@
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "jsdoc-to-markdown": "^8.0.0",
-    "metapak": "^5.1.7",
-    "metapak-nfroidure": "15.0.4",
+    "metapak": "^5.1.8",
+    "metapak-nfroidure": "16.0.1",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
@@ -156,6 +156,7 @@
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "cover": "npm run jest -- --coverage",
     "doc": "echo \"# API\" > API.md; jsdoc2md 'dist/**/*.js' >> API.md && git add API.md",
+    "format": "npm run prettier",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",

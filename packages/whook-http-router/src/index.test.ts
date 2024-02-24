@@ -13,7 +13,7 @@ import type {
   WhookHandler,
   WhookResponse,
 } from '@whook/http-transaction';
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { LogService } from 'common-services';
 import type { AppEnvVars } from 'application-services';
 

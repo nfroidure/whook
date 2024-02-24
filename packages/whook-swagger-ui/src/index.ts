@@ -9,7 +9,7 @@ import type {
 } from '@whook/http-router';
 import type { ImporterService, LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { SwaggerUIOptions } from 'swagger-ui';
 import type { Jsonify } from 'type-fest';
 

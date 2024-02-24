@@ -66,7 +66,7 @@ import type {
 } from '@whook/http-transaction';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { LogService } from 'common-services';
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import type {
   WhookErrorsDescriptors,
   WhookErrorDescriptor,

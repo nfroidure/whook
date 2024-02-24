@@ -1,5 +1,5 @@
 import { name, autoProvider } from 'knifecycle';
-import http from 'http';
+import http from 'node:http';
 import ms from 'ms';
 import { YError } from 'yerror';
 import type { Provider } from 'knifecycle';

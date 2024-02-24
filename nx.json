@@ -1,43 +1,35 @@
 {
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
-      "options": {
-        "cacheableOperations": [
-          "build",
-          "cover",
-          "doc",
-          "jest",
-          "lint",
-          "test",
-          "architecture"
-        ]
-      }
-    }
-  },
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "{projectRoot}/dist"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/dist"],
+      "cache": true
     },
     "cover": {
-      "outputs": [
-        "{projectRoot}/coverage"
-      ]
+      "outputs": ["{projectRoot}/coverage"],
+      "cache": true
     },
     "doc": {
-      "outputs": [
-        "{projectRoot}/API.md"
-      ]
+      "outputs": ["{projectRoot}/API.md"],
+      "cache": true
     },
     "architecture": {
-      "outputs": [
-        "{projectRoot}/ARCHITECTURE.md"
-      ]
+      "outputs": ["{projectRoot}/ARCHITECTURE.md"],
+      "cache": true
+    },
+    "jest": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
     }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": ["default"]
   }
 }

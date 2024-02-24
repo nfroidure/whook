@@ -13,7 +13,8 @@
         ".terraform",
         "*.plan",
         "*.tfstate.d",
-        "*.credentials.json"
+        "*.credentials.json",
+        ".nx/cache"
       ],
       "rootPackage": true
     }
@@ -31,6 +32,7 @@
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
     "cover": "lerna run cover",
     "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
+    "format": "lerna run format",
     "lerna": "lerna",
     "lint": "lerna run lint",
     "metapak": "metapak",
@@ -59,9 +61,9 @@
     "commitizen": "^4.3.0",
     "conventional-changelog-cli": "^4.1.0",
     "cz-conventional-changelog": "^3.3.0",
-    "lerna": "^7.4.1",
-    "metapak": "^5.1.7",
-    "metapak-nfroidure": "15.0.4"
+    "lerna": "^8.1.2",
+    "metapak": "^5.1.8",
+    "metapak-nfroidure": "16.0.1"
   },
   "contributors": [
     {

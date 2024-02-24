@@ -136,3 +136,4 @@ builds
 *.plan
 *.tfstate.d
 *.credentials.json
+.nx/cache

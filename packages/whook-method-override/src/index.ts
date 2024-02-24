@@ -6,7 +6,7 @@ import type {
   WhookHTTPTransaction,
   WhookHTTPTransactionService,
 } from '@whook/http-transaction';
-import type { ServerResponse, IncomingMessage } from 'http';
+import type { ServerResponse, IncomingMessage } from 'node:http';
 
 /**
  * Wrap the Whook transaction service to handle method

@@ -46,12 +46,12 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   PROCESS_ENV: 'application-services/dist/services/PROCESS_ENV',
   process: 'application-services/dist/services/process',
   ENV: 'application-services/dist/services/ENV',
-  log: 'common-services/dist/log',
-  time: 'common-services/dist/time',
-  delay: 'common-services/dist/delay',
-  random: 'common-services/dist/random',
-  importer: 'common-services/dist/importer',
-  resolve: 'common-services/dist/resolve',
+  log: 'common-services/dist/services/log',
+  time: 'common-services/dist/services/time',
+  delay: 'common-services/dist/services/delay',
+  random: 'common-services/dist/services/random',
+  importer: 'common-services/dist/services/importer',
+  resolve: 'common-services/dist/services/resolve',
 };
 
 export async function prepareBuildEnvironment<T extends Knifecycle>(

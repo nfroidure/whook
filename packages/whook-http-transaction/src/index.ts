@@ -9,7 +9,7 @@ import initAPMService, { type WhookAPMService } from './services/apm.js';
 import { printStackTrace, YError } from 'yerror';
 import type { Parameters, HandlerFunction, Dependencies } from 'knifecycle';
 import type { LogService, TimeService, DelayService } from 'common-services';
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type { Readable } from 'stream';
