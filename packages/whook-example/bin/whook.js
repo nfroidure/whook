@@ -1,10 +1,11 @@
 #! /usr/bin/env node
 
-import path from 'path';
+import { join } from 'node:path';
+import { URL } from 'node:url';
 import { runCLI } from '@whook/whook';
 
 const { prepareEnvironment } = await import(
-  path.join(process.cwd(), 'src', 'index.js')
+  new URL(join('..', 'src', 'index.ts'), import.meta.url)
 );
 
 await runCLI(prepareEnvironment);

@@ -29,26 +29,25 @@ const {
 // of constants from the APP_CONFIG service, the AppConfig
 // type and the autoloader service.
 const commonServicesTypes = {
-  time: 'TimeService',
-  log: 'LogService',
-  random: 'RandomService',
-  delay: 'DelayService',
   codeGenerator: 'CodeGeneratorService',
   counter: 'CounterService',
+  delay: 'DelayService',
   importer: 'ImporterService',
   lock: 'LockService',
+  log: 'LogService',
+  random: 'RandomService',
   resolve: 'ResolveService',
+  time: 'TimeService',
 };
 const applicationServicesTypes = {
-  PROJECT_DIR: 'ProjectDirService',
-  ENV: 'AppEnvVars',
   APP_CONFIG: 'AppConfig',
+  ENV: 'AppEnvVars',
   process: 'ProcessService',
+  PROJECT_DIR: 'ProjectDirService',
 };
 const whookSimpleTypes = {
-  PROJECT_SRC: 'string',
+  MAIN_FILE_URL: 'string',
   DEBUG_NODE_ENVS: 'string[]',
-  WHOOK_PLUGINS_PATHS: 'string[]',
 };
 const whookServicesTypes = {
   BASE_URL: 'WhookBaseURL',

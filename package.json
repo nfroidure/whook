@@ -62,8 +62,8 @@
     "conventional-changelog-cli": "^4.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^8.1.2",
-    "metapak": "^5.1.8",
-    "metapak-nfroidure": "16.0.1"
+    "metapak": "^6.0.0",
+    "metapak-nfroidure": "18.0.0"
   },
   "contributors": [
     {
@@ -73,7 +73,7 @@
     }
   ],
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.11.1"
   },
   "config": {
     "commitizen": {

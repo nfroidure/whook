@@ -105,8 +105,7 @@ async function initCompiler({
       target: 'node' + compilerOptions.target,
       format: compilerOptions.format,
       banner: {
-        js: `
-        // Built with \`@whook\`, do not edit in place!
+        js: `// Built with \`@whook\`, do not edit in place!
         
         ${
           // TODO: Remove when issue is addressed

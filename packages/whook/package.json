@@ -98,8 +98,8 @@
     "jest": "^29.7.0",
     "jsarch": "^6.0.3",
     "jsdoc-to-markdown": "^8.0.0",
-    "metapak": "^5.1.8",
-    "metapak-nfroidure": "16.0.1",
+    "metapak": "^6.0.0",
+    "metapak-nfroidure": "18.0.0",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "streamtest": "^2.0.0",
@@ -111,9 +111,9 @@
     "@whook/http-transaction": "^15.0.0",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
-    "application-services": "^5.0.1",
+    "application-services": "^6.0.0",
     "camelcase": "^8.0.0",
-    "common-services": "^15.1.0",
+    "common-services": "^16.0.1",
     "debug": "^4.3.4",
     "fs-extra": "^11.2.0",
     "ignore": "^5.3.1",
@@ -132,7 +132,7 @@
   },
   "contributors": [],
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.11.1"
   },
   "jest": {
     "coverageReporters": [

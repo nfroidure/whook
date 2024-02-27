@@ -65,7 +65,7 @@ export type {
 export const DEFAULT_BUILD_PARALLELISM = 10;
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   ...BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-  log: '@whook/aws-lambda/dist/services/log',
+  log: '@whook/aws-lambda/dist/services/log.js',
 };
 
 export type WhookAWSLambdaBuildConfig = {

@@ -36,8 +36,8 @@
 <dt><a href="#wrapEnvForBuild">wrapEnvForBuild(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the ENV service in order to filter ENV vars for the build</p>
 </dd>
-<dt><a href="#initWhookPluginsPaths">initWhookPluginsPaths(services)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
-<dd><p>Auto detect the Whook WHOOK_PLUGINS_PATHS</p>
+<dt><a href="#initResolvedWhookPlugins">initResolvedWhookPlugins(services)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
+<dd><p>Resolves the Whook plugins from their names</p>
 </dd>
 <dt><a href="#initWrappers">initWrappers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
 <dd><p>A simple passthrough service proxing the WRAPPERS.</p>
@@ -82,11 +82,11 @@ Initialize the API_DEFINITIONS service according to the porject handlers.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services API_DEFINITIONS depends on |
-| services.PROJECT_SRC | <code>Object</code> |  | The project sources location |
-| services.WHOOK_PLUGINS_PATHS | <code>Object</code> |  | The plugins paths to load services from |
+| [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
+| services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
 | [services.IGNORED_FILES_SUFFIXES] | <code>Object</code> |  | The files suffixes the autoloader must ignore |
 | [services.IGNORED_FILES_PREFIXES] | <code>Object</code> |  | The files prefixes the autoloader must ignore |
-| [services.FILTER_API_TAGS] | <code>Object</code> |  | Allows to only keep the endpoints taggeds with  the given tags |
+| [services.FILTER_API_DEFINITION] | <code>Object</code> |  | Allows to filter endpoints if the custom function returns true |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
@@ -193,19 +193,18 @@ Wrap the ENV service in order to filter ENV vars for the build
 | [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initWhookPluginsPaths"></a>
+<a name="initResolvedWhookPlugins"></a>
 
-## initWhookPluginsPaths(services) ⇒ <code>Promise.&lt;string&gt;</code>
-Auto detect the Whook WHOOK_PLUGINS_PATHS
+## initResolvedWhookPlugins(services) ⇒ <code>Promise.&lt;string&gt;</code>
+Resolves the Whook plugins from their names
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;string&gt;</code> - A promise of a number representing the actual port.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services WHOOK_PLUGINS_PATHS depends on |
-| services.WHOOK_PLUGINS | <code>Array.&lt;String&gt;</code> |  | The active whook plugins list |
-| services.PROJECT_SRC | <code>String</code> |  | The project source directory |
+| services | <code>Object</code> |  | The services WHOOK_RESOLVED_PLUGINS depends on |
+| [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrappers"></a>

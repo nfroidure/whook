@@ -35,7 +35,7 @@ Add the plugin to the `src/index.ts` main file:
 
   $.register(
     constant('WHOOK_PLUGINS', [
-      '@whook/whook',
+      ...WHOOK_DEFAULT_PLUGINS,
 +      '@whook/gcp-functions',
       '@whook/cors',
     ]),

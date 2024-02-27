@@ -1,8 +1,8 @@
 import chokidar from 'chokidar';
-import path from 'path';
+import { dirname, join } from 'node:path';
 import crypto from 'crypto';
 import { PassThrough } from 'stream';
-import { createWriteStream } from 'fs';
+import { createWriteStream } from 'node:fs';
 import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
 import initGetOpenAPI from './handlers/getOpenAPI.js';
 import { readFile } from 'fs';
@@ -10,6 +10,7 @@ import { promisify } from 'util';
 import ignore from 'ignore';
 import { createRequire } from 'module';
 import { AppEnvVars } from 'application-services';
+import { fileURLToPath } from 'url';
 import type { Dependencies, Knifecycle } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 import type { OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
@@ -23,7 +24,7 @@ let hash: string;
 
 export type WatchServerDependencies = OpenAPITypesConfig & {
   ENV: AppEnvVars;
-  PROJECT_SRC: string;
+  MAIN_FILE_URL: string;
   $instance: Knifecycle;
   delay: DelayService;
   getOpenAPI: Awaited<ReturnType<typeof initGetOpenAPI>>;
@@ -75,9 +76,10 @@ export async function watchDevServer<T extends Dependencies>(
         reject(err);
       })
       .on('all', (_event, filePath) => {
-        const absolutePath = path
-          .join(process.cwd(), filePath)
-          .replace(/.ts$/, '.js');
+        const absolutePath = join(process.cwd(), filePath).replace(
+          /.ts$/,
+          '.js',
+        );
 
         if (filePath.match(/package.*\.json/)) {
           for (const key in require.cache) {
@@ -108,13 +110,13 @@ export async function restartDevServer<T extends Dependencies>({
   }
 
   const { runServer, prepareEnvironment, prepareServer } = await import(
-    path.join(process.cwd(), 'src', 'index.js')
+    join(process.cwd(), 'src', 'index.ts')
   );
 
   const {
     ENV,
     OPEN_API_TYPES_CONFIG,
-    PROJECT_SRC,
+    MAIN_FILE_URL,
     $instance: _instance,
     delay: _delay,
     getOpenAPI,
@@ -130,7 +132,7 @@ export async function restartDevServer<T extends Dependencies>({
 
         'ENV',
         'OPEN_API_TYPES_CONFIG',
-        'PROJECT_SRC',
+        'MAIN_FILE_URL',
         '$instance',
         'delay',
         'getOpenAPI',
@@ -170,7 +172,7 @@ export async function restartDevServer<T extends Dependencies>({
     )();
 
     const writeStream = createWriteStream(
-      path.join(PROJECT_SRC, 'openAPISchema.d.ts'),
+      join(dirname(fileURLToPath(MAIN_FILE_URL)), 'openAPISchema.d.ts'),
     );
     const writeStreamCompletionPromise = new Promise((resolve, reject) => {
       writeStream.once('finish', resolve);
@@ -193,7 +195,7 @@ export async function restartDevServer<T extends Dependencies>({
       {
         ENV,
         OPEN_API_TYPES_CONFIG,
-        PROJECT_SRC,
+        MAIN_FILE_URL,
         $instance,
         delay,
         getOpenAPI,

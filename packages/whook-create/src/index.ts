@@ -4,14 +4,10 @@ import { Knifecycle, constant } from 'knifecycle';
 import { exec as _exec } from 'child_process';
 import { default as fsExtra } from 'fs-extra';
 import debug from 'debug';
-import path from 'path';
+import { join, resolve, dirname } from 'node:path';
 import inquirer from 'inquirer';
 import { createRequire } from 'module';
-import {
-  initLogService,
-  initLockService,
-  initDelayService,
-} from 'common-services';
+import { initLog, initLock, initDelay } from 'common-services';
 import initAuthor from './services/author.js';
 import initProject from './services/project.js';
 import initCreateWhook from './services/createWhook.js';
@@ -32,7 +28,7 @@ export async function runCreateWhook(): Promise<void> {
 
     // TODO: Use import.meta when Jest will support it
     const require = createRequire(
-      import.meta.url || path.join(cwd(), 'src', 'services', 'API.test.ts'),
+      import.meta.url || join(cwd(), 'src', 'services', 'API.test.ts'),
     );
 
     $.register(constant('CWD', cwd()));
@@ -45,7 +41,7 @@ export async function runCreateWhook(): Promise<void> {
     $.register(
       constant(
         'SOURCE_DIR',
-        path.resolve(path.dirname(require.resolve('@whook/example')), '..'),
+        resolve(dirname(require.resolve('@whook/example')), '..'),
       ),
     );
     $.register(
@@ -55,9 +51,9 @@ export async function runCreateWhook(): Promise<void> {
         debug: debug('whook'),
       } as Logger),
     );
-    $.register(initLogService);
-    $.register(initLockService);
-    $.register(initDelayService);
+    $.register(initLog);
+    $.register(initLock);
+    $.register(initDelay);
     $.register(initAuthor);
     $.register(initProject);
     $.register(initCreateWhook);

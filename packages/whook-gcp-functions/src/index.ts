@@ -34,7 +34,7 @@ import type { CprOptions } from 'cpr';
 export const DEFAULT_BUILD_PARALLELISM = 10;
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   ...BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-  log: '@whook/gcp-functions/dist/services/log',
+  log: '@whook/gcp-functions/dist/services/log.js',
 };
 
 export type WhookGCPBuildConfig = {

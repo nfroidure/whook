@@ -25,7 +25,7 @@ import type {
 } from 'knifecycle';
 import type { WhookBuildConstantsService } from '@whook/whook';
 import type { WhookRawOperation } from '@whook/http-router';
-import type { LogService, ResolveService } from 'common-services';
+import type { LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { WhookAPIOperationGCPFunctionConfig } from '../index.js';
 
@@ -33,7 +33,6 @@ export type WhookGoogleFunctionsAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;
   $injector: Injector<Service>;
   $instance: Knifecycle;
-  resolve: ResolveService;
   log?: LogService;
 };
 
@@ -58,7 +57,6 @@ const initializerWrapper: ServiceInitializerWrapper<
     BUILD_CONSTANTS = {},
     $injector,
     $instance,
-    resolve,
     log = noop,
   }: WhookGoogleFunctionsAutoloadDependencies,
   $autoload: Autoloader<Initializer<Dependencies, Service>>,
@@ -198,9 +196,7 @@ const initializerWrapper: ServiceInitializerWrapper<
             ],
             GCP_WRAPPERS[type].initializer as any,
           ) as any,
-          path: resolve(
-            `@whook/gcp-functions/dist/wrappers/${GCP_WRAPPERS[type].name}`,
-          ),
+          path: `@whook/gcp-functions/dist/wrappers/${GCP_WRAPPERS[type].name}.js`,
         };
       }
 
@@ -220,7 +216,7 @@ const initializerWrapper: ServiceInitializerWrapper<
             ],
             initHandler,
           ) as any,
-          path: resolve('@whook/gcp-functions/dist/services/HANDLER'),
+          path: '@whook/gcp-functions/dist/services/HANDLER.js',
         };
       }
 

@@ -167,7 +167,7 @@ And finally declare this plugin in the `src/index.ts` file
 
   $.register(
     constant('WHOOK_PLUGINS', [
-      '@whook/whook',
+      ...WHOOK_DEFAULT_PLUGINS,
       '@whook/cors',
 +      '@whook/authorization',
     ]),

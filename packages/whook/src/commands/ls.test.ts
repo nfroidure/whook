@@ -6,11 +6,15 @@ import initEnvCommand, {
 import { YError } from 'yerror';
 import type { ImporterService, LogService } from 'common-services';
 import type { WhookPromptArgs } from '../services/promptArgs.js';
+import {
+  WHOOK_PROJECT_PLUGIN_NAME,
+  type WhookResolvedPluginsService,
+} from '../services/WHOOK_RESOLVED_PLUGINS.js';
 
 describe('lsCommand', () => {
   const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
-  const readDir = jest.fn<(dir: string) => Promise<string[]>>();
+  const readDir = jest.fn<(dir: URL) => Promise<string[]>>();
   const importer = jest.fn<ImporterService<unknown>>();
 
   beforeEach(() => {
@@ -29,13 +33,19 @@ describe('lsCommand', () => {
       });
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
 
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: [],
+        },
+      };
       const lsCommand = await initLsCommand({
         CONFIG: {
           name: 'My Super project!',
         },
-        PROJECT_SRC: '/home/whoiam/whook-project/dist',
-        WHOOK_PLUGINS: [],
-        WHOOK_PLUGINS_PATHS: [],
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         promptArgs,
         readDir,
         log,
@@ -51,31 +61,31 @@ describe('lsCommand', () => {
         readDirCalls: readDir.mock.calls,
         requireCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "logCalls": [
-            [
-              "debug",
-              "✅ - No commands folder found at path "/home/whoiam/whook-project/dist".",
-            ],
-            [
-              "info",
-              "
+{
+  "logCalls": [
+    [
+      "debug",
+      "✅ - No commands folder for "__project__".",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "My Super project!": none",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/whook-project/dist/commands",
-            ],
-          ],
-          "requireCalls": [],
-          "result": undefined,
-        }
-      `);
+# Provided by "My Super project!": none",
+    ],
+  ],
+  "promptArgsCalls": [
+    [],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/commands",
+    ],
+  ],
+  "requireCalls": [],
+  "result": undefined,
+}
+`);
     });
 
     it('with some plugins', async () => {
@@ -95,16 +105,32 @@ describe('lsCommand', () => {
         namedArguments: {},
       });
 
+      const WHOOK_PLUGINS = [
+        WHOOK_PROJECT_PLUGIN_NAME,
+        '@whook/graphql',
+        '@whook/whook',
+      ];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: [],
+        },
+        '@whook/graphql': {
+          mainURL:
+            'file:///var/lib/node/node_modules/@whook/graphql/dist/index.js',
+          types: [],
+        },
+        '@whook/whook': {
+          mainURL: 'file:///var/lib/node/node_modules/@whook/lol/dist/index.js',
+          types: [],
+        },
+      };
       const lsCommand = await initLsCommand({
         CONFIG: {
           name: '',
         },
-        PROJECT_SRC: '/home/whoiam/whook-project/dist',
-        WHOOK_PLUGINS: ['@whook/graphql', '@whook/whook'],
-        WHOOK_PLUGINS_PATHS: [
-          '/var/lib/node/node_modules/@whook/graphql/dist',
-          '/var/lib/node/node_modules/@whook/lol/dist',
-        ],
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         promptArgs,
         readDir,
         log,
@@ -119,67 +145,67 @@ describe('lsCommand', () => {
         readDirCalls: readDir.mock.calls,
         requireCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "logCalls": [
-            [
-              "debug",
-              "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/graphql/dist".",
-            ],
-            [
-              "debug",
-              "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
-            ],
-            [
-              "info",
-              "
+{
+  "logCalls": [
+    [
+      "debug",
+      "✅ - No commands folder for "@whook/graphql".",
+    ],
+    [
+      "debug",
+      "✅ - No commands folder for "@whook/whook".",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "project": 2 commands",
-            ],
-            [
-              "info",
-              "- ls: Print available commands",
-            ],
-            [
-              "info",
-              "- env: A command printing env values",
-            ],
-            [
-              "info",
-              "
+# Provided by "project": 2 commands",
+    ],
+    [
+      "info",
+      "- ls: Print available commands",
+    ],
+    [
+      "info",
+      "- env: A command printing env values",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "@whook/graphql": none",
-            ],
-            [
-              "info",
-              "
+# Provided by "@whook/graphql": none",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "@whook/whook": none",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/whook-project/dist/commands",
-            ],
-            [
-              "/var/lib/node/node_modules/@whook/graphql/dist/commands",
-            ],
-            [
-              "/var/lib/node/node_modules/@whook/lol/dist/commands",
-            ],
-          ],
-          "requireCalls": [
-            [
-              "/home/whoiam/whook-project/dist/commands/ls.js",
-            ],
-            [
-              "/home/whoiam/whook-project/dist/commands/env.js",
-            ],
-          ],
-        }
-      `);
+# Provided by "@whook/whook": none",
+    ],
+  ],
+  "promptArgsCalls": [
+    [],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/commands",
+    ],
+    [
+      "file:///var/lib/node/node_modules/@whook/graphql/dist/commands",
+    ],
+    [
+      "file:///var/lib/node/node_modules/@whook/lol/dist/commands",
+    ],
+  ],
+  "requireCalls": [
+    [
+      "file:///home/whoiam/project/src/commands/ls.ts",
+    ],
+    [
+      "file:///home/whoiam/project/src/commands/env.ts",
+    ],
+  ],
+}
+`);
     });
 
     it('with some plugins and ignored files', async () => {
@@ -199,16 +225,32 @@ describe('lsCommand', () => {
         namedArguments: {},
       });
 
+      const WHOOK_PLUGINS = [
+        WHOOK_PROJECT_PLUGIN_NAME,
+        '@whook/graphql',
+        '@whook/whook',
+      ];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: [],
+        },
+        '@whook/graphql': {
+          mainURL:
+            'file:///var/lib/node/node_modules/@whook/graphql/dist/index.js',
+          types: [],
+        },
+        '@whook/whook': {
+          mainURL: 'file:///var/lib/node/node_modules/@whook/lol/dist/index.js',
+          types: [],
+        },
+      };
       const lsCommand = await initLsCommand({
         CONFIG: {
           name: '',
         },
-        PROJECT_SRC: '/home/whoiam/whook-project/dist',
-        WHOOK_PLUGINS: ['@whook/graphql', '@whook/whook'],
-        WHOOK_PLUGINS_PATHS: [
-          '/var/lib/node/node_modules/@whook/graphql/dist',
-          '/var/lib/node/node_modules/@whook/lol/dist',
-        ],
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         promptArgs,
         readDir,
         log,
@@ -223,67 +265,67 @@ describe('lsCommand', () => {
         readDirCalls: readDir.mock.calls,
         requireCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "logCalls": [
-            [
-              "debug",
-              "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/graphql/dist".",
-            ],
-            [
-              "debug",
-              "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
-            ],
-            [
-              "info",
-              "
+{
+  "logCalls": [
+    [
+      "debug",
+      "✅ - No commands folder for "@whook/graphql".",
+    ],
+    [
+      "debug",
+      "✅ - No commands folder for "@whook/whook".",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "project": 2 commands",
-            ],
-            [
-              "info",
-              "- ls: Print available commands",
-            ],
-            [
-              "info",
-              "- env: A command printing env values",
-            ],
-            [
-              "info",
-              "
+# Provided by "project": 2 commands",
+    ],
+    [
+      "info",
+      "- ls: Print available commands",
+    ],
+    [
+      "info",
+      "- env: A command printing env values",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "@whook/graphql": none",
-            ],
-            [
-              "info",
-              "
+# Provided by "@whook/graphql": none",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "@whook/whook": none",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/whook-project/dist/commands",
-            ],
-            [
-              "/var/lib/node/node_modules/@whook/graphql/dist/commands",
-            ],
-            [
-              "/var/lib/node/node_modules/@whook/lol/dist/commands",
-            ],
-          ],
-          "requireCalls": [
-            [
-              "/home/whoiam/whook-project/dist/commands/ls.js",
-            ],
-            [
-              "/home/whoiam/whook-project/dist/commands/env.js",
-            ],
-          ],
-        }
-      `);
+# Provided by "@whook/whook": none",
+    ],
+  ],
+  "promptArgsCalls": [
+    [],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/commands",
+    ],
+    [
+      "file:///var/lib/node/node_modules/@whook/graphql/dist/commands",
+    ],
+    [
+      "file:///var/lib/node/node_modules/@whook/lol/dist/commands",
+    ],
+  ],
+  "requireCalls": [
+    [
+      "file:///home/whoiam/project/src/commands/ls.ts",
+    ],
+    [
+      "file:///home/whoiam/project/src/commands/env.ts",
+    ],
+  ],
+}
+`);
     });
 
     it('with some plugins and a verbose output', async () => {
@@ -305,16 +347,32 @@ describe('lsCommand', () => {
         },
       });
 
+      const WHOOK_PLUGINS = [
+        WHOOK_PROJECT_PLUGIN_NAME,
+        '@whook/graphql',
+        '@whook/whook',
+      ];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: [],
+        },
+        '@whook/graphql': {
+          mainURL:
+            'file:///var/lib/node/node_modules/@whook/graphql/dist/index.js',
+          types: [],
+        },
+        '@whook/whook': {
+          mainURL: 'file:///var/lib/node/node_modules/@whook/lol/dist/index.js',
+          types: [],
+        },
+      };
       const lsCommand = await initLsCommand({
         CONFIG: {
           name: 'My Super project!',
         },
-        PROJECT_SRC: '/home/whoiam/whook-project/dist',
-        WHOOK_PLUGINS: ['@whook/graphql', '@whook/whook'],
-        WHOOK_PLUGINS_PATHS: [
-          '/var/lib/node/node_modules/@whook/graphql/dist',
-          '/var/lib/node/node_modules/@whook/lol/dist',
-        ],
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         promptArgs,
         readDir,
         log,
@@ -329,74 +387,74 @@ describe('lsCommand', () => {
         readDirCalls: readDir.mock.calls,
         requireCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "logCalls": [
-            [
-              "debug",
-              "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/graphql/dist".",
-            ],
-            [
-              "debug",
-              "✅ - No commands folder found at path "/var/lib/node/node_modules/@whook/lol/dist".",
-            ],
-            [
-              "info",
-              "
+{
+  "logCalls": [
+    [
+      "debug",
+      "✅ - No commands folder for "@whook/graphql".",
+    ],
+    [
+      "debug",
+      "✅ - No commands folder for "@whook/whook".",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "My Super project!": 2 commands
-        ",
-            ],
-            [
-              "info",
-              "- ls: Print available commands
-        $ whook ls
-        ",
-            ],
-            [
-              "info",
-              "- env: A command printing env values
-        $ whook env --name NODE_ENV --default "default value"
-        ",
-            ],
-            [
-              "info",
-              "
+# Provided by "My Super project!": 2 commands
+",
+    ],
+    [
+      "info",
+      "- ls: Print available commands
+$ whook ls
+",
+    ],
+    [
+      "info",
+      "- env: A command printing env values
+$ whook env --name NODE_ENV --default "default value"
+",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "@whook/graphql": none
-        ",
-            ],
-            [
-              "info",
-              "
+# Provided by "@whook/graphql": none
+",
+    ],
+    [
+      "info",
+      "
 
-        # Provided by "@whook/whook": none
-        ",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/whook-project/dist/commands",
-            ],
-            [
-              "/var/lib/node/node_modules/@whook/graphql/dist/commands",
-            ],
-            [
-              "/var/lib/node/node_modules/@whook/lol/dist/commands",
-            ],
-          ],
-          "requireCalls": [
-            [
-              "/home/whoiam/whook-project/dist/commands/ls.js",
-            ],
-            [
-              "/home/whoiam/whook-project/dist/commands/env.js",
-            ],
-          ],
-        }
-      `);
+# Provided by "@whook/whook": none
+",
+    ],
+  ],
+  "promptArgsCalls": [
+    [],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/commands",
+    ],
+    [
+      "file:///var/lib/node/node_modules/@whook/graphql/dist/commands",
+    ],
+    [
+      "file:///var/lib/node/node_modules/@whook/lol/dist/commands",
+    ],
+  ],
+  "requireCalls": [
+    [
+      "file:///home/whoiam/project/src/commands/ls.ts",
+    ],
+    [
+      "file:///home/whoiam/project/src/commands/env.ts",
+    ],
+  ],
+}
+`);
     });
   });
 });

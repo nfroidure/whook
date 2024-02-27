@@ -1,3 +1,3 @@
-import { runServer } from '../src/index.js';
+import { runServer } from '../src/index.ts';
 
 await runServer();

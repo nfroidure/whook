@@ -41,7 +41,7 @@ Declare it in the `src/index.ts` file of your project:
 
   $.register(
     constant('WHOOK_PLUGINS', [
-      '@whook/whook',
+      ...WHOOK_DEFAULT_PLUGINS,
 +      '@whook/cors',
       '@whook/authorization',
     ]),

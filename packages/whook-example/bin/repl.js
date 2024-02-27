@@ -1,3 +1,3 @@
-import { runREPL } from '../src/repl.js';
+import { runREPL } from '../src/repl.ts';
 
 await runREPL();

@@ -10,7 +10,7 @@ import {
 } from '@jest/globals';
 import { Knifecycle, constant, service } from 'knifecycle';
 import run from './cli.js';
-import { initImporterService } from 'common-services';
+import { initImporter } from 'common-services';
 import { createRequire } from 'module';
 import path from 'path';
 import type { ImporterService, LogService } from 'common-services';
@@ -55,8 +55,8 @@ describe.skip('whook-cli', () => {
 
   it('should run commands', async () => {
     const PROJECT_DIR = '/home/whoiam/projects/my-cool-project';
-    const PROJECT_SRC = '/home/whoiam/projects/my-cool-project/src';
-    const baseImporter = await initImporterService({ log });
+    const MAIN_FILE_URL = '/home/whoiam/projects/my-cool-project/src/index.ts';
+    const baseImporter = await initImporter({ log });
     const importer = jest.fn<ImporterService<unknown>>((path: string) => {
       return baseImporter(path);
     });
@@ -77,8 +77,9 @@ describe.skip('whook-cli', () => {
       }),
     );
     $.register(constant('PROJECT_DIR', PROJECT_DIR));
-    $.register(constant('PROJECT_SRC', PROJECT_SRC));
-    $.register(constant('WHOOK_PLUGINS_PATHS', []));
+    $.register(constant('MAIN_FILE_URL', MAIN_FILE_URL));
+    $.register(constant('WHOOK_PLUGINS', []));
+    $.register(constant('WHOOK_RESOLVED_PLUGINS', {}));
     $.register(
       constant('COMMAND_DEFINITION', {
         arguments: { properties: {} },
@@ -128,8 +129,8 @@ describe.skip('whook-cli', () => {
 
   it('should exit when erroring', async () => {
     const PROJECT_DIR = '/home/whoiam/projects/my-cool-project';
-    const PROJECT_SRC = '/home/whoiam/projects/my-cool-project/src';
-    const baseImporter = await initImporterService({ log });
+    const MAIN_FILE_URL = '/home/whoiam/projects/my-cool-project/src';
+    const baseImporter = await initImporter({ log });
     const importer = jest.fn<ImporterService<unknown>>((path: string) => {
       return baseImporter(path);
     });
@@ -143,8 +144,9 @@ describe.skip('whook-cli', () => {
     $.register(constant('importer', importer));
     $.register(constant('resolve', resolve));
     $.register(constant('PROJECT_DIR', PROJECT_DIR));
-    $.register(constant('PROJECT_SRC', PROJECT_SRC));
-    $.register(constant('WHOOK_PLUGINS_PATHS', []));
+    $.register(constant('MAIN_FILE_URL', MAIN_FILE_URL));
+    $.register(constant('WHOOK_PLUGINS', []));
+    $.register(constant('WHOOK_RESOLVED_PLUGINS', {}));
     $.register(
       constant('COMMAND_DEFINITION', {
         arguments: { properties: {} },

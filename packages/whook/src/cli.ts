@@ -29,7 +29,7 @@ cd ../whook-example
 node ../whook/bin/whook.js ls
 
 # Debugging source commands
-PROJECT_SRC="$PWD/src" NODE_ENV=${NODE_ENV:-development} npm run cli -- ts-node --esm --files -- ../whook/bin/whook.js ls
+npm run cli -- tsx ../whook/bin/whook.js ls
 ```
 
 */

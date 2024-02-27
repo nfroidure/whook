@@ -1,4 +1,4 @@
-import { initEnvService } from 'application-services';
+import { initEnv } from 'application-services';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
@@ -21,10 +21,7 @@ export default alsoInject<
   ['?log', '?PROXYED_ENV_VARS'],
   wrapInitializer(
     wrapEnvForBuild,
-    initEnvService as ServiceInitializer<
-      WhookProxyedENVDependencies,
-      AppEnvVars
-    >,
+    initEnv as ServiceInitializer<WhookProxyedENVDependencies, AppEnvVars>,
   ),
 );
 
