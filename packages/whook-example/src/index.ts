@@ -1,6 +1,7 @@
 import { env } from 'node:process';
 import { Knifecycle, constant } from 'knifecycle';
 import {
+  WHOOK_DEFAULT_PLUGINS,
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
   prepareEnvironment as prepareBaseEnvironment,
@@ -8,8 +9,6 @@ import {
   initAPIDefinitions,
 } from '@whook/whook';
 import initHTTPRouter from '@whook/http-router';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv } from 'application-services';
@@ -129,21 +128,12 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(initAPIDefinitions);
 
-  /* Architecture Note #1.1.3.3: PROJECT_SRC
+  /* Architecture Note #1.1.3.3: MAIN_FILE_URL
 
-  You have to declare the project main file directory
-   to allow autoloading features to work with it either
-   in development and production (files built in `dist/`).
+  The project main file allows autoloading features to work
+   either with sources (in `src`) and files built (in `dist/`).
   */
-  $.register(
-    constant(
-      'PROJECT_SRC',
-      // The env var is necessary only for Jest support
-      // it will be removeable when Jest will be fully
-      // ESM compatible
-      env.PROJECT_SRC || dirname(fileURLToPath(import.meta.url)),
-    ),
-  );
+  $.register(constant('MAIN_FILE_URL', import.meta.url));
 
   $.register(constant('APP_ENV', extractAppEnv<AppEnv>(env.APP_ENV, APP_ENVS)));
   /* Architecture Note #1.1.3.3: TRANSACTIONS
@@ -204,7 +194,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(
     constant('WHOOK_PLUGINS', [
-      '@whook/whook',
+      ...WHOOK_DEFAULT_PLUGINS,
       '@whook/cors',
       '@whook/authorization',
     ]),

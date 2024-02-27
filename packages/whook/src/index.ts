@@ -4,20 +4,20 @@ import { printStackTrace } from 'yerror';
 import {
   DEFAULT_LOG_ROUTING,
   DEFAULT_LOG_CONFIG,
-  initLogService,
-  initTimeService,
-  initRandomService,
-  initDelayService,
-  initResolveService,
-  initImporterService,
+  initLog,
+  initTime,
+  initRandom,
+  initDelay,
+  initResolve,
+  initImporter,
   type LogService,
 } from 'common-services';
 import {
-  initAppConfigService,
-  initEnvService,
-  initProcessService,
-  initProcessEnvService,
-  initProjectDirService,
+  initAppConfig,
+  initEnv,
+  initProcess,
+  initProcessEnv,
+  initProjectDir,
 } from 'application-services';
 import initHTTPRouter, { initErrorHandler } from '@whook/http-router';
 export {
@@ -36,7 +36,10 @@ import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
 import initProxyedENV from './services/PROXYED_ENV.js';
 import initBuildConstants from './services/BUILD_CONSTANTS.js';
-import initWhookPluginsPaths from './services/WHOOK_PLUGINS_PATHS.js';
+import initWhookResolvedPlugins, {
+  WHOOK_DEFAULT_PLUGINS,
+  WHOOK_PROJECT_PLUGIN_NAME,
+} from './services/WHOOK_RESOLVED_PLUGINS.js';
 import initAPIDefinitions from './services/API_DEFINITIONS.js';
 export {
   DEFAULT_IGNORED_FILES_PREFIXES,
@@ -85,10 +88,11 @@ export type { WhookHost, WhookHostEnv } from './services/HOST.js';
 export type { WhookProxyedENVConfig } from './services/PROXYED_ENV.js';
 export type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS.js';
 export type {
+  WhookPluginName,
+  WhookPluginFolder,
+  WhookResolvedPlugin,
   WhookPluginsService,
-  WhookPluginsPathsService,
-  WhookPluginsPathsConfig,
-} from './services/WHOOK_PLUGINS_PATHS.js';
+} from './services/WHOOK_RESOLVED_PLUGINS.js';
 export type {
   WhookAPIDefinitions,
   WhookAPIOperationAddition,
@@ -179,6 +183,9 @@ export {
 export { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers.js';
 export { noop, identity, compose, pipe } from './libs/utils.js';
 export {
+  WHOOK_DEFAULT_PLUGINS,
+  WHOOK_PROJECT_PLUGIN_NAME,
+  initWhookResolvedPlugins,
   initGetPing,
   initGetPingDefinition,
   initAutoload,
@@ -341,10 +348,10 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(constant('PWD', PWD));
 
   // Resolve
-  $.register(initResolveService);
+  $.register(initResolve);
 
   // Importer
-  $.register(initImporterService);
+  $.register(initImporter);
 
   /* Architecture Note #3.2: `NODE_ENV`/`APP_ENV` env var
   Whook has different behaviors depending on their values.
@@ -355,7 +362,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   Whook need to know where to look up for things like
    commands / handlers etc...
    */
-  $.register(constant('WHOOK_PLUGINS', ['@whook/whook']));
+  $.register(constant('WHOOK_PLUGINS', WHOOK_DEFAULT_PLUGINS));
 
   $.register(initLoggerService);
   $.register(initExitService);
@@ -375,19 +382,19 @@ export async function prepareEnvironment<T extends Knifecycle>(
    at will, later in project's main file.
    */
   [
-    initProcessEnvService,
-    initProjectDirService,
-    initWhookPluginsPaths,
-    initLogService,
-    initTimeService,
-    initRandomService,
-    initDelayService,
-    initProcessService,
+    initProcessEnv,
+    initProjectDir,
+    initWhookResolvedPlugins,
+    initLog,
+    initTime,
+    initRandom,
+    initDelay,
+    initProcess,
     initHTTPRouter,
     initHTTPTransaction,
     initHTTPServer,
     initErrorHandler,
-    initEnvService,
+    initEnv,
     initObfuscatorService,
     initAPMService,
   ].forEach($.register.bind($));
@@ -400,7 +407,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
     Let's load the configuration files as a convenient way
      to create constants on the fly
     */
-  $.register(initAppConfigService);
+  $.register(initAppConfig);
 
   return $;
 }

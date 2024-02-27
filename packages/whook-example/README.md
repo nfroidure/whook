@@ -57,7 +57,7 @@ npx whook create
 Play with the REPL:
 
 ```sh
-npm run whook-repl
+npm run repl
 ```
 
 List available commands:

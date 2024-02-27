@@ -6,8 +6,9 @@ import initWrappers, {
   type WhookWrappersConfig,
 } from './WRAPPERS.js';
 import { getOpenAPIOperations } from '@whook/http-router';
-import path from 'path';
-import { YError } from 'yerror';
+import { extname, join as pathJoin } from 'node:path';
+import { access as _access, constants } from 'node:fs/promises';
+import { YError, printStackTrace } from 'yerror';
 import type {
   Injector,
   Autoloader,
@@ -21,6 +22,12 @@ import type {
   ImporterService,
   LogService,
 } from 'common-services';
+import {
+  WHOOK_DEFAULT_PLUGINS,
+  WHOOK_PROJECT_PLUGIN_NAME,
+  type WhookPluginName,
+  type WhookResolvedPluginsService,
+} from './WHOOK_RESOLVED_PLUGINS.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -38,15 +45,16 @@ export type WhookAutoloadConfig = {
   SERVICE_NAME_MAP?: WhookServiceMap;
 };
 export type WhookAutoloadDependencies = WhookWrappersConfig & {
-  PROJECT_SRC: string;
   APP_CONFIG?: WhookAutoloadConfig;
   INITIALIZER_PATH_MAP?: WhookInitializerMap;
-  WHOOK_PLUGINS_PATHS?: string[];
+  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
   $injector: Injector<Service>;
   importer: ImporterService<{
     default: Initializer<Service, Dependencies>;
   }>;
   resolve: ResolveService;
+  access?: typeof _access;
   log?: LogService;
 };
 
@@ -61,14 +69,14 @@ export default singleton(name('$autoload', autoService(initAutoload)));
  * Initialize the Whook default DI autoloader
  * @param  {Object}   services
  * The services `$autoload` depends on
- * @param  {Object}   services.PROJECT_SRC
- * The project source directory
  * @param  {Array}    [services.APP_CONFIG]
  * Optional APP_CONFIG object to inject
  * @param  {Object}    [services.INITIALIZER_PATH_MAP]
  * An optional map of paths mapping initializers
- * @param  {Array}   services.WHOOK_PLUGINS_PATHS
- * The plugins paths to load services from
+ * @param  {Array<String>}   [services.WHOOK_PLUGINS]
+ * The activated plugins
+ * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS
+ * The resolved plugins
  * @param  {Array}   [services.HANDLERS_WRAPPERS]
  * The global wrappers names to wrap the handlers with
  * @param  {Object}   services.$injector
@@ -77,20 +85,23 @@ export default singleton(name('$autoload', autoService(initAutoload)));
  * A service allowing to dynamically import ES modules
  * @param  {Object}   services.resolve
  * A service allowing to dynamically resolve ES modules
+ * @param  {Object}   services.access
+ * A service allowing to verify access to a file
  * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Function>}
  * A promise of the autoload function.
  */
 async function initAutoload({
-  PROJECT_SRC,
   APP_CONFIG = undefined,
   INITIALIZER_PATH_MAP = DEFAULT_INITIALIZER_PATH_MAP,
-  WHOOK_PLUGINS_PATHS = [],
+  WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
+  WHOOK_RESOLVED_PLUGINS,
   HANDLERS_WRAPPERS = [],
   importer,
   $injector,
   resolve,
+  access = _access,
   log = noop,
 }: WhookAutoloadDependencies): Promise<
   Autoloader<Initializer<unknown, Dependencies>>
@@ -134,8 +145,8 @@ async function initAutoload({
     path: string;
     initializer: Initializer<Service, Dependencies>;
   }> {
-    /* Architecture Note #5.7: Service name mapping
-    In order to be able to substituate easily a service per another
+    /* Architecture Note #5.6: Service name mapping
+    In order to be able to easily substitute a service per another
      one can specify a mapping between a service and its substitution.
     */
     const resolvedName = SERVICE_NAME_MAP[injectedName]
@@ -184,7 +195,7 @@ async function initAutoload({
         name: resolvedName,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initializer: alsoInject(handlerNames as any, initHandlers) as any,
-        path: resolve('@whook/whook/dist/services/HANDLERS'),
+        path: '@whook/whook/dist/services/HANDLERS.js',
       };
     }
 
@@ -197,55 +208,77 @@ async function initAutoload({
         name: resolvedName,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initializer: alsoInject(HANDLERS_WRAPPERS, initWrappers) as any,
-        path: resolve('@whook/whook/dist/services/WRAPPERS'),
+        path: '@whook/whook/dist/services/WRAPPERS.js',
       };
     }
 
-    /* Architecture Note #5.6: Service/handler/wrapper loading
-    Finally, we either require the handler/service/wrapper module
-     if none of the previous strategies applyed.
+    /* Architecture Note #5.7: Service/handler/wrapper loading
+    Finally, we either load the handler/service/wrapper module
+     if none of the previous strategies applied.
     */
-    const modulePath = (
-      INITIALIZER_PATH_MAP?.[resolvedName]
-        ? resolve(INITIALIZER_PATH_MAP[resolvedName])
-        : [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].reduce(
-            (finalModulePath, basePath) => {
-              if (finalModulePath) {
-                return finalModulePath;
-              }
+    let modulePath: string = '';
 
-              const finalPath = path.join(
-                basePath,
-                isHandler ? 'handlers' : isWrapper ? 'wrappers' : 'services',
-                resolvedName,
-              );
-
-              try {
-                return resolve(finalPath);
-              } catch (err) {
-                log(
-                  'debug',
-                  `🚫 - Service "${resolvedName}" not found in "${finalPath}".`,
-                );
-                return '';
-              }
-            },
-            '',
-          )
-    ).replace(/^\.js/, '');
-
-    /* Architecture Note #5.8: Initializer path mapping
+    /* Architecture Note #5.7.1: Initializer path mapping
     In order to be able to load a service from a given path map
      one can directly specify a path to use for its resolution.
     */
     if (INITIALIZER_PATH_MAP?.[resolvedName]) {
       log(
         'debug',
-        `📖 - Using INITIALIZER_PATH_MAP to resolve the "${resolvedName}" module path.`,
+        `📖 - Using "INITIALIZER_PATH_MAP" to resolve the "${resolvedName}" module path.`,
       );
+      modulePath = INITIALIZER_PATH_MAP[resolvedName].startsWith('.')
+        ? resolve(INITIALIZER_PATH_MAP[resolvedName])
+        : INITIALIZER_PATH_MAP[resolvedName];
     }
 
-    if (!modulePath) {
+    /* Architecture Note #5.7.2: Plugins/project paths
+      Trying to load services from plugins/project paths.
+    */
+    for (const pluginName of WHOOK_PLUGINS) {
+      if (modulePath) {
+        continue;
+      }
+
+      const resolvedPlugin = WHOOK_RESOLVED_PLUGINS[pluginName];
+      const finalPath = new URL(
+        pathJoin(
+          '.',
+          isHandler ? 'handlers' : isWrapper ? 'wrappers' : 'services',
+          resolvedName + extname(resolvedPlugin.mainURL),
+        ),
+        resolvedPlugin.mainURL,
+      );
+
+      log(
+        'debug',
+        `🍀 - Trying to find "${resolvedName}" module path in "${pluginName}".`,
+      );
+
+      modulePath = (await checkAccess({ log, access }, finalPath)).toString();
+
+      if (pluginName !== WHOOK_PROJECT_PLUGIN_NAME) {
+        // TODO: This assumes a `dist`/`src` folder which
+        // is not necessarily true (`..`)
+        const prefix = new URL('..', resolvedPlugin.mainURL).toString();
+
+        if (
+          modulePath.startsWith(
+            new URL('..', resolvedPlugin.mainURL).toString(),
+          )
+        ) {
+          modulePath = modulePath.replace(prefix, pluginName + '/');
+        }
+      }
+    }
+
+    if (modulePath) {
+      log(
+        'debug',
+        `✅ - Module path of "${resolvedName}" found at "${modulePath}".`,
+      );
+    } else {
+      log('debug', `🚫 - Module path of "${resolvedName}" not found.`);
       throw new YError('E_UNMATCHED_DEPENDENCY', resolvedName);
     }
 
@@ -273,3 +306,39 @@ async function initAutoload({
     };
   }
 }
+
+export async function checkAccess(
+  {
+    log,
+    access = _access,
+  }: {
+    log: LogService;
+    access?: typeof _access;
+  },
+  url: URL,
+): Promise<Parameters<NonNullable<typeof access>>[0]> {
+  try {
+    await access(url, constants.R_OK);
+    return url;
+  } catch (err) {
+    log('debug', `🚫 - File doesn't exist at "${url}".`);
+    log('debug-stack', printStackTrace(err as Error));
+    return '';
+  }
+}
+
+// function createPluginFolder(pluginName: string) {
+//   const matches = pluginName.match(/(@[^/]+\/|)([a-z-_]+)/);
+
+//   if (matches == null) {
+//     throw new YError('E_BAD_PLUGIN_NAME', pluginName);
+//   }
+
+//   if (matches[1]) {
+//     if (matches[1] === matches[2]) {
+//       return matches[1];
+//     }
+//     return `${matches[1]}/${matches[2]}`;
+//   }
+//   return pluginName;
+// }

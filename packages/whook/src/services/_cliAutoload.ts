@@ -1,5 +1,5 @@
+import { extname, join as pathJoin } from 'node:path';
 import initAutoload from './_autoload.js';
-import path from 'path';
 import {
   wrapInitializer,
   alsoInject,
@@ -18,10 +18,15 @@ import type {
 } from 'knifecycle';
 import type { ImporterService, LogService } from 'common-services';
 import type { WhookCommandArgs } from './args.js';
+import {
+  WHOOK_DEFAULT_PLUGINS,
+  type WhookPluginName,
+  type WhookResolvedPluginsService,
+} from './WHOOK_RESOLVED_PLUGINS.js';
 
 export type AutoloaderWrapperDependencies = {
-  PROJECT_SRC: string;
-  WHOOK_PLUGINS_PATHS: string[];
+  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
   args: WhookCommandArgs;
   log: LogService;
   importer: ImporterService<Service>;
@@ -32,8 +37,8 @@ const initializerWrapper: ServiceInitializerWrapper<
   AutoloaderWrapperDependencies
 > = async (
   {
-    PROJECT_SRC,
-    WHOOK_PLUGINS_PATHS,
+    WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
+    WHOOK_RESOLVED_PLUGINS,
     args,
     log = noop,
     importer,
@@ -49,21 +54,32 @@ const initializerWrapper: ServiceInitializerWrapper<
     commandModule = {
       default: service(
         async () => async () => {
-          log('warning', `No command given in argument.`);
+          log('warning', `❌ - No command given in argument.`);
         },
         'commandHandler',
       ),
       definition: {},
     };
   } else {
-    for (const basePath of [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS]) {
-      const finalPath = path.join(basePath, 'commands', commandName + '.js');
+    for (const pluginName of WHOOK_PLUGINS) {
+      const resolvedPlugin = WHOOK_RESOLVED_PLUGINS[pluginName];
+      const finalPath = new URL(
+        pathJoin(
+          '.',
+          'commands',
+          commandName + extname(resolvedPlugin.mainURL),
+        ),
+        resolvedPlugin.mainURL,
+      ).toString();
 
       try {
         commandModule = await importer(finalPath);
         break;
       } catch (err) {
-        log('debug', `Command "${commandName}" not found in "${finalPath}".`);
+        log(
+          'debug',
+          `❌ - Command "${commandName}" not found in "${finalPath}".`,
+        );
         log('debug-stack', printStackTrace(err as Error));
       }
     }
@@ -107,7 +123,7 @@ const initializerWrapper: ServiceInitializerWrapper<
 };
 
 export default alsoInject(
-  ['args', 'PROJECT_SRC', 'WHOOK_PLUGINS_PATHS', 'log', 'importer'],
+  ['WHOOK_PLUGINS', 'WHOOK_RESOLVED_PLUGINS', 'args', 'log', 'importer'],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   wrapInitializer(initializerWrapper as any, initAutoload),
 );

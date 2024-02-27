@@ -1,7 +1,7 @@
 import { exit, stderr } from 'node:process';
-import fs from 'fs';
-import util from 'util';
-import path from 'path';
+import { readFile, writeFile } from 'node:fs/promises';
+import { join, relative } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { mkdirp } from 'mkdirp';
 import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
 import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
@@ -15,43 +15,34 @@ import type {
 } from './services/compiler.js';
 import type { LogService } from 'common-services';
 
-const readFileAsync = util.promisify(fs.readFile) as (
-  path: string,
-  encoding: string,
-) => Promise<string>;
-const writeFileAsync = util.promisify(fs.writeFile) as (
-  path: string,
-  content: string,
-  encoding: string,
-) => Promise<void>;
-
 export const DEFAULT_BUILD_DIR = 'server';
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
-  $fatalError: 'knifecycle/dist/fatalError',
-  BASE_URL: '@whook/whook/dist/services/BASE_URL',
-  API_DEFINITIONS: '@whook/whook/dist/services/API_DEFINITIONS',
-  logger: '@whook/whook/dist/services/logger',
-  exit: '@whook/whook/dist/services/exit',
-  PORT: '@whook/whook/dist/services/PORT',
-  HOST: '@whook/whook/dist/services/HOST',
-  WHOOK_PLUGINS_PATHS: '@whook/whook/dist/services/WHOOK_PLUGINS_PATHS',
-  httpRouter: '@whook/http-router/dist/index',
-  httpTransaction: '@whook/http-transaction/dist/index',
-  httpServer: '@whook/http-server/dist/index',
-  apm: '@whook/http-transaction/dist/services/apm',
-  obfuscator: '@whook/http-transaction/dist/services/obfuscator',
-  errorHandler: '@whook/http-router/dist/services/errorHandler',
-  APP_CONFIG: 'application-services/dist/services/APP_CONFIG',
-  PROJECT_DIR: 'application-services/dist/services/PROJECT_DIR',
-  PROCESS_ENV: 'application-services/dist/services/PROCESS_ENV',
-  process: 'application-services/dist/services/process',
-  ENV: 'application-services/dist/services/ENV',
-  log: 'common-services/dist/services/log',
-  time: 'common-services/dist/services/time',
-  delay: 'common-services/dist/services/delay',
-  random: 'common-services/dist/services/random',
-  importer: 'common-services/dist/services/importer',
-  resolve: 'common-services/dist/services/resolve',
+  $fatalError: 'knifecycle/dist/fatalError.js',
+  BASE_URL: '@whook/whook/dist/services/BASE_URL.js',
+  API_DEFINITIONS: '@whook/whook/dist/services/API_DEFINITIONS.js',
+  logger: '@whook/whook/dist/services/logger.js',
+  exit: '@whook/whook/dist/services/exit.js',
+  PORT: '@whook/whook/dist/services/PORT.js',
+  HOST: '@whook/whook/dist/services/HOST.js',
+  WHOOK_RESOLVED_PLUGINS:
+    '@whook/whook/dist/services/WHOOK_RESOLVED_PLUGINS.js',
+  httpRouter: '@whook/http-router/dist/index.js',
+  httpTransaction: '@whook/http-transaction/dist/index.js',
+  httpServer: '@whook/http-server/dist/index.js',
+  apm: '@whook/http-transaction/dist/services/apm.js',
+  obfuscator: '@whook/http-transaction/dist/services/obfuscator.js',
+  errorHandler: '@whook/http-router/dist/services/errorHandler.js',
+  APP_CONFIG: 'application-services/dist/services/APP_CONFIG.js',
+  PROJECT_DIR: 'application-services/dist/services/PROJECT_DIR.js',
+  PROCESS_ENV: 'application-services/dist/services/PROCESS_ENV.js',
+  process: 'application-services/dist/services/process.js',
+  ENV: 'application-services/dist/services/ENV.js',
+  log: 'common-services/dist/services/log.js',
+  time: 'common-services/dist/services/time.js',
+  delay: 'common-services/dist/services/delay.js',
+  random: 'common-services/dist/services/random.js',
+  importer: 'common-services/dist/services/importer.js',
+  resolve: 'common-services/dist/services/resolve.js',
 };
 
 export async function prepareBuildEnvironment<T extends Knifecycle>(
@@ -104,37 +95,29 @@ export async function runBuild(
 
     log('info', 'Build environment initialized 🚀🌕');
 
-    const distPath = path.join(PROJECT_DIR, 'dist');
-    const buildPath = path.join(PROJECT_DIR, 'builds', APP_ENV, BUILD_DIR);
-    const initializerContent = await buildInitializer([
-      'httpServer',
-      'process',
-    ]);
+    const distPath = join(PROJECT_DIR, 'dist');
+    const srcPath = join(PROJECT_DIR, 'src');
+    const buildPath = join(PROJECT_DIR, 'builds', APP_ENV, BUILD_DIR);
+    const srcRelativePath = relative(buildPath, srcPath);
+    const initializerContent = (
+      await buildInitializer(['httpServer', 'process'])
+    ).replaceAll(pathToFileURL(srcPath).toString(), srcRelativePath);
     const indexContent = await buildIndex();
 
     await mkdirp(distPath);
     await mkdirp(buildPath);
     await Promise.all([
-      ensureFileAsync(
-        { log },
-        path.join(buildPath, 'initialize.js'),
-        initializerContent,
-      ),
-      ensureFileAsync({ log }, path.join(buildPath, 'main.js'), indexContent),
+      ensureFile({ log }, join(buildPath, 'initialize.js'), initializerContent),
+      ensureFile({ log }, join(buildPath, 'main.js'), indexContent),
     ]);
 
     const entryPoint = `${buildPath}/main.js`;
     const { contents, mappings } = await compiler(entryPoint, COMPILER_OPTIONS);
 
     await Promise.all([
-      ensureFileAsync({ log }, `${buildPath}/start.js`, contents, 'utf-8'),
+      ensureFile({ log }, `${buildPath}/start.js`, contents),
       mappings
-        ? ensureFileAsync(
-            { log },
-            `${buildPath}/start.js.map`,
-            mappings,
-            'utf-8',
-          )
+        ? ensureFile({ log }, `${buildPath}/start.js.map`, mappings)
         : Promise.resolve(),
     ]);
   } catch (err) {
@@ -146,14 +129,13 @@ export async function runBuild(
   }
 }
 
-async function ensureFileAsync(
+async function ensureFile(
   { log }: { log: LogService },
   path: string,
   content: string,
-  encoding = 'utf-8',
 ): Promise<void> {
   try {
-    const oldContent = await readFileAsync(path, encoding);
+    const oldContent = (await readFile(path)).toString();
 
     if (oldContent === content) {
       log('debug', `Ignore unchanged file: "${path}".`);
@@ -161,15 +143,14 @@ async function ensureFileAsync(
     }
   } catch (err) {
     log('debug', `Write new file: "${path}".`);
-    return await writeFileAsync(path, content, encoding);
+    return await writeFile(path, content);
   }
   log('debug', `Write changed file: "${path}".`);
-  return await writeFileAsync(path, content, encoding);
+  return await writeFile(path, content);
 }
 
 async function buildIndex(): Promise<string> {
-  return `
-// Automatically generated by \`@whook/whook\`
+  return `// Built with \`@whook\`, do not edit in place!
 import { initialize } from './initialize.js';
 
 await initialize();

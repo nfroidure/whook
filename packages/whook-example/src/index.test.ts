@@ -15,6 +15,7 @@ import {
 } from './index.js';
 import axios from 'axios';
 import { readFileSync } from 'fs';
+import { createRequire } from 'module';
 import { join } from 'path';
 import type { Knifecycle } from 'knifecycle';
 import type { JWTService } from 'jwt-service';
@@ -23,12 +24,13 @@ import type { Logger } from 'common-services';
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 
-// This is necessary only for Jest support
-// it will be removeable when Jest will be fully
-// ESM compatible
-process.env.PROJECT_SRC = join(process.cwd(), 'src');
-
 describe('runServer', () => {
+  // TODO: Use import.meta.resolve when Jest will support it
+  // See https://github.com/jestjs/jest/issues/14923
+  const require = createRequire(
+    join(process.cwd(), 'src', 'services', 'API.test.ts'),
+  );
+
   const logger = {
     output: jest.fn(),
     error: jest.fn(),
@@ -61,6 +63,9 @@ describe('runServer', () => {
     $.register(constant('exit', exit));
     $.register(constant('time', time));
     $.register(constant('logger', logger as Logger));
+    $.register(
+      constant('resolve', (path) => 'file://' + require.resolve(path)),
+    );
 
     return $;
   }
@@ -100,25 +105,580 @@ describe('runServer', () => {
 {
   "debugCalls": [
     [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/handlers/optionsWithCORS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/BUFFER_LIMIT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/DECODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/ENCODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/HTTP_SERVER_OPTIONS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/PARSERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/PROCESS_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/SHIELD_CHAR.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/SIGNALS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/STRINGIFYERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/TIMEOUT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/services/uniqueId.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithAuthorization.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithCORS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DECODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DEFAULT_ERROR_CODE.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/ENCODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/HTTP_SERVER_OPTIONS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_PREFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/JWT_SECRET_ENV_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_RATIO.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PARSERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PROCESS_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/REDUCED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SIGNALS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/STRINGIFYERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/TIMEOUT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/ENCODERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/HTTP_SERVER_OPTIONS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithAuthorization.js'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/HTTP_SERVER_OPTIONS.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithAuthorization.ts'",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithCORS.ts'",
+    ],
+    [
       "⌛ - Delay service initialized.",
+    ],
+    [
+      "✅ - Module path of "API" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
+    ],
+    [
+      "✅ - Module path of "FILTER_API_DEFINITION" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
+    ],
+    [
+      "✅ - Module path of "MECHANISMS" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
+    ],
+    [
+      "✅ - Module path of "QUERY_PARSER" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
+    ],
+    [
+      "✅ - Module path of "authentication" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
+    ],
+    [
+      "✅ - Module path of "getDelay" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+    ],
+    [
+      "✅ - Module path of "getDiagnostic" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+    ],
+    [
+      "✅ - Module path of "getOpenAPI" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+    ],
+    [
+      "✅ - Module path of "getParameters" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+    ],
+    [
+      "✅ - Module path of "getPing" found at "@whook/whook/dist/handlers/getPing.js".",
+    ],
+    [
+      "✅ - Module path of "getTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+    ],
+    [
+      "✅ - Module path of "jwtToken" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
+    ],
+    [
+      "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/handlers/optionsWithCORS.js".",
+    ],
+    [
+      "✅ - Module path of "putEcho" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+    ],
+    [
+      "✅ - Module path of "wrapHandlerWithAuthorization" found at "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+    ],
+    [
+      "✅ - Module path of "wrapHandlerWithCORS" found at "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
     ],
     [
       "❤️ - Initializing the APM service.",
     ],
     [
-      "➰ - Plugin "@whook/authorization" resolved to "/home/whoiam/projects/whook/packages/whook-authorization/dist".",
+      "➰ - Plugin "@whook/authorization" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-authorization/dist" with "wrappers" types.",
     ],
     [
-      "➰ - Plugin "@whook/cors" resolved to "/home/whoiam/projects/whook/packages/whook-cors/dist".",
+      "➰ - Plugin "@whook/cors" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-cors/dist" with "handlers, services, wrappers" types.",
     ],
     [
-      "➰ - Plugin "@whook/whook" resolved to "/home/whoiam/projects/whook/dist".",
+      "➰ - Plugin "@whook/whook" source path resolved to "file:///home/whoiam/projects/whook/dist" with "commands, handlers, services" types.",
+    ],
+    [
+      "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-example/src" with "commands, handlers, services" types.",
     ],
     [
       "🈁 - Generating the API_DEFINITIONS",
     ],
     [
-      "🈁 - Handler module at "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js" exports no definition!",
+      "🈁 - Handler module at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js" exports no definition!",
+    ],
+    [
+      "🍀 - Trying to find "API" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "BUFFER_LIMIT" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "DECODERS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "DECODERS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "DECODERS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "ENCODERS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "ENCODERS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "ENCODERS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "ENCODERS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "FILTER_API_DEFINITION" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "MECHANISMS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "PARSERS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "PARSERS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "PARSERS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "PARSERS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "PROCESS_NAME" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "QUERY_PARSER" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "SHIELD_CHAR" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "SIGNALS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "SIGNALS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "SIGNALS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "SIGNALS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "STRINGIFYERS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "TIMEOUT" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "TIMEOUT" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "TIMEOUT" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "TIMEOUT" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "authentication" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "getDelay" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "getDiagnostic" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "getOpenAPI" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "getParameters" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "getPing" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "getPing" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "getTime" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "jwtToken" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "optionsWithCORS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "optionsWithCORS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "optionsWithCORS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "putEcho" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "uniqueId" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "uniqueId" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "uniqueId" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "uniqueId" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "wrapHandlerWithCORS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "wrapHandlerWithCORS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "wrapHandlerWithCORS" module path in "__project__".",
     ],
     [
       "🏭 - Initializing the APP_CONFIG service.",
@@ -130,100 +690,100 @@ describe('runServer', () => {
       "💱 - HTTP Transaction initialized.",
     ],
     [
-      "💿 - Loading "API" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
+      "💿 - Loading "API" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
-      "💿 - Loading "FILTER_API_DEFINITION" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
+      "💿 - Loading "FILTER_API_DEFINITION" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
-      "💿 - Loading "MECHANISMS" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
+      "💿 - Loading "MECHANISMS" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
     [
-      "💿 - Loading "QUERY_PARSER" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
+      "💿 - Loading "QUERY_PARSER" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
     [
-      "💿 - Loading "authentication" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
+      "💿 - Loading "authentication" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
     [
-      "💿 - Loading "getDelay" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "💿 - Loading "getDelay" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
     ],
     [
-      "💿 - Loading "getDiagnostic" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "💿 - Loading "getDiagnostic" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
     ],
     [
-      "💿 - Loading "getOpenAPI" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "💿 - Loading "getOpenAPI" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
     ],
     [
-      "💿 - Loading "getParameters" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "💿 - Loading "getParameters" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
     ],
     [
-      "💿 - Loading "getPing" initializer from "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
+      "💿 - Loading "getPing" initializer from "@whook/whook/dist/handlers/getPing.js".",
     ],
     [
-      "💿 - Loading "getTime" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+      "💿 - Loading "getTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
     [
-      "💿 - Loading "jwtToken" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
+      "💿 - Loading "jwtToken" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
-      "💿 - Loading "optionsWithCORS" initializer from "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
+      "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/handlers/optionsWithCORS.js".",
     ],
     [
-      "💿 - Loading "putEcho" initializer from "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+      "💿 - Loading "putEcho" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
     [
-      "💿 - Loading "wrapHandlerWithAuthorization" initializer from "/home/whoiam/projects/whook/packages/whook-authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "💿 - Loading "wrapHandlerWithAuthorization" initializer from "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
     ],
     [
-      "💿 - Loading "wrapHandlerWithCORS" initializer from "/home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithCORS.js".",
+      "💿 - Loading "wrapHandlerWithCORS" initializer from "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
     ],
     [
-      "💿 - Service "API" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
+      "💿 - Service "API" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
-      "💿 - Service "FILTER_API_DEFINITION" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
+      "💿 - Service "FILTER_API_DEFINITION" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
-      "💿 - Service "MECHANISMS" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
+      "💿 - Service "MECHANISMS" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
     [
-      "💿 - Service "QUERY_PARSER" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
+      "💿 - Service "QUERY_PARSER" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
     [
-      "💿 - Service "authentication" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
+      "💿 - Service "authentication" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
     [
-      "💿 - Service "getDelay" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "💿 - Service "getDelay" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
     ],
     [
-      "💿 - Service "getDiagnostic" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "💿 - Service "getDiagnostic" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
     ],
     [
-      "💿 - Service "getOpenAPI" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "💿 - Service "getOpenAPI" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
     ],
     [
-      "💿 - Service "getParameters" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "💿 - Service "getParameters" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
     ],
     [
-      "💿 - Service "getPing" found in "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
+      "💿 - Service "getPing" found in "@whook/whook/dist/handlers/getPing.js".",
     ],
     [
-      "💿 - Service "getTime" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+      "💿 - Service "getTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
     ],
     [
-      "💿 - Service "jwtToken" found in "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
+      "💿 - Service "jwtToken" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
-      "💿 - Service "optionsWithCORS" found in "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
+      "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/handlers/optionsWithCORS.js".",
     ],
     [
-      "💿 - Service "putEcho" found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+      "💿 - Service "putEcho" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
     [
-      "💿 - Service "wrapHandlerWithAuthorization" found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "💿 - Service "wrapHandlerWithAuthorization" found in "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
     ],
     [
-      "💿 - Service "wrapHandlerWithCORS" found in "/home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithCORS.js".",
+      "💿 - Service "wrapHandlerWithCORS" found in "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
     ],
     [
       "📇 - Process service initialized.",
@@ -244,394 +804,367 @@ describe('runServer', () => {
       "🚦 - HTTP Router initialized.",
     ],
     [
-      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/dist/services/BUFFER_LIMIT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/handlers/optionsWithCORS.js".",
     ],
     [
-      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/BUFFER_LIMIT.js".",
     ],
     [
-      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/DECODERS.js".",
     ],
     [
-      "🚫 - Service "BUFFER_LIMIT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE.js".",
     ],
     [
-      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/dist/services/DECODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/ENCODERS.js".",
     ],
     [
-      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/DECODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/HTTP_SERVER_OPTIONS.js".",
     ],
     [
-      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES.js".",
     ],
     [
-      "🚫 - Service "DECODERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES.js".",
     ],
     [
-      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/dist/services/DEFAULT_ERROR_CODE".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME.js".",
     ],
     [
-      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/DEFAULT_ERROR_CODE".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO.js".",
     ],
     [
-      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - Service "DEFAULT_ERROR_CODE" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/PROCESS_NAME.js".",
     ],
     [
-      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/dist/services/ENCODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
-      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/ENCODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/SHIELD_CHAR.js".",
     ],
     [
-      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/ENCODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/SIGNALS.js".",
     ],
     [
-      "🚫 - Service "ENCODERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/STRINGIFYERS.js".",
     ],
     [
-      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/dist/services/HTTP_SERVER_OPTIONS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/TIMEOUT.js".",
     ],
     [
-      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/HTTP_SERVER_OPTIONS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/uniqueId.js".",
     ],
     [
-      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/HTTP_SERVER_OPTIONS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithAuthorization.js".",
     ],
     [
-      "🚫 - Service "HTTP_SERVER_OPTIONS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/HTTP_SERVER_OPTIONS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithCORS.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_PREFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DECODERS.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DEFAULT_ERROR_CODE.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_PREFIXES" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/ENCODERS.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/HTTP_SERVER_OPTIONS.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_PREFIXES.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_SUFFIXES.js".",
     ],
     [
-      "🚫 - Service "IGNORED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/JWT_SECRET_ENV_NAME.js".",
     ],
     [
-      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_RATIO.js".",
     ],
     [
-      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/JWT_SECRET_ENV_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PROCESS_NAME.js".",
     ],
     [
-      "🚫 - Service "JWT_SECRET_ENV_NAME" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
-      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/dist/services/MAX_CLEAR_RATIO".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js".",
     ],
     [
-      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_RATIO".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SIGNALS.js".",
     ],
     [
-      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/STRINGIFYERS.js".",
     ],
     [
-      "🚫 - Service "MAX_CLEAR_RATIO" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/TIMEOUT.js".",
     ],
     [
-      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/dist/services/PARSERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
     ],
     [
-      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/PARSERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js".",
     ],
     [
-      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS.js".",
     ],
     [
-      "🚫 - Service "PARSERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE.js".",
     ],
     [
-      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/dist/services/PROCESS_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/ENCODERS.js".",
     ],
     [
-      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/PROCESS_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/HTTP_SERVER_OPTIONS.js".",
     ],
     [
-      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES.js".",
     ],
     [
-      "🚫 - Service "PROCESS_NAME" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES.js".",
     ],
     [
-      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME.js".",
     ],
     [
-      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/REDUCED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO.js".",
     ],
     [
-      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - Service "REDUCED_FILES_SUFFIXES" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME.js".",
     ],
     [
-      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/dist/services/SHIELD_CHAR".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
-      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js".",
     ],
     [
-      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS.js".",
     ],
     [
-      "🚫 - Service "SHIELD_CHAR" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS.js".",
     ],
     [
-      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/dist/services/SIGNALS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT.js".",
     ],
     [
-      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/SIGNALS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId.js".",
     ],
     [
-      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithAuthorization.js".",
     ],
     [
-      "🚫 - Service "SIGNALS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.ts".",
     ],
     [
-      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/dist/services/STRINGIFYERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts".",
     ],
     [
-      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/STRINGIFYERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT.ts".",
     ],
     [
-      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS.ts".",
     ],
     [
-      "🚫 - Service "STRINGIFYERS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/DEFAULT_ERROR_CODE.ts".",
     ],
     [
-      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/dist/services/TIMEOUT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/ENCODERS.ts".",
     ],
     [
-      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/TIMEOUT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/HTTP_SERVER_OPTIONS.ts".",
     ],
     [
-      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES.ts".",
     ],
     [
-      "🚫 - Service "TIMEOUT" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES.ts".",
     ],
     [
-      "🚫 - Service "getPing" not found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME.ts".",
     ],
     [
-      "🚫 - Service "optionsWithCORS" not found in "/home/whoiam/projects/whook/dist/handlers/optionsWithCORS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MAX_CLEAR_RATIO.ts".",
     ],
     [
-      "🚫 - Service "optionsWithCORS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS.ts".",
     ],
     [
-      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/dist/services/readDir".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME.ts".",
     ],
     [
-      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/readDir".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES.ts".",
     ],
     [
-      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/readDir".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR.ts".",
     ],
     [
-      "🚫 - Service "readDir" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/readDir".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS.ts".",
     ],
     [
-      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/dist/services/uniqueId".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS.ts".",
     ],
     [
-      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT.ts".",
     ],
     [
-      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId.ts".",
     ],
     [
-      "🚫 - Service "uniqueId" not found in "/home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithAuthorization.ts".",
     ],
     [
-      "🚫 - Service "wrapHandlerWithAuthorization" not found in "/home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithAuthorization".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithCORS.ts".",
     ],
     [
-      "🚫 - Service "wrapHandlerWithAuthorization" not found in "/home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithAuthorization".",
+      "🚫 - Module path of "BUFFER_LIMIT" not found.",
     ],
     [
-      "🚫 - Service "wrapHandlerWithAuthorization" not found in "/home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithAuthorization".",
+      "🚫 - Module path of "DECODERS" not found.",
     ],
     [
-      "🚫 - Service "wrapHandlerWithCORS" not found in "/home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithCORS".",
+      "🚫 - Module path of "DEFAULT_ERROR_CODE" not found.",
     ],
     [
-      "🚫 - Service "wrapHandlerWithCORS" not found in "/home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithCORS".",
+      "🚫 - Module path of "ENCODERS" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
+      "🚫 - Module path of "HTTP_SERVER_OPTIONS" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
+      "🚫 - Module path of "IGNORED_FILES_PREFIXES" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "🚫 - Module path of "IGNORED_FILES_SUFFIXES" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
+      "🚫 - Module path of "JWT_SECRET_ENV_NAME" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
+      "🚫 - Module path of "MAX_CLEAR_RATIO" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithCORS.js".",
+      "🚫 - Module path of "PARSERS" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/config/local/config.js".",
+      "🚫 - Module path of "PROCESS_NAME" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.js".",
+      "🚫 - Module path of "REDUCED_FILES_SUFFIXES" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "🚫 - Module path of "SHIELD_CHAR" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.js".",
+      "🚫 - Module path of "SIGNALS" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "🚫 - Module path of "STRINGIFYERS" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.js".",
+      "🚫 - Module path of "TIMEOUT" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "🚫 - Module path of "uniqueId" not found.",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.js".",
+      "🛂 - Dynamic import of "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "🛂 - Dynamic import of "@whook/cors/dist/handlers/optionsWithCORS.js".",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.js".",
+      "🛂 - Dynamic import of "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
     ],
     [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.js".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
+      "🛂 - Dynamic import of "@whook/whook/dist/handlers/getPing.js".",
     ],
     [
       "🛂 - Dynamic import of "ecstatic".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/handlers/getPing.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/config/local/config.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
       "🛂 - Dynamic import of "swagger-ui-dist".",
     ],
     [
       "🛂 - Initializing the importer!",
-    ],
-    [
-      "🛂 - Initializing the resolve service!",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/dist/handlers/getPing.js".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithCORS.js".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
-    ],
-    [
-      "🛂 - Resolving "/home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
-    ],
-    [
-      "🛂 - Resolving "@whook/authorization" to "/home/whoiam/projects/whook/packages/whook-authorization/dist/index.js".",
-    ],
-    [
-      "🛂 - Resolving "@whook/cors" to "/home/whoiam/projects/whook/packages/whook-cors/dist/index.js".",
-    ],
-    [
-      "🛂 - Resolving "@whook/whook" to "/home/whoiam/projects/whook/dist/index.js".",
-    ],
-    [
-      "🛂 - Resolving "@whook/whook/dist/services/HANDLERS" to "/home/whoiam/projects/whook/dist/services/HANDLERS.js".",
-    ],
-    [
-      "🛂 - Resolving "@whook/whook/dist/services/WRAPPERS" to "/home/whoiam/projects/whook/dist/services/WRAPPERS.js".",
     ],
     [
       "🤖 - Initializing the \`$autoload\` service.",
@@ -648,7 +1181,7 @@ describe('runServer', () => {
       "⚠️ - Using fake auth mechanism!",
     ],
     [
-      "⚡ - Loading configurations from "/home/whoiam/projects/whook/packages/whook-example/src/config/local/config.js".",
+      "⚡ - Loading configurations from "file:///home/whoiam/projects/whook/packages/whook-example/src/config/local/config.ts".",
     ],
     [
       "🎙️ - HTTP Server listening at "http://localhost:9999".",
@@ -900,8 +1433,8 @@ function filterPaths(strs) {
       ? str
       : str
           .replace(
-            /("|'| |^)(\/[^/]+){1,}\/whook\//g,
-            '$1/home/whoiam/projects/whook/',
+            /("|'| |^)(file:\/\/|)(\/[^/]+){1,}\/whook\//g,
+            '$1file:///home/whoiam/projects/whook/',
           )
           .replace(/(node:internal(?:\/\w+){1,}):\d+:\d+/g, '$1:x:x'),
   );

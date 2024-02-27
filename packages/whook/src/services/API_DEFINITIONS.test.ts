@@ -4,7 +4,14 @@ import initAPIDefinitions from './API_DEFINITIONS.js';
 import { definition as getPingDefinition } from '../handlers/getPing.js';
 import { YError } from 'yerror';
 import type { ImporterService, LogService } from 'common-services';
-import type { WhookAPIHandlerModule } from './API_DEFINITIONS.js';
+import type {
+  WhookAPIDefinitionsDependencies,
+  WhookAPIHandlerModule,
+} from './API_DEFINITIONS.js';
+import {
+  WHOOK_PROJECT_PLUGIN_NAME,
+  type WhookResolvedPluginsService,
+} from './WHOOK_RESOLVED_PLUGINS.js';
 
 const getUserModule: WhookAPIHandlerModule = {
   definition: {
@@ -77,10 +84,10 @@ const putUserModule: WhookAPIHandlerModule = {
 };
 
 describe('initAPIDefinitions', () => {
-  const PROJECT_SRC = '/home/whoiam/project/src';
   const log = jest.fn<LogService>();
   const importer = jest.fn<ImporterService<any>>();
-  const readDir = jest.fn<(dir: string) => Promise<string[]>>();
+  const readDir =
+    jest.fn<Required<WhookAPIDefinitionsDependencies>['readDir']>();
 
   beforeEach(() => {
     log.mockReset();
@@ -89,14 +96,24 @@ describe('initAPIDefinitions', () => {
   });
 
   describe('should work', () => {
-    it('with no handlers', async () => {
-      readDir.mockResolvedValueOnce([]);
+    it('with no handlers folder', async () => {
+      readDir.mockImplementationOnce(() => {
+        throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
+      });
       importer.mockImplementationOnce(() => {
         throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
       });
 
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: [],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         log,
         readDir,
         importer,
@@ -108,31 +125,81 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {},
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {},
-            },
-            "paths": {},
-          },
-          "importerCalls": [],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
-          ],
-        }
-      `);
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {},
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {},
+    },
+    "paths": {},
+  },
+  "importerCalls": [],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": [],
+}
+`);
+    });
+
+    it('with empty handlers folder', async () => {
+      readDir.mockResolvedValueOnce([]);
+      importer.mockImplementationOnce(() => {
+        throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
+      });
+
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: ['handlers'],
+        },
+      };
+      const API_DEFINITIONS = await initAPIDefinitions({
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
+        log,
+        readDir,
+        importer,
+      });
+
+      expect({
+        API_DEFINITIONS,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        readDirCalls: readDir.mock.calls,
+        importerCalls: importer.mock.calls,
+      }).toMatchInlineSnapshot(`
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {},
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {},
+    },
+    "paths": {},
+  },
+  "importerCalls": [],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers",
+    ],
+  ],
+}
+`);
     });
 
     it('with a few handlers', async () => {
@@ -142,8 +209,16 @@ describe('initAPIDefinitions', () => {
       });
       importer.mockResolvedValueOnce(getUserModule);
 
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: ['handlers'],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         log,
         readDir,
         importer,
@@ -155,111 +230,111 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {
-                "userId": {
-                  "in": "path",
-                  "name": "userId",
-                  "schema": {
-                    "type": "number",
-                  },
-                },
-              },
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {
-                "User": {
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "paths": {
-              "/ping": {
-                "get": {
-                  "operationId": "getPing",
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "pong": {
-                                "enum": [
-                                  "pong",
-                                ],
-                                "type": "string",
-                              },
-                            },
-                            "type": "object",
-                          },
-                        },
-                      },
-                      "description": "Pong",
-                    },
-                  },
-                  "summary": "Checks API's availability.",
-                  "tags": [
-                    "system",
-                  ],
-                },
-              },
-              "/users/{userId}": {
-                "get": {
-                  "operationId": "getUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
-                  },
-                  "tags": [
-                    "user",
-                  ],
-                },
-              },
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
+              "type": "string",
             },
           },
-          "importerCalls": [
-            [
-              "/home/whoiam/project/src/handlers/getPing.js",
-            ],
-            [
-              "/home/whoiam/project/src/handlers/getUser.js",
-            ],
+          "type": "object",
+        },
+      },
+    },
+    "paths": {
+      "/ping": {
+        "get": {
+          "operationId": "getPing",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "pong": {
+                        "enum": [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Pong",
+            },
+          },
+          "summary": "Checks API's availability.",
+          "tags": [
+            "system",
           ],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
+        },
+      },
+      "/users/{userId}": {
+        "get": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
           ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
           ],
-        }
-      `);
+        },
+      },
+    },
+  },
+  "importerCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers/getPing.ts",
+    ],
+    [
+      "file:///home/whoiam/project/src/handlers/getUser.ts",
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers",
+    ],
+  ],
+}
+`);
     });
 
     it('with a few handlers in different plugins paths', async () => {
@@ -270,9 +345,21 @@ describe('initAPIDefinitions', () => {
       });
       importer.mockResolvedValueOnce(getUserModule);
 
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME, '@whook'];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: ['handlers'],
+        },
+        '@whook': {
+          mainURL:
+            'file:///home/whoiam/project/node_modules/@whook/dist/index.js',
+          types: ['handlers'],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
-        WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         log,
         readDir,
         importer,
@@ -284,114 +371,114 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {
-                "userId": {
-                  "in": "path",
-                  "name": "userId",
-                  "schema": {
-                    "type": "number",
-                  },
-                },
-              },
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {
-                "User": {
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "paths": {
-              "/ping": {
-                "get": {
-                  "operationId": "getPing",
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "pong": {
-                                "enum": [
-                                  "pong",
-                                ],
-                                "type": "string",
-                              },
-                            },
-                            "type": "object",
-                          },
-                        },
-                      },
-                      "description": "Pong",
-                    },
-                  },
-                  "summary": "Checks API's availability.",
-                  "tags": [
-                    "system",
-                  ],
-                },
-              },
-              "/users/{userId}": {
-                "get": {
-                  "operationId": "getUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
-                  },
-                  "tags": [
-                    "user",
-                  ],
-                },
-              },
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
+              "type": "string",
             },
           },
-          "importerCalls": [
-            [
-              "/home/whoiam/project/src/handlers/getPing.js",
-            ],
-            [
-              "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
-            ],
+          "type": "object",
+        },
+      },
+    },
+    "paths": {
+      "/ping": {
+        "get": {
+          "operationId": "getPing",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "pong": {
+                        "enum": [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Pong",
+            },
+          },
+          "summary": "Checks API's availability.",
+          "tags": [
+            "system",
           ],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
+        },
+      },
+      "/users/{userId}": {
+        "get": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
           ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
-            [
-              "/home/whoiam/project/node_modules/@whook/dist/handlers",
-            ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
           ],
-        }
-      `);
+        },
+      },
+    },
+  },
+  "importerCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers/getPing.ts",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers",
+    ],
+  ],
+}
+`);
     });
 
     it('with a few handlers in different plugins paths and an overriden one', async () => {
@@ -403,9 +490,21 @@ describe('initAPIDefinitions', () => {
       importer.mockResolvedValueOnce(getUserModule);
       importer.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE'));
 
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME, '@whook'];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: ['handlers'],
+        },
+        '@whook': {
+          mainURL:
+            'file:///home/whoiam/project/node_modules/@whook/dist/index.js',
+          types: ['handlers'],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
-        WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         log,
         readDir,
         importer,
@@ -417,114 +516,114 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {
-                "userId": {
-                  "in": "path",
-                  "name": "userId",
-                  "schema": {
-                    "type": "number",
-                  },
-                },
-              },
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {
-                "User": {
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "paths": {
-              "/ping": {
-                "get": {
-                  "operationId": "getPing",
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "pong": {
-                                "enum": [
-                                  "pong",
-                                ],
-                                "type": "string",
-                              },
-                            },
-                            "type": "object",
-                          },
-                        },
-                      },
-                      "description": "Pong",
-                    },
-                  },
-                  "summary": "Checks API's availability.",
-                  "tags": [
-                    "system",
-                  ],
-                },
-              },
-              "/users/{userId}": {
-                "get": {
-                  "operationId": "getUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
-                  },
-                  "tags": [
-                    "user",
-                  ],
-                },
-              },
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
+              "type": "string",
             },
           },
-          "importerCalls": [
-            [
-              "/home/whoiam/project/src/handlers/getPing.js",
-            ],
-            [
-              "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
-            ],
+          "type": "object",
+        },
+      },
+    },
+    "paths": {
+      "/ping": {
+        "get": {
+          "operationId": "getPing",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "pong": {
+                        "enum": [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Pong",
+            },
+          },
+          "summary": "Checks API's availability.",
+          "tags": [
+            "system",
           ],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
+        },
+      },
+      "/users/{userId}": {
+        "get": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
           ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
-            [
-              "/home/whoiam/project/node_modules/@whook/dist/handlers",
-            ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
           ],
-        }
-      `);
+        },
+      },
+    },
+  },
+  "importerCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers/getPing.ts",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers",
+    ],
+  ],
+}
+`);
     });
 
     it('with a few handlers in different plugins paths and an overriden one but with a different extension', async () => {
@@ -536,9 +635,21 @@ describe('initAPIDefinitions', () => {
       importer.mockResolvedValueOnce(getUserModule);
       importer.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE'));
 
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME, '@whook'];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: ['handlers'],
+        },
+        '@whook': {
+          mainURL:
+            'file:///home/whoiam/project/node_modules/@whook/dist/index.js',
+          types: ['handlers'],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
-        WHOOK_PLUGINS_PATHS: ['/home/whoiam/project/node_modules/@whook/dist'],
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         log,
         readDir,
         importer,
@@ -550,114 +661,114 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {
-                "userId": {
-                  "in": "path",
-                  "name": "userId",
-                  "schema": {
-                    "type": "number",
-                  },
-                },
-              },
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {
-                "User": {
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "paths": {
-              "/ping": {
-                "get": {
-                  "operationId": "getPing",
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "additionalProperties": false,
-                            "properties": {
-                              "pong": {
-                                "enum": [
-                                  "pong",
-                                ],
-                                "type": "string",
-                              },
-                            },
-                            "type": "object",
-                          },
-                        },
-                      },
-                      "description": "Pong",
-                    },
-                  },
-                  "summary": "Checks API's availability.",
-                  "tags": [
-                    "system",
-                  ],
-                },
-              },
-              "/users/{userId}": {
-                "get": {
-                  "operationId": "getUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
-                  },
-                  "tags": [
-                    "user",
-                  ],
-                },
-              },
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
+              "type": "string",
             },
           },
-          "importerCalls": [
-            [
-              "/home/whoiam/project/src/handlers/getPing.js",
-            ],
-            [
-              "/home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
-            ],
+          "type": "object",
+        },
+      },
+    },
+    "paths": {
+      "/ping": {
+        "get": {
+          "operationId": "getPing",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "pong": {
+                        "enum": [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Pong",
+            },
+          },
+          "summary": "Checks API's availability.",
+          "tags": [
+            "system",
           ],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
+        },
+      },
+      "/users/{userId}": {
+        "get": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
           ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
-            [
-              "/home/whoiam/project/node_modules/@whook/dist/handlers",
-            ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
           ],
-        }
-      `);
+        },
+      },
+    },
+  },
+  "importerCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers/getPing.ts",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/src/handlers",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers",
+    ],
+  ],
+}
+`);
     });
 
     it('with a several handlers at the same path', async () => {
@@ -665,8 +776,17 @@ describe('initAPIDefinitions', () => {
       importer.mockResolvedValueOnce(getUserModule);
       importer.mockResolvedValueOnce(putUserModule);
 
+      const WHOOK_PLUGINS = ['@whook'];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        '@whook': {
+          mainURL:
+            'file:///home/whoiam/project/node_modules/@whook/dist/index.js',
+          types: ['handlers'],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         log,
         readDir,
         importer,
@@ -678,113 +798,113 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {
-                "userId": {
-                  "in": "path",
-                  "name": "userId",
-                  "schema": {
-                    "type": "number",
-                  },
-                },
-              },
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {
-                "User": {
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
+              "type": "string",
             },
-            "paths": {
-              "/users/{userId}": {
-                "get": {
-                  "operationId": "getUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
+          },
+          "type": "object",
+        },
+      },
+    },
+    "paths": {
+      "/users/{userId}": {
+        "get": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
                   },
-                  "tags": [
-                    "user",
-                  ],
                 },
-                "put": {
-                  "operationId": "putUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "requestBody": {
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/User",
-                        },
-                      },
-                    },
-                  },
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
-                  },
-                  "tags": [
-                    "user",
-                  ],
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
+          ],
+        },
+        "put": {
+          "operationId": "putUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
                 },
               },
             },
           },
-          "importerCalls": [
-            [
-              "/home/whoiam/project/src/handlers/getUser.js",
-            ],
-            [
-              "/home/whoiam/project/src/handlers/putUser.js",
-            ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
           ],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
-          ],
-        }
-      `);
+        },
+      },
+    },
+  },
+  "importerCalls": [
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/putUser.js",
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers",
+    ],
+  ],
+}
+`);
     });
 
     it('with a disabled handler at the same path', async () => {
@@ -804,8 +924,17 @@ describe('initAPIDefinitions', () => {
       importer.mockResolvedValueOnce(getUserModuleDisabled);
       importer.mockResolvedValueOnce(putUserModule);
 
+      const WHOOK_PLUGINS = ['@whook'];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        '@whook': {
+          mainURL:
+            'file:///home/whoiam/project/node_modules/@whook/dist/index.js',
+          types: ['handlers'],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         log,
         readDir,
         importer,
@@ -817,94 +946,94 @@ describe('initAPIDefinitions', () => {
         readDirCalls: readDir.mock.calls,
         importerCalls: importer.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "API_DEFINITIONS": {
-            "components": {
-              "headers": {},
-              "parameters": {
-                "userId": {
-                  "in": "path",
-                  "name": "userId",
-                  "schema": {
-                    "type": "number",
-                  },
-                },
-              },
-              "requestBodies": {},
-              "responses": {},
-              "schemas": {
-                "User": {
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
+{
+  "API_DEFINITIONS": {
+    "components": {
+      "headers": {},
+      "parameters": {
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "requestBodies": {},
+      "responses": {},
+      "schemas": {
+        "User": {
+          "properties": {
+            "name": {
+              "type": "string",
             },
-            "paths": {
-              "/users/{userId}": {
-                "put": {
-                  "operationId": "putUser",
-                  "parameters": [
-                    {
-                      "$ref": "#/components/parameters/userId",
-                    },
-                  ],
-                  "requestBody": {
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/User",
-                        },
-                      },
-                    },
-                  },
-                  "responses": {
-                    "200": {
-                      "content": {
-                        "application/json": {
-                          "schema": {
-                            "$ref": "#/components/schemas/User",
-                          },
-                        },
-                      },
-                      "description": "The user",
-                    },
-                  },
-                  "tags": [
-                    "user",
-                  ],
+          },
+          "type": "object",
+        },
+      },
+    },
+    "paths": {
+      "/users/{userId}": {
+        "put": {
+          "operationId": "putUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
                 },
               },
             },
           },
-          "importerCalls": [
-            [
-              "/home/whoiam/project/src/handlers/getUser.js",
-            ],
-            [
-              "/home/whoiam/project/src/handlers/putUser.js",
-            ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
           ],
-          "logCalls": [
-            [
-              "debug",
-              "🈁 - Generating the API_DEFINITIONS",
-            ],
-            [
-              "debug",
-              "⏳ - Ignored handler "getUser" since disabled by its definition!",
-            ],
-          ],
-          "readDirCalls": [
-            [
-              "/home/whoiam/project/src/handlers",
-            ],
-          ],
-        }
-      `);
+        },
+      },
+    },
+  },
+  "importerCalls": [
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
+    ],
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/putUser.js",
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "🈁 - Generating the API_DEFINITIONS",
+    ],
+    [
+      "debug",
+      "⏳ - Ignored handler "getUser" since disabled by its definition!",
+    ],
+  ],
+  "readDirCalls": [
+    [
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers",
+    ],
+  ],
+}
+`);
     });
 
     it('with a filtered handler', async () => {
@@ -922,8 +1051,17 @@ describe('initAPIDefinitions', () => {
       importer.mockResolvedValueOnce(getUserModuleDisabled);
       importer.mockResolvedValueOnce(putUserModule);
 
+      const WHOOK_PLUGINS = ['@whook'];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        '@whook': {
+          mainURL:
+            'file:///home/whoiam/project/node_modules/@whook/dist/index.js',
+          types: ['handlers'],
+        },
+      };
       const API_DEFINITIONS = await initAPIDefinitions({
-        PROJECT_SRC,
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         FILTER_API_DEFINITION: (definition) =>
           !(definition.operation.tags || []).includes('user'),
         log,
@@ -1002,10 +1140,10 @@ describe('initAPIDefinitions', () => {
   },
   "importerCalls": [
     [
-      "/home/whoiam/project/src/handlers/getUser.js",
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/getUser.js",
     ],
     [
-      "/home/whoiam/project/src/handlers/putUser.js",
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers/putUser.js",
     ],
   ],
   "logCalls": [
@@ -1020,7 +1158,7 @@ describe('initAPIDefinitions', () => {
   ],
   "readDirCalls": [
     [
-      "/home/whoiam/project/src/handlers",
+      "file:///home/whoiam/project/node_modules/@whook/dist/handlers",
     ],
   ],
 }

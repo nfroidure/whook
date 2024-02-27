@@ -15,7 +15,7 @@
       3. [prepareEnvironment](#113-prepareenvironment)
          1. [Autoloader](#1131-autoloader)
          2. [API definitions](#1132-api-definitions)
-         3. [PROJECT_SRC](#1133-project_src)
+         3. [MAIN_FILE_URL](#1133-main_file_url)
          3. [TRANSACTIONS](#1133-transactions)
          4. [WHOOK_PLUGINS](#1134-whook_plugins)
    2. [The build file](#12-the-build-file)
@@ -60,7 +60,6 @@
    6. [WRAPPERS](#46-wrappers)
 5. [Commands](#5-commands)
    1. [Definition](#51-definition)
-   2. [Wrappers auto loading support](#52-wrappers-auto-loading-support)
    2. [Implementation](#52-implementation)
 6. [REPL](#6-repl)
 7. [Watch server](#7-watch-server)
@@ -75,7 +74,7 @@ You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 
-[See in context](./src/index.ts#L19-L26)
+[See in context](./src/index.ts#L17-L24)
 
 
 
@@ -84,7 +83,7 @@ You can see a view of the full architecture document
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 
-[See in context](./src/index.ts#L32-L36)
+[See in context](./src/index.ts#L30-L34)
 
 
 
@@ -96,7 +95,7 @@ The `runServer` function is intended to run the server
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L38-L45)
+[See in context](./src/index.ts#L36-L43)
 
 
 
@@ -106,7 +105,7 @@ The `prepareServer` function is intended to prepare the server
  environment. It relies on the main environment but will be
  used only by the server, not the commands or build scripts.
 
-[See in context](./src/index.ts#L64-L69)
+[See in context](./src/index.ts#L62-L67)
 
 
 
@@ -116,7 +115,7 @@ Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L74-L79)
+[See in context](./src/index.ts#L72-L77)
 
 
 
@@ -124,7 +123,7 @@ Add here any logic bound to the server only
 
 The `prepareEnvironment` one is intended to prepare the server environment
 
-[See in context](./src/index.ts#L86-L89)
+[See in context](./src/index.ts#L84-L87)
 
 
 
@@ -140,7 +139,7 @@ OR, like in this example, use the Whook `$autoload` service
  autoloader by creating a service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L109-L120)
+[See in context](./src/index.ts#L107-L118)
 
 
 
@@ -152,17 +151,16 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L123-L130)
+[See in context](./src/index.ts#L121-L128)
 
 
 
-##### 1.1.3.3. PROJECT_SRC
+##### 1.1.3.3. MAIN_FILE_URL
 
-You have to declare the project main file directory
- to allow autoloading features to work with it either
- in development and production (files built in `dist/`).
+The project main file allows autoloading features to work
+ either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L133-L138)
+[See in context](./src/index.ts#L131-L135)
 
 
 
@@ -195,7 +193,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L150-L178)
+[See in context](./src/index.ts#L139-L167)
 
 
 
@@ -206,7 +204,7 @@ Plugins allows you to add simple features to the Whook's core,
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L181-L187)
+[See in context](./src/index.ts#L188-L194)
 
 
 
@@ -215,7 +213,7 @@ You can also avoid Whook defaults by leaving it empty.
 Per convention a Whook server build file must export
  the following 2 functions to be composable:
 
-[See in context](./src/build.ts#L11-L15)
+[See in context](./src/build.ts#L10-L14)
 
 
 
@@ -224,7 +222,7 @@ Per convention a Whook server build file must export
 The `runBuild` function is intended to build the
  project.
 
-[See in context](./src/build.ts#L17-L21)
+[See in context](./src/build.ts#L16-L20)
 
 
 
@@ -233,7 +231,7 @@ The `runBuild` function is intended to build the
 The `prepareBuildEnvironment` create the build
  environment
 
-[See in context](./src/build.ts#L29-L33)
+[See in context](./src/build.ts#L28-L32)
 
 
 
@@ -245,7 +243,7 @@ Configuration is done for each environement in the
 The `src/config/common/config.ts` one allows to add common
  configurations for all environements.
 
-[See in context](./src/config/common/config.ts#L6-L13)
+[See in context](./src/config/common/config.ts#L7-L14)
 
 
 
@@ -265,7 +263,7 @@ Each configuration file then create a configuration object
 
 See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/APP_CONFIG.ts#L56).
 
-[See in context](./src/config/common/config.ts#L18-L24)
+[See in context](./src/config/common/config.ts#L19-L25)
 
 
 
@@ -582,7 +580,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L93-L106)
+[See in context](./src/index.ts#L91-L104)
 
 
 
@@ -627,7 +625,7 @@ For example, to create a server with only `system` and
 FILTER_API_TAGS=system,example npm start
 ```
 
-[See in context](./src/services/FILTER_API_TAGS.ts#L11-L23)
+[See in context](./src/services/FILTER_API_DEFINITION.ts#L18-L30)
 
 
 
@@ -674,7 +672,11 @@ Wrappers are allowing you to override every
  here we add CORS and HTTP authorization support
  to all the handlers defined in the API.
 
-[See in context](./src/services/WRAPPERS.ts#L9-L15)
+Beware that the order here matters, you will
+ want CORS to be applied to the authorization
+ wrapper responses.
+
+[See in context](./src/index.ts#L170-L180)
 
 
 
@@ -707,16 +709,6 @@ To define a command, just write its definition
  command loader.
 
 [See in context](./src/commands/printEnv.ts#L26-L31)
-
-
-
-### 5.2. Wrappers auto loading support
-
-We cannot inject the `WRAPPERS` in the auto loader when
- it is dynamically loaded so giving a second chance here
- for `WRAPPERS` to be set.
-
-[See in context](./src/index.ts#L190-L194)
 
 
 

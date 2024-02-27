@@ -9,29 +9,44 @@ import {
 import initAPI from './API.js';
 import FULL_CONFIG from '../config/test/config.js';
 import { getOpenAPIOperations } from '@whook/http-router';
-import { initAPIDefinitions } from '@whook/whook';
-import { initImporterService } from 'common-services';
-import path from 'path';
 import { createRequire } from 'module';
+import {
+  WHOOK_PROJECT_PLUGIN_NAME,
+  WHOOK_DEFAULT_PLUGINS,
+  initAPIDefinitions,
+} from '@whook/whook';
+import { initImporter } from 'common-services';
+import { join } from 'node:path';
 import type { LogService } from 'common-services';
 import type { WhookAPIHandlerModule } from '@whook/whook';
 
 describe('API', () => {
-  // TODO: Use import.meta when Jest will support it
+  // TODO: Use import.meta.resolve when Jest will support it
+  // See https://github.com/jestjs/jest/issues/14923
   const require = createRequire(
-    path.join(process.cwd(), 'src', 'services', 'API.test.ts'),
+    join(process.cwd(), 'src', 'services', 'API.test.ts'),
   );
+
   const { CONFIG } = FULL_CONFIG;
   const BASE_URL = 'http://localhost:1337';
   const log = jest.fn<LogService>();
   let API_DEFINITIONS;
 
   beforeAll(async () => {
-    const importer = await initImporterService<WhookAPIHandlerModule>({ log });
+    const importer = await initImporter<WhookAPIHandlerModule>({ log });
 
     API_DEFINITIONS = await initAPIDefinitions({
-      PROJECT_SRC: path.join(process.cwd(), 'src'),
-      WHOOK_PLUGINS_PATHS: [path.dirname(require.resolve('@whook/whook/dist'))],
+      WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
+      WHOOK_RESOLVED_PLUGINS: {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: new URL('..', import.meta.url).toString(),
+          types: ['handlers'],
+        },
+        '@whook/whook': {
+          mainURL: 'file://' + require.resolve('@whook/whook'),
+          types: ['handlers'],
+        },
+      },
       importer,
     });
   });
@@ -84,6 +99,7 @@ describe('API', () => {
     ).toEqual([]);
   });
 
+  // TODO: Find another validator that works with 3.1
   // it('should produce a valid OpenAPI file', async () => {
   //   const API = await initAPI({
   //     ENV: {},
@@ -94,11 +110,7 @@ describe('API', () => {
   //     log,
   //   });
 
-  //   const result = new OpenAPISchemaValidator({ version: 3 }).validate(
-  //     // Temporar type fix due to version mismatch of OpenAPIV3
-  //     // between Whook and OpenAPISchemaValidator
-  //     API as any,
-  //   );
+  //   const result = new OpenAPISchemaValidator({ version: 3 }).validate(API);
 
   //   expect({ result }).toMatchSnapshot();
   // });

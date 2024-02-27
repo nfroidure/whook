@@ -41,6 +41,10 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   // The build often need to know were initializers
   //  can be found to create a static build and
   //  remove the need to create an injector
+  //  use path to plugins or une explicit `.`
+  //  to refer to a file in your project.
+  //  It must be set relative to the main
+  //  file (ie `index.ts`)
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,

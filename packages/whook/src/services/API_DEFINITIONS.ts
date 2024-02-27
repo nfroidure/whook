@@ -1,11 +1,15 @@
 import { autoService, name } from 'knifecycle';
-import fs from 'fs';
-import { YError } from 'yerror';
-import path from 'path';
+import { readdir as _readDir } from 'node:fs/promises';
+import { extname, join as pathJoin } from 'node:path';
 import { noop } from '../libs/utils.js';
 import type { ImporterService, LogService } from 'common-services';
 import type { OpenAPIV3 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
+import {
+  WHOOK_DEFAULT_PLUGINS,
+  type WhookPluginName,
+  type WhookResolvedPluginsService,
+} from './WHOOK_RESOLVED_PLUGINS.js';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
 export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.ts', '.mjs'];
@@ -27,8 +31,7 @@ The `API_DEFINITIONS` service provide a convenient way to
 */
 
 export type WhookAPIDefinitionsConfig = {
-  WHOOK_PLUGINS_PATHS?: string[];
-  PROJECT_SRC?: string;
+  WHOOK_PLUGINS?: WhookPluginName[];
   REDUCED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_SUFFIXES?: string[];
   IGNORED_FILES_PREFIXES?: string[];
@@ -36,10 +39,10 @@ export type WhookAPIDefinitionsConfig = {
 };
 
 export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
-  PROJECT_SRC: string;
+  WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
   log?: LogService;
   importer: ImporterService<WhookAPIHandlerModule>;
-  readDir?: typeof _readDir;
+  readDir?: (path: URL) => Promise<string[]>;
 };
 
 export type WhookAPIDefinitions = {
@@ -151,10 +154,10 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  * Initialize the API_DEFINITIONS service according to the porject handlers.
  * @param  {Object}   services
  * The services API_DEFINITIONS depends on
- * @param  {Object}   services.PROJECT_SRC
- * The project sources location
- * @param  {Object}   services.WHOOK_PLUGINS_PATHS
- * The plugins paths to load services from
+ * @param  {Array<String>}   [services.WHOOK_PLUGINS]
+ * The activated plugins
+ * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS
+ * The resolved plugins
  * @param  {Object}   [services.IGNORED_FILES_SUFFIXES]
  * The files suffixes the autoloader must ignore
  * @param  {Object}   [services.IGNORED_FILES_PREFIXES]
@@ -169,8 +172,8 @@ export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
  * A promise of a containing the actual host.
  */
 async function initAPIDefinitions({
-  PROJECT_SRC,
-  WHOOK_PLUGINS_PATHS = [],
+  WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
+  WHOOK_RESOLVED_PLUGINS,
   IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
   IGNORED_FILES_PREFIXES = DEFAULT_IGNORED_FILES_PREFIXES,
   REDUCED_FILES_SUFFIXES = DEFAULT_REDUCED_FILES_SUFFIXES,
@@ -181,79 +184,62 @@ async function initAPIDefinitions({
 }: WhookAPIDefinitionsDependencies): Promise<WhookAPIDefinitions> {
   log('debug', `🈁 - Generating the API_DEFINITIONS`);
 
-  const seenFiles = new Map<string, boolean>();
+  const handlersURLs: URL[] = [];
+  const seenHandlers: Record<string, boolean> = {};
+
+  for (const pluginName of WHOOK_PLUGINS) {
+    const resolvedPlugin = WHOOK_RESOLVED_PLUGINS[pluginName];
+    const pluginHasHandlers = resolvedPlugin.types.includes('handlers');
+
+    if (!pluginHasHandlers) {
+      continue;
+    }
+
+    for (const file of await readDir(
+      new URL(pathJoin('.', 'handlers'), resolvedPlugin.mainURL),
+    )) {
+      if (
+        file === '..' ||
+        file === '.' ||
+        IGNORED_FILES_PREFIXES.some((prefix) => file.startsWith(prefix)) ||
+        IGNORED_FILES_SUFFIXES.some((suffix) => file.endsWith(suffix))
+      ) {
+        continue;
+      }
+
+      const handler = REDUCED_FILES_SUFFIXES.some((suffix) =>
+        file.endsWith(suffix),
+      )
+        ? file.split('.').slice(0, -1).join('.')
+        : file;
+
+      // Avoid loading the same handler twice if
+      // overridden upstream by another plugin or the
+      // root project path
+
+      if (seenHandlers[handler]) {
+        continue;
+      }
+
+      seenHandlers[handler] = true;
+
+      handlersURLs.push(
+        new URL(
+          pathJoin('.', 'handlers', handler + extname(resolvedPlugin.mainURL)),
+          resolvedPlugin.mainURL,
+        ),
+      );
+    }
+  }
+
   const handlersModules: {
     file: string;
     module: WhookAPIHandlerModule;
-  }[] = await [PROJECT_SRC, ...WHOOK_PLUGINS_PATHS].reduce(
-    async (accHandlersModulesPromise, currentPath) => {
-      // We need to await previous modules here to ensure the
-      // `seenFiles` variable is completed in order
-      const accHandlersModules = await accHandlersModulesPromise;
-      let files: string[] = [];
-
-      try {
-        files = await readDir(path.join(currentPath, 'handlers'));
-      } catch (err) {
-        // throw only if the root plugin dir doesn't exists
-        if ((err as YError).code === 'E_BAD_DIR') {
-          try {
-            await readDir(currentPath);
-          } catch (err) {
-            throw YError.wrap(err as Error, 'E_BAD_PLUGIN_DIR');
-          }
-
-          files = [];
-        }
-      }
-
-      const currentHandlersModules = await Promise.all(
-        [
-          ...new Set(
-            files
-              .filter(
-                (file) =>
-                  file !== '..' &&
-                  file !== '.' &&
-                  !IGNORED_FILES_PREFIXES.some((prefix) =>
-                    file.startsWith(prefix),
-                  ) &&
-                  !IGNORED_FILES_SUFFIXES.some((suffix) =>
-                    file.endsWith(suffix),
-                  ),
-              )
-              .map((file) =>
-                REDUCED_FILES_SUFFIXES.some((suffix) => file.endsWith(suffix))
-                  ? file.split('.').slice(0, -1).join('.')
-                  : file,
-              ),
-          ),
-        ]
-          // Avoid loading the same handler twice if
-          // overriden upstream by another plugin or the
-          // root project path
-          .filter((file) => {
-            if (seenFiles.get(file)) {
-              return false;
-            }
-            seenFiles.set(file, true);
-            return true;
-          })
-          .map((file) => path.join(currentPath, 'handlers', file + '.js'))
-          .map(async (file) => ({
-            file,
-            module: await importer(file),
-          })),
-      );
-
-      return [...accHandlersModules, ...currentHandlersModules];
-    },
-    Promise.resolve(
-      [] as {
-        file: string;
-        module: WhookAPIHandlerModule;
-      }[],
-    ),
+  }[] = await Promise.all(
+    handlersURLs.map(async (handlerURL) => ({
+      file: handlerURL.toString(),
+      module: await importer(handlerURL.toString()),
+    })),
   );
 
   const API_DEFINITIONS = {
@@ -438,16 +424,4 @@ async function initAPIDefinitions({
   };
 
   return API_DEFINITIONS;
-}
-
-async function _readDir(dir: string): Promise<string[]> {
-  return new Promise((resolve, reject) => {
-    fs.readdir(dir, (err, files) => {
-      if (err) {
-        reject(YError.wrap(err as Error, 'E_BAD_DIR', dir));
-        return;
-      }
-      resolve(files);
-    });
-  });
 }

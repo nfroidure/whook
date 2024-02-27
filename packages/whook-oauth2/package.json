@@ -47,7 +47,7 @@
     "@whook/authorization": "^15.0.0",
     "@whook/whook": "^15.0.0",
     "camelcase": "^8.0.0",
-    "common-services": "^15.1.0",
+    "common-services": "^16.0.1",
     "cookie": "^0.6.0",
     "knifecycle": "^17.0.1",
     "openapi-types": "^12.1.3",

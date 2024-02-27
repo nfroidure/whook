@@ -1,5 +1,5 @@
 #! /usr/bin/env node
 
-import { runBuild } from '../dist/build.js';
+import { runBuild } from '../src/build.ts';
 
 await runBuild();
