@@ -147,7 +147,7 @@ const CONFIG: AppConfig = {
   // ...
 +  COMPILER_OPTIONS: {
 +    externalModules: [],
-+    target: '16',
++    target: '20',
 +  },
 };
 

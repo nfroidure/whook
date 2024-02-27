@@ -8,7 +8,7 @@ import type { AppEnvVars } from 'application-services';
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],
   ignoredModules: [],
-  target: '16',
+  target: '20',
   format: 'esm',
 };
 
