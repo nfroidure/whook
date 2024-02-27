@@ -1,3 +1,24 @@
+# [16.0.0](https://github.com/nfroidure/whook/compare/v15.0.0...v16.0.0) (2024-02-27)
+
+
+### Bug Fixes
+
+* **build:** fix AWS Lambdas and GCP Functions builds ([140c13d](https://github.com/nfroidure/whook/commit/140c13d17cff835f09779bb1813cabc724ef80d1))
+
+
+### Code Refactoring
+
+* **build:** move most of the code to ESM ([ae80d51](https://github.com/nfroidure/whook/commit/ae80d514c068aaee318719a4ab21c58bdccd0377)), closes [#102](https://github.com/nfroidure/whook/issues/102)
+
+
+### BREAKING CHANGES
+
+* **build:** Will require Node 20 since it relies on its ESM support. Also, the `PROJECT_SRC`
+constant is removed and the `INITIALIZER_PATHS_MAP` constant is now supposed to have well designed
+paths in it.
+
+
+
 # [15.0.0](https://github.com/nfroidure/whook/compare/v14.0.0...v15.0.0) (2024-02-20)
 
 
