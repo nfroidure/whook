@@ -138,14 +138,14 @@ async function ensureFile(
     const oldContent = (await readFile(path)).toString();
 
     if (oldContent === content) {
-      log('debug', `Ignore unchanged file: "${path}".`);
+      log('debug', `🗀 - Ignore unchanged file: "${path}".`);
       return;
     }
   } catch (err) {
-    log('debug', `Write new file: "${path}".`);
+    log('debug', `🗀 - Write new file: "${path}".`);
     return await writeFile(path, content);
   }
-  log('debug', `Write changed file: "${path}".`);
+  log('debug', `🗀 - Write changed file: "${path}".`);
   return await writeFile(path, content);
 }
 

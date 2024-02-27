@@ -1,7 +1,8 @@
 import { exit, stderr } from 'node:process';
-import fs from 'fs';
-import util from 'util';
-import path from 'path';
+import { readFile, writeFile } from 'node:fs/promises';
+import { promisify } from 'node:util';
+import { join, relative } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { mkdirp } from 'mkdirp';
 import cpr from 'cpr';
 import { printStackTrace, YError } from 'yerror';
@@ -127,16 +128,7 @@ export type WhookAPIOperationAWSLambdaConfig<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = WhookAWSLambdaBaseConfiguration & WhookAWSLambdaConfiguration<T>;
 
-const readFileAsync = util.promisify(fs.readFile) as (
-  path: string,
-  encoding: string,
-) => Promise<string>;
-const writeFileAsync = util.promisify(fs.writeFile) as (
-  path: string,
-  content: string,
-  encoding: string,
-) => Promise<void>;
-const cprAsync = util.promisify(cpr) as (
+const cprAsync = promisify(cpr) as (
   source: string,
   destination: string,
   options: CprOptions,
@@ -320,16 +312,13 @@ async function buildAnyLambda(
 
     log('warning', `🏗 - Building ${operationType} "${finalEntryPoint}"...`);
 
-    const lambdaPath = path.join(
-      PROJECT_DIR,
-      'builds',
-      APP_ENV,
-      finalEntryPoint,
-    );
+    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, finalEntryPoint);
+    const srcPath = join(PROJECT_DIR, 'src');
+    const srcRelativePath = relative(lambdaPath, srcPath);
 
-    const initializerContent = await buildInitializer([
-      `OPERATION_HANDLER_${finalEntryPoint}`,
-    ]);
+    const initializerContent = (
+      await buildInitializer([`OPERATION_HANDLER_${finalEntryPoint}`])
+    ).replaceAll(pathToFileURL(srcPath).toString(), srcRelativePath);
     const indexContent = await buildLambdaIndex(
       `OPERATION_HANDLER_${finalEntryPoint}`,
     );
@@ -341,12 +330,12 @@ async function buildAnyLambda(
         lambdaPath,
         whookConfig.staticFiles || [],
       ),
-      ensureFileAsync(
+      ensureFile(
         { log },
-        path.join(lambdaPath, 'initialize.js'),
+        join(lambdaPath, 'initialize.js'),
         initializerContent,
       ),
-      ensureFileAsync({ log }, path.join(lambdaPath, 'main.js'), indexContent),
+      ensureFile({ log }, join(lambdaPath, 'main.js'), indexContent),
     ]);
     await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
   } catch (err) {
@@ -388,18 +377,12 @@ async function buildFinalLambda(
   );
 
   await Promise.all([
-    ensureFileAsync(
-      { log },
-      path.join(lambdaPath, `/index${extension}`),
-      contents,
-      'utf-8',
-    ),
+    ensureFile({ log }, join(lambdaPath, `/index${extension}`), contents),
     mappings
-      ? ensureFileAsync(
+      ? ensureFile(
           { log },
-          path.join(lambdaPath, `/index${extension}.map`),
+          join(lambdaPath, `/index${extension}.map`),
           mappings,
-          'utf-8',
         )
       : Promise.resolve(),
   ]);
@@ -415,8 +398,8 @@ async function copyStaticFiles(
       async (staticFile) =>
         await copyFiles(
           { log },
-          path.join(PROJECT_DIR, 'node_modules', staticFile),
-          path.join(lambdaPath, 'node_modules', staticFile),
+          join(PROJECT_DIR, 'node_modules', staticFile),
+          join(lambdaPath, 'node_modules', staticFile),
         ),
     ),
   );
@@ -427,13 +410,16 @@ async function copyFiles(
   source: string,
   destination: string,
 ): Promise<void> {
-  let theError;
+  let theError: YError | undefined = undefined;
+
   try {
     await mkdirp(destination);
-    const data = await readFileAsync(source, 'utf-8');
-    await ensureFileAsync({ log }, destination, data, 'utf-8');
+
+    const data = await readFile(source);
+
+    await ensureFile({ log }, destination, data.toString());
   } catch (err) {
-    theError = err;
+    theError = err as YError;
   }
   if (theError) {
     if ('EISDIR' !== theError.code) {
@@ -445,23 +431,22 @@ async function copyFiles(
   }
 }
 
-async function ensureFileAsync(
+async function ensureFile(
   { log }: { log: LogService },
   path: string,
   content: string,
-  encoding = 'utf-8',
 ): Promise<void> {
   try {
-    const oldContent = await readFileAsync(path, encoding);
+    const oldContent = (await readFile(path)).toString();
 
     if (oldContent === content) {
-      log('debug', `Ignore unchanged file: "${path}".`);
+      log('debug', `🗀 - Ignore unchanged file: "${path}".`);
       return;
     }
   } catch (err) {
-    log('debug', `Write new file: "${path}".`);
-    return await writeFileAsync(path, content, encoding);
+    log('debug', `🗀 - Write new file: "${path}".`);
+    return await writeFile(path, content);
   }
-  log('debug', `Write changed file: "${path}".`);
-  return await writeFileAsync(path, content, encoding);
+  log('debug', `🗀 - Write changed file: "${path}".`);
+  return await writeFile(path, content);
 }
