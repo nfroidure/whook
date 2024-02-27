@@ -56,14 +56,14 @@
     "postbuild": "NODE_ENV=${NODE_ENV:-development} tsx bin/build.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
+    "repl": "NODE_ENV=${NODE_ENV:-development} tsx bin/repl.js",
     "start": "NODE_ENV=${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
     "watch": "NODE_ENV=${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
     "whook": "NODE_ENV=${NODE_ENV:-development} whook",
     "whook-debug": "NODE_OPTIONS=${NODE_OPTIONS:-'--inspect'} NODE_ENV=${NODE_ENV:-development} DEBUG=${DEBUG:-whook} tsx bin/whook.js",
-    "whook-dev": "NODE_ENV=${NODE_ENV:-development} tsx bin/whook.js",
-    "repl": "NODE_ENV=${NODE_ENV:-development} tsx bin/repl.js"
+    "whook-dev": "NODE_ENV=${NODE_ENV:-development} tsx bin/whook.js"
   },
   "author": {
     "name": "Nicolas Froidure",
@@ -115,8 +115,8 @@
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "jsarch": "^6.0.3",
-    "metapak": "^5.1.8",
-    "metapak-nfroidure": "16.0.1",
+    "metapak": "^6.0.0",
+    "metapak-nfroidure": "18.0.0",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "schema2dts": "^5.3.0",
@@ -125,7 +125,7 @@
   },
   "contributors": [],
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.11.1"
   },
   "files": [
     "bin",

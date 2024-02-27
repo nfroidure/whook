@@ -92,7 +92,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.11.1"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -118,14 +118,14 @@ DEV_MODE=1
     "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
+    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js",
     "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
     "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
-    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js",
-    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js"
+    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js"
   },
   "files": [
     "bin",
@@ -432,7 +432,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.11.1"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -458,14 +458,14 @@ DEV_MODE=1
     "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
+    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js",
     "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
     "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
-    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js",
-    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js"
+    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js"
   },
   "files": [
     "bin",
@@ -804,7 +804,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.11.1"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -830,14 +830,14 @@ DEV_MODE=1
     "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
+    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js",
     "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
     "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
-    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js",
-    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js"
+    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js"
   },
   "files": [
     "bin",
@@ -1159,7 +1159,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.11.1"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -1185,14 +1185,14 @@ DEV_MODE=1
     "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
+    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js",
     "start": "NODE_ENV=\${NODE_ENV:-development} node bin/start.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
     "whook-debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
-    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js",
-    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/repl.js"
+    "whook-dev": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js"
   },
   "files": [
     "bin",

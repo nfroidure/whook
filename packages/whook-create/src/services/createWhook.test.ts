@@ -201,7 +201,7 @@ describe('initCreateWhook', () => {
     "typescript": "^5.2.2",
   },
   "engines": {
-    "node": ">=18.16.0",
+    "node": ">=20.11.1",
   },
   "eslintConfig": {
     "env": {
@@ -423,7 +423,7 @@ describe('initCreateWhook', () => {
     "typescript": "^5.2.2",
   },
   "engines": {
-    "node": ">=18.16.0",
+    "node": ">=20.11.1",
   },
   "eslintConfig": {
     "env": {
@@ -630,7 +630,7 @@ describe('initCreateWhook', () => {
     "typescript": "^5.2.2",
   },
   "engines": {
-    "node": ">=18.16.0",
+    "node": ">=20.11.1",
   },
   "eslintConfig": {
     "env": {
