@@ -160,6 +160,7 @@ describe('initCreateWhook', () => {
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^15.0.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -168,6 +169,7 @@ describe('initCreateWhook', () => {
     "application-services": "^6.0.0",
     "common-services": "^16.0.1",
     "http-auth-utils": "^6.0.0",
+    "js-yaml": "^4.1.0",
     "jwt-service": "^10.0.4",
     "knifecycle": "^17.0.1",
     "openapi-schema-validator": "^12.1.3",
@@ -382,6 +384,7 @@ describe('initCreateWhook', () => {
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^15.0.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -390,6 +393,7 @@ describe('initCreateWhook', () => {
     "application-services": "^6.0.0",
     "common-services": "^16.0.1",
     "http-auth-utils": "^6.0.0",
+    "js-yaml": "^4.1.0",
     "jwt-service": "^10.0.4",
     "knifecycle": "^17.0.1",
     "openapi-schema-validator": "^12.1.3",
@@ -589,6 +593,7 @@ describe('initCreateWhook', () => {
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^15.0.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -597,6 +602,7 @@ describe('initCreateWhook', () => {
     "application-services": "^6.0.0",
     "common-services": "^16.0.1",
     "http-auth-utils": "^6.0.0",
+    "js-yaml": "^4.1.0",
     "jwt-service": "^10.0.4",
     "knifecycle": "^17.0.1",
     "openapi-schema-validator": "^12.1.3",

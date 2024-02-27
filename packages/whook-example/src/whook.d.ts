@@ -3,6 +3,8 @@ import type {
   WhookBaseEnv,
   WhookBaseConfigs,
   WhookAPIOperation,
+  WhookProxyedENVConfig,
+  WhookCompilerConfig,
 } from '@whook/whook';
 import type { WhookAuthorizationConfig } from '@whook/authorization';
 import type {
@@ -16,6 +18,10 @@ import type { JWTServiceConfig } from 'jwt-service';
 import type { BaseAppEnvVars } from 'application-services';
 import type { JWTEnvVars } from 'jwt-service';
 import type { FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
+import type {
+  WhookAPIOperationGCPFunctionConfig,
+  WhookGCPBuildConfig,
+} from '@whook/gcp-functions';
 
 declare module 'application-services' {
   // Eventually override the process env type here
@@ -39,6 +45,9 @@ The configuration is typed so that you are sure you cannot
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
+      WhookProxyedENVConfig,
+      WhookCompilerConfig,
+      WhookGCPBuildConfig,
       JWTServiceConfig {}
 }
 
@@ -58,7 +67,16 @@ Here we export a custom handler definition type in order
   > extends WhookBaseAPIHandlerDefinition<T, U> {
     operation: U &
       WhookAPIOperation<
-        T & WhookAPIOperationSwaggerConfig & WhookAPIOperationCORSConfig
+        T &
+          WhookAPIOperationGCPFunctionConfig &
+          WhookAPIOperationSwaggerConfig &
+          WhookAPIOperationCORSConfig & { // TODO: Add those properties to Whook GCP Functions?
+            private?: boolean;
+            memory?: number;
+            timeout?: number;
+            suffix?: string;
+            sourceOperationId?: string;
+          }
       >;
   }
 }
