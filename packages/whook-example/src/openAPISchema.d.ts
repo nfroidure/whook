@@ -52,6 +52,16 @@ declare namespace API {
       export type $200 = Components.Responses.getTimeResponse200<200>;
     }
   }
+  export namespace PostGraphQL {
+    export type Body = Components.RequestBodies.PostGraphQLRequestBody;
+    export type Output = Responses.$200;
+    export type Input = {
+      readonly body?: Body;
+    };
+    export namespace Responses {
+      export type $200 = Components.Responses.postGraphQLResponse200<200>;
+    }
+  }
   export namespace PutEcho {
     export type Body = Components.RequestBodies.Echo;
     export type Output = Responses.$200;
@@ -73,6 +83,8 @@ declare namespace API {
 declare namespace Components {
   export namespace RequestBodies {
     export type Echo = Components.Schemas.Echo;
+    export type PostGraphQLRequestBody =
+      Components.Schemas.RequestBodiespostGraphQLRequestBodyBody0;
   }
   export namespace Parameters {
     export type Duration = NonNullable<number>;
@@ -125,6 +137,13 @@ declare namespace Components {
       };
       readonly body: Components.Schemas.TimeSchema;
     };
+    export type postGraphQLResponse200<S extends number> = {
+      readonly status: S;
+      readonly headers?: {
+        readonly [name: string]: unknown;
+      };
+      readonly body: Components.Schemas.ResponsespostGraphQLResponse200Body0;
+    };
     export type getPingResponse200<S extends number> = {
       readonly status: S;
       readonly headers?: {
@@ -140,6 +159,10 @@ declare namespace Components {
     export type Echo = NonNullable<{
       echo: NonNullable<string>;
     }>;
+    export type RequestBodiespostGraphQLRequestBodyBody0 = NonNullable<{
+      query?: NonNullable<string>;
+      [pattern: string]: unknown;
+    }>;
     export type ResponsesDiagnosticBody0 = NonNullable<{
       transactions: NonNullable<{
         [pattern: string]: unknown;
@@ -152,6 +175,9 @@ declare namespace Components {
       pathParam1?: NonNullable<number>;
       pathParam2?: NonNullable<string>;
       queryParam?: NonNullable<NonNullable<string>[]>;
+    }>;
+    export type ResponsespostGraphQLResponse200Body0 = NonNullable<{
+      [pattern: string]: unknown;
     }>;
     export type ResponsesgetPingResponse200Body0 = NonNullable<{
       pong?: 'pong';

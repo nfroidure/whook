@@ -16,6 +16,8 @@ import type { JWTServiceConfig } from 'jwt-service';
 import type { BaseAppEnvVars } from 'application-services';
 import type { JWTEnvVars } from 'jwt-service';
 import type { FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
+import type { WhookGraphQLEnv, WhookGraphQLConfig } from '@whook/graphql';
+import type { WhookGraphIQLEnv, WhookGraphIQLConfig } from '@whook/graphiql';
 
 declare module 'application-services' {
   // Eventually override the process env type here
@@ -24,6 +26,8 @@ declare module 'application-services' {
       WhookBaseEnv,
       JWTEnvVars,
       FilterAPIDefinitionEnvVars,
+      WhookGraphQLEnv,
+      WhookGraphIQLEnv,
       WhookSwaggerUIEnv {
     DRY_RUN?: string;
   }
@@ -39,6 +43,8 @@ The configuration is typed so that you are sure you cannot
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
+      WhookGraphIQLConfig,
+      WhookGraphQLConfig,
       JWTServiceConfig {}
 }
 
