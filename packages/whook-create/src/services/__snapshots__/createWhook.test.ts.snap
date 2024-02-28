@@ -29,23 +29,15 @@ exports[`initCreateWhook should fail with access problems 2`] = `
   "oraCalls": [],
   "oraStartCalls": [],
   "oraStopAndPersistCalls": [],
-  "readFileCalls": [
+  "outputFileCalls": [
     [
-      "/var/lib/node/node_modules/whook-example/package.json",
+      "/home/whoiam/projects/yolo/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
-    [
-      "/var/lib/node/node_modules/whook-example/README.md",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
-    ],
-  ],
-  "readdirCalls": [
-    [
-      "/var/lib/node/node_modules/whook-example/src/config",
-    ],
-  ],
-  "writeFileCalls": [
     [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
@@ -272,14 +264,6 @@ DEV_MODE=1
       "Copyright Wayne Campbell, all rights reserved.",
     ],
     [
-      "/home/whoiam/projects/yolo/src/watch.ts",
-      "
-the watch.ts file contents
- with'./' replaced so
- equal to './'!
-",
-    ],
-    [
       "/home/whoiam/projects/yolo/.gitignore",
       "node_modules
 
@@ -287,6 +271,22 @@ the watch.ts file contents
 builds/
 .env*
 ",
+    ],
+  ],
+  "readFileCalls": [
+    [
+      "/var/lib/node/node_modules/whook-example/package.json",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "readdirCalls": [
+    [
+      "/var/lib/node/node_modules/whook-example/src/config",
     ],
   ],
 }
@@ -363,29 +363,15 @@ exports[`initCreateWhook should handle git initialization problems 2`] = `
       },
     ],
   ],
-  "readFileCalls": [
+  "outputFileCalls": [
     [
-      "/var/lib/node/node_modules/whook-example/package.json",
+      "/home/whoiam/projects/yolo/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
-    [
-      "/var/lib/node/node_modules/whook-example/README.md",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
-    ],
-  ],
-  "readdirCalls": [
-    [
-      "/var/lib/node/node_modules/whook-example/package.json",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/README.md",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
-    ],
-  ],
-  "writeFileCalls": [
     [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
@@ -612,14 +598,6 @@ DEV_MODE=1
       "Copyright Wayne Campbell, all rights reserved.",
     ],
     [
-      "/home/whoiam/projects/yolo/src/watch.ts",
-      "
-the watch.ts file contents
- with'./' replaced so
- equal to './'!
-",
-    ],
-    [
       "/home/whoiam/projects/yolo/.gitignore",
       "node_modules
 
@@ -627,6 +605,28 @@ the watch.ts file contents
 builds/
 .env*
 ",
+    ],
+  ],
+  "readFileCalls": [
+    [
+      "/var/lib/node/node_modules/whook-example/package.json",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "readdirCalls": [
+    [
+      "/var/lib/node/node_modules/whook-example/package.json",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
 }
@@ -666,31 +666,31 @@ exports[`initCreateWhook should handle network issues 2`] = `
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/package.json" => "/home/whoiam/projects/yolo/package.json ("..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/package.json" => "/home/whoiam/projects/yolo/package.json ("..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/package-lock.json" => "/home/whoiam/projects/yolo/package-lock.json ("..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/package-lock.json" => "/home/whoiam/projects/yolo/package-lock.json ("..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/LICENSE" => "/home/whoiam/projects/yolo/LICENSE ("..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/LICENSE" => "/home/whoiam/projects/yolo/LICENSE ("..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/dist/index.js" => "/home/whoiam/projects/yolo/dist/index.js ("../..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/dist/index.js" => "/home/whoiam/projects/yolo/dist/index.js ("../..").",
     ],
     [
       "debug",
-      "Moving "/var/lib/node/node_modules/whook-example/src/index.js" => "/home/whoiam/projects/yolo/src/index.js".",
+      "💱 - Moving "/var/lib/node/node_modules/whook-example/src/index.js" => "/home/whoiam/projects/yolo/src/index.js".",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/coverage/index.html" => "/home/whoiam/projects/yolo/coverage/index.html ("../..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/coverage/index.html" => "/home/whoiam/projects/yolo/coverage/index.html ("../..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js" => "/home/whoiam/projects/yolo/node_modules/whook/index.js ("../../..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js" => "/home/whoiam/projects/yolo/node_modules/whook/index.js ("../../..").",
     ],
     [
       "error",
@@ -735,29 +735,15 @@ exports[`initCreateWhook should handle network issues 2`] = `
       },
     ],
   ],
-  "readFileCalls": [
+  "outputFileCalls": [
     [
-      "/var/lib/node/node_modules/whook-example/package.json",
+      "/home/whoiam/projects/yolo/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
-    [
-      "/var/lib/node/node_modules/whook-example/README.md",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
-    ],
-  ],
-  "readdirCalls": [
-    [
-      "/var/lib/node/node_modules/whook-example/package.json",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/README.md",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
-    ],
-  ],
-  "writeFileCalls": [
     [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
@@ -983,13 +969,27 @@ DEV_MODE=1
       "/home/whoiam/projects/yolo/LICENSE",
       "Copyright Wayne Campbell, all rights reserved.",
     ],
+  ],
+  "readFileCalls": [
     [
-      "/home/whoiam/projects/yolo/src/watch.ts",
-      "
-the watch.ts file contents
- with'./' replaced so
- equal to './'!
-",
+      "/var/lib/node/node_modules/whook-example/package.json",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "readdirCalls": [
+    [
+      "/var/lib/node/node_modules/whook-example/package.json",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
 }
@@ -1029,31 +1029,31 @@ exports[`initCreateWhook should work 2`] = `
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/package.json" => "/home/whoiam/projects/yolo/package.json ("..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/package.json" => "/home/whoiam/projects/yolo/package.json ("..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/package-lock.json" => "/home/whoiam/projects/yolo/package-lock.json ("..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/package-lock.json" => "/home/whoiam/projects/yolo/package-lock.json ("..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/LICENSE" => "/home/whoiam/projects/yolo/LICENSE ("..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/LICENSE" => "/home/whoiam/projects/yolo/LICENSE ("..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/dist/index.js" => "/home/whoiam/projects/yolo/dist/index.js ("../..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/dist/index.js" => "/home/whoiam/projects/yolo/dist/index.js ("../..").",
     ],
     [
       "debug",
-      "Moving "/var/lib/node/node_modules/whook-example/src/index.js" => "/home/whoiam/projects/yolo/src/index.js".",
+      "💱 - Moving "/var/lib/node/node_modules/whook-example/src/index.js" => "/home/whoiam/projects/yolo/src/index.js".",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/coverage/index.html" => "/home/whoiam/projects/yolo/coverage/index.html ("../..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/coverage/index.html" => "/home/whoiam/projects/yolo/coverage/index.html ("../..").",
     ],
     [
       "debug",
-      "Discarding "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js" => "/home/whoiam/projects/yolo/node_modules/whook/index.js ("../../..").",
+      "💱 - Discarding "/var/lib/node/node_modules/whook-example/node_modules/whook/index.js" => "/home/whoiam/projects/yolo/node_modules/whook/index.js ("../../..").",
     ],
     [
       "warning",
@@ -1090,29 +1090,15 @@ exports[`initCreateWhook should work 2`] = `
       },
     ],
   ],
-  "readFileCalls": [
+  "outputFileCalls": [
     [
-      "/var/lib/node/node_modules/whook-example/package.json",
+      "/home/whoiam/projects/yolo/src/watch.ts",
+      "
+the watch.ts file contents
+ with'./' replaced so
+ equal to './'!
+",
     ],
-    [
-      "/var/lib/node/node_modules/whook-example/README.md",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
-    ],
-  ],
-  "readdirCalls": [
-    [
-      "/var/lib/node/node_modules/whook-example/package.json",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/README.md",
-    ],
-    [
-      "/var/lib/node/node_modules/whook-example/src/watch.ts",
-    ],
-  ],
-  "writeFileCalls": [
     [
       "/home/whoiam/projects/yolo/README.md",
       "# super-project
@@ -1339,14 +1325,6 @@ DEV_MODE=1
       "Copyright Wayne Campbell, all rights reserved.",
     ],
     [
-      "/home/whoiam/projects/yolo/src/watch.ts",
-      "
-the watch.ts file contents
- with'./' replaced so
- equal to './'!
-",
-    ],
-    [
       "/home/whoiam/projects/yolo/.gitignore",
       "node_modules
 
@@ -1354,6 +1332,28 @@ the watch.ts file contents
 builds/
 .env*
 ",
+    ],
+  ],
+  "readFileCalls": [
+    [
+      "/var/lib/node/node_modules/whook-example/package.json",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/README.md",
+    ],
+  ],
+  "readdirCalls": [
+    [
+      "/var/lib/node/node_modules/whook-example/package.json",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/src/watch.ts",
+    ],
+    [
+      "/var/lib/node/node_modules/whook-example/README.md",
     ],
   ],
 }

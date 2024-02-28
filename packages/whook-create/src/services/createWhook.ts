@@ -1,10 +1,11 @@
 import { autoService } from 'knifecycle';
-import path from 'path';
+import { exec as _exec } from 'node:child_process';
+import { readFile as _readFile, readdir as _readdir } from 'node:fs/promises';
+import { copy as _copy, outputFile as _outputFile } from 'fs-extra';
+import { join, relative } from 'node:path';
 import _axios from 'axios';
 import _ora from 'ora';
 import { printStackTrace, YError } from 'yerror';
-import { exec as _exec } from 'child_process';
-import { default as fsExtra } from 'fs-extra';
 import type { LogService } from 'common-services';
 import type { ProjectService } from './project.js';
 import type { AuthorService } from './author.js';
@@ -13,12 +14,6 @@ const GIT_IGNORE_URL =
   'https://www.toptal.com/developers/gitignore/api/osx,node,linux';
 const README_REGEXP =
   /^(?:[^]*)\[\/\/\]: # \(::contents:start\)\r?\n\r?\n([^]*)\r?\n\r?\n\[\/\/\]: # \(::contents:end\)(?:[^]*)$/gm;
-const {
-  writeFile: _writeFile,
-  readFile: _readFile,
-  copy: _copy,
-  readdir: _readdir,
-} = fsExtra;
 
 export type CreateWhookService = () => Promise<void>;
 
@@ -27,7 +22,7 @@ export default autoService(async function initCreateWhook({
   SOURCE_DIR,
   author,
   project,
-  writeFile = _writeFile,
+  outputFile = _outputFile,
   readFile = _readFile,
   readdir = _readdir,
   exec = _exec,
@@ -40,7 +35,7 @@ export default autoService(async function initCreateWhook({
   SOURCE_DIR: string;
   author: AuthorService;
   project: ProjectService;
-  writeFile: typeof _writeFile;
+  outputFile: typeof _outputFile;
   readFile: typeof _readFile;
   readdir: typeof _readdir;
   exec: typeof _exec;
@@ -53,7 +48,7 @@ export default autoService(async function initCreateWhook({
     log('warning', "🏁️ - Starting Whook project's creation!");
 
     const basePackageJSON = JSON.parse(
-      (await readFile(path.join(SOURCE_DIR, 'package.json'))).toString(),
+      (await readFile(join(SOURCE_DIR, 'package.json'))).toString(),
     );
 
     const finalPackageJSON = {
@@ -89,37 +84,44 @@ export default autoService(async function initCreateWhook({
       metapak: undefined,
     };
 
+    await readFile(join(SOURCE_DIR, 'src/watch.ts')).then((data) => {
+      return outputFile(
+        join(project.directory, 'src/watch.ts'),
+        data.toString().replace('../../', './'),
+      );
+    });
+
     await Promise.all([
       copy(SOURCE_DIR, project.directory, {
         filter: (src, dest) => {
           if (
-            src.startsWith(path.join(SOURCE_DIR, 'node_modules')) ||
-            src.startsWith(path.join(SOURCE_DIR, 'dist')) ||
-            src.startsWith(path.join(SOURCE_DIR, 'coverage')) ||
+            src.startsWith(join(SOURCE_DIR, 'node_modules')) ||
+            src.startsWith(join(SOURCE_DIR, 'dist')) ||
+            src.startsWith(join(SOURCE_DIR, 'coverage')) ||
             [
-              path.join(SOURCE_DIR, 'package.json'),
-              path.join(SOURCE_DIR, 'package-lock.json'),
-              path.join(SOURCE_DIR, 'LICENSE'),
-              path.join(SOURCE_DIR, 'README.md'),
-              path.join(SOURCE_DIR, 'src/watch.ts'),
+              join(SOURCE_DIR, 'package.json'),
+              join(SOURCE_DIR, 'package-lock.json'),
+              join(SOURCE_DIR, 'LICENSE'),
+              join(SOURCE_DIR, 'README.md'),
+              join(SOURCE_DIR, 'src/watch.ts'),
             ].includes(src)
           ) {
             log(
               'debug',
-              `Discarding "${src}" => "${dest} ("${path.relative(
+              `💱 - Discarding "${src}" => "${dest} ("${relative(
                 src,
                 SOURCE_DIR,
               )}").`,
             );
             return false;
           }
-          log('debug', `Moving "${src}" => "${dest}".`);
+          log('debug', `💱 - Moving "${src}" => "${dest}".`);
           return true;
         },
       }),
-      readFile(path.join(SOURCE_DIR, 'README.md')).then((data) =>
-        writeFile(
-          path.join(project.directory, 'README.md'),
+      readFile(join(SOURCE_DIR, 'README.md')).then((data) =>
+        outputFile(
+          join(project.directory, 'README.md'),
           `# ${project.name}
 
 ${data.toString().replace(README_REGEXP, '$1')}
@@ -130,12 +132,12 @@ ${author.name}
 `,
         ),
       ),
-      ...(await readdir(path.join(SOURCE_DIR, 'src', 'config'))).map(
+      ...(await readdir(join(SOURCE_DIR, 'src', 'config'))).map(
         (environment) =>
           environment === 'common'
             ? Promise.resolve()
-            : writeFile(
-                path.join(project.directory, `.env.app.${environment}`),
+            : outputFile(
+                join(project.directory, `.env.app.${environment}`),
                 `# Loaded when APP_ENV=${environment}
 
 # For JWT signing
@@ -143,8 +145,8 @@ JWT_SECRET=oudelali
 `,
               ),
       ),
-      writeFile(
-        path.join(project.directory, '.env.node.development'),
+      outputFile(
+        join(project.directory, '.env.node.development'),
         `# Loaded when NODE_ENV=development
 
 # Allow to kill the process with still open sockets
@@ -154,18 +156,12 @@ DESTROY_SOCKETS=1'
 DEV_MODE=1 
 `,
       ),
-      writeFile(
-        path.join(project.directory, 'package.json'),
+      outputFile(
+        join(project.directory, 'package.json'),
         JSON.stringify(finalPackageJSON, null, 2),
       ),
-      readFile(path.join(SOURCE_DIR, 'src/watch.ts')).then((data) => {
-        return writeFile(
-          path.join(project.directory, 'src/watch.ts'),
-          data.toString().replace('../../', './'),
-        );
-      }),
-      writeFile(
-        path.join(project.directory, 'tsconfig.json'),
+      outputFile(
+        join(project.directory, 'tsconfig.json'),
         JSON.stringify(
           {
             compilerOptions: {
@@ -189,8 +185,8 @@ DEV_MODE=1
           2,
         ),
       ),
-      writeFile(
-        path.join(project.directory, 'LICENSE'),
+      outputFile(
+        join(project.directory, 'LICENSE'),
         `Copyright ${author.name}, all rights reserved.`,
       ),
       axios({
@@ -202,8 +198,8 @@ DEV_MODE=1
         },
       })
         .then((response) =>
-          writeFile(
-            path.join(project.directory, '.gitignore'),
+          outputFile(
+            join(project.directory, '.gitignore'),
             `${response.data.toString()}
 
 # Whook's files
@@ -277,7 +273,7 @@ builds/
 
     log(
       'warning',
-      `➕ - Run \`cd ${path.relative(
+      `➕ - Run \`cd ${relative(
         CWD,
         project.directory,
       )}\` to enter the project.`,

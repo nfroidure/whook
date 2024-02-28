@@ -54,7 +54,7 @@ describe('initCreateWhook', () => {
     name: 'super-project',
     directory: '/home/whoiam/projects/yolo',
   };
-  const writeFile = jest.fn<(file: PathLike, data: Buffer) => Promise<void>>();
+  const outputFile = jest.fn<(file: PathLike, data: Buffer) => Promise<void>>();
   const readFile = jest.fn<(file: PathLike) => Promise<Buffer>>();
   const readdir = jest.fn<(file: PathLike) => Promise<string[]>>();
   const exec = jest.fn<any>();
@@ -69,7 +69,7 @@ describe('initCreateWhook', () => {
 
   beforeEach(() => {
     axios.mockReset();
-    writeFile.mockReset();
+    outputFile.mockReset();
     readFile.mockReset();
     readdir.mockReset();
     exec.mockReset();
@@ -118,9 +118,9 @@ describe('initCreateWhook', () => {
     axios.mockResolvedValueOnce({
       data: 'node_modules',
     });
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
     exec.mockImplementationOnce((_, _2, cb) =>
       cb(null, 'Initialized an empty git repository!'),
     );
@@ -133,7 +133,7 @@ describe('initCreateWhook', () => {
       SOURCE_DIR,
       author,
       project,
-      writeFile: writeFile as any,
+      outputFile: outputFile as any,
       readFile: readFile as any,
       readdir: readdir as any,
       exec: exec as any,
@@ -147,7 +147,7 @@ describe('initCreateWhook', () => {
 
     expect(
       JSON.parse(
-        writeFile.mock.calls
+        outputFile.mock.calls
           .find((call) => call[0].toString().endsWith('package.json'))?.[1]
           ?.toString() || '',
       ),
@@ -310,7 +310,7 @@ describe('initCreateWhook', () => {
 `);
     expect({
       copyCalls: copy.mock.calls,
-      writeFileCalls: writeFile.mock.calls,
+      outputFileCalls: outputFile.mock.calls,
       readFileCalls: readFile.mock.calls,
       execCalls: exec.mock.calls,
       oraCalls: ora.mock.calls,
@@ -342,9 +342,9 @@ describe('initCreateWhook', () => {
       ),
     );
     axios.mockRejectedValueOnce(new YError('E_NETWORK'));
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
     exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
     exec.mockImplementationOnce((_, _2, cb) =>
       cb(null, 'Installed dependencies!'),
@@ -355,7 +355,7 @@ describe('initCreateWhook', () => {
       SOURCE_DIR,
       author,
       project,
-      writeFile: writeFile as any,
+      outputFile: outputFile as any,
       readFile: readFile as any,
       readdir: readdir as any,
       exec: exec as any,
@@ -369,7 +369,7 @@ describe('initCreateWhook', () => {
 
     expect(
       JSON.parse(
-        writeFile.mock.calls
+        outputFile.mock.calls
           .find((call) => call[0].toString().endsWith('package.json'))?.[1]
           ?.toString() || '',
       ),
@@ -532,7 +532,7 @@ describe('initCreateWhook', () => {
 `);
     expect({
       copyCalls: copy.mock.calls,
-      writeFileCalls: writeFile.mock.calls,
+      outputFileCalls: outputFile.mock.calls,
       readFileCalls: readFile.mock.calls,
       execCalls: exec.mock.calls,
       oraCalls: ora.mock.calls,
@@ -549,9 +549,9 @@ describe('initCreateWhook', () => {
     axios.mockResolvedValueOnce({
       data: 'node_modules',
     });
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
     exec.mockImplementationOnce((_, _2, cb) => cb(new YError('E_ACCESS')));
     exec.mockImplementationOnce((_, _2, cb) =>
       cb(null, 'Installed dependencies!'),
@@ -562,7 +562,7 @@ describe('initCreateWhook', () => {
       SOURCE_DIR,
       author,
       project,
-      writeFile: writeFile as any,
+      outputFile: outputFile as any,
       readFile: readFile as any,
       readdir: readdir as any,
       exec: exec as any,
@@ -576,7 +576,7 @@ describe('initCreateWhook', () => {
 
     expect(
       JSON.parse(
-        writeFile.mock.calls
+        outputFile.mock.calls
           .find((call) => call[0].toString().endsWith('package.json'))?.[1]
           ?.toString() || '',
       ),
@@ -739,7 +739,7 @@ describe('initCreateWhook', () => {
 `);
     expect({
       copyCalls: copy.mock.calls,
-      writeFileCalls: writeFile.mock.calls,
+      outputFileCalls: outputFile.mock.calls,
       readFileCalls: readFile.mock.calls,
       execCalls: exec.mock.calls,
       oraCalls: ora.mock.calls,
@@ -756,9 +756,9 @@ describe('initCreateWhook', () => {
     axios.mockResolvedValueOnce({
       data: 'node_modules',
     });
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
-    writeFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
+    outputFile.mockResolvedValueOnce(undefined);
     exec.mockImplementationOnce((_, _2, cb) => cb(null, ''));
     exec.mockImplementationOnce((_, _2, cb) =>
       cb(null, 'Installed dependencies!'),
@@ -770,7 +770,7 @@ describe('initCreateWhook', () => {
         SOURCE_DIR,
         author,
         project,
-        writeFile: writeFile as any,
+        outputFile: outputFile as any,
         readFile: readFile as any,
         readdir: readdir as any,
         exec: exec as any,
@@ -795,7 +795,7 @@ describe('initCreateWhook', () => {
       `);
       expect({
         copyCalls: copy.mock.calls,
-        writeFileCalls: writeFile.mock.calls,
+        outputFileCalls: outputFile.mock.calls,
         readFileCalls: readFile.mock.calls,
         execCalls: exec.mock.calls,
         oraCalls: ora.mock.calls,

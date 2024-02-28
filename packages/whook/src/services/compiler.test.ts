@@ -42,7 +42,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
 {
-  "contentsLength": 48297,
+  "contentsLength": 48080,
   "extension": ".mjs",
   "logCalls": [],
   "mappingsLength": 0,
@@ -72,7 +72,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
 {
-  "contentsLength": 3684,
+  "contentsLength": 3608,
   "extension": ".mjs",
   "logCalls": [],
   "mappingsLength": 0,
@@ -106,7 +106,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
 {
-  "contentsLength": 5282,
+  "contentsLength": 5206,
   "extension": ".cjs",
   "logCalls": [],
   "mappingsLength": 0,
