@@ -1,3 +1,14 @@
+## [16.0.1](https://github.com/nfroidure/whook/compare/v16.0.0...v16.0.1) (2024-02-29)
+
+
+### Bug Fixes
+
+* **@whook/create:** fix the npm init script ([8ab2b10](https://github.com/nfroidure/whook/commit/8ab2b10319219e36cf6a229a4ac898b0b1c1b5d4))
+* **build:** fix forgotten node versions ([f2584fd](https://github.com/nfroidure/whook/commit/f2584fdd43d26d70c109373295d5ad2dec0914e0))
+* **watch:** fix the watch server for esm ([51022fd](https://github.com/nfroidure/whook/commit/51022fd4f577a0b226f4d021707599f0a305656c))
+
+
+
 # [16.0.0](https://github.com/nfroidure/whook/compare/v15.0.0...v16.0.0) (2024-02-27)
 
 

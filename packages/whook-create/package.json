@@ -22,7 +22,7 @@
     }
   },
   "name": "@whook/create",
-  "version": "16.0.0",
+  "version": "16.0.1",
   "description": "Kickstart a new Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -68,7 +68,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/example": "^16.0.0",
+    "@whook/example": "^16.0.1",
     "axios": "^1.6.7",
     "common-services": "^16.0.1",
     "debug": "^4.3.4",
