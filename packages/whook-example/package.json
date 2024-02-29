@@ -14,7 +14,14 @@
       "testsFiles": "'src/**/*.test.ts'",
       "distFiles": "'dist/**/*.js'",
       "ignore": [
-        "dist"
+        "dist",
+        "builds",
+        ".bin",
+        ".terraform",
+        "*.plan",
+        "*.tfstate.d",
+        "*.credentials.json",
+        "lambda_layer.zip"
       ],
       "bundleFiles": [
         "bin",
@@ -81,6 +88,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/authorization": "^16.0.1",
+    "@whook/aws-lambda": "^16.0.1",
     "@whook/cors": "^16.0.1",
     "@whook/http-router": "^16.0.0",
     "@whook/http-server": "^16.0.0",

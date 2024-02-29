@@ -3,8 +3,14 @@ import type {
   WhookBaseEnv,
   WhookBaseConfigs,
   WhookAPIOperation,
+  WhookProxyedENVConfig,
+  WhookCompilerConfig,
 } from '@whook/whook';
 import type { WhookAuthorizationConfig } from '@whook/authorization';
+import type {
+  WhookAPIOperationAWSLambdaConfig,
+  WhookAWSLambdaBuildConfig,
+} from '@whook/aws-lambda';
 import type {
   WhookAPIOperationSwaggerConfig,
   WhookSwaggerUIConfig,
@@ -39,6 +45,9 @@ The configuration is typed so that you are sure you cannot
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
+      WhookProxyedENVConfig,
+      WhookCompilerConfig,
+      WhookAWSLambdaBuildConfig,
       JWTServiceConfig {}
 }
 
@@ -53,12 +62,22 @@ Here we export a custom handler definition type in order
     T extends Record<string, unknown> = Record<string, unknown>,
     U extends {
       [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
+      // eslint-disable-next-line
     } = {},
     V extends Record<string, unknown> = Record<string, unknown>,
   > extends WhookBaseAPIHandlerDefinition<T, U> {
     operation: U &
       WhookAPIOperation<
-        T & WhookAPIOperationSwaggerConfig & WhookAPIOperationCORSConfig
+        T &
+          WhookAPIOperationAWSLambdaConfig<V> &
+          WhookAPIOperationSwaggerConfig &
+          WhookAPIOperationCORSConfig & {
+            // TODO: Add those properties to Whook AWS Lambda?
+            name?: string;
+            timeout?: number;
+            memory?: number;
+            suffix?: number;
+          }
       >;
   }
 }
