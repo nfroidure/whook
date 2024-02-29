@@ -1,21 +1,20 @@
 import chokidar from 'chokidar';
 import { dirname, join } from 'node:path';
-import crypto from 'crypto';
-import { PassThrough } from 'stream';
+import crypto from 'node:crypto';
+import { PassThrough } from 'node:stream';
 import { createWriteStream } from 'node:fs';
 import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
 import initGetOpenAPI from './handlers/getOpenAPI.js';
-import { readFile } from 'fs';
-import { promisify } from 'util';
+import initWatchResolve from './services/watchResolve.js';
+import { readFile } from 'node:fs';
+import { promisify } from 'node:util';
 import ignore from 'ignore';
-import { createRequire } from 'module';
 import { AppEnvVars } from 'application-services';
-import { fileURLToPath } from 'url';
-import type { Dependencies, Knifecycle } from 'knifecycle';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { type Dependencies, Knifecycle, constant } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 import type { OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
 
-const require = createRequire(import.meta.url);
 let $instance: Knifecycle;
 let log: LogService;
 let delay: DelayService;
@@ -44,6 +43,7 @@ export async function watchDevServer<T extends Dependencies>(
     injectedNames: [],
   },
 ): Promise<void> {
+  let restartsCounter = 0;
   let ignoreFilter;
 
   try {
@@ -61,7 +61,7 @@ export async function watchDevServer<T extends Dependencies>(
     // log('debug-stack', printStackTrace(err as Error));
   }
 
-  await restartDevServer({ injectedNames, afterRestartEnd });
+  await restartDevServer({ injectedNames, afterRestartEnd, restartsCounter });
 
   await new Promise<void>((resolve, reject) => {
     chokidar
@@ -76,23 +76,22 @@ export async function watchDevServer<T extends Dependencies>(
         reject(err);
       })
       .on('all', (_event, filePath) => {
-        const absolutePath = join(process.cwd(), filePath).replace(
-          /.ts$/,
-          '.js',
-        );
-
+        // TODO: determine all the files needing a complete restart
         if (filePath.match(/package.*\.json/)) {
-          for (const key in require.cache) {
-            uncache(key);
-          }
-        } else {
-          uncache(absolutePath, true);
+          log(
+            'warning',
+            `☢️ - A file changed that may need a full restart (${filePath}).`,
+          );
         }
 
         if (delay) {
           if (!delayPromise) {
             delayPromise = delay.create(2000);
-            restartDevServer({ injectedNames, afterRestartEnd });
+            restartDevServer({
+              injectedNames,
+              afterRestartEnd,
+              restartsCounter: restartsCounter++,
+            });
           }
         }
       });
@@ -102,16 +101,32 @@ export async function watchDevServer<T extends Dependencies>(
 export async function restartDevServer<T extends Dependencies>({
   injectedNames = [],
   afterRestartEnd,
-}: WatchServerArgs<T>): Promise<void> {
+  restartsCounter,
+}: WatchServerArgs<T> & {
+  restartsCounter: number;
+}): Promise<void> {
   if ($instance) {
-    log('warning', '➡️ - Changes detected : Will restart the server soon...');
+    log(
+      'warning',
+      `➡️ - Changes detected : Will restart the server soon (${restartsCounter})...`,
+    );
     await delayPromise;
     await $instance.destroy();
   }
 
   const { runServer, prepareEnvironment, prepareServer } = await import(
-    join(process.cwd(), 'src', 'index.ts')
+    pathToFileURL(join(process.cwd(), 'src', 'index.ts')).toString() +
+      (restartsCounter ? '?restartsCounter=' + restartsCounter : '')
   );
+
+  async function prepareWatchEnvironment<T extends Knifecycle>(
+    $: T = new Knifecycle() as T,
+  ): Promise<T> {
+    $ = await prepareEnvironment($);
+    $.register(initWatchResolve);
+    $.register(constant('RESTARTS_COUNTER', restartsCounter));
+    return $;
+  }
 
   const {
     ENV,
@@ -123,7 +138,7 @@ export async function restartDevServer<T extends Dependencies>({
     log: _log,
     ...additionalServices
   } = (await runServer(
-    prepareEnvironment,
+    prepareWatchEnvironment,
     prepareServer,
 
     [
@@ -205,22 +220,4 @@ export async function restartDevServer<T extends Dependencies>({
       { apiChanged, openAPIData },
     );
   }
-}
-
-function uncache(key: string, recursively = false) {
-  const module = require.cache[key];
-
-  if (!module) {
-    return;
-  }
-
-  if (!key.endsWith('.node')) {
-    delete require.cache[key];
-  }
-
-  if (!recursively) {
-    return;
-  }
-
-  uncache((module.parent as typeof module).id);
 }

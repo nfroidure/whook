@@ -13,9 +13,14 @@ declare namespace API {
   }
   export namespace GetDiagnostic {
     export type Output = Responses.$200;
-    export type Input = {};
+    export type Input = {
+      readonly test?: Parameters.Test;
+    };
     export namespace Responses {
       export type $200 = Components.Responses.Diagnostic<200>;
+    }
+    export namespace Parameters {
+      export type Test = Components.Parameters.GetDiagnostic0;
     }
   }
   export namespace GetOpenAPI {
@@ -78,6 +83,7 @@ declare namespace Components {
     export type Duration = NonNullable<number>;
     export type PathParam1 = NonNullable<number>;
     export type PathParam2 = NonNullable<string>;
+    export type GetDiagnostic0 = NonNullable<string>;
     export type GetParameters3 = NonNullable<boolean>;
     export type QueryParam = NonNullable<NonNullable<string>[]>;
     export type GetParameters4 = NonNullable<NonNullable<number>[]>;
