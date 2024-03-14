@@ -6,7 +6,7 @@ const DEFAULT_ENV = {};
 
 export type PortFinderModule = { getPortPromise: () => Promise<number> };
 
-/* Architecture Note #7: Port detection
+/* Architecture Note #9: Port detection
 If no `PORT` configuration is specified in dependencies nor in ENV,
 this service detects a free port automagically.
 */

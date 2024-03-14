@@ -5,6 +5,7 @@ import {
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
   prepareEnvironment as prepareBaseEnvironment,
+  prepareCommand as prepareBaseCommand,
   initAutoload,
   initAPIDefinitions,
 } from '@whook/whook';
@@ -204,4 +205,19 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(initErrorHandlerWithCORS);
 
   return $;
+}
+
+/* Architecture Note #1.1.4: prepareCommand
+
+The `prepareCommand` function is intended to prepare the commands
+ environment. It relies on the main environment but will be
+ used only by the commands, not the server or build scripts.
+*/
+
+export async function prepareCommand<T extends Knifecycle>(
+  innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
+  $: T = new Knifecycle() as T,
+): Promise<T> {
+  // you can add here any logic bound to the commands only
+  return prepareBaseCommand(innerPrepareEnvironment, $);
 }

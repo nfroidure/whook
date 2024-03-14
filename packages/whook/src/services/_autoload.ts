@@ -58,7 +58,7 @@ export type WhookAutoloadDependencies = WhookWrappersConfig & {
   log?: LogService;
 };
 
-/* Architecture Note #5: `$autoload` service
+/* Architecture Note #6: `$autoload` service
 The default Whook autoloader provides a simple way to
  load the constants, services and handlers of a Whook
  project automatically from the installed whook plugins.
