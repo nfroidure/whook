@@ -411,3 +411,23 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   return $;
 }
+
+/* Architecture Note #4: Commands preparation
+Whook expose `prepareCommand` function to create commands configuration
+before effectively running them
+ */
+/**
+ * Prepare the Whook commands environment
+ * @param {Knifecycle} $
+ * The Knifecycle instance to set the various services
+ * @returns Promise<Knifecycle>
+ * A promise of the Knifecycle instance
+ */
+export async function prepareCommand<T extends Knifecycle>(
+  innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
+  $: T = new Knifecycle() as T,
+): Promise<T> {
+  $ = await innerPrepareEnvironment($);
+  // you can add here any logic bound to the commands only
+  return $;
+}

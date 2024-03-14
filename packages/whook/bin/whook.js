@@ -3,8 +3,8 @@
 import path from 'path';
 import runCLI from '../dist/cli.js';
 
-const { prepareEnvironment } = await import(
+const { prepareCommand } = await import(
   path.join(process.cwd(), 'dist', 'index.js')
 );
 
-await runCLI(prepareEnvironment);
+await runCLI(prepareCommand);

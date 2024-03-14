@@ -24,7 +24,7 @@ export const DEFAULT_IGNORED_FILES_SUFFIXES = [
   '.mjs.map',
 ];
 
-/* Architecture Note #10: API definitions loader
+/* Architecture Note #11: API definitions loader
 The `API_DEFINITIONS` service provide a convenient way to
  gather your various API definitions from the handlers you
  created in the `src/handlers` folder.

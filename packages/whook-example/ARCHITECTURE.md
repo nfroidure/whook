@@ -18,6 +18,7 @@
          3. [MAIN_FILE_URL](#1133-main_file_url)
          3. [TRANSACTIONS](#1133-transactions)
          4. [WHOOK_PLUGINS](#1134-whook_plugins)
+      4. [prepareCommand](#114-preparecommand)
    2. [The build file](#12-the-build-file)
       1. [The `runBuild` function](#121-the-`runbuild`-function)
       2. [The `prepareBuildEnvironment` function](#122-the-`preparebuildenvironment`-function)
@@ -205,6 +206,16 @@ Plugins allows you to add simple features to the Whook's core,
 You can also avoid Whook defaults by leaving it empty.
 
 [See in context](./src/index.ts#L188-L194)
+
+
+
+#### 1.1.4. prepareCommand
+
+The `prepareCommand` function is intended to prepare the commands
+ environment. It relies on the main environment but will be
+ used only by the commands, not the server or build scripts.
+
+[See in context](./src/index.ts#L209-L214)
 
 
 
