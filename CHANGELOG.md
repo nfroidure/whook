@@ -1,3 +1,12 @@
+# [16.1.0](https://github.com/nfroidure/whook/compare/v16.0.1...v16.1.0) (2024-03-18)
+
+
+### Features
+
+* **@whook/whook:** add prepareCommand function ([f5c59f8](https://github.com/nfroidure/whook/commit/f5c59f8b99fa518b7536e591e2e2e2f57d214a4d))
+
+
+
 ## [16.0.1](https://github.com/nfroidure/whook/compare/v16.0.0...v16.0.1) (2024-02-29)
 
 
