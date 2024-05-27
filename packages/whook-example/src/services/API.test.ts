@@ -17,6 +17,7 @@ import {
 } from '@whook/whook';
 import { initImporter } from 'common-services';
 import { join } from 'node:path';
+import SwaggerParser from '@apidevtools/swagger-parser';
 import type { LogService } from 'common-services';
 import type { WhookAPIHandlerModule } from '@whook/whook';
 
@@ -99,21 +100,18 @@ describe('API', () => {
     ).toEqual([]);
   });
 
-  // TODO: Find another validator that works with 3.1
-  // it('should produce a valid OpenAPI file', async () => {
-  //   const API = await initAPI({
-  //     ENV: {},
-  //     CONFIG,
-  //     BASE_URL,
-  //     API_VERSION: '1.1.0',
-  //     API_DEFINITIONS,
-  //     log,
-  //   });
+  it('should produce a valid OpenAPI file', async () => {
+    const API = await initAPI({
+      ENV: {},
+      CONFIG,
+      BASE_URL,
+      API_VERSION: '1.1.0',
+      API_DEFINITIONS,
+      log,
+    });
 
-  //   const result = new OpenAPISchemaValidator({ version: 3 }).validate(API);
-
-  //   expect({ result }).toMatchSnapshot();
-  // });
+    await SwaggerParser.validate(API);
+  });
 
   describe('should always have the same amount of', () => {
     let operations;

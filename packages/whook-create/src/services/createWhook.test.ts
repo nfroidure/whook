@@ -158,6 +158,7 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -170,7 +171,6 @@ describe('initCreateWhook', () => {
     "http-auth-utils": "^6.0.0",
     "jwt-service": "^10.0.4",
     "knifecycle": "^17.0.1",
-    "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.2",
@@ -380,6 +380,7 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -392,7 +393,6 @@ describe('initCreateWhook', () => {
     "http-auth-utils": "^6.0.0",
     "jwt-service": "^10.0.4",
     "knifecycle": "^17.0.1",
-    "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.2",
@@ -587,6 +587,7 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -599,7 +600,6 @@ describe('initCreateWhook', () => {
     "http-auth-utils": "^6.0.0",
     "jwt-service": "^10.0.4",
     "knifecycle": "^17.0.1",
-    "openapi-schema-validator": "^12.1.3",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.2",

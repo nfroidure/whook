@@ -4,9 +4,9 @@ import { Knifecycle, constant } from 'knifecycle';
 import { exec as _exec } from 'child_process';
 import { default as fsExtra } from 'fs-extra';
 import debug from 'debug';
-import { join, resolve, dirname } from 'node:path';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import inquirer from 'inquirer';
-import { createRequire } from 'module';
 import { initLog, initLock, initDelay } from 'common-services';
 import initAuthor from './services/author.js';
 import initProject from './services/project.js';
@@ -26,11 +26,6 @@ export async function runCreateWhook(): Promise<void> {
   try {
     const $ = new Knifecycle();
 
-    // TODO: Use import.meta when Jest will support it
-    const require = createRequire(
-      import.meta.url || join(cwd(), 'src', 'services', 'API.test.ts'),
-    );
-
     $.register(constant('CWD', cwd()));
     $.register(constant('inquirer', inquirer));
     $.register(constant('exec', _exec));
@@ -41,7 +36,10 @@ export async function runCreateWhook(): Promise<void> {
     $.register(
       constant(
         'SOURCE_DIR',
-        resolve(dirname(require.resolve('@whook/example')), '..'),
+        resolve(
+          dirname(fileURLToPath(import.meta.resolve('@whook/example'))),
+          '..',
+        ),
       ),
     );
     $.register(

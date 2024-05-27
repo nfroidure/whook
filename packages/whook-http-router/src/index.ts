@@ -10,7 +10,6 @@ import { qsStrict as strictQs } from 'strict-qs';
 import { pickFirstHeaderValue } from '@whook/http-transaction';
 import {
   OPEN_API_METHODS,
-  flattenOpenAPI,
   getOpenAPIOperations,
   dereferenceOpenAPIOperations,
 } from './libs/openAPIUtils.js';
@@ -111,7 +110,6 @@ export {
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-  flattenOpenAPI,
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
   extractOperationSecurityParameters,
@@ -292,6 +290,12 @@ async function initHTTPRouter<T extends WhookHandler>({
   errorHandler,
 }: WhookHTTPRouterDependencies<T>): Promise<WhookHTTPRouterProvider> {
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
+  const consumableCharsets = Object.keys(DECODERS);
+  const produceableCharsets = Object.keys(ENCODERS);
+  const defaultResponseSpec = {
+    contentTypes: Object.keys(STRINGIFYERS),
+    charsets: produceableCharsets,
+  };
   const ajv = new Ajv.default({
     verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
     strict: true,
@@ -301,13 +305,8 @@ async function initHTTPRouter<T extends WhookHandler>({
       error: (...args: string[]) => log('error', ...args),
     },
   });
+
   addAJVFormats.default(ajv);
-  const consumableCharsets = Object.keys(DECODERS);
-  const produceableCharsets = Object.keys(ENCODERS);
-  const defaultResponseSpec = {
-    contentTypes: Object.keys(STRINGIFYERS),
-    charsets: produceableCharsets,
-  };
 
   const routers = await _createRouters<T>({
     API,
