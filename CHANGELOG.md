@@ -1,3 +1,10 @@
+## <small>16.1.1 (2024-05-27)</small>
+
+* chore(dependencies): update dependencies ([8bc226a](https://github.com/nfroidure/whook/commit/8bc226a))
+* fix(@whook/create): fix path finding ([2a425ed](https://github.com/nfroidure/whook/commit/2a425ed))
+
+
+
 # [16.1.0](https://github.com/nfroidure/whook/compare/v16.0.1...v16.1.0) (2024-03-18)
 
 
