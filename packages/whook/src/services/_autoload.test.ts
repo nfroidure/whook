@@ -280,7 +280,7 @@ describe('$autoload', () => {
     it('for handlers hash', async () => {
       $injector.mockResolvedValueOnce({
         API: {
-          openapi: '3.0.2',
+          openapi: '3.1.0',
           info: {
             version: '1.0.0',
             title: 'Sample OpenAPI',
@@ -372,7 +372,7 @@ describe('$autoload', () => {
     it('for wrappers hash', async () => {
       $injector.mockResolvedValueOnce({
         API: {
-          openapi: '3.0.2',
+          openapi: '3.1.0',
           info: {
             version: '1.0.0',
             title: 'Sample OpenAPI',

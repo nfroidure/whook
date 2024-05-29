@@ -2,7 +2,7 @@ import camelCase from 'camelcase';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import initWrapHandlerWithVersionChecker from './wrappers/wrapHandlerWithVersionChecker.js';
 import type { WhookErrorsDescriptors } from '@whook/whook';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { VersionDescriptor } from './wrappers/wrapHandlerWithVersionChecker.js';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
@@ -35,16 +35,16 @@ export type {
  * @returns {Promise<Object>} The augmented  OpenAPI object
  */
 export async function augmentAPIWithVersionsHeaders(
-  API: OpenAPIV3.Document,
+  API: OpenAPIV3_1.Document,
   VERSIONS: VersionDescriptor[],
-): Promise<OpenAPIV3.Document> {
+): Promise<OpenAPIV3_1.Document> {
   return {
     ...API,
     components: {
       ...(API.components || {}),
       parameters: {
         ...((API.components || {}).parameters || {}),
-        ...VERSIONS.reduce<{ [key: string]: OpenAPIV3.ParameterObject }>(
+        ...VERSIONS.reduce<{ [key: string]: OpenAPIV3_1.ParameterObject }>(
           (versionsParameters, version) => ({
             ...versionsParameters,
             [camelCase(version.header)]: {
@@ -63,28 +63,31 @@ export async function augmentAPIWithVersionsHeaders(
         ),
       },
     },
-    paths: Object.keys(API.paths).reduce<OpenAPIV3.PathsObject>(
+    paths: Object.keys(API.paths || {}).reduce<OpenAPIV3_1.PathsObject>(
       reducePaths,
-      API.paths,
+      API.paths || {},
     ),
   };
 
   function reducePaths(
-    pathsObject: OpenAPIV3.PathsObject,
+    pathsObject: OpenAPIV3_1.PathsObject,
     path: string,
-  ): OpenAPIV3.PathsObject {
+  ): OpenAPIV3_1.PathsObject {
     return {
       ...pathsObject,
       [path]: Object.keys(
-        API.paths[path] || {},
-      ).reduce<OpenAPIV3.PathItemObject>(reduceMethods, API.paths[path] || {}),
+        API.paths?.[path] || {},
+      ).reduce<OpenAPIV3_1.PathItemObject>(
+        reduceMethods,
+        API.paths?.[path] || {},
+      ),
     };
   }
 
   function reduceMethods(
-    pathItemObject: OpenAPIV3.PathItemObject,
+    pathItemObject: OpenAPIV3_1.PathItemObject,
     method: string,
-  ): OpenAPIV3.PathItemObject {
+  ): OpenAPIV3_1.PathItemObject {
     return {
       ...pathItemObject,
       [method]: {

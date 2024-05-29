@@ -11,7 +11,7 @@ import type {
   WhookWrapper,
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type {
   FirehoseTransformationEvent,
   FirehoseTransformationEventRecord,
@@ -23,7 +23,7 @@ import type { AppEnvVars } from 'application-services';
 
 type TransformerWrapperDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3.Document;
+  OPERATION_API: OpenAPIV3_1.Document;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -57,7 +57,7 @@ export type LambdaTransformerOutput = WhookResponse<
 
 export type WhookWrapConsumerLambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3.Document;
+  OPERATION_API: OpenAPIV3_1.Document;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -119,12 +119,12 @@ async function handleForAWSTransformerLambda(
   context: Context,
   callback: (err: Error | null, result?: FirehoseTransformationResult) => void,
 ) {
-  const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
+  const path = Object.keys(OPERATION_API.paths || {})[0];
+  const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path]?.[method],
+    ...OPERATION_API.paths?.[path]?.[method],
   };
   const startTime = time();
   const parameters = {

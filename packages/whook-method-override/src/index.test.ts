@@ -19,15 +19,15 @@ import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import { YError } from 'yerror';
 import type { Knifecycle } from 'knifecycle';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { Logger } from 'common-services';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
   const BASE_PATH = '/v1';
   const PORT = 6666;
   const HOST = 'localhost';
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: '1.0.0',
       title: 'Sample OpenAPI',

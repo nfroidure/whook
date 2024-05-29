@@ -7,7 +7,7 @@ import {
   pickFirstHeaderValue,
   pickAllHeaderValues,
 } from '@whook/http-transaction';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type {
   WhookRequest,
   WhookHandler,
@@ -30,7 +30,7 @@ export type WhookResponseSpec = {
 };
 
 export function extractConsumableMediaTypes(
-  operation: OpenAPIV3.OperationObject,
+  operation: WhookOperation,
 ): string[] {
   if (!operation.requestBody) {
     return [];
@@ -41,12 +41,12 @@ export function extractConsumableMediaTypes(
   // https://swagger.io/specification/#requestBodyObject
 
   return Object.keys(
-    (operation.requestBody as OpenAPIV3.RequestBodyObject).content,
+    (operation.requestBody as OpenAPIV3_1.RequestBodyObject).content,
   );
 }
 
 export function extractProduceableMediaTypes(
-  operation: OpenAPIV3.OperationObject,
+  operation: WhookOperation,
 ): string[] {
   if (!operation.responses) {
     return [];
@@ -58,7 +58,7 @@ export function extractProduceableMediaTypes(
         (produceableMediaTypes, status) => {
           const response = operation.responses[
             status
-          ] as OpenAPIV3.ResponseObject;
+          ] as OpenAPIV3_1.ResponseObject;
 
           if (!response.content) {
             return produceableMediaTypes;
@@ -179,7 +179,7 @@ export function checkBodyMediaType(
 }
 
 export function extractResponseSpec(
-  operation: OpenAPIV3.OperationObject,
+  operation: WhookOperation,
   request: WhookRequest,
   supportedMediaTypes: string[],
   supportedCharsets: string[],

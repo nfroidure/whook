@@ -15,8 +15,8 @@
 `whook` allows you to create REST web services by providing its ingredients and
 the recipe to make it work altogether.
 
-The recipe is your Open API (OAS3) definition while ingredients are handlers,
-wrappers, services, commands and their configuration.
+The recipe is your Open API (version 3.1) definition while ingredients are
+handlers, wrappers, services, commands and their configuration.
 
 ## Quick start
 

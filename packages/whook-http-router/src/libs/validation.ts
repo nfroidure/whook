@@ -11,7 +11,7 @@ import Ajv from 'ajv';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import type { ValidateFunction } from 'ajv';
 import type { SupportedSecurityScheme } from './openAPIUtils.js';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type {
   DereferencedParameterObject,
   WhookOperation,
@@ -44,7 +44,7 @@ export function applyValidators(
   validators: { [name: string]: ValidateFunction },
   parameters: JsonValue[],
 ): void {
-  ((operation.parameters || []) as OpenAPIV3.ParameterObject[]).forEach(
+  ((operation.parameters || []) as OpenAPIV3_1.ParameterObject[]).forEach(
     ({ name, in: isIn }) => {
       if ('header' === isIn) {
         return validators[name](parameters[camelCase(name)]);
@@ -121,7 +121,7 @@ function _validateRequestBody(
   value: unknown,
 ): void {
   if (
-    (operation.requestBody as OpenAPIV3.RequestBodyObject).required &&
+    (operation.requestBody as OpenAPIV3_1.RequestBodyObject).required &&
     'undefined' === typeof value
   ) {
     throw new YHTTPError(
@@ -169,7 +169,7 @@ function _rejectAnyRequestBody(
 const SUPPORTED_HTTP_SCHEMES = ['basic', 'bearer', 'digest'];
 
 export function extractOperationSecurityParameters(
-  openAPI: OpenAPIV3.Document,
+  openAPI: OpenAPIV3_1.Document,
   operation: WhookOperation,
 ): DereferencedParameterObject[] {
   const operationSecuritySchemes = pickupOperationSecuritySchemes(
@@ -184,7 +184,10 @@ export function extractOperationSecurityParameters(
 }
 
 export function extractParametersFromSecuritySchemes(
-  securitySchemes: (SupportedSecurityScheme | OpenAPIV3.OpenIdSecurityScheme)[],
+  securitySchemes: (
+    | SupportedSecurityScheme
+    | OpenAPIV3_1.OpenIdSecurityScheme
+  )[],
 ): DereferencedParameterObject[] {
   const hasOAuth = securitySchemes.some((securityScheme) =>
     ['oauth2', 'openIdConnect'].includes(securityScheme.type),
@@ -196,15 +199,15 @@ export function extractParametersFromSecuritySchemes(
         .map((securityScheme) => {
           if (
             !SUPPORTED_HTTP_SCHEMES.includes(
-              (securityScheme as OpenAPIV3.HttpSecurityScheme).scheme,
+              (securityScheme as OpenAPIV3_1.HttpSecurityScheme).scheme,
             )
           ) {
             throw new YError(
               'E_UNSUPPORTED_HTTP_SCHEME',
-              (securityScheme as OpenAPIV3.HttpSecurityScheme).scheme,
+              (securityScheme as OpenAPIV3_1.HttpSecurityScheme).scheme,
             );
           }
-          return (securityScheme as OpenAPIV3.HttpSecurityScheme).scheme;
+          return (securityScheme as OpenAPIV3_1.HttpSecurityScheme).scheme;
         }),
       ...(hasOAuth ? ['bearer'] : []),
     ]),
@@ -215,7 +218,7 @@ export function extractParametersFromSecuritySchemes(
 
   const securityParameters: DereferencedParameterObject[] = securitySchemes
     .filter(
-      (securityScheme): securityScheme is OpenAPIV3.ApiKeySecurityScheme =>
+      (securityScheme): securityScheme is OpenAPIV3_1.ApiKeySecurityScheme =>
         securityScheme.type === 'apiKey',
     )
     .map((securityScheme) => {
@@ -292,7 +295,7 @@ export function extractParametersFromSecuritySchemes(
 export function prepareParametersValidators(
   ajv: Ajv.default,
   operationId: string,
-  parameters: OpenAPIV3.ParameterObject[],
+  parameters: DereferencedParameterObject[],
 ): { [name: string]: ValidateFunction } {
   return parameters.reduce((validators, parameter, index) => {
     if ('string' !== typeof parameter.name) {
@@ -360,7 +363,7 @@ export function prepareParametersValidators(
 }
 
 export function _validateParameter(
-  parameter: OpenAPIV3.ParameterObject,
+  parameter: DereferencedParameterObject,
   validator: ValidateFunction,
   value: unknown,
 ): void {

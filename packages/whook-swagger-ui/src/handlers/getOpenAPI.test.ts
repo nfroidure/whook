@@ -1,10 +1,10 @@
 import { describe, it, expect } from '@jest/globals';
 import initGetOpenAPI from './getOpenAPI.js';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 describe('getOpenAPI', () => {
   const API = {
-    openapi: '3.0.0',
+    openapi: '3.1.0',
     info: {
       title: 'test',
       version: '1',
@@ -30,10 +30,10 @@ describe('getOpenAPI', () => {
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  } as unknown as OpenAPIV3.Document;
+  } as unknown as OpenAPIV3_1.Document;
 
   const APIWithParameters = {
-    openapi: '3.0.0',
+    openapi: '3.1.0',
     info: {
       title: 'test',
       version: '1',
@@ -74,7 +74,7 @@ describe('getOpenAPI', () => {
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  } as unknown as OpenAPIV3.Document;
+  } as unknown as OpenAPIV3_1.Document;
 
   it('should work', async () => {
     const getOpenAPI = await initGetOpenAPI({

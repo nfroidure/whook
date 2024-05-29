@@ -32,7 +32,7 @@ describe('augmentAPIWithVersionsHeaders()', () => {
     expect(
       await augmentAPIWithVersionsHeaders(
         {
-          openapi: '3.0.2',
+          openapi: '3.1.0',
           info: {
             version: '1.0.0',
             title: 'Sample Swagger',

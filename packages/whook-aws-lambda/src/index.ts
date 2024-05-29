@@ -28,7 +28,7 @@ import type {
   WhookCompilerOptions,
   WhookCompilerService,
 } from '@whook/whook';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { CprOptions } from 'cpr';
 
@@ -171,7 +171,7 @@ export async function runBuild(
         compiler: WhookCompilerService;
         log: LogService;
         $autoload: Autoloader<Initializer<Dependencies, Service>>;
-        API: OpenAPIV3.Document;
+        API: OpenAPIV3_1.Document;
         buildInitializer: BuildInitializer;
       } = await $.run([
       'APP_ENV',

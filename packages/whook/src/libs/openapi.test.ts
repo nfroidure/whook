@@ -1,10 +1,10 @@
 import { describe, it, expect } from '@jest/globals';
 import { collectRefs, cleanupOpenAPI } from './openapi.js';
 import type { JsonObject, JsonValue } from 'type-fest';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
-const sampleAPI: OpenAPIV3.Document = {
-  openapi: '3.0.2',
+const sampleAPI: OpenAPIV3_1.Document = {
+  openapi: '3.1.0',
   info: {
     version: '8.2.0',
     title: '@whook/example',
@@ -142,140 +142,140 @@ describe('collectRefs', () => {
 describe('cleanupOpenAPI', () => {
   it('should remove unused refs in an OpenAPI document', () => {
     expect(cleanupOpenAPI(sampleAPI)).toMatchInlineSnapshot(`
-      {
-        "components": {
-          "parameters": {
-            "duration": {
-              "description": "Duration in milliseconds",
-              "in": "query",
-              "name": "duration",
-              "required": true,
-              "schema": {
-                "type": "number",
-              },
-            },
+{
+  "components": {
+    "parameters": {
+      "duration": {
+        "description": "Duration in milliseconds",
+        "in": "query",
+        "name": "duration",
+        "required": true,
+        "schema": {
+          "type": "number",
+        },
+      },
+    },
+    "schemas": {
+      "AString": {
+        "type": "string",
+      },
+      "Echo": {
+        "additionalProperties": false,
+        "properties": {
+          "echo": {
+            "$ref": "#/components/schemas/AString",
           },
-          "schemas": {
-            "AString": {
-              "type": "string",
-            },
-            "Echo": {
-              "additionalProperties": false,
-              "properties": {
-                "echo": {
-                  "$ref": "#/components/schemas/AString",
-                },
-              },
-              "required": [
-                "echo",
-              ],
-              "type": "object",
-            },
-            "Recursive": {
-              "additionalProperties": false,
-              "properties": {
-                "child": {
+        },
+        "required": [
+          "echo",
+        ],
+        "type": "object",
+      },
+      "Recursive": {
+        "additionalProperties": false,
+        "properties": {
+          "child": {
+            "$ref": "#/components/schemas/Recursive",
+          },
+        },
+        "required": [],
+        "type": "object",
+      },
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "description": "Bearer authentication with a user API token",
+        "scheme": "bearer",
+        "type": "http",
+      },
+      "fakeAuth": {
+        "description": "A fake authentication for development purpose.",
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey",
+      },
+    },
+  },
+  "info": {
+    "description": "A basic Whook server",
+    "title": "@whook/example",
+    "version": "8.2.0",
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/delay": {
+      "get": {
+        "operationId": "getDelay",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/duration",
+          },
+        ],
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/Recursive",
                 },
               },
-              "required": [],
-              "type": "object",
             },
-          },
-          "securitySchemes": {
-            "bearerAuth": {
-              "description": "Bearer authentication with a user API token",
-              "scheme": "bearer",
-              "type": "http",
-            },
-            "fakeAuth": {
-              "description": "A fake authentication for development purpose.",
-              "in": "header",
-              "name": "Authorization",
-              "type": "apiKey",
-            },
+            "description": "Delay expired",
           },
         },
-        "info": {
-          "description": "A basic Whook server",
-          "title": "@whook/example",
-          "version": "8.2.0",
-        },
-        "openapi": "3.0.2",
-        "paths": {
-          "/delay": {
-            "get": {
-              "operationId": "getDelay",
-              "parameters": [
-                {
-                  "$ref": "#/components/parameters/duration",
-                },
-              ],
-              "responses": {
-                "204": {
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/Recursive",
-                      },
-                    },
-                  },
-                  "description": "Delay expired",
-                },
-              },
-              "summary": "Answer after a given delay.",
-              "tags": [
-                "example",
-              ],
-            },
-          },
-          "/echo": {
-            "put": {
-              "operationId": "putEcho",
-              "requestBody": {
-                "content": {
-                  "application/json": {
-                    "example": {
-                      "echo": "Repeat this!",
-                    },
-                    "schema": {
-                      "$ref": "#/components/schemas/Echo",
-                    },
-                  },
-                },
-                "description": "The input sentence",
-                "required": true,
-              },
-              "responses": {
-                "200": {
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/Echo",
-                      },
-                    },
-                  },
-                  "description": "The actual echo",
-                },
-              },
-              "summary": "Echoes what it takes.",
-              "tags": [
-                "example",
-              ],
-            },
-          },
-        },
-        "servers": [
-          {
-            "url": "http://localhost:8001/v8",
-          },
-        ],
+        "summary": "Answer after a given delay.",
         "tags": [
-          {
-            "name": "system",
-          },
+          "example",
         ],
-      }
-    `);
+      },
+    },
+    "/echo": {
+      "put": {
+        "operationId": "putEcho",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "echo": "Repeat this!",
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Echo",
+              },
+            },
+          },
+          "description": "The input sentence",
+          "required": true,
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Echo",
+                },
+              },
+            },
+            "description": "The actual echo",
+          },
+        },
+        "summary": "Echoes what it takes.",
+        "tags": [
+          "example",
+        ],
+      },
+    },
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8001/v8",
+    },
+  ],
+  "tags": [
+    {
+      "name": "system",
+    },
+  ],
+}
+`);
   });
 });

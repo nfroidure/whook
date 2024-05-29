@@ -9,15 +9,15 @@ import {
 import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from './index.js';
 import { YError } from 'yerror';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { Logger } from 'common-services';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
   const PORT = 22222;
   const BASE_PATH = '/v1';
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: '1.0.0',
       title: 'Sample OpenAPI',

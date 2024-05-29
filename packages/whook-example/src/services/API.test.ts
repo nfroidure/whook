@@ -110,7 +110,8 @@ describe('API', () => {
       log,
     });
 
-    await SwaggerParser.validate(API);
+    // Not pure function... so deep cloning the dirtiest way
+    await SwaggerParser.validate(JSON.parse(JSON.stringify(API)));
   });
 
   describe('should always have the same amount of', () => {

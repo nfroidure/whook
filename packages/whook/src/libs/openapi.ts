@@ -1,4 +1,4 @@
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type {
   WhookAPISchemaDefinition,
   WhookAPIParameterDefinition,
@@ -9,7 +9,7 @@ import type {
 } from '../services/API_DEFINITIONS.js';
 import type { JsonObject, JsonValue } from 'type-fest';
 
-type ComponentType = keyof NonNullable<OpenAPIV3.Document['components']>;
+type ComponentType = keyof NonNullable<OpenAPIV3_1.Document['components']>;
 
 export const COMPONENTS_TYPES: ComponentType[] = [
   'schemas',
@@ -20,7 +20,9 @@ export const COMPONENTS_TYPES: ComponentType[] = [
   'headers',
 ];
 
-export function cleanupOpenAPI(api: OpenAPIV3.Document): OpenAPIV3.Document {
+export function cleanupOpenAPI(
+  api: OpenAPIV3_1.Document,
+): OpenAPIV3_1.Document {
   const seenRefs = [
     ...new Set(
       collectRefs(
@@ -107,12 +109,12 @@ export function refersTo<T>(
     | WhookAPISchemaDefinition<T>
     | WhookAPIParameterDefinition<T>
     | WhookAPIExampleDefinition<
-        T extends JsonValue | OpenAPIV3.ReferenceObject ? T : never
+        T extends JsonValue | OpenAPIV3_1.ReferenceObject ? T : never
       >
     | WhookAPIHeaderDefinition
     | WhookAPIResponseDefinition
     | WhookAPIRequestBodyDefinition,
-): OpenAPIV3.ReferenceObject {
+): OpenAPIV3_1.ReferenceObject {
   return {
     $ref: `#/components/${
       (resource as WhookAPISchemaDefinition<T>).schema
