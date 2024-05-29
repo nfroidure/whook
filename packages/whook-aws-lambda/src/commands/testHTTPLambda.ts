@@ -17,7 +17,7 @@ import type {
 } from '@whook/whook';
 import type { AppEnvVars } from 'application-services';
 import type { LogService, TimeService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { WhookAPIOperationAWSLambdaConfig } from '../index.js';
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
@@ -69,7 +69,7 @@ async function initTestHTTPLambdaCommand({
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  API: OpenAPIV3.Document;
+  API: OpenAPIV3_1.Document;
   time: TimeService;
   log: LogService;
   args: WhookCommandArgs;

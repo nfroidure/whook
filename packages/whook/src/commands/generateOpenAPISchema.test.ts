@@ -22,7 +22,7 @@ describe('generateOpenAPISchema', () => {
     getOpenAPI.mockResolvedValueOnce({
       status: 200,
       body: {
-        openapi: '3.0.2',
+        openapi: '3.1.0',
         info: {
           version: '0.0.0',
           title: 'api',
@@ -62,39 +62,39 @@ describe('generateOpenAPISchema', () => {
     }).toMatchInlineSnapshot(
       {},
       `
+{
+  "getOpenAPICalls": [
+    [
       {
-        "getOpenAPICalls": [
-          [
-            {
-              "authenticated": true,
-              "mutedMethods": [
-                "options",
-              ],
-              "mutedParameters": [],
-            },
-          ],
+        "authenticated": true,
+        "mutedMethods": [
+          "options",
         ],
-        "logCalls": [
-          [
-            "warning",
-            "📥 - Retrieving schema...",
-          ],
-          [
-            "warning",
-            "📇 - Writing Open API schema...",
-          ],
-        ],
-        "output": "{
-        "openapi": "3.0.2",
-        "info": {
-          "version": "0.0.0",
-          "title": "api",
-          "description": "The API"
-        }
-      }",
-        "result": undefined,
-      }
-    `,
+        "mutedParameters": [],
+      },
+    ],
+  ],
+  "logCalls": [
+    [
+      "warning",
+      "📥 - Retrieving schema...",
+    ],
+    [
+      "warning",
+      "📇 - Writing Open API schema...",
+    ],
+  ],
+  "output": "{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "0.0.0",
+    "title": "api",
+    "description": "The API"
+  }
+}",
+  "result": undefined,
+}
+`,
     );
   });
 });

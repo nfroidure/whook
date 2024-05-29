@@ -11,7 +11,7 @@ import type {
   WhookWrapper,
 } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { S3Event, Context } from 'aws-lambda';
 import type { AppEnvVars } from 'application-services';
 
@@ -20,7 +20,7 @@ export type LambdaS3Output = WhookResponse<number, WhookHeaders, void>;
 
 export type WhookWrapS3LambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3.Document;
+  OPERATION_API: OpenAPIV3_1.Document;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -79,12 +79,12 @@ async function handleForAWSS3Lambda(
   context: Context,
   callback: (err: Error) => void,
 ) {
-  const path = Object.keys(OPERATION_API.paths)[0];
-  const method = Object.keys(OPERATION_API.paths[path] || {})[0];
+  const path = Object.keys(OPERATION_API.paths || {})[0];
+  const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
   const OPERATION: WhookOperation = {
     path,
     method,
-    ...OPERATION_API.paths[path]?.[method],
+    ...OPERATION_API.paths?.[path]?.[method],
   };
   const startTime = time();
   const parameters = {

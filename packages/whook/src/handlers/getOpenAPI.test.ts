@@ -1,10 +1,10 @@
 import { describe, it, expect } from '@jest/globals';
 import initGetOpenAPI from './getOpenAPI.js';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 describe('getOpenAPI', () => {
   const API = {
-    openapi: '3.0.0',
+    openapi: '3.1.0',
     info: {
       title: 'test',
       version: '1',
@@ -26,10 +26,10 @@ describe('getOpenAPI', () => {
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  } as unknown as OpenAPIV3.Document;
+  } as unknown as OpenAPIV3_1.Document;
 
   const APIWithParameters = {
-    openapi: '3.0.0',
+    openapi: '3.1.0',
     info: {
       title: 'test',
       version: '1',
@@ -70,7 +70,7 @@ describe('getOpenAPI', () => {
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  } as unknown as OpenAPIV3.Document;
+  } as unknown as OpenAPIV3_1.Document;
 
   it('should work', async () => {
     const getOpenAPI = await initGetOpenAPI({
@@ -90,37 +90,37 @@ describe('getOpenAPI', () => {
         },
       },
     }).toMatchInlineSnapshot(`
-      {
-        "response": {
-          "body": {
-            "info": {
-              "title": "test",
-              "version": "<already_tested>",
-            },
-            "openapi": "3.0.0",
-            "paths": {
-              "/time": {
-                "get": {
-                  "tags": [
-                    "public",
-                  ],
-                  "x-whook": undefined,
-                },
-              },
-            },
+{
+  "response": {
+    "body": {
+      "info": {
+        "title": "test",
+        "version": "<already_tested>",
+      },
+      "openapi": "3.1.0",
+      "paths": {
+        "/time": {
+          "get": {
             "tags": [
-              {
-                "name": "public",
-              },
-              {
-                "name": "private",
-              },
+              "public",
             ],
+            "x-whook": undefined,
           },
-          "status": 200,
         },
-      }
-    `);
+      },
+      "tags": [
+        {
+          "name": "public",
+        },
+        {
+          "name": "private",
+        },
+      ],
+    },
+    "status": 200,
+  },
+}
+`);
   });
 
   it('should show every endpoints when authenticated', async () => {
@@ -143,48 +143,48 @@ describe('getOpenAPI', () => {
         },
       },
     }).toMatchInlineSnapshot(`
-      {
-        "response": {
-          "body": {
-            "info": {
-              "title": "test",
-              "version": "<already_tested>",
-            },
-            "openapi": "3.0.0",
-            "paths": {
-              "/time": {
-                "get": {
-                  "tags": [
-                    "public",
-                  ],
-                  "x-whook": {
-                    "memx": 2,
-                    "tx": 18,
-                  },
-                },
-                "put": {
-                  "tags": [
-                    "private",
-                  ],
-                  "x-whook": {
-                    "private": true,
-                  },
-                },
-              },
-            },
+{
+  "response": {
+    "body": {
+      "info": {
+        "title": "test",
+        "version": "<already_tested>",
+      },
+      "openapi": "3.1.0",
+      "paths": {
+        "/time": {
+          "get": {
             "tags": [
-              {
-                "name": "public",
-              },
-              {
-                "name": "private",
-              },
+              "public",
             ],
+            "x-whook": {
+              "memx": 2,
+              "tx": 18,
+            },
           },
-          "status": 200,
+          "put": {
+            "tags": [
+              "private",
+            ],
+            "x-whook": {
+              "private": true,
+            },
+          },
         },
-      }
-    `);
+      },
+      "tags": [
+        {
+          "name": "public",
+        },
+        {
+          "name": "private",
+        },
+      ],
+    },
+    "status": 200,
+  },
+}
+`);
   });
 
   it('should work with muted paramerter', async () => {
@@ -207,50 +207,50 @@ describe('getOpenAPI', () => {
         },
       },
     }).toMatchInlineSnapshot(`
-      {
-        "response": {
-          "body": {
-            "components": {
-              "parameters": {
-                "xRefToRemove": {
-                  "in": "header",
-                  "name": "X-Ref-To-Remove",
-                },
-              },
-            },
-            "info": {
-              "title": "test",
-              "version": "<already_tested>",
-            },
-            "openapi": "3.0.0",
-            "paths": {
-              "/time": {
-                "get": {
-                  "parameters": [
-                    {
-                      "in": "query",
-                      "name": "queryParam",
-                    },
-                  ],
-                  "tags": [
-                    "public",
-                  ],
-                  "x-whook": undefined,
-                },
-              },
-            },
-            "tags": [
+{
+  "response": {
+    "body": {
+      "components": {
+        "parameters": {
+          "xRefToRemove": {
+            "in": "header",
+            "name": "X-Ref-To-Remove",
+          },
+        },
+      },
+      "info": {
+        "title": "test",
+        "version": "<already_tested>",
+      },
+      "openapi": "3.1.0",
+      "paths": {
+        "/time": {
+          "get": {
+            "parameters": [
               {
-                "name": "public",
-              },
-              {
-                "name": "private",
+                "in": "query",
+                "name": "queryParam",
               },
             ],
+            "tags": [
+              "public",
+            ],
+            "x-whook": undefined,
           },
-          "status": 200,
         },
-      }
-    `);
+      },
+      "tags": [
+        {
+          "name": "public",
+        },
+        {
+          "name": "private",
+        },
+      ],
+    },
+    "status": 200,
+  },
+}
+`);
   });
 });

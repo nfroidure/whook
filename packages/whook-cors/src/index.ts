@@ -6,7 +6,7 @@ import initErrorHandlerWithCORS, {
 } from './services/errorHandler.js';
 import initWrapHandlerWithCORS from './wrappers/wrapHandlerWithCORS.js';
 import type { WhookOperation } from '@whook/whook';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 export type {
   CORSConfig,
@@ -31,104 +31,107 @@ const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
  * @returns {Promise<Object>} The augmented  OpenAPI object
  */
 export async function augmentAPIWithCORS(
-  API: OpenAPIV3.Document,
-): Promise<OpenAPIV3.Document> {
-  // Temporar type fix due to version mismatch of OpenAPIV3
+  API: OpenAPIV3_1.Document,
+): Promise<OpenAPIV3_1.Document> {
+  // Temporar type fix due to version mismatch of OpenAPIV3_1
   // between Whook and SwaggerParser
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const $refs = await SwaggerParser.resolve(API as any);
 
-  return Object.keys(API.paths).reduce((newAPI, path) => {
-    const existingOperation = newAPI.paths[path]?.options;
+  return {
+    ...API,
+    paths: Object.keys(API?.paths || {}).reduce((newPaths, path) => {
+      const existingOperation = newPaths?.[path]?.options;
 
-    if (existingOperation) {
-      return newAPI;
-    }
+      if (existingOperation) {
+        return newPaths;
+      }
 
-    const canonicalOperationMethod = [
-      ...new Set([...METHOD_CORS_PRIORITY]),
-      ...Object.keys(newAPI.paths[path] || {}),
-    ].find((method) => newAPI.paths[path]?.[method]) as string;
-    const canonicalOperation: OpenAPIV3.OperationObject =
-      newAPI.paths[path]?.[canonicalOperationMethod];
+      const canonicalOperationMethod = [
+        ...new Set([...METHOD_CORS_PRIORITY]),
+        ...Object.keys(newPaths[path] || {}),
+      ].find((method) => newPaths[path]?.[method]) as string;
+      const canonicalOperation: OpenAPIV3_1.OperationObject =
+        newPaths[path]?.[canonicalOperationMethod];
 
-    const whookConfig = {
-      type: 'http',
-      ...(canonicalOperation['x-whook'] || {}),
-      suffix: 'CORS',
-      sourceOperationId: canonicalOperation.operationId,
-      private: true,
-    };
+      const whookConfig = {
+        type: 'http',
+        ...(canonicalOperation['x-whook'] || {}),
+        suffix: 'CORS',
+        sourceOperationId: canonicalOperation.operationId,
+        private: true,
+      };
 
-    if (whookConfig.type !== 'http') {
-      return newAPI;
-    }
+      if (whookConfig.type !== 'http') {
+        return newPaths;
+      }
 
-    newAPI.paths[path] = {
-      ...(newAPI.paths[path] || {}),
-      options: {
-        operationId: 'optionsWithCORS',
-        summary: 'Enable OPTIONS for CORS',
-        tags: ['CORS'],
-        parameters: (canonicalOperation.parameters || [])
-          .concat(
-            extractOperationSecurityParameters(
-              API,
-              canonicalOperation as WhookOperation,
-            ),
-          )
-          .filter((parameter) => {
-            const dereferencedParameter = (
-              parameter as OpenAPIV3.ReferenceObject
-            ).$ref
-              ? ($refs.get(
-                  (parameter as OpenAPIV3.ReferenceObject).$ref,
-                ) as OpenAPIV3.ParameterObject)
-              : (parameter as OpenAPIV3.ParameterObject);
+      newPaths[path] = {
+        ...(newPaths[path] || {}),
+        options: {
+          operationId: 'optionsWithCORS',
+          summary: 'Enable OPTIONS for CORS',
+          tags: ['CORS'],
+          parameters: (canonicalOperation.parameters || [])
+            .concat(
+              extractOperationSecurityParameters(
+                API,
+                canonicalOperation as WhookOperation,
+              ) as OpenAPIV3_1.ParameterObject[],
+            )
+            .filter((parameter) => {
+              const dereferencedParameter = (
+                parameter as OpenAPIV3_1.ReferenceObject
+              ).$ref
+                ? ($refs.get(
+                    (parameter as OpenAPIV3_1.ReferenceObject).$ref,
+                  ) as OpenAPIV3_1.ParameterObject)
+                : (parameter as OpenAPIV3_1.ParameterObject);
 
-            return (
-              'path' === dereferencedParameter.in ||
-              'query' === dereferencedParameter.in
-            );
-          })
-          .map((parameter) => {
-            const dereferencedParameter = (
-              parameter as OpenAPIV3.ReferenceObject
-            ).$ref
-              ? ($refs.get(
-                  (parameter as OpenAPIV3.ReferenceObject).$ref,
-                ) as OpenAPIV3.ParameterObject)
-              : (parameter as OpenAPIV3.ParameterObject);
+              return (
+                'path' === dereferencedParameter.in ||
+                'query' === dereferencedParameter.in
+              );
+            })
+            .map((parameter) => {
+              const dereferencedParameter = (
+                parameter as OpenAPIV3_1.ReferenceObject
+              ).$ref
+                ? ($refs.get(
+                    (parameter as OpenAPIV3_1.ReferenceObject).$ref,
+                  ) as OpenAPIV3_1.ParameterObject)
+                : (parameter as OpenAPIV3_1.ParameterObject);
 
-            if (
-              dereferencedParameter.in === 'path' ||
-              !dereferencedParameter.required
-            ) {
-              return parameter;
-            }
+              if (
+                dereferencedParameter.in === 'path' ||
+                !dereferencedParameter.required
+              ) {
+                return parameter;
+              }
 
-            // Avoid to require parameters for CORS
-            return {
-              ...dereferencedParameter,
-              required: false,
-            };
-          }),
-        responses: {
-          200: {
-            description: 'CORS sent.',
+              // Avoid to require parameters for CORS
+              return {
+                ...dereferencedParameter,
+                required: false,
+              };
+            }),
+          responses: {
+            200: {
+              description: 'CORS sent.',
+            },
           },
         },
-      },
-    };
+      };
 
-    // Must be set separately since not supported by OAS3 types atm
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ((newAPI.paths[path] as any).options as any)['x-whook'] = {
-      ...whookConfig,
-    };
+      // Must be set separately since not supported by OAS3 types atm
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ((newPaths[path] as any).options as any)['x-whook'] = {
+        ...whookConfig,
+      };
 
-    return newAPI;
-  }, API);
+      return newPaths;
+    }, API?.paths || {}),
+  };
 }
 
 export { initOptionsWithCORS };

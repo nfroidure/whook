@@ -280,7 +280,7 @@ import {
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
 } from '@whook/oauth2';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { WhookAPIHandlerDefinition } from '@whook/whook';
 
 export default initPostOAuth2Acknowledge;
@@ -304,26 +304,26 @@ export const definition: WhookAPIHandlerDefinition = {
           schema: {
             ...((
               postOAuth2AcknowledgeDefinition.operation
-                .requestBody as OpenAPIV3.RequestBodyObject
+                .requestBody as OpenAPIV3_1.RequestBodyObject
             ).content['application/json']
-              .schema as OpenAPIV3.NonArraySchemaObject),
+              .schema as OpenAPIV3_1.NonArraySchemaObject),
             required: [
               'userId',
               ...(
                 (
                   postOAuth2AcknowledgeDefinition.operation
-                    .requestBody as OpenAPIV3.RequestBodyObject
+                    .requestBody as OpenAPIV3_1.RequestBodyObject
                 ).content['application/json']
-                  .schema as OpenAPIV3.NonArraySchemaObject
+                  .schema as OpenAPIV3_1.NonArraySchemaObject
               ).required,
             ],
             properties: {
               ...(
                 (
                   postOAuth2AcknowledgeDefinition.operation
-                    .requestBody as OpenAPIV3.RequestBodyObject
+                    .requestBody as OpenAPIV3_1.RequestBodyObject
                 ).content['application/json']
-                  .schema as OpenAPIV3.NonArraySchemaObject
+                  .schema as OpenAPIV3_1.NonArraySchemaObject
               ).properties,
               userId: {
                 type: 'string',

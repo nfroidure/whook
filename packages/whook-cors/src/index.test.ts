@@ -8,7 +8,7 @@ import {
 import { handler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import type { CORSConfig } from './index.js';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { WhookOperation } from '@whook/whook';
 import type { LogService } from 'common-services';
 
@@ -216,7 +216,7 @@ describe('augmentAPIWithCORS()', () => {
   it('should work', async () => {
     expect(
       await augmentAPIWithCORS({
-        openapi: '3.0.2',
+        openapi: '3.1.0',
         info: {
           version: '1.0.0',
           title: 'Sample OpenAPI',
@@ -354,8 +354,8 @@ describe('augmentAPIWithCORS()', () => {
                   description: 'Pong',
                 },
               },
-            } as OpenAPIV3.OperationObject,
-          },
+            },
+          } as OpenAPIV3_1.PathItemObject,
         },
       }),
     ).toMatchSnapshot();

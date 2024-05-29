@@ -182,7 +182,7 @@ exports[`API should work 1`] = `
       "title": "@whook/example",
       "version": "1.1.0",
     },
-    "openapi": "3.0.3",
+    "openapi": "3.1.0",
     "paths": {
       "/delay": {
         "get": {
