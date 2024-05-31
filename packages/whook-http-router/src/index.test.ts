@@ -7,7 +7,8 @@ import { YError } from 'yerror';
 import initHTTPRouter from './index.js';
 import { NodeEnv } from 'application-services';
 import initErrorHandler from './services/errorHandler.js';
-import type { OpenAPIV3 } from 'openapi-types';
+import SwaggerParser from '@apidevtools/swagger-parser';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type {
   WhookHTTPTransactionService,
   WhookHandler,
@@ -92,8 +93,8 @@ describe('initHTTPRouter', () => {
   const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Test };
   const DEBUG_NODE_ENVS = ['test'];
   const BASE_PATH = '/v1';
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: '1.0.0',
       title: 'Sample Swagger',
@@ -514,15 +515,10 @@ describe('initHTTPRouter', () => {
     log.mockReset();
   });
 
-  // test('should test a valid swagger file', async () => {
-  //   const result = OpenAPISchemaValidator({ version: 3 }).validate(
-  //     API as OpenAPIV3.Document,
-  //   );
-
-  //   assert.deepEqual(result, {
-  //     errors: [],
-  //   });
-  // });
+  test('should test a valid swagger file', async () => {
+    // Not pure function... so deep cloning the dirtiest way
+    await SwaggerParser.validate(JSON.parse(JSON.stringify(API)));
+  });
 
   test('should work', async () => {
     const { httpTransaction, HANDLERS } = prepareTransaction();
@@ -570,7 +566,7 @@ describe('initHTTPRouter', () => {
                 get: {},
               },
             },
-          } as unknown as OpenAPIV3.Document,
+          } as unknown as OpenAPIV3_1.Document,
           log,
           BASE_PATH,
           httpTransaction,
@@ -742,7 +738,7 @@ describe('initHTTPRouter', () => {
                       schema: {
                         type: 'string',
                       },
-                    } as unknown as OpenAPIV3.ParameterObject,
+                    } as unknown as OpenAPIV3_1.ParameterObject,
                   ],
                 } as never,
               },
@@ -784,7 +780,7 @@ describe('initHTTPRouter', () => {
                     {
                       name: 'lol',
                       in: 'query',
-                    } as unknown as OpenAPIV3.ParameterObject,
+                    } as unknown as OpenAPIV3_1.ParameterObject,
                   ],
                 } as never,
               },
@@ -828,7 +824,7 @@ describe('initHTTPRouter', () => {
                       schema: {
                         type: 'string',
                       },
-                    } as unknown as OpenAPIV3.ParameterObject,
+                    } as unknown as OpenAPIV3_1.ParameterObject,
                   ],
                 } as never,
               },

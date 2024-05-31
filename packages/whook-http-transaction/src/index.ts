@@ -10,7 +10,7 @@ import { printStackTrace, YError } from 'yerror';
 import type { Parameters, HandlerFunction, Dependencies } from 'knifecycle';
 import type { LogService, TimeService, DelayService } from 'common-services';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type { Readable } from 'stream';
 export type {
@@ -24,13 +24,13 @@ export type { WhookAPMDependencies, WhookAPMService } from './services/apm.js';
 export { initObfuscatorService, initAPMService };
 
 export type DereferencedMediaTypeObject = Omit<
-  OpenAPIV3.MediaTypeObject,
+  OpenAPIV3_1.MediaTypeObject,
   'schema'
 > & {
-  schema: OpenAPIV3.SchemaObject;
+  schema: OpenAPIV3_1.SchemaObject;
 };
 export type DereferencedResponseObject = Omit<
-  OpenAPIV3.ResponseObject,
+  OpenAPIV3_1.ResponseObject,
   'content'
 > & {
   content?: {
@@ -38,7 +38,7 @@ export type DereferencedResponseObject = Omit<
   };
 };
 export type DereferencedRequestBodyObject = Omit<
-  OpenAPIV3.RequestBodyObject,
+  OpenAPIV3_1.RequestBodyObject,
   'content'
 > & {
   content: {
@@ -46,14 +46,14 @@ export type DereferencedRequestBodyObject = Omit<
   };
 };
 export type DereferencedParameterObject = Omit<
-  OpenAPIV3.ParameterObject,
+  OpenAPIV3_1.ParameterObject,
   'schema'
 > & {
-  schema: OpenAPIV3.SchemaObject;
+  schema: OpenAPIV3_1.SchemaObject;
 };
 
 export type DereferencedOperationObject = Omit<
-  OpenAPIV3.OperationObject,
+  OpenAPIV3_1.OperationObject,
   'parameters' | 'requestBody' | 'responses'
 > & {
   parameters: DereferencedParameterObject[];

@@ -15,7 +15,7 @@ import type {
   WhookPromptArgs,
 } from '../services/promptArgs.js';
 import type { LogService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 const {
   writeFile: _writeFile,
@@ -97,7 +97,7 @@ async function initCreateCommand({
   log = noop,
 }: {
   PROJECT_DIR: string;
-  API: OpenAPIV3.Document;
+  API: OpenAPIV3_1.Document;
   inquirer: typeof _inquirer;
   promptArgs: WhookPromptArgs;
   writeFile: typeof _writeFile;

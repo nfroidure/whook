@@ -6,7 +6,7 @@ import type {
   WhookAPIOperationConfig,
 } from '../services/API_DEFINITIONS.js';
 import type { WhookResponse } from '@whook/http-transaction';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 export default autoHandler(getOpenAPI);
 
@@ -34,18 +34,18 @@ export const definition: WhookAPIHandlerDefinition = {
 } as WhookAPIHandlerDefinition;
 
 function removeMutedParameters(
-  parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,
+  parameters: Array<OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject>,
   mutedParameters: string[],
   $refs: SwaggerParser.$Refs,
 ) {
   return parameters.reduce(
     (acc, parameter) => {
-      const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
+      const dereferencedParameter = (parameter as OpenAPIV3_1.ReferenceObject)
         .$ref
         ? ($refs.get(
-            (parameter as OpenAPIV3.ReferenceObject).$ref,
-          ) as OpenAPIV3.ParameterObject)
-        : (parameter as OpenAPIV3.ParameterObject);
+            (parameter as OpenAPIV3_1.ReferenceObject).$ref,
+          ) as OpenAPIV3_1.ParameterObject)
+        : (parameter as OpenAPIV3_1.ParameterObject);
 
       if (mutedParameters.includes(dereferencedParameter.name)) {
         return acc;
@@ -53,12 +53,12 @@ function removeMutedParameters(
 
       return acc.concat(parameter);
     },
-    [] as (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[],
+    [] as (OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject)[],
   );
 }
 
 async function getOpenAPI(
-  { API }: { API: OpenAPIV3.Document },
+  { API }: { API: OpenAPIV3_1.Document },
   {
     authenticated = false,
     mutedMethods = ['options'],
@@ -68,7 +68,7 @@ async function getOpenAPI(
     mutedMethods?: string[];
     mutedParameters?: string[];
   },
-): Promise<WhookResponse<200, void, OpenAPIV3.Document>> {
+): Promise<WhookResponse<200, void, OpenAPIV3_1.Document>> {
   const operations = getOpenAPIOperations<WhookAPIOperationConfig>(API);
   const $refs = await SwaggerParser.resolve(API);
 
@@ -95,7 +95,7 @@ async function getOpenAPI(
       paths[operation.path] = {
         ...paths[operation.path],
         [operation.method]: {
-          ...(API.paths[operation.path]?.[operation.method] || {}),
+          ...(API?.paths?.[operation.path]?.[operation.method] || {}),
           ...(operation.parameters &&
             operation.parameters.length && {
               parameters: removeMutedParameters(

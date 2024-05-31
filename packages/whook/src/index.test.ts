@@ -13,7 +13,7 @@ describe('runServer', () => {
     const HOST = 'localhost';
     const BASE_PATH = '/v1';
     const API = {
-      openapi: '3.0.2',
+      openapi: '3.1.0',
       info: {
         version: '1.0.0',
         title: 'Sample OpenAPI',

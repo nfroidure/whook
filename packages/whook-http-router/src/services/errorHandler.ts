@@ -9,7 +9,7 @@ import type { WhookStringifyers } from '../index.js';
 import type { WhookResponseSpec } from '../libs/utils.js';
 import type { WhookResponse } from '@whook/http-transaction';
 import type { YHTTPError } from 'yhttperror';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { AppEnvVars } from 'application-services';
 
 /* Architecture Note #2: Error handler
@@ -340,7 +340,7 @@ export type WhookErrorResponse = WhookResponse<
   }
 >;
 
-export const WhookErrorSchema: OpenAPIV3.SchemaObject = {
+export const WhookErrorSchema: OpenAPIV3_1.SchemaObject = {
   type: 'object',
   additionalProperties: false,
   properties: {

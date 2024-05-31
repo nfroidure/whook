@@ -3,7 +3,7 @@ import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
 import { PassThrough } from 'stream';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
 import type { OpenAPITypesGenerationOptions } from 'schema2dts';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { LogService } from 'common-services';
 
 describe('generateOpenAPITypes', () => {
@@ -17,8 +17,8 @@ describe('generateOpenAPITypes', () => {
     brandedTypes: [],
     tuplesFromFixedArraysLengthLimit: 5,
   };
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: '1.0.0',
       title: 'Sample OpenAPI',

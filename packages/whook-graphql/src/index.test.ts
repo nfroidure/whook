@@ -35,7 +35,7 @@ import {
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import type { WhookGraphQLFragmentService } from './index.js';
 import type { Knifecycle, Autoloader } from 'knifecycle';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { AuthenticationService } from '@whook/authorization';
 import type { WhookGraphQLContextFunction } from './index.js';
 import type { Logger, TimeService } from 'common-services';
@@ -55,8 +55,8 @@ describe('GraphQL server', () => {
     async (baseContext) => baseContext,
   );
 
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: '1.0.0',
       title: 'Sample OpenAPI',

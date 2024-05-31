@@ -3,7 +3,7 @@ import { camelCaseObjectProperties } from './getOAuth2Authorize.js';
 import { noop } from '@whook/whook';
 import { YError, printStackTrace } from 'yerror';
 import { refersTo } from '@whook/whook';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { LogService, TimeService } from 'common-services';
 import type {
   WhookAPISchemaDefinition,
@@ -127,7 +127,7 @@ export const tokenBodySchema: WhookAPISchemaDefinition = {
       refersTo(clientCredentialsTokenRequestBodySchema),
       refersTo(refreshTokenRequestBodySchema),
     ],
-  } as OpenAPIV3.SchemaObject,
+  } as OpenAPIV3_1.SchemaObject,
 };
 
 export const definition: WhookAPIHandlerDefinition = {

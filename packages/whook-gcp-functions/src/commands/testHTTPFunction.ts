@@ -14,7 +14,7 @@ import type {
   WhookCompilerOptions,
 } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
@@ -64,7 +64,7 @@ async function initTestHTTPFunctionCommand({
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  API: OpenAPIV3.Document;
+  API: OpenAPIV3_1.Document;
   log: LogService;
   args: WhookCommandArgs;
 }) {
@@ -94,7 +94,9 @@ async function initTestHTTPFunctionCommand({
 
     const hasBody = !!OPERATION.requestBody;
     const parameters = JSON.parse(rawParameters);
-    const search = ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[])
+    const search = (
+      (OPERATION.parameters || []) as OpenAPIV3_1.ParameterObject[]
+    )
       .filter((p) => p.in === 'query')
       .reduce((accSearch, p) => {
         if (null != parameters[p.name]) {
@@ -124,7 +126,7 @@ async function initTestHTTPFunctionCommand({
     const gcpfRequest = {
       method: OPERATION.method,
       originalUrl: path + (search ? SEARCH_SEPARATOR + search : ''),
-      headers: ((OPERATION.parameters || []) as OpenAPIV3.ParameterObject[])
+      headers: ((OPERATION.parameters || []) as OpenAPIV3_1.ParameterObject[])
         .filter((p) => p.in === 'header')
         .reduce((headerParameters, p) => {
           headerParameters[p.name] = parameters[camelCase(p.name)];
