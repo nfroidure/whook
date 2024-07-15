@@ -41,7 +41,7 @@ exports[`augmentAPIWithVersionsHeaders() should work 1`] = `
     "title": "Sample Swagger",
     "version": "1.0.0",
   },
-  "openapi": "3.0.2",
+  "openapi": "3.1.0",
   "paths": {
     "/ping": {
       "get": {

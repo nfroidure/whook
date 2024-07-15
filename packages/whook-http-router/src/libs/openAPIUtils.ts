@@ -1,7 +1,7 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { $Refs } from '@apidevtools/swagger-parser';
 import { YError } from 'yerror';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type {
   DereferencedRequestBodyObject,
   DereferencedResponseObject,
@@ -20,15 +20,15 @@ export const OPEN_API_METHODS = [
 ];
 
 export type WhookRawOperation<T = Record<string, unknown>> =
-  OpenAPIV3.OperationObject & {
+  OpenAPIV3_1.OperationObject<{
     path: string;
     method: string;
     'x-whook'?: T;
-  };
+  }>;
 export type SupportedSecurityScheme =
-  | OpenAPIV3.HttpSecurityScheme
-  | OpenAPIV3.ApiKeySecurityScheme
-  | OpenAPIV3.OAuth2SecurityScheme;
+  | OpenAPIV3_1.HttpSecurityScheme
+  | OpenAPIV3_1.ApiKeySecurityScheme
+  | OpenAPIV3_1.OAuth2SecurityScheme;
 
 /**
  * Return a OpenAPI operation in a more
@@ -47,9 +47,9 @@ export type SupportedSecurityScheme =
  *   });
  */
 export function getOpenAPIOperations<T = Record<string, unknown>>(
-  API: OpenAPIV3.Document,
+  API: OpenAPIV3_1.Document,
 ): WhookRawOperation<T>[] {
-  return Object.keys(API.paths).reduce<WhookRawOperation<T>[]>(
+  return Object.keys(API?.paths || {}).reduce<WhookRawOperation<T>[]>(
     (operations, path) =>
       Object.keys(API.paths?.[path] || {})
         .filter((key) => OPEN_API_METHODS.includes(key))
@@ -58,8 +58,8 @@ export function getOpenAPIOperations<T = Record<string, unknown>>(
             path,
             method,
             ...API.paths?.[path]?.[method],
-            parameters: (API.paths[path]?.[method].parameters || []).concat(
-              API.paths[path]?.parameters || [],
+            parameters: (API?.paths?.[path]?.[method].parameters || []).concat(
+              API?.paths?.[path]?.parameters || [],
             ),
           };
 
@@ -80,7 +80,7 @@ export function getOpenAPIOperations<T = Record<string, unknown>>(
  * The dereferenced OpenAPI operations
  */
 export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
-  API: OpenAPIV3.Document,
+  API: OpenAPIV3_1.Document,
   operations: WhookRawOperation<T>[],
 ): Promise<WhookOperation<T>[]> {
   let $refs: $Refs;
@@ -94,11 +94,11 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
   return operations.map((operation) => {
     const parameters = (operation.parameters || [])
       .map((parameter) =>
-        (parameter as OpenAPIV3.ReferenceObject).$ref
+        (parameter as OpenAPIV3_1.ReferenceObject).$ref
           ? ($refs.get(
-              (parameter as OpenAPIV3.ReferenceObject).$ref,
-            ) as OpenAPIV3.ParameterObject)
-          : (parameter as OpenAPIV3.ParameterObject),
+              (parameter as OpenAPIV3_1.ReferenceObject).$ref,
+            ) as OpenAPIV3_1.ParameterObject)
+          : (parameter as OpenAPIV3_1.ParameterObject),
       )
       .map((parameter) => {
         // Currently supporting only schema based
@@ -108,11 +108,11 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
         }
         return {
           ...parameter,
-          schema: (parameter.schema as OpenAPIV3.ReferenceObject).$ref
+          schema: (parameter.schema as OpenAPIV3_1.ReferenceObject).$ref
             ? ($refs.get(
-                (parameter.schema as OpenAPIV3.ReferenceObject).$ref,
-              ) as OpenAPIV3.SchemaObject)
-            : (parameter.schema as OpenAPIV3.SchemaObject),
+                (parameter.schema as OpenAPIV3_1.ReferenceObject).$ref,
+              ) as OpenAPIV3_1.SchemaObject)
+            : (parameter.schema as OpenAPIV3_1.SchemaObject),
         };
       })
       .map((parameter) =>
@@ -121,23 +121,23 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
               ...parameter,
               schema: {
                 ...parameter.schema,
-                items: (parameter.schema.items as OpenAPIV3.ReferenceObject)
+                items: (parameter.schema.items as OpenAPIV3_1.ReferenceObject)
                   .$ref
                   ? ($refs.get(
-                      (parameter.schema.items as OpenAPIV3.ReferenceObject)
+                      (parameter.schema.items as OpenAPIV3_1.ReferenceObject)
                         .$ref,
-                    ) as OpenAPIV3.SchemaObject)
-                  : (parameter.schema.items as OpenAPIV3.SchemaObject),
+                    ) as OpenAPIV3_1.SchemaObject)
+                  : (parameter.schema.items as OpenAPIV3_1.SchemaObject),
               },
             }
           : parameter,
       );
     const baseRequestBody = operation.requestBody
-      ? (operation.requestBody as OpenAPIV3.ReferenceObject).$ref
+      ? (operation.requestBody as OpenAPIV3_1.ReferenceObject).$ref
         ? ($refs.get(
-            (operation.requestBody as OpenAPIV3.ReferenceObject).$ref,
-          ) as OpenAPIV3.ParameterObject)
-        : (operation.requestBody as OpenAPIV3.RequestBodyObject)
+            (operation.requestBody as OpenAPIV3_1.ReferenceObject).$ref,
+          ) as OpenAPIV3_1.ParameterObject)
+        : (operation.requestBody as OpenAPIV3_1.RequestBodyObject)
       : undefined;
 
     const requestBody: DereferencedRequestBodyObject | undefined =
@@ -150,16 +150,16 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
                   .schema
                   ? (
                       baseRequestBody.content[mediaType]
-                        .schema as OpenAPIV3.ReferenceObject
+                        .schema as OpenAPIV3_1.ReferenceObject
                     ).$ref
                     ? ($refs.get(
                         (
                           baseRequestBody.content[mediaType]
-                            .schema as OpenAPIV3.ReferenceObject
+                            .schema as OpenAPIV3_1.ReferenceObject
                         ).$ref,
-                      ) as OpenAPIV3.SchemaObject)
+                      ) as OpenAPIV3_1.SchemaObject)
                     : (baseRequestBody.content[mediaType]
-                        .schema as OpenAPIV3.SchemaObject)
+                        .schema as OpenAPIV3_1.SchemaObject)
                   : undefined;
 
                 return {
@@ -168,7 +168,7 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
                     ...baseRequestBody.content?.[mediaType],
                     schema: buildJSONSchemaFromAPISchema(
                       API,
-                      mediaTypeSchema as OpenAPIV3.SchemaObject,
+                      mediaTypeSchema as OpenAPIV3_1.SchemaObject,
                     ),
                   },
                 };
@@ -180,13 +180,12 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
     const responses: Record<string, DereferencedResponseObject> = Object.keys(
       operation.responses || {},
     ).reduce((allResponses, status) => {
-      const responseObject = (
-        operation.responses[status] as OpenAPIV3.ReferenceObject
-      ).$ref
-        ? ($refs.get(
-            (operation.responses[status] as OpenAPIV3.ReferenceObject).$ref,
-          ) as OpenAPIV3.ResponseObject)
-        : (operation.responses[status] as OpenAPIV3.ResponseObject);
+      const responseObject =
+        operation.responses && '$ref' in operation.responses[status]
+          ? ($refs.get(
+              (operation.responses[status] as OpenAPIV3_1.ReferenceObject).$ref,
+            ) as OpenAPIV3_1.ResponseObject)
+          : (operation?.responses?.[status] as OpenAPIV3_1.ResponseObject);
       const finalResponseObject: DereferencedResponseObject = {
         ...responseObject,
         content: responseObject.content
@@ -196,16 +195,16 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
                   .schema
                   ? (
                       responseObject.content[mediaType]
-                        .schema as OpenAPIV3.ReferenceObject
+                        .schema as OpenAPIV3_1.ReferenceObject
                     ).$ref
                     ? ($refs.get(
                         (
                           responseObject.content[mediaType]
-                            .schema as OpenAPIV3.ReferenceObject
+                            .schema as OpenAPIV3_1.ReferenceObject
                         ).$ref,
-                      ) as OpenAPIV3.SchemaObject)
+                      ) as OpenAPIV3_1.SchemaObject)
                     : (responseObject.content[mediaType]
-                        .schema as OpenAPIV3.SchemaObject)
+                        .schema as OpenAPIV3_1.SchemaObject)
                   : undefined;
 
                 return {
@@ -214,7 +213,7 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
                     ...responseObject.content?.[mediaType],
                     schema: buildJSONSchemaFromAPISchema(
                       API,
-                      mediaTypeSchema as OpenAPIV3.SchemaObject,
+                      mediaTypeSchema as OpenAPIV3_1.SchemaObject,
                     ),
                   },
                 };
@@ -240,7 +239,7 @@ export async function dereferenceOpenAPIOperations<T = Record<string, unknown>>(
 }
 
 export function pickupOperationSecuritySchemes(
-  openAPI: OpenAPIV3.Document,
+  openAPI: OpenAPIV3_1.Document,
   operation: WhookOperation,
 ): { [name: string]: SupportedSecurityScheme } {
   const securitySchemes =
@@ -271,9 +270,9 @@ export function pickupOperationSecuritySchemes(
 }
 
 function buildJSONSchemaFromAPISchema(
-  API: OpenAPIV3.Document,
-  baseSchema: OpenAPIV3.SchemaObject,
-): OpenAPIV3.SchemaObject {
+  API: OpenAPIV3_1.Document,
+  baseSchema: OpenAPIV3_1.SchemaObject,
+): OpenAPIV3_1.SchemaObject {
   return JSON.parse(
     JSON.stringify({
       ...baseSchema,

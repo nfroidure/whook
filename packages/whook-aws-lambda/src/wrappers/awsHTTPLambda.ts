@@ -43,10 +43,10 @@ import type {
   WhookWrapper,
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { Readable } from 'stream';
 import {
-  DereferencedParameterObject,
+  type DereferencedParameterObject,
   pickAllHeaderValues,
 } from '@whook/http-transaction';
 import type {
@@ -65,7 +65,7 @@ const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
 export type WhookWrapConsumerLambdaDependencies = {
-  OPERATION_API: OpenAPIV3.Document;
+  OPERATION_API: OpenAPIV3_1.Document;
   ENV: AppEnvVars;
   DEBUG_NODE_ENVS?: string[];
   DECODERS?: typeof DEFAULT_DECODERS;
@@ -135,8 +135,8 @@ async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
 }: WhookWrapConsumerLambdaDependencies): Promise<WhookWrapper<S>> {
   log('debug', '📥 - Initializing the AWS LAmbda consumer wrapper.');
 
-  const path = Object.keys(OPERATION_API.paths)[0];
-  const pathObject = OPERATION_API.paths[path];
+  const path = Object.keys(OPERATION_API.paths || {})[0];
+  const pathObject = OPERATION_API.paths?.[path];
 
   if (typeof pathObject === 'undefined' || '$ref' in pathObject) {
     throw new YError('E_BAD_OPERATION', 'pathObject', pathObject);
@@ -175,7 +175,7 @@ async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
   const validators = prepareParametersValidators(
     ajv,
     operation.operationId,
-    ((operation.parameters || []) as OpenAPIV3.ParameterObject[]).concat(
+    ((operation.parameters || []) as DereferencedParameterObject[]).concat(
       ammendedParameters,
     ),
   );
@@ -371,13 +371,13 @@ async function handleForAWSHTTPLambda(
     // specified and it is not a binary one
     const responseObject =
       operation.responses &&
-      (operation.responses[response.status] as OpenAPIV3.ResponseObject);
+      (operation.responses[response.status] as OpenAPIV3_1.ResponseObject);
     const responseSchema =
       responseObject &&
       responseObject.content &&
       responseObject.content[response.headers['content-type']] &&
       (responseObject.content[response.headers['content-type']]
-        .schema as OpenAPIV3.SchemaObject);
+        .schema as OpenAPIV3_1.SchemaObject);
     const responseHasSchema =
       responseSchema &&
       (responseSchema.type !== 'string' || responseSchema.format !== 'binary');

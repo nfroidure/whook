@@ -5,7 +5,7 @@ import { YError } from 'yerror';
 import { pickFirstHeaderValue } from '@whook/http-transaction';
 import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
 import type { WhookBodySpec } from './utils.js';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import type {
   WhookEncoders,
@@ -46,7 +46,7 @@ export async function getBody<
 ): Promise<T | undefined> {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
   const requestBody = operation.requestBody
-    ? (operation.requestBody as OpenAPIV3.RequestBodyObject)
+    ? (operation.requestBody as OpenAPIV3_1.RequestBodyObject)
     : undefined;
   const schemaObject =
     requestBody &&
@@ -54,7 +54,7 @@ export async function getBody<
     requestBody.content[bodySpec.contentType] &&
     requestBody.content[bodySpec.contentType].schema &&
     (requestBody.content[bodySpec.contentType]
-      .schema as OpenAPIV3.NonArraySchemaObject);
+      .schema as OpenAPIV3_1.NonArraySchemaObject);
   const bodyIsParseable =
     schemaObject &&
     (schemaObject.type !== 'string' || schemaObject.format !== 'binary');

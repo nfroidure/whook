@@ -63,7 +63,7 @@ import type {
   DereferencedParameterObject,
   WhookResponse,
 } from '@whook/http-transaction';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type {
@@ -167,7 +167,7 @@ export type WhookHTTPRouterDependencies<T extends WhookHandler> =
   WhookHTTPRouterConfig & {
     ENV: AppEnvVars;
     HANDLERS: WhookHandlersService<T>;
-    API: OpenAPIV3.Document;
+    API: OpenAPIV3_1.Document;
     PARSERS?: WhookParsers;
     STRINGIFYERS?: WhookStringifyers;
     DECODERS?: WhookEncoders<Transform>;
@@ -576,7 +576,7 @@ async function _createRouters<T extends WhookHandler>({
   ajv,
   log,
 }: {
-  API: OpenAPIV3.Document;
+  API: OpenAPIV3_1.Document;
   HANDLERS: WhookHandlersService<T>;
   BASE_PATH?: string;
   ajv: Ajv.default;
@@ -606,7 +606,7 @@ async function _createRouters<T extends WhookHandler>({
 
     // TODO: create a new major version of Siso to handle OpenAPI
     // path params mode widely
-    const pathParameters = ((parameters || []) as OpenAPIV3.ParameterObject[])
+    const pathParameters = ((parameters || []) as OpenAPIV3_1.ParameterObject[])
       .filter((p) => 'path' === p.in)
       .map((p) => {
         if (p.style) {
@@ -617,7 +617,7 @@ async function _createRouters<T extends WhookHandler>({
           ...p,
           // TODO: Remove when this issue is tackled:
           // https://github.com/nfroidure/siso/issues/45
-          ...((p.schema as OpenAPIV3.SchemaObject)?.enum
+          ...((p.schema as OpenAPIV3_1.SchemaObject)?.enum
             ? {}
             : {
                 pattern: '^.*$',

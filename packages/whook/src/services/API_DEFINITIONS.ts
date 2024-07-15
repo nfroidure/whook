@@ -3,7 +3,7 @@ import { readdir as _readDir } from 'node:fs/promises';
 import { extname, join as pathJoin } from 'node:path';
 import { noop } from '../libs/utils.js';
 import type { ImporterService, LogService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { JsonValue } from 'type-fest';
 import {
   WHOOK_DEFAULT_PLUGINS,
@@ -46,8 +46,8 @@ export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
 };
 
 export type WhookAPIDefinitions = {
-  paths: OpenAPIV3.PathsObject;
-  components: OpenAPIV3.ComponentsObject;
+  paths: OpenAPIV3_1.PathsObject;
+  components: OpenAPIV3_1.ComponentsObject;
 };
 
 export interface WhookAPIOperationConfig {
@@ -58,13 +58,13 @@ export interface WhookAPIOperationConfig {
 export interface WhookAPIOperationAddition<
   T extends Record<string, unknown> = Record<string, unknown>,
 > {
-  operationId: OpenAPIV3.OperationObject['operationId'];
+  operationId: OpenAPIV3_1.OperationObject['operationId'];
   'x-whook'?: WhookAPIOperationConfig & T;
 }
 
 export type WhookAPIOperation<
   T extends Record<string, unknown> = Record<string, unknown>,
-> = OpenAPIV3.OperationObject & WhookAPIOperationAddition<T>;
+> = OpenAPIV3_1.OperationObject & WhookAPIOperationAddition<T>;
 
 export interface WhookBaseAPIHandlerDefinition<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -90,25 +90,25 @@ export interface WhookAPIHandlerDefinition<
 > extends WhookBaseAPIHandlerDefinition<T, U> {}
 
 export interface WhookAPISchemaDefinition<
-  T extends JsonValue | OpenAPIV3.ReferenceObject | void | unknown = unknown,
+  T extends JsonValue | OpenAPIV3_1.ReferenceObject | void | unknown = unknown,
 > {
   name: string;
-  schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
+  schema: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject;
   example?: T;
   examples?: Record<string, T>;
 }
 
 export interface WhookAPIParameterDefinition<
-  T extends JsonValue | OpenAPIV3.ReferenceObject | void | unknown = unknown,
+  T extends JsonValue | OpenAPIV3_1.ReferenceObject | void | unknown = unknown,
 > {
   name: string;
-  parameter: OpenAPIV3.ParameterObject;
+  parameter: OpenAPIV3_1.ParameterObject;
   example?: T;
   examples?: Record<string, T>;
 }
 
 export interface WhookAPIExampleDefinition<
-  T extends JsonValue | OpenAPIV3.ReferenceObject,
+  T extends JsonValue | OpenAPIV3_1.ReferenceObject,
 > {
   name: string;
   value: T;
@@ -116,17 +116,17 @@ export interface WhookAPIExampleDefinition<
 
 export interface WhookAPIHeaderDefinition {
   name: string;
-  header: OpenAPIV3.HeaderObject | OpenAPIV3.ReferenceObject;
+  header: OpenAPIV3_1.HeaderObject | OpenAPIV3_1.ReferenceObject;
 }
 
 export interface WhookAPIResponseDefinition {
   name: string;
-  response: OpenAPIV3.ResponseObject | OpenAPIV3.ReferenceObject;
+  response: OpenAPIV3_1.ResponseObject | OpenAPIV3_1.ReferenceObject;
 }
 
 export interface WhookAPIRequestBodyDefinition {
   name: string;
-  requestBody: OpenAPIV3.RequestBodyObject | OpenAPIV3.ReferenceObject;
+  requestBody: OpenAPIV3_1.RequestBodyObject | OpenAPIV3_1.ReferenceObject;
 }
 
 export interface WhookAPIDefinitionFilter<
@@ -243,7 +243,7 @@ async function initAPIDefinitions({
   );
 
   const API_DEFINITIONS = {
-    paths: handlersModules.reduce<OpenAPIV3.PathsObject>(
+    paths: handlersModules.reduce<OpenAPIV3_1.PathsObject>(
       (
         paths,
         { file, module }: { file: string; module: WhookAPIHandlerModule },
@@ -297,7 +297,7 @@ async function initAPIDefinitions({
     ),
     components: {
       schemas: handlersModules.reduce<{
-        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject;
+        [key: string]: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject;
       }>(
         (schemas, { module }) => ({
           ...schemas,
@@ -319,7 +319,9 @@ async function initAPIDefinitions({
         {},
       ),
       parameters: handlersModules.reduce<{
-        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject;
+        [key: string]:
+          | OpenAPIV3_1.ReferenceObject
+          | OpenAPIV3_1.ParameterObject;
       }>(
         (parameters, { module }) => ({
           ...parameters,
@@ -346,7 +348,7 @@ async function initAPIDefinitions({
         {},
       ),
       headers: handlersModules.reduce<{
-        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.HeaderObject;
+        [key: string]: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.HeaderObject;
       }>(
         (headers, { module }) => ({
           ...headers,
@@ -371,7 +373,9 @@ async function initAPIDefinitions({
         {},
       ),
       requestBodies: handlersModules.reduce<{
-        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
+        [key: string]:
+          | OpenAPIV3_1.ReferenceObject
+          | OpenAPIV3_1.RequestBodyObject;
       }>(
         (requestBodies, { module }) => ({
           ...requestBodies,
@@ -396,7 +400,7 @@ async function initAPIDefinitions({
         {},
       ),
       responses: handlersModules.reduce<{
-        [key: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.ResponseObject;
+        [key: string]: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ResponseObject;
       }>(
         (responses, { module }) => ({
           ...responses,

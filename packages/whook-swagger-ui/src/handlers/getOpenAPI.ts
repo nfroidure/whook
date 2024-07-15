@@ -2,7 +2,7 @@ import { autoHandler } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 export type WhookAPIOperationSwaggerConfig = {
   private?: boolean;
@@ -10,32 +10,31 @@ export type WhookAPIOperationSwaggerConfig = {
 
 export default autoHandler(getOpenAPI);
 
-export const definition: WhookAPIHandlerDefinition<WhookAPIOperationSwaggerConfig> =
-  {
-    path: '/openAPI',
-    method: 'get',
-    operation: {
-      operationId: 'getOpenAPI',
-      summary: 'Get API documentation.',
-      tags: ['system'],
-      'x-whook': { private: false },
-      responses: {
-        '200': {
-          description: 'Provides the private Open API documentation',
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-              },
+export const definition: WhookAPIHandlerDefinition = {
+  path: '/openAPI',
+  method: 'get',
+  operation: {
+    operationId: 'getOpenAPI',
+    summary: 'Get API documentation.',
+    tags: ['system'],
+    'x-whook': { private: false },
+    responses: {
+      '200': {
+        description: 'Provides the private Open API documentation',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
             },
           },
         },
       },
     },
-  } as WhookAPIHandlerDefinition;
+  },
+} as WhookAPIHandlerDefinition;
 
 async function getOpenAPI(
-  { API }: { API: OpenAPIV3.Document },
+  { API }: { API: OpenAPIV3_1.Document },
   {
     authenticated = false,
     mutedMethods = ['options'],
@@ -47,7 +46,7 @@ async function getOpenAPI(
     mutedParameters?: string[];
     mutedTags?: string[];
   },
-): Promise<WhookResponse<200, void, OpenAPIV3.Document>> {
+): Promise<WhookResponse<200, void, OpenAPIV3_1.Document>> {
   const operations = getOpenAPIOperations<WhookAPIOperationSwaggerConfig>(API);
   const $refs = await SwaggerParser.resolve(API);
 
@@ -78,7 +77,7 @@ async function getOpenAPI(
       paths[operation.path] = {
         ...paths[operation.path],
         [operation.method]: {
-          ...(API.paths[operation.path]?.[operation.method] || {}),
+          ...(API?.paths?.[operation.path]?.[operation.method] || {}),
           ...(operation.parameters &&
             operation.parameters.length && {
               parameters: removeMutedParameters(
@@ -108,18 +107,18 @@ async function getOpenAPI(
 }
 
 function removeMutedParameters(
-  parameters: Array<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>,
+  parameters: Array<OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject>,
   mutedParameters: string[],
   $refs: SwaggerParser.$Refs,
 ) {
   return parameters.reduce(
     (acc, parameter) => {
-      const dereferencedParameter = (parameter as OpenAPIV3.ReferenceObject)
+      const dereferencedParameter = (parameter as OpenAPIV3_1.ReferenceObject)
         .$ref
         ? ($refs.get(
-            (parameter as OpenAPIV3.ReferenceObject).$ref,
-          ) as OpenAPIV3.ParameterObject)
-        : (parameter as OpenAPIV3.ParameterObject);
+            (parameter as OpenAPIV3_1.ReferenceObject).$ref,
+          ) as OpenAPIV3_1.ParameterObject)
+        : (parameter as OpenAPIV3_1.ParameterObject);
 
       if (mutedParameters.includes(dereferencedParameter.name)) {
         return acc;
@@ -127,6 +126,6 @@ function removeMutedParameters(
 
       return acc.concat(parameter);
     },
-    [] as (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[],
+    [] as (OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject)[],
   );
 }

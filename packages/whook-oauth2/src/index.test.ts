@@ -61,7 +61,7 @@ import type {
   OAuth2AccessTokenService,
 } from './index.js';
 import type { Knifecycle } from 'knifecycle';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { Logger } from 'common-services';
 import type {
   AuthenticationService,
@@ -84,8 +84,8 @@ describe('OAuth2 server', () => {
   const time = jest.fn();
   const $autoload = jest.fn();
 
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: '1.0.0',
       title: 'Sample OpenAPI',

@@ -3,14 +3,14 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initCreateCommand from './create.js';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('createCommand', () => {
   const PROJECT_DIR = '/hom/whoiam/project';
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.2',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: '1.0.0',
       title: 'Sample OpenAPI',

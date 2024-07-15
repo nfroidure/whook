@@ -8,7 +8,7 @@ exports[`getOpenAPI should show every endpoints when authenticated 1`] = `
         "title": "test",
         "version": "<already_tested>",
       },
-      "openapi": "3.0.0",
+      "openapi": "3.1.0",
       "paths": {
         "/time": {
           "delete": {
@@ -61,7 +61,7 @@ exports[`getOpenAPI should work 1`] = `
         "title": "test",
         "version": "<already_tested>",
       },
-      "openapi": "3.0.0",
+      "openapi": "3.1.0",
       "paths": {
         "/time": {
           "get": {
@@ -99,7 +99,7 @@ exports[`getOpenAPI should work with muted parameter 1`] = `
         "title": "test",
         "version": "<already_tested>",
       },
-      "openapi": "3.0.0",
+      "openapi": "3.1.0",
       "paths": {
         "/time": {
           "get": {
@@ -135,7 +135,7 @@ exports[`getOpenAPI should work with muted tags 1`] = `
         "title": "test",
         "version": "<already_tested>",
       },
-      "openapi": "3.0.0",
+      "openapi": "3.1.0",
       "paths": {
         "/time": {
           "delete": {

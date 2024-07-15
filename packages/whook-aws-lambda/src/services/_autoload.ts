@@ -32,7 +32,7 @@ import type {
   ServiceInitializerWrapper,
 } from 'knifecycle';
 import type { LogService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type {
   WhookAPIOperationAWSLambdaConfig,
   WhookAWSLambdaConfiguration,
@@ -99,12 +99,12 @@ const initializerWrapper: ServiceInitializerWrapper<
     path: string;
   }>
 > => {
-  let API: OpenAPIV3.Document;
+  let API: OpenAPIV3_1.Document;
   let OPERATION_APIS: WhookRawOperation<WhookAPIOperationAWSLambdaConfig>[];
   const getAPIOperation: (
     serviceName: string,
   ) => Promise<
-    [WhookAWSLambdaConfiguration['type'], string, OpenAPIV3.Document]
+    [WhookAWSLambdaConfiguration['type'], string, OpenAPIV3_1.Document]
   > = (() => {
     return async (serviceName) => {
       const cleanedName = serviceName.split('_').pop();
@@ -131,11 +131,11 @@ const initializerWrapper: ServiceInitializerWrapper<
       }
 
       // eslint-disable-next-line
-      const OPERATION_API: OpenAPIV3.Document = cleanupOpenAPI({
+      const OPERATION_API: OpenAPIV3_1.Document = cleanupOpenAPI({
         ...API,
         paths: {
           [OPERATION.path]: {
-            [OPERATION.method]: API.paths[OPERATION.path]?.[OPERATION.method],
+            [OPERATION.method]: API.paths?.[OPERATION.path]?.[OPERATION.method],
           },
         },
       });
@@ -152,7 +152,9 @@ const initializerWrapper: ServiceInitializerWrapper<
                   {
                     path: OPERATION.path,
                     method: OPERATION.method,
-                    ...OPERATION_API.paths[OPERATION.path]?.[OPERATION.method],
+                    ...OPERATION_API.paths?.[OPERATION.path]?.[
+                      OPERATION.method
+                    ],
                     parameters: OPERATION.parameters,
                   },
                 ])

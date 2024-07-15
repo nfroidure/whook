@@ -3,7 +3,7 @@ import { augmentAPIWithCORS } from '@whook/cors';
 import { noop } from '@whook/whook';
 import type { WhookConfig, WhookAPIDefinitions } from '@whook/whook';
 import type { LogService } from 'common-services';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 export type APIEnv = {
   DEV_MODE?: string;
@@ -41,8 +41,8 @@ async function initAPI({
 }: APIDependencies) {
   log('debug', '🦄 - Initializing the API service!');
 
-  const API: OpenAPIV3.Document = {
-    openapi: '3.0.3',
+  const API: OpenAPIV3_1.Document = {
+    openapi: '3.1.0',
     info: {
       version: API_VERSION,
       title: CONFIG.name,
@@ -97,23 +97,23 @@ The API definition is a JSON serializable object, you
 */
 async function augmentAPIWithFakeAuth(
   { ENV }: { ENV: APIEnv },
-  API: OpenAPIV3.Document,
-): Promise<OpenAPIV3.Document> {
+  API: OpenAPIV3_1.Document,
+): Promise<OpenAPIV3_1.Document> {
   if (!ENV.DEV_MODE) {
     return API;
   }
 
   return {
     ...API,
-    paths: Object.keys(API.paths).reduce<OpenAPIV3.PathsObject>(
+    paths: Object.keys(API.paths || {}).reduce<OpenAPIV3_1.PathsObject>(
       (newPathsObject, path) => ({
         ...newPathsObject,
-        [path]: Object.keys(API.paths[path] || {}).reduce(
+        [path]: Object.keys(API.paths?.[path] || {}).reduce(
           (newPathItem, method) => ({
             ...newPathItem,
             [method]: {
-              ...API.paths[path]?.[method],
-              ...(API.paths[path]?.[method].security
+              ...API.paths?.[path]?.[method],
+              ...(API.paths?.[path]?.[method].security
                 ? {
                     security: [
                       ...(API.paths[path]?.[method]?.security || {}),
