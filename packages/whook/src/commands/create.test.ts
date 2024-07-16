@@ -24,9 +24,9 @@ describe('createCommand', () => {
     tags: [{ name: 'system' }],
   };
   const promptArgs = jest.fn<WhookPromptArgs>();
-  const ensureDir = jest.fn<any>();
-  const writeFile = jest.fn<any>();
-  const pathExists = jest.fn<any>();
+  const ensureDir = jest.fn<(path: string) => Promise<void>>();
+  const writeFile = jest.fn<(path: string, data: string) => Promise<void>>();
+  const pathExists = jest.fn<(path: string) => Promise<boolean>>();
   const inquirer = { prompt: jest.fn<any>() };
   const log = jest.fn<LogService>();
 
@@ -92,26 +92,66 @@ describe('createCommand', () => {
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -123,14 +163,38 @@ describe('createCommand', () => {
       [
         {
           "choices": [
-            "options",
-            "head",
-            "get",
-            "put",
-            "post",
-            "patch",
-            "delete",
-            "trace",
+            {
+              "name": "options",
+              "value": "options",
+            },
+            {
+              "name": "head",
+              "value": "head",
+            },
+            {
+              "name": "get",
+              "value": "get",
+            },
+            {
+              "name": "put",
+              "value": "put",
+            },
+            {
+              "name": "post",
+              "value": "post",
+            },
+            {
+              "name": "patch",
+              "value": "patch",
+            },
+            {
+              "name": "delete",
+              "value": "delete",
+            },
+            {
+              "name": "trace",
+              "value": "trace",
+            },
           ],
           "default": "get",
           "message": "Give the handler method",
@@ -149,9 +213,12 @@ describe('createCommand', () => {
         },
         {
           "choices": [
-            "system",
+            {
+              "name": "system",
+              "value": "system",
+            },
           ],
-          "message": "Assing one or more tags to the handler",
+          "message": "Assign one or more tags to the handler",
           "name": "tags",
           "type": "checkbox",
         },
@@ -280,26 +347,66 @@ async function getHandler(_: HandlerDependencies, {
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -311,14 +418,38 @@ async function getHandler(_: HandlerDependencies, {
       [
         {
           "choices": [
-            "options",
-            "head",
-            "get",
-            "put",
-            "post",
-            "patch",
-            "delete",
-            "trace",
+            {
+              "name": "options",
+              "value": "options",
+            },
+            {
+              "name": "head",
+              "value": "head",
+            },
+            {
+              "name": "get",
+              "value": "get",
+            },
+            {
+              "name": "put",
+              "value": "put",
+            },
+            {
+              "name": "post",
+              "value": "post",
+            },
+            {
+              "name": "patch",
+              "value": "patch",
+            },
+            {
+              "name": "delete",
+              "value": "delete",
+            },
+            {
+              "name": "trace",
+              "value": "trace",
+            },
           ],
           "default": "get",
           "message": "Give the handler method",
@@ -337,9 +468,12 @@ async function getHandler(_: HandlerDependencies, {
         },
         {
           "choices": [
-            "system",
+            {
+              "name": "system",
+              "value": "system",
+            },
           ],
-          "message": "Assing one or more tags to the handler",
+          "message": "Assign one or more tags to the handler",
           "name": "tags",
           "type": "checkbox",
         },
@@ -348,7 +482,8 @@ async function getHandler(_: HandlerDependencies, {
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],
@@ -429,26 +564,66 @@ async function getHandler(_: HandlerDependencies, {
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -460,14 +635,38 @@ async function getHandler(_: HandlerDependencies, {
       [
         {
           "choices": [
-            "options",
-            "head",
-            "get",
-            "put",
-            "post",
-            "patch",
-            "delete",
-            "trace",
+            {
+              "name": "options",
+              "value": "options",
+            },
+            {
+              "name": "head",
+              "value": "head",
+            },
+            {
+              "name": "get",
+              "value": "get",
+            },
+            {
+              "name": "put",
+              "value": "put",
+            },
+            {
+              "name": "post",
+              "value": "post",
+            },
+            {
+              "name": "patch",
+              "value": "patch",
+            },
+            {
+              "name": "delete",
+              "value": "delete",
+            },
+            {
+              "name": "trace",
+              "value": "trace",
+            },
           ],
           "default": "get",
           "message": "Give the handler method",
@@ -486,9 +685,12 @@ async function getHandler(_: HandlerDependencies, {
         },
         {
           "choices": [
-            "system",
+            {
+              "name": "system",
+              "value": "system",
+            },
           ],
-          "message": "Assing one or more tags to the handler",
+          "message": "Assign one or more tags to the handler",
           "name": "tags",
           "type": "checkbox",
         },
@@ -497,7 +699,8 @@ async function getHandler(_: HandlerDependencies, {
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],
@@ -633,26 +836,66 @@ async function getHandler({
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -742,26 +985,66 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -772,7 +1055,8 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],
@@ -847,26 +1131,66 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -877,7 +1201,8 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],
@@ -978,26 +1303,66 @@ async function initAService({
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -1097,26 +1462,66 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -1127,7 +1532,8 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],
@@ -1202,26 +1608,66 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -1232,7 +1678,8 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],
@@ -1346,26 +1793,66 @@ async function initAProvider({
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -1378,6 +1865,7 @@ async function initAProvider({
         {
           "message": "Give the command description",
           "name": "description",
+          "type": "input",
         },
       ],
     ],
@@ -1499,26 +1987,66 @@ async function initACommandCommand({
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -1531,13 +2059,15 @@ async function initACommandCommand({
         {
           "message": "Give the command description",
           "name": "description",
+          "type": "input",
         },
       ],
     ],
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],
@@ -1615,26 +2145,66 @@ async function initACommandCommand({
       [
         {
           "choices": [
-            "codeGenerator",
-            "counter",
-            "delay",
-            "importer",
-            "lock",
-            "log",
-            "random",
-            "resolve",
-            "time",
-            "APP_CONFIG",
-            "ENV",
-            "process",
-            "PROJECT_DIR",
-            "MAIN_FILE_URL",
-            "DEBUG_NODE_ENVS",
-            "BASE_URL",
-            "HOST",
-            "PORT",
-            "API_DEFINITIONS",
-            "APM",
+            {
+              "value": "codeGenerator",
+            },
+            {
+              "value": "counter",
+            },
+            {
+              "value": "delay",
+            },
+            {
+              "value": "importer",
+            },
+            {
+              "value": "lock",
+            },
+            {
+              "value": "log",
+            },
+            {
+              "value": "random",
+            },
+            {
+              "value": "resolve",
+            },
+            {
+              "value": "time",
+            },
+            {
+              "value": "APP_CONFIG",
+            },
+            {
+              "value": "ENV",
+            },
+            {
+              "value": "process",
+            },
+            {
+              "value": "PROJECT_DIR",
+            },
+            {
+              "value": "MAIN_FILE_URL",
+            },
+            {
+              "value": "DEBUG_NODE_ENVS",
+            },
+            {
+              "value": "BASE_URL",
+            },
+            {
+              "value": "HOST",
+            },
+            {
+              "value": "PORT",
+            },
+            {
+              "value": "API_DEFINITIONS",
+            },
+            {
+              "value": "APM",
+            },
           ],
           "message": "Which services do you want to use?",
           "name": "services",
@@ -1647,13 +2217,15 @@ async function initACommandCommand({
         {
           "message": "Give the command description",
           "name": "description",
+          "type": "input",
         },
       ],
     ],
     [
       [
         {
-          "name": "Erase ?",
+          "message": "Erase ?",
+          "name": "erase",
           "type": "confirm",
         },
       ],

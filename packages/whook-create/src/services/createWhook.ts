@@ -81,6 +81,7 @@ export default autoService(async function initCreateWhook({
       eslintConfig: basePackageJSON.eslintConfig,
       prettier: basePackageJSON.prettier,
       jest: basePackageJSON.jest,
+      overrides: basePackageJSON.overrides,
       metapak: undefined,
     };
 

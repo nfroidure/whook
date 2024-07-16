@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { autoService, singleton } from 'knifecycle';
 import _inquirer from 'inquirer';
 import { noop } from '../libs/utils.js';
-import type { Question } from 'inquirer';
 import type { LogService } from 'common-services';
 import type { WhookCommandArgs } from './args.js';
 
@@ -66,9 +66,9 @@ async function initPromptArgs<
   log('debug', '🛠 - Initializing promptArgs service');
 
   return async () => {
-    const questions: Question[] = (
-      COMMAND_DEFINITION.arguments.required || []
-    ).reduce<Question[]>((questions, propertyName) => {
+    const questions = (COMMAND_DEFINITION.arguments.required || []).reduce<
+      any[]
+    >((questions, propertyName) => {
       if ('undefined' === typeof args.namedArguments[propertyName]) {
         const propertyDefinition =
           COMMAND_DEFINITION.arguments.properties[propertyName];
@@ -116,9 +116,9 @@ async function initPromptArgs<
       return args;
     }
 
-    const questionsResponses = (await inquirer.prompt(questions)) as Partial<
-      WhookCommandArgs<T>['namedArguments']
-    >;
+    const questionsResponses = (await inquirer.prompt(
+      questions as any,
+    )) as Partial<WhookCommandArgs<T>['namedArguments']>;
 
     return {
       ...args,

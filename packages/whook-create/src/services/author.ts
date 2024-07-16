@@ -33,18 +33,23 @@ export default autoService(async function initAuthor({
   try {
     await lock.take('cli:input');
 
-    const { authorName, authorEmail } = (await inquirer.prompt([
+    const { authorName, authorEmail } = await inquirer.prompt<{
+      authorName: string;
+      authorEmail: string;
+    }>([
       {
         name: 'authorName',
+        type: 'input',
         message: "What's your name?",
         default: userName,
       },
       {
         name: 'authorEmail',
+        type: 'input',
         message: 'Your email?',
         default: userEmail,
       },
-    ])) as { authorName: string; authorEmail: string };
+    ]);
 
     await lock.release('cli:input');
 

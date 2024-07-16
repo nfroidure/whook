@@ -8,7 +8,6 @@ import _inquirer from 'inquirer';
 import path from 'path';
 import { OPEN_API_METHODS } from '@whook/http-router';
 import { default as fsExtra } from 'fs-extra';
-import type { Answers } from 'inquirer';
 import type {
   WhookCommandHandler,
   WhookCommandDefinition,
@@ -100,7 +99,7 @@ async function initCreateCommand({
   API: OpenAPIV3_1.Document;
   inquirer: typeof _inquirer;
   promptArgs: WhookPromptArgs;
-  writeFile: typeof _writeFile;
+  writeFile: (path: string, data: string) => Promise<void>;
   ensureDir: typeof _ensureDir;
   pathExists: typeof _pathExists;
   log?: LogService;
@@ -126,7 +125,9 @@ async function initCreateCommand({
       throw new YError('E_BAD_HANDLER_NAME', finalName, HANDLER_REG_EXP);
     }
 
-    const { services } = (await inquirer.prompt([
+    const { services } = (await inquirer.prompt<{
+      services: string[];
+    }>([
       {
         name: 'services',
         type: 'checkbox',
@@ -136,7 +137,7 @@ async function initCreateCommand({
           ...Object.keys(applicationServicesTypes),
           ...Object.keys(whookSimpleTypes),
           ...Object.keys(whookServicesTypes),
-        ],
+        ].map((value) => ({ value })),
       },
     ])) as { services: string[] };
 
@@ -217,12 +218,20 @@ import type { ${whookServices
     let fileSource = '';
 
     if (type === 'handler') {
-      let baseQuestions = [
+      const { method, path, description, tags } = await inquirer.prompt<{
+        method: string;
+        path: string;
+        description: string;
+        tags: string[];
+      }>([
         {
           name: 'method',
           type: 'list',
           message: 'Give the handler method',
-          choices: OPEN_API_METHODS,
+          choices: OPEN_API_METHODS.map((method) => ({
+            name: method,
+            value: method,
+          })),
           default: [(HANDLER_REG_EXP.exec(finalName) as string[])[1]].filter(
             (maybeMethod) => OPEN_API_METHODS.includes(maybeMethod),
           )[0],
@@ -237,26 +246,20 @@ import type { ${whookServices
           type: 'input',
           message: 'Give the handler description',
         },
-      ] as Answers[];
-      if (API.tags && API.tags.length) {
-        baseQuestions = [
-          ...baseQuestions,
-          {
-            name: 'tags',
-            type: 'checkbox',
-            message: 'Assing one or more tags to the handler',
-            choices: API.tags.map(({ name }) => name),
-          },
-        ];
-      }
-      const { method, path, description, tags } = (await inquirer.prompt(
-        baseQuestions,
-      )) as {
-        method: string;
-        path: string;
-        description: string;
-        tags: string[];
-      };
+        ...(API.tags && API.tags.length
+          ? ([
+              {
+                name: 'tags',
+                type: 'checkbox',
+                message: 'Assign one or more tags to the handler',
+                choices: (API.tags || []).map(({ name }) => ({
+                  name,
+                  value: name,
+                })),
+              },
+            ] as const)
+          : []),
+      ]);
       fileSource = buildHandlerSource(
         name,
         path,
@@ -282,12 +285,13 @@ import type { ${whookServices
         imports,
       );
     } else if (type === 'command') {
-      const { description } = (await inquirer.prompt([
+      const { description } = await inquirer.prompt<{ description: string }>([
         {
           name: 'description',
           message: 'Give the command description',
+          type: 'input',
         },
-      ])) as { description: string };
+      ]);
 
       fileSource = buildCommandSource(
         name,
@@ -314,14 +318,15 @@ import type { ${whookServices
     if (await pathExists(filePath)) {
       log('warning', '⚠️ - The file already exists !');
 
-      const { erase } = (await inquirer.prompt([
+      const { erase } = await inquirer.prompt<{
+        erase: boolean;
+      }>([
         {
-          name: 'Erase ?',
+          name: 'erase',
+          message: 'Erase ?',
           type: 'confirm',
         },
-      ])) as {
-        erase: boolean;
-      };
+      ]);
 
       if (!erase) {
         return;

@@ -30,18 +30,22 @@ export default autoService(async function initProject({
   try {
     await lock.take('cli:input');
 
-    const { projectName } = await inquirer.prompt([
+    const { projectName } = await inquirer.prompt<{ projectName: string }>([
       {
         name: 'projectName',
         message: "What's this new project name",
+        type: 'input',
         default: DEFAULT_PROJECT_NAME,
       },
     ]);
 
-    const { projectDirectory } = await inquirer.prompt([
+    const { projectDirectory } = await inquirer.prompt<{
+      projectDirectory: string;
+    }>([
       {
         name: 'projectDirectory',
         message: "Provide the project's directory",
+        type: 'input',
         default: path.join(CWD, projectName),
       },
     ]);
