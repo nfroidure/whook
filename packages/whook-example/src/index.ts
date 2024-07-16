@@ -196,6 +196,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(
     constant('WHOOK_PLUGINS', [
       ...WHOOK_DEFAULT_PLUGINS,
+      '@whook/gcp-functions',
       '@whook/cors',
       '@whook/authorization',
     ]),
