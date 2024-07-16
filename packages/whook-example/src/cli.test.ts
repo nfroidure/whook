@@ -17,8 +17,9 @@ describe('commands should work', () => {
 ",
   "stdout": "
 
-# Provided by "@whook/example": 1 commands
+# Provided by "@whook/example": 2 commands
 - printEnv: A command printing every env values
+- terraformValues: A command printing lambdas informations for Terraform
 
 
 # Provided by "@whook/whook": 8 commands
@@ -36,6 +37,16 @@ describe('commands should work', () => {
 
 
 # Provided by "@whook/authorization": none
+
+
+# Provided by "@whook/aws-lambda": 7 commands
+- testConsumerLambda: A command for testing AWS consumer lambda
+- testCronLambda: A command for testing AWS cron lambda
+- testHTTPLambda: A command for testing AWS HTTP lambda
+- testKafkaConsumerLambda: A command for testing AWS lambda Kafka consumers
+- testS3Lambda: A command for testing AWS consumer lambda
+- testS3Lambda: A command for testing AWS consumer lambda
+- testTransformerLambda: A command for testing AWS lambda transformers
 ",
 }
 `);
