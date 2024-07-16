@@ -1,3 +1,12 @@
+# [17.0.0](https://github.com/nfroidure/whook/compare/v16.1.1...v17.0.0) (2024-07-16)
+
+
+### Features
+
+* **openapi:** move OpenAPI support to 3.1 ([87fe576](https://github.com/nfroidure/whook/commit/87fe576be7ebe32835ff7b45d8f0c2d145316e85))
+
+
+
 ## <small>16.1.1 (2024-05-27)</small>
 
 * chore(dependencies): update dependencies ([8bc226a](https://github.com/nfroidure/whook/commit/8bc226a))
