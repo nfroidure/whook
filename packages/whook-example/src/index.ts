@@ -13,7 +13,11 @@ import initHTTPRouter from '@whook/http-router';
 import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv } from 'application-services';
+import wrapHTTPRouterWithGraphIQL from '@whook/graphiql';
+import { initGraphQL } from '@whook/graphql';
+import { gql } from 'graphql-tag';
 import type { DependencyDeclaration, Dependencies } from 'knifecycle';
+import type { WhookGraphQLFragmentService } from '@whook/graphql';
 
 /* Architecture Note #1: A Whook baked API
 This API server uses the Whook engine. Thoses architecture
@@ -77,7 +81,9 @@ export async function prepareServer<
    development purpose.
   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as any);
+  $.register(
+    wrapHTTPRouterWithGraphIQL(wrapHTTPRouterWithSwaggerUI(initHTTPRouter)),
+  );
 
   return await prepareBaseServer(injectedNames, $);
 }
@@ -196,6 +202,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(
     constant('WHOOK_PLUGINS', [
       ...WHOOK_DEFAULT_PLUGINS,
+      '@whook/graphql',
       '@whook/cors',
       '@whook/authorization',
     ]),
@@ -203,6 +210,36 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   // Add the CORS wrapped error handler
   $.register(initErrorHandlerWithCORS);
+
+  // Add the Apollo Server configuration
+  $.register(
+    constant('GRAPHQL_SERVER_OPTIONS', {
+      context: ({ operation, requestContext }) => ({
+        operationId: operation.operationId,
+        authenticationData: requestContext.authenticationData,
+      }),
+    }),
+  );
+
+  // Declare the GraphQL schema fragments
+  const helloFragment: WhookGraphQLFragmentService = {
+    typeDefs: gql`
+      type Query {
+        hello: String
+      }
+      schema {
+        query: Query
+      }
+    `,
+    resolvers: {
+      Query: {
+        hello: () => 'Hello world!',
+      },
+    },
+  };
+
+  $.register(initGraphQL);
+  $.register(constant('graphQLFragments', [helloFragment]));
 
   return $;
 }

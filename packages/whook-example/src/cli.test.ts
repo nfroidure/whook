@@ -32,6 +32,9 @@ describe('commands should work', () => {
 - ls: Print available commands
 
 
+# Provided by "@whook/graphql": none
+
+
 # Provided by "@whook/cors": none
 
 
