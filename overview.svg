@@ -2,23 +2,23 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="4051.5669"
    height="3534.6653"
    viewBox="0 0 4051.5669 3534.6651"
    id="svg2"
    version="1.1"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="overview.svg"
    inkscape:export-filename="./overview.svg.png"
    inkscape:export-xdpi="24.299999"
-   inkscape:export-ydpi="24.299999">
+   inkscape:export-ydpi="24.299999"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -28,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.32"
-     inkscape:cx="2198.9699"
-     inkscape:cy="2151.3038"
+     inkscape:zoom="0.16"
+     inkscape:cx="1150"
+     inkscape:cy="1318.75"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -44,7 +44,8 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     units="px" />
+     units="px"
+     inkscape:pagecheckerboard="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -53,7 +54,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -387,8 +387,13 @@
          x="-1026.766"
          id="tspan4296"
          sodipodi:role="line"
-         style="font-size:70px;line-height:1.25">Serializable</tspan><tspan
+         style="font-size:70px;line-height:1.25">JSON</tspan><tspan
          y="275.14627"
+         x="-1026.766"
+         sodipodi:role="line"
+         style="font-size:70px;line-height:1.25"
+         id="tspan1247">Serializable</tspan><tspan
+         y="362.64627"
          x="-1026.766"
          sodipodi:role="line"
          id="tspan4302"
@@ -403,10 +408,15 @@
          id="tspan4300"
          x="-1024.0554"
          y="744.35046"
-         style="font-size:70px;line-height:1.25">Serializable</tspan><tspan
+         style="font-size:70px;line-height:1.25">JSON</tspan><tspan
          sodipodi:role="line"
          x="-1024.0554"
          y="831.85046"
+         style="font-size:70px;line-height:1.25"
+         id="tspan2603">Serializable</tspan><tspan
+         sodipodi:role="line"
+         x="-1024.0554"
+         y="919.35046"
          id="tspan4304"
          style="font-size:70px;line-height:1.25">Response</tspan></text>
     <rect
@@ -552,7 +562,7 @@
          y="1265.8418"
          x="111.73485"
          sodipodi:role="line"
-         style="font-size:70px;line-height:1.25">Serialized Response</tspan></text>
+         style="font-size:70px;line-height:1.25">JSON Serializable Response</tspan></text>
     <rect
        transform="matrix(0,-1,-1,0,0,0)"
        style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.40616301;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"

@@ -91,7 +91,6 @@ export async function watchDevServer<T extends Dependencies>(
         reject(err);
       })
       .on('all', (_event, filePath) => {
-        console.log('event', filePath)
         // TODO: determine all the files needing a complete restart
         if (filePath.match(/package.*\.json/)) {
           log(

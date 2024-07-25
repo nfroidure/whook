@@ -12,14 +12,14 @@
 
 [//]: # (::contents:start)
 
-Why write code when you have an OpenAPI 3 definition?
+Why write code when you have an OpenAPI 3.1 definition?
 
 ![The Whook's logo](./whook.svg)
 
 ## Summary
 
 Whook eats your documentation and provides you with a performant router that
-take care of running the right code for the right operation.
+takes care of running the right code for the right operation.
 
 By using the [OpenAPI](https://www.openapis.org/) standard and the dependency
 injection pattern, Whook provides a convenient, highly modular and easily
@@ -40,7 +40,7 @@ DRY_RUN=1 npm run start
 # Run tests
 npm t
 
-# Start developping
+# Start developing
 npm run watch
 
 # Build the project
@@ -55,7 +55,7 @@ npx whook create
 - robust: types, functional programming
 - highly modular, extendable and reusable
 - fully integrated and production ready
-- easy to deploy, anywhere (serverless, docker, microservices): enter the
+- can be deployed anywhere (serverless, docker, microservices): enter the
   anylith era
 - easy to test: TDD, E2E tests made easy
 - feature complete for most API use cases
@@ -85,7 +85,7 @@ overflow with the
 [Whook tag](https://stackoverflow.com/questions/ask?tags=whook). Questions with
 this tag will be regularly checked by Whook's authors.
 
-Finally, if you encounter any bug (unexpecter error, feature requests, OpenAPI
+Finally, if you encounter any bug (unexpected error, feature requests, OpenAPI
 specification violation), please fill an issue!
 
 ## Principles
@@ -99,7 +99,7 @@ This projects aims to make creating well documented and highly customizable REST
 APIs a breeze. It is the final outcome of my experience
 [building REST APIs with NodeJS](https://insertafter.com/en/blog/http_rest_apis_with_nodejs.html).
 
-By relying on the [OpenAPI format](https://www.openapis.org/) to declare a new
+By relying on the [OpenAPI schemas](https://www.openapis.org/) to declare a new
 endpoint, this project forces documentation before code. It also is highly
 customizable since based on the dependency injection with inversion of control
 pattern allowing you to override or wrap its main constituents.
@@ -108,14 +108,14 @@ pattern allowing you to override or wrap its main constituents.
 
 The Whook route handling flow is very simple.
 
-First, we have a HTTPServer that handles requests and serve responses (the
+First, we have a HTTPServer that handles requests and serves responses (the
 `httpServer` service).
 
 Then, the `httpTransaction` transform the NodeJS requests into raw serializable
 ones (raw objects with no methods nor internal states, useful for testing).
 
-Then the router (`httpRouter`) deal with that request to test which handler need
-to be run by comparing the method/path couple with the OpenAPI operations
+Then the router (`httpRouter`) deal with that request to test which handler
+needs to be run by comparing the method/path couple with the OpenAPI operations
 declarations.
 
 Once found, it simply runs the right handler with the OpenAPI parameters value
@@ -127,8 +127,8 @@ for providing the now lacking response object based on the error it catches.
 
 And that's it, you have your REST API. We have
 [no middleware](http://insertafter.com/en/blog/no_more_middlewares.html) concept
-here. Instead, every handler is a simple function taking an object and returning
-another one. It makes those objects very easily composable (in a functional
+here. Instead, every handler is a simple function taking paramters and returning
+a response. It makes those functions very easily composable (in a functional
 programming sense).
 
 You may add global wrappers to change every handlers input/output on the fly or
@@ -140,11 +140,11 @@ Whook work by adding ingredients to you API:
 
 - **configuration**: Whook look ups for `config/{NODE_ENV}/config.js` files. It
   creates constants you can inject in your handlers and services.
-- **API**: It defines the various endpoint of you API and how to map these to
+- **API**: It defines the various endpoint of your API and how to map these to
   handlers thanks to the well known OpenAPI format (formerly Swagger),
 - **handlers**: the code that implement the API endpoints,
 - **services**: various services that deal with side effects,
-- **wrappers**: higher order functions you can apply to handlers (CORS
+- **wrappers**: higher order functions you can apply to handlers (CORS,
   authentication...).
 
 You can see a lot of those concepts implemented in the
@@ -176,7 +176,7 @@ Install those
 [VSCode extensions](https://insertafter.com/en/blog/my_vscode_configuration.html)
 to get a smooth developer experience.
 
-For commiting run:
+For committing run:
 
 ```sh
 npm run cz
