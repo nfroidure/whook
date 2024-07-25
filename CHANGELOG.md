@@ -1,3 +1,12 @@
+## [17.0.1](https://github.com/nfroidure/whook/compare/v17.0.0...v17.0.1) (2024-07-25)
+
+
+### Bug Fixes
+
+* **watch:** fix watch system ([53797ea](https://github.com/nfroidure/whook/commit/53797ea9bcf5b7bc4f46066d6582d819dfb85a44))
+
+
+
 # [17.0.0](https://github.com/nfroidure/whook/compare/v16.1.1...v17.0.0) (2024-07-16)
 
 
