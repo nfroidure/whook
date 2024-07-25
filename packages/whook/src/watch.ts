@@ -6,14 +6,14 @@ import { createWriteStream } from 'node:fs';
 import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
 import initGetOpenAPI from './handlers/getOpenAPI.js';
 import initWatchResolve from './services/watchResolve.js';
-import { readFile } from 'node:fs';
-import { promisify } from 'node:util';
+import { readFile } from 'node:fs/promises';
 import ignore from 'ignore';
 import { AppEnvVars } from 'application-services';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { type Dependencies, Knifecycle, constant } from 'knifecycle';
 import type { DelayService, LogService } from 'common-services';
 import type { OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
+import { printStackTrace } from 'yerror';
 
 let $instance: Knifecycle;
 let log: LogService;
@@ -32,6 +32,7 @@ export type WatchServerDependencies = OpenAPITypesConfig & {
 
 export type WatchServerArgs<T extends Dependencies> = {
   injectedNames: string[];
+  ignored?: string[];
   afterRestartEnd?: (
     services: T & WatchServerDependencies,
     context: { apiChanged: boolean; openAPIData: string },
@@ -39,34 +40,48 @@ export type WatchServerArgs<T extends Dependencies> = {
 };
 
 export async function watchDevServer<T extends Dependencies>(
-  { injectedNames = [], afterRestartEnd }: WatchServerArgs<T> = {
+  { injectedNames = [], ignored = [], afterRestartEnd }: WatchServerArgs<T> = {
     injectedNames: [],
+    ignored: [],
   },
 ): Promise<void> {
   let restartsCounter = 0;
-  let ignoreFilter;
+  const ignoreFilter: (pathname: string) => boolean = await (async () => {
+    let ignoreFileContent: string;
+    let ignoreBuilder = ignore.default();
 
-  try {
-    ignoreFilter = ignore
-      .default()
-      .add(['node_modules', '*.d.ts', '.git'])
-      .add((await promisify(readFile)('.gitignore')).toString())
-      .createFilter();
-  } catch (err) {
-    // TODO: requires a deeper integration of Knifecycle to
-    // start with a silo containing only the environment
-    // and then another one for the server. It would allow
-    // to wrap the chokidar wat into a service too.
-    // log('debug', '🤷 - Cannot find/parse .gitignore');
-    // log('debug-stack', printStackTrace(err as Error));
-  }
+    ignoreBuilder = ignoreBuilder.add(['node_modules', '*.d.ts', '.git']);
+
+    if (ignored.length) {
+      ignoreBuilder = ignoreBuilder.add(ignored);
+    }
+
+    try {
+      ignoreFileContent = (await readFile('.gitignore')).toString();
+      ignoreBuilder = ignoreBuilder.add(ignoreFileContent || []);
+    } catch (err) {
+      // TODO: requires a deeper integration of Knifecycle to
+      // start with a silo containing only the environment
+      // and then another one for the server. It would allow
+      // to wrap the chokidar watch into a service too.
+      log?.('debug', '🤷 - Cannot find/parse .gitignore');
+      log?.('debug-stack', printStackTrace(err as Error));
+    }
+    return ignoreBuilder.createFilter();
+  })();
 
   await restartDevServer({ injectedNames, afterRestartEnd, restartsCounter });
 
   await new Promise<void>((resolve, reject) => {
     chokidar
       .watch(['**/*.ts', 'package*.json'], {
-        ignored: ignoreFilter,
+        ignored: (str: string) => {
+          // ignore throws with this file name
+          if (str === '.') {
+            return false;
+          }
+          return !ignoreFilter(str);
+        },
         ignoreInitial: true,
       })
       .once('ready', () => {
@@ -76,6 +91,7 @@ export async function watchDevServer<T extends Dependencies>(
         reject(err);
       })
       .on('all', (_event, filePath) => {
+        console.log('event', filePath)
         // TODO: determine all the files needing a complete restart
         if (filePath.match(/package.*\.json/)) {
           log(
