@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/whook",
-  "version": "17.0.1",
+  "version": "17.0.2",
   "description": "Build strong and efficient REST web services.",
   "type": "module",
   "main": "dist/index.js",
@@ -106,9 +106,9 @@
     "typescript-eslint": "^7.16.0"
   },
   "dependencies": {
-    "@whook/http-router": "^17.0.0",
-    "@whook/http-server": "^17.0.0",
-    "@whook/http-transaction": "^17.0.0",
+    "@whook/http-router": "^17.0.2",
+    "@whook/http-server": "^17.0.2",
+    "@whook/http-transaction": "^17.0.2",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "application-services": "^6.1.0",
