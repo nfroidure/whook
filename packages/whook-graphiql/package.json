@@ -80,7 +80,7 @@
     "@swc/helpers": "^0.5.12",
     "@swc/jest": "^0.2.36",
     "@whook/http-router": "^17.0.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.7",
     "eslint": "^9.7.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "^28.6.0",

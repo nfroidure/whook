@@ -57,7 +57,7 @@
     "application-services": "^6.1.0",
     "knifecycle": "^17.0.3",
     "openapi-types": "^12.1.3",
-    "semver": "^7.6.2",
+    "semver": "^7.6.3",
     "yhttperror": "^8.0.0"
   },
   "devDependencies": {
