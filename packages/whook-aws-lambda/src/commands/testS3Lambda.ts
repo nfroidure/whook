@@ -109,25 +109,10 @@ async function initTestS3LambdaCommand({
       extension,
     );
     const parsedEvent = JSON.parse(event);
-    const result = await new Promise((resolve, reject) => {
-      const handlerPromise = handler(
-        parsedEvent,
-        {
-          succeed: (...args: unknown[]) => {
-            handlerPromise.then(resolve.bind(null, ...args));
-          },
-          fail: reject,
-        },
-        (err: Error, ...args: unknown[]) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          handlerPromise.then(resolve.bind(null, ...args));
-        },
-      ).catch(reject);
-    });
+    const result = await handler(parsedEvent, {});
 
     log('info', 'SUCCESS:', result as string);
+
+    process.emit('SIGTERM');
   };
 }

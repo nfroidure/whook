@@ -166,26 +166,10 @@ async function initTestHTTPLambdaCommand({
     }
     log('info', 'AWS_REQUEST:', awsRequest as unknown as string);
 
-    const result: APIGatewayProxyResult = await new Promise(
-      (resolve, reject) => {
-        const handlerPromise = handler(
-          awsRequest,
-          {
-            succeed: (...args: any[]) => {
-              handlerPromise.then(resolve.bind(null, ...args));
-            },
-            fail: reject,
-          },
-          (err: Error, ...args: any[]) => {
-            if (err) {
-              reject(err);
-              return;
-            }
-            handlerPromise.then(resolve.bind(null, ...args));
-          },
-        ).catch(reject);
-      },
-    );
+    const result: APIGatewayProxyResult = await handler(awsRequest);
+
     log('info', 'SUCCESS:', result as unknown as string);
+
+    process.emit('SIGTERM');
   };
 }

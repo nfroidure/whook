@@ -81,29 +81,13 @@ async function initTestCronLambdaCommand({
       type,
       extension,
     );
-
-    const result = await new Promise((resolve, reject) => {
-      const handlerPromise = handler(
-        {
-          time: date === 'now' ? new Date(time()).toISOString() : date,
-          body: JSON.parse(body),
-        },
-        {
-          succeed: (...args: unknown[]) => {
-            handlerPromise.then(resolve.bind(null, ...args));
-          },
-          fail: reject,
-        },
-        (err: Error, ...args: unknown[]) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          handlerPromise.then(resolve.bind(null, ...args));
-        },
-      ).catch(reject);
-    });
+    const result = await handler({
+      time: date === 'now' ? new Date(time()).toISOString() : date,
+      body: JSON.parse(body),
+    }, {});
 
     log('info', 'SUCCESS:', result as string);
+
+    process.emit('SIGTERM');
   };
 }
