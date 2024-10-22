@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
@@ -12,7 +11,7 @@ import type {
 } from '@whook/whook';
 import type { TimeService, LogService } from 'common-services';
 import type { OpenAPIV3_1 } from 'openapi-types';
-import type { MSKEvent, Context } from 'aws-lambda';
+import type { MSKEvent } from 'aws-lambda';
 import type { AppEnvVars } from 'application-services';
 
 export type LambdaKafkaConsumerInput = { body: MSKEvent['records'] };
@@ -61,7 +60,10 @@ async function initWrapHandlerForKafkaLambda<S extends WhookHandler>({
     const wrappedHandler = handleForAWSKafkaConsumerLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as any,
+      handler as WhookHandler<
+      LambdaKafkaConsumerInput,
+      LambdaKafkaConsumerOutput
+    >,
     );
 
     return wrappedHandler as unknown as S;
@@ -80,8 +82,6 @@ async function handleForAWSKafkaConsumerLambda(
   }: Required<WhookWrapKafkaLambdaDependencies>,
   handler: WhookHandler<LambdaKafkaConsumerInput, LambdaKafkaConsumerOutput>,
   event: MSKEvent,
-  context: Context,
-  callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
@@ -113,8 +113,6 @@ async function handleForAWSKafkaConsumerLambda(
         0,
       ),
     });
-
-    callback(null as unknown as Error);
   } catch (err) {
     const castedErr = YError.cast(err as Error);
 
@@ -135,7 +133,7 @@ async function handleForAWSKafkaConsumerLambda(
       ),
     });
 
-    callback(err as Error);
+    throw castedErr;
   }
 }
 

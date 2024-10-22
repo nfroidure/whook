@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
@@ -12,7 +11,7 @@ import type {
 } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
 import type { OpenAPIV3_1 } from 'openapi-types';
-import type { S3Event, Context } from 'aws-lambda';
+import type { S3Event } from 'aws-lambda';
 import type { AppEnvVars } from 'application-services';
 
 export type LambdaS3Input = { body: S3Event['Records'] };
@@ -76,8 +75,6 @@ async function handleForAWSS3Lambda(
   }: Required<WhookWrapS3LambdaDependencies>,
   handler: WhookHandler<LambdaS3Input, LambdaS3Output>,
   event: S3Event,
-  context: Context,
-  callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
@@ -105,7 +102,6 @@ async function handleForAWSS3Lambda(
       endTime: time(),
       recordsLength: event.Records.length,
     });
-    callback(null as unknown as Error);
   } catch (err) {
     const castedErr = YError.cast(err as Error);
 
@@ -123,7 +119,7 @@ async function handleForAWSS3Lambda(
       recordsLength: event.Records.length,
     });
 
-    callback(err as Error);
+    throw castedErr;
   }
 }
 

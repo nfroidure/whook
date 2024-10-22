@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
@@ -17,7 +16,6 @@ import type {
   FirehoseTransformationEventRecord,
   FirehoseTransformationResultRecord,
   FirehoseTransformationResult,
-  Context,
 } from 'aws-lambda';
 import type { AppEnvVars } from 'application-services';
 
@@ -116,9 +114,7 @@ async function handleForAWSTransformerLambda(
   }: Required<TransformerWrapperDependencies>,
   handler: WhookHandler<LambdaTransformerInput, LambdaTransformerOutput>,
   event: FirehoseTransformationEvent,
-  context: Context,
-  callback: (err: Error | null, result?: FirehoseTransformationResult) => void,
-) {
+): Promise<FirehoseTransformationResult> {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
   const OPERATION: WhookOperation = {
@@ -146,7 +142,7 @@ async function handleForAWSTransformerLambda(
       recordsLength: event.records.length,
     });
 
-    callback(null, { records: response.body.map(encodeRecord) });
+    return { records: response.body.map(encodeRecord) };
   } catch (err) {
     const castedErr = YError.cast(err as Error);
 
@@ -164,7 +160,7 @@ async function handleForAWSTransformerLambda(
       recordsLength: event.records.length,
     });
 
-    callback(err as Error);
+    throw castedErr;
   }
 }
 

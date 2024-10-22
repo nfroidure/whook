@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
@@ -12,7 +11,7 @@ import type {
 } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
 import type { OpenAPIV3_1 } from 'openapi-types';
-import type { ScheduledEvent, Context } from 'aws-lambda';
+import type { ScheduledEvent } from 'aws-lambda';
 import type { JsonObject } from 'type-fest';
 import type { AppEnvVars } from 'application-services';
 
@@ -61,7 +60,7 @@ async function initWrapHandlerForCronLambda<S extends WhookHandler>({
     const wrappedHandler = handleForAWSCronLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as any,
+      handler as WhookHandler<LambdaCronInput, LambdaCronOutput>,
     );
 
     return wrappedHandler as unknown as S;
@@ -80,8 +79,6 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
   }: Required<WhookWrapCronLambdaDependencies>,
   handler: WhookHandler<LambdaCronInput<T>, LambdaCronOutput>,
   event: ScheduledEvent & { body: T },
-  context: Context,
-  callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
@@ -109,7 +106,6 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
       startTime,
       endTime: time(),
     });
-    callback(null as unknown as Error);
   } catch (err) {
     const castedErr = YError.cast(err as Error);
 
@@ -126,7 +122,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
       endTime: time(),
     });
 
-    callback(err as Error);
+    throw castedErr;
   }
 }
 
