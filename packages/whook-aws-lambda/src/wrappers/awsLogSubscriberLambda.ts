@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import zlib from 'zlib';
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
@@ -17,7 +16,6 @@ import type { JsonValue } from 'type-fest';
 import type {
   CloudWatchLogsEvent,
   CloudWatchLogsDecodedData,
-  Context,
 } from 'aws-lambda';
 import type { AppEnvVars } from 'application-services';
 
@@ -94,8 +92,6 @@ async function handleForAWSLogSubscriberLambda<
   }: Required<WhookWrapLogSubscriberLambdaDependencies>,
   handler: S,
   event: CloudWatchLogsEvent,
-  context: Context,
-  callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
@@ -124,8 +120,6 @@ async function handleForAWSLogSubscriberLambda<
       endTime: time(),
       recordsLength: parameters.body.logEvents.length,
     });
-
-    callback(null as unknown as Error);
   } catch (err) {
     const castedErr = YError.cast(err as Error);
 
@@ -143,7 +137,7 @@ async function handleForAWSLogSubscriberLambda<
       recordsLength: parameters.body.logEvents.length,
     });
 
-    callback(err as Error);
+    throw castedErr;
   }
 }
 

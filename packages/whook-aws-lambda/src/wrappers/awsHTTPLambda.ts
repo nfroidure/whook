@@ -52,7 +52,6 @@ import {
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
-  Context,
 } from 'aws-lambda';
 import type { WhookErrorHandler } from '@whook/http-router';
 import type { AppEnvVars } from 'application-services';
@@ -262,8 +261,6 @@ async function handleForAWSHTTPLambda(
   },
   handler: WhookHandler<LambdaHTTPInput, LambdaHTTPOutput>,
   event: APIGatewayProxyEvent,
-  context: Context,
-  callback: (err: Error, result?: APIGatewayProxyResult) => void,
 ) {
   const startTime = time();
   const bufferLimit = bytes.parse(BUFFER_LIMIT);
@@ -506,7 +503,8 @@ async function handleForAWSHTTPLambda(
       {},
     ),
   });
-  callback(null as unknown as Error, awsResponse);
+
+  return awsResponse;
 }
 
 async function awsRequestEventToRequest(

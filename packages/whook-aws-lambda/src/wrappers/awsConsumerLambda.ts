@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
@@ -16,7 +15,6 @@ import type {
   KinesisStreamEvent,
   SQSEvent,
   SNSEvent,
-  Context,
   SESEvent,
   DynamoDBStreamEvent,
 } from 'aws-lambda';
@@ -84,7 +82,7 @@ async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
     const wrappedHandler = handleForAWSConsumerLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as any,
+      handler as WhookHandler<LambdaConsumerInput, LambdaConsumerOutput>,
     );
 
     return wrappedHandler as unknown as S;
@@ -108,8 +106,6 @@ async function handleForAWSConsumerLambda(
     | SNSEvent
     | SESEvent
     | DynamoDBStreamEvent,
-  context: Context,
-  callback: (err: Error) => void,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})?.[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
@@ -138,8 +134,6 @@ async function handleForAWSConsumerLambda(
       endTime: time(),
       recordsLength: event.Records.length,
     });
-
-    callback(null as unknown as Error);
   } catch (err) {
     const castedErr = YError.cast(err as Error);
 
@@ -157,7 +151,7 @@ async function handleForAWSConsumerLambda(
       recordsLength: event.Records.length,
     });
 
-    callback(err as Error);
+    throw castedErr;
   }
 }
 
