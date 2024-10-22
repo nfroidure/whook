@@ -1,3 +1,12 @@
+## [17.0.2](https://github.com/nfroidure/whook/compare/v17.1.0...v17.0.2) (2024-10-22)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix lambdas testing command ([123da4f](https://github.com/nfroidure/whook/commit/123da4f6026c597871e1459ae37956e14ef1c994))
+
+
+
 ## [17.0.2](https://github.com/nfroidure/whook/compare/v17.0.1...v17.0.2) (2024-10-02)
 
 

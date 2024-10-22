@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/aws-lambda",
-  "version": "17.1.0",
+  "version": "17.1.1",
   "description": "Build and deploy to AWS Lambda with Whook.",
   "type": "module",
   "main": "dist/index.js",
