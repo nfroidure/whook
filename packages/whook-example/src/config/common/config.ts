@@ -32,7 +32,6 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     description: _packageJSON.description || '',
   },
   DEBUG_NODE_ENVS: process.env.DEBUG ? Object.keys(NodeEnv) : DEBUG_NODE_ENVS,
-  SERVICE_NAME_MAP: {},
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,
     E_INVALID_FAKE_TOKEN: {

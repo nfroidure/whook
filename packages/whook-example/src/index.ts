@@ -136,8 +136,29 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(constant('MAIN_FILE_URL', import.meta.url));
 
-  $.register(constant('APP_ENV', extractAppEnv<AppEnv>(env.APP_ENV, APP_ENVS)));
-  /* Architecture Note #1.1.3.3: TRANSACTIONS
+  /* Architecture Note #1.1.3.4: APP_ENV
+
+  Reading the `APP_ENV` from the process environment and defining
+   it as a constant.
+  */
+  const APP_ENV = extractAppEnv<AppEnv>(env.APP_ENV, APP_ENVS);
+
+  $.register(constant('APP_ENV', APP_ENV));
+
+  /* Architecture Note #1.1.3.4: $overrides
+
+  Setting the `knifecycle` `$overrides` service depending on the
+   current `APP_ENV`. It allows to map services to different
+   implementations.
+  */
+  $.register(
+    constant(
+      '$overrides',
+      (await import(`./config/${APP_ENV}/overrides.js`)).default,
+    ),
+  );
+
+  /* Architecture Note #1.1.3.6: TRANSACTIONS
 
   The Whook HTTP Transaction service, maintains an internal
    hash that handles a list of the current running HTTP
@@ -186,7 +207,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
     ]),
   );
 
-  /* Architecture Note #1.1.3.4: WHOOK_PLUGINS
+  /* Architecture Note #1.1.3.7: WHOOK_PLUGINS
   
   Plugins allows you to add simple features to the Whook's core,
    to add some, just add the plugin module name here.

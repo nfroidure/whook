@@ -8,12 +8,7 @@ export type OpenAPITypesConfig = {
   OPEN_API_TYPES_CONFIG: OpenAPITypesGenerationOptions;
 };
 
-/* Architecture Note #5.3: Examples
-
-Whook's default project comes with a few sample commands.
-*/
-
-/* Architecture Note #5.3.1: Typings generator
+/* Architecture Note #2.9.2.2: Typings generator
 
 This command allows you to generate the API types that
  helps you to write your handler in a clean and safe

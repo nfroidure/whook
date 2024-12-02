@@ -146,12 +146,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -170,7 +170,7 @@ describe('initCreateWhook', () => {
     "common-services": "^16.0.4",
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^10.1.1",
-    "knifecycle": "^17.0.3",
+    "knifecycle": "^17.2.1",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
@@ -343,12 +343,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -367,7 +367,7 @@ describe('initCreateWhook', () => {
     "common-services": "^16.0.4",
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^10.1.1",
-    "knifecycle": "^17.0.3",
+    "knifecycle": "^17.2.1",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
@@ -525,12 +525,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -549,7 +549,7 @@ describe('initCreateWhook', () => {
     "common-services": "^16.0.4",
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^10.1.1",
-    "knifecycle": "^17.0.3",
+    "knifecycle": "^17.2.1",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",

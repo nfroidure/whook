@@ -109,9 +109,7 @@ export type {
   WhookAPIHandlerModule,
 } from './services/API_DEFINITIONS.js';
 export type {
-  WhookAutoloadConfig,
   WhookAutoloadDependencies,
-  WhookServiceMap,
   WhookInitializerMap,
 } from './services/_autoload.js';
 export type { LogService } from 'common-services';
@@ -204,7 +202,14 @@ export {
   runCLI,
 };
 
-/* Architecture Note #1: Server run
+/* Architecture Note #1: Main file
+The Whook's main file exports :
+- its specific types,
+- its specific `knifecycle` compatible services,
+- a few bootstrapping functions.
+*/
+
+/* Architecture Note #1.1: Server run
 Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
@@ -287,7 +292,7 @@ export async function runServer<
   }
 }
 
-/* Architecture Note #2: Server preparation
+/* Architecture Note #1.2: Server preparation
 Whook exposes a `prepareServer` function to create its server
  configuration. It takes eventually additional injections that
  would be required at a higher level and a
@@ -308,7 +313,7 @@ export async function prepareServer<
   D extends Dependencies,
   T extends Knifecycle,
 >(injectedNames: string[], $: T): Promise<D> {
-  /* Architecture Note #2.1: Root injections
+  /* Architecture Note #1.2.1: Root injections
    * We need to inject `httpServer` and `process` to bring life to our
    *  server. We also inject `log` for logging purpose and custom other
    *  injected name that were required upfront.
@@ -322,12 +327,12 @@ export async function prepareServer<
   return { log, ...services } as unknown as D;
 }
 
-/* Architecture Note #3: Server environment
+/* Architecture Note #1.3: Server environment
 The Whook `prepareEnvironment` function aims to provide the complete
  server environment without effectively planning its run. It allows
- to use that environment for CLI or build purposes. It also
+ to use that environment for CLI, REPL or build purposes. It also
  provides a chance to override some services/constants
- before actually preparing the server.
+ before actually preparing the server in actual projects main file.
  */
 /**
  * Prepare the Whook server environment
@@ -339,47 +344,11 @@ The Whook `prepareEnvironment` function aims to provide the complete
 export async function prepareEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
-  /* Architecture Note #3.1: `PWD` env var
-  The Whook server heavily rely on the process working directory
-   to dynamically load contents. We are making it available to
-   the DI system as a constant.
-   */
-  const PWD = cwd();
-  $.register(constant('PWD', PWD));
-
-  // Resolve
-  $.register(initResolve);
-
-  // Importer
-  $.register(initImporter);
-
-  /* Architecture Note #3.2: `NODE_ENV`/`APP_ENV` env var
-  Whook has different behaviors depending on their values.
-   Consider setting it to production before shipping.
-   */
-
-  /* Architecture Note #3.3: `WHOOK_PLUGINS` and `PROJECT_SRC`
-  Whook need to know where to look up for things like
-   commands / handlers etc...
-   */
-  $.register(constant('WHOOK_PLUGINS', WHOOK_DEFAULT_PLUGINS));
-
-  $.register(initLoggerService);
-  $.register(initExitService);
-
-  $.register(constant('LOG_ROUTING', DEFAULT_LOG_ROUTING));
-  $.register(constant('LOG_CONFIG', DEFAULT_LOG_CONFIG));
-  $.register(
-    constant('INITIALIZER_PATH_MAP', {
-      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-    }),
-  );
-
-  /* Architecture Note #3.5: Initializers
+  /* Architecture Note #2: Services initializers
   Whook's embed a few default initializers proxied from
-   `common-services`, `@whook/http-router` or its own
-   `src/services` folder. It can be wrapped or overriden,
-   at will, later in project's main file.
+   `common-services`, `@whook/*` or its own `src/services`
+   folder. It can be wrapped or overridden, at will, later
+   in a project using overrides.
    */
   [
     initProcessEnv,
@@ -399,20 +368,68 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initAPMService,
   ].forEach($.register.bind($));
 
-  /* Architecture Note #5.1: Configuration auto loading
+  /* Architecture Note #2.3: the `PWD` constant
+  The Whook server heavily rely on the process working directory
+   to dynamically load contents. We are making it available to
+   the DI system as a constant.
+   */
+  const PWD = cwd();
+  $.register(constant('PWD', PWD));
+
+  /* Architecture Note #2.4: the `resolve` service
+  Whook uses the `common-services` `resolve` service to allow
+   to easily mock/decorate all ESM resolutions.
+   */
+  $.register(initResolve);
+
+  /* Architecture Note #2.5: the `importer` service
+  Whook uses the `common-services` `importer` service to allow
+   to easily mock/decorate all ESM dynamic imports.
+   */
+  $.register(initImporter);
+
+  /* Architecture Note #2.6: the `exit` service
+  Whook uses a built in `exit` service to allow
+   to easily mock/decorate the app exit.
+   */
+  $.register(initExitService);
+
+  /* Architecture Note #2.7: the `logger` service
+  Whook uses a built-in `logger` service to allow
+   to easily route the application logs for the 
+   `common-services` provided `log` service.
+   */
+  $.register(constant('LOG_ROUTING', DEFAULT_LOG_ROUTING));
+  $.register(constant('LOG_CONFIG', DEFAULT_LOG_CONFIG));
+  $.register(initLoggerService);
+
+  /* Architecture Note #2.8: The `CONFIG` service
     Loading the configuration files is done according to the `APP_ENV`
      environment variable. It basically requires a configuration hash
-     where the keys are Knifecycle constants.
-
-    Let's load the configuration files as a convenient way
-     to create constants on the fly
+     where the keys are JSON formattable constants.
     */
   $.register(initAppConfig);
+
+  /* Architecture Note #2.6: the `WHOOK_PLUGINS` constant
+  The Whook `$autoload` service needs to know where to look up
+   for things like commands / handlers /services etc...
+  The `WHOOK_PLUGINS` constant allows you to give the name of
+   some modules that embrace the Whook folder structure allowing
+   you to just install Whook's plugins to get them automatically
+   loaded.
+   */
+  $.register(constant('WHOOK_PLUGINS', WHOOK_DEFAULT_PLUGINS));
+
+  $.register(
+    constant('INITIALIZER_PATH_MAP', {
+      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+    }),
+  );
 
   return $;
 }
 
-/* Architecture Note #4: Commands preparation
+/* Architecture Note #1.4: Commands preparation
 Whook expose `prepareCommand` function to create commands configuration
 before effectively running them
  */
@@ -428,6 +445,5 @@ export async function prepareCommand<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   $ = await innerPrepareEnvironment($);
-  // you can add here any logic bound to the commands only
   return $;
 }

@@ -19,7 +19,6 @@ import type { WhookHostEnv } from './services/HOST.js';
 import type { WhookAPIDefinitionsConfig } from './services/API_DEFINITIONS.js';
 import type { WhookResolvedPluginsConfig } from './services/WHOOK_RESOLVED_PLUGINS.js';
 import type { WhookWrappersConfig } from './services/WRAPPERS.js';
-import type { WhookAutoloadConfig } from './services/_autoload.js';
 import type { WhookCompilerConfig } from './services/compiler.js';
 import type {
   ProcessEnvConfig,
@@ -39,7 +38,6 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookErrorHandlerConfig &
   WhookHTTPServerConfig &
   WhookHTTPTransactionConfig &
-  WhookAutoloadConfig &
   WhookBaseURLConfig &
   WhookResolvedPluginsConfig &
   WhookObfuscatorConfig &

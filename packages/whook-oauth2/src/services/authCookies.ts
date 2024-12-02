@@ -1,8 +1,8 @@
 import ms from 'ms';
-import cookie, { CookieSerializeOptions } from 'cookie';
+import cookie, { type SerializeOptions } from 'cookie';
 import { autoService } from 'knifecycle';
-import type { BaseAuthenticationData } from '@whook/authorization';
-import { Jsonify } from 'type-fest';
+import { type BaseAuthenticationData } from '@whook/authorization';
+import { type Jsonify } from 'type-fest';
 
 export const AUTH_API_PREFIX = '/auth';
 
@@ -13,7 +13,7 @@ export type AuthHandlersConfig<
 };
 
 export type AuthCookiesConfig = {
-  COOKIES: Jsonify<Omit<CookieSerializeOptions, 'maxAge' | 'path' | 'expires'>>;
+  COOKIES: Jsonify<Omit<SerializeOptions, 'maxAge' | 'path' | 'expires'>>;
   BASE_PATH?: string;
 };
 

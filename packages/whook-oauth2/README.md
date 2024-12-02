@@ -270,7 +270,7 @@ there.
 ## Customizing handlers
 
 The endpoints definitions are designed to support the standard OAuth2
-definitions but can be easily overriden.
+definitions but can be easily overridden.
 
 You will also have to protect the `postOAuth2Acknowledge` with your own security
 mechanism:

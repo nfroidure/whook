@@ -3,7 +3,7 @@ import initGenerateOpenAPISchema from './generateOpenAPISchema.js';
 import { PassThrough } from 'stream';
 import type { LogService } from 'common-services';
 
-/* Architecture Note #5.4: Testing
+/* Architecture Note #4.1: Testing
 
 In such a hard life, Whook's make it simple to
  also test your commands.

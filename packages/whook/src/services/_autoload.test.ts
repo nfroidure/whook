@@ -42,59 +42,11 @@ describe('$autoload', () => {
   });
 
   describe('should work', () => {
-    it('for configs', async () => {
-      const $autoload = await initAutoload({
-        $injector,
-        INITIALIZER_PATH_MAP: {},
-        WHOOK_PLUGINS,
-        WHOOK_RESOLVED_PLUGINS,
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
-        log,
-        importer,
-        resolve,
-        access,
-      });
-      const result = await $autoload('SERVICE_NAME_MAP');
-
-      expect({
-        result,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        injectorCalls: $injector.mock.calls,
-        importerCalls: importer.mock.calls,
-        resolveCalls: resolve.mock.calls,
-      }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "debug",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": {
-    "initializer": {
-      "$name": "SERVICE_NAME_MAP",
-      "$singleton": true,
-      "$type": "constant",
-      "$value": {},
-    },
-    "name": "SERVICE_NAME_MAP",
-    "path": "internal://SERVICE_NAME_MAP",
-  },
-}
-`);
-    });
-
     it('for a config constant', async () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
         APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
           CONFIG: {
             testConfig: 'test',
           },
@@ -122,6 +74,10 @@ describe('$autoload', () => {
     [
       "debug",
       "🤖 - Initializing the \`$autoload\` service.",
+    ],
+    [
+      "debug",
+      "📖 - Picking the "CONFIG" constant in the "APP_CONFIG" service properties.",
     ],
   ],
   "resolveCalls": [],
@@ -152,9 +108,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -210,73 +164,6 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for SERVICE_NAME_MAP', async () => {
-      resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.js',
-      );
-      importer.mockImplementationOnce(async () => ({
-        default: service(async () => ({ info: {} }), 'SERVICE_NAME_MAP'),
-      }));
-
-      const $autoload = await initAutoload({
-        $injector,
-        INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {},
-        WHOOK_PLUGINS,
-        WHOOK_RESOLVED_PLUGINS,
-        log,
-        importer,
-        resolve,
-        access,
-      });
-      const result = await $autoload('SERVICE_NAME_MAP');
-
-      expect({
-        result,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        injectorCalls: $injector.mock.calls,
-        importerCalls: importer.mock.calls,
-        resolveCalls: resolve.mock.calls,
-      }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "debug",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "SERVICE_NAME_MAP" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "SERVICE_NAME_MAP" found at "file:///home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Service "SERVICE_NAME_MAP" found in "file:///home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "SERVICE_NAME_MAP" initializer from "file:///home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "SERVICE_NAME_MAP",
-    "path": "file:///home/whoami/my-whook-project/src/services/SERVICE_NAME_MAP.ts",
-  },
-}
-`);
-    });
-
     it('for handlers hash', async () => {
       $injector.mockResolvedValueOnce({
         API: {
@@ -311,9 +198,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -403,9 +288,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -470,9 +353,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -528,168 +409,6 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for name mapped handlers', async () => {
-      $injector.mockResolvedValueOnce({
-        API: { info: {} },
-      });
-      resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/handlers/getPingMock.js',
-      );
-      importer.mockResolvedValueOnce({
-        default: service(
-          async () => async () => ({ status: 200 }),
-          'getPingMock',
-        ),
-      });
-
-      const $autoload = await initAutoload({
-        $injector,
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {
-            getPing: 'getPingMock',
-          },
-        },
-        INITIALIZER_PATH_MAP: {},
-        WHOOK_PLUGINS,
-        WHOOK_RESOLVED_PLUGINS,
-        log,
-        importer,
-        resolve,
-        access,
-      });
-      const result = await $autoload('getPing');
-
-      expect({
-        result,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        injectorCalls: $injector.mock.calls,
-        importerCalls: importer.mock.calls,
-        resolveCalls: resolve.mock.calls,
-      }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "debug",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "📖 - Using SERVICE_NAME_MAP to route "getPing" to "getPingMock".",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "getPingMock" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "getPingMock" found at "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Service "getPingMock" found in "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "getPing" initializer via "getPingMock" resolution from "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "getPingMock",
-    "path": "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts",
-  },
-}
-`);
-    });
-
-    it('for name mapped handlers', async () => {
-      $injector.mockResolvedValueOnce({
-        API: { info: {} },
-      });
-      resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/handlers/getPingMock.js',
-      );
-      importer.mockResolvedValueOnce({
-        default: service(
-          async () => async () => ({ status: 200 }),
-          'getPingMock',
-        ),
-      });
-
-      const $autoload = await initAutoload({
-        $injector,
-        INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {
-            getPing: 'getPingMock',
-          },
-        },
-        WHOOK_PLUGINS,
-        WHOOK_RESOLVED_PLUGINS,
-        log,
-        importer,
-        resolve,
-        access,
-      });
-      const result = await $autoload('getPing');
-
-      expect({
-        result,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        injectorCalls: $injector.mock.calls,
-        importerCalls: importer.mock.calls,
-        resolveCalls: resolve.mock.calls,
-      }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "debug",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "📖 - Using SERVICE_NAME_MAP to route "getPing" to "getPingMock".",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "getPingMock" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "getPingMock" found at "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Service "getPingMock" found in "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "getPing" initializer via "getPingMock" resolution from "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "getPingMock",
-    "path": "file:///home/whoami/my-whook-project/src/handlers/getPingMock.ts",
-  },
-}
-`);
-    });
-
     it('for path mapped handlers from plugins', async () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
@@ -703,9 +422,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {
           getPing: '@whook/plugin/dist/handlers/getPing.js',
         },
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -777,9 +494,7 @@ describe('$autoload', () => {
         INITIALIZER_PATH_MAP: {
           getPing: './handlers/getPing.js',
         },
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -856,9 +571,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS: [...WHOOK_PLUGINS, '@whook/whook', '@whook/lol'],
         WHOOK_RESOLVED_PLUGINS: {
           ...WHOOK_RESOLVED_PLUGINS,
@@ -948,9 +661,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -1019,9 +730,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
-        APP_CONFIG: {
-          SERVICE_NAME_MAP: {},
-        },
+        APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,

@@ -1,6 +1,19 @@
-import { constant, name, autoService, singleton, alsoInject } from 'knifecycle';
+import {
+  constant,
+  name,
+  autoService,
+  singleton,
+  alsoInject,
+  type Injector,
+  type Autoloader,
+  type ProviderInitializer,
+  type Initializer,
+  type Dependencies,
+  type Service,
+} from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import initHandlers, { HANDLER_REG_EXP } from './HANDLERS.js';
+import { type AppConfig } from 'application-services';
 import initWrappers, {
   WRAPPER_REG_EXP,
   type WhookWrappersConfig,
@@ -9,18 +22,10 @@ import { getOpenAPIOperations } from '@whook/http-router';
 import { extname, join as pathJoin } from 'node:path';
 import { access as _access, constants } from 'node:fs/promises';
 import { YError, printStackTrace } from 'yerror';
-import type {
-  Injector,
-  Autoloader,
-  ProviderInitializer,
-  Initializer,
-  Dependencies,
-  Service,
-} from 'knifecycle';
-import type {
-  ResolveService,
-  ImporterService,
-  LogService,
+import {
+  type ResolveService,
+  type ImporterService,
+  type LogService,
 } from 'common-services';
 import {
   WHOOK_DEFAULT_PLUGINS,
@@ -31,21 +36,16 @@ import {
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
-/* Architecture Note #5.7.1: WhookServiceMap
-Whook exports a `WhookServiceMap` type to help you ensure yours are valid.
-*/
-export type WhookServiceMap = { [name: string]: string };
+/* Architecture Note #2.9.3: the `INITIALIZER_PATH_MAP` mapper
 
-/* Architecture Note #5.6.1: WhookInitializerMap
-Whook exports a `WhookInitializerMap` type to help you ensure yours are valid.
+The Whook auto-loader allows you to provide the file path
+ of a service per its name. It exports a `WhookInitializerMap`
+ type to help you ensure yours are valid.
 */
 export type WhookInitializerMap = { [name: string]: string };
 
-export type WhookAutoloadConfig = {
-  SERVICE_NAME_MAP?: WhookServiceMap;
-};
 export type WhookAutoloadDependencies = WhookWrappersConfig & {
-  APP_CONFIG?: WhookAutoloadConfig;
+  APP_CONFIG?: AppConfig;
   INITIALIZER_PATH_MAP?: WhookInitializerMap;
   WHOOK_PLUGINS?: WhookPluginName[];
   WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
@@ -58,10 +58,11 @@ export type WhookAutoloadDependencies = WhookWrappersConfig & {
   log?: LogService;
 };
 
-/* Architecture Note #6: `$autoload` service
-The default Whook autoloader provides a simple way to
- load the constants, services and handlers of a Whook
- project automatically from the installed whook plugins.
+/* Architecture Note #2.9: the `$autoload` service
+Whook provides a simple way to load the constants, services
+ and handlers of a project automatically though several
+ strategies. It is done by implementing the `knifecycle`
+ auto loading interface.
 */
 export default singleton(name('$autoload', autoService(initAutoload)));
 
@@ -108,13 +109,7 @@ async function initAutoload({
 > {
   log('debug', '🤖 - Initializing the `$autoload` service.');
 
-  // Service map is not injected but taken from the
-  // configuration
-  const SERVICE_NAME_MAP = (
-    APP_CONFIG && APP_CONFIG.SERVICE_NAME_MAP ? APP_CONFIG.SERVICE_NAME_MAP : {}
-  ) as NonNullable<WhookAutoloadConfig['SERVICE_NAME_MAP']>;
-
-  /* Architecture Note #5.3: API auto loading
+  /* Architecture Note #2.9.2: the `API` auto loading
   We cannot inject the `API` in the auto loader since
    it is dynamically loaded so doing this during the auto
    loader initialization.
@@ -123,7 +118,6 @@ async function initAutoload({
   const getAPI = (() => {
     return async () => {
       if (!API) {
-        // eslint-disable-next-line
         API = (await $injector(['API'])).API;
       }
       return API;
@@ -145,44 +139,33 @@ async function initAutoload({
     path: string;
     initializer: Initializer<Service, Dependencies>;
   }> {
-    /* Architecture Note #5.6: Service name mapping
-    In order to be able to easily substitute a service per another
-     one can specify a mapping between a service and its substitution.
-    */
-    const resolvedName = SERVICE_NAME_MAP[injectedName]
-      ? SERVICE_NAME_MAP[injectedName]
-      : injectedName;
-
-    if (resolvedName !== injectedName) {
-      log(
-        'debug',
-        `📖 - Using SERVICE_NAME_MAP to route "${injectedName}" to "${resolvedName}".`,
-      );
-    }
-
-    /* Architecture Note #5.4: Constants
+    /* Architecture Note #2.9.1: the `APP_CONFIG` mapper
     First of all the autoloader looks for constants in the
      previously loaded `APP_CONFIG` configurations hash.
     */
-    if (APP_CONFIG && APP_CONFIG[resolvedName]) {
+    if (APP_CONFIG && APP_CONFIG[injectedName]) {
+      log(
+        'debug',
+        `📖 - Picking the "${injectedName}" constant in the "APP_CONFIG" service properties.`,
+      );
       return {
-        name: resolvedName,
-        path: 'internal://' + resolvedName,
+        name: injectedName,
+        path: 'internal://' + injectedName,
         initializer: constant(
-          resolvedName,
-          APP_CONFIG[resolvedName],
+          injectedName,
+          APP_CONFIG[injectedName],
         ) as Initializer<Service, Dependencies>,
       };
     }
 
-    const isHandler = HANDLER_REG_EXP.test(resolvedName);
-    const isWrapper = WRAPPER_REG_EXP.test(resolvedName);
+    const isHandler = HANDLER_REG_EXP.test(injectedName);
+    const isWrapper = WRAPPER_REG_EXP.test(injectedName);
 
-    /* Architecture Note #5.5: Handlers map
+    /* Architecture Note #2.9.4: the `HANDLERS` mapper
     Here, we build the handlers map needed by the router by injecting every
      handler required by the API.
     */
-    if ('HANDLERS' === resolvedName) {
+    if ('HANDLERS' === injectedName) {
       const handlerNames = [
         ...new Set(
           (await getOpenAPIOperations(await getAPI())).map(
@@ -192,47 +175,47 @@ async function initAutoload({
       ];
 
       return {
-        name: resolvedName,
+        name: injectedName,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initializer: alsoInject(handlerNames as any, initHandlers) as any,
         path: '@whook/whook/dist/services/HANDLERS.js',
       };
     }
 
-    /* Architecture Note #5.2: Wrappers auto loading support
+    /* Architecture Note #2.9.5: the `WRAPPERS` auto loading
     We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
      service so that they can be dynamically applied.
     */
-    if ('WRAPPERS' === resolvedName) {
+    if ('WRAPPERS' === injectedName) {
       return {
-        name: resolvedName,
+        name: injectedName,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initializer: alsoInject(HANDLERS_WRAPPERS, initWrappers) as any,
         path: '@whook/whook/dist/services/WRAPPERS.js',
       };
     }
 
-    /* Architecture Note #5.7: Service/handler/wrapper loading
+    /* Architecture Note #2.9.6: Service/handler/wrapper loading
     Finally, we either load the handler/service/wrapper module
      if none of the previous strategies applied.
     */
     let modulePath: string = '';
 
-    /* Architecture Note #5.7.1: Initializer path mapping
+    /* Architecture Note #2.9.3.1: Initializer path mapping
     In order to be able to load a service from a given path map
      one can directly specify a path to use for its resolution.
     */
-    if (INITIALIZER_PATH_MAP?.[resolvedName]) {
+    if (INITIALIZER_PATH_MAP?.[injectedName]) {
       log(
         'debug',
-        `📖 - Using "INITIALIZER_PATH_MAP" to resolve the "${resolvedName}" module path.`,
+        `📖 - Using "INITIALIZER_PATH_MAP" to resolve the "${injectedName}" module path.`,
       );
-      modulePath = INITIALIZER_PATH_MAP[resolvedName].startsWith('.')
-        ? resolve(INITIALIZER_PATH_MAP[resolvedName])
-        : INITIALIZER_PATH_MAP[resolvedName];
+      modulePath = INITIALIZER_PATH_MAP[injectedName].startsWith('.')
+        ? resolve(INITIALIZER_PATH_MAP[injectedName])
+        : INITIALIZER_PATH_MAP[injectedName];
     }
 
-    /* Architecture Note #5.7.2: Plugins/project paths
+    /* Architecture Note #2.9.6.2: Plugins/project paths
       Trying to load services from plugins/project paths.
     */
     for (const pluginName of WHOOK_PLUGINS) {
@@ -245,14 +228,14 @@ async function initAutoload({
         pathJoin(
           '.',
           isHandler ? 'handlers' : isWrapper ? 'wrappers' : 'services',
-          resolvedName + extname(resolvedPlugin.mainURL),
+          injectedName + extname(resolvedPlugin.mainURL),
         ),
         resolvedPlugin.mainURL,
       );
 
       log(
         'debug',
-        `🍀 - Trying to find "${resolvedName}" module path in "${pluginName}".`,
+        `🍀 - Trying to find "${injectedName}" module path in "${pluginName}".`,
       );
 
       modulePath = (await checkAccess({ log, access }, finalPath)).toString();
@@ -275,29 +258,29 @@ async function initAutoload({
     if (modulePath) {
       log(
         'debug',
-        `✅ - Module path of "${resolvedName}" found at "${modulePath}".`,
+        `✅ - Module path of "${injectedName}" found at "${modulePath}".`,
       );
     } else {
-      log('debug', `🚫 - Module path of "${resolvedName}" not found.`);
-      throw new YError('E_UNMATCHED_DEPENDENCY', resolvedName);
+      log('debug', `🚫 - Module path of "${injectedName}" not found.`);
+      throw new YError('E_UNMATCHED_DEPENDENCY', injectedName);
     }
 
-    log('debug', `💿 - Service "${resolvedName}" found in "${modulePath}".`);
+    log('debug', `💿 - Service "${injectedName}" found in "${modulePath}".`);
 
     const resolvedInitializer = (await importer(modulePath)).default;
 
     log(
       'debug',
       `💿 - Loading "${injectedName}" initializer${
-        resolvedName !== injectedName ? ` via "${resolvedName}" resolution` : ''
+        injectedName !== injectedName ? ` via "${injectedName}" resolution` : ''
       } from "${modulePath}".`,
     );
 
     return {
-      name: resolvedName,
+      name: injectedName,
       path: modulePath,
       initializer:
-        injectedName !== resolvedName
+        injectedName !== injectedName
           ? name(
               injectedName,
               resolvedInitializer as ProviderInitializer<Dependencies, Service>,

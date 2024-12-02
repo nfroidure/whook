@@ -4,7 +4,7 @@ import { name, singleton, autoService } from 'knifecycle';
 import { YError, printStackTrace } from 'yerror';
 import type { ResolveService, LogService } from 'common-services';
 
-/* Architecture Note #8: Plugins resolution
+/* Architecture Note #2.9.6.1: Plugins resolution
 
 Whook auto loader can look for initializers in a list of
  plugins defined in the `WHOOK_PLUGINS` constant. This

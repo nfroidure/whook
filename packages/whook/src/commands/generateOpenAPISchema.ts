@@ -5,7 +5,7 @@ import type { LogService } from 'common-services';
 import type { WhookCommandArgs } from '../services/args.js';
 import type { WhookCommandDefinition } from '../services/promptArgs.js';
 
-/* Architecture Note #5.3.2: Open API generator
+/* Architecture Note #2.9.2.3: Open API generator
 
 Here, we reuse the Open API handler to generate the
  definition of the API right inside a CLI command.
@@ -35,11 +35,6 @@ export const definition: WhookCommandDefinition = {
 
 export default extra(definition, autoService(initGenerateOpenAPISchema));
 
-/* Architecture Note #5.2.1: Injecting handlers
-  
-  A good thing is that you can reuse any handler into
-   your commands by simply injecting it by name.
-  */
 async function initGenerateOpenAPISchema({
   getOpenAPI,
   outstream = process.stdout,

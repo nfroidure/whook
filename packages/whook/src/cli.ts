@@ -8,7 +8,7 @@ import { printStackTrace } from 'yerror';
 import type { Knifecycle } from 'knifecycle';
 import type { LogService } from 'common-services';
 
-/* Architecture Note #10: Commands
+/* Architecture Note #4: Commands
 
 Whook's commands are CLI tools that you may need to create and
  use with your Whook's projects.

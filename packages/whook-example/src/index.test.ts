@@ -789,6 +789,36 @@ describe('runServer', () => {
       "📇 - Process service initialized.",
     ],
     [
+      "📖 - Picking the "CONFIG" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "CORS" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "DEFAULT_MECHANISM" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "DEV_ACCESS_TOKEN" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "ERRORS_DESCRIPTORS" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "JWT" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "MAX_CLEAR_CHARS" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "SENSIBLE_HEADERS" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "SENSIBLE_PROPS" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "SWAGGER_UI_CONFIG" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
       "📥 - Initializing the CORS wrapper.",
     ],
     [

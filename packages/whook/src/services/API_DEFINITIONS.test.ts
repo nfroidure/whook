@@ -481,7 +481,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a few handlers in different plugins paths and an overriden one', async () => {
+    it('with a few handlers in different plugins paths and an overridden one', async () => {
       readDir.mockResolvedValueOnce(['getPing']);
       readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({
@@ -626,7 +626,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a few handlers in different plugins paths and an overriden one but with a different extension', async () => {
+    it('with a few handlers in different plugins paths and an overridden one but with a different extension', async () => {
       readDir.mockResolvedValueOnce(['getPing.ts']);
       readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({

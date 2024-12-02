@@ -1,10 +1,11 @@
 #! /usr/bin/env node
 
-import path from 'path';
+import path from 'node:path';
+import { cwd } from 'node:process';
 import runCLI from '../dist/cli.js';
 
 const { prepareCommand } = await import(
-  path.join(process.cwd(), 'dist', 'index.js')
+  path.join(cwd(), 'dist', 'index.js')
 );
 
 await runCLI(prepareCommand);

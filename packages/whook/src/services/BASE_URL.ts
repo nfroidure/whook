@@ -2,9 +2,9 @@ import { autoService, name } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import type { LogService } from 'common-services';
 
-/* Architecture Note #5: Base URL
+/* Architecture Note #2.1: Base URL
 The `BASE_URL` service is intended to provide a base URL where
- the API can be found at. It can be overriden directly via
+ the API can be found at. It can be overridden directly via
  injecting it but it is useful to have a usable URL while
  debugging production environnement.
 */

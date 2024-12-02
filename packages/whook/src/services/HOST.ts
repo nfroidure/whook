@@ -4,7 +4,7 @@ import type { ImporterService, LogService } from 'common-services';
 
 const DEFAULT_ENV = {};
 
-/* Architecture Note #7: IP detection
+/* Architecture Note #2.2: IP detection
 If no `HOST` configuration is specified in dependencies nor in ENV,
  this service detects the machine host automagically.
 */

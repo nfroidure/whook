@@ -16,8 +16,10 @@
          1. [Autoloader](#1131-autoloader)
          2. [API definitions](#1132-api-definitions)
          3. [MAIN_FILE_URL](#1133-main_file_url)
-         3. [TRANSACTIONS](#1133-transactions)
-         4. [WHOOK_PLUGINS](#1134-whook_plugins)
+         4. [APP_ENV](#1134-app_env)
+         4. [$overrides](#1134-$overrides)
+         6. [TRANSACTIONS](#1136-transactions)
+         7. [WHOOK_PLUGINS](#1137-whook_plugins)
       4. [prepareCommand](#114-preparecommand)
    2. [The build file](#12-the-build-file)
       1. [The `runBuild` function](#121-the-`runbuild`-function)
@@ -75,7 +77,7 @@ You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 
-[See in context](./src/index.ts#L17-L24)
+[See in context](./src/index.ts#L18-L25)
 
 
 
@@ -84,7 +86,7 @@ You can see a view of the full architecture document
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 
-[See in context](./src/index.ts#L30-L34)
+[See in context](./src/index.ts#L31-L35)
 
 
 
@@ -96,7 +98,7 @@ The `runServer` function is intended to run the server
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L36-L43)
+[See in context](./src/index.ts#L37-L44)
 
 
 
@@ -106,7 +108,7 @@ The `prepareServer` function is intended to prepare the server
  environment. It relies on the main environment but will be
  used only by the server, not the commands or build scripts.
 
-[See in context](./src/index.ts#L62-L67)
+[See in context](./src/index.ts#L63-L68)
 
 
 
@@ -116,7 +118,7 @@ Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L72-L77)
+[See in context](./src/index.ts#L73-L78)
 
 
 
@@ -124,7 +126,7 @@ Add here any logic bound to the server only
 
 The `prepareEnvironment` one is intended to prepare the server environment
 
-[See in context](./src/index.ts#L84-L87)
+[See in context](./src/index.ts#L85-L88)
 
 
 
@@ -140,7 +142,7 @@ OR, like in this example, use the Whook `$autoload` service
  autoloader by creating a service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L107-L118)
+[See in context](./src/index.ts#L108-L119)
 
 
 
@@ -152,7 +154,7 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L121-L128)
+[See in context](./src/index.ts#L122-L129)
 
 
 
@@ -161,11 +163,30 @@ This service loads the API definitions directly by
 The project main file allows autoloading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L131-L135)
+[See in context](./src/index.ts#L132-L136)
 
 
 
-##### 1.1.3.3. TRANSACTIONS
+##### 1.1.3.4. APP_ENV
+
+Reading the `APP_ENV` from the process environment and defining
+ it as a constant.
+
+[See in context](./src/index.ts#L139-L143)
+
+
+
+##### 1.1.3.4. $overrides
+
+Setting the `knifecycle` `$overrides` service depending on the
+ current `APP_ENV`. It allows to map services to different
+ implementations.
+
+[See in context](./src/index.ts#L148-L153)
+
+
+
+##### 1.1.3.6. TRANSACTIONS
 
 The Whook HTTP Transaction service, maintains an internal
  hash that handles a list of the current running HTTP
@@ -194,18 +215,18 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L139-L167)
+[See in context](./src/index.ts#L161-L189)
 
 
 
-##### 1.1.3.4. WHOOK_PLUGINS
+##### 1.1.3.7. WHOOK_PLUGINS
 
 Plugins allows you to add simple features to the Whook's core,
  to add some, just add the plugin module name here.
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L188-L194)
+[See in context](./src/index.ts#L210-L216)
 
 
 
@@ -215,7 +236,7 @@ The `prepareCommand` function is intended to prepare the commands
  environment. It relies on the main environment but will be
  used only by the commands, not the server or build scripts.
 
-[See in context](./src/index.ts#L209-L214)
+[See in context](./src/index.ts#L231-L236)
 
 
 
@@ -280,7 +301,7 @@ See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291
 
 ### 2.3. Overriding
 
-Finally the configuration file for a given environnment
+Finally the configuration file for a given environment
  may reuse or override the custom configuration file
  like here for the development configuration.
 
@@ -591,7 +612,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L91-L104)
+[See in context](./src/index.ts#L92-L105)
 
 
 
@@ -687,7 +708,7 @@ Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L170-L180)
+[See in context](./src/index.ts#L192-L202)
 
 
 

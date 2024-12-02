@@ -3,7 +3,7 @@ import type { AppConfig } from 'application-services';
 
 /* Architecture Note #2.3: Overriding
 
-Finally the configuration file for a given environnment
+Finally the configuration file for a given environment
  may reuse or override the custom configuration file
  like here for the development configuration.
 */
@@ -15,12 +15,6 @@ const CONFIG: AppConfig = {
   OPEN_API_TYPES_CONFIG: {
     ...COMMON_CONFIG.OPEN_API_TYPES_CONFIG,
     generateUnusedSchemas: true,
-  },
-  // This allows you to map service names depending on
-  // the targetted environment. Here, for dev, we don't send SMS
-  // but instead log them in the console.
-  SERVICE_NAME_MAP: {
-    sendSMS: 'logSMS',
   },
   // Avoid obfuscating secrets locally
   MAX_CLEAR_CHARS: Infinity,

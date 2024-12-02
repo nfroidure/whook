@@ -10,6 +10,10 @@ import type { OpenAPIV3_1 } from 'openapi-types';
 
 export default autoHandler(getOpenAPI);
 
+/* Architecture Note #3: the handlers
+Handlers are services that provide a definition and implements
+ API routes.
+*/
 export const definition: WhookAPIHandlerDefinition = {
   path: '/openAPI',
   method: 'get',

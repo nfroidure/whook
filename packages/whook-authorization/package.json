@@ -56,7 +56,7 @@
     "@whook/whook": "^17.0.2",
     "common-services": "^16.0.4",
     "http-auth-utils": "^6.0.1",
-    "knifecycle": "^17.0.3",
+    "knifecycle": "^17.2.1",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0"
   },

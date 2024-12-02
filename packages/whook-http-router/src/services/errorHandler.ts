@@ -495,8 +495,7 @@ function replaceTemplatedValues(err: YError, str: string): string | undefined {
   return str
     ? str
         .replace(/\$([0-9](:?\.[a-zA-Z0-9#@*]+)*)/g, (_, path) =>
-          // eslint-disable-next-line
-          miniquery(path, [err.params] || []).join(', '),
+          miniquery(path, err.params ? [err.params] : []).join(', '),
         )
         .replace(/\$code/, (err as YError).code)
     : undefined;
