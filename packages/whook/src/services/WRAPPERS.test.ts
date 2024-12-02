@@ -19,15 +19,15 @@ describe('initWrappers', () => {
       } as any);
 
       expect({
-        WRAPPERS,
-        logCalls: log.mock.calls,
-      }).toMatchInlineSnapshot(`
+  WRAPPERS,
+  logCalls: log.mock.calls
+}).toMatchInlineSnapshot(`
 {
   "WRAPPERS": [],
   "logCalls": [
     [
       "warning",
-      "🏭 - Initializing the HANDLERS service.",
+      "🏭 - Initializing the WRAPPERS service.",
     ],
   ],
 }
@@ -42,9 +42,9 @@ describe('initWrappers', () => {
       } as any);
 
       expect({
-        WRAPPERS,
-        logCalls: log.mock.calls,
-      }).toMatchInlineSnapshot(`
+  WRAPPERS,
+  logCalls: log.mock.calls
+}).toMatchInlineSnapshot(`
 {
   "WRAPPERS": [
     [Function],
@@ -52,7 +52,7 @@ describe('initWrappers', () => {
   "logCalls": [
     [
       "warning",
-      "🏭 - Initializing the HANDLERS service.",
+      "🏭 - Initializing the WRAPPERS service.",
     ],
   ],
 }

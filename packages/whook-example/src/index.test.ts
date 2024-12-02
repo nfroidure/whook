@@ -321,18 +321,6 @@ describe('runServer', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
       "⌛ - Delay service initialized.",
     ],
     [
@@ -532,18 +520,6 @@ describe('runServer', () => {
     ],
     [
       "🍀 - Trying to find "PARSERS" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "PROCESS_NAME" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "PROCESS_NAME" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "QUERY_PARSER" module path in "__project__".",
@@ -867,9 +843,6 @@ describe('runServer', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/PROCESS_NAME.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
@@ -924,9 +897,6 @@ describe('runServer', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PROCESS_NAME.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
@@ -973,9 +943,6 @@ describe('runServer', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PROCESS_NAME.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES.js".",
@@ -1035,9 +1002,6 @@ describe('runServer', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/PROCESS_NAME.ts".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES.ts".",
     ],
     [
@@ -1090,9 +1054,6 @@ describe('runServer', () => {
     ],
     [
       "🚫 - Module path of "PARSERS" not found.",
-    ],
-    [
-      "🚫 - Module path of "PROCESS_NAME" not found.",
     ],
     [
       "🚫 - Module path of "REDUCED_FILES_SUFFIXES" not found.",
@@ -1220,7 +1181,7 @@ describe('runServer', () => {
       "🏭 - Initializing the HANDLERS service with 8 handlers wrapped by 2 wrappers.",
     ],
     [
-      "🏭 - Initializing the HANDLERS service.",
+      "🏭 - Initializing the WRAPPERS service.",
     ],
     [
       "💁 - Serving the API docs: http://localhost:9999/docs",

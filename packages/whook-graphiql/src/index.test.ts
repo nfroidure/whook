@@ -205,9 +205,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "DEV_ACCESS_MECHANISM",
     ],
     [
-      "PROCESS_NAME",
-    ],
-    [
       "SIGNALS",
     ],
     [
@@ -387,9 +384,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     ],
     [
       "DEV_ACCESS_MECHANISM",
-    ],
-    [
-      "PROCESS_NAME",
     ],
     [
       "SIGNALS",
@@ -655,9 +649,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     ],
     [
       "DEV_ACCESS_MECHANISM",
-    ],
-    [
-      "PROCESS_NAME",
     ],
     [
       "SIGNALS",

@@ -146,12 +146,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -181,6 +181,7 @@ describe('initCreateWhook', () => {
   "description": "A new Whook project",
   "devDependencies": {
     "@eslint/js": "^9.7.0",
+    "@mermaid-js/mermaid-cli": "^11.4.0",
     "@swc/cli": "^0.4.0",
     "@swc/core": "^1.6.13",
     "@swc/helpers": "^0.5.12",
@@ -194,6 +195,7 @@ describe('initCreateWhook', () => {
     "eslint-plugin-prettier": "^5.1.3",
     "jest": "^29.7.0",
     "jsarch": "^6.0.3",
+    "mermaid": "^11.4.1",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "schema2dts": "^7.0.2",
@@ -264,6 +266,9 @@ describe('initCreateWhook', () => {
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/dev",
     "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/dev.js",
     "format": "npm run prettier",
+    "graph": "npm run graph:build && npm run graph:generate && git add DEPENDENCIES.mmd*",
+    "graph:build": "MERMAID_RUN=1 npm run --silent dev > DEPENDENCIES.mmd",
+    "graph:generate": "mmdc -i DEPENDENCIES.mmd -o DEPENDENCIES.mmd.svg",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
@@ -343,12 +348,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -378,6 +383,7 @@ describe('initCreateWhook', () => {
   "description": "A new Whook project",
   "devDependencies": {
     "@eslint/js": "^9.7.0",
+    "@mermaid-js/mermaid-cli": "^11.4.0",
     "@swc/cli": "^0.4.0",
     "@swc/core": "^1.6.13",
     "@swc/helpers": "^0.5.12",
@@ -391,6 +397,7 @@ describe('initCreateWhook', () => {
     "eslint-plugin-prettier": "^5.1.3",
     "jest": "^29.7.0",
     "jsarch": "^6.0.3",
+    "mermaid": "^11.4.1",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "schema2dts": "^7.0.2",
@@ -461,6 +468,9 @@ describe('initCreateWhook', () => {
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/dev",
     "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/dev.js",
     "format": "npm run prettier",
+    "graph": "npm run graph:build && npm run graph:generate && git add DEPENDENCIES.mmd*",
+    "graph:build": "MERMAID_RUN=1 npm run --silent dev > DEPENDENCIES.mmd",
+    "graph:generate": "mmdc -i DEPENDENCIES.mmd -o DEPENDENCIES.mmd.svg",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
@@ -525,12 +535,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -560,6 +570,7 @@ describe('initCreateWhook', () => {
   "description": "A new Whook project",
   "devDependencies": {
     "@eslint/js": "^9.7.0",
+    "@mermaid-js/mermaid-cli": "^11.4.0",
     "@swc/cli": "^0.4.0",
     "@swc/core": "^1.6.13",
     "@swc/helpers": "^0.5.12",
@@ -573,6 +584,7 @@ describe('initCreateWhook', () => {
     "eslint-plugin-prettier": "^5.1.3",
     "jest": "^29.7.0",
     "jsarch": "^6.0.3",
+    "mermaid": "^11.4.1",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "schema2dts": "^7.0.2",
@@ -643,6 +655,9 @@ describe('initCreateWhook', () => {
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/dev",
     "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/dev.js",
     "format": "npm run prettier",
+    "graph": "npm run graph:build && npm run graph:generate && git add DEPENDENCIES.mmd*",
+    "graph:build": "MERMAID_RUN=1 npm run --silent dev > DEPENDENCIES.mmd",
+    "graph:generate": "mmdc -i DEPENDENCIES.mmd -o DEPENDENCIES.mmd.svg",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",

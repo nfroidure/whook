@@ -299,18 +299,18 @@ describe('$autoload', () => {
       const result = await $autoload('WRAPPERS');
 
       expect({
-        result,
-        WRAPPERS: await (
-          result.initializer as ServiceInitializer<Dependencies, Service>
-        )({
-          getPing: () => undefined,
-          log,
-        }),
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        injectorCalls: $injector.mock.calls,
-        importerCalls: importer.mock.calls,
-        resolveCalls: resolve.mock.calls,
-      }).toMatchInlineSnapshot(`
+  result,
+  WRAPPERS: await (
+  result.initializer as ServiceInitializer<Dependencies, Service>)(
+    {
+      getPing: () => undefined,
+      log
+    }),
+  logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+  injectorCalls: $injector.mock.calls,
+  importerCalls: importer.mock.calls,
+  resolveCalls: resolve.mock.calls
+}).toMatchInlineSnapshot(`
 {
   "WRAPPERS": [],
   "importerCalls": [],
@@ -322,7 +322,7 @@ describe('$autoload', () => {
     ],
     [
       "warning",
-      "🏭 - Initializing the HANDLERS service.",
+      "🏭 - Initializing the WRAPPERS service.",
     ],
     [
       "debug",

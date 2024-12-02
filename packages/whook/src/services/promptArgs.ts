@@ -2,45 +2,16 @@
 import { autoService, singleton } from 'knifecycle';
 import _inquirer from 'inquirer';
 import { noop } from '../libs/utils.js';
-import type { LogService } from 'common-services';
-import type { WhookCommandArgs } from './args.js';
+import { type LogService } from 'common-services';
+import {
+  type WhookArgsTypes,
+  type WhookCommandArgs,
+  type WhookCommandDefinitionArguments,
+} from '../libs/args.js';
 
 export default singleton(autoService(initPromptArgs));
 
-export type WhookArgsTypes = string | boolean | number;
 export type WhookCommandHandler = () => Promise<void>;
-// Subset of JSON Schema types so not using @types/json-schema
-export type WhookCommandDefinitionArguments = {
-  type: 'object';
-  required?: string[];
-  additionalProperties: false;
-  properties: Record<
-    string,
-    | {
-        type: 'boolean' | 'string' | 'number';
-        description: string;
-        pattern?: string;
-        format?: string;
-        enum?: WhookArgsTypes[];
-        default?: WhookArgsTypes;
-      }
-    | {
-        type: 'array';
-        description: string;
-        minItems?: number;
-        maxItems?: number;
-        items: {
-          type: 'boolean' | 'string' | 'number';
-          description?: string;
-          pattern?: string;
-          format?: string;
-          enum?: WhookArgsTypes[];
-          default?: WhookArgsTypes;
-        };
-        default?: WhookArgsTypes[];
-      }
-  >;
-};
 export type WhookCommandDefinition = {
   description: string;
   example: string;

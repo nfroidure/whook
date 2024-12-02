@@ -60,6 +60,12 @@ Play with the REPL:
 npm run repl
 ```
 
+Generate the [dependency injection graph](./DEPENDENCIES.mmd.svg):
+
+```sh
+npm run graph
+```
+
 List available commands:
 
 ```sh

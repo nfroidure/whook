@@ -1,0 +1,231 @@
+graph TD
+  PROJECT_DIR{PROJECT_DIR}-->log
+  WHOOK_RESOLVED_PLUGINS{WHOOK_RESOLVED_PLUGINS}-->MAIN_FILE_URL{MAIN_FILE_URL}
+  WHOOK_RESOLVED_PLUGINS{WHOOK_RESOLVED_PLUGINS}-->WHOOK_PLUGINS{WHOOK_PLUGINS}
+  WHOOK_RESOLVED_PLUGINS{WHOOK_RESOLVED_PLUGINS}-->resolve
+  WHOOK_RESOLVED_PLUGINS{WHOOK_RESOLVED_PLUGINS}-->readDir
+  WHOOK_RESOLVED_PLUGINS{WHOOK_RESOLVED_PLUGINS}-->log
+  log-->LOG_CONFIG{LOG_CONFIG}
+  log-->LOG_ROUTING{LOG_ROUTING}
+  log-->logger
+  time-->log
+  random-->log
+  delay-->log
+  process-->ENV{ENV}
+  process-->APP_ENV{APP_ENV}
+  process-->PROCESS_NAME{PROCESS_NAME}
+  process-->SIGNALS{SIGNALS}
+  process-->log
+  process-->exit
+  process-->$instance
+  process-->$fatalError
+  httpRouter-->DEBUG_NODE_ENVS{DEBUG_NODE_ENVS}
+  httpRouter-->BUFFER_LIMIT{BUFFER_LIMIT}
+  httpRouter-->HANDLERS{HANDLERS}
+  httpRouter-->API{API}
+  httpRouter-->PARSERS{PARSERS}
+  httpRouter-->STRINGIFYERS{STRINGIFYERS}
+  httpRouter-->DECODERS{DECODERS}
+  httpRouter-->ENCODERS{ENCODERS}
+  httpRouter-->QUERY_PARSER{QUERY_PARSER}
+  httpRouter-->httpTransaction
+  httpRouter-->errorHandler
+  httpRouter-->ENV{ENV}
+  httpRouter-->DEV_ACCESS_TOKEN{DEV_ACCESS_TOKEN}
+  httpRouter-->BASE_PATH{BASE_PATH}
+  httpRouter-->HOST{HOST}
+  httpRouter-->PORT{PORT}
+  httpRouter-->SWAGGER_UI_CONFIG{SWAGGER_UI_CONFIG}
+  httpRouter-->importer
+  httpRouter-->log
+  httpTransaction-->TIMEOUT{TIMEOUT}
+  httpTransaction-->TRANSACTIONS{TRANSACTIONS}
+  httpTransaction-->delay
+  httpTransaction-->obfuscator
+  httpTransaction-->log
+  httpTransaction-->apm
+  httpTransaction-->time
+  httpTransaction-->uniqueId
+  httpServer-->ENV{ENV}
+  httpServer-->HTTP_SERVER_OPTIONS{HTTP_SERVER_OPTIONS}
+  httpServer-->HOST{HOST}
+  httpServer-->PORT{PORT}
+  httpServer-->httpRouter
+  httpServer-->log
+  errorHandler-->ENV{ENV}
+  errorHandler-->DEBUG_NODE_ENVS{DEBUG_NODE_ENVS}
+  errorHandler-->STRINGIFYERS{STRINGIFYERS}
+  errorHandler-->ERRORS_DESCRIPTORS{ERRORS_DESCRIPTORS}
+  errorHandler-->DEFAULT_ERROR_CODE{DEFAULT_ERROR_CODE}
+  errorHandler-->log
+  errorHandler-->CORS{CORS}
+  ENV{ENV}-->BASE_ENV{BASE_ENV}
+  ENV{ENV}-->APP_ENV{APP_ENV}
+  ENV{ENV}-->PROCESS_ENV{PROCESS_ENV}
+  ENV{ENV}-->PROJECT_DIR{PROJECT_DIR}
+  ENV{ENV}-->log
+  ENV{ENV}-->readFile
+  obfuscator-->SHIELD_CHAR{SHIELD_CHAR}
+  obfuscator-->MAX_CLEAR_CHARS{MAX_CLEAR_CHARS}
+  obfuscator-->MAX_CLEAR_RATIO{MAX_CLEAR_RATIO}
+  obfuscator-->SENSIBLE_PROPS{SENSIBLE_PROPS}
+  obfuscator-->SENSIBLE_HEADERS{SENSIBLE_HEADERS}
+  obfuscator-->log
+  apm-->log
+  resolve-->MAIN_FILE_URL{MAIN_FILE_URL}
+  resolve-->log
+  importer-->log
+  APP_CONFIG{APP_CONFIG}-->APP_ENV{APP_ENV}
+  APP_CONFIG{APP_CONFIG}-->MAIN_FILE_URL{MAIN_FILE_URL}
+  APP_CONFIG{APP_CONFIG}-->importer
+  APP_CONFIG{APP_CONFIG}-->log
+  API_DEFINITIONS{API_DEFINITIONS}-->WHOOK_PLUGINS{WHOOK_PLUGINS}
+  API_DEFINITIONS{API_DEFINITIONS}-->WHOOK_RESOLVED_PLUGINS{WHOOK_RESOLVED_PLUGINS}
+  API_DEFINITIONS{API_DEFINITIONS}-->IGNORED_FILES_SUFFIXES{IGNORED_FILES_SUFFIXES}
+  API_DEFINITIONS{API_DEFINITIONS}-->IGNORED_FILES_PREFIXES{IGNORED_FILES_PREFIXES}
+  API_DEFINITIONS{API_DEFINITIONS}-->REDUCED_FILES_SUFFIXES{REDUCED_FILES_SUFFIXES}
+  API_DEFINITIONS{API_DEFINITIONS}-->FILTER_API_DEFINITION{FILTER_API_DEFINITION}
+  API_DEFINITIONS{API_DEFINITIONS}-->importer
+  API_DEFINITIONS{API_DEFINITIONS}-->log
+  API_DEFINITIONS{API_DEFINITIONS}-->readDir
+  PORT{PORT}-->ENV{ENV}
+  PORT{PORT}-->log
+  PORT{PORT}-->importer
+  HANDLERS{HANDLERS}-->WRAPPERS{WRAPPERS}
+  HANDLERS{HANDLERS}-->log
+  HANDLERS{HANDLERS}-->getDelay((getDelay))
+  HANDLERS{HANDLERS}-->optionsWithCORS((optionsWithCORS))
+  HANDLERS{HANDLERS}-->getDiagnostic((getDiagnostic))
+  HANDLERS{HANDLERS}-->getOpenAPI((getOpenAPI))
+  HANDLERS{HANDLERS}-->getParameters((getParameters))
+  HANDLERS{HANDLERS}-->getTime((getTime))
+  HANDLERS{HANDLERS}-->putEcho((putEcho))
+  HANDLERS{HANDLERS}-->getPing((getPing))
+  API{API}-->ENV{ENV}
+  API{API}-->CONFIG{CONFIG}
+  API{API}-->BASE_URL{BASE_URL}
+  API{API}-->BASE_PATH{BASE_PATH}
+  API{API}-->API_VERSION{API_VERSION}
+  API{API}-->API_DEFINITIONS{API_DEFINITIONS}
+  API{API}-->log
+  BASE_URL{BASE_URL}-->ENV{ENV}
+  BASE_URL{BASE_URL}-->CONFIG{CONFIG}
+  BASE_URL{BASE_URL}-->PROTOCOL{PROTOCOL}
+  BASE_URL{BASE_URL}-->HOST{HOST}
+  BASE_URL{BASE_URL}-->PORT{PORT}
+  BASE_URL{BASE_URL}-->log
+  FILTER_API_DEFINITION{FILTER_API_DEFINITION}-->ENV{ENV}
+  FILTER_API_DEFINITION{FILTER_API_DEFINITION}-->log
+  WRAPPERS{WRAPPERS}-->HANDLERS_WRAPPERS{HANDLERS_WRAPPERS}
+  WRAPPERS{WRAPPERS}-->log
+  WRAPPERS{WRAPPERS}-->wrapHandlerWithCORS((wrapHandlerWithCORS))
+  WRAPPERS{WRAPPERS}-->wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))
+  getDelay((getDelay))-->delay
+  getDiagnostic((getDiagnostic))-->TRANSACTIONS{TRANSACTIONS}
+  getOpenAPI((getOpenAPI))-->API{API}
+  getTime((getTime))-->time
+  putEcho((putEcho))-->log
+  getPing((getPing))-->ENV{ENV}
+  wrapHandlerWithCORS((wrapHandlerWithCORS))-->CORS{CORS}
+  wrapHandlerWithCORS((wrapHandlerWithCORS))-->log
+  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->MECHANISMS{MECHANISMS}
+  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->DEFAULT_MECHANISM{DEFAULT_MECHANISM}
+  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->authentication
+  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->log
+  MECHANISMS{MECHANISMS}-->ENV{ENV}
+  MECHANISMS{MECHANISMS}-->log
+  authentication-->jwtToken
+  jwtToken-->JWT_SECRET_ENV_NAME{JWT_SECRET_ENV_NAME}
+  jwtToken-->ENV{ENV}
+  jwtToken-->JWT{JWT}
+  jwtToken-->log
+  jwtToken-->time
+  classDef handlers fill:#aad400,stroke:#000,stroke-width:1px,color:#000;
+  classDef wrappers fill:#aad400,stroke:#000,stroke-width:1px,color:#000;
+  classDef config fill:#000,stroke:#aad400,stroke-width:1px,color:#aad400;
+  classDef others fill:#aad400,stroke:#000,stroke-width:1px,color:#000;
+  class PROJECT_DIR config;
+  class log others;
+  class WHOOK_RESOLVED_PLUGINS config;
+  class MAIN_FILE_URL config;
+  class WHOOK_PLUGINS config;
+  class resolve others;
+  class readDir others;
+  class LOG_CONFIG config;
+  class LOG_ROUTING config;
+  class logger others;
+  class time others;
+  class random others;
+  class delay others;
+  class ENV config;
+  class process others;
+  class APP_ENV config;
+  class PROCESS_NAME config;
+  class SIGNALS config;
+  class exit others;
+  class $instance others;
+  class $fatalError others;
+  class DEBUG_NODE_ENVS config;
+  class httpRouter others;
+  class BUFFER_LIMIT config;
+  class HANDLERS config;
+  class API config;
+  class PARSERS config;
+  class STRINGIFYERS config;
+  class DECODERS config;
+  class ENCODERS config;
+  class QUERY_PARSER config;
+  class httpTransaction others;
+  class errorHandler others;
+  class DEV_ACCESS_TOKEN config;
+  class BASE_PATH config;
+  class HOST config;
+  class PORT config;
+  class SWAGGER_UI_CONFIG config;
+  class importer others;
+  class TIMEOUT config;
+  class TRANSACTIONS config;
+  class obfuscator others;
+  class apm others;
+  class uniqueId others;
+  class httpServer others;
+  class HTTP_SERVER_OPTIONS config;
+  class ERRORS_DESCRIPTORS config;
+  class DEFAULT_ERROR_CODE config;
+  class CORS config;
+  class BASE_ENV config;
+  class PROCESS_ENV config;
+  class readFile others;
+  class SHIELD_CHAR config;
+  class MAX_CLEAR_CHARS config;
+  class MAX_CLEAR_RATIO config;
+  class SENSIBLE_PROPS config;
+  class SENSIBLE_HEADERS config;
+  class APP_CONFIG config;
+  class API_DEFINITIONS config;
+  class IGNORED_FILES_SUFFIXES config;
+  class IGNORED_FILES_PREFIXES config;
+  class REDUCED_FILES_SUFFIXES config;
+  class FILTER_API_DEFINITION config;
+  class WRAPPERS config;
+  class getDelay handlers;
+  class optionsWithCORS handlers;
+  class getDiagnostic handlers;
+  class getOpenAPI handlers;
+  class getParameters handlers;
+  class getTime handlers;
+  class putEcho handlers;
+  class getPing handlers;
+  class CONFIG config;
+  class BASE_URL config;
+  class API_VERSION config;
+  class PROTOCOL config;
+  class HANDLERS_WRAPPERS config;
+  class wrapHandlerWithCORS wrappers;
+  class wrapHandlerWithAuthorization wrappers;
+  class MECHANISMS config;
+  class DEFAULT_MECHANISM config;
+  class authentication others;
+  class jwtToken others;
+  class JWT_SECRET_ENV_NAME config;
+  class JWT config;

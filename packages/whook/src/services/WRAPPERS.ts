@@ -42,7 +42,7 @@ async function initWrappers<S extends WhookHandler>({
   log = noop,
   ...WRAPPERS
 }: WhookWrappersDependencies<S>): Promise<WhookWrapper<S>[]> {
-  log('warning', `🏭 - Initializing the HANDLERS service.`);
+  log('warning', `🏭 - Initializing the WRAPPERS service.`);
 
   // Except with exotic configurations, those numbers should equal
   // leaving this small debug message may help with messed configs

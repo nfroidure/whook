@@ -4,8 +4,8 @@ import { join } from 'node:path';
 import { URL } from 'node:url';
 import { runCLI } from '@whook/whook';
 
-const { prepareEnvironment } = await import(
+const { prepareCommand } = await import(
   new URL(join('..', 'src', 'index.ts'), import.meta.url)
 );
 
-await runCLI(prepareEnvironment);
+await runCLI(prepareCommand);

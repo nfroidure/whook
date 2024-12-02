@@ -1,11 +1,35 @@
-import { describe, it, expect } from '@jest/globals';
-import { readArgs } from './args.js';
+import { describe, test, expect } from '@jest/globals';
+import { readArgs, parseArgs } from './args.js';
 import { definition as handlerCommandDefinition } from '../commands/handler.js';
 import { YError } from 'yerror';
-import type { WhookCommandArgs } from '../services/args.js';
+import type { WhookCommandArgs } from '../libs/args.js';
+
+describe('parseArgs', () => {
+  test('should parse args', async () => {
+    const args = await parseArgs([
+      'whook',
+      'handler',
+      '--name',
+      'getPing',
+      '--parameters',
+      '{}',
+    ]);
+
+    expect(args).toMatchInlineSnapshot(`
+{
+  "command": "handler",
+  "namedArguments": {
+    "name": "getPing",
+    "parameters": "{}",
+  },
+  "rest": [],
+}
+`);
+  });
+});
 
 describe('readArgs', () => {
-  it('should work with no args', () => {
+  test('should work with no args', () => {
     const args: WhookCommandArgs = {
       command: 'npx',
       namedArguments: {},
@@ -36,7 +60,7 @@ describe('readArgs', () => {
     `);
   });
 
-  it('should work with named args', () => {
+  test('should work with named args', () => {
     const args: WhookCommandArgs = {
       command: 'npx',
       namedArguments: {
@@ -66,7 +90,7 @@ describe('readArgs', () => {
     `);
   });
 
-  it('should work with listed args', () => {
+  test('should work with listed args', () => {
     const args: WhookCommandArgs = {
       command: 'npx',
       namedArguments: {},
@@ -106,7 +130,7 @@ describe('readArgs', () => {
     `);
   });
 
-  it('should report named args errors', () => {
+  test('should report named args errors', () => {
     const args: WhookCommandArgs = {
       command: 'npx',
       namedArguments: {

@@ -1,7 +1,13 @@
 import { env } from 'node:process';
-import { Knifecycle, constant } from 'knifecycle';
+import {
+  Knifecycle,
+  constant,
+  type DependencyDeclaration,
+  type Dependencies,
+} from 'knifecycle';
 import {
   WHOOK_DEFAULT_PLUGINS,
+  DEFAULT_INJECTED_NAMES as BASE_DEFAULT_INJECTED_NAMES,
   runServer as runBaseServer,
   prepareServer as prepareBaseServer,
   prepareEnvironment as prepareBaseEnvironment,
@@ -13,7 +19,6 @@ import initHTTPRouter from '@whook/http-router';
 import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv } from 'application-services';
-import type { DependencyDeclaration, Dependencies } from 'knifecycle';
 
 /* Architecture Note #1: A Whook baked API
 This API server uses the Whook engine. Thoses architecture
@@ -24,9 +29,25 @@ You can see a view of the full architecture document
  `ARCHITECTURE.md` file.
 */
 
+/* Architecture Note #1.1.3.4: supported `APP_ENV` values
+
+You can add more application environment here for several
+ deployment targets.
+*/
 const APP_ENVS = ['local', 'test', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
+
+/* Architecture Note #1.2.3: Injected names
+
+Whook uses Knifecycle at its core, so, you have to provide the
+ list of root services it has to run. Per default, those are
+ the `process` and the `httpServer`.
+
+Exporting this constant is required for the watch command
+ to work as expected.
+*/
+export const DEFAULT_INJECTED_NAMES = BASE_DEFAULT_INJECTED_NAMES;
 
 /* Architecture Note #1.1: The main file
 
@@ -51,7 +72,7 @@ export async function runServer<
     injectedNames: DependencyDeclaration[],
     $: T,
   ) => Promise<D> = prepareServer,
-  injectedNames: DependencyDeclaration[] = [],
+  injectedNames: DependencyDeclaration[] = DEFAULT_INJECTED_NAMES,
 ): Promise<D> {
   return runBaseServer(
     innerPrepareEnvironment,
@@ -69,7 +90,10 @@ The `prepareServer` function is intended to prepare the server
 export async function prepareServer<
   D extends Dependencies,
   T extends Knifecycle = Knifecycle,
->(injectedNames: DependencyDeclaration[], $: T): Promise<D> {
+>(
+  injectedNames: DependencyDeclaration[] = DEFAULT_INJECTED_NAMES,
+  $: T,
+): Promise<D> {
   /* Architecture Note #1.1.2.1: server wrappers
   
   Add here any logic bound to the server only
@@ -228,7 +252,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   return $;
 }
 
-/* Architecture Note #1.1.4: prepareCommand
+/* Architecture Note #1.1.3: prepareCommand
 
 The `prepareCommand` function is intended to prepare the commands
  environment. It relies on the main environment but will be

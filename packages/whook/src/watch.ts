@@ -8,11 +8,11 @@ import initGetOpenAPI from './handlers/getOpenAPI.js';
 import initWatchResolve from './services/watchResolve.js';
 import { readFile } from 'node:fs/promises';
 import ignore from 'ignore';
-import { AppEnvVars } from 'application-services';
+import { type AppEnvVars } from 'application-services';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { type Dependencies, Knifecycle, constant } from 'knifecycle';
-import type { DelayService, LogService } from 'common-services';
-import type { OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
+import { type DelayService, type LogService } from 'common-services';
+import { type OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
 import { printStackTrace } from 'yerror';
 
 let $instance: Knifecycle;
@@ -129,7 +129,12 @@ export async function restartDevServer<T extends Dependencies>({
     await $instance.destroy();
   }
 
-  const { runServer, prepareEnvironment, prepareServer } = await import(
+  const {
+    DEFAULT_INJECTED_NAMES,
+    runServer,
+    prepareEnvironment,
+    prepareServer,
+  } = await import(
     pathToFileURL(join(process.cwd(), 'src', 'index.ts')).toString() +
       (restartsCounter ? '?restartsCounter=' + restartsCounter : '')
   );
@@ -158,8 +163,7 @@ export async function restartDevServer<T extends Dependencies>({
 
     [
       ...new Set([
-        ...injectedNames,
-
+        ...(injectedNames.length ? injectedNames : DEFAULT_INJECTED_NAMES),
         'ENV',
         'OPEN_API_TYPES_CONFIG',
         'MAIN_FILE_URL',

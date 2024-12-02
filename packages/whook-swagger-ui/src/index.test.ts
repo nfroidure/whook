@@ -179,9 +179,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "SWAGGER_UI_CONFIG",
     ],
     [
-      "PROCESS_NAME",
-    ],
-    [
       "SIGNALS",
     ],
     [
@@ -365,9 +362,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     ],
     [
       "SWAGGER_UI_CONFIG",
-    ],
-    [
-      "PROCESS_NAME",
     ],
     [
       "SIGNALS",
@@ -577,9 +571,6 @@ window.onload = function() {
       "DEFAULT_ERROR_CODE",
     ],
     [
-      "PROCESS_NAME",
-    ],
-    [
       "SIGNALS",
     ],
     [
@@ -731,9 +722,6 @@ window.onload = function() {
     ],
     [
       "SWAGGER_UI_CONFIG",
-    ],
-    [
-      "PROCESS_NAME",
     ],
     [
       "SIGNALS",

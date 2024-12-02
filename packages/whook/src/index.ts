@@ -1,6 +1,9 @@
 import { Knifecycle, constant } from 'knifecycle';
-import { cwd, exit, stdout, stderr } from 'node:process';
+import { cwd, exit, stdout, stderr, argv } from 'node:process';
 import { printStackTrace } from 'yerror';
+import initPromptArgs from './services/promptArgs.js';
+import initCommand from './services/command.js';
+import initAutoloader from './services/_cliAutoload.js';
 import {
   DEFAULT_LOG_ROUTING,
   DEFAULT_LOG_CONFIG,
@@ -63,14 +66,13 @@ import {
 import { HANDLER_REG_EXP } from './services/HANDLERS.js';
 import { WRAPPER_REG_EXP } from './services/WRAPPERS.js';
 import runCLI from './cli.js';
-import { readArgs } from './libs/args.js';
+import { parseArgs, readArgs } from './libs/args.js';
 import type { Dependencies } from 'knifecycle';
 
 export type { WhookBaseEnv, WhookBaseConfigs } from './types.js';
 export { DEFAULT_BUILD_INITIALIZER_PATH_MAP } from './build.js';
-export type { WhookCommandArgs } from './services/args.js';
+export type { WhookArgsTypes, WhookCommandArgs } from './libs/args.js';
 export type {
-  WhookArgsTypes,
   WhookCommandHandler,
   WhookCommandDefinition,
   WhookPromptArgs,
@@ -209,6 +211,8 @@ The Whook's main file exports :
 - a few bootstrapping functions.
 */
 
+export const DEFAULT_INJECTED_NAMES = ['httpServer', 'process'];
+
 /* Architecture Note #1.1: Server run
 Whook exposes a `runServer` function to programmatically spawn
  its server. It is intended to be reusable and injectable so
@@ -228,6 +232,7 @@ export async function runServer<
       [...new Set([...injectedNames, 'ENV', 'log'])],
       $,
     );
+
     if (ENV.DRY_RUN) {
       log('warning', '🌵 - Dry run, shutting down now!');
       await $.destroy();
@@ -238,10 +243,10 @@ export async function runServer<
       const CONFIG_REG_EXP = /^([A-Z0-9_]+)$/;
       const MERMAID_GRAPH_CONFIG = {
         classes: {
-          handlers: 'fill:#e7cdd2,stroke:#ebd4cb,stroke-width:1px;',
-          wrappers: 'fill:#e7cda2,stroke:#ebd4cb,stroke-width:1px;',
-          config: 'fill:#d4cdcc,stroke:#ebd4cb,stroke-width:1px;',
-          others: 'fill:#ebd4cb,stroke:#000,stroke-width:1px;',
+          handlers: 'fill:#aad400,stroke:#000,stroke-width:1px,color:#000;',
+          wrappers: 'fill:#aad400,stroke:#000,stroke-width:1px,color:#000;',
+          config: 'fill:#000,stroke:#aad400,stroke-width:1px,color:#aad400;',
+          others: 'fill:#aad400,stroke:#000,stroke-width:1px,color:#000;',
         },
         styles: [
           {
@@ -320,7 +325,7 @@ export async function prepareServer<
    */
   const { log, ...services } = await $.run<{
     log: LogService;
-  }>([...new Set([...injectedNames, 'log', 'httpServer', 'process'])]);
+  }>([...new Set([...injectedNames, 'log'])]);
 
   log('warning', 'On air 🚀🌕');
 
@@ -367,6 +372,9 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initObfuscatorService,
     initAPMService,
   ].forEach($.register.bind($));
+
+  $.register(constant('PROCESS_NAME', 'whook'));
+  $.register(constant('args', parseArgs(argv)));
 
   /* Architecture Note #2.3: the `PWD` constant
   The Whook server heavily rely on the process working directory
@@ -445,5 +453,8 @@ export async function prepareCommand<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   $ = await innerPrepareEnvironment($);
+  $.register(initPromptArgs);
+  $.register(initCommand);
+  $.register(initAutoloader);
   return $;
 }

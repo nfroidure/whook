@@ -17,7 +17,7 @@ import type {
   ServiceInitializerWrapper,
 } from 'knifecycle';
 import type { ImporterService, LogService } from 'common-services';
-import type { WhookCommandArgs } from './args.js';
+import type { WhookCommandArgs } from '../libs/args.js';
 import {
   WHOOK_DEFAULT_PLUGINS,
   type WhookPluginName,
