@@ -10,8 +10,8 @@ import {
 import wrapHTTPTransactionWithMethodOverride from './index.js';
 import initHTTPTransaction from '@whook/http-transaction';
 import {
-  runServer,
-  prepareServer,
+  runProcess,
+  prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
   initGetPingDefinition,
 } from '@whook/whook';
@@ -91,9 +91,9 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   process.env.ISOLATED_ENV = '1';
 
   beforeAll(async () => {
-    const { $instance: _instance } = await runServer<{
+    const { $instance: _instance } = await runProcess<{
       $instance: Knifecycle;
-    }>(prepareEnvironment, prepareServer, [
+    }>(prepareEnvironment, prepareProcess, [
       '$instance',
       'httpServer',
       'process',

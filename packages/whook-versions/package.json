@@ -55,7 +55,7 @@
   "dependencies": {
     "@whook/whook": "^17.0.2",
     "application-services": "^6.1.0",
-    "knifecycle": "^17.2.1",
+    "knifecycle": "^17.3.0",
     "openapi-types": "^12.1.3",
     "semver": "^7.6.3",
     "yhttperror": "^8.0.0"

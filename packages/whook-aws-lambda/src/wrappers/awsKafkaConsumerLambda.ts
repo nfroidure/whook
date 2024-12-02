@@ -61,9 +61,9 @@ async function initWrapHandlerForKafkaLambda<S extends WhookHandler>({
       null,
       { ENV, OPERATION_API, apm, time, log },
       handler as WhookHandler<
-      LambdaKafkaConsumerInput,
-      LambdaKafkaConsumerOutput
-    >,
+        LambdaKafkaConsumerInput,
+        LambdaKafkaConsumerOutput
+      >,
     );
 
     return wrappedHandler as unknown as S;

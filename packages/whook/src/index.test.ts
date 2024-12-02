@@ -1,14 +1,14 @@
-import { describe, it, jest, expect } from '@jest/globals';
+import { describe, test, jest, expect } from '@jest/globals';
 import { constant } from 'knifecycle';
+import { type Logger } from 'common-services';
 import {
-  runServer,
-  prepareServer,
+  runProcess,
+  prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
 } from './index.js';
-import type { Logger } from 'common-services';
 
-describe('runServer', () => {
-  it('should work', async () => {
+describe('runProcess', () => {
+  test('should work', async () => {
     const PORT = 8888;
     const HOST = 'localhost';
     const BASE_PATH = '/v1';
@@ -54,6 +54,10 @@ describe('runServer', () => {
       $.register(constant('PORT', PORT));
       $.register(constant('HOST', HOST));
       $.register(constant('WRAPPERS', []));
+      $.register(constant('WHOOK_PLUGINS', []));
+      $.register(constant('APP_CONFIG', {}));
+      $.register(constant('WHOOK_RESOLVED_PLUGINS', []));
+      $.register(constant('HTTP_SERVER_OPTIONS', {}));
       $.register(constant('DEBUG_NODE_ENVS', []));
       $.register(
         constant('HANDLERS', {
@@ -61,16 +65,18 @@ describe('runServer', () => {
         }),
       );
       $.register(constant('logger', logger as Logger));
+      $.register(constant('MAIN_FILE_URL', import.meta.url));
 
       return $;
     }
     process.env.ISOLATED_ENV = '1';
 
-    const { $instance } = await runServer(prepareEnvironment, prepareServer, [
-      '$instance',
-      'httpServer',
-      'process',
-    ]);
+    const { $instance } = await runProcess(
+      prepareEnvironment,
+      prepareProcess,
+      ['$instance', 'httpServer', 'process'],
+      [],
+    );
 
     await $instance.destroy();
 

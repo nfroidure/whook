@@ -9,8 +9,8 @@ import {
   expect,
 } from '@jest/globals';
 import {
-  runServer,
-  prepareServer,
+  runProcess,
+  prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
   DEFAULT_ERRORS_DESCRIPTORS,
   initWrappers,
@@ -265,9 +265,9 @@ describe('OAuth2 server', () => {
   process.env.ISOLATED_ENV = '1';
 
   beforeAll(async () => {
-    const { $instance: _instance } = await runServer<{
+    const { $instance: _instance } = await runProcess<{
       $instance: Knifecycle;
-    }>(prepareEnvironment, prepareServer, [
+    }>(prepareEnvironment, prepareProcess, [
       '$instance',
       'httpServer',
       'process',

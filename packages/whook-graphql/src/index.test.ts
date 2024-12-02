@@ -9,8 +9,8 @@ import {
   expect,
 } from '@jest/globals';
 import {
-  runServer,
-  prepareServer,
+  runProcess,
+  prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
   initWrappers,
   initHandlers,
@@ -229,9 +229,9 @@ describe('GraphQL server', () => {
   process.env.ISOLATED_ENV = '1';
 
   beforeAll(async () => {
-    const { $instance: _instance } = await runServer<{
+    const { $instance: _instance } = await runProcess<{
       $instance: Knifecycle;
-    }>(prepareEnvironment, prepareServer, [
+    }>(prepareEnvironment, prepareProcess, [
       '$instance',
       'httpServer',
       'process',

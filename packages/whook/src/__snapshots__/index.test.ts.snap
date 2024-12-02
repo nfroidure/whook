@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`runServer should work 1`] = `
+exports[`runProcess should work 1`] = `
 {
   "debugCalls": [
     [

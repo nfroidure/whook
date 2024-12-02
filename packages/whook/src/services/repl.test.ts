@@ -3,8 +3,8 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initREPL from './repl.js';
 import { PassThrough } from 'stream';
 import streamtest from 'streamtest';
-import type { LogService } from 'common-services';
-import type { Injector, Disposer } from 'knifecycle';
+import { type LogService } from 'common-services';
+import { type Injector, type Disposer } from 'knifecycle';
 
 describe('initREPL', () => {
   const $injector = jest.fn<Injector<any>>();

@@ -14,6 +14,7 @@ import type {
   WhookCompilerService,
 } from './services/compiler.js';
 import type { LogService } from 'common-services';
+import { parseArgs } from './libs/args.js';
 
 export const DEFAULT_BUILD_DIR = 'server';
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
@@ -55,6 +56,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $.register(
     constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
   );
+  $.register(constant('args', parseArgs([])));
   $.register(constant('BUILD_DIR', DEFAULT_BUILD_DIR));
   $.register(constant('COMPILER_OPTIONS', DEFAULT_COMPILER_OPTIONS));
 

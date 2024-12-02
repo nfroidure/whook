@@ -1,12 +1,31 @@
-import { autoService } from 'knifecycle';
+import { type LogService } from 'common-services';
+import {
+  autoService,
+  type FatalErrorService,
+  type Knifecycle,
+} from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 
 export default autoService(initCommand);
 
-async function initCommand({ commandHandler, log }) {
-  return async function commandRunner() {
+async function initCommand({
+  commandHandler,
+  $ready,
+  $instance,
+  $fatalError,
+  log,
+}: {
+  commandHandler: () => Promise<void>;
+  $ready: Promise<void>;
+  $instance: Knifecycle;
+  $fatalError: FatalErrorService;
+  log: LogService;
+}): Promise<void> {
+  async function commandRunner() {
+    await $ready;
     try {
       await commandHandler();
+      await $instance.destroy();
     } catch (err) {
       if ((err as YError).code === 'E_BAD_ARGS') {
         log('error-stack', printStackTrace(err as Error));
@@ -18,13 +37,15 @@ async function initCommand({ commandHandler, log }) {
                 (err as YError).params[0][0].params.missingProperty
               }" is required.`,
             );
-            throw err;
+            $fatalError.throwFatalError(err as Error);
+            return;
           }
         }
         if ((err as YError).params[0][0].keyword === 'additionalProperties') {
           if ((err as YError).params[0][0].params.additionalProperty === '_') {
             log('error', 'No anonymous arguments allowed.');
-            throw err;
+            $fatalError.throwFatalError(err as Error);
+            return;
           }
           if ((err as YError).params[0][0].params.additionalProperty) {
             log(
@@ -33,7 +54,8 @@ async function initCommand({ commandHandler, log }) {
                 (err as YError).params[0][0].params.additionalProperty
               }" not allowed.`,
             );
-            throw err;
+            $fatalError.throwFatalError(err as Error);
+            return;
           }
         }
         log(
@@ -42,9 +64,12 @@ async function initCommand({ commandHandler, log }) {
           (err as YError).params[0][0].message,
           (err as YError).params[0][0].params,
         );
-        throw err;
+        $fatalError.throwFatalError(err as Error);
+        return;
       }
-      throw err;
+      $fatalError.throwFatalError(err as Error);
+      return;
     }
-  };
+  }
+  commandRunner();
 }

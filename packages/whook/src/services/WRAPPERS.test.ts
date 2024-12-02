@@ -19,9 +19,9 @@ describe('initWrappers', () => {
       } as any);
 
       expect({
-  WRAPPERS,
-  logCalls: log.mock.calls
-}).toMatchInlineSnapshot(`
+        WRAPPERS,
+        logCalls: log.mock.calls,
+      }).toMatchInlineSnapshot(`
 {
   "WRAPPERS": [],
   "logCalls": [
@@ -42,9 +42,9 @@ describe('initWrappers', () => {
       } as any);
 
       expect({
-  WRAPPERS,
-  logCalls: log.mock.calls
-}).toMatchInlineSnapshot(`
+        WRAPPERS,
+        logCalls: log.mock.calls,
+      }).toMatchInlineSnapshot(`
 {
   "WRAPPERS": [
     [Function],

@@ -1,3 +1,3 @@
-import { watchDevServer } from '../src/watch.ts';
+import { watchDevProcess } from '../src/watch.ts';
 
-await watchDevServer();
+await watchDevProcess();

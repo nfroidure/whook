@@ -9,18 +9,18 @@
 
 1. [A Whook baked API](#1-a-whook-baked-api)
    1. [The main file](#11-the-main-file)
-      1. [runServer](#111-runserver)
-      2. [prepareServer](#112-prepareserver)
+      1. [runProcess](#111-runprocess)
+      2. [prepareProcess](#112-prepareprocess)
          1. [server wrappers](#1121-server-wrappers)
       3. [prepareEnvironment](#113-prepareenvironment)
          1. [Autoloader](#1131-autoloader)
          2. [API definitions](#1132-api-definitions)
          3. [MAIN_FILE_URL](#1133-main_file_url)
+         4. [supported `APP_ENV` values](#1134-supported-`app_env`-values)
          4. [APP_ENV](#1134-app_env)
          4. [$overrides](#1134-$overrides)
          6. [TRANSACTIONS](#1136-transactions)
          7. [WHOOK_PLUGINS](#1137-whook_plugins)
-      4. [prepareCommand](#114-preparecommand)
    2. [The build file](#12-the-build-file)
       1. [The `runBuild` function](#121-the-`runbuild`-function)
       2. [The `prepareBuildEnvironment` function](#122-the-`preparebuildenvironment`-function)
@@ -64,7 +64,6 @@
 5. [Commands](#5-commands)
    1. [Definition](#51-definition)
    2. [Implementation](#52-implementation)
-6. [REPL](#6-repl)
 7. [Watch server](#7-watch-server)
 
 
@@ -77,7 +76,7 @@ You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 
-[See in context](./src/index.ts#L18-L25)
+[See in context](./src/index.ts#L21-L28)
 
 
 
@@ -86,29 +85,28 @@ You can see a view of the full architecture document
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 
-[See in context](./src/index.ts#L31-L35)
+[See in context](./src/index.ts#L39-L43)
 
 
 
-#### 1.1.1. runServer
+#### 1.1.1. runProcess
 
-The `runServer` function is intended to run the server
+The `runProcess` function is intended to run the server
  and may be proxied as is, except in some e2e test cases
  where it can be useful to put mocks in (see
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L37-L44)
+[See in context](./src/index.ts#L45-L52)
 
 
 
-#### 1.1.2. prepareServer
+#### 1.1.2. prepareProcess
 
-The `prepareServer` function is intended to prepare the server
- environment. It relies on the main environment but will be
- used only by the server, not the commands or build scripts.
+The `prepareProcess` function is intended to prepare the process
+ environment.
 
-[See in context](./src/index.ts#L63-L68)
+[See in context](./src/index.ts#L73-L77)
 
 
 
@@ -118,15 +116,15 @@ Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L73-L78)
+[See in context](./src/index.ts#L82-L87)
 
 
 
 #### 1.1.3. prepareEnvironment
 
-The `prepareEnvironment` one is intended to prepare the server environment
+The `prepareEnvironment` one is intended to prepare the process environment
 
-[See in context](./src/index.ts#L85-L88)
+[See in context](./src/index.ts#L94-L97)
 
 
 
@@ -142,7 +140,7 @@ OR, like in this example, use the Whook `$autoload` service
  autoloader by creating a service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L108-L119)
+[See in context](./src/index.ts#L117-L128)
 
 
 
@@ -154,7 +152,7 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L122-L129)
+[See in context](./src/index.ts#L131-L138)
 
 
 
@@ -163,7 +161,16 @@ This service loads the API definitions directly by
 The project main file allows autoloading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L132-L136)
+[See in context](./src/index.ts#L141-L145)
+
+
+
+##### 1.1.3.4. supported `APP_ENV` values
+
+You can add more application environment here for several
+ deployment targets.
+
+[See in context](./src/index.ts#L30-L34)
 
 
 
@@ -172,7 +179,7 @@ The project main file allows autoloading features to work
 Reading the `APP_ENV` from the process environment and defining
  it as a constant.
 
-[See in context](./src/index.ts#L139-L143)
+[See in context](./src/index.ts#L148-L152)
 
 
 
@@ -182,7 +189,7 @@ Setting the `knifecycle` `$overrides` service depending on the
  current `APP_ENV`. It allows to map services to different
  implementations.
 
-[See in context](./src/index.ts#L148-L153)
+[See in context](./src/index.ts#L157-L162)
 
 
 
@@ -215,7 +222,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L161-L189)
+[See in context](./src/index.ts#L170-L198)
 
 
 
@@ -226,17 +233,7 @@ Plugins allows you to add simple features to the Whook's core,
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L210-L216)
-
-
-
-#### 1.1.4. prepareCommand
-
-The `prepareCommand` function is intended to prepare the commands
- environment. It relies on the main environment but will be
- used only by the commands, not the server or build scripts.
-
-[See in context](./src/index.ts#L231-L236)
+[See in context](./src/index.ts#L219-L225)
 
 
 
@@ -612,7 +609,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L92-L105)
+[See in context](./src/index.ts#L101-L114)
 
 
 
@@ -708,7 +705,7 @@ Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L192-L202)
+[See in context](./src/index.ts#L201-L211)
 
 
 
@@ -751,15 +748,6 @@ To implement a command, just write a function that takes
  command as an asynchronous function.
 
 [See in context](./src/commands/printEnv.ts#L48-L53)
-
-
-
-## 6. REPL
-
-Here is a simple REPL leveraging the depency injection
- features in order to let you test things up easily.
-
-[See in context](./src/repl.ts#L4-L8)
 
 
 

@@ -2,7 +2,7 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import {
-  prepareServer,
+  prepareProcess,
   prepareEnvironment,
   initGetPingDefinition,
 } from '@whook/whook';
@@ -94,7 +94,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $instance } = await prepareServer(
+    const { $instance } = await prepareProcess(
       ['$instance', 'httpServer', 'process'],
       $,
     );
@@ -177,6 +177,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     ],
     [
       "SWAGGER_UI_CONFIG",
+    ],
+    [
+      "PROCESS_NAME",
     ],
     [
       "SIGNALS",
@@ -279,7 +282,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $instance } = await prepareServer(
+    const { $instance } = await prepareProcess(
       ['$instance', 'httpServer', 'process'],
       $,
     );
@@ -362,6 +365,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     ],
     [
       "SWAGGER_UI_CONFIG",
+    ],
+    [
+      "PROCESS_NAME",
     ],
     [
       "SIGNALS",
@@ -462,7 +468,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $instance } = await prepareServer(
+    const { $instance } = await prepareProcess(
       ['$instance', 'httpServer', 'process'],
       $,
     );
@@ -571,6 +577,9 @@ window.onload = function() {
       "DEFAULT_ERROR_CODE",
     ],
     [
+      "PROCESS_NAME",
+    ],
+    [
       "SIGNALS",
     ],
     [
@@ -657,7 +666,7 @@ window.onload = function() {
 
     time.mockReturnValue(new Date('2012-01-15T00:00:00Z').getTime());
 
-    const { $instance } = await prepareServer(
+    const { $instance } = await prepareProcess(
       ['$instance', 'httpServer', 'process'],
       $,
     );
@@ -722,6 +731,9 @@ window.onload = function() {
     ],
     [
       "SWAGGER_UI_CONFIG",
+    ],
+    [
+      "PROCESS_NAME",
     ],
     [
       "SIGNALS",

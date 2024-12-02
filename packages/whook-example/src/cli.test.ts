@@ -14,6 +14,7 @@ describe('commands should work', () => {
     }).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+On air 🚀🌕
 ",
   "stdout": "
 
@@ -54,6 +55,7 @@ describe('commands should work', () => {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
+On air 🚀🌕
 ",
   "stdout": "test
 ",
@@ -72,6 +74,7 @@ describe('commands should work', () => {
     }).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+On air 🚀🌕
 ",
   "stdout": ""localhost"
 ",

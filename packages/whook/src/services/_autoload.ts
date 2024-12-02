@@ -33,6 +33,7 @@ import {
   type WhookPluginName,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
+import { WhookCommandArgs } from '../libs/args.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -49,6 +50,7 @@ export type WhookAutoloadDependencies = WhookWrappersConfig & {
   INITIALIZER_PATH_MAP?: WhookInitializerMap;
   WHOOK_PLUGINS?: WhookPluginName[];
   WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
+  args: WhookCommandArgs;
   $injector: Injector<Service>;
   importer: ImporterService<{
     default: Initializer<Service, Dependencies>;
@@ -99,6 +101,7 @@ async function initAutoload({
   WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
   WHOOK_RESOLVED_PLUGINS,
   HANDLERS_WRAPPERS = [],
+  args,
   importer,
   $injector,
   resolve,
@@ -121,6 +124,54 @@ async function initAutoload({
         API = (await $injector(['API'])).API;
       }
       return API;
+    };
+  })();
+  let commandModule;
+  const getCommandModule = (() => {
+    return async () => {
+      if (!commandModule) {
+        const commandName = args.rest[0];
+
+        // This is not supposed to happen
+        if (!commandName) {
+          log('warning', `❌ - No command given in argument.`);
+          throw new YError('E_NO_COMMAND_NAME');
+        }
+
+        for (const pluginName of WHOOK_PLUGINS) {
+          const resolvedPlugin = WHOOK_RESOLVED_PLUGINS[pluginName];
+          const finalPath = new URL(
+            pathJoin(
+              '.',
+              'commands',
+              commandName + extname(resolvedPlugin.mainURL),
+            ),
+            resolvedPlugin.mainURL,
+          ).toString();
+
+          try {
+            commandModule = await importer(finalPath);
+            break;
+          } catch (err) {
+            log(
+              'debug',
+              `❌ - Command "${commandName}" not found in "${finalPath}".`,
+            );
+            log('debug-stack', printStackTrace(err as Error));
+          }
+        }
+
+        if (!commandModule) {
+          throw new YError('E_BAD_COMMAND_NAME', commandName);
+        }
+        if (!commandModule.default) {
+          throw new YError('E_NO_COMMAND_HANDLER', commandName);
+        }
+        if (!commandModule.definition) {
+          throw new YError('E_NO_COMMAND_DEFINITION', commandName);
+        }
+      }
+      return commandModule;
     };
   })();
 
@@ -192,6 +243,24 @@ async function initAutoload({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initializer: alsoInject(HANDLERS_WRAPPERS, initWrappers) as any,
         path: '@whook/whook/dist/services/WRAPPERS.js',
+      };
+    }
+
+    if (injectedName === 'COMMAND_DEFINITION') {
+      return {
+        name: injectedName,
+        initializer: constant(
+          injectedName,
+          (await getCommandModule()).definition,
+        ),
+        path: `definition://${args.rest[0]}`,
+      };
+    }
+    if (injectedName === 'commandHandler') {
+      return {
+        name: injectedName,
+        initializer: name('commandHandler', (await getCommandModule()).default),
+        path: `command://${args.rest[0]}`,
       };
     }
 
@@ -271,9 +340,7 @@ async function initAutoload({
 
     log(
       'debug',
-      `💿 - Loading "${injectedName}" initializer${
-        injectedName !== injectedName ? ` via "${injectedName}" resolution` : ''
-      } from "${modulePath}".`,
+      `💿 - Loading "${injectedName}" initializer from "${modulePath}".`,
     );
 
     return {
