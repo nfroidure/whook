@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { watchDevServer as baseWatchDevServer } from '@whook/whook/dist/watch.js';
+import { watchDevProcess as baseWatchDevProcess } from '@whook/whook/dist/watch.js';
 import { printStackTrace } from 'yerror';
 
 const doExec = promisify(exec);
@@ -15,8 +15,8 @@ You can add hooks to add need behaviors to the
  each restart.
 */
 
-export async function watchDevServer() {
-  await baseWatchDevServer({
+export async function watchDevProcess() {
+  await baseWatchDevProcess({
     injectedNames: ['PROJECT_DIR', 'log'],
     afterRestartEnd: async ({ PROJECT_DIR, log }, { apiChanged }) => {
       if (apiChanged) {

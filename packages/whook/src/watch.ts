@@ -21,7 +21,7 @@ let delay: DelayService;
 let delayPromise: Promise<void> | undefined;
 let hash: string;
 
-export type WatchServerDependencies = OpenAPITypesConfig & {
+export type WatchProcessDependencies = OpenAPITypesConfig & {
   ENV: AppEnvVars;
   MAIN_FILE_URL: string;
   $instance: Knifecycle;
@@ -30,17 +30,17 @@ export type WatchServerDependencies = OpenAPITypesConfig & {
   log: LogService;
 };
 
-export type WatchServerArgs<T extends Dependencies> = {
+export type WatchProcessArgs<T extends Dependencies> = {
   injectedNames: string[];
   ignored?: string[];
   afterRestartEnd?: (
-    services: T & WatchServerDependencies,
+    services: T & WatchProcessDependencies,
     context: { apiChanged: boolean; openAPIData: string },
   ) => Promise<void>;
 };
 
-export async function watchDevServer<T extends Dependencies>(
-  { injectedNames = [], ignored = [], afterRestartEnd }: WatchServerArgs<T> = {
+export async function watchDevProcess<T extends Dependencies>(
+  { injectedNames = [], ignored = [], afterRestartEnd }: WatchProcessArgs<T> = {
     injectedNames: [],
     ignored: [],
   },
@@ -70,7 +70,7 @@ export async function watchDevServer<T extends Dependencies>(
     return ignoreBuilder.createFilter();
   })();
 
-  await restartDevServer({ injectedNames, afterRestartEnd, restartsCounter });
+  await restartDevProcess({ injectedNames, afterRestartEnd, restartsCounter });
 
   await new Promise<void>((resolve, reject) => {
     chokidar
@@ -102,7 +102,7 @@ export async function watchDevServer<T extends Dependencies>(
         if (delay) {
           if (!delayPromise) {
             delayPromise = delay.create(2000);
-            restartDevServer({
+            restartDevProcess({
               injectedNames,
               afterRestartEnd,
               restartsCounter: restartsCounter++,
@@ -113,11 +113,11 @@ export async function watchDevServer<T extends Dependencies>(
   });
 }
 
-export async function restartDevServer<T extends Dependencies>({
+export async function restartDevProcess<T extends Dependencies>({
   injectedNames = [],
   afterRestartEnd,
   restartsCounter,
-}: WatchServerArgs<T> & {
+}: WatchProcessArgs<T> & {
   restartsCounter: number;
 }): Promise<void> {
   if ($instance) {
@@ -129,12 +129,7 @@ export async function restartDevServer<T extends Dependencies>({
     await $instance.destroy();
   }
 
-  const {
-    DEFAULT_INJECTED_NAMES,
-    runServer,
-    prepareEnvironment,
-    prepareServer,
-  } = await import(
+  const { runProcess, prepareEnvironment, prepareProcess } = await import(
     pathToFileURL(join(process.cwd(), 'src', 'index.ts')).toString() +
       (restartsCounter ? '?restartsCounter=' + restartsCounter : '')
   );
@@ -157,23 +152,18 @@ export async function restartDevServer<T extends Dependencies>({
     getOpenAPI,
     log: _log,
     ...additionalServices
-  } = (await runServer(
-    prepareWatchEnvironment,
-    prepareServer,
-
-    [
-      ...new Set([
-        ...(injectedNames.length ? injectedNames : DEFAULT_INJECTED_NAMES),
-        'ENV',
-        'OPEN_API_TYPES_CONFIG',
-        'MAIN_FILE_URL',
-        '$instance',
-        'delay',
-        'getOpenAPI',
-        'log',
-      ]),
-    ],
-  )) as WatchServerDependencies & T;
+  } = (await runProcess(prepareWatchEnvironment, prepareProcess, [
+    ...new Set([
+      ...injectedNames,
+      'ENV',
+      'OPEN_API_TYPES_CONFIG',
+      'MAIN_FILE_URL',
+      '$instance',
+      'delay',
+      'getOpenAPI',
+      'log',
+    ]),
+  ])) as WatchProcessDependencies & T;
 
   $instance = _instance;
   delay = _delay;
@@ -235,7 +225,7 @@ export async function restartDevServer<T extends Dependencies>({
         getOpenAPI,
         log,
         ...additionalServices,
-      } as WatchServerDependencies & T,
+      } as WatchProcessDependencies & T,
       { apiChanged, openAPIData },
     );
   }

@@ -1,9 +1,8 @@
-import { Knifecycle, constant } from 'knifecycle';
-import { cwd, exit, stdout, stderr, argv } from 'node:process';
+import { Knifecycle, constant, type Dependencies } from 'knifecycle';
+import { cwd, exit, stderr, stdin, stdout, argv as _argv } from 'node:process';
 import { printStackTrace } from 'yerror';
 import initPromptArgs from './services/promptArgs.js';
 import initCommand from './services/command.js';
-import initAutoloader from './services/_cliAutoload.js';
 import {
   DEFAULT_LOG_ROUTING,
   DEFAULT_LOG_CONFIG,
@@ -57,17 +56,12 @@ import initAutoload from './services/_autoload.js';
 import initGetPing, {
   definition as initGetPingDefinition,
 } from './handlers/getPing.js';
-import { runREPL } from './repl.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   prepareBuildEnvironment,
   runBuild,
 } from './build.js';
-import { HANDLER_REG_EXP } from './services/HANDLERS.js';
-import { WRAPPER_REG_EXP } from './services/WRAPPERS.js';
-import runCLI from './cli.js';
 import { parseArgs, readArgs } from './libs/args.js';
-import type { Dependencies } from 'knifecycle';
 
 export type { WhookBaseEnv, WhookBaseConfigs } from './types.js';
 export { DEFAULT_BUILD_INITIALIZER_PATH_MAP } from './build.js';
@@ -169,6 +163,7 @@ export {
   type WhookWrappersDependencies,
 } from './services/WRAPPERS.js';
 import initHandlers from './services/HANDLERS.js';
+import { identity } from './libs/utils.js';
 export {
   HANDLER_REG_EXP,
   applyWrappers,
@@ -197,150 +192,110 @@ export {
   initCompiler,
   initWrappers,
   initHandlers,
-  runREPL,
   prepareBuildEnvironment,
   runBuild,
   readArgs,
-  runCLI,
 };
 
 /* Architecture Note #1: Main file
 The Whook's main file exports :
 - its specific types,
 - its specific `knifecycle` compatible services,
-- a few bootstrapping functions.
+- a few bootstrapping functions designed to be customizable.
 */
 
-export const DEFAULT_INJECTED_NAMES = ['httpServer', 'process'];
-
-/* Architecture Note #1.1: Server run
-Whook exposes a `runServer` function to programmatically spawn
- its server. It is intended to be reusable and injectable so
+/* Architecture Note #1.1: Process run
+Whook exposes a `runProcess` function to programmatically spawn
+ its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 */
-export async function runServer<
+export async function runProcess<
   D extends Dependencies,
   T extends Knifecycle = Knifecycle,
 >(
-  innerPrepareEnvironment: ($?: T) => Promise<T>,
-  innerPrepareServer: (injectedNames: string[], $: T) => Promise<D>,
+  innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
+  innerPrepareProcess: (
+    injectedNames: string[],
+    $: T,
+  ) => Promise<D> = prepareProcess,
   injectedNames: string[] = [],
+  argv: typeof _argv = _argv,
 ): Promise<D> {
+  const args = parseArgs(argv);
+
+  const rootServicesNames =
+    args.rest[0] === '__inject'
+      ? (args.rest[1] || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(identity)
+      : args.rest[0]
+        ? ['command']
+        : ['httpServer', 'process'];
+
   try {
     const $ = await innerPrepareEnvironment();
-    const { ENV, log, ...services } = await innerPrepareServer(
-      [...new Set([...injectedNames, 'ENV', 'log'])],
+
+    $.register(constant('PROCESS_NAME', 'whook'));
+    $.register(constant('args', args));
+    $.register(constant('stdin', stdin));
+    $.register(constant('stdout', stdout));
+    $.register(constant('stderr', stderr));
+
+    const services = await innerPrepareProcess(
+      [...new Set([...rootServicesNames, ...injectedNames])],
       $,
     );
 
-    if (ENV.DRY_RUN) {
-      log('warning', '🌵 - Dry run, shutting down now!');
-      await $.destroy();
-      return {} as D;
-    }
-
-    if (ENV.MERMAID_RUN) {
-      const CONFIG_REG_EXP = /^([A-Z0-9_]+)$/;
-      const MERMAID_GRAPH_CONFIG = {
-        classes: {
-          handlers: 'fill:#aad400,stroke:#000,stroke-width:1px,color:#000;',
-          wrappers: 'fill:#aad400,stroke:#000,stroke-width:1px,color:#000;',
-          config: 'fill:#000,stroke:#aad400,stroke-width:1px,color:#aad400;',
-          others: 'fill:#aad400,stroke:#000,stroke-width:1px,color:#000;',
-        },
-        styles: [
-          {
-            pattern: WRAPPER_REG_EXP,
-            className: 'wrappers',
-          },
-          {
-            pattern: HANDLER_REG_EXP,
-            className: 'handlers',
-          },
-          {
-            pattern: CONFIG_REG_EXP,
-            className: 'config',
-          },
-          {
-            pattern: /^(.+)$/,
-            className: 'others',
-          },
-        ],
-        shapes: [
-          {
-            pattern: HANDLER_REG_EXP,
-            template: '$0(($0))',
-          },
-          {
-            pattern: WRAPPER_REG_EXP,
-            template: '$0(($0))',
-          },
-          {
-            pattern: CONFIG_REG_EXP,
-            template: '$0{$0}',
-          },
-        ],
-      };
-      log('warning', '🌵 - Mermaid graph generated, shutting down now!');
-      stdout.write($.toMermaidGraph(MERMAID_GRAPH_CONFIG));
-      await $.destroy();
-      return {} as D;
-    }
-
-    return { ENV, log, $instance: $, ...services } as unknown as D;
+    return { $instance: $, ...services } as unknown as D;
   } catch (err) {
     stderr.write(
-      `'💀 - Cannot launch the process: ${printStackTrace(err as Error)}`,
+      `'💀 - Cannot launch the process: ${printStackTrace(err as Error)}.
+Run with "DEBUG=whook" for more debugging context.`,
     );
     exit(1);
-    return {} as D;
   }
 }
 
-/* Architecture Note #1.2: Server preparation
-Whook exposes a `prepareServer` function to create its server
+/* Architecture Note #1.2: Process preparation
+Whook exposes a `prepareProcess` function to create its
  configuration. It takes eventually additional injections that
  would be required at a higher level and a
  [Knifecycle](https://github.com/nfroidure/knifecycle)
  containing the bootstrapped environment and allowing
- to complete and run the server.
+ to complete and run the process.
 */
 /**
- * Runs the Whook server
- * @param {Array<String>} injectedNames
+ * Runs the Whook's process
+ * @param {Array<String>} servicesNames
  * Root dependencies names to instanciate and return
  * @param {Knifecycle} $
- * The Knifecycle instance to use for the server run
+ * The Knifecycle instance to use for the run
  * @returns Object
  * A promise of the injected services
  */
-export async function prepareServer<
+export async function prepareProcess<
   D extends Dependencies,
   T extends Knifecycle,
->(injectedNames: string[], $: T): Promise<D> {
-  /* Architecture Note #1.2.1: Root injections
-   * We need to inject `httpServer` and `process` to bring life to our
-   *  server. We also inject `log` for logging purpose and custom other
-   *  injected name that were required upfront.
-   */
+>(servicesNames: string[], $: T): Promise<D> {
   const { log, ...services } = await $.run<{
     log: LogService;
-  }>([...new Set([...injectedNames, 'log'])]);
+  }>([...new Set([...servicesNames, 'log'])]);
 
   log('warning', 'On air 🚀🌕');
 
-  return { log, ...services } as unknown as D;
+  return { $instance: $, log, ...services } as unknown as D;
 }
 
-/* Architecture Note #1.3: Server environment
+/* Architecture Note #1.3: Process environments
 The Whook `prepareEnvironment` function aims to provide the complete
- server environment without effectively planning its run. It allows
- to use that environment for CLI, REPL or build purposes. It also
+ process environment without effectively planning its run. It allows
+ to use that environment for testing or build purposes. It also
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
  */
 /**
- * Prepare the Whook server environment
+ * Prepare the Whook process environment
  * @param {Knifecycle} $
  * The Knifecycle instance to set the various services
  * @returns Promise<Knifecycle>
@@ -373,8 +328,8 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initAPMService,
   ].forEach($.register.bind($));
 
-  $.register(constant('PROCESS_NAME', 'whook'));
-  $.register(constant('args', parseArgs(argv)));
+  $.register(initPromptArgs);
+  $.register(initCommand);
 
   /* Architecture Note #2.3: the `PWD` constant
   The Whook server heavily rely on the process working directory
@@ -434,27 +389,5 @@ export async function prepareEnvironment<T extends Knifecycle>(
     }),
   );
 
-  return $;
-}
-
-/* Architecture Note #1.4: Commands preparation
-Whook expose `prepareCommand` function to create commands configuration
-before effectively running them
- */
-/**
- * Prepare the Whook commands environment
- * @param {Knifecycle} $
- * The Knifecycle instance to set the various services
- * @returns Promise<Knifecycle>
- * A promise of the Knifecycle instance
- */
-export async function prepareCommand<T extends Knifecycle>(
-  innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
-  $: T = new Knifecycle() as T,
-): Promise<T> {
-  $ = await innerPrepareEnvironment($);
-  $.register(initPromptArgs);
-  $.register(initCommand);
-  $.register(initAutoloader);
   return $;
 }

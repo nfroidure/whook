@@ -8,11 +8,9 @@
 ## Summary
 
 1. [Main file](#1-main-file)
-   1. [Server run](#11-server-run)
-   2. [Server preparation](#12-server-preparation)
-      1. [Root injections](#121-root-injections)
+   1. [Process run](#11-process-run)
+   2. [Process preparation](#12-process-preparation)
    3. [Server environment](#13-server-environment)
-   4. [Commands preparation](#14-commands-preparation)
 2. [Services initializers](#2-services-initializers)
    1. [Base URL](#21-base-url)
    2. [IP detection](#22-ip-detection)
@@ -39,7 +37,6 @@
          1. [Plugins resolution](#2961-plugins-resolution)
          2. [Plugins/project paths](#2962-plugins/project-paths)
 3. [the handlers](#3-the-handlers)
-4. [Commands](#4-commands)
    1. [Testing](#41-testing)
 
 
@@ -48,63 +45,44 @@
 The Whook's main file exports :
 - its specific types,
 - its specific `knifecycle` compatible services,
-- a few bootstrapping functions.
+- a few bootstrapping functions designed to be customizable.
 
-[See in context](./src/index.ts#L205-L210)
+[See in context](./src/index.ts#L200-L205)
 
 
 
-### 1.1. Server run
+### 1.1. Process run
 
-Whook exposes a `runServer` function to programmatically spawn
- its server. It is intended to be reusable and injectable so
+Whook exposes a `runProcess` function to programmatically spawn
+ its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L212-L216)
+[See in context](./src/index.ts#L207-L211)
 
 
 
-### 1.2. Server preparation
+### 1.2. Process preparation
 
-Whook exposes a `prepareServer` function to create its server
+Whook exposes a `prepareProcess` function to create its
  configuration. It takes eventually additional injections that
  would be required at a higher level and a
  [Knifecycle](https://github.com/nfroidure/knifecycle)
  containing the bootstrapped environment and allowing
- to complete and run the server.
+ to complete and run the process.
 
-[See in context](./src/index.ts#L295-L302)
-
-
-
-#### 1.2.1. Root injections
-
-* We need to inject `httpServer` and `process` to bring life to our
- *  server. We also inject `log` for logging purpose and custom other
- *  injected name that were required upfront.
-
-[See in context](./src/index.ts#L316-L320)
+[See in context](./src/index.ts#L260-L267)
 
 
 
 ### 1.3. Server environment
 
 The Whook `prepareEnvironment` function aims to provide the complete
- server environment without effectively planning its run. It allows
- to use that environment for CLI, REPL or build purposes. It also
+ process environment without effectively planning its run. It allows
+ to use that environment for testing or build purposes. It also
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
 
-[See in context](./src/index.ts#L330-L336)
-
-
-
-### 1.4. Commands preparation
-
-Whook expose `prepareCommand` function to create commands configuration
-before effectively running them
-
-[See in context](./src/index.ts#L432-L435)
+[See in context](./src/index.ts#L290-L296)
 
 
 
@@ -115,7 +93,7 @@ Whook's embed a few default initializers proxied from
  folder. It can be wrapped or overridden, at will, later
  in a project using overrides.
 
-[See in context](./src/index.ts#L347-L352)
+[See in context](./src/index.ts#L307-L312)
 
 
 
@@ -145,7 +123,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L371-L375)
+[See in context](./src/index.ts#L334-L338)
 
 
 
@@ -163,7 +141,7 @@ this service detects a free port automagically.
 Whook uses the `common-services` `resolve` service to allow
  to easily mock/decorate all ESM resolutions.
 
-[See in context](./src/index.ts#L379-L382)
+[See in context](./src/index.ts#L342-L345)
 
 
 
@@ -172,7 +150,7 @@ Whook uses the `common-services` `resolve` service to allow
 Whook uses the `common-services` `importer` service to allow
  to easily mock/decorate all ESM dynamic imports.
 
-[See in context](./src/index.ts#L385-L388)
+[See in context](./src/index.ts#L348-L351)
 
 
 
@@ -181,7 +159,7 @@ Whook uses the `common-services` `importer` service to allow
 Whook uses a built in `exit` service to allow
  to easily mock/decorate the app exit.
 
-[See in context](./src/index.ts#L391-L394)
+[See in context](./src/index.ts#L354-L357)
 
 
 
@@ -194,7 +172,7 @@ The `WHOOK_PLUGINS` constant allows you to give the name of
  you to just install Whook's plugins to get them automatically
  loaded.
 
-[See in context](./src/index.ts#L413-L420)
+[See in context](./src/index.ts#L376-L383)
 
 
 
@@ -204,7 +182,7 @@ Whook uses a built-in `logger` service to allow
  to easily route the application logs for the 
  `common-services` provided `log` service.
 
-[See in context](./src/index.ts#L397-L401)
+[See in context](./src/index.ts#L360-L364)
 
 
 
@@ -229,7 +207,7 @@ Loading the configuration files is done according to the `APP_ENV`
    environment variable. It basically requires a configuration hash
    where the keys are JSON formattable constants.
 
-[See in context](./src/index.ts#L406-L410)
+[See in context](./src/index.ts#L369-L373)
 
 
 
@@ -240,7 +218,7 @@ Whook provides a simple way to load the constants, services
  strategies. It is done by implementing the `knifecycle`
  auto loading interface.
 
-[See in context](./src/services/_autoload.ts#L61-L66)
+[See in context](./src/services/_autoload.ts#L63-L68)
 
 
 
@@ -249,7 +227,7 @@ Whook provides a simple way to load the constants, services
 First of all the autoloader looks for constants in the
  previously loaded `APP_CONFIG` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L142-L145)
+[See in context](./src/services/_autoload.ts#L193-L196)
 
 
 
@@ -259,7 +237,7 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing this during the auto
  loader initialization.
 
-[See in context](./src/services/_autoload.ts#L112-L116)
+[See in context](./src/services/_autoload.ts#L115-L119)
 
 
 
@@ -298,7 +276,7 @@ The Whook auto-loader allows you to provide the file path
  of a service per its name. It exports a `WhookInitializerMap`
  type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L39-L44)
+[See in context](./src/services/_autoload.ts#L40-L45)
 
 
 
@@ -307,7 +285,7 @@ The Whook auto-loader allows you to provide the file path
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L204-L207)
+[See in context](./src/services/_autoload.ts#L273-L276)
 
 
 
@@ -316,7 +294,7 @@ In order to be able to load a service from a given path map
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L164-L167)
+[See in context](./src/services/_autoload.ts#L215-L218)
 
 
 
@@ -325,7 +303,7 @@ Here, we build the handlers map needed by the router by injecting every
 We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
  service so that they can be dynamically applied.
 
-[See in context](./src/services/_autoload.ts#L185-L188)
+[See in context](./src/services/_autoload.ts#L236-L239)
 
 
 
@@ -334,7 +312,7 @@ We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
 Finally, we either load the handler/service/wrapper module
  if none of the previous strategies applied.
 
-[See in context](./src/services/_autoload.ts#L198-L201)
+[See in context](./src/services/_autoload.ts#L267-L270)
 
 
 
@@ -354,7 +332,7 @@ Whook auto loader can look for initializers in a list of
 
 Trying to load services from plugins/project paths.
 
-[See in context](./src/services/_autoload.ts#L218-L220)
+[See in context](./src/services/_autoload.ts#L287-L289)
 
 
 
@@ -364,34 +342,6 @@ Handlers are services that provide a definition and implements
  API routes.
 
 [See in context](./src/handlers/getOpenAPI.ts#L13-L16)
-
-
-
-## 4. Commands
-
-Whook's commands are CLI tools that you may need to create and
- use with your Whook's projects.
-
-By doing so, it provides you a convenient way to reuse your
-Whook's project configuration, services and handlers easily
- in you day to day command line programs.
-
-To test this project, go to a project (in this repo
- `@whook/example`) and run:
-
-```sh
-cd packages/whook
-npm run build
-cd ../whook-example
-
-# Debugging compiled commands
-node ../whook/bin/whook.js ls
-
-# Debugging source commands
-npm run cli -- tsx ../whook/bin/whook.js ls
-```
-
-[See in context](./src/cli.ts#L11-L35)
 
 
 

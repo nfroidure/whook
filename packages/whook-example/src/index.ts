@@ -1,4 +1,4 @@
-import { env } from 'node:process';
+import { env, argv as _argv } from 'node:process';
 import {
   Knifecycle,
   constant,
@@ -7,11 +7,9 @@ import {
 } from 'knifecycle';
 import {
   WHOOK_DEFAULT_PLUGINS,
-  DEFAULT_INJECTED_NAMES as BASE_DEFAULT_INJECTED_NAMES,
-  runServer as runBaseServer,
-  prepareServer as prepareBaseServer,
+  runProcess as runBaseProcess,
+  prepareProcess as prepareBaseProcess,
   prepareEnvironment as prepareBaseEnvironment,
-  prepareCommand as prepareBaseCommand,
   initAutoload,
   initAPIDefinitions,
 } from '@whook/whook';
@@ -38,62 +36,49 @@ const APP_ENVS = ['local', 'test', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
 
-/* Architecture Note #1.2.3: Injected names
-
-Whook uses Knifecycle at its core, so, you have to provide the
- list of root services it has to run. Per default, those are
- the `process` and the `httpServer`.
-
-Exporting this constant is required for the watch command
- to work as expected.
-*/
-export const DEFAULT_INJECTED_NAMES = BASE_DEFAULT_INJECTED_NAMES;
-
 /* Architecture Note #1.1: The main file
 
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 */
 
-/* Architecture Note #1.1.1: runServer
+/* Architecture Note #1.1.1: runProcess
 
-The `runServer` function is intended to run the server
+The `runProcess` function is intended to run the server
  and may be proxied as is, except in some e2e test cases
  where it can be useful to put mocks in (see
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 */
-export async function runServer<
+export async function runProcess<
   D extends Dependencies,
   T extends Knifecycle = Knifecycle,
 >(
   innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
-  innerPrepareServer: (
+  innerPrepareProcess: (
     injectedNames: DependencyDeclaration[],
     $: T,
-  ) => Promise<D> = prepareServer,
-  injectedNames: DependencyDeclaration[] = DEFAULT_INJECTED_NAMES,
+  ) => Promise<D> = prepareProcess,
+  injectedNames: DependencyDeclaration[] = [],
+  argv: typeof _argv = _argv,
 ): Promise<D> {
-  return runBaseServer(
+  return runBaseProcess(
     innerPrepareEnvironment,
-    innerPrepareServer,
+    innerPrepareProcess,
     injectedNames,
+    argv,
   );
 }
 
-/* Architecture Note #1.1.2: prepareServer
+/* Architecture Note #1.1.2: prepareProcess
 
-The `prepareServer` function is intended to prepare the server
- environment. It relies on the main environment but will be
- used only by the server, not the commands or build scripts.
+The `prepareProcess` function is intended to prepare the process
+ environment.
 */
-export async function prepareServer<
+export async function prepareProcess<
   D extends Dependencies,
   T extends Knifecycle = Knifecycle,
->(
-  injectedNames: DependencyDeclaration[] = DEFAULT_INJECTED_NAMES,
-  $: T,
-): Promise<D> {
+>(injectedNames: DependencyDeclaration[], $: T): Promise<D> {
   /* Architecture Note #1.1.2.1: server wrappers
   
   Add here any logic bound to the server only
@@ -103,12 +88,12 @@ export async function prepareServer<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as any);
 
-  return await prepareBaseServer(injectedNames, $);
+  return await prepareBaseProcess(injectedNames, $);
 }
 
 /* Architecture Note #1.1.3: prepareEnvironment
 
-The `prepareEnvironment` one is intended to prepare the server environment
+The `prepareEnvironment` one is intended to prepare the process environment
 */
 export async function prepareEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
@@ -250,19 +235,4 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(initErrorHandlerWithCORS);
 
   return $;
-}
-
-/* Architecture Note #1.1.3: prepareCommand
-
-The `prepareCommand` function is intended to prepare the commands
- environment. It relies on the main environment but will be
- used only by the commands, not the server or build scripts.
-*/
-
-export async function prepareCommand<T extends Knifecycle>(
-  innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
-  $: T = new Knifecycle() as T,
-): Promise<T> {
-  // you can add here any logic bound to the commands only
-  return prepareBaseCommand(innerPrepareEnvironment, $);
 }

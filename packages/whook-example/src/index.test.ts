@@ -9,8 +9,8 @@ import {
 } from '@jest/globals';
 import { constant } from 'knifecycle';
 import {
-  runServer,
-  prepareServer,
+  runProcess,
+  prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
 } from './index.js';
 import axios from 'axios';
@@ -24,7 +24,7 @@ import type { Logger } from 'common-services';
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 
-describe('runServer', () => {
+describe('runProcess', () => {
   // TODO: Use import.meta.resolve when Jest will support it
   // See https://github.com/jestjs/jest/issues/14923
   const require = createRequire(
@@ -75,10 +75,11 @@ describe('runServer', () => {
   let jwtToken: JWTService<AuthenticationData>;
 
   beforeAll(async () => {
-    const { $instance: _instance, jwtToken: _jwtToken } = await runServer(
+    const { $instance: _instance, jwtToken: _jwtToken } = await runProcess(
       prepareEnvironment,
-      prepareServer,
+      prepareProcess,
       ['$instance', 'httpServer', 'process', 'jwtToken'],
+      [],
     );
 
     $instance = _instance;

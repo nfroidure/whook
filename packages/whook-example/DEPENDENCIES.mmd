@@ -72,6 +72,15 @@ graph TD
   obfuscator-->SENSIBLE_HEADERS{SENSIBLE_HEADERS}
   obfuscator-->log
   apm-->log
+  promptArgs-->COMMAND_DEFINITION{COMMAND_DEFINITION}
+  promptArgs-->args
+  promptArgs-->inquirer
+  promptArgs-->log
+  command-->commandHandler
+  command-->$ready
+  command-->$instance
+  command-->$fatalError
+  command-->log
   resolve-->MAIN_FILE_URL{MAIN_FILE_URL}
   resolve-->log
   importer-->log
@@ -88,58 +97,10 @@ graph TD
   API_DEFINITIONS{API_DEFINITIONS}-->importer
   API_DEFINITIONS{API_DEFINITIONS}-->log
   API_DEFINITIONS{API_DEFINITIONS}-->readDir
-  PORT{PORT}-->ENV{ENV}
-  PORT{PORT}-->log
-  PORT{PORT}-->importer
-  HANDLERS{HANDLERS}-->WRAPPERS{WRAPPERS}
-  HANDLERS{HANDLERS}-->log
-  HANDLERS{HANDLERS}-->getDelay((getDelay))
-  HANDLERS{HANDLERS}-->optionsWithCORS((optionsWithCORS))
-  HANDLERS{HANDLERS}-->getDiagnostic((getDiagnostic))
-  HANDLERS{HANDLERS}-->getOpenAPI((getOpenAPI))
-  HANDLERS{HANDLERS}-->getParameters((getParameters))
-  HANDLERS{HANDLERS}-->getTime((getTime))
-  HANDLERS{HANDLERS}-->putEcho((putEcho))
-  HANDLERS{HANDLERS}-->getPing((getPing))
-  API{API}-->ENV{ENV}
-  API{API}-->CONFIG{CONFIG}
-  API{API}-->BASE_URL{BASE_URL}
-  API{API}-->BASE_PATH{BASE_PATH}
-  API{API}-->API_VERSION{API_VERSION}
-  API{API}-->API_DEFINITIONS{API_DEFINITIONS}
-  API{API}-->log
-  BASE_URL{BASE_URL}-->ENV{ENV}
-  BASE_URL{BASE_URL}-->CONFIG{CONFIG}
-  BASE_URL{BASE_URL}-->PROTOCOL{PROTOCOL}
-  BASE_URL{BASE_URL}-->HOST{HOST}
-  BASE_URL{BASE_URL}-->PORT{PORT}
-  BASE_URL{BASE_URL}-->log
-  FILTER_API_DEFINITION{FILTER_API_DEFINITION}-->ENV{ENV}
-  FILTER_API_DEFINITION{FILTER_API_DEFINITION}-->log
-  WRAPPERS{WRAPPERS}-->HANDLERS_WRAPPERS{HANDLERS_WRAPPERS}
-  WRAPPERS{WRAPPERS}-->log
-  WRAPPERS{WRAPPERS}-->wrapHandlerWithCORS((wrapHandlerWithCORS))
-  WRAPPERS{WRAPPERS}-->wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))
-  getDelay((getDelay))-->delay
-  getDiagnostic((getDiagnostic))-->TRANSACTIONS{TRANSACTIONS}
-  getOpenAPI((getOpenAPI))-->API{API}
-  getTime((getTime))-->time
-  putEcho((putEcho))-->log
-  getPing((getPing))-->ENV{ENV}
-  wrapHandlerWithCORS((wrapHandlerWithCORS))-->CORS{CORS}
-  wrapHandlerWithCORS((wrapHandlerWithCORS))-->log
-  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->MECHANISMS{MECHANISMS}
-  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->DEFAULT_MECHANISM{DEFAULT_MECHANISM}
-  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->authentication
-  wrapHandlerWithAuthorization((wrapHandlerWithAuthorization))-->log
-  MECHANISMS{MECHANISMS}-->ENV{ENV}
-  MECHANISMS{MECHANISMS}-->log
-  authentication-->jwtToken
-  jwtToken-->JWT_SECRET_ENV_NAME{JWT_SECRET_ENV_NAME}
-  jwtToken-->ENV{ENV}
-  jwtToken-->JWT{JWT}
-  jwtToken-->log
-  jwtToken-->time
+  mermaid-->$ready
+  mermaid-->$instance
+  mermaid-->log
+  mermaid-->stdout
   classDef handlers fill:#aad400,stroke:#000,stroke-width:1px,color:#000;
   classDef wrappers fill:#aad400,stroke:#000,stroke-width:1px,color:#000;
   classDef config fill:#000,stroke:#aad400,stroke-width:1px,color:#aad400;
@@ -201,31 +162,18 @@ graph TD
   class MAX_CLEAR_RATIO config;
   class SENSIBLE_PROPS config;
   class SENSIBLE_HEADERS config;
+  class COMMAND_DEFINITION config;
+  class promptArgs others;
+  class args others;
+  class inquirer others;
+  class command others;
+  class commandHandler others;
+  class $ready others;
   class APP_CONFIG config;
   class API_DEFINITIONS config;
   class IGNORED_FILES_SUFFIXES config;
   class IGNORED_FILES_PREFIXES config;
   class REDUCED_FILES_SUFFIXES config;
   class FILTER_API_DEFINITION config;
-  class WRAPPERS config;
-  class getDelay handlers;
-  class optionsWithCORS handlers;
-  class getDiagnostic handlers;
-  class getOpenAPI handlers;
-  class getParameters handlers;
-  class getTime handlers;
-  class putEcho handlers;
-  class getPing handlers;
-  class CONFIG config;
-  class BASE_URL config;
-  class API_VERSION config;
-  class PROTOCOL config;
-  class HANDLERS_WRAPPERS config;
-  class wrapHandlerWithCORS wrappers;
-  class wrapHandlerWithAuthorization wrappers;
-  class MECHANISMS config;
-  class DEFAULT_MECHANISM config;
-  class authentication others;
-  class jwtToken others;
-  class JWT_SECRET_ENV_NAME config;
-  class JWT config;
+  class mermaid others;
+  class stdout others;

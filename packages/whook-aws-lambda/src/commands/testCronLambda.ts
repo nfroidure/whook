@@ -81,10 +81,13 @@ async function initTestCronLambdaCommand({
       type,
       extension,
     );
-    const result = await handler({
-      time: date === 'now' ? new Date(time()).toISOString() : date,
-      body: JSON.parse(body),
-    }, {});
+    const result = await handler(
+      {
+        time: date === 'now' ? new Date(time()).toISOString() : date,
+        body: JSON.parse(body),
+      },
+      {},
+    );
 
     log('info', 'SUCCESS:', result as string);
 

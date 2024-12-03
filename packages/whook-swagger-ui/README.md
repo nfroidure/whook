@@ -29,7 +29,7 @@ npm i @whook/swagger-ui
 ```
 
 To use it, just wrap the HTTP router with this module and override its
-registration with the `Knifecycle` instance inside the `runServer` function
+registration with the `Knifecycle` instance inside the `runProcess` function
 (usually in `src/index.ts`):
 
 ```diff
@@ -38,9 +38,9 @@ registration with the `Knifecycle` instance inside the `runServer` function
 
 // (...)
 
-// It is important to do this in the runServer function since it really
+// It is important to do this in the runProcess function since it really
 //  make sense only when actually running the server
-export async function runServer(injectedNames = [], $ = new Knifecycle()) {
+export async function runProcess(injectedNames = [], $ = new Knifecycle()) {
 
   // (...)
 
@@ -50,7 +50,7 @@ export async function runServer(injectedNames = [], $ = new Knifecycle()) {
 +     wrapHTTPRouterWithSwaggerUI(initHTTPRouter),
 +   );
 
-  return await runBaseServer(injectedNames, $);
+  return await runBaseProcess(injectedNames, $);
 }
 ```
 

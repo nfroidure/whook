@@ -2,7 +2,7 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import {
-  prepareServer,
+  prepareProcess,
   prepareEnvironment,
   initGetPingDefinition,
 } from '@whook/whook';
@@ -100,7 +100,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $instance } = await prepareServer(
+    const { $instance } = await prepareProcess(
       ['$instance', 'httpServer', 'process'],
       $,
     );
@@ -205,6 +205,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "DEV_ACCESS_MECHANISM",
     ],
     [
+      "PROCESS_NAME",
+    ],
+    [
       "SIGNALS",
     ],
     [
@@ -284,7 +287,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
 
-    const { $instance } = await prepareServer(
+    const { $instance } = await prepareProcess(
       ['$instance', 'httpServer', 'process'],
       $,
     );
@@ -384,6 +387,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     ],
     [
       "DEV_ACCESS_MECHANISM",
+    ],
+    [
+      "PROCESS_NAME",
     ],
     [
       "SIGNALS",
@@ -584,7 +590,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 
     time.mockReturnValue(new Date('2012-01-15T00:00:00Z').getTime());
 
-    const { $instance } = await prepareServer(
+    const { $instance } = await prepareProcess(
       ['$instance', 'httpServer', 'process'],
       $,
     );
@@ -649,6 +655,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     ],
     [
       "DEV_ACCESS_MECHANISM",
+    ],
+    [
+      "PROCESS_NAME",
     ],
     [
       "SIGNALS",

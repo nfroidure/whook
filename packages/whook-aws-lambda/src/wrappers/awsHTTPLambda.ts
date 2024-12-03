@@ -49,10 +49,7 @@ import {
   type DereferencedParameterObject,
   pickAllHeaderValues,
 } from '@whook/http-transaction';
-import type {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-} from 'aws-lambda';
+import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import type { WhookErrorHandler } from '@whook/http-router';
 import type { AppEnvVars } from 'application-services';
 

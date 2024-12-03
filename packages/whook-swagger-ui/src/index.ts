@@ -2,16 +2,16 @@ import { wrapInitializer, alsoInject } from 'knifecycle';
 import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
 } from './handlers/getOpenAPI.js';
-import type { ProviderInitializer, Dependencies } from 'knifecycle';
-import type {
-  WhookHTTPRouterProvider,
-  WhookHTTPRouterService,
+import { type ProviderInitializer, type Dependencies } from 'knifecycle';
+import {
+  type WhookHTTPRouterProvider,
+  type WhookHTTPRouterService,
 } from '@whook/http-router';
-import type { ImporterService, LogService } from 'common-services';
+import { type ImporterService, type LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { SwaggerUIOptions } from 'swagger-ui';
-import type { Jsonify } from 'type-fest';
+import { type IncomingMessage, type ServerResponse } from 'node:http';
+import { type SwaggerUIOptions } from 'swagger-ui';
+import { type Jsonify } from 'type-fest';
 
 export { initGetOpenAPI, getOpenAPIDefinition };
 
