@@ -1,4 +1,4 @@
-import { autoService } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
@@ -27,7 +27,10 @@ export type OAuth2RefreshTokenGranterService<
   AUTHENTICATION_DATA
 >;
 
-export default autoService(initOAuth2RefreshTokenGranter);
+export default location(
+  autoService(initOAuth2RefreshTokenGranter),
+  import.meta.url,
+);
 
 // Refresh Token Grant
 // https://tools.ietf.org/html/rfc6749#page-47

@@ -1,4 +1,7 @@
-import { service } from 'knifecycle';
+import { location, service } from 'knifecycle';
 import { exit } from 'node:process';
 
-export default service(async () => exit, 'exit', [], true);
+export default location(
+  service(async () => exit, 'exit', [], true),
+  import.meta.url,
+);

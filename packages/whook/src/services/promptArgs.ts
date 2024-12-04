@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { autoService, singleton } from 'knifecycle';
+import { autoService, location, singleton } from 'knifecycle';
 import _inquirer from 'inquirer';
-import { noop } from '../libs/utils.js';
-import { type LogService } from 'common-services';
+import { noop, type LogService } from 'common-services';
 import {
   type WhookArgsTypes,
   type WhookCommandArgs,
   type WhookCommandDefinitionArguments,
 } from '../libs/args.js';
 
-export default singleton(autoService(initPromptArgs));
+export default location(
+  singleton(autoService(initPromptArgs)),
+  import.meta.url,
+);
 
 export type WhookCommandHandler = () => Promise<void>;
 export type WhookCommandDefinition = {

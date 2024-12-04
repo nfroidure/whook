@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { WhookAPIHandlerDefinition, WhookResponse } from '@whook/whook';
@@ -8,7 +8,7 @@ export type WhookAPIOperationSwaggerConfig = {
   private?: boolean;
 };
 
-export default autoHandler(getOpenAPI);
+export default location(autoHandler(getOpenAPI), import.meta.url);
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '/openAPI',

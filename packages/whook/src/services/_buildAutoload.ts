@@ -50,10 +50,7 @@ const initializerWrapper: ServiceInitializerWrapper<
           ', ',
         )}) can give unpredictable results!`,
       );
-      return {
-        initializer: constant(serviceName, undefined),
-        path: `constant://${serviceName}`,
-      };
+      return constant(serviceName, undefined);
     }
 
     try {
@@ -74,17 +71,11 @@ const initializerWrapper: ServiceInitializerWrapper<
           'debug',
           `🤖 - Reusing a constant initializer directly from the Knifecycle instance: "${serviceName}".`,
         );
-        return {
-          initializer,
-          path: `instance://${serviceName}`,
-        };
+        return initializer;
       }
 
       if (BUILD_CONSTANTS[serviceName]) {
-        return {
-          initializer: constant(serviceName, BUILD_CONSTANTS[serviceName]),
-          path: `constant://${serviceName}`,
-        };
+        return constant(serviceName, BUILD_CONSTANTS[serviceName]);
       }
 
       return $autoload(serviceName);

@@ -1,7 +1,10 @@
-import { service } from 'knifecycle';
+import { service, location } from 'knifecycle';
 import { qsStrict as strictQs } from 'strict-qs';
 
-export default service(initQueryParser, 'QUERY_PARSER');
+export default location(
+  service(initQueryParser, 'QUERY_PARSER'),
+  import.meta.url,
+);
 
 /* Architecture Note #4.5: QUERY_PARSER
 

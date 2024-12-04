@@ -1,8 +1,7 @@
-import { autoService, name } from 'knifecycle';
-import { noop, applyWrappers } from '@whook/whook';
-import type { WhookWrapper } from '@whook/whook';
-import type { WhookHandler } from '@whook/http-transaction';
-import type { LogService } from 'common-services';
+import { autoService, name, location } from 'knifecycle';
+import { noop, applyWrappers, type WhookWrapper } from '@whook/whook';
+import { type WhookHandler } from '@whook/http-transaction';
+import { type LogService } from 'common-services';
 
 export type WhookHandlerDependencies<T extends WhookHandler> = {
   WRAPPERS: WhookWrapper<T>[];
@@ -11,7 +10,10 @@ export type WhookHandlerDependencies<T extends WhookHandler> = {
   log?: LogService;
 };
 
-export default name('HANDLER', autoService(initHandler));
+export default location(
+  name('HANDLER', autoService(initHandler)),
+  import.meta.url,
+);
 
 /**
  * Initialize one Whook handler

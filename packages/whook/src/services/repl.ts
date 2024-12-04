@@ -1,10 +1,16 @@
-import { autoProvider, name } from 'knifecycle';
+import {
+  autoProvider,
+  name,
+  location,
+  type Provider,
+  type Disposer,
+  type Injector,
+} from 'knifecycle';
 import { identity, noop } from '../libs/utils.js';
 import repl from 'node:repl';
 import { type LogService } from 'common-services';
-import { type Provider, type Disposer, type Injector } from 'knifecycle';
 
-export default name('repl', autoProvider(initREPL));
+export default location(name('repl', autoProvider(initREPL)), import.meta.url);
 
 export type REPLService = void;
 export type REPLDependencies<S> = {

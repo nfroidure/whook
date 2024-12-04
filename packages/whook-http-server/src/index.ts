@@ -1,11 +1,11 @@
-import { name, autoProvider } from 'knifecycle';
+import { name, autoProvider, location } from 'knifecycle';
 import http from 'node:http';
 import ms from 'ms';
 import { YError } from 'yerror';
-import type { Provider } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { WhookHTTPRouterService } from '@whook/http-router';
-import type { Socket } from 'net';
+import { type Provider } from 'knifecycle';
+import { type LogService } from 'common-services';
+import { type WhookHTTPRouterService } from '@whook/http-router';
+import { type Socket } from 'net';
 
 export type WhookHTTPServerEnv = {
   DESTROY_SOCKETS?: string;
@@ -50,7 +50,10 @@ const DEFAULT_HTTP_SERVER_OPTIONS: WhookHTTPServerOptions = {
   maxConnections: 0,
 };
 
-export default name('httpServer', autoProvider(initHTTPServer));
+export default location(
+  name('httpServer', autoProvider(initHTTPServer)),
+  import.meta.url,
+);
 
 /**
  * Initialize an HTTP server

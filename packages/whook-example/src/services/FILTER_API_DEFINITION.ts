@@ -1,4 +1,4 @@
-import { name, autoService } from 'knifecycle';
+import { name, autoService, location } from 'knifecycle';
 import { noop, identity } from '@whook/whook';
 import type { LogService } from 'common-services';
 import type {
@@ -6,9 +6,9 @@ import type {
   WhookAPIDefinitionFilter,
 } from '@whook/whook';
 
-export default name(
-  'FILTER_API_DEFINITION',
-  autoService(initFilterAPIDefinition),
+export default location(
+  name('FILTER_API_DEFINITION', autoService(initFilterAPIDefinition)),
+  import.meta.url,
 );
 
 export type FilterAPIDefinitionEnvVars = {

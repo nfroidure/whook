@@ -7,6 +7,7 @@ import {
   wrapInitializer,
   constant,
   alsoInject,
+  location,
 } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
@@ -94,10 +95,7 @@ const initializerWrapper: ServiceInitializerWrapper<
   }: WhookAWSLambdaAutoloadDependencies,
   $autoload: Autoloader<Initializer<Dependencies, Service>>,
 ): Promise<
-  (serviceName: string) => Promise<{
-    initializer: Initializer<Dependencies, Service>;
-    path: string;
-  }>
+  (serviceName: string) => Promise<Initializer<Dependencies, Service>>
 > => {
   let API: OpenAPIV3_1.Document;
   let OPERATION_APIS: WhookRawOperation<WhookAPIOperationAWSLambdaConfig>[];
@@ -108,10 +106,9 @@ const initializerWrapper: ServiceInitializerWrapper<
   > = (() => {
     return async (serviceName) => {
       const cleanedName = serviceName.split('_').pop();
-      // eslint-disable-next-line
+
       API = API || (await $injector(['API'])).API;
 
-      // eslint-disable-next-line
       OPERATION_APIS =
         OPERATION_APIS ||
         getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API);
@@ -130,7 +127,6 @@ const initializerWrapper: ServiceInitializerWrapper<
         throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
       }
 
-      // eslint-disable-next-line
       const OPERATION_API: OpenAPIV3_1.Document = cleanupOpenAPI({
         ...API,
         paths: {
@@ -176,10 +172,7 @@ const initializerWrapper: ServiceInitializerWrapper<
           ', ',
         )}) can give unpredictable results!`,
       );
-      return {
-        initializer: constant(serviceName, undefined),
-        path: `constant://${serviceName}`,
-      };
+      return constant(serviceName, undefined);
     }
 
     try {
@@ -200,26 +193,20 @@ const initializerWrapper: ServiceInitializerWrapper<
           'debug',
           `🤖 - Reusing a constant initializer directly from the Knifecycle instance: "${serviceName}".`,
         );
-        return {
-          initializer,
-          path: `instance://${serviceName}`,
-        };
+        return initializer;
       }
 
       if (serviceName.startsWith('OPERATION_API_')) {
         const [, , OPERATION_API] = await getAPIOperation(serviceName);
 
-        return {
-          initializer: constant(serviceName, OPERATION_API),
-          path: `api://${serviceName}`,
-        };
+        return constant(serviceName, OPERATION_API);
       }
 
       if (serviceName.startsWith('OPERATION_WRAPPER_')) {
         const [type] = await getAPIOperation(serviceName);
 
-        return {
-          initializer: alsoInject(
+        return location(
+          alsoInject(
             [
               `OPERATION_API>${serviceName.replace(
                 'OPERATION_WRAPPER_',
@@ -228,17 +215,15 @@ const initializerWrapper: ServiceInitializerWrapper<
             ],
             AWS_WRAPPERS[type].initializer as any,
           ) as any,
-          path: `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[type].name}.js`,
-        };
+          `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[type].name}.js`,
+        );
       }
 
       if (serviceName.startsWith('OPERATION_HANDLER_')) {
         const [type, operationId] = await getAPIOperation(serviceName);
 
-        return {
-          name: serviceName,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          initializer: alsoInject(
+        return location(
+          alsoInject(
             [
               `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
                 'OPERATION_HANDLER_',
@@ -253,15 +238,12 @@ const initializerWrapper: ServiceInitializerWrapper<
             ],
             initHandler,
           ) as any,
-          path: '@whook/aws-lambda/dist/services/HANDLER.js',
-        };
+          '@whook/aws-lambda/dist/services/HANDLER.js',
+        );
       }
 
       if (BUILD_CONSTANTS[serviceName]) {
-        return {
-          initializer: constant(serviceName, BUILD_CONSTANTS[serviceName]),
-          path: `constant://${serviceName}`,
-        };
+        return constant(serviceName, BUILD_CONSTANTS[serviceName]);
       }
 
       return $autoload(serviceName);

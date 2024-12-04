@@ -1,4 +1,4 @@
-import { autoService } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import type { LogService, TimeService } from 'common-services';
 import type {
@@ -28,7 +28,7 @@ export type OAuth2TokenGranterService<
   AUTHENTICATION_DATA
 >;
 
-export default autoService(initOAuth2TokenGranter);
+export default location(autoService(initOAuth2TokenGranter), import.meta.url);
 
 // Implicit Grant
 // https://tools.ietf.org/html/rfc6749#section-4.2

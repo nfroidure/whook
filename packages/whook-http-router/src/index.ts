@@ -1,6 +1,6 @@
 import bytes from 'bytes';
 import Stream from 'stream';
-import { initializer } from 'knifecycle';
+import { initializer, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace, YError } from 'yerror';
 import { Siso } from 'siso';
@@ -210,28 +210,31 @@ Here, the single source of truth is your API
  definition. No documentation, no route.
 */
 
-export default initializer(
-  {
-    name: 'httpRouter',
-    type: 'provider',
-    inject: [
-      'ENV',
-      '?DEBUG_NODE_ENVS',
-      '?BUFFER_LIMIT',
-      '?BASE_PATH',
-      'HANDLERS',
-      'API',
-      '?PARSERS',
-      '?STRINGIFYERS',
-      '?DECODERS',
-      '?ENCODERS',
-      '?QUERY_PARSER',
-      '?log',
-      'httpTransaction',
-      'errorHandler',
-    ],
-  },
-  initHTTPRouter,
+export default location(
+  initializer(
+    {
+      name: 'httpRouter',
+      type: 'provider',
+      inject: [
+        'ENV',
+        '?DEBUG_NODE_ENVS',
+        '?BUFFER_LIMIT',
+        '?BASE_PATH',
+        'HANDLERS',
+        'API',
+        '?PARSERS',
+        '?STRINGIFYERS',
+        '?DECODERS',
+        '?ENCODERS',
+        '?QUERY_PARSER',
+        '?log',
+        'httpTransaction',
+        'errorHandler',
+      ],
+    },
+    initHTTPRouter,
+  ),
+  import.meta.url,
 );
 
 /**
@@ -289,7 +292,8 @@ async function initHTTPRouter<T extends WhookHandler>({
   httpTransaction,
   errorHandler,
 }: WhookHTTPRouterDependencies<T>): Promise<WhookHTTPRouterProvider> {
-  const bufferLimit = bytes.parse(BUFFER_LIMIT);
+  const bufferLimit =
+    bytes.parse(BUFFER_LIMIT) || (bytes.parse(DEFAULT_BUFFER_LIMIT) as number);
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
   const defaultResponseSpec = {

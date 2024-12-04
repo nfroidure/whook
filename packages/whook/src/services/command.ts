@@ -1,12 +1,13 @@
 import { type LogService } from 'common-services';
 import {
   autoService,
+  location,
   type FatalErrorService,
   type Knifecycle,
 } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 
-export default autoService(initCommand);
+export default location(autoService(initCommand), import.meta.url);
 
 async function initCommand({
   commandHandler,

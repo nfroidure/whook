@@ -1,9 +1,9 @@
-import { service } from 'knifecycle';
+import { service, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import type { WhookWrapper } from '../services/WRAPPERS.js';
-import type { WhookHandler } from '@whook/http-transaction';
-import type { WhookHandlersService } from '@whook/http-router';
-import type { LogService } from 'common-services';
+import { type WhookWrapper } from '../services/WRAPPERS.js';
+import { type WhookHandler } from '@whook/http-transaction';
+import { type WhookHandlersService } from '@whook/http-router';
+import { type LogService } from 'common-services';
 
 export const HANDLER_REG_EXP =
   /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
@@ -13,7 +13,10 @@ export type WhookHandlersDependencies<T extends WhookHandler> = {
   log?: LogService;
 } & WhookHandlersService<T>;
 
-export default service(initHandlers, 'HANDLERS', ['WRAPPERS', 'log']);
+export default location(
+  service(initHandlers, 'HANDLERS', ['WRAPPERS', 'log']),
+  import.meta.url,
+);
 
 /**
  * Initialize the Whook handlers used byt the router

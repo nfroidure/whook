@@ -1,12 +1,12 @@
-import { service } from 'knifecycle';
+import { service, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import type { WhookHandler } from '@whook/http-transaction';
-import type { LogService } from 'common-services';
+import { type WhookHandler } from '@whook/http-transaction';
+import { type LogService } from 'common-services';
 
-export default service(initWrappers, 'WRAPPERS', [
-  '?HANDLERS_WRAPPERS',
-  '?log',
-]);
+export default location(
+  service(initWrappers, 'WRAPPERS', ['?HANDLERS_WRAPPERS', '?log']),
+  import.meta.url,
+);
 
 export const WRAPPER_REG_EXP = /^(wrap)[A-Z][a-zA-Z0-9]+/;
 

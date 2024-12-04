@@ -1,4 +1,4 @@
-import { service } from 'knifecycle';
+import { service, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import statuses from 'statuses';
 import ms from 'ms';
@@ -101,7 +101,6 @@ export declare type WhookResponse<
         body: B;
       });
 
-// eslint-disable-next-line
 export type WhookHandlerFunction<
   D extends Dependencies,
   P extends Parameters,
@@ -178,16 +177,19 @@ You can simply do this by wrapping this service. See
  [`@whook/method-override`](../whook-method-override/README.md)
  for a working example.
  */
-export default service(initHTTPTransaction, 'httpTransaction', [
-  '?TIMEOUT',
-  '?TRANSACTIONS',
-  'delay',
-  'obfuscator',
-  '?log',
-  '?apm',
-  '?time',
-  '?uniqueId',
-]);
+export default location(
+  service(initHTTPTransaction, 'httpTransaction', [
+    '?TIMEOUT',
+    '?TRANSACTIONS',
+    'delay',
+    'obfuscator',
+    '?log',
+    '?apm',
+    '?time',
+    '?uniqueId',
+  ]),
+  import.meta.url,
+);
 
 /**
  * Instantiate the httpTransaction service

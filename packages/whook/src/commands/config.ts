@@ -2,13 +2,12 @@ import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args.js';
 import { YError } from 'yerror';
 import miniquery from 'miniquery';
-import { noop } from '../libs/utils.js';
-import type { AppConfig } from 'application-services';
-import type { LogService } from 'common-services';
-import type {
-  WhookPromptArgs,
-  WhookCommandDefinition,
-  WhookCommandHandler,
+import { type AppConfig } from 'application-services';
+import { noop, type LogService } from 'common-services';
+import {
+  type WhookPromptArgs,
+  type WhookCommandDefinition,
+  type WhookCommandHandler,
 } from '../services/promptArgs.js';
 
 export const definition: WhookCommandDefinition = {

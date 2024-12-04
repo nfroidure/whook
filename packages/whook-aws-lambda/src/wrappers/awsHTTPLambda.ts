@@ -260,7 +260,8 @@ async function handleForAWSHTTPLambda(
   event: APIGatewayProxyEvent,
 ) {
   const startTime = time();
-  const bufferLimit = bytes.parse(BUFFER_LIMIT);
+  const bufferLimit =
+    bytes.parse(BUFFER_LIMIT) || (bytes.parse(DEFAULT_BUFFER_LIMIT) as number);
   const operationParameters = (operation.parameters || []).concat(
     ammendedParameters,
   );

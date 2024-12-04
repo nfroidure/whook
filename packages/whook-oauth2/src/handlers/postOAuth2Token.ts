@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import { camelCaseObjectProperties } from './getOAuth2Authorize.js';
 import { noop } from '@whook/whook';
 import { YError, printStackTrace } from 'yerror';
@@ -212,7 +212,7 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(postOAuth2Token);
+export default location(autoHandler(postOAuth2Token), import.meta.url);
 
 async function postOAuth2Token<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,

@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import type { WhookAPIHandlerDefinition } from '../services/API_DEFINITIONS.js';
 import type { WhookResponse } from '@whook/http-transaction';
 import type { AppEnvVars } from 'application-services';
@@ -32,7 +32,7 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(getPing);
+export default location(autoHandler(getPing), import.meta.url);
 
 async function getPing({
   ENV,

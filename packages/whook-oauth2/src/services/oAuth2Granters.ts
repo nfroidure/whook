@@ -1,4 +1,4 @@
-import { initializer } from 'knifecycle';
+import { initializer, location } from 'knifecycle';
 import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import type { WhookErrorsDescriptors } from '@whook/whook';
 import type { BaseAuthenticationData } from '@whook/authorization';
@@ -287,17 +287,20 @@ export type OAuth2Config = {
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
 };
 
-export default initializer(
-  {
-    name: 'oAuth2Granters',
-    type: 'service',
-    inject: [
-      'oAuth2ClientCredentialsGranter',
-      'oAuth2CodeGranter',
-      'oAuth2PasswordGranter',
-      'oAuth2RefreshTokenGranter',
-      'oAuth2TokenGranter',
-    ],
-  },
-  async (services) => Object.keys(services).map((key) => services[key]),
+export default location(
+  initializer(
+    {
+      name: 'oAuth2Granters',
+      type: 'service',
+      inject: [
+        'oAuth2ClientCredentialsGranter',
+        'oAuth2CodeGranter',
+        'oAuth2PasswordGranter',
+        'oAuth2RefreshTokenGranter',
+        'oAuth2TokenGranter',
+      ],
+    },
+    async (services) => Object.keys(services).map((key) => services[key]),
+  ),
+  import.meta.url,
 );

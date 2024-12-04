@@ -233,7 +233,8 @@ async function handleForAWSHTTPFunction(
   req,
   res,
 ) {
-  const bufferLimit = bytes.parse(BUFFER_LIMIT);
+  const bufferLimit =
+    bytes.parse(BUFFER_LIMIT) || (bytes.parse(DEFAULT_BUFFER_LIMIT) as number);
 
   log?.(
     'info',

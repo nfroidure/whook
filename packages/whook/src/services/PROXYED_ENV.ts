@@ -1,9 +1,12 @@
 import { initEnv } from 'application-services';
-import { wrapInitializer, alsoInject } from 'knifecycle';
-import { noop } from '../libs/utils.js';
-import type { LogService } from 'common-services';
+import {
+  wrapInitializer,
+  alsoInject,
+  location,
+  type ServiceInitializer,
+} from 'knifecycle';
+import { noop, type LogService } from 'common-services';
 import type { AppEnvVars, ProcessEnvDependencies } from 'application-services';
-import type { ServiceInitializer } from 'knifecycle';
 
 export type WhookProxyedENVConfig = {
   PROXYED_ENV_VARS?: string[];
@@ -12,17 +15,20 @@ export type WhookProxyedENVDependencies = WhookProxyedENVConfig & {
   log?: LogService;
 };
 
-export default alsoInject<
-  WhookProxyedENVDependencies,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ProcessEnvDependencies<any>,
-  AppEnvVars
->(
-  ['?log', '?PROXYED_ENV_VARS'],
-  wrapInitializer(
-    wrapEnvForBuild,
-    initEnv as ServiceInitializer<WhookProxyedENVDependencies, AppEnvVars>,
+export default location(
+  alsoInject<
+    WhookProxyedENVDependencies,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ProcessEnvDependencies<any>,
+    AppEnvVars
+  >(
+    ['?log', '?PROXYED_ENV_VARS'],
+    wrapInitializer(
+      wrapEnvForBuild,
+      initEnv as ServiceInitializer<WhookProxyedENVDependencies, AppEnvVars>,
+    ),
   ),
+  import.meta.url,
 );
 
 /**

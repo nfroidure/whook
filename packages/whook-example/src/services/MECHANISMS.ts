@@ -1,5 +1,5 @@
 import { YHTTPError } from 'yhttperror';
-import { name, autoService } from 'knifecycle';
+import { name, autoService, location } from 'knifecycle';
 import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 
 export const FAKE_MECHANISM = {
@@ -42,7 +42,10 @@ export const FAKE_MECHANISM = {
 A service aimed to provide implementations for the
  various supported auth mechanisms.
 */
-export default name('MECHANISMS', autoService(initMechanisms));
+export default location(
+  name('MECHANISMS', autoService(initMechanisms)),
+  import.meta.url,
+);
 
 async function initMechanisms({ ENV, log }) {
   log('debug', '🔧 - Initializing auth mechanisms');

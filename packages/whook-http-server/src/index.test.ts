@@ -25,7 +25,9 @@ describe('initHTTPServer', () => {
       httpRouter,
     });
 
-    httpServer.dispose && (await httpServer.dispose());
+    if (httpServer.dispose) {
+      await httpServer.dispose();
+    }
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -43,7 +45,9 @@ describe('initHTTPServer', () => {
       httpRouter,
     });
 
-    httpServer.dispose && (await httpServer.dispose());
+    if (httpServer.dispose) {
+      await httpServer.dispose();
+    }
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -70,7 +74,9 @@ describe('initHTTPServer', () => {
       await httpServer.fatalErrorPromise;
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
-      httpServer.dispose && (await httpServer.dispose());
+      if (httpServer.dispose) {
+        await httpServer.dispose();
+      }
 
       expect({
         errorCode: (err as YError).code,
@@ -111,7 +117,10 @@ describe('initHTTPServer', () => {
         httpServer.service.close.bind(httpServer.service),
       ) as unknown as typeof httpServer.service.close;
 
-      httpServer.dispose && (await httpServer.dispose());
+      if (httpServer.dispose) {
+        await httpServer.dispose();
+      }
+
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
@@ -144,7 +153,9 @@ describe('initHTTPServer', () => {
       client.write('GET / HTTP/1.1\r\n\r\n');
     });
 
-    httpServer.dispose && (await httpServer.dispose());
+    if (httpServer.dispose) {
+      await httpServer.dispose();
+    }
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
@@ -175,7 +186,9 @@ describe('initHTTPServer', () => {
       validateStatus: () => true,
     });
 
-    httpServer.dispose && (await httpServer.dispose());
+    if (httpServer.dispose) {
+      await httpServer.dispose();
+    }
 
     expect({
       status,

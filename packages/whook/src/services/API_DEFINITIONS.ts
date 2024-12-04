@@ -1,4 +1,4 @@
-import { autoService, name } from 'knifecycle';
+import { autoService, location, name } from 'knifecycle';
 import { readdir as _readDir } from 'node:fs/promises';
 import { extname, join as pathJoin } from 'node:path';
 import { noop } from '../libs/utils.js';
@@ -78,7 +78,7 @@ export interface WhookBaseAPIHandlerDefinition<
   operation: WhookAPIOperation<T> & U;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface WhookAPIHandlerDefinition<
   T extends Record<string, unknown> = Record<string, unknown>,
   U extends {
@@ -148,7 +148,10 @@ export interface WhookAPIHandlerModule {
 
 export const DEFAULT_API_DEFINITION_FILTER = () => false;
 
-export default name('API_DEFINITIONS', autoService(initAPIDefinitions));
+export default location(
+  name('API_DEFINITIONS', autoService(initAPIDefinitions)),
+  import.meta.url,
+);
 
 /**
  * Initialize the API_DEFINITIONS service according to the porject handlers.

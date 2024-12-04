@@ -1,9 +1,8 @@
 import path from 'path';
 import { noop } from '../libs/utils.js';
-import { autoService } from 'knifecycle';
-import type { Service } from 'knifecycle';
-import type { ImporterService, LogService } from 'common-services';
-import type { AppEnvVars } from 'application-services';
+import { autoService, location, type Service } from 'knifecycle';
+import { type ImporterService, type LogService } from 'common-services';
+import { type AppEnvVars } from 'application-services';
 
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],
@@ -12,7 +11,7 @@ export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   format: 'esm',
 };
 
-export default autoService(initCompiler);
+export default location(autoService(initCompiler), import.meta.url);
 
 export type FullWhookCompilerOptions = {
   externalModules: string[];

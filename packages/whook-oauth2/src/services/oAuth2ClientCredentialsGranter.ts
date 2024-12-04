@@ -1,4 +1,4 @@
-import { autoService } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
@@ -30,7 +30,10 @@ export type OAuth2ClientCredentialsGranterService<
   AUTHENTICATION_DATA
 >;
 
-export default autoService(initOAuth2ClientCredentialsGranter);
+export default location(
+  autoService(initOAuth2ClientCredentialsGranter),
+  import.meta.url,
+);
 
 // Client Credentials Grant
 // https://tools.ietf.org/html/rfc6749#section-4.4

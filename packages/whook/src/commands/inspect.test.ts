@@ -360,7 +360,7 @@ describe('inspectCommand', () => {
       expect({
         promptArgsCalls: promptArgs.mock.calls,
         injectorCalls: $injector.mock.calls,
-        logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
         {
           "injectorCalls": [
@@ -424,7 +424,7 @@ describe('inspectCommand', () => {
       expect({
         promptArgsCalls: promptArgs.mock.calls,
         injectorCalls: $injector.mock.calls,
-        logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
         {
           "injectorCalls": [
