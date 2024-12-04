@@ -76,7 +76,7 @@ describe('$autoload', () => {
   "injectorCalls": [],
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -130,7 +130,7 @@ describe('$autoload', () => {
   "injectorCalls": [],
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -184,7 +184,7 @@ describe('$autoload', () => {
   "location": undefined,
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -252,7 +252,7 @@ describe('$autoload', () => {
   "location": undefined,
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -314,7 +314,7 @@ describe('$autoload', () => {
   "injectorCalls": [],
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -368,7 +368,7 @@ describe('$autoload', () => {
   "injectorCalls": [],
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
   ],
@@ -419,7 +419,7 @@ describe('$autoload', () => {
   "injectorCalls": [],
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
   ],

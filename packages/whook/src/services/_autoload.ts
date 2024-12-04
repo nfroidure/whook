@@ -111,7 +111,7 @@ async function initAutoload({
 }: WhookAutoloadDependencies): Promise<
   Autoloader<Initializer<unknown, Dependencies>>
 > {
-  log('debug', '🤖 - Initializing the `$autoload` service.');
+  log('warning', '🤖 - Initializing the `$autoload` service.');
 
   /* Architecture Note #2.9.2: the `API` auto loading
   We cannot inject the `API` in the auto loader since

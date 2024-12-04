@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import initAutoload from './_autoload.js';
-import { noop } from '../libs/utils.js';
 import {
   UNBUILDABLE_SERVICES,
   SPECIAL_PROPS,
   wrapInitializer,
   constant,
   alsoInject,
+  location,
+  type Knifecycle,
+  type Autoloader,
+  type Initializer,
+  type Dependencies,
+  type Service,
+  type ServiceInitializerWrapper,
 } from 'knifecycle';
-import type { WhookBuildConstantsService } from '../services/BUILD_CONSTANTS.js';
-import type {
-  Knifecycle,
-  Autoloader,
-  Initializer,
-  Dependencies,
-  Service,
-  ServiceInitializerWrapper,
-} from 'knifecycle';
+import { type WhookBuildConstantsService } from '../services/BUILD_CONSTANTS.js';
 import { printStackTrace } from 'yerror';
-import type { LogService } from 'common-services';
+import { noop, type LogService } from 'common-services';
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
@@ -40,7 +38,7 @@ const initializerWrapper: ServiceInitializerWrapper<
     path: string;
   }>
 > => {
-  log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
+  log('warning', '🤖 - Initializing the `$autoload` build wrapper.');
 
   return async (serviceName) => {
     if (UNBUILDABLE_SERVICES.includes(serviceName)) {
@@ -78,10 +76,30 @@ const initializerWrapper: ServiceInitializerWrapper<
         return constant(serviceName, BUILD_CONSTANTS[serviceName]);
       }
 
-      return $autoload(serviceName);
+      try {
+        return await $autoload(serviceName);
+      } catch (err) {
+        if (initializer && initializer[SPECIAL_PROPS.LOCATION]) {
+          const reshapedUrl = initializer[SPECIAL_PROPS.LOCATION].url.replace(
+            /^(?:.*)\/node_modules\/(.*)$/,
+            '$1',
+          );
+
+          log(
+            'error',
+            `🤖 - Could not auto load "${serviceName}", trying to find it in the initializer embedded location (${reshapedUrl}).`,
+          );
+          log('debug-stack', printStackTrace(err as Error));
+
+          // Assuming the module name is after the last `node_modules`
+          // folder. May not be the best approach
+          return location(initializer, reshapedUrl);
+        }
+        throw err;
+      }
     } catch (err) {
-      log('error', `Build error while loading "${serviceName}".`);
-      log('error-stack', printStackTrace(err as Error));
+      log('debug', `🤖 - Unable to load "${serviceName}".`);
+      log('debug-stack', printStackTrace(err as Error));
       throw err;
     }
   };
@@ -103,7 +121,10 @@ const initializerWrapper: ServiceInitializerWrapper<
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.
  */
-export default alsoInject(
-  ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
-  wrapInitializer(initializerWrapper as any, initAutoload),
+export default location(
+  alsoInject(
+    ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
+    wrapInitializer(initializerWrapper as any, initAutoload),
+  ),
+  import.meta.url,
 );

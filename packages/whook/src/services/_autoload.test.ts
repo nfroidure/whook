@@ -243,7 +243,7 @@ describe('$autoload', () => {
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [

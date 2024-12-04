@@ -14,6 +14,7 @@ describe('commands should work', () => {
     }).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+🤖 - Initializing the \`$autoload\` service.
 On air 🚀🌕
 ",
   "stdout": "
@@ -53,6 +54,7 @@ On air 🚀🌕
     }).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
 On air 🚀🌕
@@ -74,6 +76,7 @@ On air 🚀🌕
     }).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+🤖 - Initializing the \`$autoload\` service.
 On air 🚀🌕
 ",
   "stdout": ""localhost"

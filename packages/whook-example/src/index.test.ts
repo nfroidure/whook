@@ -1165,9 +1165,6 @@ describe('runProcess', () => {
       "🛂 - Initializing the importer!",
     ],
     [
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
       "🦄 - Initializing the API service!",
     ],
   ],
@@ -1198,6 +1195,9 @@ describe('runProcess', () => {
     ],
     [
       "🕱 -Wrapping the error handler for CORS.",
+    ],
+    [
+      "🤖 - Initializing the \`$autoload\` service.",
     ],
   ],
 }
