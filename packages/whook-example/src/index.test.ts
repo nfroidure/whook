@@ -325,6 +325,9 @@ describe('runProcess', () => {
       "⌛ - Delay service initialized.",
     ],
     [
+      "⏳ - Ignored handler "putTime" since disabled by its definition!",
+    ],
+    [
       "✅ - Module path of "API" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
@@ -1133,6 +1136,9 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",

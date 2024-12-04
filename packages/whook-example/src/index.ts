@@ -16,7 +16,7 @@ import {
 import initHTTPRouter from '@whook/http-router';
 import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
-import { extractAppEnv } from 'application-services';
+import { extractAppEnv, initTimeMock } from 'application-services';
 
 /* Architecture Note #1: A Whook baked API
 This API server uses the Whook engine. Thoses architecture
@@ -233,6 +233,9 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   // Add the CORS wrapped error handler
   $.register(initErrorHandlerWithCORS);
+
+  // Add the time mock service for testing
+  $.register(initTimeMock);
 
   return $;
 }

@@ -13,7 +13,7 @@ import type {
 import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
 import type { APIConfig } from './services/API.js';
 import type { JWTServiceConfig } from 'jwt-service';
-import type { BaseAppEnvVars } from 'application-services';
+import type { BaseAppEnvVars, TimeMockConfig } from 'application-services';
 import type { JWTEnvVars } from 'jwt-service';
 import type { FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
 
@@ -39,7 +39,8 @@ The configuration is typed so that you are sure you cannot
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
-      JWTServiceConfig {}
+      JWTServiceConfig,
+      TimeMockConfig {}
 }
 
 declare module '@whook/whook' {

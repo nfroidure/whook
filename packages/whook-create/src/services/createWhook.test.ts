@@ -146,12 +146,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -344,12 +344,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -527,12 +527,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",

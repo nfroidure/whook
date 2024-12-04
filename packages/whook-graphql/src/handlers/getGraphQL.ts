@@ -3,7 +3,10 @@ import initPostGraphQL, {
   definition as postGraphQLDefinition,
 } from './postGraphQL.js';
 import { YHTTPError } from 'yhttperror';
-import { type WhookAPIHandlerDefinition, type WhookOperation } from '@whook/whook';
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookOperation,
+} from '@whook/whook';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: postGraphQLDefinition.path,
