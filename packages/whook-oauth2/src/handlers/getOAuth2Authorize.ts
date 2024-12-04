@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import camelCase from 'camelcase';
 import { YError, printStackTrace } from 'yerror';
 import { refersTo } from '@whook/whook';
@@ -104,7 +104,7 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(getOAuth2Authorize);
+export default location(autoHandler(getOAuth2Authorize), import.meta.url);
 
 async function getOAuth2Authorize(
   {

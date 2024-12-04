@@ -1,6 +1,6 @@
-import { autoService, name } from 'knifecycle';
+import { autoService, location, name } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 /* Architecture Note #2.1: Base URL
 The `BASE_URL` service is intended to provide a base URL where
@@ -32,7 +32,10 @@ export type WhookBaseURLDependencies = WhookBaseURLConfig & {
   log?: LogService;
 };
 
-export default name('BASE_URL', autoService(initBaseURL));
+export default location(
+  name('BASE_URL', autoService(initBaseURL)),
+  import.meta.url,
+);
 
 /**
  * Initialize the BASE_URL service according to the HOST/PORT

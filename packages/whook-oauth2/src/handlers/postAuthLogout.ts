@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import { AUTH_API_PREFIX } from '../services/authCookies.js';
 import type { WhookAPIHandlerDefinition } from '@whook/whook';
 import type { AuthCookiesService } from '../services/authCookies.js';
@@ -22,7 +22,7 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(postAuthLogout);
+export default location(autoHandler(postAuthLogout), import.meta.url);
 
 async function postAuthLogout({
   authCookies,

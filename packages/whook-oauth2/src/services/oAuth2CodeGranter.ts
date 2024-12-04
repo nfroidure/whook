@@ -1,4 +1,4 @@
-import { autoService } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
@@ -30,7 +30,7 @@ export type OAuth2CodeGranterService<
   AUTHENTICATION_DATA
 >;
 
-export default autoService(initOAuth2CodeGranter);
+export default location(autoService(initOAuth2CodeGranter), import.meta.url);
 
 // Authorization Code Grant
 // https://tools.ietf.org/html/rfc6749#section-4.1

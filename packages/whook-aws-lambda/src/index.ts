@@ -449,7 +449,11 @@ async function ensureFile(
       return;
     }
   } catch (err) {
-    log('debug', `🗀 - Write new file: "${path}".`);
+    log(
+      'debug',
+      `🗀 - Write new file: "${path}".`,
+      printStackTrace(err as YError),
+    );
     return await writeFile(path, content);
   }
   log('debug', `🗀 - Write changed file: "${path}".`);

@@ -1,6 +1,6 @@
-import { name, autoService } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { JsonValue } from 'type-fest';
+import { name, autoService, location } from 'knifecycle';
+import { type LogService } from 'common-services';
+import { type JsonValue } from 'type-fest';
 
 export type WhookAPMDependencies = {
   log: LogService;
@@ -10,7 +10,7 @@ export type WhookAPMService<T extends string = string> = (
   data: JsonValue,
 ) => void;
 
-export default name('apm', autoService(initAPM));
+export default location(name('apm', autoService(initAPM)), import.meta.url);
 
 const noop = () => undefined;
 

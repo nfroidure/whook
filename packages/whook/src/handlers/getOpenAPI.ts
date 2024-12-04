@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import { getOpenAPIOperations } from '@whook/http-router';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type {
@@ -8,7 +8,7 @@ import type {
 import type { WhookResponse } from '@whook/http-transaction';
 import type { OpenAPIV3_1 } from 'openapi-types';
 
-export default autoHandler(getOpenAPI);
+export default location(autoHandler(getOpenAPI), import.meta.url);
 
 /* Architecture Note #3: the handlers
 Handlers are services that provide a definition and implements

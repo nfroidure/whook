@@ -358,6 +358,7 @@ async function ensureFile(
     }
   } catch (err) {
     log('debug', `🗀 - Write new file: "${path}".`);
+    log('debug-stack', printStackTrace(err as Error));
     return await writeFile(path, content);
   }
   log('debug', `🗀 - Write changed file: "${path}".`);

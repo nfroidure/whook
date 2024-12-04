@@ -1,7 +1,7 @@
-import { autoService } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { JsonValue } from 'type-fest';
-import type { WhookHeaders } from '../index.js';
+import { autoService, location } from 'knifecycle';
+import { type LogService } from 'common-services';
+import { type JsonValue } from 'type-fest';
+import { type WhookHeaders } from '../index.js';
 
 export type WhookSensibleValueDescriptor = {
   name: string;
@@ -27,7 +27,7 @@ export type WhookObfuscatorService = {
   obfuscateSensibleHeaders: (headers: WhookHeaders) => WhookHeaders;
 };
 
-export default autoService(initObfuscator);
+export default location(autoService(initObfuscator), import.meta.url);
 
 const noop = () => undefined;
 

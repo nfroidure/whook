@@ -1,6 +1,7 @@
 import {
   constant,
   name,
+  location,
   autoService,
   singleton,
   alsoInject,
@@ -33,7 +34,7 @@ import {
   type WhookPluginName,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
-import { WhookCommandArgs } from '../libs/args.js';
+import { type WhookCommandArgs } from '../libs/args.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -185,11 +186,9 @@ async function initAutoload({
    *  An Object containing the `path`, `name` and the `initializer`
    *  in its properties.
    */
-  async function $autoload(injectedName: string): Promise<{
-    name: string;
-    path: string;
-    initializer: Initializer<Service, Dependencies>;
-  }> {
+  async function $autoload(
+    injectedName: string,
+  ): Promise<Initializer<Service, Dependencies>> {
     /* Architecture Note #2.9.1: the `APP_CONFIG` mapper
     First of all the autoloader looks for constants in the
      previously loaded `APP_CONFIG` configurations hash.
@@ -199,14 +198,7 @@ async function initAutoload({
         'debug',
         `📖 - Picking the "${injectedName}" constant in the "APP_CONFIG" service properties.`,
       );
-      return {
-        name: injectedName,
-        path: 'internal://' + injectedName,
-        initializer: constant(
-          injectedName,
-          APP_CONFIG[injectedName],
-        ) as Initializer<Service, Dependencies>,
-      };
+      return constant(injectedName, APP_CONFIG[injectedName]);
     }
 
     const isHandler = HANDLER_REG_EXP.test(injectedName);
@@ -223,14 +215,12 @@ async function initAutoload({
             (operation) => operation.operationId,
           ),
         ),
-      ];
+      ] as string[];
 
-      return {
-        name: injectedName,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        initializer: alsoInject(handlerNames as any, initHandlers) as any,
-        path: '@whook/whook/dist/services/HANDLERS.js',
-      };
+      return location(
+        alsoInject(handlerNames, initHandlers),
+        '@whook/whook/dist/services/HANDLERS.js',
+      ) as Initializer<Dependencies, Service>;
     }
 
     /* Architecture Note #2.9.5: the `WRAPPERS` auto loading
@@ -238,30 +228,17 @@ async function initAutoload({
      service so that they can be dynamically applied.
     */
     if ('WRAPPERS' === injectedName) {
-      return {
-        name: injectedName,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        initializer: alsoInject(HANDLERS_WRAPPERS, initWrappers) as any,
-        path: '@whook/whook/dist/services/WRAPPERS.js',
-      };
+      return location(
+        alsoInject(HANDLERS_WRAPPERS, initWrappers),
+        '@whook/whook/dist/services/WRAPPERS.js',
+      );
     }
 
     if (injectedName === 'COMMAND_DEFINITION') {
-      return {
-        name: injectedName,
-        initializer: constant(
-          injectedName,
-          (await getCommandModule()).definition,
-        ),
-        path: `definition://${args.rest[0]}`,
-      };
+      return constant(injectedName, (await getCommandModule()).definition);
     }
     if (injectedName === 'commandHandler') {
-      return {
-        name: injectedName,
-        initializer: name('commandHandler', (await getCommandModule()).default),
-        path: `command://${args.rest[0]}`,
-      };
+      return name('commandHandler', (await getCommandModule()).default);
     }
 
     /* Architecture Note #2.9.6: Service/handler/wrapper loading
@@ -336,24 +313,20 @@ async function initAutoload({
 
     log('debug', `💿 - Service "${injectedName}" found in "${modulePath}".`);
 
-    const resolvedInitializer = (await importer(modulePath)).default;
+    const resolvedInitializer = (await importer(modulePath))
+      .default as ProviderInitializer<Dependencies, Service>;
 
     log(
       'debug',
       `💿 - Loading "${injectedName}" initializer from "${modulePath}".`,
     );
 
-    return {
-      name: injectedName,
-      path: modulePath,
-      initializer:
-        injectedName !== injectedName
-          ? name(
-              injectedName,
-              resolvedInitializer as ProviderInitializer<Dependencies, Service>,
-            )
-          : resolvedInitializer,
-    };
+    const renamedInitializer =
+      injectedName !== injectedName
+        ? name(injectedName, resolvedInitializer)
+        : resolvedInitializer;
+
+    return location(renamedInitializer, modulePath, 'default');
   }
 }
 
@@ -376,19 +349,3 @@ export async function checkAccess(
     return '';
   }
 }
-
-// function createPluginFolder(pluginName: string) {
-//   const matches = pluginName.match(/(@[^/]+\/|)([a-z-_]+)/);
-
-//   if (matches == null) {
-//     throw new YError('E_BAD_PLUGIN_NAME', pluginName);
-//   }
-
-//   if (matches[1]) {
-//     if (matches[1] === matches[2]) {
-//       return matches[1];
-//     }
-//     return `${matches[1]}/${matches[2]}`;
-//   }
-//   return pluginName;
-// }

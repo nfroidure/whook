@@ -1,6 +1,6 @@
 import ms from 'ms';
 import cookie, { type SerializeOptions } from 'cookie';
-import { autoService } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { type BaseAuthenticationData } from '@whook/authorization';
 import { type Jsonify } from 'type-fest';
 
@@ -32,7 +32,7 @@ export type AuthCookiesService = {
   parse: (content: string) => Partial<AuthCookiesData>;
 };
 
-export default autoService(initAuthCookies);
+export default location(autoService(initAuthCookies), import.meta.url);
 
 async function initAuthCookies({
   COOKIES,

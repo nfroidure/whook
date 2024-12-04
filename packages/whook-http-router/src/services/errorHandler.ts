@@ -1,16 +1,16 @@
-import { initializer } from 'knifecycle';
+import { initializer, location } from 'knifecycle';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_STRINGIFYERS,
 } from '../libs/constants.js';
 import miniquery from 'miniquery';
 import { printStackTrace, YError } from 'yerror';
-import type { WhookStringifyers } from '../index.js';
-import type { WhookResponseSpec } from '../libs/utils.js';
-import type { WhookResponse } from '@whook/http-transaction';
-import type { YHTTPError } from 'yhttperror';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { AppEnvVars } from 'application-services';
+import { type WhookStringifyers } from '../index.js';
+import { type WhookResponseSpec } from '../libs/utils.js';
+import { type WhookResponse } from '@whook/http-transaction';
+import { type YHTTPError } from 'yhttperror';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type AppEnvVars } from 'application-services';
 
 /* Architecture Note #2: Error handler
 
@@ -360,19 +360,22 @@ export const WhookErrorSchema: OpenAPIV3_1.SchemaObject = {
   },
 };
 
-export default initializer(
-  {
-    name: 'errorHandler',
-    type: 'service',
-    inject: [
-      'ENV',
-      '?DEBUG_NODE_ENVS',
-      '?STRINGIFYERS',
-      '?ERRORS_DESCRIPTORS',
-      '?DEFAULT_ERROR_CODE',
-    ],
-  },
-  initErrorHandler,
+export default location(
+  initializer(
+    {
+      name: 'errorHandler',
+      type: 'service',
+      inject: [
+        'ENV',
+        '?DEBUG_NODE_ENVS',
+        '?STRINGIFYERS',
+        '?ERRORS_DESCRIPTORS',
+        '?DEFAULT_ERROR_CODE',
+      ],
+    },
+    initErrorHandler,
+  ),
+  import.meta.url,
 );
 
 /**

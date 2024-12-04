@@ -1,5 +1,5 @@
-import { Logger } from 'common-services';
-import { service } from 'knifecycle';
+import { type Logger } from 'common-services';
+import { service, location } from 'knifecycle';
 import debug from 'debug';
 import { info, error } from 'node:console';
 
@@ -13,14 +13,17 @@ import { info, error } from 'node:console';
   DEBUG=whook npx whook
   ```
    */
-export default service(
-  async () =>
-    ({
-      output: info,
-      error: error,
-      debug: debug('whook'),
-    }) as Logger,
-  'logger',
-  [],
-  true,
+export default location(
+  service(
+    async () =>
+      ({
+        output: info,
+        error: error,
+        debug: debug('whook'),
+      }) as Logger,
+    'logger',
+    [],
+    true,
+  ),
+  import.meta.url,
 );

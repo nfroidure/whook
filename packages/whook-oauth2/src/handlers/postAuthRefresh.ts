@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { refersTo } from '@whook/whook';
 import initPostOauth2Token from './postOAuth2Token.js';
@@ -73,7 +73,7 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(postAuthRefresh);
+export default location(autoHandler(postAuthRefresh), import.meta.url);
 
 async function postAuthRefresh<
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,

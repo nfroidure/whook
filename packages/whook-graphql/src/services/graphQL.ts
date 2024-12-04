@@ -1,11 +1,9 @@
-import { autoProvider } from 'knifecycle';
+import { autoProvider, location, type Provider } from 'knifecycle';
 import { noop, WhookOperation } from '@whook/whook';
-import { ApolloServer } from '@apollo/server';
+import { ApolloServer, type ApolloServerOptions } from '@apollo/server';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import type { Provider } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { ApolloServerOptions } from '@apollo/server';
-import type { GraphQLSchema, DocumentNode } from 'graphql';
+import { type LogService } from 'common-services';
+import { type GraphQLSchema, type DocumentNode } from 'graphql';
 
 type ElementOf<A> = A extends (infer T)[] ? T : never;
 type IResolvers = ElementOf<
@@ -43,7 +41,7 @@ export type WhookGraphQLDependencies = WhookGraphQLConfig & {
   log: LogService;
 };
 
-export default autoProvider(initGraphQL);
+export default location(autoProvider(initGraphQL), import.meta.url);
 
 /**
  * Initialize the GraphQL service

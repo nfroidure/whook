@@ -1,6 +1,6 @@
-import { autoService, name } from 'knifecycle';
+import { autoService, name, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import type { ImporterService, LogService } from 'common-services';
+import { type ImporterService, type LogService } from 'common-services';
 
 const DEFAULT_ENV = {};
 
@@ -9,7 +9,7 @@ If no `HOST` configuration is specified in dependencies nor in ENV,
  this service detects the machine host automagically.
 */
 
-export default name('HOST', autoService(initHost));
+export default location(name('HOST', autoService(initHost)), import.meta.url);
 
 export type WhookHost = string;
 export type WhookHostEnv = {

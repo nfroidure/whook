@@ -1,5 +1,5 @@
 import { stdout as _stdout } from 'node:process';
-import { type Knifecycle, autoService } from 'knifecycle';
+import { type Knifecycle, autoService, location } from 'knifecycle';
 import { WRAPPER_REG_EXP } from './WRAPPERS.js';
 import { HANDLER_REG_EXP } from './HANDLERS.js';
 import { type LogService } from 'common-services';
@@ -66,4 +66,4 @@ async function initMermaid({
   printGraph();
 }
 
-export default autoService(initMermaid);
+export default location(autoService(initMermaid), import.meta.url);

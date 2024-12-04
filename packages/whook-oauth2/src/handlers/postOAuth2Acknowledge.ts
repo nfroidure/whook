@@ -1,4 +1,4 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import { setURLError } from './getOAuth2Authorize.js';
 import type {
@@ -121,7 +121,10 @@ type HandlerParameters<AUTHENTICATION_DATA> = {
   };
 };
 
-export default autoHandler(postOAuth2Acknowledge) as unknown as <
+export default location(
+  autoHandler(postOAuth2Acknowledge),
+  import.meta.url,
+) as unknown as <
   AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
 >(
   dependencies: HandlerDependencies<AUTHENTICATION_DATA>,

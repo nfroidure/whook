@@ -146,12 +146,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -166,40 +166,40 @@ describe('initCreateWhook', () => {
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^6.1.0",
-    "common-services": "^16.0.4",
+    "application-services": "^7.0.0",
+    "common-services": "^17.0.0",
     "http-auth-utils": "^6.0.1",
-    "jwt-service": "^10.1.1",
-    "knifecycle": "^17.3.0",
+    "jwt-service": "^11.0.0",
+    "knifecycle": "^18.0.0",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.26.1",
+    "type-fest": "^4.30.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0",
   },
   "description": "A new Whook project",
   "devDependencies": {
-    "@eslint/js": "^9.7.0",
-    "@swc/cli": "^0.4.0",
-    "@swc/core": "^1.6.13",
-    "@swc/helpers": "^0.5.12",
-    "@swc/jest": "^0.2.36",
-    "axios": "^1.7.7",
+    "@eslint/js": "^9.16.0",
+    "@swc/cli": "^0.5.2",
+    "@swc/core": "^1.10.0",
+    "@swc/helpers": "^0.5.15",
+    "@swc/jest": "^0.2.37",
+    "axios": "^1.7.9",
     "chokidar": "^3.5.3",
-    "esbuild-node-externals": "^1.13.1",
-    "eslint": "^9.7.0",
+    "esbuild-node-externals": "^1.15.0",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^28.6.0",
-    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-jest": "^28.9.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "jest": "^29.7.0",
-    "jsarch": "^6.0.3",
-    "prettier": "^3.3.3",
+    "jsarch": "^6.1.2",
+    "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "schema2dts": "^7.0.2",
     "tsx": "^4.7.1",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0",
   },
   "engines": {
     "node": ">=20.11.1",
@@ -246,7 +246,7 @@ describe('initCreateWhook', () => {
   "main": "dist/index.js",
   "name": "super-project",
   "overrides": {
-    "eslint": "^9.7.0",
+    "eslint": "^9.16.0",
   },
   "prettier": {
     "printWidth": 80,
@@ -344,12 +344,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -364,40 +364,40 @@ describe('initCreateWhook', () => {
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^6.1.0",
-    "common-services": "^16.0.4",
+    "application-services": "^7.0.0",
+    "common-services": "^17.0.0",
     "http-auth-utils": "^6.0.1",
-    "jwt-service": "^10.1.1",
-    "knifecycle": "^17.3.0",
+    "jwt-service": "^11.0.0",
+    "knifecycle": "^18.0.0",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.26.1",
+    "type-fest": "^4.30.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0",
   },
   "description": "A new Whook project",
   "devDependencies": {
-    "@eslint/js": "^9.7.0",
-    "@swc/cli": "^0.4.0",
-    "@swc/core": "^1.6.13",
-    "@swc/helpers": "^0.5.12",
-    "@swc/jest": "^0.2.36",
-    "axios": "^1.7.7",
+    "@eslint/js": "^9.16.0",
+    "@swc/cli": "^0.5.2",
+    "@swc/core": "^1.10.0",
+    "@swc/helpers": "^0.5.15",
+    "@swc/jest": "^0.2.37",
+    "axios": "^1.7.9",
     "chokidar": "^3.5.3",
-    "esbuild-node-externals": "^1.13.1",
-    "eslint": "^9.7.0",
+    "esbuild-node-externals": "^1.15.0",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^28.6.0",
-    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-jest": "^28.9.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "jest": "^29.7.0",
-    "jsarch": "^6.0.3",
-    "prettier": "^3.3.3",
+    "jsarch": "^6.1.2",
+    "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "schema2dts": "^7.0.2",
     "tsx": "^4.7.1",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0",
   },
   "engines": {
     "node": ">=20.11.1",
@@ -444,7 +444,7 @@ describe('initCreateWhook', () => {
   "main": "dist/index.js",
   "name": "super-project",
   "overrides": {
-    "eslint": "^9.7.0",
+    "eslint": "^9.16.0",
   },
   "prettier": {
     "printWidth": 80,
@@ -527,12 +527,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -547,40 +547,40 @@ describe('initCreateWhook', () => {
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^6.1.0",
-    "common-services": "^16.0.4",
+    "application-services": "^7.0.0",
+    "common-services": "^17.0.0",
     "http-auth-utils": "^6.0.1",
-    "jwt-service": "^10.1.1",
-    "knifecycle": "^17.3.0",
+    "jwt-service": "^11.0.0",
+    "knifecycle": "^18.0.0",
     "openapi-types": "^12.1.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.26.1",
+    "type-fest": "^4.30.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0",
   },
   "description": "A new Whook project",
   "devDependencies": {
-    "@eslint/js": "^9.7.0",
-    "@swc/cli": "^0.4.0",
-    "@swc/core": "^1.6.13",
-    "@swc/helpers": "^0.5.12",
-    "@swc/jest": "^0.2.36",
-    "axios": "^1.7.7",
+    "@eslint/js": "^9.16.0",
+    "@swc/cli": "^0.5.2",
+    "@swc/core": "^1.10.0",
+    "@swc/helpers": "^0.5.15",
+    "@swc/jest": "^0.2.37",
+    "axios": "^1.7.9",
     "chokidar": "^3.5.3",
-    "esbuild-node-externals": "^1.13.1",
-    "eslint": "^9.7.0",
+    "esbuild-node-externals": "^1.15.0",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^28.6.0",
-    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-jest": "^28.9.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "jest": "^29.7.0",
-    "jsarch": "^6.0.3",
-    "prettier": "^3.3.3",
+    "jsarch": "^6.1.2",
+    "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "schema2dts": "^7.0.2",
     "tsx": "^4.7.1",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0",
   },
   "engines": {
     "node": ">=20.11.1",
@@ -627,7 +627,7 @@ describe('initCreateWhook', () => {
   "main": "dist/index.js",
   "name": "super-project",
   "overrides": {
-    "eslint": "^9.7.0",
+    "eslint": "^9.16.0",
   },
   "prettier": {
     "printWidth": 80,

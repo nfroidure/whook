@@ -1,4 +1,4 @@
-import { name, autoService } from 'knifecycle';
+import { name, autoService, location } from 'knifecycle';
 import { augmentAPIWithCORS } from '@whook/cors';
 import { noop } from '@whook/whook';
 import type { WhookConfig, WhookAPIDefinitions } from '@whook/whook';
@@ -22,7 +22,7 @@ export type APIDependencies = APIConfig & {
   log?: LogService;
 };
 
-export default name('API', autoService(initAPI));
+export default location(name('API', autoService(initAPI)), import.meta.url);
 
 /* Architecture Note #3: API
 Whook is all about APIs.

@@ -1,6 +1,6 @@
 import { dirname } from 'node:path';
 import { readdir as _readDir } from 'node:fs/promises';
-import { name, singleton, autoService } from 'knifecycle';
+import { name, singleton, autoService, location } from 'knifecycle';
 import { YError, printStackTrace } from 'yerror';
 import type { ResolveService, LogService } from 'common-services';
 
@@ -47,8 +47,11 @@ export type WhookResolvedPluginsDependencies = WhookResolvedPluginsConfig & {
   log: LogService;
 };
 
-export default singleton(
-  name('WHOOK_RESOLVED_PLUGINS', autoService(initWhookResolvedPlugins)),
+export default location(
+  singleton(
+    name('WHOOK_RESOLVED_PLUGINS', autoService(initWhookResolvedPlugins)),
+  ),
+  import.meta.url,
 );
 
 /**

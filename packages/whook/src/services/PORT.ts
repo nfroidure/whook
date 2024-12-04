@@ -1,6 +1,6 @@
-import { autoService, name } from 'knifecycle';
+import { autoService, name, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import type { LogService, ImporterService } from 'common-services';
+import { type LogService, type ImporterService } from 'common-services';
 
 const DEFAULT_ENV = {};
 
@@ -16,7 +16,7 @@ export type WhookPortEnv = {
   PORT?: string;
 };
 
-export default name('PORT', autoService(initPort));
+export default location(name('PORT', autoService(initPort)), import.meta.url);
 
 /**
  * Initialize the PORT service from ENV or auto-detection if

@@ -1,6 +1,6 @@
 import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args.js';
-import { YError } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import miniquery from 'miniquery';
 import { noop } from '../libs/utils.js';
 import type { Injector, Service } from 'knifecycle';
@@ -69,6 +69,7 @@ async function initInspectCommand({
       service = injectionResult[name];
     } catch (err) {
       log('error', `No service found for "${name}".`);
+      log('error-stack', printStackTrace(err as Error));
       log('error', `Try debugging with the "DEBUG=whook" env.`);
       if ('undefined' === typeof defaultValue) {
         throw new YError('E_NO_SERVICE_FOUND', name);

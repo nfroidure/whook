@@ -1,8 +1,8 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace } from 'yerror';
 import { noop } from '@whook/whook';
-import { HTTPGraphQLRequest, HeaderMap } from '@apollo/server';
+import { type HTTPGraphQLRequest, HeaderMap } from '@apollo/server';
 import type {
   WhookAPIHandlerDefinition,
   WhookOperation,
@@ -68,9 +68,10 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(postGraphQL) as unknown as <
-  T extends Record<string, unknown>,
->(services: {
+export default location(
+  autoHandler(postGraphQL),
+  import.meta.url,
+) as unknown as <T extends Record<string, unknown>>(services: {
   GRAPHQL_SERVER_CONTEXT_FUNCTION?: WhookGraphQLContext;
   graphQL: WhookGraphQLService;
   log: LogService;

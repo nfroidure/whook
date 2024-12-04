@@ -1,4 +1,4 @@
-import { autoService } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import type { LogService } from 'common-services';
@@ -28,7 +28,10 @@ export type OAuth2PasswordGranterService<
   AUTHENTICATION_DATA
 >;
 
-export default autoService(initOAuth2PasswordGranter);
+export default location(
+  autoService(initOAuth2PasswordGranter),
+  import.meta.url,
+);
 
 // Resource Owner Password Credentials Grant
 // https://tools.ietf.org/html/rfc6749#section-4.3

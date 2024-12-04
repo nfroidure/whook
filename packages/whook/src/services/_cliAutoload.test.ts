@@ -7,7 +7,7 @@ import type {
   ImporterService,
   LogService,
 } from 'common-services';
-import type { Injector } from 'knifecycle';
+import { SPECIAL_PROPS, type Injector } from 'knifecycle';
 import type { WhookAutoloadDependencies } from './_autoload.js';
 import {
   WHOOK_PROJECT_PLUGIN_NAME,
@@ -160,12 +160,13 @@ describe('$autoload', () => {
       access,
       log,
     } as WhookAutoloadDependencies);
-    const { path, initializer } = await $autoload('commandHandler');
+    const initializer = await $autoload('commandHandler');
     const command = await (initializer as any)();
     const result = await command();
 
     expect({
-      path,
+      initializer,
+      location: initializer[SPECIAL_PROPS.LOCATION],
       result,
       importerCalls: importer.mock.calls,
       injectorCalls: $injector.mock.calls,
@@ -178,7 +179,9 @@ describe('$autoload', () => {
       "file:///home/whoiam/project/src/commands/myCommand.ts",
     ],
   ],
+  "initializer": [Function],
   "injectorCalls": [],
+  "location": undefined,
   "logCalls": [
     [
       "debug",
@@ -189,7 +192,6 @@ describe('$autoload', () => {
       "Command called!",
     ],
   ],
-  "path": "command://myCommand",
   "resolveCalls": [],
   "result": undefined,
 }
@@ -223,12 +225,13 @@ describe('$autoload', () => {
       access,
       log,
     } as WhookAutoloadDependencies);
-    const { path, initializer } = await $autoload('commandHandler');
+    const initializer = await $autoload('commandHandler');
     const command = await (initializer as any)();
     const result = await command();
 
     expect({
-      path,
+      initializer,
+      location: initializer[SPECIAL_PROPS.LOCATION],
       result,
       importerCalls: importer.mock.calls,
       injectorCalls: $injector.mock.calls,
@@ -244,7 +247,9 @@ describe('$autoload', () => {
       "file://var/lib/node/node_modules/@whook/cli/dist/commands/myCommand.js",
     ],
   ],
+  "initializer": [Function],
   "injectorCalls": [],
+  "location": undefined,
   "logCalls": [
     [
       "debug",
@@ -259,7 +264,6 @@ describe('$autoload', () => {
       "Command called!",
     ],
   ],
-  "path": "command://myCommand",
   "resolveCalls": [],
   "result": undefined,
 }

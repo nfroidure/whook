@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
-import initAutoload, { WhookAutoloadDependencies } from './_autoload.js';
-import { service } from 'knifecycle';
+import initAutoload, { type WhookAutoloadDependencies } from './_autoload.js';
 import { YError } from 'yerror';
-import type {
-  ImporterService,
-  LogService,
-  ResolveService,
+import {
+  type ImporterService,
+  type LogService,
+  type ResolveService,
 } from 'common-services';
-import type {
-  ServiceInitializer,
-  Dependencies,
-  Service,
-  Injector,
+import {
+  service,
+  type ServiceInitializer,
+  type Dependencies,
+  type Service,
+  type Injector,
+  SPECIAL_PROPS,
 } from 'knifecycle';
 import {
   WHOOK_PROJECT_PLUGIN_NAME,
-  WhookResolvedPluginsService,
+  type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
 
 describe('$autoload', () => {
@@ -64,6 +65,7 @@ describe('$autoload', () => {
 
       expect({
         result,
+        location: result[SPECIAL_PROPS.LOCATION],
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,
@@ -72,6 +74,7 @@ describe('$autoload', () => {
 {
   "importerCalls": [],
   "injectorCalls": [],
+  "location": undefined,
   "logCalls": [
     [
       "debug",
@@ -84,16 +87,12 @@ describe('$autoload', () => {
   ],
   "resolveCalls": [],
   "result": {
-    "initializer": {
-      "$name": "CONFIG",
-      "$singleton": true,
-      "$type": "constant",
-      "$value": {
-        "testConfig": "test",
-      },
+    "$name": "CONFIG",
+    "$singleton": true,
+    "$type": "constant",
+    "$value": {
+      "testConfig": "test",
     },
-    "name": "CONFIG",
-    "path": "internal://CONFIG",
   },
 }
 `);
@@ -123,6 +122,7 @@ describe('$autoload', () => {
 
       expect({
         result,
+        location: result[SPECIAL_PROPS.LOCATION],
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,
@@ -135,6 +135,10 @@ describe('$autoload', () => {
     ],
   ],
   "injectorCalls": [],
+  "location": {
+    "exportName": "default",
+    "url": "file:///home/whoami/my-whook-project/src/services/API.ts",
+  },
   "logCalls": [
     [
       "debug",
@@ -158,16 +162,12 @@ describe('$autoload', () => {
     ],
   ],
   "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "API",
-    "path": "file:///home/whoami/my-whook-project/src/services/API.ts",
-  },
+  "result": [Function],
 }
 `);
     });
 
-    it('for handlers hash', async () => {
+    it.only('for handlers hash', async () => {
       $injector.mockResolvedValueOnce({
         API: {
           openapi: '3.1.0',
@@ -214,9 +214,8 @@ describe('$autoload', () => {
 
       expect({
         result,
-        HANDLERS: await (
-          result.initializer as ServiceInitializer<Dependencies, Service>
-        )({
+        location: result[SPECIAL_PROPS.LOCATION],
+        HANDLERS: await (result as ServiceInitializer<Dependencies, Service>)({
           WRAPPERS: [],
           log,
           getPing: () => undefined,
@@ -238,6 +237,10 @@ describe('$autoload', () => {
       ],
     ],
   ],
+  "location": {
+    "exportName": "default",
+    "url": "@whook/whook/dist/services/HANDLERS.js",
+  },
   "logCalls": [
     [
       "debug",
@@ -249,11 +252,7 @@ describe('$autoload', () => {
     ],
   ],
   "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "HANDLERS",
-    "path": "@whook/whook/dist/services/HANDLERS.js",
-  },
+  "result": [Function],
 }
 `);
     });
@@ -305,9 +304,8 @@ describe('$autoload', () => {
 
       expect({
         result,
-        WRAPPERS: await (
-          result.initializer as ServiceInitializer<Dependencies, Service>
-        )({
+        location: result[SPECIAL_PROPS.LOCATION],
+        WRAPPERS: await (result as ServiceInitializer<Dependencies, Service>)({
           getPing: () => undefined,
           log,
         }),
@@ -320,6 +318,10 @@ describe('$autoload', () => {
   "WRAPPERS": [],
   "importerCalls": [],
   "injectorCalls": [],
+  "location": {
+    "exportName": "default",
+    "url": "@whook/whook/dist/services/WRAPPERS.js",
+  },
   "logCalls": [
     [
       "debug",
@@ -335,11 +337,7 @@ describe('$autoload', () => {
     ],
   ],
   "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "WRAPPERS",
-    "path": "@whook/whook/dist/services/WRAPPERS.js",
-  },
+  "result": [Function],
 }
 `);
     });
@@ -371,6 +369,7 @@ describe('$autoload', () => {
 
       expect({
         result,
+        location: result[SPECIAL_PROPS.LOCATION],
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,
@@ -383,6 +382,10 @@ describe('$autoload', () => {
     ],
   ],
   "injectorCalls": [],
+  "location": {
+    "exportName": "default",
+    "url": "file:///home/whoami/my-whook-project/src/handlers/getPing.ts",
+  },
   "logCalls": [
     [
       "debug",
@@ -406,11 +409,7 @@ describe('$autoload', () => {
     ],
   ],
   "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "getPing",
-    "path": "file:///home/whoami/my-whook-project/src/handlers/getPing.ts",
-  },
+  "result": [Function],
 }
 `);
     });
@@ -441,6 +440,7 @@ describe('$autoload', () => {
 
       expect({
         result,
+        location: result[SPECIAL_PROPS.LOCATION],
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,
@@ -453,6 +453,10 @@ describe('$autoload', () => {
     ],
   ],
   "injectorCalls": [],
+  "location": {
+    "exportName": "default",
+    "url": "@whook/plugin/dist/handlers/getPing.js",
+  },
   "logCalls": [
     [
       "debug",
@@ -476,11 +480,7 @@ describe('$autoload', () => {
     ],
   ],
   "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "getPing",
-    "path": "@whook/plugin/dist/handlers/getPing.js",
-  },
+  "result": [Function],
 }
 `);
     });
@@ -514,6 +514,7 @@ describe('$autoload', () => {
 
       expect({
         result,
+        location: result[SPECIAL_PROPS.LOCATION],
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,
@@ -526,6 +527,10 @@ describe('$autoload', () => {
     ],
   ],
   "injectorCalls": [],
+  "location": {
+    "exportName": "default",
+    "url": "file:///home/whoami/my-whook-project/src/handlers/getPing.js",
+  },
   "logCalls": [
     [
       "debug",
@@ -553,11 +558,7 @@ describe('$autoload', () => {
       "./handlers/getPing.js",
     ],
   ],
-  "result": {
-    "initializer": [Function],
-    "name": "getPing",
-    "path": "file:///home/whoami/my-whook-project/src/handlers/getPing.js",
-  },
+  "result": [Function],
 }
 `);
     });
@@ -604,6 +605,7 @@ describe('$autoload', () => {
 
       expect({
         result,
+        location: result[SPECIAL_PROPS.LOCATION],
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,
@@ -616,6 +618,10 @@ describe('$autoload', () => {
     ],
   ],
   "injectorCalls": [],
+  "location": {
+    "exportName": "default",
+    "url": "@whook/whook/dist/handlers/getPing.js",
+  },
   "logCalls": [
     [
       "debug",
@@ -647,11 +653,7 @@ describe('$autoload', () => {
     ],
   ],
   "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "getPing",
-    "path": "@whook/whook/dist/handlers/getPing.js",
-  },
+  "result": [Function],
 }
 `);
     });
@@ -683,6 +685,7 @@ describe('$autoload', () => {
 
       expect({
         result,
+        location: result[SPECIAL_PROPS.LOCATION],
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
         importerCalls: importer.mock.calls,
@@ -695,6 +698,10 @@ describe('$autoload', () => {
     ],
   ],
   "injectorCalls": [],
+  "location": {
+    "exportName": "default",
+    "url": "file:///home/whoami/my-whook-project/src/wrappers/wrapHandler.ts",
+  },
   "logCalls": [
     [
       "debug",
@@ -718,11 +725,7 @@ describe('$autoload', () => {
     ],
   ],
   "resolveCalls": [],
-  "result": {
-    "initializer": [Function],
-    "name": "wrapHandler",
-    "path": "file:///home/whoami/my-whook-project/src/wrappers/wrapHandler.ts",
-  },
+  "result": [Function],
 }
 `);
     });

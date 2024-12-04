@@ -1,9 +1,9 @@
-import { autoHandler } from 'knifecycle';
+import { autoHandler, location } from 'knifecycle';
 import initPostGraphQL, {
   definition as postGraphQLDefinition,
 } from './postGraphQL.js';
 import { YHTTPError } from 'yhttperror';
-import type { WhookAPIHandlerDefinition, WhookOperation } from '@whook/whook';
+import { type WhookAPIHandlerDefinition, type WhookOperation } from '@whook/whook';
 
 export const definition: WhookAPIHandlerDefinition = {
   path: postGraphQLDefinition.path,
@@ -57,7 +57,7 @@ export const definition: WhookAPIHandlerDefinition = {
   },
 };
 
-export default autoHandler(getGraphQL);
+export default location(autoHandler(getGraphQL), import.meta.url);
 
 async function getGraphQL<T extends Record<string, unknown>>(
   { postGraphQL }: { postGraphQL: Awaited<ReturnType<typeof initPostGraphQL>> },

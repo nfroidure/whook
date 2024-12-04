@@ -58,12 +58,12 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "devDependencies": {
-    "commitizen": "^4.3.0",
+    "commitizen": "^4.3.1",
     "conventional-changelog-cli": "^5.0.0",
     "cz-conventional-changelog": "^3.3.0",
     "lerna": "^8.1.6",
     "metapak": "^6.0.1",
-    "metapak-nfroidure": "18.2.0"
+    "metapak-nfroidure": "19.0.1"
   },
   "contributors": [
     {

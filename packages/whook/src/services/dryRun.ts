@@ -1,4 +1,4 @@
-import { type Knifecycle, autoService } from 'knifecycle';
+import { type Knifecycle, autoService, location } from 'knifecycle';
 import { type LogService } from 'common-services';
 
 async function initDryRun({
@@ -18,4 +18,4 @@ async function initDryRun({
   doDryRun();
 }
 
-export default autoService(initDryRun);
+export default location(autoService(initDryRun), import.meta.url);

@@ -1,4 +1,7 @@
-import { service } from 'knifecycle';
+import { service, location } from 'knifecycle';
 import { log } from 'node:console';
 
-export default service(async () => log, 'log');
+export default location(
+  service(async () => log, 'log'),
+  import.meta.url,
+);
