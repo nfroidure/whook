@@ -35,7 +35,7 @@ npm init @whook;
 cd my_project_name;
 
 # Check install with a dry run of the server
-DRY_RUN=1 npm run start
+npm run dev -- __inject httpServer,process,dryRun
 
 # Run tests
 npm t
@@ -46,8 +46,14 @@ npm run watch
 # Build the project
 npm run build
 
+# Start the compiled project
+npm start
+
+# Start the built project
+node builds/local/server/start.js
+
 # Create a new handler/service/provider
-npx whook create
+npm run whook -- create
 ```
 
 ## Why use Whook?
@@ -59,7 +65,7 @@ npx whook create
   anylith era
 - easy to test: TDD, E2E tests made easy
 - feature complete for most API use cases
-- simplify your life but embrace projects complexity
+- ease your work but embrace projects complexity
 
 ## Usage
 
@@ -69,6 +75,7 @@ A tutorial is still to be written, expect it to come very soon. The above
 That said you can check the following "How to" PRs:
 
 - [add GraphQL](https://github.com/nfroidure/whook/pull/62)
+- [deploy with Docker](https://github.com/nfroidure/whook/pull/164)
 - [deploy on AWS Lambda](https://github.com/nfroidure/whook/pull/54)
 - [deploy with GCP Cloud Functions](https://github.com/nfroidure/whook/pull/66)
 

@@ -146,12 +146,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -262,18 +262,18 @@ describe('initCreateWhook', () => {
     "build": "rimraf 'dist' && tsc --outDir dist",
     "cover": "npm run jest -- --coverage",
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
-    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/whook.js",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/run.js",
     "format": "npm run prettier",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
-    "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
+    "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx src/runBuild.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
-    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js -- __inject repl",
-    "start": "NODE_ENV=\${NODE_ENV:-development} node bin/whook.js",
+    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx src/run.js -- __inject repl",
+    "start": "NODE_ENV=\${NODE_ENV:-development} node dist/run.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
-    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/runWatch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
   },
   "type": "module",
@@ -341,12 +341,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -457,18 +457,18 @@ describe('initCreateWhook', () => {
     "build": "rimraf 'dist' && tsc --outDir dist",
     "cover": "npm run jest -- --coverage",
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
-    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/whook.js",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/run.js",
     "format": "npm run prettier",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
-    "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
+    "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx src/runBuild.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
-    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js -- __inject repl",
-    "start": "NODE_ENV=\${NODE_ENV:-development} node bin/whook.js",
+    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx src/run.js -- __inject repl",
+    "start": "NODE_ENV=\${NODE_ENV:-development} node dist/run.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
-    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/runWatch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
   },
   "type": "module",
@@ -521,12 +521,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-      JSON.parse(
-        outputFile.mock.calls
-          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
-          ?.toString() || '',
-      ),
-    ).toMatchInlineSnapshot(`
+  JSON.parse(
+    outputFile.mock.calls.
+    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
+    toString() || ''
+  )
+).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -637,18 +637,18 @@ describe('initCreateWhook', () => {
     "build": "rimraf 'dist' && tsc --outDir dist",
     "cover": "npm run jest -- --coverage",
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
-    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/whook.js",
+    "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/run.js",
     "format": "npm run prettier",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
-    "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx bin/build.js",
+    "postbuild": "NODE_ENV=\${NODE_ENV:-development} tsx src/runBuild.js",
     "prettier": "prettier --write 'src/**/*.ts'",
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
-    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx bin/whook.js -- __inject repl",
-    "start": "NODE_ENV=\${NODE_ENV:-development} node bin/whook.js",
+    "repl": "NODE_ENV=\${NODE_ENV:-development} tsx src/run.js -- __inject repl",
+    "start": "NODE_ENV=\${NODE_ENV:-development} node dist/run.js",
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
-    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
+    "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/runWatch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook",
   },
   "type": "module",

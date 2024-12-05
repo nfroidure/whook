@@ -281,7 +281,7 @@ builds/
     );
     log(
       'warning',
-      `➕ - Then run \`DRY_RUN=1 npm run dev\` to check installation.`,
+      `➕ - Then run \`npm run dev -- __inject httpServer,process,dryRun\` to check installation.`,
     );
     log('warning', `➕ - And finally run \`npm run watch\` to start dev!`);
   };

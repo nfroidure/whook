@@ -24,9 +24,7 @@ declare module 'application-services' {
       WhookBaseEnv,
       JWTEnvVars,
       FilterAPIDefinitionEnvVars,
-      WhookSwaggerUIEnv {
-    DRY_RUN?: string;
-  }
+      WhookSwaggerUIEnv {}
 
   /* Architecture Note #2.1: Typings
 

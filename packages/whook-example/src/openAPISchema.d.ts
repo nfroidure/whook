@@ -55,16 +55,6 @@ declare namespace API {
       export type $200 = Components.Responses.getTimeResponse200<200>;
     }
   }
-  export namespace PutTime {
-    export type Body = Components.RequestBodies.PutTimeRequestBody;
-    export type Output = Responses.$200;
-    export type Input = {
-      readonly body: Body;
-    };
-    export namespace Responses {
-      export type $200 = Components.Responses.putTimeResponse200<200>;
-    }
-  }
   export namespace PutEcho {
     export type Body = Components.RequestBodies.Echo;
     export type Output = Responses.$200;
@@ -86,8 +76,6 @@ declare namespace API {
 declare namespace Components {
   export namespace RequestBodies {
     export type Echo = Components.Schemas.Echo;
-    export type PutTimeRequestBody =
-      Components.Schemas.RequestBodiesputTimeRequestBodyBody0;
   }
   export namespace Parameters {
     export type Duration = number;
@@ -140,13 +128,6 @@ declare namespace Components {
       };
       readonly body: Components.Schemas.TimeSchema;
     };
-    export type putTimeResponse200<S extends number> = {
-      readonly status: S;
-      readonly headers?: {
-        readonly [name: string]: unknown;
-      };
-      readonly body: Components.Schemas.ResponsesputTimeResponse200Body0;
-    };
     export type getPingResponse200<S extends number> = {
       readonly status: S;
       readonly headers?: {
@@ -156,12 +137,11 @@ declare namespace Components {
     };
   }
   export namespace Schemas {
+    export type TimeSchema = {
+      currentDate?: string;
+    };
     export type Echo = {
       echo: string;
-    };
-    export type RequestBodiesputTimeRequestBodyBody0 = {
-      time?: number;
-      isFixed?: boolean;
     };
     export type ResponsesDiagnosticBody0 = {
       transactions: {
@@ -176,10 +156,6 @@ declare namespace Components {
       pathParam2?: string;
       queryParam?: string[];
     };
-    export type TimeSchema = {
-      currentDate?: string;
-    };
-    export type ResponsesputTimeResponse200Body0 = number;
     export type ResponsesgetPingResponse200Body0 = {
       pong?: 'pong';
     };
