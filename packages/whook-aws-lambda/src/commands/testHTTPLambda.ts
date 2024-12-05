@@ -166,7 +166,7 @@ async function initTestHTTPLambdaCommand({
     }
     log('info', 'AWS_REQUEST:', awsRequest as unknown as string);
 
-    const result: APIGatewayProxyResult = await handler(awsRequest);
+    const result: APIGatewayProxyResult = await handler(awsRequest, {});
 
     log('info', 'SUCCESS:', result as unknown as string);
 
