@@ -31,6 +31,7 @@ import type {
 import type { OpenAPIV3_1 } from 'openapi-types';
 import type { LogService } from 'common-services';
 import type { CprOptions } from 'cpr';
+import { parseArgs } from '@whook/whook/dist/libs/args.js';
 
 export type {
   LambdaConsumerInput,
@@ -137,12 +138,13 @@ const cprAsync = promisify(cpr) as (
 export async function prepareBuildEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
-  $.register(
-    constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
-  );
   $.register(initInitializerBuilder);
   $.register(initBuildAutoloader);
   $.register(initCompiler);
+  $.register(
+    constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
+  );
+  $.register(constant('args', parseArgs([])));
   $.register(constant('PORT', 1337));
   $.register(constant('HOST', 'localhost'));
 
