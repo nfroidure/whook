@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { initAutoload, noop, cleanupOpenAPI } from '@whook/whook';
+import { initBuildAutoload, noop, cleanupOpenAPI } from '@whook/whook';
 import {
-  SPECIAL_PROPS,
   UNBUILDABLE_SERVICES,
   Knifecycle,
   wrapInitializer,
@@ -9,7 +8,7 @@ import {
   alsoInject,
   location,
 } from 'knifecycle';
-import { printStackTrace, YError } from 'yerror';
+import { YError } from 'yerror';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
@@ -54,12 +53,7 @@ const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
   Dependencies
 > = (async (
-  {
-    BUILD_CONSTANTS = {},
-    $injector,
-    $instance,
-    log = noop,
-  }: WhookGoogleFunctionsAutoloadDependencies,
+  { $injector, log = noop }: WhookGoogleFunctionsAutoloadDependencies,
   $autoload: Autoloader<Initializer<Dependencies, Service>>,
 ): Promise<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>
@@ -145,80 +139,49 @@ const initializerWrapper: ServiceInitializerWrapper<
       return constant(serviceName, undefined);
     }
 
-    try {
-      let initializer;
+    if (serviceName.startsWith('OPERATION_API_')) {
+      const [, , OPERATION_API] = await getAPIOperation(serviceName);
 
-      try {
-        initializer = $instance._getInitializer(serviceName);
-      } catch (err) {
-        log(
-          'debug',
-          `🤖 - Direct initializer access failure from the Knifecycle instance: "${serviceName}".`,
-        );
-        log('debug-stack', printStackTrace(err as Error));
-      }
-
-      if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
-        log(
-          'debug',
-          `🤖 - Reusing a constant initializer directly from the Knifecycle instance: "${serviceName}".`,
-        );
-        return initializer;
-      }
-
-      if (serviceName.startsWith('OPERATION_API_')) {
-        const [, , OPERATION_API] = await getAPIOperation(serviceName);
-
-        return constant(serviceName, OPERATION_API);
-      }
-
-      if (serviceName.startsWith('OPERATION_WRAPPER_')) {
-        const [type] = await getAPIOperation(serviceName);
-
-        return location(
-          alsoInject(
-            [
-              `OPERATION_API>${serviceName.replace(
-                'OPERATION_WRAPPER_',
-                'OPERATION_API_',
-              )}`,
-            ],
-            GCP_WRAPPERS[type].initializer as any,
-          ),
-          `@whook/gcp-functions/dist/wrappers/${GCP_WRAPPERS[type].name}.js`,
-        );
-      }
-
-      if (serviceName.startsWith('OPERATION_HANDLER_')) {
-        const [, operationId] = await getAPIOperation(serviceName);
-
-        return location(
-          alsoInject(
-            [
-              `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
-                'OPERATION_HANDLER_',
-                '',
-              )}`,
-              `baseHandler>${operationId}`,
-            ],
-            initHandler,
-          ),
-          '@whook/gcp-functions/dist/services/HANDLER.js',
-        );
-      }
-
-      if (BUILD_CONSTANTS[serviceName]) {
-        return constant(serviceName, BUILD_CONSTANTS[serviceName]);
-      }
-
-      return $autoload(serviceName);
-    } catch (err) {
-      log('error', `💥 - Build error while loading "${serviceName}".`);
-      log('error-stack', printStackTrace(err as Error));
-      throw err;
+      return constant(serviceName, OPERATION_API);
     }
+
+    if (serviceName.startsWith('OPERATION_WRAPPER_')) {
+      const [type] = await getAPIOperation(serviceName);
+
+      return location(
+        alsoInject(
+          [
+            `OPERATION_API>${serviceName.replace(
+              'OPERATION_WRAPPER_',
+              'OPERATION_API_',
+            )}`,
+          ],
+          GCP_WRAPPERS[type].initializer as any,
+        ),
+        `@whook/gcp-functions/dist/wrappers/${GCP_WRAPPERS[type].name}.js`,
+      ) as any;
+    }
+
+    if (serviceName.startsWith('OPERATION_HANDLER_')) {
+      const [, operationId] = await getAPIOperation(serviceName);
+
+      return location(
+        alsoInject(
+          [
+            `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
+              'OPERATION_HANDLER_',
+              '',
+            )}`,
+            `baseHandler>${operationId}`,
+          ],
+          initHandler,
+        ),
+        '@whook/gcp-functions/dist/services/HANDLER.js',
+      );
+    }
+
+    return await $autoload(serviceName);
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }) as any;
 
 /**
@@ -239,6 +202,5 @@ const initializerWrapper: ServiceInitializerWrapper<
  */
 export default alsoInject(
   ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  wrapInitializer(initializerWrapper as any, initAutoload),
+  wrapInitializer(initializerWrapper as any, initBuildAutoload),
 );

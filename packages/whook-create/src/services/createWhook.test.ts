@@ -146,12 +146,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -186,7 +186,6 @@ describe('initCreateWhook', () => {
     "@swc/helpers": "^0.5.15",
     "@swc/jest": "^0.2.37",
     "axios": "^1.7.9",
-    "chokidar": "^3.5.3",
     "esbuild-node-externals": "^1.15.0",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
@@ -341,12 +340,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -381,7 +380,6 @@ describe('initCreateWhook', () => {
     "@swc/helpers": "^0.5.15",
     "@swc/jest": "^0.2.37",
     "axios": "^1.7.9",
-    "chokidar": "^3.5.3",
     "esbuild-node-externals": "^1.15.0",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
@@ -521,12 +519,12 @@ describe('initCreateWhook', () => {
     await createWhook();
 
     expect(
-  JSON.parse(
-    outputFile.mock.calls.
-    find((call) => call[0].toString().endsWith('package.json'))?.[1]?.
-    toString() || ''
-  )
-).toMatchInlineSnapshot(`
+      JSON.parse(
+        outputFile.mock.calls
+          .find((call) => call[0].toString().endsWith('package.json'))?.[1]
+          ?.toString() || '',
+      ),
+    ).toMatchInlineSnapshot(`
 {
   "author": {
     "email": "wayne@warner.com",
@@ -561,7 +559,6 @@ describe('initCreateWhook', () => {
     "@swc/helpers": "^0.5.15",
     "@swc/jest": "^0.2.37",
     "axios": "^1.7.9",
-    "chokidar": "^3.5.3",
     "esbuild-node-externals": "^1.15.0",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",

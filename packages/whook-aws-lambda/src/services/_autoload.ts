@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { initAutoload, noop, cleanupOpenAPI } from '@whook/whook';
+import { initBuildAutoload, noop, cleanupOpenAPI } from '@whook/whook';
 import {
-  SPECIAL_PROPS,
-  UNBUILDABLE_SERVICES,
   Knifecycle,
   wrapInitializer,
   constant,
   alsoInject,
   location,
 } from 'knifecycle';
-import { printStackTrace, YError } from 'yerror';
+import { YError } from 'yerror';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
@@ -88,9 +86,7 @@ const initializerWrapper: ServiceInitializerWrapper<
   Dependencies
 > = (async (
   {
-    BUILD_CONSTANTS = {},
     $injector,
-    $instance,
     log = noop,
   }: WhookAWSLambdaAutoloadDependencies,
   $autoload: Autoloader<Initializer<Dependencies, Service>>,
@@ -165,93 +161,53 @@ const initializerWrapper: ServiceInitializerWrapper<
   log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
 
   return async (serviceName) => {
-    if (UNBUILDABLE_SERVICES.includes(serviceName)) {
-      log(
-        'warning',
-        `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${UNBUILDABLE_SERVICES.join(
-          ', ',
-        )}) can give unpredictable results!`,
+    if (serviceName.startsWith('OPERATION_API_')) {
+      const [, , OPERATION_API] = await getAPIOperation(serviceName);
+
+      return constant(serviceName, OPERATION_API);
+    }
+
+    if (serviceName.startsWith('OPERATION_WRAPPER_')) {
+      const [type] = await getAPIOperation(serviceName);
+
+      return location(
+        alsoInject(
+          [
+            `OPERATION_API>${serviceName.replace(
+              'OPERATION_WRAPPER_',
+              'OPERATION_API_',
+            )}`,
+          ],
+          AWS_WRAPPERS[type].initializer as any,
+        ) as any,
+        `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[type].name}.js`,
+      ) as any;
+    }
+
+    if (serviceName.startsWith('OPERATION_HANDLER_')) {
+      const [type, operationId] = await getAPIOperation(serviceName);
+
+      return location(
+        alsoInject(
+          [
+            `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
+              'OPERATION_HANDLER_',
+              '',
+            )}`,
+            // Only inject wrappers for HTTP handlers and
+            // eventually inject other ones
+            ...(type !== 'http'
+              ? [`?WRAPPERS>${type.toUpperCase()}_WRAPPERS`]
+              : []),
+            `baseHandler>${operationId}`,
+          ],
+          initHandler,
+        ) as any,
+        '@whook/aws-lambda/dist/services/HANDLER.js',
       );
-      return constant(serviceName, undefined);
     }
 
-    try {
-      let initializer;
-
-      try {
-        initializer = $instance._getInitializer(serviceName);
-      } catch (err) {
-        log(
-          'debug',
-          `🤖 - Direct initializer access failure from the Knifecycle instance: "${serviceName}".`,
-        );
-        log('debug-stack', printStackTrace(err as Error));
-      }
-
-      if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
-        log(
-          'debug',
-          `🤖 - Reusing a constant initializer directly from the Knifecycle instance: "${serviceName}".`,
-        );
-        return initializer;
-      }
-
-      if (serviceName.startsWith('OPERATION_API_')) {
-        const [, , OPERATION_API] = await getAPIOperation(serviceName);
-
-        return constant(serviceName, OPERATION_API);
-      }
-
-      if (serviceName.startsWith('OPERATION_WRAPPER_')) {
-        const [type] = await getAPIOperation(serviceName);
-
-        return location(
-          alsoInject(
-            [
-              `OPERATION_API>${serviceName.replace(
-                'OPERATION_WRAPPER_',
-                'OPERATION_API_',
-              )}`,
-            ],
-            AWS_WRAPPERS[type].initializer as any,
-          ) as any,
-          `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[type].name}.js`,
-        );
-      }
-
-      if (serviceName.startsWith('OPERATION_HANDLER_')) {
-        const [type, operationId] = await getAPIOperation(serviceName);
-
-        return location(
-          alsoInject(
-            [
-              `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
-                'OPERATION_HANDLER_',
-                '',
-              )}`,
-              // Only inject wrappers for HTTP handlers and
-              // eventually inject other ones
-              ...(type !== 'http'
-                ? [`?WRAPPERS>${type.toUpperCase()}_WRAPPERS`]
-                : []),
-              `baseHandler>${operationId}`,
-            ],
-            initHandler,
-          ) as any,
-          '@whook/aws-lambda/dist/services/HANDLER.js',
-        );
-      }
-
-      if (BUILD_CONSTANTS[serviceName]) {
-        return constant(serviceName, BUILD_CONSTANTS[serviceName]);
-      }
-
-      return $autoload(serviceName);
-    } catch (err) {
-      log('error', `💥 - Build error while loading "${serviceName}".`);
-      log('error-stack', printStackTrace(err as Error));
-      throw err;
-    }
+    return await $autoload(serviceName);
   };
 }) as any;
 
@@ -273,5 +229,5 @@ const initializerWrapper: ServiceInitializerWrapper<
  */
 export default alsoInject(
   ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
-  wrapInitializer(initializerWrapper as any, initAutoload),
+  wrapInitializer(initializerWrapper as any, initBuildAutoload),
 );

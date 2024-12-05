@@ -53,6 +53,7 @@ export {
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';
+import initBuildAutoload from './services/_buildAutoload.js';
 import initGetPing, {
   definition as initGetPingDefinition,
 } from './handlers/getPing.js';
@@ -184,6 +185,7 @@ export {
   initGetPing,
   initGetPingDefinition,
   initAutoload,
+  initBuildAutoload,
   initAPIDefinitions,
   initBuildConstants,
   initProxyedENV,

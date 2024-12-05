@@ -113,6 +113,7 @@
     "ajv-formats": "^3.0.1",
     "application-services": "^7.0.0",
     "camelcase": "^8.0.0",
+    "chokidar": "^4.0.1",
     "common-services": "^17.0.0",
     "debug": "^4.3.7",
     "fs-extra": "^11.2.0",
