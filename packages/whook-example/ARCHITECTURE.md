@@ -510,7 +510,7 @@ The default Whook project contains a few sample
  handlers to help you grasp its principles.
 
 You can keep some or just delete them and create
- yours with `npm run whook-dev -- create`.
+ yours with `npm run dev -- create`.
 
 [See in context](./src/handlers/getDelay.ts#L9-L16)
 
@@ -720,7 +720,7 @@ It leverages the dependency injection features of Whook
 
 You can list every available commands by running:
 ```sh
-npm run whook-dev -- ls
+npm run dev -- ls
 ```
 
 Commands are a simple way to write utility scripts that leverage

@@ -60,15 +60,19 @@ Play with the REPL:
 npm run repl
 ```
 
-Generate the [dependency injection graph](./DEPENDENCIES.mmd.svg):
+Generate the dependency injection graph (here, for the `putTime` handler):
 
 ```sh
-npm run graph
+npm run --silent whook -- __inject putTime,mermaid > DEPENDENCIES.mmd;
+docker run --rm -u `id -u`:`id -g` -v $(pwd):/data minlag/mermaid-cli -i DEPENDENCIES.mmd -o DEPENDENCIES.mmd.svg;
 ```
 
 List available commands:
 
 ```sh
+## In dev mode
+npm run dev -- ls
+## With built files
 npx whook ls
 ```
 

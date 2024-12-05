@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { exec } from 'child_process';
+import { exec } from 'node:child_process';
 import { YError } from 'yerror';
 
 describe('commands should work', () => {

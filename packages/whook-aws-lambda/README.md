@@ -175,7 +175,7 @@ npx whook testHTTPLambda --name getPing
 To get more insights when some errors happens:
 
 ```sh
-DEBUG=whook npm run whook-dev -- testHTTPLambda --name getPing
+DEBUG=whook npm run dev -- testHTTPLambda --name getPing
 ```
 
 ## Deployment

@@ -179,7 +179,7 @@ npx whook testHTTPFunction --name getPing
 To get more insights when some errors happens:
 
 ```sh
-DEBUG=whook npm run whook-dev -- testHTTPFunction --name getPing
+DEBUG=whook npm run dev -- testHTTPFunction --name getPing
 ```
 
 ## Deployment

@@ -12,7 +12,7 @@ The default Whook project contains a few sample
  handlers to help you grasp its principles.
 
 You can keep some or just delete them and create
- yours with `npm run whook-dev -- create`.
+ yours with `npm run dev -- create`.
 */
 
 /* Architecture Note #3.1.2: Reusable parameters

@@ -1,3 +1,18 @@
+/* Architecture Note #1: A Whook baked API
+This API server uses the Whook engine. Those architecture
+ notes will help you to master its features.
+
+You can see a view of the full architecture document
+ by running `npm run architecture` and opening the generated
+ `ARCHITECTURE.md` file.
+*/
+
+/* Architecture Note #1.1: The main file
+
+Per convention a Whook server main file must exports
+ the following 3 functions to be composable.
+*/
+
 import { env, argv as _argv } from 'node:process';
 import {
   Knifecycle,
@@ -18,15 +33,6 @@ import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv, initTimeMock } from 'application-services';
 
-/* Architecture Note #1: A Whook baked API
-This API server uses the Whook engine. Thoses architecture
- notes will help you to master its features.
-
-You can see a view of the full architecture document
- by running `npm run architecture` and opening the generated
- `ARCHITECTURE.md` file.
-*/
-
 /* Architecture Note #1.1.3.4: supported `APP_ENV` values
 
 You can add more application environment here for several
@@ -35,12 +41,6 @@ You can add more application environment here for several
 const APP_ENVS = ['local', 'test', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
-
-/* Architecture Note #1.1: The main file
-
-Per convention a Whook server main file must exports
- the following 3 functions to be composable.
-*/
 
 /* Architecture Note #1.1.1: runProcess
 
@@ -85,8 +85,7 @@ export async function prepareProcess<
    For example, here we add a Swagger UI page for
    development purpose.
   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter) as any);
+  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
 
   return await prepareBaseProcess(injectedNames, $);
 }

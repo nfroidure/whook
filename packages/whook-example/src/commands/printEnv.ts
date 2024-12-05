@@ -15,7 +15,7 @@ It leverages the dependency injection features of Whook
 
 You can list every available commands by running:
 ```sh
-npm run whook-dev -- ls
+npm run dev -- ls
 ```
 
 Commands are a simple way to write utility scripts that leverage

@@ -1,10 +1,3 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import { watchDevProcess as baseWatchDevProcess } from '@whook/whook/dist/watch.js';
-import { printStackTrace } from 'yerror';
-
-const doExec = promisify(exec);
-
 /* Architecture Note #7: Watch server
 
 The watch command allows you to reload the server
@@ -14,6 +7,13 @@ You can add hooks to add need behaviors to the
  watch server like here with a prettier run after
  each restart.
 */
+
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+import { watchDevProcess as baseWatchDevProcess } from '@whook/whook/dist/watch.js';
+import { printStackTrace } from 'yerror';
+
+const doExec = promisify(exec);
 
 export async function watchDevProcess() {
   await baseWatchDevProcess({

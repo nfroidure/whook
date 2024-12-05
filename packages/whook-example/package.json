@@ -50,7 +50,6 @@
     "debug": "NODE_OPTIONS=${NODE_OPTIONS:-'--inspect'} NODE_ENV=${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=${DEBUG:-whook} tsx bin/whook.js",
     "dev": "NODE_ENV=${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/whook.js",
     "format": "npm run prettier",
-    "graph": "MERMAID_RUN=1 npm run --silent whook -- __inject mermaid > DEPENDENCIES.mmd",
     "jest": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest",
     "lint": "eslint 'src/**/*.ts'",
     "metapak": "metapak",
@@ -62,9 +61,7 @@
     "test": "NODE_ENV=test npm run build && npm run jest",
     "type-check": "tsc --pretty --noEmit",
     "watch": "NODE_ENV=${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx bin/watch.js",
-    "whook": "NODE_ENV=${NODE_ENV:-development} whook",
-    "whook-debug": "NODE_OPTIONS=${NODE_OPTIONS:-'--inspect'} NODE_ENV=${NODE_ENV:-development} DEBUG=${DEBUG:-whook} tsx bin/whook.js",
-    "whook-dev": "NODE_ENV=${NODE_ENV:-development} tsx bin/whook.js"
+    "whook": "NODE_ENV=${NODE_ENV:-development} whook"
   },
   "author": {
     "name": "Nicolas Froidure",

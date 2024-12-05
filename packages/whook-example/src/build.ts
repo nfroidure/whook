@@ -1,3 +1,8 @@
+/* Architecture Note #1.2: The build file
+
+Per convention a Whook server build file must export
+ the following 2 functions to be composable:
+*/
 import { Knifecycle, constant, alsoInject } from 'knifecycle';
 import { prepareEnvironment } from './index.js';
 import {
@@ -6,12 +11,6 @@ import {
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
 } from '@whook/whook';
-
-/* Architecture Note #1.2: The build file
-
-Per convention a Whook server build file must export
- the following 2 functions to be composable:
-*/
 
 /* Architecture Note #1.2.1: The `runBuild` function
 
