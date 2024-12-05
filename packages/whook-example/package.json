@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/example",
-  "version": "18.0.0",
+  "version": "18.0.1",
   "description": "A basic Whook server",
   "type": "module",
   "main": "dist/index.js",
