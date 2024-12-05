@@ -1,3 +1,13 @@
+# [18.0.0](https://github.com/nfroidure/whook/compare/v18.0.1...v18.0.0) (2024-12-05)
+
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix lambda testing ([a7b84a8](https://github.com/nfroidure/whook/commit/a7b84a89be25710ab1c2f7b722d6a1292deb3326))
+* **build:** fix lambda/function builds ([6170d57](https://github.com/nfroidure/whook/commit/6170d57e0210f92867053754209130f0b94eb919))
+
+
+
 # [18.0.0](https://github.com/nfroidure/whook/compare/v17.1.1...v18.0.0) (2024-12-05)
 
 
