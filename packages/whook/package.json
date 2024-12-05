@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/whook",
-  "version": "18.0.0",
+  "version": "18.0.3",
   "description": "Build strong and efficient REST web services.",
   "type": "module",
   "main": "dist/index.js",

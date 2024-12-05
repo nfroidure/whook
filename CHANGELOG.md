@@ -1,3 +1,12 @@
+## [18.0.3](https://github.com/nfroidure/whook/compare/v18.0.2...v18.0.3) (2024-12-05)
+
+
+### Bug Fixes
+
+* **build:** fix builds ([2a2f54f](https://github.com/nfroidure/whook/commit/2a2f54f9d5516441c6320d9bb24120d995ce20c7))
+
+
+
 # [18.0.0](https://github.com/nfroidure/whook/compare/v18.0.1...v18.0.0) (2024-12-05)
 
 

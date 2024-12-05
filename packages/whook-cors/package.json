@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/cors",
-  "version": "18.0.0",
+  "version": "18.0.3",
   "description": "A wrapper to provide CORS support to a Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -54,7 +54,7 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/http-router": "^18.0.0",
-    "@whook/whook": "^18.0.0",
+    "@whook/whook": "^18.0.3",
     "knifecycle": "^18.0.0",
     "openapi-types": "^12.1.3",
     "yhttperror": "^8.0.0"
