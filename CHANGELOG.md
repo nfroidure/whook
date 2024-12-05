@@ -1,3 +1,30 @@
+# [18.0.0](https://github.com/nfroidure/whook/compare/v17.1.1...v18.0.0) (2024-12-05)
+
+
+### chore
+
+* **dependencies:** update dependencies ([3fdd8ed](https://github.com/nfroidure/whook/commit/3fdd8edbdf19227aa3c13a8b3741b1fb0242e745))
+
+
+### Code Refactoring
+
+* **services:** use the knifecycle core service mapping ([ea84982](https://github.com/nfroidure/whook/commit/ea849820e44ee93f8d52959ac395692269a02be7))
+
+
+### Features
+
+* **@whook/example:** add a time mock example ([21d4987](https://github.com/nfroidure/whook/commit/21d4987cfaa6016583cfb3081454df8d538f6710))
+* **@whook/whook:** improve the build autoloader ([75132c3](https://github.com/nfroidure/whook/commit/75132c3a55250b56c424c796bc039989c4f886ce))
+
+
+### BREAKING CHANGES
+
+* **dependencies:** Things should just work for most cases except if you wrote your own autoloader.
+* **services:** The `SERVICE_NAME_MAP` contents in Whook's projects must be put in a
+`src/config/:app_env/overrides.ts` file instead.
+
+
+
 ## [17.0.2](https://github.com/nfroidure/whook/compare/v17.1.0...v17.0.2) (2024-10-22)
 
 
