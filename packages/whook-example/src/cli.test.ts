@@ -9,9 +9,9 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-    }).toMatchInlineSnapshot(`
+  stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+  stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/')
+}).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
@@ -19,8 +19,9 @@ On air 🚀🌕
 ",
   "stdout": "
 
-# Provided by "@whook/example": 1 commands
+# Provided by "@whook/example": 2 commands
 - printEnv: A command printing every env values
+- terraformValues: A command printing lambdas informations for Terraform
 
 
 # Provided by "@whook/whook": 8 commands
@@ -38,6 +39,16 @@ On air 🚀🌕
 
 
 # Provided by "@whook/authorization": none
+
+
+# Provided by "@whook/aws-lambda": 7 commands
+- testConsumerLambda: A command for testing AWS consumer lambda
+- testCronLambda: A command for testing AWS cron lambda
+- testHTTPLambda: A command for testing AWS HTTP lambda
+- testKafkaConsumerLambda: A command for testing AWS lambda Kafka consumers
+- testS3Lambda: A command for testing AWS consumer lambda
+- testS3Lambda: A command for testing AWS consumer lambda
+- testTransformerLambda: A command for testing AWS lambda transformers
 ",
 }
 `);

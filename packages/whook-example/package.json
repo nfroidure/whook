@@ -14,7 +14,14 @@
       "testsFiles": "'src/**/*.test.ts'",
       "distFiles": "'dist/**/*.js'",
       "ignore": [
-        "dist"
+        "dist",
+        "builds",
+        ".bin",
+        ".terraform",
+        "*.plan",
+        "*.tfstate.d",
+        "*.credentials.json",
+        "lambda_layer.zip"
       ],
       "bundleFiles": [
         "bin",
@@ -80,6 +87,7 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "^18.0.0",
+    "@whook/aws-lambda": "^18.0.1",
     "@whook/cors": "^18.0.0",
     "@whook/http-router": "^18.0.0",
     "@whook/http-server": "^18.0.0",

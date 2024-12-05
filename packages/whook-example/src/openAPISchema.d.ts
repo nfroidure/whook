@@ -55,6 +55,23 @@ declare namespace API {
       export type $200 = Components.Responses.getTimeResponse200<200>;
     }
   }
+  export namespace HandleMessages {
+    export type Output = Responses.$200;
+    export type Input = {};
+    export namespace Responses {
+      export type $200 = Components.Responses.handleMessagesResponse200<200>;
+    }
+  }
+  export namespace HandleMinutes {
+    export type Body = Components.RequestBodies.HandleMinutesRequestBody;
+    export type Output = Responses.$200;
+    export type Input = {
+      readonly body: Body;
+    };
+    export namespace Responses {
+      export type $200 = Components.Responses.handleMinutesResponse200<200>;
+    }
+  }
   export namespace PutEcho {
     export type Body = Components.RequestBodies.Echo;
     export type Output = Responses.$200;
@@ -76,6 +93,7 @@ declare namespace API {
 declare namespace Components {
   export namespace RequestBodies {
     export type Echo = Components.Schemas.Echo;
+    export type HandleMinutesRequestBody = Components.Schemas.ExampleSchema;
   }
   export namespace Parameters {
     export type Duration = number;
@@ -87,6 +105,20 @@ declare namespace Components {
   }
   export namespace Responses {
     export type getDelayResponse204<S extends number> = {
+      readonly status: S;
+      readonly headers?: {
+        readonly [name: string]: unknown;
+      };
+      readonly body?: unknown;
+    };
+    export type handleMessagesResponse200<S extends number> = {
+      readonly status: S;
+      readonly headers?: {
+        readonly [name: string]: unknown;
+      };
+      readonly body?: unknown;
+    };
+    export type handleMinutesResponse200<S extends number> = {
       readonly status: S;
       readonly headers?: {
         readonly [name: string]: unknown;
@@ -139,6 +171,10 @@ declare namespace Components {
   export namespace Schemas {
     export type TimeSchema = {
       currentDate?: string;
+    };
+    export type ExampleSchema = {
+      foo?: string;
+      bar?: string;
     };
     export type Echo = {
       echo: string;
