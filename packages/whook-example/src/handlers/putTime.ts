@@ -2,7 +2,7 @@ import {
   type WhookAPIHandlerDefinition,
   type WhookResponse,
 } from '@whook/whook';
-import { type LogService } from 'common-services';
+import { type TimeService, type LogService } from 'common-services';
 import { type ClockMockService } from 'application-services';
 import { autoHandler } from 'knifecycle';
 import { YError } from 'yerror';
@@ -58,11 +58,13 @@ async function putTime(
     APP_ENV,
     CLOCK_MOCK,
     time,
+    timeMock,
     log,
   }: {
     APP_ENV: AppEnv;
     CLOCK_MOCK: ClockMockService;
-    time: TimeMockService;
+    time: TimeService;
+    timeMock: TimeMockService;
     log: LogService;
   },
   { body }: { body: { time: number; isFixed: boolean } },
@@ -78,10 +80,10 @@ async function putTime(
     CLOCK_MOCK.referenceTime = time();
   }
 
-  log('warning', `⌚ - Set time to "${body.time}".`);
+  log('warning', `⌚ - Set time to "${new Date(body.time).toISOString()}".`);
 
   return {
     status: 201,
-    body: time(),
+    body: timeMock(),
   };
 }

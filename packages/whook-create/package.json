@@ -70,7 +70,7 @@
   "dependencies": {
     "@whook/example": "^18.0.3",
     "axios": "^1.7.9",
-    "common-services": "^17.0.0",
+    "common-services": "^17.0.1",
     "debug": "^4.3.7",
     "fs-extra": "^11.2.0",
     "inquirer": "^12.1.0",

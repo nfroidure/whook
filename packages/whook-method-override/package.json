@@ -54,7 +54,7 @@
   "dependencies": {
     "@whook/http-transaction": "^18.0.0",
     "@whook/whook": "^18.0.3",
-    "common-services": "^17.0.0",
+    "common-services": "^17.0.1",
     "knifecycle": "^18.0.0",
     "openapi-types": "^12.1.3"
   },
