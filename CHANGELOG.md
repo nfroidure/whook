@@ -1,3 +1,22 @@
+# [18.1.0](https://github.com/nfroidure/whook/compare/v18.0.3...v18.1.0) (2024-12-11)
+
+
+### Bug Fixes
+
+* **@whook/example:** fix the time mock handler ([1cc3956](https://github.com/nfroidure/whook/commit/1cc395665c5c69e38d4f36612b16d5fc3dd92e72))
+
+
+### Code Refactoring
+
+* **core:** remove non-necessary modules ([ec3f556](https://github.com/nfroidure/whook/commit/ec3f556ab53da4ff119014c9e3152a53e680f107))
+
+
+### BREAKING CHANGES
+
+* **core:** Will have to import whook instead
+
+
+
 ## [18.0.3](https://github.com/nfroidure/whook/compare/v18.0.2...v18.0.3) (2024-12-05)
 
 
