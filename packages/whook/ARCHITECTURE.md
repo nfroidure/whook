@@ -8,10 +8,15 @@
 ## Summary
 
 1. [Main file](#1-main-file)
+1. [HTTP Router](#1-http-router)
    1. [Process run](#11-process-run)
+   1. [Validators](#11-validators)
+   1. [Request body](#11-request-body)
    2. [Process preparation](#12-process-preparation)
-   3. [Server environment](#13-server-environment)
+   3. [Process environments](#13-process-environments)
 2. [Services initializers](#2-services-initializers)
+2. [Error handler](#2-error-handler)
+   1. [Errors descriptors](#21-errors-descriptors)
    1. [Base URL](#21-base-url)
    2. [IP detection](#22-ip-detection)
    3. [the `PWD` constant](#23-the-`pwd`-constant)
@@ -36,6 +41,12 @@
       6. [Service/handler/wrapper loading](#296-service/handler/wrapper-loading)
          1. [Plugins resolution](#2961-plugins-resolution)
          2. [Plugins/project paths](#2962-plugins/project-paths)
+   10. [HTTP Transactions](#210-http-transactions)
+   10. [HTTP Server](#210-http-server)
+      1. [New Transaction](#2101-new-transaction)
+      2. [Transaction start](#2102-transaction-start)
+      3. [Transaction errors](#2103-transaction-errors)
+      4. [Transaction end](#2104-transaction-end)
 3. [the handlers](#3-the-handlers)
    1. [Testing](#41-testing)
 
@@ -47,7 +58,34 @@ The Whook's main file exports :
 - its specific `knifecycle` compatible services,
 - a few bootstrapping functions designed to be customizable.
 
-[See in context](./src/index.ts#L200-L205)
+[See in context](./src/index.ts#L215-L220)
+
+
+
+## 1. HTTP Router
+
+The Whook's `httpRouter` service  is responsible
+ for wiring routes definitions to their actual
+ implementation while filtering inputs and ensuring
+ good outputs.
+
+This is the default implementation of the Framework
+ but it can be replaced or customized by setting your
+ own configurations to replace the default ones
+ (see the [API section](#API)).
+
+The `httpRouter` service is responsible for handling
+ the request, validating it and wiring the handlers
+ response to the actual HTTP response.
+
+It is very opinionated and clearly diverges from the
+ current standards based on a middlewares/plugins
+ approach.
+
+Here, the single source of truth is your API
+ definition. No documentation, no route.
+
+[See in context](./src/services/httpRouter.ts#L137-L159)
 
 
 
@@ -57,7 +95,48 @@ Whook exposes a `runProcess` function to programmatically spawn
  its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L207-L211)
+[See in context](./src/index.ts#L222-L226)
+
+
+
+### 1.1. Validators
+
+For performance reasons, the validators are
+ created once for all at startup from the
+ API definition.
+
+One could argue that it would have been
+ better for performances to generate
+ the code statically. This is true. It
+ may be done later but it won't change
+ the way it works so, moving fast for
+ now but keeping it in mind.
+
+Also, looking closely to Prepack that
+ could improve significantly this
+ project performances with close to no
+ time costs:
+ https://github.com/facebook/prepack/issues/522#issuecomment-300706099
+
+[See in context](./src/libs/validation.ts#L21-L38)
+
+
+
+### 1.1. Request body
+
+According to the OpenAPI specification
+there are two kinds of requests:
+- **validated contents:** it implies to
+ buffer their content and parse them to
+ finally validate it. In that case, we
+ provide it as a plain JS object to the
+ handlers.
+- **streamable contents:** often used
+ for large files, those contents must
+ be parsed and validated into the
+ handler itself.
+
+[See in context](./src/libs/body.ts#L20-L32)
 
 
 
@@ -70,11 +149,11 @@ Whook exposes a `prepareProcess` function to create its
  containing the bootstrapped environment and allowing
  to complete and run the process.
 
-[See in context](./src/index.ts#L260-L267)
+[See in context](./src/index.ts#L275-L282)
 
 
 
-### 1.3. Server environment
+### 1.3. Process environments
 
 The Whook `prepareEnvironment` function aims to provide the complete
  process environment without effectively planning its run. It allows
@@ -82,7 +161,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
 
-[See in context](./src/index.ts#L290-L296)
+[See in context](./src/index.ts#L305-L311)
 
 
 
@@ -93,7 +172,38 @@ Whook's embed a few default initializers proxied from
  folder. It can be wrapped or overridden, at will, later
  in a project using overrides.
 
-[See in context](./src/index.ts#L307-L312)
+[See in context](./src/index.ts#L322-L327)
+
+
+
+## 2. Error handler
+
+Whook provides a default error handler that allows
+ you to use the [`yerror`](https://github.com/nfroidure/yerror)
+ and [`yhttperror`](https://github.com/nfroidure/yhttperror)
+ modules to throw errors with some parameters allowing you
+ to give some debugging context with raised errors.
+
+Depending on the `NODE_ENV` it adds extra informations to
+ HTTP response, beware to avoid activating it in production.
+
+[See in context](./src/services/errorHandler.ts#L15-L25)
+
+
+
+### 2.1. Errors descriptors
+
+Errors descriptors allows you to change the error
+ handler behavior selectively for each error :
+- change error codes to proper error messages templated
+ with params,
+- add URIs to help for debugging API errors
+- override the error status with the `status` property.
+- decide to pass some error parameters through with the
+ `transmittedParams` so that your end users can have some
+ more context on the error root cause.
+
+[See in context](./src/services/errorHandler.ts#L27-L38)
 
 
 
@@ -123,7 +233,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L334-L338)
+[See in context](./src/index.ts#L349-L353)
 
 
 
@@ -141,7 +251,7 @@ this service detects a free port automagically.
 Whook uses the `common-services` `resolve` service to allow
  to easily mock/decorate all ESM resolutions.
 
-[See in context](./src/index.ts#L342-L345)
+[See in context](./src/index.ts#L357-L360)
 
 
 
@@ -150,7 +260,7 @@ Whook uses the `common-services` `resolve` service to allow
 Whook uses the `common-services` `importer` service to allow
  to easily mock/decorate all ESM dynamic imports.
 
-[See in context](./src/index.ts#L348-L351)
+[See in context](./src/index.ts#L363-L366)
 
 
 
@@ -159,7 +269,7 @@ Whook uses the `common-services` `importer` service to allow
 Whook uses a built in `exit` service to allow
  to easily mock/decorate the app exit.
 
-[See in context](./src/index.ts#L354-L357)
+[See in context](./src/index.ts#L369-L372)
 
 
 
@@ -172,7 +282,7 @@ The `WHOOK_PLUGINS` constant allows you to give the name of
  you to just install Whook's plugins to get them automatically
  loaded.
 
-[See in context](./src/index.ts#L376-L383)
+[See in context](./src/index.ts#L391-L398)
 
 
 
@@ -182,7 +292,7 @@ Whook uses a built-in `logger` service to allow
  to easily route the application logs for the 
  `common-services` provided `log` service.
 
-[See in context](./src/index.ts#L360-L364)
+[See in context](./src/index.ts#L375-L379)
 
 
 
@@ -207,7 +317,7 @@ Loading the configuration files is done according to the `APP_ENV`
    environment variable. It basically requires a configuration hash
    where the keys are JSON formattable constants.
 
-[See in context](./src/index.ts#L369-L373)
+[See in context](./src/index.ts#L384-L388)
 
 
 
@@ -218,7 +328,7 @@ Whook provides a simple way to load the constants, services
  strategies. It is done by implementing the `knifecycle`
  auto loading interface.
 
-[See in context](./src/services/_autoload.ts#L63-L68)
+[See in context](./src/services/_autoload.ts#L64-L69)
 
 
 
@@ -227,7 +337,7 @@ Whook provides a simple way to load the constants, services
 First of all the autoloader looks for constants in the
  previously loaded `APP_CONFIG` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L193-L196)
+[See in context](./src/services/_autoload.ts#L192-L195)
 
 
 
@@ -237,7 +347,7 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing this during the auto
  loader initialization.
 
-[See in context](./src/services/_autoload.ts#L115-L119)
+[See in context](./src/services/_autoload.ts#L116-L120)
 
 
 
@@ -276,7 +386,7 @@ The Whook auto-loader allows you to provide the file path
  of a service per its name. It exports a `WhookInitializerMap`
  type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L40-L45)
+[See in context](./src/services/_autoload.ts#L41-L46)
 
 
 
@@ -285,7 +395,7 @@ The Whook auto-loader allows you to provide the file path
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L273-L276)
+[See in context](./src/services/_autoload.ts#L250-L253)
 
 
 
@@ -294,7 +404,7 @@ In order to be able to load a service from a given path map
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L215-L218)
+[See in context](./src/services/_autoload.ts#L207-L210)
 
 
 
@@ -303,7 +413,7 @@ Here, we build the handlers map needed by the router by injecting every
 We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
  service so that they can be dynamically applied.
 
-[See in context](./src/services/_autoload.ts#L236-L239)
+[See in context](./src/services/_autoload.ts#L226-L229)
 
 
 
@@ -312,7 +422,7 @@ We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
 Finally, we either load the handler/service/wrapper module
  if none of the previous strategies applied.
 
-[See in context](./src/services/_autoload.ts#L267-L270)
+[See in context](./src/services/_autoload.ts#L244-L247)
 
 
 
@@ -332,7 +442,129 @@ Whook auto loader can look for initializers in a list of
 
 Trying to load services from plugins/project paths.
 
-[See in context](./src/services/_autoload.ts#L287-L289)
+[See in context](./src/services/_autoload.ts#L264-L266)
+
+
+
+### 2.10. HTTP Transactions
+
+[Whook](https://github.com/nfroidure/whook) takes a very
+ unusual direction when it comes to dealing with HTTP
+ transactions.
+It makes requests and responses serializable (thanks to
+ `WhookRequest` and `WhookResponse` types) to:
+
+- only work with functions that take request and return
+ responses (allowing your handlers to be pure functions),
+- have  easily unit testable handlers thanks to concise
+ snapshots.
+
+This service is intended to build those literal objects 
+ from Node HTTP ones (famously known as req/res) before
+ passing them to the handlers. It also keeps track of
+ running queries and ensure it is well handled by the
+ server before releasing it. If not, the transaction is
+ resolved with an error response (for timeouts or when
+ an error were catched).
+
+The `httpTransaction` service creates a new transaction
+ for every single HTTP request incoming. It helps
+ ensuring each request receives a response and avoid
+ idle requests via a configurable timeout.
+
+It is also a convenient abstraction of the actual
+ request/response between the router and
+ the NodeJS world. A common need is to fake the
+ HTTP method for backward compatibility with old
+ browsers/proxies by using the
+ `X-HTTP-Method-Override` header.
+
+You can simply do this by wrapping this service. See
+ the @whook/method-override` module for a working
+ example.
+
+[See in context](./src/services/httpTransaction.ts#L160-L196)
+
+
+
+### 2.10. HTTP Server
+
+The Whook's `httpServer` service is responsible for
+ instanciating the NodeJS HTTP Server and handling its
+ start/shutdown.
+
+It can be easily replaced by any other HTTP server
+ (an HTTPS one for instance if you cannot use a
+ gateway or a proxy to handle HTTPS connections).
+
+The server takes in charge graceful shutdown by
+ awaiting connections to be closed before shutting
+ down which can take a long time (basically if a
+ browser is still maintaining an open socket with
+ it). You can short circuit this behavior, basically
+ for development, by setting the `DESTROY_SOCKETS=1`
+ environment variable.
+
+[See in context](./src/services/httpServer.ts#L58-L75)
+
+
+
+#### 2.10.1. New Transaction
+
+The idea is to maintain a hash of each pending
+ transaction. To do so, we create a transaction
+ object that contains useful informations about
+ the transaction and we store it into the
+ `TRANSACTIONS` hash.
+
+Each transaction has a unique id that is either
+ generated or picked up in the `Transaction-Id`
+ request header. This allows to trace
+ transactions end to end with that unique id.
+
+[See in context](./src/services/httpTransaction.ts#L284-L295)
+
+
+
+#### 2.10.2. Transaction start
+
+Once initiated, the transaction can be started. It
+   basically spawns a promise that will be resolved
+   to the actual response or rejected if the timeout
+   is reached.
+
+[See in context](./src/services/httpTransaction.ts#L380-L385)
+
+
+
+#### 2.10.3. Transaction errors
+
+Here we are simply logging errors.
+   It is important for debugging but also for
+   ending the transaction properly if an error
+   occurs.
+
+[See in context](./src/services/httpTransaction.ts#L407-L412)
+
+
+
+#### 2.10.4. Transaction end
+
+We end the transaction by writing the final status
+   and headers and piping the response body if any.
+
+  The transaction can till error at that time but it
+   is too late for changing the response status so
+   we are just logging the event.
+   This could be handled with
+   [HTTP trailers](https://nodejs.org/api/http.html#http_response_addtrailers_headers)
+   but the lack of client side support for now is
+   preventing us to use them.
+
+   Once terminated, the transaction is removed
+from the `TRANSACTIONS` hash.
+
+[See in context](./src/services/httpTransaction.ts#L456-L470)
 
 
 

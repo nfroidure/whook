@@ -2,12 +2,16 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import StreamTest from 'streamtest';
 import { YError } from 'yerror';
-import initHTTPTransaction from './index.js';
-import type { WhookHandler, WhookResponse } from './index.js';
-import type { WhookAPMService } from './services/apm.js';
-import type { WhookObfuscatorService } from './services/obfuscator.js';
-import type { IncomingMessage } from 'node:http';
-import type { LogService, TimeService, DelayService } from 'common-services';
+import initHTTPTransaction from './httpTransaction.js';
+import { type WhookHandler, type WhookResponse } from './httpTransaction.js';
+import { type WhookAPMService } from './apm.js';
+import { type WhookObfuscatorService } from './obfuscator.js';
+import { type IncomingMessage } from 'node:http';
+import {
+  type LogService,
+  type TimeService,
+  type DelayService,
+} from 'common-services';
 
 function streamifyBody(response) {
   return Object.assign({}, response, {

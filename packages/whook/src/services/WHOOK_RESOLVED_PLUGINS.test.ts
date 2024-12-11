@@ -4,7 +4,7 @@ import initWhookPluginsPaths, {
   type WhookResolvedPluginsDependencies,
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { YError } from 'yerror';
-import type { LogService, ResolveService } from 'common-services';
+import { type LogService, type ResolveService } from 'common-services';
 
 describe('WHOOK_RESOLVED_PLUGINS', () => {
   const MAIN_FILE_URL = 'file:///home/whoiam/project/src/index.ts';

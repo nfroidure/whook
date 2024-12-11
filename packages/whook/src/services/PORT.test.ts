@@ -1,8 +1,8 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initPORT from './PORT.js';
 import { initImporter } from 'common-services';
-import type { PortFinderModule } from './PORT.js';
-import type { LogService } from 'common-services';
+import { type PortFinderModule } from './PORT.js';
+import { type LogService } from 'common-services';
 
 describe('initPORT', () => {
   const log = jest.fn<LogService>();

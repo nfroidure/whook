@@ -2,14 +2,14 @@ import { extra, autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import { readArgs } from '../libs/args.js';
 import { noop } from '../libs/utils.js';
-import type { WhookHandler } from '@whook/http-transaction';
-import type {
-  WhookCommandDefinition,
-  WhookPromptArgs,
-  WhookCommandHandler,
+import { type WhookHandler } from '../services/httpTransaction.js';
+import {
+  type WhookCommandDefinition,
+  type WhookPromptArgs,
+  type WhookCommandHandler,
 } from '../services/promptArgs.js';
-import type { Injector, Parameters } from 'knifecycle';
-import type { LogService } from 'common-services';
+import { type Injector, type Parameters } from 'knifecycle';
+import { type LogService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {
   description: 'Runs the given server handler for testing purpose',

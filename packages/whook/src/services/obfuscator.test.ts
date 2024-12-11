@@ -7,7 +7,7 @@ import {
   expect,
 } from '@jest/globals';
 import initObfuscator from './obfuscator.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('Obfuscator Service', () => {
   const log = jest.fn<LogService>();

@@ -5,13 +5,13 @@ import {
   prepareProcess,
   prepareEnvironment,
   initGetPingDefinition,
+  initHTTPRouter,
 } from '@whook/whook';
-import initHTTPRouter from '@whook/http-router';
 import { YError } from 'yerror';
 import wrapHTTPRouterWithGraphIQL from './index.js';
-import type { WhookGraphIQLOptions } from './index.js';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { Logger } from 'common-services';
+import { type WhookGraphIQLOptions } from './index.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type Logger } from 'common-services';
 
 describe('wrapHTTPRouterWithGraphIQL', () => {
   const HOST = 'localhost';

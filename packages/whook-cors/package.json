@@ -53,7 +53,6 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@whook/http-router": "^18.0.0",
     "@whook/whook": "^18.0.3",
     "knifecycle": "^18.0.0",
     "openapi-types": "^12.1.3",

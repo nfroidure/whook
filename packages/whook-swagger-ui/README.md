@@ -33,7 +33,7 @@ registration with the `Knifecycle` instance inside the `runProcess` function
 (usually in `src/index.ts`):
 
 ```diff
-+ import initHTTPRouter from '@whook/http-router';
++ import { initHTTPRouter } from '@whook/whook';
 + import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 
 // (...)
@@ -57,10 +57,10 @@ export async function runProcess(injectedNames = [], $ = new Knifecycle()) {
 Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
-+import type {
-+   WhookSwaggerUIEnv,
-+   WhookAPIOperationSwaggerConfig,
-+   WhookSwaggerUIConfig,
++import {
++   type WhookSwaggerUIEnv,
++   type WhookAPIOperationSwaggerConfig,
++   type WhookSwaggerUIConfig,
 +} from '@whook/swagger-ui';
 
 // ...
@@ -103,7 +103,7 @@ And add the SwaggerUI config (usually in `src/config/common/config.js`):
 
 ```diff
 // ...
-import type { AppConfig } from 'application-services';
+import { type AppConfig } from 'application-services';
 
 const CONFIG: AppConfig = {
   // ...

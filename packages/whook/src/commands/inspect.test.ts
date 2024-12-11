@@ -1,9 +1,9 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initInspectCommand from './inspect.js';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type { WhookPromptArgs } from '../services/promptArgs.js';
-import type { Injector, Service } from 'knifecycle';
+import { type LogService } from 'common-services';
+import { type WhookPromptArgs } from '../services/promptArgs.js';
+import { type Injector, type Service } from 'knifecycle';
 
 describe('inspectCommand', () => {
   const SERVICES = {

@@ -51,21 +51,19 @@ import {
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
   postOAuth2TokenRefreshTokenRequestBodySchema,
+  type OAuth2Options,
+  type CheckApplicationService,
+  type OAuth2PasswordService,
+  type OAuth2CodeService,
+  type OAuth2RefreshTokenService,
+  type OAuth2AccessTokenService,
 } from './index.js';
-import type {
-  OAuth2Options,
-  CheckApplicationService,
-  OAuth2PasswordService,
-  OAuth2CodeService,
-  OAuth2RefreshTokenService,
-  OAuth2AccessTokenService,
-} from './index.js';
-import type { Knifecycle } from 'knifecycle';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { Logger } from 'common-services';
-import type {
-  AuthenticationService,
-  BaseAuthenticationData,
+import { type Knifecycle } from 'knifecycle';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type Logger } from 'common-services';
+import {
+  type AuthenticationService,
+  type BaseAuthenticationData,
 } from '@whook/authorization';
 
 type CustomAuthenticationData = BaseAuthenticationData & {

@@ -33,12 +33,12 @@ import {
   initGraphQL,
 } from './index.js';
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
-import type { WhookGraphQLFragmentService } from './index.js';
-import type { Knifecycle, Autoloader } from 'knifecycle';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { AuthenticationService } from '@whook/authorization';
-import type { WhookGraphQLContextFunction } from './index.js';
-import type { Logger, TimeService } from 'common-services';
+import { type WhookGraphQLFragmentService } from './index.js';
+import { type Knifecycle, type Autoloader } from 'knifecycle';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type AuthenticationService } from '@whook/authorization';
+import { type WhookGraphQLContextFunction } from './index.js';
+import { type Logger, type TimeService } from 'common-services';
 
 describe('GraphQL server', () => {
   const BASE_PATH = '/v1';

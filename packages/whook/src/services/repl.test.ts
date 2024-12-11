@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initREPL from './repl.js';
-import { PassThrough } from 'stream';
+import { PassThrough } from 'node:stream';
 import streamtest from 'streamtest';
 import { type LogService } from 'common-services';
 import { type Injector, type Disposer } from 'knifecycle';

@@ -1,10 +1,11 @@
 import { name, autoService, location } from 'knifecycle';
-import { noop, identity } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPIDefinitionFilter,
+import {
+  noop,
+  identity,
+  type WhookAPIDefinitionFilter,
+  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
+import { type LogService } from 'common-services';
 
 export default location(
   name('FILTER_API_DEFINITION', autoService(initFilterAPIDefinition)),

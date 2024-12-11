@@ -1,12 +1,12 @@
 import { autoHandler, location } from 'knifecycle';
-import { getOpenAPIOperations } from '@whook/http-router';
 import SwaggerParser from '@apidevtools/swagger-parser';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPIOperationConfig,
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookAPIOperationConfig,
 } from '../services/API_DEFINITIONS.js';
-import type { WhookResponse } from '@whook/http-transaction';
-import type { OpenAPIV3_1 } from 'openapi-types';
+import { type WhookResponse } from '../services/httpTransaction.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { getOpenAPIOperations } from '../libs/openapi.js';
 
 export default location(autoHandler(getOpenAPI), import.meta.url);
 

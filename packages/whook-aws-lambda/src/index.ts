@@ -6,32 +6,30 @@ import { pathToFileURL } from 'node:url';
 import { mkdirp } from 'mkdirp';
 import cpr from 'cpr';
 import { printStackTrace, YError } from 'yerror';
-import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
+import {
+  Knifecycle,
+  constant,
+  initInitializerBuilder,
+  type Autoloader,
+  type Dependencies,
+  type BuildInitializer,
+  type Initializer,
+  type Service,
+} from 'knifecycle';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initCompiler,
-} from '@whook/whook';
-import initBuildAutoloader from './services/_autoload.js';
-import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
-} from '@whook/http-router';
-import type {
-  Autoloader,
-  Dependencies,
-  BuildInitializer,
-  Initializer,
-  Service,
-} from 'knifecycle';
-import type {
-  WhookOperation,
-  WhookCompilerOptions,
-  WhookCompilerService,
+  parseArgs,
+  type WhookOperation,
+  type WhookCompilerOptions,
+  type WhookCompilerService,
 } from '@whook/whook';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { LogService } from 'common-services';
-import type { CprOptions } from 'cpr';
-import { parseArgs } from '@whook/whook/dist/libs/args.js';
+import initBuildAutoloader from './services/_autoload.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type LogService } from 'common-services';
+import { type CprOptions } from 'cpr';
 
 export type {
   LambdaConsumerInput,

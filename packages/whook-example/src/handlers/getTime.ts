@@ -1,10 +1,10 @@
 import { autoHandler } from 'knifecycle';
-import { refersTo } from '@whook/whook';
-import type {
-  WhookAPISchemaDefinition,
-  WhookAPIHandlerDefinition,
+import {
+  refersTo,
+  type WhookAPISchemaDefinition,
+  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
-import type { TimeService } from 'common-services';
+import { type TimeService } from 'common-services';
 
 export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema> =
   {

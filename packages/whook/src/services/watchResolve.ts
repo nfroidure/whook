@@ -4,7 +4,7 @@ import {
   type ResolveService,
 } from 'common-services';
 import { name, autoService, singleton, location } from 'knifecycle';
-import { WhookURL } from './WHOOK_RESOLVED_PLUGINS.js';
+import { type WhookURL } from './WHOOK_RESOLVED_PLUGINS.js';
 
 export default location(
   singleton(name('resolve', autoService(initWatchResolve))),

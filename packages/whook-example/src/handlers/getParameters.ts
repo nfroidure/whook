@@ -1,8 +1,8 @@
 import { handler } from 'knifecycle';
-import { refersTo } from '@whook/whook';
-import type {
-  WhookAPIParameterDefinition,
-  WhookAPIHandlerDefinition,
+import {
+  refersTo,
+  type WhookAPIParameterDefinition,
+  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
 
 export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam1> =

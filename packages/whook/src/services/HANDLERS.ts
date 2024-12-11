@@ -1,9 +1,9 @@
 import { service, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import { type WhookWrapper } from '../services/WRAPPERS.js';
-import { type WhookHandler } from '@whook/http-transaction';
-import { type WhookHandlersService } from '@whook/http-router';
+import { type WhookHandler } from '../services/httpTransaction.js';
 import { type LogService } from 'common-services';
+import { type WhookHandlersService } from './httpRouter.js';
 
 export const HANDLER_REG_EXP =
   /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;

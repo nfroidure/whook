@@ -8,12 +8,12 @@ import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
 import initProxyedENV from './services/PROXYED_ENV.js';
 import initBuildAutoloader from './services/_buildAutoload.js';
 import { printStackTrace } from 'yerror';
-import type { BuildInitializer } from 'knifecycle';
-import type {
-  WhookCompilerOptions,
-  WhookCompilerService,
+import { type BuildInitializer } from 'knifecycle';
+import {
+  type WhookCompilerOptions,
+  type WhookCompilerService,
 } from './services/compiler.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 import { parseArgs } from './libs/args.js';
 
 export const DEFAULT_BUILD_DIR = 'server';
@@ -27,12 +27,12 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   HOST: '@whook/whook/dist/services/HOST.js',
   WHOOK_RESOLVED_PLUGINS:
     '@whook/whook/dist/services/WHOOK_RESOLVED_PLUGINS.js',
-  httpRouter: '@whook/http-router/dist/index.js',
-  httpTransaction: '@whook/http-transaction/dist/index.js',
-  httpServer: '@whook/http-server/dist/index.js',
-  apm: '@whook/http-transaction/dist/services/apm.js',
-  obfuscator: '@whook/http-transaction/dist/services/obfuscator.js',
-  errorHandler: '@whook/http-router/dist/services/errorHandler.js',
+  httpRouter: '@whook/whook/dist/services/httpRouter.js',
+  httpTransaction: '@whook/whook/dist/services/httpTransaction.js',
+  httpServer: '@whook/whook/dist/services/httpServer.js',
+  apm: '@whook/whook/dist/services/apm.js',
+  obfuscator: '@whook/whook/dist/services/obfuscator.js',
+  errorHandler: '@whook/whook/dist/services/errorHandler.js',
   APP_CONFIG: 'application-services/dist/services/APP_CONFIG.js',
   PROJECT_DIR: 'application-services/dist/services/PROJECT_DIR.js',
   PROCESS_ENV: 'application-services/dist/services/PROCESS_ENV.js',

@@ -6,7 +6,7 @@ import { type ProviderInitializer, type Dependencies } from 'knifecycle';
 import {
   type WhookHTTPRouterProvider,
   type WhookHTTPRouterService,
-} from '@whook/http-router';
+} from '@whook/whook';
 import { type ImporterService, type LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
 import { type IncomingMessage, type ServerResponse } from 'node:http';

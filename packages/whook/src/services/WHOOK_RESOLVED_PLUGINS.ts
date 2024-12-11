@@ -2,7 +2,7 @@ import { dirname } from 'node:path';
 import { readdir as _readDir } from 'node:fs/promises';
 import { name, singleton, autoService, location } from 'knifecycle';
 import { YError, printStackTrace } from 'yerror';
-import type { ResolveService, LogService } from 'common-services';
+import { type ResolveService, type LogService } from 'common-services';
 
 /* Architecture Note #2.9.6.1: Plugins resolution
 

@@ -1,25 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
-import { DEFAULT_COMPILER_OPTIONS, noop, readArgs } from '@whook/whook';
 import { YError } from 'yerror';
-import {
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
-} from '@whook/http-router';
 import { v4 as randomUUID } from 'uuid';
 import camelCase from 'camelcase';
-import { extractOperationSecurityParameters } from '@whook/http-router';
-import type {
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCompilerOptions,
+import {
+  DEFAULT_COMPILER_OPTIONS,
+  noop,
+  readArgs,
+  extractOperationSecurityParameters,
+  dereferenceOpenAPIOperations,
+  getOpenAPIOperations,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookCompilerOptions,
 } from '@whook/whook';
-import type { AppEnvVars } from 'application-services';
-import type { LogService, TimeService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { WhookAPIOperationAWSLambdaConfig } from '../index.js';
-import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { type AppEnvVars } from 'application-services';
+import { type LogService, type TimeService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type WhookAPIOperationAWSLambdaConfig } from '../index.js';
+import {
+  type APIGatewayProxyEvent,
+  type APIGatewayProxyResult,
+} from 'aws-lambda';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing AWS HTTP lambda',

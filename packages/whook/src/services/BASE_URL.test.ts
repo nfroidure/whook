@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initBaseURL from './BASE_URL.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('initBaseURL', () => {
   const log = jest.fn<LogService>();

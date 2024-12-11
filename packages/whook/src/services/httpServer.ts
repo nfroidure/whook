@@ -4,7 +4,7 @@ import ms from 'ms';
 import { YError } from 'yerror';
 import { type Provider } from 'knifecycle';
 import { type LogService } from 'common-services';
-import { type WhookHTTPRouterService } from '@whook/http-router';
+import { type WhookHTTPRouterService } from './httpRouter.js';
 import { type Socket } from 'net';
 
 export type WhookHTTPServerEnv = {
@@ -54,6 +54,25 @@ export default location(
   name('httpServer', autoProvider(initHTTPServer)),
   import.meta.url,
 );
+
+/* Architecture Note #2.10: HTTP Server
+
+The Whook's `httpServer` service is responsible for
+ instanciating the NodeJS HTTP Server and handling its
+ start/shutdown.
+
+It can be easily replaced by any other HTTP server
+ (an HTTPS one for instance if you cannot use a
+ gateway or a proxy to handle HTTPS connections).
+
+The server takes in charge graceful shutdown by
+ awaiting connections to be closed before shutting
+ down which can take a long time (basically if a
+ browser is still maintaining an open socket with
+ it). You can short circuit this behavior, basically
+ for development, by setting the `DESTROY_SOCKETS=1`
+ environment variable.
+*/
 
 /**
  * Initialize an HTTP server

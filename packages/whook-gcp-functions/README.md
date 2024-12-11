@@ -97,10 +97,10 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
 // ...
-+ import type { WhookCompilerConfig } from '@whook/whook';
-+ import type {
-+    WhookGCPBuildConfig,
-+    WhookAPIOperationGCPFunctionConfig
++ import { type WhookCompilerConfig } from '@whook/whook';
++ import {
++    type WhookGCPBuildConfig,
++    type WhookAPIOperationGCPFunctionConfig
 + } from '@whook/gcp-functions';
 
 declare module 'application-services' {
@@ -139,7 +139,7 @@ And add the GCP Functions config (usually in `src/config/common/config.js`):
 
 ```diff
 // ...
-import type { AppConfig } from 'application-services';
+import { type AppConfig } from 'application-services';
 
 // ...
 

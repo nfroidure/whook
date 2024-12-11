@@ -3,18 +3,15 @@ import contentType from 'content-type';
 import preferredCharsets from 'negotiator/lib/charset.js';
 import preferredMediaType from 'negotiator/lib/encoding.js';
 import { YError } from 'yerror';
+import { pickFirstHeaderValue, pickAllHeaderValues } from './headers.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type Parameters } from 'knifecycle';
 import {
-  pickFirstHeaderValue,
-  pickAllHeaderValues,
-} from '@whook/http-transaction';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type {
-  WhookRequest,
-  WhookHandler,
-  WhookOperation,
-  WhookResponse,
-} from '@whook/http-transaction';
-import type { Parameters } from 'knifecycle';
+  type WhookHandler,
+  type WhookOperation,
+  type WhookRequest,
+  type WhookResponse,
+} from '../index.js';
 
 const { parse: parseContentType } = contentType;
 

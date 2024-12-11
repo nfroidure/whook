@@ -3,12 +3,12 @@ import initPostOAuth2Acknowledge from './postOAuth2Acknowledge.js';
 import { YError } from 'yerror';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters.js';
-import type { CheckApplicationService } from '../services/oAuth2Granters.js';
-import type { LogService } from 'common-services';
-import type { OAuth2GranterService } from '../services/oAuth2Granters.js';
-import type { BaseAuthenticationData } from '@whook/authorization';
-import type { OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
-import type { OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
+import { type CheckApplicationService } from '../services/oAuth2Granters.js';
+import { type LogService } from 'common-services';
+import { type OAuth2GranterService } from '../services/oAuth2Granters.js';
+import { type BaseAuthenticationData } from '@whook/authorization';
+import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
+import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
 
 type CustomAuthenticationData = BaseAuthenticationData & {
   userId: string;

@@ -52,7 +52,6 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/http-transaction": "^18.0.0",
     "@whook/whook": "^18.0.3",
     "common-services": "^17.0.1",
     "knifecycle": "^18.0.0",

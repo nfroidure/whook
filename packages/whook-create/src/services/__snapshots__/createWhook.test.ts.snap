@@ -129,9 +129,6 @@ DEV_MODE=1
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
-    "@whook/http-router": "<current_version>",
-    "@whook/http-server": "<current_version>",
-    "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.1",
@@ -144,7 +141,10 @@ DEV_MODE=1
     "strict-qs": "^8.0.3",
     "type-fest": "^4.30.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.0.0",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "<current_version>",
+    "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
@@ -435,9 +435,6 @@ DEV_MODE=1
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
-    "@whook/http-router": "<current_version>",
-    "@whook/http-server": "<current_version>",
-    "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.1",
@@ -450,7 +447,10 @@ DEV_MODE=1
     "strict-qs": "^8.0.3",
     "type-fest": "^4.30.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.0.0",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "<current_version>",
+    "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
@@ -779,9 +779,6 @@ DEV_MODE=1
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
-    "@whook/http-router": "<current_version>",
-    "@whook/http-server": "<current_version>",
-    "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.1",
@@ -794,7 +791,10 @@ DEV_MODE=1
     "strict-qs": "^8.0.3",
     "type-fest": "^4.30.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.0.0",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "<current_version>",
+    "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
@@ -1106,9 +1106,6 @@ DEV_MODE=1
     "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
-    "@whook/http-router": "<current_version>",
-    "@whook/http-server": "<current_version>",
-    "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^7.0.1",
@@ -1121,7 +1118,10 @@ DEV_MODE=1
     "strict-qs": "^8.0.3",
     "type-fest": "^4.30.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.0.0",
+    "@whook/http-router": "<current_version>",
+    "@whook/http-server": "<current_version>",
+    "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

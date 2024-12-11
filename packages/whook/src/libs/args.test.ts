@@ -2,7 +2,7 @@ import { describe, test, expect } from '@jest/globals';
 import { readArgs, parseArgs } from './args.js';
 import { definition as handlerCommandDefinition } from '../commands/handler.js';
 import { YError } from 'yerror';
-import type { WhookCommandArgs } from '../libs/args.js';
+import { type WhookCommandArgs } from '../libs/args.js';
 
 describe('parseArgs', () => {
   test('should parse args', async () => {

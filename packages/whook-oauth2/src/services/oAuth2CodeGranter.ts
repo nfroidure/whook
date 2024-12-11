@@ -1,13 +1,13 @@
 import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type {
-  OAuth2GranterService,
-  OAuth2CodeService,
-  CheckApplicationService,
+import { type LogService } from 'common-services';
+import {
+  type OAuth2GranterService,
+  type OAuth2CodeService,
+  type CheckApplicationService,
 } from './oAuth2Granters.js';
-import type { BaseAuthenticationData } from '@whook/authorization';
+import { type BaseAuthenticationData } from '@whook/authorization';
 
 export const CODE_GRANTER_TYPE = 'code';
 

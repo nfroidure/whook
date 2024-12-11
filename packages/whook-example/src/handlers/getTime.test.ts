@@ -1,6 +1,6 @@
 import { describe, it, jest, expect } from '@jest/globals';
 import initGetTime from './getTime.js';
-import type { TimeService } from 'common-services';
+import { type TimeService } from 'common-services';
 
 describe('getTime', () => {
   const time = jest.fn<TimeService>();

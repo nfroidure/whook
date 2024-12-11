@@ -1,24 +1,22 @@
 import camelCase from 'camelcase';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
-import Stream from 'stream';
-import { pickupOperationSecuritySchemes } from './openAPIUtils.js';
-import {
-  pickAllHeaderValues,
-  pickFirstHeaderValue,
-} from '@whook/http-transaction';
+import Stream from 'node:stream';
+import { pickAllHeaderValues, pickFirstHeaderValue } from './headers.js';
 import Ajv from 'ajv';
 import { parseReentrantNumber, parseBoolean } from 'strict-qs';
-import type { ValidateFunction } from 'ajv';
-import type { SupportedSecurityScheme } from './openAPIUtils.js';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type {
-  DereferencedParameterObject,
-  WhookOperation,
-  WhookHeaders,
-  DereferencedRequestBodyObject,
-} from '@whook/http-transaction';
-import type { JsonValue } from 'type-fest';
+import { type ValidateFunction } from 'ajv';
+import {
+  pickupOperationSecuritySchemes,
+  type SupportedSecurityScheme,
+} from './openapi.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type JsonValue } from 'type-fest';
+import { type WhookHeaders, type WhookOperation } from '../index.js';
+import {
+  type DereferencedParameterObject,
+  type DereferencedRequestBodyObject,
+} from '../services/httpTransaction.js';
 
 /* Architecture Note #1.1: Validators
 For performance reasons, the validators are

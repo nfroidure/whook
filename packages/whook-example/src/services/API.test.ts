@@ -8,18 +8,18 @@ import {
 } from '@jest/globals';
 import initAPI from './API.js';
 import FULL_CONFIG from '../config/test/config.js';
-import { getOpenAPIOperations } from '@whook/http-router';
 import { createRequire } from 'module';
 import {
+  getOpenAPIOperations,
   WHOOK_PROJECT_PLUGIN_NAME,
   WHOOK_DEFAULT_PLUGINS,
   initAPIDefinitions,
+  type WhookAPIHandlerModule,
 } from '@whook/whook';
 import { initImporter } from 'common-services';
 import { join } from 'node:path';
 import SwaggerParser from '@apidevtools/swagger-parser';
-import type { LogService } from 'common-services';
-import type { WhookAPIHandlerModule } from '@whook/whook';
+import { type LogService } from 'common-services';
 
 describe('API', () => {
   // TODO: Use import.meta.resolve when Jest will support it

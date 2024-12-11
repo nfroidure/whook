@@ -1,12 +1,12 @@
 import { autoHandler } from 'knifecycle';
-import { refersTo } from '@whook/whook';
 import { YHTTPError } from 'yhttperror';
-import type { LogService } from 'common-services';
-import type {
-  WhookAPISchemaDefinition,
-  WhookAPIResponseDefinition,
-  WhookAPIRequestBodyDefinition,
-  WhookAPIHandlerDefinition,
+import { type LogService } from 'common-services';
+import {
+  refersTo,
+  type WhookAPISchemaDefinition,
+  type WhookAPIResponseDefinition,
+  type WhookAPIRequestBodyDefinition,
+  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
 
 /* Architecture Note #3.1.3: Reusable schemas

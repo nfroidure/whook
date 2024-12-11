@@ -1,15 +1,15 @@
 import { YHTTPError } from 'yhttperror';
 import semverSatisfies from 'semver/functions/satisfies.js';
 import camelCase from 'camelcase';
-import { noop } from '@whook/whook';
 import { autoService } from 'knifecycle';
-import type { Parameters } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type {
-  WhookResponse,
-  WhookHandler,
-  WhookOperation,
-  WhookWrapper,
+import { type Parameters } from 'knifecycle';
+import { type LogService } from 'common-services';
+import {
+  noop,
+  type WhookResponse,
+  type WhookHandler,
+  type WhookOperation,
+  type WhookWrapper,
 } from '@whook/whook';
 
 export type VersionDescriptor = {

@@ -1,7 +1,10 @@
-import Stream from 'stream';
+import Stream from 'node:stream';
 import qs from 'qs';
-import type { JsonValue } from 'type-fest';
-import type { WhookEncoders, WhookDecoders } from '../index.js';
+import { type JsonValue } from 'type-fest';
+import {
+  type WhookDecoders,
+  type WhookEncoders,
+} from '../services/httpRouter.js';
 
 export const DEFAULT_DEBUG_NODE_ENVS = ['test', 'development'];
 export const DEFAULT_BUFFER_LIMIT = '500kB';

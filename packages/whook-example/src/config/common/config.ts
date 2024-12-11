@@ -1,8 +1,8 @@
-import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
-import { readFileSync } from 'fs';
+import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
+import { readFileSync } from 'node:fs';
 import { NodeEnv } from 'application-services';
 import { DEFAULT_SWAGGER_UI_CONFIG } from '@whook/swagger-ui';
-import type { AppConfig } from 'application-services';
+import { type AppConfig } from 'application-services';
 
 /* Architecture Note #2: Configuration
 

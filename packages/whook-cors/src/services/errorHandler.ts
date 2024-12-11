@@ -1,21 +1,21 @@
-import { initErrorHandler } from '@whook/http-router';
 import {
   wrapInitializer,
   alsoInject,
   location,
   type ServiceInitializer,
 } from 'knifecycle';
-import { noop } from '@whook/whook';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace } from 'yerror';
-import { lowerCaseHeaders } from '@whook/whook';
-import { mergeVaryHeaders } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type {
-  WhookErrorHandler,
-  WhookErrorHandlerDependencies,
-} from '@whook/http-router';
-import type { WhookCORSConfig } from '../wrappers/wrapHandlerWithCORS.js';
+import { type LogService } from 'common-services';
+import {
+  noop,
+  lowerCaseHeaders,
+  mergeVaryHeaders,
+  initErrorHandler,
+  type WhookErrorHandler,
+  type WhookErrorHandlerDependencies,
+} from '@whook/whook';
+import { type WhookCORSConfig } from '../wrappers/wrapHandlerWithCORS.js';
 
 type ErrorHandlerWrapperDependencies = WhookCORSConfig & { log?: LogService };
 

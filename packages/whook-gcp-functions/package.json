@@ -50,7 +50,6 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/cors": "^18.0.3",
-    "@whook/http-router": "^18.0.0",
     "@whook/whook": "^18.0.3",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",

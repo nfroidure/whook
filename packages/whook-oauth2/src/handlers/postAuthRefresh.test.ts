@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, jest, expect } from '@jest/globals';
 import initPostAuthRefresh from './postAuthRefresh.js';
-import type { AuthCookiesService } from '../services/authCookies.js';
+import { type AuthCookiesService } from '../services/authCookies.js';
 
 describe('postAuthRefresh', () => {
   test('should work', async () => {

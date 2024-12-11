@@ -1,16 +1,16 @@
 import { autoHandler, location } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import { setURLError } from './getOAuth2Authorize.js';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookErrorsDescriptors,
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookErrorsDescriptors,
 } from '@whook/whook';
-import type {
-  CheckApplicationService,
-  OAuth2GranterService,
+import {
+  type CheckApplicationService,
+  type OAuth2GranterService,
 } from '../services/oAuth2Granters.js';
-import type { LogService } from 'common-services';
-import type { BaseAuthenticationData } from '@whook/authorization';
+import { type LogService } from 'common-services';
+import { type BaseAuthenticationData } from '@whook/authorization';
 
 /* Architecture Note #2: OAuth2 acknowledge
 This endpoint is to be used by the authentication SSR frontend

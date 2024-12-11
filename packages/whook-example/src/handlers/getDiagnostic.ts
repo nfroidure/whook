@@ -1,8 +1,8 @@
-import { refersTo } from '@whook/whook';
 import { autoHandler } from 'knifecycle';
-import type {
-  WhookAPIResponseDefinition,
-  WhookAPIHandlerDefinition,
+import {
+  refersTo,
+  type WhookAPIResponseDefinition,
+  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
 
 export const diagnosticResponse: WhookAPIResponseDefinition = {

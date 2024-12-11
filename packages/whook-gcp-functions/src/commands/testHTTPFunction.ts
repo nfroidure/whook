@@ -1,20 +1,19 @@
 import { loadFunction } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { YError } from 'yerror';
+import stream from 'node:stream';
+import camelCase from 'camelcase';
 import {
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
-} from '@whook/http-router';
-import stream from 'stream';
-import camelCase from 'camelcase';
-import { DEFAULT_COMPILER_OPTIONS, readArgs } from '@whook/whook';
-import type {
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCompilerOptions,
+  DEFAULT_COMPILER_OPTIONS,
+  readArgs,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookCompilerOptions,
 } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
+import { type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';

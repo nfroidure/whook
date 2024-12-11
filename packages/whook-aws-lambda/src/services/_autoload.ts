@@ -1,17 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { initBuildAutoload, noop, cleanupOpenAPI } from '@whook/whook';
 import {
   Knifecycle,
   wrapInitializer,
   constant,
   alsoInject,
   location,
+  type Injector,
+  type Autoloader,
+  type Initializer,
+  type Dependencies,
+  type Service,
+  type ServiceInitializerWrapper,
 } from 'knifecycle';
 import { YError } from 'yerror';
 import {
+  initBuildAutoload,
+  noop,
+  cleanupOpenAPI,
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
-} from '@whook/http-router';
+  type WhookBuildConstantsService,
+  type WhookRawOperation,
+} from '@whook/whook';
 import initHandler from './HANDLER.js';
 import initWrapHandlerForAWSConsumerLambda from '../wrappers/awsConsumerLambda.js';
 import initWrapHandlerForAWSHTTPLambda from '../wrappers/awsHTTPLambda.js';
@@ -20,21 +30,11 @@ import initWrapHandlerForAWSTransformerLambda from '../wrappers/awsTransformerLa
 import initWrapHandlerForAWSCronLambda from '../wrappers/awsCronLambda.js';
 import initWrapHandlerForAWSKafkaConsumerLambda from '../wrappers/awsKafkaConsumerLambda.js';
 import initWrapHandlerForAWSS3Lambda from '../wrappers/awsS3Lambda.js';
-import type { WhookBuildConstantsService } from '@whook/whook';
-import type { WhookRawOperation } from '@whook/http-router';
-import type {
-  Injector,
-  Autoloader,
-  Initializer,
-  Dependencies,
-  Service,
-  ServiceInitializerWrapper,
-} from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type {
-  WhookAPIOperationAWSLambdaConfig,
-  WhookAWSLambdaConfiguration,
+import { type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  type WhookAPIOperationAWSLambdaConfig,
+  type WhookAWSLambdaConfiguration,
 } from '../index.js';
 
 export type WhookAWSLambdaAutoloadDependencies = {
@@ -85,10 +85,7 @@ const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
   Dependencies
 > = (async (
-  {
-    $injector,
-    log = noop,
-  }: WhookAWSLambdaAutoloadDependencies,
+  { $injector, log = noop }: WhookAWSLambdaAutoloadDependencies,
   $autoload: Autoloader<Initializer<Dependencies, Service>>,
 ): Promise<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>

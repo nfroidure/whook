@@ -2,7 +2,7 @@ import { autoService } from 'knifecycle';
 import _inquirer from 'inquirer';
 import { printStackTrace, YError } from 'yerror';
 import { exec as _exec } from 'child_process';
-import type { LockService, LogService } from 'common-services';
+import { type LockService, type LogService } from 'common-services';
 
 export interface AuthorService {
   name: string;

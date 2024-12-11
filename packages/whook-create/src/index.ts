@@ -12,8 +12,8 @@ import initAuthor from './services/author.js';
 import initProject from './services/project.js';
 import initCreateWhook from './services/createWhook.js';
 import { printStackTrace } from 'yerror';
-import type { CreateWhookService } from './services/createWhook.js';
-import type { Logger } from 'common-services';
+import { type CreateWhookService } from './services/createWhook.js';
+import { type Logger } from 'common-services';
 
 const {
   writeFile: _writeFile,

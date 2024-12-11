@@ -4,10 +4,10 @@ import initGetOAuth2Authorize from './getOAuth2Authorize.js';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters.js';
 import { YError } from 'yerror';
-import type { OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
-import type { OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
-import type { LogService } from 'common-services';
-import type { OAuth2Options, OAuth2GranterService } from '../index.js';
+import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
+import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
+import { type LogService } from 'common-services';
+import { type OAuth2Options, type OAuth2GranterService } from '../index.js';
 
 describe('getOAuth2Authorize', () => {
   const OAUTH2: OAuth2Options = {

@@ -1,12 +1,16 @@
-import { wrapInitializer, alsoInject } from 'knifecycle';
-import { pickFirstHeaderValue } from '@whook/http-transaction';
-import type { ServiceInitializer, Dependencies } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type {
-  WhookHTTPTransaction,
-  WhookHTTPTransactionService,
-} from '@whook/http-transaction';
-import type { ServerResponse, IncomingMessage } from 'node:http';
+import {
+  wrapInitializer,
+  alsoInject,
+  type ServiceInitializer,
+  Dependencies,
+} from 'knifecycle';
+import { type LogService } from 'common-services';
+import {
+  pickFirstHeaderValue,
+  type WhookHTTPTransaction,
+  type WhookHTTPTransactionService,
+} from '@whook/whook';
+import { type ServerResponse, type IncomingMessage } from 'node:http';
 
 /**
  * Wrap the Whook transaction service to handle method

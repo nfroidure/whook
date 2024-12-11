@@ -1,19 +1,19 @@
 import { autoHandler, location } from 'knifecycle';
 import camelCase from 'camelcase';
 import { YError, printStackTrace } from 'yerror';
-import { refersTo } from '@whook/whook';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPIParameterDefinition,
-  WhookResponse,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
+import {
+  refersTo,
+  type WhookAPIHandlerDefinition,
+  type WhookAPIParameterDefinition,
+  type WhookResponse,
+  type WhookErrorsDescriptors,
+  type WhookErrorDescriptor,
 } from '@whook/whook';
-import type {
-  OAuth2Options,
-  OAuth2GranterService,
+import {
+  type OAuth2Options,
+  type OAuth2GranterService,
 } from '../services/oAuth2Granters.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 /* Architecture Note #1: OAuth2 authorize
 This endpoint simply redirect the user to the authentication

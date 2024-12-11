@@ -1,7 +1,10 @@
 import { initializer, location } from 'knifecycle';
-import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
-import type { WhookErrorsDescriptors } from '@whook/whook';
-import type { BaseAuthenticationData } from '@whook/authorization';
+import {
+  DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
+  type WhookErrorsDescriptors,
+} from '@whook/whook';
+import { type BaseAuthenticationData } from '@whook/authorization';
 
 export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_UNKNOWN_AUTHORIZER_TYPE: {

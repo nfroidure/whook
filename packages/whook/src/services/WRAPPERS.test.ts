@@ -2,7 +2,7 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initWrappers from './WRAPPERS.js';
 import { identity } from '../libs/utils.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('initWrappers', () => {
   const log = jest.fn<LogService>();

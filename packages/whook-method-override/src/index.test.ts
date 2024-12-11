@@ -8,8 +8,8 @@ import {
   expect,
 } from '@jest/globals';
 import wrapHTTPTransactionWithMethodOverride from './index.js';
-import initHTTPTransaction from '@whook/http-transaction';
 import {
+  initHTTPTransaction,
   runProcess,
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
@@ -18,9 +18,9 @@ import {
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import { YError } from 'yerror';
-import type { Knifecycle } from 'knifecycle';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { Logger } from 'common-services';
+import { type Knifecycle } from 'knifecycle';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type Logger } from 'common-services';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
   const BASE_PATH = '/v1';

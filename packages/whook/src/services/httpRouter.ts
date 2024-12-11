@@ -1,5 +1,5 @@
 import bytes from 'bytes';
-import Stream from 'stream';
+import Stream from 'node:stream';
 import { initializer, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace, YError } from 'yerror';
@@ -7,24 +7,21 @@ import { Siso } from 'siso';
 import Ajv from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import { qsStrict as strictQs } from 'strict-qs';
-import { pickFirstHeaderValue } from '@whook/http-transaction';
+import { pickFirstHeaderValue } from '../libs/headers.js';
 import {
-  OPEN_API_METHODS,
   getOpenAPIOperations,
   dereferenceOpenAPIOperations,
-} from './libs/openAPIUtils.js';
+} from '../libs/openapi.js';
 import {
   prepareParametersValidators,
   applyValidators,
   filterHeaders,
   prepareBodyValidator,
   extractOperationSecurityParameters,
-  castSchemaValue,
   castParameters,
-} from './libs/validation.js';
+} from '../libs/validation.js';
 import {
   type WhookBodySpec,
-  type WhookResponseSpec,
   extractBodySpec,
   extractResponseSpec,
   checkResponseCharset,
@@ -32,14 +29,8 @@ import {
   executeHandler,
   extractProduceableMediaTypes,
   extractConsumableMediaTypes,
-} from './libs/utils.js';
-import { getBody, sendBody } from './libs/body.js';
-import initErrorHandler, {
-  DEFAULT_ERROR_URI,
-  DEFAULT_HELP_URI,
-  DEFAULT_ERRORS_DESCRIPTORS,
-  DEFAULT_DEFAULT_ERROR_CODE,
-} from './services/errorHandler.js';
+} from '../libs/router.js';
+import { getBody, sendBody } from '../libs/body.js';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -47,34 +38,24 @@ import {
   DEFAULT_STRINGIFYERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
-} from './libs/constants.js';
-import type {
-  WhookRawOperation,
-  SupportedSecurityScheme,
-} from './libs/openAPIUtils.js';
-import type { JsonValue } from 'type-fest';
-import type { QSParameter } from 'strict-qs';
-import type { Provider } from 'knifecycle';
-import type { Transform, Readable } from 'stream';
-import type {
-  WhookHandler,
-  WhookOperation,
-  WhookHTTPTransactionService,
-  DereferencedParameterObject,
-  WhookResponse,
-} from '@whook/http-transaction';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { LogService } from 'common-services';
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import type {
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
-  WhookErrorHandlerConfig,
-  WhookErrorHandlerDependencies,
-  WhookErrorHandler,
-} from './services/errorHandler.js';
-import type { ValidateFunction } from 'ajv';
-import type { AppEnvVars } from 'application-services';
+} from '../libs/constants.js';
+import { type JsonValue } from 'type-fest';
+import { type QSParameter } from 'strict-qs';
+import { type Provider } from 'knifecycle';
+import { type Transform, Readable } from 'node:stream';
+import {
+  type WhookHandler,
+  type WhookOperation,
+  type WhookHTTPTransactionService,
+  type DereferencedParameterObject,
+  type WhookResponse,
+} from './httpTransaction.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type LogService } from 'common-services';
+import { type IncomingMessage, ServerResponse } from 'node:http';
+import { type WhookErrorHandler } from '../services/errorHandler.js';
+import { type ValidateFunction } from 'ajv';
+import { type AppEnvVars } from 'application-services';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';
@@ -85,50 +66,6 @@ function noop() {
 function identity<T>(x: T): T {
   return x;
 }
-
-export type {
-  WhookErrorHandler,
-  WhookErrorHandlerDependencies,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
-  WhookErrorHandlerConfig,
-  WhookBodySpec,
-  WhookResponseSpec,
-  WhookRawOperation,
-  SupportedSecurityScheme,
-};
-export {
-  OPEN_API_METHODS,
-  DEFAULT_DEBUG_NODE_ENVS,
-  DEFAULT_BUFFER_LIMIT,
-  DEFAULT_PARSERS,
-  DEFAULT_STRINGIFYERS,
-  DEFAULT_DECODERS,
-  DEFAULT_ENCODERS,
-  initErrorHandler,
-  DEFAULT_ERROR_URI,
-  DEFAULT_HELP_URI,
-  DEFAULT_ERRORS_DESCRIPTORS,
-  DEFAULT_DEFAULT_ERROR_CODE,
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
-  extractOperationSecurityParameters,
-  castSchemaValue,
-  castParameters,
-  prepareParametersValidators,
-  prepareBodyValidator,
-  applyValidators,
-  filterHeaders,
-  extractBodySpec,
-  extractResponseSpec,
-  checkResponseCharset,
-  checkResponseMediaType,
-  executeHandler,
-  extractProduceableMediaTypes,
-  extractConsumableMediaTypes,
-  getBody,
-  sendBody,
-};
 
 export type WhookQueryStringParser = (
   definitions: Parameters<typeof strictQs>[1],
@@ -198,11 +135,22 @@ type RouteDescriptor = {
 };
 
 /* Architecture Note #1: HTTP Router
+
+The Whook's `httpRouter` service  is responsible
+ for wiring routes definitions to their actual
+ implementation while filtering inputs and ensuring
+ good outputs.
+
+This is the default implementation of the Framework
+ but it can be replaced or customized by setting your
+ own configurations to replace the default ones
+ (see the [API section](#API)).
+
 The `httpRouter` service is responsible for handling
  the request, validating it and wiring the handlers
  response to the actual HTTP response.
 
-It is very opiniated and clearly diverges from the
+It is very opinionated and clearly diverges from the
  current standards based on a middlewares/plugins
  approach.
 

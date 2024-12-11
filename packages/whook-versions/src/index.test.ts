@@ -8,7 +8,7 @@ import { initGetPing, initGetPingDefinition } from '@whook/whook';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
 import { NodeEnv } from 'application-services';
-import type { AppEnvVars } from 'application-services';
+import { type AppEnvVars } from 'application-services';
 
 const VERSIONS = [
   {

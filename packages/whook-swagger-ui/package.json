@@ -69,7 +69,6 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@types/swagger-ui": "3.52.4",
-    "@whook/http-router": "^18.0.0",
     "@whook/whook": "^18.0.3",
     "axios": "^1.7.9",
     "ecstatic": "^4.1.4",

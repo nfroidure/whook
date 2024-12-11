@@ -4,8 +4,8 @@ import initEnvCommand, {
   definition as initEnvCommandDefinition,
 } from './env.js';
 import { YError } from 'yerror';
-import type { ImporterService, LogService } from 'common-services';
-import type { WhookPromptArgs } from '../services/promptArgs.js';
+import { type ImporterService, type LogService } from 'common-services';
+import { type WhookPromptArgs } from '../services/promptArgs.js';
 import {
   WHOOK_PROJECT_PLUGIN_NAME,
   type WhookResolvedPluginsService,

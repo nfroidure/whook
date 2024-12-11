@@ -1,9 +1,12 @@
 import camelCase from 'camelcase';
-import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
 import initWrapHandlerWithVersionChecker from './wrappers/wrapHandlerWithVersionChecker.js';
-import type { WhookErrorsDescriptors } from '@whook/whook';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { VersionDescriptor } from './wrappers/wrapHandlerWithVersionChecker.js';
+import {
+  DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
+  type WhookErrorsDescriptors,
+} from '@whook/whook';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type VersionDescriptor } from './wrappers/wrapHandlerWithVersionChecker.js';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_DEPRECATED_VERSION: {

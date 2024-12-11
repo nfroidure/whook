@@ -21,19 +21,18 @@ import {
   initProcessEnv,
   initProjectDir,
 } from 'application-services';
-import initHTTPRouter, { initErrorHandler } from '@whook/http-router';
+import initHTTPRouter from './services/httpRouter.js';
+import initErrorHandler from './services/errorHandler.js';
+import initHTTPTransaction from './services/httpTransaction.js';
+import initObfuscatorService from './services/obfuscator.js';
+import initAPMService from './services/apm.js';
 export {
-  OPEN_API_METHODS,
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
   DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_DEFAULT_ERROR_CODE,
-} from '@whook/http-router';
-import initHTTPTransaction, {
-  initObfuscatorService,
-  initAPMService,
-} from '@whook/http-transaction';
-import initHTTPServer from '@whook/http-server';
+} from './services/errorHandler.js';
+import initHTTPServer from './services/httpServer.js';
 import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
 import initProxyedENV from './services/PROXYED_ENV.js';
@@ -62,11 +61,19 @@ import {
   prepareBuildEnvironment,
   runBuild,
 } from './build.js';
-import { parseArgs, readArgs } from './libs/args.js';
+import { identity } from './libs/utils.js';
+import { parseArgs } from './libs/args.js';
 
-export type { WhookBaseEnv, WhookBaseConfigs } from './types.js';
+export { type WhookBaseEnv, type WhookBaseConfigs } from './types.js';
 export { DEFAULT_BUILD_INITIALIZER_PATH_MAP } from './build.js';
-export type { WhookArgsTypes, WhookCommandArgs } from './libs/args.js';
+export * from './libs/args.js';
+export * from './libs/body.js';
+export * from './libs/constants.js';
+export * from './libs/headers.js';
+export * from './libs/openapi.js';
+export * from './libs/router.js';
+export * from './libs/utils.js';
+export * from './libs/validation.js';
 export type {
   WhookCommandHandler,
   WhookCommandDefinition,
@@ -80,7 +87,7 @@ export type {
   WhookHTTPServerDependencies,
   WhookHTTPServerService,
   WhookHTTPServerProvider,
-} from '@whook/http-server';
+} from './services/httpServer.js';
 export type { WhookHost, WhookHostEnv } from './services/HOST.js';
 export type { WhookProxyedENVConfig } from './services/PROXYED_ENV.js';
 export type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS.js';
@@ -114,32 +121,48 @@ export type {
   ProcessEnvConfig,
   ProcessServiceConfig,
 } from 'application-services';
+export { initHTTPRouter };
+export {
+  type WhookHandlerName,
+  type WhookHandlersService,
+  type WhookQueryStringParser,
+  type WhookHTTPRouterConfig,
+  type WhookHTTPRouterProvider,
+  type WhookHTTPRouterService,
+} from './services/httpRouter.js';
+export { initHTTPTransaction };
+export {
+  type WhookOperation,
+  type WhookHeaders,
+  type WhookRequest,
+  type WhookResponse,
+  type WhookHandlerFunction,
+  type WhookHandler,
+  type WhookHTTPTransaction,
+  type WhookHTTPTransactionConfig,
+  type HTTPTransactionDependencies,
+  type WhookHTTPTransactionService,
+  type DereferencedParameterObject,
+  type DereferencedRequestBodyObject,
+} from './services/httpTransaction.js';
 export type {
-  WhookErrorHandler,
-  WhookErrorHandlerDependencies,
-  WhookErrorsDescriptors,
-  WhookErrorDescriptor,
-  WhookErrorHandlerConfig,
-  WhookHandlerName,
-  WhookHandlersService,
-  WhookQueryStringParser,
-  WhookHTTPRouterConfig,
-  WhookHTTPRouterProvider,
-  WhookHTTPRouterService,
-} from '@whook/http-router';
-export type {
-  WhookOperation,
-  WhookRequest,
-  WhookHeaders,
-  WhookResponse,
-  WhookHandler,
-  WhookHandlerFunction,
-  WhookHTTPTransactionConfig,
-  WhookHTTPTransactionService,
-  WhookObfuscatorConfig,
+  WhookObfuscatorDependencies,
+  WhookSensibleValueDescriptor,
   WhookObfuscatorService,
-  WhookAPMService,
-} from '@whook/http-transaction';
+  WhookObfuscatorConfig,
+} from './services/obfuscator.js';
+export { initObfuscatorService };
+export type { WhookAPMDependencies, WhookAPMService } from './services/apm.js';
+export { initAPMService };
+export {
+  type WhookErrorsDescriptors,
+  type WhookErrorDescriptor,
+  type WhookErrorHandlerConfig,
+  type WhookErrorHandlerDependencies,
+  type WhookErrorHandler,
+} from './services/errorHandler.js';
+export { initErrorHandler };
+
 export type {
   WhookBaseURL,
   WhookBaseURLConfig,
@@ -164,20 +187,11 @@ export {
   type WhookWrappersDependencies,
 } from './services/WRAPPERS.js';
 import initHandlers from './services/HANDLERS.js';
-import { identity } from './libs/utils.js';
 export {
   HANDLER_REG_EXP,
   applyWrappers,
   type WhookHandlersDependencies,
 } from './services/HANDLERS.js';
-export {
-  COMPONENTS_TYPES,
-  cleanupOpenAPI,
-  collectRefs,
-  refersTo,
-} from './libs/openapi.js';
-export { mergeVaryHeaders, lowerCaseHeaders } from './libs/headers.js';
-export { noop, identity, compose, pipe } from './libs/utils.js';
 export {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
@@ -196,7 +210,6 @@ export {
   initHandlers,
   prepareBuildEnvironment,
   runBuild,
-  readArgs,
 };
 
 /* Architecture Note #1: Main file

@@ -6,7 +6,10 @@ import {
   type ServiceInitializer,
 } from 'knifecycle';
 import { noop, type LogService } from 'common-services';
-import type { AppEnvVars, ProcessEnvDependencies } from 'application-services';
+import {
+  type AppEnvVars,
+  type ProcessEnvDependencies,
+} from 'application-services';
 
 export type WhookProxyedENVConfig = {
   PROXYED_ENV_VARS?: string[];

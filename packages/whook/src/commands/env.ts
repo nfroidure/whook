@@ -2,12 +2,12 @@ import { extra, autoService } from 'knifecycle';
 import { readArgs } from '../libs/args.js';
 import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
-import type {
-  WhookCommandDefinition,
-  WhookPromptArgs,
+import {
+  type WhookCommandDefinition,
+  type WhookPromptArgs,
 } from '../services/promptArgs.js';
-import type { AppEnvVars } from 'application-services';
-import type { LogService } from 'common-services';
+import { type AppEnvVars } from 'application-services';
+import { type LogService } from 'common-services';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command printing env values',

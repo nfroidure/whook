@@ -2,8 +2,8 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initEnvCommand from './env.js';
 import { YError } from 'yerror';
 import { NodeEnv } from 'application-services';
-import type { LogService } from 'common-services';
-import type { WhookPromptArgs } from '../services/promptArgs.js';
+import { type LogService } from 'common-services';
+import { type WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('envCommand', () => {
   const promptArgs = jest.fn<WhookPromptArgs>();

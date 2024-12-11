@@ -6,10 +6,14 @@ import {
   buildWWWAuthenticateHeader,
   BEARER as BEARER_MECHANISM,
 } from 'http-auth-utils';
-import type { Mechanism } from 'http-auth-utils';
-import type { Parameters } from 'knifecycle';
-import type { WhookHandler, WhookWrapper, WhookOperation } from '@whook/whook';
-import type { LogService } from 'common-services';
+import { type Mechanism } from 'http-auth-utils';
+import { type Parameters } from 'knifecycle';
+import {
+  type WhookHandler,
+  type WhookWrapper,
+  type WhookOperation,
+} from '@whook/whook';
+import { type LogService } from 'common-services';
 
 export type AuthenticationApplicationId = string;
 export type AuthenticationScope = string;

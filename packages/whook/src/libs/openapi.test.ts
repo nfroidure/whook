@@ -1,7 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
 import { collectRefs, cleanupOpenAPI } from './openapi.js';
-import type { JsonObject, JsonValue } from 'type-fest';
-import type { OpenAPIV3_1 } from 'openapi-types';
+import { type JsonObject, type JsonValue } from 'type-fest';
+import { type OpenAPIV3_1 } from 'openapi-types';
 
 const sampleAPI: OpenAPIV3_1.Document = {
   openapi: '3.1.0',

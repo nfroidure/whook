@@ -46,8 +46,6 @@
     "@types/aws-lambda": "^8.10.146",
     "@types/bytes": "^3.1.4",
     "@whook/cors": "^18.0.3",
-    "@whook/http-router": "^18.0.0",
-    "@whook/http-transaction": "^18.0.0",
     "@whook/whook": "^18.0.3",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",

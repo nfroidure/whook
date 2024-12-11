@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals';
 import initAuthCookies from './authCookies.js';
-import type { AuthCookiesConfig } from './authCookies.js';
+import { type AuthCookiesConfig } from './authCookies.js';
 
 describe('authCookies', () => {
   describe('.build()', () => {

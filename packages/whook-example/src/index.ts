@@ -27,8 +27,8 @@ import {
   prepareEnvironment as prepareBaseEnvironment,
   initAutoload,
   initAPIDefinitions,
+  initHTTPRouter,
 } from '@whook/whook';
-import initHTTPRouter from '@whook/http-router';
 import { initErrorHandlerWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv, initTimeMock } from 'application-services';

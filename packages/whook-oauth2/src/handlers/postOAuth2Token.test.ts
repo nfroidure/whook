@@ -1,16 +1,16 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initPostOAuth2Token from './postOAuth2Token.js';
 import { YError } from 'yerror';
-import type { LogService, TimeService } from 'common-services';
-import type {
-  OAuth2GranterService,
-  OAuth2AccessTokenService,
-  OAuth2RefreshTokenService,
+import { type LogService, type TimeService } from 'common-services';
+import {
+  type OAuth2GranterService,
+  type OAuth2AccessTokenService,
+  type OAuth2RefreshTokenService,
 } from '../index.js';
-import type { OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
-import type { OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
-import type { OAuth2PasswordGranterService } from '../services/oAuth2PasswordGranter.js';
-import type { OAuth2RefreshTokenGranterService } from '../services/oAuth2RefreshTokenGranter.js';
+import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
+import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
+import { type OAuth2PasswordGranterService } from '../services/oAuth2PasswordGranter.js';
+import { type OAuth2RefreshTokenGranterService } from '../services/oAuth2RefreshTokenGranter.js';
 
 describe('postOAuth2Token', () => {
   const log = jest.fn<LogService>();

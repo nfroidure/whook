@@ -31,9 +31,9 @@ npm i @whook/graphiql
 Update the types (usually in `src/whook.d.ts`):
 
 ```diff
-+import type {
-+   WhookGraphIQLEnv,
-+   WhookGraphIQLConfig,
++import {
++   type WhookGraphIQLEnv,
++   type WhookGraphIQLConfig,
 +} from '@whook/graphiql';
 
 // ...
@@ -65,7 +65,7 @@ Then, just wrap the HTTP router with this module and register it again with the
 `src/index.ts`):
 
 ```diff
-+ import initHTTPRouter from '@whook/http-router';
++ import { initHTTPRouter } from '@whook/whook';
 + import wrapHTTPRouterWithGraphIQL from '@whook/graphiql';
 
 // (...)

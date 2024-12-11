@@ -1,19 +1,21 @@
 import { YHTTPError } from 'yhttperror';
 import FirstChunkStream from 'first-chunk-stream';
-import Stream from 'stream';
 import { YError } from 'yerror';
-import { pickFirstHeaderValue } from '@whook/http-transaction';
-import type { WhookOperation, WhookResponse } from '@whook/http-transaction';
-import type { WhookBodySpec } from './utils.js';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { JsonValue } from 'type-fest';
-import type {
-  WhookEncoders,
-  WhookParsers,
-  WhookDecoders,
-  WhookStringifyers,
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type JsonValue } from 'type-fest';
+import { pickFirstHeaderValue } from './headers.js';
+import { Readable, type Transform } from 'node:stream';
+import {
+  type WhookDecoders,
+  type WhookEncoders,
+  type WhookParsers,
+  type WhookStringifyers,
+} from '../services/httpRouter.js';
+import {
+  type WhookBodySpec,
+  type WhookOperation,
+  type WhookResponse,
 } from '../index.js';
-import type { Transform, Readable } from 'stream';
 
 /* Architecture Note #1.1: Request body
 According to the OpenAPI specification
@@ -154,7 +156,7 @@ export async function sendBody(
     return response;
   }
 
-  if (response.body instanceof Stream) {
+  if (response.body instanceof Readable) {
     return response;
   }
 

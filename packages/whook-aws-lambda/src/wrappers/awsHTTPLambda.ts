@@ -1,3 +1,9 @@
+import { autoService } from 'knifecycle';
+import Ajv from 'ajv';
+import addAJVFormats from 'ajv-formats';
+import bytes from 'bytes';
+import { YHTTPError } from 'yhttperror';
+import { printStackTrace, YError } from 'yerror';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -7,14 +13,6 @@ import {
   DEFAULT_ENCODERS,
   extractOperationSecurityParameters,
   castParameters,
-} from '@whook/http-router';
-import { autoService } from 'knifecycle';
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
-import bytes from 'bytes';
-import { YHTTPError } from 'yhttperror';
-import { printStackTrace, YError } from 'yerror';
-import {
   prepareParametersValidators,
   prepareBodyValidator,
   applyValidators,
@@ -28,30 +26,30 @@ import {
   extractConsumableMediaTypes,
   getBody,
   sendBody,
-} from '@whook/http-router';
-import stream from 'stream';
-import qs from 'qs';
-import { noop, lowerCaseHeaders } from '@whook/whook';
-import type { Parameters } from 'knifecycle';
-import type {
-  WhookRequest,
-  WhookResponse,
-  WhookHandler,
-  WhookObfuscatorService,
-  WhookOperation,
-  WhookAPMService,
-  WhookWrapper,
-} from '@whook/whook';
-import type { TimeService, LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { Readable } from 'stream';
-import {
-  type DereferencedParameterObject,
   pickAllHeaderValues,
-} from '@whook/http-transaction';
-import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import type { WhookErrorHandler } from '@whook/http-router';
-import type { AppEnvVars } from 'application-services';
+  noop,
+  lowerCaseHeaders,
+  type WhookRequest,
+  type WhookResponse,
+  type WhookHandler,
+  type WhookObfuscatorService,
+  type WhookOperation,
+  type WhookAPMService,
+  type DereferencedParameterObject,
+  type WhookWrapper,
+  type WhookErrorHandler,
+} from '@whook/whook';
+import stream from 'node:stream';
+import qs from 'qs';
+import { type Parameters } from 'knifecycle';
+import { type TimeService, type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type Readable } from 'node:stream';
+import {
+  type APIGatewayProxyEvent,
+  type APIGatewayProxyResult,
+} from 'aws-lambda';
+import { type AppEnvVars } from 'application-services';
 
 export type LambdaHTTPInput = Parameters;
 export type LambdaHTTPOutput = WhookResponse;

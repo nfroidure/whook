@@ -2,26 +2,24 @@ import { service, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import statuses from 'statuses';
 import ms from 'ms';
-import initObfuscatorService, {
-  type WhookObfuscatorService,
-} from './services/obfuscator.js';
-import initAPMService, { type WhookAPMService } from './services/apm.js';
+import { type WhookObfuscatorService } from './obfuscator.js';
+import { type WhookAPMService } from './apm.js';
 import { printStackTrace, YError } from 'yerror';
-import type { Parameters, HandlerFunction, Dependencies } from 'knifecycle';
-import type { LogService, TimeService, DelayService } from 'common-services';
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { JsonValue } from 'type-fest';
-import type { Readable } from 'stream';
-export type {
-  WhookObfuscatorDependencies,
-  WhookSensibleValueDescriptor,
-  WhookObfuscatorService,
-  WhookObfuscatorConfig,
-} from './services/obfuscator.js';
-export type { WhookAPMDependencies, WhookAPMService } from './services/apm.js';
-
-export { initObfuscatorService, initAPMService };
+import {
+  type Parameters,
+  type HandlerFunction,
+  type Dependencies,
+} from 'knifecycle';
+import {
+  type LogService,
+  type TimeService,
+  type DelayService,
+} from 'common-services';
+import { type IncomingMessage, type ServerResponse } from 'node:http';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type JsonValue } from 'type-fest';
+import { type Readable } from 'node:stream';
+import { pickFirstHeaderValue } from '../libs/headers.js';
 
 export type DereferencedMediaTypeObject = Omit<
   OpenAPIV3_1.MediaTypeObject,
@@ -159,7 +157,26 @@ function createIncrementor(n = 0) {
   };
 }
 
-/* Architecture Note #1: HTTP Transactions
+/* Architecture Note #2.10: HTTP Transactions
+
+[Whook](https://github.com/nfroidure/whook) takes a very
+ unusual direction when it comes to dealing with HTTP
+ transactions.
+It makes requests and responses serializable (thanks to
+ `WhookRequest` and `WhookResponse` types) to:
+
+- only work with functions that take request and return
+ responses (allowing your handlers to be pure functions),
+- have  easily unit testable handlers thanks to concise
+ snapshots.
+
+This service is intended to build those literal objects 
+ from Node HTTP ones (famously known as req/res) before
+ passing them to the handlers. It also keeps track of
+ running queries and ensure it is well handled by the
+ server before releasing it. If not, the transaction is
+ resolved with an error response (for timeouts or when
+ an error were catched).
 
 The `httpTransaction` service creates a new transaction
  for every single HTTP request incoming. It helps
@@ -174,8 +191,8 @@ It is also a convenient abstraction of the actual
  `X-HTTP-Method-Override` header.
 
 You can simply do this by wrapping this service. See
- [`@whook/method-override`](../whook-method-override/README.md)
- for a working example.
+ the @whook/method-override` module for a working
+ example.
  */
 export default location(
   service(initHTTPTransaction, 'httpTransaction', [
@@ -216,7 +233,7 @@ export default location(
  * @return {Promise<WhookHTTPTransaction>}
  * A promise of the httpTransaction function
  * @example
- * import initHTTPTransaction from '@whook/http-transaction';
+ * import initHTTPTransaction from '@whook/whook';
  * import { log } from 'node:console';
  *
  * const httpTransaction = await initHTTPTransaction({
@@ -264,7 +281,7 @@ async function initHTTPTransaction({
   ): Promise<WhookHTTPTransaction> {
     let initializationPromise;
 
-    /* Architecture Note #1.1: New Transaction
+    /* Architecture Note #2.10.1: New Transaction
     The idea is to maintain a hash of each pending
      transaction. To do so, we create a transaction
      object that contains useful informations about
@@ -360,7 +377,7 @@ async function initHTTPTransaction({
     initializationPromise: Promise<void>,
     buildResponse: () => Promise<WhookResponse>,
   ) {
-    /* Architecture Note #1.2: Transaction start
+    /* Architecture Note #2.10.2: Transaction start
   Once initiated, the transaction can be started. It
    basically spawns a promise that will be resolved
    to the actual response or rejected if the timeout
@@ -387,7 +404,7 @@ async function initHTTPTransaction({
     { id, req }: { id: string; req: IncomingMessage },
     err: Error | YError | YHTTPError,
   ) {
-    /* Architecture Note #1.3: Transaction errors
+    /* Architecture Note #2.10.3: Transaction errors
   Here we are simply logging errors.
    It is important for debugging but also for
    ending the transaction properly if an error
@@ -436,7 +453,7 @@ async function initHTTPTransaction({
     response: WhookResponse,
     operationId = 'none',
   ): Promise<void> {
-    /* Architecture Note #1.4: Transaction end
+    /* Architecture Note #2.10.4: Transaction end
   We end the transaction by writing the final status
    and headers and piping the response body if any.
 
@@ -498,45 +515,4 @@ async function initHTTPTransaction({
       log('debug-stack', printStackTrace(err as Error));
     }
   }
-}
-
-/**
- * Pick the first header value if exists
- * @function
- * @param  {string} name
- * The header name
- * @param  {Object} headers
- * The headers map
- * @return {string}
- * The value if defined.
- */
-export function pickFirstHeaderValue(
-  name: string,
-  headers: IncomingMessage['headers'],
-): string | undefined {
-  return pickAllHeaderValues(name, headers)[0];
-}
-
-/**
- * Pick header values
- * @function
- * @param  {string} name
- * The header name
- * @param  {Object} headers
- * The headers map
- * @return {Array}
- * The values in an array.
- */
-export function pickAllHeaderValues(
-  name: string,
-  headers: IncomingMessage['headers'],
-): string[] {
-  const headerValues: string[] =
-    headers && typeof headers[name] === 'undefined'
-      ? []
-      : typeof headers[name] === 'string'
-        ? [headers[name] as string]
-        : (headers[name] as string[]);
-
-  return headerValues;
 }

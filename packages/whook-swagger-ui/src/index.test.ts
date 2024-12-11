@@ -5,12 +5,12 @@ import {
   prepareProcess,
   prepareEnvironment,
   initGetPingDefinition,
+  initHTTPRouter,
 } from '@whook/whook';
-import initHTTPRouter from '@whook/http-router';
 import wrapHTTPRouterWithSwaggerUI from './index.js';
 import { YError } from 'yerror';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { Logger } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type Logger } from 'common-services';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';

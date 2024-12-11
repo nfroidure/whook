@@ -4,19 +4,19 @@ import assert from 'assert';
 import StreamTest from 'streamtest';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';
-import initHTTPRouter from './index.js';
+import initHTTPRouter from './httpRouter.js';
 import { NodeEnv } from 'application-services';
-import initErrorHandler from './services/errorHandler.js';
+import initErrorHandler from './errorHandler.js';
 import SwaggerParser from '@apidevtools/swagger-parser';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type {
-  WhookHTTPTransactionService,
-  WhookHandler,
-  WhookResponse,
-} from '@whook/http-transaction';
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { LogService } from 'common-services';
-import type { AppEnvVars } from 'application-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  type WhookHTTPTransactionService,
+  type WhookHandler,
+  type WhookResponse,
+} from './httpTransaction.js';
+import { type IncomingMessage, ServerResponse } from 'node:http';
+import { type LogService } from 'common-services';
+import { type AppEnvVars } from 'application-services';
 
 function waitResponse(response, raw = true) {
   return new Promise((resolve, reject) => {

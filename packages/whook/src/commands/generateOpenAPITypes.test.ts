@@ -1,10 +1,10 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
-import { PassThrough } from 'stream';
+import { PassThrough } from 'node:stream';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
-import type { OpenAPITypesGenerationOptions } from 'schema2dts';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { LogService } from 'common-services';
+import { type OpenAPITypesGenerationOptions } from 'schema2dts';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type LogService } from 'common-services';
 
 describe('generateOpenAPITypes', () => {
   const getOpenAPI = jest.fn();

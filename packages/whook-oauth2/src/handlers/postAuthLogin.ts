@@ -2,12 +2,12 @@ import { autoHandler, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import initPostOauth2Token from './postOAuth2Token.js';
 import { AUTH_API_PREFIX } from '../services/authCookies.js';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';
-import type {
-  AuthCookiesService,
-  AuthHandlersConfig,
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
+import {
+  type AuthCookiesService,
+  type AuthHandlersConfig,
 } from '../services/authCookies.js';
-import type { BaseAuthenticationData } from '@whook/authorization';
+import { type BaseAuthenticationData } from '@whook/authorization';
 
 export const definition: WhookAPIHandlerDefinition = {
   method: 'post',

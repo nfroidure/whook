@@ -5,12 +5,12 @@ import {
 } from '../libs/constants.js';
 import miniquery from 'miniquery';
 import { printStackTrace, YError } from 'yerror';
-import { type WhookStringifyers } from '../index.js';
-import { type WhookResponseSpec } from '../libs/utils.js';
-import { type WhookResponse } from '@whook/http-transaction';
+import { type WhookResponse } from './httpTransaction.js';
 import { type YHTTPError } from 'yhttperror';
 import { type OpenAPIV3_1 } from 'openapi-types';
 import { type AppEnvVars } from 'application-services';
+import { type WhookResponseSpec } from '../libs/router.js';
+import { type WhookStringifyers } from './httpRouter.js';
 
 /* Architecture Note #2: Error handler
 

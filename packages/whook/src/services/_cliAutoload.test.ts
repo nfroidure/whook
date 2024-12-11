@@ -2,13 +2,13 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import { YError } from 'yerror';
 import initAutoload from './_autoload.js';
-import type {
-  ResolveService,
-  ImporterService,
-  LogService,
+import {
+  type ResolveService,
+  type ImporterService,
+  type LogService,
 } from 'common-services';
 import { SPECIAL_PROPS, type Injector } from 'knifecycle';
-import type { WhookAutoloadDependencies } from './_autoload.js';
+import { type WhookAutoloadDependencies } from './_autoload.js';
 import {
   WHOOK_PROJECT_PLUGIN_NAME,
   type WhookResolvedPluginsService,

@@ -1,6 +1,6 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initAPMService from './apm.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('APM service', () => {
   const log = jest.fn<LogService>();

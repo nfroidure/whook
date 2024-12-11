@@ -3,9 +3,9 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initCreateCommand from './create.js';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { LogService } from 'common-services';
-import type { WhookPromptArgs } from '../services/promptArgs.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type LogService } from 'common-services';
+import { type WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('createCommand', () => {
   const PROJECT_DIR = '/hom/whoiam/project';
@@ -239,7 +239,7 @@ describe('createCommand', () => {
     [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
 
 
 export const definition: WhookAPIHandlerDefinition = {
@@ -725,9 +725,9 @@ async function getHandler(_: HandlerDependencies, {
     [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
       "import { autoHandler } from 'knifecycle';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type { AppEnvVars, ProjectDirService } from 'application-services';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
+import { type LogService } from 'common-services';
+import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
 export const definition: WhookAPIHandlerDefinition = {
@@ -1227,8 +1227,8 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
     [
       "/hom/whoiam/project/src/services/aService.ts",
       "import { autoService } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { AppEnvVars, ProjectDirService } from 'application-services';
+import { type LogService } from 'common-services';
+import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
 export type AServiceService = {};
@@ -1704,8 +1704,8 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
     [
       "/hom/whoiam/project/src/services/aProvider.ts",
       "import { autoProvider, Provider } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { AppEnvVars, ProjectDirService } from 'application-services';
+import { type LogService } from 'common-services';
+import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
 export type AProviderService = {};
@@ -1886,12 +1886,10 @@ async function initAProvider({
       "import { extra, autoService } from 'knifecycle';
 import {
   readArgs,
-} from '@whook/whook';
-import type {
-  WhookPromptArgs,
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCommandHandler,
+  type WhookPromptArgs,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookCommandHandler,
 } from '@whook/whook';
 
 
@@ -2252,15 +2250,13 @@ async function initACommandCommand({
       "import { extra, autoService } from 'knifecycle';
 import {
   readArgs,
+  type WhookPromptArgs,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookCommandHandler,
 } from '@whook/whook';
-import type {
-  WhookPromptArgs,
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCommandHandler,
-} from '@whook/whook';
-import type { LogService } from 'common-services';
-import type { AppEnvVars, ProjectDirService } from 'application-services';
+import { type LogService } from 'common-services';
+import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
 export const definition: WhookCommandDefinition = {

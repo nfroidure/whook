@@ -25,15 +25,15 @@ import initOAuth2CodeGranter from './services/oAuth2CodeGranter.js';
 import initOAuth2PasswordGranter from './services/oAuth2PasswordGranter.js';
 import initOAuth2RefreshTokenGranter from './services/oAuth2RefreshTokenGranter.js';
 import initOAuth2TokenGranter from './services/oAuth2TokenGranter.js';
-import type {
-  OAuth2CodeService,
-  OAuth2PasswordService,
-  OAuth2AccessTokenService,
-  OAuth2RefreshTokenService,
-  CheckApplicationService,
-  OAuth2GranterService,
-  OAuth2Options,
-  OAuth2Config,
+import {
+  type OAuth2CodeService,
+  type OAuth2PasswordService,
+  type OAuth2AccessTokenService,
+  type OAuth2RefreshTokenService,
+  type CheckApplicationService,
+  type OAuth2GranterService,
+  type OAuth2Options,
+  type OAuth2Config,
 } from './services/oAuth2Granters.js';
 import initPostAuthLogin, {
   definition as postAuthLoginDefinition,
@@ -48,11 +48,11 @@ import initPostAuthRefresh, {
 import initAuthCookiesService, {
   AUTH_API_PREFIX,
 } from './services/authCookies.js';
-import type {
-  AuthCookiesConfig,
-  AuthCookiesService,
-  AuthCookiesData,
-  AuthHandlersConfig,
+import {
+  type AuthCookiesConfig,
+  type AuthCookiesService,
+  type AuthCookiesData,
+  type AuthHandlersConfig,
 } from './services/authCookies.js';
 
 export type {

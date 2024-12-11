@@ -2,9 +2,9 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initCreateWhook from './createWhook.js';
 import { YError } from 'yerror';
-import { readFileSync } from 'fs';
-import type { LogService } from 'common-services';
-import type { PathLike } from 'fs-extra';
+import { readFileSync } from 'node:fs';
+import { type LogService } from 'common-services';
+import { type PathLike } from 'fs-extra';
 
 const _packageJSON = JSON.parse(
   readFileSync('../whook-example/package.json').toString(),

@@ -1,6 +1,6 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initFilterAPIDefinition from './FILTER_API_DEFINITION.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('initFilterAPIDefinition', () => {
   describe('should work', () => {

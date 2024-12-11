@@ -9,10 +9,10 @@ import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
-import type { Parameters, Dependencies } from 'knifecycle';
-import type { WhookOperation } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type { AuthenticationService } from './index.js';
+import { type Parameters, type Dependencies } from 'knifecycle';
+import { type WhookOperation } from '@whook/whook';
+import { type LogService } from 'common-services';
+import { type AuthenticationService } from './index.js';
 
 describe('wrapHandlerWithAuthorization', () => {
   const noopMock = jest.fn(

@@ -1,9 +1,9 @@
 import { autoService, location } from 'knifecycle';
 import { YError } from 'yerror';
-import type { JWTService } from 'jwt-service';
-import type {
-  AuthenticationService,
-  BaseAuthenticationData,
+import { type JWTService } from 'jwt-service';
+import {
+  type AuthenticationService,
+  type BaseAuthenticationData,
 } from '@whook/authorization';
 
 export default location(autoService(initAuthentication), import.meta.url);

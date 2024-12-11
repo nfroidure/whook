@@ -1,7 +1,7 @@
 import { autoHandler, location } from 'knifecycle';
 import { AUTH_API_PREFIX } from '../services/authCookies.js';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';
-import type { AuthCookiesService } from '../services/authCookies.js';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
+import { type AuthCookiesService } from '../services/authCookies.js';
 
 export const definition: WhookAPIHandlerDefinition = {
   method: 'post',

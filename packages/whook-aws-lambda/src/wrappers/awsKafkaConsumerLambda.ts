@@ -1,18 +1,18 @@
 import { autoService } from 'knifecycle';
-import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type {
-  WhookOperation,
-  WhookAPMService,
-  WhookHandler,
-  WhookResponse,
-  WhookHeaders,
-  WhookWrapper,
+import {
+  noop,
+  type WhookOperation,
+  type WhookAPMService,
+  type WhookHandler,
+  type WhookResponse,
+  type WhookHeaders,
+  type WhookWrapper,
 } from '@whook/whook';
-import type { TimeService, LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { MSKEvent } from 'aws-lambda';
-import type { AppEnvVars } from 'application-services';
+import { type TimeService, type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type MSKEvent } from 'aws-lambda';
+import { type AppEnvVars } from 'application-services';
 
 export type LambdaKafkaConsumerInput = { body: MSKEvent['records'] };
 export type LambdaKafkaConsumerOutput = WhookResponse<

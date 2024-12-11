@@ -6,9 +6,9 @@ import { join, relative } from 'node:path';
 import _axios from 'axios';
 import _ora from 'ora';
 import { printStackTrace, YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type { ProjectService } from './project.js';
-import type { AuthorService } from './author.js';
+import { type LogService } from 'common-services';
+import { type ProjectService } from './project.js';
+import { type AuthorService } from './author.js';
 
 const GIT_IGNORE_URL =
   'https://www.toptal.com/developers/gitignore/api/osx,node,linux';

@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initPrintEnvCommand from './printEnv.js';
 import { NodeEnv } from 'application-services';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('printEnvCommand', () => {
   const log = jest.fn<LogService>();

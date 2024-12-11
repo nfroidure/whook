@@ -1,16 +1,17 @@
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
-import { DEFAULT_COMPILER_OPTIONS, readArgs } from '@whook/whook';
 import { encodePayload } from '../wrappers/awsLogSubscriberLambda.js';
-import type {
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCompilerOptions,
+import {
+  DEFAULT_COMPILER_OPTIONS,
+  readArgs,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookCompilerOptions,
 } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type {
-  CloudWatchLogsDecodedData,
-  CloudWatchLogsEvent,
+import { type LogService } from 'common-services';
+import {
+  type CloudWatchLogsDecodedData,
+  type CloudWatchLogsEvent,
 } from 'aws-lambda';
 
 // Event example from:

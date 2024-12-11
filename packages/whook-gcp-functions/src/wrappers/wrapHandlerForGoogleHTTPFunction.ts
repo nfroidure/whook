@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { YError, printStackTrace } from 'yerror';
+import stream from 'node:stream';
+import { autoService } from 'knifecycle';
+import Ajv from 'ajv';
+import addAJVFormats from 'ajv-formats';
+import bytes from 'bytes';
+import { YHTTPError } from 'yhttperror';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
@@ -9,13 +15,6 @@ import {
   DEFAULT_ENCODERS,
   extractOperationSecurityParameters,
   castParameters,
-} from '@whook/http-router';
-import { autoService } from 'knifecycle';
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
-import bytes from 'bytes';
-import { YHTTPError } from 'yhttperror';
-import {
   prepareParametersValidators,
   prepareBodyValidator,
   applyValidators,
@@ -29,24 +28,23 @@ import {
   extractConsumableMediaTypes,
   getBody,
   sendBody,
-} from '@whook/http-router';
-import { noop, identity, lowerCaseHeaders } from '@whook/whook';
-import stream from 'stream';
-import type { WhookQueryStringParser } from '@whook/http-router';
-import type {
-  WhookRequest,
-  WhookResponse,
-  WhookHandler,
-  WhookObfuscatorService,
-  WhookOperation,
-  WhookWrapper,
-  WhookErrorHandler,
+  noop,
+  identity,
+  lowerCaseHeaders,
+  type WhookQueryStringParser,
+  type WhookRequest,
+  type WhookResponse,
+  type WhookHandler,
+  type WhookObfuscatorService,
+  type WhookOperation,
+  type WhookWrapper,
+  type WhookErrorHandler,
+  type DereferencedParameterObject,
 } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { Readable } from 'stream';
-import type { AppEnvVars } from 'application-services';
-import type { DereferencedParameterObject } from '@whook/http-transaction';
+import { type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type Readable } from 'node:stream';
+import { type AppEnvVars } from 'application-services';
 
 const SEARCH_SEPARATOR = '?';
 const PATH_SEPARATOR = '/';

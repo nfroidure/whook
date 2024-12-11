@@ -5,14 +5,14 @@ import os from 'node:os';
 import { readArgs } from '../libs/args.js';
 import { printStackTrace } from 'yerror';
 import { identity, noop } from '../libs/utils.js';
-import type { Service } from 'knifecycle';
-import type {
-  WhookCommandDefinition,
-  WhookPromptArgs,
-  WhookCommandHandler,
+import { type Service } from 'knifecycle';
+import {
+  type WhookCommandDefinition,
+  type WhookPromptArgs,
+  type WhookCommandHandler,
 } from '../services/promptArgs.js';
-import type { ImporterService, LogService } from 'common-services';
-import type { WhookConfig } from '../services/BASE_URL.js';
+import { type ImporterService, type LogService } from 'common-services';
+import { type WhookConfig } from '../services/BASE_URL.js';
 import {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,

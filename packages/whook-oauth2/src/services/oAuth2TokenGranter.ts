@@ -1,13 +1,13 @@
 import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
-import type { LogService, TimeService } from 'common-services';
-import type {
-  OAuth2GranterService,
-  OAuth2AccessTokenService,
-  CheckApplicationService,
-  OAuth2CodeService,
+import { type LogService, type TimeService } from 'common-services';
+import {
+  type OAuth2GranterService,
+  type OAuth2AccessTokenService,
+  type CheckApplicationService,
+  type OAuth2CodeService,
 } from './oAuth2Granters.js';
-import type { BaseAuthenticationData } from '@whook/authorization';
+import { type BaseAuthenticationData } from '@whook/authorization';
 
 export const IMPLICIT_GRANTER_TYPE = 'token';
 

@@ -1,23 +1,23 @@
 import { autoService } from 'knifecycle';
-import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type {
-  WhookHeaders,
-  WhookResponse,
-  WhookOperation,
-  WhookAPMService,
-  WhookHandler,
-  WhookWrapper,
+import {
+  noop,
+  type WhookHeaders,
+  type WhookResponse,
+  type WhookOperation,
+  type WhookAPMService,
+  type WhookHandler,
+  type WhookWrapper,
 } from '@whook/whook';
-import type { TimeService, LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type {
-  FirehoseTransformationEvent,
-  FirehoseTransformationEventRecord,
-  FirehoseTransformationResultRecord,
-  FirehoseTransformationResult,
+import { type TimeService, type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  type FirehoseTransformationEvent,
+  type FirehoseTransformationEventRecord,
+  type FirehoseTransformationResultRecord,
+  type FirehoseTransformationResult,
 } from 'aws-lambda';
-import type { AppEnvVars } from 'application-services';
+import { type AppEnvVars } from 'application-services';
 
 type TransformerWrapperDependencies = {
   ENV: AppEnvVars;

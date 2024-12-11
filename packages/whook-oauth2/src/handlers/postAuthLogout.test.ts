@@ -1,6 +1,6 @@
 import { describe, test, jest, expect } from '@jest/globals';
 import initPostAuthLogout from './postAuthLogout.js';
-import type { AuthCookiesService } from '../services/authCookies.js';
+import { type AuthCookiesService } from '../services/authCookies.js';
 
 describe('postAuthLogout', () => {
   test('should work', async () => {

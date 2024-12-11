@@ -1,8 +1,8 @@
 import { autoService, extra } from 'knifecycle';
 import { generateOpenAPITypes as generateTypes, toSource } from 'schema2dts';
-import type { OpenAPITypesGenerationOptions } from 'schema2dts';
-import type { LogService } from 'common-services';
-import type { WhookCommandDefinition } from '../services/promptArgs.js';
+import { type OpenAPITypesGenerationOptions } from 'schema2dts';
+import { type LogService } from 'common-services';
+import { type WhookCommandDefinition } from '../services/promptArgs.js';
 
 export type OpenAPITypesConfig = {
   OPEN_API_TYPES_CONFIG: OpenAPITypesGenerationOptions;

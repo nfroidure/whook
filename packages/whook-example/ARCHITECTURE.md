@@ -69,14 +69,14 @@
 
 ## 1. A Whook baked API
 
-This API server uses the Whook engine. Thoses architecture
+This API server uses the Whook engine. Those architecture
  notes will help you to master its features.
 
 You can see a view of the full architecture document
  by running `npm run architecture` and opening the generated
  `ARCHITECTURE.md` file.
 
-[See in context](./src/index.ts#L21-L28)
+[See in context](./src/index.ts#L1-L8)
 
 
 
@@ -85,7 +85,7 @@ You can see a view of the full architecture document
 Per convention a Whook server main file must exports
  the following 3 functions to be composable.
 
-[See in context](./src/index.ts#L39-L43)
+[See in context](./src/index.ts#L10-L14)
 
 
 
@@ -124,7 +124,7 @@ Add here any logic bound to the server only
 
 The `prepareEnvironment` one is intended to prepare the process environment
 
-[See in context](./src/index.ts#L94-L97)
+[See in context](./src/index.ts#L93-L96)
 
 
 
@@ -140,7 +140,7 @@ OR, like in this example, use the Whook `$autoload` service
  autoloader by creating a service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L117-L128)
+[See in context](./src/index.ts#L116-L127)
 
 
 
@@ -152,7 +152,7 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L131-L138)
+[See in context](./src/index.ts#L130-L137)
 
 
 
@@ -161,7 +161,7 @@ This service loads the API definitions directly by
 The project main file allows autoloading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L141-L145)
+[See in context](./src/index.ts#L140-L144)
 
 
 
@@ -170,7 +170,7 @@ The project main file allows autoloading features to work
 You can add more application environment here for several
  deployment targets.
 
-[See in context](./src/index.ts#L30-L34)
+[See in context](./src/index.ts#L36-L40)
 
 
 
@@ -179,7 +179,7 @@ You can add more application environment here for several
 Reading the `APP_ENV` from the process environment and defining
  it as a constant.
 
-[See in context](./src/index.ts#L148-L152)
+[See in context](./src/index.ts#L147-L151)
 
 
 
@@ -189,7 +189,7 @@ Setting the `knifecycle` `$overrides` service depending on the
  current `APP_ENV`. It allows to map services to different
  implementations.
 
-[See in context](./src/index.ts#L157-L162)
+[See in context](./src/index.ts#L156-L161)
 
 
 
@@ -222,7 +222,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L170-L198)
+[See in context](./src/index.ts#L169-L197)
 
 
 
@@ -233,7 +233,7 @@ Plugins allows you to add simple features to the Whook's core,
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L219-L225)
+[See in context](./src/index.ts#L218-L224)
 
 
 
@@ -242,7 +242,7 @@ You can also avoid Whook defaults by leaving it empty.
 Per convention a Whook server build file must export
  the following 2 functions to be composable:
 
-[See in context](./src/build.ts#L10-L14)
+[See in context](./src/build.ts#L1-L5)
 
 
 
@@ -251,7 +251,7 @@ Per convention a Whook server build file must export
 The `runBuild` function is intended to build the
  project.
 
-[See in context](./src/build.ts#L16-L20)
+[See in context](./src/build.ts#L15-L19)
 
 
 
@@ -260,7 +260,7 @@ The `runBuild` function is intended to build the
 The `prepareBuildEnvironment` create the build
  environment
 
-[See in context](./src/build.ts#L28-L32)
+[See in context](./src/build.ts#L27-L31)
 
 
 
@@ -281,7 +281,7 @@ The `src/config/common/config.ts` one allows to add common
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/whook.d.ts#L31-L35)
+[See in context](./src/whook.d.ts#L32-L36)
 
 
 
@@ -313,7 +313,7 @@ Whook is all about APIs.
 The API service defined here is where you put
  your handlers altogether to build the final API.
 
-[See in context](./src/services/API.ts#L27-L32)
+[See in context](./src/services/API.ts#L26-L31)
 
 
 
@@ -481,7 +481,7 @@ Here we export a custom handler definition type in order
  to allow using the various plugins installed that deal
  with the handlers.
 
-[See in context](./src/whook.d.ts#L46-L51)
+[See in context](./src/whook.d.ts#L48-L53)
 
 
 
@@ -490,7 +490,7 @@ Here we export a custom handler definition type in order
 You can apply transformations to your API like
  here for CORS support (OPTIONS method handling).
 
-[See in context](./src/services/API.ts#L84-L88)
+[See in context](./src/services/API.ts#L83-L87)
 
 
 
@@ -500,7 +500,7 @@ The API definition is a JSON serializable object, you
  can then reshape it the way you want. Here, we set a
  fake auth mecanism to help in development environment.
 
-[See in context](./src/services/API.ts#L92-L97)
+[See in context](./src/services/API.ts#L91-L96)
 
 
 
@@ -609,7 +609,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L101-L114)
+[See in context](./src/index.ts#L100-L113)
 
 
 
@@ -654,7 +654,7 @@ For example, to create a server with only `system` and
 FILTER_API_TAGS=system,example npm start
 ```
 
-[See in context](./src/services/FILTER_API_DEFINITION.ts#L18-L30)
+[See in context](./src/services/FILTER_API_DEFINITION.ts#L19-L31)
 
 
 
@@ -663,7 +663,7 @@ FILTER_API_TAGS=system,example npm start
 A JWT token issuer service. Here, we simply reuse
  an external project and rename it by the way.
 
-[See in context](./src/services/jwtToken.ts#L5-L9)
+[See in context](./src/services/jwtToken.ts#L10-L14)
 
 
 
@@ -690,7 +690,7 @@ You can navigate through the Whook's sources to
  environment variable to see what happens under the
  hood, in the DI system.
 
-[See in context](./src/services/QUERY_PARSER.ts#L6-L19)
+[See in context](./src/services/QUERY_PARSER.ts#L9-L22)
 
 
 
@@ -705,7 +705,7 @@ Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L201-L211)
+[See in context](./src/index.ts#L200-L210)
 
 
 
@@ -727,7 +727,7 @@ Commands are a simple way to write utility scripts that leverage
  your application setup. It allows to simply inject services
  without worrying about their initialization.
 
-[See in context](./src/commands/printEnv.ts#L7-L24)
+[See in context](./src/commands/printEnv.ts#L10-L27)
 
 
 
@@ -737,7 +737,7 @@ To define a command, just write its definition
  and export it to make it available to Whook's
  command loader.
 
-[See in context](./src/commands/printEnv.ts#L26-L31)
+[See in context](./src/commands/printEnv.ts#L29-L34)
 
 
 
@@ -747,7 +747,7 @@ To implement a command, just write a function that takes
  injected services as a first argument and return the
  command as an asynchronous function.
 
-[See in context](./src/commands/printEnv.ts#L48-L53)
+[See in context](./src/commands/printEnv.ts#L51-L56)
 
 
 
@@ -760,5 +760,5 @@ You can add hooks to add need behaviors to the
  watch server like here with a prettier run after
  each restart.
 
-[See in context](./src/watch.ts#L8-L16)
+[See in context](./src/watch.ts#L1-L9)
 

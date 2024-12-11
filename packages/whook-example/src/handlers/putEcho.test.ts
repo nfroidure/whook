@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initPutEcho, { echoSchema } from './putEcho.js';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('putEcho', () => {
   const log = jest.fn<LogService>();

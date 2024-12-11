@@ -88,7 +88,7 @@ const DEFAULT_SENSIBLE_PROPS: WhookSensibleValueDescriptor[] = [
  * @return {Promise<Object>}
  * A promise of an object containing the gathered constants.
  * @example
- * import { initObfuscator } from '@whook/http-transaction';
+ * import { initObfuscator } from '@whook/whook';
  * import { alsoInject } from 'knifecycle';
  * import { log } from 'node:console';
  *

@@ -4,7 +4,7 @@ import initHandlers from './HANDLERS.js';
 import initGetPing from '../handlers/getPing.js';
 import { NodeEnv } from 'application-services';
 import { identity } from '../libs/utils.js';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('initHandlers', () => {
   const log = jest.fn<LogService>();

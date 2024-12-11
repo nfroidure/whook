@@ -52,7 +52,7 @@ Declare types in your `src/whook.d.ts` definition:
 
 ```diff
 // ...
-+ import type { WhookVersionsConfig } from '@whook/versions';
++ import { type WhookVersionsConfig } from '@whook/versions';
 
 declare module 'application-services' {
 
@@ -74,9 +74,9 @@ And add the errors descriptors or provide your
  `src/config/common/config.js`):
 ```diff
 // ...
-import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/http-router';
+import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 + import { VERSIONS_ERRORS_DESCRIPTORS } from '@whook/versions';
-import type { AppConfig } from 'application-services';
+import { type AppConfig } from 'application-services';
 
 // ...
 

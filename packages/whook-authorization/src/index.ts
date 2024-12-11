@@ -1,5 +1,8 @@
-import { DEFAULT_ERROR_URI, DEFAULT_HELP_URI } from '@whook/whook';
-import type { WhookErrorsDescriptors } from '@whook/whook';
+import {
+  DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
+  type WhookErrorsDescriptors,
+} from '@whook/whook';
 import initWrapHandlerWithAuthorization from './wrappers/wrapHandlerWithAuthorization.js';
 
 export { initWrapHandlerWithAuthorization };

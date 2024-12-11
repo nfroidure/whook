@@ -3,7 +3,7 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initAuthor from './author.js';
 import { YError } from 'yerror';
-import type { LogService, LockService } from 'common-services';
+import { type LogService, type LockService } from 'common-services';
 
 describe('initAuthor', () => {
   const exec = jest.fn() as any;

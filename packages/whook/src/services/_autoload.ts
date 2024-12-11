@@ -19,7 +19,6 @@ import initWrappers, {
   WRAPPER_REG_EXP,
   type WhookWrappersConfig,
 } from './WRAPPERS.js';
-import { getOpenAPIOperations } from '@whook/http-router';
 import { extname, join as pathJoin } from 'node:path';
 import { access as _access, constants } from 'node:fs/promises';
 import { YError, printStackTrace } from 'yerror';
@@ -35,6 +34,7 @@ import {
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type WhookCommandArgs } from '../libs/args.js';
+import { getOpenAPIOperations } from '../libs/openapi.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 

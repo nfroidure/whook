@@ -17,10 +17,10 @@ import axios from 'axios';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'module';
 import { join } from 'node:path';
-import type { Knifecycle } from 'knifecycle';
-import type { JWTService } from 'jwt-service';
-import type { AuthenticationData } from './services/authentication.js';
-import type { Logger } from 'common-services';
+import { type Knifecycle } from 'knifecycle';
+import { type JWTService } from 'jwt-service';
+import { type AuthenticationData } from './services/authentication.js';
+import { type Logger } from 'common-services';
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 

@@ -94,10 +94,10 @@ export async function prepareBuildEnvironment(
 Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
-+ import type { WhookCompilerConfig } from '@whook/whook';
-+ import type {
-+   WhookAWSLambdaBuildConfig,
-+   WhookAPIOperationAWSLambdaConfig
++ import { type WhookCompilerConfig } from '@whook/whook';
++ import {
++   type WhookAWSLambdaBuildConfig,
++   type WhookAPIOperationAWSLambdaConfig
 + } from '@whook/aws-lambda';
 
 declare module 'application-services' {
@@ -135,7 +135,7 @@ And add the AWS Lambda config (usually in `src/config/common/config.js`):
 
 ```diff
 // ...
-import type { AppConfig } from 'application-services';
+import { type AppConfig } from 'application-services';
 
 // ...
 

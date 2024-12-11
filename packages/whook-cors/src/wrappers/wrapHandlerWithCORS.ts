@@ -1,15 +1,16 @@
 import { autoService } from 'knifecycle';
-import { mergeVaryHeaders, lowerCaseHeaders } from '@whook/whook';
 import { printStackTrace } from 'yerror';
 import { YHTTPError } from 'yhttperror';
-import type { Parameters } from 'knifecycle';
-import type {
-  WhookResponse,
-  WhookHandler,
-  WhookOperation,
-  WhookWrapper,
+import { type Parameters } from 'knifecycle';
+import {
+  mergeVaryHeaders,
+  lowerCaseHeaders,
+  type WhookResponse,
+  type WhookHandler,
+  type WhookOperation,
+  type WhookWrapper,
 } from '@whook/whook';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 export type CORSConfig = {
   'Access-Control-Allow-Origin': string;

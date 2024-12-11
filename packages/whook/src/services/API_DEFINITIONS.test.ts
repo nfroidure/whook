@@ -3,10 +3,10 @@ import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initAPIDefinitions from './API_DEFINITIONS.js';
 import { definition as getPingDefinition } from '../handlers/getPing.js';
 import { YError } from 'yerror';
-import type { ImporterService, LogService } from 'common-services';
-import type {
-  WhookAPIDefinitionsDependencies,
-  WhookAPIHandlerModule,
+import { type ImporterService, type LogService } from 'common-services';
+import {
+  type WhookAPIDefinitionsDependencies,
+  type WhookAPIHandlerModule,
 } from './API_DEFINITIONS.js';
 import {
   WHOOK_PROJECT_PLUGIN_NAME,

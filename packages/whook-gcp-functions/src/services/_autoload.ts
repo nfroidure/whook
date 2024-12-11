@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { initBuildAutoload, noop, cleanupOpenAPI } from '@whook/whook';
 import {
   UNBUILDABLE_SERVICES,
   Knifecycle,
@@ -7,27 +6,28 @@ import {
   constant,
   alsoInject,
   location,
+  type Injector,
+  type Autoloader,
+  type Initializer,
+  type Dependencies,
+  type Service,
+  type ServiceInitializerWrapper,
 } from 'knifecycle';
 import { YError } from 'yerror';
 import {
+  initBuildAutoload,
+  noop,
+  cleanupOpenAPI,
   dereferenceOpenAPIOperations,
   getOpenAPIOperations,
-} from '@whook/http-router';
+  type WhookBuildConstantsService,
+  type WhookRawOperation,
+} from '@whook/whook';
+import { type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type WhookAPIOperationGCPFunctionConfig } from '../index.js';
 import initHandler from './HANDLER.js';
 import initWrapHandlerForGoogleHTTPFunction from '../wrappers/wrapHandlerForGoogleHTTPFunction.js';
-import type {
-  Injector,
-  Autoloader,
-  Initializer,
-  Dependencies,
-  Service,
-  ServiceInitializerWrapper,
-} from 'knifecycle';
-import type { WhookBuildConstantsService } from '@whook/whook';
-import type { WhookRawOperation } from '@whook/http-router';
-import type { LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { WhookAPIOperationGCPFunctionConfig } from '../index.js';
 
 export type WhookGoogleFunctionsAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;

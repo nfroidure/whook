@@ -1,17 +1,17 @@
 import { autoHandler, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import { refersTo } from '@whook/whook';
 import initPostOauth2Token from './postOAuth2Token.js';
 import { AUTH_API_PREFIX } from '../services/authCookies.js';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookAPIParameterDefinition,
+import {
+  refersTo,
+  type WhookAPIHandlerDefinition,
+  type WhookAPIParameterDefinition,
 } from '@whook/whook';
-import type {
-  AuthCookiesService,
-  AuthHandlersConfig,
+import {
+  type AuthCookiesService,
+  type AuthHandlersConfig,
 } from '../services/authCookies.js';
-import type { BaseAuthenticationData } from '@whook/authorization';
+import { type BaseAuthenticationData } from '@whook/authorization';
 
 export const authCookieHeaderParameter: WhookAPIParameterDefinition<string> = {
   name: 'cookie',

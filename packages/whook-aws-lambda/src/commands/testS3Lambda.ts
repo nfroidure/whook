@@ -1,13 +1,14 @@
 import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
-import { DEFAULT_COMPILER_OPTIONS, readArgs } from '@whook/whook';
-import type {
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCompilerOptions,
+import {
+  DEFAULT_COMPILER_OPTIONS,
+  readArgs,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookCompilerOptions,
 } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type { S3Event } from 'aws-lambda';
+import { type LogService } from 'common-services';
+import { type S3Event } from 'aws-lambda';
 
 // Event example from:
 // https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html

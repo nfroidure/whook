@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPISchema from './generateOpenAPISchema.js';
-import { PassThrough } from 'stream';
-import type { LogService } from 'common-services';
+import { PassThrough } from 'node:stream';
+import { type LogService } from 'common-services';
 
 /* Architecture Note #4.1: Testing
 

@@ -1,9 +1,9 @@
 import initGetOpenAPI from '../handlers/getOpenAPI.js';
 import { readArgs } from '../libs/args.js';
 import { autoService, extra } from 'knifecycle';
-import type { LogService } from 'common-services';
-import type { WhookCommandArgs } from '../libs/args.js';
-import type { WhookCommandDefinition } from '../services/promptArgs.js';
+import { type LogService } from 'common-services';
+import { type WhookCommandArgs } from '../libs/args.js';
+import { type WhookCommandDefinition } from '../services/promptArgs.js';
 
 /* Architecture Note #2.9.2.3: Open API generator
 

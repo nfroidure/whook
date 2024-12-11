@@ -72,8 +72,8 @@ Declare the plugin into your `src/index.ts` file:
 Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
-+import type {
-+  OAuth2Config,
++import {
++  type OAuth2Config,
 +} from '@whook/oauth2';
 
 // ...
@@ -101,7 +101,7 @@ Add the OAuth2 configuration to your config files:
 +   OAUTH2_ERRORS_DESCRIPTORS,
 +   OAuth2Config,
 + } from '@whook/oauth2';
-import type { AppConfig } from 'application-services';
+import { type AppConfig } from 'application-services';
 
 // ...
 
@@ -135,14 +135,14 @@ validate a user subscription:
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type { AuthenticationData } from './authentication.js';
-import type {
-  OAuth2GranterService,
-  CheckApplicationService,
+import { type LogService } from 'common-services';
+import { type AuthenticationData } from './authentication.js';
+import {
+  type OAuth2GranterService,
+  type CheckApplicationService,
 } from '@whook/oauth2';
-import type { JWTService } from 'jwt-service';
-import type { PGService } from 'postgresql-service';
+import { type JWTService } from 'jwt-service';
+import { type PGService } from 'postgresql-service';
 
 export type OAuth2VerifyTokenGranterDependencies = {
   checkApplication: CheckApplicationService;
@@ -246,7 +246,7 @@ import {
   postAuthRefreshDefinition,
   authCookieHeaderParameter,
 } from '@whook/oauth2';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
 
 export { authCookieHeaderParameter };
 
@@ -280,8 +280,8 @@ import {
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
 } from '@whook/oauth2';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
 
 export default initPostOAuth2Acknowledge;
 
@@ -350,7 +350,7 @@ own security mecanism:
   postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
 } from '@whook/oauth2';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
 
 export default initPostOAuth2Token;
 

@@ -1,18 +1,18 @@
 import { autoService } from 'knifecycle';
-import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type {
-  WhookAPMService,
-  WhookOperation,
-  WhookHandler,
-  WhookHeaders,
-  WhookResponse,
-  WhookWrapper,
+import {
+  noop,
+  type WhookAPMService,
+  type WhookOperation,
+  type WhookHandler,
+  type WhookHeaders,
+  type WhookResponse,
+  type WhookWrapper,
 } from '@whook/whook';
-import type { LogService, TimeService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { S3Event } from 'aws-lambda';
-import type { AppEnvVars } from 'application-services';
+import { type LogService, type TimeService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type S3Event } from 'aws-lambda';
+import { type AppEnvVars } from 'application-services';
 
 export type LambdaS3Input = { body: S3Event['Records'] };
 export type LambdaS3Output = WhookResponse<number, WhookHeaders, void>;

@@ -7,10 +7,10 @@ import {
 } from './index.js';
 import { handler } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import type { CORSConfig } from './index.js';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { WhookOperation } from '@whook/whook';
-import type { LogService } from 'common-services';
+import { type CORSConfig } from './index.js';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type WhookOperation } from '@whook/whook';
+import { type LogService } from 'common-services';
 
 describe('initWrapHandlerWithCORS', () => {
   const CORS: CORSConfig = {

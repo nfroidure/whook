@@ -1,23 +1,23 @@
 import zlib from 'zlib';
 import { autoService } from 'knifecycle';
-import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type {
-  WhookHeaders,
-  WhookResponse,
-  WhookOperation,
-  WhookAPMService,
-  WhookHandler,
-  WhookWrapper,
+import {
+  noop,
+  type WhookHeaders,
+  type WhookResponse,
+  type WhookOperation,
+  type WhookAPMService,
+  type WhookHandler,
+  type WhookWrapper,
 } from '@whook/whook';
-import type { TimeService, LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { JsonValue } from 'type-fest';
-import type {
-  CloudWatchLogsEvent,
-  CloudWatchLogsDecodedData,
+import { type TimeService, type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type JsonValue } from 'type-fest';
+import {
+  type CloudWatchLogsEvent,
+  type CloudWatchLogsDecodedData,
 } from 'aws-lambda';
-import type { AppEnvVars } from 'application-services';
+import { type AppEnvVars } from 'application-services';
 
 export type LambdaLogSubscriberInput = { body: CloudWatchLogsDecodedData };
 export type LambdaLogSubscriberOutput = WhookResponse<

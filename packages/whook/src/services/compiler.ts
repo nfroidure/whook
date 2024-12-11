@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { noop } from '../libs/utils.js';
 import { autoService, location, type Service } from 'knifecycle';
 import { type ImporterService, type LogService } from 'common-services';

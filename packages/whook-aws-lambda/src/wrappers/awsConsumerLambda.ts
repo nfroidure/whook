@@ -1,24 +1,24 @@
 import { autoService } from 'knifecycle';
-import { noop } from '@whook/whook';
 import { printStackTrace, YError } from 'yerror';
-import type {
-  WhookOperation,
-  WhookAPMService,
-  WhookHandler,
-  WhookHeaders,
-  WhookResponse,
-  WhookWrapper,
+import {
+  noop,
+  type WhookOperation,
+  type WhookAPMService,
+  type WhookHandler,
+  type WhookHeaders,
+  type WhookResponse,
+  type WhookWrapper,
 } from '@whook/whook';
-import type { TimeService, LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type {
-  KinesisStreamEvent,
-  SQSEvent,
-  SNSEvent,
-  SESEvent,
-  DynamoDBStreamEvent,
+import { type TimeService, type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  type KinesisStreamEvent,
+  type SQSEvent,
+  type SNSEvent,
+  type SESEvent,
+  type DynamoDBStreamEvent,
 } from 'aws-lambda';
-import type { AppEnvVars } from 'application-services';
+import { type AppEnvVars } from 'application-services';
 
 export type LambdaKinesisStreamConsumerInput = {
   body: KinesisStreamEvent['Records'];

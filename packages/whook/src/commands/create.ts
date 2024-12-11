@@ -5,16 +5,16 @@ import { YError } from 'yerror';
 import camelCase from 'camelcase';
 import { HANDLER_REG_EXP } from '../services/HANDLERS.js';
 import _inquirer from 'inquirer';
-import path from 'path';
-import { OPEN_API_METHODS } from '@whook/http-router';
+import path from 'node:path';
 import { default as fsExtra } from 'fs-extra';
-import type {
-  WhookCommandHandler,
-  WhookCommandDefinition,
-  WhookPromptArgs,
+import { OPEN_API_METHODS } from '../libs/openapi.js';
+import {
+  type WhookCommandHandler,
+  type WhookCommandDefinition,
+  type WhookPromptArgs,
 } from '../services/promptArgs.js';
-import type { LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
+import { type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
 
 const {
   writeFile: _writeFile,
@@ -184,33 +184,31 @@ async function initCreateCommand({
         ? `
 import {
   readArgs,
-} from '@whook/whook';
-import type {
-  WhookPromptArgs,
-  WhookCommandArgs,
-  WhookCommandDefinition,
-  WhookCommandHandler,
+  type WhookPromptArgs,
+  type WhookCommandArgs,
+  type WhookCommandDefinition,
+  type WhookCommandHandler,
 } from '@whook/whook';`
         : ''
     }${
       commonServices.length
         ? `
-import type { ${commonServices
-            .map((name) => commonServicesTypes[name])
+import { ${commonServices
+            .map((name) => `type ${commonServicesTypes[name]}`)
             .join(', ')} } from 'common-services';`
         : ''
     }${
       applicationServices.length
         ? `
-import type { ${applicationServices
-            .map((name) => applicationServicesTypes[name])
+import { ${applicationServices
+            .map((name) => `type ${applicationServicesTypes[name]}`)
             .join(', ')} } from 'application-services';`
         : ''
     }${
       whookServices.length
         ? `
-import type { ${whookServices
-            .map((name) => whookServicesTypes[name])
+import { ${whookServices
+            .map((name) => `type ${whookServicesTypes[name]}`)
             .join(', ')} } from '@whook/whook';`
         : ''
     }
@@ -349,7 +347,7 @@ function buildHandlerSource(
   const APIHandlerName = name[0].toUpperCase() + name.slice(1);
 
   return `import { autoHandler } from 'knifecycle';
-import type { WhookAPIHandlerDefinition } from '@whook/whook';${imports}
+import { type WhookAPIHandlerDefinition } from '@whook/whook';${imports}
 
 export const definition: WhookAPIHandlerDefinition = {
   path: '${path}',

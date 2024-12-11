@@ -1,12 +1,14 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
-import { extractOperationSecurityParameters } from '@whook/http-router';
+import {
+  extractOperationSecurityParameters,
+  type WhookOperation,
+} from '@whook/whook';
 import initOptionsWithCORS from './handlers/optionsWithCORS.js';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
 } from './services/errorHandler.js';
 import initWrapHandlerWithCORS from './wrappers/wrapHandlerWithCORS.js';
-import type { WhookOperation } from '@whook/whook';
-import type { OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPIV3_1 } from 'openapi-types';
 
 export type {
   CORSConfig,

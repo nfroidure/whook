@@ -1,10 +1,10 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import initHTTPServer from './index.js';
+import initHTTPServer from './httpServer.js';
 import axios from 'axios';
 import net from 'net';
 import { YError } from 'yerror';
-import type { WhookHTTPRouterService } from '@whook/http-router';
-import type { LogService } from 'common-services';
+import { type WhookHTTPRouterService } from './httpRouter.js';
+import { type LogService } from 'common-services';
 
 describe('initHTTPServer', () => {
   const PORT = 7777;

@@ -2,7 +2,7 @@ import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initEnv from './PROXYED_ENV.js';
 import { NodeEnv } from 'application-services';
 import { readFile as _readFile } from 'node:fs/promises';
-import type { LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 describe('initEnv', () => {
   const log = jest.fn<LogService>();

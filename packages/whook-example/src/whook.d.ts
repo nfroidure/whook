@@ -1,21 +1,24 @@
-import type {
-  WhookBaseAPIHandlerDefinition,
-  WhookBaseEnv,
-  WhookBaseConfigs,
-  WhookAPIOperation,
+import {
+  type WhookBaseAPIHandlerDefinition,
+  type WhookBaseEnv,
+  type WhookBaseConfigs,
+  type WhookAPIOperation,
 } from '@whook/whook';
-import type { WhookAuthorizationConfig } from '@whook/authorization';
-import type {
-  WhookAPIOperationSwaggerConfig,
-  WhookSwaggerUIConfig,
-  WhookSwaggerUIEnv,
+import { type WhookAuthorizationConfig } from '@whook/authorization';
+import {
+  type WhookAPIOperationSwaggerConfig,
+  type WhookSwaggerUIConfig,
+  type WhookSwaggerUIEnv,
 } from '@whook/swagger-ui';
-import type { WhookAPIOperationCORSConfig, WhookCORSConfig } from '@whook/cors';
-import type { APIConfig } from './services/API.js';
-import type { JWTServiceConfig } from 'jwt-service';
-import type { BaseAppEnvVars, TimeMockConfig } from 'application-services';
-import type { JWTEnvVars } from 'jwt-service';
-import type { FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
+import {
+  type WhookAPIOperationCORSConfig,
+  type WhookCORSConfig,
+} from '@whook/cors';
+import { type APIConfig } from './services/API.js';
+import { type JWTServiceConfig } from 'jwt-service';
+import { type BaseAppEnvVars, type TimeMockConfig } from 'application-services';
+import { type JWTEnvVars } from 'jwt-service';
+import { type FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
 
 declare module 'application-services' {
   // Eventually override the process env type here

@@ -1,13 +1,13 @@
 import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { YError } from 'yerror';
-import type { LogService } from 'common-services';
-import type {
-  OAuth2GranterService,
-  CheckApplicationService,
-  OAuth2RefreshTokenService,
+import { type LogService } from 'common-services';
+import {
+  type OAuth2GranterService,
+  type CheckApplicationService,
+  type OAuth2RefreshTokenService,
 } from './oAuth2Granters.js';
-import type { BaseAuthenticationData } from '@whook/authorization';
+import { type BaseAuthenticationData } from '@whook/authorization';
 
 export type OAuth2RefreshTokenGranterDependencies = {
   checkApplication: CheckApplicationService;

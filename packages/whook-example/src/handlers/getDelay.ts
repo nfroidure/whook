@@ -1,10 +1,10 @@
 import { autoHandler } from 'knifecycle';
-import { refersTo } from '@whook/whook';
-import type {
-  WhookAPIParameterDefinition,
-  WhookAPIHandlerDefinition,
+import {
+  refersTo,
+  type WhookAPIParameterDefinition,
+  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
-import type { DelayService } from 'common-services';
+import { type DelayService } from 'common-services';
 
 /* Architecture Note #3.4: Examples
 

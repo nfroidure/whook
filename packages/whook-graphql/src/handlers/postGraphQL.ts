@@ -1,19 +1,19 @@
 import { autoHandler, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace } from 'yerror';
-import { noop } from '@whook/whook';
 import { type HTTPGraphQLRequest, HeaderMap } from '@apollo/server';
-import type {
-  WhookAPIHandlerDefinition,
-  WhookOperation,
-  WhookResponse,
-  WhookHeaders,
+import {
+  noop,
+  type WhookAPIHandlerDefinition,
+  type WhookOperation,
+  type WhookResponse,
+  type WhookHeaders,
 } from '@whook/whook';
-import type { LogService } from 'common-services';
-import type { WhookGraphQLService } from '../services/graphQL.js';
-import type {
-  BaseWhookGraphQLContext,
-  WhookGraphQLContext,
+import { type LogService } from 'common-services';
+import { type WhookGraphQLService } from '../services/graphQL.js';
+import {
+  type BaseWhookGraphQLContext,
+  type WhookGraphQLContext,
 } from '../services/graphQL.js';
 
 // Serving GraphQL over HTTP

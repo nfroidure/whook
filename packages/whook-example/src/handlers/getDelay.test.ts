@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, jest, expect } from '@jest/globals';
 import initGetDelay from './getDelay.js';
-import type { DelayService } from 'common-services';
+import { type DelayService } from 'common-services';
 
 /* Architecture Note #3.5: Testing
 

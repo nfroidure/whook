@@ -53,9 +53,9 @@ Declare it in the `src/index.ts` file of your project:
 Declare types in your `src/whook.d.ts` definition:
 
 ```diff
-+ import type {
-+   CORSConfig,
-+   WhookAPIOperationCORSConfig,
++ import {
++   type CORSConfig,
++   type WhookAPIOperationCORSConfig,
 + } from '@whook/cors';
 
 declare module 'application-services' {
@@ -91,7 +91,7 @@ And add the CORS config (usually in `src/config/common/config.js`):
 
 ```diff
 // ...
-import type { AppConfig } from 'application-services';
+import { type AppConfig } from 'application-services';
 
 const CONFIG: AppConfig = {
   // ...

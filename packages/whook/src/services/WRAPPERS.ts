@@ -1,6 +1,6 @@
 import { service, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { type WhookHandler } from '@whook/http-transaction';
+import { type WhookHandler } from '../services/httpTransaction.js';
 import { type LogService } from 'common-services';
 
 export default location(

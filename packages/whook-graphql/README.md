@@ -28,9 +28,9 @@ npm i @whook/graphql graphql-tag
 Update the types (usually in `src/whook.d.ts`):
 
 ```diff
-+import type {
-+   WhookGraphQLEnv,
-+   WhookGraphQLConfig,
++import {
++   type WhookGraphQLEnv,
++   type WhookGraphQLConfig,
 +} from '@whook/graphql';
 
 // ...
@@ -61,7 +61,7 @@ Declare the plugin into your `src/index.ts` file:
 
 ```diff
 +  import { gql } from 'graphql-tag';
-+  import type { WhookGraphQLFragmentService } from '@whook/graphql';
++  import { type WhookGraphQLFragmentService } from '@whook/graphql';
   // (...)
 
 +  // Add the Apollo Server configuration

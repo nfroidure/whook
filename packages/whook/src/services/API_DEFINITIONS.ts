@@ -2,9 +2,9 @@ import { autoService, location, name } from 'knifecycle';
 import { readdir as _readDir } from 'node:fs/promises';
 import { extname, join as pathJoin } from 'node:path';
 import { noop } from '../libs/utils.js';
-import type { ImporterService, LogService } from 'common-services';
-import type { OpenAPIV3_1 } from 'openapi-types';
-import type { JsonValue } from 'type-fest';
+import { type ImporterService, type LogService } from 'common-services';
+import { type OpenAPIV3_1 } from 'openapi-types';
+import { type JsonValue } from 'type-fest';
 import {
   WHOOK_DEFAULT_PLUGINS,
   type WhookPluginName,
