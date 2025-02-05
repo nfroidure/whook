@@ -40,6 +40,7 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     },
   },
   OPEN_API_TYPES_CONFIG: {
+    basePath: 'src/openAPI.d.ts',
     baseName: 'API',
     generateUnusedSchemas: false,
     generateRealEnums: false,

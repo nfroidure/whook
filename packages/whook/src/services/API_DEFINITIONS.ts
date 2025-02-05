@@ -3,13 +3,32 @@ import { readdir as _readDir } from 'node:fs/promises';
 import { extname, join as pathJoin } from 'node:path';
 import { noop } from '../libs/utils.js';
 import { type ImporterService, type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type JsonValue } from 'type-fest';
+import {
+  type OpenAPIComponents,
+  type OpenAPIExtension,
+  type OpenAPIPaths,
+  type OpenAPIResponse,
+  type OpenAPIParameter,
+  type OpenAPIHeader,
+  type OpenAPIRequestBody,
+} from 'ya-open-api-types';
 import {
   WHOOK_DEFAULT_PLUGINS,
   type WhookPluginName,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import {
+  WhookAPIHandlerDefinition,
+  type WhookAPIHandlerModule,
+} from '../types/handlers.js';
+import {
+  WhookAPIHeaderDefinition,
+  WhookAPIParameterDefinition,
+  WhookAPIRequestBodyDefinition,
+  WhookAPIResponseDefinition,
+  WhookAPISchemaDefinition,
+} from '../types/openapi.js';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
 export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.ts', '.mjs'];
@@ -39,6 +58,7 @@ export type WhookAPIDefinitionsConfig = {
 };
 
 export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
+  APP_ENV: string;
   WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
   log?: LogService;
   importer: ImporterService<WhookAPIHandlerModule>;
@@ -46,104 +66,12 @@ export type WhookAPIDefinitionsDependencies = WhookAPIDefinitionsConfig & {
 };
 
 export type WhookAPIDefinitions = {
-  paths: OpenAPIV3_1.PathsObject;
-  components: OpenAPIV3_1.ComponentsObject;
+  paths: OpenAPIPaths<ExpressiveJSONSchema, OpenAPIExtension>;
+  components: OpenAPIComponents<ExpressiveJSONSchema, OpenAPIExtension>;
 };
 
-export interface WhookAPIOperationConfig {
-  disabled?: boolean;
-  private?: boolean;
-}
-
-export interface WhookAPIOperationAddition<
-  T extends Record<string, unknown> = Record<string, unknown>,
-> {
-  operationId: OpenAPIV3_1.OperationObject['operationId'];
-  'x-whook'?: WhookAPIOperationConfig & T;
-}
-
-export type WhookAPIOperation<
-  T extends Record<string, unknown> = Record<string, unknown>,
-> = OpenAPIV3_1.OperationObject & WhookAPIOperationAddition<T>;
-
-export interface WhookBaseAPIHandlerDefinition<
-  T extends Record<string, unknown> = Record<string, unknown>,
-  U extends {
-    [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-    // eslint-disable-next-line
-  } = {},
-> {
-  path: string;
-  method: string;
-  operation: WhookAPIOperation<T> & U;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface WhookAPIHandlerDefinition<
-  T extends Record<string, unknown> = Record<string, unknown>,
-  U extends {
-    [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-    // eslint-disable-next-line
-  } = {},
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  V extends Record<string, unknown> = Record<string, unknown>,
-> extends WhookBaseAPIHandlerDefinition<T, U> {}
-
-export interface WhookAPISchemaDefinition<
-  T extends JsonValue | OpenAPIV3_1.ReferenceObject | void | unknown = unknown,
-> {
-  name: string;
-  schema: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject;
-  example?: T;
-  examples?: Record<string, T>;
-}
-
-export interface WhookAPIParameterDefinition<
-  T extends JsonValue | OpenAPIV3_1.ReferenceObject | void | unknown = unknown,
-> {
-  name: string;
-  parameter: OpenAPIV3_1.ParameterObject;
-  example?: T;
-  examples?: Record<string, T>;
-}
-
-export interface WhookAPIExampleDefinition<
-  T extends JsonValue | OpenAPIV3_1.ReferenceObject,
-> {
-  name: string;
-  value: T;
-}
-
-export interface WhookAPIHeaderDefinition {
-  name: string;
-  header: OpenAPIV3_1.HeaderObject | OpenAPIV3_1.ReferenceObject;
-}
-
-export interface WhookAPIResponseDefinition {
-  name: string;
-  response: OpenAPIV3_1.ResponseObject | OpenAPIV3_1.ReferenceObject;
-}
-
-export interface WhookAPIRequestBodyDefinition {
-  name: string;
-  requestBody: OpenAPIV3_1.RequestBodyObject | OpenAPIV3_1.ReferenceObject;
-}
-
-export interface WhookAPIDefinitionFilter<
-  T extends Record<string, unknown> = Record<string, unknown>,
-> {
-  (definition: WhookAPIHandlerDefinition<T>): boolean;
-}
-
-export interface WhookAPIHandlerModule {
-  [name: string]:
-    | WhookAPISchemaDefinition<never>
-    | WhookAPIParameterDefinition<never>
-    | WhookAPIHeaderDefinition
-    | WhookAPIResponseDefinition
-    | WhookAPIRequestBodyDefinition
-    | WhookAPIHandlerDefinition;
-  definition: WhookAPIHandlerDefinition;
+export interface WhookAPIDefinitionFilter {
+  (definition: WhookAPIHandlerDefinition): boolean;
 }
 
 export const DEFAULT_API_DEFINITION_FILTER = () => false;
@@ -175,6 +103,7 @@ export default location(
  * A promise of a containing the actual host.
  */
 async function initAPIDefinitions({
+  APP_ENV,
   WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
   WHOOK_RESOLVED_PLUGINS,
   IGNORED_FILES_SUFFIXES = DEFAULT_IGNORED_FILES_SUFFIXES,
@@ -246,7 +175,9 @@ async function initAPIDefinitions({
   );
 
   const API_DEFINITIONS = {
-    paths: handlersModules.reduce<OpenAPIV3_1.PathsObject>(
+    paths: handlersModules.reduce<
+      OpenAPIPaths<ExpressiveJSONSchema, OpenAPIExtension>
+    >(
       (
         paths,
         { file, module }: { file: string; module: WhookAPIHandlerModule },
@@ -261,7 +192,11 @@ async function initAPIDefinitions({
           return paths;
         }
 
-        if ((definition.operation['x-whook'] || {}).disabled) {
+        if (
+          definition.config?.environments &&
+          definition.config.environments !== 'all' &&
+          !definition.config.environments.includes(APP_ENV)
+        ) {
           log(
             'debug',
             `⏳ - Ignored handler "${definition.operation.operationId}" since disabled by its definition!`,
@@ -300,14 +235,14 @@ async function initAPIDefinitions({
     ),
     components: {
       schemas: handlersModules.reduce<{
-        [key: string]: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject;
+        [key: string]: ExpressiveJSONSchema;
       }>(
         (schemas, { module }) => ({
           ...schemas,
           ...Object.keys(module)
             .filter((key) => key.endsWith('Schema'))
             .reduce((addedSchemas, key) => {
-              const schema = module[key] as WhookAPISchemaDefinition<never>;
+              const schema = module[key] as WhookAPISchemaDefinition;
 
               if (schemas[schema.name]) {
                 log(
@@ -322,18 +257,14 @@ async function initAPIDefinitions({
         {},
       ),
       parameters: handlersModules.reduce<{
-        [key: string]:
-          | OpenAPIV3_1.ReferenceObject
-          | OpenAPIV3_1.ParameterObject;
+        [key: string]: OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>;
       }>(
         (parameters, { module }) => ({
           ...parameters,
           ...Object.keys(module)
             .filter((key) => key.endsWith('Parameter'))
             .reduce((addedParameters, key) => {
-              const parameter = module[
-                key
-              ] as WhookAPIParameterDefinition<never>;
+              const parameter = module[key] as WhookAPIParameterDefinition;
 
               if (addedParameters[parameter.name]) {
                 log(
@@ -351,7 +282,7 @@ async function initAPIDefinitions({
         {},
       ),
       headers: handlersModules.reduce<{
-        [key: string]: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.HeaderObject;
+        [key: string]: OpenAPIHeader<ExpressiveJSONSchema, OpenAPIExtension>;
       }>(
         (headers, { module }) => ({
           ...headers,
@@ -376,9 +307,10 @@ async function initAPIDefinitions({
         {},
       ),
       requestBodies: handlersModules.reduce<{
-        [key: string]:
-          | OpenAPIV3_1.ReferenceObject
-          | OpenAPIV3_1.RequestBodyObject;
+        [key: string]: OpenAPIRequestBody<
+          ExpressiveJSONSchema,
+          OpenAPIExtension
+        >;
       }>(
         (requestBodies, { module }) => ({
           ...requestBodies,
@@ -403,7 +335,7 @@ async function initAPIDefinitions({
         {},
       ),
       responses: handlersModules.reduce<{
-        [key: string]: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ResponseObject;
+        [key: string]: OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>;
       }>(
         (responses, { module }) => ({
           ...responses,

@@ -35,10 +35,16 @@ exports[`runProcess should work 1`] = `
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
   ],
   "logErrorCalls": [
+    [
+      "⌨️ - Initializing the basic query parser.",
+    ],
     [
       "🎙️ - HTTP Server listening at "http://localhost:8888".",
     ],

@@ -6,7 +6,7 @@ import {
   type OAuth2GranterService,
   type CheckApplicationService,
 } from './oAuth2Granters.js';
-import { type BaseAuthenticationData } from '@whook/authorization';
+import { type WhookAuthenticationData } from '@whook/authorization';
 import { type OAuth2Options } from '../services/oAuth2Granters.js';
 
 export type OAuth2ClientCredentialsGranterDependencies = {
@@ -14,20 +14,15 @@ export type OAuth2ClientCredentialsGranterDependencies = {
   checkApplication: CheckApplicationService;
   log?: LogService;
 };
-export type OAuth2ClientCredentialsGranterParameters<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-> = {
+export type OAuth2ClientCredentialsGranterParameters = {
   username: string;
   password: string;
-  scope?: AUTHENTICATION_DATA['scope'];
+  scope?: WhookAuthenticationData['scope'];
 };
-export type OAuth2ClientCredentialsGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-> = OAuth2GranterService<
+export type OAuth2ClientCredentialsGranterService = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
-  OAuth2ClientCredentialsGranterParameters,
-  AUTHENTICATION_DATA
+  OAuth2ClientCredentialsGranterParameters
 >;
 
 export default location(

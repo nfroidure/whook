@@ -1,11 +1,10 @@
-import { autoHandler, location } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import camelCase from 'camelcase';
 import { YError, printStackTrace } from 'yerror';
 import {
   refersTo,
   type WhookAPIHandlerDefinition,
   type WhookAPIParameterDefinition,
-  type WhookResponse,
   type WhookErrorsDescriptors,
   type WhookErrorDescriptor,
 } from '@whook/whook';
@@ -21,7 +20,7 @@ This endpoint simply redirect the user to the authentication
  fine.
 */
 
-export const responseTypeParameter: WhookAPIParameterDefinition = {
+export const responseTypeParameter = {
   name: 'responseType',
   parameter: {
     in: 'query',
@@ -32,8 +31,8 @@ export const responseTypeParameter: WhookAPIParameterDefinition = {
       enum: ['code', 'token'],
     },
   },
-};
-export const clientIdParameter: WhookAPIParameterDefinition = {
+} as const satisfies WhookAPIParameterDefinition;
+export const clientIdParameter = {
   name: 'clientId',
   parameter: {
     in: 'query',
@@ -43,8 +42,8 @@ export const clientIdParameter: WhookAPIParameterDefinition = {
       type: 'string',
     },
   },
-};
-export const redirectURIParameter: WhookAPIParameterDefinition = {
+} as const satisfies WhookAPIParameterDefinition;
+export const redirectURIParameter = {
   name: 'redirectURI',
   parameter: {
     in: 'query',
@@ -56,8 +55,8 @@ export const redirectURIParameter: WhookAPIParameterDefinition = {
       format: 'uri',
     },
   },
-};
-export const scopeParameter: WhookAPIParameterDefinition = {
+} as const satisfies WhookAPIParameterDefinition;
+export const scopeParameter = {
   name: 'scope',
   parameter: {
     in: 'query',
@@ -68,8 +67,8 @@ export const scopeParameter: WhookAPIParameterDefinition = {
       type: 'string',
     },
   },
-};
-export const stateParameter: WhookAPIParameterDefinition = {
+} as const satisfies WhookAPIParameterDefinition;
+export const stateParameter = {
   name: 'state',
   parameter: {
     in: 'query',
@@ -79,9 +78,9 @@ export const stateParameter: WhookAPIParameterDefinition = {
       type: 'string',
     },
   },
-};
+} as const satisfies WhookAPIParameterDefinition;
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   method: 'get',
   path: '/oauth2/authorize',
   operation: {
@@ -102,87 +101,7 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
-
-export default location(autoHandler(getOAuth2Authorize), import.meta.url);
-
-async function getOAuth2Authorize(
-  {
-    OAUTH2,
-    ERRORS_DESCRIPTORS,
-    oAuth2Granters,
-    log,
-  }: {
-    OAUTH2: OAuth2Options;
-    ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
-    oAuth2Granters: OAuth2GranterService[];
-    log: LogService;
-  },
-  {
-    response_type: responseType,
-    client_id: clientId,
-    redirect_uri: demandedRedirectURI = '',
-    scope: demandedScope = '',
-    state,
-    ...authorizeParameters
-  }: {
-    response_type: string;
-    client_id: string;
-    redirect_uri?: string;
-    scope?: string;
-    state: string;
-  } & Record<string, unknown>,
-): Promise<WhookResponse<302, { location: string }>> {
-  const url = new URL(OAUTH2.authenticateURL);
-
-  try {
-    const granter = oAuth2Granters.find(
-      (granter) =>
-        granter.authorizer && granter.authorizer.responseType === responseType,
-    );
-
-    if (!granter) {
-      throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', responseType);
-    }
-
-    const { applicationId, redirectURI, scope } = await (
-      granter.authorizer as NonNullable<OAuth2GranterService['authorizer']>
-    ).authorize(
-      {
-        clientId,
-        redirectURI: demandedRedirectURI,
-        scope: demandedScope,
-      },
-      camelCaseObjectProperties(authorizeParameters),
-    );
-
-    url.searchParams.set('type', responseType);
-    url.searchParams.set('redirect_uri', redirectURI);
-    url.searchParams.set('scope', scope);
-    url.searchParams.set('client_id', applicationId);
-  } catch (err) {
-    log('debug', '👫 - OAuth2 initialization error', (err as YError).code);
-    log('error-stack', printStackTrace(err as Error));
-
-    url.searchParams.set('redirect_uri', demandedRedirectURI);
-    setURLError(
-      url,
-      err as YError,
-      ERRORS_DESCRIPTORS[(err as YError).code] || ERRORS_DESCRIPTORS.E_OAUTH2,
-    );
-  }
-
-  if (state) {
-    url.searchParams.set('state', state);
-  }
-
-  return {
-    status: 302,
-    headers: {
-      location: url.href,
-    },
-  };
-}
+} as const satisfies WhookAPIHandlerDefinition;
 
 // The OAuth2 standard uses snake case names so we are
 // converting them to the project standards asap
@@ -212,3 +131,87 @@ export function setURLError(
     );
   }
 }
+
+async function initGetOAuth2Authorize({
+  OAUTH2,
+  ERRORS_DESCRIPTORS,
+  oAuth2Granters,
+  log,
+}: {
+  OAUTH2: OAuth2Options;
+  ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
+  oAuth2Granters: OAuth2GranterService[];
+  log: LogService;
+}) {
+  return async ({
+    query: {
+      response_type: responseType,
+      client_id: clientId,
+      redirect_uri: demandedRedirectURI = '',
+      scope: demandedScope = '',
+      state,
+      ...authorizeParameters
+    },
+  }: {
+    query: {
+      response_type: string;
+      client_id: string;
+      redirect_uri?: string;
+      scope?: string;
+      state: string;
+    } & Record<string, unknown>;
+  }) => {
+    const url = new URL(OAUTH2.authenticateURL);
+
+    try {
+      const granter = oAuth2Granters.find(
+        (granter) =>
+          granter.authorizer &&
+          granter.authorizer.responseType === responseType,
+      );
+
+      if (!granter) {
+        throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', responseType);
+      }
+
+      const { applicationId, redirectURI, scope } = await (
+        granter.authorizer as NonNullable<OAuth2GranterService['authorizer']>
+      ).authorize(
+        {
+          clientId,
+          redirectURI: demandedRedirectURI,
+          scope: demandedScope,
+        },
+        camelCaseObjectProperties(authorizeParameters),
+      );
+
+      url.searchParams.set('type', responseType);
+      url.searchParams.set('redirect_uri', redirectURI);
+      url.searchParams.set('scope', scope);
+      url.searchParams.set('client_id', applicationId);
+    } catch (err) {
+      log('debug', '👫 - OAuth2 initialization error', (err as YError).code);
+      log('error-stack', printStackTrace(err as Error));
+
+      url.searchParams.set('redirect_uri', demandedRedirectURI);
+      setURLError(
+        url,
+        err as YError,
+        ERRORS_DESCRIPTORS[(err as YError).code] || ERRORS_DESCRIPTORS.E_OAUTH2,
+      );
+    }
+
+    if (state) {
+      url.searchParams.set('state', state);
+    }
+
+    return {
+      status: 302,
+      headers: {
+        location: url.href,
+      },
+    };
+  };
+}
+
+export default location(autoService(initGetOAuth2Authorize), import.meta.url);

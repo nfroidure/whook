@@ -5,14 +5,13 @@ import {
 } from '../libs/constants.js';
 import miniquery from 'miniquery';
 import { printStackTrace, YError } from 'yerror';
-import { type WhookResponse } from './httpTransaction.js';
 import { type YHTTPError } from 'yhttperror';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import { type AppEnvVars } from 'application-services';
 import { type WhookResponseSpec } from '../libs/router.js';
 import { type WhookStringifyers } from './httpRouter.js';
+import { type JSONSchema } from 'ya-json-schema-types';
 
-/* Architecture Note #2: Error handler
+/* Architecture Note #2.13: Error handler
 
 Whook provides a default error handler that allows
  you to use the [`yerror`](https://github.com/nfroidure/yerror)
@@ -24,7 +23,7 @@ Depending on the `NODE_ENV` it adds extra informations to
  HTTP response, beware to avoid activating it in production.
 */
 
-/* Architecture Note #2.1: Errors descriptors
+/* Architecture Note #2.13.1: Errors descriptors
 
 Errors descriptors allows you to change the error
  handler behavior selectively for each error :
@@ -318,14 +317,14 @@ export interface WhookErrorHandler {
   ): Promise<WhookErrorResponse>;
 }
 
-export type WhookErrorResponse = WhookResponse<
-  number,
-  {
+export type WhookErrorResponse = {
+  status: number;
+  headers: {
     'cache-control': 'private';
     'content-type': string;
     [name: string]: string;
-  },
-  {
+  };
+  body: {
     error: string;
     error_description?: string;
     error_uri?: string;
@@ -337,10 +336,10 @@ export type WhookErrorResponse = WhookResponse<
       stack?: string;
       params?: unknown[];
     };
-  }
->;
+  };
+};
 
-export const WhookErrorSchema: OpenAPIV3_1.SchemaObject = {
+export const whookErrorSchema: JSONSchema = {
   type: 'object',
   additionalProperties: false,
   properties: {

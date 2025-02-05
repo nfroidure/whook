@@ -1,31 +1,33 @@
-import { autoHandler } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import {
   refersTo,
   type WhookAPISchemaDefinition,
   type WhookAPIHandlerDefinition,
+  type WhookAPITypedHandler,
 } from '@whook/whook';
 import { type TimeService } from 'common-services';
 
-export const timeSchema: WhookAPISchemaDefinition<Components.Schemas.TimeSchema> =
-  {
-    name: 'TimeSchema',
-    schema: {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        currentDate: {
-          type: 'string',
-          format: 'date-time',
-        },
+export const timeSchema = {
+  name: 'TimeSchema',
+  schema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      currentDate: {
+        type: 'string',
+        format: 'date-time',
       },
     },
-  };
+  },
+} as const satisfies WhookAPISchemaDefinition<
+  components['schemas']['TimeSchema']
+>;
 
 /* Architecture Note #3.4.3: getTime
 
 Returns the server time.
 */
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '/time',
   method: 'get',
   operation: {
@@ -43,19 +45,20 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-export default autoHandler(getTime);
-
-async function getTime({
-  time,
-}: {
-  time: TimeService;
-}): Promise<API.GetTime.Output> {
-  return {
+async function initGetTime({ time }: { time: TimeService }) {
+  const handler: WhookAPITypedHandler<
+    operations[typeof definition.operation.operationId],
+    typeof definition
+  > = async () => ({
     status: 200,
     body: {
       currentDate: new Date(time()).toISOString(),
     },
-  };
+  });
+
+  return handler;
 }
+
+export default autoService(initGetTime);

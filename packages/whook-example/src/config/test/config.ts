@@ -4,7 +4,7 @@ import { type AppConfig } from 'application-services';
 const CONFIG: AppConfig = {
   ...COMMON_CONFIG,
   HOST: 'localhost',
-  // Let's mock the time starting at a special date
+  // Let's mock the time starting at a special date when testing
   CLOCK_MOCK: {
     isFixed: false,
     mockedTime: Date.parse('2012-01-15T00:00:00Z'),

@@ -4,24 +4,20 @@ import { initializer, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace, YError } from 'yerror';
 import { Siso } from 'siso';
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
-import { qsStrict as strictQs } from 'strict-qs';
 import { pickFirstHeaderValue } from '../libs/headers.js';
 import {
-  getOpenAPIOperations,
-  dereferenceOpenAPIOperations,
-} from '../libs/openapi.js';
-import {
-  prepareParametersValidators,
-  applyValidators,
-  filterHeaders,
   prepareBodyValidator,
   extractOperationSecurityParameters,
-  castParameters,
+  resolveParameters,
+  createParametersValidators,
+  type WhookBodyValidator,
+  type WhookParametersValidators,
 } from '../libs/validation.js';
 import {
-  type WhookBodySpec,
+  DEFAULT_COERCION_OPTIONS,
+  type WhookCoercionOptions,
+} from '../libs/coercion.js';
+import {
   extractBodySpec,
   extractResponseSpec,
   checkResponseCharset,
@@ -29,10 +25,10 @@ import {
   executeHandler,
   extractProduceableMediaTypes,
   extractConsumableMediaTypes,
+  type WhookBodySpec,
 } from '../libs/router.js';
 import { getBody, sendBody } from '../libs/body.js';
 import {
-  DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
   DEFAULT_STRINGIFYERS,
@@ -40,25 +36,40 @@ import {
   DEFAULT_ENCODERS,
 } from '../libs/constants.js';
 import { type JsonValue } from 'type-fest';
-import { type QSParameter } from 'strict-qs';
 import { type Provider } from 'knifecycle';
-import { type Transform, Readable } from 'node:stream';
+import { type Transform, type Readable } from 'node:stream';
+import { type WhookHTTPTransactionService } from './httpTransaction.js';
 import {
-  type WhookHandler,
-  type WhookOperation,
-  type WhookHTTPTransactionService,
-  type DereferencedParameterObject,
-  type WhookResponse,
-} from './httpTransaction.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
+  pathItemToOperationMap,
+  ensureResolvedObject,
+  type OpenAPIExtension,
+  type OpenAPIReference,
+  type OpenAPIResponse,
+  PATH_ITEM_METHODS,
+} from 'ya-open-api-types';
 import { type LogService } from 'common-services';
-import { type IncomingMessage, ServerResponse } from 'node:http';
+import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type WhookErrorHandler } from '../services/errorHandler.js';
-import { type ValidateFunction } from 'ajv';
 import { type AppEnvVars } from 'application-services';
+import {
+  type WhookAPIHandlerParameters,
+  type WhookAPIHandler,
+} from '../types/handlers.js';
+import { type WhookRequestBody, type WhookResponse } from '../types/http.js';
+import { type WhookSchemaValidatorsService } from './schemaValidators.js';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import {
+  type WhookOpenAPIOperation,
+  type WhookOpenAPI,
+  type WhookSupportedParameter,
+} from '../types/openapi.js';
+import {
+  type WhookQueryParser,
+  type WhookQueryParserBuilderService,
+} from './queryParserBuilder.js';
 
-const SEARCH_SEPARATOR = '?';
-const PATH_SEPARATOR = '/';
+export const SEARCH_SEPARATOR = '?';
+export const PATH_SEPARATOR = '/';
 
 function noop() {
   return undefined;
@@ -67,15 +78,7 @@ function identity<T>(x: T): T {
   return x;
 }
 
-export type WhookQueryStringParser = (
-  definitions: Parameters<typeof strictQs>[1],
-  query: Parameters<typeof strictQs>[2],
-) => ReturnType<typeof strictQs>;
-export type WhookHandlerName = string;
-export type WhookHandlersService<T extends WhookHandler> = Record<
-  WhookHandlerName,
-  T
->;
+export type WhookHandlersService = Record<string, WhookAPIHandler>;
 export type WhookParser = (
   content: string,
   bodySpec?: WhookBodySpec,
@@ -99,42 +102,38 @@ export type WhookHTTPRouterConfig = {
   DEBUG_NODE_ENVS?: string[];
   BUFFER_LIMIT?: string;
   BASE_PATH?: string;
+  COERCION_OPTIONS?: WhookCoercionOptions;
 };
-export type WhookHTTPRouterDependencies<T extends WhookHandler> =
-  WhookHTTPRouterConfig & {
-    ENV: AppEnvVars;
-    HANDLERS: WhookHandlersService<T>;
-    API: OpenAPIV3_1.Document;
-    PARSERS?: WhookParsers;
-    STRINGIFYERS?: WhookStringifyers;
-    DECODERS?: WhookEncoders<Transform>;
-    ENCODERS?: WhookDecoders<Transform>;
-    QUERY_PARSER?: WhookQueryStringParser;
-    log?: LogService;
-    httpTransaction: WhookHTTPTransactionService;
-    errorHandler: WhookErrorHandler;
-  };
+export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
+  ENV: AppEnvVars;
+  HANDLERS: WhookHandlersService;
+  API: WhookOpenAPI;
+  PARSERS?: WhookParsers;
+  STRINGIFYERS?: WhookStringifyers;
+  DECODERS?: WhookEncoders<Transform>;
+  ENCODERS?: WhookDecoders<Transform>;
+  queryParserBuilder: WhookQueryParserBuilderService;
+  log?: LogService;
+  schemaValidators: WhookSchemaValidatorsService;
+  httpTransaction: WhookHTTPTransactionService;
+  errorHandler: WhookErrorHandler;
+};
 export interface WhookHTTPRouterService {
   (req: IncomingMessage, res: ServerResponse): Promise<void>;
 }
 export type WhookHTTPRouterProvider = Provider<WhookHTTPRouterService>;
 
-type RouteDescriptor = {
-  handler: WhookHandler;
+export type WhookHTTPRouterDescriptor = {
+  handler: WhookAPIHandler;
+  operation: WhookOpenAPIOperation;
+  queryParser: WhookQueryParser;
+  parametersValidators: WhookParametersValidators;
   consumableMediaTypes: string[];
   produceableMediaTypes: string[];
-  operation: WhookOperation;
-  validators: {
-    [name: string]: ValidateFunction;
-  };
-  bodyValidator: (
-    operation: WhookOperation,
-    contentType: string,
-    body: JsonValue | Readable | void,
-  ) => void;
+  bodyValidator: WhookBodyValidator;
 };
 
-/* Architecture Note #1: HTTP Router
+/* Architecture Note #2.11: HTTP Router
 
 The Whook's `httpRouter` service  is responsible
  for wiring routes definitions to their actual
@@ -174,10 +173,12 @@ export default location(
         '?STRINGIFYERS',
         '?DECODERS',
         '?ENCODERS',
-        '?QUERY_PARSER',
+        '?COERCION_OPTIONS',
         '?log',
+        'schemaValidators',
         'httpTransaction',
         'errorHandler',
+        'queryParserBuilder',
       ],
     },
     initHTTPRouter,
@@ -189,11 +190,6 @@ export default location(
  * Initialize an HTTP router
  * @param  {Object}   services
  * The services the server depends on
- * @param  {Object}   services.ENV
- * The injected ENV value
- * @param  {Array}   [services.DEBUG_NODE_ENVS]
- * The environnement that activate debugging
- *  (prints stack trace in HTTP errors responses)
  * @param  {String}   [services.BUFFER_LIMIT]
  * The maximum bufferisation before parsing the
  *  request body
@@ -215,8 +211,10 @@ export default location(
  * A map of encoder stream constructors
  * @param  {Object} [services.DECODERS]
  * A map of decoder stream constructors
- * @param  {Object} [services.QUERY_PARSER]
- * A query parser with the `strict-qs` signature
+ * @param  {Object} [services.queryParserBuilder]
+ * A query parser builder from OpenAPI parameters
+ * @param  {Object} [services.COERCION_OPTIONS]
+ * Options for type coercion of parameters values
  * @param  {Function} [services.log=noop]
  * A logging function
  * @param  {Function} services.httpTransaction
@@ -224,9 +222,7 @@ export default location(
  * @return {Promise}
  * A promise of a function to handle HTTP requests.
  */
-async function initHTTPRouter<T extends WhookHandler>({
-  ENV,
-  DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
+async function initHTTPRouter({
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   BASE_PATH = '',
   HANDLERS,
@@ -235,11 +231,13 @@ async function initHTTPRouter<T extends WhookHandler>({
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
-  QUERY_PARSER = strictQs.bind(null, {} as Parameters<typeof strictQs>[0]),
+  COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
+  queryParserBuilder,
+  schemaValidators,
   log = noop,
   httpTransaction,
   errorHandler,
-}: WhookHTTPRouterDependencies<T>): Promise<WhookHTTPRouterProvider> {
+}: WhookHTTPRouterDependencies): Promise<WhookHTTPRouterProvider> {
   const bufferLimit =
     bytes.parse(BUFFER_LIMIT) || (bytes.parse(DEFAULT_BUFFER_LIMIT) as number);
   const consumableCharsets = Object.keys(DECODERS);
@@ -248,28 +246,19 @@ async function initHTTPRouter<T extends WhookHandler>({
     contentTypes: Object.keys(STRINGIFYERS),
     charsets: produceableCharsets,
   };
-  const ajv = new Ajv.default({
-    verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
-    strict: true,
-    logger: {
-      log: (...args: string[]) => log('debug', ...args),
-      warn: (...args: string[]) => log('warning', ...args),
-      error: (...args: string[]) => log('error', ...args),
-    },
-  });
 
-  addAJVFormats.default(ajv);
-
-  const routers = await _createRouters<T>({
+  const routers = await _createRouters({
     API,
+    COERCION_OPTIONS,
     HANDLERS,
     BASE_PATH,
-    ajv,
+    queryParserBuilder,
+    schemaValidators,
     log,
   });
 
-  let handleFatalError;
-  const fatalErrorPromise: Promise<void> = new Promise((resolve, reject) => {
+  let handleFatalError: (reason?: unknown) => void;
+  const fatalErrorPromise: Promise<void> = new Promise((_resolve, reject) => {
     handleFatalError = reject;
   });
 
@@ -295,37 +284,28 @@ async function initHTTPRouter<T extends WhookHandler>({
     res: ServerResponse,
   ): Promise<void> {
     try {
-      let operation: WhookOperation;
+      let operation: WhookOpenAPIOperation;
       let responseSpec = defaultResponseSpec;
 
       const { request, transaction } = await httpTransaction(req, res);
 
       await transaction
         .start(async () => {
-          const method = request.method;
+          const method = request.method as (typeof PATH_ITEM_METHODS)[number];
           const path = request.url.split(SEARCH_SEPARATOR)[0];
           const parts = path.split(PATH_SEPARATOR).filter(identity);
-          let [result, pathParameters] = routers[method]
+          let [result, pathNodesValues] = routers[method]
             ? routers[method].find(parts)
             : [];
 
           // Second chance for HEAD calls
           if (!result && 'head' === method) {
-            [result, pathParameters] = routers.get
+            [result, pathNodesValues] = routers.get
               ? routers.get.find(parts)
               : [];
           }
 
-          const {
-            handler,
-            operation: _operation_,
-            validators,
-            bodyValidator,
-            consumableMediaTypes,
-            produceableMediaTypes,
-          } = result || {};
-
-          if (!handler) {
+          if (!result || !result.handler) {
             log('debug', '❌ - No handler found for: ', method, parts);
             throw new YHTTPError(
               404,
@@ -336,28 +316,88 @@ async function initHTTPRouter<T extends WhookHandler>({
             );
           }
 
-          operation = _operation_ as WhookOperation;
+          const {
+            handler,
+            operation: _operation_,
+            queryParser,
+            parametersValidators,
+            consumableMediaTypes,
+            produceableMediaTypes,
+            bodyValidator,
+          } = result;
+
+          operation = _operation_;
 
           const search = request.url.substr(
             request.url.split(SEARCH_SEPARATOR)[0].length,
           );
-          const bodySpec = extractBodySpec(
-            request,
-            consumableMediaTypes || [],
-            consumableCharsets,
-          );
-          let parameters;
 
-          responseSpec = extractResponseSpec(
-            operation,
-            request,
-            produceableMediaTypes || [],
-            produceableCharsets,
-          );
+          const parametersValues: WhookAPIHandlerParameters = {
+            query: {},
+            header: {},
+            path: {},
+            cookie: {},
+            body: undefined as unknown as WhookRequestBody,
+            options: {},
+          };
 
           try {
+            const queryValues = queryParser(search);
+
+            for (const location of Object.keys(parametersValidators)) {
+              if (location === 'query') {
+                for (const [name, validator] of Object.entries(
+                  parametersValidators.query,
+                )) {
+                  parametersValues.query[name] = validator(
+                    typeof queryValues[name] !== 'undefined'
+                      ? queryValues[name]?.toString()
+                      : undefined,
+                  );
+                }
+              } else if (location === 'header') {
+                for (const [name, validator] of Object.entries(
+                  parametersValidators.header,
+                )) {
+                  // header names are case insensitive
+                  const canonicalName = name.toLowerCase();
+
+                  parametersValues.header[name] = validator(
+                    typeof request.headers[canonicalName] !== 'undefined'
+                      ? request.headers[canonicalName].toString()
+                      : undefined,
+                  );
+                }
+              } else if (location === 'path') {
+                for (const [name, validator] of Object.entries(
+                  parametersValidators.path,
+                )) {
+                  parametersValues.path[name] = validator(
+                    pathNodesValues &&
+                      typeof pathNodesValues[name] !== 'undefined'
+                      ? pathNodesValues[name].toString()
+                      : undefined,
+                  );
+                }
+              }
+            }
+
+            const bodySpec = extractBodySpec(
+              request,
+              consumableMediaTypes || [],
+              consumableCharsets,
+            );
+
+            responseSpec = extractResponseSpec(
+              operation,
+              request,
+              produceableMediaTypes || [],
+              produceableCharsets,
+            );
+
             const body = await getBody(
               {
+                API,
                 DECODERS,
                 PARSERS,
                 bufferLimit,
@@ -366,47 +406,25 @@ async function initHTTPRouter<T extends WhookHandler>({
               request.body as Readable,
               bodySpec,
             );
-            // TODO: Update strictQS to handle OpenAPI 3
-            const retroCompatibleQueryParameters = (operation.parameters || [])
-              .filter((p) => p.in === 'query')
-              .map((p) => ({ ...p, ...p.schema }));
-            const headersParameters = (operation.parameters || []).filter(
-              (p) => p.in === 'header',
-            );
 
-            parameters = {
-              ...pathParameters,
-              ...QUERY_PARSER(
-                retroCompatibleQueryParameters as unknown as QSParameter[],
-                search,
-              ),
-              ...castParameters(
-                headersParameters,
-                filterHeaders(headersParameters, request.headers),
-              ),
-            };
+            bodyValidator(operation, bodySpec.contentType, body);
 
-            applyValidators(
-              operation,
-              validators as RouteDescriptor['validators'],
-              parameters,
-            );
-
-            (bodyValidator as RouteDescriptor['bodyValidator'])(
-              operation,
-              bodySpec.contentType,
-              body,
-            );
-
-            parameters = {
-              ...parameters,
-              ...('undefined' !== typeof body ? { body } : {}),
-            };
+            if (typeof body !== 'undefined') {
+              parametersValues.body = body;
+            }
           } catch (err) {
             throw YHTTPError.cast(err as Error, 400);
           }
 
-          const response = await executeHandler(operation, handler, parameters);
+          const response = await executeHandler(
+            {
+              path,
+              method,
+              operation: operation as WhookOpenAPIOperation & OpenAPIExtension,
+            },
+            handler,
+            parametersValues,
+          );
 
           response.headers = response.headers || {};
 
@@ -419,22 +437,38 @@ async function initHTTPRouter<T extends WhookHandler>({
             pickFirstHeaderValue('content-type', response.headers || {}) ||
             'text/plain';
 
+          const responseObject =
+            operation.responses && operation.responses[response.status]
+              ? await ensureResolvedObject(
+                  API,
+                  operation.responses[response.status] as
+                    | OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
+                    | OpenAPIReference<
+                        OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
+                      >,
+                )
+              : undefined;
+          const responseSchema =
+            responseObject &&
+            responseObject.content &&
+            responseObject.content?.[responseContentType] &&
+            'schema' in responseObject.content[responseContentType] &&
+            ((await ensureResolvedObject(
+              API,
+              responseObject.content?.[responseContentType].schema,
+            )) as ExpressiveJSONSchema);
+
           // Check the stringifyer only when a schema is
           // specified and it is not a binary one
           const responseHasSchema =
-            operation.responses &&
-            operation.responses[response.status] &&
-            operation.responses[response.status].content &&
-            operation.responses[response.status].content?.[
-              responseContentType
-            ] &&
-            operation.responses[response.status].content?.[responseContentType]
-              .schema &&
-            (operation.responses[response.status].content?.[responseContentType]
-              .schema.type !== 'string' ||
-              operation.responses[response.status].content?.[
-                responseContentType
-              ].schema.format !== 'binary');
+            typeof responseSchema === 'boolean' ||
+            (typeof responseSchema === 'object' &&
+              responseSchema &&
+              !(
+                'type' in responseSchema &&
+                responseSchema.type === 'string' &&
+                responseSchema.format === 'binary'
+              ));
 
           if (responseHasSchema && !STRINGIFYERS[responseContentType]) {
             throw new YHTTPError(
@@ -471,6 +505,7 @@ async function initHTTPRouter<T extends WhookHandler>({
                 ? 'Stream'
                 : castedResponse.body,
             );
+
             castedResponse = {
               ...castedResponse,
               body: undefined,
@@ -496,129 +531,187 @@ async function initHTTPRouter<T extends WhookHandler>({
   }
 }
 
-function _explodePath(
+async function buildPathNodes(
+  {
+    API,
+    schemaValidators,
+  }: { API: WhookOpenAPI; schemaValidators: WhookSchemaValidatorsService },
   path: string,
-  parameters: DereferencedParameterObject[],
-): (string | DereferencedParameterObject)[] {
-  return path
-    .split(PATH_SEPARATOR)
-    .filter(identity)
-    .map((node) => {
-      const matches = /^{([a-z0-9]+)}$/i.exec(node);
+  parameters: WhookSupportedParameter[],
+) {
+  const pathNodes: Parameters<Siso['register']>[0] = [];
 
-      if (!matches) {
-        return node;
-      }
+  for (const node of path.split(PATH_SEPARATOR).filter(identity)) {
+    const matches = /^{([a-z0-9]+)}$/i.exec(node);
 
-      const parameter = (parameters || []).find(
-        (aParameter) => aParameter.name === matches[1],
-      );
+    if (!matches) {
+      pathNodes.push(node);
+      continue;
+    }
 
-      if (!parameter) {
-        throw new YError('E_UNDECLARED_PATH_PARAMETER', path, node);
-      }
-      return parameter;
+    const parameter = (parameters || []).find(
+      (aParameter) =>
+        aParameter.in === 'path' && aParameter.name === matches[1],
+    );
+
+    if (!parameter) {
+      throw new YError('E_UNDECLARED_PATH_PARAMETER', path, node);
+    }
+
+    if (!('schema' in parameter) || typeof parameter.schema !== 'object') {
+      throw new YError('E_UNSUPPORTED_PATH_PARAMETER', path, node);
+    }
+
+    const schema = (await ensureResolvedObject(
+      API,
+      parameter.schema,
+    )) as ExpressiveJSONSchema;
+
+    if (
+      !('type' in schema) ||
+      typeof schema.type !== 'string' ||
+      !['number', 'string', 'boolean'].includes(schema.type)
+    ) {
+      throw new YError('E_UNSUPPORTED_PATH_PARAMETER', path, node);
+    }
+
+    pathNodes.push({
+      type: schema.type as 'string',
+      name: parameter.name,
+      validate: schemaValidators(parameter.schema),
     });
+  }
+  return pathNodes;
 }
 
-async function _createRouters<T extends WhookHandler>({
+async function _createRouters({
   API,
   HANDLERS,
   BASE_PATH = '',
-  ajv,
+  COERCION_OPTIONS,
+  queryParserBuilder,
+  schemaValidators,
   log,
 }: {
-  API: OpenAPIV3_1.Document;
-  HANDLERS: WhookHandlersService<T>;
+  API: WhookOpenAPI;
+  HANDLERS: WhookHandlersService;
   BASE_PATH?: string;
-  ajv: Ajv.default;
+  COERCION_OPTIONS: WhookCoercionOptions;
+  queryParserBuilder: WhookQueryParserBuilderService;
+  schemaValidators: WhookSchemaValidatorsService;
   log: LogService;
-}): Promise<{ [method: string]: Siso<RouteDescriptor> }> {
-  const routers = {};
-  const operations = await dereferenceOpenAPIOperations(
-    API,
-    getOpenAPIOperations(API),
-  );
+}) {
+  const routers: Record<string, Siso<WhookHTTPRouterDescriptor>> = {};
 
-  operations.forEach((operation) => {
-    const { path, method, operationId, parameters } = operation;
-
-    if (!path.startsWith(PATH_SEPARATOR)) {
-      throw new YError('E_BAD_PATH', path);
-    }
-    if (!operationId) {
-      throw new YError('E_NO_OPERATION_ID', path, method);
-    }
-
-    if (!HANDLERS[operationId]) {
-      throw new YError('E_NO_HANDLER', operationId);
-    }
-
-    const handler = HANDLERS[operationId];
-
-    // TODO: create a new major version of Siso to handle OpenAPI
-    // path params mode widely
-    const pathParameters = ((parameters || []) as OpenAPIV3_1.ParameterObject[])
-      .filter((p) => 'path' === p.in)
-      .map((p) => {
-        if (p.style) {
-          log('warning', '⚠️ - Only a style subset is supported currently!');
-        }
-
-        return {
-          ...p,
-          // TODO: Remove when this issue is tackled:
-          // https://github.com/nfroidure/siso/issues/45
-          ...((p.schema as OpenAPIV3_1.SchemaObject)?.enum
-            ? {}
-            : {
-                pattern: '^.*$',
-              }),
-          ...p.schema,
-          schema: undefined,
-        };
-      });
-    const ammendedParameters = extractOperationSecurityParameters(
-      API,
-      operation,
+  for (const [path, pathItem] of Object.entries(API.paths || {})) {
+    const pathItemParameters = await resolveParameters(
+      { API, log },
+      pathItem.parameters || [],
+    );
+    const pathItemValidators = await createParametersValidators(
+      {
+        API,
+        COERCION_OPTIONS,
+        schemaValidators,
+      },
+      pathItemParameters,
     );
 
-    routers[method] = routers[method] || new Siso();
-    routers[method].register(
-      _explodePath(
-        BASE_PATH + path,
-        pathParameters as unknown[] as DereferencedParameterObject[],
-      ),
-      _prepareRoute({ ajv }, operation, handler, ammendedParameters),
-    );
-  });
+    for (const [method, operation] of Object.entries(
+      pathItemToOperationMap(pathItem) as Record<string, WhookOpenAPIOperation>,
+    )) {
+      const operationId = operation.operationId;
+
+      if (!path.startsWith(PATH_SEPARATOR)) {
+        throw new YError('E_BAD_PATH', path);
+      }
+
+      if (!operationId) {
+        throw new YError('E_NO_OPERATION_ID', path, method);
+      }
+
+      if (!HANDLERS[operationId]) {
+        throw new YError('E_NO_HANDLER', operationId);
+      }
+
+      const handler = HANDLERS[operationId];
+      const operationParameters = await resolveParameters(
+        { API, log },
+        operation.parameters || [],
+      );
+      const ammendedParameters = await resolveParameters(
+        { API, log },
+        await extractOperationSecurityParameters({ API }, operation),
+      );
+      const operationValidators = await createParametersValidators(
+        {
+          API,
+          COERCION_OPTIONS,
+          schemaValidators,
+        },
+        operationParameters.concat(ammendedParameters),
+      );
+      const bodyValidator = await prepareBodyValidator(
+        { API, schemaValidators },
+        operation,
+      );
+
+      const consumableMediaTypes = await extractConsumableMediaTypes(
+        API,
+        operation,
+      );
+      const produceableMediaTypes = await extractProduceableMediaTypes(
+        API,
+        operation,
+      );
+      const parameters = pathItemParameters
+        .concat(ammendedParameters)
+        .filter((parameter) =>
+          operationParameters.every(
+            (aParameter) =>
+              aParameter.in !== parameter.in ||
+              aParameter.name !== parameter.name,
+          ),
+        )
+        .concat(operationParameters);
+      const queryParser = await queryParserBuilder(parameters);
+
+      routers[method] = routers[method] || new Siso();
+      routers[method].register(
+        await buildPathNodes(
+          { API, schemaValidators },
+          BASE_PATH + path,
+          pathItemParameters.concat(operationParameters),
+        ),
+        {
+          handler,
+          operation,
+          queryParser,
+          parametersValidators: {
+            path: {
+              ...pathItemValidators.path,
+              ...operationValidators.path,
+            },
+            query: {
+              ...pathItemValidators.query,
+              ...operationValidators.query,
+            },
+            header: {
+              ...pathItemValidators.header,
+              ...operationValidators.header,
+            },
+            cookie: {
+              ...pathItemValidators.cookie,
+              ...operationValidators.cookie,
+            },
+          },
+          consumableMediaTypes,
+          produceableMediaTypes,
+          bodyValidator,
+        },
+      );
+    }
+  }
 
   return routers;
-}
-
-function _prepareRoute(
-  { ajv }: { ajv: Ajv.default },
-  operation: WhookOperation,
-  handler: WhookHandler,
-  ammendedParameters: DereferencedParameterObject[] = [],
-) {
-  const consumableMediaTypes = extractConsumableMediaTypes(operation);
-  const produceableMediaTypes = extractProduceableMediaTypes(operation);
-  const parameters = (operation.parameters || []).concat(ammendedParameters);
-
-  return {
-    handler,
-    consumableMediaTypes,
-    produceableMediaTypes,
-    operation: {
-      ...operation,
-      parameters,
-    },
-    validators: prepareParametersValidators(
-      ajv,
-      operation.operationId,
-      parameters,
-    ),
-    bodyValidator: prepareBodyValidator(ajv, operation),
-  };
 }

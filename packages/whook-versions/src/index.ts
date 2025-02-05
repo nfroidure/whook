@@ -5,7 +5,14 @@ import {
   DEFAULT_HELP_URI,
   type WhookErrorsDescriptors,
 } from '@whook/whook';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  type OpenAPIParameter,
+  type OpenAPI,
+  type OpenAPIPathItem,
+  type OpenAPIPaths,
+  type OpenAPIExtension,
+} from 'ya-open-api-types';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type VersionDescriptor } from './wrappers/wrapHandlerWithVersionChecker.js';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
@@ -38,16 +45,21 @@ export type {
  * @returns {Promise<Object>} The augmented  OpenAPI object
  */
 export async function augmentAPIWithVersionsHeaders(
-  API: OpenAPIV3_1.Document,
+  API: OpenAPI,
   VERSIONS: VersionDescriptor[],
-): Promise<OpenAPIV3_1.Document> {
+): Promise<OpenAPI> {
   return {
     ...API,
     components: {
       ...(API.components || {}),
       parameters: {
         ...((API.components || {}).parameters || {}),
-        ...VERSIONS.reduce<{ [key: string]: OpenAPIV3_1.ParameterObject }>(
+        ...VERSIONS.reduce<{
+          [key: string]: OpenAPIParameter<
+            ExpressiveJSONSchema,
+            OpenAPIExtension
+          >;
+        }>(
           (versionsParameters, version) => ({
             ...versionsParameters,
             [camelCase(version.header)]: {
@@ -66,31 +78,27 @@ export async function augmentAPIWithVersionsHeaders(
         ),
       },
     },
-    paths: Object.keys(API.paths || {}).reduce<OpenAPIV3_1.PathsObject>(
-      reducePaths,
-      API.paths || {},
-    ),
+    paths: Object.keys(API.paths || {}).reduce<
+      OpenAPIPaths<ExpressiveJSONSchema, OpenAPIExtension>
+    >(reducePaths, API.paths || {}),
   };
 
   function reducePaths(
-    pathsObject: OpenAPIV3_1.PathsObject,
+    pathsObject: OpenAPIPaths<ExpressiveJSONSchema, OpenAPIExtension>,
     path: string,
-  ): OpenAPIV3_1.PathsObject {
+  ): OpenAPIPaths<ExpressiveJSONSchema, OpenAPIExtension> {
     return {
       ...pathsObject,
-      [path]: Object.keys(
-        API.paths?.[path] || {},
-      ).reduce<OpenAPIV3_1.PathItemObject>(
-        reduceMethods,
-        API.paths?.[path] || {},
-      ),
+      [path]: Object.keys(API.paths?.[path] || {}).reduce<
+        OpenAPIPathItem<ExpressiveJSONSchema, OpenAPIExtension>
+      >(reduceMethods, API.paths?.[path] || {}),
     };
   }
 
   function reduceMethods(
-    pathItemObject: OpenAPIV3_1.PathItemObject,
+    pathItemObject: OpenAPIPathItem<ExpressiveJSONSchema, OpenAPIExtension>,
     method: string,
-  ): OpenAPIV3_1.PathItemObject {
+  ): OpenAPIPathItem<ExpressiveJSONSchema, OpenAPIExtension> {
     return {
       ...pathItemObject,
       [method]: {

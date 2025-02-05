@@ -74,7 +74,7 @@
     "debug": "^4.3.7",
     "fs-extra": "^11.2.0",
     "inquirer": "^12.1.0",
-    "knifecycle": "^18.0.0",
+    "knifecycle": "^19.0.0",
     "ora": "^8.1.0",
     "yerror": "^8.0.0"
   },

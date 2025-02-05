@@ -99,11 +99,13 @@ describe('getOAuth2Authorize', () => {
       log,
     });
     const response = await getOAuth2Authorize({
-      response_type: 'code',
-      client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
-      redirect_uri: 'https://www.example.com',
-      scope: 'user',
-      state: 'bancal',
+      query: {
+        response_type: 'code',
+        client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        redirect_uri: 'https://www.example.com',
+        scope: 'user',
+        state: 'bancal',
+      },
     });
 
     expect(response).toMatchInlineSnapshot(`
@@ -147,11 +149,13 @@ describe('getOAuth2Authorize', () => {
       log,
     });
     const response = await getOAuth2Authorize({
-      response_type: 'yolo',
-      client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
-      redirect_uri: 'https://www.example.com',
-      scope: 'user',
-      state: 'bancal',
+      query: {
+        response_type: 'yolo',
+        client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        redirect_uri: 'https://www.example.com',
+        scope: 'user',
+        state: 'bancal',
+      },
     });
 
     expect(response).toMatchInlineSnapshot(`

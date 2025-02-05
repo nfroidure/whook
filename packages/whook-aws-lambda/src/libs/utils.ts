@@ -1,6 +1,11 @@
 import { YError } from 'yerror';
 import path from 'node:path';
 import { type LogService } from 'common-services';
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookOpenAPI,
+} from '@whook/whook';
+import { pathItemToOperationMap } from 'ya-open-api-types';
 
 export async function loadLambda(
   {
@@ -42,4 +47,25 @@ export async function loadLambda(
   } catch (err) {
     throw YError.wrap(err as Error, 'E_LAMBDA_LOAD');
   }
+}
+
+export function getOpenAPIDefinitions(
+  API: WhookOpenAPI,
+): WhookAPIHandlerDefinition[] {
+  const definitions: WhookAPIHandlerDefinition[] = [];
+
+  for (const [path, pathItem] of Object.entries(API.paths || {})) {
+    for (const [method, operation] of Object.entries(
+      pathItemToOperationMap(pathItem || {}),
+    )) {
+      definitions.push({
+        path,
+        method,
+        operation,
+        config: { type: 'http', ...((operation['x-whook'] as object) || {}) },
+      } as unknown as WhookAPIHandlerDefinition);
+    }
+  }
+
+  return definitions;
 }

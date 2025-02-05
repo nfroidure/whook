@@ -16,11 +16,10 @@ import { YError } from 'yerror';
 import {
   initBuildAutoload,
   noop,
-  cleanupOpenAPI,
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
+  type WhookAPIHandlerDefinition,
+  type WhookOpenAPI,
   type WhookBuildConstantsService,
-  type WhookRawOperation,
+  type WhookAPIHandlerConfig,
 } from '@whook/whook';
 import initHandler from './HANDLER.js';
 import initWrapHandlerForAWSConsumerLambda from '../wrappers/awsConsumerLambda.js';
@@ -31,11 +30,9 @@ import initWrapHandlerForAWSCronLambda from '../wrappers/awsCronLambda.js';
 import initWrapHandlerForAWSKafkaConsumerLambda from '../wrappers/awsKafkaConsumerLambda.js';
 import initWrapHandlerForAWSS3Lambda from '../wrappers/awsS3Lambda.js';
 import { type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import {
-  type WhookAPIOperationAWSLambdaConfig,
-  type WhookAWSLambdaConfiguration,
-} from '../index.js';
+import { cleanupOpenAPI } from 'ya-open-api-types';
+import { type WhookAWSLambdaConfiguration } from '../index.js';
+import { getOpenAPIDefinitions } from '../libs/utils.js';
 
 export type WhookAWSLambdaAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;
@@ -90,64 +87,51 @@ const initializerWrapper: ServiceInitializerWrapper<
 ): Promise<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>
 > => {
-  let API: OpenAPIV3_1.Document;
-  let OPERATION_APIS: WhookRawOperation<WhookAPIOperationAWSLambdaConfig>[];
-  const getAPIOperation: (
+  let API: WhookOpenAPI;
+  let API_DEFINITIONS: WhookAPIHandlerDefinition[];
+  const getAPIDefinition: (
     serviceName: string,
-  ) => Promise<
-    [WhookAWSLambdaConfiguration['type'], string, OpenAPIV3_1.Document]
-  > = (() => {
+  ) => Promise<[WhookAPIHandlerConfig['type'], string, WhookOpenAPI]> = (() => {
     return async (serviceName) => {
       const cleanedName = serviceName.split('_').pop();
 
       API = API || (await $injector(['API'])).API;
 
-      OPERATION_APIS =
-        OPERATION_APIS ||
-        getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API);
+      API_DEFINITIONS = API_DEFINITIONS || getOpenAPIDefinitions(API);
 
-      const OPERATION = OPERATION_APIS.find(
-        (operation) =>
+      const definition = API_DEFINITIONS.find(
+        (aDefinition) =>
           cleanedName ===
-          (((operation['x-whook'] || {}).sourceOperationId &&
-            (operation['x-whook'] || {}).sourceOperationId) ||
-            operation.operationId) +
-            ((operation['x-whook'] || {}).suffix || ''),
+          ((aDefinition?.config?.sourceOperationId &&
+            aDefinition?.config?.sourceOperationId) ||
+            aDefinition?.operation?.operationId) +
+            (aDefinition?.config?.suffix || ''),
       );
 
-      if (!OPERATION) {
+      if (!definition) {
         log('error', '💥 - Unable to find a lambda operation definition!');
         throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
       }
 
-      const OPERATION_API: OpenAPIV3_1.Document = cleanupOpenAPI({
+      const OPERATION_API = (await cleanupOpenAPI({
         ...API,
         paths: {
-          [OPERATION.path]: {
-            [OPERATION.method]: API.paths?.[OPERATION.path]?.[OPERATION.method],
+          [definition.path]: {
+            [definition.method]:
+              API.paths?.[definition.path]?.[definition.method],
           },
         },
-      });
+      })) as WhookOpenAPI;
 
       return [
-        OPERATION['x-whook']?.type || 'http',
-        OPERATION.operationId as string,
+        definition?.config?.type || 'http',
+        definition?.operation?.operationId as string,
         {
           ...OPERATION_API,
           paths: {
-            [OPERATION.path]: {
-              [OPERATION.method]: (
-                await dereferenceOpenAPIOperations(OPERATION_API, [
-                  {
-                    path: OPERATION.path,
-                    method: OPERATION.method,
-                    ...OPERATION_API.paths?.[OPERATION.path]?.[
-                      OPERATION.method
-                    ],
-                    parameters: OPERATION.parameters,
-                  },
-                ])
-              )[0],
+            [definition.path]: {
+              parameters: API[definition.path].parameters || [],
+              [definition.method]: definition.operation,
             },
           },
         },
@@ -159,13 +143,13 @@ const initializerWrapper: ServiceInitializerWrapper<
 
   return async (serviceName) => {
     if (serviceName.startsWith('OPERATION_API_')) {
-      const [, , OPERATION_API] = await getAPIOperation(serviceName);
+      const [, , OPERATION_API] = await getAPIDefinition(serviceName);
 
       return constant(serviceName, OPERATION_API);
     }
 
     if (serviceName.startsWith('OPERATION_WRAPPER_')) {
-      const [type] = await getAPIOperation(serviceName);
+      const [type] = await getAPIDefinition(serviceName);
 
       return location(
         alsoInject(
@@ -182,7 +166,7 @@ const initializerWrapper: ServiceInitializerWrapper<
     }
 
     if (serviceName.startsWith('OPERATION_HANDLER_')) {
-      const [type, operationId] = await getAPIOperation(serviceName);
+      const [type, operationId] = await getAPIDefinition(serviceName);
 
       return location(
         alsoInject(

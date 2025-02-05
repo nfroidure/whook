@@ -3,14 +3,14 @@ import { printStackTrace, YError } from 'yerror';
 import {
   noop,
   type WhookHeaders,
-  type WhookResponse,
-  type WhookOperation,
+  type WhookAPIHandlerDefinition,
   type WhookAPMService,
-  type WhookHandler,
-  type WhookWrapper,
+  type WhookAPIHandler,
+  type WhookAPIWrapper,
+  type WhookAPIHandlerParameters,
+  type WhookOpenAPI,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import {
   type FirehoseTransformationEvent,
   type FirehoseTransformationEventRecord,
@@ -21,7 +21,7 @@ import { type AppEnvVars } from 'application-services';
 
 type TransformerWrapperDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3_1.Document;
+  OPERATION_API: WhookOpenAPI;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -43,11 +43,11 @@ export type FirehoseDecodedTransformationResultRecord = Omit<
 export type LambdaTransformerInput = {
   body: FirehoseDecodedTransformationEventRecord[];
 };
-export type LambdaTransformerOutput = WhookResponse<
-  number,
-  WhookHeaders,
-  FirehoseDecodedTransformationResultRecord[]
->;
+export type LambdaTransformerOutput = {
+  status: number;
+  headers: WhookHeaders;
+  body: FirehoseDecodedTransformationResultRecord[];
+};
 
 // Allow to transform Kinesis streams
 // See https://aws.amazon.com/fr/blogs/compute/amazon-kinesis-firehose-data-transformation-with-aws-lambda/
@@ -55,7 +55,7 @@ export type LambdaTransformerOutput = WhookResponse<
 
 export type WhookWrapConsumerLambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3_1.Document;
+  OPERATION_API: WhookOpenAPI;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -79,26 +79,25 @@ export type WhookWrapConsumerLambdaDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
+async function initWrapHandlerForConsumerLambda({
   ENV,
   OPERATION_API,
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapConsumerLambdaDependencies): Promise<WhookWrapper<S>> {
+}: WhookWrapConsumerLambdaDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda transformer wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleForAWSTransformerLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as unknown as WhookHandler<
-        LambdaTransformerInput,
-        LambdaTransformerOutput
-      >,
+      handler,
     );
 
-    return wrappedHandler as unknown as S;
+    return wrappedHandler as unknown as WhookAPIHandler;
   };
 
   return wrapper;
@@ -112,29 +111,32 @@ async function handleForAWSTransformerLambda(
     time,
     log,
   }: Required<TransformerWrapperDependencies>,
-  handler: WhookHandler<LambdaTransformerInput, LambdaTransformerOutput>,
+  handler: WhookAPIHandler,
   event: FirehoseTransformationEvent,
 ): Promise<FirehoseTransformationResult> {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
-  const OPERATION: WhookOperation = {
+  const definition: WhookAPIHandlerDefinition = {
     path,
     method,
     ...OPERATION_API.paths?.[path]?.[method],
   };
   const startTime = time();
-  const parameters = {
+  const parameters: LambdaTransformerInput = {
     body: event.records.map(decodeRecord),
   };
 
   try {
     log('debug', 'EVENT', JSON.stringify(event));
-    const response = await handler(parameters, OPERATION);
+    const response = (await handler(
+      parameters as unknown as WhookAPIHandlerParameters,
+      definition,
+    )) as unknown as LambdaTransformerOutput;
 
     apm('TRANSFORMER', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':EventRecord' },
       type: 'success',
       startTime,
@@ -149,7 +151,7 @@ async function handleForAWSTransformerLambda(
     apm('TRANSFORMER', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':EventRecord' },
       type: 'error',
       stack: printStackTrace(castedErr),

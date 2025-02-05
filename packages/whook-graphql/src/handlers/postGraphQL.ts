@@ -1,13 +1,11 @@
-import { autoHandler, location } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace } from 'yerror';
 import { type HTTPGraphQLRequest, HeaderMap } from '@apollo/server';
 import {
   noop,
   type WhookAPIHandlerDefinition,
-  type WhookOperation,
   type WhookResponse,
-  type WhookHeaders,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { type WhookGraphQLService } from '../services/graphQL.js';
@@ -15,6 +13,7 @@ import {
   type BaseWhookGraphQLContext,
   type WhookGraphQLContext,
 } from '../services/graphQL.js';
+import { cleanupGraphQLHeaders } from '../lib/headers.js';
 
 // Serving GraphQL over HTTP
 // https://graphql.org/learn/serving-over-http/
@@ -27,7 +26,7 @@ const DEFAULT_GRAPHQL_CONTEXT_FUNCTION: WhookGraphQLContextFunction = async (
   baseContext: BaseWhookGraphQLContext,
 ) => baseContext;
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '/graphql',
   method: 'post',
   operation: {
@@ -66,10 +65,89 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
+
+async function initPostGraphQL<T extends Record<string, unknown>>({
+  graphQL,
+  graphQLContextFunction = DEFAULT_GRAPHQL_CONTEXT_FUNCTION,
+  log = noop,
+}: {
+  graphQLContextFunction?: WhookGraphQLContextFunction;
+  graphQL: WhookGraphQLService;
+  log: LogService;
+}) {
+  return async (
+    {
+      body,
+      ...requestContext
+    }: T & {
+      body: {
+        query: string;
+        variables: Record<string, unknown>;
+        operationName: string;
+        [name: string]: unknown;
+      };
+    },
+    definition: WhookAPIHandlerDefinition,
+  ) => {
+    try {
+      const headers = new HeaderMap();
+
+      headers.set('content-type', 'application/json');
+
+      const httpGraphQLRequest: HTTPGraphQLRequest = {
+        method: 'POST',
+        headers,
+        search: '',
+        body,
+      };
+
+      const httpGraphQLResponse = await graphQL.executeHTTPGraphQLRequest({
+        httpGraphQLRequest,
+        context: async () =>
+          graphQLContextFunction({
+            definition,
+            requestContext,
+          }),
+      });
+      let responseBody = '';
+
+      if (httpGraphQLResponse.body.kind === 'complete') {
+        responseBody = httpGraphQLResponse.body.string;
+      } else {
+        for await (const chunk of httpGraphQLResponse.body.asyncIterator) {
+          responseBody += chunk;
+        }
+      }
+
+      const response = {
+        status: httpGraphQLResponse.status || 200,
+        headers: cleanupGraphQLHeaders(httpGraphQLResponse.headers || {}),
+        body: JSON.parse(responseBody),
+      };
+
+      return response;
+    } catch (err) {
+      if ('HttpQueryError' === (err as Error).name) {
+        log('debug', '💥 - Got a GraphQL error!');
+        log('debug-stack', printStackTrace(err as Error));
+
+        return {
+          body: JSON.parse((err as Error).message),
+          status: (err as { statusCode: number }).statusCode,
+          headers: cleanupGraphQLHeaders(
+            ((err as YHTTPError).headers as unknown as HeaderMap) || {},
+          ),
+        };
+      }
+
+      throw YHTTPError.cast(err as Error, 500, 'E_GRAPH_QL');
+    }
+  };
+}
 
 export default location(
-  autoHandler(postGraphQL),
+  autoService(initPostGraphQL),
   import.meta.url,
 ) as unknown as <T extends Record<string, unknown>>(services: {
   GRAPHQL_SERVER_CONTEXT_FUNCTION?: WhookGraphQLContext;
@@ -85,98 +163,6 @@ export default location(
         [name: string]: unknown;
       };
     },
-    operation: WhookOperation,
-  ) => Promise<WhookResponse<number>>
+    definition: WhookAPIHandlerDefinition,
+  ) => Promise<WhookResponse>
 >;
-
-async function postGraphQL<T extends Record<string, unknown>>(
-  {
-    graphQL,
-    graphQLContextFunction = DEFAULT_GRAPHQL_CONTEXT_FUNCTION,
-    log = noop,
-  }: {
-    graphQLContextFunction?: WhookGraphQLContextFunction;
-    graphQL: WhookGraphQLService;
-    log: LogService;
-  },
-  {
-    body,
-    ...requestContext
-  }: T & {
-    body: {
-      query: string;
-      variables: Record<string, unknown>;
-      operationName: string;
-      [name: string]: unknown;
-    };
-  },
-  operation: WhookOperation,
-): Promise<WhookResponse<number>> {
-  try {
-    const headers = new HeaderMap();
-
-    headers.set('content-type', 'application/json');
-
-    const httpGraphQLRequest: HTTPGraphQLRequest = {
-      method: 'POST',
-      headers,
-      search: '',
-      body,
-    };
-
-    const httpGraphQLResponse = await graphQL.executeHTTPGraphQLRequest({
-      httpGraphQLRequest,
-      context: async () =>
-        graphQLContextFunction({
-          operation,
-          requestContext,
-        }),
-    });
-    let responseBody = '';
-
-    if (httpGraphQLResponse.body.kind === 'complete') {
-      responseBody = httpGraphQLResponse.body.string;
-    } else {
-      for await (const chunk of httpGraphQLResponse.body.asyncIterator) {
-        responseBody += chunk;
-      }
-    }
-
-    const response = {
-      status: httpGraphQLResponse.status || 200,
-      headers: _cleanupGraphQLHeaders(httpGraphQLResponse.headers || {}),
-      body: JSON.parse(responseBody),
-    };
-
-    return response;
-  } catch (err) {
-    if ('HttpQueryError' === (err as Error).name) {
-      log('debug', '💥 - Got a GraphQL error!');
-      log('debug-stack', printStackTrace(err as Error));
-
-      return {
-        body: JSON.parse((err as Error).message),
-        status: (err as { statusCode: number }).statusCode,
-        headers: _cleanupGraphQLHeaders(
-          ((err as YHTTPError).headers as unknown as HeaderMap) || {},
-        ),
-      };
-    }
-
-    throw YHTTPError.cast(err as Error, 500, 'E_GRAPH_QL');
-  }
-}
-
-// Remove content related headers and lowercase them
-// Also remove identity symbol that ain't valid header
-function _cleanupGraphQLHeaders(headers: HeaderMap): WhookHeaders {
-  return Object.keys(headers || {})
-    .filter((key) => key !== '__identity' && !/content-\w+/i.test(key))
-    .reduce(
-      (keptsHeaders, key) => ({
-        ...keptsHeaders,
-        [key.toLowerCase()]: headers?.[key],
-      }),
-      {},
-    );
-}

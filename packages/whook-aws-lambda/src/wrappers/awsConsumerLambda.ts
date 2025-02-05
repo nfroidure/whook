@@ -2,15 +2,15 @@ import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
   noop,
-  type WhookOperation,
+  type WhookAPIHandlerDefinition,
   type WhookAPMService,
-  type WhookHandler,
-  type WhookHeaders,
+  type WhookAPIHandler,
   type WhookResponse,
-  type WhookWrapper,
+  type WhookAPIWrapper,
+  type WhookAPIHandlerParameters,
+  type WhookOpenAPI,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import {
   type KinesisStreamEvent,
   type SQSEvent,
@@ -41,11 +41,11 @@ export type LambdaConsumerInput =
   | LambdaSNSConsumerInput
   | LambdaSESConsumerInput
   | LambdaDynamoDBStreamConsumerInput;
-export type LambdaConsumerOutput = WhookResponse<number, WhookHeaders, void>;
+export type LambdaConsumerOutput = WhookResponse;
 
 export type WhookWrapConsumerLambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3_1.Document;
+  OPERATION_API: WhookOpenAPI;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -69,23 +69,25 @@ export type WhookWrapConsumerLambdaDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForConsumerLambda<S extends WhookHandler>({
+async function initWrapHandlerForConsumerLambda({
   ENV,
   OPERATION_API,
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapConsumerLambdaDependencies): Promise<WhookWrapper<S>> {
+}: WhookWrapConsumerLambdaDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleForAWSConsumerLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as WhookHandler<LambdaConsumerInput, LambdaConsumerOutput>,
+      handler,
     );
 
-    return wrappedHandler as unknown as S;
+    return wrappedHandler as unknown as WhookAPIHandler;
   };
 
   return wrapper;
@@ -99,7 +101,7 @@ async function handleForAWSConsumerLambda(
     time,
     log,
   }: Required<WhookWrapConsumerLambdaDependencies>,
-  handler: WhookHandler<LambdaConsumerInput, LambdaConsumerOutput>,
+  handler: WhookAPIHandler,
   event:
     | KinesisStreamEvent
     | SQSEvent
@@ -109,7 +111,7 @@ async function handleForAWSConsumerLambda(
 ) {
   const path = Object.keys(OPERATION_API.paths || {})?.[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
-  const OPERATION: WhookOperation = {
+  const definition: WhookAPIHandlerDefinition = {
     path,
     method,
     ...OPERATION_API.paths?.[path]?.[method],
@@ -122,12 +124,15 @@ async function handleForAWSConsumerLambda(
   try {
     log('debug', 'EVENT', JSON.stringify(event));
 
-    await handler(parameters, OPERATION);
+    await handler(
+      parameters as unknown as WhookAPIHandlerParameters,
+      definition,
+    );
 
     apm('CONSUMER', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':EventRecord' },
       type: 'success',
       startTime,
@@ -140,7 +145,7 @@ async function handleForAWSConsumerLambda(
     apm('CONSUMER', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':EventRecord' },
       type: 'error',
       stack: printStackTrace(castedErr),

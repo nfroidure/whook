@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import { internalIpV4 } from 'internal-ip';
 import initHOST from './HOST.js';
 import { type ImporterService, type LogService } from 'common-services';
@@ -15,7 +15,7 @@ describe('initHOST', () => {
     internalIp.internalIpV4.mockReset();
   });
 
-  it('should use the env HOST first', async () => {
+  test('should use the env HOST first', async () => {
     importer.mockResolvedValueOnce(internalIp);
 
     const HOST = await initHOST({
@@ -47,7 +47,7 @@ describe('initHOST', () => {
 `);
   });
 
-  it('should find a HOST by itself if no env HOST', async () => {
+  test('should find a HOST by itself if no env HOST', async () => {
     importer.mockResolvedValueOnce(internalIp);
     internalIp.internalIpV4.mockResolvedValueOnce('192.168.1.10');
 
@@ -86,7 +86,7 @@ describe('initHOST', () => {
 `);
   });
 
-  it('should fallback to localhost', async () => {
+  test('should fallback to localhost', async () => {
     importer.mockResolvedValueOnce(internalIp);
     internalIp.internalIpV4.mockResolvedValueOnce('');
 

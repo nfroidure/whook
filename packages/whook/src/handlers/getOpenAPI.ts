@@ -1,27 +1,53 @@
-import { autoHandler, location } from 'knifecycle';
-import SwaggerParser from '@apidevtools/swagger-parser';
+import { autoService, location } from 'knifecycle';
 import {
+  WhookAPIHandler,
   type WhookAPIHandlerDefinition,
-  type WhookAPIOperationConfig,
-} from '../services/API_DEFINITIONS.js';
-import { type WhookResponse } from '../services/httpTransaction.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { getOpenAPIOperations } from '../libs/openapi.js';
+} from '../types/handlers.js';
+import {
+  ensureResolvedObject,
+  pathItemToOperationMap,
+  type OpenAPIExtension,
+  type OpenAPIParameter,
+  type OpenAPIReference,
+  type OpenAPI,
+} from 'ya-open-api-types';
+import { type Jsonify } from 'type-fest';
 
-export default location(autoHandler(getOpenAPI), import.meta.url);
+async function removeMutedParameters(
+  API: OpenAPI,
+  parameters: (
+    | OpenAPIReference<OpenAPIParameter<unknown, OpenAPIExtension>>
+    | OpenAPIParameter<unknown, OpenAPIExtension>
+  )[],
+  mutedParameters: string[],
+) {
+  const filteredParameters: typeof parameters = [];
+
+  for (const parameter of parameters) {
+    const dereferencedParameter = await ensureResolvedObject(API, parameter);
+
+    if (mutedParameters.includes(dereferencedParameter.name)) {
+      continue;
+    }
+
+    filteredParameters.push(parameter);
+  }
+
+  return filteredParameters;
+}
 
 /* Architecture Note #3: the handlers
 Handlers are services that provide a definition and implements
  API routes.
 */
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '/openAPI',
   method: 'get',
   operation: {
     operationId: 'getOpenAPI',
     summary: 'Get the API documentation.',
     tags: ['system'],
-    'x-whook': { private: false },
+    // Here we do not declare the OpenAPI JSON Schema to KISS
     responses: {
       '200': {
         description: 'Provides the private Open API documentation',
@@ -35,104 +61,92 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-async function getOpenAPI(
-  { API }: { API: OpenAPIV3_1.Document },
-  {
-    authenticated = false,
-    mutedMethods = ['options'],
-    mutedParameters = [],
-    mutedTags = [],
+async function initGetOpenAPI({ API }: { API: OpenAPI }) {
+  const getOpenAPI = async ({
+    query: { mutedMethods = ['options'], mutedParameters = [], mutedTags = [] },
+    options: { authenticated = false },
   }: {
-    authenticated?: boolean;
-    mutedMethods?: string[];
-    mutedParameters?: string[];
-    mutedTags?: string[];
-  },
-): Promise<WhookResponse<200, void, OpenAPIV3_1.Document>> {
-  const operations = getOpenAPIOperations<WhookAPIOperationConfig>(API);
-  const $refs = await SwaggerParser.resolve(API);
+    query: {
+      mutedMethods?: string[];
+      mutedParameters?: string[];
+      mutedTags?: string[];
+    };
+    options: {
+      authenticated?: boolean;
+    };
+  }) => {
+    const tagIsPresent = {};
+    const newPaths: NonNullable<(typeof API)['paths']> = {};
 
-  const tagIsPresent = {};
-
-  const CLEANED_API = {
-    ...API,
-    paths: operations.reduce((paths, operation) => {
-      if (operation.tags)
-        operation.tags.forEach((tag) => {
+    for (const [path, pathItem] of Object.entries(API.paths || {})) {
+      for (const [method, operation] of Object.entries(
+        pathItemToOperationMap(pathItem || {}),
+      )) {
+        if (mutedMethods.includes(method)) {
+          continue;
+        }
+        if (operation.tags?.every((tag) => mutedTags.includes(tag))) {
+          continue;
+        }
+        if (
+          typeof operation['x-whook'] === 'object' &&
+          operation['x-whook'] &&
+          'private' in operation['x-whook'] &&
+          operation['x-whook'].private &&
+          !authenticated
+        ) {
+          continue;
+        }
+        for (const tag of operation?.tags || []) {
           tagIsPresent[tag] = true;
-        });
-      if (
-        operation['x-whook'] &&
-        operation['x-whook'].private &&
-        !authenticated
-      ) {
-        return paths;
-      }
-      if (mutedMethods.includes(operation.method)) {
-        return paths;
-      }
-      if (operation.tags?.every((tag) => mutedTags.includes(tag))) {
-        return paths;
-      }
-      if (operation.tags) {
-        operation.tags.forEach((tag) => {
-          tagIsPresent[tag] = !mutedTags.includes(tag);
-        });
-      }
+        }
 
-      paths[operation.path] = {
-        ...paths[operation.path],
-        [operation.method]: {
-          ...(API?.paths?.[operation.path]?.[operation.method] || {}),
-          ...(operation.parameters &&
-            operation.parameters.length && {
-              parameters: removeMutedParameters(
-                operation.parameters,
-                mutedParameters,
-                $refs,
-              ),
-            }),
-          ...(authenticated
-            ? {}
-            : {
-                'x-whook': undefined,
+        newPaths[path] = {
+          ...newPaths[path],
+          ...(API?.paths?.[path]?.parameters
+            ? {
+                parameters: await removeMutedParameters(
+                  API,
+                  API.paths[path].parameters,
+                  mutedParameters,
+                ),
+              }
+            : {}),
+          [method]: {
+            ...(API?.paths?.[path]?.[method] || {}),
+            ...(operation.parameters &&
+              operation.parameters.length && {
+                parameters: await removeMutedParameters(
+                  API,
+                  operation.parameters,
+                  mutedParameters,
+                ),
               }),
-        },
-      };
-
-      return paths;
-    }, {}),
-    tags: API.tags ? API.tags.filter((tag) => tagIsPresent[tag.name]) : [],
-  };
-
-  return {
-    status: 200,
-    body: CLEANED_API,
-  };
-}
-
-function removeMutedParameters(
-  parameters: Array<OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject>,
-  mutedParameters: string[],
-  $refs: SwaggerParser.$Refs,
-) {
-  return parameters.reduce(
-    (acc, parameter) => {
-      const dereferencedParameter = (parameter as OpenAPIV3_1.ReferenceObject)
-        .$ref
-        ? ($refs.get(
-            (parameter as OpenAPIV3_1.ReferenceObject).$ref,
-          ) as OpenAPIV3_1.ParameterObject)
-        : (parameter as OpenAPIV3_1.ParameterObject);
-
-      if (mutedParameters.includes(dereferencedParameter.name)) {
-        return acc;
+            ...(authenticated
+              ? {}
+              : {
+                  'x-whook': undefined,
+                }),
+          },
+        };
       }
+    }
 
-      return acc.concat(parameter);
-    },
-    [] as (OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject)[],
-  );
+    const CLEANED_API: OpenAPI = {
+      ...API,
+      paths: newPaths,
+      tags: API.tags ? API.tags.filter((tag) => tagIsPresent[tag.name]) : [],
+    };
+
+    return {
+      status: 200,
+      body: CLEANED_API as Jsonify<OpenAPI>,
+    };
+  };
+
+  return getOpenAPI satisfies WhookAPIHandler;
 }
+
+export default location(autoService(initGetOpenAPI), import.meta.url);

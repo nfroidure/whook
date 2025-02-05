@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initLsCommand, { definition as initLsCommandDefinition } from './ls.js';
 import initEnvCommand, {
   definition as initEnvCommandDefinition,
@@ -25,7 +25,7 @@ describe('lsCommand', () => {
   });
 
   describe('should work', () => {
-    it('with no plugin', async () => {
+    test('with no plugin', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['ls'],
@@ -88,7 +88,7 @@ describe('lsCommand', () => {
 `);
     });
 
-    it('with some plugins', async () => {
+    test('with some plugins', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
       importer.mockResolvedValueOnce({
@@ -208,7 +208,7 @@ describe('lsCommand', () => {
 `);
     });
 
-    it('with some plugins and ignored files', async () => {
+    test('with some plugins and ignored files', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env', '__snapshots__']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
       importer.mockResolvedValueOnce({
@@ -328,7 +328,7 @@ describe('lsCommand', () => {
 `);
     });
 
-    it('with some plugins and a verbose output', async () => {
+    test('with some plugins and a verbose output', async () => {
       readDir.mockResolvedValueOnce(['ls', 'env']);
       readDir.mockRejectedValueOnce(new YError('E_NO_MODULE'));
       importer.mockResolvedValueOnce({

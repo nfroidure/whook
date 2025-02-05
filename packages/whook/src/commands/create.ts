@@ -7,14 +7,13 @@ import { HANDLER_REG_EXP } from '../services/HANDLERS.js';
 import _inquirer from 'inquirer';
 import path from 'node:path';
 import { default as fsExtra } from 'fs-extra';
-import { OPEN_API_METHODS } from '../libs/openapi.js';
 import {
   type WhookCommandHandler,
   type WhookCommandDefinition,
   type WhookPromptArgs,
 } from '../services/promptArgs.js';
 import { type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPI, PATH_ITEM_METHODS } from 'ya-open-api-types';
 
 const {
   writeFile: _writeFile,
@@ -96,7 +95,7 @@ async function initCreateCommand({
   log = noop,
 }: {
   PROJECT_DIR: string;
-  API: OpenAPIV3_1.Document;
+  API: OpenAPI;
   inquirer: typeof _inquirer;
   promptArgs: WhookPromptArgs;
   writeFile: (path: string, data: string) => Promise<void>;
@@ -226,12 +225,12 @@ import { ${whookServices
           name: 'method',
           type: 'list',
           message: 'Give the handler method',
-          choices: OPEN_API_METHODS.map((method) => ({
+          choices: PATH_ITEM_METHODS.map((method) => ({
             name: method,
             value: method,
           })),
           default: [(HANDLER_REG_EXP.exec(finalName) as string[])[1]].filter(
-            (maybeMethod) => OPEN_API_METHODS.includes(maybeMethod),
+            (maybeMethod) => PATH_ITEM_METHODS.includes(maybeMethod as 'get'),
           )[0],
         },
         {
@@ -344,12 +343,15 @@ function buildHandlerSource(
   typesDeclaration,
   imports: string,
 ) {
-  const APIHandlerName = name[0].toUpperCase() + name.slice(1);
+  const handlerInitializerName = 'init' + name[0].toUpperCase() + name.slice(1);
 
-  return `import { autoHandler } from 'knifecycle';
-import { type WhookAPIHandlerDefinition } from '@whook/whook';${imports}
+  return `import { autoService, location } from 'knifecycle';
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookAPITypedHandler,
+} from '@whook/whook';${imports}
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '${path}',
   method: '${method}',
   operation: {
@@ -391,26 +393,36 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-type HandlerDependencies = ${typesDeclaration || '{}'};
+export type HandlerDependencies = ${typesDeclaration || '{}'};
 
-export default autoHandler(${name});
-
-async function ${name}(${parametersDeclaration || '_'}: HandlerDependencies, {
-    param,${
+async function ${handlerInitializerName}(${parametersDeclaration || '_'}: HandlerDependencies) {
+  const handler: WhookAPITypedHandler<
+    operations[typeof definition.operation.operationId],
+    typeof definition
+  > = async ({
+    query: { param },${
       ['post', 'put'].includes(method)
         ? `
     body,`
         : ''
     }
-  } : API.${APIHandlerName}.Input): Promise<API.${APIHandlerName}.Output> {
-  return {
-    status: 200,
-    headers: {},
-    body: { param },
+  }) => {
+    return {
+      status: 200,
+      headers: {},
+      body: { param },
+    };
   };
+
+  return handler;
 }
+
+export default location(
+  autoService(${handlerInitializerName}),
+  import.meta.url,
+);
 `;
 }
 
@@ -422,12 +434,10 @@ function buildServiceSource(
 ) {
   const upperCamelizedName = name[0].toLocaleUpperCase() + name.slice(1);
 
-  return `import { autoService } from 'knifecycle';${imports}
+  return `import { autoService, location } from 'knifecycle';${imports}
 
 export type ${upperCamelizedName}Service = {};
 export type ${upperCamelizedName}Dependencies = ${typesDeclaration || '{}'};
-
-export default autoService(init${upperCamelizedName});
 
 async function init${upperCamelizedName}(${
     parametersDeclaration || '_'
@@ -435,6 +445,11 @@ async function init${upperCamelizedName}(${
   // Instantiate and return your service
   return {};
 }
+
+export default location(
+  autoService(init${upperCamelizedName}),
+  import.meta.url,
+);
 `;
 }
 
@@ -446,13 +461,11 @@ function buildProviderSource(
 ) {
   const upperCamelizedName = name[0].toLocaleUpperCase() + name.slice(1);
 
-  return `import { autoProvider, Provider } from 'knifecycle';${imports}
+  return `import { autoProvider, location, type Provider } from 'knifecycle';${imports}
 
 export type ${upperCamelizedName}Service = {};
 export type ${upperCamelizedName}Provider = Provider<${upperCamelizedName}Service>;
 export type ${upperCamelizedName}Dependencies = ${typesDeclaration || '{}'};
-
-export default autoProvider(init${upperCamelizedName});
 
 async function init${upperCamelizedName}(${
     parametersDeclaration || '_'
@@ -469,6 +482,11 @@ async function init${upperCamelizedName}(${
     // errorPromise: new Promise(),
   };
 }
+
+export default location(
+  autoProvider(init${upperCamelizedName}),
+  import.meta.url,
+);
 `;
 }
 
@@ -481,7 +499,7 @@ function buildCommandSource(
 ) {
   const upperCamelizedName = name[0].toLocaleUpperCase() + name.slice(1);
 
-  return `import { extra, autoService } from 'knifecycle';${imports}
+  return `import { extra, autoService, location } from 'knifecycle';${imports}
 
 export const definition: WhookCommandDefinition = {
   description: '${description.replace(/'/g, "\\'")}',
@@ -500,8 +518,6 @@ export const definition: WhookCommandDefinition = {
   },
 };
 
-export default extra(definition, autoService(init${upperCamelizedName}Command));
-
 async function init${upperCamelizedName}Command(${
     parametersDeclaration || '_'
   }: ${typesDeclaration || {}}): Promise<WhookCommandHandler> {
@@ -514,5 +530,10 @@ async function init${upperCamelizedName}Command(${
   // Implement your command here
   }
 }
+
+export default location(
+  extra(definition, autoService(init${upperCamelizedName}Command)),
+  import.meta.url,
+);
 `;
 }

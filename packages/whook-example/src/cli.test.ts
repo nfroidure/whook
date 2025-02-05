@@ -1,9 +1,9 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, test, expect } from '@jest/globals';
 import { exec } from 'node:child_process';
 import { YError } from 'yerror';
 
 describe('commands should work', () => {
-  it('with ls', async () => {
+  test('with ls', async () => {
     const { stdout, stderr } = await execCommand(
       'npm run whook --silent -- ls',
     );
@@ -43,7 +43,7 @@ On air 🚀🌕
 `);
   });
 
-  it('with env', async () => {
+  test('with env', async () => {
     const { stdout, stderr } = await execCommand(
       'npm run whook --silent -- env --name NODE_ENV',
     );
@@ -65,7 +65,7 @@ On air 🚀🌕
 `);
   });
 
-  it('with config', async () => {
+  test('with config', async () => {
     const { stdout, stderr } = await execCommand(
       'npm run whook --silent -- config --name HOST',
     );

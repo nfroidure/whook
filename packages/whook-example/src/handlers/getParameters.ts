@@ -1,64 +1,66 @@
-import { handler } from 'knifecycle';
+import { location, service } from 'knifecycle';
 import {
   refersTo,
   type WhookAPIParameterDefinition,
   type WhookAPIHandlerDefinition,
+  type WhookAPITypedHandler,
 } from '@whook/whook';
 
-export const pathParam1Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam1> =
-  {
+export const pathParam1Parameter = {
+  name: 'pathParam1',
+  example: 123,
+  parameter: {
+    in: 'path',
     name: 'pathParam1',
-    example: 123,
-    parameter: {
-      in: 'path',
-      name: 'pathParam1',
-      required: true,
-      description: 'A number param',
-      schema: {
-        type: 'number',
-      },
+    required: true,
+    description: 'A number param',
+    schema: {
+      type: 'number',
     },
-  };
+  },
+} as const satisfies WhookAPIParameterDefinition<
+  components['parameters']['pathParam1']
+>;
 
-export const pathParam2Parameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.PathParam2> =
-  {
+export const pathParam2Parameter = {
+  name: 'pathParam2',
+  example: 'item',
+  parameter: {
+    in: 'path',
     name: 'pathParam2',
-    example: 'item',
-    parameter: {
-      in: 'path',
-      name: 'pathParam2',
-      required: true,
-      description: 'A string item',
-      schema: {
+    required: true,
+    description: 'A string item',
+    schema: {
+      type: 'string',
+    },
+  },
+} as WhookAPIParameterDefinition<components['parameters']['pathParam2']>;
+
+export const queryParamParameter = {
+  name: 'queryParam',
+  example: ['item1', 'item2'],
+  parameter: {
+    in: 'query',
+    name: 'queryParam',
+    required: true,
+    description: 'A list of items',
+    schema: {
+      type: 'array',
+      items: {
         type: 'string',
       },
     },
-  };
-
-export const queryParamParameter: WhookAPIParameterDefinition<API.GetParameters.Parameters.QueryParam> =
-  {
-    name: 'queryParam',
-    example: ['item1', 'item2'],
-    parameter: {
-      in: 'query',
-      name: 'queryParam',
-      required: true,
-      description: 'A list of items',
-      schema: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
-    },
-  };
+  },
+} as const satisfies WhookAPIParameterDefinition<
+  components['parameters']['queryParam']
+>;
 
 /* Architecture Note #3.4.2: getParameters
 
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 */
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: `/{${pathParam1Parameter.parameter.name}}/{${pathParam2Parameter.parameter.name}}`,
   method: 'get',
   operation: {
@@ -71,7 +73,7 @@ export const definition: WhookAPIHandlerDefinition = {
       refersTo(queryParamParameter),
       {
         in: 'header',
-        name: 'aHeader',
+        name: 'a-header',
         schema: {
           type: 'boolean',
         },
@@ -123,28 +125,33 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-async function getParameters(
-  _,
-  {
-    aHeader,
-    aMultiHeader,
-    pathParam1,
-    pathParam2,
-    queryParam,
-  }: API.GetParameters.Input,
-): Promise<API.GetParameters.Output> {
-  return {
-    status: 200,
-    body: {
-      aHeader,
-      aMultiHeader,
-      pathParam1,
-      pathParam2,
-      queryParam,
-    },
+async function initGetParameters() {
+  const handler: WhookAPITypedHandler<
+    operations[typeof definition.operation.operationId],
+    typeof definition
+  > = async ({
+    header: { 'a-header': aHeader, aMultiHeader },
+    path: { pathParam1, pathParam2 },
+    query: { queryParam },
+  }) => {
+    return {
+      status: 200,
+      body: {
+        aHeader,
+        aMultiHeader,
+        pathParam1,
+        pathParam2,
+        queryParam,
+      },
+    };
   };
+
+  return handler;
 }
 
-export default handler(getParameters, 'getParameters');
+export default location(
+  service(initGetParameters, definition.operation.operationId),
+  import.meta.url,
+);

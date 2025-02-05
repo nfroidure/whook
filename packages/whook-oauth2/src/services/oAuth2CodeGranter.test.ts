@@ -1,27 +1,15 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
-import { BaseAuthenticationData } from '@whook/authorization';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
+import { type WhookAuthenticationData } from '@whook/authorization';
 import initOAuth2CodeGranter from './oAuth2CodeGranter.js';
 import {
-  CheckApplicationService,
-  OAuth2CodeService,
+  type CheckApplicationService,
+  type OAuth2CodeService,
 } from './oAuth2Granters.js';
 
 describe('OAuth2CodeGranter', () => {
   const oAuth2Code = {
-    create:
-      jest.fn<
-        OAuth2CodeService<
-          BaseAuthenticationData<string, string>,
-          string
-        >['create']
-      >(),
-    check:
-      jest.fn<
-        OAuth2CodeService<
-          BaseAuthenticationData<string, string>,
-          string
-        >['check']
-      >(),
+    create: jest.fn<OAuth2CodeService<string>['create']>(),
+    check: jest.fn<OAuth2CodeService<string>['check']>(),
   };
   const checkApplication = jest.fn<CheckApplicationService>();
   const log = jest.fn();
@@ -33,7 +21,7 @@ describe('OAuth2CodeGranter', () => {
     log.mockReset();
   });
 
-  it('should work with a complete valid flow', async () => {
+  test('should work with a complete valid flow', async () => {
     const oAuth2CodeGranter = await initOAuth2CodeGranter({
       checkApplication,
       oAuth2Code,
@@ -51,6 +39,9 @@ describe('OAuth2CodeGranter', () => {
       redirectURI: 'https://www.example2.com',
       applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       scope: 'user',
+    } as WhookAuthenticationData & {
+      redirectURI: string;
+      [name: string]: unknown;
     });
 
     const authorizerResult = await oAuth2CodeGranter.authorizer?.authorize({
@@ -63,7 +54,7 @@ describe('OAuth2CodeGranter', () => {
         {
           applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
           scope: 'user, admin',
-        },
+        } as WhookAuthenticationData,
         {
           clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
           redirectURI: 'https://www.example.com/oauth2/code',
@@ -81,7 +72,7 @@ describe('OAuth2CodeGranter', () => {
         {
           applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
           scope: 'user',
-        },
+        } as WhookAuthenticationData,
       );
 
     expect({

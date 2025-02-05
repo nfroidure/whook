@@ -56,9 +56,11 @@ async function initGenerateOpenAPISchema({
 
     log('warning', '📥 - Retrieving schema...');
     const response = await getOpenAPI({
-      authenticated,
-      mutedMethods: ['options'],
-      mutedParameters: [],
+      options: { authenticated },
+      query: {
+        mutedMethods: ['options'],
+        mutedParameters: [],
+      },
     });
     log('warning', '📇 - Writing Open API schema...');
 

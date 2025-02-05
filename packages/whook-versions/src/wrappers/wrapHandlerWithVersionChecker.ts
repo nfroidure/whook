@@ -1,15 +1,14 @@
 import { YHTTPError } from 'yhttperror';
 import semverSatisfies from 'semver/functions/satisfies.js';
-import camelCase from 'camelcase';
 import { autoService } from 'knifecycle';
-import { type Parameters } from 'knifecycle';
 import { type LogService } from 'common-services';
 import {
   noop,
   type WhookResponse,
-  type WhookHandler,
-  type WhookOperation,
-  type WhookWrapper,
+  type WhookAPIHandler,
+  type WhookAPIWrapper,
+  type WhookAPIHandlerParameters,
+  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
 
 export type VersionDescriptor = {
@@ -34,37 +33,35 @@ export type VersionsCheckerDependencies = VersionsConfig & {
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.
  */
-async function initWrapHandlerWithVersionChecker<S extends WhookHandler>({
+async function initWrapHandlerWithVersionChecker({
   VERSIONS,
   log = noop,
-}: VersionsCheckerDependencies): Promise<WhookWrapper<S>> {
+}: VersionsCheckerDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the version checker wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleWithVersionChecker.bind(
       null,
       { VERSIONS, log },
       handler,
     );
 
-    return wrappedHandler as S;
+    return wrappedHandler;
   };
 
   return wrapper;
 }
 
-async function handleWithVersionChecker<
-  R extends WhookResponse,
-  O extends WhookOperation,
-  P extends Parameters,
->(
+async function handleWithVersionChecker(
   { VERSIONS }: VersionsCheckerDependencies,
-  handler: WhookHandler<P, R, O>,
-  parameters: P,
-  operation: O,
-): Promise<R> {
+  handler: WhookAPIHandler,
+  parameters: WhookAPIHandlerParameters,
+  operation: WhookAPIHandlerDefinition,
+): Promise<WhookResponse> {
   VERSIONS.forEach((version) => {
-    const value = parameters[camelCase(version.header)];
+    const value = parameters.header[version.header.toLowerCase()] as string;
 
     if (
       'undefined' !== typeof value &&

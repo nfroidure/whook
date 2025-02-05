@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initEnvCommand from './env.js';
 import { YError } from 'yerror';
 import { NodeEnv } from 'application-services';
@@ -14,7 +14,7 @@ describe('envCommand', () => {
     promptArgs.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['env'],
@@ -50,7 +50,7 @@ describe('envCommand', () => {
 `);
   });
 
-  it('should work with a default value', async () => {
+  test('should work with a default value', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['env'],
@@ -89,7 +89,7 @@ describe('envCommand', () => {
 `);
   });
 
-  it('should fail with no value', async () => {
+  test('should fail with no value', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['env'],

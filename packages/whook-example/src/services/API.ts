@@ -1,8 +1,12 @@
 import { name, autoService, location } from 'knifecycle';
 import { augmentAPIWithCORS } from '@whook/cors';
-import { noop, type WhookConfig, type WhookAPIDefinitions } from '@whook/whook';
+import {
+  noop,
+  type WhookConfig,
+  type WhookAPIDefinitions,
+  type WhookOpenAPI,
+} from '@whook/whook';
 import { type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
 
 export type APIEnv = {
   DEV_MODE?: string;
@@ -40,7 +44,7 @@ async function initAPI({
 }: APIDependencies) {
   log('debug', '🦄 - Initializing the API service!');
 
-  const API: OpenAPIV3_1.Document = {
+  const API = {
     openapi: '3.1.0',
     info: {
       version: API_VERSION,
@@ -78,7 +82,7 @@ async function initAPI({
         name: 'system',
       },
     ],
-  };
+  } as unknown as WhookOpenAPI;
 
   /* Architecture Note #3.3: Plugins
 
@@ -96,15 +100,15 @@ The API definition is a JSON serializable object, you
 */
 async function augmentAPIWithFakeAuth(
   { ENV }: { ENV: APIEnv },
-  API: OpenAPIV3_1.Document,
-): Promise<OpenAPIV3_1.Document> {
+  API: WhookOpenAPI,
+): Promise<WhookOpenAPI> {
   if (!ENV.DEV_MODE) {
     return API;
   }
 
   return {
     ...API,
-    paths: Object.keys(API.paths || {}).reduce<OpenAPIV3_1.PathsObject>(
+    paths: Object.keys(API.paths || {}).reduce<WhookOpenAPI['paths']>(
       (newPathsObject, path) => ({
         ...newPathsObject,
         [path]: Object.keys(API.paths?.[path] || {}).reduce(

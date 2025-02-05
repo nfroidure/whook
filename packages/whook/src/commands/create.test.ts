@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initCreateCommand from './create.js';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPI } from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 import { type WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('createCommand', () => {
   const PROJECT_DIR = '/hom/whoiam/project';
-  const API: OpenAPIV3_1.Document = {
+  const API: OpenAPI = {
     openapi: '3.1.0',
     info: {
       version: '1.0.0',
@@ -40,7 +40,7 @@ describe('createCommand', () => {
   });
 
   describe('for handlers', () => {
-    it('should work with get and no dependencies', async () => {
+    test('should work with get and no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -164,14 +164,6 @@ describe('createCommand', () => {
         {
           "choices": [
             {
-              "name": "options",
-              "value": "options",
-            },
-            {
-              "name": "head",
-              "value": "head",
-            },
-            {
               "name": "get",
               "value": "get",
             },
@@ -184,12 +176,20 @@ describe('createCommand', () => {
               "value": "post",
             },
             {
-              "name": "patch",
-              "value": "patch",
-            },
-            {
               "name": "delete",
               "value": "delete",
+            },
+            {
+              "name": "options",
+              "value": "options",
+            },
+            {
+              "name": "head",
+              "value": "head",
+            },
+            {
+              "name": "patch",
+              "value": "patch",
             },
             {
               "name": "trace",
@@ -238,11 +238,14 @@ describe('createCommand', () => {
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
-      "import { autoHandler } from 'knifecycle';
-import { type WhookAPIHandlerDefinition } from '@whook/whook';
+      "import { autoService, location } from 'knifecycle';
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookAPITypedHandler,
+} from '@whook/whook';
 
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '/lol',
   method: 'get',
   operation: {
@@ -270,21 +273,31 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-type HandlerDependencies = {};
+export type HandlerDependencies = {};
 
-export default autoHandler(getHandler);
-
-async function getHandler(_: HandlerDependencies, {
-    param,
-  } : API.GetHandler.Input): Promise<API.GetHandler.Output> {
-  return {
-    status: 200,
-    headers: {},
-    body: { param },
+async function initGetHandler(_: HandlerDependencies) {
+  const handler: WhookAPITypedHandler<
+    operations[typeof definition.operation.operationId],
+    typeof definition
+  > = async ({
+    query: { param },
+  }) => {
+    return {
+      status: 200,
+      headers: {},
+      body: { param },
+    };
   };
+
+  return handler;
 }
+
+export default location(
+  autoService(initGetHandler),
+  import.meta.url,
+);
 ",
     ],
   ],
@@ -292,7 +305,7 @@ async function getHandler(_: HandlerDependencies, {
 `);
     });
 
-    it('should work with an existing get and dependencies but no erase allowed', async () => {
+    test('should work with an existing get and dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -419,14 +432,6 @@ async function getHandler(_: HandlerDependencies, {
         {
           "choices": [
             {
-              "name": "options",
-              "value": "options",
-            },
-            {
-              "name": "head",
-              "value": "head",
-            },
-            {
               "name": "get",
               "value": "get",
             },
@@ -439,12 +444,20 @@ async function getHandler(_: HandlerDependencies, {
               "value": "post",
             },
             {
-              "name": "patch",
-              "value": "patch",
-            },
-            {
               "name": "delete",
               "value": "delete",
+            },
+            {
+              "name": "options",
+              "value": "options",
+            },
+            {
+              "name": "head",
+              "value": "head",
+            },
+            {
+              "name": "patch",
+              "value": "patch",
             },
             {
               "name": "trace",
@@ -509,7 +522,7 @@ async function getHandler(_: HandlerDependencies, {
 `);
     });
 
-    it('should work with an existing get and dependencies and erase allowed', async () => {
+    test('should work with an existing get and dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -636,14 +649,6 @@ async function getHandler(_: HandlerDependencies, {
         {
           "choices": [
             {
-              "name": "options",
-              "value": "options",
-            },
-            {
-              "name": "head",
-              "value": "head",
-            },
-            {
               "name": "get",
               "value": "get",
             },
@@ -656,12 +661,20 @@ async function getHandler(_: HandlerDependencies, {
               "value": "post",
             },
             {
-              "name": "patch",
-              "value": "patch",
-            },
-            {
               "name": "delete",
               "value": "delete",
+            },
+            {
+              "name": "options",
+              "value": "options",
+            },
+            {
+              "name": "head",
+              "value": "head",
+            },
+            {
+              "name": "patch",
+              "value": "patch",
             },
             {
               "name": "trace",
@@ -724,13 +737,16 @@ async function getHandler(_: HandlerDependencies, {
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
-      "import { autoHandler } from 'knifecycle';
-import { type WhookAPIHandlerDefinition } from '@whook/whook';
+      "import { autoService, location } from 'knifecycle';
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookAPITypedHandler,
+} from '@whook/whook';
 import { type LogService } from 'common-services';
 import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '/lol',
   method: 'get',
   operation: {
@@ -758,29 +774,39 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-type HandlerDependencies = {
+export type HandlerDependencies = {
   ENV: AppEnvVars;
   PROJECT_DIR: ProjectDirService;
   log: LogService;
 };
 
-export default autoHandler(getHandler);
-
-async function getHandler({
+async function initGetHandler({
   ENV,
   PROJECT_DIR,
   log,
-}: HandlerDependencies, {
-    param,
-  } : API.GetHandler.Input): Promise<API.GetHandler.Output> {
-  return {
-    status: 200,
-    headers: {},
-    body: { param },
+}: HandlerDependencies) {
+  const handler: WhookAPITypedHandler<
+    operations[typeof definition.operation.operationId],
+    typeof definition
+  > = async ({
+    query: { param },
+  }) => {
+    return {
+      status: 200,
+      headers: {},
+      body: { param },
+    };
   };
+
+  return handler;
 }
+
+export default location(
+  autoService(initGetHandler),
+  import.meta.url,
+);
 ",
     ],
   ],
@@ -790,7 +816,7 @@ async function getHandler({
   });
 
   describe('for services', () => {
-    it('should work with no dependencies', async () => {
+    test('should work with no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -917,18 +943,21 @@ async function getHandler({
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/services/aService.ts",
-      "import { autoService } from 'knifecycle';
+      "import { autoService, location } from 'knifecycle';
 
 
 export type AServiceService = {};
 export type AServiceDependencies = {};
 
-export default autoService(initAService);
-
 async function initAService(_: AServiceDependencies): Promise<AServiceService> {
   // Instantiate and return your service
   return {};
 }
+
+export default location(
+  autoService(initAService),
+  import.meta.url,
+);
 ",
     ],
   ],
@@ -936,7 +965,7 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
 `);
     });
 
-    it('should work when existing with dependencies but no erase allowed', async () => {
+    test('should work when existing with dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -1082,7 +1111,7 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
 `);
     });
 
-    it('should work when existing with dependencies and erase allowed', async () => {
+    test('should work when existing with dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -1226,7 +1255,7 @@ async function initAService(_: AServiceDependencies): Promise<AServiceService> {
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/services/aService.ts",
-      "import { autoService } from 'knifecycle';
+      "import { autoService, location } from 'knifecycle';
 import { type LogService } from 'common-services';
 import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
@@ -1238,8 +1267,6 @@ export type AServiceDependencies = {
   log: LogService;
 };
 
-export default autoService(initAService);
-
 async function initAService({
   ENV,
   PROJECT_DIR,
@@ -1248,6 +1275,11 @@ async function initAService({
   // Instantiate and return your service
   return {};
 }
+
+export default location(
+  autoService(initAService),
+  import.meta.url,
+);
 ",
     ],
   ],
@@ -1257,7 +1289,7 @@ async function initAService({
   });
 
   describe('for providers', () => {
-    it('should work with no dependencies', async () => {
+    test('should work with no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -1384,14 +1416,12 @@ async function initAService({
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/services/aProvider.ts",
-      "import { autoProvider, Provider } from 'knifecycle';
+      "import { autoProvider, location, type Provider } from 'knifecycle';
 
 
 export type AProviderService = {};
 export type AProviderProvider = Provider<AProviderService>;
 export type AProviderDependencies = {};
-
-export default autoProvider(initAProvider);
 
 async function initAProvider(_: AProviderDependencies): Promise<AProviderProvider> {
   // Instantiate and return your service
@@ -1406,6 +1436,11 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
     // errorPromise: new Promise(),
   };
 }
+
+export default location(
+  autoProvider(initAProvider),
+  import.meta.url,
+);
 ",
     ],
   ],
@@ -1413,7 +1448,7 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
 `);
     });
 
-    it('should work when existing with dependencies but no erase allowed', async () => {
+    test('should work when existing with dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -1559,7 +1594,7 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
 `);
     });
 
-    it('should work when existing with dependencies and erase allowed', async () => {
+    test('should work when existing with dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -1703,7 +1738,7 @@ async function initAProvider(_: AProviderDependencies): Promise<AProviderProvide
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/services/aProvider.ts",
-      "import { autoProvider, Provider } from 'knifecycle';
+      "import { autoProvider, location, type Provider } from 'knifecycle';
 import { type LogService } from 'common-services';
 import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
@@ -1715,8 +1750,6 @@ export type AProviderDependencies = {
   PROJECT_DIR: ProjectDirService;
   log: LogService;
 };
-
-export default autoProvider(initAProvider);
 
 async function initAProvider({
   ENV,
@@ -1735,6 +1768,11 @@ async function initAProvider({
     // errorPromise: new Promise(),
   };
 }
+
+export default location(
+  autoProvider(initAProvider),
+  import.meta.url,
+);
 ",
     ],
   ],
@@ -1744,7 +1782,7 @@ async function initAProvider({
   });
 
   describe('for commands', () => {
-    it('should work with no dependencies', async () => {
+    test('should work with no dependencies', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -1883,7 +1921,7 @@ async function initAProvider({
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/commands/aCommand.ts",
-      "import { extra, autoService } from 'knifecycle';
+      "import { extra, autoService, location } from 'knifecycle';
 import {
   readArgs,
   type WhookPromptArgs,
@@ -1910,8 +1948,6 @@ export const definition: WhookCommandDefinition = {
   },
 };
 
-export default extra(definition, autoService(initACommandCommand));
-
 async function initACommandCommand({
   promptArgs,
 }: {
@@ -1926,6 +1962,11 @@ async function initACommandCommand({
   // Implement your command here
   }
 }
+
+export default location(
+  extra(definition, autoService(initACommandCommand)),
+  import.meta.url,
+);
 ",
     ],
   ],
@@ -1933,7 +1974,7 @@ async function initACommandCommand({
 `);
     });
 
-    it('should work when existing with dependencies but no erase allowed', async () => {
+    test('should work when existing with dependencies but no erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -2091,7 +2132,7 @@ async function initACommandCommand({
 `);
     });
 
-    it('should work when existing with dependencies and erase allowed', async () => {
+    test('should work when existing with dependencies and erase allowed', async () => {
       promptArgs.mockResolvedValueOnce({
         command: 'whook',
         rest: ['create'],
@@ -2247,7 +2288,7 @@ async function initACommandCommand({
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/commands/aCommand.ts",
-      "import { extra, autoService } from 'knifecycle';
+      "import { extra, autoService, location } from 'knifecycle';
 import {
   readArgs,
   type WhookPromptArgs,
@@ -2276,8 +2317,6 @@ export const definition: WhookCommandDefinition = {
   },
 };
 
-export default extra(definition, autoService(initACommandCommand));
-
 async function initACommandCommand({
   ENV,
   PROJECT_DIR,
@@ -2298,6 +2337,11 @@ async function initACommandCommand({
   // Implement your command here
   }
 }
+
+export default location(
+  extra(definition, autoService(initACommandCommand)),
+  import.meta.url,
+);
 ",
     ],
   ],

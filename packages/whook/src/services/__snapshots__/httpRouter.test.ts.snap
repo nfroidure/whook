@@ -30,7 +30,7 @@ exports[`initHTTPRouter httpRouter GET should fail without a required parameter 
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should lately fail when stringifier lack 1`] = `
+exports[`initHTTPRouter httpRouter GET should lately fail when stringifier lack 2`] = `
 {
   "error": "router_misconfiguration",
   "error_debug_data": undefined,
@@ -40,7 +40,7 @@ exports[`initHTTPRouter httpRouter GET should lately fail when stringifier lack 
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns a bad status 1`] = `
+exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns a bad status 2`] = `
 {
   "error": "bad_handler",
   "error_debug_data": undefined,
@@ -50,7 +50,7 @@ exports[`initHTTPRouter httpRouter GET should lately fail when the handler retur
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns no response 1`] = `
+exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns no response 2`] = `
 {
   "error": "bad_handler",
   "error_debug_data": undefined,
@@ -70,7 +70,7 @@ exports[`initHTTPRouter httpRouter GET should lately fail when the handler retur
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns nothing 1`] = `
+exports[`initHTTPRouter httpRouter GET should lately fail when the handler returns nothing 2`] = `
 {
   "error": "bad_handler",
   "error_debug_data": undefined,
@@ -80,7 +80,7 @@ exports[`initHTTPRouter httpRouter GET should lately fail when the handler retur
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should lately fail whith unacceptable media type 1`] = `
+exports[`initHTTPRouter httpRouter GET should lately fail whith unacceptable media type 2`] = `
 {
   "error": "bad_request",
   "error_debug_data": undefined,
@@ -213,72 +213,12 @@ exports[`initHTTPRouter httpRouter PUT should fail with illegal contents accordi
         },
         "parentSchema": {
           "additionalProperties": false,
-          "definitions": {
-            "BinaryPayload": {
-              "format": "binary",
-              "type": "string",
-            },
-            "ContentType": {
-              "type": "string",
-            },
-            "Error": {
-              "properties": {
-                "code": {
-                  "pattern": "^E_[a-zA-Z0-9_]+$",
-                  "type": "string",
-                },
-                "transactionId": {
-                  "type": "string",
-                },
-              },
-              "type": "object",
-            },
-            "Recursive": {
-              "additionalProperties": false,
-              "properties": {
-                "childs": {
-                  "items": {
-                    "$ref": "#/definitions/Recursive",
-                  },
-                  "type": "array",
-                },
-                "id": {
-                  "type": "string",
-                },
-              },
-              "required": [
-                "id",
-                "childs",
-              ],
-              "type": "object",
-            },
-            "User": {
-              "additionalProperties": false,
-              "properties": {
-                "name": {
-                  "type": "string",
-                },
-                "tree": {
-                  "$ref": "#/definitions/Recursive",
-                },
-              },
-              "required": [
-                "name",
-              ],
-              "type": "object",
-            },
-            "UserIdSchema": {
-              "minimum": 0,
-              "multipleOf": 1,
-              "type": "number",
-            },
-          },
           "properties": {
             "name": {
               "type": "string",
             },
             "tree": {
-              "$ref": "#/definitions/Recursive",
+              "$ref": "#/components/schemas/Recursive",
             },
           },
           "required": [
@@ -327,7 +267,7 @@ exports[`initHTTPRouter httpRouter PUT should fail with too large contents not d
 }
 `;
 
-exports[`initHTTPRouter httpRouter PUT should fail with unsupported charset 1`] = `
+exports[`initHTTPRouter httpRouter PUT should fail with unsupported charset 2`] = `
 {
   "error": "bad_request",
   "error_debug_data": undefined,

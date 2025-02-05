@@ -1,17 +1,19 @@
 import { service, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { type WhookWrapper } from '../services/WRAPPERS.js';
-import { type WhookHandler } from '../services/httpTransaction.js';
 import { type LogService } from 'common-services';
-import { type WhookHandlersService } from './httpRouter.js';
+import {
+  type WhookAPIWrapper,
+  type WhookAPIHandler,
+} from '../types/handlers.js';
 
 export const HANDLER_REG_EXP =
   /^(head|get|put|post|delete|options|handle)[A-Z][a-zA-Z0-9]+/;
 
-export type WhookHandlersDependencies<T extends WhookHandler> = {
-  WRAPPERS: WhookWrapper<T>[];
+export type WhookHandlersService = Record<string, WhookAPIHandler>;
+export type WhookHandlersDependencies = {
+  WRAPPERS: WhookAPIWrapper[];
   log?: LogService;
-} & WhookHandlersService<T>;
+} & WhookHandlersService;
 
 export default location(
   service(initHandlers, 'HANDLERS', ['WRAPPERS', 'log']),
@@ -33,11 +35,11 @@ export default location(
  * @return {Promise<Function>}
  * A promise of the `HANDLERS` hash.
  */
-async function initHandlers<T extends WhookHandler>({
+async function initHandlers({
   WRAPPERS,
   log = noop,
   ...HANDLERS
-}: WhookHandlersDependencies<T>): Promise<WhookHandlersService<T>> {
+}: WhookHandlersDependencies): Promise<WhookHandlersService> {
   const handlersCount = Object.keys(HANDLERS).length;
   log(
     'warning',
@@ -55,18 +57,18 @@ async function initHandlers<T extends WhookHandler>({
   const WRAPPED_HANDLERS = await Object.keys(HANDLERS).reduce(
     async (handlers, handlerName) => ({
       ...(await handlers),
-      [handlerName]: await applyWrappers<T>(WRAPPERS, HANDLERS[handlerName]),
+      [handlerName]: await applyWrappers(WRAPPERS, HANDLERS[handlerName]),
     }),
-    Promise.resolve({} as Record<string, T>),
+    Promise.resolve({}),
   );
 
   return WRAPPED_HANDLERS;
 }
 
-export async function applyWrappers<T extends WhookHandler>(
-  wrappers: WhookWrapper<T>[],
-  handler: T,
-): Promise<T> {
+export async function applyWrappers(
+  wrappers: WhookAPIWrapper[],
+  handler: WhookAPIHandler,
+): Promise<WhookAPIHandler> {
   for (const wrapper of wrappers) {
     handler = await wrapper(handler);
   }

@@ -3,7 +3,6 @@ import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import StreamTest from 'streamtest';
 import { YError } from 'yerror';
 import initHTTPTransaction from './httpTransaction.js';
-import { type WhookHandler, type WhookResponse } from './httpTransaction.js';
 import { type WhookAPMService } from './apm.js';
 import { type WhookObfuscatorService } from './obfuscator.js';
 import { type IncomingMessage } from 'node:http';
@@ -140,9 +139,7 @@ describe('initHTTPTransaction', () => {
         res,
       );
 
-      const response = await transaction.start(
-        buildResponse as unknown as WhookHandler,
-      );
+      const response = await transaction.start(buildResponse);
 
       await transaction.end(response, 'theOperationId');
 
@@ -224,9 +221,9 @@ describe('initHTTPTransaction', () => {
 
         request = _request;
 
-        await transaction.start(buildResponse as unknown as WhookHandler);
+        await transaction.start(buildResponse);
 
-        await transaction.end({} as WhookResponse);
+        await transaction.end({ status: 200 });
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
@@ -289,7 +286,7 @@ describe('initHTTPTransaction', () => {
         );
 
         await transaction
-          .start(buildResponse as unknown as WhookHandler)
+          .start(buildResponse)
           .catch(transaction.catch)
           .then(streamifyBody)
           .then(transaction.end);

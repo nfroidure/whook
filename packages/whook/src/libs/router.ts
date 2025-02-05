@@ -4,14 +4,17 @@ import preferredCharsets from 'negotiator/lib/charset.js';
 import preferredMediaType from 'negotiator/lib/encoding.js';
 import { YError } from 'yerror';
 import { pickFirstHeaderValue, pickAllHeaderValues } from './headers.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type Parameters } from 'knifecycle';
+import { ensureResolvedObject } from 'ya-open-api-types';
 import {
-  type WhookHandler,
-  type WhookOperation,
-  type WhookRequest,
-  type WhookResponse,
-} from '../index.js';
+  type WhookOpenAPI,
+  type WhookOpenAPIOperation,
+} from '../types/openapi.js';
+import { type WhookRequest, type WhookResponse } from '../types/http.js';
+import {
+  type WhookAPIHandler,
+  type WhookAPIHandlerDefinition,
+  type WhookAPIHandlerParameters,
+} from '../types/handlers.js';
 
 const { parse: parseContentType } = contentType;
 
@@ -26,10 +29,17 @@ export type WhookResponseSpec = {
   charsets: string[];
 };
 
-export function extractConsumableMediaTypes(
-  operation: WhookOperation,
-): string[] {
-  if (!operation.requestBody) {
+export async function extractConsumableMediaTypes(
+  API: WhookOpenAPI,
+  operation: WhookOpenAPIOperation,
+): Promise<string[]> {
+  if (!('requestBody' in operation && operation.requestBody)) {
+    return [];
+  }
+
+  const requestBody = await ensureResolvedObject(API, operation.requestBody);
+
+  if (!('content' in requestBody && requestBody.content)) {
     return [];
   }
 
@@ -37,36 +47,34 @@ export function extractConsumableMediaTypes(
   // be present so not checking before using it
   // https://swagger.io/specification/#requestBodyObject
 
-  return Object.keys(
-    (operation.requestBody as OpenAPIV3_1.RequestBodyObject).content,
-  );
+  return Object.keys(requestBody.content);
 }
 
-export function extractProduceableMediaTypes(
-  operation: WhookOperation,
-): string[] {
-  if (!operation.responses) {
+export async function extractProduceableMediaTypes(
+  API: WhookOpenAPI,
+  operation: WhookOpenAPIOperation,
+): Promise<string[]> {
+  if (!('responses' in operation && operation.responses)) {
     return [];
   }
 
-  return [
-    ...new Set(
-      Object.keys(operation.responses).reduce(
-        (produceableMediaTypes, status) => {
-          const response = operation.responses[
-            status
-          ] as OpenAPIV3_1.ResponseObject;
+  const produceableMediaTypes: string[] = [];
 
-          if (!response.content) {
-            return produceableMediaTypes;
-          }
+  for (const response of Object.values(operation.responses)) {
+    if (!(typeof response === 'object' && response)) {
+      continue;
+    }
 
-          return [...produceableMediaTypes, ...Object.keys(response.content)];
-        },
-        [] as string[],
-      ),
-    ),
-  ];
+    const resolvedResponse = await ensureResolvedObject(API, response);
+
+    if (!('content' in resolvedResponse && resolvedResponse.content)) {
+      continue;
+    }
+
+    produceableMediaTypes.push(...Object.keys(resolvedResponse.content || {}));
+  }
+
+  return [...new Set(produceableMediaTypes)];
 }
 
 export function extractBodySpec(
@@ -176,7 +184,7 @@ export function checkBodyMediaType(
 }
 
 export function extractResponseSpec(
-  operation: WhookOperation,
+  operation: WhookOpenAPIOperation,
   request: WhookRequest,
   supportedMediaTypes: string[],
   supportedCharsets: string[],
@@ -230,19 +238,19 @@ export function checkResponseCharset(
 }
 
 export async function executeHandler(
-  operation: WhookOperation,
-  handler: WhookHandler,
-  parameters: Parameters,
+  definition: WhookAPIHandlerDefinition,
+  handler: WhookAPIHandler,
+  parameters: WhookAPIHandlerParameters,
 ): Promise<WhookResponse> {
-  const responsePromise = handler(parameters, operation);
+  const responsePromise = handler(parameters, definition);
 
   if (!(responsePromise && responsePromise.then)) {
     throw new YHTTPError(
       500,
       'E_NO_RESPONSE_PROMISE',
-      operation.operationId,
-      operation.method,
-      operation.path,
+      definition.operation.operationId,
+      definition.method,
+      definition.path,
     );
   }
 
@@ -252,27 +260,27 @@ export async function executeHandler(
     throw new YHTTPError(
       500,
       'E_NO_RESPONSE',
-      operation.operationId,
-      operation.method,
-      operation.path,
+      definition.operation.operationId,
+      definition.method,
+      definition.path,
     );
   }
   if ('undefined' === typeof response.status) {
     throw new YHTTPError(
       500,
       'E_NO_RESPONSE_STATUS',
-      operation.operationId,
-      operation.method,
-      operation.path,
+      definition.operation.operationId,
+      definition.method,
+      definition.path,
     );
   }
   if ('number' !== typeof response.status) {
     throw new YHTTPError(
       500,
       'E_NON_NUMERIC_STATUS',
-      operation.operationId,
-      operation.method,
-      operation.path,
+      definition.operation.operationId,
+      definition.method,
+      definition.path,
     );
   }
 

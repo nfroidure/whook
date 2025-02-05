@@ -34,7 +34,11 @@ import {
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type WhookCommandArgs } from '../libs/args.js';
-import { getOpenAPIOperations } from '../libs/openapi.js';
+import { pathItemToOperationMap } from 'ya-open-api-types';
+import {
+  type WhookOpenAPIOperation,
+  type WhookOpenAPI,
+} from '../types/openapi.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -118,7 +122,7 @@ async function initAutoload({
    it is dynamically loaded so doing this during the auto
    loader initialization.
   */
-  let API;
+  let API: WhookOpenAPI;
   const getAPI = (() => {
     return async () => {
       if (!API) {
@@ -209,13 +213,18 @@ async function initAutoload({
      handler required by the API.
     */
     if ('HANDLERS' === injectedName) {
-      const handlerNames = [
-        ...new Set(
-          (await getOpenAPIOperations(await getAPI())).map(
-            (operation) => operation.operationId,
-          ),
-        ),
-      ] as string[];
+      const handlerNames = [] as string[];
+
+      for (const [, pathItem] of Object.entries((await getAPI()).paths || {})) {
+        for (const [, operation] of Object.entries(
+          pathItemToOperationMap(pathItem) as Record<
+            string,
+            WhookOpenAPIOperation
+          >,
+        )) {
+          handlerNames.push(operation.operationId as string);
+        }
+      }
 
       return location(
         alsoInject(handlerNames, initHandlers),

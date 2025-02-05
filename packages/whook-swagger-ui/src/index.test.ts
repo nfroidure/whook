@@ -1,22 +1,22 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import {
   prepareProcess,
   prepareEnvironment,
-  initGetPingDefinition,
+  getPingDefinition,
   initHTTPRouter,
 } from '@whook/whook';
 import wrapHTTPRouterWithSwaggerUI from './index.js';
 import { YError } from 'yerror';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPI } from 'ya-open-api-types';
 import { type Logger } from 'common-services';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
   const PORT = 22222;
   const BASE_PATH = '/v1';
-  const API: OpenAPIV3_1.Document = {
+  const API: OpenAPI = {
     openapi: '3.1.0',
     info: {
       version: '1.0.0',
@@ -24,8 +24,8 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [initGetPingDefinition.path]: {
-        [initGetPingDefinition.method]: initGetPingDefinition.operation,
+      [getPingDefinition.path]: {
+        [getPingDefinition.method]: getPingDefinition.operation,
       },
     },
   };
@@ -80,7 +80,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(constant('time', time));
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     $.register(constant('PORT', PORT));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(constant('CONFIG', {}));
@@ -143,7 +143,10 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "ENCODERS",
     ],
     [
-      "QUERY_PARSER",
+      "COERCION_OPTIONS",
+    ],
+    [
+      "SCHEMA_VALIDATORS_OPTIONS",
     ],
     [
       "TIMEOUT",
@@ -174,6 +177,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "QUERY_PARSER_OPTIONS",
     ],
     [
       "SWAGGER_UI_CONFIG",
@@ -225,6 +231,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
     [
@@ -250,6 +259,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   },
   "logErrorCalls": [
     [
+      "⌨️ - Initializing the basic query parser.",
+    ],
+    [
       "💁 - Serving the API docs: http://localhost:22222/docs",
     ],
     [
@@ -264,7 +276,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 `);
   });
 
-  it('should serve Swagger HTML', async () => {
+  test('should serve Swagger HTML', async () => {
     $.register(constant('PORT', PORT + 2));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(
@@ -331,7 +343,10 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "ENCODERS",
     ],
     [
-      "QUERY_PARSER",
+      "COERCION_OPTIONS",
+    ],
+    [
+      "SCHEMA_VALIDATORS_OPTIONS",
     ],
     [
       "TIMEOUT",
@@ -362,6 +377,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "QUERY_PARSER_OPTIONS",
     ],
     [
       "SWAGGER_UI_CONFIG",
@@ -406,6 +424,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
     [
@@ -431,6 +452,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   },
   "logErrorCalls": [
     [
+      "⌨️ - Initializing the basic query parser.",
+    ],
+    [
       "💁 - Serving the API docs: http://localhost:22224/docs",
     ],
     [
@@ -445,7 +469,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
 `);
   });
 
-  it('should serve Swagger Initializer', async () => {
+  test('should serve Swagger Initializer', async () => {
     $.register(constant('PORT', PORT + 3));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(
@@ -544,7 +568,10 @@ window.onload = function() {
       "ENCODERS",
     ],
     [
-      "QUERY_PARSER",
+      "COERCION_OPTIONS",
+    ],
+    [
+      "SCHEMA_VALIDATORS_OPTIONS",
     ],
     [
       "TIMEOUT",
@@ -575,6 +602,9 @@ window.onload = function() {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "QUERY_PARSER_OPTIONS",
     ],
     [
       "PROCESS_NAME",
@@ -616,6 +646,9 @@ window.onload = function() {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
     [
@@ -640,6 +673,9 @@ window.onload = function() {
   },
   "logErrorCalls": [
     [
+      "⌨️ - Initializing the basic query parser.",
+    ],
+    [
       "💁 - Serving the API docs: http://localhost:22225/docs",
     ],
     [
@@ -654,7 +690,7 @@ window.onload = function() {
 `);
   });
 
-  it('should be bypassed with no debug env', async () => {
+  test('should be bypassed with no debug env', async () => {
     $.register(constant('PORT', PORT + 1));
     $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
     $.register(
@@ -697,7 +733,10 @@ window.onload = function() {
       "ENCODERS",
     ],
     [
-      "QUERY_PARSER",
+      "COERCION_OPTIONS",
+    ],
+    [
+      "SCHEMA_VALIDATORS_OPTIONS",
     ],
     [
       "TIMEOUT",
@@ -728,6 +767,9 @@ window.onload = function() {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "QUERY_PARSER_OPTIONS",
     ],
     [
       "SWAGGER_UI_CONFIG",
@@ -772,6 +814,9 @@ window.onload = function() {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
     [
@@ -779,6 +824,9 @@ window.onload = function() {
     ],
   ],
   "logErrorCalls": [
+    [
+      "⌨️ - Initializing the basic query parser.",
+    ],
     [
       "🎙️ - HTTP Server listening at "http://localhost:22223".",
     ],

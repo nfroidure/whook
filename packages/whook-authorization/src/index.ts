@@ -6,13 +6,14 @@ import {
 import initWrapHandlerWithAuthorization from './wrappers/wrapHandlerWithAuthorization.js';
 
 export { initWrapHandlerWithAuthorization };
-export type {
-  AuthenticationApplicationId,
-  AuthenticationScope,
-  BaseAuthenticationData,
-  AuthenticationService,
-  WhookAuthorizationConfig,
-  WhookAuthorizationDependencies,
+export {
+  type WhookAuthenticationApplicationId,
+  type WhookAuthenticationScope,
+  type WhookBaseAuthenticationData,
+  type WhookAuthenticationData,
+  type WhookAuthenticationService,
+  type WhookAuthorizationConfig,
+  type WhookAuthorizationDependencies,
 } from './wrappers/wrapHandlerWithAuthorization.js';
 
 export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {

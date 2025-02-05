@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   describe,
-  it,
+  test,
   beforeAll,
   beforeEach,
   afterAll,
@@ -35,8 +35,8 @@ import {
 import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import { type WhookGraphQLFragmentService } from './index.js';
 import { type Knifecycle, type Autoloader } from 'knifecycle';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type AuthenticationService } from '@whook/authorization';
+import { type OpenAPI } from 'ya-open-api-types';
+import { type WhookAuthenticationService } from '@whook/authorization';
 import { type WhookGraphQLContextFunction } from './index.js';
 import { type Logger, type TimeService } from 'common-services';
 
@@ -55,7 +55,7 @@ describe('GraphQL server', () => {
     async (baseContext) => baseContext,
   );
 
-  const API: OpenAPIV3_1.Document = {
+  const API: OpenAPI = {
     openapi: '3.1.0',
     info: {
       version: '1.0.0',
@@ -98,7 +98,7 @@ describe('GraphQL server', () => {
     },
   };
   const authentication = {
-    check: jest.fn<AuthenticationService<any, any>['check']>(),
+    check: jest.fn<WhookAuthenticationService<any>['check']>(),
   };
 
   function upperDirectiveTransformer(schema, directiveName: string) {
@@ -255,7 +255,7 @@ describe('GraphQL server', () => {
   });
 
   describe('should work', () => {
-    it('with a simple query', async () => {
+    test('with a simple query', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
@@ -308,70 +308,54 @@ describe('GraphQL server', () => {
   "graphQLContextFunctionCalls": [
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
+              "description": "The GraphQL query",
+              "required": false,
             },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -379,7 +363,15 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],
@@ -408,7 +400,7 @@ describe('GraphQL server', () => {
 `);
     });
 
-    it('with a GraphQL error', async () => {
+    test('with a GraphQL error', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
@@ -460,70 +452,54 @@ describe('GraphQL server', () => {
   "graphQLContextFunctionCalls": [
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
+              "description": "The GraphQL query",
+              "required": false,
             },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -531,76 +507,68 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
+              "description": "The GraphQL query",
+              "required": false,
             },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -608,7 +576,15 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],
@@ -648,7 +624,7 @@ describe('GraphQL server', () => {
 `);
     });
 
-    it('with a simple query though the GET endpoint', async () => {
+    test('with a simple query though the GET endpoint', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
@@ -701,234 +677,54 @@ describe('GraphQL server', () => {
   "graphQLContextFunctionCalls": [
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
-                    "type": "object",
-                  },
-                },
-              },
-              "description": "Successfully ran the GraphQL query",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
-        },
-        "requestContext": {
-          "authenticated": true,
-          "authenticationData": {
-            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-            "scope": "user,oauth",
-          },
-          "authorization": "bearer hash",
-        },
-      },
-    ],
-    [
-      {
-        "operation": {
-          "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
                     },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "additionalProperties": true,
-                    "definitions": {},
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
-        },
-        "requestContext": {
-          "authenticated": true,
-          "authenticationData": {
-            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-            "scope": "user,oauth",
-          },
-          "authorization": "bearer hash",
-        },
-      },
-    ],
-    [
-      {
-        "operation": {
-          "method": "get",
-          "operationId": "getGraphQL",
-          "parameters": [
-            {
               "description": "The GraphQL query",
-              "in": "query",
-              "name": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "description": "The GraphQL variables",
-              "in": "query",
-              "name": "variables",
               "required": false,
-              "schema": {
-                "type": "string",
-              },
             },
-            {
-              "description": "The GraphQL operation name",
-              "in": "query",
-              "name": "operationName",
-              "required": false,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": undefined,
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "additionalProperties": true,
-                    "definitions": {},
-                    "type": "object",
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
                   },
                 },
+                "description": "Successfully ran the GraphQL query",
               },
-              "description": "Successfully ran the GraphQL query",
             },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -936,7 +732,161 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
+        },
+      },
+    ],
+    [
+      {
+        "definition": {
+          "method": "post",
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": true,
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "The GraphQL query",
+              "required": false,
+            },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
+          },
+          "path": "/v1/graphql",
+        },
+        "requestContext": {
+          "authenticated": true,
+          "authenticationData": {
+            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+            "scope": "user,oauth",
+          },
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
+        },
+      },
+    ],
+    [
+      {
+        "definition": {
+          "method": "get",
+          "operation": {
+            "operationId": "getGraphQL",
+            "parameters": [
+              {
+                "description": "The GraphQL query",
+                "in": "query",
+                "name": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                },
+              },
+              {
+                "description": "The GraphQL variables",
+                "in": "query",
+                "name": "variables",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                },
+              },
+              {
+                "description": "The GraphQL operation name",
+                "in": "query",
+                "name": "operationName",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                },
+              },
+            ],
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
+          },
+          "path": "/v1/graphql",
+        },
+        "requestContext": {
+          "authenticated": true,
+          "authenticationData": {
+            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+            "scope": "user,oauth",
+          },
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
         },
       },
     ],
@@ -948,7 +898,7 @@ describe('GraphQL server', () => {
           "extensions": {
             "code": "BAD_REQUEST",
           },
-          "message": "\`operationName\` in a POST body must be a string if provided.",
+          "message": "POST body missing, invalid Content-Type, or JSON object has no keys.",
         },
       ],
     },
@@ -970,7 +920,7 @@ describe('GraphQL server', () => {
 `);
     });
 
-    it('with a query with args', async () => {
+    test('with a query with args', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
@@ -1023,234 +973,54 @@ describe('GraphQL server', () => {
   "graphQLContextFunctionCalls": [
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
-                    "type": "object",
-                  },
-                },
-              },
-              "description": "Successfully ran the GraphQL query",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
-        },
-        "requestContext": {
-          "authenticated": true,
-          "authenticationData": {
-            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-            "scope": "user,oauth",
-          },
-          "authorization": "bearer hash",
-        },
-      },
-    ],
-    [
-      {
-        "operation": {
-          "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
                     },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "additionalProperties": true,
-                    "definitions": {},
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
-        },
-        "requestContext": {
-          "authenticated": true,
-          "authenticationData": {
-            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-            "scope": "user,oauth",
-          },
-          "authorization": "bearer hash",
-        },
-      },
-    ],
-    [
-      {
-        "operation": {
-          "method": "get",
-          "operationId": "getGraphQL",
-          "parameters": [
-            {
               "description": "The GraphQL query",
-              "in": "query",
-              "name": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "description": "The GraphQL variables",
-              "in": "query",
-              "name": "variables",
               "required": false,
-              "schema": {
-                "type": "string",
-              },
             },
-            {
-              "description": "The GraphQL operation name",
-              "in": "query",
-              "name": "operationName",
-              "required": false,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": undefined,
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "additionalProperties": true,
-                    "definitions": {},
-                    "type": "object",
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
                   },
                 },
+                "description": "Successfully ran the GraphQL query",
               },
-              "description": "Successfully ran the GraphQL query",
             },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -1258,76 +1028,68 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
+              "description": "The GraphQL query",
+              "required": false,
             },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -1335,7 +1097,161 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
+        },
+      },
+    ],
+    [
+      {
+        "definition": {
+          "method": "get",
+          "operation": {
+            "operationId": "getGraphQL",
+            "parameters": [
+              {
+                "description": "The GraphQL query",
+                "in": "query",
+                "name": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                },
+              },
+              {
+                "description": "The GraphQL variables",
+                "in": "query",
+                "name": "variables",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                },
+              },
+              {
+                "description": "The GraphQL operation name",
+                "in": "query",
+                "name": "operationName",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                },
+              },
+            ],
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
+          },
+          "path": "/v1/graphql",
+        },
+        "requestContext": {
+          "authenticated": true,
+          "authenticationData": {
+            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+            "scope": "user,oauth",
+          },
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+        },
+      },
+    ],
+    [
+      {
+        "definition": {
+          "method": "post",
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": true,
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "The GraphQL query",
+              "required": false,
+            },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
+          },
+          "path": "/v1/graphql",
+        },
+        "requestContext": {
+          "authenticated": true,
+          "authenticationData": {
+            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+            "scope": "user,oauth",
+          },
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],
@@ -1364,7 +1280,7 @@ describe('GraphQL server', () => {
 `);
     });
 
-    it('with a query with variables', async () => {
+    test('with a query with variables', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       authentication.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
@@ -1424,234 +1340,54 @@ describe('GraphQL server', () => {
   "graphQLContextFunctionCalls": [
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
-                    "type": "object",
-                  },
-                },
-              },
-              "description": "Successfully ran the GraphQL query",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
-        },
-        "requestContext": {
-          "authenticated": true,
-          "authenticationData": {
-            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-            "scope": "user,oauth",
-          },
-          "authorization": "bearer hash",
-        },
-      },
-    ],
-    [
-      {
-        "operation": {
-          "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
                     },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "additionalProperties": true,
-                    "definitions": {},
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
-        },
-        "requestContext": {
-          "authenticated": true,
-          "authenticationData": {
-            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
-            "scope": "user,oauth",
-          },
-          "authorization": "bearer hash",
-        },
-      },
-    ],
-    [
-      {
-        "operation": {
-          "method": "get",
-          "operationId": "getGraphQL",
-          "parameters": [
-            {
               "description": "The GraphQL query",
-              "in": "query",
-              "name": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "description": "The GraphQL variables",
-              "in": "query",
-              "name": "variables",
               "required": false,
-              "schema": {
-                "type": "string",
-              },
             },
-            {
-              "description": "The GraphQL operation name",
-              "in": "query",
-              "name": "operationName",
-              "required": false,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": undefined,
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "additionalProperties": true,
-                    "definitions": {},
-                    "type": "object",
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
                   },
                 },
+                "description": "Successfully ran the GraphQL query",
               },
-              "description": "Successfully ran the GraphQL query",
             },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -1659,76 +1395,68 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],
     [
       {
-        "operation": {
+        "definition": {
           "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
-                    },
-                  },
-                  "type": "object",
-                },
-              },
-            },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
               "content": {
                 "application/json": {
                   "schema": {
                     "additionalProperties": true,
-                    "definitions": {},
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
                     "type": "object",
                   },
                 },
               },
-              "description": "Successfully ran the GraphQL query",
+              "description": "The GraphQL query",
+              "required": false,
             },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -1736,76 +1464,79 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],
     [
       {
-        "operation": {
-          "method": "post",
-          "operationId": "postGraphQL",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "schema": {
-                "pattern": "((b|B)earer) .*",
-                "type": "string",
-              },
-            },
-            {
-              "in": "query",
-              "name": "access_token",
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "path": "/graphql",
-          "requestBody": {
-            "content": {
-              "application/json": {
+        "definition": {
+          "method": "get",
+          "operation": {
+            "operationId": "getGraphQL",
+            "parameters": [
+              {
+                "description": "The GraphQL query",
+                "in": "query",
+                "name": "query",
+                "required": true,
                 "schema": {
-                  "additionalProperties": true,
-                  "definitions": {},
-                  "properties": {
-                    "query": {
-                      "type": "string",
+                  "type": "string",
+                },
+              },
+              {
+                "description": "The GraphQL variables",
+                "in": "query",
+                "name": "variables",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                },
+              },
+              {
+                "description": "The GraphQL operation name",
+                "in": "query",
+                "name": "operationName",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                },
+              },
+            ],
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
                     },
                   },
-                  "type": "object",
                 },
+                "description": "Successfully ran the GraphQL query",
               },
             },
-            "description": "The GraphQL query",
-            "required": false,
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "additionalProperties": true,
-                    "definitions": {},
-                    "type": "object",
-                  },
-                },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
               },
-              "description": "Successfully ran the GraphQL query",
-            },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
           },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-              ],
-            },
-          ],
-          "summary": "Graphql endpoint",
-          "tags": [
-            "graphql",
-          ],
+          "path": "/v1/graphql",
         },
         "requestContext": {
           "authenticated": true,
@@ -1813,7 +1544,150 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "authorization": "bearer hash",
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+        },
+      },
+    ],
+    [
+      {
+        "definition": {
+          "method": "post",
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": true,
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "The GraphQL query",
+              "required": false,
+            },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
+          },
+          "path": "/v1/graphql",
+        },
+        "requestContext": {
+          "authenticated": true,
+          "authenticationData": {
+            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+            "scope": "user,oauth",
+          },
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
+        },
+      },
+    ],
+    [
+      {
+        "definition": {
+          "method": "post",
+          "operation": {
+            "operationId": "postGraphQL",
+            "parameters": [],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": true,
+                    "properties": {
+                      "query": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "The GraphQL query",
+              "required": false,
+            },
+            "responses": {
+              "200": {
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                    },
+                  },
+                },
+                "description": "Successfully ran the GraphQL query",
+              },
+            },
+            "security": [
+              {
+                "bearerAuth": [
+                  "user",
+                ],
+              },
+            ],
+            "summary": "Graphql endpoint",
+            "tags": [
+              "graphql",
+            ],
+          },
+          "path": "/v1/graphql",
+        },
+        "requestContext": {
+          "authenticated": true,
+          "authenticationData": {
+            "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+            "scope": "user,oauth",
+          },
+          "cookie": {},
+          "header": {
+            "authorization": "bearer hash",
+          },
+          "options": {},
+          "path": {},
+          "query": {
+            "access_token": undefined,
+          },
         },
       },
     ],

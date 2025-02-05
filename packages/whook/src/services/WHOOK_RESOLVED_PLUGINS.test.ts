@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initWhookPluginsPaths, {
   WHOOK_PROJECT_PLUGIN_NAME,
   type WhookResolvedPluginsDependencies,
@@ -19,7 +19,7 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
   });
 
   describe('should work', () => {
-    it('with no plugin at all', async () => {
+    test('with no plugin at all', async () => {
       const WHOOK_RESOLVED_PLUGINS = await initWhookPluginsPaths({
         MAIN_FILE_URL,
         WHOOK_PLUGINS: [],
@@ -41,7 +41,7 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
 `);
     });
 
-    it('with some plugins', async () => {
+    test('with some plugins', async () => {
       resolve.mockReturnValueOnce(
         'file:///var/lib/node/node_modules/@whook/graphql/dist/index.js',
       );
@@ -119,7 +119,7 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
   });
 
   describe('should fail', () => {
-    it('with unexisting plugin', async () => {
+    test('with unexisting plugin', async () => {
       resolve.mockImplementationOnce(() => {
         throw new YError('E_NO_MODULE');
       });

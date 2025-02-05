@@ -7,7 +7,6 @@ import {
   type OAuth2PasswordService,
   type CheckApplicationService,
 } from './oAuth2Granters.js';
-import { type BaseAuthenticationData } from '@whook/authorization';
 
 export type OAuth2PasswordGranterDependencies = {
   oAuth2Password: OAuth2PasswordService;
@@ -19,13 +18,10 @@ export type OAuth2PasswordGranterParameters = {
   password: string;
   scope?: string;
 };
-export type OAuth2PasswordGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-> = OAuth2GranterService<
+export type OAuth2PasswordGranterService<> = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
-  OAuth2PasswordGranterParameters,
-  AUTHENTICATION_DATA
+  OAuth2PasswordGranterParameters
 >;
 
 export default location(

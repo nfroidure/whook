@@ -1,12 +1,7 @@
-import { service, location } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { qsStrict as strictQs } from 'strict-qs';
 
-export default location(
-  service(initQueryParser, 'QUERY_PARSER'),
-  import.meta.url,
-);
-
-/* Architecture Note #4.5: QUERY_PARSER
+/* Architecture Note #4.5: queryParserBuilder
 
 Thanks to the DI system, you can easily customize
  Whook building blocks to match your flavor. Here,
@@ -20,13 +15,15 @@ You can navigate through the Whook's sources to
  environment variable to see what happens under the
  hood, in the DI system.
 */
-async function initQueryParser() {
-  const QUERY_PARSER = strictQs.bind(null, {
+async function initQueryParserBuilder() {
+  const queryParser = strictQs.bind(null, {
     allowEmptySearch: true,
     allowUnknownParams: true,
     allowDefault: true,
     allowUnorderedParams: true,
   });
 
-  return QUERY_PARSER;
+  return async () => queryParser;
 }
+
+export default location(autoService(initQueryParserBuilder), import.meta.url);

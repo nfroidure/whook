@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initAutoload, { type WhookAutoloadDependencies } from './_autoload.js';
 import { YError } from 'yerror';
 import {
@@ -44,7 +44,7 @@ describe('$autoload', () => {
   });
 
   describe('should work', () => {
-    it('for a config constant', async () => {
+    test('for a config constant', async () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {},
@@ -98,7 +98,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for API', async () => {
+    test('for API', async () => {
       resolve.mockReturnValueOnce(
         'file:///home/whoami/my-whook-project/src/services/API.js',
       );
@@ -167,7 +167,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it.only('for handlers hash', async () => {
+    test.only('for handlers hash', async () => {
       $injector.mockResolvedValueOnce({
         API: {
           openapi: '3.1.0',
@@ -257,7 +257,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for wrappers hash', async () => {
+    test('for wrappers hash', async () => {
       $injector.mockResolvedValueOnce({
         API: {
           openapi: '3.1.0',
@@ -342,7 +342,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for handlers', async () => {
+    test('for handlers', async () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
@@ -414,7 +414,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for path mapped handlers from plugins', async () => {
+    test('for path mapped handlers from plugins', async () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
@@ -485,7 +485,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for path mapped handlers from project', async () => {
+    test('for path mapped handlers from project', async () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
@@ -563,7 +563,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for handlers in sub plugins', async () => {
+    test('for handlers in sub plugins', async () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
@@ -658,7 +658,7 @@ describe('$autoload', () => {
 `);
     });
 
-    it('for wrappers', async () => {
+    test('for wrappers', async () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });
@@ -732,7 +732,7 @@ describe('$autoload', () => {
   });
 
   describe('should fail', () => {
-    it('with unexisting handlers', async () => {
+    test('with unexisting handlers', async () => {
       $injector.mockResolvedValueOnce({
         API: { info: {} },
       });

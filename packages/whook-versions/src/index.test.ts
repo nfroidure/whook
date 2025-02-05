@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { jest, describe, it, expect, beforeEach } from '@jest/globals';
+import { jest, describe, test, expect, beforeEach } from '@jest/globals';
 import {
   augmentAPIWithVersionsHeaders,
   initWrapHandlerWithVersionChecker,
 } from './index.js';
-import { initGetPing, initGetPingDefinition } from '@whook/whook';
+import {
+  initGetPing,
+  getPingDefinition,
+  type WhookAPIHandlerDefinition,
+} from '@whook/whook';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
 import { NodeEnv } from 'application-services';
@@ -28,7 +32,7 @@ const VERSIONS = [
 const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Test };
 
 describe('augmentAPIWithVersionsHeaders()', () => {
-  it('should work', async () => {
+  test('should work', async () => {
     expect(
       await augmentAPIWithVersionsHeaders(
         {
@@ -39,8 +43,8 @@ describe('augmentAPIWithVersionsHeaders()', () => {
             description: 'A sample Swagger file for testing purpose.',
           },
           paths: {
-            [initGetPingDefinition.path]: {
-              [initGetPingDefinition.method]: initGetPingDefinition.operation,
+            [getPingDefinition.path]: {
+              [getPingDefinition.method]: getPingDefinition.operation,
             },
           },
         },
@@ -57,7 +61,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     log.mockReset();
   });
 
-  it('should work with no version headers', async () => {
+  test('should work with no version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -66,7 +70,17 @@ describe('wrapHandlerWithVersionChecker()', () => {
       log,
     });
     const wrappedHandler = await wrapper(baseHandler as any);
-    const response = await wrappedHandler({});
+    const response = await wrappedHandler(
+      {
+        path: {},
+        query: {},
+        header: {},
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      {} as unknown as WhookAPIHandlerDefinition,
+    );
 
     expect({
       response,
@@ -74,7 +88,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     }).toMatchSnapshot();
   });
 
-  it('should work with good api version headers', async () => {
+  test('should work with good api version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -83,9 +97,17 @@ describe('wrapHandlerWithVersionChecker()', () => {
       log,
     });
     const wrappedHandler = await wrapper(baseHandler as any);
-    const response = await wrappedHandler({
-      xApiVersion: '1.2.3',
-    });
+    const response = await wrappedHandler(
+      {
+        path: {},
+        query: {},
+        header: { 'x-api-version': '1.2.3' },
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      {} as unknown as WhookAPIHandlerDefinition,
+    );
 
     expect({
       response,
@@ -93,7 +115,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     }).toMatchSnapshot();
   });
 
-  it('should work with good app version headers', async () => {
+  test('should work with good app version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -102,9 +124,17 @@ describe('wrapHandlerWithVersionChecker()', () => {
       log,
     });
     const wrappedHandler = await wrapper(baseHandler as any);
-    const response = await wrappedHandler({
-      xAppVersion: '3.6.0',
-    });
+    const response = await wrappedHandler(
+      {
+        path: {},
+        query: {},
+        header: { 'x-app-version': '3.6.0' },
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      {} as unknown as WhookAPIHandlerDefinition,
+    );
 
     expect({
       response,
@@ -112,7 +142,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     }).toMatchSnapshot();
   });
 
-  it('should work with beta app version headers', async () => {
+  test('should work with beta app version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -121,9 +151,19 @@ describe('wrapHandlerWithVersionChecker()', () => {
       log,
     });
     const wrappedHandler = await wrapper(baseHandler as any);
-    const response = await wrappedHandler({
-      xAppVersion: '4.0.0-beta.2',
-    });
+    const response = await wrappedHandler(
+      {
+        path: {},
+        query: {},
+        header: {
+          'x-app-version': '4.0.0-beta.2',
+        },
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      {} as unknown as WhookAPIHandlerDefinition,
+    );
 
     expect({
       response,
@@ -131,7 +171,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     }).toMatchSnapshot();
   });
 
-  it('should work with good sdk version headers', async () => {
+  test('should work with good sdk version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -140,9 +180,19 @@ describe('wrapHandlerWithVersionChecker()', () => {
       log,
     });
     const wrappedHandler = await wrapper(baseHandler as any);
-    const response = await wrappedHandler({
-      xSdkVersion: '2.2.3',
-    });
+    const response = await wrappedHandler(
+      {
+        path: {},
+        query: {},
+        header: {
+          'x-sdk-version': '2.2.3',
+        },
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      {} as unknown as WhookAPIHandlerDefinition,
+    );
 
     expect({
       response,
@@ -150,7 +200,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     }).toMatchSnapshot();
   });
 
-  it('should fail with bad api version headers', async () => {
+  test('should fail with bad api version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -161,9 +211,19 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
-      await wrappedHandler({
-        xApiVersion: '2.2.3',
-      });
+      await wrappedHandler(
+        {
+          path: {},
+          query: {},
+          header: {
+            'x-api-version': '2.2.3',
+          },
+          cookie: {},
+          body: {},
+          options: {},
+        },
+        {} as unknown as WhookAPIHandlerDefinition,
+      );
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
@@ -176,7 +236,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     }
   });
 
-  it('should fail with bad app version headers', async () => {
+  test('should fail with bad app version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -187,9 +247,19 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
-      await wrappedHandler({
-        xAppVersion: '0.0.0',
-      });
+      await wrappedHandler(
+        {
+          path: {},
+          query: {},
+          header: {
+            'x-app-version': '0.0.0',
+          },
+          cookie: {},
+          body: {},
+          options: {},
+        },
+        {} as unknown as WhookAPIHandlerDefinition,
+      );
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
@@ -202,7 +272,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     }
   });
 
-  it('should fail with bad sdk version headers', async () => {
+  test('should fail with bad sdk version headers', async () => {
     const baseHandler = await initGetPing({
       ENV,
     });
@@ -213,9 +283,19 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
-      await wrappedHandler({
-        xSdkVersion: '0.2.3',
-      });
+      await wrappedHandler(
+        {
+          path: {},
+          query: {},
+          header: {
+            'x-sdk-version': '0.2.3',
+          },
+          cookie: {},
+          body: {},
+          options: {},
+        },
+        {} as unknown as WhookAPIHandlerDefinition,
+      );
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');

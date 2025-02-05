@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initProject from './project.js';
 import { YError } from 'yerror';
@@ -23,7 +23,7 @@ describe('initProject', () => {
     log.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     lock.take.mockResolvedValueOnce(undefined);
     inquirer.prompt.mockResolvedValueOnce({
       projectName: 'super-project',
@@ -52,7 +52,7 @@ describe('initProject', () => {
     }).toMatchSnapshot();
   });
 
-  it('should fail with access problems', async () => {
+  test('should fail with access problems', async () => {
     lock.take.mockResolvedValueOnce(undefined);
     lock.release.mockResolvedValueOnce(undefined);
     inquirer.prompt.mockResolvedValueOnce({

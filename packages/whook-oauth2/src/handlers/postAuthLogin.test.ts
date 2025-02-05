@@ -1,6 +1,7 @@
 import { describe, test, jest, expect } from '@jest/globals';
 import initPostAuthLogin from './postAuthLogin.js';
 import { type AuthCookiesService } from '../services/authCookies.js';
+import { type WhookAuthenticationData } from '@whook/authorization';
 
 describe('postAuthLogin', () => {
   test('should work', async () => {
@@ -13,7 +14,7 @@ describe('postAuthLogin', () => {
       ROOT_AUTHENTICATION_DATA: {
         scope: 'user',
         applicationId: 'root_app_id',
-      },
+      } as WhookAuthenticationData,
       authCookies,
       postOAuth2Token,
     });

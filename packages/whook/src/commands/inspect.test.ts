@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initInspectCommand from './inspect.js';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
@@ -24,7 +24,7 @@ describe('inspectCommand', () => {
     log.mockReset();
   });
 
-  it('should work with no query at all', async () => {
+  test('should work with no query at all', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['inspect'],
@@ -81,7 +81,7 @@ describe('inspectCommand', () => {
     `);
   });
 
-  it('should work with one value', async () => {
+  test('should work with one value', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['inspect'],
@@ -139,7 +139,7 @@ describe('inspectCommand', () => {
     `);
   });
 
-  it('should work with several values', async () => {
+  test('should work with several values', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['inspect'],
@@ -198,7 +198,7 @@ describe('inspectCommand', () => {
     `);
   });
 
-  it('should work with an unexisting config but a default value', async () => {
+  test('should work with an unexisting config but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['inspect'],
@@ -264,7 +264,7 @@ describe('inspectCommand', () => {
     `);
   });
 
-  it('should work with no result but a default value', async () => {
+  test('should work with no result but a default value', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['inspect'],
@@ -327,7 +327,7 @@ describe('inspectCommand', () => {
     `);
   });
 
-  it('should fail with unexisting config name', async () => {
+  test('should fail with unexisting config name', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['inspect'],
@@ -388,7 +388,7 @@ describe('inspectCommand', () => {
     }
   });
 
-  it('should fail with no result', async () => {
+  test('should fail with no result', async () => {
     promptArgs.mockResolvedValueOnce({
       command: 'whook',
       rest: ['inspect'],

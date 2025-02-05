@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initAuthor from './author.js';
 import { YError } from 'yerror';
@@ -22,7 +22,7 @@ describe('initAuthor', () => {
     log.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     exec.mockImplementationOnce((_, cb) => cb(null, 'Wayne Campbell'));
     exec.mockImplementationOnce((_, cb) => cb(null, 'wayne@warner.com'));
     lock.take.mockResolvedValueOnce(undefined);
@@ -49,7 +49,7 @@ describe('initAuthor', () => {
     }).toMatchSnapshot();
   });
 
-  it('should handle git failures', async () => {
+  test('should handle git failures', async () => {
     exec.mockImplementationOnce((_, cb) => cb(new Error('E_GIT_ERROR')));
     exec.mockImplementationOnce((_, cb) => cb(new Error('E_GIT_ERROR')));
     lock.take.mockResolvedValueOnce(undefined);
@@ -76,7 +76,7 @@ describe('initAuthor', () => {
     }).toMatchSnapshot();
   });
 
-  it('should release the lock on failure', async () => {
+  test('should release the lock on failure', async () => {
     exec.mockImplementationOnce((_, cb) => cb(null, 'Wayne Campbell'));
     exec.mockImplementationOnce((_, cb) => cb(null, 'wayne@warner.com'));
     lock.take.mockResolvedValueOnce(undefined);

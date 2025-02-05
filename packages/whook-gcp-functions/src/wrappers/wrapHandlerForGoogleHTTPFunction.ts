@@ -1,24 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { YError, printStackTrace } from 'yerror';
-import stream from 'node:stream';
+import stream, { type Readable } from 'node:stream';
 import { autoService } from 'knifecycle';
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
 import bytes from 'bytes';
 import { YHTTPError } from 'yhttperror';
 import {
-  DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
   DEFAULT_STRINGIFYERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
+  SEARCH_SEPARATOR,
+  PATH_SEPARATOR,
   extractOperationSecurityParameters,
-  castParameters,
-  prepareParametersValidators,
   prepareBodyValidator,
-  applyValidators,
-  filterHeaders,
   extractBodySpec,
   extractResponseSpec,
   checkResponseCharset,
@@ -31,36 +26,45 @@ import {
   noop,
   identity,
   lowerCaseHeaders,
-  type WhookQueryStringParser,
+  resolveParameters,
+  createParametersValidators,
+  pickFirstHeaderValue,
   type WhookRequest,
   type WhookResponse,
-  type WhookHandler,
+  type WhookAPIHandler,
   type WhookObfuscatorService,
-  type WhookOperation,
-  type WhookWrapper,
+  type WhookAPIWrapper,
   type WhookErrorHandler,
-  type DereferencedParameterObject,
+  type WhookOpenAPI,
+  type WhookCoercionOptions,
+  type WhookAPIHandlerDefinition,
+  type WhookRequestBody,
+  type WhookHTTPRouterDescriptor,
+  type WhookSchemaValidatorsService,
+  type WhookAPIHandlerParameters,
+  type WhookQueryParserBuilderService,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type Readable } from 'node:stream';
-import { type AppEnvVars } from 'application-services';
-
-const SEARCH_SEPARATOR = '?';
-const PATH_SEPARATOR = '/';
+import {
+  ensureResolvedObject,
+  type OpenAPIReference,
+  type OpenAPIExtension,
+  type OpenAPIResponse,
+} from 'ya-open-api-types';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 
 export type WhookWrapHTTPFunctionDependencies = {
-  OPERATION_API: OpenAPIV3_1.Document;
-  ENV: AppEnvVars;
-  DEBUG_NODE_ENVS?: string[];
+  OPERATION_API: WhookOpenAPI;
   DECODERS?: typeof DEFAULT_DECODERS;
   ENCODERS?: typeof DEFAULT_ENCODERS;
   PARSERS?: typeof DEFAULT_PARSERS;
   STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
-  QUERY_PARSER: WhookQueryStringParser;
+  queryParserBuilder: WhookQueryParserBuilderService;
   BUFFER_LIMIT?: string;
+  COERCION_OPTIONS: WhookCoercionOptions;
   obfuscator: WhookObfuscatorService;
   errorHandler: WhookErrorHandler;
+  schemaValidators: WhookSchemaValidatorsService;
   log?: LogService;
 };
 
@@ -70,10 +74,6 @@ export type WhookWrapHTTPFunctionDependencies = {
  * The services the wrapper depends on
  * @param  {Object}   services.OPERATION_API
  * An OpenAPI definitition for that handler
- * @param  {Object}   services.ENV
- * The process environment
- * @param  {Object}   services.DEBUG_NODE_ENVS
- * The NODE_ENV values that trigger debugging
  * @param  {Object}   services.DECODERS
  * Request body decoders available
  * @param  {Object}   services.ENCODERS
@@ -84,8 +84,8 @@ export type WhookWrapHTTPFunctionDependencies = {
  * Response body stringifyers available
  * @param  {Object}   services.BUFFER_LIMIT
  * The buffer size limit
- * @param  {Object}   services.QUERY_PARSER
- * The query parser to use
+ * @param  {Object} services.queryParserBuilder
+ * A query parser builder from OpenAPI parameters
  * @param  {Object}   services.obfuscator
  * A service to hide sensible values
  * @param  {Object}   services.errorHandler
@@ -96,91 +96,141 @@ export type WhookWrapHTTPFunctionDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
+async function initWrapHandlerForGoogleHTTPFunction<S extends WhookAPIHandler>({
   OPERATION_API,
-  ENV,
-  DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
   PARSERS = DEFAULT_PARSERS,
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
-  QUERY_PARSER,
+  queryParserBuilder,
+  COERCION_OPTIONS,
   obfuscator,
   errorHandler,
+  schemaValidators,
   log = noop,
-}: WhookWrapHTTPFunctionDependencies): Promise<WhookWrapper<S>> {
+}: WhookWrapHTTPFunctionDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda cron wrapper.');
 
   const path = Object.keys(OPERATION_API.paths || {})[0];
-  const pathObject = OPERATION_API.paths?.[path];
+  const pathItem = OPERATION_API.paths?.[path];
 
-  if (typeof pathObject === 'undefined' || '$ref' in pathObject) {
-    throw new YError('E_BAD_OPERATION', 'pathObject', pathObject);
+  if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
+    throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
   }
 
-  const method = Object.keys(pathObject)[0];
-  const operationObject = pathObject[method];
+  const method = Object.keys(pathItem)[0];
+  const operation = pathItem[method];
 
-  if (typeof operationObject === 'undefined' || '$ref' in operationObject) {
-    throw new YError('E_BAD_OPERATION', 'operationObject', operationObject);
+  if (typeof operation === 'undefined' || '$ref' in operation) {
+    throw new YError('E_BAD_OPERATION', 'operation', operation);
   }
 
-  const operation: WhookOperation = {
+  const definition = {
     path,
     method,
-    ...operationObject,
-  };
+    operation,
+    config: operation['x-whook'],
+  } as unknown as WhookAPIHandlerDefinition;
+  const pathItemParameters = await resolveParameters(
+    { API: OPERATION_API, log },
+    pathItem.parameters || [],
+  );
+  const pathItemValidators = await createParametersValidators(
+    {
+      API: OPERATION_API,
+      COERCION_OPTIONS,
+      schemaValidators,
+    },
+    pathItemParameters,
+  );
+
+  const operationParameters = await resolveParameters(
+    { API: OPERATION_API, log },
+    operation.parameters || [],
+  );
+  const ammendedParameters = await resolveParameters(
+    { API: OPERATION_API, log },
+    await extractOperationSecurityParameters({ API: OPERATION_API }, operation),
+  );
+  const operationValidators = await createParametersValidators(
+    {
+      API: OPERATION_API,
+      COERCION_OPTIONS,
+      schemaValidators,
+    },
+    operationParameters.concat(ammendedParameters),
+  );
+  const bodyValidator = await prepareBodyValidator(
+    { API: OPERATION_API, schemaValidators },
+    operation,
+  );
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
-  const consumableMediaTypes = extractConsumableMediaTypes(operation);
-  const produceableMediaTypes = extractProduceableMediaTypes(operation);
-  const ajv = new Ajv.default({
-    verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
-    strict: true,
-    logger: {
-      log: (...args: string[]) => log?.('debug', ...args),
-      warn: (...args: string[]) => log?.('warning', ...args),
-      error: (...args: string[]) => log?.('error', ...args),
-    },
-  });
-  addAJVFormats.default(ajv);
-  const ammendedParameters = extractOperationSecurityParameters(
+  const consumableMediaTypes = await extractConsumableMediaTypes(
     OPERATION_API,
     operation,
   );
-  const validators = prepareParametersValidators(
-    ajv,
-    operation.operationId,
-    ((operation.parameters || []) as DereferencedParameterObject[]).concat(
-      ammendedParameters,
-    ),
+  const produceableMediaTypes = await extractProduceableMediaTypes(
+    OPERATION_API,
+    operation,
   );
-  const bodyValidator = prepareBodyValidator(ajv, operation);
-  const wrapper = async (handler: S): Promise<S> => {
+  const parameters = pathItemParameters
+    .concat(ammendedParameters)
+    .filter((parameter) =>
+      operationParameters.every(
+        (aParameter) =>
+          aParameter.in !== parameter.in || aParameter.name !== parameter.name,
+      ),
+    )
+    .concat(operationParameters);
+  const queryParser = await queryParserBuilder(parameters);
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleForAWSHTTPFunction.bind(
       null,
       {
+        OPERATION_API,
         DECODERS,
         ENCODERS,
         PARSERS,
         STRINGIFYERS,
         BUFFER_LIMIT,
-        QUERY_PARSER,
         obfuscator,
         errorHandler,
         log,
       },
       {
-        consumableMediaTypes,
-        produceableMediaTypes,
         consumableCharsets,
         produceableCharsets,
-        validators,
-        bodyValidator,
+        handler,
         operation,
+        queryParser,
+        parametersValidators: {
+          path: {
+            ...pathItemValidators.path,
+            ...operationValidators.path,
+          },
+          query: {
+            ...pathItemValidators.query,
+            ...operationValidators.query,
+          },
+          header: {
+            ...pathItemValidators.header,
+            ...operationValidators.header,
+          },
+          cookie: {
+            ...pathItemValidators.cookie,
+            ...operationValidators.cookie,
+          },
+        },
+        consumableMediaTypes,
+        produceableMediaTypes,
+        bodyValidator,
       },
       handler as any,
+      definition,
     );
 
     return wrappedHandler as unknown as S;
@@ -191,43 +241,34 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookHandler>({
 
 async function handleForAWSHTTPFunction(
   {
+    OPERATION_API,
     DECODERS,
     ENCODERS,
     PARSERS,
     STRINGIFYERS,
     BUFFER_LIMIT,
-    QUERY_PARSER,
     obfuscator,
     errorHandler,
     log,
   }: Omit<
     Required<WhookWrapHTTPFunctionDependencies>,
-    'time' | 'OPERATION_API' | 'ENV' | 'DEBUG_NODE_ENVS'
+    'COERCION_OPTIONS' | 'schemaValidators' | 'queryParserBuilder'
   >,
   {
+    handler,
+    operation,
+    parametersValidators,
     consumableMediaTypes,
     produceableMediaTypes,
     consumableCharsets,
     produceableCharsets,
-    validators,
+    queryParser,
     bodyValidator,
-    operation,
-  }: {
-    consumableMediaTypes: string[];
-    produceableMediaTypes: string[];
+  }: WhookHTTPRouterDescriptor & {
     consumableCharsets: string[];
     produceableCharsets: string[];
-    validators: {
-      [name: string]: Ajv.ValidateFunction<unknown>;
-    };
-    bodyValidator: (
-      operation: WhookOperation,
-      contentType: string,
-      value: unknown,
-    ) => void;
-    operation: WhookOperation;
   },
-  handler: WhookHandler,
+  definition: WhookAPIHandlerDefinition,
   req,
   res,
 ) {
@@ -262,39 +303,25 @@ async function handleForAWSHTTPFunction(
     }),
   );
 
+  const parametersValues: WhookAPIHandlerParameters = {
+    query: {},
+    header: {},
+    path: {},
+    cookie: {},
+    body: undefined as unknown as WhookRequestBody,
+    options: {},
+  };
+
   try {
-    const bodySpec = extractBodySpec(
-      request,
-      consumableMediaTypes,
-      consumableCharsets,
-    );
-
-    responseSpec = extractResponseSpec(
-      operation,
-      request,
-      produceableMediaTypes,
-      produceableCharsets,
-    );
-
     try {
-      const body = await getBody(
-        {
-          DECODERS,
-          PARSERS,
-          bufferLimit,
-        },
-        operation,
-        request.body as Readable,
-        bodySpec,
-      );
       const path = request.url.split(SEARCH_SEPARATOR)[0];
       const parts = path.split(PATH_SEPARATOR).filter(identity);
       const search = request.url.substr(
         request.url.split(SEARCH_SEPARATOR)[0].length,
       );
-
+      const queryValues = queryParser(search);
       const pathParameters = (
-        operation.path
+        definition.path
           .split(PATH_SEPARATOR)
           .filter(identity)
           .map((part, index) => {
@@ -317,68 +344,137 @@ async function handleForAWSHTTPFunction(
           {},
         );
 
-      // TODO: Update strictQS to handle OpenAPI 3
-      const retroCompatibleQueryParameters = (operation.parameters || [])
-        .filter((p) => p.in === 'query')
-        .map((p) => ({ ...p, ...p.schema }));
+      for (const location of Object.keys(parametersValidators)) {
+        if (location === 'query') {
+          for (const [name, validator] of Object.entries(
+            parametersValidators.query,
+          )) {
+            parametersValues.query[name] = validator(
+              queryValues && typeof queryValues[name] !== 'undefined'
+                ? queryValues[name]?.toString()
+                : undefined,
+            );
+          }
+        } else if (location === 'header') {
+          for (const [name, validator] of Object.entries(
+            parametersValidators.header,
+          )) {
+            // header names are case insensitive
+            const canonicalName = name.toLowerCase();
 
-      parameters = {
-        ...pathParameters,
-        ...QUERY_PARSER(retroCompatibleQueryParameters as any, search),
-        ...filterHeaders(operation.parameters, request.headers),
-      };
+            parametersValues.header[name] = validator(
+              typeof request.headers[canonicalName] !== 'undefined'
+                ? request.headers[canonicalName].toString()
+                : undefined,
+            );
+          }
+        } else if (location === 'path') {
+          for (const [name, validator] of Object.entries(
+            parametersValidators.path,
+          )) {
+            parametersValues.path[name] = validator(
+              pathParameters && typeof pathParameters[name] !== 'undefined'
+                ? pathParameters[name].toString()
+                : undefined,
+            );
+          }
+        }
+      }
 
-      parameters = {
-        // TODO: Use the security of the operation to infer
-        // authorization parameters, see:
-        // https://github.com/nfroidure/whook/blob/06ccae93d1d52d97ff70fd5e19fa826bdabf3968/packages/whook-http-router/src/validation.js#L110
-        authorization: parameters.authorization,
-        ...castParameters(operation.parameters || [], parameters),
-      };
+      const bodySpec = extractBodySpec(
+        request,
+        consumableMediaTypes || [],
+        consumableCharsets,
+      );
 
-      applyValidators(operation, validators, parameters);
+      responseSpec = extractResponseSpec(
+        operation,
+        request,
+        produceableMediaTypes || [],
+        produceableCharsets,
+      );
+
+      const body = await getBody(
+        {
+          API: OPERATION_API,
+          DECODERS,
+          PARSERS,
+          bufferLimit,
+        },
+        operation,
+        request.body as Readable,
+        bodySpec,
+      );
 
       bodyValidator(operation, bodySpec.contentType, body);
 
-      parameters = {
-        ...parameters,
-        ...('undefined' !== typeof body ? { body } : {}),
-      };
+      if (typeof body !== 'undefined') {
+        parametersValues.body = body;
+      }
     } catch (err) {
       throw YHTTPError.cast(err as Error, 400);
     }
 
-    response = await executeHandler(operation, handler, parameters);
+    response = await executeHandler(definition, handler, parameters);
+
+    response.headers = response.headers || {};
 
     if (response.body) {
       response.headers['content-type'] =
         response.headers['content-type'] || responseSpec.contentTypes[0];
     }
 
-    // Check the stringifyer only when a schema is
-    // specified and it is not a binary one
+    const responseContentType =
+      pickFirstHeaderValue('content-type', response.headers || {}) ||
+      'text/plain';
+
     const responseObject =
-      operation.responses &&
-      (operation.responses[response.status] as OpenAPIV3_1.ResponseObject);
+      operation.responses && operation.responses[response.status]
+        ? await ensureResolvedObject(
+            OPERATION_API,
+            operation.responses[response.status] as
+              | OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
+              | OpenAPIReference<
+                  OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
+                >,
+          )
+        : undefined;
     const responseSchema =
       responseObject &&
       responseObject.content &&
-      responseObject.content[response.headers['content-type']] &&
-      (responseObject.content[response.headers['content-type']]
-        .schema as OpenAPIV3_1.SchemaObject);
-    const responseHasSchema =
-      responseSchema &&
-      (responseSchema.type !== 'string' || responseSchema.format !== 'binary');
+      responseObject.content?.[responseContentType] &&
+      'schema' in responseObject.content[responseContentType] &&
+      ((await ensureResolvedObject(
+        OPERATION_API,
+        responseObject.content?.[responseContentType].schema,
+      )) as ExpressiveJSONSchema);
 
-    if (responseHasSchema && !STRINGIFYERS[response.headers['content-type']]) {
+    // Check the stringifyer only when a schema is
+    // specified and it is not a binary one
+    const responseHasSchema =
+      typeof responseSchema === 'boolean' ||
+      (typeof responseSchema === 'object' &&
+        responseSchema &&
+        !(
+          'type' in responseSchema &&
+          responseSchema.type === 'string' &&
+          responseSchema.format === 'binary'
+        ));
+
+    if (responseHasSchema && !STRINGIFYERS[responseContentType]) {
       throw new YHTTPError(
         500,
         'E_STRINGIFYER_LACK',
         response.headers['content-type'],
+        response,
       );
     }
     if (response.body) {
-      checkResponseMediaType(request, responseSpec, produceableMediaTypes);
+      checkResponseMediaType(
+        request,
+        responseSpec,
+        produceableMediaTypes || [],
+      );
       checkResponseCharset(request, responseSpec, produceableCharsets);
     }
     responseLog = {

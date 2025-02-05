@@ -1,9 +1,9 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, test, expect } from '@jest/globals';
 import initGetOpenAPI from './getOpenAPI.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type WhookOpenAPI } from '../types/openapi.js';
 
 describe('getOpenAPI', () => {
-  const API = {
+  const API: WhookOpenAPI = {
     openapi: '3.1.0',
     info: {
       title: 'test',
@@ -12,23 +12,23 @@ describe('getOpenAPI', () => {
     paths: {
       '/time': {
         options: {
+          operationId: 'optionsTime',
           tags: ['public'],
-          'x-whook': { memx: 2, tx: 18 },
         },
         get: {
+          operationId: 'getTime',
           tags: ['public'],
-          'x-whook': { memx: 2, tx: 18 },
         },
         put: {
+          operationId: 'putTime',
           tags: ['private'],
-          'x-whook': { private: true },
         },
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  } as unknown as OpenAPIV3_1.Document;
+  };
 
-  const APIWithParameters = {
+  const APIWithParameters: WhookOpenAPI = {
     openapi: '3.1.0',
     info: {
       title: 'test',
@@ -37,27 +37,29 @@ describe('getOpenAPI', () => {
     paths: {
       '/time': {
         options: {
+          operationId: 'optionsTime',
           tags: ['public'],
-          'x-whook': { memx: 2, tx: 18 },
         },
         get: {
+          operationId: 'getTime',
           tags: ['public'],
-          'x-whook': { memx: 2, tx: 18 },
           parameters: [
             {
               in: 'query',
               name: 'queryParam',
+              schema: { type: 'string' },
             },
             {
               in: 'query',
               name: 'parameterToRemove',
+              schema: { type: 'string' },
             },
             { $ref: '#/components/parameters/xRefToRemove' },
           ],
         },
         put: {
+          operationId: 'putTime',
           tags: ['private'],
-          'x-whook': { private: true },
         },
       },
     },
@@ -66,17 +68,21 @@ describe('getOpenAPI', () => {
         xRefToRemove: {
           name: 'X-Ref-To-Remove',
           in: 'header',
+          schema: { type: 'string' },
         },
       },
     },
     tags: [{ name: 'public' }, { name: 'private' }],
-  } as unknown as OpenAPIV3_1.Document;
+  };
 
-  it('should work', async () => {
+  test('should work', async () => {
     const getOpenAPI = await initGetOpenAPI({
       API,
     });
-    const response = await getOpenAPI({});
+    const response = await getOpenAPI({
+      query: {},
+      options: {},
+    });
 
     expect({
       response: {
@@ -101,8 +107,16 @@ describe('getOpenAPI', () => {
       "paths": {
         "/time": {
           "get": {
+            "operationId": "getTime",
             "tags": [
               "public",
+            ],
+            "x-whook": undefined,
+          },
+          "put": {
+            "operationId": "putTime",
+            "tags": [
+              "private",
             ],
             "x-whook": undefined,
           },
@@ -123,12 +137,15 @@ describe('getOpenAPI', () => {
 `);
   });
 
-  it('should show every endpoints when authenticated', async () => {
+  test('should show every endpoints when authenticated', async () => {
     const getOpenAPI = await initGetOpenAPI({
       API,
     });
     const response = await getOpenAPI({
-      authenticated: true,
+      query: {},
+      options: {
+        authenticated: true,
+      },
     });
 
     expect({
@@ -154,21 +171,16 @@ describe('getOpenAPI', () => {
       "paths": {
         "/time": {
           "get": {
+            "operationId": "getTime",
             "tags": [
               "public",
             ],
-            "x-whook": {
-              "memx": 2,
-              "tx": 18,
-            },
           },
           "put": {
+            "operationId": "putTime",
             "tags": [
               "private",
             ],
-            "x-whook": {
-              "private": true,
-            },
           },
         },
       },
@@ -187,12 +199,15 @@ describe('getOpenAPI', () => {
 `);
   });
 
-  it('should work with muted paramerter', async () => {
+  test('should work with muted paramerter', async () => {
     const getOpenAPI = await initGetOpenAPI({
       API: APIWithParameters,
     });
     const response = await getOpenAPI({
-      mutedParameters: ['X-Ref-To-Remove', 'parameterToRemove'],
+      query: {
+        mutedParameters: ['X-Ref-To-Remove', 'parameterToRemove'],
+      },
+      options: {},
     });
 
     expect({
@@ -215,6 +230,9 @@ describe('getOpenAPI', () => {
           "xRefToRemove": {
             "in": "header",
             "name": "X-Ref-To-Remove",
+            "schema": {
+              "type": "string",
+            },
           },
         },
       },
@@ -226,14 +244,25 @@ describe('getOpenAPI', () => {
       "paths": {
         "/time": {
           "get": {
+            "operationId": "getTime",
             "parameters": [
               {
                 "in": "query",
                 "name": "queryParam",
+                "schema": {
+                  "type": "string",
+                },
               },
             ],
             "tags": [
               "public",
+            ],
+            "x-whook": undefined,
+          },
+          "put": {
+            "operationId": "putTime",
+            "tags": [
+              "private",
             ],
             "x-whook": undefined,
           },

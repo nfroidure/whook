@@ -1,24 +1,23 @@
 import {
+  type WhookAPITypedHandler,
   type WhookAPIHandlerDefinition,
-  type WhookResponse,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
-import { type ClockMockService } from 'application-services';
-import { autoHandler } from 'knifecycle';
+import {
+  type ClockMockService,
+  type TimeMockService,
+} from 'application-services';
+import { autoService } from 'knifecycle';
 import { YError } from 'yerror';
-import { env } from 'node:process';
+import { AppEnv } from '../index.js';
 
-import { type AppEnv } from '../index.js';
-import { type TimeMockService } from 'application-services/dist/services/timeMock.js';
-
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '/time',
   method: 'put',
+  config: {
+    environments: ['local'],
+  },
   operation: {
-    'x-whook': {
-      type: 'http',
-      disabled: env.APP_ENV !== 'test',
-    },
     operationId: 'putTime',
     summary: 'Allows to set the time like the great random god',
     tags: ['system'],
@@ -28,6 +27,7 @@ export const definition: WhookAPIHandlerDefinition = {
         'application/json': {
           schema: {
             type: 'object',
+            required: ['time'],
             properties: {
               time: { type: 'number' },
               isFixed: { type: 'boolean' },
@@ -37,7 +37,7 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
     responses: {
-      200: {
+      201: {
         description: 'Success',
         content: {
           'application/json': {
@@ -49,41 +49,45 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-export default autoHandler(putTime);
+export default autoService(putTime);
 
-async function putTime(
-  {
-    APP_ENV,
-    CLOCK_MOCK,
-    time,
-    timeMock,
-    log,
-  }: {
-    APP_ENV: AppEnv;
-    CLOCK_MOCK: ClockMockService;
-    time: TimeService;
-    timeMock: TimeMockService;
-    log: LogService;
-  },
-  { body }: { body: { time: number; isFixed: boolean } },
-): Promise<WhookResponse<201, void, number>> {
-  if (APP_ENV !== 'local' && APP_ENV !== 'test') {
-    throw new YError('E_NO_MOCK_IN_PROD', APP_ENV);
-  }
+async function putTime({
+  APP_ENV,
+  CLOCK_MOCK,
+  time,
+  timeMock,
+  log,
+}: {
+  APP_ENV: AppEnv;
+  CLOCK_MOCK: ClockMockService;
+  time: TimeService;
+  timeMock: TimeMockService;
+  log: LogService;
+}) {
+  const handler: WhookAPITypedHandler<
+    operations[typeof definition.operation.operationId],
+    typeof definition
+  > = async ({ body }) => {
+    if (APP_ENV !== 'local' && APP_ENV !== 'test') {
+      throw new YError('E_NO_MOCK_IN_PROD', APP_ENV);
+    }
 
-  CLOCK_MOCK.isFixed = body.isFixed;
-  CLOCK_MOCK.mockedTime = body.time;
+    CLOCK_MOCK.isFixed = !!body.isFixed;
+    CLOCK_MOCK.mockedTime = body.time;
 
-  if (!CLOCK_MOCK.isFixed) {
-    CLOCK_MOCK.referenceTime = time();
-  }
+    if (!CLOCK_MOCK.isFixed) {
+      CLOCK_MOCK.referenceTime = time();
+    }
 
-  log('warning', `⌚ - Set time to "${new Date(body.time).toISOString()}".`);
+    log('warning', `⌚ - Set time to "${new Date(body.time).toISOString()}".`);
 
-  return {
-    status: 201,
-    body: timeMock(),
+    return {
+      status: 201,
+      body: timeMock(),
+    };
   };
+
+  return handler;
 }
