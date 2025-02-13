@@ -193,6 +193,7 @@ export async function runBuild(
     for (const pathItem of Object.values(API.paths || {})) {
       for (const operation of Object.values(pathItemToOperationMap(pathItem))) {
         if (
+          !handlerName ||
           handlerName === operation.operationId ||
           ('x-whook' in operation &&
             typeof operation['x-whook'] === 'object' &&

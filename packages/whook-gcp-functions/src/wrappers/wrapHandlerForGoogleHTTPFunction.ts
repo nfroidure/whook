@@ -5,6 +5,7 @@ import { autoService } from 'knifecycle';
 import bytes from 'bytes';
 import { YHTTPError } from 'yhttperror';
 import {
+  DEFAULT_COERCION_OPTIONS,
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
   DEFAULT_STRINGIFYERS,
@@ -46,6 +47,7 @@ import {
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import {
+  PATH_ITEM_METHODS,
   ensureResolvedObject,
   type OpenAPIReference,
   type OpenAPIExtension,
@@ -96,7 +98,7 @@ export type WhookWrapHTTPFunctionDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForGoogleHTTPFunction<S extends WhookAPIHandler>({
+async function initWrapHandlerForGoogleHTTPFunction({
   OPERATION_API,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
@@ -104,13 +106,13 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookAPIHandler>({
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   queryParserBuilder,
-  COERCION_OPTIONS,
+  COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
   obfuscator,
   errorHandler,
   schemaValidators,
   log = noop,
 }: WhookWrapHTTPFunctionDependencies): Promise<WhookAPIWrapper> {
-  log('debug', '📥 - Initializing the AWS Lambda cron wrapper.');
+  log('debug', '📥 - Initializing the GCP Function wrapper.');
 
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const pathItem = OPERATION_API.paths?.[path];
@@ -119,7 +121,9 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookAPIHandler>({
     throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
   }
 
-  const method = Object.keys(pathItem)[0];
+  const method = Object.keys(pathItem).filter((method) =>
+    PATH_ITEM_METHODS.includes(method as (typeof PATH_ITEM_METHODS)[number]),
+  )[0];
   const operation = pathItem[method];
 
   if (typeof operation === 'undefined' || '$ref' in operation) {
@@ -233,7 +237,7 @@ async function initWrapHandlerForGoogleHTTPFunction<S extends WhookAPIHandler>({
       definition,
     );
 
-    return wrappedHandler as unknown as S;
+    return wrappedHandler as unknown as WhookAPIHandler;
   };
 
   return wrapper;

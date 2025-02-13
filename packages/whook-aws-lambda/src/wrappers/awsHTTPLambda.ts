@@ -3,6 +3,8 @@ import bytes from 'bytes';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace, YError } from 'yerror';
 import {
+  SEARCH_SEPARATOR,
+  DEFAULT_COERCION_OPTIONS,
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
   DEFAULT_STRINGIFYERS,
@@ -39,12 +41,12 @@ import {
   type WhookSchemaValidatorsService,
   type WhookCoercionOptions,
   type WhookHTTPRouterDescriptor,
-  SEARCH_SEPARATOR,
 } from '@whook/whook';
 import stream from 'node:stream';
 import qs from 'qs';
 import { type TimeService, type LogService } from 'common-services';
 import {
+  PATH_ITEM_METHODS,
   ensureResolvedObject,
   type OpenAPIReference,
   type OpenAPIExtension,
@@ -126,7 +128,7 @@ async function initWrapHandlerForConsumerLambda({
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   PARSED_HEADERS = [],
-  COERCION_OPTIONS,
+  COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
   time,
   apm,
   obfuscator,
@@ -134,7 +136,7 @@ async function initWrapHandlerForConsumerLambda({
   schemaValidators,
   log = noop,
 }: WhookWrapConsumerLambdaDependencies): Promise<WhookAPIWrapper> {
-  log('debug', '📥 - Initializing the AWS LAmbda consumer wrapper.');
+  log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
@@ -145,7 +147,9 @@ async function initWrapHandlerForConsumerLambda({
     throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
   }
 
-  const method = Object.keys(pathItem)[0];
+  const method = Object.keys(pathItem).filter((method) =>
+    PATH_ITEM_METHODS.includes(method as (typeof PATH_ITEM_METHODS)[number]),
+  )[0];
   const operation = pathItem[method];
 
   if (typeof operation === 'undefined' || '$ref' in operation) {

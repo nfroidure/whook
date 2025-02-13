@@ -87,6 +87,7 @@ const initializerWrapper: ServiceInitializerWrapper<
         ...API,
         paths: {
           [definition.path]: {
+            parameters: API[definition.path]?.parameters || [],
             [definition.method]:
               API.paths?.[definition.path]?.[definition.method],
           },
@@ -96,15 +97,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       return [
         definition?.config?.type || 'http',
         definition?.operation?.operationId as string,
-        {
-          ...OPERATION_API,
-          paths: {
-            [definition.path]: {
-              parameters: API[definition.path].parameters || [],
-              [definition.method]: definition.operation,
-            },
-          },
-        },
+        OPERATION_API,
       ];
     };
   })();

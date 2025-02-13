@@ -99,9 +99,9 @@ async function initTestHTTPLambdaCommand({
     const hasBody = !!handlerDefinition?.operation.requestBody;
     const parameters = JSON.parse(rawParameters) as WhookAPIHandlerParameters;
     const awsRequest: APIGatewayProxyEvent = {
-      pathParameters: parameters.path,
-      multiValueQueryStringParameters: parameters.query,
-      headers: Object.keys(parameters.header).reduce(
+      pathParameters: parameters.path || {},
+      multiValueQueryStringParameters: parameters.query || {},
+      headers: Object.keys(parameters.header || {}).reduce(
         (headers, name) => ({
           [name]:
             parameters.header[name] instanceof Array
@@ -111,7 +111,7 @@ async function initTestHTTPLambdaCommand({
         }),
         {},
       ),
-      multiValueHeaders: Object.keys(parameters.header).reduce(
+      multiValueHeaders: Object.keys(parameters.header || {}).reduce(
         (headers, name) => ({
           [name]:
             parameters.header[name] instanceof Array
@@ -130,7 +130,7 @@ async function initTestHTTPLambdaCommand({
         path:
           '/v1' +
           handlerDefinition.path.replace(/:([a-zA-Z0-9]+)/gm, (_, name) => {
-            return parameters[name]?.toString() as string;
+            return parameters.path?.[name]?.toString() as string;
           }),
         resourcePath: '/v1' + handlerDefinition.path,
         stage: ENV.NODE_ENV,
