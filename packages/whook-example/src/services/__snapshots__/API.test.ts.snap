@@ -17,6 +17,13 @@ exports[`API should always have the same amount of endpoints 1`] = `
   "get /ping",
   "get /time",
   "get /{pathParam1}/{pathParam2}",
+  "options /delay",
+  "options /diagnostic",
+  "options /echo",
+  "options /openAPI",
+  "options /ping",
+  "options /time",
+  "options /{pathParam1}/{pathParam2}",
   "put /echo",
 ]
 `;
@@ -52,6 +59,13 @@ exports[`API should always have the same amount of publicly documented endpoints
   "get /ping",
   "get /time",
   "get /{pathParam1}/{pathParam2}",
+  "options /delay",
+  "options /diagnostic",
+  "options /echo",
+  "options /openAPI",
+  "options /ping",
+  "options /time",
+  "options /{pathParam1}/{pathParam2}",
   "put /echo",
 ]
 `;
@@ -320,7 +334,6 @@ exports[`API should work 1`] = `
       "/openAPI": {
         "get": {
           "operationId": "getOpenAPI",
-          "parameters": [],
           "responses": {
             "200": {
               "content": {
@@ -341,13 +354,10 @@ exports[`API should work 1`] = `
               ],
             },
           ],
-          "summary": "Get API documentation.",
+          "summary": "Get the API documentation.",
           "tags": [
             "system",
           ],
-          "x-whook": {
-            "private": false,
-          },
         },
         "options": {
           "operationId": "optionsWithCORS",
@@ -481,7 +491,7 @@ exports[`API should work 1`] = `
             },
             {
               "in": "header",
-              "name": "aHeader",
+              "name": "a-header",
               "schema": {
                 "type": "boolean",
               },

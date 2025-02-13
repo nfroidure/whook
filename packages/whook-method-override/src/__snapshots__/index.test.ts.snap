@@ -5,39 +5,45 @@ exports[`wrapHTTPTransactionWithMethodOverride should let normal methods pass 1`
   "data": "",
   "getPingCalls": [
     [
-      {},
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {},
+        "query": {},
+      },
       {
         "method": "get",
-        "operationId": "getPing",
-        "parameters": [],
-        "path": "/ping",
-        "requestBody": undefined,
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": false,
-                  "definitions": {},
-                  "properties": {
-                    "pong": {
-                      "enum": [
-                        "pong",
-                      ],
-                      "type": "string",
+        "operation": {
+          "operationId": "getPing",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "pong": {
+                        "enum": [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
                     },
+                    "type": "object",
                   },
-                  "type": "object",
                 },
               },
+              "description": "Pong",
             },
-            "description": "Pong",
           },
+          "summary": "Checks API's availability.",
+          "tags": [
+            "system",
+          ],
         },
-        "summary": "Checks API's availability.",
-        "tags": [
-          "system",
-        ],
+        "path": "/v1/ping",
       },
     ],
   ],
@@ -60,39 +66,45 @@ exports[`wrapHTTPTransactionWithMethodOverride should override methods 1`] = `
   "data": "",
   "getPingCalls": [
     [
-      {},
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {},
+        "query": {},
+      },
       {
         "method": "get",
-        "operationId": "getPing",
-        "parameters": [],
-        "path": "/ping",
-        "requestBody": undefined,
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": false,
-                  "definitions": {},
-                  "properties": {
-                    "pong": {
-                      "enum": [
-                        "pong",
-                      ],
-                      "type": "string",
+        "operation": {
+          "operationId": "getPing",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "pong": {
+                        "enum": [
+                          "pong",
+                        ],
+                        "type": "string",
+                      },
                     },
+                    "type": "object",
                   },
-                  "type": "object",
                 },
               },
+              "description": "Pong",
             },
-            "description": "Pong",
           },
+          "summary": "Checks API's availability.",
+          "tags": [
+            "system",
+          ],
         },
-        "summary": "Checks API's availability.",
-        "tags": [
-          "system",
-        ],
+        "path": "/v1/ping",
       },
     ],
   ],

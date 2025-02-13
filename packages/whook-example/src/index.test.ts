@@ -1,6 +1,6 @@
 import {
   describe,
-  it,
+  test,
   beforeAll,
   afterEach,
   afterAll,
@@ -19,8 +19,8 @@ import { createRequire } from 'module';
 import { join } from 'node:path';
 import { type Knifecycle } from 'knifecycle';
 import { type JWTService } from 'jwt-service';
-import { type AuthenticationData } from './services/authentication.js';
 import { type Logger } from 'common-services';
+import { WhookAuthenticationData } from '@whook/authorization';
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 
@@ -72,7 +72,7 @@ describe('runProcess', () => {
   process.env.ISOLATED_ENV = '1';
 
   let $instance: Knifecycle;
-  let jwtToken: JWTService<AuthenticationData>;
+  let jwtToken: JWTService<WhookAuthenticationData>;
 
   beforeAll(async () => {
     const { $instance: _instance, jwtToken: _jwtToken } = await runProcess(
@@ -97,7 +97,7 @@ describe('runProcess', () => {
     logger.error.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
       debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
@@ -105,6 +105,42 @@ describe('runProcess', () => {
     }).toMatchInlineSnapshot(`
 {
   "debugCalls": [
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
@@ -325,19 +361,16 @@ describe('runProcess', () => {
       "⌛ - Delay service initialized.",
     ],
     [
-      "⏳ - Ignored handler "putTime" since disabled by its definition!",
+      "✅ - Module path of "API" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
-      "✅ - Module path of "API" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
+      "✅ - Module path of "CLOCK_MOCK" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
     ],
     [
       "✅ - Module path of "FILTER_API_DEFINITION" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "✅ - Module path of "MECHANISMS" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
-    ],
-    [
-      "✅ - Module path of "QUERY_PARSER" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
     [
       "✅ - Module path of "authentication" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -368,6 +401,9 @@ describe('runProcess', () => {
     ],
     [
       "✅ - Module path of "putEcho" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+    ],
+    [
+      "✅ - Module path of "putTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
     ],
     [
       "✅ - Module path of "wrapHandlerWithAuthorization" found at "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
@@ -410,6 +446,21 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "CLOCK_MOCK" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
@@ -526,7 +577,16 @@ describe('runProcess', () => {
       "🍀 - Trying to find "PARSERS" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "QUERY_PARSER" module path in "__project__".",
+      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/authorization".",
@@ -539,6 +599,18 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/authorization".",
@@ -628,6 +700,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "putEcho" module path in "__project__".",
     ],
     [
+      "🍀 - Trying to find "putTime" module path in "__project__".",
+    ],
+    [
       "🍀 - Trying to find "uniqueId" module path in "@whook/authorization".",
     ],
     [
@@ -673,13 +748,13 @@ describe('runProcess', () => {
       "💿 - Loading "API" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
+      "💿 - Loading "CLOCK_MOCK" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
+    ],
+    [
       "💿 - Loading "FILTER_API_DEFINITION" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "💿 - Loading "MECHANISMS" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
-    ],
-    [
-      "💿 - Loading "QUERY_PARSER" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
     [
       "💿 - Loading "authentication" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -712,6 +787,9 @@ describe('runProcess', () => {
       "💿 - Loading "putEcho" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
     ],
     [
+      "💿 - Loading "putTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
+    ],
+    [
       "💿 - Loading "wrapHandlerWithAuthorization" initializer from "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
     ],
     [
@@ -721,13 +799,13 @@ describe('runProcess', () => {
       "💿 - Service "API" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
+      "💿 - Service "CLOCK_MOCK" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
+    ],
+    [
       "💿 - Service "FILTER_API_DEFINITION" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "💿 - Service "MECHANISMS" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
-    ],
-    [
-      "💿 - Service "QUERY_PARSER" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
     [
       "💿 - Service "authentication" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -758,6 +836,9 @@ describe('runProcess', () => {
     ],
     [
       "💿 - Service "putEcho" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+    ],
+    [
+      "💿 - Service "putTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
     ],
     [
       "💿 - Service "wrapHandlerWithAuthorization" found in "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
@@ -811,6 +892,9 @@ describe('runProcess', () => {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
     [
@@ -818,6 +902,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/BUFFER_LIMIT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COERCION_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/DECODERS.js".",
@@ -847,7 +934,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/PARSERS.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/QUERY_PARSER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/SHIELD_CHAR.js".",
@@ -872,6 +965,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COERCION_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DECODERS.js".",
@@ -901,7 +997,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PARSERS.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/REDUCED_FILES_SUFFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js".",
@@ -920,6 +1022,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COERCION_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS.js".",
@@ -949,7 +1054,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js".",
@@ -979,6 +1090,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COERCION_OPTIONS.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS.ts".",
     ],
     [
@@ -1006,7 +1120,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER_OPTIONS.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES.ts".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/SCHEMA_VALIDATORS_OPTIONS.ts".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/SHIELD_CHAR.ts".",
@@ -1031,6 +1151,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "BUFFER_LIMIT" not found.",
+    ],
+    [
+      "🚫 - Module path of "COERCION_OPTIONS" not found.",
     ],
     [
       "🚫 - Module path of "DECODERS" not found.",
@@ -1060,7 +1183,13 @@ describe('runProcess', () => {
       "🚫 - Module path of "PARSERS" not found.",
     ],
     [
+      "🚫 - Module path of "QUERY_PARSER_OPTIONS" not found.",
+    ],
+    [
       "🚫 - Module path of "REDUCED_FILES_SUFFIXES" not found.",
+    ],
+    [
+      "🚫 - Module path of "SCHEMA_VALIDATORS_OPTIONS" not found.",
     ],
     [
       "🚫 - Module path of "SHIELD_CHAR" not found.",
@@ -1141,16 +1270,19 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
     ],
     [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
+    ],
+    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -1173,6 +1305,12 @@ describe('runProcess', () => {
       "On air 🚀🌕",
     ],
     [
+      "⌨️ - Initializing the basic query parser.",
+    ],
+    [
+      "⏳ - Time mock is enabled!",
+    ],
+    [
       "⚠️ - Using fake auth mechanism!",
     ],
     [
@@ -1182,7 +1320,7 @@ describe('runProcess', () => {
       "🎙️ - HTTP Server listening at "http://localhost:9999".",
     ],
     [
-      "🏭 - Initializing the HANDLERS service with 8 handlers wrapped by 2 wrappers.",
+      "🏭 - Initializing the HANDLERS service with 9 handlers wrapped by 2 wrappers.",
     ],
     [
       "🏭 - Initializing the WRAPPERS service.",
@@ -1204,7 +1342,7 @@ describe('runProcess', () => {
 `);
   });
 
-  it('should ping', async () => {
+  test('should ping', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
 
     const { status, headers, data } = await axios({
@@ -1270,7 +1408,7 @@ describe('runProcess', () => {
 `);
   });
 
-  it('should authenticate users', async () => {
+  test('should authenticate users', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
 
     const { status, headers, data } = await axios({
@@ -1340,7 +1478,7 @@ describe('runProcess', () => {
 `);
   });
 
-  it('should fail with bad fake tokens', async () => {
+  test('should fail with bad fake tokens', async () => {
     time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
 
     const { status, headers, data } = await axios({

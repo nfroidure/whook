@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initAPIDefinitions from './API_DEFINITIONS.js';
 import { definition as getPingDefinition } from '../handlers/getPing.js';
 import { YError } from 'yerror';
 import { type ImporterService, type LogService } from 'common-services';
-import {
-  type WhookAPIDefinitionsDependencies,
-  type WhookAPIHandlerModule,
-} from './API_DEFINITIONS.js';
+import { type WhookAPIDefinitionsDependencies } from './API_DEFINITIONS.js';
 import {
   WHOOK_PROJECT_PLUGIN_NAME,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
+import {
+  WhookAPIHandler,
+  type WhookAPIHandlerModule,
+} from '../types/handlers.js';
+import { Dependencies, ServiceInitializer } from 'knifecycle';
 
+const APP_ENV = 'test';
 const getUserModule: WhookAPIHandlerModule = {
   definition: {
     path: '/users/{userId}',
@@ -56,6 +59,10 @@ const getUserModule: WhookAPIHandlerModule = {
       },
     },
   },
+  default: undefined as unknown as ServiceInitializer<
+    Dependencies,
+    WhookAPIHandler
+  >,
 };
 const putUserModule: WhookAPIHandlerModule = {
   definition: {
@@ -81,6 +88,10 @@ const putUserModule: WhookAPIHandlerModule = {
       responses: getUserModule.definition.operation.responses,
     },
   },
+  default: undefined as unknown as ServiceInitializer<
+    Dependencies,
+    WhookAPIHandler
+  >,
 };
 
 describe('initAPIDefinitions', () => {
@@ -96,7 +107,7 @@ describe('initAPIDefinitions', () => {
   });
 
   describe('should work', () => {
-    it('with no handlers folder', async () => {
+    test('with no handlers folder', async () => {
       readDir.mockImplementationOnce(() => {
         throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
       });
@@ -112,6 +123,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -148,7 +160,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with empty handlers folder', async () => {
+    test('with empty handlers folder', async () => {
       readDir.mockResolvedValueOnce([]);
       importer.mockImplementationOnce(() => {
         throw new YError('E_NOT_SUPPOSED_TO_BE_HERE');
@@ -162,6 +174,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -202,7 +215,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a few handlers', async () => {
+    test('with a few handlers', async () => {
       readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({
         definition: getPingDefinition,
@@ -217,6 +230,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -337,7 +351,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a few handlers in different plugins paths', async () => {
+    test('with a few handlers in different plugins paths', async () => {
       readDir.mockResolvedValueOnce(['getPing']);
       readDir.mockResolvedValueOnce(['getUser']);
       importer.mockResolvedValueOnce({
@@ -358,6 +372,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -481,7 +496,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a few handlers in different plugins paths and an overridden one', async () => {
+    test('with a few handlers in different plugins paths and an overridden one', async () => {
       readDir.mockResolvedValueOnce(['getPing']);
       readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({
@@ -503,6 +518,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -626,7 +642,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a few handlers in different plugins paths and an overridden one but with a different extension', async () => {
+    test('with a few handlers in different plugins paths and an overridden one but with a different extension', async () => {
       readDir.mockResolvedValueOnce(['getPing.ts']);
       readDir.mockResolvedValueOnce(['getPing', 'getUser']);
       importer.mockResolvedValueOnce({
@@ -648,6 +664,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -771,7 +788,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a several handlers at the same path', async () => {
+    test('with a several handlers at the same path', async () => {
       readDir.mockResolvedValueOnce(['getUser', 'putUser']);
       importer.mockResolvedValueOnce(getUserModule);
       importer.mockResolvedValueOnce(putUserModule);
@@ -785,6 +802,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -907,16 +925,13 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a disabled handler at the same path', async () => {
+    test('with a disabled handler at the same path', async () => {
       const getUserModuleDisabled: WhookAPIHandlerModule = {
         ...getUserModule,
         definition: {
           ...getUserModule.definition,
-          operation: {
-            ...getUserModule.definition.operation,
-            'x-whook': {
-              disabled: true,
-            },
+          config: {
+            environments: ['dev'],
           },
         },
       };
@@ -933,6 +948,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -1036,7 +1052,7 @@ describe('initAPIDefinitions', () => {
 `);
     });
 
-    it('with a filtered handler', async () => {
+    test('with a filtered handler', async () => {
       const getUserModuleDisabled: WhookAPIHandlerModule = {
         ...getUserModule,
         definition: {
@@ -1060,6 +1076,7 @@ describe('initAPIDefinitions', () => {
         },
       };
       const API_DEFINITIONS = await initAPIDefinitions({
+        APP_ENV,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         FILTER_API_DEFINITION: (definition) =>

@@ -1,23 +1,23 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import {
   prepareProcess,
   prepareEnvironment,
-  initGetPingDefinition,
+  getPingDefinition,
   initHTTPRouter,
 } from '@whook/whook';
 import { YError } from 'yerror';
 import wrapHTTPRouterWithGraphIQL from './index.js';
 import { type WhookGraphIQLOptions } from './index.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPI } from 'ya-open-api-types';
 import { type Logger } from 'common-services';
 
 describe('wrapHTTPRouterWithGraphIQL', () => {
   const HOST = 'localhost';
   const PORT = 11111;
   const BASE_PATH = '/v1';
-  const API: OpenAPIV3_1.Document = {
+  const API: OpenAPI = {
     openapi: '3.1.0',
     info: {
       version: '1.0.0',
@@ -25,8 +25,8 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [initGetPingDefinition.path]: {
-        [initGetPingDefinition.method]: initGetPingDefinition.operation,
+      [getPingDefinition.path]: {
+        [getPingDefinition.method]: getPingDefinition.operation,
       },
     },
   };
@@ -86,7 +86,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     $.register(constant('GRAPHIQL', GRAPHIQL));
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     $.register(constant('PORT', PORT));
     $.register(wrapHTTPRouterWithGraphIQL(initHTTPRouter));
     $.register(constant('CONFIG', {}));
@@ -106,7 +106,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     );
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT}${BASE_PATH}${initGetPingDefinition.path}`,
+      url: `http://${HOST}:${PORT}${BASE_PATH}${getPingDefinition.path}`,
       headers: { 'user-agent': '__avoid_axios_version__' },
       validateStatus: () => true,
     });
@@ -169,7 +169,10 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "ENCODERS",
     ],
     [
-      "QUERY_PARSER",
+      "COERCION_OPTIONS",
+    ],
+    [
+      "SCHEMA_VALIDATORS_OPTIONS",
     ],
     [
       "TIMEOUT",
@@ -200,6 +203,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "QUERY_PARSER_OPTIONS",
     ],
     [
       "DEV_ACCESS_MECHANISM",
@@ -251,10 +257,16 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
   ],
   "logErrorCalls": [
+    [
+      "⌨️ - Initializing the basic query parser.",
+    ],
     [
       "🕸️ - Serving the GraphIQL UI. http://localhost:11111/graphiql",
     ],
@@ -269,7 +281,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 `);
   });
 
-  it('should serve GraphIQL HTML', async () => {
+  test('should serve GraphIQL HTML', async () => {
     $.register(constant('PORT', PORT + 2));
     $.register(wrapHTTPRouterWithGraphIQL(initHTTPRouter));
     $.register(
@@ -353,7 +365,10 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "ENCODERS",
     ],
     [
-      "QUERY_PARSER",
+      "COERCION_OPTIONS",
+    ],
+    [
+      "SCHEMA_VALIDATORS_OPTIONS",
     ],
     [
       "TIMEOUT",
@@ -384,6 +399,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "QUERY_PARSER_OPTIONS",
     ],
     [
       "DEV_ACCESS_MECHANISM",
@@ -560,10 +578,16 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
   ],
   "logErrorCalls": [
+    [
+      "⌨️ - Initializing the basic query parser.",
+    ],
     [
       "🕸️ - Serving the GraphIQL UI. http://localhost:11113/graphiql",
     ],
@@ -578,7 +602,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
 `);
   });
 
-  it('should be bypassed with no debug env', async () => {
+  test('should be bypassed with no debug env', async () => {
     $.register(constant('PORT', PORT + 1));
     $.register(wrapHTTPRouterWithGraphIQL(initHTTPRouter));
     $.register(constant('DEBUG_NODE_ENVS', []));
@@ -621,7 +645,10 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "ENCODERS",
     ],
     [
-      "QUERY_PARSER",
+      "COERCION_OPTIONS",
+    ],
+    [
+      "SCHEMA_VALIDATORS_OPTIONS",
     ],
     [
       "TIMEOUT",
@@ -652,6 +679,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     ],
     [
       "DEFAULT_ERROR_CODE",
+    ],
+    [
+      "QUERY_PARSER_OPTIONS",
     ],
     [
       "DEV_ACCESS_MECHANISM",
@@ -696,10 +726,16 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "🕶️ - Initializing the obfuscator service.",
     ],
     [
+      "🖃 - Initializing the validators service.",
+    ],
+    [
       "🚦 - HTTP Router initialized.",
     ],
   ],
   "logErrorCalls": [
+    [
+      "⌨️ - Initializing the basic query parser.",
+    ],
     [
       "🎙️ - HTTP Server listening at "http://localhost:11112".",
     ],

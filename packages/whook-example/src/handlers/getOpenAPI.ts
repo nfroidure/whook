@@ -1,7 +1,8 @@
 import {
-  initGetOpenAPI as getOpenAPI,
+  initGetOpenAPI as baseInitGetOpenAPI,
   getOpenAPIDefinition as baseGetOpenAPIDefinition,
-} from '@whook/swagger-ui';
+} from '@whook/whook';
+import { service, location, useInject } from 'knifecycle';
 
 /* Architecture Note #4: Serving the Open API
 
@@ -28,7 +29,27 @@ export const definition = {
         bearerAuth: ['admin'],
       },
     ],
-    parameters: [...(baseGetOpenAPIDefinition.operation.parameters || [])],
   },
 };
-export default getOpenAPI;
+
+export default location(
+  useInject(
+    baseInitGetOpenAPI,
+    service(initGetOpenAPI, definition.operation.operationId),
+  ),
+  import.meta.url,
+);
+
+async function initGetOpenAPI(services) {
+  const baseGetOpenAPI = await baseInitGetOpenAPI(services);
+
+  const handler = async ({
+    authenticated,
+    ...parameters
+  }: {
+    authenticated: boolean;
+  } & Omit<Parameters<typeof baseGetOpenAPI>[0], 'options'>) =>
+    await baseGetOpenAPI({ ...parameters, options: { authenticated } });
+
+  return handler;
+}

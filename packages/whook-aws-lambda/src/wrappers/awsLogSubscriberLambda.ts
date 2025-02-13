@@ -3,15 +3,15 @@ import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
   noop,
-  type WhookHeaders,
   type WhookResponse,
-  type WhookOperation,
+  type WhookAPIHandlerDefinition,
   type WhookAPMService,
-  type WhookHandler,
-  type WhookWrapper,
+  type WhookAPIHandler,
+  type WhookAPIWrapper,
+  type WhookOpenAPI,
+  type WhookAPIHandlerParameters,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import { type JsonValue } from 'type-fest';
 import {
   type CloudWatchLogsEvent,
@@ -20,18 +20,14 @@ import {
 import { type AppEnvVars } from 'application-services';
 
 export type LambdaLogSubscriberInput = { body: CloudWatchLogsDecodedData };
-export type LambdaLogSubscriberOutput = WhookResponse<
-  number,
-  WhookHeaders,
-  void
->;
+export type LambdaLogSubscriberOutput = WhookResponse;
 
 // Allow to subscribe to AWS logs
 // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html
 
 export type WhookWrapLogSubscriberLambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3_1.Document;
+  OPERATION_API: WhookOpenAPI;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -55,34 +51,31 @@ export type WhookWrapLogSubscriberLambdaDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForLogSubscriberLambda<S extends WhookHandler>({
+async function initWrapHandlerForLogSubscriberLambda({
   ENV,
   OPERATION_API,
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapLogSubscriberLambdaDependencies): Promise<WhookWrapper<S>> {
+}: WhookWrapLogSubscriberLambdaDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda log subscriber wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleForAWSLogSubscriberLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as WhookHandler<
-        LambdaLogSubscriberInput,
-        LambdaLogSubscriberOutput
-      >,
+      handler,
     );
 
-    return wrappedHandler as unknown as S;
+    return wrappedHandler as unknown as WhookAPIHandler;
   };
 
   return wrapper;
 }
 
-async function handleForAWSLogSubscriberLambda<
-  S extends WhookHandler<LambdaLogSubscriberInput, LambdaLogSubscriberOutput>,
->(
+async function handleForAWSLogSubscriberLambda<S extends WhookAPIHandler>(
   {
     ENV,
     OPERATION_API,
@@ -95,7 +88,7 @@ async function handleForAWSLogSubscriberLambda<
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
-  const OPERATION: WhookOperation = {
+  const definition: WhookAPIHandlerDefinition = {
     path,
     method,
     ...OPERATION_API.paths?.[path]?.[method],
@@ -108,12 +101,15 @@ async function handleForAWSLogSubscriberLambda<
   try {
     log('debug', 'EVENT', JSON.stringify(event));
 
-    await handler(parameters, OPERATION);
+    await handler(
+      parameters as unknown as WhookAPIHandlerParameters,
+      definition,
+    );
 
     apm('LOG_SUBSCRIBER', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':LogRecord' },
       type: 'success',
       startTime,
@@ -126,7 +122,7 @@ async function handleForAWSLogSubscriberLambda<
     apm('LOG_SUBSCRIBER', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':LogRecord' },
       type: 'error',
       stack: printStackTrace(castedErr),

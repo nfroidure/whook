@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  UNBUILDABLE_SERVICES,
   Knifecycle,
   wrapInitializer,
   constant,
@@ -17,17 +16,17 @@ import { YError } from 'yerror';
 import {
   initBuildAutoload,
   noop,
-  cleanupOpenAPI,
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
+  type WhookAPIHandlerConfig,
+  type WhookAPIHandlerDefinition,
+  type WhookOpenAPI,
   type WhookBuildConstantsService,
-  type WhookRawOperation,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { cleanupOpenAPI } from 'ya-open-api-types';
 import { type WhookAPIOperationGCPFunctionConfig } from '../index.js';
 import initHandler from './HANDLER.js';
 import initWrapHandlerForGoogleHTTPFunction from '../wrappers/wrapHandlerForGoogleHTTPFunction.js';
+import { getOpenAPIDefinitions } from '../libs/utils.js';
 
 export type WhookGoogleFunctionsAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;
@@ -58,67 +57,51 @@ const initializerWrapper: ServiceInitializerWrapper<
 ): Promise<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>
 > => {
-  let API: OpenAPIV3_1.Document;
-  let OPERATION_APIS: WhookRawOperation<WhookAPIOperationGCPFunctionConfig>[];
-  const getAPIOperation: (
+  let API: WhookOpenAPI;
+  let API_DEFINITIONS: WhookAPIHandlerDefinition[];
+  const getAPIDefinition: (
     serviceName: string,
-  ) => Promise<
-    [
-      Required<WhookAPIOperationGCPFunctionConfig>['type'],
-      string,
-      OpenAPIV3_1.Document,
-    ]
-  > = (() => {
+  ) => Promise<[WhookAPIHandlerConfig['type'], string, WhookOpenAPI]> = (() => {
     return async (serviceName) => {
       const cleanedName = serviceName.split('_').pop();
 
       API = API || (await $injector(['API'])).API;
-      OPERATION_APIS =
-        OPERATION_APIS ||
-        getOpenAPIOperations<WhookAPIOperationGCPFunctionConfig>(API);
 
-      const OPERATION = OPERATION_APIS.find(
-        (operation) =>
+      API_DEFINITIONS = API_DEFINITIONS || getOpenAPIDefinitions(API);
+
+      const definition = API_DEFINITIONS.find(
+        (aDefinition) =>
           cleanedName ===
-          (((operation['x-whook'] || {}).sourceOperationId &&
-            (operation['x-whook'] || {}).sourceOperationId) ||
-            operation.operationId) +
-            ((operation['x-whook'] || {}).suffix || ''),
+          ((aDefinition?.config?.sourceOperationId &&
+            aDefinition?.config?.sourceOperationId) ||
+            aDefinition?.operation?.operationId) +
+            (aDefinition?.config?.suffix || ''),
       );
 
-      if (!OPERATION) {
-        log('error', '💥 - Unable to find a function operation definition!');
-        throw new YError('E_OPERATION_NOT_FOUND', serviceName);
+      if (!definition) {
+        log('error', '💥 - Unable to find a lambda operation definition!');
+        throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
       }
 
-      const OPERATION_API: OpenAPIV3_1.Document = cleanupOpenAPI({
+      const OPERATION_API = (await cleanupOpenAPI({
         ...API,
         paths: {
-          [OPERATION.path]: {
-            [OPERATION.method]: API.paths?.[OPERATION.path]?.[OPERATION.method],
+          [definition.path]: {
+            [definition.method]:
+              API.paths?.[definition.path]?.[definition.method],
           },
         },
-      });
+      })) as WhookOpenAPI;
 
       return [
-        OPERATION['x-whook']?.type || 'http',
-        OPERATION.operationId as string,
+        definition?.config?.type || 'http',
+        definition?.operation?.operationId as string,
         {
           ...OPERATION_API,
           paths: {
-            [OPERATION.path]: {
-              [OPERATION.method]: (
-                await dereferenceOpenAPIOperations(OPERATION_API, [
-                  {
-                    path: OPERATION.path,
-                    method: OPERATION.method,
-                    ...OPERATION_API.paths?.[OPERATION.path]?.[
-                      OPERATION.method
-                    ],
-                    parameters: OPERATION.parameters,
-                  },
-                ])
-              )[0],
+            [definition.path]: {
+              parameters: API[definition.path].parameters || [],
+              [definition.method]: definition.operation,
             },
           },
         },
@@ -129,24 +112,14 @@ const initializerWrapper: ServiceInitializerWrapper<
   log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
 
   return async (serviceName) => {
-    if (UNBUILDABLE_SERVICES.includes(serviceName)) {
-      log(
-        'warning',
-        `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${UNBUILDABLE_SERVICES.join(
-          ', ',
-        )}) can give unpredictable results!`,
-      );
-      return constant(serviceName, undefined);
-    }
-
     if (serviceName.startsWith('OPERATION_API_')) {
-      const [, , OPERATION_API] = await getAPIOperation(serviceName);
+      const [, , OPERATION_API] = await getAPIDefinition(serviceName);
 
       return constant(serviceName, OPERATION_API);
     }
 
     if (serviceName.startsWith('OPERATION_WRAPPER_')) {
-      const [type] = await getAPIOperation(serviceName);
+      const type = (await getAPIDefinition(serviceName))[0] || 'http';
 
       return location(
         alsoInject(
@@ -157,13 +130,13 @@ const initializerWrapper: ServiceInitializerWrapper<
             )}`,
           ],
           GCP_WRAPPERS[type].initializer as any,
-        ),
+        ) as any,
         `@whook/gcp-functions/dist/wrappers/${GCP_WRAPPERS[type].name}.js`,
       ) as any;
     }
 
     if (serviceName.startsWith('OPERATION_HANDLER_')) {
-      const [, operationId] = await getAPIOperation(serviceName);
+      const [type, operationId] = await getAPIDefinition(serviceName);
 
       return location(
         alsoInject(
@@ -172,10 +145,15 @@ const initializerWrapper: ServiceInitializerWrapper<
               'OPERATION_HANDLER_',
               '',
             )}`,
+            // Only inject wrappers for HTTP handlers and
+            // eventually inject other ones
+            ...(type !== 'http'
+              ? [`?WRAPPERS>${(type || 'http').toUpperCase()}_WRAPPERS`]
+              : []),
             `baseHandler>${operationId}`,
           ],
           initHandler,
-        ),
+        ) as any,
         '@whook/gcp-functions/dist/services/HANDLER.js',
       );
     }

@@ -1,24 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { loadLambda } from '../libs/utils.js';
+import { getOpenAPIDefinitions, loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import { v4 as randomUUID } from 'uuid';
-import camelCase from 'camelcase';
 import {
   DEFAULT_COMPILER_OPTIONS,
   noop,
   readArgs,
-  extractOperationSecurityParameters,
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
   type WhookCommandArgs,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
+  type WhookOpenAPI,
+  type WhookAPIHandlerParameters,
 } from '@whook/whook';
 import { type AppEnvVars } from 'application-services';
 import { type LogService, type TimeService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type WhookAPIOperationAWSLambdaConfig } from '../index.js';
 import {
   type APIGatewayProxyEvent,
   type APIGatewayProxyResult,
@@ -72,7 +67,7 @@ async function initTestHTTPLambdaCommand({
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  API: OpenAPIV3_1.Document;
+  API: WhookOpenAPI;
   time: TimeService;
   log: LogService;
   args: WhookCommandArgs;
@@ -93,59 +88,39 @@ async function initTestHTTPLambdaCommand({
       type,
       extension,
     );
-    const OPERATION = (
-      await dereferenceOpenAPIOperations(
-        API,
-        getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API),
-      )
-    ).find(({ operationId }) => operationId === name);
+    const handlerDefinition = getOpenAPIDefinitions(API).find(
+      ({ operation }) => operation.operationId === name,
+    );
 
-    if (!OPERATION) {
+    if (!handlerDefinition) {
       throw new YError('E_OPERATION_NOT_FOUND');
     }
 
-    const ammendedParameters = extractOperationSecurityParameters(
-      API,
-      OPERATION,
-    ).concat(OPERATION.parameters);
-    const hasBody = !!OPERATION.requestBody;
-    const parameters = JSON.parse(rawParameters);
+    const hasBody = !!handlerDefinition?.operation.requestBody;
+    const parameters = JSON.parse(rawParameters) as WhookAPIHandlerParameters;
     const awsRequest: APIGatewayProxyEvent = {
-      pathParameters: ammendedParameters
-        .filter((p) => p.in === 'path')
-        .reduce((pathParameters, p) => {
-          pathParameters[p.name] = '' + parameters[p.name];
-          return pathParameters;
-        }, {}),
-      multiValueQueryStringParameters: ammendedParameters
-        .filter((p) => p.in === 'query')
-        .reduce((multiValueQueryStringParameters, p) => {
-          multiValueQueryStringParameters[p.name] =
-            null != parameters[p.name]
-              ? parameters[p.name] instanceof Array
-                ? parameters[p.name].map((val) => '' + val)
-                : ['' + parameters[p.name]]
-              : undefined;
-          return multiValueQueryStringParameters;
-        }, {}),
-      headers: ammendedParameters
-        .filter((p) => p.in === 'header')
-        .reduce((headerParameters, p) => {
-          headerParameters[p.name] =
-            parameters[camelCase(p.name)] instanceof Array
-              ? parameters[camelCase(p.name)][0]
-              : parameters[camelCase(p.name)];
-          return headerParameters;
-        }, {}),
-      multiValueHeaders: ammendedParameters
-        .filter((p) => p.in === 'header')
-        .reduce((headerParameters, p) => {
-          headerParameters[p.name] =
-            parameters[camelCase(p.name)] instanceof Array
-              ? parameters[camelCase(p.name)]
-              : [parameters[camelCase(p.name)]];
-          return headerParameters;
-        }, {}),
+      pathParameters: parameters.path,
+      multiValueQueryStringParameters: parameters.query,
+      headers: Object.keys(parameters.header).reduce(
+        (headers, name) => ({
+          [name]:
+            parameters.header[name] instanceof Array
+              ? parameters.header[name][0]
+              : parameters.header[name],
+          ...headers,
+        }),
+        {},
+      ),
+      multiValueHeaders: Object.keys(parameters.header).reduce(
+        (headers, name) => ({
+          [name]:
+            parameters.header[name] instanceof Array
+              ? parameters.header[name]
+              : [parameters.header[name]],
+          ...headers,
+        }),
+        {},
+      ),
       body: hasBody
         ? contentType === 'application/json'
           ? JSON.stringify(parameters.body)
@@ -154,14 +129,14 @@ async function initTestHTTPLambdaCommand({
       requestContext: {
         path:
           '/v1' +
-          OPERATION.path.replace(/:([a-zA-Z0-9]+)/gm, (_, name) => {
-            return parameters[name];
+          handlerDefinition.path.replace(/:([a-zA-Z0-9]+)/gm, (_, name) => {
+            return parameters[name]?.toString() as string;
           }),
-        resourcePath: '/v1' + OPERATION.path,
+        resourcePath: '/v1' + handlerDefinition.path,
         stage: ENV.NODE_ENV,
         requestTimeEpoch: time(),
         requestId: randomUUID(),
-        httpMethod: OPERATION.method.toUpperCase(),
+        httpMethod: handlerDefinition.method.toUpperCase(),
       },
     } as APIGatewayProxyEvent;
     if (hasBody) {

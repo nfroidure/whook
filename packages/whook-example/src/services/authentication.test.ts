@@ -1,6 +1,6 @@
 import {
   describe,
-  it,
+  test,
   beforeAll,
   beforeEach,
   jest,
@@ -9,13 +9,13 @@ import {
 import initAuthentication from './authentication.js';
 import { YError } from 'yerror';
 import initJWT from '../services/jwtToken.js';
-import { type AuthenticationData } from './authentication.js';
 import { type JWTService } from 'jwt-service';
 import { type TimeService } from 'common-services';
+import { type WhookAuthenticationData } from '@whook/authorization';
 
 describe('authentication', () => {
   const time = jest.fn<TimeService>();
-  let jwtToken: JWTService<AuthenticationData>;
+  let jwtToken: JWTService<WhookAuthenticationData>;
 
   beforeAll(async () => {
     jwtToken = await initJWT({
@@ -35,7 +35,7 @@ describe('authentication', () => {
 
   describe('.check()', () => {
     describe('with bearer type', () => {
-      it('should work with a good token', async () => {
+      test('should work with a good token', async () => {
         time.mockReturnValueOnce(Date.parse('1982-07-22T00:00:00Z'));
 
         const theToken = (
@@ -58,7 +58,7 @@ describe('authentication', () => {
         }).toMatchSnapshot();
       });
 
-      it('should fail with a bad token', async () => {
+      test('should fail with a bad token', async () => {
         const authentication = await initAuthentication({ jwtToken });
 
         try {
@@ -74,7 +74,7 @@ describe('authentication', () => {
     });
 
     describe('with fake type', () => {
-      it('should work with fakedata', async () => {
+      test('should work with fakedata', async () => {
         const authentication = await initAuthentication({ jwtToken });
         const result = await authentication.check('fake', {
           applicationId: '1',
@@ -89,7 +89,7 @@ describe('authentication', () => {
     });
 
     describe('with a bad auth type', () => {
-      it('should fail', async () => {
+      test('should fail', async () => {
         const authentication = await initAuthentication({ jwtToken });
 
         try {

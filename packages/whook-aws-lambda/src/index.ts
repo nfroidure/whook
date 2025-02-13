@@ -19,17 +19,22 @@ import {
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initCompiler,
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
   parseArgs,
-  type WhookOperation,
   type WhookCompilerOptions,
   type WhookCompilerService,
 } from '@whook/whook';
 import initBuildAutoloader from './services/_autoload.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  pathItemToOperationMap,
+  type OpenAPIExtension,
+  type OpenAPIOperation,
+  type OpenAPI,
+} from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { type JsonValue } from 'type-fest';
+import { WhookAPIHandlerConfig } from '@whook/whook';
 
 export type {
   LambdaConsumerInput,
@@ -72,6 +77,7 @@ export type WhookAWSLambdaBuildConfig = {
   BUILD_PARALLELISM?: number;
 };
 export type WhookAWSLambdaBaseConfiguration = {
+  type: string;
   sourceOperationId?: string;
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
@@ -82,13 +88,11 @@ export type WhookAWSLambdaBaseConfiguration = {
 export type WhookAWSLambdaBaseHTTPConfiguration = {
   type: 'http';
 };
-export type WhookAWSLambdaBaseCronConfiguration<
-  T extends Record<string, unknown>,
-> = {
+export type WhookAWSLambdaBaseCronConfiguration = {
   type: 'cron';
   schedules: {
     rule: string;
-    body?: T;
+    body?: JsonValue;
     enabled: boolean;
   }[];
 };
@@ -112,20 +116,14 @@ export type WhookAWSLambdaBaseS3Configuration = {
   type: 's3';
   enabled: boolean;
 };
-export type WhookAWSLambdaConfiguration<
-  T extends Record<string, unknown> = Record<string, unknown>,
-> =
+export type WhookAWSLambdaConfiguration =
   | WhookAWSLambdaBaseHTTPConfiguration
-  | WhookAWSLambdaBaseCronConfiguration<T>
+  | WhookAWSLambdaBaseCronConfiguration
   | WhookAWSLambdaBaseConsumerConfiguration
   | WhookAWSLambdaBaseTransformerConfiguration
   | WhookAWSLambdaBaseKafkaConsumerConfiguration
   | WhookAWSLambdaBaseLogSubscriberConfiguration
   | WhookAWSLambdaBaseS3Configuration;
-
-export type WhookAPIOperationAWSLambdaConfig<
-  T extends Record<string, unknown> = Record<string, unknown>,
-> = WhookAWSLambdaBaseConfiguration & WhookAWSLambdaConfiguration<T>;
 
 const cprAsync = promisify(cpr) as (
   source: string,
@@ -171,7 +169,7 @@ export async function runBuild(
         compiler: WhookCompilerService;
         log: LogService;
         $autoload: Autoloader<Initializer<Dependencies, Service>>;
-        API: OpenAPIV3_1.Document;
+        API: OpenAPI;
         buildInitializer: BuildInitializer;
       } = await $.run([
       'APP_ENV',
@@ -187,23 +185,31 @@ export async function runBuild(
 
     log('info', 'AWS Lambda build Environment initialized 🚀🌕');
 
-    const operations = (
-      await dereferenceOpenAPIOperations(
-        API,
-        getOpenAPIOperations<WhookAPIOperationAWSLambdaConfig>(API),
-      )
-    ).filter((operation) => {
-      if (handlerName) {
-        const sourceOperationId =
-          operation['x-whook'] && operation['x-whook'].sourceOperationId;
+    const operations: OpenAPIOperation<
+      ExpressiveJSONSchema,
+      OpenAPIExtension
+    >[] = [];
 
-        return (
+    for (const pathItem of Object.values(API.paths || {})) {
+      for (const operation of Object.values(pathItemToOperationMap(pathItem))) {
+        if (
           handlerName === operation.operationId ||
-          handlerName === sourceOperationId
-        );
+          ('x-whook' in operation &&
+            typeof operation['x-whook'] === 'object' &&
+            operation['x-whook'] &&
+            'sourceOperationId' in operation['x-whook'] &&
+            typeof operation['x-whook'].sourceOperationId === 'string' &&
+            handlerName === operation['x-whook'].sourceOperationId)
+        ) {
+          operations.push(
+            operation as OpenAPIOperation<
+              ExpressiveJSONSchema,
+              OpenAPIExtension
+            >,
+          );
+        }
       }
-      return true;
-    });
+    }
 
     log('warning', `📃 - ${operations.length} operations to process.`);
 
@@ -245,7 +251,7 @@ async function processOperations(
     $autoload: Autoloader<Initializer<Dependencies, Service>>;
     buildInitializer: BuildInitializer;
   },
-  operations: WhookOperation<WhookAPIOperationAWSLambdaConfig>[],
+  operations: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>[],
 ): Promise<void> {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
 
@@ -296,19 +302,19 @@ async function buildAnyLambda(
     log: LogService;
     buildInitializer: BuildInitializer;
   },
-  operation: WhookOperation<WhookAPIOperationAWSLambdaConfig>,
+  operation: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
 ): Promise<void> {
   const { operationId } = operation;
 
   try {
-    const whookConfig: WhookAPIOperationAWSLambdaConfig = operation[
-      'x-whook'
-    ] || { type: 'http' };
+    const whookConfig = (operation['x-whook'] || {
+      type: 'http',
+    }) as unknown as WhookAWSLambdaConfiguration & WhookAPIHandlerConfig;
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
     const finalEntryPoint =
       (sourceOperationId ? sourceOperationId : operationId) +
-      ((operation['x-whook'] || {}).suffix || '');
+      (whookConfig.suffix || '');
 
     log('warning', `🏗 - Building ${operationType} "${finalEntryPoint}"...`);
 
@@ -373,7 +379,7 @@ async function buildFinalLambda(
     log: LogService;
   },
   lambdaPath: string,
-  whookConfig: WhookAPIOperationAWSLambdaConfig,
+  whookConfig: WhookAWSLambdaConfiguration & WhookAPIHandlerConfig,
 ): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings, extension } = await compiler(

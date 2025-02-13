@@ -1,25 +1,36 @@
-import camelCase from 'camelcase';
+import { noop, type LogService } from 'common-services';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
 import Stream from 'node:stream';
-import { pickAllHeaderValues, pickFirstHeaderValue } from './headers.js';
-import Ajv from 'ajv';
-import { parseReentrantNumber, parseBoolean } from 'strict-qs';
 import { type ValidateFunction } from 'ajv';
 import {
-  pickupOperationSecuritySchemes,
-  type SupportedSecurityScheme,
-} from './openapi.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type JsonValue } from 'type-fest';
-import { type WhookHeaders, type WhookOperation } from '../index.js';
+  ensureResolvedObject,
+  type OpenAPIParameter,
+  type OpenAPIExtension,
+  type OpenAPI,
+  type OpenAPISecurityScheme,
+  type OpenAPIReference,
+} from 'ya-open-api-types';
 import {
-  type DereferencedParameterObject,
-  type DereferencedRequestBodyObject,
-} from '../services/httpTransaction.js';
+  parseArrayOfBooleans,
+  parseArrayOfNumbers,
+  parseArrayOfStrings,
+  parseBoolean,
+  parseNumber,
+  type WhookCoercionOptions,
+} from './coercion.js';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { type WhookSchemaValidatorsService } from '../services/schemaValidators.js';
+import { type WhookRequestBody } from '../types/http.js';
+import {
+  type WhookOpenAPIOperation,
+  type WhookOpenAPI,
+  type WhookSupportedParameter,
+} from '../types/openapi.js';
 
-/* Architecture Note #1.1: Validators
-For performance reasons, the validators are
+/* Architecture Note #2.11.2: Validation
+
+For performance reasons, the schemaValidators are
  created once for all at startup from the
  API definition.
 
@@ -37,127 +48,125 @@ Also, looking closely to Prepack that
  https://github.com/facebook/prepack/issues/522#issuecomment-300706099
 */
 
-export function applyValidators(
-  operation: WhookOperation,
-  validators: { [name: string]: ValidateFunction },
-  parameters: JsonValue[],
-): void {
-  ((operation.parameters || []) as OpenAPIV3_1.ParameterObject[]).forEach(
-    ({ name, in: isIn }) => {
-      if ('header' === isIn) {
-        return validators[name](parameters[camelCase(name)]);
-      }
-      return validators[name](parameters[name]);
-    },
-  );
-}
-
-export function prepareBodyValidator(
-  ajv: Ajv.default,
-  operation: WhookOperation,
-): (operation: WhookOperation, contentType: string, value: unknown) => void {
-  if (
-    !(
-      'requestBody' in operation &&
-      operation.requestBody &&
-      operation.requestBody.content
-    )
-  ) {
-    return _rejectAnyRequestBody;
-  }
-
-  const validators = Object.keys(operation.requestBody.content).reduce(
-    (validators, mediaType) => {
-      const mediaTypeObject = (
-        operation.requestBody as DereferencedRequestBodyObject
-      ).content[mediaType];
-      const hasNoSchema = !mediaTypeObject.schema;
-
-      if (hasNoSchema) {
-        return validators;
-      }
-
-      const isBinaryContent =
-        mediaTypeObject.schema.type === 'string' &&
-        mediaTypeObject.schema.format === 'binary';
-
-      if (isBinaryContent) {
-        return validators;
-      }
-
-      let validator;
-
-      try {
-        validator = ajv.compile(mediaTypeObject.schema);
-      } catch (err) {
-        throw YError.wrap(
-          err as Error,
-          'E_BAD_BODY_SCHEMA',
-          operation.operationId,
-          mediaType,
-        );
-      }
-
-      return {
-        ...validators,
-        [mediaType]: validator,
-      };
-    },
-    {},
-  );
-
-  return _validateRequestBody.bind(
-    null,
-    validators as ValidateFunction<unknown>[],
-  );
-}
-
-function _validateRequestBody(
-  validators: ValidateFunction[],
-  operation: WhookOperation,
+export type WhookBodyValidator = (
+  operation: WhookOpenAPIOperation,
   contentType: string,
-  value: unknown,
-): void {
-  if (
-    (operation.requestBody as OpenAPIV3_1.RequestBodyObject).required &&
-    'undefined' === typeof value
-  ) {
-    throw new YHTTPError(
-      400,
-      'E_REQUIRED_REQUEST_BODY',
-      operation.operationId,
-      typeof value,
-      value,
-    );
+  body: WhookRequestBody | void,
+) => void;
+
+export async function prepareBodyValidator(
+  {
+    API,
+    schemaValidators,
+  }: { API: OpenAPI; schemaValidators: WhookSchemaValidatorsService },
+  operation: WhookOpenAPIOperation,
+): Promise<WhookBodyValidator> {
+  if (!('requestBody' in operation) || !operation.requestBody) {
+    return rejectAnyRequestBody;
   }
-  // Streamed contents, let it pass
-  if (!validators[contentType]) {
+
+  const requestBodyObject = await ensureResolvedObject(
+    API,
+    operation.requestBody,
+  );
+
+  if (!requestBodyObject.content) {
+    return rejectAnyRequestBody;
+  }
+
+  const bodyValidators = {};
+
+  for (const mediaType of Object.keys(requestBodyObject.content)) {
+    const mediaTypeObject = requestBodyObject.content[mediaType];
+
+    if (!('schema' in mediaTypeObject) || !mediaTypeObject.schema) {
+      continue;
+    }
+
+    const schema = (await ensureResolvedObject(
+      API,
+      mediaTypeObject.schema,
+    )) as ExpressiveJSONSchema;
+
+    const isBinaryContent =
+      typeof schema === 'object' &&
+      schema &&
+      'type' in schema &&
+      schema.type === 'string' &&
+      schema.format === 'binary';
+
+    if (isBinaryContent) {
+      continue;
+    }
+
+    try {
+      bodyValidators[mediaType] = schemaValidators(mediaTypeObject.schema);
+    } catch (err) {
+      throw YError.wrap(
+        err as Error,
+        'E_BAD_BODY_SCHEMA',
+        operation.operationId,
+        mediaType,
+      );
+    }
+  }
+
+  return validateRequestBody.bind(
+    null,
+    bodyValidators,
+    !!requestBodyObject.required,
+  );
+}
+
+function validateRequestBody(
+  bodyValidators: Record<string, ValidateFunction>,
+  required: boolean,
+  operation: WhookOpenAPIOperation,
+  contentType: string,
+  body: WhookRequestBody | void,
+): void {
+  if ('undefined' === typeof body) {
+    if (required) {
+      throw new YHTTPError(
+        400,
+        'E_REQUIRED_REQUEST_BODY',
+        operation.operationId,
+        typeof body,
+        body,
+      );
+    }
     return;
   }
-  if ('undefined' !== typeof value && !validators[contentType](value)) {
+
+  // Streamed contents, let it pass
+  if (!bodyValidators[contentType]) {
+    return;
+  }
+
+  if (!bodyValidators[contentType](body)) {
     throw new YHTTPError(
       400,
       'E_BAD_REQUEST_BODY',
       operation.operationId,
-      typeof value,
-      value instanceof Stream ? 'Stream' : value,
-      validators[contentType].errors,
+      typeof body,
+      (body as WhookRequestBody) instanceof Stream ? 'Stream' : body,
+      bodyValidators[contentType].errors,
     );
   }
 }
 
-function _rejectAnyRequestBody(
-  operation: WhookOperation,
+function rejectAnyRequestBody(
+  operation: WhookOpenAPIOperation,
   _contentType: string,
-  value: unknown,
+  body: unknown,
 ): void {
-  if ('undefined' !== typeof value) {
+  if ('undefined' !== typeof body) {
     throw new YHTTPError(
       400,
       'E_NO_REQUEST_BODY',
       operation.operationId,
-      typeof value,
-      value instanceof Stream ? 'Stream' : value,
+      typeof body,
+      body instanceof Stream ? 'Stream' : body,
     );
   }
 }
@@ -166,12 +175,12 @@ function _rejectAnyRequestBody(
 // https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
 const SUPPORTED_HTTP_SCHEMES = ['basic', 'bearer', 'digest'];
 
-export function extractOperationSecurityParameters(
-  openAPI: OpenAPIV3_1.Document,
-  operation: WhookOperation,
-): DereferencedParameterObject[] {
-  const operationSecuritySchemes = pickupOperationSecuritySchemes(
-    openAPI,
+export async function extractOperationSecurityParameters(
+  { API }: { API: WhookOpenAPI },
+  operation: WhookOpenAPIOperation,
+): Promise<WhookSupportedParameter[]> {
+  const operationSecuritySchemes = await pickupOperationSecuritySchemes(
+    { API },
     operation,
   );
   const securitySchemes = Object.keys(operationSecuritySchemes).map(
@@ -181,12 +190,41 @@ export function extractOperationSecurityParameters(
   return extractParametersFromSecuritySchemes(securitySchemes);
 }
 
+export async function pickupOperationSecuritySchemes(
+  { API }: { API: WhookOpenAPI },
+  operation: WhookOpenAPIOperation,
+): Promise<{ [name: string]: OpenAPISecurityScheme<OpenAPIExtension> }> {
+  const securitySchemes =
+    (API.components && API.components.securitySchemes) || {};
+  const operationSecuritySchemes = {};
+
+  for (const security of operation.security || API.security || []) {
+    const schemeKey = Object.keys(security)[0];
+
+    if (!schemeKey) {
+      continue;
+    }
+
+    if (!securitySchemes[schemeKey]) {
+      throw new YError(
+        'E_UNDECLARED_SECURITY_SCHEME',
+        schemeKey,
+        operation.operationId,
+      );
+    }
+
+    operationSecuritySchemes[schemeKey] = await ensureResolvedObject(
+      { API },
+      securitySchemes[schemeKey],
+    );
+  }
+
+  return operationSecuritySchemes;
+}
+
 export function extractParametersFromSecuritySchemes(
-  securitySchemes: (
-    | SupportedSecurityScheme
-    | OpenAPIV3_1.OpenIdSecurityScheme
-  )[],
-): DereferencedParameterObject[] {
+  securitySchemes: OpenAPISecurityScheme<OpenAPIExtension>[],
+): WhookSupportedParameter[] {
   const hasOAuth = securitySchemes.some((securityScheme) =>
     ['oauth2', 'openIdConnect'].includes(securityScheme.type),
   );
@@ -195,17 +233,13 @@ export function extractParametersFromSecuritySchemes(
       ...securitySchemes
         .filter((securityScheme) => securityScheme.type === 'http')
         .map((securityScheme) => {
-          if (
-            !SUPPORTED_HTTP_SCHEMES.includes(
-              (securityScheme as OpenAPIV3_1.HttpSecurityScheme).scheme,
-            )
-          ) {
+          if (!SUPPORTED_HTTP_SCHEMES.includes(securityScheme.scheme)) {
             throw new YError(
               'E_UNSUPPORTED_HTTP_SCHEME',
-              (securityScheme as OpenAPIV3_1.HttpSecurityScheme).scheme,
+              securityScheme.scheme,
             );
           }
-          return (securityScheme as OpenAPIV3_1.HttpSecurityScheme).scheme;
+          return securityScheme.scheme;
         }),
       ...(hasOAuth ? ['bearer'] : []),
     ]),
@@ -214,11 +248,8 @@ export function extractParametersFromSecuritySchemes(
   let hasAuthorizationApiKey = false;
   let hasAccessTokenApiKey = false;
 
-  const securityParameters: DereferencedParameterObject[] = securitySchemes
-    .filter(
-      (securityScheme): securityScheme is OpenAPIV3_1.ApiKeySecurityScheme =>
-        securityScheme.type === 'apiKey',
-    )
+  const securityParameters: WhookSupportedParameter[] = securitySchemes
+    .filter((securityScheme) => securityScheme.type === 'apiKey')
     .map((securityScheme) => {
       if (securityScheme.in === 'cookie') {
         throw new YError(
@@ -250,8 +281,8 @@ export function extractParametersFromSecuritySchemes(
             : securityScheme.name,
         schema: {
           type: 'string',
-        },
-      } as DereferencedParameterObject;
+        } as ExpressiveJSONSchema,
+      };
     })
     .concat(
       httpSchemes.length && !hasAuthorizationApiKey
@@ -269,7 +300,7 @@ export function extractParametersFromSecuritySchemes(
                       }|${httpScheme[0].toUpperCase()})${httpScheme.slice(1)}`,
                   )
                   .join('|')}) .*`,
-              },
+              } as ExpressiveJSONSchema,
             },
           ]
         : [],
@@ -290,91 +321,200 @@ export function extractParametersFromSecuritySchemes(
   return securityParameters;
 }
 
-export function prepareParametersValidators(
-  ajv: Ajv.default,
-  operationId: string,
-  parameters: DereferencedParameterObject[],
-): { [name: string]: ValidateFunction } {
-  return parameters.reduce((validators, parameter, index) => {
-    if ('string' !== typeof parameter.name) {
-      throw new YError(
-        'E_BAD_PARAMETER_NAME',
-        operationId,
-        index,
-        parameter.name,
-      );
+export async function resolveParameters(
+  {
+    API,
+    log = noop,
+  }: {
+    API: WhookOpenAPI;
+    log?: LogService;
+  },
+  parameters: (
+    | OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>
+    | OpenAPIReference<OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>>
+  )[],
+) {
+  const resolvedParameters: WhookSupportedParameter[] = [];
+
+  for (const parameter of parameters) {
+    const resolvedParameter = await ensureResolvedObject(API, parameter);
+
+    if ('style' in resolvedParameter) {
+      log('warning', '⚠️ - Only defaults styles are supported currently!');
+      log('debug', JSON.stringify(resolvedParameter));
+    }
+    if ('string' !== typeof resolvedParameter.name) {
+      throw new YError('E_BAD_PARAMETER_NAME', resolvedParameter);
     }
 
-    if (parameter.content) {
+    if ('content' in resolvedParameter) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
-        operationId,
-        parameter.name,
+        resolvedParameter.name,
         'content',
       );
     }
 
-    if (parameter.style && 'simple' !== parameter.style) {
+    if ('style' in resolvedParameter && 'simple' !== resolvedParameter.style) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
-        operationId,
-        parameter.name,
+        resolvedParameter.name,
         'style',
-        parameter.style,
+        resolvedParameter.style,
       );
     }
 
-    if (!['query', 'header', 'path'].includes(parameter.in)) {
+    if (!['query', 'header', 'path'].includes(resolvedParameter.in)) {
       throw new YError(
         'E_UNSUPPORTED_PARAMETER_DEFINITION',
-        operationId,
-        parameter.name,
+        resolvedParameter.name,
         'in',
-        parameter.in,
+        resolvedParameter.in,
       );
     }
 
-    if (!parameter.schema) {
-      throw new YError('E_NO_PARAMETER_SCHEMA', operationId, parameter.name);
+    if (!resolvedParameter.schema) {
+      throw new YError('E_PARAMETER_WITHOUT_SCHEMA', resolvedParameter.name);
     }
 
-    let validator;
+    resolvedParameters.push(resolvedParameter);
+  }
 
-    try {
-      validator = ajv.compile(parameter.schema);
-    } catch (err) {
-      throw YError.wrap(
-        err as Error,
-        'E_BAD_PARAMETER_SCHEMA',
-        operationId,
-        parameter.name,
-      );
-    }
-
-    validators[parameter.name] = _validateParameter.bind(
-      null,
-      parameter,
-      validator,
-    );
-    return validators;
-  }, {});
+  return resolvedParameters;
 }
 
-export function _validateParameter(
-  parameter: DereferencedParameterObject,
-  validator: ValidateFunction,
-  value: unknown,
-): void {
-  if (parameter.required && 'undefined' === typeof value) {
-    throw new YHTTPError(
-      400,
-      'E_REQUIRED_PARAMETER',
-      parameter.name,
-      typeof value,
-      value,
-    );
+export type WhookParameterValue =
+  | boolean
+  | boolean[]
+  | string
+  | string[]
+  | number
+  | number[]
+  | undefined;
+export type WhookParameterCaster = (str: string) => WhookParameterValue;
+export type WhookParameterValidator = (
+  str: string | undefined,
+) => WhookParameterValue;
+export type WhookParametersValidators = Record<
+  'query' | 'header' | 'path' | 'cookie',
+  Record<string, WhookParameterValidator>
+>;
+
+export async function createParameterValidator(
+  {
+    API,
+    COERCION_OPTIONS,
+    schemaValidators,
+  }: {
+    API: WhookOpenAPI;
+    COERCION_OPTIONS: WhookCoercionOptions;
+    schemaValidators: WhookSchemaValidatorsService;
+  },
+  parameter: WhookSupportedParameter,
+): Promise<WhookParameterValidator> {
+  let validator: ReturnType<typeof schemaValidators>;
+  let caster: WhookParameterCaster | undefined = undefined;
+
+  const schema = (await ensureResolvedObject(
+    API,
+    parameter.schema,
+  )) as ExpressiveJSONSchema;
+
+  if (!('type' in schema && schema.type)) {
+    throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', parameter);
   }
-  if ('undefined' !== typeof value && !validator(value)) {
+
+  if (schema.type === 'number') {
+    caster = parseNumber.bind(null, COERCION_OPTIONS);
+  } else if (schema.type === 'boolean') {
+    caster = parseBoolean;
+  } else if (schema.type === 'array') {
+    if (!('items' in schema && schema.items) || 'prefixItems' in schema) {
+      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', parameter);
+    }
+
+    const itemSchema = (await ensureResolvedObject(
+      API,
+      schema.items,
+    )) as ExpressiveJSONSchema;
+
+    if (!('type' in itemSchema && itemSchema.type)) {
+      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', parameter);
+    }
+    if (itemSchema.type === 'string') {
+      caster = parseArrayOfStrings;
+    } else if (itemSchema.type === 'number') {
+      caster = parseArrayOfNumbers.bind(null, COERCION_OPTIONS);
+    } else if (itemSchema.type === 'boolean') {
+      caster = parseArrayOfBooleans;
+    }
+  }
+
+  try {
+    validator = schemaValidators(parameter.schema);
+  } catch (err) {
+    throw YError.wrap(err as Error, 'E_BAD_PARAMETER_SCHEMA', parameter.name);
+  }
+
+  return validateParameter.bind(null, parameter, caster, validator);
+}
+
+export async function createParametersValidators(
+  {
+    API,
+    COERCION_OPTIONS,
+    schemaValidators,
+  }: {
+    API: WhookOpenAPI;
+    COERCION_OPTIONS: WhookCoercionOptions;
+    schemaValidators: WhookSchemaValidatorsService;
+  },
+  parameters: WhookSupportedParameter[],
+) {
+  const parameterValidators: WhookParametersValidators = {
+    query: {},
+    header: {},
+    path: {},
+    cookie: {},
+  };
+
+  for (const parameter of parameters) {
+    parameterValidators[parameter.in][parameter.name] =
+      await createParameterValidator(
+        {
+          API,
+          COERCION_OPTIONS,
+          schemaValidators,
+        },
+        parameter,
+      );
+  }
+
+  return parameterValidators;
+}
+
+export function validateParameter(
+  parameter: OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>,
+  caster: WhookParameterCaster | undefined,
+  validator: ValidateFunction,
+  str: string | undefined,
+): WhookParameterValue | undefined {
+  if ('undefined' === typeof str) {
+    if (parameter.required) {
+      throw new YHTTPError(
+        400,
+        'E_REQUIRED_PARAMETER',
+        parameter.name,
+        typeof str,
+        str,
+      );
+    }
+    return undefined;
+  }
+
+  const value = caster ? caster(str) : str;
+
+  if (!validator(value)) {
     throw new YHTTPError(
       400,
       'E_BAD_PARAMETER',
@@ -384,76 +524,5 @@ export function _validateParameter(
       validator.errors,
     );
   }
-}
-
-export function filterHeaders(
-  parameters: DereferencedParameterObject[],
-  headers: WhookHeaders,
-): WhookHeaders {
-  return (parameters || [])
-    .filter((parameter) => 'header' === parameter.in)
-    .reduce((filteredHeaders, parameter) => {
-      if (headers[parameter.name.toLowerCase()]) {
-        filteredHeaders[camelCase(parameter.name)] =
-          headers[parameter.name.toLowerCase()];
-      }
-      return filteredHeaders;
-    }, {});
-}
-
-export function castParameters<
-  T = boolean | boolean[] | string | string[] | number | number[],
->(
-  parameters: DereferencedParameterObject[],
-  values: WhookHeaders,
-): Record<string, T> {
-  return (parameters || []).reduce((filteredValues, parameter) => {
-    const parameterName =
-      parameter.in === 'header' ? camelCase(parameter.name) : parameter.name;
-    const parameterValue =
-      parameter.in !== 'header'
-        ? values[parameterName]
-        : parameter.schema?.type === 'array'
-          ? pickAllHeaderValues(parameterName, values)
-          : pickFirstHeaderValue(parameterName, values);
-
-    if (parameterValue) {
-      filteredValues[parameterName] = castSchemaValue(
-        parameter.schema,
-        parameterValue,
-      );
-    }
-    return filteredValues;
-  }, {});
-}
-
-export function castSchemaValue<
-  T = boolean | boolean[] | string | string[] | number | number[],
->(
-  schema: DereferencedParameterObject['schema'],
-  value: string | string[],
-): T | undefined {
-  let castedValue: T | undefined = undefined;
-
-  if ('undefined' !== typeof value) {
-    if ('array' === schema.type) {
-      castedValue = (value as string[]).map(
-        castSchemaValue.bind(
-          null,
-          schema.items as DereferencedParameterObject['schema'],
-        ),
-      ) as unknown as T;
-    } else if ('boolean' === schema.type) {
-      castedValue = parseBoolean(value as string) as unknown as T;
-    } else if ('number' === schema.type) {
-      castedValue = parseReentrantNumber(value as string) as unknown as T;
-    } else {
-      castedValue = value as unknown as T;
-    }
-
-    if (schema.enum && !schema.enum.includes(castedValue)) {
-      throw new YHTTPError(400, 'E_NOT_IN_ENUM', castedValue, schema.enum);
-    }
-  }
-  return castedValue;
+  return value;
 }

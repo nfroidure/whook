@@ -6,13 +6,8 @@ import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters.js';
 import { type CheckApplicationService } from '../services/oAuth2Granters.js';
 import { type LogService } from 'common-services';
 import { type OAuth2GranterService } from '../services/oAuth2Granters.js';
-import { type BaseAuthenticationData } from '@whook/authorization';
 import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
 import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
-
-type CustomAuthenticationData = BaseAuthenticationData & {
-  userId: string;
-};
 
 describe('postOAuth2Acknowledge', () => {
   const ERRORS_DESCRIPTORS = {
@@ -27,27 +22,21 @@ describe('postOAuth2Acknowledge', () => {
       responseType: 'code',
       authorize:
         jest.fn<
-          NonNullable<
-            OAuth2CodeGranterService<CustomAuthenticationData>['authorizer']
-          >['authorize']
+          NonNullable<OAuth2CodeGranterService['authorizer']>['authorize']
         >(),
     },
     acknowledger: {
       acknowledgmentType: 'code',
       acknowledge:
         jest.fn<
-          NonNullable<
-            OAuth2CodeGranterService<CustomAuthenticationData>['acknowledger']
-          >['acknowledge']
+          NonNullable<OAuth2CodeGranterService['acknowledger']>['acknowledge']
         >(),
     },
     authenticator: {
       grantType: 'authorization_code',
       authenticate:
         jest.fn<
-          NonNullable<
-            OAuth2CodeGranterService<CustomAuthenticationData>['authenticator']
-          >['authenticate']
+          NonNullable<OAuth2CodeGranterService['authenticator']>['authenticate']
         >(),
     },
   };
@@ -58,7 +47,7 @@ describe('postOAuth2Acknowledge', () => {
       authorize:
         jest.fn<
           NonNullable<
-            OAuth2TokenGranterService<CustomAuthenticationData>['authenticator']
+            OAuth2TokenGranterService['authenticator']
           >['authenticate']
         >(),
     },
@@ -66,9 +55,7 @@ describe('postOAuth2Acknowledge', () => {
       acknowledgmentType: 'token',
       acknowledge:
         jest.fn<
-          NonNullable<
-            OAuth2TokenGranterService<CustomAuthenticationData>['acknowledger']
-          >['acknowledge']
+          NonNullable<OAuth2TokenGranterService['acknowledger']>['acknowledge']
         >(),
     },
   };
@@ -78,8 +65,7 @@ describe('postOAuth2Acknowledge', () => {
   ] as unknown as OAuth2GranterService<
     Record<string, unknown>,
     Record<string, unknown>,
-    Record<string, unknown>,
-    CustomAuthenticationData
+    Record<string, unknown>
   >[];
 
   beforeEach(() => {
@@ -110,13 +96,12 @@ describe('postOAuth2Acknowledge', () => {
       userId: '1',
     });
 
-    const postOAuth2Acknowledge =
-      await initPostOAuth2Acknowledge<CustomAuthenticationData>({
-        ERRORS_DESCRIPTORS,
-        oAuth2Granters,
-        checkApplication,
-        log,
-      });
+    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge({
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      checkApplication,
+      log,
+    });
     const response = await postOAuth2Acknowledge({
       authenticationData: {
         applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
@@ -171,13 +156,12 @@ describe('postOAuth2Acknowledge', () => {
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
 
-    const postOAuth2Acknowledge =
-      await initPostOAuth2Acknowledge<CustomAuthenticationData>({
-        ERRORS_DESCRIPTORS,
-        oAuth2Granters,
-        checkApplication,
-        log,
-      });
+    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge({
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      checkApplication,
+      log,
+    });
     const response = await postOAuth2Acknowledge({
       authenticationData: {
         applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',

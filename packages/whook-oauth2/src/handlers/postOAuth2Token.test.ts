@@ -11,6 +11,7 @@ import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js'
 import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
 import { type OAuth2PasswordGranterService } from '../services/oAuth2PasswordGranter.js';
 import { type OAuth2RefreshTokenGranterService } from '../services/oAuth2RefreshTokenGranter.js';
+import { type WhookAuthenticationData } from '@whook/authorization';
 
 describe('postOAuth2Token', () => {
   const log = jest.fn<LogService>();
@@ -152,7 +153,7 @@ describe('postOAuth2Token', () => {
       authenticationData: {
         applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         scope: 'user',
-      },
+      } as WhookAuthenticationData,
       body: {
         grant_type: 'authorization_code',
         code: '007',
@@ -182,7 +183,7 @@ describe('postOAuth2Token', () => {
         authenticationData: {
           applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
           scope: 'user',
-        },
+        } as WhookAuthenticationData,
         body: {
           grant_type: 'yolo',
           code: '007',

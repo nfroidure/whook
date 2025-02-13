@@ -7,7 +7,6 @@ import {
   type OAuth2CodeService,
   type CheckApplicationService,
 } from './oAuth2Granters.js';
-import { type BaseAuthenticationData } from '@whook/authorization';
 
 export const CODE_GRANTER_TYPE = 'code';
 
@@ -21,13 +20,10 @@ export type OAuth2CodeGranterParameters = {
   redirectURI: string;
   clientId: string;
 };
-export type OAuth2CodeGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-> = OAuth2GranterService<
+export type OAuth2CodeGranterService = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
-  OAuth2CodeGranterParameters,
-  AUTHENTICATION_DATA
+  OAuth2CodeGranterParameters
 >;
 
 export default location(autoService(initOAuth2CodeGranter), import.meta.url);
@@ -72,6 +68,8 @@ async function initOAuth2CodeGranter({
     );
 
     return {
+      // TODO: check a way to avoid this by adding params
+      ...authenticationData,
       applicationId: clientId,
       redirectURI,
       scope,

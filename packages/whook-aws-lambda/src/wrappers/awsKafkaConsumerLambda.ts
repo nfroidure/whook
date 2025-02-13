@@ -2,28 +2,24 @@ import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
   noop,
-  type WhookOperation,
+  type WhookAPIHandlerDefinition,
   type WhookAPMService,
-  type WhookHandler,
+  type WhookAPIHandler,
   type WhookResponse,
-  type WhookHeaders,
-  type WhookWrapper,
+  type WhookAPIWrapper,
+  type WhookAPIHandlerParameters,
+  type WhookOpenAPI,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import { type MSKEvent } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
 
 export type LambdaKafkaConsumerInput = { body: MSKEvent['records'] };
-export type LambdaKafkaConsumerOutput = WhookResponse<
-  number,
-  WhookHeaders,
-  unknown
->;
+export type LambdaKafkaConsumerOutput = WhookResponse;
 
 export type WhookWrapKafkaLambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3_1.Document;
+  OPERATION_API: WhookOpenAPI;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -47,26 +43,25 @@ export type WhookWrapKafkaLambdaDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForKafkaLambda<S extends WhookHandler>({
+async function initWrapHandlerForKafkaLambda({
   ENV,
   OPERATION_API,
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapKafkaLambdaDependencies): Promise<WhookWrapper<S>> {
+}: WhookWrapKafkaLambdaDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda kafka wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleForAWSKafkaConsumerLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as WhookHandler<
-        LambdaKafkaConsumerInput,
-        LambdaKafkaConsumerOutput
-      >,
+      handler,
     );
 
-    return wrappedHandler as unknown as S;
+    return wrappedHandler as unknown as WhookAPIHandler;
   };
 
   return wrapper;
@@ -80,12 +75,12 @@ async function handleForAWSKafkaConsumerLambda(
     time,
     log,
   }: Required<WhookWrapKafkaLambdaDependencies>,
-  handler: WhookHandler<LambdaKafkaConsumerInput, LambdaKafkaConsumerOutput>,
+  handler: WhookAPIHandler,
   event: MSKEvent,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
-  const OPERATION: WhookOperation = {
+  const definition: WhookAPIHandlerDefinition = {
     path,
     method,
     ...OPERATION_API.paths?.[path]?.[method],
@@ -98,12 +93,15 @@ async function handleForAWSKafkaConsumerLambda(
   try {
     log('debug', 'EVENT', JSON.stringify(event));
 
-    await handler(parameters, OPERATION);
+    await handler(
+      parameters as unknown as WhookAPIHandlerParameters,
+      definition,
+    );
 
     apm('KAFKA', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':MSKEventRecord' },
       type: 'success',
       startTime,
@@ -119,7 +117,7 @@ async function handleForAWSKafkaConsumerLambda(
     apm('KAFKA', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':MSKEventRecord' },
       type: 'error',
       stack: printStackTrace(castedErr),

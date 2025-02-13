@@ -134,9 +134,9 @@ validate a user subscription:
 ```ts
 import { autoService } from 'knifecycle';
 import { noop } from '@whook/whook';
+import { type WhookAuthenticationData } from '@whook/authorization';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
-import { type AuthenticationData } from './authentication.js';
 import {
   type OAuth2GranterService,
   type CheckApplicationService,
@@ -146,7 +146,7 @@ import { type PGService } from 'postgresql-service';
 
 export type OAuth2VerifyTokenGranterDependencies = {
   checkApplication: CheckApplicationService;
-  jwtToken: JWTService<AuthenticationData>;
+  jwtToken: JWTService<WhookAuthenticationData>;
   pg: Pick<PGService, 'query'>;
   log?: LogService;
 };
@@ -157,7 +157,7 @@ export type OAuth2VerifyTokenGranterService = OAuth2GranterService<
   unknown,
   unknown,
   OAuth2VerifyTokenGranterParameters,
-  AuthenticationData
+  WhookAuthenticationData
 >;
 
 export default autoService(initOAuth2VerifyTokenGranter);
@@ -280,7 +280,7 @@ import {
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
 } from '@whook/oauth2';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPI } from 'ya-open-api-types';
 import { type WhookAPIHandlerDefinition } from '@whook/whook';
 
 export default initPostOAuth2Acknowledge;
@@ -302,29 +302,19 @@ export const definition: WhookAPIHandlerDefinition = {
       content: {
         'application/json': {
           schema: {
-            ...((
-              postOAuth2AcknowledgeDefinition.operation
-                .requestBody as OpenAPIV3_1.RequestBodyObject
-            ).content['application/json']
-              .schema as OpenAPIV3_1.NonArraySchemaObject),
+            ...postOAuth2AcknowledgeDefinition.operation.requestBodyt.content[
+              'application/json'
+            ].schema,
             required: [
               'userId',
-              ...(
-                (
-                  postOAuth2AcknowledgeDefinition.operation
-                    .requestBody as OpenAPIV3_1.RequestBodyObject
-                ).content['application/json']
-                  .schema as OpenAPIV3_1.NonArraySchemaObject
-              ).required,
+              ...postOAuth2AcknowledgeDefinition.operation.requestBody.content[
+                'application/json'
+              ].schema.required,
             ],
             properties: {
-              ...(
-                (
-                  postOAuth2AcknowledgeDefinition.operation
-                    .requestBody as OpenAPIV3_1.RequestBodyObject
-                ).content['application/json']
-                  .schema as OpenAPIV3_1.NonArraySchemaObject
-              ).properties,
+              ...postOAuth2AcknowledgeDefinition.operation.requestBody.content[
+                'application/json'
+              ].schema.properties,
               userId: {
                 type: 'string',
               },

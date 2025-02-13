@@ -1,15 +1,22 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, test, expect } from '@jest/globals';
 import initGetParameters from './getParameters.js';
 
 describe('getParameters', () => {
-  it('should work', async () => {
+  test('should work', async () => {
     const getParameters = await initGetParameters({});
+
     const response = await getParameters({
-      pathParam1: 2,
-      pathParam2: 'a',
-      queryParam: ['a', 'b'],
-      aHeader: true,
-      aMultiHeader: [1, 2],
+      path: {
+        pathParam1: 2,
+        pathParam2: 'a',
+      },
+      query: {
+        queryParam: ['a', 'b'],
+      },
+      header: {
+        'a-header': true,
+        aMultiHeader: [1, 2],
+      },
     });
 
     expect({

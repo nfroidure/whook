@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { jest, describe, it, expect, beforeEach } from '@jest/globals';
+import { jest, describe, test, expect, beforeEach } from '@jest/globals';
 import {
   initWrapHandlerWithCORS,
   initOptionsWithCORS,
   augmentAPIWithCORS,
 } from './index.js';
-import { handler } from 'knifecycle';
+import { service } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { type CORSConfig } from './index.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type WhookOperation } from '@whook/whook';
+import {
+  type WhookAPIHandlerDefinition,
+  type WhookOpenAPI,
+} from '@whook/whook';
 import { type LogService } from 'common-services';
 
 describe('initWrapHandlerWithCORS', () => {
@@ -28,17 +30,19 @@ describe('initWrapHandlerWithCORS', () => {
       'User-Agent',
     ].join(','),
   };
-  const OPERATION: WhookOperation = {
+  const DEFINITION: WhookAPIHandlerDefinition = {
     path: '/test',
     method: 'get',
-    operationId: 'getOp',
-    parameters: [],
-    responses: {
-      '200': {
-        description: 'Ok',
+    operation: {
+      operationId: 'getOp',
+      parameters: [],
+      responses: {
+        '200': {
+          description: 'Ok',
+        },
       },
     },
-    'x-whook': {},
+    config: {},
   };
   const log = jest.fn<LogService>();
 
@@ -46,14 +50,24 @@ describe('initWrapHandlerWithCORS', () => {
     log.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     const baseHandler = await initOptionsWithCORS({});
     const wrapper = await initWrapHandlerWithCORS({
       CORS,
       log,
     });
     const wrappedHandler = await wrapper(baseHandler as any);
-    const response = await wrappedHandler({}, OPERATION);
+    const response = await wrappedHandler(
+      {
+        path: {},
+        query: {},
+        header: {},
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      DEFINITION,
+    );
 
     expect({
       response,
@@ -79,7 +93,7 @@ describe('initWrapHandlerWithCORS', () => {
 `);
   });
 
-  it('should work with replace custom CORS', async () => {
+  test('should work with replace custom CORS', async () => {
     const baseHandler = await initOptionsWithCORS({});
     const wrapper = await initWrapHandlerWithCORS({
       CORS,
@@ -87,10 +101,17 @@ describe('initWrapHandlerWithCORS', () => {
     });
     const wrappedHandler = await wrapper(baseHandler as any);
     const response = await wrappedHandler(
-      {},
       {
-        ...OPERATION,
-        'x-whook': {
+        path: {},
+        query: {},
+        header: {},
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      {
+        ...DEFINITION,
+        config: {
           cors: {
             type: 'replace',
             value: {
@@ -127,7 +148,7 @@ describe('initWrapHandlerWithCORS', () => {
 `);
   });
 
-  it('should work with merge custom CORS', async () => {
+  test('should work with merge custom CORS', async () => {
     const baseHandler = await initOptionsWithCORS({});
     const wrapper = await initWrapHandlerWithCORS({
       CORS,
@@ -135,10 +156,17 @@ describe('initWrapHandlerWithCORS', () => {
     });
     const wrappedHandler = await wrapper(baseHandler as any);
     const response = await wrappedHandler(
-      {},
       {
-        ...OPERATION,
-        'x-whook': {
+        path: {},
+        query: {},
+        header: {},
+        cookie: {},
+        body: {},
+        options: {},
+      },
+      {
+        ...DEFINITION,
+        config: {
           cors: {
             type: 'merge',
             value: {
@@ -174,10 +202,12 @@ describe('initWrapHandlerWithCORS', () => {
 `);
   });
 
-  it('should add CORS to errors', async () => {
-    const baseHandler = await handler(
-      async function getError() {
-        throw new YHTTPError(400, 'E_ERROR');
+  test('should add CORS to errors', async () => {
+    const baseHandler = await service(
+      async function initGetError() {
+        return async () => {
+          throw new YHTTPError(400, 'E_ERROR');
+        };
       },
       'getError',
       [],
@@ -189,7 +219,17 @@ describe('initWrapHandlerWithCORS', () => {
     const wrappedHandler = await wrapper(baseHandler as any);
 
     try {
-      await wrappedHandler({}, OPERATION);
+      await wrappedHandler(
+        {
+          path: {},
+          query: {},
+          header: {},
+          cookie: {},
+          body: {},
+          options: {},
+        },
+        DEFINITION,
+      );
       throw new YHTTPError(500, 'E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
@@ -213,7 +253,7 @@ describe('initWrapHandlerWithCORS', () => {
 });
 
 describe('augmentAPIWithCORS()', () => {
-  it('should work', async () => {
+  test('should work', async () => {
     expect(
       await augmentAPIWithCORS({
         openapi: '3.1.0',
@@ -355,9 +395,9 @@ describe('augmentAPIWithCORS()', () => {
                 },
               },
             },
-          } as OpenAPIV3_1.PathItemObject,
+          },
         },
-      }),
+      } as WhookOpenAPI),
     ).toMatchSnapshot();
   });
 });

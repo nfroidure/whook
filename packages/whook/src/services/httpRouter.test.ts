@@ -1,22 +1,26 @@
 /* eslint max-nested-callbacks: 0 */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import assert from 'assert';
 import StreamTest from 'streamtest';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';
 import initHTTPRouter from './httpRouter.js';
+import initSchemaValidators from './schemaValidators.js';
+import initQueryParserBuilder from './queryParserBuilder.js';
 import { NodeEnv } from 'application-services';
 import initErrorHandler from './errorHandler.js';
-import SwaggerParser from '@apidevtools/swagger-parser';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import {
-  type WhookHTTPTransactionService,
-  type WhookHandler,
-  type WhookResponse,
-} from './httpTransaction.js';
-import { type IncomingMessage, ServerResponse } from 'node:http';
+  type OpenAPIParameter,
+  type OpenAPIExtension,
+} from 'ya-open-api-types';
+import { type WhookHTTPTransactionService } from './httpTransaction.js';
+import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { type WhookAPIHandler } from '../types/handlers.js';
+import { type WhookResponse } from '../types/http.js';
+import { type WhookSchemaValidatorsService } from './schemaValidators.js';
+import { type WhookOpenAPI } from '../types/openapi.js';
 
 function waitResponse(response, raw = true) {
   return new Promise((resolve, reject) => {
@@ -47,7 +51,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
       : result
         ? Promise.resolve(result)
         : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
-  ) as WhookHandler & ReturnType<typeof jest.fn>;
+  ) as WhookAPIHandler & ReturnType<typeof jest.fn>;
   const httpTransactionStart = jest.fn(async (buildResponse: () => void) =>
     buildResponse(),
   );
@@ -93,7 +97,7 @@ describe('initHTTPRouter', () => {
   const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Test };
   const DEBUG_NODE_ENVS = ['test'];
   const BASE_PATH = '/v1';
-  const API: OpenAPIV3_1.Document = {
+  const API: WhookOpenAPI = {
     openapi: '3.1.0',
     info: {
       version: '1.0.0',
@@ -149,9 +153,7 @@ describe('initHTTPRouter', () => {
             name: 'userId',
             required: true,
             schema: {
-              type: 'number',
-              minimum: 0,
-              multipleOf: 1,
+              $ref: '#/components/schemas/UserIdSchema',
             },
           },
           {
@@ -201,7 +203,7 @@ describe('initHTTPRouter', () => {
                   schema: {
                     type: 'string',
                     format: 'binary',
-                  },
+                  } as unknown as ExpressiveJSONSchema,
                 },
               },
             },
@@ -265,7 +267,10 @@ describe('initHTTPRouter', () => {
               description: 'User avatar set.',
               content: {
                 'image/jpeg': {
-                  schema: { type: 'string', format: 'binary' },
+                  schema: {
+                    type: 'string',
+                    format: 'binary',
+                  } as unknown as ExpressiveJSONSchema,
                 },
               },
             },
@@ -297,9 +302,7 @@ describe('initHTTPRouter', () => {
               name: 'userId',
               required: true,
               schema: {
-                type: 'number',
-                minimum: 0,
-                multipleOf: 1,
+                $ref: '#/components/schemas/UserIdSchema',
               },
             },
             {
@@ -459,7 +462,7 @@ describe('initHTTPRouter', () => {
         BinaryPayload: {
           type: 'string',
           format: 'binary',
-        },
+        } as unknown as ExpressiveJSONSchema,
         UserIdSchema: {
           type: 'number',
           minimum: 0,
@@ -509,15 +512,13 @@ describe('initHTTPRouter', () => {
     },
   };
   const log = jest.fn<LogService>();
+  const fakeValidator = () => true;
+  const schemaValidators = (() =>
+    fakeValidator) as unknown as WhookSchemaValidatorsService;
   const res = {} as unknown as ServerResponse;
 
   beforeEach(() => {
     log.mockReset();
-  });
-
-  test('should test a valid swagger file', async () => {
-    // Not pure function... so deep cloning the dirtiest way
-    await SwaggerParser.validate(JSON.parse(JSON.stringify(API)));
   });
 
   test('should work', async () => {
@@ -526,6 +527,10 @@ describe('initHTTPRouter', () => {
       ENV,
       DEBUG_NODE_ENVS,
       ERRORS_DESCRIPTORS: {},
+    });
+    const queryParserBuilder = await initQueryParserBuilder({
+      API,
+      log,
     });
     const httpRouter = await initHTTPRouter({
       ENV,
@@ -536,13 +541,24 @@ describe('initHTTPRouter', () => {
       log,
       httpTransaction,
       errorHandler,
+      queryParserBuilder,
+      schemaValidators,
     });
 
-    assert('function' === typeof httpRouter.service);
-    assert(httpRouter.fatalErrorPromise instanceof Promise);
-    assert.deepEqual(log.mock.calls, [
-      ['debug', '🚦 - HTTP Router initialized.'],
-    ]);
+    expect(typeof httpRouter.service).toEqual('function');
+    expect(httpRouter.fatalErrorPromise).toBeInstanceOf(Promise);
+    expect(log.mock.calls).toMatchInlineSnapshot(`
+[
+  [
+    "warning",
+    "⌨️ - Initializing the basic query parser.",
+  ],
+  [
+    "debug",
+    "🚦 - HTTP Router initialized.",
+  ],
+]
+`);
   });
 
   describe('should fail', () => {
@@ -553,6 +569,10 @@ describe('initHTTPRouter', () => {
           ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
+        });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
         });
 
         await initHTTPRouter({
@@ -566,16 +586,20 @@ describe('initHTTPRouter', () => {
                 get: {},
               },
             },
-          } as unknown as OpenAPIV3_1.Document,
+          } as unknown as WhookOpenAPI,
           log,
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal((err as YError).code, 'E_BAD_OPEN_API');
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_NO_OPERATION_ID (/lol, get): E_NO_OPERATION_ID]`,
+        );
       }
     });
 
@@ -586,6 +610,10 @@ describe('initHTTPRouter', () => {
           ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
+        });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
         });
 
         await initHTTPRouter({
@@ -606,11 +634,15 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal((err as YError).code, 'E_NO_OPERATION_ID');
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_NO_OPERATION_ID (/lol, get): E_NO_OPERATION_ID]`,
+        );
       }
     });
 
@@ -622,6 +654,10 @@ describe('initHTTPRouter', () => {
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
 
         await initHTTPRouter({
           ENV,
@@ -632,7 +668,7 @@ describe('initHTTPRouter', () => {
             servers: API.servers,
             info: API.info,
             paths: {
-              lol: {
+              ['lol' as '/lol']: {
                 get: {} as never,
               },
             },
@@ -641,10 +677,14 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal((err as YError).code, 'E_BAD_PATH');
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_BAD_PATH (lol): E_BAD_PATH]`,
+        );
       }
     });
 
@@ -655,6 +695,10 @@ describe('initHTTPRouter', () => {
           ENV,
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
+        });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
         });
 
         await initHTTPRouter({
@@ -679,11 +723,15 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal((err as YError).code, 'E_UNDECLARED_PATH_PARAMETER');
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_UNDECLARED_PATH_PARAMETER (/v1/{lol}, {lol}): E_UNDECLARED_PATH_PARAMETER]`,
+        );
       }
     });
 
@@ -695,6 +743,11 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
+
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -704,10 +757,14 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal((err as YError).code, 'E_NO_HANDLER');
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_NO_HANDLER (ping): E_NO_HANDLER]`,
+        );
       }
     });
 
@@ -719,6 +776,10 @@ describe('initHTTPRouter', () => {
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
 
         await initHTTPRouter({
           ENV,
@@ -738,7 +799,10 @@ describe('initHTTPRouter', () => {
                       schema: {
                         type: 'string',
                       },
-                    } as unknown as OpenAPIV3_1.ParameterObject,
+                    } as OpenAPIParameter<
+                      ExpressiveJSONSchema,
+                      OpenAPIExtension
+                    >,
                   ],
                 } as never,
               },
@@ -748,10 +812,14 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal((err as YError).code, 'E_BAD_PARAMETER_NAME');
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_BAD_PARAMETER_NAME ([object Object]): E_BAD_PARAMETER_NAME]`,
+        );
       }
     });
 
@@ -763,6 +831,10 @@ describe('initHTTPRouter', () => {
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
 
         await initHTTPRouter({
           ENV,
@@ -780,7 +852,10 @@ describe('initHTTPRouter', () => {
                     {
                       name: 'lol',
                       in: 'query',
-                    } as unknown as OpenAPIV3_1.ParameterObject,
+                    } as OpenAPIParameter<
+                      ExpressiveJSONSchema,
+                      OpenAPIExtension
+                    >,
                   ],
                 } as never,
               },
@@ -790,10 +865,14 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal((err as YError).code, 'E_PARAMETER_WITHOUT_SCHEMA');
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_PARAMETER_WITHOUT_SCHEMA (lol): E_PARAMETER_WITHOUT_SCHEMA]`,
+        );
       }
     });
 
@@ -805,6 +884,10 @@ describe('initHTTPRouter', () => {
           ERRORS_DESCRIPTORS: {},
         });
         const { httpTransaction, HANDLERS } = prepareTransaction();
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
 
         await initHTTPRouter({
           ENV,
@@ -824,7 +907,10 @@ describe('initHTTPRouter', () => {
                       schema: {
                         type: 'string',
                       },
-                    } as unknown as OpenAPIV3_1.ParameterObject,
+                    } as OpenAPIParameter<
+                      ExpressiveJSONSchema,
+                      OpenAPIExtension
+                    >,
                   ],
                 } as never,
               },
@@ -834,19 +920,14 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
-        assert.equal(
-          (err as YError).code,
-          'E_UNSUPPORTED_PARAMETER_DEFINITION',
+        expect(err).toMatchInlineSnapshot(
+          `[YError: E_UNSUPPORTED_PARAMETER_DEFINITION (lol, in, ): E_UNSUPPORTED_PARAMETER_DEFINITION]`,
         );
-        assert.deepEqual((err as YError).params, [
-          'ping',
-          'lol',
-          'in',
-          undefined,
-        ]);
       }
     });
   });
@@ -873,6 +954,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -882,6 +967,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         const req = {
           method: 'HEAD',
@@ -903,15 +990,53 @@ describe('initHTTPRouter', () => {
           httpTransactionEnd.mock.calls[0][0],
         );
 
-        expect(response).toEqual({
-          headers: {
-            'content-type': 'image/jpeg',
+        expect({
+          response,
+          handlerCalls: handler.mock.calls,
+        }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {
+          "x-depth": undefined,
+        },
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "forFriendsUserId": undefined,
+        },
+      },
+      {
+        "method": "head",
+        "operation": {
+          "operationId": "headUserAvatar",
+          "responses": {
+            "200": {
+              "description": "User avatar exists.",
+            },
+            "404": {
+              "description": "User avatar not found",
+            },
           },
-          status: 200,
-        });
-        expect(handler.mock.calls[0][0]).toEqual({
-          userId: 1,
-        });
+          "summary": "Checks user's avatar existance.",
+        },
+        "path": "/v1/users/1/avatar",
+      },
+    ],
+  ],
+  "response": {
+    "headers": {
+      "content-type": "image/jpeg",
+    },
+    "status": 200,
+  },
+}
+`);
       });
 
       test('should work with an existing GET route', async () => {
@@ -937,6 +1062,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -946,6 +1075,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         const req = {
           method: 'HEAD',
@@ -967,16 +1098,108 @@ describe('initHTTPRouter', () => {
           httpTransactionEnd.mock.calls[0][0],
         );
 
-        expect(response).toEqual({
-          headers: {
-            'content-type': 'application/json',
+        expect({
+          response,
+          handlerCalls: handler.mock.calls,
+        }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "head",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
           },
-          status: 200,
-        });
-        expect(handler.mock.calls[0][0]).toEqual({
-          userId: 1,
-          extended: true,
-        });
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+  "response": {
+    "body": undefined,
+    "headers": {
+      "content-type": "application/json",
+    },
+    "status": 200,
+  },
+}
+`);
       });
 
       test('should work with a */* accept header', async () => {
@@ -1002,6 +1225,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -1011,6 +1238,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
 
         const req = {
@@ -1035,16 +1264,108 @@ describe('initHTTPRouter', () => {
           httpTransactionEnd.mock.calls[0][0],
         );
 
-        expect(response).toEqual({
-          status: 200,
-          headers: {
-            'content-type': 'application/json',
+        expect({
+          response,
+          handlerCalls: handler.mock.calls,
+        }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "head",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
           },
-        });
-        expect(handler.mock.calls[0][0]).toEqual({
-          userId: 1,
-          extended: true,
-        });
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+  "response": {
+    "body": undefined,
+    "headers": {
+      "content-type": "application/json",
+    },
+    "status": 200,
+  },
+}
+`);
       });
     });
 
@@ -1073,6 +1394,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1082,6 +1407,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1103,20 +1430,108 @@ describe('initHTTPRouter', () => {
             httpTransactionEnd.mock.calls[0][0],
           );
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              id: 1,
-              name: 'John Doe',
-            }),
-            headers: {
-              'content-type': 'application/json',
+          expect({
+            response,
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
             },
-            status: 200,
-          });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
-          });
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+  "response": {
+    "body": "{"id":1,"name":"John Doe"}",
+    "headers": {
+      "content-type": "application/json",
+    },
+    "status": 200,
+  },
+}
+`);
         });
 
         test('with an existing streamed route', async () => {
@@ -1139,6 +1554,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1148,6 +1567,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1172,18 +1593,68 @@ describe('initHTTPRouter', () => {
             true,
           );
 
-          expect(response).toEqual({
-            body: 'hello',
-            headers: {
-              'content-type': 'image/jpeg',
+          expect({
+            response,
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {
+          "x-depth": 1,
+        },
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "forFriendsUserId": [
+            2,
+            3,
+          ],
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUserAvatar",
+          "responses": {
+            "200": {
+              "content": {
+                "image/jpeg": {
+                  "schema": {
+                    "format": "binary",
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User avatar found.",
             },
-            status: 200,
-          });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            forFriendsUserId: [2, 3],
-            xDepth: 1,
-          });
+            "404": {
+              "description": "User avatar not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve user's avatar.",
+        },
+        "path": "/v1/users/1/avatar",
+      },
+    ],
+  ],
+  "response": {
+    "body": "hello",
+    "headers": {
+      "content-type": "image/jpeg",
+    },
+    "status": 200,
+  },
+}
+`);
         });
       });
 
@@ -1212,6 +1683,10 @@ describe('initHTTPRouter', () => {
             STRINGIFYERS: {},
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1222,6 +1697,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1251,8 +1728,16 @@ describe('initHTTPRouter', () => {
           }
 
           expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
+            cookie: {},
+            path: {
+              userId: 1,
+            },
+            query: {
+              extended: true,
+            },
+            header: {},
+            options: {},
+            body: undefined,
           });
         });
       });
@@ -1282,6 +1767,10 @@ describe('initHTTPRouter', () => {
             STRINGIFYERS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1292,6 +1781,8 @@ describe('initHTTPRouter', () => {
             STRINGIFYERS,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1320,10 +1811,100 @@ describe('initHTTPRouter', () => {
             },
             status: 500,
           });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
-          });
+          expect({
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+}
+`);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -1354,6 +1935,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1363,6 +1948,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
 
           const req = {
@@ -1395,10 +1982,101 @@ describe('initHTTPRouter', () => {
             },
             status: 406,
           });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
-          });
+
+          expect({
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+}
+`);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -1420,6 +2098,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1429,6 +2111,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1458,10 +2142,100 @@ describe('initHTTPRouter', () => {
             },
             status: 500,
           });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
-          });
+          expect({
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+}
+`);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -1484,6 +2258,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1493,6 +2271,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1522,10 +2302,101 @@ describe('initHTTPRouter', () => {
             },
             status: 500,
           });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
-          });
+
+          expect({
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+}
+`);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -1551,6 +2422,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1560,6 +2435,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1590,8 +2467,16 @@ describe('initHTTPRouter', () => {
             status: 500,
           });
           expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
+            cookie: {},
+            path: {
+              userId: 1,
+            },
+            query: {
+              extended: true,
+            },
+            header: {},
+            options: {},
+            body: undefined,
           });
 
           expect({
@@ -1614,6 +2499,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1623,6 +2512,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1652,11 +2543,100 @@ describe('initHTTPRouter', () => {
             },
             status: 500,
           });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: true,
-          });
-
+          expect({
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": true,
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+}
+`);
           expect({
             ...JSON.parse(response.body as string),
             error_debug_data: undefined,
@@ -1680,6 +2660,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1689,6 +2673,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
 
           const req = {
@@ -1741,6 +2727,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -1750,6 +2740,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'GET',
@@ -1804,6 +2796,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -1813,6 +2809,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         const req = {
           method: 'GET',
@@ -1843,8 +2841,16 @@ describe('initHTTPRouter', () => {
           },
         });
         expect(handler.mock.calls[0][0]).toEqual({
-          userId: 1,
-          extended: true,
+          cookie: {},
+          path: {
+            userId: 1,
+          },
+          query: {
+            extended: true,
+          },
+          header: {},
+          options: {},
+          body: undefined,
         });
 
         expect({
@@ -1872,6 +2878,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -1881,6 +2891,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         const req = {
           method: 'GET',
@@ -1912,8 +2924,16 @@ describe('initHTTPRouter', () => {
           },
         });
         expect(handler.mock.calls[0][0]).toEqual({
-          userId: 1,
-          extended: true,
+          cookie: {},
+          path: {
+            userId: 1,
+          },
+          query: {
+            extended: true,
+          },
+          header: {},
+          options: {},
+          body: undefined,
         });
 
         expect({
@@ -1937,6 +2957,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -1946,6 +2970,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         const req = {
           method: 'GET',
@@ -2008,6 +3034,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2017,6 +3047,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2042,28 +3074,115 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionStart).toBeCalled();
           expect(httpTransactionCatch).not.toBeCalled();
           expect(httpTransactionEnd).toBeCalled();
+
           const response = await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
           );
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              id: 1,
-              name: 'John Doe',
-            }),
-            headers: {
-              'content-type': 'application/json',
+          expect({
+            response,
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": {
+          "name": "John Doe",
+        },
+        "cookie": {},
+        "header": {
+          "Authorization": "Bearer x",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {},
+      },
+      {
+        "method": "put",
+        "operation": {
+          "operationId": "putUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserId",
             },
-            status: 201,
-          });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            body: {
-              name: 'John Doe',
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "schema": {
+                "type": "string",
+              },
             },
-            authorization: 'Bearer x',
-            contentType: 'application/json;charset=UTF-8',
-          });
+            {
+              "in": "header",
+              "name": "Content-Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+              },
+            },
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+              "application/vnd.github+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+            "description": "The input user",
+            "required": true,
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "User updated",
+            },
+            "400": {
+              "$ref": "#/components/responses/BadRequest",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Upsert a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+  "response": {
+    "body": "{"id":1,"name":"John Doe"}",
+    "headers": {
+      "content-type": "application/json",
+    },
+    "status": 201,
+  },
+}
+`);
         });
 
         test('with an existing streamed route', async () => {
@@ -2086,6 +3205,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2095,6 +3218,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             'he',
@@ -2158,6 +3283,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2167,6 +3296,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2197,24 +3328,110 @@ describe('initHTTPRouter', () => {
             httpTransactionEnd.mock.calls[0][0],
           );
 
-          expect(response).toEqual({
-            body: JSON.stringify({
-              id: 1,
-              name: 'John Doe',
-            }),
-            headers: {
-              'content-type': 'application/json',
+          expect({
+            response,
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": {
+          "name": "John Doe",
+        },
+        "cookie": {},
+        "header": {
+          "Authorization": "Bearer x",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {},
+      },
+      {
+        "method": "put",
+        "operation": {
+          "operationId": "putUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/UserId",
             },
-            status: 201,
-          });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            body: {
-              name: 'John Doe',
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "schema": {
+                "type": "string",
+              },
             },
-            authorization: 'Bearer x',
-            contentType: 'application/json;charset=UTF-8',
-          });
+            {
+              "in": "header",
+              "name": "Content-Type",
+              "required": true,
+              "schema": {
+                "type": "string",
+              },
+            },
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+              "application/vnd.github+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+            "description": "The input user",
+            "required": true,
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "User updated",
+            },
+            "400": {
+              "$ref": "#/components/responses/BadRequest",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Upsert a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+  "response": {
+    "body": "{"id":1,"name":"John Doe"}",
+    "headers": {
+      "content-type": "application/json",
+    },
+    "status": 201,
+  },
+}
+`);
         });
       });
 
@@ -2233,6 +3450,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2242,12 +3463,15 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = {
             method: 'PUT',
             url: '/v1/users/1',
             headers: {
               'content-type': '$%$;;;===',
+              authorization: 'Bearer x',
             },
           } as IncomingMessage;
 
@@ -2294,6 +3518,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2303,6 +3531,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             'he',
@@ -2314,6 +3544,10 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'text/plain',
             'content-length': '4',
+            authorization: 'Bearer x',
+            'x-file-name': 'test.jpg',
+            'x-file-size': '1024',
+            'x-file-type': 'image/jpeg',
           };
 
           log.mockReset();
@@ -2358,6 +3592,16 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const schemaValidators = await initSchemaValidators({
+            ENV,
+            DEBUG_NODE_ENVS,
+            API,
+            log,
+          });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2367,6 +3611,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2379,8 +3625,11 @@ describe('initHTTPRouter', () => {
           req.url = '/v1/users/1';
           req.headers = {
             'content-type': 'application/json',
-            authorization: 'Bearer yolo',
             'content-length': '22',
+            authorization: 'Bearer x',
+            'x-file-name': 'test.jpg',
+            'x-file-size': '1024',
+            'x-file-type': 'image/jpeg',
           };
 
           log.mockReset();
@@ -2426,6 +3675,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2435,6 +3688,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2448,6 +3703,10 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': '#$===;;;==',
             'content-length': '22',
+            authorization: 'Bearer x',
+            'x-file-name': 'test.jpg',
+            'x-file-size': '1024',
+            'x-file-type': 'image/jpeg',
           };
 
           log.mockReset();
@@ -2493,6 +3752,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2502,6 +3765,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2515,6 +3780,10 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'application/json',
             'content-length': '21',
+            authorization: 'Bearer x',
+            'x-file-name': 'test.jpg',
+            'x-file-size': '1024',
+            'x-file-type': 'image/jpeg',
           };
 
           log.mockReset();
@@ -2559,6 +3828,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2568,6 +3841,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2581,6 +3856,7 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'application/json',
             'content-length': '21',
+            authorization: 'Bearer x',
           };
 
           log.mockReset();
@@ -2626,6 +3902,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2635,6 +3915,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromErroredChunks(
             new Error('E_SHIT_HIT_THE_FAN'),
@@ -2646,6 +3928,7 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'application/json',
             'content-length': '21',
+            authorization: 'Bearer x',
           };
 
           log.mockReset();
@@ -2691,6 +3974,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2701,6 +3988,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2714,6 +4003,7 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'application/json',
             'content-length': '21',
+            authorization: 'Bearer x',
           };
 
           log.mockReset();
@@ -2759,6 +4049,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2769,6 +4063,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2782,6 +4078,7 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'application/json',
             'content-length': '10',
+            authorization: 'Bearer x',
           };
 
           log.mockReset();
@@ -2827,6 +4124,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2837,6 +4138,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([
             '{ ',
@@ -2850,6 +4153,7 @@ describe('initHTTPRouter', () => {
           req.headers = {
             'content-type': 'application/vnd.github+json',
             'content-length': '21',
+            authorization: 'Bearer x',
           };
 
           log.mockReset();
@@ -2900,6 +4204,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2909,6 +4217,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([]) as IncomingMessage;
 
@@ -2941,10 +4251,100 @@ describe('initHTTPRouter', () => {
               'cache-control': 'private',
             },
           });
-          expect(handler.mock.calls[0][0]).toEqual({
-            userId: 1,
-            extended: false,
-          });
+          expect({
+            handlerCalls: handler.mock.calls,
+          }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {},
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "archived": undefined,
+          "extended": false,
+        },
+      },
+      {
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "userId",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/UserIdSchema",
+              },
+            },
+            {
+              "in": "query",
+              "name": "extended",
+              "required": true,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "in": "query",
+              "name": "archived",
+              "schema": {
+                "type": "boolean",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                      },
+                      "name": {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                  },
+                },
+              },
+              "description": "User found",
+            },
+            "404": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error",
+                  },
+                },
+              },
+              "description": "User not found",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Retrieve a user.",
+        },
+        "path": "/v1/users/1",
+      },
+    ],
+  ],
+}
+`);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -2966,6 +4366,10 @@ describe('initHTTPRouter', () => {
             DEBUG_NODE_ENVS,
             ERRORS_DESCRIPTORS: {},
           });
+          const queryParserBuilder = await initQueryParserBuilder({
+            API,
+            log,
+          });
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
@@ -2976,6 +4380,8 @@ describe('initHTTPRouter', () => {
             BASE_PATH,
             httpTransaction,
             errorHandler,
+            queryParserBuilder,
+            schemaValidators,
           });
           const req = StreamTest.v2.fromChunks([]) as IncomingMessage;
 
@@ -3035,6 +4441,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -3044,6 +4454,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         const req = {
           method: 'DELETE',
@@ -3065,13 +4477,51 @@ describe('initHTTPRouter', () => {
           httpTransactionEnd.mock.calls[0][0],
         );
 
-        expect(response).toEqual({
-          headers: {},
-          status: 410,
-        });
-        expect(handler.mock.calls[0][0]).toEqual({
-          userId: 1,
-        });
+        expect({
+          response,
+          handlerCalls: handler.mock.calls,
+        }).toMatchInlineSnapshot(`
+{
+  "handlerCalls": [
+    [
+      {
+        "body": undefined,
+        "cookie": {},
+        "header": {
+          "x-depth": undefined,
+        },
+        "options": {},
+        "path": {
+          "userId": 1,
+        },
+        "query": {
+          "forFriendsUserId": undefined,
+        },
+      },
+      {
+        "method": "delete",
+        "operation": {
+          "operationId": "deleteUserAvatar",
+          "responses": {
+            "410": {
+              "description": "User avatar is gone.",
+            },
+            "default": {
+              "$ref": "#/components/responses/UnexpectedError",
+            },
+          },
+          "summary": "Ensure user's avatar is gone.",
+        },
+        "path": "/v1/users/1/avatar",
+      },
+    ],
+  ],
+  "response": {
+    "headers": {},
+    "status": 410,
+  },
+}
+`);
       });
     });
 
@@ -3090,6 +4540,10 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
+        const queryParserBuilder = await initQueryParserBuilder({
+          API,
+          log,
+        });
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
@@ -3099,6 +4553,8 @@ describe('initHTTPRouter', () => {
           BASE_PATH,
           httpTransaction,
           errorHandler,
+          queryParserBuilder,
+          schemaValidators,
         });
         const req = {
           method: 'CUSTOMHEADER',

@@ -3,23 +3,23 @@ import { printStackTrace, YError } from 'yerror';
 import {
   noop,
   type WhookAPMService,
-  type WhookOperation,
-  type WhookHandler,
+  type WhookAPIHandlerDefinition,
+  type WhookAPIHandler,
   type WhookHeaders,
-  type WhookResponse,
-  type WhookWrapper,
+  type WhookAPIWrapper,
+  type WhookAPIHandlerParameters,
+  type WhookOpenAPI,
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import { type S3Event } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
 
 export type LambdaS3Input = { body: S3Event['Records'] };
-export type LambdaS3Output = WhookResponse<number, WhookHeaders, void>;
+export type LambdaS3Output = { stauts: number; headers: WhookHeaders };
 
 export type WhookWrapS3LambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3_1.Document;
+  OPERATION_API: WhookOpenAPI;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -43,23 +43,25 @@ export type WhookWrapS3LambdaDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForS3Lambda<S extends WhookHandler>({
+async function initWrapHandlerForS3Lambda({
   ENV,
   OPERATION_API,
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapS3LambdaDependencies): Promise<WhookWrapper<S>> {
+}: WhookWrapS3LambdaDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda S3 wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleForAWSS3Lambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as WhookHandler<LambdaS3Input, LambdaS3Output>,
+      handler,
     );
 
-    return wrappedHandler as unknown as S;
+    return wrappedHandler as unknown as WhookAPIHandler;
   };
 
   return wrapper;
@@ -73,12 +75,12 @@ async function handleForAWSS3Lambda(
     time,
     log,
   }: Required<WhookWrapS3LambdaDependencies>,
-  handler: WhookHandler<LambdaS3Input, LambdaS3Output>,
+  handler: WhookAPIHandler,
   event: S3Event,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
-  const OPERATION: WhookOperation = {
+  const definition: WhookAPIHandlerDefinition = {
     path,
     method,
     ...OPERATION_API.paths?.[path]?.[method],
@@ -90,12 +92,15 @@ async function handleForAWSS3Lambda(
   try {
     log('debug', 'EVENT', JSON.stringify(event));
 
-    await handler(parameters, OPERATION);
+    await handler(
+      parameters as unknown as WhookAPIHandlerParameters,
+      definition,
+    );
 
     apm('S3', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':S3EventRecord' },
       type: 'success',
       startTime,
@@ -108,7 +113,7 @@ async function handleForAWSS3Lambda(
     apm('S3', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters: { body: ':S3EventRecord' },
       type: 'error',
       stack: printStackTrace(castedErr),

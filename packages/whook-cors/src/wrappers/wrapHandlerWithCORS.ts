@@ -1,14 +1,14 @@
 import { autoService } from 'knifecycle';
 import { printStackTrace } from 'yerror';
 import { YHTTPError } from 'yhttperror';
-import { type Parameters } from 'knifecycle';
 import {
   mergeVaryHeaders,
   lowerCaseHeaders,
   type WhookResponse,
-  type WhookHandler,
-  type WhookOperation,
-  type WhookWrapper,
+  type WhookAPIHandler,
+  type WhookAPIWrapper,
+  type WhookAPIHandlerDefinition,
+  type WhookAPIHandlerParameters,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 
@@ -50,16 +50,18 @@ export type WhookAPIOperationCORSConfig = {
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.
  */
-async function initWrapHandlerWithCORS<S extends WhookHandler>({
+async function initWrapHandlerWithCORS({
   CORS,
   log,
-}: WhookCORSDependencies): Promise<WhookWrapper<S>> {
+}: WhookCORSDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the CORS wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleWithCORS.bind(null, { CORS, log }, handler);
 
-    return wrappedHandler as S;
+    return wrappedHandler;
   };
 
   return wrapper;
@@ -67,11 +69,11 @@ async function initWrapHandlerWithCORS<S extends WhookHandler>({
 
 async function handleWithCORS(
   { CORS, log }: WhookCORSDependencies,
-  handler: WhookHandler,
-  parameters: Parameters,
-  operation: WhookOperation<WhookAPIOperationCORSConfig>,
+  handler: WhookAPIHandler,
+  parameters: WhookAPIHandlerParameters,
+  definition: WhookAPIHandlerDefinition,
 ): Promise<WhookResponse> {
-  const operationCORSConfig = operation['x-whook']?.cors;
+  const operationCORSConfig = definition.config?.cors;
   const finalCORS = lowerCaseHeaders(
     operationCORSConfig && operationCORSConfig.type === 'replace'
       ? operationCORSConfig.value
@@ -84,7 +86,7 @@ async function handleWithCORS(
   );
 
   try {
-    const response = await handler(parameters, operation);
+    const response = await handler(parameters, definition);
 
     return {
       ...response,

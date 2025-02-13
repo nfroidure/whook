@@ -1,4 +1,5 @@
-import { handler, location } from 'knifecycle';
+import { service, location } from 'knifecycle';
+import { type WhookAPIHandler } from '@whook/whook';
 
 /**
  * A simple Whook handler that just returns a 200 OK
@@ -6,12 +7,14 @@ import { handler, location } from 'knifecycle';
  * @returns {Promise<Object>} The HTTP response object
  */
 export default location(
-  handler(optionsWithCORS, 'optionsWithCORS', []),
+  service(initOptionsWithCORS, 'optionsWithCORS', []),
   import.meta.url,
 );
 
-async function optionsWithCORS() {
-  return {
+async function initOptionsWithCORS() {
+  const response = {
     status: 200,
   };
+
+  return (async () => response) satisfies WhookAPIHandler;
 }

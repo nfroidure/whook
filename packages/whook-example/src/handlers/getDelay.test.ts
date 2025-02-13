@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initGetDelay from './getDelay.js';
 import { type DelayService } from 'common-services';
 
@@ -25,7 +25,7 @@ describe('getDelay', () => {
     delay.clear.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     delay.create.mockResolvedValueOnce(undefined);
 
     /* Architecture Note #3.5.2: Handler initialization
@@ -49,7 +49,9 @@ describe('getDelay', () => {
       no method or other OOP noisy things.
     */
     const response = await getDelay({
-      duration: 1000,
+      query: {
+        duration: 1000,
+      },
     });
 
     expect({

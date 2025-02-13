@@ -1,22 +1,19 @@
-import { loadFunction } from '../libs/utils.js';
+import { getOpenAPIDefinitions, loadFunction } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import stream from 'node:stream';
-import camelCase from 'camelcase';
 import {
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
   DEFAULT_COMPILER_OPTIONS,
+  PATH_SEPARATOR,
+  SEARCH_SEPARATOR,
   readArgs,
+  type WhookAPIHandlerParameters,
+  type WhookOpenAPI,
   type WhookCommandArgs,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
-
-const SEARCH_SEPARATOR = '?';
-const PATH_SEPARATOR = '/';
 
 export const definition: WhookCommandDefinition = {
   description: 'A command for testing GCP HTTP function',
@@ -63,7 +60,7 @@ async function initTestHTTPFunctionCommand({
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  API: OpenAPIV3_1.Document;
+  API: WhookOpenAPI;
   log: LogService;
   args: WhookCommandArgs;
 }) {
@@ -83,61 +80,51 @@ async function initTestHTTPFunctionCommand({
       type,
       extension,
     );
-    const OPERATION = (
-      await dereferenceOpenAPIOperations(API, getOpenAPIOperations(API))
-    ).find(({ operationId }) => operationId === name);
+    const handlerDefinition = getOpenAPIDefinitions(API).find(
+      ({ operation }) => operation.operationId === name,
+    );
 
-    if (!OPERATION) {
+    if (!handlerDefinition) {
       throw new YError('E_OPERATION_NOT_FOUND');
     }
 
-    const hasBody = !!OPERATION.requestBody;
-    const parameters = JSON.parse(rawParameters);
-    const search = (
-      (OPERATION.parameters || []) as OpenAPIV3_1.ParameterObject[]
-    )
-      .filter((p) => p.in === 'query')
-      .reduce((accSearch, p) => {
-        if (null != parameters[p.name]) {
-          return (
-            accSearch +
-            (accSearch ? '&' : '') +
-            p.name +
-            '=' +
-            parameters[p.name]
-          );
-        }
-        return accSearch;
-      }, '');
+    const hasBody = !!handlerDefinition.operation.requestBody;
+    const parameters = JSON.parse(rawParameters) as WhookAPIHandlerParameters;
+    const search = Object.keys(parameters.query).reduce((accSearch, name) => {
+      if (null != parameters.query[name]) {
+        return (
+          accSearch +
+          (accSearch ? '&' : '') +
+          name +
+          '=' +
+          parameters.query[name]
+        );
+      }
+      return accSearch;
+    }, '');
 
-    const path = OPERATION.path
+    const path = handlerDefinition.path
       .split(PATH_SEPARATOR)
-
       .map((part) => {
         const matches = /^\{([\d\w]+)\}$/i.exec(part);
 
         if (matches) {
-          return parameters[matches[1]];
+          return parameters.path[matches[1]];
         }
         return part;
       })
       .join(PATH_SEPARATOR);
     const gcpfRequest = {
-      method: OPERATION.method,
+      method: handlerDefinition.method,
       originalUrl: path + (search ? SEARCH_SEPARATOR + search : ''),
-      headers: ((OPERATION.parameters || []) as OpenAPIV3_1.ParameterObject[])
-        .filter((p) => p.in === 'header')
-        .reduce((headerParameters, p) => {
-          headerParameters[p.name] = parameters[camelCase(p.name)];
-          return headerParameters;
-        }, {}),
+      headers: parameters.header || {},
       rawBody: Buffer.from(
         hasBody
           ? contentType === 'application/json'
             ? parameters.body
               ? JSON.stringify(parameters.body)
               : ''
-            : parameters.body || ''
+            : (parameters.body as string) || ''
           : '',
       ),
     };

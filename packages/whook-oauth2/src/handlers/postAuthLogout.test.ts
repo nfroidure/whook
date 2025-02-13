@@ -13,7 +13,7 @@ describe('postAuthLogout', () => {
 
     authCookies.build.mockReturnValueOnce(['the_build_cookies']);
 
-    const response = await postAuthLogout({});
+    const response = await postAuthLogout();
 
     expect({
       response,

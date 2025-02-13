@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPISchema from './generateOpenAPISchema.js';
 import { PassThrough } from 'node:stream';
 import { type LogService } from 'common-services';
@@ -18,7 +18,7 @@ describe('generateOpenAPISchema', () => {
     log.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     getOpenAPI.mockResolvedValueOnce({
       status: 200,
       body: {
@@ -66,11 +66,15 @@ describe('generateOpenAPISchema', () => {
   "getOpenAPICalls": [
     [
       {
-        "authenticated": true,
-        "mutedMethods": [
-          "options",
-        ],
-        "mutedParameters": [],
+        "options": {
+          "authenticated": true,
+        },
+        "query": {
+          "mutedMethods": [
+            "options",
+          ],
+          "mutedParameters": [],
+        },
       },
     ],
   ],

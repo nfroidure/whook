@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initPutEcho, { echoSchema } from './putEcho.js';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
@@ -10,7 +10,7 @@ describe('putEcho', () => {
     log.mockReset();
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     const putEcho = await initPutEcho({
       log,
     });
@@ -40,7 +40,7 @@ describe('putEcho', () => {
     `);
   });
 
-  it('should fail when crossing the red line ;)', async () => {
+  test('should fail when crossing the red line ;)', async () => {
     const putEcho = await initPutEcho({
       log,
     });

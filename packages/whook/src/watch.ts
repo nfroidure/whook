@@ -87,8 +87,8 @@ export async function watchDevProcess<T extends Dependencies>(
       .once('ready', () => {
         resolve();
       })
-      .once('error', (err: Error) => {
-        reject(err);
+      .once('error', (err) => {
+        reject(err as Error);
       })
       .on('all', (_event, filePath) => {
         // TODO: determine all the files needing a complete restart
@@ -172,9 +172,13 @@ export async function restartDevProcess<T extends Dependencies>({
   delayPromise = undefined;
 
   const response = await getOpenAPI({
-    authenticated: true,
-    mutedMethods: ['options'],
-    mutedParameters: [],
+    options: {
+      authenticated: true,
+    },
+    query: {
+      mutedMethods: ['options'],
+      mutedParameters: [],
+    },
   });
   const openAPIData = JSON.stringify(response.body);
   const newHash = crypto.createHash('md5').update(openAPIData).digest('hex');

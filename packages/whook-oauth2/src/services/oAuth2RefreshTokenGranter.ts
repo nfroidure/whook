@@ -7,7 +7,6 @@ import {
   type CheckApplicationService,
   type OAuth2RefreshTokenService,
 } from './oAuth2Granters.js';
-import { type BaseAuthenticationData } from '@whook/authorization';
 
 export type OAuth2RefreshTokenGranterDependencies = {
   checkApplication: CheckApplicationService;
@@ -18,13 +17,10 @@ export type OAuth2RefreshTokenGranterParameters = {
   refreshToken: string;
   scope?: string;
 };
-export type OAuth2RefreshTokenGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-> = OAuth2GranterService<
+export type OAuth2RefreshTokenGranterService = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
-  OAuth2RefreshTokenGranterParameters,
-  AUTHENTICATION_DATA
+  OAuth2RefreshTokenGranterParameters
 >;
 
 export default location(

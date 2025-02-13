@@ -70,9 +70,9 @@
     "@apollo/server": "^4.11.2",
     "@whook/whook": "^18.1.0",
     "common-services": "^17.0.1",
-    "knifecycle": "^18.0.0",
-    "openapi-types": "^12.1.3",
-    "type-fest": "^4.30.0",
+    "knifecycle": "^19.0.0",
+    "ya-open-api-types": "^1.2.0",
+    "type-fest": "^4.33.0",
     "yhttperror": "^8.0.0"
   },
   "devDependencies": {

@@ -3,14 +3,14 @@ import { printStackTrace, YError } from 'yerror';
 import {
   noop,
   type WhookAPMService,
-  type WhookOperation,
-  type WhookHandler,
-  type WhookHeaders,
+  type WhookAPIHandlerDefinition,
+  type WhookAPIHandler,
   type WhookResponse,
-  type WhookWrapper,
+  type WhookAPIWrapper,
+  type WhookAPIHandlerParameters,
+  type WhookOpenAPI,
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import { type ScheduledEvent } from 'aws-lambda';
 import { type JsonObject } from 'type-fest';
 import { type AppEnvVars } from 'application-services';
@@ -19,11 +19,11 @@ export type LambdaCronInput<T extends JsonObject = JsonObject> = {
   date: string;
   body: T;
 };
-export type LambdaCronOutput = WhookResponse<number, WhookHeaders, void>;
+export type LambdaCronOutput = WhookResponse;
 
 export type WhookWrapCronLambdaDependencies = {
   ENV: AppEnvVars;
-  OPERATION_API: OpenAPIV3_1.Document;
+  OPERATION_API: WhookOpenAPI;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -47,23 +47,25 @@ export type WhookWrapCronLambdaDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForCronLambda<S extends WhookHandler>({
+async function initWrapHandlerForCronLambda({
   ENV,
   OPERATION_API,
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapCronLambdaDependencies): Promise<WhookWrapper<S>> {
+}: WhookWrapCronLambdaDependencies): Promise<WhookAPIWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda cron wrapper.');
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleForAWSCronLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
-      handler as WhookHandler<LambdaCronInput, LambdaCronOutput>,
+      handler,
     );
 
-    return wrappedHandler as unknown as S;
+    return wrappedHandler as unknown as WhookAPIHandler;
   };
 
   return wrapper;
@@ -77,12 +79,12 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
     time,
     log,
   }: Required<WhookWrapCronLambdaDependencies>,
-  handler: WhookHandler<LambdaCronInput<T>, LambdaCronOutput>,
+  handler: WhookAPIHandler,
   event: ScheduledEvent & { body: T },
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
   const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
-  const OPERATION: WhookOperation = {
+  const definition: WhookAPIHandlerDefinition = {
     path,
     method,
     ...OPERATION_API.paths?.[path]?.[method],
@@ -95,12 +97,15 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
   try {
     log('debug', 'EVENT', JSON.stringify(event));
 
-    await handler(parameters, OPERATION);
+    await handler(
+      parameters as unknown as WhookAPIHandlerParameters,
+      definition,
+    );
 
     apm('CRON', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters,
       type: 'success',
       startTime,
@@ -112,7 +117,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
     apm('CRON', {
       environment: ENV.NODE_ENV,
       triggerTime: startTime,
-      lambdaName: OPERATION.operationId,
+      lambdaName: definition.operation.operationId,
       parameters,
       type: 'error',
       stack: printStackTrace(castedErr),

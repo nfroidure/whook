@@ -249,6 +249,7 @@ exports[`OAuth2 server with the implicit flow should redirect with a token 2`] =
       {
         "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
         "scope": "user",
+        "userId": "2",
       },
       {},
     ],

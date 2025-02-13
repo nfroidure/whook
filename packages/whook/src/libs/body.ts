@@ -1,8 +1,7 @@
 import { YHTTPError } from 'yhttperror';
 import FirstChunkStream from 'first-chunk-stream';
 import { YError } from 'yerror';
-import { type OpenAPIV3_1 } from 'openapi-types';
-import { type JsonValue } from 'type-fest';
+import { ensureResolvedObject, type OpenAPI } from 'ya-open-api-types';
 import { pickFirstHeaderValue } from './headers.js';
 import { Readable, type Transform } from 'node:stream';
 import {
@@ -11,13 +10,13 @@ import {
   type WhookParsers,
   type WhookStringifyers,
 } from '../services/httpRouter.js';
-import {
-  type WhookBodySpec,
-  type WhookOperation,
-  type WhookResponse,
-} from '../index.js';
+import { type WhookOpenAPIOperation } from '../types/openapi.js';
+import { type WhookResponse } from '../types/http.js';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { type WhookRequestBody } from '../types/http.js';
+import { type WhookBodySpec } from '../libs/router.js';
 
-/* Architecture Note #1.1: Request body
+/* Architecture Note #2.11.3: Request body
 According to the OpenAPI specification
 there are two kinds of requests:
 - **validated contents:** it implies to
@@ -30,44 +29,53 @@ there are two kinds of requests:
  be parsed and validated into the
  handler itself.
 */
-export async function getBody<
-  T extends Readable | JsonValue | void = Readable | JsonValue | void,
->(
+export async function getBody(
   {
     DECODERS,
     PARSERS,
+    API,
     bufferLimit,
   }: {
     DECODERS?: WhookDecoders<Transform>;
     PARSERS?: WhookParsers;
+    API: OpenAPI;
     bufferLimit: number;
   },
-  operation: WhookOperation,
+  operation: WhookOpenAPIOperation,
   inputStream: Readable,
   bodySpec: WhookBodySpec,
-): Promise<T | undefined> {
+): Promise<WhookRequestBody | undefined> {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
-  const requestBody = operation.requestBody
-    ? (operation.requestBody as OpenAPIV3_1.RequestBodyObject)
-    : undefined;
-  const schemaObject =
+
+  const requestBody =
+    'requestBody' in operation && operation.requestBody
+      ? await ensureResolvedObject(API, operation.requestBody)
+      : undefined;
+  const schemaObject = (await ensureResolvedObject(
+    API,
     requestBody &&
-    requestBody.content &&
-    requestBody.content[bodySpec.contentType] &&
-    requestBody.content[bodySpec.contentType].schema &&
-    (requestBody.content[bodySpec.contentType]
-      .schema as OpenAPIV3_1.NonArraySchemaObject);
-  const bodyIsParseable =
-    schemaObject &&
-    (schemaObject.type !== 'string' || schemaObject.format !== 'binary');
+      requestBody.content &&
+      requestBody.content[bodySpec.contentType] &&
+      requestBody.content[bodySpec.contentType].schema &&
+      (requestBody.content[bodySpec.contentType]
+        .schema as ExpressiveJSONSchema),
+  )) as ExpressiveJSONSchema;
+  const bodyIsBinary =
+    typeof schemaObject === 'object' &&
+    schemaObject !== null &&
+    'type' in schemaObject &&
+    schemaObject.type === 'string' &&
+    'format' in schemaObject &&
+    schemaObject.format === 'binary';
 
   if (bodyIsEmpty) {
     return;
   }
 
-  if (!bodyIsParseable) {
-    return inputStream as T;
+  if (bodyIsBinary) {
+    return inputStream;
   }
+
   if (!PARSERS?.[bodySpec.contentType]) {
     return Promise.reject(
       new YHTTPError(500, 'E_PARSER_LACK', bodySpec.contentType),
@@ -130,9 +138,9 @@ export async function getBody<
   }
 
   try {
-    return await new Promise<T>((resolve, reject) => {
+    return await new Promise<WhookRequestBody>((resolve, reject) => {
       try {
-        resolve(PARSERS[bodySpec.contentType](body.toString(), bodySpec) as T);
+        resolve(PARSERS[bodySpec.contentType](body.toString(), bodySpec));
       } catch (err) {
         reject(err);
       }

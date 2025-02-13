@@ -1,5 +1,5 @@
 import { autoProvider, location, type Provider } from 'knifecycle';
-import { noop, WhookOperation } from '@whook/whook';
+import { noop, type WhookAPIHandlerDefinition } from '@whook/whook';
 import { ApolloServer, type ApolloServerOptions } from '@apollo/server';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { type LogService } from 'common-services';
@@ -21,7 +21,7 @@ export type WhookGraphQLFragmentService = {
 };
 
 export type BaseWhookGraphQLContext = {
-  operation: WhookOperation;
+  definition: WhookAPIHandlerDefinition;
   requestContext: Record<string, unknown>;
 };
 

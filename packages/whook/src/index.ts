@@ -2,6 +2,7 @@ import { Knifecycle, constant, type Dependencies } from 'knifecycle';
 import { cwd, exit, stderr, stdin, stdout, argv as _argv } from 'node:process';
 import { printStackTrace } from 'yerror';
 import initPromptArgs from './services/promptArgs.js';
+import initQueryParserBuilder from './services/queryParserBuilder.js';
 import initCommand from './services/command.js';
 import {
   DEFAULT_LOG_ROUTING,
@@ -21,11 +22,15 @@ import {
   initProcessEnv,
   initProjectDir,
 } from 'application-services';
-import initHTTPRouter from './services/httpRouter.js';
+import initHTTPRouter, {
+  SEARCH_SEPARATOR,
+  PATH_SEPARATOR,
+} from './services/httpRouter.js';
 import initErrorHandler from './services/errorHandler.js';
 import initHTTPTransaction from './services/httpTransaction.js';
 import initObfuscatorService from './services/obfuscator.js';
 import initAPMService from './services/apm.js';
+import initSchemaValidators from './services/schemaValidators.js';
 export {
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
@@ -54,8 +59,11 @@ import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';
 import initBuildAutoload from './services/_buildAutoload.js';
 import initGetPing, {
-  definition as initGetPingDefinition,
+  definition as getPingDefinition,
 } from './handlers/getPing.js';
+import initGetOpenAPI, {
+  definition as getOpenAPIDefinition,
+} from './handlers/getOpenAPI.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   prepareBuildEnvironment,
@@ -64,112 +72,46 @@ import {
 import { identity } from './libs/utils.js';
 import { parseArgs } from './libs/args.js';
 
-export { type WhookBaseEnv, type WhookBaseConfigs } from './types.js';
 export { DEFAULT_BUILD_INITIALIZER_PATH_MAP } from './build.js';
 export * from './libs/args.js';
 export * from './libs/body.js';
+export * from './libs/coercion.js';
 export * from './libs/constants.js';
 export * from './libs/headers.js';
 export * from './libs/openapi.js';
 export * from './libs/router.js';
 export * from './libs/utils.js';
 export * from './libs/validation.js';
-export type {
-  WhookCommandHandler,
-  WhookCommandDefinition,
-  WhookPromptArgs,
-} from './services/promptArgs.js';
-export type { WhookPort, WhookPortEnv } from './services/PORT.js';
-export type {
-  WhookHTTPServerEnv,
-  WhookHTTPServerOptions,
-  WhookHTTPServerConfig,
-  WhookHTTPServerDependencies,
-  WhookHTTPServerService,
-  WhookHTTPServerProvider,
-} from './services/httpServer.js';
-export type { WhookHost, WhookHostEnv } from './services/HOST.js';
-export type { WhookProxyedENVConfig } from './services/PROXYED_ENV.js';
-export type { WhookBuildConstantsService } from './services/BUILD_CONSTANTS.js';
-export type {
-  WhookPluginName,
-  WhookPluginFolder,
-  WhookResolvedPlugin,
-  WhookPluginsService,
-} from './services/WHOOK_RESOLVED_PLUGINS.js';
-export type {
-  WhookAPIDefinitions,
-  WhookAPIOperationAddition,
-  WhookAPIOperationConfig,
-  WhookAPIOperation,
-  WhookBaseAPIHandlerDefinition,
-  WhookAPIHandlerDefinition,
-  WhookAPIParameterDefinition,
-  WhookAPISchemaDefinition,
-  WhookAPIExampleDefinition,
-  WhookAPIHeaderDefinition,
-  WhookAPIResponseDefinition,
-  WhookAPIRequestBodyDefinition,
-  WhookAPIHandlerModule,
-} from './services/API_DEFINITIONS.js';
-export type {
-  WhookAutoloadDependencies,
-  WhookInitializerMap,
-} from './services/_autoload.js';
-export type { LogService } from 'common-services';
-export type {
-  ProcessEnvConfig,
-  ProcessServiceConfig,
-} from 'application-services';
-export { initHTTPRouter };
-export {
-  type WhookHandlerName,
-  type WhookHandlersService,
-  type WhookQueryStringParser,
-  type WhookHTTPRouterConfig,
-  type WhookHTTPRouterProvider,
-  type WhookHTTPRouterService,
-} from './services/httpRouter.js';
+export * from './services/queryParserBuilder.js';
+export type * from './types/handlers.js';
+export type * from './types/http.js';
+export type * from './types/base.js';
+export type * from './types/openapi.js';
+export type * from './libs/openapi.js';
+export type * from './libs/validation.js';
+export type * from './services/promptArgs.js';
+export type * from './services/PORT.js';
+export type * from './services/httpServer.js';
+export type * from './services/HOST.js';
+export type * from './services/PROXYED_ENV.js';
+export type * from './services/BUILD_CONSTANTS.js';
+export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
+export type * from './services/API_DEFINITIONS.js';
+export type * from './services/_autoload.js';
+export type * from './services/schemaValidators.js';
+export { SEARCH_SEPARATOR, PATH_SEPARATOR, initHTTPRouter };
+export type * from './services/httpRouter.js';
 export { initHTTPTransaction };
-export {
-  type WhookOperation,
-  type WhookHeaders,
-  type WhookRequest,
-  type WhookResponse,
-  type WhookHandlerFunction,
-  type WhookHandler,
-  type WhookHTTPTransaction,
-  type WhookHTTPTransactionConfig,
-  type HTTPTransactionDependencies,
-  type WhookHTTPTransactionService,
-  type DereferencedParameterObject,
-  type DereferencedRequestBodyObject,
-} from './services/httpTransaction.js';
-export type {
-  WhookObfuscatorDependencies,
-  WhookSensibleValueDescriptor,
-  WhookObfuscatorService,
-  WhookObfuscatorConfig,
-} from './services/obfuscator.js';
+export type * from './services/httpTransaction.js';
+export type * from './services/obfuscator.js';
 export { initObfuscatorService };
-export type { WhookAPMDependencies, WhookAPMService } from './services/apm.js';
+export type * from './services/apm.js';
 export { initAPMService };
-export {
-  type WhookErrorsDescriptors,
-  type WhookErrorDescriptor,
-  type WhookErrorHandlerConfig,
-  type WhookErrorHandlerDependencies,
-  type WhookErrorHandler,
-} from './services/errorHandler.js';
+export type * from './services/errorHandler.js';
 export { initErrorHandler };
+export { initQueryParserBuilder };
 
-export type {
-  WhookBaseURL,
-  WhookBaseURLConfig,
-  WhookBaseURLEnv,
-  WhookBaseURLDependencies,
-  WhookConfig,
-} from './services/BASE_URL.js';
+export type * from './services/BASE_URL.js';
 import initCompiler from './services/compiler.js';
 export {
   DEFAULT_COMPILER_OPTIONS,
@@ -180,8 +122,6 @@ export {
 import initWrappers from './services/WRAPPERS.js';
 export {
   WRAPPER_REG_EXP,
-  type WhookWrapper,
-  type WhookWrapperName,
   type WhookWrappersService,
   type WhookWrappersConfig,
   type WhookWrappersDependencies,
@@ -197,7 +137,9 @@ export {
   WHOOK_PROJECT_PLUGIN_NAME,
   initWhookResolvedPlugins,
   initGetPing,
-  initGetPingDefinition,
+  getPingDefinition,
+  initGetOpenAPI,
+  getOpenAPIDefinition,
   initAutoload,
   initBuildAutoload,
   initAPIDefinitions,
@@ -335,12 +277,14 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initDelay,
     initProcess,
     initHTTPRouter,
+    initSchemaValidators,
     initHTTPTransaction,
     initHTTPServer,
     initErrorHandler,
     initEnv,
     initObfuscatorService,
     initAPMService,
+    initQueryParserBuilder,
   ].forEach($.register.bind($));
 
   $.register(initPromptArgs);

@@ -2,14 +2,19 @@ import { extra, autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import { readArgs } from '../libs/args.js';
 import { noop } from '../libs/utils.js';
-import { type WhookHandler } from '../services/httpTransaction.js';
 import {
   type WhookCommandDefinition,
   type WhookPromptArgs,
   type WhookCommandHandler,
 } from '../services/promptArgs.js';
-import { type Injector, type Parameters } from 'knifecycle';
+import { type Injector } from 'knifecycle';
 import { type LogService } from 'common-services';
+import {
+  type WhookAPIHandler,
+  type WhookAPIHandlerParameters,
+  type WhookAPIHandlerDefinition,
+} from '../types/handlers.js';
+import { type JsonObject } from 'type-fest';
 
 export const definition: WhookCommandDefinition = {
   description: 'Runs the given server handler for testing purpose',
@@ -39,7 +44,7 @@ async function initHandlerCommand({
   log = noop,
   promptArgs,
 }: {
-  $injector: Injector<Record<string, WhookHandler>>;
+  $injector: Injector<Record<string, WhookAPIHandler>>;
   log?: LogService;
   promptArgs: WhookPromptArgs;
 }): Promise<WhookCommandHandler> {
@@ -50,7 +55,7 @@ async function initHandlerCommand({
       name: string;
       parameters: string;
     }>(definition.arguments, await promptArgs());
-    let parsedParameters: Parameters;
+    let parsedParameters: WhookAPIHandlerParameters;
 
     try {
       parsedParameters = JSON.parse(handlerParameters || '{}');
@@ -59,14 +64,17 @@ async function initHandlerCommand({
     }
 
     log('debug', 'handler', handlerName);
-    log('debug', 'parameters', parsedParameters);
+    log('debug', 'parameters', parsedParameters as JsonObject);
 
     // Maybe infer and check command definition from handler definition
     // with ajv or else
 
     try {
       const handler = (await $injector([handlerName]))[handlerName];
-      const response = await handler(parsedParameters, undefined);
+      const response = await handler(
+        parsedParameters,
+        undefined as unknown as WhookAPIHandlerDefinition,
+      );
 
       log('info', JSON.stringify(response, null, 2));
     } catch (err) {

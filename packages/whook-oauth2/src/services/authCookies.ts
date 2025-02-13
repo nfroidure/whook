@@ -1,15 +1,13 @@
 import ms from 'ms';
 import cookie, { type SerializeOptions } from 'cookie';
 import { autoService, location } from 'knifecycle';
-import { type BaseAuthenticationData } from '@whook/authorization';
+import { type WhookAuthenticationData } from '@whook/authorization';
 import { type Jsonify } from 'type-fest';
 
 export const AUTH_API_PREFIX = '/auth';
 
-export type AuthHandlersConfig<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-> = {
-  ROOT_AUTHENTICATION_DATA: AUTHENTICATION_DATA;
+export type AuthHandlersConfig = {
+  ROOT_AUTHENTICATION_DATA: WhookAuthenticationData;
 };
 
 export type AuthCookiesConfig = {

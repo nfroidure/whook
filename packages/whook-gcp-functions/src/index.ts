@@ -20,16 +20,19 @@ import initBuildAutoloader from './services/_autoload.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initCompiler,
-  dereferenceOpenAPIOperations,
-  getOpenAPIOperations,
-  type WhookOperation,
   type WhookCompilerOptions,
   type WhookCompilerService,
 } from '@whook/whook';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  pathItemToOperationMap,
+  type OpenAPIExtension,
+  type OpenAPIOperation,
+  type OpenAPI,
+} from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
 import { parseArgs } from '@whook/whook/dist/libs/args.js';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 
 export const DEFAULT_BUILD_PARALLELISM = 10;
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
@@ -91,7 +94,7 @@ export async function runBuild(
       compiler: WhookCompilerService;
       log: LogService;
       $autoload: Autoloader<Initializer<Dependencies, Service>>;
-      API: OpenAPIV3_1.Document;
+      API: OpenAPI;
       buildInitializer: BuildInitializer;
     } = await $.run([
       'APP_ENV',
@@ -107,23 +110,31 @@ export async function runBuild(
 
     log('info', 'GCP Functions build Environment initialized 🚀🌕');
 
-    const operations = (
-      await dereferenceOpenAPIOperations(
-        API,
-        getOpenAPIOperations<WhookAPIOperationGCPFunctionConfig>(API),
-      )
-    ).filter((operation) => {
-      if (handlerName) {
-        const sourceOperationId =
-          operation['x-whook'] && operation['x-whook'].sourceOperationId;
+    const operations: OpenAPIOperation<
+      ExpressiveJSONSchema,
+      OpenAPIExtension
+    >[] = [];
 
-        return (
+    for (const pathItem of Object.values(API.paths || {})) {
+      for (const operation of Object.values(pathItemToOperationMap(pathItem))) {
+        if (
           handlerName === operation.operationId ||
-          handlerName === sourceOperationId
-        );
+          ('x-whook' in operation &&
+            typeof operation['x-whook'] === 'object' &&
+            operation['x-whook'] &&
+            'sourceOperationId' in operation['x-whook'] &&
+            typeof operation['x-whook'].sourceOperationId === 'string' &&
+            handlerName === operation['x-whook'].sourceOperationId)
+        ) {
+          operations.push(
+            operation as OpenAPIOperation<
+              ExpressiveJSONSchema,
+              OpenAPIExtension
+            >,
+          );
+        }
       }
-      return true;
-    });
+    }
 
     log('warning', `📃 - ${operations.length} operations to process.`);
 
@@ -165,7 +176,7 @@ async function processOperations(
     $autoload: Autoloader<Initializer<Dependencies, Service>>;
     buildInitializer: BuildInitializer;
   },
-  operations: WhookOperation<WhookAPIOperationGCPFunctionConfig>[],
+  operations: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>[],
 ): Promise<void> {
   const operationsLeft = operations.slice(BUILD_PARALLELISM);
 
@@ -216,19 +227,19 @@ async function buildAnyLambda(
     log: LogService;
     buildInitializer: BuildInitializer;
   },
-  operation: WhookOperation<WhookAPIOperationGCPFunctionConfig>,
+  operation: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
 ): Promise<void> {
   const { operationId } = operation;
 
   try {
-    const whookConfig: WhookAPIOperationGCPFunctionConfig = operation[
+    const whookConfig: WhookAPIOperationGCPFunctionConfig = (operation[
       'x-whook'
-    ] || { type: 'http' };
+    ] as WhookAPIOperationGCPFunctionConfig) || { type: 'http' };
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
     const finalEntryPoint =
       (sourceOperationId ? sourceOperationId : operationId) +
-      ((operation['x-whook'] || {}).suffix || '');
+      (whookConfig.suffix || '');
 
     log('warning', `🏗 - Building ${operationType} "${finalEntryPoint}"...`);
 

@@ -1,10 +1,11 @@
-import { autoHandler } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import {
   refersTo,
+  type WhookAPITypedHandler,
   type WhookAPIParameterDefinition,
-  type WhookAPIHandlerDefinition,
 } from '@whook/whook';
 import { type DelayService } from 'common-services';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
 
 /* Architecture Note #3.4: Examples
 
@@ -21,20 +22,21 @@ This is how to declare a reusable API parameter
  to avoid having to write it several times and
  lower your final Open API file weight.
 */
-export const durationParameter: WhookAPIParameterDefinition<API.GetDelay.Parameters.Duration> =
-  {
+export const durationParameter = {
+  name: 'duration',
+  example: 1,
+  parameter: {
+    in: 'query',
     name: 'duration',
-    example: 1,
-    parameter: {
-      in: 'query',
-      name: 'duration',
-      required: true,
-      description: 'Duration in milliseconds',
-      schema: {
-        type: 'number',
-      },
+    required: true,
+    description: 'Duration in milliseconds',
+    schema: {
+      type: 'number',
     },
-  };
+  },
+} as const satisfies WhookAPIParameterDefinition<
+  components['parameters']['duration']
+>;
 
 /* Architecture Note #3.1: Definition
 
@@ -47,7 +49,7 @@ For it to work, you have to export the definition, like
  here, to make it available for the API service, responsible
  for gathering all API route definitions.
 */
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: '/delay',
   method: 'get',
   operation: {
@@ -74,7 +76,7 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
 /* Architecture Note #3.2: Implementation
 
@@ -93,25 +95,25 @@ Parameters are cleaned up and checked by Whook so
  to the API contract you set in the handler's
  Open API definition above.
 */
-async function getDelay(
-  {
-    delay,
-  }: {
-    delay: DelayService;
-  },
-  { duration }: API.GetDelay.Input,
-): Promise<API.GetDelay.Output> {
-  await delay.create(duration);
+async function initGetDelay({ delay }: { delay: DelayService }) {
+  const handler: WhookAPITypedHandler<
+    operations[typeof definition.operation.operationId],
+    typeof definition
+  > = async ({ query: { duration } }) => {
+    await delay.create(duration);
 
-  /* Architecture Note #3.2.1: Response
+    /* Architecture Note #3.2.1: Response
 
   The handler's response are simple JSON serializable
    objects with a `status` and optional `body` and
    `headers` properties.
   */
-  return {
-    status: 204,
+    return {
+      status: 204,
+    };
   };
+
+  return handler;
 }
 
 /* Architecture Note #3.2.2: Exportation
@@ -125,4 +127,4 @@ There is some magic here with the use of
 You can read more about it
  [here](https://github.com/nfroidure/knifecycle).
 */
-export default autoHandler(getDelay);
+export default autoService(initGetDelay);

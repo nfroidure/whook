@@ -2,14 +2,14 @@ import { autoService, name, location } from 'knifecycle';
 import {
   noop,
   applyWrappers,
-  type WhookWrapper,
-  type WhookHandler,
+  type WhookAPIWrapper,
+  type WhookAPIHandler,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 
-export type WhookHandlerDependencies<T extends WhookHandler> = {
-  WRAPPERS: WhookWrapper<T>[];
-  mainWrapper: WhookWrapper<T>;
+export type WhookAPIHandlerDependencies<T extends WhookAPIHandler> = {
+  WRAPPERS: WhookAPIWrapper[];
+  mainWrapper: WhookAPIWrapper;
   baseHandler: T;
   log?: LogService;
 };
@@ -34,16 +34,16 @@ export default location(
  * @return {Promise<Function>}
  * A promise of the `HANDLERS` hash.
  */
-async function initHandler<T extends WhookHandler>({
+async function initHandler<T extends WhookAPIHandler>({
   WRAPPERS = DEFAULT_WRAPPERS,
   mainWrapper,
   baseHandler,
   log = noop,
-}: WhookHandlerDependencies<T>): Promise<WhookHandler<T>> {
+}: WhookAPIHandlerDependencies<T>): Promise<WhookAPIHandler> {
   log(
     'warning',
     `🏭 - Initializing the HANDLER service with wrapped by ${WRAPPERS.length} wrappers.`,
   );
 
-  return await applyWrappers<T>([...WRAPPERS, mainWrapper], baseHandler);
+  return await applyWrappers([...WRAPPERS, mainWrapper], baseHandler);
 }

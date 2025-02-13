@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initMechanisms, { FAKE_MECHANISM } from './MECHANISMS.js';
 import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 import { type LogService } from 'common-services';
@@ -10,7 +10,7 @@ describe('MECHANISMS', () => {
     log.mockReset();
   });
 
-  it('should only include bearer', async () => {
+  test('should only include bearer', async () => {
     const MECHANISMS = await initMechanisms({
       ENV: {},
       log,
@@ -23,7 +23,7 @@ describe('MECHANISMS', () => {
     }).toMatchSnapshot();
   });
 
-  it('should also include fake on debugging', async () => {
+  test('should also include fake on debugging', async () => {
     const MECHANISMS = await initMechanisms({
       ENV: { DEV_MODE: '1' },
       log,

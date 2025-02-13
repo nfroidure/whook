@@ -7,38 +7,34 @@ import {
   BEARER as BEARER_MECHANISM,
 } from 'http-auth-utils';
 import { type Mechanism } from 'http-auth-utils';
-import { type Parameters } from 'knifecycle';
 import {
-  type WhookHandler,
-  type WhookWrapper,
-  type WhookOperation,
+  WhookAPIHandlerDefinition,
+  WhookAPIHandlerParameters,
+  WhookResponse,
+  type WhookAPIHandler,
+  type WhookAPIWrapper,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 
-export type AuthenticationApplicationId = string;
-export type AuthenticationScope = string;
-export type BaseAuthenticationData<
-  T = AuthenticationApplicationId,
-  U = AuthenticationScope,
-> = {
-  applicationId: T;
-  scope: U;
+export type WhookAuthenticationApplicationId = string;
+export type WhookAuthenticationScope = string;
+export type WhookBaseAuthenticationData = {
+  applicationId: WhookAuthenticationApplicationId;
+  scope: WhookAuthenticationScope;
 };
 
-export interface AuthenticationService<A, R extends BaseAuthenticationData> {
-  check: (type: string, data: A) => Promise<R>;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface WhookAuthenticationData extends WhookBaseAuthenticationData {}
 
+export interface WhookAuthenticationService<A> {
+  check: (type: string, data: A) => Promise<WhookAuthenticationData>;
+}
 export type WhookAuthorizationConfig = {
   MECHANISMS?: (typeof BEARER_MECHANISM)[];
   DEFAULT_MECHANISM?: string;
 };
-
-export type WhookAuthorizationDependencies<
-  A,
-  R extends BaseAuthenticationData,
-> = WhookAuthorizationConfig & {
-  authentication: AuthenticationService<A, R>;
+export type WhookAuthorizationDependencies<A> = WhookAuthorizationConfig & {
+  authentication: WhookAuthenticationService<A>;
   log: LogService;
 };
 
@@ -57,19 +53,17 @@ export type WhookAuthorizationDependencies<
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.
  */
-async function initWrapHandlerWithAuthorization<
-  A,
-  R extends BaseAuthenticationData,
-  S extends WhookHandler,
->({
+async function initWrapHandlerWithAuthorization<A>({
   MECHANISMS = [BEARER_MECHANISM],
   DEFAULT_MECHANISM = BEARER_MECHANISM.type,
   authentication,
   log,
-}: WhookAuthorizationDependencies<A, R>): Promise<WhookWrapper<S>> {
+}: WhookAuthorizationDependencies<A>): Promise<WhookAPIWrapper> {
   log('debug', `🔐 - Initializing the authorization wrapper.`);
 
-  const wrapper = async (handler: S): Promise<S> => {
+  const wrapper = async (
+    handler: WhookAPIHandler,
+  ): Promise<WhookAPIHandler> => {
     const wrappedHandler = handleWithAuthorization.bind(
       null,
       {
@@ -82,28 +76,23 @@ async function initWrapHandlerWithAuthorization<
       handler,
     );
 
-    return wrappedHandler as S;
+    return wrappedHandler;
   };
 
   return wrapper;
 }
 
-async function handleWithAuthorization<
-  P extends Parameters,
-  A,
-  R extends BaseAuthenticationData,
-  WR,
->(
+async function handleWithAuthorization<A>(
   {
     MECHANISMS,
     DEFAULT_MECHANISM,
     authentication,
     log,
-  }: WhookAuthorizationDependencies<A, R>,
-  handler: WhookHandler<P, WR, WhookOperation>,
-  parameters: P,
-  operation: WhookOperation,
-): Promise<WR> {
+  }: WhookAuthorizationDependencies<A>,
+  handler: WhookAPIHandler,
+  parameters: WhookAPIHandlerParameters,
+  definition: WhookAPIHandlerDefinition,
+): Promise<WhookResponse> {
   let response;
 
   // Since the operation embed the security rules
@@ -112,20 +101,21 @@ async function handleWithAuthorization<
   // then security will not be checked
   // and the API will have a big security hole.
   // TL;DR: DO NOT remove this line!
-  if (!operation) {
+  if (!definition) {
     throw new YHTTPError(500, 'E_OPERATION_REQUIRED');
   }
 
   const noAuth =
-    'undefined' === typeof operation.security ||
-    operation.security.length === 0;
-  const optionalAuth = (operation.security || []).some(
+    'undefined' === typeof definition.operation.security ||
+    definition.operation.security.length === 0;
+  const optionalAuth = (definition.operation.security || []).some(
     (security) => Object.keys(security).length === 0,
   );
-  const authorization =
-    parameters.access_token && DEFAULT_MECHANISM
-      ? `${DEFAULT_MECHANISM} ${parameters.access_token}`
-      : parameters.authorization;
+  const authorization = (
+    parameters.query.access_token && DEFAULT_MECHANISM
+      ? `${DEFAULT_MECHANISM} ${parameters.query.access_token}`
+      : parameters.header.authorization
+  ) as string;
 
   if (noAuth || (optionalAuth && !authorization)) {
     log(
@@ -136,13 +126,13 @@ async function handleWithAuthorization<
     );
     response = await handler(
       { ...parameters, authenticated: false },
-      operation,
+      definition,
     );
   } else {
     let parsedAuthorization;
 
     const usableMechanisms = (MECHANISMS || []).filter((mechanism) =>
-      (operation.security || []).find(
+      (definition.operation.security || []).find(
         (security) => security[`${mechanism.type.toLowerCase()}Auth`],
       ),
     ) as Mechanism[];
@@ -178,7 +168,7 @@ async function handleWithAuthorization<
       }
 
       const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
-      const requiredScopes = ((operation.security || []).find(
+      const requiredScopes = ((definition.operation.security || []).find(
         (security) => security[authName],
       ) || { [authName]: [] })[authName];
 
@@ -189,11 +179,11 @@ async function handleWithAuthorization<
           'E_MISCONFIGURATION',
           parsedAuthorization.type,
           requiredScopes,
-          operation.operationId,
+          definition.operation.operationId,
         );
       }
 
-      let authenticationData: R;
+      let authenticationData: WhookAuthenticationData;
 
       try {
         authenticationData = await authentication.check(
@@ -224,7 +214,7 @@ async function handleWithAuthorization<
           authenticationData,
           authenticated: true,
         },
-        operation,
+        definition,
       );
       response = {
         ...response,
@@ -234,7 +224,7 @@ async function handleWithAuthorization<
         },
       };
     } catch (err) {
-      if ('undefined' === typeof operation.security) {
+      if ('undefined' === typeof definition.operation.security) {
         throw err;
       }
 

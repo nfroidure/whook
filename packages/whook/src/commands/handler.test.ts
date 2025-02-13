@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initHandlerCommand from './handler.js';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
@@ -17,7 +17,7 @@ describe('handlerCommand', () => {
   });
 
   describe('should work', () => {
-    it('with all parameters', async () => {
+    test('with all parameters', async () => {
       $injector.mockResolvedValueOnce({
         putEcho: async ({ body }) => ({
           status: 200,
@@ -86,7 +86,7 @@ describe('handlerCommand', () => {
       `);
     });
 
-    it('with handler only', async () => {
+    test('with handler only', async () => {
       $injector.mockResolvedValueOnce({
         getPing: async ({ body }) => ({
           status: 200,
@@ -149,7 +149,7 @@ describe('handlerCommand', () => {
   });
 
   describe('should fail', () => {
-    it('with non JSON parameters', async () => {
+    test('with non JSON parameters', async () => {
       $injector.mockResolvedValueOnce({
         putEcho: async ({ body }) => ({
           status: 200,
@@ -197,7 +197,7 @@ describe('handlerCommand', () => {
       }
     });
 
-    it('with a failing handler', async () => {
+    test('with a failing handler', async () => {
       $injector.mockResolvedValueOnce({
         putEcho: async () => {
           throw new YError('E_HANDLER_ERROR');

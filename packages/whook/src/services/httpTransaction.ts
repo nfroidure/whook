@@ -6,119 +6,15 @@ import { type WhookObfuscatorService } from './obfuscator.js';
 import { type WhookAPMService } from './apm.js';
 import { printStackTrace, YError } from 'yerror';
 import {
-  type Parameters,
-  type HandlerFunction,
-  type Dependencies,
-} from 'knifecycle';
-import {
   type LogService,
   type TimeService,
   type DelayService,
 } from 'common-services';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
-import { type OpenAPIV3_1 } from 'openapi-types';
 import { type JsonValue } from 'type-fest';
 import { type Readable } from 'node:stream';
 import { pickFirstHeaderValue } from '../libs/headers.js';
-
-export type DereferencedMediaTypeObject = Omit<
-  OpenAPIV3_1.MediaTypeObject,
-  'schema'
-> & {
-  schema: OpenAPIV3_1.SchemaObject;
-};
-export type DereferencedResponseObject = Omit<
-  OpenAPIV3_1.ResponseObject,
-  'content'
-> & {
-  content?: {
-    [media: string]: DereferencedMediaTypeObject;
-  };
-};
-export type DereferencedRequestBodyObject = Omit<
-  OpenAPIV3_1.RequestBodyObject,
-  'content'
-> & {
-  content: {
-    [media: string]: DereferencedMediaTypeObject;
-  };
-};
-export type DereferencedParameterObject = Omit<
-  OpenAPIV3_1.ParameterObject,
-  'schema'
-> & {
-  schema: OpenAPIV3_1.SchemaObject;
-};
-
-export type DereferencedOperationObject = Omit<
-  OpenAPIV3_1.OperationObject,
-  'parameters' | 'requestBody' | 'responses'
-> & {
-  parameters: DereferencedParameterObject[];
-  requestBody?: DereferencedRequestBodyObject;
-  responses: {
-    [code: string]: DereferencedResponseObject;
-  };
-};
-
-export type WhookOperation<T = Record<string, unknown>> =
-  DereferencedOperationObject & {
-    operationId: string;
-    path: string;
-    method: string;
-    'x-whook'?: T;
-  };
-
-export type WhookHeaders = Record<string, string | string[]>;
-
-export type WhookRequest<H = WhookHeaders, B = JsonValue | Readable> = {
-  url: string;
-  method: string;
-  headers: H;
-  body?: B;
-};
-
-export declare type WhookResponse<
-  S = number,
-  H = WhookHeaders | void,
-  B = JsonValue | Readable | void,
-> = {
-  status: S;
-} & (H extends void
-  ? {
-      headers?: H;
-    }
-  : {
-      headers: H;
-    }) &
-  (B extends void
-    ? {
-        body?: B;
-      }
-    : {
-        body: B;
-      });
-
-export type WhookHandlerFunction<
-  D extends Dependencies,
-  P extends Parameters,
-  R extends WhookResponse,
-  O = WhookOperation,
-> = HandlerFunction<
-  D,
-  P extends Parameters<infer V> ? V : never,
-  P,
-  [O] | [],
-  R
->;
-
-export interface WhookHandler<
-  P = Parameters,
-  R = WhookResponse,
-  O = WhookOperation,
-> {
-  (parameters?: P, operation?: O): Promise<R>;
-}
+import { type WhookRequest, type WhookResponse } from '../types/http.js';
 
 export type WhookHTTPTransactionConfig = {
   TIMEOUT?: number;
@@ -137,7 +33,9 @@ export type WhookHTTPTransaction = {
   request: WhookRequest;
   transaction: {
     id: string;
-    start: (buildResponse: WhookHandler) => Promise<WhookResponse>;
+    start: (
+      buildResponse: () => Promise<WhookResponse>,
+    ) => Promise<WhookResponse>;
     catch: (err: Error) => Promise<void>;
     end: (response: WhookResponse, operationId?: string) => Promise<void>;
   };

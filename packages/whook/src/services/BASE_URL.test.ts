@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initBaseURL from './BASE_URL.js';
 import { type LogService } from 'common-services';
 
@@ -9,7 +9,7 @@ describe('initBaseURL', () => {
     log.mockReset();
   });
 
-  it('should work with all dependencies', async () => {
+  test('should work with all dependencies', async () => {
     const BASE_URL = await initBaseURL({
       ENV: {},
       CONFIG: {
@@ -37,7 +37,7 @@ describe('initBaseURL', () => {
 `);
   });
 
-  it('should work with required dependencies only', async () => {
+  test('should work with required dependencies only', async () => {
     const BASE_URL = await initBaseURL({
       ENV: {},
       CONFIG: {
@@ -64,7 +64,7 @@ describe('initBaseURL', () => {
 `);
   });
 
-  it('should work with a base URL in config', async () => {
+  test('should work with a base URL in config', async () => {
     const BASE_URL = await initBaseURL({
       ENV: {},
       CONFIG: {
@@ -92,7 +92,7 @@ describe('initBaseURL', () => {
 `);
   });
 
-  it('should work with a base URL in config but in development mode', async () => {
+  test('should work with a base URL in config but in development mode', async () => {
     const BASE_URL = await initBaseURL({
       ENV: {
         DEV_MODE: '1',

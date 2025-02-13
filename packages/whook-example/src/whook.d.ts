@@ -1,10 +1,12 @@
 import {
-  type WhookBaseAPIHandlerDefinition,
+  type WhookBaseAPIHandlerConfig,
   type WhookBaseEnv,
   type WhookBaseConfigs,
-  type WhookAPIOperation,
 } from '@whook/whook';
-import { type WhookAuthorizationConfig } from '@whook/authorization';
+import {
+  type WhookAuthorizationConfig,
+  type WhookBaseAuthenticationData,
+} from '@whook/authorization';
 import {
   type WhookAPIOperationSwaggerConfig,
   type WhookSwaggerUIConfig,
@@ -19,9 +21,18 @@ import { type JWTServiceConfig } from 'jwt-service';
 import { type BaseAppEnvVars, type TimeMockConfig } from 'application-services';
 import { type JWTEnvVars } from 'jwt-service';
 import { type FilterAPIDefinitionEnvVars } from './services/FILTER_API_DEFINITION.ts';
+import { type AppEnv } from './index.ts';
+
+/* Architecture Note #2.1: Typings
+
+Whook provides several types you may extend here.
+*/
 
 declare module 'application-services' {
-  // Eventually override the process env type here
+  /* Architecture Note #2.1.1: AppEnvVars
+
+  The process environment can be typed by extending this type.
+  */
   export interface AppEnvVars
     extends BaseAppEnvVars,
       WhookBaseEnv,
@@ -29,11 +40,11 @@ declare module 'application-services' {
       FilterAPIDefinitionEnvVars,
       WhookSwaggerUIEnv {}
 
-  /* Architecture Note #2.1: Typings
+  /* Architecture Note #2.1.2: AppConfig
 
-The configuration is typed so that you are sure you cannot
- produce a bad configuration for your API.
-*/
+  The configuration is typed so that you are sure you cannot
+   produce a bad configuration for your API.
+  */
   export interface AppConfig
     extends WhookBaseConfigs,
       WhookAuthorizationConfig,
@@ -45,24 +56,35 @@ The configuration is typed so that you are sure you cannot
 }
 
 declare module '@whook/whook' {
+  /* Architecture Note #2.1.3: WhookAPIHandlerConfig
+
+  Here we export a custom API handler config type in order
+   to allow using the various plugins installed that deal
+   with the handlers.
+  */
+  export interface WhookAPIHandlerConfig
+    extends WhookBaseAPIHandlerConfig,
+      WhookAPIOperationSwaggerConfig,
+      WhookAPIOperationCORSConfig {}
+
+  /* Architecture Note #2.1.3: WhookMain
+  
+  Here we export a main config to type AppEnv.
+  */
+
+  export interface WhookMain {
+    AppEnv: AppEnv;
+  }
+}
+
+declare module '@whook/authorization' {
   /* Architecture Note #3.2.3: Typings
 
-Here we export a custom handler definition type in order
- to allow using the various plugins installed that deal
- with the handlers.
-*/
-  export interface WhookAPIHandlerDefinition<
-    T extends Record<string, unknown> = Record<string, unknown>,
-    U extends {
-      [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-      // eslint-disable-next-line
-    } = {},
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    V extends Record<string, unknown> = Record<string, unknown>,
-  > extends WhookBaseAPIHandlerDefinition<T, U> {
-    operation: U &
-      WhookAPIOperation<
-        T & WhookAPIOperationSwaggerConfig & WhookAPIOperationCORSConfig
-      >;
+  Here we export a custom API handler config type in order
+   to allow using the various plugins installed that deal
+   with the handlers.
+  */
+  export interface WhookAuthenticationData extends WhookBaseAuthenticationData {
+    userId: string;
   }
 }

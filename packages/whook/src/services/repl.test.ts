@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initREPL from './repl.js';
 import { PassThrough } from 'node:stream';
 import streamtest from 'streamtest';
@@ -17,7 +17,7 @@ describe('initREPL', () => {
     log.mockReset();
   });
 
-  it('should work as expected', async () => {
+  test('should work as expected', async () => {
     const stdin = new PassThrough();
     let stdout;
     const textPromise = new Promise((resolve, reject) => {

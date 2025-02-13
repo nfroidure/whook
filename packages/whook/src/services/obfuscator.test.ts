@@ -1,6 +1,6 @@
 import {
   describe,
-  it,
+  test,
   beforeEach,
   beforeAll,
   jest,
@@ -21,28 +21,28 @@ describe('Obfuscator Service', () => {
   });
 
   describe('obfuscate()', () => {
-    it('should work with short secrets', () => {
+    test('should work with short secrets', () => {
       expect(obfuscator.obfuscate('abba12')).toMatchInlineSnapshot(`"🛡"`);
     });
 
-    it('should work with odd secrets', () => {
+    test('should work with odd secrets', () => {
       expect(obfuscator.obfuscate('odd secret')).toMatchInlineSnapshot(
         `"o...t"`,
       );
     });
 
-    it('should work with long secrets', () => {
+    test('should work with long secrets', () => {
       expect(obfuscator.obfuscate('a long secret')).toMatchInlineSnapshot(
         `"a ...t"`,
       );
     });
-    it('should work with very long secrets', () => {
+    test('should work with very long secrets', () => {
       expect(
         obfuscator.obfuscate('a very long secret to obfuscate'),
       ).toMatchInlineSnapshot(`"a v...ate"`);
     });
 
-    it('should work with uuids', () => {
+    test('should work with uuids', () => {
       expect(
         obfuscator.obfuscate('abbacaca-abba-caca-abba-cacaabbacaca'),
       ).toMatchInlineSnapshot(`"abb...aca"`);
@@ -50,13 +50,13 @@ describe('Obfuscator Service', () => {
   });
 
   describe('obfuscateSensibleHeaders()', () => {
-    it('should work with no headers', () => {
+    test('should work with no headers', () => {
       expect(obfuscator.obfuscateSensibleHeaders({})).toMatchInlineSnapshot(
         `{}`,
       );
     });
 
-    it('should work with some sensible headers', () => {
+    test('should work with some sensible headers', () => {
       expect(
         obfuscator.obfuscateSensibleHeaders({
           Cookie: 'sessid=yolo',
@@ -72,7 +72,7 @@ describe('Obfuscator Service', () => {
       `);
     });
 
-    it('should work with no sensible headers', () => {
+    test('should work with no sensible headers', () => {
       expect(
         obfuscator.obfuscateSensibleHeaders({
           'user-agent': 'yolo browser',
@@ -84,7 +84,7 @@ describe('Obfuscator Service', () => {
       `);
     });
 
-    it('should work with undefined sensible headers', () => {
+    test('should work with undefined sensible headers', () => {
       expect(
         obfuscator.obfuscateSensibleHeaders({
           Authorization: undefined,
@@ -96,7 +96,7 @@ describe('Obfuscator Service', () => {
       `);
     });
 
-    it('should work with set-cookie sensible headers', () => {
+    test('should work with set-cookie sensible headers', () => {
       expect(
         obfuscator.obfuscateSensibleHeaders({
           'Set-Cookie':
@@ -111,11 +111,11 @@ describe('Obfuscator Service', () => {
   });
 
   describe('obfuscateSensibleProps()', () => {
-    it('should work with no props', () => {
+    test('should work with no props', () => {
       expect(obfuscator.obfuscateSensibleProps({})).toMatchInlineSnapshot(`{}`);
     });
 
-    it('should work with some sensible props', () => {
+    test('should work with some sensible props', () => {
       expect(
         obfuscator.obfuscateSensibleProps({
           username: 'marco@po.lo',
@@ -129,7 +129,7 @@ describe('Obfuscator Service', () => {
       `);
     });
 
-    it('should work with no sensible headers', () => {
+    test('should work with no sensible headers', () => {
       expect(
         obfuscator.obfuscateSensibleProps({
           username: 'jean',
@@ -141,7 +141,7 @@ describe('Obfuscator Service', () => {
       `);
     });
 
-    it('should work with AWS events', () => {
+    test('should work with AWS events', () => {
       expect(
         obfuscator.obfuscateSensibleProps({
           resource: '/users/{userId}/views/{viewId}',

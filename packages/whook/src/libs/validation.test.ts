@@ -1,19 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect } from '@jest/globals';
+import { describe, test, expect } from '@jest/globals';
 import {
   extractParametersFromSecuritySchemes,
   extractOperationSecurityParameters,
 } from './validation.js';
 import { YError } from 'yerror';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import {
+  type WhookOpenAPIOperation,
+  type WhookOpenAPI,
+} from '../types/openapi.js';
+import { type OpenAPIExtension } from 'ya-open-api-types';
 
 describe('extractParametersFromSecuritySchemes', () => {
   describe('should work', () => {
-    it('with no security scheme', () => {
+    test('with no security scheme', async () => {
       expect(extractParametersFromSecuritySchemes([])).toMatchSnapshot();
     });
 
-    it('with apiKey in query security scheme', () => {
+    test('with apiKey in query security scheme', async () => {
       expect(
         extractParametersFromSecuritySchemes([
           {
@@ -25,7 +29,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       ).toMatchSnapshot();
     });
 
-    it('with apiKey in header security scheme', () => {
+    test('with apiKey in header security scheme', async () => {
       expect(
         extractParametersFromSecuritySchemes([
           {
@@ -37,7 +41,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       ).toMatchSnapshot();
     });
 
-    it('with OAuth security scheme', () => {
+    test('with OAuth security scheme', async () => {
       expect(
         extractParametersFromSecuritySchemes([
           {
@@ -48,7 +52,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       ).toMatchSnapshot();
     });
 
-    it('with OpenId security scheme', () => {
+    test('with OpenId security scheme', async () => {
       expect(
         extractParametersFromSecuritySchemes([
           {
@@ -59,7 +63,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       ).toMatchSnapshot();
     });
 
-    it('with header overlapping security schemes', () => {
+    test('with header overlapping security schemes', async () => {
       expect(
         extractParametersFromSecuritySchemes([
           {
@@ -75,7 +79,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       ).toMatchSnapshot();
     });
 
-    it('with query overlapping security schemes', () => {
+    test('with query overlapping security schemes', async () => {
       expect(
         extractParametersFromSecuritySchemes([
           {
@@ -91,7 +95,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       ).toMatchSnapshot();
     });
 
-    it('with nested security scheme', () => {
+    test('with nested security scheme', async () => {
       expect(
         extractParametersFromSecuritySchemes([
           {
@@ -131,7 +135,7 @@ describe('extractParametersFromSecuritySchemes', () => {
     });
   });
   describe('should fail', () => {
-    it('with unsupported security scheme', () => {
+    test('with unsupported security scheme', async () => {
       try {
         extractParametersFromSecuritySchemes([
           {
@@ -148,7 +152,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       }
     });
 
-    it('with unsupported API scheme source', () => {
+    test('with unsupported API scheme source', async () => {
       try {
         extractParametersFromSecuritySchemes([
           {
@@ -170,7 +174,7 @@ describe('extractParametersFromSecuritySchemes', () => {
 
 describe('extractOperationSecurityParameters', () => {
   describe('should work', () => {
-    it('with no security scheme', () => {
+    test('with no security scheme', async () => {
       const operation = {
         path: '/test',
         method: 'get',
@@ -178,7 +182,7 @@ describe('extractOperationSecurityParameters', () => {
         parameters: [],
         responses: {},
       };
-      const API: OpenAPIV3_1.Document = {
+      const API: WhookOpenAPI = {
         openapi: '3.1.0',
         info: {
           version: '1.0.0',
@@ -206,11 +210,11 @@ describe('extractOperationSecurityParameters', () => {
         },
       };
       expect(
-        extractOperationSecurityParameters(API, operation),
+        await extractOperationSecurityParameters({ API }, operation),
       ).toMatchInlineSnapshot(`[]`);
     });
 
-    it('with the bearer security scheme', () => {
+    test('with the bearer security scheme', async () => {
       const operation = {
         path: '/test',
         method: 'get',
@@ -223,7 +227,7 @@ describe('extractOperationSecurityParameters', () => {
         parameters: [],
         responses: {},
       };
-      const API: OpenAPIV3_1.Document = {
+      const API: WhookOpenAPI = {
         openapi: '3.1.0',
         info: {
           version: '1.0.0',
@@ -250,29 +254,29 @@ describe('extractOperationSecurityParameters', () => {
           },
         },
       };
-      expect(extractOperationSecurityParameters(API, operation))
+      expect(await extractOperationSecurityParameters({ API }, operation))
         .toMatchInlineSnapshot(`
-        [
-          {
-            "in": "header",
-            "name": "authorization",
-            "schema": {
-              "pattern": "((b|B)earer) .*",
-              "type": "string",
-            },
-          },
-          {
-            "in": "query",
-            "name": "access_token",
-            "schema": {
-              "type": "string",
-            },
-          },
-        ]
-      `);
+[
+  {
+    "in": "header",
+    "name": "authorization",
+    "schema": {
+      "pattern": "((b|B)earer) .*",
+      "type": "string",
+    },
+  },
+  {
+    "in": "query",
+    "name": "access_token",
+    "schema": {
+      "type": "string",
+    },
+  },
+]
+`);
     });
 
-    it('with the basic security scheme', () => {
+    test('with the basic security scheme', async () => {
       const operation = {
         path: '/test',
         method: 'get',
@@ -285,7 +289,7 @@ describe('extractOperationSecurityParameters', () => {
         parameters: [],
         responses: {},
       };
-      const API: OpenAPIV3_1.Document = {
+      const API: WhookOpenAPI = {
         openapi: '3.1.0',
         info: {
           version: '1.0.0',
@@ -312,25 +316,23 @@ describe('extractOperationSecurityParameters', () => {
           },
         },
       };
-      expect(extractOperationSecurityParameters(API, operation))
+      expect(await extractOperationSecurityParameters({ API }, operation))
         .toMatchInlineSnapshot(`
-        [
-          {
-            "in": "header",
-            "name": "authorization",
-            "schema": {
-              "pattern": "((b|B)asic) .*",
-              "type": "string",
-            },
-          },
-        ]
-      `);
+[
+  {
+    "in": "header",
+    "name": "authorization",
+    "schema": {
+      "pattern": "((b|B)asic) .*",
+      "type": "string",
+    },
+  },
+]
+`);
     });
 
-    it('with the basic and bearer security schemes', () => {
-      const operation = {
-        path: '/test',
-        method: 'get',
+    test('with the basic and bearer security schemes', async () => {
+      const operation: WhookOpenAPIOperation & OpenAPIExtension = {
         operationId: 'test',
         security: [
           {
@@ -339,11 +341,11 @@ describe('extractOperationSecurityParameters', () => {
           {
             basicAuth: ['user:delegate'],
           },
-        ] as OpenAPIV3_1.OperationObject['security'],
+        ],
         parameters: [],
         responses: {},
       };
-      const API: OpenAPIV3_1.Document = {
+      const API: WhookOpenAPI = {
         openapi: '3.1.0',
         info: {
           version: '1.0.0',
@@ -370,26 +372,27 @@ describe('extractOperationSecurityParameters', () => {
           },
         },
       };
-      expect(extractOperationSecurityParameters(API, operation as any))
-        .toMatchInlineSnapshot(`
-        [
-          {
-            "in": "header",
-            "name": "authorization",
-            "schema": {
-              "pattern": "((b|B)earer|(b|B)asic) .*",
-              "type": "string",
-            },
-          },
-          {
-            "in": "query",
-            "name": "access_token",
-            "schema": {
-              "type": "string",
-            },
-          },
-        ]
-      `);
+      expect(
+        await extractOperationSecurityParameters({ API }, operation as any),
+      ).toMatchInlineSnapshot(`
+[
+  {
+    "in": "header",
+    "name": "authorization",
+    "schema": {
+      "pattern": "((b|B)earer|(b|B)asic) .*",
+      "type": "string",
+    },
+  },
+  {
+    "in": "query",
+    "name": "access_token",
+    "schema": {
+      "type": "string",
+    },
+  },
+]
+`);
     });
   });
 });

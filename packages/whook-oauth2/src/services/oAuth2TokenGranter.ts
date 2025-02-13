@@ -7,7 +7,6 @@ import {
   type CheckApplicationService,
   type OAuth2CodeService,
 } from './oAuth2Granters.js';
-import { type BaseAuthenticationData } from '@whook/authorization';
 
 export const IMPLICIT_GRANTER_TYPE = 'token';
 
@@ -19,13 +18,10 @@ export type OAuth2TokenGranterDependencies = {
   log?: LogService;
 };
 export type OAuth2TokenGranterParameters = Record<string, unknown>;
-export type OAuth2TokenGranterService<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
-> = OAuth2GranterService<
+export type OAuth2TokenGranterService = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
-  OAuth2TokenGranterParameters,
-  AUTHENTICATION_DATA
+  OAuth2TokenGranterParameters
 >;
 
 export default location(autoService(initOAuth2TokenGranter), import.meta.url);
@@ -75,6 +71,8 @@ async function initOAuth2TokenGranter({
       await oAuth2AccessToken.create(
         authenticationData,
         {
+          // TODO: check a way to avoid this by adding params
+          ...authenticationData,
           applicationId: clientId,
           scope: providedScope,
         },
@@ -82,6 +80,8 @@ async function initOAuth2TokenGranter({
       );
 
     return {
+      // TODO: check a way to avoid this by adding params
+      ...authenticationData,
       applicationId: clientId,
       redirectURI: finalRedirectURI,
       scope: providedScope,

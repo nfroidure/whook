@@ -1,6 +1,6 @@
 import {
   describe,
-  it,
+  test,
   beforeAll,
   beforeEach,
   afterAll,
@@ -13,20 +13,20 @@ import {
   runProcess,
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
-  initGetPingDefinition,
+  getPingDefinition,
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import { YError } from 'yerror';
 import { type Knifecycle } from 'knifecycle';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPI } from 'ya-open-api-types';
 import { type Logger } from 'common-services';
 
 describe('wrapHTTPTransactionWithMethodOverride', () => {
   const BASE_PATH = '/v1';
   const PORT = 6666;
   const HOST = 'localhost';
-  const API: OpenAPIV3_1.Document = {
+  const API: OpenAPI = {
     openapi: '3.1.0',
     info: {
       version: '1.0.0',
@@ -34,8 +34,8 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [initGetPingDefinition.path]: {
-        [initGetPingDefinition.method]: initGetPingDefinition.operation,
+      [getPingDefinition.path]: {
+        [getPingDefinition.method]: getPingDefinition.operation,
       },
     },
   };
@@ -114,7 +114,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     $autoload.mockClear();
   });
 
-  it('should override methods', async () => {
+  test('should override methods', async () => {
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
     getPing.mockResolvedValueOnce({ status: 200 });
 
@@ -145,7 +145,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     }).toMatchSnapshot();
   });
 
-  it('should let normal methods pass', async () => {
+  test('should let normal methods pass', async () => {
     time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
     getPing.mockResolvedValueOnce({ status: 200 });
 

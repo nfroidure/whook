@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initPORT from './PORT.js';
 import { initImporter } from 'common-services';
 import { type PortFinderModule } from './PORT.js';
@@ -11,7 +11,7 @@ describe('initPORT', () => {
     log.mockReset();
   });
 
-  it('should use the env port first', async () => {
+  test('should use the env port first', async () => {
     const importer = await initImporter<PortFinderModule>({ log });
     const port = await initPORT({
       ENV: { PORT: '1337' },
@@ -48,7 +48,7 @@ describe('initPORT', () => {
 `);
   });
 
-  it('should find a port by itself if no env port', async () => {
+  test('should find a port by itself if no env port', async () => {
     const importer = await initImporter<PortFinderModule>({ log });
     const port = await initPORT({
       importer,

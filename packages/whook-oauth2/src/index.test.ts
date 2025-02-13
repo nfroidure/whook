@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   describe,
-  it,
+  test,
   beforeAll,
   beforeEach,
   afterAll,
@@ -59,16 +59,9 @@ import {
   type OAuth2AccessTokenService,
 } from './index.js';
 import { type Knifecycle } from 'knifecycle';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { type OpenAPI } from 'ya-open-api-types';
 import { type Logger } from 'common-services';
-import {
-  type AuthenticationService,
-  type BaseAuthenticationData,
-} from '@whook/authorization';
-
-type CustomAuthenticationData = BaseAuthenticationData & {
-  userId: string;
-};
+import { type WhookAuthenticationService } from '@whook/authorization';
 
 describe('OAuth2 server', () => {
   const BASE_PATH = '/v1';
@@ -82,7 +75,7 @@ describe('OAuth2 server', () => {
   const time = jest.fn();
   const $autoload = jest.fn();
 
-  const API: OpenAPIV3_1.Document = {
+  const API: OpenAPI = {
     openapi: '3.1.0',
     info: {
       version: '1.0.0',
@@ -160,28 +153,23 @@ describe('OAuth2 server', () => {
     authenticateURL: 'https://auth.example.com/sign_in',
   };
   const authentication = {
-    check:
-      jest.fn<AuthenticationService<any, CustomAuthenticationData>['check']>(),
+    check: jest.fn<WhookAuthenticationService<any>['check']>(),
   };
   const checkApplication = jest.fn<CheckApplicationService>();
   const oAuth2AccessToken = {
-    create:
-      jest.fn<OAuth2AccessTokenService<CustomAuthenticationData>['create']>(),
-    check:
-      jest.fn<OAuth2AccessTokenService<CustomAuthenticationData>['check']>(),
+    create: jest.fn<OAuth2AccessTokenService['create']>(),
+    check: jest.fn<OAuth2AccessTokenService['check']>(),
   };
   const oAuth2RefreshToken = {
-    create:
-      jest.fn<OAuth2RefreshTokenService<CustomAuthenticationData>['create']>(),
-    check:
-      jest.fn<OAuth2RefreshTokenService<CustomAuthenticationData>['check']>(),
+    create: jest.fn<OAuth2RefreshTokenService['create']>(),
+    check: jest.fn<OAuth2RefreshTokenService['check']>(),
   };
   const oAuth2Code = {
-    create: jest.fn<OAuth2CodeService<CustomAuthenticationData>['create']>(),
-    check: jest.fn<OAuth2CodeService<CustomAuthenticationData>['check']>(),
+    create: jest.fn<OAuth2CodeService['create']>(),
+    check: jest.fn<OAuth2CodeService['check']>(),
   };
   const oAuth2Password = {
-    check: jest.fn<OAuth2PasswordService<CustomAuthenticationData>['check']>(),
+    check: jest.fn<OAuth2PasswordService['check']>(),
   };
 
   let $instance;
@@ -297,7 +285,7 @@ describe('OAuth2 server', () => {
   });
 
   describe('with the password flow', () => {
-    it('should produce new tokens', async () => {
+    test('should produce new tokens', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
@@ -404,7 +392,7 @@ describe('OAuth2 server', () => {
   });
 
   describe('with the refresh token flow', () => {
-    it('should produce new tokens', async () => {
+    test('should produce new tokens', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
@@ -509,7 +497,7 @@ describe('OAuth2 server', () => {
   });
 
   describe('with the client credentials flow', () => {
-    it('should produce new tokens', async () => {
+    test('should produce new tokens', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
@@ -609,7 +597,7 @@ describe('OAuth2 server', () => {
   });
 
   describe('with the code flow', () => {
-    it('should build the authorization redirection', async () => {
+    test('should build the authorization redirection', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         authentication.check,
@@ -689,7 +677,7 @@ describe('OAuth2 server', () => {
       }).toMatchSnapshot();
     });
 
-    it('should redirect with a code', async () => {
+    test('should redirect with a code', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
@@ -754,7 +742,7 @@ describe('OAuth2 server', () => {
     "etag": undefined,
     "keep-alive": undefined,
     "last-modified": undefined,
-    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo%3Fa_param%3Da_value&code=a_code",
+    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&user_id=2&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo%3Fa_param%3Da_value&code=a_code",
     "server": undefined,
     "transaction-id": "4",
     "transfer-encoding": "chunked",
@@ -776,7 +764,7 @@ describe('OAuth2 server', () => {
       }).toMatchSnapshot();
     });
 
-    it('should produce new tokens', async () => {
+    test('should produce new tokens', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
@@ -881,7 +869,7 @@ describe('OAuth2 server', () => {
   });
 
   describe('with the implicit flow', () => {
-    it('should build the authorization redirection', async () => {
+    test('should build the authorization redirection', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         authentication.check,
@@ -959,7 +947,7 @@ describe('OAuth2 server', () => {
       }).toMatchSnapshot();
     });
 
-    it('should redirect with a token', async () => {
+    test('should redirect with a token', async () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
@@ -1033,7 +1021,7 @@ describe('OAuth2 server', () => {
     "etag": undefined,
     "keep-alive": undefined,
     "last-modified": undefined,
-    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&access_token=an_access_token&token_type=bearer&expires_in=86400",
+    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&user_id=2&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&access_token=an_access_token&token_type=bearer&expires_in=86400",
     "server": undefined,
     "transaction-id": "7",
     "transfer-encoding": "chunked",

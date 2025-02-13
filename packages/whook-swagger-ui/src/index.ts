@@ -1,19 +1,15 @@
 import { wrapInitializer, alsoInject } from 'knifecycle';
-import initGetOpenAPI, {
-  definition as getOpenAPIDefinition,
-} from './handlers/getOpenAPI.js';
 import { type ProviderInitializer, type Dependencies } from 'knifecycle';
 import {
   type WhookHTTPRouterProvider,
   type WhookHTTPRouterService,
+  getOpenAPIDefinition,
 } from '@whook/whook';
-import { type ImporterService, type LogService } from 'common-services';
+import { noop, type ImporterService, type LogService } from 'common-services';
 import type ECStatic from 'ecstatic';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type SwaggerUIOptions } from 'swagger-ui';
 import { type Jsonify } from 'type-fest';
-
-export { initGetOpenAPI, getOpenAPIDefinition };
 
 export type WhookSwaggerUIEnv = {
   DEV_MODE?: string;
@@ -23,7 +19,9 @@ export type WhookSwaggerUIConfig = {
   BASE_PATH?: string;
   HOST?: string;
   PORT?: number;
-  SWAGGER_UI_CONFIG?: Omit<Jsonify<SwaggerUIOptions>, 'dom_id' | 'urls'>;
+  SWAGGER_UI_CONFIG?: Omit<Jsonify<SwaggerUIOptions>, 'dom_id' | 'urls'> & {
+    path: string;
+  };
 };
 export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   ENV: WhookSwaggerUIEnv;
@@ -37,12 +35,12 @@ export type WhookAPIOperationSwaggerConfig = {
   private?: boolean;
 };
 
-export const DEFAULT_SWAGGER_UI_CONFIG: WhookSwaggerUIConfig['SWAGGER_UI_CONFIG'] =
-  {
-    deepLinking: true,
-    layout: 'StandaloneLayout',
-    displayOperationId: true,
-  };
+export const DEFAULT_SWAGGER_UI_CONFIG = {
+  deepLinking: true,
+  layout: 'StandaloneLayout',
+  displayOperationId: true,
+  path: getOpenAPIDefinition.path,
+} as const satisfies WhookSwaggerUIConfig['SWAGGER_UI_CONFIG'];
 
 /**
  * Wraps the `httpRouter` initializer to also serve the
@@ -163,8 +161,4 @@ window.onload = function() {
     },
     augmentedInitializer,
   );
-}
-
-function noop() {
-  return undefined;
 }

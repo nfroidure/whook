@@ -1,6 +1,6 @@
 import { service, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { type WhookHandler } from '../services/httpTransaction.js';
+import { type WhookAPIWrapper } from '../types/handlers.js';
 import { type LogService } from 'common-services';
 
 export default location(
@@ -10,19 +10,13 @@ export default location(
 
 export const WRAPPER_REG_EXP = /^(wrap)[A-Z][a-zA-Z0-9]+/;
 
-export type WhookWrapper<S extends WhookHandler> = (handler: S) => Promise<S>;
-export type WhookWrapperName = string;
-export type WhookWrappersService<S extends WhookHandler> = Record<
-  WhookWrapperName,
-  WhookWrapper<S>
->;
+export type WhookWrappersService = Record<string, WhookAPIWrapper>;
 export type WhookWrappersConfig = {
-  HANDLERS_WRAPPERS?: WhookWrapperName[];
+  HANDLERS_WRAPPERS?: string[];
 };
-export type WhookWrappersDependencies<S extends WhookHandler> =
-  WhookWrappersConfig & {
-    log?: LogService;
-  } & WhookWrappersService<S>;
+export type WhookWrappersDependencies = WhookWrappersConfig & {
+  log?: LogService;
+} & WhookWrappersService;
 
 /**
  * A simple passthrough service proxing the WRAPPERS.
@@ -37,11 +31,11 @@ export type WhookWrappersDependencies<S extends WhookHandler> =
  * @return {Promise<Function>}
  * A promise of the `HANDLERS` hash.
  */
-async function initWrappers<S extends WhookHandler>({
+async function initWrappers({
   HANDLERS_WRAPPERS = [],
   log = noop,
   ...WRAPPERS
-}: WhookWrappersDependencies<S>): Promise<WhookWrapper<S>[]> {
+}: WhookWrappersDependencies): Promise<WhookAPIWrapper[]> {
   log('warning', `🏭 - Initializing the WRAPPERS service.`);
 
   // Except with exotic configurations, those numbers should equal

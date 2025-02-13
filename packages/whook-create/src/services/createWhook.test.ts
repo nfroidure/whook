@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, beforeEach, jest, expect } from '@jest/globals';
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initCreateWhook from './createWhook.js';
 import { YError } from 'yerror';
 import { readFileSync } from 'node:fs';
@@ -95,7 +95,7 @@ describe('initCreateWhook', () => {
     });
   });
 
-  it('should work', async () => {
+  test('should work', async () => {
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
@@ -158,7 +158,6 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
-    "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -166,15 +165,16 @@ describe('initCreateWhook', () => {
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^7.0.1",
+    "application-services": "^7.0.2",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",
-    "jwt-service": "^11.0.0",
-    "knifecycle": "^18.0.0",
-    "openapi-types": "^12.1.3",
+    "jwt-service": "^11.0.2",
+    "knifecycle": "^19.0.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.30.0",
+    "type-fest": "^4.33.0",
+    "ya-json-schema-types": "^1.0.1",
+    "ya-open-api-types": "^1.2.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0",
   },
@@ -195,7 +195,7 @@ describe('initCreateWhook', () => {
     "jsarch": "^6.1.2",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "schema2dts": "^7.0.2",
+    "schema2dts": "^8.0.0",
     "tsx": "^4.7.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.17.0",
@@ -293,7 +293,7 @@ describe('initCreateWhook', () => {
     }).toMatchSnapshot();
   });
 
-  it('should handle network issues', async () => {
+  test('should handle network issues', async () => {
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockImplementationOnce((_, _2, { filter }) =>
       Promise.all(
@@ -352,7 +352,6 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
-    "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -360,15 +359,16 @@ describe('initCreateWhook', () => {
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^7.0.1",
+    "application-services": "^7.0.2",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",
-    "jwt-service": "^11.0.0",
-    "knifecycle": "^18.0.0",
-    "openapi-types": "^12.1.3",
+    "jwt-service": "^11.0.2",
+    "knifecycle": "^19.0.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.30.0",
+    "type-fest": "^4.33.0",
+    "ya-json-schema-types": "^1.0.1",
+    "ya-open-api-types": "^1.2.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0",
   },
@@ -389,7 +389,7 @@ describe('initCreateWhook', () => {
     "jsarch": "^6.1.2",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "schema2dts": "^7.0.2",
+    "schema2dts": "^8.0.0",
     "tsx": "^4.7.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.17.0",
@@ -487,7 +487,7 @@ describe('initCreateWhook', () => {
     }).toMatchSnapshot();
   });
 
-  it('should handle git initialization problems', async () => {
+  test('should handle git initialization problems', async () => {
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockResolvedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
@@ -531,7 +531,6 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
-    "@apidevtools/swagger-parser": "^10.1.0",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -539,15 +538,16 @@ describe('initCreateWhook', () => {
     "@whook/http-transaction": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
-    "application-services": "^7.0.1",
+    "application-services": "^7.0.2",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",
-    "jwt-service": "^11.0.0",
-    "knifecycle": "^18.0.0",
-    "openapi-types": "^12.1.3",
+    "jwt-service": "^11.0.2",
+    "knifecycle": "^19.0.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.30.0",
+    "type-fest": "^4.33.0",
+    "ya-json-schema-types": "^1.0.1",
+    "ya-open-api-types": "^1.2.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.0.0",
   },
@@ -568,7 +568,7 @@ describe('initCreateWhook', () => {
     "jsarch": "^6.1.2",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "schema2dts": "^7.0.2",
+    "schema2dts": "^8.0.0",
     "tsx": "^4.7.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.17.0",
@@ -666,7 +666,7 @@ describe('initCreateWhook', () => {
     }).toMatchSnapshot();
   });
 
-  it('should fail with access problems', async () => {
+  test('should fail with access problems', async () => {
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({

@@ -1,14 +1,11 @@
-import { autoHandler, location } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import initPostGraphQL, {
   definition as postGraphQLDefinition,
 } from './postGraphQL.js';
-import { YHTTPError } from 'yhttperror';
-import {
-  type WhookAPIHandlerDefinition,
-  type WhookOperation,
-} from '@whook/whook';
+import { type WhookAPIHandlerDefinition } from '@whook/whook';
+import { deserialize } from '../lib/data.js';
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   path: postGraphQLDefinition.path,
   method: 'get',
   operation: {
@@ -58,50 +55,42 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-export default location(autoHandler(getGraphQL), import.meta.url);
-
-async function getGraphQL<T extends Record<string, unknown>>(
-  { postGraphQL }: { postGraphQL: Awaited<ReturnType<typeof initPostGraphQL>> },
-  {
-    query,
-    variables = '{}',
-    operationName,
-    ...requestContext
-  }: T & {
-    query: string;
-    variables: string;
-    operationName: string;
-  },
-  operation: WhookOperation,
-): Promise<Awaited<ReturnType<Awaited<ReturnType<typeof initPostGraphQL>>>>> {
-  const deserializedVariables = deserialize(variables, 'variables');
-
-  return await postGraphQL(
+async function initGetGraphQL<T extends Record<string, unknown>>({
+  postGraphQL,
+}: {
+  postGraphQL: Awaited<ReturnType<typeof initPostGraphQL>>;
+}) {
+  return async (
     {
-      body: {
-        query,
-        variables: deserializedVariables,
-        operationName,
-      },
-      ...requestContext,
+      query,
+      variables = '{}',
+      operationName,
+      ...requestContext
+    }: T & {
+      query: string;
+      variables: string;
+      operationName: string;
     },
-    operation,
-  );
+    definition: WhookAPIHandlerDefinition,
+  ): Promise<
+    Awaited<ReturnType<Awaited<ReturnType<typeof initPostGraphQL>>>>
+  > => {
+    const deserializedVariables = deserialize(variables, 'variables');
+
+    return await postGraphQL(
+      {
+        body: {
+          query,
+          variables: deserializedVariables,
+          operationName,
+        },
+        ...requestContext,
+      },
+      definition,
+    );
+  };
 }
 
-function deserialize<T>(data: string, name: string): Record<string, T> {
-  let deserializedData: Record<string, T>;
-
-  try {
-    deserializedData = JSON.parse(data);
-  } catch (err) {
-    throw YHTTPError.cast(err as Error, 400, 'E_BAD_JSON', name, data);
-  }
-
-  if (typeof deserializedData !== 'object') {
-    throw new YHTTPError(400, 'E_BAD_JSON', name, data);
-  }
-  return deserializedData;
-}
+export default location(autoService(initGetGraphQL), import.meta.url);

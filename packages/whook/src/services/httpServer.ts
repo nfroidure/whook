@@ -55,7 +55,7 @@ export default location(
   import.meta.url,
 );
 
-/* Architecture Note #2.10: HTTP Server
+/* Architecture Note #2.12: HTTP Server
 
 The Whook's `httpServer` service is responsible for
  instanciating the NodeJS HTTP Server and handling its

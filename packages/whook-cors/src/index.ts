@@ -1,14 +1,14 @@
-import SwaggerParser from '@apidevtools/swagger-parser';
 import {
   extractOperationSecurityParameters,
-  type WhookOperation,
+  type WhookOpenAPI,
+  type WhookOpenAPIOperation,
 } from '@whook/whook';
 import initOptionsWithCORS from './handlers/optionsWithCORS.js';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
 } from './services/errorHandler.js';
 import initWrapHandlerWithCORS from './wrappers/wrapHandlerWithCORS.js';
-import { type OpenAPIV3_1 } from 'openapi-types';
+import { ensureResolvedObject } from 'ya-open-api-types';
 
 export type {
   CORSConfig,
@@ -33,106 +33,87 @@ const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
  * @returns {Promise<Object>} The augmented  OpenAPI object
  */
 export async function augmentAPIWithCORS(
-  API: OpenAPIV3_1.Document,
-): Promise<OpenAPIV3_1.Document> {
-  // Temporar type fix due to version mismatch of OpenAPIV3_1
-  // between Whook and SwaggerParser
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const $refs = await SwaggerParser.resolve(API as any);
+  API: WhookOpenAPI,
+): Promise<WhookOpenAPI> {
+  const newPaths: WhookOpenAPI['paths'] = API?.paths || {};
+
+  for (const [path, pathObject] of Object.entries(API.paths || {})) {
+    const existingOperation = newPaths?.[path]?.options;
+
+    if (existingOperation) {
+      continue;
+    }
+
+    const canonicalOperationMethod = [
+      ...new Set([...METHOD_CORS_PRIORITY]),
+      ...Object.keys(pathObject),
+    ].find((method) => newPaths[path]?.[method]) as string;
+    const canonicalOperation = pathObject?.[
+      canonicalOperationMethod
+    ] as WhookOpenAPIOperation;
+    const whookConfig = {
+      type: 'http',
+      ...((canonicalOperation['x-whook'] as object) || {}),
+      suffix: 'CORS',
+      sourceOperationId: canonicalOperation.operationId,
+      private: true,
+    };
+
+    if (whookConfig.type !== 'http') {
+      continue;
+    }
+
+    const newOperationParameters: NonNullable<
+      typeof canonicalOperation.parameters
+    > = [];
+
+    for (const parameter of (canonicalOperation.parameters || []).concat(
+      await extractOperationSecurityParameters({ API }, canonicalOperation),
+    )) {
+      const dereferencedParameter = await ensureResolvedObject(API, parameter);
+
+      if (
+        dereferencedParameter.in !== 'path' &&
+        dereferencedParameter.in !== 'query'
+      ) {
+        continue;
+      }
+
+      if (
+        dereferencedParameter.in === 'path' ||
+        !dereferencedParameter.required
+      ) {
+        newOperationParameters.push(parameter);
+        continue;
+      }
+
+      // Avoid to require parameters for CORS
+      newOperationParameters.push({
+        ...dereferencedParameter,
+        required: false,
+      });
+    }
+
+    newPaths[path] = {
+      ...(newPaths[path] || {}),
+      options: {
+        operationId: 'optionsWithCORS',
+        summary: 'Enable OPTIONS for CORS',
+        tags: ['CORS'],
+        'x-whook': whookConfig,
+        parameters: newOperationParameters,
+        responses: {
+          200: {
+            description: 'CORS sent.',
+          },
+        },
+      },
+    };
+  }
 
   return {
     ...API,
-    paths: Object.keys(API?.paths || {}).reduce((newPaths, path) => {
-      const existingOperation = newPaths?.[path]?.options;
-
-      if (existingOperation) {
-        return newPaths;
-      }
-
-      const canonicalOperationMethod = [
-        ...new Set([...METHOD_CORS_PRIORITY]),
-        ...Object.keys(newPaths[path] || {}),
-      ].find((method) => newPaths[path]?.[method]) as string;
-      const canonicalOperation: OpenAPIV3_1.OperationObject =
-        newPaths[path]?.[canonicalOperationMethod];
-
-      const whookConfig = {
-        type: 'http',
-        ...(canonicalOperation['x-whook'] || {}),
-        suffix: 'CORS',
-        sourceOperationId: canonicalOperation.operationId,
-        private: true,
-      };
-
-      if (whookConfig.type !== 'http') {
-        return newPaths;
-      }
-
-      newPaths[path] = {
-        ...(newPaths[path] || {}),
-        options: {
-          operationId: 'optionsWithCORS',
-          summary: 'Enable OPTIONS for CORS',
-          tags: ['CORS'],
-          parameters: (canonicalOperation.parameters || [])
-            .concat(
-              extractOperationSecurityParameters(
-                API,
-                canonicalOperation as WhookOperation,
-              ) as OpenAPIV3_1.ParameterObject[],
-            )
-            .filter((parameter) => {
-              const dereferencedParameter = (
-                parameter as OpenAPIV3_1.ReferenceObject
-              ).$ref
-                ? ($refs.get(
-                    (parameter as OpenAPIV3_1.ReferenceObject).$ref,
-                  ) as OpenAPIV3_1.ParameterObject)
-                : (parameter as OpenAPIV3_1.ParameterObject);
-
-              return (
-                'path' === dereferencedParameter.in ||
-                'query' === dereferencedParameter.in
-              );
-            })
-            .map((parameter) => {
-              const dereferencedParameter = (
-                parameter as OpenAPIV3_1.ReferenceObject
-              ).$ref
-                ? ($refs.get(
-                    (parameter as OpenAPIV3_1.ReferenceObject).$ref,
-                  ) as OpenAPIV3_1.ParameterObject)
-                : (parameter as OpenAPIV3_1.ParameterObject);
-
-              if (
-                dereferencedParameter.in === 'path' ||
-                !dereferencedParameter.required
-              ) {
-                return parameter;
-              }
-
-              // Avoid to require parameters for CORS
-              return {
-                ...dereferencedParameter,
-                required: false,
-              };
-            }),
-          responses: {
-            200: {
-              description: 'CORS sent.',
-            },
-          },
-        },
-      };
-
-      // Must be set separately since not supported by OAS3 types atm
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ((newPaths[path] as any).options as any)['x-whook'] = {
-        ...whookConfig,
-      };
-
-      return newPaths;
-    }, API?.paths || {}),
+    paths: newPaths,
   };
 }
 

@@ -1,4 +1,4 @@
-import { autoHandler, location } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import initPostOauth2Token from './postOAuth2Token.js';
 import { AUTH_API_PREFIX } from '../services/authCookies.js';
@@ -7,18 +7,17 @@ import {
   type AuthCookiesService,
   type AuthHandlersConfig,
 } from '../services/authCookies.js';
-import { type BaseAuthenticationData } from '@whook/authorization';
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition = {
   method: 'post',
   path: `${AUTH_API_PREFIX}/login`,
+  config: {
+    environments: [],
+  },
   operation: {
     operationId: 'postAuthLogin',
     summary: 'Logs a user in',
     tags: ['auth'],
-    'x-whook': {
-      disabled: true,
-    },
     parameters: [],
     requestBody: {
       required: true,
@@ -56,22 +55,17 @@ export const definition: WhookAPIHandlerDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookAPIHandlerDefinition;
 
-export default location(autoHandler(postAuthLogin), import.meta.url);
-
-async function postAuthLogin<
-  AUTHENTICATION_DATA extends BaseAuthenticationData = BaseAuthenticationData,
->(
-  {
-    ROOT_AUTHENTICATION_DATA,
-    authCookies,
-    postOAuth2Token,
-  }: AuthHandlersConfig<AUTHENTICATION_DATA> & {
-    authCookies: Pick<AuthCookiesService, 'build'>;
-    postOAuth2Token: Awaited<ReturnType<typeof initPostOauth2Token>>;
-  },
-  {
+async function initPostAuthLogin({
+  ROOT_AUTHENTICATION_DATA,
+  authCookies,
+  postOAuth2Token,
+}: AuthHandlersConfig & {
+  authCookies: Pick<AuthCookiesService, 'build'>;
+  postOAuth2Token: Awaited<ReturnType<typeof initPostOauth2Token>>;
+}) {
+  return async ({
     body,
   }: {
     body: {
@@ -80,44 +74,46 @@ async function postAuthLogin<
       scope: string;
       remember: boolean;
     };
-  },
-) {
-  try {
-    const response = await postOAuth2Token({
-      body: {
-        grant_type: 'password',
-        scope: body.scope,
-        username: body.username,
-        password: body.password,
-      },
-      authenticationData: ROOT_AUTHENTICATION_DATA,
-    });
+  }) => {
+    try {
+      const response = await postOAuth2Token({
+        body: {
+          grant_type: 'password',
+          scope: body.scope,
+          username: body.username,
+          password: body.password,
+        },
+        authenticationData: ROOT_AUTHENTICATION_DATA,
+      });
 
-    return {
-      ...response,
-      headers: {
-        ...(response.headers || {}),
-        'Set-Cookie': authCookies.build(
-          response.status === 200 ? response.body : undefined,
-          { session: !body.remember },
-        ),
-      },
-      body: {
-        access_token: response.body.access_token,
-        expiration_date: response.body.expiration_date,
-        expires_in: response.body.expires_in,
-        token_type: response.body.token_type,
-      },
-    };
-  } catch (err) {
-    const newErr = YHTTPError.wrap(err as Error);
+      return {
+        ...response,
+        headers: {
+          ...(response.headers || {}),
+          'Set-Cookie': authCookies.build(
+            response.status === 200 ? response.body : undefined,
+            { session: !body.remember },
+          ),
+        },
+        body: {
+          access_token: response.body.access_token,
+          expiration_date: response.body.expiration_date,
+          expires_in: response.body.expires_in,
+          token_type: response.body.token_type,
+        },
+      };
+    } catch (err) {
+      const newErr = YHTTPError.wrap(err as Error);
 
-    newErr.headers = {
-      ...((err as YHTTPError).headers || {}),
-      // TODO: Allow string[] in YHTTPError
-      'Set-Cookie': authCookies.build() as unknown as string,
-    };
+      newErr.headers = {
+        ...((err as YHTTPError).headers || {}),
+        // TODO: Allow string[] in YHTTPError
+        'Set-Cookie': authCookies.build() as unknown as string,
+      };
 
-    throw newErr;
-  }
+      throw newErr;
+    }
+  };
 }
+
+export default location(autoService(initPostAuthLogin), import.meta.url);

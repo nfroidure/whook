@@ -1,10 +1,11 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, test, expect } from '@jest/globals';
 import initGetDiagnostic from './getDiagnostic.js';
 
 describe('getDiagnostic', () => {
-  const TRANSACTIONS = {} as Components.Responses.Diagnostic<number>['body'];
+  const TRANSACTIONS =
+    {} as components['responses']['Diagnostic']['body']['transactions'];
 
-  it('should work', async () => {
+  test('should work', async () => {
     const getDiagnostic = await initGetDiagnostic({
       TRANSACTIONS,
     });
