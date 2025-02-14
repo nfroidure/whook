@@ -225,7 +225,12 @@ async function initAPIDefinitions({
             ? {
                 [definition.path]: {
                   ...(paths[definition.path] || {}),
-                  [definition.method]: definition.operation,
+                  [definition.method]: {
+                    ...definition.operation,
+                    // TODO: Should be replaced to deal with definitions
+                    // directly and a separated config object
+                    'x-whook': definition.config,
+                  },
                 },
               }
             : {}),

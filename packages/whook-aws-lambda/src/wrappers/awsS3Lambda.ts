@@ -13,6 +13,7 @@ import {
 import { type LogService, type TimeService } from 'common-services';
 import { type S3Event } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
+import { PATH_ITEM_METHODS } from 'ya-open-api-types';
 
 export type LambdaS3Input = { body: S3Event['Records'] };
 export type LambdaS3Output = { stauts: number; headers: WhookHeaders };
@@ -79,12 +80,27 @@ async function handleForAWSS3Lambda(
   event: S3Event,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
-  const method = Object.keys(OPERATION_API.paths?.[path] || {})[0];
-  const definition: WhookAPIHandlerDefinition = {
+  const pathItem = OPERATION_API.paths?.[path];
+
+  if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
+    throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
+  }
+
+  const method = Object.keys(pathItem).filter((method) =>
+    PATH_ITEM_METHODS.includes(method as (typeof PATH_ITEM_METHODS)[number]),
+  )[0];
+  const operation = pathItem[method];
+
+  if (typeof operation === 'undefined' || '$ref' in operation) {
+    throw new YError('E_BAD_OPERATION', 'operation', operation);
+  }
+
+  const definition = {
     path,
     method,
-    ...OPERATION_API.paths?.[path]?.[method],
-  };
+    operation,
+    config: operation['x-whook'],
+  } as unknown as WhookAPIHandlerDefinition;
   const startTime = time();
   const parameters = {
     body: event.Records,

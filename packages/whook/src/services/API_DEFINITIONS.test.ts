@@ -299,6 +299,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
       },
       "/users/{userId}": {
@@ -324,6 +325,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
       },
     },
@@ -441,6 +443,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
       },
       "/users/{userId}": {
@@ -466,6 +469,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
       },
     },
@@ -587,6 +591,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
       },
       "/users/{userId}": {
@@ -612,6 +617,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
       },
     },
@@ -733,6 +739,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
       },
       "/users/{userId}": {
@@ -758,6 +765,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
       },
     },
@@ -866,6 +874,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
         "put": {
           "operationId": "putUser",
@@ -898,6 +907,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
       },
     },
@@ -1021,6 +1031,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
       },
     },
@@ -1151,6 +1162,7 @@ describe('initAPIDefinitions', () => {
           "tags": [
             "user",
           ],
+          "x-whook": undefined,
         },
       },
     },

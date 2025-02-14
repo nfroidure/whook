@@ -215,6 +215,7 @@ exports[`API should work 1`] = `
           "tags": [
             "example",
           ],
+          "x-whook": undefined,
         },
         "options": {
           "operationId": "optionsWithCORS",
@@ -266,6 +267,7 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
         "options": {
           "operationId": "optionsWithCORS",
@@ -329,6 +331,7 @@ exports[`API should work 1`] = `
           "tags": [
             "example",
           ],
+          "x-whook": undefined,
         },
       },
       "/openAPI": {
@@ -358,6 +361,7 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
         "options": {
           "operationId": "optionsWithCORS",
@@ -415,6 +419,7 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
         "options": {
           "operationId": "optionsWithCORS",
@@ -455,6 +460,7 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
+          "x-whook": undefined,
         },
         "options": {
           "operationId": "optionsWithCORS",
@@ -546,6 +552,7 @@ exports[`API should work 1`] = `
           "tags": [
             "example",
           ],
+          "x-whook": undefined,
         },
         "options": {
           "operationId": "optionsWithCORS",

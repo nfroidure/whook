@@ -515,7 +515,7 @@ async function handleForAWSHTTPLambda(
     JSON.stringify({
       ...response,
       body: obfuscateEventBody(obfuscator, response.body),
-      headers: obfuscator.obfuscateSensibleHeaders(response.headers),
+      headers: obfuscator.obfuscateSensibleHeaders(response.headers || {}),
     }),
   );
 
