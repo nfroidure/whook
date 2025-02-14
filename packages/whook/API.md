@@ -14,15 +14,6 @@
 <dt><a href="#pickAllHeaderValues">pickAllHeaderValues(name, headers)</a> ⇒ <code>Array</code></dt>
 <dd><p>Pick header values</p>
 </dd>
-<dt><a href="#getOpenAPIOperations">getOpenAPIOperations(API)</a> ⇒ <code>Array</code></dt>
-<dd><p>Return a OpenAPI operation in a more
- convenient way to iterate onto its
- operations</p>
-</dd>
-<dt><a href="#dereferenceOpenAPIOperations">dereferenceOpenAPIOperations(API, operations)</a> ⇒ <code>Object</code></dt>
-<dd><p>Dereference API operations and transform OpenAPISchemas
- into JSONSchemas</p>
-</dd>
 <dt><a href="#initAPIDefinitions">initAPIDefinitions(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
 <dd><p>Initialize the API_DEFINITIONS service according to the porject handlers.</p>
 </dd>
@@ -69,6 +60,12 @@ HTTP router</p>
 </dd>
 <dt><a href="#wrapEnvForBuild">wrapEnvForBuild(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the ENV service in order to filter ENV vars for the build</p>
+</dd>
+<dt><a href="#initSchemaValidators">initSchemaValidators(services)</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
+<dd><p>Initialize the schema validator service for
+ application schemas validation. This central
+ place is aimed to compile schemas once and
+ use them many times.</p>
 </dd>
 <dt><a href="#initWhookResolvedPlugins">initWhookResolvedPlugins(services)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
 <dd><p>Resolves the Whook plugins from their names</p>
@@ -139,43 +136,6 @@ Pick header values
 | --- | --- | --- |
 | name | <code>string</code> | The header name |
 | headers | <code>Object</code> | The headers map |
-
-<a name="getOpenAPIOperations"></a>
-
-## getOpenAPIOperations(API) ⇒ <code>Array</code>
-Return a OpenAPI operation in a more
- convenient way to iterate onto its
- operations
-
-**Kind**: global function  
-**Returns**: <code>Array</code> - An array of all the OpenAPI operations  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| API | <code>Object</code> | The flattened OpenAPI defition |
-
-**Example**  
-```js
-getOpenAPIOperations(API)
-  .map((operation) => {
-    const { path, method, operationId, parameters } = operation;
-
-    // Do something with that operation
-  });
-```
-<a name="dereferenceOpenAPIOperations"></a>
-
-## dereferenceOpenAPIOperations(API, operations) ⇒ <code>Object</code>
-Dereference API operations and transform OpenAPISchemas
- into JSONSchemas
-
-**Kind**: global function  
-**Returns**: <code>Object</code> - The dereferenced OpenAPI operations  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| API | <code>Object</code> | An OpenAPI object |
-| operations | <code>Object</code> | The OpenAPI operation objects |
 
 <a name="initAPIDefinitions"></a>
 
@@ -327,8 +287,6 @@ Initialize an HTTP router
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the server depends on |
-| services.ENV | <code>Object</code> |  | The injected ENV value |
-| [services.DEBUG_NODE_ENVS] | <code>Array</code> |  | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
 | [services.BUFFER_LIMIT] | <code>String</code> |  | The maximum bufferisation before parsing the  request body |
 | [services.BASE_PATH] | <code>String</code> |  | API base path |
 | services.HANDLERS | <code>Object</code> |  | The handlers for the operations decribe  by the OpenAPI API definition |
@@ -337,7 +295,8 @@ Initialize an HTTP router
 | [services.STRINGIFYERS] | <code>Object</code> |  | The synchronous body stringifyers (for  operations that defines a response body  schema) |
 | [services.ENCODERS] | <code>Object</code> |  | A map of encoder stream constructors |
 | [services.DECODERS] | <code>Object</code> |  | A map of decoder stream constructors |
-| [services.QUERY_PARSER] | <code>Object</code> |  | A query parser with the `strict-qs` signature |
+| [services.queryParserBuilder] | <code>Object</code> |  | A query parser builder from OpenAPI parameters |
+| [services.COERCION_OPTIONS] | <code>Object</code> |  | Options for type coercion of parameters values |
 | [services.log] | <code>function</code> | <code>noop</code> | A logging function |
 | services.httpTransaction | <code>function</code> |  | A function to create a new HTTP transaction |
 
@@ -476,6 +435,25 @@ Wrap the ENV service in order to filter ENV vars for the build
 | services | <code>Object</code> |  | The services ENV depends on |
 | [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initSchemaValidators"></a>
+
+## initSchemaValidators(services) ⇒ <code>Promise.&lt;Number&gt;</code>
+Initialize the schema validator service for
+ application schemas validation. This central
+ place is aimed to compile schemas once and
+ use them many times.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Number&gt;</code> - A promise of a schema validators registry  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services it depends on |
+| [services.SCHEMA_VALIDATORS_OPTIONS] | <code>Object</code> | <code>{}</code> | Options for the schema validators registry |
+| [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.API | <code>Object</code> |  | A valid Open API file |
 
 <a name="initWhookResolvedPlugins"></a>
 

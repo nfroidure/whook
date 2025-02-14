@@ -90,7 +90,6 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.DEBUG_NODE_ENVS | <code>Object</code> |  | The NODE_ENV values that trigger debugging |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
 | services.PARSED_HEADERS | <code>Object</code> |  | A list of headers that should be parsed as JSON |

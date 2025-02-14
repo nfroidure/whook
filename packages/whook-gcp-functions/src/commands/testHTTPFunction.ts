@@ -90,7 +90,7 @@ async function initTestHTTPFunctionCommand({
 
     const hasBody = !!handlerDefinition.operation.requestBody;
     const parameters = JSON.parse(rawParameters) as WhookAPIHandlerParameters;
-    const search = Object.keys(parameters.query).reduce((accSearch, name) => {
+    const search = Object.keys(parameters.query || {}).reduce((accSearch, name) => {
       if (null != parameters.query[name]) {
         return (
           accSearch +
@@ -109,7 +109,7 @@ async function initTestHTTPFunctionCommand({
         const matches = /^\{([\d\w]+)\}$/i.exec(part);
 
         if (matches) {
-          return parameters.path[matches[1]];
+          return parameters.path?.[matches[1]];
         }
         return part;
       })

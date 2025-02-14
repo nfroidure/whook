@@ -26,6 +26,10 @@
       2. [The `prepareBuildEnvironment` function](#122-the-`preparebuildenvironment`-function)
 2. [Configuration](#2-configuration)
    1. [Typings](#21-typings)
+      1. [AppEnvVars](#211-appenvvars)
+      2. [AppConfig](#212-appconfig)
+      3. [WhookAPIHandlerConfig](#213-whookapihandlerconfig)
+      3. [WhookMain](#213-whookmain)
    2. [Exporting](#22-exporting)
    3. [Overriding](#23-overriding)
 3. [API](#3-api)
@@ -59,7 +63,7 @@
    2. [filterAPITags](#42-filterapitags)
    3. [jwtToken](#43-jwttoken)
    4. [MECHANISMS](#44-mechanisms)
-   5. [QUERY_PARSER](#45-query_parser)
+   5. [queryParserBuilder](#45-queryparserbuilder)
    6. [WRAPPERS](#46-wrappers)
 5. [Commands](#5-commands)
    1. [Definition](#51-definition)
@@ -278,10 +282,44 @@ The `src/config/common/config.ts` one allows to add common
 
 ### 2.1. Typings
 
+Whook provides several types you may extend here.
+
+[See in context](./src/whook.d.ts#L26-L29)
+
+
+
+#### 2.1.1. AppEnvVars
+
+The process environment can be typed by extending this type.
+
+[See in context](./src/whook.d.ts#L32-L35)
+
+
+
+#### 2.1.2. AppConfig
+
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/whook.d.ts#L32-L36)
+[See in context](./src/whook.d.ts#L43-L47)
+
+
+
+#### 2.1.3. WhookAPIHandlerConfig
+
+Here we export a custom API handler config type in order
+ to allow using the various plugins installed that deal
+ with the handlers.
+
+[See in context](./src/whook.d.ts#L59-L64)
+
+
+
+#### 2.1.3. WhookMain
+
+Here we export a main config to type AppEnv.
+
+[See in context](./src/whook.d.ts#L70-L73)
 
 
 
@@ -313,7 +351,7 @@ Whook is all about APIs.
 The API service defined here is where you put
  your handlers altogether to build the final API.
 
-[See in context](./src/services/API.ts#L26-L31)
+[See in context](./src/services/API.ts#L30-L35)
 
 
 
@@ -328,7 +366,7 @@ For it to work, you have to export the definition, like
  here, to make it available for the API service, responsible
  for gathering all API route definitions.
 
-[See in context](./src/handlers/getDelay.ts#L39-L49)
+[See in context](./src/handlers/getDelay.ts#L41-L51)
 
 
 
@@ -338,7 +376,7 @@ The name provided as the Open API `operationId` here
 must map the handler name to link the definition
 to it (here `getDelay`).
 
-[See in context](./src/handlers/getDelay.ts#L54-L59)
+[See in context](./src/handlers/getDelay.ts#L56-L61)
 
 
 
@@ -348,7 +386,7 @@ This is how to declare a reusable API parameter
  to avoid having to write it several times and
  lower your final Open API file weight.
 
-[See in context](./src/handlers/getDelay.ts#L18-L23)
+[See in context](./src/handlers/getDelay.ts#L19-L24)
 
 
 
@@ -357,7 +395,7 @@ This is how to declare a reusable API parameter
 To use reusable parameters, you must refer to it
  instead of writing it inline.
 
-[See in context](./src/handlers/getDelay.ts#L64-L68)
+[See in context](./src/handlers/getDelay.ts#L66-L70)
 
 
 
@@ -372,7 +410,7 @@ You simply have to export a variable finishing with
  `WhookAPISchemaDefinition` type to be guided
  when creating it.
 
-[See in context](./src/handlers/putEcho.ts#L12-L22)
+[See in context](./src/handlers/putEcho.ts#L13-L23)
 
 
 
@@ -385,15 +423,15 @@ You can use it in request/response bodies,
  inside parameters or even inside other
  schemas as per the OpenAPI specification.
 
-[See in context](./src/handlers/putEcho.ts#L97-L105)
+[See in context](./src/handlers/putEcho.ts#L98-L106)
 
 
 
 ##### 3.1.3.2. Typings
 
 Schemas are converted to types so that
- TypeScript warns you when you don't output
- the expected data.
+     TypeScript warns you when you don't output
+     the expected data.
 
 [See in context](./src/handlers/putEcho.ts#L127-L132)
 
@@ -410,7 +448,7 @@ You simply have to export a variable finishing with
  `WhookAPIResponseDefinition` type to be guided
  when creating it.
 
-[See in context](./src/handlers/putEcho.ts#L40-L50)
+[See in context](./src/handlers/putEcho.ts#L41-L51)
 
 
 
@@ -425,7 +463,7 @@ You simply have to export a variable finishing with
  `WhookAPIRequestBodyDefinition` type to be guided
  when creating it.
 
-[See in context](./src/handlers/putEcho.ts#L63-L73)
+[See in context](./src/handlers/putEcho.ts#L64-L74)
 
 
 
@@ -446,17 +484,17 @@ Parameters are cleaned up and checked by Whook so
  to the API contract you set in the handler's
  Open API definition above.
 
-[See in context](./src/handlers/getDelay.ts#L79-L95)
+[See in context](./src/handlers/getDelay.ts#L81-L97)
 
 
 
 #### 3.2.1. Response
 
 The handler's response are simple JSON serializable
- objects with a `status` and optional `body` and
- `headers` properties.
+   objects with a `status` and optional `body` and
+   `headers` properties.
 
-[See in context](./src/handlers/getDelay.ts#L106-L111)
+[See in context](./src/handlers/getDelay.ts#L105-L110)
 
 
 
@@ -471,17 +509,17 @@ There is some magic here with the use of
 You can read more about it
  [here](https://github.com/nfroidure/knifecycle).
 
-[See in context](./src/handlers/getDelay.ts#L117-L127)
+[See in context](./src/handlers/getDelay.ts#L119-L129)
 
 
 
 #### 3.2.3. Typings
 
-Here we export a custom handler definition type in order
+Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the handlers.
 
-[See in context](./src/whook.d.ts#L48-L53)
+[See in context](./src/whook.d.ts#L81-L86)
 
 
 
@@ -490,7 +528,7 @@ Here we export a custom handler definition type in order
 You can apply transformations to your API like
  here for CORS support (OPTIONS method handling).
 
-[See in context](./src/services/API.ts#L83-L87)
+[See in context](./src/services/API.ts#L87-L91)
 
 
 
@@ -500,7 +538,7 @@ The API definition is a JSON serializable object, you
  can then reshape it the way you want. Here, we set a
  fake auth mecanism to help in development environment.
 
-[See in context](./src/services/API.ts#L91-L96)
+[See in context](./src/services/API.ts#L95-L100)
 
 
 
@@ -512,7 +550,7 @@ The default Whook project contains a few sample
 You can keep some or just delete them and create
  yours with `npm run dev -- create`.
 
-[See in context](./src/handlers/getDelay.ts#L9-L16)
+[See in context](./src/handlers/getDelay.ts#L10-L17)
 
 
 
@@ -521,7 +559,7 @@ You can keep some or just delete them and create
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 
-[See in context](./src/handlers/getDiagnostic.ts#L29-L33)
+[See in context](./src/handlers/getDiagnostic.ts#L30-L34)
 
 
 
@@ -530,7 +568,7 @@ Here is a simple handler that just proxy the `TRANSACTIONS`
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 
-[See in context](./src/handlers/getParameters.ts#L56-L60)
+[See in context](./src/handlers/getParameters.ts#L58-L62)
 
 
 
@@ -538,7 +576,7 @@ Here is a simple handler that just proxy the `TRANSACTIONS`
 
 Returns the server time.
 
-[See in context](./src/handlers/getTime.ts#L24-L27)
+[See in context](./src/handlers/getTime.ts#L26-L29)
 
 
 
@@ -546,7 +584,7 @@ Returns the server time.
 
 Simply outputs its input.
 
-[See in context](./src/handlers/putEcho.ts#L86-L89)
+[See in context](./src/handlers/putEcho.ts#L87-L90)
 
 
 
@@ -628,7 +666,7 @@ The fact that definitions are simple objects make them
  add new parameters or change the schema of the
  default definition of this endpoint.
 
-[See in context](./src/handlers/getOpenAPI.ts#L6-L20)
+[See in context](./src/handlers/getOpenAPI.ts#L7-L21)
 
 
 
@@ -637,7 +675,7 @@ The fact that definitions are simple objects make them
 A fake authentication service you can use as a base
  authentication service.
 
-[See in context](./src/services/authentication.ts#L22-L26)
+[See in context](./src/services/authentication.ts#L18-L22)
 
 
 
@@ -676,7 +714,7 @@ A service aimed to provide implementations for the
 
 
 
-### 4.5. QUERY_PARSER
+### 4.5. queryParserBuilder
 
 Thanks to the DI system, you can easily customize
  Whook building blocks to match your flavor. Here,
@@ -690,7 +728,7 @@ You can navigate through the Whook's sources to
  environment variable to see what happens under the
  hood, in the DI system.
 
-[See in context](./src/services/QUERY_PARSER.ts#L9-L22)
+[See in context](./src/services/queryParserBuilder.ts#L4-L17)
 
 
 

@@ -230,14 +230,12 @@ Wrap an handler to make it work with GCP Functions.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
-| services.ENV | <code>Object</code> |  | The process environment |
-| services.DEBUG_NODE_ENVS | <code>Object</code> |  | The NODE_ENV values that trigger debugging |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
 | services.PARSERS | <code>Object</code> |  | Request body parsers available |
 | services.STRINGIFYERS | <code>Object</code> |  | Response body stringifyers available |
 | services.BUFFER_LIMIT | <code>Object</code> |  | The buffer size limit |
-| services.QUERY_PARSER | <code>Object</code> |  | The query parser to use |
+| services.queryParserBuilder | <code>Object</code> |  | A query parser builder from OpenAPI parameters |
 | services.obfuscator | <code>Object</code> |  | A service to hide sensible values |
 | services.errorHandler | <code>Object</code> |  | A service that changes any error to Whook response |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |

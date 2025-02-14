@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { YError, printStackTrace } from 'yerror';
 import stream, { type Readable } from 'node:stream';
 import { autoService } from 'knifecycle';
@@ -233,7 +232,6 @@ async function initWrapHandlerForGoogleHTTPFunction({
         produceableMediaTypes,
         bodyValidator,
       },
-      handler as any,
       definition,
     );
 
@@ -287,7 +285,7 @@ async function handleForAWSHTTPFunction(
       method: req.method,
       body: req.body,
       // body: obfuscateEventBody(obfuscator, req.body),
-      headers: obfuscator.obfuscateSensibleHeaders(req.headers),
+      headers: obfuscator.obfuscateSensibleHeaders(req.headers || {}),
     }),
   );
 
