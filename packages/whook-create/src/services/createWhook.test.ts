@@ -160,6 +160,7 @@ describe('initCreateWhook', () => {
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^18.1.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -168,6 +169,7 @@ describe('initCreateWhook', () => {
     "application-services": "^7.0.2",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",
+    "js-yaml": "^4.1.0",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
     "pkg-dir": "^8.0.0",
@@ -354,6 +356,7 @@ describe('initCreateWhook', () => {
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^18.1.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -362,6 +365,7 @@ describe('initCreateWhook', () => {
     "application-services": "^7.0.2",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",
+    "js-yaml": "^4.1.0",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
     "pkg-dir": "^8.0.0",
@@ -533,6 +537,7 @@ describe('initCreateWhook', () => {
   "dependencies": {
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^18.1.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>",
@@ -541,6 +546,7 @@ describe('initCreateWhook', () => {
     "application-services": "^7.0.2",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",
+    "js-yaml": "^4.1.0",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
     "pkg-dir": "^8.0.0",
