@@ -24,6 +24,8 @@ exports[`API should always have the same amount of endpoints 1`] = `
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /consumer/messages",
+  "post /cron/minutes",
   "put /echo",
 ]
 `;
@@ -41,6 +43,8 @@ exports[`API should always have the same amount of non authenticated endpoints 1
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /consumer/messages",
+  "post /cron/minutes",
   "put /echo",
 ]
 `;
@@ -66,6 +70,8 @@ exports[`API should always have the same amount of publicly documented endpoints
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /consumer/messages",
+  "post /cron/minutes",
   "put /echo",
 ]
 `;
@@ -172,6 +178,17 @@ exports[`API should work 1`] = `
           ],
           "type": "object",
         },
+        "ExampleSchema": {
+          "properties": {
+            "bar": {
+              "type": "string",
+            },
+            "foo": {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
         "TimeSchema": {
           "additionalProperties": false,
           "properties": {
@@ -198,6 +215,62 @@ exports[`API should work 1`] = `
     },
     "openapi": "3.1.0",
     "paths": {
+      "/consumer/messages": {
+        "post": {
+          "operationId": "handleMessages",
+          "responses": {
+            "200": {
+              "description": "Batch handled",
+            },
+          },
+          "summary": "Handle queue messages.",
+          "tags": [
+            "system",
+          ],
+          "x-whook": {
+            "private": true,
+            "type": "consumer",
+          },
+        },
+      },
+      "/cron/minutes": {
+        "post": {
+          "operationId": "handleMinutes",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExampleSchema",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": {
+            "200": {
+              "description": "Cron executed",
+            },
+          },
+          "summary": "Executes every minutes.",
+          "tags": [
+            "system",
+          ],
+          "x-whook": {
+            "private": true,
+            "schedules": [
+              {
+                "body": {
+                  "bar": "baz",
+                  "foo": "bar",
+                },
+                "enabled": true,
+                "rule": "*/1 * * * *",
+              },
+            ],
+            "type": "cron",
+          },
+        },
+      },
       "/delay": {
         "get": {
           "operationId": "getDelay",

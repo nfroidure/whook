@@ -15,6 +15,7 @@ import {
   initAPIDefinitions,
   type WhookAPIHandlerModule,
   type WhookAPIHandlerDefinition,
+  type WhookAPIHandlerConfig,
 } from '@whook/whook';
 import { initImporter } from 'common-services';
 import { join } from 'node:path';
@@ -93,7 +94,9 @@ describe('API', () => {
           path,
           method,
           operation,
-          config: operation['x-whook'] || { type: 'http' },
+          config: (operation['x-whook'] || {
+            type: 'http',
+          }) as unknown as WhookAPIHandlerConfig,
         } as WhookAPIHandlerDefinition);
       }
     }
@@ -153,7 +156,9 @@ describe('API', () => {
             path,
             method,
             operation,
-            config: operation['x-whook'] || { type: 'http' },
+            config: (operation['x-whook'] || {
+              type: 'http',
+            }) as unknown as WhookAPIHandlerConfig,
           } as WhookAPIHandlerDefinition);
         }
       }

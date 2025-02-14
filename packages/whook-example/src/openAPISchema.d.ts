@@ -18,6 +18,12 @@ declare interface paths {
     get: operations['getTime'];
     put: operations['putTime'];
   };
+  '/consumer/messages': {
+    post: operations['handleMessages'];
+  };
+  '/cron/minutes': {
+    post: operations['handleMinutes'];
+  };
   '/echo': {
     put: operations['putEcho'];
   };
@@ -92,6 +98,17 @@ declare interface operations {
       };
     };
   };
+  handleMessages: {
+    responses: {
+      200: object;
+    };
+  };
+  handleMinutes: {
+    requestBody: components['schemas']['ExampleSchema'];
+    responses: {
+      200: object;
+    };
+  };
   putEcho: {
     requestBody: components['requestBodies']['Echo'];
     responses: {
@@ -133,6 +150,10 @@ declare interface components {
   schemas: {
     TimeSchema: {
       currentDate?: string;
+    };
+    ExampleSchema: {
+      foo?: string;
+      bar?: string;
     };
     Echo: {
       echo: string;
