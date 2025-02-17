@@ -2,14 +2,16 @@ import {
   type OpenAPIReference,
   type OpenAPIReferenceable,
   type OpenAPIExtension,
-  OpenAPIParameter,
-  OpenAPIExample,
-  OpenAPIRequestBody,
-  OpenAPIResponse,
-  OpenAPIHeader,
+  type OpenAPIParameter,
+  type OpenAPIExample,
+  type OpenAPIRequestBody,
+  type OpenAPIResponse,
+  type OpenAPIHeader,
+  type OpenAPICallback,
 } from 'ya-open-api-types';
 import { type JsonValue } from 'type-fest';
 import {
+  type WhookAPICallbackDefinition,
   type WhookAPIExampleDefinition,
   type WhookAPIHeaderDefinition,
   type WhookAPIParameterDefinition,
@@ -17,7 +19,7 @@ import {
   type WhookAPIResponseDefinition,
   type WhookAPISchemaDefinition,
 } from '../types/openapi.js';
-import { ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 
 export function refersTo<
   T extends
@@ -26,7 +28,8 @@ export function refersTo<
     | WhookAPIExampleDefinition<JsonValue>
     | WhookAPIHeaderDefinition
     | WhookAPIResponseDefinition
-    | WhookAPIRequestBodyDefinition,
+    | WhookAPIRequestBodyDefinition
+    | WhookAPICallbackDefinition,
 >(
   resource: T,
 ): OpenAPIReference<
@@ -42,7 +45,9 @@ export function refersTo<
             ? OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
             : T extends WhookAPIRequestBodyDefinition
               ? OpenAPIRequestBody<ExpressiveJSONSchema, OpenAPIExtension>
-              : OpenAPIReferenceable<unknown, OpenAPIExtension>
+              : T extends WhookAPICallbackDefinition
+                ? OpenAPICallback<ExpressiveJSONSchema, OpenAPIExtension>
+                : OpenAPIReferenceable<unknown, OpenAPIExtension>
 > {
   return {
     $ref: `#/components/${
@@ -56,7 +61,9 @@ export function refersTo<
               ? 'responses'
               : 'requestBody' in resource
                 ? 'requestBodies'
-                : 'examples'
+                : 'callback' in resource
+                  ? 'callbacks'
+                  : 'examples'
     }/${resource.name}`,
   };
 }

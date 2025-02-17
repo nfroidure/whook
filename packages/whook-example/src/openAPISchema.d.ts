@@ -26,13 +26,27 @@ declare interface paths {
   };
 }
 declare interface operations {
-  getDelay: {
+  postDelayCallback: {
     responses: {
       204: object;
     };
     parameters: {
       query: {
         duration: components['parameters']['duration'];
+      };
+    };
+  };
+  getDelay: {
+    callbacks: {
+      DelayCallback: components['callbacks']['DelayCallback'];
+    };
+    responses: {
+      204: object;
+    };
+    parameters: {
+      query: {
+        duration: components['parameters']['duration'];
+        callbackUrl?: string;
       };
     };
   };
@@ -109,6 +123,13 @@ declare interface operations {
   };
 }
 declare interface components {
+  callbacks: {
+    DelayCallback: {
+      '{$request.query.callbackUrl}': {
+        post: operations['postDelayCallback'];
+      };
+    };
+  };
   parameters: {
     duration: number;
     pathParam1: number;

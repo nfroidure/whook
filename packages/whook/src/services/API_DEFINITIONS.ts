@@ -7,10 +7,6 @@ import {
   type OpenAPIComponents,
   type OpenAPIExtension,
   type OpenAPIPaths,
-  type OpenAPIResponse,
-  type OpenAPIParameter,
-  type OpenAPIHeader,
-  type OpenAPIRequestBody,
 } from 'ya-open-api-types';
 import {
   WHOOK_DEFAULT_PLUGINS,
@@ -19,16 +15,11 @@ import {
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import {
-  WhookAPIHandlerDefinition,
+  API_HANDLER_ASIDE_COMPONENTS_PROPERTY_MAP,
+  type WhookAPIHandlerAsideComponentSuffix,
+  type WhookAPIHandlerDefinition,
   type WhookAPIHandlerModule,
 } from '../types/handlers.js';
-import {
-  WhookAPIHeaderDefinition,
-  WhookAPIParameterDefinition,
-  WhookAPIRequestBodyDefinition,
-  WhookAPIResponseDefinition,
-  WhookAPISchemaDefinition,
-} from '../types/openapi.js';
 
 export const DEFAULT_IGNORED_FILES_PREFIXES = ['__'];
 export const DEFAULT_REDUCED_FILES_SUFFIXES = ['.js', '.ts', '.mjs'];
@@ -239,133 +230,48 @@ async function initAPIDefinitions({
       {},
     ),
     components: {
-      schemas: handlersModules.reduce<{
-        [key: string]: ExpressiveJSONSchema;
-      }>(
-        (schemas, { module }) => ({
-          ...schemas,
-          ...Object.keys(module)
-            .filter((key) => key.endsWith('Schema'))
-            .reduce((addedSchemas, key) => {
-              const schema = module[key] as WhookAPISchemaDefinition;
-
-              if (schemas[schema.name]) {
-                log(
-                  'warning',
-                  `⚠️ - Overriding an existing schema ("${schema.name}").`,
-                );
-              }
-
-              return { ...addedSchemas, [schema.name]: schema.schema };
-            }, {}),
-        }),
-        {},
-      ),
-      parameters: handlersModules.reduce<{
-        [key: string]: OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>;
-      }>(
-        (parameters, { module }) => ({
-          ...parameters,
-          ...Object.keys(module)
-            .filter((key) => key.endsWith('Parameter'))
-            .reduce((addedParameters, key) => {
-              const parameter = module[key] as WhookAPIParameterDefinition;
-
-              if (addedParameters[parameter.name]) {
-                log(
-                  'warning',
-                  `⚠️ - Overriding an existing parameter ("${parameter.name}").`,
-                );
-              }
-
-              return {
-                ...addedParameters,
-                [parameter.name]: parameter.parameter,
-              };
-            }, {}),
-        }),
-        {},
-      ),
-      headers: handlersModules.reduce<{
-        [key: string]: OpenAPIHeader<ExpressiveJSONSchema, OpenAPIExtension>;
-      }>(
-        (headers, { module }) => ({
-          ...headers,
-          ...Object.keys(module)
-            .filter((key) => key.endsWith('Header'))
-            .reduce((addedHeaders, key) => {
-              const header = module[key] as WhookAPIHeaderDefinition;
-
-              if (addedHeaders[header.name]) {
-                log(
-                  'warning',
-                  `⚠️ - Overriding an existing header ("${header.name}").`,
-                );
-              }
-
-              return {
-                ...addedHeaders,
-                [header.name]: header.header,
-              };
-            }, {}),
-        }),
-        {},
-      ),
-      requestBodies: handlersModules.reduce<{
-        [key: string]: OpenAPIRequestBody<
-          ExpressiveJSONSchema,
-          OpenAPIExtension
-        >;
-      }>(
-        (requestBodies, { module }) => ({
-          ...requestBodies,
-          ...Object.keys(module)
-            .filter((key) => key.endsWith('RequestBody'))
-            .reduce((addedRequestBodies, key) => {
-              const requestBody = module[key] as WhookAPIRequestBodyDefinition;
-
-              if (addedRequestBodies[requestBody.name]) {
-                log(
-                  'warning',
-                  `⚠️ - Overriding an existing request body ("${requestBody.name}").`,
-                );
-              }
-
-              return {
-                ...addedRequestBodies,
-                [requestBody.name]: requestBody.requestBody,
-              };
-            }, {}),
-        }),
-        {},
-      ),
-      responses: handlersModules.reduce<{
-        [key: string]: OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>;
-      }>(
-        (responses, { module }) => ({
-          ...responses,
-          ...Object.keys(module)
-            .filter((key) => key.endsWith('Response'))
-            .reduce((addedResponses, key) => {
-              const response = module[key] as WhookAPIResponseDefinition;
-
-              if (addedResponses[response.name]) {
-                log(
-                  'warning',
-                  `⚠️ - Overriding an existing response ("${response.name}").`,
-                );
-              }
-
-              return {
-                ...addedResponses,
-                [response.name]: response.response,
-              };
-            }, {}),
-        }),
-        {},
-      ),
+      schemas: combineComponents({ log }, 'Schema', handlersModules),
+      parameters: combineComponents({ log }, 'Parameter', handlersModules),
+      headers: combineComponents({ log }, 'Header', handlersModules),
+      requestBodies: combineComponents({ log }, 'RequestBody', handlersModules),
+      responses: combineComponents({ log }, 'Response', handlersModules),
+      callbacks: combineComponents({ log }, 'Callback', handlersModules),
     },
   };
 
   return API_DEFINITIONS;
+}
+
+export function combineComponents(
+  { log }: { log: LogService },
+  type: WhookAPIHandlerAsideComponentSuffix,
+  modules: {
+    file: string;
+    module: WhookAPIHandlerModule;
+  }[],
+) {
+  return modules.reduce(
+    (components, { module }) => ({
+      ...components,
+      ...Object.keys(module)
+        .filter((key) => key.endsWith(type))
+        .reduce((addedComponents, key) => {
+          const component = module[key];
+
+          if (addedComponents[component.name]) {
+            log(
+              'warning',
+              `⚠️ - Overriding an existing aside component (type: "${type}", name: "${component.name}").`,
+            );
+          }
+
+          return {
+            ...addedComponents,
+            [component.name]:
+              component[API_HANDLER_ASIDE_COMPONENTS_PROPERTY_MAP[type]],
+          };
+        }, {}),
+    }),
+    {},
+  );
 }

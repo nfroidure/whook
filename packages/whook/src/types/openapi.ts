@@ -11,6 +11,7 @@ import {
   type OpenAPIResponse,
   type OpenAPIReference,
   type OpenAPIExample,
+  type OpenAPICallback,
 } from 'ya-open-api-types';
 
 export interface WhookOpenAPIOperation
@@ -99,4 +100,10 @@ export interface WhookAPIRequestBodyDefinition {
     | OpenAPIReference<
         OpenAPIRequestBody<ExpressiveJSONSchema, OpenAPIExtension>
       >;
+}
+export interface WhookAPICallbackDefinition {
+  name: string;
+  callback:
+    | OpenAPICallback<ExpressiveJSONSchema, OpenAPIExtension>
+    | OpenAPIReference<OpenAPICallback<ExpressiveJSONSchema, OpenAPIExtension>>;
 }

@@ -61,7 +61,7 @@ export const echoResponse = {
   },
 } as const satisfies WhookAPIResponseDefinition;
 
-/* Architecture Note #3.1.4: Reusable request bodies
+/* Architecture Note #3.1.5: Reusable request bodies
 
 This is how to declare a reusable API request body
  to avoid having to write it several times and

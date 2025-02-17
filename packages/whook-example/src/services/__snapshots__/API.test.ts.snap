@@ -74,6 +74,25 @@ exports[`API should work 1`] = `
 {
   "API": {
     "components": {
+      "callbacks": {
+        "DelayCallback": {
+          "{$request.query.callbackUrl}": {
+            "post": {
+              "operationId": "postDelayCallback",
+              "parameters": [
+                {
+                  "$ref": "#/components/parameters/duration",
+                },
+              ],
+              "responses": {
+                "204": {
+                  "description": "Delay trigger received.",
+                },
+              },
+            },
+          },
+        },
+      },
       "headers": {},
       "parameters": {
         "duration": {
@@ -200,10 +219,23 @@ exports[`API should work 1`] = `
     "paths": {
       "/delay": {
         "get": {
+          "callbacks": {
+            "DelayCallback": {
+              "$ref": "#/components/callbacks/DelayCallback",
+            },
+          },
           "operationId": "getDelay",
           "parameters": [
             {
               "$ref": "#/components/parameters/duration",
+            },
+            {
+              "in": "query",
+              "name": "callbackUrl",
+              "schema": {
+                "format": "uri",
+                "type": "string",
+              },
             },
           ],
           "responses": {
@@ -227,6 +259,14 @@ exports[`API should work 1`] = `
               "required": false,
               "schema": {
                 "type": "number",
+              },
+            },
+            {
+              "in": "query",
+              "name": "callbackUrl",
+              "schema": {
+                "format": "uri",
+                "type": "string",
               },
             },
           ],

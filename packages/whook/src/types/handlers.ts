@@ -6,13 +6,18 @@ import {
 } from 'ya-open-api-types';
 import { type WhookRequestBody, type WhookResponse } from './http.js';
 import { type WhookMain } from '../index.js';
-import { type Dependencies, ServiceInitializer } from 'knifecycle';
 import {
-  WhookAPIHeaderDefinition,
-  WhookAPIParameterDefinition,
-  WhookAPIRequestBodyDefinition,
-  WhookAPIResponseDefinition,
-  WhookAPISchemaDefinition,
+  type Dependencies,
+  type ServiceInitializer,
+  type ProviderInitializer,
+} from 'knifecycle';
+import {
+  type WhookAPIHeaderDefinition,
+  type WhookAPIParameterDefinition,
+  type WhookAPIRequestBodyDefinition,
+  type WhookAPIResponseDefinition,
+  type WhookAPISchemaDefinition,
+  type WhookAPICallbackDefinition,
 } from './openapi.js';
 
 export const DEFAULT_HANDLER_CONFIG: Required<WhookAPIHandlerConfig> = {
@@ -59,7 +64,27 @@ export interface WhookAPIHandler<
 export type WhookAPIHandlerInitializer<
   D extends Dependencies = Record<string, unknown>,
   S extends WhookAPIHandler = WhookAPIHandler,
-> = ServiceInitializer<D, S>;
+> = ServiceInitializer<D, S> | ProviderInitializer<D, S>;
+
+export const API_HANDLER_ASIDE_COMPONENTS_SUFFIXES = [
+  'Response',
+  'RequestBody',
+  'Header',
+  'Parameter',
+  'Schema',
+  'Callback',
+] as const;
+export const API_HANDLER_ASIDE_COMPONENTS_PROPERTY_MAP = {
+  Response: 'response',
+  RequestBody: 'requestBody',
+  Header: 'header',
+  Parameter: 'parameter',
+  Schema: 'schema',
+  Callback: 'callback',
+} as const;
+
+export type WhookAPIHandlerAsideComponentSuffix =
+  (typeof API_HANDLER_ASIDE_COMPONENTS_SUFFIXES)[number];
 
 // May allow to type handlers files later
 // https://github.com/nfroidure/whook/issues/196
@@ -71,6 +96,7 @@ export interface WhookAPIHandlerModule {
   [name: `${string}Header`]: WhookAPIHeaderDefinition;
   [name: `${string}Response`]: WhookAPIResponseDefinition;
   [name: `${string}RequestBody`]: WhookAPIRequestBodyDefinition;
+  [name: `${string}Callback`]: WhookAPICallbackDefinition;
 }
 
 export type WhookAPIWrapper = (

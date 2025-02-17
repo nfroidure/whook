@@ -3,8 +3,9 @@ import {
   refersTo,
   type WhookAPITypedHandler,
   type WhookAPIParameterDefinition,
+  type WhookAPICallbackDefinition,
 } from '@whook/whook';
-import { type DelayService } from 'common-services';
+import { type LogService, type DelayService } from 'common-services';
 import { type WhookAPIHandlerDefinition } from '@whook/whook';
 
 /* Architecture Note #3.4: Examples
@@ -38,6 +39,30 @@ export const durationParameter = {
   components['parameters']['duration']
 >;
 
+/* Architecture Note #3.1.5: Reusable callbacks
+
+This is how to declare a reusable API callback.
+
+Callbacks get typed too allowing you to ensure
+ your code fits the required API signature.
+*/
+export const delayCallback = {
+  name: 'DelayCallback',
+  callback: {
+    '{$request.query.callbackUrl}': {
+      post: {
+        operationId: 'postDelayCallback',
+        parameters: [refersTo(durationParameter)],
+        responses: {
+          204: {
+            description: 'Delay trigger received.',
+          },
+        },
+      },
+    },
+  },
+} as const satisfies WhookAPICallbackDefinition;
+
 /* Architecture Note #3.1: Definition
 
 This is how to declare a new route for your API.
@@ -69,11 +94,22 @@ export const definition = {
        instead of writing it inline.
       */
       refersTo(durationParameter),
+      {
+        name: 'callbackUrl',
+        in: 'query',
+        schema: {
+          type: 'string',
+          format: 'uri',
+        },
+      },
     ],
     responses: {
       204: {
         description: 'Delay expired',
       },
+    },
+    callbacks: {
+      DelayCallback: refersTo(delayCallback),
     },
   },
 } as const satisfies WhookAPIHandlerDefinition;
@@ -95,12 +131,29 @@ Parameters are cleaned up and checked by Whook so
  to the API contract you set in the handler's
  Open API definition above.
 */
-async function initGetDelay({ delay }: { delay: DelayService }) {
+async function initGetDelay({
+  delay,
+  fetcher = fetch,
+  log,
+}: {
+  delay: DelayService;
+  fetcher: typeof fetch;
+  log: LogService;
+}) {
   const handler: WhookAPITypedHandler<
     operations[typeof definition.operation.operationId],
     typeof definition
-  > = async ({ query: { duration } }) => {
+  > = async ({ query: { duration, callbackUrl } }) => {
     await delay.create(duration);
+
+    if (callbackUrl) {
+      const url = buildDelayCallbackURL(callbackUrl, { query: { duration } });
+      const response = await fetcher(url, { method: 'POST' });
+
+      if (response.status !== 204) {
+        log('error', '💥 - Bad callback response!');
+      }
+    }
 
     /* Architecture Note #3.2.1: Response
 
@@ -114,6 +167,16 @@ async function initGetDelay({ delay }: { delay: DelayService }) {
   };
 
   return handler;
+}
+
+function buildDelayCallbackURL(
+  callbackURL: string,
+  input: operations['postDelayCallback']['parameters'],
+) {
+  const url = new URL(callbackURL);
+
+  url.searchParams.set('duration', input.query.duration.toString());
+  return url.toString();
 }
 
 /* Architecture Note #3.2.2: Exportation

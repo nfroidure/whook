@@ -358,6 +358,18 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
       "⌛ - Delay service initialized.",
     ],
     [
@@ -664,6 +676,18 @@ describe('runProcess', () => {
       "🍀 - Trying to find "authentication" module path in "__project__".",
     ],
     [
+      "🍀 - Trying to find "fetcher" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "fetcher" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "fetcher" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "fetcher" module path in "__project__".",
+    ],
+    [
       "🍀 - Trying to find "getDelay" module path in "__project__".",
     ],
     [
@@ -955,6 +979,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/TIMEOUT.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/fetcher.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/uniqueId.js".",
     ],
     [
@@ -1018,6 +1045,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/TIMEOUT.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/fetcher.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
     ],
     [
@@ -1073,6 +1103,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/fetcher.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId.js".",
@@ -1141,6 +1174,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/fetcher.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId.ts".",
     ],
     [
@@ -1202,6 +1238,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "TIMEOUT" not found.",
+    ],
+    [
+      "🚫 - Module path of "fetcher" not found.",
     ],
     [
       "🚫 - Module path of "uniqueId" not found.",

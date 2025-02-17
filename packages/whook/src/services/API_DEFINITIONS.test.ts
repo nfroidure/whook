@@ -140,6 +140,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {},
       "requestBodies": {},
@@ -191,6 +192,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {},
       "requestBodies": {},
@@ -247,6 +249,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {
         "userId": {
@@ -391,6 +394,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {
         "userId": {
@@ -539,6 +543,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {
         "userId": {
@@ -687,6 +692,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {
         "userId": {
@@ -827,6 +833,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {
         "userId": {
@@ -975,6 +982,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {
         "userId": {
@@ -1106,6 +1114,7 @@ describe('initAPIDefinitions', () => {
 {
   "API_DEFINITIONS": {
     "components": {
+      "callbacks": {},
       "headers": {},
       "parameters": {
         "userId": {
