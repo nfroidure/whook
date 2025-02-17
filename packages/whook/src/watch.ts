@@ -33,16 +33,24 @@ export type WatchProcessDependencies = OpenAPITypesConfig & {
 export type WatchProcessArgs<T extends Dependencies> = {
   injectedNames: string[];
   ignored?: string[];
+  watched?: string[];
   afterRestartEnd?: (
     services: T & WatchProcessDependencies,
     context: { apiChanged: boolean; openAPIData: string },
   ) => Promise<void>;
 };
 
+export const DEFAULT_IGNORED = ['node_modules', '*.d.ts', '.git'];
+export const DEFAULT_WATCHED = ['src', 'package.json', 'package-lock.json'];
+
 export async function watchDevProcess<T extends Dependencies>(
-  { injectedNames = [], ignored = [], afterRestartEnd }: WatchProcessArgs<T> = {
+  {
+    injectedNames = [],
+    ignored,
+    watched,
+    afterRestartEnd,
+  }: WatchProcessArgs<T> = {
     injectedNames: [],
-    ignored: [],
   },
 ): Promise<void> {
   let restartsCounter = 0;
@@ -50,11 +58,9 @@ export async function watchDevProcess<T extends Dependencies>(
     let ignoreFileContent: string;
     let ignoreBuilder = ignore.default();
 
-    ignoreBuilder = ignoreBuilder.add(['node_modules', '*.d.ts', '.git']);
-
-    if (ignored.length) {
-      ignoreBuilder = ignoreBuilder.add(ignored);
-    }
+    ignoreBuilder = ignoreBuilder.add(
+      ignored?.length ? ignored : DEFAULT_IGNORED,
+    );
 
     try {
       ignoreFileContent = (await readFile('.gitignore')).toString();
@@ -74,10 +80,9 @@ export async function watchDevProcess<T extends Dependencies>(
 
   await new Promise<void>((resolve, reject) => {
     chokidar
-      .watch(['**/*.ts', 'package*.json'], {
-        ignored: (str: string) => {
-          // ignore throws with this file name
-          if (str === '.') {
+      .watch(watched?.length ? watched : DEFAULT_WATCHED, {
+        ignored: (str, stats) => {
+          if (!stats?.isFile()) {
             return false;
           }
           return !ignoreFilter(str);
