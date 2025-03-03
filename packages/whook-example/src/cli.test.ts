@@ -9,12 +9,15 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-    }).toMatchInlineSnapshot(`
+  stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+  stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/')
+}).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
+🔴 - Running with "local" application environment.
+🔂 - Running with "test" node environment.
+✔ - Found a free port "8000"
 On air 🚀🌕
 ",
   "stdout": "
@@ -23,9 +26,8 @@ On air 🚀🌕
 - printEnv: A command printing every env values
 
 
-# Provided by "@whook/whook": 8 commands
+# Provided by "@whook/whook": 7 commands
 - config: A simple program that returns the queryed config value
-- create: A command helping to create new Whook files easily
 - env: A command printing env values
 - generateOpenAPISchema: Write openAPI schema to stdout
 - generateOpenAPITypes: Write openAPI types to stdout
@@ -57,6 +59,7 @@ On air 🚀🌕
 🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
+✔ - Found a free port "8000"
 On air 🚀🌕
 ",
   "stdout": "test
@@ -77,6 +80,9 @@ On air 🚀🌕
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
+🔴 - Running with "local" application environment.
+🔂 - Running with "test" node environment.
+✔ - Found a free port "8000"
 On air 🚀🌕
 ",
   "stdout": ""localhost"

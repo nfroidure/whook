@@ -2,16 +2,13 @@ import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initHandlerCommand from './handler.js';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
-import { type WhookPromptArgs } from '../services/promptArgs.js';
 import { type Injector, type Service } from 'knifecycle';
 
 describe('handlerCommand', () => {
-  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
   const $injector = jest.fn<Injector<Service>>();
 
   beforeEach(() => {
-    promptArgs.mockReset();
     log.mockReset();
     $injector.mockReset();
   });
@@ -24,7 +21,13 @@ describe('handlerCommand', () => {
           body,
         }),
       });
-      promptArgs.mockResolvedValueOnce({
+
+      const handlerCommand = await initHandlerCommand({
+        log,
+        $injector,
+      });
+
+      await handlerCommand({
         command: 'whook',
         rest: ['handler'],
         namedArguments: {
@@ -33,57 +36,45 @@ describe('handlerCommand', () => {
         },
       });
 
-      const handlerCommand = await initHandlerCommand({
-        promptArgs,
-        log,
-        $injector,
-      });
-
-      await handlerCommand();
-
       expect({
-        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "injectorCalls": [
-            [
-              [
-                "putEcho",
-              ],
-            ],
-          ],
-          "logCalls": [
-            [
-              "debug",
-              "handler",
-              "putEcho",
-            ],
-            [
-              "debug",
-              "parameters",
-              {
-                "body": {
-                  "echo": "YOLO!",
-                },
-              },
-            ],
-            [
-              "info",
-              "{
-          "status": 200,
-          "body": {
-            "echo": "YOLO!"
-          }
-        }",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-        }
-      `);
+{
+  "injectorCalls": [
+    [
+      [
+        "putEcho",
+      ],
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "handler",
+      "putEcho",
+    ],
+    [
+      "debug",
+      "parameters",
+      {
+        "body": {
+          "echo": "YOLO!",
+        },
+      },
+    ],
+    [
+      "info",
+      "{
+  "status": 200,
+  "body": {
+    "echo": "YOLO!"
+  }
+}",
+    ],
+  ],
+}
+`);
     });
 
     test('with handler only', async () => {
@@ -93,7 +84,13 @@ describe('handlerCommand', () => {
           body,
         }),
       });
-      promptArgs.mockResolvedValueOnce({
+
+      const handlerCommand = await initHandlerCommand({
+        log,
+        $injector,
+      });
+
+      await handlerCommand({
         command: 'whook',
         rest: ['handler'],
         namedArguments: {
@@ -101,50 +98,38 @@ describe('handlerCommand', () => {
         },
       });
 
-      const handlerCommand = await initHandlerCommand({
-        promptArgs,
-        log,
-        $injector,
-      });
-
-      await handlerCommand();
-
       expect({
-        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
       }).toMatchInlineSnapshot(`
-        {
-          "injectorCalls": [
-            [
-              [
-                "getPing",
-              ],
-            ],
-          ],
-          "logCalls": [
-            [
-              "debug",
-              "handler",
-              "getPing",
-            ],
-            [
-              "debug",
-              "parameters",
-              {},
-            ],
-            [
-              "info",
-              "{
-          "status": 200
-        }",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-        }
-      `);
+{
+  "injectorCalls": [
+    [
+      [
+        "getPing",
+      ],
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "handler",
+      "getPing",
+    ],
+    [
+      "debug",
+      "parameters",
+      {},
+    ],
+    [
+      "info",
+      "{
+  "status": 200
+}",
+    ],
+  ],
+}
+`);
     });
   });
 
@@ -156,29 +141,26 @@ describe('handlerCommand', () => {
           body,
         }),
       });
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['handler'],
-        namedArguments: {
-          name: 'putEcho',
-          parameters: '{"body: {"echo": "YOLO!"} }',
-        },
-      });
 
       const handlerCommand = await initHandlerCommand({
-        promptArgs,
         log,
         $injector,
       });
 
       try {
-        await handlerCommand();
+        await handlerCommand({
+          command: 'whook',
+          rest: ['handler'],
+          namedArguments: {
+            name: 'putEcho',
+            parameters: '{"body: {"echo": "YOLO!"} }',
+          },
+        });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
           errorParams: (err as YError).params.slice(0, -1),
-          promptArgsCalls: promptArgs.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchInlineSnapshot(`
@@ -189,9 +171,6 @@ describe('handlerCommand', () => {
   ],
   "injectorCalls": [],
   "logCalls": [],
-  "promptArgsCalls": [
-    [],
-  ],
 }
 `);
       }
@@ -203,67 +182,61 @@ describe('handlerCommand', () => {
           throw new YError('E_HANDLER_ERROR');
         },
       });
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['handler'],
-        namedArguments: {
-          name: 'putEcho',
-          parameters: '{"body": {"echo": "YOLO!"} }',
-        },
-      });
 
       const handlerCommand = await initHandlerCommand({
-        promptArgs,
         log,
         $injector,
       });
 
       try {
-        await handlerCommand();
+        await handlerCommand({
+          command: 'whook',
+          rest: ['handler'],
+          namedArguments: {
+            name: 'putEcho',
+            parameters: '{"body": {"echo": "YOLO!"} }',
+          },
+        });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
           errorParams: (err as YError).params,
-          promptArgsCalls: promptArgs.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchInlineSnapshot(`
-          {
-            "errorCode": "E_UNEXPECTED_SUCCESS",
-            "errorParams": [],
-            "injectorCalls": [
-              [
-                [
-                  "putEcho",
-                ],
-              ],
-            ],
-            "logCalls": [
-              [
-                "debug",
-                "handler",
-                "putEcho",
-              ],
-              [
-                "debug",
-                "parameters",
-                {
-                  "body": {
-                    "echo": "YOLO!",
-                  },
-                },
-              ],
-              [
-                "error",
-                "Got an error while running the handler.",
-              ],
-            ],
-            "promptArgsCalls": [
-              [],
-            ],
-          }
-        `);
+{
+  "errorCode": "E_UNEXPECTED_SUCCESS",
+  "errorParams": [],
+  "injectorCalls": [
+    [
+      [
+        "putEcho",
+      ],
+    ],
+  ],
+  "logCalls": [
+    [
+      "debug",
+      "handler",
+      "putEcho",
+    ],
+    [
+      "debug",
+      "parameters",
+      {
+        "body": {
+          "echo": "YOLO!",
+        },
+      },
+    ],
+    [
+      "error",
+      "Got an error while running the handler.",
+    ],
+  ],
+}
+`);
       }
     });
   });

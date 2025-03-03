@@ -122,7 +122,7 @@
     "first-chunk-stream": "^6.0.0",
     "fs-extra": "^11.2.0",
     "ignore": "^5.3.1",
-    "inquirer": "^12.1.0",
+    "@inquirer/prompts": "^7.3.2",
     "internal-ip": "^8.0.0",
     "knifecycle": "^19.0.0",
     "miniquery": "^1.1.2",

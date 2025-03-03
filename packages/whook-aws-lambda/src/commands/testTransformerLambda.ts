@@ -2,8 +2,7 @@ import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import {
   DEFAULT_COMPILER_OPTIONS,
-  readArgs,
-  type WhookCommandArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
 } from '@whook/whook';
@@ -23,32 +22,38 @@ const DEFAULT_EVENT: FirehoseTransformationEvent = {
   ],
 };
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'TransformerLambda',
   description: 'A command for testing AWS lambda transformers',
   example: `whook TransformerLambda --name handleTransformerLambda`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name'],
-    properties: {
-      name: {
-        description: 'Name of the lambda to run',
+  arguments: [
+    {
+      name: 'name',
+      required: true,
+      description: 'Name of the lambda to run',
+      schema: {
         type: 'string',
       },
-      type: {
-        description: 'Type of lambda to test',
+    },
+    {
+      name: 'type',
+      description: 'Type of lambda to test',
+      schema: {
         type: 'string',
         enum: ['main', 'index'],
         default: 'index',
       },
-      event: {
-        description: 'The stream event',
+    },
+    {
+      name: 'event',
+      description: 'The stream event',
+      schema: {
         type: 'string',
         default: JSON.stringify(DEFAULT_EVENT),
       },
     },
-  },
-};
+  ],
+} as const satisfies WhookCommandDefinition;
 
 export default extra(definition, autoService(initTestTransformerLambdaCommand));
 
@@ -57,22 +62,22 @@ async function initTestTransformerLambdaCommand({
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log,
-  args,
 }: {
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;
-  args: WhookCommandArgs;
-}) {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    type: string;
+    event: string;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name, type, event },
-    } = readArgs<{
-      name: string;
-      type: string;
-      event: string;
-    }>(definition.arguments, args);
+    } = args;
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
       { APP_ENV, PROJECT_DIR, log },

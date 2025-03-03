@@ -16,15 +16,14 @@ describe('printEnvCommand', () => {
     const printEnvCommand = await initPrintEnvCommand({
       log,
       ENV: { NODE_ENV: NodeEnv.Test },
-      args: {
-        command: 'whook',
-        namedArguments: {
-          keysOnly: true,
-        },
-        rest: ['printEnv'],
-      },
     });
-    const result = await printEnvCommand();
+    const result = await printEnvCommand({
+      command: 'whook',
+      namedArguments: {
+        keysOnly: true,
+      },
+      rest: ['printEnv'],
+    });
 
     expect({
       result,

@@ -5,7 +5,6 @@ import initCreateCommand from './create.js';
 import { definition as initGetPingDefinition } from '../handlers/getPing.js';
 import { type OpenAPI } from 'ya-open-api-types';
 import { type LogService } from 'common-services';
-import { type WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('createCommand', () => {
   const PROJECT_DIR = '/hom/whoiam/project';
@@ -23,7 +22,6 @@ describe('createCommand', () => {
     },
     tags: [{ name: 'system' }],
   };
-  const promptArgs = jest.fn<WhookPromptArgs>();
   const ensureDir = jest.fn<(path: string) => Promise<void>>();
   const writeFile = jest.fn<(path: string, data: string) => Promise<void>>();
   const pathExists = jest.fn<(path: string) => Promise<boolean>>();
@@ -31,7 +29,6 @@ describe('createCommand', () => {
   const log = jest.fn<LogService>();
 
   beforeEach(() => {
-    promptArgs.mockReset();
     ensureDir.mockReset();
     writeFile.mockReset();
     pathExists.mockReset();
@@ -41,14 +38,6 @@ describe('createCommand', () => {
 
   describe('for handlers', () => {
     test('should work with get and no dependencies', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'getHandler',
-          type: 'handler',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
       });
@@ -63,18 +52,23 @@ describe('createCommand', () => {
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'getHandler',
+          type: 'handler',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -231,9 +225,6 @@ describe('createCommand', () => {
       "/hom/whoiam/project/src/handlers/getHandler.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [
     [
@@ -306,14 +297,6 @@ export default location(
     });
 
     test('should work with an existing get and dependencies but no erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'getHandler',
-          type: 'handler',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -331,18 +314,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'getHandler',
+          type: 'handler',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -513,9 +501,6 @@ export default location(
       "/hom/whoiam/project/src/handlers/getHandler.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [],
 }
@@ -523,14 +508,6 @@ export default location(
     });
 
     test('should work with an existing get and dependencies and erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'getHandler',
-          type: 'handler',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -548,18 +525,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'getHandler',
+          type: 'handler',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -729,9 +711,6 @@ export default location(
     [
       "/hom/whoiam/project/src/handlers/getHandler.ts",
     ],
-  ],
-  "promptArgsCalls": [
-    [],
   ],
   "result": undefined,
   "writeFileCalls": [
@@ -817,14 +796,6 @@ export default location(
 
   describe('for services', () => {
     test('should work with no dependencies', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aService',
-          type: 'service',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
       });
@@ -833,18 +804,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aService',
+          type: 'service',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -936,9 +912,6 @@ export default location(
       "/hom/whoiam/project/src/services/aService.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [
     [
@@ -966,14 +939,6 @@ export default location(
     });
 
     test('should work when existing with dependencies but no erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aService',
-          type: 'service',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -985,18 +950,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aService',
+          type: 'service',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -1102,9 +1072,6 @@ export default location(
       "/hom/whoiam/project/src/services/aService.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [],
 }
@@ -1112,14 +1079,6 @@ export default location(
     });
 
     test('should work when existing with dependencies and erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aService',
-          type: 'service',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -1131,18 +1090,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aService',
+          type: 'service',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -1247,9 +1211,6 @@ export default location(
     [
       "/hom/whoiam/project/src/services/aService.ts",
     ],
-  ],
-  "promptArgsCalls": [
-    [],
   ],
   "result": undefined,
   "writeFileCalls": [
@@ -1290,14 +1251,6 @@ export default location(
 
   describe('for providers', () => {
     test('should work with no dependencies', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aProvider',
-          type: 'provider',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
       });
@@ -1306,18 +1259,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aProvider',
+          type: 'provider',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -1409,9 +1367,6 @@ export default location(
       "/hom/whoiam/project/src/services/aProvider.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [
     [
@@ -1449,14 +1404,6 @@ export default location(
     });
 
     test('should work when existing with dependencies but no erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aProvider',
-          type: 'provider',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -1468,18 +1415,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aProvider',
+          type: 'provider',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -1585,9 +1537,6 @@ export default location(
       "/hom/whoiam/project/src/services/aProvider.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [],
 }
@@ -1595,14 +1544,6 @@ export default location(
     });
 
     test('should work when existing with dependencies and erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aProvider',
-          type: 'provider',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -1614,18 +1555,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aProvider',
+          type: 'provider',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -1730,9 +1676,6 @@ export default location(
     [
       "/hom/whoiam/project/src/services/aProvider.ts",
     ],
-  ],
-  "promptArgsCalls": [
-    [],
   ],
   "result": undefined,
   "writeFileCalls": [
@@ -1783,14 +1726,6 @@ export default location(
 
   describe('for commands', () => {
     test('should work with no dependencies', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aCommand',
-          type: 'command',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
       });
@@ -1802,18 +1737,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aCommand',
+          type: 'command',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -1914,57 +1854,45 @@ export default location(
       "/hom/whoiam/project/src/commands/aCommand.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { extra, autoService, location } from 'knifecycle';
 import {
-  readArgs,
-  type WhookPromptArgs,
-  type WhookCommandArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
-  type WhookCommandHandler,
 } from '@whook/whook';
 
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'aCommand',
   description: 'yolo',
   example: \`whook aCommand --param "value"\`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['param'],
-    properties: {
-      param: {
-        description: 'A parameter',
-        type: 'string',
-        default: 'A default value',
-      },
+  arguments: [{
+    name: 'param',
+    required: true,
+    description: 'A parameter',
+    schema: {
+      type: 'string',
+      default: 'A default value',
     },
-  },
-};
+  }],
+} as const satisfies WhookCommandDefinition;
 
 async function initACommandCommand({
   promptArgs,
 }: {
   promptArgs: WhookPromptArgs;
-}): Promise<WhookCommandHandler> {
-  return async () => {
-    const { param } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { param: string; };
+}): Promise<WhookCommand<{ param: string; }>> {
+  return async ({ param }) => {
 
   // Implement your command here
   }
 }
 
 export default location(
-  extra(definition, autoService(initACommandCommand)),
+  autoService(initACommandCommand),
   import.meta.url,
 );
 ",
@@ -1975,14 +1903,6 @@ export default location(
     });
 
     test('should work when existing with dependencies but no erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aCommand',
-          type: 'command',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -1997,18 +1917,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aCommand',
+          type: 'command',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -2123,9 +2048,6 @@ export default location(
       "/hom/whoiam/project/src/commands/aCommand.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [],
 }
@@ -2133,14 +2055,6 @@ export default location(
     });
 
     test('should work when existing with dependencies and erase allowed', async () => {
-      promptArgs.mockResolvedValueOnce({
-        command: 'whook',
-        rest: ['create'],
-        namedArguments: {
-          name: 'aCommand',
-          type: 'command',
-        },
-      });
       inquirer.prompt.mockResolvedValueOnce({
         services: ['PROJECT_DIR', 'log', 'ENV'],
       });
@@ -2155,18 +2069,23 @@ export default location(
       const createCommand = await initCreateCommand({
         PROJECT_DIR,
         API,
-        promptArgs,
         ensureDir,
         writeFile,
         pathExists,
         inquirer: inquirer as unknown as typeof _inquirer,
         log,
       });
-      const result = await createCommand();
+      const result = await createCommand({
+        command: 'whook',
+        rest: ['create'],
+        namedArguments: {
+          name: 'aCommand',
+          type: 'command',
+        },
+      });
 
       expect({
         result,
-        promptArgsCalls: promptArgs.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,
         writeFileCalls: writeFile.mock.calls,
         pathExistsCalls: pathExists.mock.calls,
@@ -2281,41 +2200,33 @@ export default location(
       "/hom/whoiam/project/src/commands/aCommand.ts",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { extra, autoService, location } from 'knifecycle';
 import {
-  readArgs,
-  type WhookPromptArgs,
-  type WhookCommandArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
-  type WhookCommandHandler,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'aCommand',
   description: 'yolo',
   example: \`whook aCommand --param "value"\`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['param'],
-    properties: {
-      param: {
-        description: 'A parameter',
-        type: 'string',
-        default: 'A default value',
-      },
+  arguments: [{
+    name: 'param',
+    required: true,
+    description: 'A parameter',
+    schema: {
+      type: 'string',
+      default: 'A default value',
     },
-  },
-};
+  }],
+} as const satisfies WhookCommandDefinition;
 
 async function initACommandCommand({
   ENV,
@@ -2327,19 +2238,15 @@ async function initACommandCommand({
   PROJECT_DIR: ProjectDirService;
   log: LogService;
   promptArgs: WhookPromptArgs;
-}): Promise<WhookCommandHandler> {
-  return async () => {
-    const { param } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { param: string; };
+}): Promise<WhookCommand<{ param: string; }>> {
+  return async ({ param }) => {
 
   // Implement your command here
   }
 }
 
 export default location(
-  extra(definition, autoService(initACommandCommand)),
+  autoService(initACommandCommand),
   import.meta.url,
 );
 ",

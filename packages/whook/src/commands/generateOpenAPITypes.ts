@@ -1,8 +1,11 @@
-import { autoService, extra } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { generateOpenAPITypes as generateTypes, toSource } from 'schema2dts';
 import { type OpenAPITypesGenerationOptions } from 'schema2dts';
 import { type LogService } from 'common-services';
-import { type WhookCommandDefinition } from '../services/promptArgs.js';
+import {
+  type WhookCommand,
+  type WhookCommandDefinition,
+} from '../types/commands.js';
 
 export type OpenAPITypesConfig = {
   OPEN_API_TYPES_CONFIG: OpenAPITypesGenerationOptions;
@@ -14,18 +17,12 @@ This command allows you to generate the API types that
  helps you to write your handler in a clean and safe
  manner.
 */
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'generateOpenAPITypes',
   description: 'Write openAPI types to stdout',
   example: `whook generateOpenAPITypes`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: [],
-    properties: {},
-  },
-};
-
-export default extra(definition, autoService(initGenerateOpenAPITypes));
+  arguments: [],
+} as const satisfies WhookCommandDefinition;
 
 async function initGenerateOpenAPITypes({
   OPEN_API_TYPES_CONFIG,
@@ -36,7 +33,7 @@ async function initGenerateOpenAPITypes({
   instream: NodeJS.ReadableStream;
   outstream: NodeJS.WritableStream;
   log: LogService;
-}): Promise<() => Promise<void>> {
+}): Promise<WhookCommand> {
   return async function generateOpenAPITypes(): Promise<void> {
     log('warning', '📥 - Retrieving API schema...');
 
@@ -67,3 +64,5 @@ async function initGenerateOpenAPITypes({
     });
   };
 }
+
+export default autoService(initGenerateOpenAPITypes);

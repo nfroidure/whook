@@ -1,64 +1,71 @@
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '../libs/args.js';
 import { YError } from 'yerror';
 import miniquery from 'miniquery';
 import { type AppConfig } from 'application-services';
 import { noop, type LogService } from 'common-services';
 import {
-  type WhookPromptArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
-  type WhookCommandHandler,
-} from '../services/promptArgs.js';
+} from '../types/commands.js';
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'config',
   description: 'A simple program that returns the queryed config value',
   example: `whook config --name MYSQL --query 'auth.username' --default root`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name'],
-    properties: {
-      name: {
-        description: 'Configuration name',
+  arguments: [
+    {
+      name: 'name',
+      required: true,
+      description: 'Configuration name',
+      schema: {
         type: 'string',
       },
-      query: {
-        description: 'Property to pickup in config (uses `miniquery`)',
+    },
+    {
+      name: 'query',
+      description: 'Property to pickup in config (uses `miniquery`)',
+      schema: {
         type: 'string',
       },
-      default: {
-        description: 'Provide a default value',
+    },
+    {
+      name: 'default',
+      description: 'Provide a default value',
+      schema: {
         type: 'string',
       },
-      pretty: {
-        description: 'Pretty JSON output',
+    },
+    {
+      name: 'pretty',
+      description: 'Pretty JSON output',
+      schema: {
         type: 'boolean',
         default: false,
       },
     },
-  },
-};
+  ],
+} as const satisfies WhookCommandDefinition;
 
 export default extra(definition, autoService(initConfigCommand));
 
 async function initConfigCommand({
   APP_CONFIG,
-  promptArgs,
   log = noop,
 }: {
   APP_CONFIG: AppConfig;
-  promptArgs: WhookPromptArgs;
   log?: LogService;
-}): Promise<WhookCommandHandler> {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    query?: string;
+    default?: string;
+    pretty?: boolean;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name, query, default: defaultValue, pretty },
-    } = readArgs<{
-      name: string;
-      query: string;
-      default: string;
-      pretty: boolean;
-    }>(definition.arguments, await promptArgs());
+    } = args;
 
     if ('undefined' === typeof APP_CONFIG[name]) {
       log('error', `No config found for "${name}"`);

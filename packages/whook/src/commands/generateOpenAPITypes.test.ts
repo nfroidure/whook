@@ -55,7 +55,11 @@ describe('generateOpenAPITypes', () => {
       log,
     });
 
-    const resultPromise = generateOpenAPITypes();
+    const resultPromise = generateOpenAPITypes({
+      command: 'whook',
+      namedArguments: {},
+      rest: [],
+    });
 
     instream.write(JSON.stringify(API));
     instream.end();

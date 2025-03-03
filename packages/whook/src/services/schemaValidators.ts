@@ -1,6 +1,6 @@
 import { autoService, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import Ajv, { ValidateFunction } from 'ajv';
+import Ajv, { type ValidateFunction } from 'ajv';
 import addAJVFormats from 'ajv-formats';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
@@ -40,7 +40,7 @@ export type WhookSchemaValidatorsDependencies = WhookSchemaValidatorsConfig & {
 };
 export type WhookSchemaValidatorsService = (
   schema: JSONSchema,
-) => Ajv.ValidateFunction;
+) => ValidateFunction;
 
 export default location(autoService(initSchemaValidators), import.meta.url);
 
@@ -71,7 +71,7 @@ async function initSchemaValidators({
 }: WhookSchemaValidatorsDependencies): Promise<WhookSchemaValidatorsService> {
   log('debug', `🖃 - Initializing the validators service.`);
 
-  const validatorsMap: Record<string, Ajv.ValidateFunction> = {};
+  const validatorsMap: Record<string, ValidateFunction> = {};
   const ajv = new Ajv.default({
     verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
     strict: true,

@@ -1,65 +1,71 @@
-import { extra, autoService, type Injector, type Service } from 'knifecycle';
-import { readArgs } from '../libs/args.js';
+import { autoService, type Injector, type Service } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import miniquery from 'miniquery';
 import { noop } from '../libs/utils.js';
 import { type LogService } from 'common-services';
 import {
-  type WhookPromptArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
-  type WhookCommandHandler,
-} from '../services/promptArgs.js';
+} from '../types/commands.js';
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'inspect',
   description:
     'A simple program that returns the result of the injected service',
   example: `whook config --name API_DEFINITIONS --query 'paths.*'`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name'],
-    properties: {
-      name: {
-        description: 'Injected service name',
+  config: { promptArgs: true },
+  arguments: [
+    {
+      name: 'name',
+      required: true,
+      description: 'Injected service name',
+      schema: {
         type: 'string',
       },
-      query: {
-        description: 'Property to pickup in the result (uses `miniquery`)',
+    },
+    {
+      name: 'query',
+      description: 'Property to pickup in the result (uses `miniquery`)',
+      schema: {
         type: 'string',
       },
-      default: {
-        description: 'Provide a default value',
+    },
+    {
+      name: 'default',
+      description: 'Provide a default value',
+      schema: {
         type: 'string',
       },
-      pretty: {
-        description: 'Pretty JSON output',
+    },
+    {
+      name: 'pretty',
+      description: 'Pretty JSON output',
+      schema: {
         type: 'boolean',
         default: false,
       },
     },
-  },
-};
-
-export default extra(definition, autoService(initInspectCommand));
+  ],
+} as const satisfies WhookCommandDefinition;
 
 async function initInspectCommand({
   $injector,
-  promptArgs,
   log = noop,
 }: {
   $injector: Injector<Service>;
-  promptArgs: WhookPromptArgs;
   log?: LogService;
-}): Promise<WhookCommandHandler> {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    query?: string;
+    default?: string;
+    pretty?: true;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name, query, default: defaultValue, pretty },
-    } = readArgs<{
-      name: string;
-      query: string;
-      default: string;
-      pretty: true;
-    }>(definition.arguments, await promptArgs());
+    } = args;
     let service;
 
     try {
@@ -104,3 +110,5 @@ async function initInspectCommand({
     );
   };
 }
+
+export default autoService(initInspectCommand);

@@ -3,19 +3,20 @@ import initEnvCommand from './env.js';
 import { YError } from 'yerror';
 import { NodeEnv } from 'application-services';
 import { type LogService } from 'common-services';
-import { type WhookPromptArgs } from '../services/promptArgs.js';
 
 describe('envCommand', () => {
-  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
 
   beforeEach(() => {
     log.mockReset();
-    promptArgs.mockReset();
   });
 
   test('should work', async () => {
-    promptArgs.mockResolvedValueOnce({
+    const envCommand = await initEnvCommand({
+      log,
+      ENV: { NODE_ENV: NodeEnv.Development },
+    });
+    const result = await envCommand({
       command: 'whook',
       rest: ['env'],
       namedArguments: {
@@ -23,16 +24,8 @@ describe('envCommand', () => {
       },
     });
 
-    const envCommand = await initEnvCommand({
-      log,
-      ENV: { NODE_ENV: NodeEnv.Development },
-      promptArgs,
-    });
-    const result = await envCommand();
-
     expect({
       result,
-      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
 {
@@ -42,16 +35,19 @@ describe('envCommand', () => {
       "development",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
 }
 `);
   });
 
   test('should work with a default value', async () => {
-    promptArgs.mockResolvedValueOnce({
+    const envCommand = await initEnvCommand({
+      log,
+      ENV: {
+        NODE_ENV: NodeEnv.Test,
+      },
+    });
+    const result = await envCommand({
       command: 'whook',
       rest: ['env'],
       namedArguments: {
@@ -60,18 +56,8 @@ describe('envCommand', () => {
       },
     });
 
-    const envCommand = await initEnvCommand({
-      log,
-      ENV: {
-        NODE_ENV: NodeEnv.Test,
-      },
-      promptArgs,
-    });
-    const result = await envCommand();
-
     expect({
       result,
-      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
 {
@@ -81,39 +67,32 @@ describe('envCommand', () => {
       "local",
     ],
   ],
-  "promptArgsCalls": [
-    [],
-  ],
   "result": undefined,
 }
 `);
   });
 
   test('should fail with no value', async () => {
-    promptArgs.mockResolvedValueOnce({
-      command: 'whook',
-      rest: ['env'],
-      namedArguments: {
-        name: 'APP_ENV',
-      },
-    });
-
     const envCommand = await initEnvCommand({
       log,
       ENV: {
         NODE_ENV: NodeEnv.Production,
       },
-      promptArgs,
     });
 
     try {
-      await envCommand();
+      await envCommand({
+        command: 'whook',
+        rest: ['env'],
+        namedArguments: {
+          name: 'APP_ENV',
+        },
+      });
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
         errorParams: (err as YError).params,
-        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
 {
@@ -122,9 +101,6 @@ describe('envCommand', () => {
     "APP_ENV",
   ],
   "logCalls": [],
-  "promptArgsCalls": [
-    [],
-  ],
 }
 `);
     }

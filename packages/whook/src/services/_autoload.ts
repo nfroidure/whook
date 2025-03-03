@@ -33,7 +33,7 @@ import {
   type WhookPluginName,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
-import { type WhookCommandArgs } from '../libs/args.js';
+import { type WhookRawCommandArgs } from '../libs/args.js';
 import { pathItemToOperationMap } from 'ya-open-api-types';
 import {
   type WhookOpenAPIOperation,
@@ -55,7 +55,7 @@ export type WhookAutoloadDependencies = WhookWrappersConfig & {
   INITIALIZER_PATH_MAP?: WhookInitializerMap;
   WHOOK_PLUGINS?: WhookPluginName[];
   WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
-  args: WhookCommandArgs;
+  args: WhookRawCommandArgs;
   $injector: Injector<Service>;
   importer: ImporterService<{
     default: Initializer<Service, Dependencies>;
@@ -205,6 +205,7 @@ async function initAutoload({
       return constant(injectedName, APP_CONFIG[injectedName]);
     }
 
+    // TODO: use new regexps
     const isHandler = HANDLER_REG_EXP.test(injectedName);
     const isWrapper = WRAPPER_REG_EXP.test(injectedName);
 

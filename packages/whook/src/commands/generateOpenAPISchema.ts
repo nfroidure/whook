@@ -1,9 +1,10 @@
 import initGetOpenAPI from '../handlers/getOpenAPI.js';
-import { readArgs } from '../libs/args.js';
-import { autoService, extra } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { type LogService } from 'common-services';
-import { type WhookCommandArgs } from '../libs/args.js';
-import { type WhookCommandDefinition } from '../services/promptArgs.js';
+import {
+  type WhookCommand,
+  type WhookCommandDefinition,
+} from '../types/commands.js';
 
 /* Architecture Note #2.9.2.3: Open API generator
 
@@ -11,48 +12,42 @@ Here, we reuse the Open API handler to generate the
  definition of the API right inside a CLI command.
 */
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'generateOpenAPISchema',
   description: 'Write openAPI schema to stdout',
   example: `whook generateOpenAPISchema`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: [],
-    properties: {
-      pretty: {
-        description: 'Option to prettify output',
-        type: 'boolean',
-        default: true,
-      },
-      authenticated: {
-        description: 'Option to get the private routes too',
-        type: 'boolean',
-        default: true,
-      },
+  arguments: [
+    {
+      name: 'pretty',
+      description: 'Option to prettify output',
+      schema: { type: 'boolean', default: true },
     },
-  },
-};
-
-export default extra(definition, autoService(initGenerateOpenAPISchema));
+    {
+      name: 'authenticated',
+      description: 'Option to get the private routes too',
+      schema: { type: 'boolean', default: true },
+    },
+  ],
+} as const satisfies WhookCommandDefinition;
 
 async function initGenerateOpenAPISchema({
   getOpenAPI,
   outstream = process.stdout,
-  args,
   log,
 }: {
   getOpenAPI: Awaited<ReturnType<typeof initGetOpenAPI>>;
   outstream: NodeJS.WritableStream;
-  args: WhookCommandArgs;
   log: LogService;
-}): Promise<() => Promise<void>> {
-  return async function generateOpenAPISchema() {
+}): Promise<
+  WhookCommand<{
+    pretty?: boolean;
+    authenticated?: boolean;
+  }>
+> {
+  return async function generateOpenAPISchema(args) {
     const {
       namedArguments: { pretty, authenticated },
-    } = readArgs<{
-      pretty: boolean;
-      authenticated: boolean;
-    }>(definition.arguments, args);
+    } = args;
 
     log('warning', '📥 - Retrieving schema...');
     const response = await getOpenAPI({
@@ -74,3 +69,5 @@ async function initGenerateOpenAPISchema({
     });
   };
 }
+
+export default autoService(initGenerateOpenAPISchema);

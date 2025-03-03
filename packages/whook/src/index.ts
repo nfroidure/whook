@@ -1,7 +1,6 @@
 import { Knifecycle, constant, type Dependencies } from 'knifecycle';
 import { cwd, exit, stderr, stdin, stdout, argv as _argv } from 'node:process';
 import { printStackTrace } from 'yerror';
-import initPromptArgs from './services/promptArgs.js';
 import initQueryParserBuilder from './services/queryParserBuilder.js';
 import initCommand from './services/command.js';
 import {
@@ -47,13 +46,14 @@ import initWhookResolvedPlugins, {
   WHOOK_PROJECT_PLUGIN_NAME,
 } from './services/WHOOK_RESOLVED_PLUGINS.js';
 import initAPIDefinitions from './services/API_DEFINITIONS.js';
-export {
-  DEFAULT_IGNORED_FILES_PREFIXES,
-  DEFAULT_IGNORED_FILES_SUFFIXES,
-  DEFAULT_REDUCED_FILES_SUFFIXES,
-  type WhookAPIDefinitionsConfig,
-  type WhookAPIDefinitionFilter,
-} from './services/API_DEFINITIONS.js';
+export type * from './services/API_DEFINITIONS.js';
+export { DEFAULT_API_HANDLERS_OPTIONS } from './services/API_HANDLERS.js';
+import initAPIHandlers from './services/API_HANDLERS.js';
+export { initAPIHandlers };
+export type * from './services/API_HANDLERS.js';
+import initCommands from './services/COMMANDS.js';
+export { initCommands };
+export type * from './services/COMMANDS.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';
@@ -84,12 +84,13 @@ export * from './libs/utils.js';
 export * from './libs/validation.js';
 export * from './services/queryParserBuilder.js';
 export type * from './types/handlers.js';
+export type * from './types/commands.js';
 export type * from './types/http.js';
 export type * from './types/base.js';
 export type * from './types/openapi.js';
 export type * from './libs/openapi.js';
 export type * from './libs/validation.js';
-export type * from './services/promptArgs.js';
+export type * from './libs/args.js';
 export type * from './services/PORT.js';
 export type * from './services/httpServer.js';
 export type * from './services/HOST.js';
@@ -285,9 +286,10 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initObfuscatorService,
     initAPMService,
     initQueryParserBuilder,
+    initAPIHandlers,
+    initCommands,
   ].forEach($.register.bind($));
 
-  $.register(initPromptArgs);
   $.register(initCommand);
 
   /* Architecture Note #2.3: the `PWD` constant

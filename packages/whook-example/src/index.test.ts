@@ -100,9 +100,9 @@ describe('runProcess', () => {
   test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
-      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
-    }).toMatchInlineSnapshot(`
+  debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+  logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs)
+}).toMatchInlineSnapshot(`
 {
   "debugCalls": [
     [
@@ -113,6 +113,18 @@ describe('runProcess', () => {
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
@@ -373,13 +385,199 @@ describe('runProcess', () => {
       "⌛ - Delay service initialized.",
     ],
     [
+      "⏳ - Skipped "__snapshots__" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "__snapshots__" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "config.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "config.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "config.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "config.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "config.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "create.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "create.js" since disabled by the application environment (local)!",
+    ],
+    [
+      "⏳ - Skipped "create.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "create.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "create.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "create.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "env.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "env.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "env.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "env.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "env.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPISchema.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPISchema.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPISchema.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPISchema.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPISchema.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPITypes.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPITypes.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPITypes.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPITypes.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "generateOpenAPITypes.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "getDelay.test.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getDiagnostic.test.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getOpenAPI.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getOpenAPI.js" since already loaded upstream.",
+    ],
+    [
+      "⏳ - Skipped "getOpenAPI.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "getOpenAPI.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getOpenAPI.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getOpenAPI.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "getParameters.test.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getPing.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getPing.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "getPing.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getPing.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getPing.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "getTime.test.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "handler.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "handler.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "handler.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "handler.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "handler.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "inspect.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "inspect.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "inspect.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "inspect.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "inspect.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "ls.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "ls.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "ls.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "ls.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "ls.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "optionsWithCORS.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "optionsWithCORS.js" since no definition!",
+    ],
+    [
+      "⏳ - Skipped "optionsWithCORS.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "printEnv.test.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "putEcho.test.ts" per ignore patterns.",
+    ],
+    [
       "✅ - Module path of "API" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
       "✅ - Module path of "CLOCK_MOCK" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
-    ],
-    [
-      "✅ - Module path of "FILTER_API_DEFINITION" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "✅ - Module path of "MECHANISMS" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
@@ -439,13 +637,40 @@ describe('runProcess', () => {
       "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-example/src" with "commands, handlers, services" types.",
     ],
     [
+      "🈁 - Gathering the API handlers modules.",
+    ],
+    [
+      "🈁 - Gathering the project commands modules.",
+    ],
+    [
       "🈁 - Generating the API_DEFINITIONS",
     ],
     [
-      "🈁 - Handler module at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js" exports no definition!",
+      "🍀 - Trying to find "API" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "API" module path in "__project__".",
+      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/authorization".",
@@ -473,6 +698,30 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_FILTER" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_FILTER" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_FILTER" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
@@ -511,9 +760,6 @@ describe('runProcess', () => {
       "🍀 - Trying to find "ENCODERS" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "FILTER_API_DEFINITION" module path in "__project__".",
-    ],
-    [
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/authorization".",
     ],
     [
@@ -524,30 +770,6 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_PREFIXES" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "IGNORED_FILES_SUFFIXES" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/authorization".",
@@ -599,18 +821,6 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "REDUCED_FILES_SUFFIXES" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/authorization".",
@@ -775,9 +985,6 @@ describe('runProcess', () => {
       "💿 - Loading "CLOCK_MOCK" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
     ],
     [
-      "💿 - Loading "FILTER_API_DEFINITION" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
-    ],
-    [
       "💿 - Loading "MECHANISMS" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
     [
@@ -824,9 +1031,6 @@ describe('runProcess', () => {
     ],
     [
       "💿 - Service "CLOCK_MOCK" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
-    ],
-    [
-      "💿 - Service "FILTER_API_DEFINITION" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "💿 - Service "MECHANISMS" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
@@ -925,10 +1129,22 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/handlers/optionsWithCORS.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/API_HANDLERS_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/API_HANDLERS_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/BUFFER_LIMIT.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COERCION_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMANDS_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMANDS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/DECODERS.js".",
@@ -943,12 +1159,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/HTTP_SERVER_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/IGNORED_FILES_PREFIXES.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/IGNORED_FILES_SUFFIXES.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/JWT_SECRET_ENV_NAME.js".",
     ],
     [
@@ -959,9 +1169,6 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/QUERY_PARSER_OPTIONS.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
@@ -991,10 +1198,22 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithCORS.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/API_HANDLERS_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/API_HANDLERS_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COERCION_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMANDS_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMANDS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DECODERS.js".",
@@ -1009,12 +1228,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/HTTP_SERVER_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_PREFIXES.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/IGNORED_FILES_SUFFIXES.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/JWT_SECRET_ENV_NAME.js".",
     ],
     [
@@ -1025,9 +1238,6 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
@@ -1051,10 +1261,22 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/API_HANDLERS_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/API_HANDLERS_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COERCION_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMANDS_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMANDS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS.js".",
@@ -1069,12 +1291,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/HTTP_SERVER_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_PREFIXES.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/IGNORED_FILES_SUFFIXES.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME.js".",
     ],
     [
@@ -1085,9 +1301,6 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/REDUCED_FILES_SUFFIXES.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
@@ -1120,10 +1333,22 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API_HANDLERS_FILTER.ts".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API_HANDLERS_OPTIONS.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT.ts".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COERCION_OPTIONS.ts".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMANDS_FILTER.ts".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMANDS_OPTIONS.ts".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS.ts".",
@@ -1138,12 +1363,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/HTTP_SERVER_OPTIONS.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_PREFIXES.ts".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/IGNORED_FILES_SUFFIXES.ts".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/JWT_SECRET_ENV_NAME.ts".",
     ],
     [
@@ -1154,9 +1373,6 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER_OPTIONS.ts".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/REDUCED_FILES_SUFFIXES.ts".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/SCHEMA_VALIDATORS_OPTIONS.ts".",
@@ -1186,10 +1402,22 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithCORS.ts".",
     ],
     [
+      "🚫 - Module path of "API_HANDLERS_FILTER" not found.",
+    ],
+    [
+      "🚫 - Module path of "API_HANDLERS_OPTIONS" not found.",
+    ],
+    [
       "🚫 - Module path of "BUFFER_LIMIT" not found.",
     ],
     [
       "🚫 - Module path of "COERCION_OPTIONS" not found.",
+    ],
+    [
+      "🚫 - Module path of "COMMANDS_FILTER" not found.",
+    ],
+    [
+      "🚫 - Module path of "COMMANDS_OPTIONS" not found.",
     ],
     [
       "🚫 - Module path of "DECODERS" not found.",
@@ -1204,12 +1432,6 @@ describe('runProcess', () => {
       "🚫 - Module path of "HTTP_SERVER_OPTIONS" not found.",
     ],
     [
-      "🚫 - Module path of "IGNORED_FILES_PREFIXES" not found.",
-    ],
-    [
-      "🚫 - Module path of "IGNORED_FILES_SUFFIXES" not found.",
-    ],
-    [
       "🚫 - Module path of "JWT_SECRET_ENV_NAME" not found.",
     ],
     [
@@ -1220,9 +1442,6 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "QUERY_PARSER_OPTIONS" not found.",
-    ],
-    [
-      "🚫 - Module path of "REDUCED_FILES_SUFFIXES" not found.",
     ],
     [
       "🚫 - Module path of "SCHEMA_VALIDATORS_OPTIONS" not found.",
@@ -1261,10 +1480,37 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "ecstatic".",
     ],
     [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/config.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/create.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/env.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/generateOpenAPISchema.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/generateOpenAPITypes.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/handler.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/inspect.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/ls.js".",
+    ],
+    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/handlers/getPing.js".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/commands/printEnv.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/config/local/config.ts".",
@@ -1316,9 +1562,6 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CLOCK_MOCK.ts".",
-    ],
-    [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/FILTER_API_DEFINITION.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
