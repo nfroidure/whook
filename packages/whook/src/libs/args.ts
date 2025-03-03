@@ -1,50 +1,19 @@
-import Ajv from 'ajv';
-import addAJVFormats from 'ajv-formats';
-import { YError } from 'yerror';
+import { select, checkbox, input, password } from '@inquirer/prompts';
+import {
+  WhookCommandSchema,
+  type WhookCommandDefinition,
+} from '../types/commands.js';
 import baseParseArgs from 'yargs-parser';
+import { WhookOpenAPI } from '../types/openapi.js';
+import { ensureResolvedObject } from 'ya-open-api-types';
 
-export type WhookArgsTypes = string | boolean | number;
-export type WhookCommandArgs<
-  T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
-> = {
-  namedArguments: T;
+export type WhookRawCommandArgs = {
+  namedArguments: Record<string, string>;
   rest: string[];
   command: string;
 };
-// Subset of JSON Schema types so not using @types/json-schema
-export type WhookCommandDefinitionArguments = {
-  type: 'object';
-  required?: string[];
-  additionalProperties: false;
-  properties: Record<
-    string,
-    | {
-        type: 'boolean' | 'string' | 'number';
-        description: string;
-        pattern?: string;
-        format?: string;
-        enum?: WhookArgsTypes[];
-        default?: WhookArgsTypes;
-      }
-    | {
-        type: 'array';
-        description: string;
-        minItems?: number;
-        maxItems?: number;
-        items: {
-          type: 'boolean' | 'string' | 'number';
-          description?: string;
-          pattern?: string;
-          format?: string;
-          enum?: WhookArgsTypes[];
-          default?: WhookArgsTypes;
-        };
-        default?: WhookArgsTypes[];
-      }
-  >;
-};
 
-export function parseArgs(rawArgs: string[]): WhookCommandArgs {
+export function parseArgs(rawArgs: string[]): WhookRawCommandArgs {
   const { _, ...args } = baseParseArgs(rawArgs.slice(2));
   const finalArgs = {
     namedArguments: args,
@@ -55,31 +24,91 @@ export function parseArgs(rawArgs: string[]): WhookCommandArgs {
   return finalArgs;
 }
 
-// TODO: Add ajv human readable error builder
-export function readArgs<T extends WhookCommandArgs['namedArguments']>(
-  schema: WhookCommandDefinitionArguments,
-  args: WhookCommandArgs,
-): WhookCommandArgs<T> {
-  const ajv = new Ajv.default({
-    coerceTypes: true,
-    useDefaults: true,
-    strict: true,
-  });
-  addAJVFormats.default(ajv);
-  const validator = ajv.compile(schema);
+export async function promptArgs(
+  {
+    API,
+    COMMAND_DEFINITION,
+  }: {
+    API: WhookOpenAPI;
+    COMMAND_DEFINITION: WhookCommandDefinition;
+  },
+  args: WhookRawCommandArgs,
+): Promise<WhookRawCommandArgs> {
+  const newNamedArgs = {};
 
-  const { namedArguments, rest } = args;
-  const cleanedArgs = {
-    namedArguments,
-    rest: rest.slice(1),
-    command: rest[0],
-  };
+  for (const argument of COMMAND_DEFINITION.arguments) {
+    if ('undefined' === typeof args.namedArguments[argument.name]) {
+      let schema = argument.schema;
 
-  validator(namedArguments);
+      if ('$ref' in schema) {
+        schema = (await ensureResolvedObject(
+          API,
+          schema.$ref,
+        )) as WhookCommandSchema;
+        newNamedArgs[argument.name] = await input({
+          message: `Enter the value for "${argument.name}": `,
+          default: schema.default?.toString(),
+          required: argument.required,
+        });
+        continue;
+      }
 
-  if ((validator.errors || []).length) {
-    throw new YError('E_BAD_ARGS', validator.errors);
+      if (!('default' in schema)) {
+        newNamedArgs[argument.name] = schema.default?.toString();
+        continue;
+      }
+
+      if (!('type' in schema)) {
+        newNamedArgs[argument.name] = await input({
+          message: `Enter the value for "${argument.name}": `,
+          default: schema.default?.toString(),
+          required: argument.required,
+        });
+        continue;
+      }
+
+      if (schema.type === 'boolean') {
+        newNamedArgs[argument.name] = await checkbox({
+          message: `Enter the value for "${argument.name}": `,
+          choices: ['true', 'false'],
+          required: argument.required,
+        });
+        continue;
+      }
+
+      if (schema.type === 'string' || schema.type === 'number') {
+        if (schema.format === 'password') {
+          newNamedArgs[argument.name] = await password({
+            message: `Enter the value for "${argument.name}": `,
+          });
+          continue;
+        }
+
+        if (schema.enum) {
+          newNamedArgs[argument.name] = await select({
+            message: `Enter the value for "${argument.name}": `,
+            default: schema.default?.toString(),
+            choices: schema.enum.map((value) => ({
+              name: value,
+              value: value.toString(),
+            })),
+          });
+          continue;
+        }
+
+        newNamedArgs[argument.name] = await input({
+          message: `Enter the value for "${argument.name}": `,
+          required: argument.required,
+        });
+      }
+    }
   }
 
-  return cleanedArgs as WhookCommandArgs<T>;
+  return {
+    ...args,
+    namedArguments: {
+      ...args.namedArguments,
+      ...newNamedArgs,
+    },
+  };
 }

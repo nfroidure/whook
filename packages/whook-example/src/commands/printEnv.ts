@@ -1,11 +1,7 @@
 import { extra, autoService } from 'knifecycle';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
-import {
-  readArgs,
-  type WhookCommandArgs,
-  type WhookCommandDefinition,
-} from '@whook/whook';
+import { type WhookCommand, type WhookCommandDefinition } from '@whook/whook';
 
 /* Architecture Note #5: Commands
 
@@ -32,21 +28,20 @@ To define a command, just write its definition
  and export it to make it available to Whook's
  command loader.
 */
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'printEnv',
   description: 'A command printing every env values',
   example: `whook printEnv --keysOnly`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: [],
-    properties: {
-      keysOnly: {
-        description: 'Option to print only env keys',
+  arguments: [
+    {
+      name: 'keysOnly',
+      description: 'Option to print only env keys',
+      schema: {
         type: 'boolean',
       },
     },
-  },
-};
+  ],
+} as const satisfies WhookCommandDefinition;
 
 /* Architecture Note #5.2: Implementation
 
@@ -59,18 +54,18 @@ export default extra(definition, autoService(initPrintEnvCommand));
 async function initPrintEnvCommand({
   ENV,
   log,
-  args,
 }: {
   ENV: AppEnvVars;
   log: LogService;
-  args: WhookCommandArgs;
-}) {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    keysOnly: boolean;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { keysOnly },
-    } = readArgs<{
-      keysOnly: boolean;
-    }>(definition.arguments, args);
+    } = args;
 
     log('info', `${JSON.stringify(keysOnly ? Object.keys(ENV) : ENV)}`);
   };

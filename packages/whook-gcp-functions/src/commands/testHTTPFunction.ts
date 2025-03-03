@@ -6,46 +6,54 @@ import {
   DEFAULT_COMPILER_OPTIONS,
   PATH_SEPARATOR,
   SEARCH_SEPARATOR,
-  readArgs,
   type WhookAPIHandlerParameters,
   type WhookOpenAPI,
-  type WhookCommandArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'testHTTPFunction',
   description: 'A command for testing GCP HTTP function',
   example: `whook testHTTPFunction --name getPing`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name'],
-    properties: {
-      name: {
-        description: 'Name of the function to run',
+  arguments: [
+    {
+      description: 'Name of the function to run',
+      name: 'name',
+      required: true,
+      schema: {
         type: 'string',
       },
-      type: {
-        description: 'Type of function to test',
+    },
+    {
+      name: 'type',
+      description: 'Type of function to test',
+      schema: {
         type: 'string',
         enum: ['main', 'index'],
         default: 'index',
       },
-      contentType: {
-        description: 'Content type of the payload',
+    },
+    {
+      name: 'contentType',
+      description: 'Content type of the payload',
+      schema: {
         type: 'string',
         default: 'application/json',
       },
-      parameters: {
-        description: 'The HTTP call parameters',
+    },
+    {
+      name: 'parameters',
+      description: 'The HTTP call parameters',
+      schema: {
         type: 'string',
         default: '{}',
       },
     },
-  },
-};
+  ],
+} as const satisfies WhookCommandDefinition;
 
 export default extra(definition, autoService(initTestHTTPFunctionCommand));
 
@@ -55,24 +63,24 @@ async function initTestHTTPFunctionCommand({
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   API,
   log,
-  args,
 }: {
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   API: WhookOpenAPI;
   log: LogService;
-  args: WhookCommandArgs;
-}) {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    type: string;
+    contentType: string;
+    parameters: string;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name, type, contentType, parameters: rawParameters },
-    } = readArgs<{
-      name: string;
-      type: string;
-      contentType: string;
-      parameters: string;
-    }>(definition.arguments, args);
+    } = args;
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadFunction(
       { APP_ENV, PROJECT_DIR, log },
@@ -90,18 +98,21 @@ async function initTestHTTPFunctionCommand({
 
     const hasBody = !!handlerDefinition.operation.requestBody;
     const parameters = JSON.parse(rawParameters) as WhookAPIHandlerParameters;
-    const search = Object.keys(parameters.query || {}).reduce((accSearch, name) => {
-      if (null != parameters.query[name]) {
-        return (
-          accSearch +
-          (accSearch ? '&' : '') +
-          name +
-          '=' +
-          parameters.query[name]
-        );
-      }
-      return accSearch;
-    }, '');
+    const search = Object.keys(parameters.query || {}).reduce(
+      (accSearch, name) => {
+        if (null != parameters.query[name]) {
+          return (
+            accSearch +
+            (accSearch ? '&' : '') +
+            name +
+            '=' +
+            parameters.query[name]
+          );
+        }
+        return accSearch;
+      },
+      '',
+    );
 
     const path = handlerDefinition.path
       .split(PATH_SEPARATOR)

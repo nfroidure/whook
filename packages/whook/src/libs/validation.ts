@@ -19,7 +19,7 @@ import {
   parseNumber,
   type WhookCoercionOptions,
 } from './coercion.js';
-import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { JSONSchema, type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type WhookSchemaValidatorsService } from '../services/schemaValidators.js';
 import { type WhookRequestBody } from '../types/http.js';
 import {
@@ -27,6 +27,7 @@ import {
   type WhookOpenAPI,
   type WhookSupportedParameter,
 } from '../types/openapi.js';
+import { identity } from './utils.js';
 
 /* Architecture Note #2.11.2: Validation
 
@@ -399,6 +400,58 @@ export type WhookParametersValidators = Record<
   'query' | 'header' | 'path' | 'cookie',
   Record<string, WhookParameterValidator>
 >;
+
+export async function getCasterForSchema(
+  {
+    API,
+    COERCION_OPTIONS,
+  }: {
+    API: WhookOpenAPI;
+    COERCION_OPTIONS: WhookCoercionOptions;
+  },
+  schema: JSONSchema,
+): Promise<WhookParameterCaster> {
+  const resolvedSchema = (await ensureResolvedObject(
+    API,
+    schema,
+  )) as ExpressiveJSONSchema;
+
+  if (!('type' in resolvedSchema && resolvedSchema.type)) {
+    throw new YError('E_UNSUPPORTED_SCHEMA', resolvedSchema);
+  }
+
+  if (resolvedSchema.type === 'number') {
+    return parseNumber.bind(null, COERCION_OPTIONS);
+  } else if (resolvedSchema.type === 'boolean') {
+    return parseBoolean;
+  } else if (resolvedSchema.type === 'string') {
+    return identity;
+  } else if (resolvedSchema.type === 'array') {
+    if (
+      !('items' in resolvedSchema && resolvedSchema.items) ||
+      'prefixItems' in resolvedSchema
+    ) {
+      throw new YError('E_UNSUPPORTED_SCHEMA', resolvedSchema);
+    }
+
+    const itemSchema = (await ensureResolvedObject(
+      API,
+      resolvedSchema.items,
+    )) as ExpressiveJSONSchema;
+
+    if (!('type' in itemSchema && itemSchema.type)) {
+      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', resolvedSchema);
+    }
+    if (itemSchema.type === 'string') {
+      return parseArrayOfStrings;
+    } else if (itemSchema.type === 'number') {
+      return parseArrayOfNumbers.bind(null, COERCION_OPTIONS);
+    } else if (itemSchema.type === 'boolean') {
+      return parseArrayOfBooleans;
+    }
+  }
+  throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', resolvedSchema);
+}
 
 export async function createParameterValidator(
   {

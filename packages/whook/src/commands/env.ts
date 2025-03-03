@@ -1,52 +1,51 @@
-import { extra, autoService } from 'knifecycle';
-import { readArgs } from '../libs/args.js';
+import { autoService } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
-import {
-  type WhookCommandDefinition,
-  type WhookPromptArgs,
-} from '../services/promptArgs.js';
 import { type AppEnvVars } from 'application-services';
 import { type LogService } from 'common-services';
+import {
+  type WhookCommand,
+  type WhookCommandDefinition,
+} from '../types/commands.js';
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'env',
   description: 'A command printing env values',
   example: `whook env --name NODE_ENV --default "default value"`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name'],
-    properties: {
-      name: {
-        description: 'Environment variable name to pick-up',
-        type: 'string',
-      },
-      default: {
-        description: 'Provide a default value',
-        type: 'string',
-      },
+  config: { promptArgs: true },
+  arguments: [
+    {
+      name: 'name',
+      required: true,
+      description: 'Environment variable name to pick-up',
+      schema: { type: 'string' },
     },
-  },
-};
+    {
+      name: 'default',
+      description: 'Provide a default value',
+      schema: { type: 'string' },
+    },
+  ],
+} as const satisfies WhookCommandDefinition;
 
-export default extra(definition, autoService(initEnvCommand));
+export default autoService(initEnvCommand);
 
 async function initEnvCommand({
   ENV,
-  promptArgs,
   log = noop,
 }: {
   ENV: AppEnvVars;
-  promptArgs: WhookPromptArgs;
   log?: LogService;
-}) {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    default?: string;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name, default: defaultValue },
-    } = readArgs<{
-      name: string;
-      default: string;
-    }>(definition.arguments, await promptArgs());
+    } = args;
 
     if (
       'undefined' === typeof ENV[name] &&

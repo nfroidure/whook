@@ -1,3 +1,5 @@
+import { createRequire } from 'module';
+import { join } from 'node:path';
 import {
   describe,
   test,
@@ -8,48 +10,56 @@ import {
 } from '@jest/globals';
 import initAPI from './API.js';
 import FULL_CONFIG from '../config/test/config.js';
-import { createRequire } from 'module';
 import {
-  WHOOK_PROJECT_PLUGIN_NAME,
   WHOOK_DEFAULT_PLUGINS,
+  WHOOK_PROJECT_PLUGIN_NAME,
+  initAPIHandlers,
   initAPIDefinitions,
-  type WhookAPIHandlerModule,
+  type WhookAPIDefinitions,
+  type WhookAPIHandlersService,
   type WhookAPIHandlerDefinition,
+  type WhookResolvedPluginsService,
+  type WhookAPIHandlerModule,
 } from '@whook/whook';
-import { initImporter } from 'common-services';
-import { join } from 'node:path';
-import { type LogService } from 'common-services';
+import { initImporter, type LogService } from 'common-services';
 import { pathItemToOperationMap } from 'ya-open-api-types';
 
 describe('API', () => {
+  const { CONFIG } = FULL_CONFIG;
+  const BASE_URL = 'http://localhost:1337';
+  const APP_ENV = 'test';
   // TODO: Use import.meta.resolve when Jest will support it
   // See https://github.com/jestjs/jest/issues/14923
   const require = createRequire(
     join(process.cwd(), 'src', 'services', 'API.test.ts'),
   );
-
-  const { CONFIG } = FULL_CONFIG;
-  const BASE_URL = 'http://localhost:1337';
+  const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+    [WHOOK_PROJECT_PLUGIN_NAME]: {
+      mainURL: new URL('..', import.meta.url).toString(),
+      types: ['handlers'],
+    },
+    '@whook/whook': {
+      mainURL: 'file://' + require.resolve('@whook/whook'),
+      types: ['handlers'],
+    },
+  };
   const log = jest.fn<LogService>();
-  let API_DEFINITIONS;
+  let API_HANDLERS: WhookAPIHandlersService;
+  let API_DEFINITIONS: WhookAPIDefinitions;
 
   beforeAll(async () => {
     const importer = await initImporter<WhookAPIHandlerModule>({ log });
 
-    API_DEFINITIONS = await initAPIDefinitions({
-      APP_ENV: 'test',
+    API_HANDLERS = await initAPIHandlers({
+      APP_ENV,
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
-      WHOOK_RESOLVED_PLUGINS: {
-        [WHOOK_PROJECT_PLUGIN_NAME]: {
-          mainURL: new URL('..', import.meta.url).toString(),
-          types: ['handlers'],
-        },
-        '@whook/whook': {
-          mainURL: 'file://' + require.resolve('@whook/whook'),
-          types: ['handlers'],
-        },
-      },
+      WHOOK_RESOLVED_PLUGINS,
       importer,
+    });
+    API_DEFINITIONS = await initAPIDefinitions({
+      WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
+      API_HANDLERS,
+      COMMANDS: {},
     });
   });
 

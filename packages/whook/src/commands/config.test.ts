@@ -2,7 +2,6 @@ import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initConfigCommand from './config.js';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
-import { type WhookPromptArgs } from '../services/promptArgs.js';
 import { type AppConfig } from 'application-services';
 
 describe('configCommand', () => {
@@ -14,29 +13,24 @@ describe('configCommand', () => {
       version: '2.1.1',
     },
   } as AppConfig;
-  const promptArgs = jest.fn<WhookPromptArgs>();
   const log = jest.fn<LogService>();
 
   beforeEach(() => {
-    promptArgs.mockReset();
     log.mockReset();
   });
 
   test('should work with no query at all', async () => {
-    promptArgs.mockResolvedValueOnce({
+    const configCommand = await initConfigCommand({
+      log,
+      APP_CONFIG,
+    });
+    const result = await configCommand({
       command: 'whook',
       rest: ['config'],
       namedArguments: {
         name: 'MYSQL',
       },
     });
-
-    const configCommand = await initConfigCommand({
-      log,
-      APP_CONFIG,
-      promptArgs,
-    });
-    const result = await configCommand();
 
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
@@ -52,26 +46,26 @@ describe('configCommand', () => {
     `);
     expect({
       result,
-      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [
-          [
-            "info",
-            "{"auth":{"username":"root"},"version":"2.1.1"}",
-          ],
-        ],
-        "promptArgsCalls": [
-          [],
-        ],
-        "result": undefined,
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "info",
+      "{"auth":{"username":"root"},"version":"2.1.1"}",
+    ],
+  ],
+  "result": undefined,
+}
+`);
   });
 
   test('should work with one value', async () => {
-    promptArgs.mockResolvedValueOnce({
+    const configCommand = await initConfigCommand({
+      log,
+      APP_CONFIG,
+    });
+    const result = await configCommand({
       command: 'whook',
       rest: ['config'],
       namedArguments: {
@@ -80,13 +74,6 @@ describe('configCommand', () => {
       },
     });
 
-    const configCommand = await initConfigCommand({
-      log,
-      APP_CONFIG,
-      promptArgs,
-    });
-    const result = await configCommand();
-
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
@@ -101,26 +88,26 @@ describe('configCommand', () => {
     `);
     expect({
       result,
-      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [
-          [
-            "info",
-            ""root"",
-          ],
-        ],
-        "promptArgsCalls": [
-          [],
-        ],
-        "result": undefined,
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "info",
+      ""root"",
+    ],
+  ],
+  "result": undefined,
+}
+`);
   });
 
   test('should work with several values', async () => {
-    promptArgs.mockResolvedValueOnce({
+    const configCommand = await initConfigCommand({
+      log,
+      APP_CONFIG,
+    });
+    const result = await configCommand({
       command: 'whook',
       rest: ['config'],
       namedArguments: {
@@ -129,13 +116,6 @@ describe('configCommand', () => {
       },
     });
 
-    const configCommand = await initConfigCommand({
-      log,
-      APP_CONFIG,
-      promptArgs,
-    });
-    const result = await configCommand();
-
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
@@ -150,26 +130,26 @@ describe('configCommand', () => {
     `);
     expect({
       result,
-      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [
-          [
-            "info",
-            ""root"",
-          ],
-        ],
-        "promptArgsCalls": [
-          [],
-        ],
-        "result": undefined,
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "info",
+      ""root"",
+    ],
+  ],
+  "result": undefined,
+}
+`);
   });
 
   test('should work with an unexisting config but a default value', async () => {
-    promptArgs.mockResolvedValueOnce({
+    const configCommand = await initConfigCommand({
+      log,
+      APP_CONFIG,
+    });
+    const result = await configCommand({
       command: 'whook',
       rest: ['config'],
       namedArguments: {
@@ -178,13 +158,6 @@ describe('configCommand', () => {
       },
     });
 
-    const configCommand = await initConfigCommand({
-      log,
-      APP_CONFIG,
-      promptArgs,
-    });
-    const result = await configCommand();
-
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
@@ -199,30 +172,30 @@ describe('configCommand', () => {
     `);
     expect({
       result,
-      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [
-          [
-            "error",
-            "No config found for "DOES_NOT_EXIST"",
-          ],
-          [
-            "info",
-            ""v8"",
-          ],
-        ],
-        "promptArgsCalls": [
-          [],
-        ],
-        "result": undefined,
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "error",
+      "No config found for "DOES_NOT_EXIST"",
+    ],
+    [
+      "info",
+      ""v8"",
+    ],
+  ],
+  "result": undefined,
+}
+`);
   });
 
   test('should work with no result but a default value', async () => {
-    promptArgs.mockResolvedValueOnce({
+    const configCommand = await initConfigCommand({
+      log,
+      APP_CONFIG,
+    });
+    const result = await configCommand({
       command: 'whook',
       rest: ['config'],
       namedArguments: {
@@ -232,13 +205,6 @@ describe('configCommand', () => {
       },
     });
 
-    const configCommand = await initConfigCommand({
-      log,
-      APP_CONFIG,
-      promptArgs,
-    });
-    const result = await configCommand();
-
     expect({
       output: log.mock.calls.filter(([type]) => type === 'info'),
     }).toMatchInlineSnapshot(`
@@ -253,45 +219,38 @@ describe('configCommand', () => {
     `);
     expect({
       result,
-      promptArgsCalls: promptArgs.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "logCalls": [
-          [
-            "error",
-            "Could not find any results for "nothing_here".",
-          ],
-          [
-            "info",
-            ""v8"",
-          ],
-        ],
-        "promptArgsCalls": [
-          [],
-        ],
-        "result": undefined,
-      }
-    `);
+{
+  "logCalls": [
+    [
+      "error",
+      "Could not find any results for "nothing_here".",
+    ],
+    [
+      "info",
+      ""v8"",
+    ],
+  ],
+  "result": undefined,
+}
+`);
   });
 
   test('should fail with unexisting config name', async () => {
-    promptArgs.mockResolvedValueOnce({
-      command: 'whook',
-      rest: ['config'],
-      namedArguments: {
-        name: 'DOES_NOT_EXIST',
-      },
-    });
-
     const configCommand = await initConfigCommand({
       log,
       APP_CONFIG,
-      promptArgs,
     });
 
     try {
-      await configCommand();
+      await configCommand({
+        command: 'whook',
+        rest: ['config'],
+        namedArguments: {
+          name: 'DOES_NOT_EXIST',
+        },
+      });
       throw new YError('E_UNEXPEXTED_SUCCESS');
     } catch (err) {
       expect({
@@ -306,42 +265,35 @@ describe('configCommand', () => {
         }
       `);
       expect({
-        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchInlineSnapshot(`
-        {
-          "logCalls": [
-            [
-              "error",
-              "No config found for "DOES_NOT_EXIST"",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-        }
-      `);
+{
+  "logCalls": [
+    [
+      "error",
+      "No config found for "DOES_NOT_EXIST"",
+    ],
+  ],
+}
+`);
     }
   });
 
   test('should fail with no result', async () => {
-    promptArgs.mockResolvedValueOnce({
-      command: 'whook',
-      rest: ['config'],
-      namedArguments: {
-        name: 'MYSQL',
-        query: 'nothing_here',
-      },
-    });
-
     const configCommand = await initConfigCommand({
       log,
       APP_CONFIG,
-      promptArgs,
     });
 
     try {
-      await configCommand();
+      await configCommand({
+        command: 'whook',
+        rest: ['config'],
+        namedArguments: {
+          name: 'MYSQL',
+          query: 'nothing_here',
+        },
+      });
       throw new YError('E_UNEXPEXTED_SUCCESS');
     } catch (err) {
       expect({
@@ -357,21 +309,17 @@ describe('configCommand', () => {
         }
       `);
       expect({
-        promptArgsCalls: promptArgs.mock.calls,
         logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchInlineSnapshot(`
-        {
-          "logCalls": [
-            [
-              "error",
-              "Could not find any results for "nothing_here".",
-            ],
-          ],
-          "promptArgsCalls": [
-            [],
-          ],
-        }
-      `);
+{
+  "logCalls": [
+    [
+      "error",
+      "Could not find any results for "nothing_here".",
+    ],
+  ],
+}
+`);
     }
   });
 });

@@ -1,12 +1,6 @@
-import { extra, autoService } from 'knifecycle';
+import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
-import { readArgs } from '../libs/args.js';
 import { noop } from '../libs/utils.js';
-import {
-  type WhookCommandDefinition,
-  type WhookPromptArgs,
-  type WhookCommandHandler,
-} from '../services/promptArgs.js';
 import { type Injector } from 'knifecycle';
 import { type LogService } from 'common-services';
 import {
@@ -15,46 +9,53 @@ import {
   type WhookAPIHandlerDefinition,
 } from '../types/handlers.js';
 import { type JsonObject } from 'type-fest';
+import {
+  type WhookCommand,
+  type WhookCommandDefinition,
+} from '../types/commands.js';
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'handler',
   description: 'Runs the given server handler for testing purpose',
   example: `whook handler --name getPing --parameters '{}'`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name', 'parameters'],
-    properties: {
-      name: {
-        description: 'Handler to invoke',
+  config: { promptArgs: true },
+  arguments: [
+    {
+      name: 'name',
+      required: true,
+      description: 'Handler to invoke',
+      schema: {
         type: 'string',
       },
-      parameters: {
-        description: 'Parameters to invoke the handler with',
+    },
+    {
+      name: 'parameters',
+      required: true,
+      description: 'Parameters to invoke the handler with',
+      schema: {
         type: 'string',
         default: '{}',
       },
     },
-  },
-};
-
-export default extra(definition, autoService(initHandlerCommand));
+  ],
+} as const satisfies WhookCommandDefinition;
 
 async function initHandlerCommand({
   $injector,
   log = noop,
-  promptArgs,
 }: {
   $injector: Injector<Record<string, WhookAPIHandler>>;
   log?: LogService;
-  promptArgs: WhookPromptArgs;
-}): Promise<WhookCommandHandler> {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    parameters?: string;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name: handlerName, parameters: handlerParameters },
-    } = readArgs<{
-      name: string;
-      parameters: string;
-    }>(definition.arguments, await promptArgs());
+    } = args;
     let parsedParameters: WhookAPIHandlerParameters;
 
     try {
@@ -83,3 +84,5 @@ async function initHandlerCommand({
     }
   };
 }
+
+export default autoService(initHandlerCommand);

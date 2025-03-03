@@ -202,7 +202,11 @@ export async function restartDevProcess<T extends Dependencies>({
         outstream: bridge,
         log,
       })
-    )();
+    )({
+      command: 'whook',
+      namedArguments: {},
+      rest: [],
+    });
 
     const writeStream = createWriteStream(
       join(dirname(fileURLToPath(MAIN_FILE_URL)), 'openAPISchema.d.ts'),

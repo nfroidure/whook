@@ -2,45 +2,53 @@ import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import {
   DEFAULT_COMPILER_OPTIONS,
-  readArgs,
-  type WhookCommandArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'testCronLambda',
   description: 'A command for testing AWS cron lambda',
   example: `whook testCronLambda --name handleCronLambda`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name'],
-    properties: {
-      name: {
-        description: 'Name of the lambda to run',
+  arguments: [
+    {
+      name: 'name',
+      required: true,
+      description: 'Name of the lambda to run',
+      schema: {
         type: 'string',
       },
-      type: {
-        description: 'Type of lambda to test',
+    },
+    {
+      name: 'type',
+      description: 'Type of lambda to test',
+      schema: {
         type: 'string',
         enum: ['main', 'index'],
         default: 'index',
       },
-      date: {
-        description: 'Date at which to run the cron lambda',
+    },
+    {
+      name: 'date',
+      description: 'Date at which to run the cron lambda',
+      schema: {
         type: 'string',
         pattern: 'now|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z',
         default: 'now',
       },
-      body: {
-        description: 'Parameters to pass to the cron (as JSON string)',
+    },
+    {
+      name: 'body',
+      description: 'Parameters to pass to the cron (as JSON string)',
+      schema: {
         type: 'string',
         default: '{}',
       },
     },
-  },
-};
+  ],
+} as const satisfies WhookCommandDefinition;
 
 export default extra(definition, autoService(initTestCronLambdaCommand));
 
@@ -53,24 +61,24 @@ async function initTestCronLambdaCommand({
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log,
   time,
-  args,
 }: {
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;
   time: TimeService;
-  args: WhookCommandArgs;
-}) {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    type: string;
+    date: string;
+    body: string;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name, type, date, body },
-    } = readArgs<{
-      name: string;
-      type: string;
-      date: string;
-      body: string;
-    }>(definition.arguments, args);
+    } = args;
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
       {

@@ -1,5 +1,4 @@
 import { extra, autoService } from 'knifecycle';
-import { readArgs } from '../libs/args.js';
 import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import camelCase from 'camelcase';
@@ -7,13 +6,12 @@ import { HANDLER_REG_EXP } from '../services/HANDLERS.js';
 import _inquirer from 'inquirer';
 import path from 'node:path';
 import { default as fsExtra } from 'fs-extra';
-import {
-  type WhookCommandHandler,
-  type WhookCommandDefinition,
-  type WhookPromptArgs,
-} from '../services/promptArgs.js';
 import { type LogService } from 'common-services';
 import { type OpenAPI, PATH_ITEM_METHODS } from 'ya-open-api-types';
+import {
+  type WhookCommand,
+  type WhookCommandDefinition,
+} from '../types/commands.js';
 
 const {
   writeFile: _writeFile,
@@ -61,26 +59,34 @@ const allTypes = {
   ...whookServicesTypes,
 };
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'create',
   description: 'A command helping to create new Whook files easily',
   example: `whook create --type service --name "db"`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['type', 'name'],
-    properties: {
-      type: {
-        description: 'Type',
+  config: {
+    environments: ['development'],
+    promptArgs: true,
+  },
+  arguments: [
+    {
+      name: 'type',
+      description: 'Type',
+      required: true,
+      schema: {
         type: 'string',
         enum: ['handler', 'service', 'provider', 'command'],
       },
-      name: {
-        description: 'Name',
+    },
+    {
+      name: 'name',
+      description: 'Name',
+      required: true,
+      schema: {
         type: 'string',
       },
     },
-  },
-};
+  ],
+} as const satisfies WhookCommandDefinition;
 
 export default extra(definition, autoService(initCreateCommand));
 
@@ -88,7 +94,6 @@ async function initCreateCommand({
   PROJECT_DIR,
   API,
   inquirer = _inquirer,
-  promptArgs,
   writeFile = _writeFile,
   ensureDir = _ensureDir,
   pathExists = _pathExists,
@@ -97,19 +102,15 @@ async function initCreateCommand({
   PROJECT_DIR: string;
   API: OpenAPI;
   inquirer: typeof _inquirer;
-  promptArgs: WhookPromptArgs;
   writeFile: (path: string, data: string) => Promise<void>;
   ensureDir: typeof _ensureDir;
   pathExists: typeof _pathExists;
   log?: LogService;
-}): Promise<WhookCommandHandler> {
-  return async () => {
+}): Promise<WhookCommand<{ type: string; name: string }>> {
+  return async (args) => {
     const {
       namedArguments: { type, name },
-    } = readArgs<{ type: string; name: string }>(
-      definition.arguments,
-      await promptArgs(),
-    );
+    } = args;
     const finalName = camelCase(name);
 
     if (name !== finalName) {
@@ -182,11 +183,8 @@ async function initCreateCommand({
       type === 'command'
         ? `
 import {
-  readArgs,
-  type WhookPromptArgs,
-  type WhookCommandArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
-  type WhookCommandHandler,
 } from '@whook/whook';`
         : ''
     }${
@@ -501,38 +499,32 @@ function buildCommandSource(
 
   return `import { extra, autoService, location } from 'knifecycle';${imports}
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: '${name}',
   description: '${description.replace(/'/g, "\\'")}',
   example: \`whook ${name} --param "value"\`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['param'],
-    properties: {
-      param: {
-        description: 'A parameter',
-        type: 'string',
-        default: 'A default value',
-      },
+  arguments: [{
+    name: 'param',
+    required: true,
+    description: 'A parameter',
+    schema: {
+      type: 'string',
+      default: 'A default value',
     },
-  },
-};
+  }],
+} as const satisfies WhookCommandDefinition;
 
 async function init${upperCamelizedName}Command(${
     parametersDeclaration || '_'
-  }: ${typesDeclaration || {}}): Promise<WhookCommandHandler> {
-  return async () => {
-    const { param } = readArgs(
-      definition.arguments,
-      await promptArgs(),
-    ) as { param: string; };
+  }: ${typesDeclaration || {}}): Promise<WhookCommand<{ param: string; }>> {
+  return async ({ param }) => {
 
   // Implement your command here
   }
 }
 
 export default location(
-  extra(definition, autoService(init${upperCamelizedName}Command)),
+  autoService(init${upperCamelizedName}Command),
   import.meta.url,
 );
 `;

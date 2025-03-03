@@ -44,15 +44,15 @@ describe('generateOpenAPISchema', () => {
       log,
       getOpenAPI,
       outstream,
-      args: {
-        command: 'whook',
-        namedArguments: {
-          pretty: true,
-        },
-        rest: ['generateOpenAPISchema'],
-      },
     });
-    const result = await generateOpenAPISchema();
+    const result = await generateOpenAPISchema({
+      command: 'whook',
+      namedArguments: {
+        pretty: true,
+        authenticated: true,
+      },
+      rest: ['generateOpenAPISchema'],
+    });
 
     expect({
       result,

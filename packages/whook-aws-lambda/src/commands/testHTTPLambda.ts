@@ -5,8 +5,7 @@ import { v4 as randomUUID } from 'uuid';
 import {
   DEFAULT_COMPILER_OPTIONS,
   noop,
-  readArgs,
-  type WhookCommandArgs,
+  type WhookCommand,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
   type WhookOpenAPI,
@@ -19,37 +18,46 @@ import {
   type APIGatewayProxyResult,
 } from 'aws-lambda';
 
-export const definition: WhookCommandDefinition = {
+export const definition = {
+  name: 'testHTTPLambda',
   description: 'A command for testing AWS HTTP lambda',
   example: `whook testHTTPLambda --name getPing`,
-  arguments: {
-    type: 'object',
-    additionalProperties: false,
-    required: ['name'],
-    properties: {
-      name: {
-        description: 'Name of the lambda to run',
+  arguments: [
+    {
+      name: 'name',
+      required: true,
+      description: 'Name of the lambda to run',
+      schema: {
         type: 'string',
       },
-      type: {
-        description: 'Type of lambda to test',
+    },
+    {
+      name: 'type',
+      description: 'Type of lambda to test',
+      schema: {
         type: 'string',
         enum: ['main', 'index'],
         default: 'index',
       },
-      contentType: {
-        description: 'Content type of the payload',
+    },
+    {
+      name: 'contentType',
+      description: 'Content type of the payload',
+      schema: {
         type: 'string',
         default: 'application/json',
       },
-      parameters: {
-        description: 'The HTTP call parameters',
+    },
+    {
+      name: 'parameters',
+      description: 'The HTTP call parameters',
+      schema: {
         type: 'string',
         default: '{}',
       },
     },
-  },
-};
+  ],
+} as const satisfies WhookCommandDefinition;
 
 export default extra(definition, autoService(initTestHTTPLambdaCommand));
 
@@ -61,7 +69,6 @@ async function initTestHTTPLambdaCommand({
   API,
   time,
   log = noop,
-  args,
 }: {
   ENV: AppEnvVars;
   APP_ENV: string;
@@ -70,17 +77,18 @@ async function initTestHTTPLambdaCommand({
   API: WhookOpenAPI;
   time: TimeService;
   log: LogService;
-  args: WhookCommandArgs;
-}) {
-  return async () => {
+}): Promise<
+  WhookCommand<{
+    name: string;
+    type: string;
+    contentType: string;
+    parameters: string;
+  }>
+> {
+  return async (args) => {
     const {
       namedArguments: { name, type, contentType, parameters: rawParameters },
-    } = readArgs<{
-      name: string;
-      type: string;
-      contentType: string;
-      parameters: string;
-    }>(definition.arguments, args);
+    } = args;
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
       { APP_ENV, PROJECT_DIR, log },
