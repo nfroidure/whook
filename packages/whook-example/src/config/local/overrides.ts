@@ -6,6 +6,8 @@ export const OVERRIDES: Overrides = {
   // You could debug logs by substituting the normal log
   // service by another named `debugLog`.
   // log: 'debugLog',
+  // You can enable the cron runner to test it locally
+  cronRunner: 'localCronRunner',
 };
 
 export default OVERRIDES;

@@ -1,8 +1,8 @@
-import initGetOpenAPI from '../handlers/getOpenAPI.js';
+import initGetOpenAPI from '../routes/getOpenAPI.js';
 import { autoService } from 'knifecycle';
 import { type LogService } from 'common-services';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
 
@@ -39,7 +39,7 @@ async function initGenerateOpenAPISchema({
   outstream: NodeJS.WritableStream;
   log: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     pretty?: boolean;
     authenticated?: boolean;
   }>

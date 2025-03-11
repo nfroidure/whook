@@ -3,9 +3,9 @@ import {
   DEFAULT_HELP_URI,
   type WhookErrorsDescriptors,
 } from '@whook/whook';
-import initWrapHandlerWithAuthorization from './wrappers/wrapHandlerWithAuthorization.js';
+import initWrapRouteHandlerWithAuthorization from './wrappers/wrapRouteHandlerWithAuthorization.js';
 
-export { initWrapHandlerWithAuthorization };
+export { initWrapRouteHandlerWithAuthorization };
 export {
   type WhookAuthenticationApplicationId,
   type WhookAuthenticationScope,
@@ -14,7 +14,7 @@ export {
   type WhookAuthenticationService,
   type WhookAuthorizationConfig,
   type WhookAuthorizationDependencies,
-} from './wrappers/wrapHandlerWithAuthorization.js';
+} from './wrappers/wrapRouteHandlerWithAuthorization.js';
 
 export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_OPERATION_REQUIRED: {

@@ -1,8 +1,8 @@
 # API
-<a name="initWrapHandlerWithAuthorization"></a>
+<a name="initWrapRouteHandlerWithAuthorization"></a>
 
-## initWrapHandlerWithAuthorization(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Wrap an handler to check client's authorizations.
+## initWrapRouteHandlerWithAuthorization(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a route handler to check client's authorizations.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  

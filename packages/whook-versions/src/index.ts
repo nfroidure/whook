@@ -1,5 +1,5 @@
 import camelCase from 'camelcase';
-import initWrapHandlerWithVersionChecker from './wrappers/wrapHandlerWithVersionChecker.js';
+import initWrapRouteHandlerWithVersionChecker from './wrappers/wrapRouteHandlerWithVersionChecker.js';
 import {
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
@@ -13,7 +13,7 @@ import {
   type OpenAPIExtension,
 } from 'ya-open-api-types';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
-import { type VersionDescriptor } from './wrappers/wrapHandlerWithVersionChecker.js';
+import { type VersionDescriptor } from './wrappers/wrapRouteHandlerWithVersionChecker.js';
 
 export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_DEPRECATED_VERSION: {
@@ -25,16 +25,16 @@ export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   },
 };
 
-export { initWrapHandlerWithVersionChecker };
+export { initWrapRouteHandlerWithVersionChecker };
 
 export type {
   VersionDescriptor,
   VersionsConfig,
   VersionsCheckerDependencies,
-} from './wrappers/wrapHandlerWithVersionChecker.js';
+} from './wrappers/wrapRouteHandlerWithVersionChecker.js';
 
 // TODO: This is here to do things fast but a proper way to
-// do this would be to change the handlers signature so that
+// do this would be to change the routes signature so that
 // one can access additional headers without having to declare them
 // each time in the open API
 // https://github.com/nfroidure/swagger-http-router/blob/e34c7f890627df4a062eee7932a658c25943ace3/src/router.js#L259

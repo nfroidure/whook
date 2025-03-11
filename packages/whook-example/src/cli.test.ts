@@ -9,9 +9,9 @@ describe('commands should work', () => {
     );
 
     expect({
-  stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-  stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/')
-}).toMatchInlineSnapshot(`
+      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+    }).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
@@ -31,9 +31,9 @@ On air 🚀🌕
 - env: A command printing env values
 - generateOpenAPISchema: Write openAPI schema to stdout
 - generateOpenAPITypes: Write openAPI types to stdout
-- handler: Runs the given server handler for testing purpose
 - inspect: A simple program that returns the result of the injected service
 - ls: Print available commands
+- route: Runs the given server route for testing purpose
 
 
 # Provided by "@whook/cors": none

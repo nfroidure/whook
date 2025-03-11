@@ -2,7 +2,7 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import _inquirer from 'inquirer';
 import initCreateCommand from './create.js';
-import { definition as initGetPingDefinition } from '../handlers/getPing.js';
+import { definition as initGetPingDefinition } from '../routes/getPing.js';
 import { type OpenAPI } from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 
@@ -36,7 +36,7 @@ describe('createCommand', () => {
     log.mockReset();
   });
 
-  describe('for handlers', () => {
+  describe('for routes', () => {
     test('should work with get and no dependencies', async () => {
       inquirer.prompt.mockResolvedValueOnce({
         services: [],
@@ -63,7 +63,7 @@ describe('createCommand', () => {
         rest: ['create'],
         namedArguments: {
           name: 'getHandler',
-          type: 'handler',
+          type: 'route',
         },
       });
 
@@ -78,7 +78,7 @@ describe('createCommand', () => {
 {
   "ensureDirCalls": [
     [
-      "/hom/whoiam/project/src/handlers",
+      "/hom/whoiam/project/src/routes",
     ],
   ],
   "inquirerPromptCalls": [
@@ -141,7 +141,7 @@ describe('createCommand', () => {
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -222,17 +222,17 @@ describe('createCommand', () => {
   "logCalls": [],
   "pathExistsCalls": [
     [
-      "/hom/whoiam/project/src/handlers/getHandler.ts",
+      "/hom/whoiam/project/src/routes/getHandler.ts",
     ],
   ],
   "result": undefined,
   "writeFileCalls": [
     [
-      "/hom/whoiam/project/src/handlers/getHandler.ts",
+      "/hom/whoiam/project/src/routes/getHandler.ts",
       "import { autoService, location } from 'knifecycle';
 import {
-  type WhookAPIHandlerDefinition,
-  type WhookAPITypedHandler,
+  type WhookRouteDefinition,
+  type WhookRouteTypedHandler,
 } from '@whook/whook';
 
 
@@ -264,12 +264,12 @@ export const definition = {
       },
     },
   },
-} as const satisfies WhookAPIHandlerDefinition;
+} as const satisfies WhookRouteDefinition;
 
 export type HandlerDependencies = {};
 
 async function initGetHandler(_: HandlerDependencies) {
-  const handler: WhookAPITypedHandler<
+  const handler: WhookRouteTypedHandler<
     operations[typeof definition.operation.operationId],
     typeof definition
   > = async ({
@@ -325,7 +325,7 @@ export default location(
         rest: ['create'],
         namedArguments: {
           name: 'getHandler',
-          type: 'handler',
+          type: 'route',
         },
       });
 
@@ -340,7 +340,7 @@ export default location(
 {
   "ensureDirCalls": [
     [
-      "/hom/whoiam/project/src/handlers",
+      "/hom/whoiam/project/src/routes",
     ],
   ],
   "inquirerPromptCalls": [
@@ -403,7 +403,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -498,7 +498,7 @@ export default location(
   ],
   "pathExistsCalls": [
     [
-      "/hom/whoiam/project/src/handlers/getHandler.ts",
+      "/hom/whoiam/project/src/routes/getHandler.ts",
     ],
   ],
   "result": undefined,
@@ -536,7 +536,7 @@ export default location(
         rest: ['create'],
         namedArguments: {
           name: 'getHandler',
-          type: 'handler',
+          type: 'route',
         },
       });
 
@@ -551,7 +551,7 @@ export default location(
 {
   "ensureDirCalls": [
     [
-      "/hom/whoiam/project/src/handlers",
+      "/hom/whoiam/project/src/routes",
     ],
   ],
   "inquirerPromptCalls": [
@@ -614,7 +614,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -709,17 +709,17 @@ export default location(
   ],
   "pathExistsCalls": [
     [
-      "/hom/whoiam/project/src/handlers/getHandler.ts",
+      "/hom/whoiam/project/src/routes/getHandler.ts",
     ],
   ],
   "result": undefined,
   "writeFileCalls": [
     [
-      "/hom/whoiam/project/src/handlers/getHandler.ts",
+      "/hom/whoiam/project/src/routes/getHandler.ts",
       "import { autoService, location } from 'knifecycle';
 import {
-  type WhookAPIHandlerDefinition,
-  type WhookAPITypedHandler,
+  type WhookRouteDefinition,
+  type WhookRouteTypedHandler,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { type AppEnvVars, type ProjectDirService } from 'application-services';
@@ -753,7 +753,7 @@ export const definition = {
       },
     },
   },
-} as const satisfies WhookAPIHandlerDefinition;
+} as const satisfies WhookRouteDefinition;
 
 export type HandlerDependencies = {
   ENV: AppEnvVars;
@@ -766,7 +766,7 @@ async function initGetHandler({
   PROJECT_DIR,
   log,
 }: HandlerDependencies) {
-  const handler: WhookAPITypedHandler<
+  const handler: WhookRouteTypedHandler<
     operations[typeof definition.operation.operationId],
     typeof definition
   > = async ({
@@ -893,7 +893,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -1039,7 +1039,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -1179,7 +1179,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -1348,7 +1348,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -1504,7 +1504,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -1644,7 +1644,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -1826,7 +1826,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -2006,7 +2006,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",
@@ -2158,7 +2158,7 @@ export default location(
               "value": "PORT",
             },
             {
-              "value": "API_DEFINITIONS",
+              "value": "DEFINITIONS",
             },
             {
               "value": "APM",

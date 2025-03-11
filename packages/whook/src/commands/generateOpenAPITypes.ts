@@ -3,7 +3,7 @@ import { generateOpenAPITypes as generateTypes, toSource } from 'schema2dts';
 import { type OpenAPITypesGenerationOptions } from 'schema2dts';
 import { type LogService } from 'common-services';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
 
@@ -33,7 +33,7 @@ async function initGenerateOpenAPITypes({
   instream: NodeJS.ReadableStream;
   outstream: NodeJS.WritableStream;
   log: LogService;
-}): Promise<WhookCommand> {
+}): Promise<WhookCommandHandler> {
   return async function generateOpenAPITypes(): Promise<void> {
     log('warning', '📥 - Retrieving API schema...');
 

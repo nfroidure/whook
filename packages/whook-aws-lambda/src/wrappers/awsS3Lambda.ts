@@ -3,11 +3,11 @@ import { printStackTrace, YError } from 'yerror';
 import {
   noop,
   type WhookAPMService,
-  type WhookAPIHandlerDefinition,
-  type WhookAPIHandler,
+  type WhookRouteDefinition,
+  type WhookRouteHandler,
   type WhookHeaders,
-  type WhookAPIWrapper,
-  type WhookAPIHandlerParameters,
+  type WhookRouteHandlerWrapper,
+  type WhookRouteHandlerParameters,
   type WhookOpenAPI,
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
@@ -50,19 +50,19 @@ async function initWrapHandlerForS3Lambda({
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapS3LambdaDependencies): Promise<WhookAPIWrapper> {
+}: WhookWrapS3LambdaDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda S3 wrapper.');
 
   const wrapper = async (
-    handler: WhookAPIHandler,
-  ): Promise<WhookAPIHandler> => {
+    handler: WhookRouteHandler,
+  ): Promise<WhookRouteHandler> => {
     const wrappedHandler = handleForAWSS3Lambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
       handler,
     );
 
-    return wrappedHandler as unknown as WhookAPIHandler;
+    return wrappedHandler as unknown as WhookRouteHandler;
   };
 
   return wrapper;
@@ -76,7 +76,7 @@ async function handleForAWSS3Lambda(
     time,
     log,
   }: Required<WhookWrapS3LambdaDependencies>,
-  handler: WhookAPIHandler,
+  handler: WhookRouteHandler,
   event: S3Event,
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
@@ -100,7 +100,7 @@ async function handleForAWSS3Lambda(
     method,
     operation,
     config: operation['x-whook'],
-  } as unknown as WhookAPIHandlerDefinition;
+  } as unknown as WhookRouteDefinition;
   const startTime = time();
   const parameters = {
     body: event.Records,
@@ -109,7 +109,7 @@ async function handleForAWSS3Lambda(
     log('debug', 'EVENT', JSON.stringify(event));
 
     await handler(
-      parameters as unknown as WhookAPIHandlerParameters,
+      parameters as unknown as WhookRouteHandlerParameters,
       definition,
     );
 

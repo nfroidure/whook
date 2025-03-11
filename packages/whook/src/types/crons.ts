@@ -6,33 +6,36 @@ import {
 } from 'knifecycle';
 import { type WhookAPISchemaDefinition } from './openapi.js';
 import { type JsonValue } from 'type-fest';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { WhookHandlerWrapper } from './wrappers.js';
 
-export const DEFAULT_CRON_CONFIG: Required<WhookCronHandlerConfig> = {
+export const DEFAULT_CRON_CONFIG: Required<WhookCronConfig> = {
   environments: 'all',
 };
 
-export type WhookBaseCronHandlerConfig = {
+export type WhookBaseCronConfig = {
   environments?: 'all' | WhookMain['AppEnv'][];
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface WhookCronHandlerConfig extends WhookBaseCronHandlerConfig {}
+export interface WhookCronConfig extends WhookBaseCronConfig {}
 
-export type WhookCronHandlerDefinition<T extends JsonValue> = {
+export type WhookCronDefinition<T extends JsonValue = JsonValue> = {
   name: string;
   schedules: {
     rule: string;
     body: T;
     enabled: boolean;
   }[];
-  config?: WhookCronHandlerConfig;
+  schema: ExpressiveJSONSchema;
+  config?: WhookCronConfig;
 };
 
 export interface WhookCronHandler<
   T extends JsonValue,
-  D extends WhookCronHandlerDefinition<T> = WhookCronHandlerDefinition<T>,
+  D extends WhookCronDefinition<T> = WhookCronDefinition<T>,
 > {
-  (parameters: T, definition: D): Promise<void>;
+  (input: { date: string; body: T }, definition: D): Promise<void>;
 }
 export type WhookCronHandlerInitializer<
   T extends JsonValue,
@@ -41,27 +44,21 @@ export type WhookCronHandlerInitializer<
   | ServiceInitializer<D, WhookCronHandler<T>>
   | ProviderInitializer<D, WhookCronHandler<T>>;
 
-export const CRON_HANDLER_ASIDE_COMPONENTS_SUFFIXES = ['Schema'] as const;
-export const CRON_HANDLER_ASIDE_COMPONENTS_PROPERTY_MAP = {
+export const CRON_ASIDE_COMPONENTS_SUFFIXES = ['Schema'] as const;
+export const CRON_ASIDE_COMPONENTS_PROPERTY_MAP = {
   Schema: 'schema',
 } as const;
 
-export type WhookAPIHandlerAsideComponentSuffix =
-  (typeof CRON_HANDLER_ASIDE_COMPONENTS_SUFFIXES)[number];
+export type WhookCronAsideComponentSuffix =
+  (typeof CRON_ASIDE_COMPONENTS_SUFFIXES)[number];
 
-// May allow to type handlers files later
+// May allow to type crons files later
 // https://github.com/nfroidure/whook/issues/196
-export interface WhookCronHandlerModule<T extends JsonValue> {
+export interface WhookCronModule<T extends JsonValue = JsonValue> {
   default: WhookCronHandlerInitializer<T>;
-  definition: WhookCronHandlerDefinition<T>;
+  definition: WhookCronDefinition<T>;
   [name: `${string}Schema`]: WhookAPISchemaDefinition<unknown>;
 }
 
-export type WhookCronWrapper<T extends JsonValue> = (
-  handler: WhookCronHandler<T>,
-) => Promise<WhookCronHandler<T>>;
-
-export type WhookCronTypedHandler<
-  T extends JsonValue,
-  D extends WhookCronHandlerDefinition<T>,
-> = (input: T, definition?: D) => Promise<void>;
+export type WhookCronHandlerWrapper<T extends JsonValue = JsonValue> =
+  WhookHandlerWrapper<WhookCronHandler<T>>;

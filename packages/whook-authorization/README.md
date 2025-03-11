@@ -157,9 +157,9 @@ And finally declare this plugin in the `src/index.ts` file
   // ...
 
   $.register(
-    constant('HANDLERS_WRAPPERS', [
-      'wrapHandlerWithCORS',
-+      'wrapHandlerWithAuthorization',
+    constant('ROUTES_WRAPPERS_NAMES', [
+      'wrapRouteHandlerWithCORS',
++      'wrapRouteHandlerWithAuthorization',
     ]),
   );
 
@@ -183,10 +183,10 @@ project.
 [//]: # (::contents:end)
 
 # API
-<a name="initWrapHandlerWithAuthorization"></a>
+<a name="initWrapRouteHandlerWithAuthorization"></a>
 
-## initWrapHandlerWithAuthorization(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Wrap an handler to check client's authorizations.
+## initWrapRouteHandlerWithAuthorization(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a route handler to check client's authorizations.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  

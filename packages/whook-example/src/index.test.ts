@@ -100,9 +100,9 @@ describe('runProcess', () => {
   test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
-  debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-  logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs)
-}).toMatchInlineSnapshot(`
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
+    }).toMatchInlineSnapshot(`
 {
   "debugCalls": [
     [
@@ -118,34 +118,28 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
@@ -379,10 +373,13 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+      "⌚ - Scheduling the "handleMinutes" cron with "*/1 * * * *" (task name: "handleMinutes-0").",
     ],
     [
       "⌛ - Delay service initialized.",
+    ],
+    [
+      "⏳ - Module "optionsWithCORS.js" has no definition!",
     ],
     [
       "⏳ - Skipped "__snapshots__" per ignore patterns.",
@@ -514,21 +511,6 @@ describe('runProcess', () => {
       "⏳ - Skipped "getTime.test.ts" per ignore patterns.",
     ],
     [
-      "⏳ - Skipped "handler.d.ts" per ignore patterns.",
-    ],
-    [
-      "⏳ - Skipped "handler.js.map" per file patterns.",
-    ],
-    [
-      "⏳ - Skipped "handler.test.d.ts" per ignore patterns.",
-    ],
-    [
-      "⏳ - Skipped "handler.test.js" per ignore patterns.",
-    ],
-    [
-      "⏳ - Skipped "handler.test.js.map" per file patterns.",
-    ],
-    [
       "⏳ - Skipped "inspect.d.ts" per ignore patterns.",
     ],
     [
@@ -562,9 +544,6 @@ describe('runProcess', () => {
       "⏳ - Skipped "optionsWithCORS.d.ts" per ignore patterns.",
     ],
     [
-      "⏳ - Skipped "optionsWithCORS.js" since no definition!",
-    ],
-    [
       "⏳ - Skipped "optionsWithCORS.js.map" per file patterns.",
     ],
     [
@@ -572,6 +551,21 @@ describe('runProcess', () => {
     ],
     [
       "⏳ - Skipped "putEcho.test.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "route.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "route.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "route.test.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "route.test.js" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "route.test.js.map" per file patterns.",
     ],
     [
       "✅ - Module path of "API" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
@@ -583,43 +577,52 @@ describe('runProcess', () => {
       "✅ - Module path of "MECHANISMS" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
     [
+      "✅ - Module path of "ROUTE_DEFINITION_FILTER" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/ROUTE_DEFINITION_FILTER.ts".",
+    ],
+    [
       "✅ - Module path of "authentication" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
     [
-      "✅ - Module path of "getDelay" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "✅ - Module path of "getDelay" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDelay.ts".",
     ],
     [
-      "✅ - Module path of "getDiagnostic" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "✅ - Module path of "getDiagnostic" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
-      "✅ - Module path of "getOpenAPI" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "✅ - Module path of "getOpenAPI" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
-      "✅ - Module path of "getParameters" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "✅ - Module path of "getParameters" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getParameters.ts".",
     ],
     [
-      "✅ - Module path of "getPing" found at "@whook/whook/dist/handlers/getPing.js".",
+      "✅ - Module path of "getPing" found at "@whook/whook/dist/routes/getPing.js".",
     ],
     [
-      "✅ - Module path of "getTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+      "✅ - Module path of "getTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getTime.ts".",
+    ],
+    [
+      "✅ - Module path of "handleMinutes" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/crons/handleMinutes.ts".",
     ],
     [
       "✅ - Module path of "jwtToken" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
-      "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/handlers/optionsWithCORS.js".",
+      "✅ - Module path of "localCronRunner" found at "@whook/whook/dist/services/localCronRunner.js".",
     ],
     [
-      "✅ - Module path of "putEcho" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+      "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/routes/optionsWithCORS.js".",
     ],
     [
-      "✅ - Module path of "putTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
+      "✅ - Module path of "putEcho" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
-      "✅ - Module path of "wrapHandlerWithAuthorization" found at "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "✅ - Module path of "putTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
     ],
     [
-      "✅ - Module path of "wrapHandlerWithCORS" found at "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
+      "✅ - Module path of "wrapRouteHandlerWithAuthorization" found at "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+    ],
+    [
+      "✅ - Module path of "wrapRouteHandlerWithCORS" found at "@whook/cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
     ],
     [
       "❤️ - Initializing the APM service.",
@@ -628,49 +631,31 @@ describe('runProcess', () => {
       "➰ - Plugin "@whook/authorization" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-authorization/dist" with "wrappers" types.",
     ],
     [
-      "➰ - Plugin "@whook/cors" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-cors/dist" with "handlers, services, wrappers" types.",
+      "➰ - Plugin "@whook/cors" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-cors/dist" with "routes, services, wrappers" types.",
     ],
     [
-      "➰ - Plugin "@whook/whook" source path resolved to "file:///home/whoiam/projects/whook/dist" with "commands, handlers, services" types.",
+      "➰ - Plugin "@whook/whook" source path resolved to "file:///home/whoiam/projects/whook/dist" with "commands, routes, services" types.",
     ],
     [
-      "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-example/src" with "commands, handlers, services" types.",
-    ],
-    [
-      "🈁 - Gathering the API handlers modules.",
+      "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-example/src" with "commands, crons, routes, services" types.",
     ],
     [
       "🈁 - Gathering the project commands modules.",
     ],
     [
-      "🈁 - Generating the API_DEFINITIONS",
+      "🈁 - Gathering the project crons modules.",
+    ],
+    [
+      "🈁 - Gathering the routes modules.",
+    ],
+    [
+      "🈁 - Generating the DEFINITIONS",
+    ],
+    [
+      "🈁 - Handler module at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js" exports no definition!",
     ],
     [
       "🍀 - Trying to find "API" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_FILTER" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "API_HANDLERS_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/authorization".",
@@ -700,28 +685,40 @@ describe('runProcess', () => {
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_FILTER" module path in "@whook/authorization".",
+      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/authorization".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_FILTER" module path in "@whook/cors".",
+      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/cors".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_FILTER" module path in "@whook/whook".",
+      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/whook".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_FILTER" module path in "__project__".",
+      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "@whook/authorization".",
+      "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/authorization".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "@whook/cors".",
+      "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/cors".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "@whook/whook".",
+      "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/whook".",
     ],
     [
-      "🍀 - Trying to find "COMMANDS_OPTIONS" module path in "__project__".",
+      "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
@@ -823,6 +820,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "__project__".",
     ],
     [
+      "🍀 - Trying to find "ROUTE_DEFINITION_FILTER" module path in "__project__".",
+    ],
+    [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/authorization".",
     ],
     [
@@ -919,7 +919,16 @@ describe('runProcess', () => {
       "🍀 - Trying to find "getTime" module path in "__project__".",
     ],
     [
+      "🍀 - Trying to find "handleMinutes" module path in "__project__".",
+    ],
+    [
       "🍀 - Trying to find "jwtToken" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "localCronRunner" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "localCronRunner" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "optionsWithCORS" module path in "@whook/cors".",
@@ -949,25 +958,25 @@ describe('runProcess', () => {
       "🍀 - Trying to find "uniqueId" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "@whook/authorization".",
+      "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/authorization".",
     ],
     [
-      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "@whook/cors".",
+      "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/cors".",
     ],
     [
-      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "@whook/whook".",
+      "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/whook".",
     ],
     [
-      "🍀 - Trying to find "wrapHandlerWithAuthorization" module path in "__project__".",
+      "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "wrapHandlerWithCORS" module path in "@whook/cors".",
+      "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/cors".",
     ],
     [
-      "🍀 - Trying to find "wrapHandlerWithCORS" module path in "@whook/whook".",
+      "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/whook".",
     ],
     [
-      "🍀 - Trying to find "wrapHandlerWithCORS" module path in "__project__".",
+      "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "__project__".",
     ],
     [
       "🏭 - Initializing the APP_CONFIG service.",
@@ -988,43 +997,52 @@ describe('runProcess', () => {
       "💿 - Loading "MECHANISMS" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
     [
+      "💿 - Loading "ROUTE_DEFINITION_FILTER" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/ROUTE_DEFINITION_FILTER.ts".",
+    ],
+    [
       "💿 - Loading "authentication" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
     [
-      "💿 - Loading "getDelay" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "💿 - Loading "getDelay" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDelay.ts".",
     ],
     [
-      "💿 - Loading "getDiagnostic" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "💿 - Loading "getDiagnostic" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
-      "💿 - Loading "getOpenAPI" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "💿 - Loading "getOpenAPI" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
-      "💿 - Loading "getParameters" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "💿 - Loading "getParameters" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getParameters.ts".",
     ],
     [
-      "💿 - Loading "getPing" initializer from "@whook/whook/dist/handlers/getPing.js".",
+      "💿 - Loading "getPing" initializer from "@whook/whook/dist/routes/getPing.js".",
     ],
     [
-      "💿 - Loading "getTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+      "💿 - Loading "getTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getTime.ts".",
+    ],
+    [
+      "💿 - Loading "handleMinutes" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/crons/handleMinutes.ts".",
     ],
     [
       "💿 - Loading "jwtToken" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
-      "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/handlers/optionsWithCORS.js".",
+      "💿 - Loading "localCronRunner" initializer from "@whook/whook/dist/services/localCronRunner.js".",
     ],
     [
-      "💿 - Loading "putEcho" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+      "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/routes/optionsWithCORS.js".",
     ],
     [
-      "💿 - Loading "putTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
+      "💿 - Loading "putEcho" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
-      "💿 - Loading "wrapHandlerWithAuthorization" initializer from "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "💿 - Loading "putTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
     ],
     [
-      "💿 - Loading "wrapHandlerWithCORS" initializer from "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
+      "💿 - Loading "wrapRouteHandlerWithAuthorization" initializer from "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+    ],
+    [
+      "💿 - Loading "wrapRouteHandlerWithCORS" initializer from "@whook/cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
     ],
     [
       "💿 - Service "API" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
@@ -1036,43 +1054,52 @@ describe('runProcess', () => {
       "💿 - Service "MECHANISMS" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
     ],
     [
+      "💿 - Service "ROUTE_DEFINITION_FILTER" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/ROUTE_DEFINITION_FILTER.ts".",
+    ],
+    [
       "💿 - Service "authentication" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
     ],
     [
-      "💿 - Service "getDelay" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "💿 - Service "getDelay" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDelay.ts".",
     ],
     [
-      "💿 - Service "getDiagnostic" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "💿 - Service "getDiagnostic" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
-      "💿 - Service "getOpenAPI" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "💿 - Service "getOpenAPI" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
-      "💿 - Service "getParameters" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "💿 - Service "getParameters" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getParameters.ts".",
     ],
     [
-      "💿 - Service "getPing" found in "@whook/whook/dist/handlers/getPing.js".",
+      "💿 - Service "getPing" found in "@whook/whook/dist/routes/getPing.js".",
     ],
     [
-      "💿 - Service "getTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+      "💿 - Service "getTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getTime.ts".",
+    ],
+    [
+      "💿 - Service "handleMinutes" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/crons/handleMinutes.ts".",
     ],
     [
       "💿 - Service "jwtToken" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
     ],
     [
-      "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/handlers/optionsWithCORS.js".",
+      "💿 - Service "localCronRunner" found in "@whook/whook/dist/services/localCronRunner.js".",
     ],
     [
-      "💿 - Service "putEcho" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+      "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/routes/optionsWithCORS.js".",
     ],
     [
-      "💿 - Service "putTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
+      "💿 - Service "putEcho" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
-      "💿 - Service "wrapHandlerWithAuthorization" found in "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "💿 - Service "putTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
     ],
     [
-      "💿 - Service "wrapHandlerWithCORS" found in "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
+      "💿 - Service "wrapRouteHandlerWithAuthorization" found in "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+    ],
+    [
+      "💿 - Service "wrapRouteHandlerWithCORS" found in "@whook/cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
     ],
     [
       "📇 - Process service initialized.",
@@ -1126,13 +1153,7 @@ describe('runProcess', () => {
       "🚦 - HTTP Router initialized.",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/handlers/optionsWithCORS.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/API_HANDLERS_FILTER.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/API_HANDLERS_OPTIONS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/routes/optionsWithCORS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/BUFFER_LIMIT.js".",
@@ -1141,10 +1162,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COERCION_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMANDS_FILTER.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMANDS_OPTIONS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMAND_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/CRON_DEFINITION_FILTER.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/DECODERS.js".",
@@ -1192,16 +1216,10 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/uniqueId.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/wrappers/wrapHandlerWithCORS.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/API_HANDLERS_FILTER.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/API_HANDLERS_OPTIONS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/wrappers/wrapRouteHandlerWithCORS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js".",
@@ -1210,10 +1228,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COERCION_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMANDS_FILTER.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMANDS_OPTIONS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMAND_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DECODERS.js".",
@@ -1261,22 +1282,19 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/API_HANDLERS_FILTER.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/API_HANDLERS_OPTIONS.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COERCION_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMANDS_FILTER.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMANDS_OPTIONS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMAND_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS.js".",
@@ -1324,19 +1342,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getPing.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getPing.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/optionsWithCORS.ts".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API_HANDLERS_FILTER.ts".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API_HANDLERS_OPTIONS.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/optionsWithCORS.ts".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/BUFFER_LIMIT.ts".",
@@ -1345,10 +1357,13 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COERCION_OPTIONS.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMANDS_FILTER.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMANDS_DEFINITIONS_OPTIONS.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMANDS_OPTIONS.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMAND_DEFINITION_FILTER.ts".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CRON_DEFINITION_FILTER.ts".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS.ts".",
@@ -1393,19 +1408,16 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/fetcher.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/localCronRunner.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/uniqueId.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithAuthorization.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapRouteHandlerWithAuthorization.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapHandlerWithCORS.ts".",
-    ],
-    [
-      "🚫 - Module path of "API_HANDLERS_FILTER" not found.",
-    ],
-    [
-      "🚫 - Module path of "API_HANDLERS_OPTIONS" not found.",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapRouteHandlerWithCORS.ts".",
     ],
     [
       "🚫 - Module path of "BUFFER_LIMIT" not found.",
@@ -1414,10 +1426,13 @@ describe('runProcess', () => {
       "🚫 - Module path of "COERCION_OPTIONS" not found.",
     ],
     [
-      "🚫 - Module path of "COMMANDS_FILTER" not found.",
+      "🚫 - Module path of "COMMANDS_DEFINITIONS_OPTIONS" not found.",
     ],
     [
-      "🚫 - Module path of "COMMANDS_OPTIONS" not found.",
+      "🚫 - Module path of "COMMAND_DEFINITION_FILTER" not found.",
+    ],
+    [
+      "🚫 - Module path of "CRON_DEFINITION_FILTER" not found.",
     ],
     [
       "🚫 - Module path of "DECODERS" not found.",
@@ -1465,16 +1480,19 @@ describe('runProcess', () => {
       "🚫 - Module path of "uniqueId" not found.",
     ],
     [
-      "🛂 - Dynamic import of "@whook/authorization/dist/wrappers/wrapHandlerWithAuthorization.js".",
+      "🛂 - Dynamic import of "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
     ],
     [
-      "🛂 - Dynamic import of "@whook/cors/dist/handlers/optionsWithCORS.js".",
+      "🛂 - Dynamic import of "@whook/cors/dist/routes/optionsWithCORS.js".",
     ],
     [
-      "🛂 - Dynamic import of "@whook/cors/dist/wrappers/wrapHandlerWithCORS.js".",
+      "🛂 - Dynamic import of "@whook/cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
     ],
     [
-      "🛂 - Dynamic import of "@whook/whook/dist/handlers/getPing.js".",
+      "🛂 - Dynamic import of "@whook/whook/dist/routes/getPing.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "@whook/whook/dist/services/localCronRunner.js".",
     ],
     [
       "🛂 - Dynamic import of "ecstatic".",
@@ -1495,19 +1513,19 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/generateOpenAPITypes.js".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/handler.js".",
-    ],
-    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/inspect.js".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/ls.js".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/handlers/getPing.js".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/route.js".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-cors/dist/handlers/optionsWithCORS.js".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/routes/getPing.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/commands/printEnv.ts".",
@@ -1516,46 +1534,52 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/config/local/config.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/crons/handleMinutes.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDelay.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/crons/handleMinutes.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDelay.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getDiagnostic.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDelay.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getOpenAPI.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getParameters.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getParameters.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/getTime.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getParameters.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getTime.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putEcho.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getTime.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
-      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/handlers/putTime.ts".",
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
@@ -1565,6 +1589,9 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/MECHANISMS.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/ROUTE_DEFINITION_FILTER.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/authentication.ts".",
@@ -1587,6 +1614,9 @@ describe('runProcess', () => {
       "On air 🚀🌕",
     ],
     [
+      "⌚ - Initializing the local cron runner (1 crons).",
+    ],
+    [
       "⌨️ - Initializing the basic query parser.",
     ],
     [
@@ -1602,10 +1632,16 @@ describe('runProcess', () => {
       "🎙️ - HTTP Server listening at "http://localhost:9999".",
     ],
     [
-      "🏭 - Initializing the HANDLERS service with 9 handlers wrapped by 2 wrappers.",
+      "🏭 - Initializing the CRONS_HANDLERS service with 1 handlers wrapped by 0 wrappers.",
     ],
     [
-      "🏭 - Initializing the WRAPPERS service.",
+      "🏭 - Initializing the CRONS_WRAPPERS service.",
+    ],
+    [
+      "🏭 - Initializing the ROUTES_HANDLERS service with 9 handlers wrapped by 2 wrappers.",
+    ],
+    [
+      "🏭 - Initializing the ROUTES_WRAPPERS service.",
     ],
     [
       "💁 - Serving the API docs: http://localhost:9999/docs",

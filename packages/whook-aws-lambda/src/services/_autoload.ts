@@ -16,12 +16,13 @@ import { YError } from 'yerror';
 import {
   initBuildAutoload,
   noop,
-  type WhookAPIHandlerDefinition,
+  initMainHandler,
   type WhookOpenAPI,
   type WhookBuildConstantsService,
-  type WhookAPIHandlerConfig,
+  type WhookRoutesDefinitionsService,
+  type WhookCronsDefinitionsService,
+  type WhookCronDefinition,
 } from '@whook/whook';
-import initHandler from './HANDLER.js';
 import initWrapHandlerForAWSConsumerLambda from '../wrappers/awsConsumerLambda.js';
 import initWrapHandlerForAWSHTTPLambda from '../wrappers/awsHTTPLambda.js';
 import initWrapHandlerForAWSLogSubscriberLambda from '../wrappers/awsLogSubscriberLambda.js';
@@ -32,7 +33,6 @@ import initWrapHandlerForAWSS3Lambda from '../wrappers/awsS3Lambda.js';
 import { type LogService } from 'common-services';
 import { cleanupOpenAPI } from 'ya-open-api-types';
 import { type WhookAWSLambdaConfiguration } from '../index.js';
-import { getOpenAPIDefinitions } from '../libs/utils.js';
 
 export type WhookAWSLambdaAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;
@@ -88,47 +88,55 @@ const initializerWrapper: ServiceInitializerWrapper<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>
 > => {
   let API: WhookOpenAPI;
-  let API_DEFINITIONS: WhookAPIHandlerDefinition[];
+  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  let CRONS_DEFINITIONS: WhookCronsDefinitionsService;
   const getAPIDefinition: (
     serviceName: string,
-  ) => Promise<[WhookAPIHandlerConfig['type'], string, WhookOpenAPI]> = (() => {
+  ) => Promise<
+    [
+      WhookAWSLambdaConfiguration['type'],
+      string,
+      WhookOpenAPI | WhookCronDefinition,
+    ]
+  > = (() => {
     return async (serviceName) => {
-      const cleanedName = serviceName.split('_').pop();
+      const cleanedName = serviceName.split('_').pop() as string;
 
       API = API || (await $injector(['API'])).API;
+      ROUTES_DEFINITIONS =
+        ROUTES_DEFINITIONS ||
+        (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
+      CRONS_DEFINITIONS =
+        CRONS_DEFINITIONS ||
+        (await $injector(['CRONS_DEFINITIONS'])).CRONS_DEFINITIONS;
 
-      API_DEFINITIONS = API_DEFINITIONS || getOpenAPIDefinitions(API);
+      if (CRONS_DEFINITIONS[cleanedName]?.module?.definition) {
+        return [
+          'cron',
+          cleanedName,
+          CRONS_DEFINITIONS[cleanedName]?.module?.definition,
+        ];
+      } else if (ROUTES_DEFINITIONS[cleanedName]?.module?.definition) {
+        const definition = ROUTES_DEFINITIONS[cleanedName]?.module?.definition;
 
-      const definition = API_DEFINITIONS.find(
-        (aDefinition) =>
-          cleanedName ===
-          ((aDefinition?.config?.sourceOperationId &&
-            aDefinition?.config?.sourceOperationId) ||
-            aDefinition?.operation?.operationId) +
-            (aDefinition?.config?.suffix || ''),
-      );
-
-      if (!definition) {
-        log('error', '💥 - Unable to find a lambda operation definition!');
-        throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
+        return [
+          'http',
+          cleanedName,
+          (await cleanupOpenAPI({
+            ...API,
+            paths: {
+              [definition.path]: {
+                parameters: API?.paths?.[definition.path]?.parameters || [],
+                [definition.method]:
+                  API.paths?.[definition.path]?.[definition.method],
+              },
+            },
+          })) as WhookOpenAPI,
+        ];
       }
 
-      const OPERATION_API = (await cleanupOpenAPI({
-        ...API,
-        paths: {
-          [definition.path]: {
-            parameters: API[definition.path]?.parameters || [],
-            [definition.method]:
-              API.paths?.[definition.path]?.[definition.method],
-          },
-        },
-      })) as WhookOpenAPI;
-
-      return [
-        definition?.config?.type || 'http',
-        definition?.operation?.operationId as string,
-        OPERATION_API,
-      ];
+      log('error', '💥 - Unable to find a lambda operation definition!');
+      throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
     };
   })();
 
@@ -164,20 +172,21 @@ const initializerWrapper: ServiceInitializerWrapper<
       return location(
         alsoInject(
           [
-            `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
+            `MAIN_WRAPPER>OPERATION_WRAPPER_${serviceName.replace(
               'OPERATION_HANDLER_',
               '',
             )}`,
-            // Only inject wrappers for HTTP handlers and
+            // TODO: Review it
+            // Only inject wrappers for HTTP routes and
             // eventually inject other ones
             ...(type !== 'http'
               ? [`?WRAPPERS>${type.toUpperCase()}_WRAPPERS`]
               : []),
-            `baseHandler>${operationId}`,
+            `BASE_HANDLER>${operationId}`,
           ],
-          initHandler,
+          initMainHandler,
         ) as any,
-        '@whook/aws-lambda/dist/services/HANDLER.js',
+        '@whook/whook/dist/services/MAIN_HANDLER.js',
       );
     }
 

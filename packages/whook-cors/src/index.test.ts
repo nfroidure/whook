@@ -1,20 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { jest, describe, test, expect, beforeEach } from '@jest/globals';
 import {
-  initWrapHandlerWithCORS,
+  initWrapRouteHandlerWithCORS,
   initOptionsWithCORS,
   augmentAPIWithCORS,
 } from './index.js';
 import { service } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { type CORSConfig } from './index.js';
-import {
-  type WhookAPIHandlerDefinition,
-  type WhookOpenAPI,
-} from '@whook/whook';
+import { type WhookRouteDefinition, type WhookOpenAPI } from '@whook/whook';
 import { type LogService } from 'common-services';
 
-describe('initWrapHandlerWithCORS', () => {
+describe('initWrapRouteHandlerWithCORS', () => {
   const CORS: CORSConfig = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
@@ -30,7 +27,7 @@ describe('initWrapHandlerWithCORS', () => {
       'User-Agent',
     ].join(','),
   };
-  const DEFINITION: WhookAPIHandlerDefinition = {
+  const DEFINITION: WhookRouteDefinition = {
     path: '/test',
     method: 'get',
     operation: {
@@ -52,7 +49,7 @@ describe('initWrapHandlerWithCORS', () => {
 
   test('should work', async () => {
     const baseHandler = await initOptionsWithCORS({});
-    const wrapper = await initWrapHandlerWithCORS({
+    const wrapper = await initWrapRouteHandlerWithCORS({
       CORS,
       log,
     });
@@ -95,7 +92,7 @@ describe('initWrapHandlerWithCORS', () => {
 
   test('should work with replace custom CORS', async () => {
     const baseHandler = await initOptionsWithCORS({});
-    const wrapper = await initWrapHandlerWithCORS({
+    const wrapper = await initWrapRouteHandlerWithCORS({
       CORS,
       log,
     });
@@ -150,7 +147,7 @@ describe('initWrapHandlerWithCORS', () => {
 
   test('should work with merge custom CORS', async () => {
     const baseHandler = await initOptionsWithCORS({});
-    const wrapper = await initWrapHandlerWithCORS({
+    const wrapper = await initWrapRouteHandlerWithCORS({
       CORS,
       log,
     });
@@ -212,7 +209,7 @@ describe('initWrapHandlerWithCORS', () => {
       'getError',
       [],
     )({});
-    const wrapper = await initWrapHandlerWithCORS({
+    const wrapper = await initWrapRouteHandlerWithCORS({
       CORS,
       log,
     });

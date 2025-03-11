@@ -37,7 +37,7 @@ import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 export const DEFAULT_BUILD_PARALLELISM = 10;
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   ...BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-  log: '@whook/gcp-functions/dist/services/log.js',
+  log: '@whook/whook/dist/services/rawLog.js',
 };
 
 export type WhookGCPBuildConfig = {

@@ -5,7 +5,7 @@ import initEnvCommand, {
 } from './env.js';
 import { type LogService } from 'common-services';
 import { WHOOK_PROJECT_PLUGIN_NAME } from '../services/WHOOK_RESOLVED_PLUGINS.js';
-import { type WhookCommandsService } from '../services/COMMANDS.js';
+import { type WhookCommandsDefinitionsService } from '../services/COMMANDS_DEFINITIONS.js';
 import { type WhookCommandModule } from '../types/commands.js';
 
 describe('lsCommand', () => {
@@ -17,14 +17,14 @@ describe('lsCommand', () => {
 
   describe('should work', () => {
     test('with no plugin', async () => {
-      const COMMANDS: WhookCommandsService = {};
+      const COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService = {};
       const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
       const lsCommand = await initLsCommand({
         CONFIG: {
           name: 'My Super project!',
         },
         WHOOK_PLUGINS,
-        COMMANDS,
+        COMMANDS_DEFINITIONS,
         log,
         EOL: '\n',
       });
@@ -57,7 +57,7 @@ describe('lsCommand', () => {
     });
 
     test('with some plugins', async () => {
-      const COMMANDS: WhookCommandsService = {
+      const COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService = {
         ls: {
           url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
           name: 'ls',
@@ -87,7 +87,7 @@ describe('lsCommand', () => {
           name: '',
         },
         WHOOK_PLUGINS,
-        COMMANDS,
+        COMMANDS_DEFINITIONS,
         log,
         EOL: '\n',
       });
@@ -138,7 +138,7 @@ describe('lsCommand', () => {
     });
 
     test('with some plugins and a verbose output', async () => {
-      const COMMANDS: WhookCommandsService = {
+      const COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService = {
         ls: {
           url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
           name: 'ls',
@@ -168,7 +168,7 @@ describe('lsCommand', () => {
           name: 'My Super project!',
         },
         WHOOK_PLUGINS,
-        COMMANDS,
+        COMMANDS_DEFINITIONS,
         log,
         EOL: '\n',
       });

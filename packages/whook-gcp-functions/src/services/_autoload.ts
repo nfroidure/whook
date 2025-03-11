@@ -15,18 +15,17 @@ import {
 import { YError } from 'yerror';
 import {
   initBuildAutoload,
+  initMainHandler,
   noop,
-  type WhookAPIHandlerConfig,
-  type WhookAPIHandlerDefinition,
+  type WhookRouteConfig,
   type WhookOpenAPI,
   type WhookBuildConstantsService,
+  type WhookRoutesDefinitionsService,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { cleanupOpenAPI } from 'ya-open-api-types';
 import { type WhookAPIOperationGCPFunctionConfig } from '../index.js';
-import initHandler from './HANDLER.js';
-import initWrapHandlerForGoogleHTTPFunction from '../wrappers/wrapHandlerForGoogleHTTPFunction.js';
-import { getOpenAPIDefinitions } from '../libs/utils.js';
+import initWrapHandlerForGoogleHTTPFunction from '../wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
 
 export type WhookGoogleFunctionsAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;
@@ -43,7 +42,7 @@ export const GCP_WRAPPERS: Record<
   }
 > = {
   http: {
-    name: 'wrapHandlerForGoogleHTTPFunction',
+    name: 'wrapRouteHandlerForGoogleHTTPFunction',
     initializer: initWrapHandlerForGoogleHTTPFunction as any,
   },
 };
@@ -58,25 +57,20 @@ const initializerWrapper: ServiceInitializerWrapper<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>
 > => {
   let API: WhookOpenAPI;
-  let API_DEFINITIONS: WhookAPIHandlerDefinition[];
+  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   const getAPIDefinition: (
     serviceName: string,
-  ) => Promise<[WhookAPIHandlerConfig['type'], string, WhookOpenAPI]> = (() => {
+  ) => Promise<[WhookRouteConfig['type'], string, WhookOpenAPI]> = (() => {
     return async (serviceName) => {
       const cleanedName = serviceName.split('_').pop();
 
       API = API || (await $injector(['API'])).API;
+      ROUTES_DEFINITIONS =
+        ROUTES_DEFINITIONS ||
+        (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
 
-      API_DEFINITIONS = API_DEFINITIONS || getOpenAPIDefinitions(API);
-
-      const definition = API_DEFINITIONS.find(
-        (aDefinition) =>
-          cleanedName ===
-          ((aDefinition?.config?.sourceOperationId &&
-            aDefinition?.config?.sourceOperationId) ||
-            aDefinition?.operation?.operationId) +
-            (aDefinition?.config?.suffix || ''),
-      );
+      const definition =
+        ROUTES_DEFINITIONS[cleanedName as string]?.module?.definition;
 
       if (!definition) {
         log('error', '💥 - Unable to find a lambda operation definition!');
@@ -87,7 +81,7 @@ const initializerWrapper: ServiceInitializerWrapper<
         ...API,
         paths: {
           [definition.path]: {
-            parameters: API[definition.path]?.parameters || [],
+            parameters: API?.paths?.[definition.path]?.parameters || [],
             [definition.method]:
               API.paths?.[definition.path]?.[definition.method],
           },
@@ -95,7 +89,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       })) as WhookOpenAPI;
 
       return [
-        definition?.config?.type || 'http',
+        'http',
         definition?.operation?.operationId as string,
         OPERATION_API,
       ];
@@ -134,20 +128,16 @@ const initializerWrapper: ServiceInitializerWrapper<
       return location(
         alsoInject(
           [
-            `mainWrapper>OPERATION_WRAPPER_${serviceName.replace(
+            `MAIN_WRAPPER>OPERATION_WRAPPER_${serviceName.replace(
               'OPERATION_HANDLER_',
               '',
             )}`,
-            // Only inject wrappers for HTTP handlers and
-            // eventually inject other ones
-            ...(type !== 'http'
-              ? [`?WRAPPERS>${(type || 'http').toUpperCase()}_WRAPPERS`]
-              : []),
-            `baseHandler>${operationId}`,
+            `?WRAPPERS>${(type || 'http').toUpperCase()}_WRAPPERS`,
+            `BASE_HANDLER>${operationId}`,
           ],
-          initHandler,
+          initMainHandler,
         ) as any,
-        '@whook/gcp-functions/dist/services/HANDLER.js',
+        '@whook/whook/dist/services/MAIN_HANDLER.js',
       );
     }
 

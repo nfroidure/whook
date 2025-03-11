@@ -4,7 +4,7 @@ import { YError } from 'yerror';
 import { type AppEnvVars } from 'application-services';
 import { type LogService } from 'common-services';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
 
@@ -37,7 +37,7 @@ async function initEnvCommand({
   ENV: AppEnvVars;
   log?: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     name: string;
     default?: string;
   }>

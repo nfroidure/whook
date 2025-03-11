@@ -141,7 +141,7 @@
     "type-fest": "^4.33.0",
     "yargs-parser": "^21.1.1",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.1.0"
   },
   "contributors": [],
   "engines": {

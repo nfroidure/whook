@@ -4,12 +4,12 @@ import { printStackTrace, YError } from 'yerror';
 import {
   noop,
   type WhookResponse,
-  type WhookAPIHandlerDefinition,
+  type WhookRouteDefinition,
   type WhookAPMService,
-  type WhookAPIHandler,
-  type WhookAPIWrapper,
+  type WhookRouteHandler,
+  type WhookRouteHandlerWrapper,
   type WhookOpenAPI,
-  type WhookAPIHandlerParameters,
+  type WhookRouteHandlerParameters,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
 import { type JsonValue } from 'type-fest';
@@ -58,25 +58,25 @@ async function initWrapHandlerForLogSubscriberLambda({
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapLogSubscriberLambdaDependencies): Promise<WhookAPIWrapper> {
+}: WhookWrapLogSubscriberLambdaDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda log subscriber wrapper.');
 
   const wrapper = async (
-    handler: WhookAPIHandler,
-  ): Promise<WhookAPIHandler> => {
+    handler: WhookRouteHandler,
+  ): Promise<WhookRouteHandler> => {
     const wrappedHandler = handleForAWSLogSubscriberLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
       handler,
     );
 
-    return wrappedHandler as unknown as WhookAPIHandler;
+    return wrappedHandler as unknown as WhookRouteHandler;
   };
 
   return wrapper;
 }
 
-async function handleForAWSLogSubscriberLambda<S extends WhookAPIHandler>(
+async function handleForAWSLogSubscriberLambda<S extends WhookRouteHandler>(
   {
     ENV,
     OPERATION_API,
@@ -108,7 +108,7 @@ async function handleForAWSLogSubscriberLambda<S extends WhookAPIHandler>(
     method,
     operation,
     config: operation['x-whook'],
-  } as unknown as WhookAPIHandlerDefinition;
+  } as unknown as WhookRouteDefinition;
   const startTime = time();
   const parameters = {
     body: await decodePayload(event.awslogs.data),
@@ -118,7 +118,7 @@ async function handleForAWSLogSubscriberLambda<S extends WhookAPIHandler>(
     log('debug', 'EVENT', JSON.stringify(event));
 
     await handler(
-      parameters as unknown as WhookAPIHandlerParameters,
+      parameters as unknown as WhookRouteHandlerParameters,
       definition,
     );
 

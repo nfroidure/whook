@@ -48,9 +48,9 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
       resolve.mockReturnValueOnce(
         'file:///var/lib/node/node_modules/@whook/whook/dist/index.js',
       );
-      readDir.mockResolvedValueOnce(['handlers', 'wrappers', 'libs']);
+      readDir.mockResolvedValueOnce(['routes', 'wrappers', 'libs']);
       readDir.mockResolvedValueOnce(['services', 'libs']);
-      readDir.mockResolvedValueOnce(['handlers']);
+      readDir.mockResolvedValueOnce(['routes']);
 
       const WHOOK_RESOLVED_PLUGINS = await initWhookPluginsPaths({
         MAIN_FILE_URL,
@@ -80,13 +80,13 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
     "@whook/whook": {
       "mainURL": "file:///var/lib/node/node_modules/@whook/whook/dist/index.js",
       "types": [
-        "handlers",
+        "routes",
       ],
     },
     "__project__": {
       "mainURL": "file:///home/whoiam/project/src/index.ts",
       "types": [
-        "handlers",
+        "routes",
         "wrappers",
       ],
     },
@@ -94,7 +94,7 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
   "logCalls": [
     [
       "debug",
-      "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/project/src" with "handlers, wrappers" types.",
+      "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/project/src" with "routes, wrappers" types.",
     ],
     [
       "debug",
@@ -102,7 +102,7 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
     ],
     [
       "debug",
-      "➰ - Plugin "@whook/whook" source path resolved to "file:///var/lib/node/node_modules/@whook/whook/dist" with "handlers" types.",
+      "➰ - Plugin "@whook/whook" source path resolved to "file:///var/lib/node/node_modules/@whook/whook/dist" with "routes" types.",
     ],
   ],
   "resolveCalls": [

@@ -1,4 +1,4 @@
-import { getOpenAPIDefinitions, loadFunction } from '../libs/utils.js';
+import { loadFunction } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import stream from 'node:stream';
@@ -6,11 +6,11 @@ import {
   DEFAULT_COMPILER_OPTIONS,
   PATH_SEPARATOR,
   SEARCH_SEPARATOR,
-  type WhookAPIHandlerParameters,
-  type WhookOpenAPI,
-  type WhookCommand,
+  type WhookRouteHandlerParameters,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
+  type WhookRoutesDefinitionsService,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 
@@ -61,16 +61,16 @@ async function initTestHTTPFunctionCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
-  API,
+  ROUTES_DEFINITIONS,
   log,
 }: {
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  API: WhookOpenAPI;
+  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   log: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     name: string;
     type: string;
     contentType: string;
@@ -88,16 +88,14 @@ async function initTestHTTPFunctionCommand({
       type,
       extension,
     );
-    const handlerDefinition = getOpenAPIDefinitions(API).find(
-      ({ operation }) => operation.operationId === name,
-    );
+    const handlerDefinition = ROUTES_DEFINITIONS[name]?.module?.definition;
 
     if (!handlerDefinition) {
       throw new YError('E_OPERATION_NOT_FOUND');
     }
 
     const hasBody = !!handlerDefinition.operation.requestBody;
-    const parameters = JSON.parse(rawParameters) as WhookAPIHandlerParameters;
+    const parameters = JSON.parse(rawParameters) as WhookRouteHandlerParameters;
     const search = Object.keys(parameters.query || {}).reduce(
       (accSearch, name) => {
         if (null != parameters.query[name]) {

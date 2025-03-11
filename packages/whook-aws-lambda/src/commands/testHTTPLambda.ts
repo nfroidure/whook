@@ -1,15 +1,15 @@
-import { getOpenAPIDefinitions, loadLambda } from '../libs/utils.js';
+import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import { v4 as randomUUID } from 'uuid';
 import {
   DEFAULT_COMPILER_OPTIONS,
   noop,
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
-  type WhookOpenAPI,
-  type WhookAPIHandlerParameters,
+  type WhookRouteHandlerParameters,
+  type WhookRoutesDefinitionsService,
 } from '@whook/whook';
 import { type AppEnvVars } from 'application-services';
 import { type LogService, type TimeService } from 'common-services';
@@ -66,7 +66,7 @@ async function initTestHTTPLambdaCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
-  API,
+  ROUTES_DEFINITIONS,
   time,
   log = noop,
 }: {
@@ -74,11 +74,11 @@ async function initTestHTTPLambdaCommand({
   APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  API: WhookOpenAPI;
+  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   time: TimeService;
   log: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     name: string;
     type: string;
     contentType: string;
@@ -96,16 +96,14 @@ async function initTestHTTPLambdaCommand({
       type,
       extension,
     );
-    const handlerDefinition = getOpenAPIDefinitions(API).find(
-      ({ operation }) => operation.operationId === name,
-    );
+    const handlerDefinition = ROUTES_DEFINITIONS[name]?.module?.definition;
 
     if (!handlerDefinition) {
       throw new YError('E_OPERATION_NOT_FOUND');
     }
 
     const hasBody = !!handlerDefinition?.operation.requestBody;
-    const parameters = JSON.parse(rawParameters) as WhookAPIHandlerParameters;
+    const parameters = JSON.parse(rawParameters) as WhookRouteHandlerParameters;
     const awsRequest: APIGatewayProxyEvent = {
       pathParameters: parameters.path || {},
       multiValueQueryStringParameters: parameters.query || {},

@@ -41,7 +41,8 @@
          1. [Usage](#3131-usage)
          2. [Typings](#3132-typings)
       4. [Reusable responses](#314-reusable-responses)
-      4. [Reusable request bodies](#314-reusable-request-bodies)
+      5. [Reusable request bodies](#315-reusable-request-bodies)
+      5. [Reusable callbacks](#315-reusable-callbacks)
    2. [Implementation](#32-implementation)
       1. [Response](#321-response)
       2. [Exportation](#322-exportation)
@@ -56,6 +57,8 @@
    5. [Testing](#35-testing)
       1. [Services stubs](#351-services-stubs)
       2. [Handler initialization](#352-handler-initialization)
+      2. [Handler initialization](#352-handler-initialization)
+      3. [Handler run](#353-handler-run)
       3. [Handler run](#353-handler-run)
 4. [Services](#4-services)
 4. [Serving the Open API](#4-serving-the-open-api)
@@ -64,7 +67,7 @@
    3. [jwtToken](#43-jwttoken)
    4. [MECHANISMS](#44-mechanisms)
    5. [queryParserBuilder](#45-queryparserbuilder)
-   6. [WRAPPERS](#46-wrappers)
+   6. [ROUTES_WRAPPERS](#46-routes_wrappers)
 5. [Commands](#5-commands)
    1. [Definition](#51-definition)
    2. [Implementation](#52-implementation)
@@ -139,12 +142,13 @@ You can register any service/handler required to bootstrap
  https://github.com/nfroidure/knifecycle
 
 OR, like in this example, use the Whook `$autoload` service
- that looks for handlers, configs and services for you in their
- respective folders. Of course, you can also write your own
- autoloader by creating a service with the same signature
+ that looks for routes, crons, commands, configs and
+ services for you in their respective folders. Of course,
+ you can also write your own autoloader by creating a
+ service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L116-L127)
+[See in context](./src/index.ts#L116-L128)
 
 
 
@@ -156,7 +160,7 @@ This service loads the API definitions directly by
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L130-L137)
+[See in context](./src/index.ts#L131-L138)
 
 
 
@@ -165,7 +169,7 @@ This service loads the API definitions directly by
 The project main file allows autoloading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L140-L144)
+[See in context](./src/index.ts#L141-L145)
 
 
 
@@ -183,7 +187,7 @@ You can add more application environment here for several
 Reading the `APP_ENV` from the process environment and defining
  it as a constant.
 
-[See in context](./src/index.ts#L147-L151)
+[See in context](./src/index.ts#L148-L152)
 
 
 
@@ -193,7 +197,7 @@ Setting the `knifecycle` `$overrides` service depending on the
  current `APP_ENV`. It allows to map services to different
  implementations.
 
-[See in context](./src/index.ts#L156-L161)
+[See in context](./src/index.ts#L157-L162)
 
 
 
@@ -203,7 +207,7 @@ The Whook HTTP Transaction service, maintains an internal
  hash that handles a list of the current running HTTP
  transactions.
 
-This line allows the [`getDiagnostic`](./src/handlers/getDiagnostic.ts)
+This line allows the [`getDiagnostic`](./src/routes/getDiagnostic.ts)
  handler to get access to it in order to return the
  current transactions.
 
@@ -226,7 +230,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L169-L197)
+[See in context](./src/index.ts#L170-L198)
 
 
 
@@ -237,7 +241,7 @@ Plugins allows you to add simple features to the Whook's core,
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L218-L224)
+[See in context](./src/index.ts#L219-L225)
 
 
 
@@ -309,7 +313,7 @@ The configuration is typed so that you are sure you cannot
 
 Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
- with the handlers.
+ with the routes.
 
 [See in context](./src/whook.d.ts#L59-L64)
 
@@ -349,7 +353,7 @@ Finally the configuration file for a given environment
 Whook is all about APIs.
 
 The API service defined here is where you put
- your handlers altogether to build the final API.
+ your routes altogether to build the final API.
 
 [See in context](./src/services/API.ts#L30-L35)
 
@@ -366,7 +370,7 @@ For it to work, you have to export the definition, like
  here, to make it available for the API service, responsible
  for gathering all API route definitions.
 
-[See in context](./src/handlers/getDelay.ts#L41-L51)
+[See in context](./src/routes/getDelay.ts#L66-L76)
 
 
 
@@ -376,7 +380,7 @@ The name provided as the Open API `operationId` here
 must map the handler name to link the definition
 to it (here `getDelay`).
 
-[See in context](./src/handlers/getDelay.ts#L56-L61)
+[See in context](./src/routes/getDelay.ts#L81-L86)
 
 
 
@@ -386,7 +390,7 @@ This is how to declare a reusable API parameter
  to avoid having to write it several times and
  lower your final Open API file weight.
 
-[See in context](./src/handlers/getDelay.ts#L19-L24)
+[See in context](./src/routes/getDelay.ts#L20-L25)
 
 
 
@@ -395,7 +399,7 @@ This is how to declare a reusable API parameter
 To use reusable parameters, you must refer to it
  instead of writing it inline.
 
-[See in context](./src/handlers/getDelay.ts#L66-L70)
+[See in context](./src/routes/getDelay.ts#L91-L95)
 
 
 
@@ -410,7 +414,7 @@ You simply have to export a variable finishing with
  `WhookAPISchemaDefinition` type to be guided
  when creating it.
 
-[See in context](./src/handlers/putEcho.ts#L13-L23)
+[See in context](./src/routes/putEcho.ts#L13-L23)
 
 
 
@@ -423,7 +427,7 @@ You can use it in request/response bodies,
  inside parameters or even inside other
  schemas as per the OpenAPI specification.
 
-[See in context](./src/handlers/putEcho.ts#L98-L106)
+[See in context](./src/routes/putEcho.ts#L98-L106)
 
 
 
@@ -433,7 +437,7 @@ Schemas are converted to types so that
      TypeScript warns you when you don't output
      the expected data.
 
-[See in context](./src/handlers/putEcho.ts#L127-L132)
+[See in context](./src/routes/putEcho.ts#L127-L132)
 
 
 
@@ -448,11 +452,11 @@ You simply have to export a variable finishing with
  `WhookAPIResponseDefinition` type to be guided
  when creating it.
 
-[See in context](./src/handlers/putEcho.ts#L41-L51)
+[See in context](./src/routes/putEcho.ts#L41-L51)
 
 
 
-#### 3.1.4. Reusable request bodies
+#### 3.1.5. Reusable request bodies
 
 This is how to declare a reusable API request body
  to avoid having to write it several times and
@@ -463,7 +467,18 @@ You simply have to export a variable finishing with
  `WhookAPIRequestBodyDefinition` type to be guided
  when creating it.
 
-[See in context](./src/handlers/putEcho.ts#L64-L74)
+[See in context](./src/routes/putEcho.ts#L64-L74)
+
+
+
+#### 3.1.5. Reusable callbacks
+
+This is how to declare a reusable API callback.
+
+Callbacks get typed too allowing you to ensure
+ your code fits the required API signature.
+
+[See in context](./src/routes/getDelay.ts#L42-L48)
 
 
 
@@ -484,7 +499,7 @@ Parameters are cleaned up and checked by Whook so
  to the API contract you set in the handler's
  Open API definition above.
 
-[See in context](./src/handlers/getDelay.ts#L81-L97)
+[See in context](./src/routes/getDelay.ts#L117-L133)
 
 
 
@@ -494,7 +509,7 @@ The handler's response are simple JSON serializable
    objects with a `status` and optional `body` and
    `headers` properties.
 
-[See in context](./src/handlers/getDelay.ts#L105-L110)
+[See in context](./src/routes/getDelay.ts#L158-L163)
 
 
 
@@ -509,7 +524,7 @@ There is some magic here with the use of
 You can read more about it
  [here](https://github.com/nfroidure/knifecycle).
 
-[See in context](./src/handlers/getDelay.ts#L119-L129)
+[See in context](./src/routes/getDelay.ts#L182-L192)
 
 
 
@@ -517,7 +532,7 @@ You can read more about it
 
 Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
- with the handlers.
+ with the routes.
 
 [See in context](./src/whook.d.ts#L81-L86)
 
@@ -545,12 +560,12 @@ The API definition is a JSON serializable object, you
 ### 3.4. Examples
 
 The default Whook project contains a few sample
- handlers to help you grasp its principles.
+ routes to help you grasp its principles.
 
 You can keep some or just delete them and create
  yours with `npm run dev -- create`.
 
-[See in context](./src/handlers/getDelay.ts#L10-L17)
+[See in context](./src/routes/getDelay.ts#L11-L18)
 
 
 
@@ -559,7 +574,7 @@ You can keep some or just delete them and create
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 
-[See in context](./src/handlers/getDiagnostic.ts#L30-L34)
+[See in context](./src/routes/getDiagnostic.ts#L30-L34)
 
 
 
@@ -568,7 +583,7 @@ Here is a simple handler that just proxy the `TRANSACTIONS`
 Here is a simple handler that just proxy the `TRANSACTIONS`
  service which contains the currently pending transactions.
 
-[See in context](./src/handlers/getParameters.ts#L58-L62)
+[See in context](./src/routes/getParameters.ts#L58-L62)
 
 
 
@@ -576,7 +591,7 @@ Here is a simple handler that just proxy the `TRANSACTIONS`
 
 Returns the server time.
 
-[See in context](./src/handlers/getTime.ts#L26-L29)
+[See in context](./src/routes/getTime.ts#L26-L29)
 
 
 
@@ -584,17 +599,17 @@ Returns the server time.
 
 Simply outputs its input.
 
-[See in context](./src/handlers/putEcho.ts#L87-L90)
+[See in context](./src/routes/putEcho.ts#L87-L90)
 
 
 
 ### 3.5. Testing
 
-Since the handlers do not need to deal with
+Since the routes do not need to deal with
  input/ouput validity, you can just write
  tests for the business logic.
 
-[See in context](./src/handlers/getDelay.test.ts#L5-L10)
+[See in context](./src/routes/getDelay.test.ts#L5-L10)
 
 
 
@@ -604,7 +619,7 @@ First you need to write stubs for services,
  pass it to the handler initializer and
  eventually mock their return values.
 
-[See in context](./src/handlers/getDelay.test.ts#L12-L17)
+[See in context](./src/routes/getDelay.test.ts#L12-L17)
 
 
 
@@ -613,7 +628,16 @@ First you need to write stubs for services,
 To get the testable handler, you first need to
  initialize it by providing mock services.
 
-[See in context](./src/handlers/getDelay.test.ts#L31-L35)
+[See in context](./src/routes/getDelay.test.ts#L35-L39)
+
+
+
+#### 3.5.2. Handler initialization
+
+To get the testable handler, you first need to
+ initialize it by providing mock services.
+
+[See in context](./src/routes/getDelay.test.ts#L90-L94)
 
 
 
@@ -628,7 +652,22 @@ Then run the handler and get the response.
   responses. It embed only the data structure,
   no method or other OOP noisy things.
 
-[See in context](./src/handlers/getDelay.test.ts#L40-L50)
+[See in context](./src/routes/getDelay.test.ts#L46-L56)
+
+
+
+#### 3.5.3. Handler run
+
+Then run the handler and get the response.
+ Here, we snapshot the response and the
+ services mock calls to ensure it do not
+ changes unexpectedly.
+
+ This is the force of Whook's serializable
+  responses. It embed only the data structure,
+  no method or other OOP noisy things.
+
+[See in context](./src/routes/getDelay.test.ts#L101-L111)
 
 
 
@@ -657,7 +696,7 @@ Whook provides a handler to serve the final Open API
  definition.
 
 We could use the `WHOOK_PLUGINS` service to get the
- handlers from plugins instead of proxying here, but
+ routes from plugins instead of proxying here, but
  we want to ensure the endpoint is reachable with
  a token too.
 
@@ -666,7 +705,7 @@ The fact that definitions are simple objects make them
  add new parameters or change the schema of the
  default definition of this endpoint.
 
-[See in context](./src/handlers/getOpenAPI.ts#L7-L21)
+[See in context](./src/routes/getOpenAPI.ts#L7-L21)
 
 
 
@@ -689,10 +728,10 @@ Small tweak to be able to run only parts of the API
 For example, to create a server with only `system` and
  `example` tagged endpoints, juste do this:
 ```sh
-FILTER_API_TAGS=system,example npm start
+FILTER_ROUTE_TAGS=system,example npm start
 ```
 
-[See in context](./src/services/FILTER_API_DEFINITION.ts#L19-L31)
+[See in context](./src/services/ROUTE_DEFINITION_FILTER.ts#L19-L31)
 
 
 
@@ -732,18 +771,18 @@ You can navigate through the Whook's sources to
 
 
 
-### 4.6. WRAPPERS
+### 4.6. ROUTES_WRAPPERS
 
 Wrappers are allowing you to override every
- handlers of your API with specific behaviors,
+ routes of your API with specific behaviors,
  here we add CORS and HTTP authorization support
- to all the handlers defined in the API.
+ to all the routes defined in the API.
 
 Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L200-L210)
+[See in context](./src/index.ts#L201-L211)
 
 
 
@@ -751,7 +790,7 @@ Beware that the order here matters, you will
 
 We consider to be a good practice to bind the commands
  you write to your API code. The `src/commands` folder
- allows you to write commands in a similar way to handlers.
+ allows you to write commands in a similar way to routes.
 
 It leverages the dependency injection features of Whook
  and has helpers for parsing the input parameters.
@@ -765,7 +804,7 @@ Commands are a simple way to write utility scripts that leverage
  your application setup. It allows to simply inject services
  without worrying about their initialization.
 
-[See in context](./src/commands/printEnv.ts#L10-L27)
+[See in context](./src/commands/printEnv.ts#L9-L26)
 
 
 
@@ -775,7 +814,7 @@ To define a command, just write its definition
  and export it to make it available to Whook's
  command loader.
 
-[See in context](./src/commands/printEnv.ts#L29-L34)
+[See in context](./src/commands/printEnv.ts#L28-L33)
 
 
 
@@ -785,7 +824,7 @@ To implement a command, just write a function that takes
  injected services as a first argument and return the
  command as an asynchronous function.
 
-[See in context](./src/commands/printEnv.ts#L51-L56)
+[See in context](./src/commands/printEnv.ts#L49-L54)
 
 
 

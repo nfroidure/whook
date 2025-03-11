@@ -3,7 +3,7 @@ import { augmentAPIWithCORS } from '@whook/cors';
 import {
   noop,
   type WhookConfig,
-  type WhookAPIDefinitions,
+  type WhookDefinitions,
   type WhookOpenAPI,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
@@ -16,12 +16,12 @@ export type APIConfig = {
   BASE_URL?: string;
   BASE_PATH?: string;
   API_VERSION: string;
-  API_DEFINITIONS?: WhookAPIDefinitions;
+  DEFINITIONS?: WhookDefinitions;
 };
 export type APIDependencies = APIConfig & {
   ENV: APIEnv;
   BASE_URL: string;
-  API_DEFINITIONS: WhookAPIDefinitions;
+  DEFINITIONS: WhookDefinitions;
   log?: LogService;
 };
 
@@ -31,7 +31,7 @@ export default location(name('API', autoService(initAPI)), import.meta.url);
 Whook is all about APIs.
 
 The API service defined here is where you put
- your handlers altogether to build the final API.
+ your routes altogether to build the final API.
 */
 async function initAPI({
   ENV,
@@ -39,7 +39,7 @@ async function initAPI({
   BASE_URL,
   BASE_PATH = '',
   API_VERSION,
-  API_DEFINITIONS,
+  DEFINITIONS,
   log = noop,
 }: APIDependencies) {
   log('debug', '🦄 - Initializing the API service!');
@@ -56,9 +56,9 @@ async function initAPI({
         url: `${BASE_URL}${BASE_PATH}`,
       },
     ],
-    ...API_DEFINITIONS,
+    ...DEFINITIONS,
     components: {
-      ...API_DEFINITIONS.components,
+      ...DEFINITIONS.components,
       securitySchemes: {
         bearerAuth: {
           type: 'http',

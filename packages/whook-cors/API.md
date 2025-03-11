@@ -6,11 +6,15 @@
 <dd><p>Augment an OpenAPI to also serve OPTIONS methods with
  the CORS added.</p>
 </dd>
+<dt><a href="#initOptionsWithCORS">initOptionsWithCORS()</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>A simple Whook handler that just returns a 200 OK
+ HTTP response</p>
+</dd>
 <dt><a href="#wrapErrorHandlerForCORS">wrapErrorHandlerForCORS(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the error handler service as a last chance to add CORS</p>
 </dd>
-<dt><a href="#initWrapHandlerWithCORS">initWrapHandlerWithCORS(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Wrap an handler to append CORS to response.</p>
+<dt><a href="#initWrapRouteHandlerWithCORS">initWrapRouteHandlerWithCORS(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap a route handler to append CORS to response.</p>
 </dd>
 </dl>
 
@@ -27,6 +31,14 @@ Augment an OpenAPI to also serve OPTIONS methods with
 | --- | --- | --- |
 | API | <code>Object</code> | The OpenAPI object |
 
+<a name="initOptionsWithCORS"></a>
+
+## initOptionsWithCORS() ⇒ <code>Promise.&lt;Object&gt;</code>
+A simple Whook handler that just returns a 200 OK
+ HTTP response
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - The HTTP response object  
 <a name="wrapErrorHandlerForCORS"></a>
 
 ## wrapErrorHandlerForCORS(services) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -41,10 +53,10 @@ Wrap the error handler service as a last chance to add CORS
 | services.CORS | <code>Object</code> |  | A CORS object to be added to errors responses |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initWrapHandlerWithCORS"></a>
+<a name="initWrapRouteHandlerWithCORS"></a>
 
-## initWrapHandlerWithCORS(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Wrap an handler to append CORS to response.
+## initWrapRouteHandlerWithCORS(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a route handler to append CORS to response.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  

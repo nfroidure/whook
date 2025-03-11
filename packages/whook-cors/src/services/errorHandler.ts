@@ -15,7 +15,7 @@ import {
   type WhookErrorHandler,
   type WhookErrorHandlerDependencies,
 } from '@whook/whook';
-import { type WhookCORSConfig } from '../wrappers/wrapHandlerWithCORS.js';
+import { type WhookCORSConfig } from '../wrappers/wrapRouteHandlerWithCORS.js';
 
 type ErrorHandlerWrapperDependencies = WhookCORSConfig & { log?: LogService };
 

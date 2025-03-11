@@ -20,7 +20,7 @@ export const DEFAULT_BUILD_DIR = 'server';
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   $fatalError: 'knifecycle/dist/fatalError.js',
   BASE_URL: '@whook/whook/dist/services/BASE_URL.js',
-  API_DEFINITIONS: '@whook/whook/dist/services/API_DEFINITIONS.js',
+  DEFINITIONS: '@whook/whook/dist/services/DEFINITIONS.js',
   logger: '@whook/whook/dist/services/logger.js',
   exit: '@whook/whook/dist/services/exit.js',
   PORT: '@whook/whook/dist/services/PORT.js',

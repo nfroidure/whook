@@ -3,16 +3,16 @@ import os from 'node:os';
 import { noop } from '../libs/utils.js';
 import { type LogService } from 'common-services';
 import { type WhookConfig } from '../services/BASE_URL.js';
-import { type WhookCommandsService } from '../services/COMMANDS.js';
 import {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
   type WhookPluginName,
 } from '../services/WHOOK_RESOLVED_PLUGINS.js';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
+import { type WhookCommandsDefinitionsService } from '../services/COMMANDS_DEFINITIONS.js';
 
 export const definition = {
   name: 'ls',
@@ -32,16 +32,16 @@ export const definition = {
 async function initLsCommand({
   CONFIG,
   WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
-  COMMANDS,
+  COMMANDS_DEFINITIONS,
   log = noop,
   EOL = os.EOL,
 }: {
   CONFIG: WhookConfig;
   WHOOK_PLUGINS?: WhookPluginName[];
-  COMMANDS: WhookCommandsService;
+  COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService;
   log?: LogService;
   EOL?: typeof os.EOL;
-}): Promise<WhookCommand<{ verbose?: boolean }>> {
+}): Promise<WhookCommandHandler<{ verbose?: boolean }>> {
   return async (args) => {
     const {
       namedArguments: { verbose },
@@ -54,10 +54,12 @@ async function initLsCommand({
             ? CONFIG.name || 'project'
             : pluginName;
 
-        const definitions = Object.keys(COMMANDS)
-          .filter((name) => COMMANDS[name].pluginName === pluginName)
+        const definitions = Object.keys(COMMANDS_DEFINITIONS)
+          .filter(
+            (name) => COMMANDS_DEFINITIONS[name].pluginName === pluginName,
+          )
           .map((name) => {
-            const definition = COMMANDS[name].module.definition;
+            const definition = COMMANDS_DEFINITIONS[name].module.definition;
 
             return { name, definition };
           });

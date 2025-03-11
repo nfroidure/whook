@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import { PassThrough } from 'node:stream';
 import { createWriteStream } from 'node:fs';
 import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
-import initGetOpenAPI from './handlers/getOpenAPI.js';
+import initGetOpenAPI from './routes/getOpenAPI.js';
 import initWatchResolve from './services/watchResolve.js';
 import { readFile } from 'node:fs/promises';
 import ignore from 'ignore';
@@ -97,7 +97,10 @@ export async function watchDevProcess<T extends Dependencies>(
       })
       .on('all', (_event, filePath) => {
         // TODO: determine all the files needing a complete restart
-        if (filePath.match(/package.*\.json/)) {
+        if (
+          filePath.match(/package.*\.json/) ||
+          filePath.match(/src\/[^/]*\.ts/)
+        ) {
           log(
             'warning',
             `☢️ - A file changed that may need a full restart (${filePath}).`,

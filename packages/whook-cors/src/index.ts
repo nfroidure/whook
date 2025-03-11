@@ -3,11 +3,11 @@ import {
   type WhookOpenAPI,
   type WhookOpenAPIOperation,
 } from '@whook/whook';
-import initOptionsWithCORS from './handlers/optionsWithCORS.js';
+import initOptionsWithCORS from './routes/optionsWithCORS.js';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
 } from './services/errorHandler.js';
-import initWrapHandlerWithCORS from './wrappers/wrapHandlerWithCORS.js';
+import initWrapRouteHandlerWithCORS from './wrappers/wrapRouteHandlerWithCORS.js';
 import { ensureResolvedObject } from 'ya-open-api-types';
 
 export type {
@@ -15,10 +15,10 @@ export type {
   WhookCORSConfig,
   WhookCORSDependencies,
   WhookAPIOperationCORSConfig,
-} from './wrappers/wrapHandlerWithCORS.js';
+} from './wrappers/wrapRouteHandlerWithCORS.js';
 
 export {
-  initWrapHandlerWithCORS,
+  initWrapRouteHandlerWithCORS,
   initErrorHandlerWithCORS,
   wrapErrorHandlerForCORS,
 };

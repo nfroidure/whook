@@ -5,7 +5,7 @@ describe('parseArgs', () => {
   test('should parse args', async () => {
     const args = await parseArgs([
       'whook',
-      'handler',
+      'route',
       '--name',
       'getPing',
       '--parameters',
@@ -14,7 +14,7 @@ describe('parseArgs', () => {
 
     expect(args).toMatchInlineSnapshot(`
 {
-  "command": "handler",
+  "command": "route",
   "namedArguments": {
     "name": "getPing",
     "parameters": "{}",

@@ -2,12 +2,12 @@
 import { jest, describe, test, expect, beforeEach } from '@jest/globals';
 import {
   augmentAPIWithVersionsHeaders,
-  initWrapHandlerWithVersionChecker,
+  initWrapRouteHandlerWithVersionChecker,
 } from './index.js';
 import {
   initGetPing,
   getPingDefinition,
-  type WhookAPIHandlerDefinition,
+  type WhookRouteDefinition,
 } from '@whook/whook';
 import { YError } from 'yerror';
 import { YHTTPError } from 'yhttperror';
@@ -54,7 +54,7 @@ describe('augmentAPIWithVersionsHeaders()', () => {
   });
 });
 
-describe('wrapHandlerWithVersionChecker()', () => {
+describe('wrapRouteHandlerWithVersionChecker()', () => {
   const log = jest.fn();
 
   beforeEach(() => {
@@ -65,7 +65,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -79,7 +79,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
         body: {},
         options: {},
       },
-      {} as unknown as WhookAPIHandlerDefinition,
+      {} as unknown as WhookRouteDefinition,
     );
 
     expect({
@@ -92,7 +92,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -106,7 +106,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
         body: {},
         options: {},
       },
-      {} as unknown as WhookAPIHandlerDefinition,
+      {} as unknown as WhookRouteDefinition,
     );
 
     expect({
@@ -119,7 +119,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -133,7 +133,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
         body: {},
         options: {},
       },
-      {} as unknown as WhookAPIHandlerDefinition,
+      {} as unknown as WhookRouteDefinition,
     );
 
     expect({
@@ -146,7 +146,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -162,7 +162,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
         body: {},
         options: {},
       },
-      {} as unknown as WhookAPIHandlerDefinition,
+      {} as unknown as WhookRouteDefinition,
     );
 
     expect({
@@ -175,7 +175,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -191,7 +191,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
         body: {},
         options: {},
       },
-      {} as unknown as WhookAPIHandlerDefinition,
+      {} as unknown as WhookRouteDefinition,
     );
 
     expect({
@@ -204,7 +204,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -222,7 +222,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
           body: {},
           options: {},
         },
-        {} as unknown as WhookAPIHandlerDefinition,
+        {} as unknown as WhookRouteDefinition,
       );
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
@@ -240,7 +240,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -258,7 +258,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
           body: {},
           options: {},
         },
-        {} as unknown as WhookAPIHandlerDefinition,
+        {} as unknown as WhookRouteDefinition,
       );
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
@@ -276,7 +276,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
     const baseHandler = await initGetPing({
       ENV,
     });
-    const wrapper = await initWrapHandlerWithVersionChecker({
+    const wrapper = await initWrapRouteHandlerWithVersionChecker({
       VERSIONS,
       log,
     });
@@ -294,7 +294,7 @@ describe('wrapHandlerWithVersionChecker()', () => {
           body: {},
           options: {},
         },
-        {} as unknown as WhookAPIHandlerDefinition,
+        {} as unknown as WhookRouteDefinition,
       );
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {

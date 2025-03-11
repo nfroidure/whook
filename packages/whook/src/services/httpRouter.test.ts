@@ -17,7 +17,7 @@ import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
-import { type WhookAPIHandler } from '../types/handlers.js';
+import { type WhookRouteHandler } from '../types/routes.js';
 import { type WhookResponse } from '../types/http.js';
 import { type WhookSchemaValidatorsService } from './schemaValidators.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
@@ -51,7 +51,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
       : result
         ? Promise.resolve(result)
         : Promise.reject(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
-  ) as WhookAPIHandler & ReturnType<typeof jest.fn>;
+  ) as WhookRouteHandler & ReturnType<typeof jest.fn>;
   const httpTransactionStart = jest.fn(async (buildResponse: () => void) =>
     buildResponse(),
   );
@@ -74,7 +74,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
       end: httpTransactionEnd,
     },
   }));
-  const HANDLERS = {
+  const ROUTES_HANDLERS = {
     ping: handler,
     headUserAvatar: handler,
     getUserAvatar: handler,
@@ -84,7 +84,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
     putUser: handler,
   };
   return {
-    HANDLERS,
+    ROUTES_HANDLERS,
     httpTransaction: httpTransaction as unknown as WhookHTTPTransactionService,
     httpTransactionStart,
     httpTransactionCatch,
@@ -522,7 +522,7 @@ describe('initHTTPRouter', () => {
   });
 
   test('should work', async () => {
-    const { httpTransaction, HANDLERS } = prepareTransaction();
+    const { httpTransaction, ROUTES_HANDLERS } = prepareTransaction();
     const errorHandler = await initErrorHandler({
       ENV,
       DEBUG_NODE_ENVS,
@@ -535,7 +535,7 @@ describe('initHTTPRouter', () => {
     const httpRouter = await initHTTPRouter({
       ENV,
       DEBUG_NODE_ENVS,
-      HANDLERS,
+      ROUTES_HANDLERS,
       API,
       BASE_PATH,
       log,
@@ -564,7 +564,7 @@ describe('initHTTPRouter', () => {
   describe('should fail', () => {
     test('when the API parsing fails', async () => {
       try {
-        const { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, ROUTES_HANDLERS } = prepareTransaction();
         const errorHandler = await initErrorHandler({
           ENV,
           DEBUG_NODE_ENVS,
@@ -578,7 +578,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API: {
             info: API.info,
             paths: {
@@ -605,7 +605,7 @@ describe('initHTTPRouter', () => {
 
     test('when operation id is lacking', async () => {
       try {
-        const { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, ROUTES_HANDLERS } = prepareTransaction();
         const errorHandler = await initErrorHandler({
           ENV,
           DEBUG_NODE_ENVS,
@@ -619,7 +619,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API: {
             openapi: API.openapi,
             servers: API.servers,
@@ -653,7 +653,7 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
-        const { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, ROUTES_HANDLERS } = prepareTransaction();
         const queryParserBuilder = await initQueryParserBuilder({
           API,
           log,
@@ -662,7 +662,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API: {
             openapi: API.openapi,
             servers: API.servers,
@@ -704,7 +704,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS: {
+          ROUTES_HANDLERS: {
             lol: handler,
           },
           API: {
@@ -751,7 +751,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS: {},
+          ROUTES_HANDLERS: {},
           API,
           log,
           BASE_PATH,
@@ -775,7 +775,7 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
-        const { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, ROUTES_HANDLERS } = prepareTransaction();
         const queryParserBuilder = await initQueryParserBuilder({
           API,
           log,
@@ -784,7 +784,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API: {
             openapi: API.openapi,
             servers: API.servers,
@@ -830,7 +830,7 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
-        const { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, ROUTES_HANDLERS } = prepareTransaction();
         const queryParserBuilder = await initQueryParserBuilder({
           API,
           log,
@@ -839,7 +839,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API: {
             openapi: API.openapi,
             servers: API.servers,
@@ -883,7 +883,7 @@ describe('initHTTPRouter', () => {
           DEBUG_NODE_ENVS,
           ERRORS_DESCRIPTORS: {},
         });
-        const { httpTransaction, HANDLERS } = prepareTransaction();
+        const { httpTransaction, ROUTES_HANDLERS } = prepareTransaction();
         const queryParserBuilder = await initQueryParserBuilder({
           API,
           log,
@@ -892,7 +892,7 @@ describe('initHTTPRouter', () => {
         await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API: {
             openapi: API.openapi,
             servers: API.servers,
@@ -941,7 +941,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction({
           status: 200,
           headers: {
@@ -961,7 +961,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,
@@ -1046,7 +1046,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction({
           status: 200,
           headers: {
@@ -1069,7 +1069,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,
@@ -1209,7 +1209,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction({
           status: 200,
           headers: {
@@ -1232,7 +1232,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,
@@ -1378,7 +1378,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 200,
             headers: {
@@ -1401,7 +1401,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -1541,7 +1541,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 200,
             headers: {
@@ -1561,7 +1561,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -1666,7 +1666,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 200,
             headers: {
@@ -1691,7 +1691,7 @@ describe('initHTTPRouter', () => {
             ENV,
             DEBUG_NODE_ENVS,
             STRINGIFYERS: {},
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -1750,7 +1750,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 200,
             headers: {
@@ -1774,7 +1774,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -1919,7 +1919,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 200,
             headers: {
@@ -1942,7 +1942,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -2091,7 +2091,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction(null);
           const errorHandler = await initErrorHandler({
             ENV,
@@ -2105,7 +2105,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -2250,7 +2250,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction(Promise.resolve());
 
           const errorHandler = await initErrorHandler({
@@ -2265,7 +2265,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -2411,7 +2411,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction(
             Promise.resolve({
               status: '200',
@@ -2429,7 +2429,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -2492,7 +2492,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction(Promise.resolve({}));
           const errorHandler = await initErrorHandler({
             ENV,
@@ -2506,7 +2506,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -2652,7 +2652,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
 
           const errorHandler = await initErrorHandler({
@@ -2667,7 +2667,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -2719,7 +2719,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
 
           const errorHandler = await initErrorHandler({
@@ -2734,7 +2734,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -2786,7 +2786,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction(
           Promise.reject(new YHTTPError(501, 'E_UNAUTHORIZED')),
         );
@@ -2803,7 +2803,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,
@@ -2871,7 +2871,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction(Promise.reject(handlerError));
         const errorHandler = await initErrorHandler({
           ENV,
@@ -2885,7 +2885,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,
@@ -2949,7 +2949,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction();
 
         const errorHandler = await initErrorHandler({
@@ -2964,7 +2964,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,
@@ -3018,7 +3018,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 201,
             headers: {
@@ -3041,7 +3041,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3192,7 +3192,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 201,
             headers: {
@@ -3212,7 +3212,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3267,7 +3267,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 201,
             headers: {
@@ -3290,7 +3290,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3443,7 +3443,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction(Promise.resolve({}));
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3457,7 +3457,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3511,7 +3511,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction(Promise.resolve({}));
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3525,7 +3525,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3585,7 +3585,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3605,7 +3605,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3668,7 +3668,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3682,7 +3682,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3745,7 +3745,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3759,7 +3759,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3821,7 +3821,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3835,7 +3835,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3895,7 +3895,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3909,7 +3909,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -3967,7 +3967,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3981,7 +3981,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             BUFFER_LIMIT: '20b',
             log,
@@ -4042,7 +4042,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -4056,7 +4056,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             BUFFER_LIMIT: '20b',
             log,
@@ -4117,7 +4117,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -4131,7 +4131,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             BUFFER_LIMIT: '20b',
             log,
@@ -4192,7 +4192,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction({
             status: 200,
             body: {
@@ -4211,7 +4211,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             log,
             BASE_PATH,
@@ -4359,7 +4359,7 @@ describe('initHTTPRouter', () => {
             httpTransactionCatch,
             httpTransactionEnd,
             handler,
-            HANDLERS,
+            ROUTES_HANDLERS,
           } = prepareTransaction();
           const errorHandler = await initErrorHandler({
             ENV,
@@ -4373,7 +4373,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            HANDLERS,
+            ROUTES_HANDLERS,
             API,
             BUFFER_LIMIT: '20b',
             log,
@@ -4431,7 +4431,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction({
           status: 410,
           headers: {},
@@ -4448,7 +4448,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,
@@ -4533,7 +4533,7 @@ describe('initHTTPRouter', () => {
           httpTransactionCatch,
           httpTransactionEnd,
           handler,
-          HANDLERS,
+          ROUTES_HANDLERS,
         } = prepareTransaction();
         const errorHandler = await initErrorHandler({
           ENV,
@@ -4547,7 +4547,7 @@ describe('initHTTPRouter', () => {
         const httpRouter = await initHTTPRouter({
           ENV,
           DEBUG_NODE_ENVS,
-          HANDLERS,
+          ROUTES_HANDLERS,
           API,
           log,
           BASE_PATH,

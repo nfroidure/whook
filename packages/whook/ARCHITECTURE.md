@@ -26,13 +26,13 @@
    9. [the `$autoload` service](#29-the-`$autoload`-service)
       1. [the `APP_CONFIG` mapper](#291-the-`app_config`-mapper)
       2. [the `API` auto loading](#292-the-`api`-auto-loading)
-         1. [API definitions loader](#2921-api-definitions-loader)
+         1. [Definitions loader](#2921-definitions-loader)
          2. [Typings generator](#2922-typings-generator)
          3. [Open API generator](#2923-open-api-generator)
       3. [the `INITIALIZER_PATH_MAP` mapper](#293-the-`initializer_path_map`-mapper)
          1. [Initializer path mapping](#2931-initializer-path-mapping)
-      4. [the `HANDLERS` mapper](#294-the-`handlers`-mapper)
-      5. [the `WRAPPERS` auto loading](#295-the-`wrappers`-auto-loading)
+      4. [the `ROUTES_HANDLERS` mapper](#294-the-`routes_handlers`-mapper)
+      5. [the `ROUTES_WRAPPERS` auto loading](#295-the-`routes_wrappers`-auto-loading)
       6. [Service/handler/wrapper loading](#296-service/handler/wrapper-loading)
          1. [Plugins resolution](#2961-plugins-resolution)
          2. [Plugins/project paths](#2962-plugins/project-paths)
@@ -49,7 +49,8 @@
    12. [HTTP Server](#212-http-server)
    13. [Error handler](#213-error-handler)
       1. [Errors descriptors](#2131-errors-descriptors)
-3. [the handlers](#3-the-handlers)
+   14. [Local cron runner](#214-local-cron-runner)
+3. [the routes](#3-the-routes)
    1. [Testing](#41-testing)
 
 
@@ -60,7 +61,7 @@ The Whook's main file exports :
 - its specific `knifecycle` compatible services,
 - a few bootstrapping functions designed to be customizable.
 
-[See in context](./src/index.ts#L157-L162)
+[See in context](./src/index.ts#L165-L170)
 
 
 
@@ -70,7 +71,7 @@ Whook exposes a `runProcess` function to programmatically spawn
  its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L164-L168)
+[See in context](./src/index.ts#L172-L176)
 
 
 
@@ -83,7 +84,7 @@ Whook exposes a `prepareProcess` function to create its
  containing the bootstrapped environment and allowing
  to complete and run the process.
 
-[See in context](./src/index.ts#L217-L224)
+[See in context](./src/index.ts#L225-L232)
 
 
 
@@ -95,7 +96,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
 
-[See in context](./src/index.ts#L247-L253)
+[See in context](./src/index.ts#L255-L261)
 
 
 
@@ -106,7 +107,7 @@ Whook's embed a few default initializers proxied from
  folder. It can be wrapped or overridden, at will, later
  in a project using overrides.
 
-[See in context](./src/index.ts#L264-L269)
+[See in context](./src/index.ts#L272-L277)
 
 
 
@@ -136,7 +137,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L293-L297)
+[See in context](./src/index.ts#L303-L307)
 
 
 
@@ -154,7 +155,7 @@ this service detects a free port automagically.
 Whook uses the `common-services` `resolve` service to allow
  to easily mock/decorate all ESM resolutions.
 
-[See in context](./src/index.ts#L301-L304)
+[See in context](./src/index.ts#L311-L314)
 
 
 
@@ -163,7 +164,7 @@ Whook uses the `common-services` `resolve` service to allow
 Whook uses the `common-services` `importer` service to allow
  to easily mock/decorate all ESM dynamic imports.
 
-[See in context](./src/index.ts#L307-L310)
+[See in context](./src/index.ts#L317-L320)
 
 
 
@@ -172,20 +173,20 @@ Whook uses the `common-services` `importer` service to allow
 Whook uses a built in `exit` service to allow
  to easily mock/decorate the app exit.
 
-[See in context](./src/index.ts#L313-L316)
+[See in context](./src/index.ts#L323-L326)
 
 
 
 ### 2.6. the `WHOOK_PLUGINS` constant
 
 The Whook `$autoload` service needs to know where to look up
- for things like commands / handlers /services etc...
+ for things like commands / routes /services etc...
 The `WHOOK_PLUGINS` constant allows you to give the name of
  some modules that embrace the Whook folder structure allowing
  you to just install Whook's plugins to get them automatically
  loaded.
 
-[See in context](./src/index.ts#L335-L342)
+[See in context](./src/index.ts#L345-L352)
 
 
 
@@ -195,7 +196,7 @@ Whook uses a built-in `logger` service to allow
  to easily route the application logs for the 
  `common-services` provided `log` service.
 
-[See in context](./src/index.ts#L319-L323)
+[See in context](./src/index.ts#L329-L333)
 
 
 
@@ -220,7 +221,7 @@ Loading the configuration files is done according to the `APP_ENV`
    environment variable. It basically requires a configuration hash
    where the keys are JSON formattable constants.
 
-[See in context](./src/index.ts#L328-L332)
+[See in context](./src/index.ts#L338-L342)
 
 
 
@@ -231,7 +232,7 @@ Whook provides a simple way to load the constants, services
  strategies. It is done by implementing the `knifecycle`
  auto loading interface.
 
-[See in context](./src/services/_autoload.ts#L68-L73)
+[See in context](./src/services/_autoload.ts#L73-L78)
 
 
 
@@ -240,7 +241,7 @@ Whook provides a simple way to load the constants, services
 First of all the autoloader looks for constants in the
  previously loaded `APP_CONFIG` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L196-L199)
+[See in context](./src/services/_autoload.ts#L213-L216)
 
 
 
@@ -250,17 +251,18 @@ We cannot inject the `API` in the auto loader since
  it is dynamically loaded so doing this during the auto
  loader initialization.
 
-[See in context](./src/services/_autoload.ts#L120-L124)
+[See in context](./src/services/_autoload.ts#L126-L130)
 
 
 
-##### 2.9.2.1. API definitions loader
+##### 2.9.2.1. Definitions loader
 
-The `API_DEFINITIONS` service provide a convenient way to
- gather your various API definitions from the handlers you
- created in the `src/handlers` folder.
+The `DEFINITIONS` service provide a convenient way to
+ gather your various definitions from the routes, crons
+ or commands you created in the `src/(routes|cron|commands)`
+ folder.
 
-[See in context](./src/services/API_DEFINITIONS.ts#L46-L50)
+[See in context](./src/services/DEFINITIONS.ts#L23-L28)
 
 
 
@@ -270,7 +272,7 @@ This command allows you to generate the API types that
  helps you to write your handler in a clean and safe
  manner.
 
-[See in context](./src/commands/generateOpenAPITypes.ts#L11-L16)
+[See in context](./src/commands/generateOpenAPITypes.ts#L14-L19)
 
 
 
@@ -279,7 +281,7 @@ This command allows you to generate the API types that
 Here, we reuse the Open API handler to generate the
  definition of the API right inside a CLI command.
 
-[See in context](./src/commands/generateOpenAPISchema.ts#L8-L12)
+[See in context](./src/commands/generateOpenAPISchema.ts#L9-L13)
 
 
 
@@ -289,7 +291,7 @@ The Whook auto-loader allows you to provide the file path
  of a service per its name. It exports a `WhookInitializerMap`
  type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L45-L50)
+[See in context](./src/services/_autoload.ts#L49-L54)
 
 
 
@@ -298,25 +300,25 @@ The Whook auto-loader allows you to provide the file path
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L259-L262)
+[See in context](./src/services/_autoload.ts#L284-L287)
 
 
 
-#### 2.9.4. the `HANDLERS` mapper
+#### 2.9.4. the `ROUTES_HANDLERS` mapper
 
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L211-L214)
+[See in context](./src/services/_autoload.ts#L231-L234)
 
 
 
-#### 2.9.5. the `WRAPPERS` auto loading
+#### 2.9.5. the `ROUTES_WRAPPERS` auto loading
 
-We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
+We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
  service so that they can be dynamically applied.
 
-[See in context](./src/services/_autoload.ts#L235-L238)
+[See in context](./src/services/_autoload.ts#L253-L256)
 
 
 
@@ -325,7 +327,7 @@ We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
 Finally, we either load the handler/service/wrapper module
  if none of the previous strategies applied.
 
-[See in context](./src/services/_autoload.ts#L253-L256)
+[See in context](./src/services/_autoload.ts#L278-L281)
 
 
 
@@ -345,7 +347,7 @@ Whook auto loader can look for initializers in a list of
 
 Trying to load services from plugins/project paths.
 
-[See in context](./src/services/_autoload.ts#L273-L275)
+[See in context](./src/services/_autoload.ts#L298-L300)
 
 
 
@@ -462,7 +464,7 @@ This is the default implementation of the Framework
  (see the [API section](#API)).
 
 The `httpRouter` service is responsible for handling
- the request, validating it and wiring the handlers
+ the request, validating it and wiring the routes
  response to the actual HTTP response.
 
 It is very opinionated and clearly diverges from the
@@ -511,7 +513,7 @@ Also, looking closely to Prepack that
  time costs:
  https://github.com/facebook/prepack/issues/522#issuecomment-300706099
 
-[See in context](./src/libs/validation.ts#L31-L49)
+[See in context](./src/libs/validation.ts#L32-L50)
 
 
 
@@ -535,7 +537,7 @@ there are two kinds of requests:
  buffer their content and parse them to
  finally validate it. In that case, we
  provide it as a plain JS object to the
- handlers.
+ routes handlers.
 - **streamable contents:** often used
  for large files, those contents must
  be parsed and validated into the
@@ -598,12 +600,23 @@ Errors descriptors allows you to change the error
 
 
 
-## 3. the handlers
+### 2.14. Local cron runner
 
-Handlers are services that provide a definition and implements
+Whook allows you to run crons locally with the help
+ of this local cron runner. Best practice is to
+ export them and run it with some external runner
+ like cloud ones, systemd or crontab.
+
+[See in context](./src/services/localCronRunner.ts#L8-L14)
+
+
+
+## 3. the routes
+
+Routes are services that provide a definition and implements
  API routes.
 
-[See in context](./src/handlers/getOpenAPI.ts#L39-L42)
+[See in context](./src/routes/getOpenAPI.ts#L39-L42)
 
 
 

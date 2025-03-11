@@ -215,7 +215,7 @@ describe('$autoload', () => {
           mainURL: 'file://var/lib/node/node_modules/@whook/cli/dist/index.js',
           directory: 'file://var/lib/node/node_modules/@whook/cli/dist',
           extension: '.js',
-          types: ['handlers', 'commands', 'services', 'wrappers'],
+          types: ['routes', 'commands', 'services', 'wrappers'],
         },
       },
       args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },

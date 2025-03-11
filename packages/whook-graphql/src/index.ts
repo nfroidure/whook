@@ -1,11 +1,11 @@
 import initGetGraphQL, {
   definition as getGraphQLDefinition,
-} from './handlers/getGraphQL.js';
+} from './routes/getGraphQL.js';
 import initPostGraphQL, {
   definition as postGraphQLDefinition,
-} from './handlers/postGraphQL.js';
+} from './routes/postGraphQL.js';
 import initGraphQL from './services/graphQL.js';
-import { type WhookGraphQLContextFunction } from './handlers/postGraphQL.js';
+import { type WhookGraphQLContextFunction } from './routes/postGraphQL.js';
 import {
   type WhookGraphQLEnv,
   type WhookGraphQLConfig,

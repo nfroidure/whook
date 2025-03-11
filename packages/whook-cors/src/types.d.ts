@@ -1,8 +1,8 @@
-import { type WhookBaseAPIHandlerConfig } from '@whook/whook';
-import { type WhookAPIOperationCORSConfig } from './wrappers/wrapHandlerWithCORS.ts';
+import { type WhookBaseRouteConfig } from '@whook/whook';
+import { type WhookAPIOperationCORSConfig } from './wrappers/wrapRouteHandlerWithCORS.ts';
 
 declare module '@whook/whook' {
-  export interface WhookAPIHandlerConfig
-    extends WhookBaseAPIHandlerConfig,
+  export interface WhookRouteConfig
+    extends WhookBaseRouteConfig,
       WhookAPIOperationCORSConfig {}
 }
