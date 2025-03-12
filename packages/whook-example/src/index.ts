@@ -30,8 +30,11 @@ import {
   initHTTPRouter,
 } from '@whook/whook';
 import { initErrorHandlerWithCORS } from '@whook/cors';
+import wrapHTTPRouterWithGraphIQL from '@whook/graphiql';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv, initTimeMock } from 'application-services';
+import { initGraphQL, type WhookGraphQLFragmentService } from '@whook/graphql';
+import { gql } from 'graphql-tag';
 
 /* Architecture Note #1.1.3.4: supported `APP_ENV` values
 
@@ -85,7 +88,9 @@ export async function prepareProcess<
    For example, here we add a Swagger UI page for
    development purpose.
   */
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
+  $.register(
+    wrapHTTPRouterWithGraphIQL(wrapHTTPRouterWithSwaggerUI(initHTTPRouter)),
+  );
 
   return await prepareBaseProcess(injectedNames, $);
 }
@@ -226,6 +231,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(
     constant('WHOOK_PLUGINS', [
       ...WHOOK_DEFAULT_PLUGINS,
+      '@whook/graphql',
       '@whook/cors',
       '@whook/authorization',
     ]),
@@ -236,6 +242,36 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   // Add the time mock service for testing
   $.register(initTimeMock);
+
+  // Add the Apollo Server configuration
+  $.register(
+    constant('GRAPHQL_SERVER_OPTIONS', {
+      context: ({ operation, requestContext }) => ({
+        operationId: operation.operationId,
+        authenticationData: requestContext.authenticationData,
+      }),
+    }),
+  );
+
+  // Declare the GraphQL schema fragments
+  const helloFragment: WhookGraphQLFragmentService = {
+    typeDefs: gql`
+      type Query {
+        hello: String
+      }
+      schema {
+        query: Query
+      }
+    `,
+    resolvers: {
+      Query: {
+        hello: () => 'Hello world!',
+      },
+    },
+  };
+
+  $.register(initGraphQL);
+  $.register(constant('graphQLFragments', [helloFragment]));
 
   return $;
 }

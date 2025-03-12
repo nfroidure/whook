@@ -22,6 +22,11 @@ import { type BaseAppEnvVars, type TimeMockConfig } from 'application-services';
 import { type JWTEnvVars } from 'jwt-service';
 import { type RouteDefinitionFilterEnvVars } from './services/ROUTE_DEFINITION_FILTER.ts';
 import { type AppEnv } from './index.ts';
+import { type WhookGraphQLEnv, type WhookGraphQLConfig } from '@whook/graphql';
+import {
+  type WhookGraphIQLEnv,
+  type WhookGraphIQLConfig,
+} from '@whook/graphiql';
 
 /* Architecture Note #2.1: Typings
 
@@ -38,6 +43,8 @@ declare module 'application-services' {
       WhookBaseEnv,
       JWTEnvVars,
       RouteDefinitionFilterEnvVars,
+      WhookGraphQLEnv,
+      WhookGraphIQLEnv,
       WhookSwaggerUIEnv {}
 
   /* Architecture Note #2.1.2: AppConfig
@@ -51,6 +58,8 @@ declare module 'application-services' {
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
+      WhookGraphIQLConfig,
+      WhookGraphQLConfig,
       JWTServiceConfig,
       TimeMockConfig {}
 }

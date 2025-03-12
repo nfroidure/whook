@@ -20,7 +20,7 @@ import { join } from 'node:path';
 import { type Knifecycle } from 'knifecycle';
 import { type JWTService } from 'jwt-service';
 import { type Logger } from 'common-services';
-import { WhookAuthenticationData } from '@whook/authorization';
+import { type WhookAuthenticationData } from '@whook/authorization';
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 
@@ -130,16 +130,85 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
@@ -472,6 +541,15 @@ describe('runProcess', () => {
       "⏳ - Skipped "getDiagnostic.test.ts" per ignore patterns.",
     ],
     [
+      "⏳ - Skipped "getGraphQL.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "getGraphQL.js" since already loaded upstream.",
+    ],
+    [
+      "⏳ - Skipped "getGraphQL.js.map" per file patterns.",
+    ],
+    [
       "⏳ - Skipped "getOpenAPI.d.ts" per ignore patterns.",
     ],
     [
@@ -547,6 +625,15 @@ describe('runProcess', () => {
       "⏳ - Skipped "optionsWithCORS.js.map" per file patterns.",
     ],
     [
+      "⏳ - Skipped "postGraphQL.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "postGraphQL.js" since already loaded upstream.",
+    ],
+    [
+      "⏳ - Skipped "postGraphQL.js.map" per file patterns.",
+    ],
+    [
       "⏳ - Skipped "printEnv.test.ts" per ignore patterns.",
     ],
     [
@@ -589,6 +676,9 @@ describe('runProcess', () => {
       "✅ - Module path of "getDiagnostic" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
+      "✅ - Module path of "getGraphQL" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getGraphQL.ts".",
+    ],
+    [
       "✅ - Module path of "getOpenAPI" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
@@ -613,6 +703,9 @@ describe('runProcess', () => {
       "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/routes/optionsWithCORS.js".",
     ],
     [
+      "✅ - Module path of "postGraphQL" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postGraphQL.ts".",
+    ],
+    [
       "✅ - Module path of "putEcho" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
@@ -632,6 +725,9 @@ describe('runProcess', () => {
     ],
     [
       "➰ - Plugin "@whook/cors" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-cors/dist" with "routes, services, wrappers" types.",
+    ],
+    [
+      "➰ - Plugin "@whook/graphql" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-graphql/dist" with "routes, services" types.",
     ],
     [
       "➰ - Plugin "@whook/whook" source path resolved to "file:///home/whoiam/projects/whook/dist" with "commands, routes, services" types.",
@@ -664,6 +760,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/whook".",
     ],
     [
@@ -679,6 +778,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/whook".",
     ],
     [
@@ -689,6 +791,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/whook".",
@@ -703,6 +808,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/whook".",
     ],
     [
@@ -713,6 +821,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/whook".",
@@ -727,6 +838,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "DECODERS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "DECODERS" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "DECODERS" module path in "@whook/whook".",
     ],
     [
@@ -737,6 +851,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/whook".",
@@ -751,6 +868,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "ENCODERS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "ENCODERS" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "ENCODERS" module path in "@whook/whook".",
     ],
     [
@@ -761,6 +881,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/whook".",
@@ -775,6 +898,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/whook".",
     ],
     [
@@ -785,6 +911,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/whook".",
@@ -802,22 +931,13 @@ describe('runProcess', () => {
       "🍀 - Trying to find "PARSERS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "PARSERS" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "PARSERS" module path in "@whook/whook".",
     ],
     [
       "🍀 - Trying to find "PARSERS" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "ROUTE_DEFINITION_FILTER" module path in "__project__".",
@@ -827,6 +947,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/whook".",
@@ -841,6 +964,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/whook".",
     ],
     [
@@ -851,6 +977,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "SIGNALS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "SIGNALS" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "SIGNALS" module path in "@whook/whook".",
@@ -865,6 +994,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/whook".",
     ],
     [
@@ -875,6 +1007,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "TIMEOUT" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "TIMEOUT" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "TIMEOUT" module path in "@whook/whook".",
@@ -892,6 +1027,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "fetcher" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "fetcher" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "fetcher" module path in "@whook/whook".",
     ],
     [
@@ -902,6 +1040,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "getDiagnostic" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "getGraphQL" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "getOpenAPI" module path in "__project__".",
@@ -919,6 +1060,21 @@ describe('runProcess', () => {
       "🍀 - Trying to find "getTime" module path in "__project__".",
     ],
     [
+      "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/graphql".",
+    ],
+    [
+      "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "graphQLContextFunction" module path in "__project__".",
+    ],
+    [
       "🍀 - Trying to find "handleMinutes" module path in "__project__".",
     ],
     [
@@ -934,10 +1090,16 @@ describe('runProcess', () => {
       "🍀 - Trying to find "optionsWithCORS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "optionsWithCORS" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "optionsWithCORS" module path in "@whook/whook".",
     ],
     [
       "🍀 - Trying to find "optionsWithCORS" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "postGraphQL" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "putEcho" module path in "__project__".",
@@ -952,6 +1114,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "uniqueId" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "uniqueId" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "uniqueId" module path in "@whook/whook".",
     ],
     [
@@ -964,6 +1129,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/graphql".",
+    ],
+    [
       "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/whook".",
     ],
     [
@@ -971,6 +1139,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/graphql".",
     ],
     [
       "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/whook".",
@@ -1009,6 +1180,9 @@ describe('runProcess', () => {
       "💿 - Loading "getDiagnostic" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
+      "💿 - Loading "getGraphQL" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getGraphQL.ts".",
+    ],
+    [
       "💿 - Loading "getOpenAPI" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
@@ -1031,6 +1205,9 @@ describe('runProcess', () => {
     ],
     [
       "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/routes/optionsWithCORS.js".",
+    ],
+    [
+      "💿 - Loading "postGraphQL" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postGraphQL.ts".",
     ],
     [
       "💿 - Loading "putEcho" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
@@ -1066,6 +1243,9 @@ describe('runProcess', () => {
       "💿 - Service "getDiagnostic" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
+      "💿 - Service "getGraphQL" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getGraphQL.ts".",
+    ],
+    [
       "💿 - Service "getOpenAPI" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
@@ -1088,6 +1268,9 @@ describe('runProcess', () => {
     ],
     [
       "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/routes/optionsWithCORS.js".",
+    ],
+    [
+      "💿 - Service "postGraphQL" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postGraphQL.ts".",
     ],
     [
       "💿 - Service "putEcho" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
@@ -1114,16 +1297,25 @@ describe('runProcess', () => {
       "📖 - Picking the "DEFAULT_MECHANISM" constant in the "APP_CONFIG" service properties.",
     ],
     [
+      "📖 - Picking the "DEV_ACCESS_MECHANISM" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
       "📖 - Picking the "DEV_ACCESS_TOKEN" constant in the "APP_CONFIG" service properties.",
     ],
     [
       "📖 - Picking the "ERRORS_DESCRIPTORS" constant in the "APP_CONFIG" service properties.",
     ],
     [
+      "📖 - Picking the "GRAPHIQL" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
       "📖 - Picking the "JWT" constant in the "APP_CONFIG" service properties.",
     ],
     [
       "📖 - Picking the "MAX_CLEAR_CHARS" constant in the "APP_CONFIG" service properties.",
+    ],
+    [
+      "📖 - Picking the "QUERY_PARSER_OPTIONS" constant in the "APP_CONFIG" service properties.",
     ],
     [
       "📖 - Picking the "SENSIBLE_HEADERS" constant in the "APP_CONFIG" service properties.",
@@ -1145,6 +1337,9 @@ describe('runProcess', () => {
     ],
     [
       "🕶️ - Initializing the obfuscator service.",
+    ],
+    [
+      "🕸️ - Initializing the GraphQL Service",
     ],
     [
       "🖃 - Initializing the validators service.",
@@ -1192,9 +1387,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/QUERY_PARSER_OPTIONS.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
@@ -1211,6 +1403,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/fetcher.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/graphQLContextFunction.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/uniqueId.js".",
@@ -1258,9 +1453,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
@@ -1277,6 +1469,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/fetcher.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/graphQLContextFunction.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
@@ -1318,9 +1513,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/PARSERS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
     ],
     [
@@ -1337,6 +1529,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/fetcher.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/graphQLContextFunction.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/uniqueId.js".",
@@ -1387,9 +1582,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/PARSERS.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/QUERY_PARSER_OPTIONS.ts".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/SCHEMA_VALIDATORS_OPTIONS.ts".",
     ],
     [
@@ -1408,6 +1600,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/fetcher.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/graphQLContextFunction.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/localCronRunner.ts".",
     ],
     [
@@ -1418,6 +1613,75 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapRouteHandlerWithCORS.ts".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/routes/optionsWithCORS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/BUFFER_LIMIT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/COERCION_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/COMMAND_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/CRON_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/DECODERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/DEFAULT_ERROR_CODE.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/ENCODERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/HTTP_SERVER_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/JWT_SECRET_ENV_NAME.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/MAX_CLEAR_RATIO.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/PARSERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/SHIELD_CHAR.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/SIGNALS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/STRINGIFYERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/TIMEOUT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/fetcher.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/graphQLContextFunction.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/services/uniqueId.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-graphql/dist/wrappers/wrapRouteHandlerWithCORS.js".",
     ],
     [
       "🚫 - Module path of "BUFFER_LIMIT" not found.",
@@ -1456,9 +1720,6 @@ describe('runProcess', () => {
       "🚫 - Module path of "PARSERS" not found.",
     ],
     [
-      "🚫 - Module path of "QUERY_PARSER_OPTIONS" not found.",
-    ],
-    [
       "🚫 - Module path of "SCHEMA_VALIDATORS_OPTIONS" not found.",
     ],
     [
@@ -1475,6 +1736,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "fetcher" not found.",
+    ],
+    [
+      "🚫 - Module path of "graphQLContextFunction" not found.",
     ],
     [
       "🚫 - Module path of "uniqueId" not found.",
@@ -1552,6 +1816,12 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getDiagnostic.ts".",
     ],
     [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getGraphQL.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getGraphQL.ts".",
+    ],
+    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getOpenAPI.ts".",
     ],
     [
@@ -1568,6 +1838,12 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getTime.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postGraphQL.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postGraphQL.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
@@ -1638,7 +1914,7 @@ describe('runProcess', () => {
       "🏭 - Initializing the CRONS_WRAPPERS service.",
     ],
     [
-      "🏭 - Initializing the ROUTES_HANDLERS service with 9 handlers wrapped by 2 wrappers.",
+      "🏭 - Initializing the ROUTES_HANDLERS service with 11 handlers wrapped by 2 wrappers.",
     ],
     [
       "🏭 - Initializing the ROUTES_WRAPPERS service.",
@@ -1651,6 +1927,9 @@ describe('runProcess', () => {
     ],
     [
       "🕱 -Wrapping the error handler for CORS.",
+    ],
+    [
+      "🕸️ - Serving the GraphIQL UI. http://localhost:9999/graphiql",
     ],
     [
       "🤖 - Initializing the \`$autoload\` service.",

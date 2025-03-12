@@ -8,6 +8,10 @@ declare interface paths {
   '/diagnostic': {
     get: operations['getDiagnostic'];
   };
+  '/graphql': {
+    get: operations['getGraphQL'];
+    post: operations['postGraphQL'];
+  };
   '/openAPI': {
     get: operations['getOpenAPI'];
   };
@@ -53,6 +57,35 @@ declare interface operations {
   getDiagnostic: {
     responses: {
       200: components['responses']['Diagnostic'];
+    };
+  };
+  getGraphQL: {
+    responses: {
+      200: {
+        body: {
+          [pattern: string]: unknown;
+        };
+      };
+    };
+    parameters: {
+      query: {
+        query: string;
+        variables?: string;
+        operationName?: string;
+      };
+    };
+  };
+  postGraphQL: {
+    requestBody?: {
+      query?: string;
+      [pattern: string]: unknown;
+    };
+    responses: {
+      200: {
+        body: {
+          [pattern: string]: unknown;
+        };
+      };
     };
   };
   getOpenAPI: {
