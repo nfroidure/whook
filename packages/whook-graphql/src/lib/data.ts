@@ -1,4 +1,4 @@
-import YHTTPError from 'yhttperror';
+import { YHTTPError } from 'yhttperror';
 
 export function deserialize<T>(data: string, name: string): Record<string, T> {
   let deserializedData: Record<string, T>;

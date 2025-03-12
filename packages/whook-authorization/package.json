@@ -58,7 +58,7 @@
     "http-auth-utils": "^6.0.1",
     "knifecycle": "^19.0.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

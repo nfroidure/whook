@@ -69,7 +69,7 @@ export type WhookCommandArgs<
   command: string;
 };
 
-export interface WhookCommand<
+export interface WhookCommandHandler<
   T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
   D extends WhookCommandDefinition = WhookCommandDefinition,
 > {
@@ -79,8 +79,8 @@ export type WhookCommandInitializer<
   T extends Record<string, WhookArgsTypes>,
   D extends Dependencies = Record<string, WhookArgsTypes>,
 > =
-  | ServiceInitializer<D, WhookCommand<T>>
-  | ProviderInitializer<D, WhookCommand<T>>;
+  | ServiceInitializer<D, WhookCommandHandler<T>>
+  | ProviderInitializer<D, WhookCommandHandler<T>>;
 
 export const COMMAND_ASIDE_COMPONENTS_SUFFIXES = ['Schema'] as const;
 export const COMMAND_ASIDE_COMPONENTS_PROPERTY_MAP = {
@@ -100,6 +100,6 @@ export interface WhookCommandModule<
   [name: `${string}Schema`]: WhookCommandArgumentDefinition<unknown>;
 }
 
-export type WhookCommandWrapper<T extends Record<string, WhookArgsTypes>> = (
-  handler: WhookCommand<T>,
-) => Promise<WhookCommand<T>>;
+export type WhookCommandHandlerWrapper<
+  T extends Record<string, WhookArgsTypes>,
+> = (handler: WhookCommandHandler<T>) => Promise<WhookCommandHandler<T>>;

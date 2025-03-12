@@ -126,6 +126,7 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -135,13 +136,14 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
+    "node-cron": "^3.0.3",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0",
+    "yhttperror": "^8.1.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>"
@@ -432,6 +434,7 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -441,13 +444,14 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
+    "node-cron": "^3.0.3",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0",
+    "yhttperror": "^8.1.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>"
@@ -776,6 +780,7 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -785,13 +790,14 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
+    "node-cron": "^3.0.3",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0",
+    "yhttperror": "^8.1.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>"
@@ -1103,6 +1109,7 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -1112,13 +1119,14 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
+    "node-cron": "^3.0.3",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0",
+    "yhttperror": "^8.1.0",
     "@whook/http-router": "<current_version>",
     "@whook/http-server": "<current_version>",
     "@whook/http-transaction": "<current_version>"

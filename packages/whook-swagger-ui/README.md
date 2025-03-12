@@ -82,7 +82,7 @@ declare module 'application-services' {
 
   // ...
 
-  export interface WhookAPIHandlerDefinition<
+  export interface WhookRouteDefinition<
     T extends Record<string, unknown> = Record<string, unknown>,
     U extends {
       [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;

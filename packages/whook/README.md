@@ -45,9 +45,6 @@ more documentation.
 <dt><a href="#pickAllHeaderValues">pickAllHeaderValues(name, headers)</a> ⇒ <code>Array</code></dt>
 <dd><p>Pick header values</p>
 </dd>
-<dt><a href="#initAPIDefinitions">initAPIDefinitions(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
-<dd><p>Initialize the API_DEFINITIONS service according to the porject handlers.</p>
-</dd>
 <dt><a href="#initAPM">initAPM(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Application monitoring service that simply log stringified contents.</p>
 </dd>
@@ -60,14 +57,25 @@ more documentation.
  build, saving some computing and increasing boot time of
  the build.</p>
 </dd>
+<dt><a href="#initCommands">initCommands(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Initialize the COMMANDS service gathering the project commands.</p>
+</dd>
+<dt><a href="#initCronsDefinitions">initCronsDefinitions(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Initialize the CRONS_DEFINITIONS service gathering the project crons.</p>
+</dd>
+<dt><a href="#initCronsHandlers">initCronsHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>Initialize the Whook cron handlers used by the router
+ to know which cron to run for a given cron name.</p>
+</dd>
+<dt><a href="#initCronsWrappers">initCronsWrappers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>A simple passthrough service proxying the CRONS_WRAPPERS.</p>
+</dd>
+<dt><a href="#initDefinitions">initDefinitions(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
+<dd><p>Initialize the DEFINITIONS service.</p>
+</dd>
 <dt><a href="#initErrorHandler">initErrorHandler(services)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Initialize an error handler for the
 HTTP router</p>
-</dd>
-<dt><a href="#initHandlers">initHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
-<dd><p>Initialize the Whook handlers used byt the router
- to know which handler to run for a given open API
- operation id.</p>
 </dd>
 <dt><a href="#initHost">initHost(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
 <dd><p>Initialize the HOST service from ENV or auto-detection if
@@ -82,6 +90,9 @@ HTTP router</p>
 <dt><a href="#initHTTPTransaction">initHTTPTransaction(services)</a> ⇒ <code><a href="#WhookHTTPTransaction">Promise.&lt;WhookHTTPTransaction&gt;</a></code></dt>
 <dd><p>Instantiate the httpTransaction service</p>
 </dd>
+<dt><a href="#initMainHandler">initMainHandler(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>An initializer to build a single Whook route handler.</p>
+</dd>
 <dt><a href="#initObfuscator">initObfuscator(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Obfuscate sensible informations.</p>
 </dd>
@@ -92,6 +103,17 @@ HTTP router</p>
 <dt><a href="#wrapEnvForBuild">wrapEnvForBuild(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the ENV service in order to filter ENV vars for the build</p>
 </dd>
+<dt><a href="#initRoutesDefinitions">initRoutesDefinitions(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Initialize the ROUTES_DEFINITIONS service gathering
+ the project routes definitions.</p>
+</dd>
+<dt><a href="#initRoutesHandlers">initRoutesHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>Initialize the Whook routes handlers used by the router
+ to know which handler to run for a given route.</p>
+</dd>
+<dt><a href="#initRoutesWrappers">initRoutesWrappers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>A simple passthrough service proxying the ROUTES_WRAPPERS.</p>
+</dd>
 <dt><a href="#initSchemaValidators">initSchemaValidators(services)</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
 <dd><p>Initialize the schema validator service for
  application schemas validation. This central
@@ -100,9 +122,6 @@ HTTP router</p>
 </dd>
 <dt><a href="#initWhookResolvedPlugins">initWhookResolvedPlugins(services)</a> ⇒ <code>Promise.&lt;string&gt;</code></dt>
 <dd><p>Resolves the Whook plugins from their names</p>
-</dd>
-<dt><a href="#initWrappers">initWrappers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
-<dd><p>A simple passthrough service proxing the WRAPPERS.</p>
 </dd>
 </dl>
 
@@ -168,25 +187,6 @@ Pick header values
 | name | <code>string</code> | The header name |
 | headers | <code>Object</code> | The headers map |
 
-<a name="initAPIDefinitions"></a>
-
-## initAPIDefinitions(services) ⇒ <code>Promise.&lt;String&gt;</code>
-Initialize the API_DEFINITIONS service according to the porject handlers.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;String&gt;</code> - A promise of a containing the actual host.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services API_DEFINITIONS depends on |
-| [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
-| services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
-| [services.IGNORED_FILES_SUFFIXES] | <code>Object</code> |  | The files suffixes the autoloader must ignore |
-| [services.IGNORED_FILES_PREFIXES] | <code>Object</code> |  | The files prefixes the autoloader must ignore |
-| [services.FILTER_API_DEFINITION] | <code>Object</code> |  | Allows to filter endpoints if the custom function returns true |
-| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
 <a name="initAPM"></a>
 
 ## initAPM(services) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -240,6 +240,89 @@ import { alsoInject } from 'knifecycle';
 
 export default alsoInject(['MY_OWN_CONSTANT'], initBuildConstants);
 ```
+<a name="initCommands"></a>
+
+## initCommands(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Initialize the COMMANDS service gathering the project commands.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a containing the actual host.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services COMMANDS depends on |
+| [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
+| services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
+| [services.COMMANDS_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the project commands |
+| [services.COMMAND_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the project commands per definitions |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initCronsDefinitions"></a>
+
+## initCronsDefinitions(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Initialize the CRONS_DEFINITIONS service gathering the project crons.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a containing the actual host.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services CRONS_DEFINITIONS depends on |
+| [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
+| services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
+| [services.CRONS_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the project crons |
+| [services.CRON_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the project crons per definitions |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initCronsHandlers"></a>
+
+## initCronsHandlers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
+Initialize the Whook cron handlers used by the router
+ to know which cron to run for a given cron name.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `CRONS_HANDLERS` hash.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services `CRONS_HANDLERS` depends on |
+| services.CRONS_WRAPPERS | <code>Array</code> |  | An optional list of wrappers to inject |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.CRONS_HANDLERS | <code>Object</code> |  | The rest is a hash of crons handlers mapped by name |
+
+<a name="initCronsWrappers"></a>
+
+## initCronsWrappers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
+A simple passthrough service proxying the CRONS_WRAPPERS.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `CRONS_WRAPPERS` hash.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services `CRONS_WRAPPERS` depends on |
+| [services.CRONS_WRAPPERS_NAMES] | <code>Array</code> |  | The global wrappers names to wrap the crons with |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.CRONS_WRAPPERS | <code>Object</code> |  | The dependencies must all be injected wrappers |
+
+<a name="initDefinitions"></a>
+
+## initDefinitions(services) ⇒ <code>Promise.&lt;String&gt;</code>
+Initialize the DEFINITIONS service.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise of a containing the actual host.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services DEFINITIONS depends on |
+| [services.ROUTES_DEFINITIONS] | <code>Object</code> |  | The API routes modules |
+| [services.COMMANDS_DEFINITIONS] | <code>Object</code> |  | The commands modules |
+| [services.CRONS_DEFINITIONS] | <code>Object</code> |  | The crons modules |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
 <a name="initErrorHandler"></a>
 
 ## initErrorHandler(services) ⇒ <code>Promise</code>
@@ -274,23 +357,6 @@ map it to a serializable response
 | responseSpec | <code>Object</code> | The response specification |
 | err | <code>YHTTPError</code> | The encountered error |
 
-<a name="initHandlers"></a>
-
-## initHandlers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
-Initialize the Whook handlers used byt the router
- to know which handler to run for a given open API
- operation id.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `HANDLERS` hash.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services `HANDLERS` depends on |
-| services.WRAPPERS | <code>Array</code> |  | An optional list of wrappers to inject |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-| services.HANDLERS | <code>Object</code> |  | The rest is a hash of handlers mapped by their operation id |
-
 <a name="initHost"></a>
 
 ## initHost(services) ⇒ <code>Promise.&lt;String&gt;</code>
@@ -320,7 +386,7 @@ Initialize an HTTP router
 | services | <code>Object</code> |  | The services the server depends on |
 | [services.BUFFER_LIMIT] | <code>String</code> |  | The maximum bufferisation before parsing the  request body |
 | [services.BASE_PATH] | <code>String</code> |  | API base path |
-| services.HANDLERS | <code>Object</code> |  | The handlers for the operations decribe  by the OpenAPI API definition |
+| services.ROUTES_HANDLERS | <code>Object</code> |  | The handlers for the operations decribe  by the OpenAPI API definition |
 | services.API | <code>Object</code> |  | The OpenAPI definition of the API |
 | [services.PARSERS] | <code>Object</code> |  | The synchronous body parsers (for operations  that defines a request body schema) |
 | [services.STRINGIFYERS] | <code>Object</code> |  | The synchronous body stringifyers (for  operations that defines a response body  schema) |
@@ -409,6 +475,22 @@ transaction created in an array.
 | req | <code>HTTPRequest</code> | A raw NodeJS HTTP incoming message |
 | res | <code>HTTPResponse</code> | A raw NodeJS HTTP response |
 
+<a name="initMainHandler"></a>
+
+## initMainHandler(services) ⇒ <code>Promise.&lt;function()&gt;</code>
+An initializer to build a single Whook route handler.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `MAIN_HANDLER` service.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services `$autoload` depends on |
+| services.WRAPPERS | <code>Array</code> |  | An optional list of wrappers to inject |
+| services.MAIN_WRAPPER | <code>function</code> |  | The main route handle wrapper |
+| services.BASE_HANDLER | <code>function</code> |  | The base handler |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
+
 <a name="initObfuscator"></a>
 
 ## initObfuscator(services) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -467,6 +549,56 @@ Wrap the ENV service in order to filter ENV vars for the build
 | [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
+<a name="initRoutesDefinitions"></a>
+
+## initRoutesDefinitions(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Initialize the ROUTES_DEFINITIONS service gathering
+ the project routes definitions.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a containing the actual host.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services ROUTES_DEFINITIONS depends on |
+| [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
+| services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
+| [services.ROUTES_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the routes in the file system |
+| [services.ROUTE_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the routes per definitions |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initRoutesHandlers"></a>
+
+## initRoutesHandlers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
+Initialize the Whook routes handlers used by the router
+ to know which handler to run for a given route.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `ROUTES_HANDLERS` hash.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services `ROUTES_HANDLERS` depends on |
+| services.ROUTES_WRAPPERS | <code>Array</code> |  | An optional list of wrappers to inject |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.ROUTES_HANDLERS | <code>Object</code> |  | The rest is a hash of routesHandlers mapped by their operation id |
+
+<a name="initRoutesWrappers"></a>
+
+## initRoutesWrappers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
+A simple passthrough service proxying the ROUTES_WRAPPERS.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `ROUTES_WRAPPERS` hash.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The services `ROUTES_WRAPPERS` depends on |
+| [services.ROUTES_WRAPPERS_NAMES] | <code>Array</code> |  | The global wrappers names to wrap the routes with |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.ROUTES_WRAPPERS | <code>Object</code> |  | The dependencies must all be injected wrappers |
+
 <a name="initSchemaValidators"></a>
 
 ## initSchemaValidators(services) ⇒ <code>Promise.&lt;Number&gt;</code>
@@ -499,21 +631,6 @@ Resolves the Whook plugins from their names
 | services | <code>Object</code> |  | The services WHOOK_RESOLVED_PLUGINS depends on |
 | [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
-<a name="initWrappers"></a>
-
-## initWrappers(services) ⇒ <code>Promise.&lt;function()&gt;</code>
-A simple passthrough service proxing the WRAPPERS.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `HANDLERS` hash.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services `WRAPPERS` depends on |
-| [services.HANDLERS_WRAPPERS] | <code>Array</code> |  | The global wrappers names to wrap the handlers with |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-| services.WRAPPERS | <code>Object</code> |  | The dependencies must all be injected wrappers |
 
 <a name="HTTPServer"></a>
 

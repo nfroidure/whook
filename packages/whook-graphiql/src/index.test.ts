@@ -71,9 +71,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     $.register(constant('HOST', HOST));
     $.register(constant('APP_ENV', 'local'));
     $.register(constant('API', API));
-    $.register(constant('WRAPPERS', []));
+    $.register(constant('ROUTES_WRAPPERS_NAMES', []));
     $.register(
-      constant('HANDLERS', {
+      constant('ROUTES_HANDLERS', {
         getPing: jest.fn(async () => ({
           status: 200,
           headers: { 'content-type': 'application/json' },

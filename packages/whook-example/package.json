@@ -78,6 +78,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
+    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "^18.1.0",
     "@whook/cors": "^18.1.0",
     "@whook/swagger-ui": "^18.1.0",
@@ -87,13 +88,14 @@
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.0.0",
+    "node-cron": "^3.0.3",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.33.0",
     "yerror": "^8.0.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

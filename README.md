@@ -138,20 +138,21 @@ here. Instead, every handler is a simple function taking paramters and returning
 a response. It makes those functions very easily composable (in a functional
 programming sense).
 
-You may add global wrappers to change every handlers input/output on the fly or
-add a local wrapper specifically to one of a few handlers.
+You may add global wrappers to change every routes input/output on the fly or
+add a local wrapper specifically to one of a few routes.
 
 ### Core concepts
 
 Whook work by adding ingredients to you API:
 
 - **configuration**: Whook look ups for `config/{NODE_ENV}/config.js` files. It
-  creates constants you can inject in your handlers and services.
+  creates constants you can inject in your routes and services.
 - **API**: It defines the various endpoint of your API and how to map these to
-  handlers thanks to the well known OpenAPI format (formerly Swagger),
-- **handlers**: the code that implement the API endpoints,
+  routes thanks to the well known OpenAPI format (formerly Swagger),
+- **routes**: the code that implement the API endpoints,
+- **crons**: the code that implement the API endpoints,
 - **services**: various services that deal with side effects,
-- **wrappers**: higher order functions you can apply to handlers (CORS,
+- **wrappers**: higher order functions you can apply to routes or crons (CORS,
   authentication...).
 
 You can see a lot of those concepts implemented in the

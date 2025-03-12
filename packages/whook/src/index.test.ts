@@ -53,14 +53,14 @@ describe('runProcess', () => {
       );
       $.register(constant('PORT', PORT));
       $.register(constant('HOST', HOST));
-      $.register(constant('WRAPPERS', []));
+      $.register(constant('ROUTES_WRAPPERS_NAMES', []));
       $.register(constant('WHOOK_PLUGINS', []));
       $.register(constant('APP_CONFIG', {}));
       $.register(constant('WHOOK_RESOLVED_PLUGINS', []));
       $.register(constant('HTTP_SERVER_OPTIONS', {}));
       $.register(constant('DEBUG_NODE_ENVS', []));
       $.register(
-        constant('HANDLERS', {
+        constant('ROUTES_HANDLERS', {
           getPing: jest.fn(() => ({ status: 200 })),
         }),
       );

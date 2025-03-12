@@ -55,7 +55,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
 
   // Finally, some constants can be serialized instead of being
   //  initialized in the target build saving some time at boot
-  $.register(alsoInject(['API_DEFINITIONS'], initBuildConstants));
+  $.register(alsoInject(['DEFINITIONS'], initBuildConstants));
 
   return $;
 }

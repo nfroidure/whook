@@ -4,7 +4,7 @@ import miniquery from 'miniquery';
 import { noop } from '../libs/utils.js';
 import { type LogService } from 'common-services';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
 
@@ -12,7 +12,7 @@ export const definition = {
   name: 'inspect',
   description:
     'A simple program that returns the result of the injected service',
-  example: `whook config --name API_DEFINITIONS --query 'paths.*'`,
+  example: `whook config --name DEFINITIONS --query 'paths.*'`,
   config: { promptArgs: true },
   arguments: [
     {
@@ -55,7 +55,7 @@ async function initInspectCommand({
   $injector: Injector<Service>;
   log?: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     name: string;
     query?: string;
     default?: string;

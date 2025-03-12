@@ -1,5 +1,5 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import { initWrapHandlerWithAuthorization } from './index.js';
+import { initWrapRouteHandlerWithAuthorization } from './index.js';
 import {
   service,
   type Dependencies,
@@ -11,25 +11,28 @@ import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
-import { WhookAPIHandler, type WhookAPIHandlerDefinition } from '@whook/whook';
+import {
+  type WhookRouteHandler,
+  type WhookRouteDefinition,
+} from '@whook/whook';
 import { type LogService } from 'common-services';
 import {
   type WhookAuthenticationData,
   type WhookAuthenticationService,
-} from './wrappers/wrapHandlerWithAuthorization.js';
+} from './wrappers/wrapRouteHandlerWithAuthorization.js';
 
-describe('wrapHandlerWithAuthorization', () => {
-  const noopHandlerMock = jest.fn<WhookAPIHandler>(async () => ({
+describe('wrapRouteHandlerWithAuthorization', () => {
+  const noopHandlerMock = jest.fn<WhookRouteHandler>(async () => ({
     status: 200,
   }));
   const noopInitializerMock = jest.fn<
-    ServiceInitializer<Dependencies, WhookAPIHandler>
+    ServiceInitializer<Dependencies, WhookRouteHandler>
   >(async () => noopHandlerMock);
   const log = jest.fn<LogService>();
   const authentication = {
     check: jest.fn<WhookAuthenticationService<unknown>['check']>(),
   };
-  const NOOP_DEFINITION: WhookAPIHandlerDefinition = {
+  const NOOP_DEFINITION: WhookRouteDefinition = {
     path: '/path',
     method: 'get',
     operation: {
@@ -44,7 +47,7 @@ describe('wrapHandlerWithAuthorization', () => {
       },
     },
   };
-  const NOOP_AUTHENTICATED_DEFINITION: WhookAPIHandlerDefinition = {
+  const NOOP_AUTHENTICATED_DEFINITION: WhookRouteDefinition = {
     ...NOOP_DEFINITION,
     operation: {
       ...NOOP_DEFINITION.operation,
@@ -56,7 +59,7 @@ describe('wrapHandlerWithAuthorization', () => {
       ],
     },
   };
-  const NOOP_RESTRICTED_DEFINITION: WhookAPIHandlerDefinition = {
+  const NOOP_RESTRICTED_DEFINITION: WhookRouteDefinition = {
     ...NOOP_DEFINITION,
     operation: {
       ...NOOP_DEFINITION.operation,
@@ -67,7 +70,7 @@ describe('wrapHandlerWithAuthorization', () => {
       ],
     },
   };
-  const BAD_DEFINITION: WhookAPIHandlerDefinition = {
+  const BAD_DEFINITION: WhookRouteDefinition = {
     ...NOOP_DEFINITION,
     operation: {
       ...NOOP_DEFINITION.operation,
@@ -90,7 +93,7 @@ describe('wrapHandlerWithAuthorization', () => {
     test('should work', async () => {
       const noopHandler = service(noopInitializerMock, 'getNoop');
       const baseHandler = await noopHandler({});
-      const wrapper = await initWrapHandlerWithAuthorization({
+      const wrapper = await initWrapRouteHandlerWithAuthorization({
         authentication,
         log,
       });
@@ -179,7 +182,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
       const baseHandler = await noopHandler({});
-      const wrapper = await initWrapHandlerWithAuthorization({
+      const wrapper = await initWrapRouteHandlerWithAuthorization({
         authentication,
         log,
       });
@@ -288,7 +291,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
       const baseHandler = await noopHandler({});
-      const wrapper = await initWrapHandlerWithAuthorization({
+      const wrapper = await initWrapRouteHandlerWithAuthorization({
         authentication,
         log,
       });
@@ -397,7 +400,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
       const baseHandler = await noopHandler({});
-      const wrapper = await initWrapHandlerWithAuthorization({
+      const wrapper = await initWrapRouteHandlerWithAuthorization({
         authentication,
         log,
       });
@@ -506,7 +509,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
       const baseHandler = await noopHandler({});
-      const wrapper = await initWrapHandlerWithAuthorization({
+      const wrapper = await initWrapRouteHandlerWithAuthorization({
         authentication,
         log,
       });
@@ -602,7 +605,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
       const baseHandler = await noopHandler({});
-      const wrapper = await initWrapHandlerWithAuthorization({
+      const wrapper = await initWrapRouteHandlerWithAuthorization({
         authentication,
         log,
       });
@@ -710,7 +713,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
       const baseHandler = await noopHandler({});
-      const wrapper = await initWrapHandlerWithAuthorization({
+      const wrapper = await initWrapRouteHandlerWithAuthorization({
         authentication,
         log,
       });
@@ -813,7 +816,7 @@ describe('wrapHandlerWithAuthorization', () => {
   test('should fail with no operation definition provided', async () => {
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       authentication,
       log,
     });
@@ -830,7 +833,7 @@ describe('wrapHandlerWithAuthorization', () => {
           },
           options: {},
         },
-        undefined as unknown as WhookAPIHandlerDefinition,
+        undefined as unknown as WhookRouteDefinition,
       );
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
@@ -870,7 +873,7 @@ describe('wrapHandlerWithAuthorization', () => {
   test('should fail with bad operation definition provided', async () => {
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       authentication,
       log,
     });
@@ -937,7 +940,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       authentication,
       log,
     });
@@ -1013,7 +1016,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       MECHANISMS: [BASIC_MECHANISM, BEARER_MECHANISM],
       authentication,
       log,
@@ -1077,7 +1080,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       authentication,
       log,
     });
@@ -1140,7 +1143,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       authentication,
       log,
     });
@@ -1205,7 +1208,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       DEFAULT_MECHANISM: '',
       authentication,
       log,
@@ -1275,7 +1278,7 @@ describe('wrapHandlerWithAuthorization', () => {
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
     const baseHandler = await noopHandler({});
-    const wrapper = await initWrapHandlerWithAuthorization({
+    const wrapper = await initWrapRouteHandlerWithAuthorization({
       authentication,
       log,
     });

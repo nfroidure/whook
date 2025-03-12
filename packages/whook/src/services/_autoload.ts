@@ -13,12 +13,17 @@ import {
   type Service,
 } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import initHandlers, { HANDLER_REG_EXP } from './HANDLERS.js';
+import initRoutesHandlers from './ROUTES_HANDLERS.js';
+import initCronsHandlers from './CRONS_HANDLERS.js';
 import { type AppConfig } from 'application-services';
-import initWrappers, {
-  WRAPPER_REG_EXP,
-  type WhookWrappersConfig,
-} from './WRAPPERS.js';
+import initRoutesWrappers, {
+  ROUTES_WRAPPERS_REG_EXP,
+  type WhookRoutesWrappersConfig,
+} from './ROUTES_WRAPPERS.js';
+import initCronsWrappers, {
+  CRONS_WRAPPERS_REG_EXP,
+  type WhookCronsWrappersConfig,
+} from './CRONS_WRAPPERS.js';
 import { extname, join as pathJoin } from 'node:path';
 import { access as _access, constants } from 'node:fs/promises';
 import { YError, printStackTrace } from 'yerror';
@@ -34,11 +39,16 @@ import {
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type WhookRawCommandArgs } from '../libs/args.js';
-import { pathItemToOperationMap } from 'ya-open-api-types';
+import { type WhookOpenAPI } from '../types/openapi.js';
 import {
-  type WhookOpenAPIOperation,
-  type WhookOpenAPI,
-} from '../types/openapi.js';
+  DEFAULT_CRONS_DEFINITIONS_OPTIONS,
+  type WhookCronDefinitionsOptions,
+  type WhookCronsDefinitionsService,
+} from './CRONS_DEFINITIONS.js';
+import {
+  DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
+  type WhookRoutesDefinitionsOptions,
+} from './ROUTES_DEFINITIONS.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -50,20 +60,23 @@ The Whook auto-loader allows you to provide the file path
 */
 export type WhookInitializerMap = { [name: string]: string };
 
-export type WhookAutoloadDependencies = WhookWrappersConfig & {
-  APP_CONFIG?: AppConfig;
-  INITIALIZER_PATH_MAP?: WhookInitializerMap;
-  WHOOK_PLUGINS?: WhookPluginName[];
-  WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
-  args: WhookRawCommandArgs;
-  $injector: Injector<Service>;
-  importer: ImporterService<{
-    default: Initializer<Service, Dependencies>;
-  }>;
-  resolve: ResolveService;
-  access?: typeof _access;
-  log?: LogService;
-};
+export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
+  WhookCronsWrappersConfig & {
+    APP_CONFIG?: AppConfig;
+    INITIALIZER_PATH_MAP?: WhookInitializerMap;
+    WHOOK_PLUGINS?: WhookPluginName[];
+    WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
+    ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
+    CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
+    args: WhookRawCommandArgs;
+    $injector: Injector<Service>;
+    importer: ImporterService<{
+      default: Initializer<Service, Dependencies>;
+    }>;
+    resolve: ResolveService;
+    access?: typeof _access;
+    log?: LogService;
+  };
 
 /* Architecture Note #2.9: the `$autoload` service
 Whook provides a simple way to load the constants, services
@@ -85,7 +98,7 @@ export default singleton(name('$autoload', autoService(initAutoload)));
  * The activated plugins
  * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS
  * The resolved plugins
- * @param  {Array}   [services.HANDLERS_WRAPPERS]
+ * @param  {Array}   [services.ROUTES_WRAPPERS_NAMES]
  * The global wrappers names to wrap the handlers with
  * @param  {Object}   services.$injector
  * An optional object to map services names to other names
@@ -105,7 +118,10 @@ async function initAutoload({
   INITIALIZER_PATH_MAP = DEFAULT_INITIALIZER_PATH_MAP,
   WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
   WHOOK_RESOLVED_PLUGINS,
-  HANDLERS_WRAPPERS = [],
+  ROUTES_WRAPPERS_NAMES = [],
+  CRONS_WRAPPERS_NAMES = [],
+  ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
+  CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   args,
   importer,
   $injector,
@@ -122,13 +138,24 @@ async function initAutoload({
    it is dynamically loaded so doing this during the auto
    loader initialization.
   */
-  let API: WhookOpenAPI;
-  const getAPI = (() => {
+  let ROUTES_DEFINITIONS: WhookOpenAPI;
+  const getRoutesDefinitions = (() => {
     return async () => {
-      if (!API) {
-        API = (await $injector(['API'])).API;
+      if (!ROUTES_DEFINITIONS) {
+        ROUTES_DEFINITIONS = (await $injector(['ROUTES_DEFINITIONS']))
+          .ROUTES_DEFINITIONS;
       }
-      return API;
+      return ROUTES_DEFINITIONS;
+    };
+  })();
+  let CRONS_DEFINITIONS: WhookCronsDefinitionsService;
+  const getCronsDefinitions = (() => {
+    return async () => {
+      if (!CRONS_DEFINITIONS) {
+        CRONS_DEFINITIONS = (await $injector(['CRONS_DEFINITIONS']))
+          .CRONS_DEFINITIONS;
+      }
+      return CRONS_DEFINITIONS;
     };
   })();
   let commandModule;
@@ -205,42 +232,52 @@ async function initAutoload({
       return constant(injectedName, APP_CONFIG[injectedName]);
     }
 
-    // TODO: use new regexps
-    const isHandler = HANDLER_REG_EXP.test(injectedName);
-    const isWrapper = WRAPPER_REG_EXP.test(injectedName);
+    const isRouteHandler = ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns.some(
+      (pattern) => new RegExp(pattern).test(injectedName),
+    );
+    const isRouteWrapper = ROUTES_WRAPPERS_REG_EXP.test(injectedName);
+    const isCronHandler = CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns.some(
+      (pattern) => new RegExp(pattern).test(injectedName),
+    );
+    const isCronWrapper = CRONS_WRAPPERS_REG_EXP.test(injectedName);
 
-    /* Architecture Note #2.9.4: the `HANDLERS` mapper
+    /* Architecture Note #2.9.4: the `ROUTES_HANDLERS` mapper
     Here, we build the handlers map needed by the router by injecting every
      handler required by the API.
     */
-    if ('HANDLERS' === injectedName) {
-      const handlerNames = [] as string[];
-
-      for (const [, pathItem] of Object.entries((await getAPI()).paths || {})) {
-        for (const [, operation] of Object.entries(
-          pathItemToOperationMap(pathItem) as Record<
-            string,
-            WhookOpenAPIOperation
-          >,
-        )) {
-          handlerNames.push(operation.operationId as string);
-        }
-      }
+    if ('ROUTES_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getRoutesDefinitions());
 
       return location(
-        alsoInject(handlerNames, initHandlers),
-        '@whook/whook/dist/services/HANDLERS.js',
+        alsoInject(handlerNames, initRoutesHandlers),
+        '@whook/whook/dist/services/ROUTES_HANDLERS.js',
       ) as Initializer<Dependencies, Service>;
     }
 
-    /* Architecture Note #2.9.5: the `WRAPPERS` auto loading
-    We inject the `HANDLERS_WRAPPERS` in the `WRAPPERS`
+    if ('CRONS_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getCronsDefinitions());
+
+      return location(
+        alsoInject(handlerNames, initCronsHandlers),
+        '@whook/whook/dist/services/CRONS_HANDLERS.js',
+      ) as Initializer<Dependencies, Service>;
+    }
+
+    /* Architecture Note #2.9.5: the `ROUTES_WRAPPERS` auto loading
+    We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
      service so that they can be dynamically applied.
     */
-    if ('WRAPPERS' === injectedName) {
+    if ('ROUTES_WRAPPERS' === injectedName) {
       return location(
-        alsoInject(HANDLERS_WRAPPERS, initWrappers),
-        '@whook/whook/dist/services/WRAPPERS.js',
+        alsoInject(ROUTES_WRAPPERS_NAMES, initRoutesWrappers),
+        '@whook/whook/dist/services/ROUTES_WRAPPERS.js',
+      );
+    }
+
+    if ('CRONS_WRAPPERS' === injectedName) {
+      return location(
+        alsoInject(CRONS_WRAPPERS_NAMES, initCronsWrappers),
+        '@whook/whook/dist/services/CRONS_WRAPPERS.js',
       );
     }
 
@@ -282,8 +319,14 @@ async function initAutoload({
       const resolvedPlugin = WHOOK_RESOLVED_PLUGINS[pluginName];
       const finalPath = new URL(
         pathJoin(
+          isCronHandler
+            ? 'crons'
+            : isRouteHandler
+              ? 'routes'
+              : isRouteWrapper || isCronWrapper
+                ? 'wrappers'
+                : 'services',
           '.',
-          isHandler ? 'handlers' : isWrapper ? 'wrappers' : 'services',
           injectedName + extname(resolvedPlugin.mainURL),
         ),
         resolvedPlugin.mainURL,

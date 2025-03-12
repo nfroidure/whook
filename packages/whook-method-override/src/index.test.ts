@@ -73,10 +73,10 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     );
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
-    $.register(constant('WRAPPERS', []));
+    $.register(constant('ROUTES_WRAPPERS_NAMES', []));
     $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(
-      constant('HANDLERS', {
+      constant('ROUTES_HANDLERS', {
         getPing,
       }),
     );

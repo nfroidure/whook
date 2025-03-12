@@ -158,5 +158,9 @@ declare interface components {
     Echo: {
       echo: string;
     };
+    ExampleSchema: {
+      message?: string;
+      delay?: number;
+    };
   };
 }

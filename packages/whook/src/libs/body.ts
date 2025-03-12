@@ -23,7 +23,7 @@ there are two kinds of requests:
  buffer their content and parse them to
  finally validate it. In that case, we
  provide it as a plain JS object to the
- handlers.
+ routes handlers.
 - **streamable contents:** often used
  for large files, those contents must
  be parsed and validated into the

@@ -21,7 +21,7 @@ authenticate and allow client applications to act on behalf of them.
 
 The module provides:
 
-- 2 OAuth2 handlers implementing the 2 OAuth2 standard endpoints
+- 2 OAuth2 routes definitions implementing the 2 OAuth2 standard endpoints
   (`getOAuth2authorize`, `postOAuth2Tokentoken`) to be used by OAuth2 client
   applications,
 - 4 authentication endpoints to be used by the authorization server directly to
@@ -219,9 +219,9 @@ async function initOAuth2VerifyTokenGranter({
 }
 ```
 
-## Additional handlers/helpers
+## Additional routes/helpers
 
-For internal use, you may prefer use cookies based auth handlers like
+For internal use, you may prefer use cookies based auth routes like
 `postLogin`, `postLogout` and `postRefresh`.
 
 To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
@@ -237,20 +237,20 @@ To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
 +  },
 ```
 
-Than import the `postLogin`, `postLogout` and `postRefresh` handlers like so:
+Than import the `postLogin`, `postLogout` and `postRefresh` routes like so:
 
 ```ts
-// src/handlers/postRefresh.ts
+// src/routes/postRefresh.ts
 import {
   initPostAuthRefresh,
   postAuthRefreshDefinition,
   authCookieHeaderParameter,
 } from '@whook/oauth2';
-import { type WhookAPIHandlerDefinition } from '@whook/whook';
+import { type WhookRouteDefinition } from '@whook/whook';
 
 export { authCookieHeaderParameter };
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: WhookRouteDefinition = {
   ...postAuthRefreshDefinition,
   operation: {
     ...postAuthRefreshDefinition.operation,
@@ -267,7 +267,7 @@ Additionnaly, you could create any handler in the `/auth` path in order to
 receive the auth cookies. For example, you may want to serve user profiles
 there.
 
-## Customizing handlers
+## Customizing routes
 
 The endpoints definitions are designed to support the standard OAuth2
 definitions but can be easily overridden.
@@ -281,11 +281,11 @@ import {
   postOAuth2AcknowledgeDefinition,
 } from '@whook/oauth2';
 import { type OpenAPI } from 'ya-open-api-types';
-import { type WhookAPIHandlerDefinition } from '@whook/whook';
+import { type WhookRouteDefinition } from '@whook/whook';
 
 export default initPostOAuth2Acknowledge;
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: WhookRouteDefinition = {
   ...postOAuth2AcknowledgeDefinition,
   operation: {
     ...postOAuth2AcknowledgeDefinition.operation,
@@ -331,7 +331,7 @@ You will probably need to also protect the `postOAuth2Token` endpoint with your
 own security mecanism:
 
 ```ts
-// In a `src/handlers/postOAuth2Token.ts` fileimport {
+// In a `src/routes/postOAuth2Token.ts` fileimport {
   initPostOAuth2Token,
   postOAuth2TokenDefinition,
   postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
@@ -340,11 +340,11 @@ own security mecanism:
   postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
 } from '@whook/oauth2';
-import { type WhookAPIHandlerDefinition } from '@whook/whook';
+import { type WhookRouteDefinition } from '@whook/whook';
 
 export default initPostOAuth2Token;
 
-export const definition: WhookAPIHandlerDefinition = {
+export const definition: WhookRouteDefinition = {
   ...postOAuth2TokenDefinition,
   operation: {
     ...postOAuth2TokenDefinition.operation,
@@ -368,7 +368,7 @@ export {
 Or you may want to reduce the OAuth2 grant types supported:
 
 ```ts
-// In a `src/handlers/getOAuth2Authorize.ts` file
+// In a `src/routes/getOAuth2Authorize.ts` file
 import {
   initGetOAuth2Authorize,
   getOAuth2AuthorizeDefinition as definition,

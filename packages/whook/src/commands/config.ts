@@ -4,7 +4,7 @@ import miniquery from 'miniquery';
 import { type AppConfig } from 'application-services';
 import { noop, type LogService } from 'common-services';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
 
@@ -55,7 +55,7 @@ async function initConfigCommand({
   APP_CONFIG: AppConfig;
   log?: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     name: string;
     query?: string;
     default?: string;

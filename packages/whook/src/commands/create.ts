@@ -2,16 +2,23 @@ import { extra, autoService } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import camelCase from 'camelcase';
-import { HANDLER_REG_EXP } from '../services/HANDLERS.js';
 import _inquirer from 'inquirer';
 import path from 'node:path';
 import { default as fsExtra } from 'fs-extra';
 import { type LogService } from 'common-services';
 import { type OpenAPI, PATH_ITEM_METHODS } from 'ya-open-api-types';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
+import {
+  DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
+  type WhookRoutesDefinitionsOptions,
+} from '../services/ROUTES_DEFINITIONS.js';
+import {
+  DEFAULT_CRONS_DEFINITIONS_OPTIONS,
+  type WhookCronDefinitionsOptions,
+} from '../services/CRONS_DEFINITIONS.js';
 
 const {
   writeFile: _writeFile,
@@ -49,7 +56,7 @@ const whookServicesTypes = {
   BASE_URL: 'WhookBaseURL',
   HOST: 'WhookHost',
   PORT: 'WhookPort',
-  API_DEFINITIONS: 'WhookAPIDefinitions',
+  DEFINITIONS: 'WhookDefinitions',
   APM: 'APMService',
 };
 const allTypes = {
@@ -74,7 +81,7 @@ export const definition = {
       required: true,
       schema: {
         type: 'string',
-        enum: ['handler', 'service', 'provider', 'command'],
+        enum: ['route', 'service', 'provider', 'cron', 'command'],
       },
     },
     {
@@ -92,6 +99,8 @@ export default extra(definition, autoService(initCreateCommand));
 
 async function initCreateCommand({
   PROJECT_DIR,
+  ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
+  CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   API,
   inquirer = _inquirer,
   writeFile = _writeFile,
@@ -100,13 +109,15 @@ async function initCreateCommand({
   log = noop,
 }: {
   PROJECT_DIR: string;
+  ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
+  CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
   API: OpenAPI;
   inquirer: typeof _inquirer;
   writeFile: (path: string, data: string) => Promise<void>;
   ensureDir: typeof _ensureDir;
   pathExists: typeof _pathExists;
   log?: LogService;
-}): Promise<WhookCommand<{ type: string; name: string }>> {
+}): Promise<WhookCommandHandler<{ type: string; name: string }>> {
   return async (args) => {
     const {
       namedArguments: { type, name },
@@ -117,12 +128,36 @@ async function initCreateCommand({
       log('warning', `🐪 - Camelized the name "${finalName}".`);
     }
 
-    if (type === 'handler' && !HANDLER_REG_EXP.test(finalName)) {
+    if (
+      type === 'route' &&
+      !ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
+        new RegExp(pattern).test(finalName),
+      )
+    ) {
       log(
         'error',
-        `💥 - The handler name is invalid, "${finalName}" does not match "${HANDLER_REG_EXP}".`,
+        `💥 - The route name "${finalName}" does not match "${ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns}".`,
       );
-      throw new YError('E_BAD_HANDLER_NAME', finalName, HANDLER_REG_EXP);
+      throw new YError(
+        'E_BAD_HANDLER_NAME',
+        finalName,
+        ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns,
+      );
+    } else if (
+      type === 'cron' &&
+      !CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
+        new RegExp(pattern).test(finalName),
+      )
+    ) {
+      log(
+        'error',
+        `💥 - The cron name "${finalName}" does not match "${CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns}".`,
+      );
+      throw new YError(
+        'E_BAD_HANDLER_NAME',
+        finalName,
+        CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns,
+      );
     }
 
     const { services } = (await inquirer.prompt<{
@@ -212,7 +247,7 @@ import { ${whookServices
 `;
     let fileSource = '';
 
-    if (type === 'handler') {
+    if (type === 'route') {
       const { method, path, description, tags } = await inquirer.prompt<{
         method: string;
         path: string;
@@ -227,9 +262,13 @@ import { ${whookServices
             name: method,
             value: method,
           })),
-          default: [(HANDLER_REG_EXP.exec(finalName) as string[])[1]].filter(
-            (maybeMethod) => PATH_ITEM_METHODS.includes(maybeMethod as 'get'),
-          )[0],
+          default: ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns
+            .map(
+              (pattern) => (new RegExp(pattern).exec(finalName) as string[])[2],
+            )
+            .filter((maybeMethod) =>
+              PATH_ITEM_METHODS.includes(maybeMethod as 'get'),
+            )[0],
         },
         {
           name: 'path',
@@ -255,12 +294,19 @@ import { ${whookServices
             ] as const)
           : []),
       ]);
-      fileSource = buildHandlerSource(
+      fileSource = buildRouteSource(
         name,
         path,
         method,
         description,
         tags,
+        parametersDeclaration,
+        typesDeclaration,
+        imports,
+      );
+    } else if (type === 'cron') {
+      fileSource = buildCronSource(
+        name,
         parametersDeclaration,
         typesDeclaration,
         imports,
@@ -304,9 +350,11 @@ import { ${whookServices
       'src',
       ['service', 'provider'].includes(type)
         ? 'services'
-        : type === 'handler'
-          ? 'handlers'
-          : 'commands',
+        : type === 'route'
+          ? 'routes'
+          : type === 'cron'
+            ? 'crons'
+            : 'commands',
     );
     await ensureDir(fileDir);
     const filePath = path.join(fileDir, `${name}.ts`);
@@ -331,22 +379,22 @@ import { ${whookServices
   };
 }
 
-function buildHandlerSource(
+function buildRouteSource(
   name: string,
   path: string,
   method: string,
   description = '',
   tags: string[] = [],
-  parametersDeclaration,
-  typesDeclaration,
+  parametersDeclaration: string,
+  typesDeclaration: string,
   imports: string,
 ) {
   const handlerInitializerName = 'init' + name[0].toUpperCase() + name.slice(1);
 
   return `import { autoService, location } from 'knifecycle';
 import {
-  type WhookAPIHandlerDefinition,
-  type WhookAPITypedHandler,
+  type WhookRouteDefinition,
+  type WhookRouteTypedHandler,
 } from '@whook/whook';${imports}
 
 export const definition = {
@@ -391,12 +439,12 @@ export const definition = {
       },
     },
   },
-} as const satisfies WhookAPIHandlerDefinition;
+} as const satisfies WhookRouteDefinition;
 
 export type HandlerDependencies = ${typesDeclaration || '{}'};
 
 async function ${handlerInitializerName}(${parametersDeclaration || '_'}: HandlerDependencies) {
-  const handler: WhookAPITypedHandler<
+  const handler: WhookRouteTypedHandler<
     operations[typeof definition.operation.operationId],
     typeof definition
   > = async ({
@@ -412,6 +460,52 @@ async function ${handlerInitializerName}(${parametersDeclaration || '_'}: Handle
       headers: {},
       body: { param },
     };
+  };
+
+  return handler;
+}
+
+export default location(
+  autoService(${handlerInitializerName}),
+  import.meta.url,
+);
+`;
+}
+
+function buildCronSource(
+  name: string,
+  parametersDeclaration: string,
+  typesDeclaration: string,
+  imports: string,
+) {
+  const handlerInitializerName = 'init' + name[0].toUpperCase() + name.slice(1);
+
+  return `import { autoService, location } from 'knifecycle';
+import {
+  type WhookCronDefinition,
+} from '@whook/whook';${imports}
+
+export const definition = {
+  name: 'handleMinutes',
+  schedules: [
+    {
+      rule: '*/1 * * * *',
+      // Bodies provided here are type checked ;)
+      body: { message: 'A minute starts!', delay: 10000 },
+      enabled: true,
+    },
+  ],
+  schema: { type: 'string' },
+} as const satisfies WhookCronDefinition;
+
+export type CronHandlerDependencies = ${typesDeclaration || '{}'};
+
+async function ${handlerInitializerName}(${parametersDeclaration || '_'}: CronHandlerDependencies) {
+  const handler: WhookCronHandler<string> = async ({
+    date,
+    body,
+  }) => {
+   // Cron tasks goes here
   };
 
   return handler;

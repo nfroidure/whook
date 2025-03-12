@@ -11,10 +11,10 @@ import {
 } from '../types/openapi.js';
 import { type WhookRequest, type WhookResponse } from '../types/http.js';
 import {
-  type WhookAPIHandler,
-  type WhookAPIHandlerDefinition,
-  type WhookAPIHandlerParameters,
-} from '../types/handlers.js';
+  type WhookRouteHandler,
+  type WhookRouteDefinition,
+  type WhookRouteHandlerParameters,
+} from '../types/routes.js';
 
 const { parse: parseContentType } = contentType;
 
@@ -238,9 +238,9 @@ export function checkResponseCharset(
 }
 
 export async function executeHandler(
-  definition: WhookAPIHandlerDefinition,
-  handler: WhookAPIHandler,
-  parameters: WhookAPIHandlerParameters,
+  definition: WhookRouteDefinition,
+  handler: WhookRouteHandler,
+  parameters: WhookRouteHandlerParameters,
 ): Promise<WhookResponse> {
   const responsePromise = handler(parameters, definition);
 

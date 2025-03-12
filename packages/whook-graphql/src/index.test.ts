@@ -12,13 +12,13 @@ import {
   runProcess,
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
-  initWrappers,
-  initHandlers,
+  initRoutesWrappers,
+  initRoutesHandlers,
 } from '@whook/whook';
 import { alsoInject, constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import { YError } from 'yerror';
-import { initWrapHandlerWithAuthorization } from '@whook/authorization';
+import { initWrapRouteHandlerWithAuthorization } from '@whook/authorization';
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
@@ -166,12 +166,12 @@ describe('GraphQL server', () => {
     $.register(constant('authentication', authentication));
 
     // Auth
-    const HANDLERS_WRAPPERS = ['wrapHandlerWithAuthorization'];
+    const ROUTES_WRAPPERS_NAMES = ['wrapRouteHandlerWithAuthorization'];
 
-    $.register(initWrapHandlerWithAuthorization);
-    $.register(alsoInject(HANDLERS_WRAPPERS, initWrappers));
-    $.register(constant('HANDLERS_WRAPPERS', HANDLERS_WRAPPERS));
-    $.register(alsoInject(['getGraphQL', 'postGraphQL'], initHandlers));
+    $.register(initWrapRouteHandlerWithAuthorization);
+    $.register(alsoInject(ROUTES_WRAPPERS_NAMES, initRoutesWrappers));
+    $.register(constant('ROUTES_WRAPPERS_NAMES', ROUTES_WRAPPERS_NAMES));
+    $.register(alsoInject(['getGraphQL', 'postGraphQL'], initRoutesHandlers));
     [initGetGraphQL, initPostGraphQL].forEach((handlerInitializer) =>
       $.register(handlerInitializer),
     );

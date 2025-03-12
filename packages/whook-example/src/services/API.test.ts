@@ -13,13 +13,13 @@ import FULL_CONFIG from '../config/test/config.js';
 import {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
-  initAPIHandlers,
-  initAPIDefinitions,
-  type WhookAPIDefinitions,
-  type WhookAPIHandlersService,
-  type WhookAPIHandlerDefinition,
+  initDefinitions,
+  initRoutesDefinitions,
+  type WhookDefinitions,
+  type WhookRoutesDefinitionsService,
+  type WhookRouteDefinition,
   type WhookResolvedPluginsService,
-  type WhookAPIHandlerModule,
+  type WhookRouteModule,
 } from '@whook/whook';
 import { initImporter, type LogService } from 'common-services';
 import { pathItemToOperationMap } from 'ya-open-api-types';
@@ -36,30 +36,31 @@ describe('API', () => {
   const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
     [WHOOK_PROJECT_PLUGIN_NAME]: {
       mainURL: new URL('..', import.meta.url).toString(),
-      types: ['handlers'],
+      types: ['routes'],
     },
     '@whook/whook': {
       mainURL: 'file://' + require.resolve('@whook/whook'),
-      types: ['handlers'],
+      types: ['routes'],
     },
   };
   const log = jest.fn<LogService>();
-  let API_HANDLERS: WhookAPIHandlersService;
-  let API_DEFINITIONS: WhookAPIDefinitions;
+  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  let DEFINITIONS: WhookDefinitions;
 
   beforeAll(async () => {
-    const importer = await initImporter<WhookAPIHandlerModule>({ log });
+    const importer = await initImporter<WhookRouteModule>({ log });
 
-    API_HANDLERS = await initAPIHandlers({
+    ROUTES_DEFINITIONS = await initRoutesDefinitions({
       APP_ENV,
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
       WHOOK_RESOLVED_PLUGINS,
       importer,
     });
-    API_DEFINITIONS = await initAPIDefinitions({
+    DEFINITIONS = await initDefinitions({
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
-      API_HANDLERS,
-      COMMANDS: {},
+      ROUTES_DEFINITIONS,
+      COMMANDS_DEFINITIONS: {},
+      CRONS_DEFINITIONS: {},
     });
   });
 
@@ -73,7 +74,7 @@ describe('API', () => {
       CONFIG,
       BASE_URL,
       API_VERSION: '1.1.0',
-      API_DEFINITIONS,
+      DEFINITIONS,
       log,
     });
 
@@ -89,11 +90,11 @@ describe('API', () => {
       CONFIG,
       BASE_URL,
       API_VERSION: '1.1.0',
-      API_DEFINITIONS,
+      DEFINITIONS,
       log,
     });
     const securitySchemes = API.components?.securitySchemes || {};
-    const definitions: WhookAPIHandlerDefinition[] = [];
+    const definitions: WhookRouteDefinition[] = [];
 
     for (const [path, pathItem] of Object.entries(API.paths || {})) {
       for (const [method, operation] of Object.entries(
@@ -104,7 +105,7 @@ describe('API', () => {
           method,
           operation,
           config: operation['x-whook'] || { type: 'http' },
-        } as WhookAPIHandlerDefinition);
+        } as WhookRouteDefinition);
       }
     }
 
@@ -132,7 +133,7 @@ describe('API', () => {
   //     CONFIG,
   //     BASE_URL,
   //     API_VERSION: '1.1.0',
-  //     API_DEFINITIONS,
+  //     DEFINITIONS,
   //     log,
   //   });
 
@@ -141,7 +142,7 @@ describe('API', () => {
   // });
 
   describe('should always have the same amount of', () => {
-    let definitions: WhookAPIHandlerDefinition[];
+    let definitions: WhookRouteDefinition[];
 
     beforeAll(async () => {
       const API = await initAPI({
@@ -149,7 +150,7 @@ describe('API', () => {
         CONFIG,
         BASE_URL,
         API_VERSION: '1.1.0',
-        API_DEFINITIONS,
+        DEFINITIONS,
         log,
       });
 
@@ -164,7 +165,7 @@ describe('API', () => {
             method,
             operation,
             config: operation['x-whook'] || { type: 'http' },
-          } as WhookAPIHandlerDefinition);
+          } as WhookRouteDefinition);
         }
       }
     });

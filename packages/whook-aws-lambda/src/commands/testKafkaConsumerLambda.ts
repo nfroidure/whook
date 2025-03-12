@@ -2,7 +2,7 @@ import { loadLambda } from '../libs/utils.js';
 import { extra, autoService } from 'knifecycle';
 import {
   DEFAULT_COMPILER_OPTIONS,
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
 } from '@whook/whook';
@@ -91,7 +91,7 @@ async function initTestKafkaConsumerLambdaCommand({
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     name: string;
     type: string;
     event: string;

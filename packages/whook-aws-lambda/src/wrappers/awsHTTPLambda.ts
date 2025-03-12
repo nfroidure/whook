@@ -29,14 +29,14 @@ import {
   pickFirstHeaderValue,
   type WhookRequest,
   type WhookResponse,
-  type WhookAPIHandler,
+  type WhookRouteHandler,
   type WhookObfuscatorService,
-  type WhookAPIHandlerDefinition,
+  type WhookRouteDefinition,
   type WhookAPMService,
-  type WhookAPIWrapper,
+  type WhookRouteHandlerWrapper,
   type WhookErrorHandler,
   type WhookRequestBody,
-  type WhookAPIHandlerParameters,
+  type WhookRouteHandlerParameters,
   type WhookOpenAPI,
   type WhookSchemaValidatorsService,
   type WhookCoercionOptions,
@@ -61,7 +61,7 @@ import { type AppEnvVars } from 'application-services';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type JsonValue } from 'type-fest';
 
-export type LambdaHTTPInput = WhookAPIHandlerParameters;
+export type LambdaHTTPInput = WhookRouteHandlerParameters;
 export type LambdaHTTPOutput = WhookResponse;
 
 const uuidPattern =
@@ -135,7 +135,7 @@ async function initWrapHandlerForConsumerLambda({
   errorHandler,
   schemaValidators,
   log = noop,
-}: WhookWrapConsumerLambdaDependencies): Promise<WhookAPIWrapper> {
+}: WhookWrapConsumerLambdaDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
   const consumableCharsets = Object.keys(DECODERS);
@@ -161,7 +161,7 @@ async function initWrapHandlerForConsumerLambda({
     method,
     operation,
     config: operation['x-whook'],
-  } as unknown as WhookAPIHandlerDefinition;
+  } as unknown as WhookRouteDefinition;
   const pathItemParameters = await resolveParameters(
     { API: OPERATION_API, log },
     pathItem.parameters || [],
@@ -206,8 +206,8 @@ async function initWrapHandlerForConsumerLambda({
   );
 
   const wrapper = async (
-    handler: WhookAPIHandler,
-  ): Promise<WhookAPIHandler> => {
+    handler: WhookRouteHandler,
+  ): Promise<WhookRouteHandler> => {
     const wrappedHandler = handleForAWSHTTPLambda.bind(
       null,
       {
@@ -255,7 +255,7 @@ async function initWrapHandlerForConsumerLambda({
       definition,
     );
 
-    return wrappedHandler as unknown as WhookAPIHandler;
+    return wrappedHandler as unknown as WhookRouteHandler;
   };
 
   return wrapper;
@@ -293,7 +293,7 @@ async function handleForAWSHTTPLambda(
     consumableCharsets: string[];
     produceableCharsets: string[];
   },
-  definition: WhookAPIHandlerDefinition,
+  definition: WhookRouteDefinition,
   event: APIGatewayProxyEvent,
 ) {
   const startTime = time();
@@ -330,7 +330,7 @@ async function handleForAWSHTTPLambda(
     }),
   );
 
-  const parametersValues: WhookAPIHandlerParameters = {
+  const parametersValues: WhookRouteHandlerParameters = {
     query: {},
     header: {},
     path: {},

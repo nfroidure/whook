@@ -5,10 +5,10 @@ import initGetOAuth2Authorize, {
   redirectURIParameter as getOAuth2AuthorizeRedirectURIParameter,
   scopeParameter as getOAuth2AuthorizeScopeParameter,
   stateParameter as getOAuth2AuthorizeStateParameter,
-} from './handlers/getOAuth2Authorize.js';
+} from './routes/getOAuth2Authorize.js';
 import initPostOAuth2Acknowledge, {
   definition as postOAuth2AcknowledgeDefinition,
-} from './handlers/postOAuth2Acknowledge.js';
+} from './routes/postOAuth2Acknowledge.js';
 import initPostOAuth2Token, {
   definition as postOAuth2TokenDefinition,
   authorizationCodeTokenRequestBodySchema as postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
@@ -16,7 +16,7 @@ import initPostOAuth2Token, {
   clientCredentialsTokenRequestBodySchema as postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   refreshTokenRequestBodySchema as postOAuth2TokenRefreshTokenRequestBodySchema,
   tokenBodySchema as postOAuth2TokenTokenBodySchema,
-} from './handlers/postOAuth2Token.js';
+} from './routes/postOAuth2Token.js';
 import initOAuth2Granters, {
   OAUTH2_ERRORS_DESCRIPTORS,
 } from './services/oAuth2Granters.js';
@@ -37,14 +37,14 @@ import {
 } from './services/oAuth2Granters.js';
 import initPostAuthLogin, {
   definition as postAuthLoginDefinition,
-} from './handlers/postAuthLogin.js';
+} from './routes/postAuthLogin.js';
 import initPostAuthLogout, {
   definition as postAuthLogoutDefinition,
-} from './handlers/postAuthLogout.js';
+} from './routes/postAuthLogout.js';
 import initPostAuthRefresh, {
   authCookieHeaderParameter,
   definition as postAuthRefreshDefinition,
-} from './handlers/postAuthRefresh.js';
+} from './routes/postAuthRefresh.js';
 import initAuthCookiesService, {
   AUTH_API_PREFIX,
 } from './services/authCookies.js';

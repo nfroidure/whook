@@ -73,7 +73,7 @@
     "knifecycle": "^19.0.0",
     "ya-open-api-types": "^1.2.0",
     "type-fest": "^4.33.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

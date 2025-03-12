@@ -56,7 +56,7 @@
     "knifecycle": "^19.0.0",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
-    "yhttperror": "^8.0.0"
+    "yhttperror": "^8.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",

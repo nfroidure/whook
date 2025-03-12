@@ -26,7 +26,7 @@ describe('$autoload', () => {
   const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
     [WHOOK_PROJECT_PLUGIN_NAME]: {
       mainURL: 'file:///home/whoami/my-whook-project/src/index.ts',
-      types: ['handlers', 'commands', 'services', 'wrappers'],
+      types: ['routes', 'commands', 'services', 'wrappers'],
     },
   };
   const log = jest.fn<LogService>();
@@ -77,7 +77,7 @@ describe('$autoload', () => {
   "location": undefined,
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -141,7 +141,7 @@ describe('$autoload', () => {
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -167,15 +167,9 @@ describe('$autoload', () => {
 `);
     });
 
-    test.only('for handlers hash', async () => {
+    test('for routes hash', async () => {
       $injector.mockResolvedValueOnce({
-        API: {
-          openapi: '3.1.0',
-          info: {
-            version: '1.0.0',
-            title: 'Sample OpenAPI',
-            description: 'A sample OpenAPI file for testing purpose.',
-          },
+        ROUTES_DEFINITIONS: {
           paths: {
             '/ping': {
               get: {
@@ -192,7 +186,7 @@ describe('$autoload', () => {
         },
       });
       resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/handlers/getPing.js',
+        'file:///home/whoami/my-whook-project/src/routes/getPing.js',
       );
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -210,13 +204,15 @@ describe('$autoload', () => {
         resolve,
         access,
       });
-      const result = await $autoload('HANDLERS');
+      const result = await $autoload('ROUTES_HANDLERS');
 
       expect({
         result,
         location: result[SPECIAL_PROPS.LOCATION],
-        HANDLERS: await (result as ServiceInitializer<Dependencies, Service>)({
-          WRAPPERS: [],
+        ROUTES_HANDLERS: await (
+          result as ServiceInitializer<Dependencies, Service>
+        )({
+          ROUTES_WRAPPERS: [],
           log,
           getPing: () => undefined,
         }),
@@ -226,20 +222,20 @@ describe('$autoload', () => {
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
 {
-  "HANDLERS": {
+  "ROUTES_HANDLERS": {
     "getPing": [Function],
   },
   "importerCalls": [],
   "injectorCalls": [
     [
       [
-        "API",
+        "ROUTES_DEFINITIONS",
       ],
     ],
   ],
   "location": {
     "exportName": "default",
-    "url": "@whook/whook/dist/services/HANDLERS.js",
+    "url": "@whook/whook/dist/services/ROUTES_HANDLERS.js",
   },
   "logCalls": [
     [
@@ -248,7 +244,7 @@ describe('$autoload', () => {
     ],
     [
       "warning",
-      "🏭 - Initializing the HANDLERS service with 1 handlers wrapped by 0 wrappers.",
+      "🏭 - Initializing the ROUTES_HANDLERS service with 1 handlers wrapped by 0 wrappers.",
     ],
   ],
   "resolveCalls": [],
@@ -259,7 +255,7 @@ describe('$autoload', () => {
 
     test('for wrappers hash', async () => {
       $injector.mockResolvedValueOnce({
-        API: {
+        ROUTES_DEFINITIONS: {
           openapi: '3.1.0',
           info: {
             version: '1.0.0',
@@ -282,7 +278,7 @@ describe('$autoload', () => {
         },
       });
       resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/handlers/getPing.js',
+        'file:///home/whoami/my-whook-project/src/routes/getPing.js',
       );
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -300,12 +296,14 @@ describe('$autoload', () => {
         resolve,
         access,
       });
-      const result = await $autoload('WRAPPERS');
+      const result = await $autoload('ROUTES_WRAPPERS');
 
       expect({
         result,
         location: result[SPECIAL_PROPS.LOCATION],
-        WRAPPERS: await (result as ServiceInitializer<Dependencies, Service>)({
+        ROUTES_WRAPPERS: await (
+          result as ServiceInitializer<Dependencies, Service>
+        )({
           getPing: () => undefined,
           log,
         }),
@@ -315,25 +313,25 @@ describe('$autoload', () => {
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
 {
-  "WRAPPERS": [],
+  "ROUTES_WRAPPERS": [],
   "importerCalls": [],
   "injectorCalls": [],
   "location": {
     "exportName": "default",
-    "url": "@whook/whook/dist/services/WRAPPERS.js",
+    "url": "@whook/whook/dist/services/ROUTES_WRAPPERS.js",
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
       "warning",
-      "🏭 - Initializing the WRAPPERS service.",
+      "🏭 - Initializing the ROUTES_WRAPPERS service.",
     ],
     [
       "debug",
-      "🏭 - Found inconsistencies between WRAPPERS and HANDLERS_WRAPPERS.",
+      "🏭 - Found inconsistencies between ROUTES_WRAPPERS and ROUTES_WRAPPERS_NAMES.",
     ],
   ],
   "resolveCalls": [],
@@ -342,12 +340,12 @@ describe('$autoload', () => {
 `);
     });
 
-    test('for handlers', async () => {
+    test('for routes', async () => {
       $injector.mockResolvedValueOnce({
-        API: { info: {} },
+        ROUTES_DEFINITIONS: { info: {} },
       });
       resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/handlers/getPing.js',
+        'file:///home/whoami/my-whook-project/src/routes/getPing.js',
       );
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -378,17 +376,17 @@ describe('$autoload', () => {
 {
   "importerCalls": [
     [
-      "file:///home/whoami/my-whook-project/src/handlers/getPing.ts",
+      "file:///home/whoami/my-whook-project/src/routes/getPing.ts",
     ],
   ],
   "injectorCalls": [],
   "location": {
     "exportName": "default",
-    "url": "file:///home/whoami/my-whook-project/src/handlers/getPing.ts",
+    "url": "file:///home/whoami/my-whook-project/src/routes/getPing.ts",
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -397,15 +395,15 @@ describe('$autoload', () => {
     ],
     [
       "debug",
-      "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/handlers/getPing.ts".",
+      "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
     ],
     [
       "debug",
-      "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/handlers/getPing.ts".",
+      "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
     ],
     [
       "debug",
-      "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/handlers/getPing.ts".",
+      "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
     ],
   ],
   "resolveCalls": [],
@@ -414,9 +412,9 @@ describe('$autoload', () => {
 `);
     });
 
-    test('for path mapped handlers from plugins', async () => {
+    test('for path mapped routes from plugins', async () => {
       $injector.mockResolvedValueOnce({
-        API: { info: {} },
+        ROUTES_DEFINITIONS: { info: {} },
       });
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -425,7 +423,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {
-          getPing: '@whook/plugin/dist/handlers/getPing.js',
+          getPing: '@whook/plugin/dist/routes/getPing.js',
         },
         APP_CONFIG: {},
         WHOOK_PLUGINS,
@@ -449,17 +447,17 @@ describe('$autoload', () => {
 {
   "importerCalls": [
     [
-      "@whook/plugin/dist/handlers/getPing.js",
+      "@whook/plugin/dist/routes/getPing.js",
     ],
   ],
   "injectorCalls": [],
   "location": {
     "exportName": "default",
-    "url": "@whook/plugin/dist/handlers/getPing.js",
+    "url": "@whook/plugin/dist/routes/getPing.js",
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -468,15 +466,15 @@ describe('$autoload', () => {
     ],
     [
       "debug",
-      "✅ - Module path of "getPing" found at "@whook/plugin/dist/handlers/getPing.js".",
+      "✅ - Module path of "getPing" found at "@whook/plugin/dist/routes/getPing.js".",
     ],
     [
       "debug",
-      "💿 - Service "getPing" found in "@whook/plugin/dist/handlers/getPing.js".",
+      "💿 - Service "getPing" found in "@whook/plugin/dist/routes/getPing.js".",
     ],
     [
       "debug",
-      "💿 - Loading "getPing" initializer from "@whook/plugin/dist/handlers/getPing.js".",
+      "💿 - Loading "getPing" initializer from "@whook/plugin/dist/routes/getPing.js".",
     ],
   ],
   "resolveCalls": [],
@@ -485,12 +483,12 @@ describe('$autoload', () => {
 `);
     });
 
-    test('for path mapped handlers from project', async () => {
+    test('for path mapped routes from project', async () => {
       $injector.mockResolvedValueOnce({
-        API: { info: {} },
+        ROUTES_DEFINITIONS: { info: {} },
       });
       resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/handlers/getPing.js',
+        'file:///home/whoami/my-whook-project/src/routes/getPing.js',
       );
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -499,7 +497,7 @@ describe('$autoload', () => {
       const $autoload = await initAutoload({
         $injector,
         INITIALIZER_PATH_MAP: {
-          getPing: './handlers/getPing.js',
+          getPing: './routes/getPing.js',
         },
         APP_CONFIG: {},
         WHOOK_PLUGINS,
@@ -523,17 +521,17 @@ describe('$autoload', () => {
 {
   "importerCalls": [
     [
-      "file:///home/whoami/my-whook-project/src/handlers/getPing.js",
+      "file:///home/whoami/my-whook-project/src/routes/getPing.js",
     ],
   ],
   "injectorCalls": [],
   "location": {
     "exportName": "default",
-    "url": "file:///home/whoami/my-whook-project/src/handlers/getPing.js",
+    "url": "file:///home/whoami/my-whook-project/src/routes/getPing.js",
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -542,20 +540,20 @@ describe('$autoload', () => {
     ],
     [
       "debug",
-      "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/handlers/getPing.js".",
+      "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
     ],
     [
       "debug",
-      "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/handlers/getPing.js".",
+      "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
     ],
     [
       "debug",
-      "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/handlers/getPing.js".",
+      "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
     ],
   ],
   "resolveCalls": [
     [
-      "./handlers/getPing.js",
+      "./routes/getPing.js",
     ],
   ],
   "result": [Function],
@@ -563,15 +561,15 @@ describe('$autoload', () => {
 `);
     });
 
-    test('for handlers in sub plugins', async () => {
+    test('for routes in sub plugins', async () => {
       $injector.mockResolvedValueOnce({
-        API: { info: {} },
+        ROUTES_DEFINITIONS: { info: {} },
       });
       access.mockImplementationOnce(() => {
         throw new YError('E_NO_ACCESS');
       });
       resolve.mockReturnValueOnce(
-        'file:///var/lib/node/node_modules/@whook/whook/dist/handlers/getPing.js',
+        'file:///var/lib/node/node_modules/@whook/whook/dist/routes/getPing.js',
       );
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -587,12 +585,12 @@ describe('$autoload', () => {
           '@whook/whook': {
             mainURL:
               'file://var/lib/node/node_modules/@whook/whook/dist/index.js',
-            types: ['handlers', 'commands', 'services', 'wrappers'],
+            types: ['routes', 'commands', 'services', 'wrappers'],
           },
           '@whook/lol': {
             mainURL:
               'file://var/lib/node/node_modules/@whook/lol/dist/index.js',
-            types: ['handlers', 'commands', 'services', 'wrappers'],
+            types: ['routes', 'commands', 'services', 'wrappers'],
           },
         },
         args,
@@ -614,17 +612,17 @@ describe('$autoload', () => {
 {
   "importerCalls": [
     [
-      "@whook/whook/dist/handlers/getPing.js",
+      "@whook/whook/dist/routes/getPing.js",
     ],
   ],
   "injectorCalls": [],
   "location": {
     "exportName": "default",
-    "url": "@whook/whook/dist/handlers/getPing.js",
+    "url": "@whook/whook/dist/routes/getPing.js",
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -633,7 +631,7 @@ describe('$autoload', () => {
     ],
     [
       "debug",
-      "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/handlers/getPing.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
     ],
     [
       "debug",
@@ -641,15 +639,15 @@ describe('$autoload', () => {
     ],
     [
       "debug",
-      "✅ - Module path of "getPing" found at "@whook/whook/dist/handlers/getPing.js".",
+      "✅ - Module path of "getPing" found at "@whook/whook/dist/routes/getPing.js".",
     ],
     [
       "debug",
-      "💿 - Service "getPing" found in "@whook/whook/dist/handlers/getPing.js".",
+      "💿 - Service "getPing" found in "@whook/whook/dist/routes/getPing.js".",
     ],
     [
       "debug",
-      "💿 - Loading "getPing" initializer from "@whook/whook/dist/handlers/getPing.js".",
+      "💿 - Loading "getPing" initializer from "@whook/whook/dist/routes/getPing.js".",
     ],
   ],
   "resolveCalls": [],
@@ -660,13 +658,13 @@ describe('$autoload', () => {
 
     test('for wrappers', async () => {
       $injector.mockResolvedValueOnce({
-        API: { info: {} },
+        ROUTES_DEFINITIONS: { info: {} },
       });
       resolve.mockReturnValueOnce(
-        'file:///home/whoami/my-whook-project/src/handlers/wrapHandler.js',
+        'file:///home/whoami/my-whook-project/src/routes/wrapRouteHandler.js',
       );
       importer.mockResolvedValueOnce({
-        default: service(async () => async (id) => id, 'wrapHandler'),
+        default: service(async () => async (id) => id, 'wrapRouteHandler'),
       });
 
       const $autoload = await initAutoload({
@@ -681,7 +679,7 @@ describe('$autoload', () => {
         resolve,
         access,
       });
-      const result = await $autoload('wrapHandler');
+      const result = await $autoload('wrapRouteHandler');
 
       expect({
         result,
@@ -694,34 +692,34 @@ describe('$autoload', () => {
 {
   "importerCalls": [
     [
-      "file:///home/whoami/my-whook-project/src/wrappers/wrapHandler.ts",
+      "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts",
     ],
   ],
   "injectorCalls": [],
   "location": {
     "exportName": "default",
-    "url": "file:///home/whoami/my-whook-project/src/wrappers/wrapHandler.ts",
+    "url": "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts",
   },
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
       "debug",
-      "🍀 - Trying to find "wrapHandler" module path in "__project__".",
+      "🍀 - Trying to find "wrapRouteHandler" module path in "__project__".",
     ],
     [
       "debug",
-      "✅ - Module path of "wrapHandler" found at "file:///home/whoami/my-whook-project/src/wrappers/wrapHandler.ts".",
+      "✅ - Module path of "wrapRouteHandler" found at "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
     ],
     [
       "debug",
-      "💿 - Service "wrapHandler" found in "file:///home/whoami/my-whook-project/src/wrappers/wrapHandler.ts".",
+      "💿 - Service "wrapRouteHandler" found in "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
     ],
     [
       "debug",
-      "💿 - Loading "wrapHandler" initializer from "file:///home/whoami/my-whook-project/src/wrappers/wrapHandler.ts".",
+      "💿 - Loading "wrapRouteHandler" initializer from "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
     ],
   ],
   "resolveCalls": [],
@@ -732,9 +730,9 @@ describe('$autoload', () => {
   });
 
   describe('should fail', () => {
-    test('with unexisting handlers', async () => {
+    test('with unexisting routes', async () => {
       $injector.mockResolvedValueOnce({
-        API: { info: {} },
+        ROUTES_DEFINITIONS: { info: {} },
       });
       access.mockImplementationOnce(() => {
         throw new YError('E_NO_ACCESS');
@@ -774,7 +772,7 @@ describe('$autoload', () => {
   "injectorCalls": [],
   "logCalls": [
     [
-      "debug",
+      "warning",
       "🤖 - Initializing the \`$autoload\` service.",
     ],
     [
@@ -783,7 +781,7 @@ describe('$autoload', () => {
     ],
     [
       "debug",
-      "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/handlers/getPing.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
     ],
     [
       "debug",

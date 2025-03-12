@@ -45,25 +45,44 @@ import initWhookResolvedPlugins, {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
 } from './services/WHOOK_RESOLVED_PLUGINS.js';
-import initAPIDefinitions from './services/API_DEFINITIONS.js';
-export type * from './services/API_DEFINITIONS.js';
-export { DEFAULT_API_HANDLERS_OPTIONS } from './services/API_HANDLERS.js';
-import initAPIHandlers from './services/API_HANDLERS.js';
-export { initAPIHandlers };
-export type * from './services/API_HANDLERS.js';
-import initCommands from './services/COMMANDS.js';
-export { initCommands };
-export type * from './services/COMMANDS.js';
+import initDefinitions from './services/DEFINITIONS.js';
+export type * from './services/DEFINITIONS.js';
+import initRoutesDefinitions from './services/ROUTES_DEFINITIONS.js';
+export { initRoutesDefinitions };
+export * from './services/ROUTES_DEFINITIONS.js';
+export type * from './services/ROUTES_DEFINITIONS.js';
+import initRoutesWrappers from './services/ROUTES_WRAPPERS.js';
+export { initRoutesWrappers };
+export * from './services/ROUTES_WRAPPERS.js';
+import initMainHandler from './services/MAIN_HANDLER.js';
+export { initMainHandler };
+import initRoutesHandlers from './services/ROUTES_HANDLERS.js';
+export { initRoutesHandlers };
+export * from './services/ROUTES_HANDLERS.js';
+import initCommandsDefinitions from './services/COMMANDS_DEFINITIONS.js';
+export { initCommandsDefinitions };
+export * from './services/COMMANDS_DEFINITIONS.js';
+export type * from './services/COMMANDS_DEFINITIONS.js';
+import initCronsDefinitions from './services/CRONS_DEFINITIONS.js';
+export { initCronsDefinitions };
+export * from './services/CRONS_DEFINITIONS.js';
+export type * from './services/CRONS_DEFINITIONS.js';
+import initCronsWrappers from './services/CRONS_WRAPPERS.js';
+export { initCronsWrappers };
+export * from './services/CRONS_WRAPPERS.js';
+import initCronsHandlers from './services/CRONS_HANDLERS.js';
+export { initCronsHandlers };
+export * from './services/CRONS_HANDLERS.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';
 import initBuildAutoload from './services/_buildAutoload.js';
 import initGetPing, {
   definition as getPingDefinition,
-} from './handlers/getPing.js';
+} from './routes/getPing.js';
 import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
-} from './handlers/getOpenAPI.js';
+} from './routes/getOpenAPI.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   prepareBuildEnvironment,
@@ -82,12 +101,15 @@ export * from './libs/openapi.js';
 export * from './libs/router.js';
 export * from './libs/utils.js';
 export * from './libs/validation.js';
+export * from './libs/wrappers.js';
 export * from './services/queryParserBuilder.js';
-export type * from './types/handlers.js';
+export type * from './types/wrappers.js';
+export type * from './types/routes.js';
 export type * from './types/commands.js';
 export type * from './types/http.js';
 export type * from './types/base.js';
 export type * from './types/openapi.js';
+export type * from './types/crons.js';
 export type * from './libs/openapi.js';
 export type * from './libs/validation.js';
 export type * from './libs/args.js';
@@ -97,7 +119,7 @@ export type * from './services/HOST.js';
 export type * from './services/PROXYED_ENV.js';
 export type * from './services/BUILD_CONSTANTS.js';
 export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
-export type * from './services/API_DEFINITIONS.js';
+export type * from './services/DEFINITIONS.js';
 export type * from './services/_autoload.js';
 export type * from './services/schemaValidators.js';
 export { SEARCH_SEPARATOR, PATH_SEPARATOR, initHTTPRouter };
@@ -120,19 +142,6 @@ export {
   type WhookCompilerService,
   type WhookCompilerConfig,
 } from './services/compiler.js';
-import initWrappers from './services/WRAPPERS.js';
-export {
-  WRAPPER_REG_EXP,
-  type WhookWrappersService,
-  type WhookWrappersConfig,
-  type WhookWrappersDependencies,
-} from './services/WRAPPERS.js';
-import initHandlers from './services/HANDLERS.js';
-export {
-  HANDLER_REG_EXP,
-  applyWrappers,
-  type WhookHandlersDependencies,
-} from './services/HANDLERS.js';
 export {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
@@ -143,14 +152,12 @@ export {
   getOpenAPIDefinition,
   initAutoload,
   initBuildAutoload,
-  initAPIDefinitions,
+  initDefinitions,
   initBuildConstants,
   initProxyedENV,
   initPort,
   initHost,
   initCompiler,
-  initWrappers,
-  initHandlers,
   prepareBuildEnvironment,
   runBuild,
 };
@@ -189,7 +196,7 @@ export async function runProcess<
           .filter(identity)
       : args.rest[0]
         ? ['command']
-        : ['httpServer', 'process'];
+        : ['httpServer', '?cronRunner', 'process'];
 
   try {
     const $ = await innerPrepareEnvironment();
@@ -286,8 +293,9 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initObfuscatorService,
     initAPMService,
     initQueryParserBuilder,
-    initAPIHandlers,
-    initCommands,
+    initRoutesDefinitions,
+    initCommandsDefinitions,
+    initCronsDefinitions,
   ].forEach($.register.bind($));
 
   $.register(initCommand);
@@ -336,7 +344,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   /* Architecture Note #2.6: the `WHOOK_PLUGINS` constant
   The Whook `$autoload` service needs to know where to look up
-   for things like commands / handlers /services etc...
+   for things like commands / routes /services etc...
   The `WHOOK_PLUGINS` constant allows you to give the name of
    some modules that embrace the Whook folder structure allowing
    you to just install Whook's plugins to get them automatically

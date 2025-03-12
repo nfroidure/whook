@@ -3,7 +3,7 @@ import { extra, autoService } from 'knifecycle';
 import { encodePayload } from '../wrappers/awsLogSubscriberLambda.js';
 import {
   DEFAULT_COMPILER_OPTIONS,
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
   type WhookCompilerOptions,
 } from '@whook/whook';
@@ -77,7 +77,7 @@ async function initTestS3LambdaCommand({
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     name: string;
     type: string;
     event: string;

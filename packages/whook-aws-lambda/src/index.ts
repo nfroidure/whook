@@ -34,7 +34,7 @@ import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type JsonValue } from 'type-fest';
-import { WhookAPIHandlerConfig } from '@whook/whook';
+import { type WhookRouteConfig } from '@whook/whook';
 
 export type {
   LambdaConsumerInput,
@@ -70,7 +70,7 @@ export type {
 export const DEFAULT_BUILD_PARALLELISM = 10;
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   ...BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-  log: '@whook/aws-lambda/dist/services/log.js',
+  log: '@whook/whook/dist/services/rawLog.js',
 };
 
 export type WhookAWSLambdaBuildConfig = {
@@ -310,7 +310,7 @@ async function buildAnyLambda(
   try {
     const whookConfig = (operation['x-whook'] || {
       type: 'http',
-    }) as unknown as WhookAWSLambdaConfiguration & WhookAPIHandlerConfig;
+    }) as unknown as WhookAWSLambdaConfiguration & WhookRouteConfig;
     const operationType = whookConfig.type || 'http';
     const sourceOperationId = whookConfig.sourceOperationId;
     const finalEntryPoint =
@@ -380,7 +380,7 @@ async function buildFinalLambda(
     log: LogService;
   },
   lambdaPath: string,
-  whookConfig: WhookAWSLambdaConfiguration & WhookAPIHandlerConfig,
+  whookConfig: WhookAWSLambdaConfiguration & WhookRouteConfig,
 ): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings, extension } = await compiler(

@@ -3,11 +3,11 @@ import { printStackTrace, YError } from 'yerror';
 import {
   noop,
   type WhookHeaders,
-  type WhookAPIHandlerDefinition,
+  type WhookRouteDefinition,
   type WhookAPMService,
-  type WhookAPIHandler,
-  type WhookAPIWrapper,
-  type WhookAPIHandlerParameters,
+  type WhookRouteHandler,
+  type WhookRouteHandlerWrapper,
+  type WhookRouteHandlerParameters,
   type WhookOpenAPI,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
@@ -86,19 +86,19 @@ async function initWrapHandlerForConsumerLambda({
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapConsumerLambdaDependencies): Promise<WhookAPIWrapper> {
+}: WhookWrapConsumerLambdaDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda transformer wrapper.');
 
   const wrapper = async (
-    handler: WhookAPIHandler,
-  ): Promise<WhookAPIHandler> => {
+    handler: WhookRouteHandler,
+  ): Promise<WhookRouteHandler> => {
     const wrappedHandler = handleForAWSTransformerLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
       handler,
     );
 
-    return wrappedHandler as unknown as WhookAPIHandler;
+    return wrappedHandler as unknown as WhookRouteHandler;
   };
 
   return wrapper;
@@ -112,7 +112,7 @@ async function handleForAWSTransformerLambda(
     time,
     log,
   }: Required<TransformerWrapperDependencies>,
-  handler: WhookAPIHandler,
+  handler: WhookRouteHandler,
   event: FirehoseTransformationEvent,
 ): Promise<FirehoseTransformationResult> {
   const path = Object.keys(OPERATION_API.paths || {})[0];
@@ -136,7 +136,7 @@ async function handleForAWSTransformerLambda(
     method,
     operation,
     config: operation['x-whook'],
-  } as unknown as WhookAPIHandlerDefinition;
+  } as unknown as WhookRouteDefinition;
   const startTime = time();
   const parameters: LambdaTransformerInput = {
     body: event.records.map(decodeRecord),
@@ -145,7 +145,7 @@ async function handleForAWSTransformerLambda(
   try {
     log('debug', 'EVENT', JSON.stringify(event));
     const response = (await handler(
-      parameters as unknown as WhookAPIHandlerParameters,
+      parameters as unknown as WhookRouteHandlerParameters,
       definition,
     )) as unknown as LambdaTransformerOutput;
 

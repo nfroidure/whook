@@ -66,9 +66,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(constant('API', API));
     $.register(constant('DEV_ACCESS_TOKEN', 'oudelali'));
     $.register(constant('HOST', HOST));
-    $.register(constant('WRAPPERS', []));
+    $.register(constant('ROUTES_WRAPPERS_NAMES', []));
     $.register(
-      constant('HANDLERS', {
+      constant('ROUTES_HANDLERS', {
         getPing: jest.fn(async () => ({
           status: 200,
           headers: { 'content-type': 'application/json' },

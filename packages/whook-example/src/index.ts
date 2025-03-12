@@ -26,7 +26,7 @@ import {
   prepareProcess as prepareBaseProcess,
   prepareEnvironment as prepareBaseEnvironment,
   initAutoload,
-  initAPIDefinitions,
+  initDefinitions,
   initHTTPRouter,
 } from '@whook/whook';
 import { initErrorHandlerWithCORS } from '@whook/cors';
@@ -120,9 +120,10 @@ export async function prepareEnvironment<T extends Knifecycle>(
    https://github.com/nfroidure/knifecycle
 
   OR, like in this example, use the Whook `$autoload` service
-   that looks for handlers, configs and services for you in their
-   respective folders. Of course, you can also write your own
-   autoloader by creating a service with the same signature
+   that looks for routes, crons, commands, configs and
+   services for you in their respective folders. Of course,
+   you can also write your own autoloader by creating a
+   service with the same signature
    (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
   */
   $.register(initAutoload);
@@ -135,7 +136,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
    Though, it is not recommended to not use the
    Whook's black magic ;).
   */
-  $.register(initAPIDefinitions);
+  $.register(initDefinitions);
 
   /* Architecture Note #1.1.3.3: MAIN_FILE_URL
 
@@ -172,7 +173,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
    hash that handles a list of the current running HTTP
    transactions.
   
-  This line allows the [`getDiagnostic`](./src/handlers/getDiagnostic.ts)
+  This line allows the [`getDiagnostic`](./src/routes/getDiagnostic.ts)
    handler to get access to it in order to return the
    current transactions.
 
@@ -197,21 +198,21 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(constant('TRANSACTIONS', {}));
 
-  /* Architecture Note #4.6: WRAPPERS
+  /* Architecture Note #4.6: ROUTES_WRAPPERS
 
   Wrappers are allowing you to override every
-   handlers of your API with specific behaviors,
+   routes of your API with specific behaviors,
    here we add CORS and HTTP authorization support
-   to all the handlers defined in the API.
+   to all the routes defined in the API.
   
   Beware that the order here matters, you will
    want CORS to be applied to the authorization
    wrapper responses.
   */
   $.register(
-    constant('HANDLERS_WRAPPERS', [
-      'wrapHandlerWithCORS',
-      'wrapHandlerWithAuthorization',
+    constant('ROUTES_WRAPPERS_NAMES', [
+      'wrapRouteHandlerWithCORS',
+      'wrapRouteHandlerWithAuthorization',
     ]),
   );
 

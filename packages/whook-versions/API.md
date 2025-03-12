@@ -5,8 +5,8 @@
 <dt><a href="#augmentAPIWithVersionsHeaders">augmentAPIWithVersionsHeaders(API, VERSIONS)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Augment an OpenAPI with versions headers added.</p>
 </dd>
-<dt><a href="#initWrapHandlerWithVersionChecker">initWrapHandlerWithVersionChecker(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Wrap an handler to append CORS to response.</p>
+<dt><a href="#initWrapRouteHandlerWithVersionChecker">initWrapRouteHandlerWithVersionChecker(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap a route handler to append CORS to response.</p>
 </dd>
 </dl>
 
@@ -23,10 +23,10 @@ Augment an OpenAPI with versions headers added.
 | API | <code>Object</code> | The OpenAPI object |
 | VERSIONS | <code>Object</code> | The versions configurations |
 
-<a name="initWrapHandlerWithVersionChecker"></a>
+<a name="initWrapRouteHandlerWithVersionChecker"></a>
 
-## initWrapHandlerWithVersionChecker(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Wrap an handler to append CORS to response.
+## initWrapRouteHandlerWithVersionChecker(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a route handler to append CORS to response.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  

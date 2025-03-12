@@ -52,9 +52,9 @@ import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type WhookErrorHandler } from '../services/errorHandler.js';
 import { type AppEnvVars } from 'application-services';
 import {
-  type WhookAPIHandlerParameters,
-  type WhookAPIHandler,
-} from '../types/handlers.js';
+  type WhookRouteHandlerParameters,
+  type WhookRouteHandler,
+} from '../types/routes.js';
 import { type WhookRequestBody, type WhookResponse } from '../types/http.js';
 import { type WhookSchemaValidatorsService } from './schemaValidators.js';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
@@ -78,7 +78,7 @@ function identity<T>(x: T): T {
   return x;
 }
 
-export type WhookHandlersService = Record<string, WhookAPIHandler>;
+export type WhookHandlersService = Record<string, WhookRouteHandler>;
 export type WhookParser = (
   content: string,
   bodySpec?: WhookBodySpec,
@@ -106,7 +106,7 @@ export type WhookHTTPRouterConfig = {
 };
 export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
   ENV: AppEnvVars;
-  HANDLERS: WhookHandlersService;
+  ROUTES_HANDLERS: WhookHandlersService;
   API: WhookOpenAPI;
   PARSERS?: WhookParsers;
   STRINGIFYERS?: WhookStringifyers;
@@ -124,7 +124,7 @@ export interface WhookHTTPRouterService {
 export type WhookHTTPRouterProvider = Provider<WhookHTTPRouterService>;
 
 export type WhookHTTPRouterDescriptor = {
-  handler: WhookAPIHandler;
+  handler: WhookRouteHandler;
   operation: WhookOpenAPIOperation;
   queryParser: WhookQueryParser;
   parametersValidators: WhookParametersValidators;
@@ -146,7 +146,7 @@ This is the default implementation of the Framework
  (see the [API section](#API)).
 
 The `httpRouter` service is responsible for handling
- the request, validating it and wiring the handlers
+ the request, validating it and wiring the routes
  response to the actual HTTP response.
 
 It is very opinionated and clearly diverges from the
@@ -167,7 +167,7 @@ export default location(
         '?DEBUG_NODE_ENVS',
         '?BUFFER_LIMIT',
         '?BASE_PATH',
-        'HANDLERS',
+        'ROUTES_HANDLERS',
         'API',
         '?PARSERS',
         '?STRINGIFYERS',
@@ -195,7 +195,7 @@ export default location(
  *  request body
  * @param  {String}   [services.BASE_PATH]
  * API base path
- * @param  {Object}   services.HANDLERS
+ * @param  {Object}   services.ROUTES_HANDLERS
  * The handlers for the operations decribe
  *  by the OpenAPI API definition
  * @param  {Object}   services.API
@@ -225,7 +225,7 @@ export default location(
 async function initHTTPRouter({
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   BASE_PATH = '',
-  HANDLERS,
+  ROUTES_HANDLERS,
   API,
   PARSERS = DEFAULT_PARSERS,
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
@@ -250,7 +250,7 @@ async function initHTTPRouter({
   const routers = await _createRouters({
     API,
     COERCION_OPTIONS,
-    HANDLERS,
+    ROUTES_HANDLERS,
     BASE_PATH,
     queryParserBuilder,
     schemaValidators,
@@ -332,7 +332,7 @@ async function initHTTPRouter({
             request.url.split(SEARCH_SEPARATOR)[0].length,
           );
 
-          const parametersValues: WhookAPIHandlerParameters = {
+          const parametersValues: WhookRouteHandlerParameters = {
             query: {},
             header: {},
             path: {},
@@ -586,7 +586,7 @@ async function buildPathNodes(
 
 async function _createRouters({
   API,
-  HANDLERS,
+  ROUTES_HANDLERS,
   BASE_PATH = '',
   COERCION_OPTIONS,
   queryParserBuilder,
@@ -594,7 +594,7 @@ async function _createRouters({
   log,
 }: {
   API: WhookOpenAPI;
-  HANDLERS: WhookHandlersService;
+  ROUTES_HANDLERS: WhookHandlersService;
   BASE_PATH?: string;
   COERCION_OPTIONS: WhookCoercionOptions;
   queryParserBuilder: WhookQueryParserBuilderService;
@@ -630,11 +630,11 @@ async function _createRouters({
         throw new YError('E_NO_OPERATION_ID', path, method);
       }
 
-      if (!HANDLERS[operationId]) {
+      if (!ROUTES_HANDLERS[operationId]) {
         throw new YError('E_NO_HANDLER', operationId);
       }
 
-      const handler = HANDLERS[operationId];
+      const handler = ROUTES_HANDLERS[operationId];
       const operationParameters = await resolveParameters(
         { API, log },
         operation.parameters || [],

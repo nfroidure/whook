@@ -1,13 +1,16 @@
 import { extra, autoService } from 'knifecycle';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
-import { type WhookCommand, type WhookCommandDefinition } from '@whook/whook';
+import {
+  type WhookCommandHandler,
+  type WhookCommandDefinition,
+} from '@whook/whook';
 
 /* Architecture Note #5: Commands
 
 We consider to be a good practice to bind the commands
  you write to your API code. The `src/commands` folder
- allows you to write commands in a similar way to handlers.
+ allows you to write commands in a similar way to routes.
 
 It leverages the dependency injection features of Whook
  and has helpers for parsing the input parameters.
@@ -58,7 +61,7 @@ async function initPrintEnvCommand({
   ENV: AppEnvVars;
   log: LogService;
 }): Promise<
-  WhookCommand<{
+  WhookCommandHandler<{
     keysOnly: boolean;
   }>
 > {

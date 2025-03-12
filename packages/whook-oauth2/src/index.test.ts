@@ -13,12 +13,12 @@ import {
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
   DEFAULT_ERRORS_DESCRIPTORS,
-  initWrappers,
-  initHandlers,
+  initRoutesWrappers,
+  initRoutesHandlers,
 } from '@whook/whook';
 import {
   AUTHORIZATION_ERRORS_DESCRIPTORS,
-  initWrapHandlerWithAuthorization,
+  initWrapRouteHandlerWithAuthorization,
 } from '@whook/authorization';
 import { alsoInject, constant, initializer } from 'knifecycle';
 import axios from 'axios';
@@ -203,11 +203,11 @@ describe('OAuth2 server', () => {
     $.register(constant('time', time));
 
     // Auth
-    const HANDLERS_WRAPPERS = ['wrapHandlerWithAuthorization'];
+    const ROUTES_WRAPPERS_NAMES = ['wrapRouteHandlerWithAuthorization'];
 
-    $.register(initWrapHandlerWithAuthorization);
-    $.register(alsoInject(HANDLERS_WRAPPERS, initWrappers));
-    $.register(constant('HANDLERS_WRAPPERS', HANDLERS_WRAPPERS));
+    $.register(initWrapRouteHandlerWithAuthorization);
+    $.register(alsoInject(ROUTES_WRAPPERS_NAMES, initRoutesWrappers));
+    $.register(constant('ROUTES_WRAPPERS_NAMES', ROUTES_WRAPPERS_NAMES));
 
     // OAuth2 Specifics
     $.register(constant('OAUTH2', OAUTH2));
@@ -221,7 +221,7 @@ describe('OAuth2 server', () => {
     $.register(
       alsoInject(
         ['getOAuth2Authorize', 'postOAuth2Acknowledge', 'postOAuth2Token'],
-        initHandlers,
+        initRoutesHandlers,
       ),
     );
     $.register(constant('authentication', authentication));

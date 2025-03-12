@@ -1,33 +1,7 @@
 # API
-## Functions
+<a name="initWrapRouteHandlerForGoogleHTTPFunction"></a>
 
-<dl>
-<dt><a href="#initHandler">initHandler(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
-<dd><p>Initialize one Whook handler</p>
-</dd>
-<dt><a href="#initWrapHandlerForGoogleHTTPFunction">initWrapHandlerForGoogleHTTPFunction(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Wrap an handler to make it work with GCP Functions.</p>
-</dd>
-</dl>
-
-<a name="initHandler"></a>
-
-## initHandler(services) ⇒ <code>Promise.&lt;function()&gt;</code>
-Initialize one Whook handler
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;function()&gt;</code> - A promise of the `HANDLERS` hash.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services `$autoload` depends on |
-| services.WRAPPERS | <code>Array</code> |  | An optional list of wrappers to inject |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-| services.HANDLERS | <code>Object</code> |  | The rest is a hash of handlers mapped by their operation id |
-
-<a name="initWrapHandlerForGoogleHTTPFunction"></a>
-
-## initWrapHandlerForGoogleHTTPFunction(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+## initWrapRouteHandlerForGoogleHTTPFunction(services) ⇒ <code>Promise.&lt;Object&gt;</code>
 Wrap an handler to make it work with GCP Functions.
 
 **Kind**: global function  

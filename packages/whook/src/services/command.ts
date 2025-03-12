@@ -13,7 +13,7 @@ import {
   type WhookCoercionOptions,
 } from '../libs/coercion.js';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '../types/commands.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
@@ -38,7 +38,7 @@ async function initCommand({
   API: WhookOpenAPI;
   COMMAND_DEFINITION: WhookCommandDefinition;
   COERCION_OPTIONS?: WhookCoercionOptions;
-  commandHandler: WhookCommand;
+  commandHandler: WhookCommandHandler;
   schemaValidators: WhookSchemaValidatorsService;
   $ready: Promise<void>;
   $instance: Knifecycle;
@@ -49,14 +49,14 @@ async function initCommand({
   async function commandRunner() {
     await $ready;
 
-    if (COMMAND_DEFINITION.config?.promptArgs) {
-      // Required to ensure any logs are printed
-      await Promise.resolve();
-
-      args = await promptArgs({ API, COMMAND_DEFINITION }, args);
-    }
-
     try {
+      if (COMMAND_DEFINITION.config?.promptArgs) {
+        // Required to ensure any logs are printed
+        await Promise.resolve();
+
+        args = await promptArgs({ API, COMMAND_DEFINITION }, args);
+      }
+
       for (const argument of COMMAND_DEFINITION.arguments) {
         const resolvedSchema = (await ensureResolvedObject(
           API,

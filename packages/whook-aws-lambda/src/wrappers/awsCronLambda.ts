@@ -3,11 +3,11 @@ import { printStackTrace, YError } from 'yerror';
 import {
   noop,
   type WhookAPMService,
-  type WhookAPIHandlerDefinition,
-  type WhookAPIHandler,
+  type WhookRouteDefinition,
+  type WhookRouteHandler,
   type WhookResponse,
-  type WhookAPIWrapper,
-  type WhookAPIHandlerParameters,
+  type WhookRouteHandlerWrapper,
+  type WhookRouteHandlerParameters,
   type WhookOpenAPI,
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
@@ -54,19 +54,19 @@ async function initWrapHandlerForCronLambda({
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapCronLambdaDependencies): Promise<WhookAPIWrapper> {
+}: WhookWrapCronLambdaDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda cron wrapper.');
 
   const wrapper = async (
-    handler: WhookAPIHandler,
-  ): Promise<WhookAPIHandler> => {
+    handler: WhookRouteHandler,
+  ): Promise<WhookRouteHandler> => {
     const wrappedHandler = handleForAWSCronLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
       handler,
     );
 
-    return wrappedHandler as unknown as WhookAPIHandler;
+    return wrappedHandler as unknown as WhookRouteHandler;
   };
 
   return wrapper;
@@ -80,7 +80,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
     time,
     log,
   }: Required<WhookWrapCronLambdaDependencies>,
-  handler: WhookAPIHandler,
+  handler: WhookRouteHandler,
   event: ScheduledEvent & { body: T },
 ) {
   const path = Object.keys(OPERATION_API.paths || {})[0];
@@ -104,7 +104,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
     method,
     operation,
     config: operation['x-whook'],
-  } as unknown as WhookAPIHandlerDefinition;
+  } as unknown as WhookRouteDefinition;
   const startTime = time();
   const parameters: LambdaCronInput<T> = {
     date: event.time,
@@ -114,7 +114,7 @@ async function handleForAWSCronLambda<T extends JsonObject = JsonObject>(
     log('debug', 'EVENT', JSON.stringify(event));
 
     await handler(
-      parameters as unknown as WhookAPIHandlerParameters,
+      parameters as unknown as WhookRouteHandlerParameters,
       definition,
     );
 

@@ -322,7 +322,7 @@ export type WhookErrorResponse = {
   headers: {
     'cache-control': 'private';
     'content-type': string;
-    [name: string]: string;
+    [name: string]: string | string[];
   };
   body: {
     error: string;

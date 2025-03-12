@@ -2,12 +2,12 @@ import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
   noop,
-  type WhookAPIHandlerDefinition,
+  type WhookRouteDefinition,
   type WhookAPMService,
-  type WhookAPIHandler,
+  type WhookRouteHandler,
   type WhookResponse,
-  type WhookAPIWrapper,
-  type WhookAPIHandlerParameters,
+  type WhookRouteHandlerWrapper,
+  type WhookRouteHandlerParameters,
   type WhookOpenAPI,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
@@ -76,19 +76,19 @@ async function initWrapHandlerForConsumerLambda({
   apm,
   time = Date.now.bind(Date),
   log = noop,
-}: WhookWrapConsumerLambdaDependencies): Promise<WhookAPIWrapper> {
+}: WhookWrapConsumerLambdaDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
   const wrapper = async (
-    handler: WhookAPIHandler,
-  ): Promise<WhookAPIHandler> => {
+    handler: WhookRouteHandler,
+  ): Promise<WhookRouteHandler> => {
     const wrappedHandler = handleForAWSConsumerLambda.bind(
       null,
       { ENV, OPERATION_API, apm, time, log },
       handler,
     );
 
-    return wrappedHandler as unknown as WhookAPIHandler;
+    return wrappedHandler as unknown as WhookRouteHandler;
   };
 
   return wrapper;
@@ -102,7 +102,7 @@ async function handleForAWSConsumerLambda(
     time,
     log,
   }: Required<WhookWrapConsumerLambdaDependencies>,
-  handler: WhookAPIHandler,
+  handler: WhookRouteHandler,
   event:
     | KinesisStreamEvent
     | SQSEvent
@@ -131,7 +131,7 @@ async function handleForAWSConsumerLambda(
     method,
     operation,
     config: operation['x-whook'],
-  } as unknown as WhookAPIHandlerDefinition;
+  } as unknown as WhookRouteDefinition;
   const startTime = time();
   const parameters: LambdaConsumerInput = {
     body: event.Records,
@@ -141,7 +141,7 @@ async function handleForAWSConsumerLambda(
     log('debug', 'EVENT', JSON.stringify(event));
 
     await handler(
-      parameters as unknown as WhookAPIHandlerParameters,
+      parameters as unknown as WhookRouteHandlerParameters,
       definition,
     );
 

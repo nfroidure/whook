@@ -19,10 +19,11 @@ export const WHOOK_DEFAULT_PLUGINS = [
   '@whook/whook',
 ];
 export const WHOOK_FOLDERS = [
-  'handlers',
+  'routes',
   'services',
   'wrappers',
   'commands',
+  'crons',
 ] as const;
 
 export type WhookPluginName = string & { _type?: 'whook_plugin' };

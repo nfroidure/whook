@@ -11,9 +11,9 @@ import { type WhookPortEnv } from '../services/PORT.js';
 import { type WhookObfuscatorConfig } from '../services/obfuscator.js';
 import { type WhookHTTPTransactionConfig } from '../services/httpTransaction.js';
 import { type WhookHostEnv } from '../services/HOST.js';
-import { type WhookAPIDefinitionsConfig } from '../services/API_DEFINITIONS.js';
+import { type WhookDefinitionsConfig } from '../services/DEFINITIONS.js';
 import { type WhookResolvedPluginsConfig } from '../services/WHOOK_RESOLVED_PLUGINS.js';
-import { type WhookWrappersConfig } from '../services/WRAPPERS.js';
+import { type WhookRoutesWrappersConfig } from '../services/ROUTES_WRAPPERS.js';
 import { type WhookCompilerConfig } from '../services/compiler.js';
 import {
   type ProcessEnvConfig,
@@ -47,8 +47,8 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookBaseURLConfig &
   WhookResolvedPluginsConfig &
   WhookObfuscatorConfig &
-  WhookAPIDefinitionsConfig &
+  WhookDefinitionsConfig &
   WhookCompilerConfig &
-  WhookWrappersConfig &
+  WhookRoutesWrappersConfig &
   WhookSchemaValidatorsConfig &
   OpenAPITypesConfig;
