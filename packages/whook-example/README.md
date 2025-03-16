@@ -102,6 +102,64 @@ Debug `knifecycle` internals (dependency injection issues):
 DEBUG=knifecycle npm run dev
 ```
 
+## Deploying with Google Cloud Functions
+
+Create a project and save its credentials to `.credentials.json`.
+
+Then install Terraform:
+```sh
+wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
+mkdir .bin
+unzip -d .bin terraform_0.12.24_linux_amd64.zip
+rm terraform_0.12.24_linux_amd64.zip
+```
+
+Then initialize the Terraform configuration:
+```sh
+.bin/terraform init ./terraform;
+```
+
+Create a new workspace:
+```sh
+.bin/terraform workspace new staging
+```
+
+Build the functions:
+```sh
+NODE_ENV=staging npm run build
+```
+
+Build the Whook commands Terraform depends on:
+```sh
+npm run compile
+```
+
+Plan the deployment:
+```sh
+.bin/terraform plan -var="project_id=my-project-1664" \
+ -out=terraform.plan terraform
+```
+
+Apply changes:
+```sh
+# parallelism may be necessary to avoid hitting
+#  timeouts with a slow connection
+.bin/terraform apply -parallelism=1 terraform.plan
+```
+
+Finally retrieve the API URL and enjoy!
+```sh
+.bin/terraform -var="project_id=my-project-1664" \
+ output api_url
+```
+
+## Testing the GCP Functions
+
+```sh
+JWT_SECRET=lol APP_ENV=local npm run dev -- testGCPFunctionRoute \
+ --name putEcho --parameters '{ "body": { "echo": "Hey!" } }'
+```
+
 [//]: # (::contents:end)
 
 # Authors
