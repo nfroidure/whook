@@ -397,6 +397,81 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
       "⌚ - Scheduling the "handleMinutes" cron with "*/1 * * * *" (task name: "handleMinutes-0").",
     ],
     [
@@ -598,6 +673,12 @@ describe('runProcess', () => {
       "⏳ - Skipped "route.test.js.map" per file patterns.",
     ],
     [
+      "⏳ - Skipped "testGCPFunctionRoute.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "testGCPFunctionRoute.js.map" per file patterns.",
+    ],
+    [
       "✅ - Module path of "API" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/API.ts".",
     ],
     [
@@ -664,6 +745,9 @@ describe('runProcess', () => {
       "➰ - Plugin "@whook/cors" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-cors/dist" with "routes, services, wrappers" types.",
     ],
     [
+      "➰ - Plugin "@whook/gcp-functions" source path resolved to "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist" with "commands, services, wrappers" types.",
+    ],
+    [
       "➰ - Plugin "@whook/whook" source path resolved to "file:///home/whoiam/projects/whook/dist" with "commands, routes, services" types.",
     ],
     [
@@ -700,6 +784,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/whook".",
     ],
     [
@@ -715,6 +802,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/whook".",
     ],
     [
@@ -725,6 +815,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/whook".",
@@ -739,6 +832,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/whook".",
     ],
     [
@@ -749,6 +845,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/whook".",
@@ -763,6 +862,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/whook".",
     ],
     [
@@ -773,6 +875,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "DECODERS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/whook".",
@@ -787,6 +892,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/whook".",
     ],
     [
@@ -797,6 +905,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "ENCODERS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "ENCODERS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "ENCODERS" module path in "@whook/whook".",
@@ -811,6 +922,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/whook".",
     ],
     [
@@ -823,6 +937,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/whook".",
     ],
     [
@@ -833,6 +950,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/whook".",
@@ -850,6 +970,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "PARSERS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "PARSERS" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "PARSERS" module path in "@whook/whook".",
     ],
     [
@@ -860,6 +983,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/whook".",
@@ -877,6 +1003,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/whook".",
     ],
     [
@@ -887,6 +1016,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/whook".",
@@ -901,6 +1033,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "SIGNALS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "SIGNALS" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "SIGNALS" module path in "@whook/whook".",
     ],
     [
@@ -911,6 +1046,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/whook".",
@@ -925,6 +1063,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "TIMEOUT" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "TIMEOUT" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "TIMEOUT" module path in "@whook/whook".",
     ],
     [
@@ -935,6 +1076,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/whook".",
@@ -950,6 +1094,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "fetcher" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "fetcher" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "fetcher" module path in "@whook/whook".",
@@ -994,6 +1141,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "optionsWithCORS" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "optionsWithCORS" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "optionsWithCORS" module path in "@whook/whook".",
     ],
     [
@@ -1012,6 +1162,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "uniqueId" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "uniqueId" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "uniqueId" module path in "@whook/whook".",
     ],
     [
@@ -1024,6 +1177,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/cors".",
     ],
     [
+      "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/gcp-functions".",
+    ],
+    [
       "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/whook".",
     ],
     [
@@ -1031,6 +1187,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/gcp-functions".",
     ],
     [
       "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/whook".",
@@ -1507,6 +1666,81 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/wrappers/wrapRouteHandlerWithCORS.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/routes/optionsWithCORS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/BUFFER_LIMIT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/COERCION_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/COMMAND_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/CONSUMER_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/CRON_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/DECODERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/DEFAULT_ERROR_CODE.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/ENCODERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/HTTP_SERVER_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/JWT_SECRET_ENV_NAME.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/MAX_CLEAR_RATIO.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/PARSERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/QUERY_PARSER_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/SHIELD_CHAR.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/SIGNALS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/STRINGIFYERS.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/TIMEOUT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/fetcher.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/services/uniqueId.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/wrappers/wrapRouteHandlerWithCORS.js".",
+    ],
+    [
       "🚫 - Module path of "BUFFER_LIMIT" not found.",
     ],
     [
@@ -1627,6 +1861,9 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/commands/printEnv.ts".",
     ],
     [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/commands/terraformValues.ts".",
+    ],
+    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/config/local/config.ts".",
     ],
     [
@@ -1694,6 +1931,9 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/services/jwtToken.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-gcp-functions/dist/commands/testGCPFunctionRoute.js".",
     ],
     [
       "🛂 - Dynamic import of "swagger-ui-dist".",
