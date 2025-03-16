@@ -263,7 +263,7 @@ Per convention a Whook server build file must export
 The `runBuild` function is intended to build the
  project.
 
-[See in context](./src/build.ts#L15-L19)
+[See in context](./src/build.ts#L17-L21)
 
 
 
@@ -272,7 +272,7 @@ The `runBuild` function is intended to build the
 The `prepareBuildEnvironment` create the build
  environment
 
-[See in context](./src/build.ts#L27-L31)
+[See in context](./src/build.ts#L29-L33)
 
 
 
@@ -292,7 +292,11 @@ The `src/config/common/config.ts` one allows to add common
 
 Whook provides several types you may extend here.
 
+<<<<<<< HEAD
 [See in context](./src/whook.d.ts#L35-L38)
+=======
+[See in context](./src/whook.d.ts#L31-L34)
+>>>>>>> 57fe667f (feat(@whook/example): add Google Cloud Functions build)
 
 
 
@@ -300,7 +304,11 @@ Whook provides several types you may extend here.
 
 The process environment can be typed by extending this type.
 
+<<<<<<< HEAD
 [See in context](./src/whook.d.ts#L41-L44)
+=======
+[See in context](./src/whook.d.ts#L37-L40)
+>>>>>>> 57fe667f (feat(@whook/example): add Google Cloud Functions build)
 
 
 
@@ -309,7 +317,11 @@ The process environment can be typed by extending this type.
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
+<<<<<<< HEAD
 [See in context](./src/whook.d.ts#L52-L56)
+=======
+[See in context](./src/whook.d.ts#L48-L52)
+>>>>>>> 57fe667f (feat(@whook/example): add Google Cloud Functions build)
 
 
 
@@ -319,7 +331,11 @@ Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the routes.
 
+<<<<<<< HEAD
 [See in context](./src/whook.d.ts#L71-L76)
+=======
+[See in context](./src/whook.d.ts#L67-L72)
+>>>>>>> 57fe667f (feat(@whook/example): add Google Cloud Functions build)
 
 
 
@@ -327,7 +343,11 @@ Here we export a custom API handler config type in order
 
 Here we export a main config to type AppEnv.
 
+<<<<<<< HEAD
 [See in context](./src/whook.d.ts#L98-L101)
+=======
+[See in context](./src/whook.d.ts#L79-L82)
+>>>>>>> 57fe667f (feat(@whook/example): add Google Cloud Functions build)
 
 
 
@@ -538,7 +558,11 @@ Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the routes.
 
+<<<<<<< HEAD
 [See in context](./src/whook.d.ts#L109-L114)
+=======
+[See in context](./src/whook.d.ts#L90-L95)
+>>>>>>> 57fe667f (feat(@whook/example): add Google Cloud Functions build)
 
 
 

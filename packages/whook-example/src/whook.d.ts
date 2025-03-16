@@ -2,6 +2,8 @@ import {
   type WhookBaseRouteConfig,
   type WhookBaseEnv,
   type WhookBaseConfigs,
+  type WhookCompilerConfig,
+  type WhookProxiedENVConfig,
 } from '@whook/whook';
 import {
   type WhookAuthenticationExtraParameters,
@@ -19,6 +21,10 @@ import { type JWTServiceConfig, type JWTEnvVars } from 'jwt-service';
 import { type BaseAppEnvVars, type TimeMockConfig } from 'application-services';
 import { type RouteDefinitionFilterEnvVars } from './services/ROUTE_DEFINITION_FILTER.ts';
 import { type AppEnv } from './index.ts';
+import {
+  type WhookGCPFunctionRouteConfig,
+  type WhookGCPFunctionBuildConfig,
+} from '@whook/gcp-functions';
 
 /* Architecture Note #2.1: Typings
 
@@ -50,6 +56,9 @@ declare module 'application-services' {
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
+      WhookProxiedENVConfig,
+      WhookCompilerConfig,
+      WhookGCPFunctionBuildConfig,
       JWTServiceConfig,
       TimeMockConfig {}
 }
@@ -64,6 +73,7 @@ declare module '@whook/whook' {
   export interface WhookRouteConfig
     extends
       WhookBaseRouteConfig,
+      WhookGCPFunctionRouteConfig,
       WhookSwaggerUIRouteConfig,
       WhookCORSRouteConfig {}
 
