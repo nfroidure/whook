@@ -1,5 +1,5 @@
 import { loadLambda } from '../libs/utils.js';
-import { extra, autoService } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
 import {
   DEFAULT_COMPILER_OPTIONS,
   type WhookCommandHandler,
@@ -7,25 +7,11 @@ import {
   type WhookCompilerOptions,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
-import { type FirehoseTransformationEvent } from 'aws-lambda';
-
-const DEFAULT_EVENT: FirehoseTransformationEvent = {
-  invocationId: 'xxxx',
-  deliveryStreamArn: 'aws:xx:xx:xx',
-  region: 'eu-west-3',
-  records: [
-    {
-      recordId: 'xxxxxxxxxxxxxxxxx',
-      approximateArrivalTimestamp: Date.parse('2010-03-06T00:00:00Z'),
-      data: Buffer.from(JSON.stringify({ some: 'data' })).toString('base64'),
-    },
-  ],
-};
 
 export const definition = {
-  name: 'TransformerLambda',
-  description: 'A command for testing AWS lambda transformers',
-  example: `whook TransformerLambda --name handleTransformerLambda`,
+  name: 'testAWSLambdaConsumer',
+  description: 'A command for testing AWS consumer lambda',
+  example: `whook testAWSLambdaConsumer --name handleConsumerLambda`,
   arguments: [
     {
       name: 'name',
@@ -46,18 +32,15 @@ export const definition = {
     },
     {
       name: 'event',
-      description: 'The stream event',
+      description: 'The event batch',
       schema: {
         type: 'string',
-        default: JSON.stringify(DEFAULT_EVENT),
       },
     },
   ],
 } as const satisfies WhookCommandDefinition;
 
-export default extra(definition, autoService(initTestTransformerLambdaCommand));
-
-async function initTestTransformerLambdaCommand({
+async function initTestAWSLambdaConsumerCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
@@ -80,7 +63,11 @@ async function initTestTransformerLambdaCommand({
     } = args;
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
-      { APP_ENV, PROJECT_DIR, log },
+      {
+        APP_ENV,
+        PROJECT_DIR,
+        log,
+      },
       name,
       type,
       extension,
@@ -93,3 +80,8 @@ async function initTestTransformerLambdaCommand({
     process.emit('SIGTERM');
   };
 }
+
+export default location(
+  autoService(initTestAWSLambdaConsumerCommand),
+  import.meta.url,
+);

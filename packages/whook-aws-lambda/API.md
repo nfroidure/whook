@@ -37,7 +37,7 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -54,7 +54,7 @@ Wrap an handler to make it work with cron AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -70,7 +70,7 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.ENV | <code>Object</code> |  | The process environment |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
@@ -96,7 +96,7 @@ Wrap an handler to make it work with a kafka AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -113,7 +113,7 @@ Wrap an handler to make it work with a log subscriber AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -130,7 +130,7 @@ Wrap an handler to make it work with a S3 AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -147,7 +147,7 @@ Wrap an handler to make it work with a transformer AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |

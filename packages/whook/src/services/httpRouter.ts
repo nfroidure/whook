@@ -67,6 +67,7 @@ import {
   type WhookQueryParser,
   type WhookQueryParserBuilderService,
 } from './queryParserBuilder.js';
+import { type WhookDefinitions } from './DEFINITIONS.js';
 
 export const SEARCH_SEPARATOR = '?';
 export const PATH_SEPARATOR = '/';
@@ -108,6 +109,7 @@ export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
   ENV: AppEnvVars;
   ROUTES_HANDLERS: WhookHandlersService;
   API: WhookOpenAPI;
+  DEFINITIONS: WhookDefinitions;
   PARSERS?: WhookParsers;
   STRINGIFYERS?: WhookStringifyers;
   DECODERS?: WhookEncoders<Transform>;
@@ -169,6 +171,7 @@ export default location(
         '?BASE_PATH',
         'ROUTES_HANDLERS',
         'API',
+        'DEFINITIONS',
         '?PARSERS',
         '?STRINGIFYERS',
         '?DECODERS',
@@ -227,6 +230,7 @@ async function initHTTPRouter({
   BASE_PATH = '',
   ROUTES_HANDLERS,
   API,
+  DEFINITIONS,
   PARSERS = DEFAULT_PARSERS,
   STRINGIFYERS = DEFAULT_STRINGIFYERS,
   DECODERS = DEFAULT_DECODERS,
@@ -249,6 +253,7 @@ async function initHTTPRouter({
 
   const routers = await _createRouters({
     API,
+    DEFINITIONS,
     COERCION_OPTIONS,
     ROUTES_HANDLERS,
     BASE_PATH,
@@ -535,7 +540,10 @@ async function buildPathNodes(
   {
     API,
     schemaValidators,
-  }: { API: WhookOpenAPI; schemaValidators: WhookSchemaValidatorsService },
+  }: {
+    API: WhookOpenAPI;
+    schemaValidators: WhookSchemaValidatorsService;
+  },
   path: string,
   parameters: WhookSupportedParameter[],
 ) {
@@ -586,6 +594,7 @@ async function buildPathNodes(
 
 async function _createRouters({
   API,
+  DEFINITIONS,
   ROUTES_HANDLERS,
   BASE_PATH = '',
   COERCION_OPTIONS,
@@ -594,6 +603,7 @@ async function _createRouters({
   log,
 }: {
   API: WhookOpenAPI;
+  DEFINITIONS: WhookDefinitions;
   ROUTES_HANDLERS: WhookHandlersService;
   BASE_PATH?: string;
   COERCION_OPTIONS: WhookCoercionOptions;
@@ -630,11 +640,17 @@ async function _createRouters({
         throw new YError('E_NO_OPERATION_ID', path, method);
       }
 
-      if (!ROUTES_HANDLERS[operationId]) {
-        throw new YError('E_NO_HANDLER', operationId);
+      const targetHandler =
+        DEFINITIONS.configs?.[operationId]?.type === 'route' &&
+        DEFINITIONS.configs[operationId].config?.targetHandler
+          ? DEFINITIONS.configs[operationId].config.targetHandler
+          : operationId;
+      const handler = ROUTES_HANDLERS[targetHandler];
+
+      if (!handler) {
+        throw new YError('E_NO_HANDLER', targetHandler);
       }
 
-      const handler = ROUTES_HANDLERS[operationId];
       const operationParameters = await resolveParameters(
         { API, log },
         operation.parameters || [],

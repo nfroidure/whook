@@ -11,6 +11,12 @@ import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type SwaggerUIOptions } from 'swagger-ui';
 import { type Jsonify } from 'type-fest';
 
+export type WhookSwaggerUIOptions = Omit<
+  Jsonify<SwaggerUIOptions>,
+  'dom_id' | 'urls'
+> & {
+  path: string;
+};
 export type WhookSwaggerUIEnv = {
   DEV_MODE?: string;
 };
@@ -19,9 +25,7 @@ export type WhookSwaggerUIConfig = {
   BASE_PATH?: string;
   HOST?: string;
   PORT?: number;
-  SWAGGER_UI_CONFIG?: Omit<Jsonify<SwaggerUIOptions>, 'dom_id' | 'urls'> & {
-    path: string;
-  };
+  SWAGGER_UI_OPTIONS?: WhookSwaggerUIOptions;
 };
 export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   ENV: WhookSwaggerUIEnv;
@@ -31,16 +35,16 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   log: LogService;
   importer: ImporterService<ECStatic>;
 };
-export type WhookAPIOperationSwaggerConfig = {
+export type WhookSwaggerUIRouteConfig = {
   private?: boolean;
 };
 
-export const DEFAULT_SWAGGER_UI_CONFIG = {
+export const DEFAULT_SWAGGER_UI_OPTIONS = {
   deepLinking: true,
   layout: 'StandaloneLayout',
   displayOperationId: true,
   path: getOpenAPIDefinition.path,
-} as const satisfies WhookSwaggerUIConfig['SWAGGER_UI_CONFIG'];
+} as const satisfies WhookSwaggerUIConfig['SWAGGER_UI_OPTIONS'];
 
 /**
  * Wraps the `httpRouter` initializer to also serve the
@@ -62,7 +66,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
       '?BASE_PATH',
       'HOST',
       'PORT',
-      '?SWAGGER_UI_CONFIG',
+      '?SWAGGER_UI_OPTIONS',
       'importer',
       '?log',
     ],
@@ -77,7 +81,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
         BASE_PATH = '',
         HOST,
         PORT,
-        SWAGGER_UI_CONFIG = DEFAULT_SWAGGER_UI_CONFIG,
+        SWAGGER_UI_OPTIONS = DEFAULT_SWAGGER_UI_OPTIONS,
         importer,
         log = noop,
       }: WhookSwaggerUIDependencies,
@@ -128,7 +132,7 @@ window.onload = function() {
           SwaggerUIBundle.plugins.Topbar
         ],
       },
-      ${JSON.stringify(SWAGGER_UI_CONFIG)}
+      ${JSON.stringify(SWAGGER_UI_OPTIONS)}
     )
   );
 

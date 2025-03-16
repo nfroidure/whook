@@ -1,5 +1,5 @@
 import { loadLambda } from '../libs/utils.js';
-import { extra, autoService } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
 import {
   DEFAULT_COMPILER_OPTIONS,
   type WhookCommandHandler,
@@ -7,45 +7,25 @@ import {
   type WhookCompilerOptions,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
-import { type MSKEvent } from 'aws-lambda';
+import { type FirehoseTransformationEvent } from 'aws-lambda';
 
-const DEFAULT_EVENT: MSKEvent = {
-  bootstrapServers: '',
-  eventSource: 'aws:kafka',
-  eventSourceArn:
-    'arn:aws:kafka:eu-west-3:765225263528:cluster/production/abbacaca-abba-caca-abba-cacaabbacaca-2',
-  records: {
-    'ingestion-bench-1': [
-      {
-        key: 'none',
-        headers: [],
-        topic: 'tropic',
-        partition: 1,
-        offset: 0,
-        timestamp: 1608321344592,
-        timestampType: 'CREATE_TIME',
-        value:
-          'WyJERy1TUi0wMDAxIiwieCIsIjIwMjAtMTAtMTVUMDg6MjE6MTAuMzA4WiIsIi0yNzIuMCJd',
-      },
-      {
-        key: 'none',
-        headers: [],
-        topic: 'tropic',
-        partition: 1,
-        offset: 1,
-        timestamp: 1608321344801,
-        timestampType: 'CREATE_TIME',
-        value:
-          'WyJERy1TUi0wMDAxIiwieCIsIjIwMjAtMTAtMTVUMDg6MjE6MTEuMjE1WiIsIi0xOTIuMCJd',
-      },
-    ],
-  },
+const DEFAULT_EVENT: FirehoseTransformationEvent = {
+  invocationId: 'xxxx',
+  deliveryStreamArn: 'aws:xx:xx:xx',
+  region: 'eu-west-3',
+  records: [
+    {
+      recordId: 'xxxxxxxxxxxxxxxxx',
+      approximateArrivalTimestamp: Date.parse('2010-03-06T00:00:00Z'),
+      data: Buffer.from(JSON.stringify({ some: 'data' })).toString('base64'),
+    },
+  ],
 };
 
 export const definition = {
-  name: 'KafkaConsumer',
-  description: 'A command for testing AWS lambda Kafka consumers',
-  example: `whook KafkaConsumer --name handleKafkaConsumerLambda`,
+  name: 'testAWSLambdaTransformer',
+  description: 'A command for testing AWS lambda transformers',
+  example: `whook testAWSLambdaTransformer --name handleTransformerLambda`,
   arguments: [
     {
       name: 'name',
@@ -66,7 +46,7 @@ export const definition = {
     },
     {
       name: 'event',
-      description: 'The Kafka batch event',
+      description: 'The stream event',
       schema: {
         type: 'string',
         default: JSON.stringify(DEFAULT_EVENT),
@@ -75,12 +55,7 @@ export const definition = {
   ],
 } as const satisfies WhookCommandDefinition;
 
-export default extra(
-  definition,
-  autoService(initTestKafkaConsumerLambdaCommand),
-);
-
-async function initTestKafkaConsumerLambdaCommand({
+async function initTestAWSLambdaTransformerCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
@@ -103,11 +78,7 @@ async function initTestKafkaConsumerLambdaCommand({
     } = args;
     const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
     const handler = await loadLambda(
-      {
-        APP_ENV,
-        PROJECT_DIR,
-        log,
-      },
+      { APP_ENV, PROJECT_DIR, log },
       name,
       type,
       extension,
@@ -120,3 +91,8 @@ async function initTestKafkaConsumerLambdaCommand({
     process.emit('SIGTERM');
   };
 }
+
+export default location(
+  autoService(initTestAWSLambdaTransformerCommand),
+  import.meta.url,
+);

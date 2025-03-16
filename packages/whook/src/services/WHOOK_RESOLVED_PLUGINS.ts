@@ -22,6 +22,8 @@ export const WHOOK_FOLDERS = [
   'routes',
   'services',
   'wrappers',
+  'consumers',
+  'transformers',
   'commands',
   'crons',
 ] as const;

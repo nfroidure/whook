@@ -16,7 +16,7 @@ import {
 } from 'ya-json-schema-types';
 import { type OpenAPIReference } from 'ya-open-api-types';
 
-export const DEFAULT_COMMAND_CONFIG: Required<WhookCommandConfig> = {
+export const DEFAULT_COMMAND_CONFIG: WhookCommandConfig = {
   environments: 'all',
   promptArgs: true,
 };
@@ -24,6 +24,7 @@ export const DEFAULT_COMMAND_CONFIG: Required<WhookCommandConfig> = {
 export type WhookBaseCommandConfig = {
   environments?: 'all' | WhookMain['AppEnv'][];
   promptArgs?: boolean;
+  targetHandler?: string;
 };
 
 export type WhookCommandSchema =

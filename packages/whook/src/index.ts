@@ -46,6 +46,7 @@ import initWhookResolvedPlugins, {
   WHOOK_PROJECT_PLUGIN_NAME,
 } from './services/WHOOK_RESOLVED_PLUGINS.js';
 import initDefinitions from './services/DEFINITIONS.js';
+export * from './services/DEFINITIONS.js';
 export type * from './services/DEFINITIONS.js';
 import initRoutesDefinitions from './services/ROUTES_DEFINITIONS.js';
 export { initRoutesDefinitions };
@@ -73,6 +74,16 @@ export * from './services/CRONS_WRAPPERS.js';
 import initCronsHandlers from './services/CRONS_HANDLERS.js';
 export { initCronsHandlers };
 export * from './services/CRONS_HANDLERS.js';
+import initConsumersDefinitions from './services/CONSUMERS_DEFINITIONS.js';
+export { initConsumersDefinitions };
+export * from './services/CONSUMERS_DEFINITIONS.js';
+export type * from './services/CONSUMERS_DEFINITIONS.js';
+import initConsumersWrappers from './services/CONSUMERS_WRAPPERS.js';
+export { initConsumersWrappers };
+export * from './services/CONSUMERS_WRAPPERS.js';
+import initConsumersHandlers from './services/CONSUMERS_HANDLERS.js';
+export { initConsumersHandlers };
+export * from './services/CONSUMERS_HANDLERS.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';
@@ -110,6 +121,8 @@ export type * from './types/http.js';
 export type * from './types/base.js';
 export type * from './types/openapi.js';
 export type * from './types/crons.js';
+export type * from './types/transformers.js';
+export type * from './types/consumers.js';
 export type * from './libs/openapi.js';
 export type * from './libs/validation.js';
 export type * from './libs/args.js';
@@ -296,6 +309,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initRoutesDefinitions,
     initCommandsDefinitions,
     initCronsDefinitions,
+    initConsumersDefinitions,
   ].forEach($.register.bind($));
 
   $.register(initCommand);

@@ -1,5 +1,5 @@
 import { loadLambda } from '../libs/utils.js';
-import { extra, autoService } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import { v4 as randomUUID } from 'uuid';
 import {
@@ -19,9 +19,9 @@ import {
 } from 'aws-lambda';
 
 export const definition = {
-  name: 'testHTTPLambda',
+  name: 'testAWSLambdaRoute',
   description: 'A command for testing AWS HTTP lambda',
-  example: `whook testHTTPLambda --name getPing`,
+  example: `whook testAWSLambdaRoute --name getPing`,
   arguments: [
     {
       name: 'name',
@@ -59,9 +59,7 @@ export const definition = {
   ],
 } as const satisfies WhookCommandDefinition;
 
-export default extra(definition, autoService(initTestHTTPLambdaCommand));
-
-async function initTestHTTPLambdaCommand({
+async function initTestAWSLambdaRouteCommand({
   ENV,
   APP_ENV,
   PROJECT_DIR,
@@ -157,3 +155,8 @@ async function initTestHTTPLambdaCommand({
     process.emit('SIGTERM');
   };
 }
+
+export default location(
+  autoService(initTestAWSLambdaRouteCommand),
+  import.meta.url,
+);

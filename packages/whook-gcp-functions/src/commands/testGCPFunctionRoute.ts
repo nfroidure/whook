@@ -1,5 +1,5 @@
 import { loadFunction } from '../libs/utils.js';
-import { extra, autoService } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import stream from 'node:stream';
 import {
@@ -15,9 +15,9 @@ import {
 import { type LogService } from 'common-services';
 
 export const definition = {
-  name: 'testHTTPFunction',
-  description: 'A command for testing GCP HTTP function',
-  example: `whook testHTTPFunction --name getPing`,
+  name: 'testGCPFunctionRoute',
+  description: 'A command for testing a GCP function route',
+  example: `whook testGCPFunctionRoute --name getPing`,
   arguments: [
     {
       description: 'Name of the function to run',
@@ -55,9 +55,7 @@ export const definition = {
   ],
 } as const satisfies WhookCommandDefinition;
 
-export default extra(definition, autoService(initTestHTTPFunctionCommand));
-
-async function initTestHTTPFunctionCommand({
+async function initTestGCPFunctionRouteCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
@@ -178,3 +176,8 @@ async function initTestHTTPFunctionCommand({
     log('info', 'SUCCESS:', response);
   };
 }
+
+export default location(
+  autoService(initTestGCPFunctionRouteCommand),
+  import.meta.url,
+);

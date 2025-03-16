@@ -7,14 +7,15 @@ import {
 import { type WhookAPISchemaDefinition } from './openapi.js';
 import { type JsonValue } from 'type-fest';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
-import { WhookHandlerWrapper } from './wrappers.js';
+import { type WhookHandlerWrapper } from './wrappers.js';
 
-export const DEFAULT_CRON_CONFIG: Required<WhookCronConfig> = {
+export const DEFAULT_CRON_CONFIG: WhookCronConfig = {
   environments: 'all',
 };
 
 export type WhookBaseCronConfig = {
   environments?: 'all' | WhookMain['AppEnv'][];
+  targetHandler?: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

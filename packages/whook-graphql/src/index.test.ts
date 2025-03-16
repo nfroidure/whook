@@ -149,6 +149,7 @@ describe('GraphQL server', () => {
     $.register(constant('PROJECT_DIR', '/home/whoami/projects'));
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
+    $.register(constant('DEFINITIONS', API));
     $.register(
       constant('ENV', {
         NODE_ENV: 'test',

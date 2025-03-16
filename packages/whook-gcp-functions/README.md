@@ -99,8 +99,8 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 // ...
 + import { type WhookCompilerConfig } from '@whook/whook';
 + import {
-+    type WhookGCPBuildConfig,
-+    type WhookAPIOperationGCPFunctionConfig
++    type WhookGCPFunctionBuildConfig,
++    type WhookGCPFunctionRouteConfig
 + } from '@whook/gcp-functions';
 
 declare module 'application-services' {
@@ -110,8 +110,8 @@ declare module 'application-services' {
   export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs,
-+      WhookGCPBuildConfig,
-+      WhookCompilerConfig {}
++       WhookGCPFunctionBuildConfig,
++       WhookCompilerConfig {}
 
   // ...
 }
@@ -119,19 +119,10 @@ declare module 'application-services' {
 // ...
 
 declare module '@whook/whook' {
-  export interface WhookRouteDefinition<
-    T extends Record<string, unknown> = Record<string, unknown>,
-    U extends {
-      [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-    } = unknown,
-    V extends Record<string, unknown> = Record<string, unknown>,
-  > extends WhookBaseAPIHandlerDefinition<T, U> {
-    operation: U & WhookAPIOperation<
-        T &
-+      WhookAPIOperationGCPFunctionConfig &
-      WhookAPIOperationCORSConfig
-    >;
-  }
+  export interface WhookRouteConfig
+    extends WhookBaseRouteConfig,
++      WhookGCPFunctionRouteConfig,
+      WhookCORSRouteConfig {}
 }
 ```
 
@@ -170,16 +161,16 @@ npm run build -- getPing
 
 You can easily test your function builds by adding `@whook/gcp-functions` to
 your `WHOOK_PLUGINS` list. It provides you some commands like the
-`testHTTPFunction` one:
+`testGCPFunctionRoute` one:
 
 ```sh
-npx whook testHTTPFunction --name getPing
+npx whook testGCPFunctionRoute --name getPing
 ```
 
 To get more insights when some errors happens:
 
 ```sh
-DEBUG=whook npm run dev -- testHTTPFunction --name getPing
+DEBUG=whook npm run dev -- testGCPFunctionRoute --name getPing
 ```
 
 ## Deployment
@@ -203,7 +194,7 @@ Wrap an handler to make it work with GCP Functions.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
 | services.PARSERS | <code>Object</code> |  | Request body parsers available |

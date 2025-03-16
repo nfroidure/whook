@@ -20,52 +20,35 @@ import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initCompiler,
   parseArgs,
+  type WhookDefinitions,
   type WhookCompilerOptions,
   type WhookCompilerService,
 } from '@whook/whook';
 import initBuildAutoloader from './services/_autoload.js';
-import {
-  pathItemToOperationMap,
-  type OpenAPIExtension,
-  type OpenAPIOperation,
-  type OpenAPI,
-} from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
-import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
-import { type JsonValue } from 'type-fest';
-import { type WhookRouteConfig } from '@whook/whook';
 
-export type {
-  LambdaConsumerInput,
-  LambdaConsumerOutput,
-  LambdaKinesisStreamConsumerInput,
-  LambdaSQSConsumerInput,
-  LambdaSNSConsumerInput,
-  LambdaSESConsumerInput,
-  LambdaDynamoDBStreamConsumerInput,
-} from './wrappers/awsConsumerLambda.js';
-export type {
-  LambdaCronInput,
-  LambdaCronOutput,
-} from './wrappers/awsCronLambda.js';
-export type {
-  LambdaHTTPInput,
-  LambdaHTTPOutput,
-} from './wrappers/awsHTTPLambda.js';
-export type {
-  LambdaKafkaConsumerInput,
-  LambdaKafkaConsumerOutput,
-} from './wrappers/awsKafkaConsumerLambda.js';
-export type {
-  LambdaLogSubscriberInput,
-  LambdaLogSubscriberOutput,
-} from './wrappers/awsLogSubscriberLambda.js';
-export type { LambdaS3Input, LambdaS3Output } from './wrappers/awsS3Lambda.js';
-export type {
-  LambdaTransformerInput,
-  LambdaTransformerOutput,
-} from './wrappers/awsTransformerLambda.js';
+export type * from './wrappers/wrapConsumerHandlerForAWSLambda.js';
+import initWrapConsumerHandlerForAWSLambda from './wrappers/wrapConsumerHandlerForAWSLambda.js';
+export { initWrapConsumerHandlerForAWSLambda };
+export type * from './wrappers/wrapCronHandlerForAWSLambda.js';
+import initWrapCronHandlerForAWSLambda from './wrappers/wrapCronHandlerForAWSLambda.js';
+export { initWrapCronHandlerForAWSLambda };
+export type * from './wrappers/wrapRouteHandlerForAWSLambda.js';
+import initWrapRouteHandlerForAWSLambda from './wrappers/wrapRouteHandlerForAWSLambda.js';
+export { initWrapRouteHandlerForAWSLambda };
+export type * from './wrappers/wrapKafkaConsumerHandlerForAWSLambda.js';
+import initWrapKafkaConsumerHandlerForAWSLambda from './wrappers/wrapKafkaConsumerHandlerForAWSLambda.js';
+export { initWrapKafkaConsumerHandlerForAWSLambda };
+export type * from './wrappers/wrapLogSubscriberHandlerForAWSLambda.js';
+import initWrapLogSubscriberHandlerForAWSLambda from './wrappers/wrapLogSubscriberHandlerForAWSLambda.js';
+export { initWrapLogSubscriberHandlerForAWSLambda };
+export type * from './wrappers/wrapS3HandlerForAWSLambda.js';
+import initWrapS3HandlerForAWSLambda from './wrappers/wrapS3HandlerForAWSLambda.js';
+export { initWrapS3HandlerForAWSLambda };
+export type * from './wrappers/wrapTransformerHandlerForAWSLambda.js';
+import initWrapTransformerHandlerForAWSLambda from './wrappers/wrapTransformerHandlerForAWSLambda.js';
+export { initWrapTransformerHandlerForAWSLambda };
 
 export const DEFAULT_BUILD_PARALLELISM = 10;
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
@@ -76,54 +59,29 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
 export type WhookAWSLambdaBuildConfig = {
   BUILD_PARALLELISM?: number;
 };
-export type WhookAWSLambdaBaseConfiguration = {
-  type: string;
-  sourceOperationId?: string;
+export type WhookAWSLambdaBaseConfig = {
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
-  suffix?: string;
   memory?: number;
   timeout?: number;
 };
-export type WhookAWSLambdaBaseHTTPConfiguration = {
-  type: 'http';
-};
-export type WhookAWSLambdaBaseCronConfiguration = {
-  type: 'cron';
-  schedules: {
-    rule: string;
-    body?: JsonValue;
-    enabled: boolean;
-  }[];
-};
-export type WhookAWSLambdaBaseConsumerConfiguration = {
-  type: 'consumer';
+export type WhookAWSLambdaRouteConfig = WhookAWSLambdaBaseConfig;
+export type WhookAWSLambdaCronConfig = WhookAWSLambdaBaseConfig;
+export type WhookAWSLambdaConsumerConfig = WhookAWSLambdaBaseConfig & {
   enabled: boolean;
 };
-export type WhookAWSLambdaBaseTransformerConfiguration = {
-  type: 'transformer';
+export type WhookAWSLambdaTransformerConfig = WhookAWSLambdaBaseConfig & {
   enabled: boolean;
 };
-export type WhookAWSLambdaBaseKafkaConsumerConfiguration = {
-  type: 'kafka';
+export type WhookAWSLambdaKafkaConsumerConfig = WhookAWSLambdaBaseConfig & {
   enabled: boolean;
 };
-export type WhookAWSLambdaBaseLogSubscriberConfiguration = {
-  type: 'log';
+export type WhookAWSLambdaLogSubscriberConfig = WhookAWSLambdaBaseConfig & {
   enabled: boolean;
 };
-export type WhookAWSLambdaBaseS3Configuration = {
-  type: 's3';
+export type WhookAWSLambdaS3Config = WhookAWSLambdaBaseConfig & {
   enabled: boolean;
 };
-export type WhookAWSLambdaConfiguration =
-  | WhookAWSLambdaBaseHTTPConfiguration
-  | WhookAWSLambdaBaseCronConfiguration
-  | WhookAWSLambdaBaseConsumerConfiguration
-  | WhookAWSLambdaBaseTransformerConfiguration
-  | WhookAWSLambdaBaseKafkaConsumerConfiguration
-  | WhookAWSLambdaBaseLogSubscriberConfiguration
-  | WhookAWSLambdaBaseS3Configuration;
 
 const cprAsync = promisify(cpr) as (
   source: string,
@@ -160,18 +118,17 @@ export async function runBuild(
       compiler,
       log,
       $autoload,
-      API,
+      DEFINITIONS,
       buildInitializer,
-    }: WhookAWSLambdaBuildConfig &
-      WhookAWSLambdaBuildConfig & {
-        APP_ENV: string;
-        PROJECT_DIR: string;
-        compiler: WhookCompilerService;
-        log: LogService;
-        $autoload: Autoloader<Initializer<Dependencies, Service>>;
-        API: OpenAPI;
-        buildInitializer: BuildInitializer;
-      } = await $.run([
+    }: WhookAWSLambdaBuildConfig & {
+      APP_ENV: string;
+      PROJECT_DIR: string;
+      compiler: WhookCompilerService;
+      log: LogService;
+      $autoload: Autoloader<Initializer<Dependencies, Service>>;
+      DEFINITIONS: WhookDefinitions;
+      buildInitializer: BuildInitializer;
+    } = await $.run([
       'APP_ENV',
       '?BUILD_PARALLELISM',
       'PROJECT_DIR',
@@ -179,52 +136,30 @@ export async function runBuild(
       'compiler',
       'log',
       '$autoload',
-      'API',
+      'DEFINITIONS',
       'buildInitializer',
     ]);
 
     log('info', 'AWS Lambda build Environment initialized 🚀🌕');
 
-    const operations: OpenAPIOperation<
-      ExpressiveJSONSchema,
-      OpenAPIExtension
-    >[] = [];
+    const handlerNames = Object.keys(DEFINITIONS.configs).filter(
+      (aHandlerName) => handlerName === aHandlerName || !handlerName,
+    );
 
-    for (const pathItem of Object.values(API.paths || {})) {
-      for (const operation of Object.values(pathItemToOperationMap(pathItem))) {
-        if (
-          !handlerName ||
-          handlerName === operation.operationId ||
-          ('x-whook' in operation &&
-            typeof operation['x-whook'] === 'object' &&
-            operation['x-whook'] &&
-            'sourceOperationId' in operation['x-whook'] &&
-            typeof operation['x-whook'].sourceOperationId === 'string' &&
-            handlerName === operation['x-whook'].sourceOperationId)
-        ) {
-          operations.push(
-            operation as OpenAPIOperation<
-              ExpressiveJSONSchema,
-              OpenAPIExtension
-            >,
-          );
-        }
-      }
-    }
+    log('warning', `📃 - ${handlerNames.length} handlerNames to process.`);
 
-    log('warning', `📃 - ${operations.length} operations to process.`);
-
-    await processOperations(
+    await processHandlers(
       {
         APP_ENV,
         BUILD_PARALLELISM: BUILD_PARALLELISM || DEFAULT_BUILD_PARALLELISM,
         PROJECT_DIR,
+        DEFINITIONS,
         compiler,
         log,
         $autoload,
         buildInitializer,
       },
-      operations,
+      handlerNames,
     );
     await $.destroy();
   } catch (err) {
@@ -235,11 +170,12 @@ export async function runBuild(
   }
 }
 
-async function processOperations(
+async function processHandlers(
   {
     APP_ENV,
     BUILD_PARALLELISM,
     PROJECT_DIR,
+    DEFINITIONS,
     compiler,
     log,
     $autoload,
@@ -247,98 +183,94 @@ async function processOperations(
   }: WhookAWSLambdaBuildConfig & {
     APP_ENV: string;
     PROJECT_DIR: string;
+    DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader<Initializer<Dependencies, Service>>;
     buildInitializer: BuildInitializer;
   },
-  operations: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>[],
+  handlerNames: string[],
 ): Promise<void> {
-  const operationsLeft = operations.slice(BUILD_PARALLELISM);
+  const handlerNamesLeft = handlerNames.slice(BUILD_PARALLELISM);
 
   await Promise.all(
-    operations.slice(0, BUILD_PARALLELISM).map((operation) =>
-      buildAnyLambda(
+    handlerNames.slice(0, BUILD_PARALLELISM).map((handlerName) =>
+      buildHandler(
         {
           APP_ENV,
           PROJECT_DIR,
+          DEFINITIONS,
           compiler,
           log,
           buildInitializer,
         },
-        operation,
+        handlerName,
       ),
     ),
   );
 
-  if (operationsLeft.length) {
-    log('info', `📃 - ${operationsLeft.length} operations left.`);
-    return processOperations(
+  if (handlerNamesLeft.length) {
+    log('info', `📃 - ${handlerNamesLeft.length} handlerNames left.`);
+    return processHandlers(
       {
         APP_ENV,
         BUILD_PARALLELISM,
         PROJECT_DIR,
+        DEFINITIONS,
         compiler,
         log,
         $autoload,
         buildInitializer,
       },
-      operationsLeft,
+      handlerNamesLeft,
     );
   }
-  log('info', '🤷 - No more operations.');
+  log('info', '🤷 - No more handlerNames.');
 }
 
-async function buildAnyLambda(
+async function buildHandler(
   {
     APP_ENV,
     PROJECT_DIR,
+    DEFINITIONS,
     compiler,
     log,
     buildInitializer,
   }: {
     APP_ENV: string;
     PROJECT_DIR: string;
+    DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
     log: LogService;
     buildInitializer: BuildInitializer;
   },
-  operation: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
+  handlerName: string,
 ): Promise<void> {
-  const { operationId } = operation;
-
   try {
-    const whookConfig = (operation['x-whook'] || {
-      type: 'http',
-    }) as unknown as WhookAWSLambdaConfiguration & WhookRouteConfig;
-    const operationType = whookConfig.type || 'http';
-    const sourceOperationId = whookConfig.sourceOperationId;
-    const finalEntryPoint =
-      (sourceOperationId ? sourceOperationId : operationId) +
-      (whookConfig.suffix || '');
+    const definition = DEFINITIONS.configs[handlerName];
 
-    log('warning', `🏗 - Building ${operationType} "${finalEntryPoint}"...`);
+    if (definition.type === 'command') {
+      log('warning', `🚮 - Skipping "${handlerName}"...`);
+      return;
+    }
 
-    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, finalEntryPoint);
+    log('warning', `🏗 - Building ${handlerName}...`);
+
+    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, handlerName);
     const srcPath = join(PROJECT_DIR, 'src');
     const srcRelativePath = relative(lambdaPath, srcPath);
 
     const initializerContent = (
-      await buildInitializer([
-        `OPERATION_HANDLER_${finalEntryPoint}`,
-        'process',
-      ])
+      await buildInitializer([`MAIN_HANDLER_${handlerName}`, 'process'])
     ).replaceAll(pathToFileURL(srcPath).toString(), srcRelativePath);
-    const indexContent = await buildLambdaIndex(
-      `OPERATION_HANDLER_${finalEntryPoint}`,
-    );
+    const indexContent = await buildHandlerIndex(`MAIN_HANDLER_${handlerName}`);
 
     await mkdirp(lambdaPath);
     await Promise.all([
       copyStaticFiles(
         { PROJECT_DIR, log },
         lambdaPath,
-        whookConfig.staticFiles || [],
+        definition.config?.staticFiles || [],
       ),
       ensureFile(
         { log },
@@ -347,15 +279,19 @@ async function buildAnyLambda(
       ),
       ensureFile({ log }, join(lambdaPath, 'main.js'), indexContent),
     ]);
-    await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
+    await buildFinalHandler(
+      { DEFINITIONS, compiler, log },
+      lambdaPath,
+      handlerName,
+    );
   } catch (err) {
-    log('error', `Error building "${operationId}"...`);
+    log('error', `💥 - Error building "${handlerName}"...`);
     log('error-stack', printStackTrace(err as Error));
-    throw YError.wrap(err as Error, 'E_LAMBDA_BUILD', operationId);
+    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', handlerName);
   }
 }
 
-async function buildLambdaIndex(name: string): Promise<string> {
+async function buildHandlerIndex(handlerName: string): Promise<string> {
   return `// Automatically generated by \`@whook/aws-lambda\`
 import { initialize } from './initialize.js';
 
@@ -364,28 +300,30 @@ const services = await initialize();
 export const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
-  return await services['${name}'](event, context);
+  return await services['${handlerName}'](event, context);
 };
 
 export default handler;
 `;
 }
 
-async function buildFinalLambda(
+async function buildFinalHandler(
   {
+    DEFINITIONS,
     compiler,
     log,
   }: {
+    DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
     log: LogService;
   },
   lambdaPath: string,
-  whookConfig: WhookAWSLambdaConfiguration & WhookRouteConfig,
+  handlerName: string,
 ): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings, extension } = await compiler(
     entryPoint,
-    whookConfig.compilerOptions,
+    DEFINITIONS[handlerName]?.config?.compilerOptions,
   );
 
   await Promise.all([

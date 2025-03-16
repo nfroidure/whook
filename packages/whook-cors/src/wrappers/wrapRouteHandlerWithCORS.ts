@@ -10,9 +10,9 @@ import {
   type WhookRouteDefinition,
   type WhookRouteHandlerParameters,
 } from '@whook/whook';
-import { type LogService } from 'common-services';
+import { noop, type LogService } from 'common-services';
 
-export type CORSConfig = {
+export type WhookCORSOptions = {
   'Access-Control-Allow-Origin': string;
   'Access-Control-Allow-Headers': string;
   'Access-Control-Expose-Headers'?: string;
@@ -21,21 +21,21 @@ export type CORSConfig = {
   'Access-Control-Allow-Credentials'?: 'true';
 };
 export type WhookCORSConfig = {
-  CORS: CORSConfig;
+  CORS: WhookCORSOptions;
 };
 export type WhookCORSDependencies = WhookCORSConfig & {
-  log: LogService;
+  log?: LogService;
 };
 
-export type WhookAPIOperationCORSConfig = {
+export type WhookCORSRouteConfig = {
   cors?:
     | {
         type: 'merge';
-        value: Partial<CORSConfig>;
+        value: Partial<WhookCORSOptions>;
       }
     | {
         type: 'replace';
-        value: CORSConfig;
+        value: WhookCORSOptions;
       };
 };
 
@@ -52,7 +52,7 @@ export type WhookAPIOperationCORSConfig = {
  */
 async function initWrapRouteHandlerWithCORS({
   CORS,
-  log,
+  log = noop,
 }: WhookCORSDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the CORS wrapper.');
 
@@ -68,7 +68,7 @@ async function initWrapRouteHandlerWithCORS({
 }
 
 async function handleWithCORS(
-  { CORS, log }: WhookCORSDependencies,
+  { CORS, log = noop }: WhookCORSDependencies,
   handler: WhookRouteHandler,
   parameters: WhookRouteHandlerParameters,
   definition: WhookRouteDefinition,

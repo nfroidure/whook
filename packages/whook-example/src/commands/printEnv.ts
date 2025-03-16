@@ -1,4 +1,4 @@
-import { extra, autoService } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
 import {
@@ -52,8 +52,6 @@ To implement a command, just write a function that takes
  injected services as a first argument and return the
  command as an asynchronous function.
 */
-export default extra(definition, autoService(initPrintEnvCommand));
-
 async function initPrintEnvCommand({
   ENV,
   log,
@@ -73,3 +71,5 @@ async function initPrintEnvCommand({
     log('info', `${JSON.stringify(keysOnly ? Object.keys(ENV) : ENV)}`);
   };
 }
+
+export default location(autoService(initPrintEnvCommand), import.meta.url);

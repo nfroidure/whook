@@ -1,4 +1,4 @@
-import { extra, autoService } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import miniquery from 'miniquery';
 import { type AppConfig } from 'application-services';
@@ -45,8 +45,6 @@ export const definition = {
     },
   ],
 } as const satisfies WhookCommandDefinition;
-
-export default extra(definition, autoService(initConfigCommand));
 
 async function initConfigCommand({
   APP_CONFIG,
@@ -104,3 +102,5 @@ async function initConfigCommand({
     );
   };
 }
+
+export default location(autoService(initConfigCommand), import.meta.url);

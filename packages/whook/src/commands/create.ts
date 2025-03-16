@@ -1,4 +1,4 @@
-import { extra, autoService } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import camelCase from 'camelcase';
@@ -94,8 +94,6 @@ export const definition = {
     },
   ],
 } as const satisfies WhookCommandDefinition;
-
-export default extra(definition, autoService(initCreateCommand));
 
 async function initCreateCommand({
   PROJECT_DIR,
@@ -591,7 +589,7 @@ function buildCommandSource(
 ) {
   const upperCamelizedName = name[0].toLocaleUpperCase() + name.slice(1);
 
-  return `import { extra, autoService, location } from 'knifecycle';${imports}
+  return `import { location, autoService } from 'knifecycle';${imports}
 
 export const definition = {
   name: '${name}',
@@ -623,3 +621,5 @@ export default location(
 );
 `;
 }
+
+export default location(autoService(initCreateCommand), import.meta.url);

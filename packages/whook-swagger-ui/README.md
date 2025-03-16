@@ -59,7 +59,7 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 ```diff
 +import {
 +   type WhookSwaggerUIEnv,
-+   type WhookAPIOperationSwaggerConfig,
++   type WhookSwaggerUIRouteConfig,
 +   type WhookSwaggerUIConfig,
 +} from '@whook/swagger-ui';
 
@@ -79,24 +79,17 @@ declare module 'application-services' {
   export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs, WhookSwaggerUIConfig {}
-
-  // ...
-
-  export interface WhookRouteDefinition<
-    T extends Record<string, unknown> = Record<string, unknown>,
-    U extends {
-      [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-    } = unknown,
-    V extends Record<string, unknown> = Record<string, unknown>,
-  > extends WhookBaseAPIHandlerDefinition<T, U> {
-    operation: U & WhookAPIOperation<
-        T &
-+      WhookAPIOperationSwaggerConfig &
-      WhookAPIOperationCORSConfig
-    >;
-  }
-
 }
+
+// ...
+
+declare module '@whook/whook' {
+  export interface WhookRouteConfig
+    extends WhookBaseRouteConfig,
++      WhookSwaggerUIRouteConfig,
+      WhookCORSRouteConfig {}
+}
+
 ```
 
 And add the SwaggerUI config (usually in `src/config/common/config.js`):

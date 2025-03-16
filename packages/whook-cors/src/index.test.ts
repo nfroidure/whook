@@ -1,18 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { jest, describe, test, expect, beforeEach } from '@jest/globals';
 import {
+  wrapDefinitionsWithCORS,
   initWrapRouteHandlerWithCORS,
   initOptionsWithCORS,
-  augmentAPIWithCORS,
 } from './index.js';
 import { service } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import { type CORSConfig } from './index.js';
-import { type WhookRouteDefinition, type WhookOpenAPI } from '@whook/whook';
+import { type WhookCORSOptions } from './index.js';
+import {
+  type WhookRouteDefinition,
+  type WhookDefinitions,
+  type WhookDefinitionsDependencies,
+} from '@whook/whook';
 import { type LogService } from 'common-services';
 
 describe('initWrapRouteHandlerWithCORS', () => {
-  const CORS: CORSConfig = {
+  const CORS: WhookCORSOptions = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': [
@@ -250,151 +254,494 @@ describe('initWrapRouteHandlerWithCORS', () => {
 });
 
 describe('augmentAPIWithCORS()', () => {
+  const log = jest.fn<LogService>();
+
+  beforeEach(() => {
+    log.mockReset();
+  });
+
   test('should work', async () => {
-    expect(
-      await augmentAPIWithCORS({
-        openapi: '3.1.0',
-        info: {
-          version: '1.0.0',
-          title: 'Sample OpenAPI',
-          description: 'A sample OpenAPI file for testing purpose.',
+    const DEFINITIONS: WhookDefinitions = {
+      components: {
+        securitySchemes: {
+          oAuth2: {
+            type: 'oauth2',
+            flows: {},
+          },
         },
-        components: {
-          securitySchemes: {
-            oAuth2: {
-              type: 'oauth2',
-              flows: {},
+        schemas: {
+          user: {
+            type: 'object',
+            additionalProperties: true,
+          },
+        },
+        parameters: {
+          userId: {
+            in: 'path',
+            name: 'userId',
+            required: true,
+            schema: {
+              type: 'number',
             },
           },
-          schemas: {
-            user: {
-              type: 'object',
-              additionalProperties: true,
+          full: {
+            in: 'query',
+            name: 'full',
+            required: true,
+            schema: {
+              type: 'boolean',
             },
           },
-          parameters: {
-            userId: {
-              in: 'path',
-              name: 'userId',
-              required: true,
-              schema: {
-                type: 'number',
-              },
-            },
-            full: {
-              in: 'query',
-              name: 'full',
-              required: true,
-              schema: {
-                type: 'boolean',
-              },
-            },
-            retry: {
-              in: 'query',
-              name: 'retry',
-              required: false,
-              schema: {
-                type: 'boolean',
-              },
+          retry: {
+            in: 'query',
+            name: 'retry',
+            required: false,
+            schema: {
+              type: 'boolean',
             },
           },
         },
-        paths: {
-          '/ping': {
-            options: {
-              operationId: 'optionsPing',
-              summary: 'Provides ping options.',
-              responses: {
-                '200': {
-                  description: 'Ping options',
-                },
-              },
-            },
-            get: {
-              operationId: 'getPing',
-              summary: "Checks API's availability.",
-              responses: {
-                '200': {
-                  description: 'Pong',
-                },
+      },
+      paths: {
+        '/ping': {
+          options: {
+            operationId: 'optionsPing',
+            summary: 'Provides ping options.',
+            responses: {
+              '200': {
+                description: 'Ping options',
               },
             },
           },
-          '/users/{userid}': {
-            head: {
-              operationId: 'getUser',
-              summary: 'Return a user.',
-              security: [
-                {
-                  oAuth2: ['user'],
-                },
-              ],
-              parameters: [
-                {
-                  $ref: '#/components/parameters/userId',
-                },
-                {
-                  $ref: '#/components/parameters/full',
-                },
-                {
-                  $ref: '#/components/parameters/retry',
-                },
-              ],
-              responses: {
-                '200': {
-                  description: 'The user',
-                },
+          get: {
+            operationId: 'getPing',
+            summary: "Checks API's availability.",
+            responses: {
+              '200': {
+                description: 'Pong',
               },
             },
-            get: {
-              operationId: 'getUser',
-              summary: 'Return a user.',
-              security: [
-                {
-                  oAuth2: ['user'],
-                },
-              ],
-              parameters: [
-                {
-                  $ref: '#/components/parameters/userId',
-                },
-                {
-                  $ref: '#/components/parameters/full',
-                },
-                {
-                  $ref: '#/components/parameters/retry',
-                },
-              ],
-              responses: {
-                '200': {
-                  description: 'The user',
-                  content: {
-                    'application/json': {
-                      schema: {
-                        $ref: '#/components/schemas/user',
-                      },
+          },
+        },
+        '/users/{userid}': {
+          head: {
+            operationId: 'headUser',
+            summary: 'Return a user.',
+            security: [
+              {
+                oAuth2: ['user'],
+              },
+            ],
+            parameters: [
+              {
+                $ref: '#/components/parameters/userId',
+              },
+              {
+                $ref: '#/components/parameters/full',
+              },
+              {
+                $ref: '#/components/parameters/retry',
+              },
+            ],
+            responses: {
+              '200': {
+                description: 'The user',
+              },
+            },
+          },
+          get: {
+            operationId: 'getUser',
+            summary: 'Return a user.',
+            security: [
+              {
+                oAuth2: ['user'],
+              },
+            ],
+            parameters: [
+              {
+                $ref: '#/components/parameters/userId',
+              },
+              {
+                $ref: '#/components/parameters/full',
+              },
+              {
+                $ref: '#/components/parameters/retry',
+              },
+            ],
+            responses: {
+              '200': {
+                description: 'The user',
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/user',
                     },
                   },
                 },
               },
             },
           },
-          '/crons/tokens': {
-            post: {
-              operationId: 'ping',
-              'x-whook': {
-                type: 'cron',
-              },
-              summary: "Checks API's availability.",
-              responses: {
-                '200': {
-                  description: 'Pong',
-                },
+        },
+        '/crons/tokens': {
+          post: {
+            operationId: 'ping',
+            'x-whook': {
+              type: 'cron',
+            },
+            summary: "Checks API's availability.",
+            responses: {
+              '200': {
+                description: 'Pong',
               },
             },
           },
         },
-      } as WhookOpenAPI),
-    ).toMatchSnapshot();
+      },
+      security: [],
+      configs: {
+        optionsPing: {
+          type: 'route',
+          path: '/ping',
+          method: 'options',
+          config: {},
+          operation: {} as Extract<
+            WhookDefinitions['configs'][string],
+            { type: 'route' }
+          >['operation'],
+        },
+        getPing: {
+          type: 'route',
+          path: '/ping',
+          method: 'get',
+          config: {},
+          operation: {} as Extract<
+            WhookDefinitions['configs'][string],
+            { type: 'route' }
+          >['operation'],
+        },
+        headUser: {
+          type: 'route',
+          path: '/users/{userid}',
+          method: 'head',
+          config: {},
+          operation: {} as Extract<
+            WhookDefinitions['configs'][string],
+            { type: 'route' }
+          >['operation'],
+        },
+        getUser: {
+          type: 'route',
+          path: '/users/{userid}',
+          method: 'get',
+          config: {},
+          operation: {} as Extract<
+            WhookDefinitions['configs'][string],
+            { type: 'route' }
+          >['operation'],
+        },
+        ping: {
+          type: 'route',
+          path: '/crons/tokens',
+          method: 'post',
+          config: {},
+          operation: {} as Extract<
+            WhookDefinitions['configs'][string],
+            { type: 'route' }
+          >['operation'],
+        },
+      },
+    };
+
+    const initDefinitions = wrapDefinitionsWithCORS(async () => DEFINITIONS);
+    const NEW_DEFININIONS = await initDefinitions({
+      log,
+    } as unknown as WhookDefinitionsDependencies);
+
+    expect({
+      NEW_DEFININIONS,
+      logCalls: log.mock.calls,
+    }).toMatchInlineSnapshot(`
+{
+  "NEW_DEFININIONS": {
+    "components": {
+      "parameters": {
+        "full": {
+          "in": "query",
+          "name": "full",
+          "required": true,
+          "schema": {
+            "type": "boolean",
+          },
+        },
+        "retry": {
+          "in": "query",
+          "name": "retry",
+          "required": false,
+          "schema": {
+            "type": "boolean",
+          },
+        },
+        "userId": {
+          "in": "path",
+          "name": "userId",
+          "required": true,
+          "schema": {
+            "type": "number",
+          },
+        },
+      },
+      "schemas": {
+        "user": {
+          "additionalProperties": true,
+          "type": "object",
+        },
+      },
+      "securitySchemes": {
+        "oAuth2": {
+          "flows": {},
+          "type": "oauth2",
+        },
+      },
+    },
+    "configs": {
+      "getPing": {
+        "config": {},
+        "method": "get",
+        "operation": {},
+        "path": "/ping",
+        "type": "route",
+      },
+      "getUser": {
+        "config": {},
+        "method": "get",
+        "operation": {},
+        "path": "/users/{userid}",
+        "type": "route",
+      },
+      "headUser": {
+        "config": {},
+        "method": "head",
+        "operation": {},
+        "path": "/users/{userid}",
+        "type": "route",
+      },
+      "headUserCORS": {
+        "config": {
+          "private": true,
+          "targetHandler": "optionsWithCORS",
+        },
+        "method": "options",
+        "operation": {
+          "operationId": "headUserCORS",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+            {
+              "in": "query",
+              "name": "full",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "$ref": "#/components/parameters/retry",
+            },
+            {
+              "in": "query",
+              "name": "access_token",
+              "schema": {
+                "type": "string",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": [
+            "CORS",
+          ],
+        },
+        "path": "/users/{userid}",
+        "type": "route",
+      },
+      "optionsPing": {
+        "config": {},
+        "method": "options",
+        "operation": {},
+        "path": "/ping",
+        "type": "route",
+      },
+      "ping": {
+        "config": {},
+        "method": "post",
+        "operation": {},
+        "path": "/crons/tokens",
+        "type": "route",
+      },
+      "pingCORS": {
+        "config": {
+          "private": true,
+          "targetHandler": "optionsWithCORS",
+        },
+        "method": "options",
+        "operation": {
+          "operationId": "pingCORS",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": [
+            "CORS",
+          ],
+        },
+        "path": "/crons/tokens",
+        "type": "route",
+      },
+    },
+    "paths": {
+      "/crons/tokens": {
+        "options": {
+          "operationId": "pingCORS",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": [
+            "CORS",
+          ],
+        },
+        "post": {
+          "operationId": "ping",
+          "responses": {
+            "200": {
+              "description": "Pong",
+            },
+          },
+          "summary": "Checks API's availability.",
+          "x-whook": {
+            "type": "cron",
+          },
+        },
+      },
+      "/users/{userid}": {
+        "get": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+            {
+              "$ref": "#/components/parameters/full",
+            },
+            {
+              "$ref": "#/components/parameters/retry",
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/user",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "security": [
+            {
+              "oAuth2": [
+                "user",
+              ],
+            },
+          ],
+          "summary": "Return a user.",
+        },
+        "head": {
+          "operationId": "headUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+            {
+              "$ref": "#/components/parameters/full",
+            },
+            {
+              "$ref": "#/components/parameters/retry",
+            },
+          ],
+          "responses": {
+            "200": {
+              "description": "The user",
+            },
+          },
+          "security": [
+            {
+              "oAuth2": [
+                "user",
+              ],
+            },
+          ],
+          "summary": "Return a user.",
+        },
+        "options": {
+          "operationId": "headUserCORS",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+            {
+              "in": "query",
+              "name": "full",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+              },
+            },
+            {
+              "$ref": "#/components/parameters/retry",
+            },
+            {
+              "in": "query",
+              "name": "access_token",
+              "schema": {
+                "type": "string",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": [
+            "CORS",
+          ],
+        },
+      },
+    },
+    "security": [],
+  },
+  "logCalls": [
+    [
+      "warning",
+      "➕ - Wrapping definitions for CORS.",
+    ],
+  ],
+}
+`);
   });
 });

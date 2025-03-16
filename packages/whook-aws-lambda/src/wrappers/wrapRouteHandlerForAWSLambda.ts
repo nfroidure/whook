@@ -46,7 +46,6 @@ import stream from 'node:stream';
 import qs from 'qs';
 import { type TimeService, type LogService } from 'common-services';
 import {
-  PATH_ITEM_METHODS,
   ensureResolvedObject,
   type OpenAPIReference,
   type OpenAPIExtension,
@@ -61,14 +60,12 @@ import { type AppEnvVars } from 'application-services';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type JsonValue } from 'type-fest';
 
-export type LambdaHTTPInput = WhookRouteHandlerParameters;
-export type LambdaHTTPOutput = WhookResponse;
-
 const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
-export type WhookWrapConsumerLambdaDependencies = {
-  OPERATION_API: WhookOpenAPI;
+export type WhookAWSLambdaRouteHandlerWrapperDependencies = {
+  MAIN_API: WhookOpenAPI;
+  MAIN_DEFINITION: WhookRouteDefinition;
   ENV: AppEnvVars;
   DECODERS?: typeof DEFAULT_DECODERS;
   ENCODERS?: typeof DEFAULT_ENCODERS;
@@ -89,7 +86,7 @@ export type WhookWrapConsumerLambdaDependencies = {
  * Wrap an handler to make it work with a consumer AWS Lambda.
  * @param  {Object}   services
  * The services the wrapper depends on
- * @param  {Object}   services.OPERATION_API
+ * @param  {Object}   services.MAIN_DEFINITION
  * An OpenAPI definitition for that handler
  * @param  {Object}   services.ENV
  * The process environment
@@ -119,8 +116,9 @@ export type WhookWrapConsumerLambdaDependencies = {
  * A promise of an object containing the reshaped env vars.
  */
 
-async function initWrapHandlerForConsumerLambda({
-  OPERATION_API,
+async function initWrapRouteHandlerForAWSLambda({
+  MAIN_DEFINITION,
+  MAIN_API,
   ENV,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
@@ -135,21 +133,19 @@ async function initWrapHandlerForConsumerLambda({
   errorHandler,
   schemaValidators,
   log = noop,
-}: WhookWrapConsumerLambdaDependencies): Promise<WhookRouteHandlerWrapper> {
+}: WhookAWSLambdaRouteHandlerWrapperDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
-  const path = Object.keys(OPERATION_API.paths || {})[0];
-  const pathItem = OPERATION_API.paths?.[path];
+  const path = MAIN_DEFINITION.path;
+  const pathItem = MAIN_API.paths?.[path];
 
   if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
     throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
   }
 
-  const method = Object.keys(pathItem).filter((method) =>
-    PATH_ITEM_METHODS.includes(method as (typeof PATH_ITEM_METHODS)[number]),
-  )[0];
+  const method = MAIN_DEFINITION.method;
   const operation = pathItem[method];
 
   if (typeof operation === 'undefined' || '$ref' in operation) {
@@ -163,12 +159,12 @@ async function initWrapHandlerForConsumerLambda({
     config: operation['x-whook'],
   } as unknown as WhookRouteDefinition;
   const pathItemParameters = await resolveParameters(
-    { API: OPERATION_API, log },
+    { API: MAIN_API, log },
     pathItem.parameters || [],
   );
   const pathItemValidators = await createParametersValidators(
     {
-      API: OPERATION_API,
+      API: MAIN_API,
       COERCION_OPTIONS,
       schemaValidators,
     },
@@ -176,32 +172,32 @@ async function initWrapHandlerForConsumerLambda({
   );
 
   const operationParameters = await resolveParameters(
-    { API: OPERATION_API, log },
+    { API: MAIN_API, log },
     operation.parameters || [],
   );
   const ammendedParameters = await resolveParameters(
-    { API: OPERATION_API, log },
-    await extractOperationSecurityParameters({ API: OPERATION_API }, operation),
+    { API: MAIN_API, log },
+    await extractOperationSecurityParameters({ API: MAIN_API }, operation),
   );
   const operationValidators = await createParametersValidators(
     {
-      API: OPERATION_API,
+      API: MAIN_API,
       COERCION_OPTIONS,
       schemaValidators,
     },
     operationParameters.concat(ammendedParameters),
   );
   const bodyValidator = await prepareBodyValidator(
-    { API: OPERATION_API, schemaValidators },
+    { API: MAIN_API, schemaValidators },
     operation,
   );
 
   const consumableMediaTypes = await extractConsumableMediaTypes(
-    OPERATION_API,
+    MAIN_API,
     operation,
   );
   const produceableMediaTypes = await extractProduceableMediaTypes(
-    OPERATION_API,
+    MAIN_API,
     operation,
   );
 
@@ -211,7 +207,7 @@ async function initWrapHandlerForConsumerLambda({
     const wrappedHandler = handleForAWSHTTPLambda.bind(
       null,
       {
-        OPERATION_API,
+        MAIN_API,
         ENV,
         DECODERS,
         ENCODERS,
@@ -264,7 +260,7 @@ async function initWrapHandlerForConsumerLambda({
 async function handleForAWSHTTPLambda(
   {
     ENV,
-    OPERATION_API,
+    MAIN_API,
     DECODERS,
     ENCODERS,
     PARSED_HEADERS,
@@ -277,8 +273,8 @@ async function handleForAWSHTTPLambda(
     log,
     time,
   }: Omit<
-    Required<WhookWrapConsumerLambdaDependencies>,
-    'COERCION_OPTIONS' | 'schemaValidators'
+    Required<WhookAWSLambdaRouteHandlerWrapperDependencies>,
+    'MAIN_DEFINITION' | 'COERCION_OPTIONS' | 'schemaValidators'
   >,
   {
     handler,
@@ -396,7 +392,7 @@ async function handleForAWSHTTPLambda(
 
       const body = await getBody(
         {
-          API: OPERATION_API,
+          API: MAIN_API,
           DECODERS,
           PARSERS,
           bufferLimit,
@@ -431,7 +427,7 @@ async function handleForAWSHTTPLambda(
     const responseObject =
       operation.responses && operation.responses[response.status]
         ? await ensureResolvedObject(
-            OPERATION_API,
+            MAIN_API,
             operation.responses[response.status] as
               | OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
               | OpenAPIReference<
@@ -446,7 +442,7 @@ async function handleForAWSHTTPLambda(
       responseObject.content?.[responseContentType] &&
       'schema' in responseObject.content[responseContentType] &&
       ((await ensureResolvedObject(
-        OPERATION_API,
+        MAIN_API,
         responseObject.content?.[responseContentType].schema,
       )) as ExpressiveJSONSchema);
 
@@ -706,4 +702,4 @@ function obfuscateEventBody(obfuscator, rawBody) {
   return rawBody;
 }
 
-export default autoService(initWrapHandlerForConsumerLambda);
+export default autoService(initWrapRouteHandlerForAWSLambda);

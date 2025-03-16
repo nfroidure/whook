@@ -10,7 +10,7 @@ Wrap an handler to make it work with GCP Functions.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
 | services.PARSERS | <code>Object</code> |  | Request body parsers available |

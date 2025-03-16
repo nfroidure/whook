@@ -106,40 +106,52 @@ describe('runProcess', () => {
 {
   "debugCalls": [
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/node_modules/knifecycle/src/index.ts:995:22)",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
@@ -643,6 +655,9 @@ describe('runProcess', () => {
       "🈁 - Gathering the project commands modules.",
     ],
     [
+      "🈁 - Gathering the project consumers modules.",
+    ],
+    [
       "🈁 - Gathering the project crons modules.",
     ],
     [
@@ -707,6 +722,18 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/authorization".",
@@ -1132,13 +1159,16 @@ describe('runProcess', () => {
       "📖 - Picking the "SENSIBLE_PROPS" constant in the "APP_CONFIG" service properties.",
     ],
     [
-      "📖 - Picking the "SWAGGER_UI_CONFIG" constant in the "APP_CONFIG" service properties.",
+      "📖 - Picking the "SWAGGER_UI_OPTIONS" constant in the "APP_CONFIG" service properties.",
     ],
     [
       "📥 - Initializing the CORS wrapper.",
     ],
     [
       "🔐 - Initializing the authorization wrapper.",
+    ],
+    [
+      "🔒 - Initializing the SECURITY_DEFINITIONS service!",
     ],
     [
       "🔧 - Initializing auth mechanisms",
@@ -1166,6 +1196,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMAND_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/CONSUMER_DEFINITION_FILTER.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/CRON_DEFINITION_FILTER.js".",
@@ -1234,6 +1267,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMAND_DEFINITION_FILTER.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/CONSUMER_DEFINITION_FILTER.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js".",
     ],
     [
@@ -1292,6 +1328,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMAND_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/CONSUMER_DEFINITION_FILTER.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js".",
@@ -1363,6 +1402,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMAND_DEFINITION_FILTER.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CONSUMER_DEFINITION_FILTER.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CRON_DEFINITION_FILTER.ts".",
     ],
     [
@@ -1430,6 +1472,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "COMMAND_DEFINITION_FILTER" not found.",
+    ],
+    [
+      "🚫 - Module path of "CONSUMER_DEFINITION_FILTER" not found.",
     ],
     [
       "🚫 - Module path of "CRON_DEFINITION_FILTER" not found.",
@@ -1627,6 +1672,9 @@ describe('runProcess', () => {
     ],
     [
       "⚡ - Loading configurations from "file:///home/whoiam/projects/whook/packages/whook-example/src/config/local/config.ts".",
+    ],
+    [
+      "➕ - Wrapping definitions for CORS.",
     ],
     [
       "🎙️ - HTTP Server listening at "http://localhost:9999".",

@@ -84,6 +84,10 @@ const putUserModule: WhookRouteModule = {
     WhookRouteHandler
   >,
 };
+const SECURITY_DEFINITIONS = {
+  security: [],
+  securitySchemes: {},
+};
 
 describe('initDefinitions', () => {
   const log = jest.fn<LogService>();
@@ -98,6 +102,8 @@ describe('initDefinitions', () => {
         ROUTES_DEFINITIONS: {},
         COMMANDS_DEFINITIONS: {},
         CRONS_DEFINITIONS: {},
+        CONSUMERS_DEFINITIONS: {},
+        SECURITY_DEFINITIONS,
         log,
       });
 
@@ -114,8 +120,11 @@ describe('initDefinitions', () => {
       "requestBodies": {},
       "responses": {},
       "schemas": {},
+      "securitySchemes": {},
     },
+    "configs": {},
     "paths": {},
+    "security": [],
   },
   "logCalls": [
     [
@@ -131,6 +140,7 @@ describe('initDefinitions', () => {
       const DEFINITIONS = await initDefinitions({
         COMMANDS_DEFINITIONS: {},
         CRONS_DEFINITIONS: {},
+        CONSUMERS_DEFINITIONS: {},
         ROUTES_DEFINITIONS: {
           getUser: {
             url: 'src/routes/getUser.ts',
@@ -145,6 +155,7 @@ describe('initDefinitions', () => {
             module: putUserModule,
           },
         },
+        SECURITY_DEFINITIONS,
         log,
       });
 
@@ -178,6 +189,82 @@ describe('initDefinitions', () => {
           "type": "object",
         },
       },
+      "securitySchemes": {},
+    },
+    "configs": {
+      "getUser": {
+        "config": {
+          "environments": "all",
+          "private": false,
+        },
+        "method": "get",
+        "operation": {
+          "operationId": "getUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
+          ],
+        },
+        "path": "/users/{userId}",
+        "type": "route",
+      },
+      "putUser": {
+        "config": {
+          "environments": "all",
+          "private": false,
+        },
+        "method": "put",
+        "operation": {
+          "operationId": "putUser",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/userId",
+            },
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User",
+                },
+              },
+            },
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/User",
+                  },
+                },
+              },
+              "description": "The user",
+            },
+          },
+          "tags": [
+            "user",
+          ],
+        },
+        "path": "/users/{userId}",
+        "type": "route",
+      },
     },
     "paths": {
       "/users/{userId}": {
@@ -203,7 +290,6 @@ describe('initDefinitions', () => {
           "tags": [
             "user",
           ],
-          "x-whook": undefined,
         },
         "put": {
           "operationId": "putUser",
@@ -236,10 +322,10 @@ describe('initDefinitions', () => {
           "tags": [
             "user",
           ],
-          "x-whook": undefined,
         },
       },
     },
+    "security": [],
   },
   "logCalls": [
     [

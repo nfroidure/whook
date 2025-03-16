@@ -19,20 +19,41 @@ import {
   initMainHandler,
   type WhookOpenAPI,
   type WhookBuildConstantsService,
-  type WhookRoutesDefinitionsService,
   type WhookCronsDefinitionsService,
+  type WhookDefinitions,
   type WhookCronDefinition,
+  type WhookRouteDefinition,
+  type WhookRoutesDefinitionsService,
+  type WhookConsumersDefinitionsService,
+  type WhookConsumerDefinition,
 } from '@whook/whook';
-import initWrapHandlerForAWSConsumerLambda from '../wrappers/awsConsumerLambda.js';
-import initWrapHandlerForAWSHTTPLambda from '../wrappers/awsHTTPLambda.js';
-import initWrapHandlerForAWSLogSubscriberLambda from '../wrappers/awsLogSubscriberLambda.js';
-import initWrapHandlerForAWSTransformerLambda from '../wrappers/awsTransformerLambda.js';
-import initWrapHandlerForAWSCronLambda from '../wrappers/awsCronLambda.js';
-import initWrapHandlerForAWSKafkaConsumerLambda from '../wrappers/awsKafkaConsumerLambda.js';
-import initWrapHandlerForAWSS3Lambda from '../wrappers/awsS3Lambda.js';
+import initWrapConsumerHandlerForAWSLambda from '../wrappers/wrapConsumerHandlerForAWSLambda.js';
+import initWrapRouteHandlerForAWSLambda from '../wrappers/wrapRouteHandlerForAWSLambda.js';
+import initWrapLogSubscriberHandlerForAWSLambda from '../wrappers/wrapLogSubscriberHandlerForAWSLambda.js';
+import initWrapTransformerHandlerForAWSLambda from '../wrappers/wrapTransformerHandlerForAWSLambda.js';
+import initWrapCronHandlerForAWSLambda from '../wrappers/wrapCronHandlerForAWSLambda.js';
+import initWrapKafkaConsumerHandlerForAWSLambda from '../wrappers/wrapKafkaConsumerHandlerForAWSLambda.js';
+import initWrapS3HandlerForAWSLambda from '../wrappers/wrapS3HandlerForAWSLambda.js';
 import { type LogService } from 'common-services';
 import { cleanupOpenAPI } from 'ya-open-api-types';
-import { type WhookAWSLambdaConfiguration } from '../index.js';
+
+export type WhookAWSLambdaDefinition = {
+  name: string;
+} & (
+  | {
+      type: 'route';
+      definition: WhookRouteDefinition;
+      openAPI: WhookOpenAPI;
+    }
+  | {
+      type: 'cron';
+      definition: WhookCronDefinition;
+    }
+  | {
+      type: 'consumer';
+      definition: WhookConsumerDefinition;
+    }
+);
 
 export type WhookAWSLambdaAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;
@@ -42,39 +63,39 @@ export type WhookAWSLambdaAutoloadDependencies = {
 };
 
 export const AWS_WRAPPERS: Record<
-  WhookAWSLambdaConfiguration['type'],
+  string,
   {
     name: string;
     initializer: Initializer<Service, Dependencies>;
   }
 > = {
-  consumer: {
-    name: 'awsConsumerLambda',
-    initializer: initWrapHandlerForAWSConsumerLambda as any,
-  },
-  http: {
-    name: 'awsHTTPLambda',
-    initializer: initWrapHandlerForAWSHTTPLambda as any,
-  },
-  log: {
-    name: 'awsLogSubscriberLambda',
-    initializer: initWrapHandlerForAWSLogSubscriberLambda as any,
-  },
-  transformer: {
-    name: 'awsTransformerLambda',
-    initializer: initWrapHandlerForAWSTransformerLambda as any,
+  route: {
+    name: 'wrapRouteHandlerForAWSLambda',
+    initializer: initWrapRouteHandlerForAWSLambda as any,
   },
   cron: {
-    name: 'awsCronLambda',
-    initializer: initWrapHandlerForAWSCronLambda as any,
+    name: 'wrapCronHandlerForAWSLambda',
+    initializer: initWrapCronHandlerForAWSLambda as any,
+  },
+  consumer: {
+    name: 'wrapConsumerHandlerForAWSLambda',
+    initializer: initWrapConsumerHandlerForAWSLambda as any,
+  },
+  log: {
+    name: 'wrapLogSubscriberHandlerForAWSLambda',
+    initializer: initWrapLogSubscriberHandlerForAWSLambda as any,
+  },
+  transformer: {
+    name: 'wrapTransformerHandlerForAWSLambda',
+    initializer: initWrapTransformerHandlerForAWSLambda as any,
   },
   kafka: {
-    name: 'awsKafkaConsumerLambda',
-    initializer: initWrapHandlerForAWSKafkaConsumerLambda as any,
+    name: 'wrapKafkaConsumerHandlerForAWSLambda',
+    initializer: initWrapKafkaConsumerHandlerForAWSLambda as any,
   },
   s3: {
-    name: 'awsS3Lambda',
-    initializer: initWrapHandlerForAWSS3Lambda as any,
+    name: 'wrapS3HandlerForAWSLambda',
+    initializer: initWrapS3HandlerForAWSLambda as any,
   },
 };
 
@@ -88,77 +109,112 @@ const initializerWrapper: ServiceInitializerWrapper<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>
 > => {
   let API: WhookOpenAPI;
-  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  let DEFINITIONS: WhookDefinitions;
   let CRONS_DEFINITIONS: WhookCronsDefinitionsService;
-  const getAPIDefinition: (
-    serviceName: string,
-  ) => Promise<
-    [
-      WhookAWSLambdaConfiguration['type'],
-      string,
-      WhookOpenAPI | WhookCronDefinition,
-    ]
-  > = (() => {
-    return async (serviceName) => {
+  let CONSUMERS_DEFINITIONS: WhookConsumersDefinitionsService;
+  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  const getDefinition = (() => {
+    return async (serviceName: string): Promise<WhookAWSLambdaDefinition> => {
       const cleanedName = serviceName.split('_').pop() as string;
 
       API = API || (await $injector(['API'])).API;
-      ROUTES_DEFINITIONS =
-        ROUTES_DEFINITIONS ||
-        (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
-      CRONS_DEFINITIONS =
-        CRONS_DEFINITIONS ||
-        (await $injector(['CRONS_DEFINITIONS'])).CRONS_DEFINITIONS;
+      DEFINITIONS =
+        DEFINITIONS || (await $injector(['DEFINITIONS'])).DEFINITIONS;
 
-      if (CRONS_DEFINITIONS[cleanedName]?.module?.definition) {
-        return [
-          'cron',
-          cleanedName,
-          CRONS_DEFINITIONS[cleanedName]?.module?.definition,
-        ];
-      } else if (ROUTES_DEFINITIONS[cleanedName]?.module?.definition) {
-        const definition = ROUTES_DEFINITIONS[cleanedName]?.module?.definition;
+      const config = DEFINITIONS.configs[cleanedName as string];
 
-        return [
-          'http',
-          cleanedName,
-          (await cleanupOpenAPI({
-            ...API,
-            paths: {
-              [definition.path]: {
-                parameters: API?.paths?.[definition.path]?.parameters || [],
-                [definition.method]:
-                  API.paths?.[definition.path]?.[definition.method],
-              },
-            },
-          })) as WhookOpenAPI,
-        ];
+      if (!config) {
+        log('error', '💥 - Unable to find an AWS Lambda config!');
+        throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
       }
 
-      log('error', '💥 - Unable to find a lambda operation definition!');
-      throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
+      if (config.type === 'route') {
+        ROUTES_DEFINITIONS =
+          ROUTES_DEFINITIONS ||
+          (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
+
+        const openAPI = (await cleanupOpenAPI({
+          ...API,
+          paths: {
+            [config.path]: {
+              parameters: API?.paths?.[config.path]?.parameters || [],
+              [config.method]: API.paths?.[config.path]?.[config.method],
+            },
+          },
+        })) as WhookOpenAPI;
+
+        return {
+          name: cleanedName,
+          type: 'route',
+          openAPI,
+          definition:
+            ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
+        };
+      } else if (config.type === 'cron') {
+        CRONS_DEFINITIONS =
+          CRONS_DEFINITIONS ||
+          (await $injector(['CRONS_DEFINITIONS'])).CRONS_DEFINITIONS;
+
+        return {
+          name: cleanedName,
+          type: 'cron',
+          definition:
+            CRONS_DEFINITIONS[cleanedName]?.module?.definition || config,
+        };
+      } else if (config.type === 'consumer') {
+        CONSUMERS_DEFINITIONS =
+          CONSUMERS_DEFINITIONS ||
+          (await $injector(['CONSUMERS_DEFINITIONS'])).CONSUMERS_DEFINITIONS;
+
+        return {
+          name: cleanedName,
+          type: 'consumer',
+          definition:
+            CONSUMERS_DEFINITIONS[cleanedName]?.module?.definition || config,
+        };
+      }
+
+      log('error', '💥 - AWS Lambda does not support this definition!');
+      throw new YError('E_UNSUPPORTED_DEFINITION', serviceName, cleanedName);
     };
   })();
 
-  log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
+  log('debug', '🤖 - Initializing the AWS Lambdas `$autoload` build wrapper.');
 
   return async (serviceName) => {
-    if (serviceName.startsWith('OPERATION_API_')) {
-      const [, , OPERATION_API] = await getAPIDefinition(serviceName);
+    if (serviceName.startsWith('MAIN_API_')) {
+      const definition = await getDefinition(serviceName);
 
-      return constant(serviceName, OPERATION_API);
+      return constant(
+        serviceName,
+        definition.type === 'route' ? definition.openAPI : {},
+      );
     }
 
-    if (serviceName.startsWith('OPERATION_WRAPPER_')) {
-      const [type] = await getAPIDefinition(serviceName);
+    if (serviceName.startsWith('MAIN_DEFINITION_')) {
+      const { definition } = await getDefinition(serviceName);
+
+      return constant(serviceName, definition);
+    }
+
+    if (serviceName.startsWith('MAIN_WRAPPER_')) {
+      const { type } = await getDefinition(serviceName);
 
       return location(
         alsoInject(
           [
-            `OPERATION_API>${serviceName.replace(
-              'OPERATION_WRAPPER_',
-              'OPERATION_API_',
+            `MAIN_DEFINITION>${serviceName.replace(
+              'MAIN_WRAPPER_',
+              'MAIN_DEFINITION_',
             )}`,
+            ...(type === 'route'
+              ? [
+                  `MAIN_API>${serviceName.replace(
+                    'MAIN_WRAPPER_',
+                    'MAIN_API_',
+                  )}`,
+                ]
+              : []),
           ],
           AWS_WRAPPERS[type].initializer as any,
         ) as any,
@@ -166,23 +222,22 @@ const initializerWrapper: ServiceInitializerWrapper<
       ) as any;
     }
 
-    if (serviceName.startsWith('OPERATION_HANDLER_')) {
-      const [type, operationId] = await getAPIDefinition(serviceName);
+    if (serviceName.startsWith('MAIN_HANDLER_')) {
+      const { type, name, definition } = await getDefinition(serviceName);
+      const targetHandler = definition.config?.targetHandler || name;
 
       return location(
         alsoInject(
           [
-            `MAIN_WRAPPER>OPERATION_WRAPPER_${serviceName.replace(
-              'OPERATION_HANDLER_',
+            `MAIN_WRAPPER>MAIN_WRAPPER_${serviceName.replace(
+              'MAIN_HANDLER_',
               '',
             )}`,
             // TODO: Review it
             // Only inject wrappers for HTTP routes and
             // eventually inject other ones
-            ...(type !== 'http'
-              ? [`?WRAPPERS>${type.toUpperCase()}_WRAPPERS`]
-              : []),
-            `BASE_HANDLER>${operationId}`,
+            `?WRAPPERS>${type.toUpperCase()}S_WRAPPERS`,
+            `BASE_HANDLER>${targetHandler}`,
           ],
           initMainHandler,
         ) as any,

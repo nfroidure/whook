@@ -97,7 +97,7 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 + import { type WhookCompilerConfig } from '@whook/whook';
 + import {
 +   type WhookAWSLambdaBuildConfig,
-+   type WhookAPIOperationAWSLambdaConfig
++   type WhookAWSLambdaRouteConfig
 + } from '@whook/aws-lambda';
 
 declare module 'application-services' {
@@ -113,22 +113,21 @@ declare module 'application-services' {
 
 // ...
 
-declare module '@whook/whook' {
-  export interface WhookRouteDefinition<
-    T extends Record<string, unknown> = Record<string, unknown>,
-    U extends {
-      [K in keyof U]: K extends `x-${string}` ? Record<string, unknown> : never;
-    } = unknown,
-    V extends Record<string, unknown> = Record<string, unknown>,
-  > extends WhookBaseAPIHandlerDefinition<T, U> {
-    operation: U & WhookAPIOperation<
-        T &
-+       WhookAPIOperationAWSLambdaConfig<V> &
-      WhookAPIOperationCORSConfig
-    >;
-  }
 
+// ...
+
+declare module '@whook/whook' {
+  export interface WhookRouteConfig
+    extends WhookBaseRouteConfig,
++      WhookAWSLambdaRouteConfig,
+      WhookCORSRouteConfig {};
+
+  export interface WhookCronConfig
+-    extends WhookBaseCronConfig {}
++    extends WhookBaseCronConfig,
++      WhookAWSLambdaCronConfig {}
 }
+
 ```
 
 And add the AWS Lambda config (usually in `src/config/common/config.js`):
@@ -165,17 +164,17 @@ npm run build -- getPing
 # Debug
 
 You can easily test your functions builds by adding `@whook/aws-lambda` to your
-`WHOOK_PLUGINS` list. It provides you some commands like the `testHTTPLambda`
+`WHOOK_PLUGINS` list. It provides you some commands like the `testAWSLambdaRoute`
 one:
 
 ```sh
-npx whook testHTTPLambda --name getPing
+npx whook testAWSLambdaRoute --name getPing
 ```
 
 To get more insights when some errors happens:
 
 ```sh
-DEBUG=whook npm run dev -- testHTTPLambda --name getPing
+DEBUG=whook npm run dev -- testAWSLambdaRoute --name getPing
 ```
 
 ## Deployment
@@ -227,7 +226,7 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -244,7 +243,7 @@ Wrap an handler to make it work with cron AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -260,7 +259,7 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.ENV | <code>Object</code> |  | The process environment |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
@@ -286,7 +285,7 @@ Wrap an handler to make it work with a kafka AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -303,7 +302,7 @@ Wrap an handler to make it work with a log subscriber AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -320,7 +319,7 @@ Wrap an handler to make it work with a S3 AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
@@ -337,7 +336,7 @@ Wrap an handler to make it work with a transformer AWS Lambda.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services the wrapper depends on |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.OPERATION_API | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |

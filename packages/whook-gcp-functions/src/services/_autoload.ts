@@ -17,34 +17,28 @@ import {
   initBuildAutoload,
   initMainHandler,
   noop,
-  type WhookRouteConfig,
   type WhookOpenAPI,
   type WhookBuildConstantsService,
+  type WhookDefinitions,
+  type WhookRouteDefinition,
   type WhookRoutesDefinitionsService,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { cleanupOpenAPI } from 'ya-open-api-types';
-import { type WhookAPIOperationGCPFunctionConfig } from '../index.js';
-import initWrapHandlerForGoogleHTTPFunction from '../wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
+import initWrapRouteHandlerForGoogleHTTPFunction from '../wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
+
+export type GCPFunctionDefinition = {
+  name: string;
+  type: 'route';
+  definition: WhookRouteDefinition;
+  openAPI: WhookOpenAPI;
+};
 
 export type WhookGoogleFunctionsAutoloadDependencies = {
   BUILD_CONSTANTS?: WhookBuildConstantsService;
   $injector: Injector<Service>;
   $instance: Knifecycle;
   log?: LogService;
-};
-
-export const GCP_WRAPPERS: Record<
-  Required<WhookAPIOperationGCPFunctionConfig>['type'],
-  {
-    name: string;
-    initializer: Initializer<Service, Dependencies>;
-  }
-> = {
-  http: {
-    name: 'wrapRouteHandlerForGoogleHTTPFunction',
-    initializer: initWrapHandlerForGoogleHTTPFunction as any,
-  },
 };
 
 const initializerWrapper: ServiceInitializerWrapper<
@@ -57,83 +51,103 @@ const initializerWrapper: ServiceInitializerWrapper<
   (serviceName: string) => Promise<Initializer<Dependencies, Service>>
 > => {
   let API: WhookOpenAPI;
+  let DEFINITIONS: WhookDefinitions;
   let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
-  const getAPIDefinition: (
-    serviceName: string,
-  ) => Promise<[WhookRouteConfig['type'], string, WhookOpenAPI]> = (() => {
-    return async (serviceName) => {
-      const cleanedName = serviceName.split('_').pop();
+  const getDefinition = (() => {
+    return async (serviceName: string): Promise<GCPFunctionDefinition> => {
+      const cleanedName = serviceName.split('_').pop() as string;
 
       API = API || (await $injector(['API'])).API;
+      DEFINITIONS =
+        DEFINITIONS || (await $injector(['DEFINITIONS'])).DEFINITIONS;
       ROUTES_DEFINITIONS =
         ROUTES_DEFINITIONS ||
         (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
 
-      const definition =
-        ROUTES_DEFINITIONS[cleanedName as string]?.module?.definition;
+      const config = DEFINITIONS.configs[cleanedName as string];
 
-      if (!definition) {
-        log('error', '💥 - Unable to find a lambda operation definition!');
-        throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
+      if (!config) {
+        log('error', '💥 - Unable to find a GCP Function definition!');
+        throw new YError('E_DEFINITION_NOT_FOUND', serviceName, cleanedName);
       }
 
-      const OPERATION_API = (await cleanupOpenAPI({
+      if (!config || config.type !== 'route') {
+        log('error', '💥 - GCP Function only supports routes!');
+        throw new YError('E_UNSUPPORTED_DEFINITION', serviceName, cleanedName);
+      }
+
+      const openAPI = (await cleanupOpenAPI({
         ...API,
         paths: {
-          [definition.path]: {
-            parameters: API?.paths?.[definition.path]?.parameters || [],
-            [definition.method]:
-              API.paths?.[definition.path]?.[definition.method],
+          [config.path]: {
+            parameters: API?.paths?.[config.path]?.parameters || [],
+            [config.method]: API.paths?.[config.path]?.[config.method],
           },
         },
       })) as WhookOpenAPI;
 
-      return [
-        'http',
-        definition?.operation?.operationId as string,
-        OPERATION_API,
-      ];
+      return {
+        name: cleanedName,
+        type: 'route',
+        openAPI,
+        definition: ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
+      };
     };
   })();
 
-  log('debug', '🤖 - Initializing the `$autoload` build wrapper.');
+  log(
+    'debug',
+    '🤖 - Initializing the GCP Functions `$autoload` build wrapper.',
+  );
 
   return async (serviceName) => {
-    if (serviceName.startsWith('OPERATION_API_')) {
-      const [, , OPERATION_API] = await getAPIDefinition(serviceName);
+    if (serviceName.startsWith('MAIN_API_')) {
+      const definition = await getDefinition(serviceName);
 
-      return constant(serviceName, OPERATION_API);
+      return constant(
+        serviceName,
+        definition.type === 'route' ? definition.openAPI : {},
+      );
     }
 
-    if (serviceName.startsWith('OPERATION_WRAPPER_')) {
-      const type = (await getAPIDefinition(serviceName))[0] || 'http';
+    if (serviceName.startsWith('MAIN_DEFINITION_')) {
+      const { definition } = await getDefinition(serviceName);
 
+      return constant(serviceName, definition);
+    }
+
+    if (serviceName.startsWith('MAIN_WRAPPER_')) {
       return location(
         alsoInject(
           [
-            `OPERATION_API>${serviceName.replace(
-              'OPERATION_WRAPPER_',
-              'OPERATION_API_',
+            `MAIN_DEFINITION>${serviceName.replace(
+              'MAIN_WRAPPER_',
+              'MAIN_DEFINITION_',
+            )}`,
+            `MAIN_API>${serviceName.replace(
+              'MAIN_WRAPPER_',
+              'MAIN_API_',
             )}`,
           ],
-          GCP_WRAPPERS[type].initializer as any,
+          initWrapRouteHandlerForGoogleHTTPFunction as any,
         ) as any,
-        `@whook/gcp-functions/dist/wrappers/${GCP_WRAPPERS[type].name}.js`,
+        `@whook/gcp-functions/dist/wrappers/wrapRouteHandlerForGoogleHTTPFunction.js`,
       ) as any;
     }
 
-    if (serviceName.startsWith('OPERATION_HANDLER_')) {
-      const [type, operationId] = await getAPIDefinition(serviceName);
+    if (serviceName.startsWith('MAIN_HANDLER_')) {
+      const { type, name, definition } = await getDefinition(serviceName);
+      const targetHandler = definition.config?.targetHandler || name;
 
       return location(
         alsoInject(
           [
-            `MAIN_WRAPPER>OPERATION_WRAPPER_${serviceName.replace(
-              'OPERATION_HANDLER_',
+            `MAIN_WRAPPER>MAIN_WRAPPER_${serviceName.replace(
+              'MAIN_HANDLER_',
               '',
             )}`,
-            `?WRAPPERS>${(type || 'http').toUpperCase()}_WRAPPERS`,
-            `BASE_HANDLER>${operationId}`,
+            `?WRAPPERS>${type.toUpperCase()}S_WRAPPERS`,
+            `BASE_HANDLER>${targetHandler}`,
           ],
           initMainHandler,
         ) as any,

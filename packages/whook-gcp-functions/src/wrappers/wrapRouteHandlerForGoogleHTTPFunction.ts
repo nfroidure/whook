@@ -46,7 +46,6 @@ import {
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import {
-  PATH_ITEM_METHODS,
   ensureResolvedObject,
   type OpenAPIReference,
   type OpenAPIExtension,
@@ -54,8 +53,9 @@ import {
 } from 'ya-open-api-types';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 
-export type WhookWrapHTTPFunctionDependencies = {
-  OPERATION_API: WhookOpenAPI;
+export type WhookGCPFunctionRouteWrapperDependencies = {
+  MAIN_DEFINITION: WhookRouteDefinition;
+  MAIN_API: WhookOpenAPI;
   DECODERS?: typeof DEFAULT_DECODERS;
   ENCODERS?: typeof DEFAULT_ENCODERS;
   PARSERS?: typeof DEFAULT_PARSERS;
@@ -73,7 +73,7 @@ export type WhookWrapHTTPFunctionDependencies = {
  * Wrap an handler to make it work with GCP Functions.
  * @param  {Object}   services
  * The services the wrapper depends on
- * @param  {Object}   services.OPERATION_API
+ * @param  {Object}   services.MAIN_DEFINITION
  * An OpenAPI definitition for that handler
  * @param  {Object}   services.DECODERS
  * Request body decoders available
@@ -98,7 +98,8 @@ export type WhookWrapHTTPFunctionDependencies = {
  */
 
 async function initWrapRouteHandlerForGoogleHTTPFunction({
-  OPERATION_API,
+  MAIN_DEFINITION,
+  MAIN_API,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
   PARSERS = DEFAULT_PARSERS,
@@ -110,38 +111,30 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
   errorHandler,
   schemaValidators,
   log = noop,
-}: WhookWrapHTTPFunctionDependencies): Promise<WhookRouteHandlerWrapper> {
+}: WhookGCPFunctionRouteWrapperDependencies): Promise<WhookRouteHandlerWrapper> {
   log('debug', '📥 - Initializing the GCP Function wrapper.');
 
-  const path = Object.keys(OPERATION_API.paths || {})[0];
-  const pathItem = OPERATION_API.paths?.[path];
+  const path = MAIN_DEFINITION.path;
+  const pathItem = MAIN_API.paths?.[path];
 
   if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
     throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
   }
 
-  const method = Object.keys(pathItem).filter((method) =>
-    PATH_ITEM_METHODS.includes(method as (typeof PATH_ITEM_METHODS)[number]),
-  )[0];
+  const method = MAIN_DEFINITION.method;
   const operation = pathItem[method];
 
   if (typeof operation === 'undefined' || '$ref' in operation) {
     throw new YError('E_BAD_OPERATION', 'operation', operation);
   }
 
-  const definition = {
-    path,
-    method,
-    operation,
-    config: operation['x-whook'],
-  } as unknown as WhookRouteDefinition;
   const pathItemParameters = await resolveParameters(
-    { API: OPERATION_API, log },
+    { API: MAIN_API, log },
     pathItem.parameters || [],
   );
   const pathItemValidators = await createParametersValidators(
     {
-      API: OPERATION_API,
+      API: MAIN_API,
       COERCION_OPTIONS,
       schemaValidators,
     },
@@ -149,33 +142,33 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
   );
 
   const operationParameters = await resolveParameters(
-    { API: OPERATION_API, log },
+    { API: MAIN_API, log },
     operation.parameters || [],
   );
   const ammendedParameters = await resolveParameters(
-    { API: OPERATION_API, log },
-    await extractOperationSecurityParameters({ API: OPERATION_API }, operation),
+    { API: MAIN_API, log },
+    await extractOperationSecurityParameters({ API: MAIN_API }, operation),
   );
   const operationValidators = await createParametersValidators(
     {
-      API: OPERATION_API,
+      API: MAIN_API,
       COERCION_OPTIONS,
       schemaValidators,
     },
     operationParameters.concat(ammendedParameters),
   );
   const bodyValidator = await prepareBodyValidator(
-    { API: OPERATION_API, schemaValidators },
+    { API: MAIN_API, schemaValidators },
     operation,
   );
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
   const consumableMediaTypes = await extractConsumableMediaTypes(
-    OPERATION_API,
+    MAIN_API,
     operation,
   );
   const produceableMediaTypes = await extractProduceableMediaTypes(
-    OPERATION_API,
+    MAIN_API,
     operation,
   );
   const parameters = pathItemParameters
@@ -194,7 +187,8 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
     const wrappedHandler = handleForAWSHTTPFunction.bind(
       null,
       {
-        OPERATION_API,
+        MAIN_DEFINITION,
+        MAIN_API,
         DECODERS,
         ENCODERS,
         PARSERS,
@@ -232,7 +226,7 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
         produceableMediaTypes,
         bodyValidator,
       },
-      definition,
+      MAIN_DEFINITION,
     );
 
     return wrappedHandler as unknown as WhookRouteHandler;
@@ -243,7 +237,7 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
 
 async function handleForAWSHTTPFunction(
   {
-    OPERATION_API,
+    MAIN_API,
     DECODERS,
     ENCODERS,
     PARSERS,
@@ -253,7 +247,7 @@ async function handleForAWSHTTPFunction(
     errorHandler,
     log,
   }: Omit<
-    Required<WhookWrapHTTPFunctionDependencies>,
+    Required<WhookGCPFunctionRouteWrapperDependencies>,
     'COERCION_OPTIONS' | 'schemaValidators' | 'queryParserBuilder'
   >,
   {
@@ -290,7 +284,6 @@ async function handleForAWSHTTPFunction(
   );
 
   const request = await gcpfReqToRequest(req);
-  let parameters;
   let response;
   let responseLog;
   let responseSpec;
@@ -398,7 +391,7 @@ async function handleForAWSHTTPFunction(
 
       const body = await getBody(
         {
-          API: OPERATION_API,
+          API: MAIN_API,
           DECODERS,
           PARSERS,
           bufferLimit,
@@ -417,7 +410,7 @@ async function handleForAWSHTTPFunction(
       throw YHTTPError.cast(err as Error, 400);
     }
 
-    response = await executeHandler(definition, handler, parameters);
+    response = await executeHandler(definition, handler, parametersValues);
 
     response.headers = response.headers || {};
 
@@ -433,7 +426,7 @@ async function handleForAWSHTTPFunction(
     const responseObject =
       operation.responses && operation.responses[response.status]
         ? await ensureResolvedObject(
-            OPERATION_API,
+            MAIN_API,
             operation.responses[response.status] as
               | OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
               | OpenAPIReference<
@@ -447,7 +440,7 @@ async function handleForAWSHTTPFunction(
       responseObject.content?.[responseContentType] &&
       'schema' in responseObject.content[responseContentType] &&
       ((await ensureResolvedObject(
-        OPERATION_API,
+        MAIN_API,
         responseObject.content?.[responseContentType].schema,
       )) as ExpressiveJSONSchema);
 

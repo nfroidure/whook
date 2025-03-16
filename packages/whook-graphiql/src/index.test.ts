@@ -71,6 +71,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     $.register(constant('HOST', HOST));
     $.register(constant('APP_ENV', 'local'));
     $.register(constant('API', API));
+    $.register(constant('DEFINITIONS', API));
     $.register(constant('ROUTES_WRAPPERS_NAMES', []));
     $.register(
       constant('ROUTES_HANDLERS', {

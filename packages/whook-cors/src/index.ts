@@ -1,5 +1,7 @@
 import {
   extractOperationSecurityParameters,
+  type WhookDefinitionsDependencies,
+  type WhookDefinitions,
   type WhookOpenAPI,
   type WhookOpenAPIOperation,
 } from '@whook/whook';
@@ -8,13 +10,21 @@ import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
 } from './services/errorHandler.js';
 import initWrapRouteHandlerWithCORS from './wrappers/wrapRouteHandlerWithCORS.js';
-import { ensureResolvedObject } from 'ya-open-api-types';
+import {
+  ensureResolvedObject,
+  pathItemToOperationMap,
+  type OpenAPIExtension,
+  type OpenAPIParameter,
+} from 'ya-open-api-types';
+import { type ServiceInitializer, wrapInitializer } from 'knifecycle';
+import { noop } from 'common-services';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 
 export type {
-  CORSConfig,
+  WhookCORSOptions,
   WhookCORSConfig,
   WhookCORSDependencies,
-  WhookAPIOperationCORSConfig,
+  WhookCORSRouteConfig,
 } from './wrappers/wrapRouteHandlerWithCORS.js';
 
 export {
@@ -32,89 +42,138 @@ const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
  * @param {Object} API The OpenAPI object
  * @returns {Promise<Object>} The augmented  OpenAPI object
  */
-export async function augmentAPIWithCORS(
-  API: WhookOpenAPI,
-): Promise<WhookOpenAPI> {
-  const newPaths: WhookOpenAPI['paths'] = API?.paths || {};
 
-  for (const [path, pathObject] of Object.entries(API.paths || {})) {
-    const existingOperation = newPaths?.[path]?.options;
+export function wrapDefinitionsWithCORS(
+  initDefinitions: ServiceInitializer<
+    WhookDefinitionsDependencies,
+    WhookDefinitions
+  >,
+): ServiceInitializer<WhookDefinitionsDependencies, WhookDefinitions> {
+  return wrapInitializer<WhookDefinitionsDependencies, WhookDefinitions>(
+    async ({ log = noop }: WhookDefinitionsDependencies, DEFINITIONS) => {
+      log('warning', '➕ - Wrapping definitions for CORS.');
 
-    if (existingOperation) {
-      continue;
-    }
+      const paths: Record<string, string[]> = {};
+      const newPaths: WhookDefinitions['paths'] = {};
+      const newConfigs: WhookDefinitions['configs'] = {
+        ...DEFINITIONS.configs,
+      };
 
-    const canonicalOperationMethod = [
-      ...new Set([...METHOD_CORS_PRIORITY]),
-      ...Object.keys(pathObject),
-    ].find((method) => newPaths[path]?.[method]) as string;
-    const canonicalOperation = pathObject?.[
-      canonicalOperationMethod
-    ] as WhookOpenAPIOperation;
-    const whookConfig = {
-      type: 'http',
-      ...((canonicalOperation['x-whook'] as object) || {}),
-      suffix: 'CORS',
-      sourceOperationId: canonicalOperation.operationId,
-      private: true,
-    };
-
-    if (whookConfig.type !== 'http') {
-      continue;
-    }
-
-    const newOperationParameters: NonNullable<
-      typeof canonicalOperation.parameters
-    > = [];
-
-    for (const parameter of (canonicalOperation.parameters || []).concat(
-      await extractOperationSecurityParameters({ API }, canonicalOperation),
-    )) {
-      const dereferencedParameter = await ensureResolvedObject(API, parameter);
-
-      if (
-        dereferencedParameter.in !== 'path' &&
-        dereferencedParameter.in !== 'query'
-      ) {
-        continue;
+      for (const [path, pathItem] of Object.entries(DEFINITIONS.paths || {})) {
+        for (const method of Object.keys(
+          pathItemToOperationMap(pathItem) as Record<
+            string,
+            WhookOpenAPIOperation
+          >,
+        )) {
+          paths[path] = paths[path] || [];
+          paths[path].push(method);
+        }
       }
 
-      if (
-        dereferencedParameter.in === 'path' ||
-        !dereferencedParameter.required
-      ) {
-        newOperationParameters.push(parameter);
-        continue;
-      }
+      for (const [path, methods] of Object.entries(paths)) {
+        if (DEFINITIONS.paths[path].options) {
+          continue;
+        }
 
-      // Avoid to require parameters for CORS
-      newOperationParameters.push({
-        ...dereferencedParameter,
-        required: false,
-      });
-    }
+        const canonicalOperationMethod = METHOD_CORS_PRIORITY.find((method) =>
+          methods.some((aMethod) => aMethod === method),
+        ) as string;
 
-    newPaths[path] = {
-      ...(newPaths[path] || {}),
-      options: {
-        operationId: 'optionsWithCORS',
-        summary: 'Enable OPTIONS for CORS',
-        tags: ['CORS'],
-        'x-whook': whookConfig,
-        parameters: newOperationParameters,
-        responses: {
-          200: {
-            description: 'CORS sent.',
+        const canonicalOperation: WhookOpenAPIOperation =
+          DEFINITIONS.paths[path][canonicalOperationMethod];
+
+        const newOperationParameters: OpenAPIParameter<
+          ExpressiveJSONSchema,
+          OpenAPIExtension
+        >[] = [];
+
+        for (const parameter of (canonicalOperation.parameters || []).concat(
+          await extractOperationSecurityParameters(
+            { API: DEFINITIONS as unknown as WhookOpenAPI },
+            canonicalOperation,
+          ),
+        )) {
+          const dereferencedParameter = await ensureResolvedObject(
+            DEFINITIONS as unknown as WhookOpenAPI,
+            parameter,
+          );
+
+          if (
+            dereferencedParameter.in !== 'path' &&
+            dereferencedParameter.in !== 'query'
+          ) {
+            continue;
+          }
+
+          if (
+            dereferencedParameter.in === 'path' ||
+            !dereferencedParameter.required
+          ) {
+            newOperationParameters.push(
+              parameter as OpenAPIParameter<
+                ExpressiveJSONSchema,
+                OpenAPIExtension
+              >,
+            );
+            continue;
+          }
+
+          // Avoid to require parameters for CORS
+          newOperationParameters.push({
+            ...dereferencedParameter,
+            required: false,
+          });
+        }
+
+        const operationId = `${canonicalOperation.operationId}CORS`;
+
+        if (DEFINITIONS.configs[operationId]) {
+          log(
+            'error',
+            `💥 - Cannot override an existing definition (${operationId}).`,
+          );
+        }
+
+        const optionsOperation = {
+          operationId,
+          summary: 'Enable OPTIONS for CORS',
+          tags: ['CORS'],
+          parameters: newOperationParameters,
+          responses: {
+            200: {
+              description: 'CORS sent.',
+            },
           },
-        },
-      },
-    };
-  }
+        };
 
-  return {
-    ...API,
-    paths: newPaths,
-  };
+        newConfigs[operationId] = {
+          type: 'route',
+          path,
+          method: 'options',
+          config: {
+            ...(DEFINITIONS.configs[canonicalOperation.operationId] || {})
+              .config,
+            private: true,
+            targetHandler: 'optionsWithCORS',
+          },
+          operation: optionsOperation,
+        };
+
+        newPaths[path] = {
+          ...(DEFINITIONS.paths[path] || {}),
+          options: optionsOperation,
+        };
+      }
+
+      return {
+        ...DEFINITIONS,
+        paths: newPaths,
+        configs: newConfigs,
+      };
+    },
+    initDefinitions,
+  );
 }
 
 export { initOptionsWithCORS };

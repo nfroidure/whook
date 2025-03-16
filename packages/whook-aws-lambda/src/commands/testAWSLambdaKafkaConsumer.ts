@@ -1,6 +1,5 @@
 import { loadLambda } from '../libs/utils.js';
-import { extra, autoService } from 'knifecycle';
-import { encodePayload } from '../wrappers/awsLogSubscriberLambda.js';
+import { location, autoService } from 'knifecycle';
 import {
   DEFAULT_COMPILER_OPTIONS,
   type WhookCommandHandler,
@@ -8,33 +7,45 @@ import {
   type WhookCompilerOptions,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
-import {
-  type CloudWatchLogsDecodedData,
-  type CloudWatchLogsEvent,
-} from 'aws-lambda';
+import { type MSKEvent } from 'aws-lambda';
 
-// Event example from:
-// https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchlogs.html
-const DEFAULT_EVENT: CloudWatchLogsDecodedData = {
-  messageType: 'DATA_MESSAGE',
-  owner: '123456789012',
-  logGroup: '/aws/lambda/echo-nodejs',
-  logStream: '2019/03/13/[$LATEST]94fa867e5374431291a7fc14e2f56ae7',
-  subscriptionFilters: ['LambdaStream_cloudwatchlogs-node'],
-  logEvents: [
-    {
-      id: '34622316099697884706540976068822859012661220141643892546',
-      timestamp: 1552518348220,
-      message:
-        'REPORT RequestId: 6234bffe-149a-b642-81ff-2e8e376d8aff\tDuration: 46.84 ms\tBilled Duration: 47 ms \tMemory Size: 192 MB\tMax Memory Used: 72 MB\t\n',
-    },
-  ],
+const DEFAULT_EVENT: MSKEvent = {
+  bootstrapServers: '',
+  eventSource: 'aws:kafka',
+  eventSourceArn:
+    'arn:aws:kafka:eu-west-3:765225263528:cluster/production/abbacaca-abba-caca-abba-cacaabbacaca-2',
+  records: {
+    'ingestion-bench-1': [
+      {
+        key: 'none',
+        headers: [],
+        topic: 'tropic',
+        partition: 1,
+        offset: 0,
+        timestamp: 1608321344592,
+        timestampType: 'CREATE_TIME',
+        value:
+          'WyJERy1TUi0wMDAxIiwieCIsIjIwMjAtMTAtMTVUMDg6MjE6MTAuMzA4WiIsIi0yNzIuMCJd',
+      },
+      {
+        key: 'none',
+        headers: [],
+        topic: 'tropic',
+        partition: 1,
+        offset: 1,
+        timestamp: 1608321344801,
+        timestampType: 'CREATE_TIME',
+        value:
+          'WyJERy1TUi0wMDAxIiwieCIsIjIwMjAtMTAtMTVUMDg6MjE6MTEuMjE1WiIsIi0xOTIuMCJd',
+      },
+    ],
+  },
 };
 
 export const definition = {
-  name: '',
-  description: 'A command for testing AWS consumer lambda',
-  example: `whook testLogSubscriberLambda --name handleS3Lambda`,
+  name: 'testAWSLambdaLogKafkaConsumer',
+  description: 'A command for testing AWS lambda Kafka consumers',
+  example: `whook testAWSLambdaLogKafkaConsumer --name handleKafkaConsumerLambda`,
   arguments: [
     {
       name: 'name',
@@ -55,7 +66,7 @@ export const definition = {
     },
     {
       name: 'event',
-      description: 'The S3 actions batch event',
+      description: 'The Kafka batch event',
       schema: {
         type: 'string',
         default: JSON.stringify(DEFAULT_EVENT),
@@ -64,9 +75,7 @@ export const definition = {
   ],
 } as const satisfies WhookCommandDefinition;
 
-export default extra(definition, autoService(initTestS3LambdaCommand));
-
-async function initTestS3LambdaCommand({
+async function initTestAWSLambdaKafkaConsumerCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
@@ -98,11 +107,7 @@ async function initTestS3LambdaCommand({
       type,
       extension,
     );
-    const parsedEvent: CloudWatchLogsEvent = {
-      awslogs: {
-        data: await encodePayload(JSON.parse(event)),
-      },
-    };
+    const parsedEvent = JSON.parse(event);
     const result = await handler(parsedEvent, {});
 
     log('info', 'SUCCESS:', result as string);
@@ -110,3 +115,8 @@ async function initTestS3LambdaCommand({
     process.emit('SIGTERM');
   };
 }
+
+export default location(
+  autoService(initTestAWSLambdaKafkaConsumerCommand),
+  import.meta.url,
+);

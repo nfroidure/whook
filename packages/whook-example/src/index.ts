@@ -29,9 +29,10 @@ import {
   initDefinitions,
   initHTTPRouter,
 } from '@whook/whook';
-import { initErrorHandlerWithCORS } from '@whook/cors';
+import { initErrorHandlerWithCORS, wrapDefinitionsWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv, initTimeMock } from 'application-services';
+import initSecurityDefinitions from './services/SECURITY_DEFINITIONS.js';
 
 /* Architecture Note #1.1.3.4: supported `APP_ENV` values
 
@@ -128,15 +129,19 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(initAutoload);
 
-  /* Architecture Note #1.1.3.2: API definitions
+  /* Architecture Note #1.1.3.2: Definitions
 
-  This service loads the API definitions directly by
-   looking at your `src/handlers` folder. You can
+  This service loads the definitions directly by
+   looking at your `src` folder. You can
    release this behavior by removing this line.
    Though, it is not recommended to not use the
    Whook's black magic ;).
+
+  A service wrapper is also used here to add CORS to
+   the routes definitions.
   */
-  $.register(initDefinitions);
+  // $.register(wrapDefinitionsWithCORS(initDefinitions));
+  $.register(wrapDefinitionsWithCORS(initDefinitions));
 
   /* Architecture Note #1.1.3.3: MAIN_FILE_URL
 
@@ -236,6 +241,8 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   // Add the time mock service for testing
   $.register(initTimeMock);
+
+  $.register(initSecurityDefinitions);
 
   return $;
 }

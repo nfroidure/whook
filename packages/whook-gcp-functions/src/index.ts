@@ -20,19 +20,14 @@ import initBuildAutoloader from './services/_autoload.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initCompiler,
+  type WhookDefinitions,
   type WhookCompilerOptions,
   type WhookCompilerService,
 } from '@whook/whook';
-import {
-  pathItemToOperationMap,
-  type OpenAPIExtension,
-  type OpenAPIOperation,
-  type OpenAPI,
-} from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
 import { parseArgs } from '@whook/whook/dist/libs/args.js';
-import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import initWrapRouteHandlerForGoogleHTTPFunction from './wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
 
 export const DEFAULT_BUILD_PARALLELISM = 10;
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
@@ -40,16 +35,17 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   log: '@whook/whook/dist/services/rawLog.js',
 };
 
-export type WhookGCPBuildConfig = {
+export type * from './wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
+export { initWrapRouteHandlerForGoogleHTTPFunction };
+
+export type WhookGCPFunctionBuildConfig = {
   BUILD_PARALLELISM?: number;
 };
-export type WhookAPIOperationGCPFunctionConfig = {
-  type?: 'http';
-  sourceOperationId?: string;
+export type WhookGCPFunctionBaseConfig = {
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
-  suffix?: string;
 };
+export type WhookGCPFunctionRouteConfig = WhookGCPFunctionBaseConfig;
 
 const cprAsync = promisify(cpr) as (
   source: string,
@@ -86,15 +82,15 @@ export async function runBuild(
       compiler,
       log,
       $autoload,
-      API,
+      DEFINITIONS,
       buildInitializer,
-    }: WhookGCPBuildConfig & {
+    }: WhookGCPFunctionBuildConfig & {
       APP_ENV: string;
       PROJECT_DIR: string;
       compiler: WhookCompilerService;
       log: LogService;
       $autoload: Autoloader<Initializer<Dependencies, Service>>;
-      API: OpenAPI;
+      DEFINITIONS: WhookDefinitions;
       buildInitializer: BuildInitializer;
     } = await $.run([
       'APP_ENV',
@@ -104,52 +100,30 @@ export async function runBuild(
       'compiler',
       'log',
       '$autoload',
-      'API',
+      'DEFINITIONS',
       'buildInitializer',
     ]);
 
     log('info', 'GCP Functions build Environment initialized 🚀🌕');
 
-    const operations: OpenAPIOperation<
-      ExpressiveJSONSchema,
-      OpenAPIExtension
-    >[] = [];
+    const handlerNames = Object.keys(DEFINITIONS.configs).filter(
+      (aHandlerName) => handlerName === aHandlerName || !handlerName,
+    );
 
-    for (const pathItem of Object.values(API.paths || {})) {
-      for (const operation of Object.values(pathItemToOperationMap(pathItem))) {
-        if (
-          !handlerName ||
-          handlerName === operation.operationId ||
-          ('x-whook' in operation &&
-            typeof operation['x-whook'] === 'object' &&
-            operation['x-whook'] &&
-            'sourceOperationId' in operation['x-whook'] &&
-            typeof operation['x-whook'].sourceOperationId === 'string' &&
-            handlerName === operation['x-whook'].sourceOperationId)
-        ) {
-          operations.push(
-            operation as OpenAPIOperation<
-              ExpressiveJSONSchema,
-              OpenAPIExtension
-            >,
-          );
-        }
-      }
-    }
+    log('warning', `📃 - ${handlerNames.length} handlerNames to process.`);
 
-    log('warning', `📃 - ${operations.length} operations to process.`);
-
-    await processOperations(
+    await processHandlers(
       {
         APP_ENV,
         BUILD_PARALLELISM: BUILD_PARALLELISM || DEFAULT_BUILD_PARALLELISM,
         PROJECT_DIR,
+        DEFINITIONS,
         compiler,
         log,
         $autoload,
         buildInitializer,
       },
-      operations,
+      handlerNames,
     );
     await $.destroy();
   } catch (err) {
@@ -160,124 +134,128 @@ export async function runBuild(
   }
 }
 
-async function processOperations(
+async function processHandlers(
   {
     APP_ENV,
     BUILD_PARALLELISM,
     PROJECT_DIR,
+    DEFINITIONS,
     compiler,
     log,
     $autoload,
     buildInitializer,
-  }: WhookGCPBuildConfig & {
+  }: WhookGCPFunctionBuildConfig & {
     APP_ENV: string;
     PROJECT_DIR: string;
+    DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
     log: LogService;
     $autoload: Autoloader<Initializer<Dependencies, Service>>;
     buildInitializer: BuildInitializer;
   },
-  operations: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>[],
+  handlerNames: string[],
 ): Promise<void> {
-  const operationsLeft = operations.slice(BUILD_PARALLELISM);
+  const handlerNamesLeft = handlerNames.slice(BUILD_PARALLELISM);
 
   await Promise.all(
-    operations.slice(0, BUILD_PARALLELISM).map((operation) =>
-      buildAnyLambda(
+    handlerNames.slice(0, BUILD_PARALLELISM).map((handlerName) =>
+      buildHandler(
         {
           APP_ENV,
           PROJECT_DIR,
+          DEFINITIONS,
           compiler,
           log,
           buildInitializer,
         },
-        operation,
+        handlerName,
       ),
     ),
   );
 
-  if (operationsLeft.length) {
-    log('info', `📃 - ${operationsLeft.length} operations left.`);
-    return processOperations(
+  if (handlerNamesLeft.length) {
+    log('info', `📃 - ${handlerNamesLeft.length} handlerNames left.`);
+    return processHandlers(
       {
         APP_ENV,
         BUILD_PARALLELISM,
         PROJECT_DIR,
+        DEFINITIONS,
         compiler,
         log,
         $autoload,
         buildInitializer,
       },
-      operationsLeft,
+      handlerNamesLeft,
     );
   }
-  log('info', '🤷 - No more operations.');
+  log('info', '🤷 - No more handlerNames.');
 }
 
-async function buildAnyLambda(
+async function buildHandler(
   {
     APP_ENV,
     PROJECT_DIR,
+    DEFINITIONS,
     compiler,
     log,
     buildInitializer,
   }: {
     APP_ENV: string;
     PROJECT_DIR: string;
+    DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
     log: LogService;
     buildInitializer: BuildInitializer;
   },
-  operation: OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
+  handlerName: string,
 ): Promise<void> {
-  const { operationId } = operation;
-
   try {
-    const whookConfig: WhookAPIOperationGCPFunctionConfig = (operation[
-      'x-whook'
-    ] as WhookAPIOperationGCPFunctionConfig) || { type: 'http' };
-    const operationType = whookConfig.type || 'http';
-    const sourceOperationId = whookConfig.sourceOperationId;
-    const finalEntryPoint =
-      (sourceOperationId ? sourceOperationId : operationId) +
-      (whookConfig.suffix || '');
+    const definition = DEFINITIONS.configs[handlerName];
 
-    log('warning', `🏗 - Building ${operationType} "${finalEntryPoint}"...`);
+    if (definition.type !== 'route') {
+      log('warning', `🚮 - Skipping "${handlerName}"...`);
+      return;
+    }
 
-    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, finalEntryPoint);
+    log('warning', `🏗 - Building "${handlerName}"...`);
+
+    const handlerPath = join(PROJECT_DIR, 'builds', APP_ENV, handlerName);
     const srcPath = join(PROJECT_DIR, 'src');
-    const srcRelativePath = relative(lambdaPath, srcPath);
+    const srcRelativePath = relative(handlerPath, srcPath);
 
     const initializerContent = (
-      await buildInitializer([`OPERATION_HANDLER_${finalEntryPoint}`])
+      await buildInitializer([`MAIN_HANDLER_${handlerName}`])
     ).replaceAll(pathToFileURL(srcPath).toString(), srcRelativePath);
-    const indexContent = await buildLambdaIndex(
-      `OPERATION_HANDLER_${finalEntryPoint}`,
-    );
+    const indexContent = await buildHandlerIndex(`MAIN_HANDLER_${handlerName}`);
 
-    await mkdirp(lambdaPath);
+    await mkdirp(handlerPath);
     await Promise.all([
       copyStaticFiles(
         { PROJECT_DIR, log },
-        lambdaPath,
-        whookConfig.staticFiles || [],
+        handlerPath,
+        definition.config?.staticFiles || [],
       ),
       ensureFile(
         { log },
-        join(lambdaPath, 'initialize.js'),
+        join(handlerPath, 'initialize.js'),
         initializerContent,
       ),
-      ensureFile({ log }, join(lambdaPath, 'main.js'), indexContent),
+      ensureFile({ log }, join(handlerPath, 'main.js'), indexContent),
     ]);
-    await buildFinalLambda({ compiler, log }, lambdaPath, whookConfig);
+    await buildFinalHandler(
+      { DEFINITIONS, compiler, log },
+      handlerPath,
+      handlerName,
+    );
   } catch (err) {
-    log('error', `Error building "${operationId}"...`);
+    log('error', `💥 - Error building "${handlerName}"...`);
     log('error-stack', printStackTrace(err as Error));
-    throw YError.wrap(err as Error, 'E_LAMBDA_BUILD', operationId);
+    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', handlerName);
   }
 }
 
-async function buildLambdaIndex(name: string): Promise<string> {
+async function buildHandlerIndex(handlerName: string): Promise<string> {
   return `// Automatically generated by \`@whook/gcp-functions\`
 import { initialize } from './initialize.js';
 
@@ -285,28 +263,36 @@ const initializationPromise = initialize();
 
 export default function handler (req, res) {
   return initializationPromise
-    .then(services => services['${name}'](req, res));
+    .then(services => services['${handlerName}'](req, res));
 };
 `;
 }
 
-async function buildFinalLambda(
-  { compiler, log }: { compiler: WhookCompilerService; log: LogService },
-  lambdaPath: string,
-  whookConfig: WhookAPIOperationGCPFunctionConfig,
+async function buildFinalHandler(
+  {
+    DEFINITIONS,
+    compiler,
+    log,
+  }: {
+    DEFINITIONS: WhookDefinitions;
+    compiler: WhookCompilerService;
+    log: LogService;
+  },
+  handlerPath: string,
+  handlerName: string,
 ): Promise<void> {
-  const entryPoint = `${lambdaPath}/main.js`;
+  const entryPoint = `${handlerPath}/main.js`;
   const { extension, contents, mappings } = await compiler(
     entryPoint,
-    whookConfig.compilerOptions,
+    DEFINITIONS[handlerName]?.config?.compilerOptions,
   );
 
   await Promise.all([
-    ensureFile({ log }, join(lambdaPath, `/index${extension}`), contents),
+    ensureFile({ log }, join(handlerPath, `/index${extension}`), contents),
     mappings
       ? ensureFile(
           { log },
-          join(lambdaPath, `/index${extension}.map`),
+          join(handlerPath, `/index${extension}.map`),
           mappings,
         )
       : Promise.resolve(),
@@ -315,7 +301,7 @@ async function buildFinalLambda(
 
 async function copyStaticFiles(
   { PROJECT_DIR, log }: { PROJECT_DIR: string; log: LogService },
-  lambdaPath: string,
+  handlerPath: string,
   staticFiles: string[] = [],
 ): Promise<void> {
   await Promise.all(
@@ -324,7 +310,7 @@ async function copyStaticFiles(
         await copyFiles(
           { log },
           join(PROJECT_DIR, 'node_modules', staticFile),
-          join(lambdaPath, 'node_modules', staticFile),
+          join(handlerPath, 'node_modules', staticFile),
         ),
     ),
   );

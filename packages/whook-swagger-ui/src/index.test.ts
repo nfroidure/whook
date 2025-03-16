@@ -64,6 +64,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('APP_ENV', 'local'));
     $.register(constant('API', API));
+    $.register(constant('DEFINITIONS', API));
     $.register(constant('DEV_ACCESS_TOKEN', 'oudelali'));
     $.register(constant('HOST', HOST));
     $.register(constant('ROUTES_WRAPPERS_NAMES', []));
@@ -182,7 +183,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "QUERY_PARSER_OPTIONS",
     ],
     [
-      "SWAGGER_UI_CONFIG",
+      "SWAGGER_UI_OPTIONS",
     ],
     [
       "PROCESS_NAME",
@@ -382,7 +383,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "QUERY_PARSER_OPTIONS",
     ],
     [
-      "SWAGGER_UI_CONFIG",
+      "SWAGGER_UI_OPTIONS",
     ],
     [
       "PROCESS_NAME",
@@ -484,7 +485,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       }),
     );
     $.register(
-      constant('SWAGGER_UI_CONFIG', {
+      constant('SWAGGER_UI_OPTIONS', {
         layout: 'StandaloneLayout',
       }),
     );
@@ -772,7 +773,7 @@ window.onload = function() {
       "QUERY_PARSER_OPTIONS",
     ],
     [
-      "SWAGGER_UI_CONFIG",
+      "SWAGGER_UI_OPTIONS",
     ],
     [
       "PROCESS_NAME",

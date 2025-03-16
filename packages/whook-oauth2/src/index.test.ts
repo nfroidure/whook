@@ -189,6 +189,7 @@ describe('OAuth2 server', () => {
     );
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
+    $.register(constant('DEFINITIONS', API));
     $.register(constant('APP_ENV', 'local'));
     $.register(
       constant('ENV', {

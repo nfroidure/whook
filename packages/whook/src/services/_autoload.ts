@@ -15,6 +15,7 @@ import {
 import { noop } from '../libs/utils.js';
 import initRoutesHandlers from './ROUTES_HANDLERS.js';
 import initCronsHandlers from './CRONS_HANDLERS.js';
+import initConsumersHandlers from './CRONS_HANDLERS.js';
 import { type AppConfig } from 'application-services';
 import initRoutesWrappers, {
   ROUTES_WRAPPERS_REG_EXP,
@@ -24,6 +25,10 @@ import initCronsWrappers, {
   CRONS_WRAPPERS_REG_EXP,
   type WhookCronsWrappersConfig,
 } from './CRONS_WRAPPERS.js';
+import initConsumersWrappers, {
+  CONSUMERS_WRAPPERS_REG_EXP,
+  type WhookConsumersWrappersConfig,
+} from './CONSUMERS_WRAPPERS.js';
 import { extname, join as pathJoin } from 'node:path';
 import { access as _access, constants } from 'node:fs/promises';
 import { YError, printStackTrace } from 'yerror';
@@ -49,6 +54,10 @@ import {
   DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
   type WhookRoutesDefinitionsOptions,
 } from './ROUTES_DEFINITIONS.js';
+import {
+  DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
+  type WhookConsumerDefinitionsOptions,
+} from './CONSUMERS_DEFINITIONS.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -61,13 +70,15 @@ The Whook auto-loader allows you to provide the file path
 export type WhookInitializerMap = { [name: string]: string };
 
 export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
-  WhookCronsWrappersConfig & {
+  WhookCronsWrappersConfig &
+  WhookConsumersWrappersConfig & {
     APP_CONFIG?: AppConfig;
     INITIALIZER_PATH_MAP?: WhookInitializerMap;
     WHOOK_PLUGINS?: WhookPluginName[];
     WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
     ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
     CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
+    CONSUMERS_DEFINITIONS_OPTIONS?: WhookConsumerDefinitionsOptions;
     args: WhookRawCommandArgs;
     $injector: Injector<Service>;
     importer: ImporterService<{
@@ -120,8 +131,10 @@ async function initAutoload({
   WHOOK_RESOLVED_PLUGINS,
   ROUTES_WRAPPERS_NAMES = [],
   CRONS_WRAPPERS_NAMES = [],
+  CONSUMERS_WRAPPERS_NAMES = [],
   ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
   CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
+  CONSUMERS_DEFINITIONS_OPTIONS = DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
   args,
   importer,
   $injector,
@@ -156,6 +169,16 @@ async function initAutoload({
           .CRONS_DEFINITIONS;
       }
       return CRONS_DEFINITIONS;
+    };
+  })();
+  let CONSUMERS_DEFINITIONS: WhookCronsDefinitionsService;
+  const getConsumersDefinitions = (() => {
+    return async () => {
+      if (!CONSUMERS_DEFINITIONS) {
+        CONSUMERS_DEFINITIONS = (await $injector(['CONSUMERS_DEFINITIONS']))
+          .CONSUMERS_DEFINITIONS;
+      }
+      return CONSUMERS_DEFINITIONS;
     };
   })();
   let commandModule;
@@ -239,7 +262,12 @@ async function initAutoload({
     const isCronHandler = CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns.some(
       (pattern) => new RegExp(pattern).test(injectedName),
     );
+    const isConsumerHandler =
+      CONSUMERS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
+        new RegExp(pattern).test(injectedName),
+      );
     const isCronWrapper = CRONS_WRAPPERS_REG_EXP.test(injectedName);
+    const isConsumerWrapper = CONSUMERS_WRAPPERS_REG_EXP.test(injectedName);
 
     /* Architecture Note #2.9.4: the `ROUTES_HANDLERS` mapper
     Here, we build the handlers map needed by the router by injecting every
@@ -263,6 +291,15 @@ async function initAutoload({
       ) as Initializer<Dependencies, Service>;
     }
 
+    if ('CONSUMERS_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getConsumersDefinitions());
+
+      return location(
+        alsoInject(handlerNames, initConsumersHandlers),
+        '@whook/whook/dist/services/CONSUMERS_HANDLERS.js',
+      ) as Initializer<Dependencies, Service>;
+    }
+
     /* Architecture Note #2.9.5: the `ROUTES_WRAPPERS` auto loading
     We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
      service so that they can be dynamically applied.
@@ -278,6 +315,13 @@ async function initAutoload({
       return location(
         alsoInject(CRONS_WRAPPERS_NAMES, initCronsWrappers),
         '@whook/whook/dist/services/CRONS_WRAPPERS.js',
+      );
+    }
+
+    if ('CONSUMERS_WRAPPERS' === injectedName) {
+      return location(
+        alsoInject(CONSUMERS_WRAPPERS_NAMES, initConsumersWrappers),
+        '@whook/whook/dist/services/CONSUMERS_WRAPPERS.js',
       );
     }
 
@@ -321,11 +365,13 @@ async function initAutoload({
         pathJoin(
           isCronHandler
             ? 'crons'
-            : isRouteHandler
-              ? 'routes'
-              : isRouteWrapper || isCronWrapper
-                ? 'wrappers'
-                : 'services',
+            : isConsumerHandler
+              ? 'consumers'
+              : isRouteHandler
+                ? 'routes'
+                : isRouteWrapper || isCronWrapper || isConsumerWrapper
+                  ? 'wrappers'
+                  : 'services',
           '.',
           injectedName + extname(resolvedPlugin.mainURL),
         ),

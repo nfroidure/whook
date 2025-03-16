@@ -8,18 +8,14 @@ import {
   type WhookBaseAuthenticationData,
 } from '@whook/authorization';
 import {
-  type WhookAPIOperationSwaggerConfig,
+  type WhookSwaggerUIRouteConfig,
   type WhookSwaggerUIConfig,
   type WhookSwaggerUIEnv,
 } from '@whook/swagger-ui';
-import {
-  type WhookAPIOperationCORSConfig,
-  type WhookCORSConfig,
-} from '@whook/cors';
+import { type WhookCORSRouteConfig, type WhookCORSConfig } from '@whook/cors';
 import { type APIConfig } from './services/API.js';
-import { type JWTServiceConfig } from 'jwt-service';
+import { type JWTServiceConfig, type JWTEnvVars } from 'jwt-service';
 import { type BaseAppEnvVars, type TimeMockConfig } from 'application-services';
-import { type JWTEnvVars } from 'jwt-service';
 import { type RouteDefinitionFilterEnvVars } from './services/ROUTE_DEFINITION_FILTER.ts';
 import { type AppEnv } from './index.ts';
 
@@ -56,16 +52,16 @@ declare module 'application-services' {
 }
 
 declare module '@whook/whook' {
-  /* Architecture Note #2.1.3: WhookAPIHandlerConfig
+  /* Architecture Note #2.1.3: WhookRouteConfig
 
   Here we export a custom API handler config type in order
    to allow using the various plugins installed that deal
    with the routes.
   */
-  export interface WhookAPIHandlerConfig
+  export interface WhookRouteConfig
     extends WhookBaseRouteConfig,
-      WhookAPIOperationSwaggerConfig,
-      WhookAPIOperationCORSConfig {}
+      WhookSwaggerUIRouteConfig,
+      WhookCORSRouteConfig {}
 
   /* Architecture Note #2.1.3: WhookMain
   

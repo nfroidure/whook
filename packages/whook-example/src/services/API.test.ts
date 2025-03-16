@@ -9,6 +9,7 @@ import {
   expect,
 } from '@jest/globals';
 import initAPI from './API.js';
+import initSecurityDefinitions from './SECURITY_DEFINITIONS.js';
 import FULL_CONFIG from '../config/test/config.js';
 import {
   WHOOK_DEFAULT_PLUGINS,
@@ -20,14 +21,17 @@ import {
   type WhookRouteDefinition,
   type WhookResolvedPluginsService,
   type WhookRouteModule,
+  type WhookSecurityDefinitions,
 } from '@whook/whook';
 import { initImporter, type LogService } from 'common-services';
 import { pathItemToOperationMap } from 'ya-open-api-types';
+import { wrapDefinitionsWithCORS } from '@whook/cors';
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;
   const BASE_URL = 'http://localhost:1337';
   const APP_ENV = 'test';
+  const ENV = {};
   // TODO: Use import.meta.resolve when Jest will support it
   // See https://github.com/jestjs/jest/issues/14923
   const require = createRequire(
@@ -45,22 +49,26 @@ describe('API', () => {
   };
   const log = jest.fn<LogService>();
   let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  let SECURITY_DEFINITIONS: WhookSecurityDefinitions;
   let DEFINITIONS: WhookDefinitions;
 
   beforeAll(async () => {
     const importer = await initImporter<WhookRouteModule>({ log });
 
+    SECURITY_DEFINITIONS = await initSecurityDefinitions({ ENV, log });
     ROUTES_DEFINITIONS = await initRoutesDefinitions({
       APP_ENV,
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
       WHOOK_RESOLVED_PLUGINS,
       importer,
     });
-    DEFINITIONS = await initDefinitions({
+    DEFINITIONS = await wrapDefinitionsWithCORS(initDefinitions)({
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
       ROUTES_DEFINITIONS,
       COMMANDS_DEFINITIONS: {},
       CRONS_DEFINITIONS: {},
+      CONSUMERS_DEFINITIONS: {},
+      SECURITY_DEFINITIONS,
     });
   });
 

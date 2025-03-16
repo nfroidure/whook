@@ -1,8 +1,22 @@
-import { type WhookBaseRouteConfig } from '@whook/whook';
-import { type WhookAWSLambdaBaseConfiguration } from './index.ts';
+import {
+  type WhookBaseConsumerConfig,
+  type WhookBaseCronConfig,
+  type WhookBaseRouteConfig,
+} from '@whook/whook';
+import {
+  type WhookAWSLambdaRouteConfig,
+  type WhookAWSLambdaCronConfig,
+  type WhookAWSLambdaConsumerConfig,
+} from './index.ts';
 
 declare module '@whook/whook' {
   export interface WhookRouteConfig
     extends WhookBaseRouteConfig,
-      WhookAWSLambdaBaseConfiguration {}
+      WhookAWSLambdaRouteConfig {}
+  export interface WhookCronConfig
+    extends WhookBaseCronConfig,
+      WhookAWSLambdaCronConfig {}
+  export interface WhookConsumerConfig
+    extends WhookBaseConsumerConfig,
+      WhookAWSLambdaConsumerConfig {}
 }

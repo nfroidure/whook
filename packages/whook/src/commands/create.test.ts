@@ -1858,7 +1858,7 @@ export default location(
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/commands/aCommand.ts",
-      "import { extra, autoService, location } from 'knifecycle';
+      "import { location, autoService } from 'knifecycle';
 import {
   type WhookCommand,
   type WhookCommandDefinition,
@@ -2204,7 +2204,7 @@ export default location(
   "writeFileCalls": [
     [
       "/hom/whoiam/project/src/commands/aCommand.ts",
-      "import { extra, autoService, location } from 'knifecycle';
+      "import { location, autoService } from 'knifecycle';
 import {
   type WhookCommand,
   type WhookCommandDefinition,

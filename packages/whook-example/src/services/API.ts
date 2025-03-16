@@ -1,5 +1,4 @@
 import { name, autoService, location } from 'knifecycle';
-import { augmentAPIWithCORS } from '@whook/cors';
 import {
   noop,
   type WhookConfig,
@@ -56,27 +55,9 @@ async function initAPI({
         url: `${BASE_URL}${BASE_PATH}`,
       },
     ],
-    ...DEFINITIONS,
-    components: {
-      ...DEFINITIONS.components,
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          description: 'Bearer authentication with a user API token',
-          scheme: 'bearer',
-        },
-        ...(ENV.DEV_MODE
-          ? {
-              fakeAuth: {
-                type: 'apiKey',
-                description: 'A fake authentication for development purpose.',
-                name: 'Authorization',
-                in: 'header',
-              },
-            }
-          : {}),
-      },
-    },
+    components: DEFINITIONS.components,
+    security: DEFINITIONS.security,
+    paths: DEFINITIONS.paths,
     tags: [
       {
         name: 'system',
@@ -89,7 +70,7 @@ async function initAPI({
   You can apply transformations to your API like
    here for CORS support (OPTIONS method handling).
   */
-  return augmentAPIWithCORS(await augmentAPIWithFakeAuth({ ENV }, API));
+  return await augmentAPIWithFakeAuth({ ENV }, API);
 }
 
 /* Architecture Note #3.3.1: Custom transformations

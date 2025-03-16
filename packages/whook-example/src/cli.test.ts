@@ -17,6 +17,7 @@ describe('commands should work', () => {
 🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
+➕ - Wrapping definitions for CORS.
 ✔ - Found a free port "8000"
 On air 🚀🌕
 ",
@@ -59,6 +60,7 @@ On air 🚀🌕
 🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
+➕ - Wrapping definitions for CORS.
 ✔ - Found a free port "8000"
 On air 🚀🌕
 ",
@@ -82,6 +84,7 @@ On air 🚀🌕
 🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
+➕ - Wrapping definitions for CORS.
 ✔ - Found a free port "8000"
 On air 🚀🌕
 ",

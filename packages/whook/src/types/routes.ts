@@ -19,9 +19,9 @@ import {
   type WhookAPISchemaDefinition,
   type WhookAPICallbackDefinition,
 } from './openapi.js';
-import { WhookHandlerWrapper } from './wrappers.js';
+import { type WhookHandlerWrapper } from './wrappers.js';
 
-export const DEFAULT_ROUTE_CONFIG: Required<WhookRouteConfig> = {
+export const DEFAULT_ROUTE_CONFIG: WhookRouteConfig = {
   environments: 'all',
   private: false,
 };
@@ -29,6 +29,7 @@ export const DEFAULT_ROUTE_CONFIG: Required<WhookRouteConfig> = {
 export type WhookBaseRouteConfig = {
   environments?: 'all' | WhookMain['AppEnv'][];
   private?: boolean;
+  targetHandler?: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

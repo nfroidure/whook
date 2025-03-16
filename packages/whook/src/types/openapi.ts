@@ -1,4 +1,4 @@
-import { JsonValue } from 'type-fest';
+import { type JsonValue } from 'type-fest';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import {
   type OpenAPI,

@@ -247,10 +247,9 @@ exports[`API should work 1`] = `
           "tags": [
             "example",
           ],
-          "x-whook": undefined,
         },
         "options": {
-          "operationId": "optionsWithCORS",
+          "operationId": "getDelayCORS",
           "parameters": [
             {
               "description": "Duration in milliseconds",
@@ -279,12 +278,6 @@ exports[`API should work 1`] = `
           "tags": [
             "CORS",
           ],
-          "x-whook": {
-            "private": true,
-            "sourceOperationId": "getDelay",
-            "suffix": "CORS",
-            "type": "http",
-          },
         },
       },
       "/diagnostic": {
@@ -307,10 +300,9 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
-          "x-whook": undefined,
         },
         "options": {
-          "operationId": "optionsWithCORS",
+          "operationId": "getDiagnosticCORS",
           "parameters": [
             {
               "in": "query",
@@ -329,17 +321,11 @@ exports[`API should work 1`] = `
           "tags": [
             "CORS",
           ],
-          "x-whook": {
-            "private": true,
-            "sourceOperationId": "getDiagnostic",
-            "suffix": "CORS",
-            "type": "http",
-          },
         },
       },
       "/echo": {
         "options": {
-          "operationId": "optionsWithCORS",
+          "operationId": "putEchoCORS",
           "parameters": [],
           "responses": {
             "200": {
@@ -350,12 +336,6 @@ exports[`API should work 1`] = `
           "tags": [
             "CORS",
           ],
-          "x-whook": {
-            "private": true,
-            "sourceOperationId": "putEcho",
-            "suffix": "CORS",
-            "type": "http",
-          },
         },
         "put": {
           "operationId": "putEcho",
@@ -371,7 +351,6 @@ exports[`API should work 1`] = `
           "tags": [
             "example",
           ],
-          "x-whook": undefined,
         },
       },
       "/openAPI": {
@@ -401,10 +380,9 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
-          "x-whook": undefined,
         },
         "options": {
-          "operationId": "optionsWithCORS",
+          "operationId": "getOpenAPICORS",
           "parameters": [
             {
               "in": "query",
@@ -423,12 +401,6 @@ exports[`API should work 1`] = `
           "tags": [
             "CORS",
           ],
-          "x-whook": {
-            "private": true,
-            "sourceOperationId": "getOpenAPI",
-            "suffix": "CORS",
-            "type": "http",
-          },
         },
       },
       "/ping": {
@@ -459,10 +431,9 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
-          "x-whook": undefined,
         },
         "options": {
-          "operationId": "optionsWithCORS",
+          "operationId": "getPingCORS",
           "parameters": [],
           "responses": {
             "200": {
@@ -473,12 +444,6 @@ exports[`API should work 1`] = `
           "tags": [
             "CORS",
           ],
-          "x-whook": {
-            "private": true,
-            "sourceOperationId": "getPing",
-            "suffix": "CORS",
-            "type": "http",
-          },
         },
       },
       "/time": {
@@ -500,10 +465,9 @@ exports[`API should work 1`] = `
           "tags": [
             "system",
           ],
-          "x-whook": undefined,
         },
         "options": {
-          "operationId": "optionsWithCORS",
+          "operationId": "getTimeCORS",
           "parameters": [],
           "responses": {
             "200": {
@@ -514,12 +478,6 @@ exports[`API should work 1`] = `
           "tags": [
             "CORS",
           ],
-          "x-whook": {
-            "private": true,
-            "sourceOperationId": "getTime",
-            "suffix": "CORS",
-            "type": "http",
-          },
         },
       },
       "/{pathParam1}/{pathParam2}": {
@@ -592,10 +550,9 @@ exports[`API should work 1`] = `
           "tags": [
             "example",
           ],
-          "x-whook": undefined,
         },
         "options": {
-          "operationId": "optionsWithCORS",
+          "operationId": "getParametersCORS",
           "parameters": [
             {
               "$ref": "#/components/parameters/pathParam1",
@@ -625,15 +582,10 @@ exports[`API should work 1`] = `
           "tags": [
             "CORS",
           ],
-          "x-whook": {
-            "private": true,
-            "sourceOperationId": "getParameters",
-            "suffix": "CORS",
-            "type": "http",
-          },
         },
       },
     },
+    "security": [],
     "servers": [
       {
         "url": "http://localhost:1337",

@@ -50,12 +50,13 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
       // MY_SERVICE: '@my/service_module_name/afile.js',
       jwtToken: 'jwt-service/dist/index.js',
       errorHandler: '@whook/cors/dist/services/errorHandler.js',
+      SECURITY_DEFINITIONS: './services/SECURITY_DEFINITIONS.js',
     }),
   );
 
   // Finally, some constants can be serialized instead of being
   //  initialized in the target build saving some time at boot
-  $.register(alsoInject(['DEFINITIONS'], initBuildConstants));
+  $.register(alsoInject([], initBuildConstants));
 
   return $;
 }
