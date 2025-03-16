@@ -5,6 +5,7 @@ const CONFIG: AppConfig = {
   ...COMMON_CONFIG,
   BASE_ENV: {
     ...COMMON_CONFIG.BASE_ENV,
+    JWT_SECRET: 'yop',
     // Set fixed host/port
     HOST: 'localhost',
     PORT: '8080',

@@ -46,6 +46,7 @@ export type AppEnv = (typeof APP_ENVS)[number];
   */
 export const WHOOK_PLUGINS = [
   ...WHOOK_DEFAULT_PLUGINS,
+  '@whook/gcp-functions',
   '@whook/cors',
   '@whook/authorization',
 ] as const satisfies WhookPluginsService;

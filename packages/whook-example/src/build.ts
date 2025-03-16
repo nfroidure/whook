@@ -8,9 +8,11 @@ import { prepareEnvironment } from './index.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initBuildConstantFilter,
+} from '@whook/dev';
+import {
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
-} from '@whook/dev';
+} from '@whook/gcp-functions';
 
 /* Architecture Note #1.3.1: The `runBuild` function
 
