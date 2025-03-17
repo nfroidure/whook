@@ -71,7 +71,7 @@ export async function prepareBuildEnvironment(
   // (...)
 
 -  // Usually, here you call the installed build env
--  // $ = await prepareBaseBuildEnvironment($);
+-  $ = await prepareBaseBuildEnvironment($);
 +  // Calling the AWS specific build env
 +  $ = await prepareBaseBuildEnvironment($);
 
@@ -98,6 +98,8 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 + import {
 +   type WhookAWSLambdaBuildConfig,
 +   type WhookAWSLambdaRouteConfig
++   type WhookConsumerConfig,
++   type WhookAWSLambdaConsumerConfig,
 + } from '@whook/aws-lambda';
 
 declare module 'application-services' {
@@ -123,9 +125,13 @@ declare module '@whook/whook' {
       WhookCORSRouteConfig {};
 
   export interface WhookCronConfig
--    extends WhookBaseCronConfig {}
+-    extends WhookBaseCronConfig {};
 +    extends WhookBaseCronConfig,
-+      WhookAWSLambdaCronConfig {}
++      WhookAWSLambdaCronConfig {};
+
++  export interface WhookConsumerConfig
++    extends WhookBaseConsumerConfig,
++      WhookAWSLambdaConsumerConfig {};
 }
 
 ```

@@ -48,7 +48,7 @@ npm run dev
 npm run watch
 ```
 
-Create a new endpoint / service / provider or command:
+Create a new route / cron / service / provider or command:
 
 ```sh
 npx whook create

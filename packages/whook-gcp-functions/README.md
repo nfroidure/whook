@@ -44,8 +44,7 @@ Add the plugin to the `src/index.ts` main file:
   // ...
 ```
 
-Tweak the 2 build functions in your
-`src/build.ts` main file:
+Tweak the 2 build functions in your `src/build.ts` main file:
 
 ```diff
 import {

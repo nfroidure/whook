@@ -140,7 +140,6 @@ export async function prepareEnvironment<T extends Knifecycle>(
   A service wrapper is also used here to add CORS to
    the routes definitions.
   */
-  // $.register(wrapDefinitionsWithCORS(initDefinitions));
   $.register(wrapDefinitionsWithCORS(initDefinitions));
 
   /* Architecture Note #1.1.3.3: MAIN_FILE_URL

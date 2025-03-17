@@ -12,9 +12,8 @@
 
 [//]: # (::contents:start)
 
-This [Whook](https://github.com/nfroidure/whook)'s wrapper simply answer
- to any HTTP call with a unsupported version header with a 418 HTTP error.
-
+This [Whook](https://github.com/nfroidure/whook)'s wrapper simply answer to any
+HTTP call with a unsupported version header with a 418 HTTP error.
 
 To use this plugin, simply install it:
 
@@ -69,9 +68,9 @@ declare module 'application-services' {
 // ...
 ```
 
-And add the errors descriptors or provide your
- own and configure the module (usually in
- `src/config/common/config.js`):
+And add the errors descriptors or provide your own and configure the module
+(usually in `src/config/common/config.js`):
+
 ```diff
 // ...
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';

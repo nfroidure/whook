@@ -26,8 +26,8 @@ with only two kinds of input:
   constant to an empty string.
 
 Note that the form-encoded body parameter defined by the bearer authentication
-RFC is volontarily not supported since nowadays everyone uses JSON and there is
-no situations where one could not set the token in headers.
+RFC is not supported since nowadays everyone uses JSON and there is no
+situations where one could not set the token in headers.
 
 To use this wrapper, you'll have to create an `authentication` service. Here is
 a simple unique token based implementation (usually in
@@ -37,8 +37,8 @@ a simple unique token based implementation (usually in
 import { autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import {
-  AuthenticationService,
-  BaseAuthenticationData,
+  type AuthenticationService,
+  type BaseAuthenticationData,
 } from '@whook/authorization';
 
 export type AuthenticationConfig = {
@@ -92,6 +92,7 @@ handlers and an `authenticated` property will also be added in order for
 handlers to know if the client were authenticated.
 
 Then, simply install this plugin:
+
 ```sh
 npm i @whook/authorization;
 ```
@@ -150,8 +151,8 @@ const CONFIG: AppConfig = {
 export default CONFIG;
 ```
 
-And finally declare this plugin in the `src/index.ts` file
- of your project:
+And finally declare this plugin in the `src/index.ts` file of your project:
+
 ```diff
 
   // ...

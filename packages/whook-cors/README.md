@@ -13,8 +13,8 @@
 [//]: # (::contents:start)
 
 This [Whook](https://github.com/nfroidure/whook) wrapper provides CORS support
-by adding it to your OpenAPI file and creating the routes that runs the
-OPTIONS method when you cannot do it at the proxy/gateway level.
+by adding it to your OpenAPI file and creating the routes that runs the OPTIONS
+method when you cannot do it at the proxy/gateway level.
 
 ## Usage
 
@@ -111,7 +111,10 @@ export default CONFIG;
 You should also use the wrapped error handler:
 
 ```diff
-+ import { initErrorHandlerWithCORS } from '@whook/cors';
++ import {
++  initErrorHandlerWithCORS,
++  wrapDefinitionsWithCORS,
++} from '@whook/cors';
 
 // ...
 
@@ -120,6 +123,9 @@ export async function prepareEnvironment<T extends Knifecycle<Dependencies>>(
   ): Promise<T> {
 
 //...
+
++  // Wrap the definitions for CORS
++  $.register(wrapDefinitionsWithCORS(initDefinitions));
 
 +  // Add the CORS wrapped error handler
 +  $.register(initErrorHandlerWithCORS);
@@ -140,30 +146,6 @@ According to the kind of build you use, you may also declare it in your
 +      errorHandler: '@whook/cors/dist/services/errorHandler.js',
     }),
   );
-```
-
-Finally, you must adapt the API service to handle CORS options:
-
-```diff
-+ import { augmentAPIWithCORS } from '@whook/cors';
-
-// (...)
-
-export default name('API', autoService(initAPI));
-
-// The API service is where you put your routes
-// altogether to form the final API
-async function initAPI({
-// (..)
-) {
-
-  // (..)
-
-  // You can apply transformations to your API like
-  // here for CORS support (OPTIONS method handling)
--  return augmentAPIWithFakeAuth({ ENV }, API);
-+  return augmentAPIWithCORS(await augmentAPIWithFakeAuth({ ENV }, API));
-}
 ```
 
 To see a real example have a look at the

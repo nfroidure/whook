@@ -16,7 +16,8 @@
 ingredients and the recipe to make it work altogether.
 
 The recipe is your Open API (version 3.1) definition while ingredients are
-handlers, wrappers, services, commands and some environment configuration.
+routes, crons, consumers, wrappers, services, commands and some environment
+configuration.
 
 ## Quick start
 

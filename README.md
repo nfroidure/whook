@@ -85,7 +85,7 @@ modules with well detailed readmes and setup instructions.
 Finally, search for Whook's package easily with the
 [NPM's Whook tag](https://www.npmjs.com/search?q=keywords:whook). Also the
 [Knifecycle tag](https://www.npmjs.com/search?q=keywords:knifecycle) can be
-useful to find projects using the same dependency injection framework.
+useful to find projects using the same dependency injection library.
 
 If you have any question or issue using Whook, post your help request to stack
 overflow with the
@@ -103,7 +103,7 @@ introduction to Whook's principles!
 ### Global overview
 
 This projects aims to make creating well documented and highly customizable REST
-APIs a breeze. It is the final outcome of my experience
+APIs a breeze. It is based on years of experience
 [building REST APIs with NodeJS](https://insertafter.com/en/blog/http_rest_apis_with_nodejs.html).
 
 By relying on the [OpenAPI schemas](https://www.openapis.org/) to declare a new
@@ -125,8 +125,8 @@ Then the router (`httpRouter`) deal with that request to test which handler
 needs to be run by comparing the method/path couple with the OpenAPI operations
 declarations.
 
-Once found, it simply runs the right handler with the OpenAPI parameters value
-filled from the serializable request. The handler simply have to return a
+Once found, it simply runs the right route handler with the OpenAPI parameters
+value filled from the serializable request. The handler simply have to return a
 serializable response object in turn.
 
 If any error occurs within this process, than the `errorHandler` is responsible
@@ -134,12 +134,12 @@ for providing the now lacking response object based on the error it catches.
 
 And that's it, you have your REST API. We have
 [no middleware](http://insertafter.com/en/blog/no_more_middlewares.html) concept
-here. Instead, every handler is a simple function taking paramters and returning
-a response. It makes those functions very easily composable (in a functional
-programming sense).
+here. Instead, every handler is a simple function taking parameters and
+returning a response. It makes those functions very easily composable (in a
+functional programming sense).
 
 You may add global wrappers to change every routes input/output on the fly or
-add a local wrapper specifically to one of a few routes.
+add a local wrapper specifically to one or a few routes.
 
 ### Core concepts
 
@@ -149,11 +149,12 @@ Whook work by adding ingredients to you API:
   creates constants you can inject in your routes and services.
 - **API**: It defines the various endpoint of your API and how to map these to
   routes thanks to the well known OpenAPI format (formerly Swagger),
-- **routes**: the code that implement the API endpoints,
-- **crons**: the code that implement the API endpoints,
+- **routes**: to define an implement API endpoints,
+- **crons**: to define and implement periodic tasks,
+- **consumers**: to implement queues/streams consumers,
 - **services**: various services that deal with side effects,
-- **wrappers**: higher order functions you can apply to routes or crons (CORS,
-  authentication...).
+- **wrappers**: higher order functions you can apply to routes, crons or
+  consumers (CORS, authentication...).
 
 You can see a lot of those concepts implemented in the
 [Whook example](./packages/whook-example) folder.
