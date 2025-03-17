@@ -24,14 +24,11 @@ describe('build should work', () => {
     { operationId: 'getTime', parameters: '{}' },
     { operationId: 'getDelay', parameters: '{ "duration": 1 }' },
     { operationId: 'putEcho', parameters: '{"body": { "echo": "YOLO!" }}' },
-  ])(
-    `with $operationId http lambdas`,
-    async ({ operationId, parameters }) => {
-      await execCommand(
-        `${env} npx whook testAWSLambdaRoute --name ${operationId} --parameters '${parameters}'`,
-      );
-    },
-  );
+  ])(`with $operationId http lambdas`, async ({ operationId, parameters }) => {
+    await execCommand(
+      `${env} npx whook testAWSLambdaRoute --name ${operationId} --parameters '${parameters}'`,
+    );
+  });
 
   test(`with cron lambdas`, async () => {
     await execCommand(

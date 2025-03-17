@@ -1106,6 +1106,9 @@ describe('runProcess', () => {
            "⏳ - Skipped "file:///project/src/commands/printEnv.test.ts" per ignore patterns.",
          ],
          [
+           "⏳ - Skipped "file:///project/src/commands/terraformValues.test.ts" per ignore patterns.",
+         ],
+         [
            "⏳ - Skipped "file:///project/src/routes/__snapshots__/getTime.test.ts.snap" per ignore patterns.",
          ],
          [
@@ -1649,6 +1652,9 @@ describe('runProcess', () => {
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "command", name: "printEnvCommand".",
          ],
          [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "command", name: "terraformValuesCommand".",
+         ],
+         [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "consumer", name: "consumeMessages".",
          ],
          [
@@ -1692,6 +1698,9 @@ describe('runProcess', () => {
          ],
          [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "putTime".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "terraformValuesCommand".",
          ],
          [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "parameter", name: "date".",
@@ -4350,6 +4359,9 @@ describe('runProcess', () => {
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/commands/printEnv.ts".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///project/src/commands/terraformValues.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/config/test/config.ts".",
