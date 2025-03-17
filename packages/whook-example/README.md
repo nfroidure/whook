@@ -82,6 +82,71 @@ Generate API types:
 npm run apitypes
 ```
 
+## Deploying with AWS Lambda
+
+### Pushing to S3
+
+First of all, push the lambdas to S3. If you prefer to use it with your own
+architecture later, you can stop at that step:
+
+```sh
+NODE_ENV=production APP_ENV=staging npm run build
+APP_ENV=staging bin/lambdas_zip.sh
+APP_ENV=staging bin/lambdas_push.sh
+```
+
+### Deploy with Terraform
+
+Otherwise, here is a full step by step setup for you.
+
+First install Terraform:
+
+```sh
+wget https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
+mkdir .bin
+unzip -d .bin terraform_1.6.2_linux_amd64.zip
+rm terraform_1.6.2_linux_amd64.zip
+```
+
+Then initialize the Terraform configuration:
+
+```sh
+cd ./terraform
+../.bin/terraform init;
+```
+
+Create a new workspace for each `APP_ENV`:
+
+```sh
+../.bin/terraform workspace new staging
+```
+
+Build the lambdas layer:
+
+```sh
+NODE_ENV=production bin/lambda_layer.sh
+```
+
+Plan the deployment:
+
+```sh
+../.bin/terraform plan -out=terraform.plan -var "node_env=${NODE_ENV}"
+```
+
+Apply changes:
+
+```sh
+../.bin/terraform apply -var "node_env=${NODE_ENV}" terraform.plan
+```
+
+Finally retrieve the API URL and add and enjoy!
+
+```sh
+../.bin/terraform output api_url
+curl "$(.bin/terraform output api_url)staging/v3/ping"
+# {"pong":"pong"}
+```
+
 ## Debug
 
 Execute a handler in isolation:
