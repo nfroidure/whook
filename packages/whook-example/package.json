@@ -21,7 +21,8 @@
         "*.plan",
         "*.tfstate.d",
         "*.credentials.json",
-        "lambda_layer.zip"
+        "layer",
+        "lambdas"
       ],
       "bundleFiles": [
         "bin",

@@ -737,6 +737,9 @@ describe('runProcess', () => {
            "⏳ - Skipped "route.test.js.map" per file patterns.",
          ],
          [
+           "⏳ - Skipped "terraformValues.test.ts" per ignore patterns.",
+         ],
+         [
            "⏳ - Skipped "testAWSLambdaConsumer.d.ts" per ignore patterns.",
          ],
          [
@@ -2019,6 +2022,9 @@ describe('runProcess', () => {
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/commands/printEnv.ts".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///project/src/commands/terraformValues.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/config/local/config.ts".",

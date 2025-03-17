@@ -1,7 +1,5 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { readFileSync } from 'node:fs';
-import { env } from 'node:process';
-import { NodeEnv } from 'application-services';
 import { DEFAULT_SWAGGER_UI_OPTIONS } from '@whook/swagger-ui';
 import { type AppConfig } from 'application-services';
 import { type JsonObject } from 'type-fest';
@@ -72,7 +70,7 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     ignoredModules: [],
     excludeNodeModules: true,
   },
-  DEBUG_NODE_ENVS: env.DEBUG ? Object.keys(NodeEnv) : DEBUG_NODE_ENVS,
+  DEBUG_NODE_ENVS,
   BUILD_PARALLELISM: 10,
   PROXIED_ENV_VARS: ['APP_ENV', 'NODE_ENV', 'JWT_SECRET'],
   ERRORS_DESCRIPTORS: {

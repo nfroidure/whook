@@ -3,7 +3,6 @@ import {
   type WhookBaseEnv,
   type WhookBaseConfigs,
   type WhookProxiedENVConfig,
-  type WhookCompilerConfig,
   type WhookBaseCronConfig,
   type WhookBaseConsumerConfig,
   type WhookBaseTransformerConfig,
@@ -89,16 +88,13 @@ declare module '@whook/whook' {
   export interface WhookRouteHandlerExtraParameters extends WhookAuthenticationExtraParameters {}
 
   export interface WhookCronConfig
-    extends WhookBaseCronConfig,
-      WhookAWSLambdaCronConfig {}
+    extends WhookBaseCronConfig, WhookAWSLambdaCronConfig {}
 
   export interface WhookConsumerConfig
-    extends WhookBaseConsumerConfig,
-      WhookAWSLambdaConsumerConfig {}
+    extends WhookBaseConsumerConfig, WhookAWSLambdaConsumerConfig {}
 
   export interface WhookTransformerConfig
-    extends WhookBaseTransformerConfig,
-      WhookAWSLambdaTransformerConfig {}
+    extends WhookBaseTransformerConfig, WhookAWSLambdaTransformerConfig {}
 
   /* Architecture Note #2.1.3: WhookMain
   
