@@ -135,6 +135,8 @@ builds
 .terraform
 *.plan
 *.tfstate.d
+layer
+lambdas
 *.credentials.json
 .nx
 .cursor/rules/nx-rules.mdc

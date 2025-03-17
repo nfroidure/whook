@@ -2,6 +2,10 @@ import {
   type WhookBaseRouteConfig,
   type WhookBaseEnv,
   type WhookBaseConfigs,
+  type WhookProxiedENVConfig,
+  type WhookBaseCronConfig,
+  type WhookBaseConsumerConfig,
+  type WhookBaseTransformerConfig,
 } from '@whook/whook';
 import {
   type WhookAuthenticationExtraParameters,
@@ -24,6 +28,13 @@ import {
 } from 'application-services';
 import { type RouteDefinitionFilterEnvVars } from './services/ROUTE_DEFINITION_FILTER.ts';
 import { type AppEnv } from './index.ts';
+import {
+  type WhookAWSLambdaCronConfig,
+  type WhookAWSLambdaRouteConfig,
+  type WhookAWSLambdaBuildConfig,
+  type WhookAWSLambdaConsumerConfig,
+  type WhookAWSLambdaTransformerConfig,
+} from '@whook/aws-lambda';
 
 /* Architecture Note #2.1: Typings
 
@@ -56,6 +67,9 @@ declare module 'application-services' {
       WhookCORSConfig,
       APIConfig,
       ProcessEnvConfig,
+      WhookProxiedENVConfig,
+      WhookCompilerConfig,
+      WhookAWSLambdaBuildConfig,
       JWTServiceConfig,
       TimeMockConfig,
       WhookCompilerConfig,
@@ -73,11 +87,21 @@ declare module '@whook/whook' {
     extends
       WhookBaseRouteConfig,
       WhookSwaggerUIRouteConfig,
+      WhookAWSLambdaRouteConfig,
       WhookCORSRouteConfig {}
 
   export interface WhookRouteHandlerExtraParameters extends WhookAuthenticationExtraParameters {}
 
-  /* Architecture Note #2.1.4: WhookMain
+  export interface WhookCronConfig
+    extends WhookBaseCronConfig, WhookAWSLambdaCronConfig {}
+
+  export interface WhookConsumerConfig
+    extends WhookBaseConsumerConfig, WhookAWSLambdaConsumerConfig {}
+
+  export interface WhookTransformerConfig
+    extends WhookBaseTransformerConfig, WhookAWSLambdaTransformerConfig {}
+
+  /* Architecture Note #2.1.3: WhookMain
   
   Here we export a main config to type AppEnv.
   */

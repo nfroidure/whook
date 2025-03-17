@@ -1,6 +1,5 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { readFileSync } from 'node:fs';
-import { NodeEnv } from 'application-services';
 import { DEFAULT_SWAGGER_UI_OPTIONS } from '@whook/swagger-ui';
 import { type AppConfig } from 'application-services';
 
@@ -14,7 +13,6 @@ The `src/config/common/config.ts` one allows to add common
 */
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
-const DEBUG_NODE_ENVS = [NodeEnv.Test, NodeEnv.Development];
 
 /* Architecture Note #2.2: Exporting
 
@@ -31,10 +29,15 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
   CONFIG: {
     name: _packageJSON.name,
     description: _packageJSON.description || '',
+    baseURL: 'https://api.example.com',
   },
-  DEBUG_NODE_ENVS: process.env.DEBUG
-    ? ([NodeEnv.Test, NodeEnv.Development, NodeEnv.Production] as NodeEnv[])
-    : DEBUG_NODE_ENVS,
+  COMPILER_OPTIONS: {
+    externalModules: [],
+    ignoredModules: [],
+    excludeNodeModules: true,
+  },
+  BUILD_PARALLELISM: 10,
+  PROXIED_ENV_VARS: ['APP_ENV', 'NODE_ENV', 'JWT_SECRET'],
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,
     E_INVALID_FAKE_TOKEN: {
