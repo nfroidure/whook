@@ -463,7 +463,19 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "⌚ - Scheduling the "handleMinutes" cron with "*/1 * * * *" (task name: "handleMinutes-0").",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
       "⌛ - Delay service initialized.",
@@ -671,6 +683,9 @@ describe('runProcess', () => {
     ],
     [
       "⏳ - Skipped "route.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "terraformValues.test.ts" per ignore patterns.",
     ],
     [
       "⏳ - Skipped "testAWSLambdaConsumer.d.ts" per ignore patterns.",
@@ -914,6 +929,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/aws-lambda".",
     ],
     [
       "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/cors".",
@@ -1603,6 +1621,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/CRON_DEFINITION_FILTER.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/CRON_RUNNER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-aws-lambda/dist/services/DECODERS.js".",
     ],
     [
@@ -1949,6 +1970,9 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/commands/printEnv.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/commands/terraformValues.ts".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/config/local/config.ts".",

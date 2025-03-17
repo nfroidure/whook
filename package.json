@@ -9,6 +9,8 @@
       "ignore": [
         "dist",
         "builds",
+        "layer",
+        "lambdas",
         ".bin",
         ".terraform",
         "*.plan",

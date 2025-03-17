@@ -11,7 +11,7 @@ export const definition = {
   schema: { type: 'object' },
 } as const satisfies WhookConsumerDefinition;
 
-async function initHandleMessages({ log }: { log: LogService }) {
+async function initConsumeMessages({ log }: { log: LogService }) {
   const handler: WhookConsumerHandler<WhookAWSLambdaConsumerInput> = async ({
     body,
   }) => {
@@ -22,4 +22,4 @@ async function initHandleMessages({ log }: { log: LogService }) {
   return handler;
 }
 
-export default autoService(initHandleMessages);
+export default autoService(initConsumeMessages);
