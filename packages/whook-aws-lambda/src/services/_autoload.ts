@@ -26,6 +26,7 @@ import {
   type WhookRoutesDefinitionsService,
   type WhookConsumersDefinitionsService,
   type WhookConsumerDefinition,
+  type WhookTransformerDefinition,
 } from '@whook/whook';
 import initWrapConsumerHandlerForAWSLambda from '../wrappers/wrapConsumerHandlerForAWSLambda.js';
 import initWrapRouteHandlerForAWSLambda from '../wrappers/wrapRouteHandlerForAWSLambda.js';
@@ -53,6 +54,10 @@ export type WhookAWSLambdaDefinition = {
       type: 'consumer';
       definition: WhookConsumerDefinition;
     }
+  | {
+      type: 'transformer';
+      definition: WhookTransformerDefinition;
+    }
 );
 
 export type WhookAWSLambdaAutoloadDependencies = {
@@ -62,13 +67,7 @@ export type WhookAWSLambdaAutoloadDependencies = {
   log?: LogService;
 };
 
-export const AWS_WRAPPERS: Record<
-  string,
-  {
-    name: string;
-    initializer: Initializer<Service, Dependencies>;
-  }
-> = {
+export const AWS_WRAPPERS = {
   route: {
     name: 'wrapRouteHandlerForAWSLambda',
     initializer: initWrapRouteHandlerForAWSLambda as any,
@@ -198,7 +197,12 @@ const initializerWrapper: ServiceInitializerWrapper<
     }
 
     if (serviceName.startsWith('MAIN_WRAPPER_')) {
-      const { type } = await getDefinition(serviceName);
+      const { type, definition } = await getDefinition(serviceName);
+      let finalType: keyof typeof AWS_WRAPPERS = type;
+
+      if (type === 'consumer') {
+        finalType = definition.config?.options.wrapper || 'consumer';
+      }
 
       return location(
         alsoInject(
@@ -216,9 +220,9 @@ const initializerWrapper: ServiceInitializerWrapper<
                 ]
               : []),
           ],
-          AWS_WRAPPERS[type].initializer as any,
+          AWS_WRAPPERS[finalType].initializer as any,
         ) as any,
-        `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[type].name}.js`,
+        `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[finalType].name}.js`,
       ) as any;
     }
 

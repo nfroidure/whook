@@ -103,6 +103,7 @@ describe('initDefinitions', () => {
         COMMANDS_DEFINITIONS: {},
         CRONS_DEFINITIONS: {},
         CONSUMERS_DEFINITIONS: {},
+        TRANSFORMERS_DEFINITIONS: {},
         SECURITY_DEFINITIONS,
         log,
       });
@@ -141,6 +142,7 @@ describe('initDefinitions', () => {
         COMMANDS_DEFINITIONS: {},
         CRONS_DEFINITIONS: {},
         CONSUMERS_DEFINITIONS: {},
+        TRANSFORMERS_DEFINITIONS: {},
         ROUTES_DEFINITIONS: {
           getUser: {
             url: 'src/routes/getUser.ts',

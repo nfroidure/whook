@@ -25,10 +25,16 @@ import {
   type WhookCronDefinition,
   type WhookCronModule,
 } from '../types/crons.js';
+import {
+  DEFAULT_TRANSFORMER_CONFIG,
+  type WhookTransformerDefinition,
+  type WhookTransformerModule,
+} from '../types/transformers.js';
 import { type WhookRoutesDefinitionsService } from './ROUTES_DEFINITIONS.js';
 import { type WhookCommandsDefinitionsService } from './COMMANDS_DEFINITIONS.js';
 import { type WhookCronsDefinitionsService } from './CRONS_DEFINITIONS.js';
 import { type WhookConsumersDefinitionsService } from './CONSUMERS_DEFINITIONS.js';
+import { type WhookTransformersDefinitionsService } from './TRANSFORMERS_DEFINITIONS.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
 import {
   type WhookConsumerModule,
@@ -64,6 +70,7 @@ export type WhookDefinitionsDependencies = WhookDefinitionsConfig & {
   COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService;
   CRONS_DEFINITIONS: WhookCronsDefinitionsService;
   CONSUMERS_DEFINITIONS: WhookConsumersDefinitionsService;
+  TRANSFORMERS_DEFINITIONS: WhookTransformersDefinitionsService;
   SECURITY_DEFINITIONS?: WhookSecurityDefinitions;
   log?: LogService;
 };
@@ -86,6 +93,9 @@ export type WhookDefinitions = {
     | (WhookConsumerDefinition & {
         type: 'consumer';
       })
+    | (WhookTransformerDefinition & {
+        type: 'transformer';
+      })
   >;
 };
 
@@ -106,6 +116,8 @@ export default location(
  * The crons modules
  * @param  {Object}   [services.CONSUMERS_DEFINITIONS]
  * The consumers modules
+ * @param  {Object}   [services.TRANSFORMERS_DEFINITIONS]
+ * The transformers modules
  * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @return {Promise<String>}
@@ -116,6 +128,7 @@ async function initDefinitions({
   COMMANDS_DEFINITIONS,
   CRONS_DEFINITIONS,
   CONSUMERS_DEFINITIONS,
+  TRANSFORMERS_DEFINITIONS,
   SECURITY_DEFINITIONS = DEFAULT_SECURITY_DEFINITIONS,
   log = noop,
 }: WhookDefinitionsDependencies): Promise<WhookDefinitions> {
@@ -148,6 +161,13 @@ async function initDefinitions({
   }[] = Object.keys(CONSUMERS_DEFINITIONS).map((key) => ({
     file: CONSUMERS_DEFINITIONS[key].url,
     module: CONSUMERS_DEFINITIONS[key].module,
+  }));
+  const transformersModules: {
+    file: string;
+    module: WhookTransformerModule;
+  }[] = Object.keys(TRANSFORMERS_DEFINITIONS).map((key) => ({
+    file: TRANSFORMERS_DEFINITIONS[key].url,
+    module: TRANSFORMERS_DEFINITIONS[key].module,
   }));
 
   const DEFINITIONS = {
@@ -187,6 +207,7 @@ async function initDefinitions({
         routesModules
           .concat(commandsModules as unknown as typeof routesModules)
           .concat(cronsModules as unknown as typeof routesModules)
+          .concat(transformersModules as unknown as typeof routesModules)
           .concat(consumersModules as unknown as typeof routesModules),
       ),
       parameters: combineComponents({ log }, 'Parameter', routesModules),
@@ -250,6 +271,22 @@ async function initDefinitions({
       ...consumerModule.module.definition,
       config:
         consumerModule.module.definition.config || DEFAULT_CONSUMER_CONFIG,
+    };
+  }
+
+  for (const transformerModule of transformersModules) {
+    const name = transformerModule.module.definition.name;
+
+    if (DEFINITIONS.configs[name]) {
+      log('error', `💥 - Cannot override an existing definition (${name}).`);
+    }
+
+    DEFINITIONS.configs[name] = {
+      type: 'transformer',
+      ...transformerModule.module.definition,
+      config:
+        transformerModule.module.definition.config ||
+        DEFAULT_TRANSFORMER_CONFIG,
     };
   }
 

@@ -84,6 +84,16 @@ export * from './services/CONSUMERS_WRAPPERS.js';
 import initConsumersHandlers from './services/CONSUMERS_HANDLERS.js';
 export { initConsumersHandlers };
 export * from './services/CONSUMERS_HANDLERS.js';
+import initTransformersDefinitions from './services/TRANSFORMERS_DEFINITIONS.js';
+export { initTransformersDefinitions };
+export * from './services/TRANSFORMERS_DEFINITIONS.js';
+export type * from './services/TRANSFORMERS_DEFINITIONS.js';
+import initTransformersWrappers from './services/TRANSFORMERS_WRAPPERS.js';
+export { initTransformersWrappers };
+export * from './services/TRANSFORMERS_WRAPPERS.js';
+import initTransformersHandlers from './services/TRANSFORMERS_HANDLERS.js';
+export { initTransformersHandlers };
+export * from './services/TRANSFORMERS_HANDLERS.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';
@@ -310,6 +320,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initCommandsDefinitions,
     initCronsDefinitions,
     initConsumersDefinitions,
+    initTransformersDefinitions,
   ].forEach($.register.bind($));
 
   $.register(initCommand);

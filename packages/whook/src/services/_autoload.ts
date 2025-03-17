@@ -16,6 +16,7 @@ import { noop } from '../libs/utils.js';
 import initRoutesHandlers from './ROUTES_HANDLERS.js';
 import initCronsHandlers from './CRONS_HANDLERS.js';
 import initConsumersHandlers from './CRONS_HANDLERS.js';
+import initTransformersHandlers from './TRANSFORMERS_HANDLERS.js';
 import { type AppConfig } from 'application-services';
 import initRoutesWrappers, {
   ROUTES_WRAPPERS_REG_EXP,
@@ -29,6 +30,10 @@ import initConsumersWrappers, {
   CONSUMERS_WRAPPERS_REG_EXP,
   type WhookConsumersWrappersConfig,
 } from './CONSUMERS_WRAPPERS.js';
+import initTransformersWrappers, {
+  TRANSFORMERS_WRAPPERS_REG_EXP,
+  type WhookTransformersWrappersConfig,
+} from './TRANSFORMERS_WRAPPERS.js';
 import { extname, join as pathJoin } from 'node:path';
 import { access as _access, constants } from 'node:fs/promises';
 import { YError, printStackTrace } from 'yerror';
@@ -44,7 +49,6 @@ import {
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type WhookRawCommandArgs } from '../libs/args.js';
-import { type WhookOpenAPI } from '../types/openapi.js';
 import {
   DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   type WhookCronDefinitionsOptions,
@@ -53,11 +57,18 @@ import {
 import {
   DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
   type WhookRoutesDefinitionsOptions,
+  type WhookRoutesDefinitionsService,
 } from './ROUTES_DEFINITIONS.js';
 import {
   DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
   type WhookConsumerDefinitionsOptions,
+  type WhookConsumersDefinitionsService,
 } from './CONSUMERS_DEFINITIONS.js';
+import {
+  DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
+  type WhookTransformerDefinitionsOptions,
+  type WhookTransformersDefinitionsService,
+} from './TRANSFORMERS_DEFINITIONS.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -71,7 +82,8 @@ export type WhookInitializerMap = { [name: string]: string };
 
 export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
   WhookCronsWrappersConfig &
-  WhookConsumersWrappersConfig & {
+  WhookConsumersWrappersConfig &
+  WhookTransformersWrappersConfig & {
     APP_CONFIG?: AppConfig;
     INITIALIZER_PATH_MAP?: WhookInitializerMap;
     WHOOK_PLUGINS?: WhookPluginName[];
@@ -79,6 +91,7 @@ export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
     ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
     CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
     CONSUMERS_DEFINITIONS_OPTIONS?: WhookConsumerDefinitionsOptions;
+    TRANSFORMERS_DEFINITIONS_OPTIONS?: WhookTransformerDefinitionsOptions;
     args: WhookRawCommandArgs;
     $injector: Injector<Service>;
     importer: ImporterService<{
@@ -132,9 +145,11 @@ async function initAutoload({
   ROUTES_WRAPPERS_NAMES = [],
   CRONS_WRAPPERS_NAMES = [],
   CONSUMERS_WRAPPERS_NAMES = [],
+  TRANSFORMERS_WRAPPERS_NAMES = [],
   ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
   CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   CONSUMERS_DEFINITIONS_OPTIONS = DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
+  TRANSFORMERS_DEFINITIONS_OPTIONS = DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
   args,
   importer,
   $injector,
@@ -151,7 +166,7 @@ async function initAutoload({
    it is dynamically loaded so doing this during the auto
    loader initialization.
   */
-  let ROUTES_DEFINITIONS: WhookOpenAPI;
+  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   const getRoutesDefinitions = (() => {
     return async () => {
       if (!ROUTES_DEFINITIONS) {
@@ -171,7 +186,7 @@ async function initAutoload({
       return CRONS_DEFINITIONS;
     };
   })();
-  let CONSUMERS_DEFINITIONS: WhookCronsDefinitionsService;
+  let CONSUMERS_DEFINITIONS: WhookConsumersDefinitionsService;
   const getConsumersDefinitions = (() => {
     return async () => {
       if (!CONSUMERS_DEFINITIONS) {
@@ -179,6 +194,17 @@ async function initAutoload({
           .CONSUMERS_DEFINITIONS;
       }
       return CONSUMERS_DEFINITIONS;
+    };
+  })();
+  let TRANSFORMERS_DEFINITIONS: WhookTransformersDefinitionsService;
+  const getTransformersDefinitions = (() => {
+    return async () => {
+      if (!TRANSFORMERS_DEFINITIONS) {
+        TRANSFORMERS_DEFINITIONS = (
+          await $injector(['TRANSFORMERS_DEFINITIONS'])
+        ).TRANSFORMERS_DEFINITIONS;
+      }
+      return TRANSFORMERS_DEFINITIONS;
     };
   })();
   let commandModule;
@@ -266,8 +292,14 @@ async function initAutoload({
       CONSUMERS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
         new RegExp(pattern).test(injectedName),
       );
+    const isTransformerHandler =
+      TRANSFORMERS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
+        new RegExp(pattern).test(injectedName),
+      );
     const isCronWrapper = CRONS_WRAPPERS_REG_EXP.test(injectedName);
     const isConsumerWrapper = CONSUMERS_WRAPPERS_REG_EXP.test(injectedName);
+    const isTransformerWrapper =
+      TRANSFORMERS_WRAPPERS_REG_EXP.test(injectedName);
 
     /* Architecture Note #2.9.4: the `ROUTES_HANDLERS` mapper
     Here, we build the handlers map needed by the router by injecting every
@@ -300,6 +332,15 @@ async function initAutoload({
       ) as Initializer<Dependencies, Service>;
     }
 
+    if ('TRANSFORMERS_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getTransformersDefinitions());
+
+      return location(
+        alsoInject(handlerNames, initTransformersHandlers),
+        '@whook/whook/dist/services/TRANSFORMERS_HANDLERS.js',
+      ) as Initializer<Dependencies, Service>;
+    }
+
     /* Architecture Note #2.9.5: the `ROUTES_WRAPPERS` auto loading
     We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
      service so that they can be dynamically applied.
@@ -322,6 +363,13 @@ async function initAutoload({
       return location(
         alsoInject(CONSUMERS_WRAPPERS_NAMES, initConsumersWrappers),
         '@whook/whook/dist/services/CONSUMERS_WRAPPERS.js',
+      );
+    }
+
+    if ('TRANSFORMERS_WRAPPERS' === injectedName) {
+      return location(
+        alsoInject(TRANSFORMERS_WRAPPERS_NAMES, initTransformersWrappers),
+        '@whook/whook/dist/services/TRANSFORMERS_WRAPPERS.js',
       );
     }
 
@@ -367,11 +415,16 @@ async function initAutoload({
             ? 'crons'
             : isConsumerHandler
               ? 'consumers'
-              : isRouteHandler
-                ? 'routes'
-                : isRouteWrapper || isCronWrapper || isConsumerWrapper
-                  ? 'wrappers'
-                  : 'services',
+              : isTransformerHandler
+                ? 'transformers'
+                : isRouteHandler
+                  ? 'routes'
+                  : isRouteWrapper ||
+                      isCronWrapper ||
+                      isConsumerWrapper ||
+                      isTransformerWrapper
+                    ? 'wrappers'
+                    : 'services',
           '.',
           injectedName + extname(resolvedPlugin.mainURL),
         ),

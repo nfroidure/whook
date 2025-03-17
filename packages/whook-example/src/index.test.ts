@@ -385,6 +385,18 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
       "⌚ - Scheduling the "handleMinutes" cron with "*/1 * * * *" (task name: "handleMinutes-0").",
     ],
     [
@@ -661,6 +673,9 @@ describe('runProcess', () => {
       "🈁 - Gathering the project crons modules.",
     ],
     [
+      "🈁 - Gathering the project transformers modules.",
+    ],
+    [
       "🈁 - Gathering the routes modules.",
     ],
     [
@@ -908,6 +923,18 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "TIMEOUT" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "authentication" module path in "__project__".",
@@ -1243,6 +1270,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/TIMEOUT.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/fetcher.js".",
     ],
     [
@@ -1312,6 +1342,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/TIMEOUT.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/fetcher.js".",
     ],
     [
@@ -1373,6 +1406,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/fetcher.js".",
@@ -1447,6 +1483,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/TRANSFORMER_DEFINITION_FILTER.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/fetcher.ts".",
     ],
     [
@@ -1517,6 +1556,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "TIMEOUT" not found.",
+    ],
+    [
+      "🚫 - Module path of "TRANSFORMER_DEFINITION_FILTER" not found.",
     ],
     [
       "🚫 - Module path of "fetcher" not found.",

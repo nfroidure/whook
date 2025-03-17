@@ -67,20 +67,35 @@ export type WhookAWSLambdaBaseConfig = {
 };
 export type WhookAWSLambdaRouteConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaCronConfig = WhookAWSLambdaBaseConfig;
-export type WhookAWSLambdaConsumerConfig = WhookAWSLambdaBaseConfig & {
-  enabled: boolean;
-};
 export type WhookAWSLambdaTransformerConfig = WhookAWSLambdaBaseConfig & {
   enabled: boolean;
 };
-export type WhookAWSLambdaKafkaConsumerConfig = WhookAWSLambdaBaseConfig & {
+export type WhookAWSLambdaConsumerConfig = WhookAWSLambdaBaseConfig & {
   enabled: boolean;
+  options:
+    | WhookAWSLambdaEventConsumerConfig
+    | WhookAWSLambdaKafkaConsumerConfig
+    | WhookAWSLambdaLogSubscriberConfig
+    | WhookAWSLambdaS3Config;
 };
-export type WhookAWSLambdaLogSubscriberConfig = WhookAWSLambdaBaseConfig & {
-  enabled: boolean;
+export type WhookAWSLambdaEventConsumerConfig = {
+  wrapper: 'consumer';
+  eventSourceARN: string;
 };
-export type WhookAWSLambdaS3Config = WhookAWSLambdaBaseConfig & {
-  enabled: boolean;
+export type WhookAWSLambdaKafkaConsumerConfig = {
+  wrapper: 'kafka';
+  topics: string[];
+  startingPosition: 'latest' | 'trim_horizon';
+};
+export type WhookAWSLambdaLogSubscriberConfig = {
+  wrapper: 'log';
+  logGroupName: string;
+};
+export type WhookAWSLambdaS3Config = {
+  wrapper: 's3';
+  bucket: string;
+  filterPrefix: string;
+  filterSuffix: string;
 };
 
 const cprAsync = promisify(cpr) as (

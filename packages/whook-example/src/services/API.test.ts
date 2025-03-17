@@ -68,6 +68,7 @@ describe('API', () => {
       COMMANDS_DEFINITIONS: {},
       CRONS_DEFINITIONS: {},
       CONSUMERS_DEFINITIONS: {},
+      TRANSFORMERS_DEFINITIONS: {},
       SECURITY_DEFINITIONS,
     });
   });

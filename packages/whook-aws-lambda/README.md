@@ -94,12 +94,18 @@ export async function prepareBuildEnvironment(
 Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
-+ import { type WhookCompilerConfig } from '@whook/whook';
+import {
++   type WhookCompilerConfig,
+   type WhookBaseRouteConfig,
+   type WhookBaseCronConfig,
++   type WhookBaseConsumerConfig,
++   type WhookBaseTransformerConfig,
++ } from '@whook/whook';
 + import {
 +   type WhookAWSLambdaBuildConfig,
 +   type WhookAWSLambdaRouteConfig
-+   type WhookConsumerConfig,
 +   type WhookAWSLambdaConsumerConfig,
++   type WhookAWSLambdaTransformerConfig,
 + } from '@whook/aws-lambda';
 
 declare module 'application-services' {
@@ -122,16 +128,20 @@ declare module '@whook/whook' {
   export interface WhookRouteConfig
     extends WhookBaseRouteConfig,
 +      WhookAWSLambdaRouteConfig,
-      WhookCORSRouteConfig {};
+      WhookCORSRouteConfig {}
 
   export interface WhookCronConfig
--    extends WhookBaseCronConfig {};
+-    extends WhookBaseCronConfig {}
 +    extends WhookBaseCronConfig,
-+      WhookAWSLambdaCronConfig {};
-
++      WhookAWSLambdaCronConfig {}
++
 +  export interface WhookConsumerConfig
 +    extends WhookBaseConsumerConfig,
-+      WhookAWSLambdaConsumerConfig {};
++      WhookAWSLambdaConsumerConfig {}
++
++  export interface WhookTransformerConfig
++    extends WhookBaseTransformerConfig,
++      WhookAWSLambdaTransformerConfig {}
 }
 
 ```
