@@ -52,6 +52,16 @@ describe('commands should work', () => {
      # Provided by "@whook/dev": 2 commands
      - create: A command helping to create new Whook files easily
      - generateOpenAPITypes: Write openAPI types to stdout
+
+
+     # Provided by "@whook/aws-lambda": 7 commands
+     - testAWSLambdaConsumer: A command for testing AWS consumer lambda
+     - testAWSLambdaCron: A command for testing AWS cron lambda
+     - testAWSLambdaKafkaConsumer: A command for testing AWS lambda Kafka consumers
+     - testAWSLambdaLogSubscriber: A command for testing AWS consumer lambda
+     - testAWSLambdaRoute: A command for testing AWS HTTP lambda
+     - testAWSLambdaS3: A command for testing AWS consumer lambda
+     - testAWSLambdaTransformer: A command for testing AWS lambda transformers
      ",
      }
     `);

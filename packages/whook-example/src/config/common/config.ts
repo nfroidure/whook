@@ -1,8 +1,10 @@
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
 import { readFileSync } from 'node:fs';
+import { env } from 'node:process';
 import { NodeEnv } from 'application-services';
 import { DEFAULT_SWAGGER_UI_OPTIONS } from '@whook/swagger-ui';
 import { type AppConfig } from 'application-services';
+import { type JsonObject } from 'type-fest';
 
 /* Architecture Note #2: Configuration
 
@@ -15,6 +17,39 @@ The `src/config/common/config.ts` one allows to add common
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
 const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
+
+// Export custom handlers definitions
+export type WhookAWSLambdaBaseHTTPConfiguration = {
+  type: 'http';
+};
+export type WhookAWSLambdaBaseCronConfiguration<T = JsonObject> = {
+  type: 'cron';
+  schedules: {
+    rule: string;
+    body?: T;
+    enabled: boolean;
+  }[];
+};
+export type WhookAWSLambdaBaseConsumerConfiguration = {
+  type: 'consumer';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseTransformerConfiguration = {
+  type: 'transformer';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseKafkaConsumerConfiguration = {
+  type: 'kafka';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseLogSubscriberConfiguration = {
+  type: 'log';
+  enabled: boolean;
+};
+export type WhookAWSLambdaBaseS3Configuration = {
+  type: 's3';
+  enabled: boolean;
+};
 
 /* Architecture Note #2.2: Exporting
 
@@ -30,8 +65,16 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
   CONFIG: {
     name: _packageJSON.name,
     description: _packageJSON.description || '',
+    baseURL: 'https://api.example.com',
   },
-  DEBUG_NODE_ENVS: process.env.DEBUG ? Object.keys(NodeEnv) : DEBUG_NODE_ENVS,
+  COMPILER_OPTIONS: {
+    externalModules: [],
+    ignoredModules: [],
+    excludeNodeModules: true,
+  },
+  DEBUG_NODE_ENVS: env.DEBUG ? Object.keys(NodeEnv) : DEBUG_NODE_ENVS,
+  BUILD_PARALLELISM: 10,
+  PROXIED_ENV_VARS: ['APP_ENV', 'NODE_ENV', 'JWT_SECRET'],
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,
     E_INVALID_FAKE_TOKEN: {

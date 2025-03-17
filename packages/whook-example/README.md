@@ -124,6 +124,19 @@ Debug `knifecycle` internals (dependency injection issues):
 DEBUG=knifecycle node --run dev
 ```
 
+Debug built lambdas:
+
+```sh
+## HTTP
+APP_ENV=staging npx whook testAWSLambdaRoute --name putEcho \
+ --parameters '{ "body": { "echo": "Hey!" } }'
+## Cron
+APP_ENV=staging npx whook testAWSLambdaCron --name handleMinutes
+## Consumer
+APP_ENV=staging npx whook testAWSLambdaConsumer --name consumeMessages \
+ --event '{ "Records": [{ "test": "test" }] }'
+```
+
 [//]: # (::contents:end)
 
 # Authors
