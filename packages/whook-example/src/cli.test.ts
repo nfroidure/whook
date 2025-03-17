@@ -42,6 +42,16 @@ On air 🚀🌕
 
 
 # Provided by "@whook/authorization": none
+
+
+# Provided by "@whook/aws-lambda": 7 commands
+- testAWSLambdaConsumer: A command for testing AWS consumer lambda
+- testAWSLambdaCron: A command for testing AWS cron lambda
+- testAWSLambdaKafkaConsumer: A command for testing AWS lambda Kafka consumers
+- testAWSLambdaLogSubscriber: A command for testing AWS consumer lambda
+- testAWSLambdaRoute: A command for testing AWS HTTP lambda
+- testAWSLambdaS3: A command for testing AWS consumer lambda
+- testAWSLambdaTransformer: A command for testing AWS lambda transformers
 ",
 }
 `);
