@@ -39,7 +39,7 @@ import initSecurityDefinitions from './services/SECURITY_DEFINITIONS.js';
 You can add more application environment here for several
  deployment targets.
 */
-const APP_ENVS = ['local', 'test', 'production'] as const;
+const APP_ENVS = ['local', 'test', 'staging', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
 
@@ -232,6 +232,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
       ...WHOOK_DEFAULT_PLUGINS,
       '@whook/cors',
       '@whook/authorization',
+      '@whook/aws-lambda',
     ]),
   );
 
