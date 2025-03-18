@@ -8,9 +8,11 @@ import { prepareEnvironment } from './index.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initBuildConstants,
+} from '@whook/whook';
+import {
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
-} from '@whook/whook';
+} from '@whook/gcp-functions';
 
 /* Architecture Note #1.2.1: The `runBuild` function
 
@@ -56,7 +58,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
 
   // Finally, some constants can be serialized instead of being
   //  initialized in the target build saving some time at boot
-  $.register(alsoInject([], initBuildConstants));
+  $.register(alsoInject(['DEFINITIONS'], initBuildConstants));
 
   return $;
 }
