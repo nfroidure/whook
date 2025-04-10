@@ -13,12 +13,37 @@ import {
   type OAuth2GranterService,
 } from '../services/oAuth2Granters.js';
 import { type LogService } from 'common-services';
+import { CODE_CHALLENGE_METHODS } from '../services/oAuth2CodeGranter.js';
 
 /* Architecture Note #1: OAuth2 authorize
 This endpoint simply redirect the user to the authentication
  server page by first checking the application details are
  fine.
 */
+
+export const codeChallengeParameter = {
+  name: 'code_challenge',
+  parameter: {
+    in: 'query',
+    name: 'code_challenge',
+    required: false,
+    schema: {
+      type: 'string',
+    },
+  },
+} as const satisfies WhookAPIParameterDefinition;
+export const codeChallengeMethodParameter = {
+  name: 'code_challenge_method',
+  parameter: {
+    in: 'query',
+    name: 'code_challenge_method',
+    required: false,
+    schema: {
+      type: 'string',
+      enum: CODE_CHALLENGE_METHODS as unknown as string[],
+    },
+  },
+} as const satisfies WhookAPIParameterDefinition;
 
 export const responseTypeParameter = {
   name: 'responseType',
@@ -94,6 +119,8 @@ export const definition = {
       refersTo(redirectURIParameter),
       refersTo(scopeParameter),
       refersTo(stateParameter),
+      refersTo(codeChallengeParameter),
+      refersTo(codeChallengeMethodParameter),
     ],
     responses: {
       '302': {
@@ -150,6 +177,8 @@ async function initGetOAuth2Authorize({
       redirect_uri: demandedRedirectURI = '',
       scope: demandedScope = '',
       state,
+      code_challenge: codeChallenge = '',
+      code_challenge_method: codeChallengeMethod = 'plain',
       ...authorizeParameters
     },
   }: {
@@ -159,6 +188,8 @@ async function initGetOAuth2Authorize({
       redirect_uri?: string;
       scope?: string;
       state: string;
+      code_challenge?: string;
+      code_challenge_method?: string;
     } & Record<string, unknown>;
   }) => {
     const url = new URL(OAUTH2.authenticateURL);
@@ -174,6 +205,16 @@ async function initGetOAuth2Authorize({
         throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', responseType);
       }
 
+      if (responseType === 'code') {
+        if (!codeChallenge) {
+          if (OAUTH2.forcePKCE) {
+            throw new YError('E_PKCE_REQUIRED', responseType);
+          }
+        }
+      } else if (codeChallenge) {
+        throw new YError('E_PKCE_NOT_SUPPORTED', responseType);
+      }
+
       const { applicationId, redirectURI, scope } = await (
         granter.authorizer as NonNullable<OAuth2GranterService['authorizer']>
       ).authorize(
@@ -182,7 +223,15 @@ async function initGetOAuth2Authorize({
           redirectURI: demandedRedirectURI,
           scope: demandedScope,
         },
-        camelCaseObjectProperties(authorizeParameters),
+        camelCaseObjectProperties({
+          ...authorizeParameters,
+          ...(responseType === 'code'
+            ? {
+                codeChallenge,
+                codeChallengeMethod,
+              }
+            : {}),
+        }),
       );
 
       url.searchParams.set('type', responseType);
