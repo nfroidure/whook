@@ -118,6 +118,7 @@
     "chokidar": "^4.0.1",
     "common-services": "^17.0.1",
     "content-type": "^1.0.5",
+    "cron-parser": "^5.0.5",
     "debug": "^4.3.7",
     "first-chunk-stream": "^6.0.0",
     "fs-extra": "^11.2.0",

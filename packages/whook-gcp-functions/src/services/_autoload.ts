@@ -90,7 +90,8 @@ const initializerWrapper: ServiceInitializerWrapper<
         name: cleanedName,
         type: 'route',
         openAPI,
-        definition: ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
+        definition:
+          ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
       };
     };
   })();
@@ -124,10 +125,7 @@ const initializerWrapper: ServiceInitializerWrapper<
               'MAIN_WRAPPER_',
               'MAIN_DEFINITION_',
             )}`,
-            `MAIN_API>${serviceName.replace(
-              'MAIN_WRAPPER_',
-              'MAIN_API_',
-            )}`,
+            `MAIN_API>${serviceName.replace('MAIN_WRAPPER_', 'MAIN_API_')}`,
           ],
           initWrapRouteHandlerForGoogleHTTPFunction as any,
         ) as any,

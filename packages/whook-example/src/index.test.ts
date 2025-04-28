@@ -100,9 +100,9 @@ describe('runProcess', () => {
   test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
-      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
-    }).toMatchInlineSnapshot(`
+  debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+  logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs)
+}).toMatchInlineSnapshot(`
 {
   "debugCalls": [
     [
@@ -443,6 +443,12 @@ describe('runProcess', () => {
     ],
     [
       "⏳ - Skipped "create.test.js.map" per file patterns.",
+    ],
+    [
+      "⏳ - Skipped "cronSchedule.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "cronSchedule.js.map" per file patterns.",
     ],
     [
       "⏳ - Skipped "env.d.ts" per ignore patterns.",
@@ -1589,6 +1595,9 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/create.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/cronSchedule.js".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/env.js".",

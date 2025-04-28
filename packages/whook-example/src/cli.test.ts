@@ -9,9 +9,9 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-    }).toMatchInlineSnapshot(`
+  stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+  stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/')
+}).toMatchInlineSnapshot(`
 {
   "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
@@ -27,8 +27,9 @@ On air 🚀🌕
 - printEnv: A command printing every env values
 
 
-# Provided by "@whook/whook": 7 commands
+# Provided by "@whook/whook": 8 commands
 - config: A simple program that returns the queryed config value
+- cronSchedule: A command to run a cron schedules for a given time frame
 - env: A command printing env values
 - generateOpenAPISchema: Write openAPI schema to stdout
 - generateOpenAPITypes: Write openAPI types to stdout

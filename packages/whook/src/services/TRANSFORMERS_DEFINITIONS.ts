@@ -116,9 +116,10 @@ async function initTransformersDefinitions({
         continue;
       }
 
-      const transformerName = TRANSFORMERS_DEFINITIONS_OPTIONS.fileNamePatterns.map(
-        (pattern) => new RegExp(pattern).exec(file)?.[1],
-      )[0];
+      const transformerName =
+        TRANSFORMERS_DEFINITIONS_OPTIONS.fileNamePatterns.map(
+          (pattern) => new RegExp(pattern).exec(file)?.[1],
+        )[0];
 
       if (!transformerName) {
         log('debug', `⏳ - Skipped "${file}" per file patterns.`);
@@ -147,7 +148,11 @@ async function initTransformersDefinitions({
       }
 
       const url = new URL(
-        pathJoin('.', 'transformers', transformerName + extname(resolvedPlugin.mainURL)),
+        pathJoin(
+          '.',
+          'transformers',
+          transformerName + extname(resolvedPlugin.mainURL),
+        ),
         resolvedPlugin.mainURL,
       ).toString();
 
@@ -156,7 +161,10 @@ async function initTransformersDefinitions({
       try {
         module = await importer(url);
       } catch (err) {
-        log('error', `🔴 - Got an error while loading a transformer file: ${file}`);
+        log(
+          'error',
+          `🔴 - Got an error while loading a transformer file: ${file}`,
+        );
         log('error-stack', printStackTrace(err as Error));
       }
 
@@ -178,7 +186,10 @@ async function initTransformersDefinitions({
       }
 
       if (TRANSFORMER_DEFINITION_FILTER(module.definition)) {
-        log('debug', `⏳ - Skipped "${file}" due to project transformers filter.`);
+        log(
+          'debug',
+          `⏳ - Skipped "${file}" due to project transformers filter.`,
+        );
         continue;
       }
 

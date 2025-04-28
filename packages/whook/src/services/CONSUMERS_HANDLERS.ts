@@ -18,7 +18,10 @@ export type WhookConsumersHandlersDependencies = {
 } & WhookConsumersHandlersService;
 
 export default location(
-  service(initConsumersHandlers, 'CONSUMERS_HANDLERS', ['CONSUMERS_WRAPPERS', 'log']),
+  service(initConsumersHandlers, 'CONSUMERS_HANDLERS', [
+    'CONSUMERS_WRAPPERS',
+    'log',
+  ]),
   import.meta.url,
 );
 
@@ -58,10 +61,11 @@ async function initConsumersHandlers({
   const WRAPPED_CONSUMERS_HANDLERS: WhookConsumersHandlersService = {};
 
   for (const consumerHandlerName of Object.keys(CONSUMERS_HANDLERS)) {
-    WRAPPED_CONSUMERS_HANDLERS[consumerHandlerName] = await applyHandlerWrappers(
-      CONSUMERS_WRAPPERS,
-      CONSUMERS_HANDLERS[consumerHandlerName],
-    );
+    WRAPPED_CONSUMERS_HANDLERS[consumerHandlerName] =
+      await applyHandlerWrappers(
+        CONSUMERS_WRAPPERS,
+        CONSUMERS_HANDLERS[consumerHandlerName],
+      );
   }
 
   return WRAPPED_CONSUMERS_HANDLERS;

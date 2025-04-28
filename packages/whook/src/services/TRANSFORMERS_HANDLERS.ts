@@ -18,7 +18,10 @@ export type WhookTransformersHandlersDependencies = {
 } & WhookTransformersHandlersService;
 
 export default location(
-  service(initTransformersHandlers, 'TRANSFORMERS_HANDLERS', ['TRANSFORMERS_WRAPPERS', 'log']),
+  service(initTransformersHandlers, 'TRANSFORMERS_HANDLERS', [
+    'TRANSFORMERS_WRAPPERS',
+    'log',
+  ]),
   import.meta.url,
 );
 
@@ -58,10 +61,11 @@ async function initTransformersHandlers({
   const WRAPPED_TRANSFORMERS_HANDLERS: WhookTransformersHandlersService = {};
 
   for (const transformerHandlerName of Object.keys(TRANSFORMERS_HANDLERS)) {
-    WRAPPED_TRANSFORMERS_HANDLERS[transformerHandlerName] = await applyHandlerWrappers(
-      TRANSFORMERS_WRAPPERS,
-      TRANSFORMERS_HANDLERS[transformerHandlerName],
-    );
+    WRAPPED_TRANSFORMERS_HANDLERS[transformerHandlerName] =
+      await applyHandlerWrappers(
+        TRANSFORMERS_WRAPPERS,
+        TRANSFORMERS_HANDLERS[transformerHandlerName],
+      );
   }
 
   return WRAPPED_TRANSFORMERS_HANDLERS;

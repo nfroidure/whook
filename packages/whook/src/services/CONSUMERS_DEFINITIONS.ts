@@ -147,7 +147,11 @@ async function initConsumersDefinitions({
       }
 
       const url = new URL(
-        pathJoin('.', 'consumers', consumerName + extname(resolvedPlugin.mainURL)),
+        pathJoin(
+          '.',
+          'consumers',
+          consumerName + extname(resolvedPlugin.mainURL),
+        ),
         resolvedPlugin.mainURL,
       ).toString();
 
@@ -156,7 +160,10 @@ async function initConsumersDefinitions({
       try {
         module = await importer(url);
       } catch (err) {
-        log('error', `🔴 - Got an error while loading a consumer file: ${file}`);
+        log(
+          'error',
+          `🔴 - Got an error while loading a consumer file: ${file}`,
+        );
         log('error-stack', printStackTrace(err as Error));
       }
 

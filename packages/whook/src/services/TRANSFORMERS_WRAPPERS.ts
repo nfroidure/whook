@@ -11,7 +11,8 @@ export default location(
   import.meta.url,
 );
 
-export const TRANSFORMERS_WRAPPERS_REG_EXP = /^(wrapTransformer)[A-Z][a-zA-Z0-9]+/;
+export const TRANSFORMERS_WRAPPERS_REG_EXP =
+  /^(wrapTransformer)[A-Z][a-zA-Z0-9]+/;
 
 export type WhookTransformersWrappersService = Record<
   string,
@@ -42,13 +43,16 @@ async function initTransformersWrappers({
   TRANSFORMERS_WRAPPERS_NAMES = [],
   log = noop,
   ...TRANSFORMERS_WRAPPERS
-}: WhookTransformersWrappersDependencies): Promise<WhookTransformerHandlerWrapper[]> {
+}: WhookTransformersWrappersDependencies): Promise<
+  WhookTransformerHandlerWrapper[]
+> {
   log('warning', `🏭 - Initializing the TRANSFORMERS_WRAPPERS service.`);
 
   // Except with exotic configurations, those numbers should equal
   // leaving this small debug message may help with messed configs
   if (
-    Object.keys(TRANSFORMERS_WRAPPERS).length !== TRANSFORMERS_WRAPPERS_NAMES.length
+    Object.keys(TRANSFORMERS_WRAPPERS).length !==
+    TRANSFORMERS_WRAPPERS_NAMES.length
   ) {
     log(
       'debug',

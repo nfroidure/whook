@@ -11,7 +11,9 @@ import { type MSKEvent } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
 import { type Jsonify } from 'type-fest';
 
-export type WhookAWSLambdaKafkaConsumerInput = { body: Jsonify<MSKEvent['records']> };
+export type WhookAWSLambdaKafkaConsumerInput = {
+  body: Jsonify<MSKEvent['records']>;
+};
 
 export type WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies = {
   ENV: AppEnvVars;
