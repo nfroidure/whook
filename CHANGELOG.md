@@ -1,3 +1,7 @@
+## [19.0.1](https://github.com/nfroidure/whook/compare/v19.0.0...v19.0.1) (2025-05-02)
+
+
+
 # [19.0.0](https://github.com/nfroidure/whook/compare/v18.1.0...v19.0.0) (2025-05-02)
 
 

@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/authorization",
-  "version": "19.0.0",
+  "version": "19.0.1",
   "description": "A wrapper to provide authorization support to a Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -53,7 +53,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^19.0.0",
+    "@whook/whook": "^19.0.1",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",
     "knifecycle": "^19.0.0",
