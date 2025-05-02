@@ -5,7 +5,9 @@ exports[`API should always have the same amount of basic authenticated endpoints
 exports[`API should always have the same amount of bearer authenticated endpoints 1`] = `
 [
   "get /diagnostic",
+  "get /graphql",
   "get /openAPI",
+  "post /graphql",
 ]
 `;
 
@@ -13,6 +15,7 @@ exports[`API should always have the same amount of endpoints 1`] = `
 [
   "get /delay",
   "get /diagnostic",
+  "get /graphql",
   "get /openAPI",
   "get /ping",
   "get /time",
@@ -20,10 +23,12 @@ exports[`API should always have the same amount of endpoints 1`] = `
   "options /delay",
   "options /diagnostic",
   "options /echo",
+  "options /graphql",
   "options /openAPI",
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /graphql",
   "put /echo",
 ]
 `;
@@ -37,6 +42,7 @@ exports[`API should always have the same amount of non authenticated endpoints 1
   "options /delay",
   "options /diagnostic",
   "options /echo",
+  "options /graphql",
   "options /openAPI",
   "options /ping",
   "options /time",
@@ -55,6 +61,7 @@ exports[`API should always have the same amount of publicly documented endpoints
 [
   "get /delay",
   "get /diagnostic",
+  "get /graphql",
   "get /openAPI",
   "get /ping",
   "get /time",
@@ -62,10 +69,12 @@ exports[`API should always have the same amount of publicly documented endpoints
   "options /delay",
   "options /diagnostic",
   "options /echo",
+  "options /graphql",
   "options /openAPI",
   "options /ping",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /graphql",
   "put /echo",
 ]
 `;
@@ -350,6 +359,157 @@ exports[`API should work 1`] = `
           "summary": "Echoes what it takes.",
           "tags": [
             "example",
+          ],
+        },
+      },
+      "/graphql": {
+        "get": {
+          "operationId": "getGraphQL",
+          "parameters": [
+            {
+              "description": "The GraphQL query",
+              "in": "query",
+              "name": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+              },
+            },
+            {
+              "description": "The GraphQL variables",
+              "in": "query",
+              "name": "variables",
+              "required": false,
+              "schema": {
+                "type": "string",
+              },
+            },
+            {
+              "description": "The GraphQL operation name",
+              "in": "query",
+              "name": "operationName",
+              "required": false,
+              "schema": {
+                "type": "string",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": true,
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successfully ran the GraphQL query",
+            },
+          },
+          "security": [
+            {
+              "bearerAuth": [
+                "admin",
+              ],
+            },
+          ],
+          "summary": "Graphql endpoint",
+          "tags": [
+            "graphql",
+          ],
+        },
+        "options": {
+          "operationId": "getGraphQLCORS",
+          "parameters": [
+            {
+              "description": "The GraphQL query",
+              "in": "query",
+              "name": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+              },
+            },
+            {
+              "description": "The GraphQL variables",
+              "in": "query",
+              "name": "variables",
+              "required": false,
+              "schema": {
+                "type": "string",
+              },
+            },
+            {
+              "description": "The GraphQL operation name",
+              "in": "query",
+              "name": "operationName",
+              "required": false,
+              "schema": {
+                "type": "string",
+              },
+            },
+            {
+              "in": "query",
+              "name": "access_token",
+              "schema": {
+                "type": "string",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": [
+            "CORS",
+          ],
+        },
+        "post": {
+          "operationId": "postGraphQL",
+          "parameters": [],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "description": "The GraphQL query",
+            "required": false,
+          },
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": true,
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successfully ran the GraphQL query",
+            },
+          },
+          "security": [
+            {
+              "bearerAuth": [
+                "admin",
+              ],
+            },
+          ],
+          "summary": "Graphql endpoint",
+          "tags": [
+            "graphql",
           ],
         },
       },
