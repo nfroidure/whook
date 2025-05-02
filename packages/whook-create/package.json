@@ -22,7 +22,7 @@
     }
   },
   "name": "@whook/create",
-  "version": "18.1.0",
+  "version": "19.0.0",
   "description": "Kickstart a new Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -68,12 +68,12 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/example": "^18.1.0",
+    "@inquirer/prompts": "^7.3.2",
+    "@whook/example": "^19.0.0",
     "axios": "^1.7.9",
     "common-services": "^17.0.1",
     "debug": "^4.3.7",
     "fs-extra": "^11.2.0",
-    "@inquirer/prompts": "^7.3.2",
     "knifecycle": "^19.0.0",
     "ora": "^8.1.0",
     "yerror": "^8.0.0"

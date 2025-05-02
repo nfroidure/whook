@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/oauth2",
-  "version": "18.1.0",
+  "version": "19.0.0",
   "description": "OAuth2 implementation for Whook servers",
   "type": "module",
   "main": "dist/index.js",
@@ -43,15 +43,15 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^18.1.0",
-    "@whook/whook": "^18.1.0",
+    "@whook/authorization": "^19.0.0",
+    "@whook/whook": "^19.0.0",
     "camelcase": "^8.0.0",
     "common-services": "^17.0.1",
     "cookie": "^1.0.2",
     "knifecycle": "^19.0.0",
-    "ya-open-api-types": "^1.2.0",
-    "ya-json-schema-types": "^1.0.1",
     "type-fest": "^4.33.0",
+    "ya-json-schema-types": "^1.0.1",
+    "ya-open-api-types": "^1.2.0",
     "yerror": "^8.0.0",
     "yhttperror": "^8.1.0"
   },

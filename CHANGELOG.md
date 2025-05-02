@@ -1,3 +1,34 @@
+# [19.0.0](https://github.com/nfroidure/whook/compare/v18.1.0...v19.0.0) (2025-05-02)
+
+
+### Bug Fixes
+
+* **build:** fix GCP function builds ([cc10d4a](https://github.com/nfroidure/whook/commit/cc10d4a091bb55ee34900e50391e866b36535a86))
+* **build:** fix HTTP lambda wrappers ([73ba894](https://github.com/nfroidure/whook/commit/73ba8946ce8e86802c00facc09f870a70b2f43de))
+* **core:** fix builds for AWS Lambda/GCP functions ([59e05b8](https://github.com/nfroidure/whook/commit/59e05b8f4a699f9312884252618a0dc5cc5e3504))
+* **watch:** fix the watch system ([9aebff0](https://github.com/nfroidure/whook/commit/9aebff07381df0dc40d2cf8ea3b1205b1039f988))
+
+
+### Code Refactoring
+
+* **commands:** improve commands management ([bf5fe31](https://github.com/nfroidure/whook/commit/bf5fe31283d12f3996f0cc98874891a1e6ffeafa)), closes [#118](https://github.com/nfroidure/whook/issues/118)
+
+
+### Features
+
+* **commands:** allow to run crons for a given time frame ([25be8cb](https://github.com/nfroidure/whook/commit/25be8cb5a36624b295868d2edb7c61120d8a2cc9))
+* **core:** add crons supports ([a2259dd](https://github.com/nfroidure/whook/commit/a2259ddff56bcb19d1b09538955417df295edd9d)), closes [#180](https://github.com/nfroidure/whook/issues/180)
+* **core:** add transformers definitions ([b8be8e7](https://github.com/nfroidure/whook/commit/b8be8e73ff3400074d088bbdb80d70e78d054369))
+* **openapi:** add support for callbacks ([f36fcfc](https://github.com/nfroidure/whook/commit/f36fcfc3f59d8b016b993b90fc1b885edd7ead15)), closes [#188](https://github.com/nfroidure/whook/issues/188)
+
+
+### BREAKING CHANGES
+
+* **commands:** Alsmost everything changed in the final Whook's projects. Handler defintions will
+need a refresh and handlers an API surface change.
+
+
+
 # [18.1.0](https://github.com/nfroidure/whook/compare/v18.0.3...v18.1.0) (2024-12-11)
 
 
