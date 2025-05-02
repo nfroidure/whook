@@ -91,7 +91,7 @@
     "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.33.0",
+    "type-fest": "^4.40.1",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "yerror": "^8.0.0",

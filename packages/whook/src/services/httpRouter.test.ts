@@ -1,6 +1,6 @@
 /* eslint max-nested-callbacks: 0 */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import StreamTest from 'streamtest';
+import streamtest from 'streamtest';
 import { YHTTPError } from 'yhttperror';
 import { YError } from 'yerror';
 import initHTTPRouter from './httpRouter.js';
@@ -23,25 +23,19 @@ import { type WhookSchemaValidatorsService } from './schemaValidators.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
 import { type WhookDefinitions } from './DEFINITIONS.js';
 
-function waitResponse(response, raw = true) {
-  return new Promise((resolve, reject) => {
-    if (!response.body) {
-      resolve(response);
-      return;
-    }
-    response.body.pipe(
-      StreamTest.v2.toText((err, text) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(
-          Object.assign({}, response, {
-            body: raw ? text : JSON.parse(text),
-          }),
-        );
-      }),
-    );
+async function waitResponse(response, raw = true) {
+  if (!response.body) {
+    return response;
+  }
+
+  const [stream, resultPromise] = streamtest.toText();
+
+  response.body.pipe(stream);
+
+  const text = await resultPromise;
+
+  return Object.assign({}, response, {
+    body: raw ? text : JSON.parse(text),
   });
 }
 
@@ -1567,7 +1561,10 @@ describe('initHTTPRouter', () => {
             headers: {
               'content-type': 'image/jpeg',
             },
-            body: StreamTest.v2.fromChunks(['he', 'llo']),
+            body: streamtest.fromChunks([
+              Buffer.from('he'),
+              Buffer.from('llo'),
+            ]),
           });
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3084,11 +3081,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3232,7 +3229,10 @@ describe('initHTTPRouter', () => {
             headers: {
               'content-type': 'image/jpeg',
             },
-            body: StreamTest.v2.fromChunks(['he', 'llo']),
+            body: streamtest.fromChunks([
+              Buffer.from('he'),
+              Buffer.from('llo'),
+            ]),
           });
           const errorHandler = await initErrorHandler({
             ENV,
@@ -3256,9 +3256,9 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            'he',
-            'llo',
+          const req = streamtest.fromChunks([
+            Buffer.from('he'),
+            Buffer.from('llo'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3335,11 +3335,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3572,9 +3572,9 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            'he',
-            'llo',
+          const req = streamtest.fromChunks([
+            Buffer.from('he'),
+            Buffer.from('llo'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3653,11 +3653,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nat',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nat'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3731,11 +3731,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3809,11 +3809,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3886,11 +3886,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            'nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -3961,9 +3961,14 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromErroredChunks(
+          const req = streamtest.fromErroredChunks(
             new Error('E_SHIT_HIT_THE_FAN'),
-            ['{ ', 'nam', 'e": "John', ' Doe" }'],
+            [
+              Buffer.from('{ '),
+              Buffer.from('nam'),
+              Buffer.from('e": "John'),
+              Buffer.from(' Doe" }'),
+            ],
           ) as IncomingMessage;
 
           req.method = 'PUT';
@@ -4035,11 +4040,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -4111,11 +4116,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -4187,11 +4192,11 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([
-            '{ ',
-            '"nam',
-            'e": "John',
-            ' Doe" }',
+          const req = streamtest.fromChunks([
+            Buffer.from('{ '),
+            Buffer.from('"nam'),
+            Buffer.from('e": "John'),
+            Buffer.from(' Doe" }'),
           ]) as IncomingMessage;
 
           req.method = 'PUT';
@@ -4267,7 +4272,7 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([]) as IncomingMessage;
+          const req = streamtest.fromChunks([]) as IncomingMessage;
 
           req.method = 'GET';
           req.url = '/v1/users/1?extended=false';
@@ -4431,7 +4436,7 @@ describe('initHTTPRouter', () => {
             queryParserBuilder,
             schemaValidators,
           });
-          const req = StreamTest.v2.fromChunks([]) as IncomingMessage;
+          const req = streamtest.fromChunks([]) as IncomingMessage;
 
           req.method = 'PUT';
           req.url = '/v1/users/1';

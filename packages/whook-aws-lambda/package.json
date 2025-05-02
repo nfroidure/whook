@@ -58,7 +58,7 @@
     "mkdirp": "^3.0.1",
     "qs": "^6.13.1",
     "strict-qs": "^8.0.3",
-    "type-fest": "^4.33.0",
+    "type-fest": "^4.40.1",
     "uuid": "^11.0.3",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",

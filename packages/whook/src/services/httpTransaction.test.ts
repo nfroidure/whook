@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import StreamTest from 'streamtest';
+import streamtest from 'streamtest';
 import { YError } from 'yerror';
 import initHTTPTransaction from './httpTransaction.js';
 import { type WhookAPMService } from './apm.js';
 import { type WhookObfuscatorService } from './obfuscator.js';
-import { type IncomingMessage } from 'node:http';
+import { ServerResponse, type IncomingMessage } from 'node:http';
 import {
   type LogService,
   type TimeService,
@@ -14,7 +14,7 @@ import {
 
 function streamifyBody(response) {
   return Object.assign({}, response, {
-    body: StreamTest.v2.fromChunks([JSON.stringify(response.body)]),
+    body: streamtest.fromChunks([Buffer.from(JSON.stringify(response.body))]),
   });
 }
 
@@ -74,22 +74,9 @@ describe('initHTTPTransaction', () => {
 
   describe('httpTransaction', () => {
     const buildResponse = jest.fn<any>();
-    let res;
-    let resBodyPromise;
 
-    beforeEach((done) => {
+    beforeEach(() => {
       buildResponse.mockReset();
-      resBodyPromise = new Promise((resolve, reject) => {
-        res = StreamTest.v2.toText((err, text) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(text);
-        });
-        res.writeHead = jest.fn();
-        done();
-      });
     });
 
     test('should work', async () => {
@@ -120,13 +107,22 @@ describe('initHTTPTransaction', () => {
           bytesWritten: 64,
         },
       };
+      const [res, resBodyPromise] = streamtest.toText() as [
+        ServerResponse<IncomingMessage>,
+        Promise<string>,
+      ];
+      const writeHead = jest.fn<ServerResponse<IncomingMessage>['writeHead']>();
+
+      res.writeHead = writeHead as ServerResponse<IncomingMessage>['writeHead'];
 
       buildResponse.mockResolvedValueOnce({
-        body: StreamTest.v2.fromChunks([
-          JSON.stringify({
-            id: 1,
-            name: 'John Doe',
-          }),
+        body: streamtest.fromChunks([
+          Buffer.from(
+            JSON.stringify({
+              id: 1,
+              name: 'John Doe',
+            }),
+          ),
         ]),
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +145,7 @@ describe('initHTTPTransaction', () => {
         'x-forwarded-for': '127.0.0.1',
       });
       expect(request.body).toEqual(req);
-      expect(res.writeHead.mock.calls).toEqual([
+      expect(writeHead.mock.calls).toEqual([
         [
           200,
           'OK',
@@ -211,6 +207,15 @@ describe('initHTTPTransaction', () => {
             bytesWritten: 64,
           },
         };
+        const [res, resBodyPromise] = streamtest.toText() as [
+          ServerResponse<IncomingMessage>,
+          Promise<string>,
+        ];
+        const writeHead =
+          jest.fn<ServerResponse<IncomingMessage>['writeHead']>();
+
+        res.writeHead =
+          writeHead as ServerResponse<IncomingMessage>['writeHead'];
 
         buildResponse.mockReturnValueOnce(new Promise(() => undefined));
 
@@ -224,6 +229,8 @@ describe('initHTTPTransaction', () => {
         await transaction.start(buildResponse);
 
         await transaction.end({ status: 200 });
+
+        await resBodyPromise;
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
@@ -277,6 +284,15 @@ describe('initHTTPTransaction', () => {
             bytesWritten: 64,
           },
         };
+        const [res, resBodyPromise] = streamtest.toText() as [
+          ServerResponse<IncomingMessage>,
+          Promise<string>,
+        ];
+        const writeHead =
+          jest.fn<ServerResponse<IncomingMessage>['writeHead']>();
+
+        res.writeHead =
+          writeHead as ServerResponse<IncomingMessage>['writeHead'];
 
         buildResponse.mockReturnValueOnce(Promise.resolve());
 
@@ -290,6 +306,7 @@ describe('initHTTPTransaction', () => {
           .catch(transaction.catch)
           .then(streamifyBody)
           .then(transaction.end);
+        await resBodyPromise;
 
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {

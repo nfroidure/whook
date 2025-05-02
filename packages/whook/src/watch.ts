@@ -56,7 +56,7 @@ export async function watchDevProcess<T extends Dependencies>(
   let restartsCounter = 0;
   const ignoreFilter: (pathname: string) => boolean = await (async () => {
     let ignoreFileContent: string;
-    let ignoreBuilder = ignore.default();
+    let ignoreBuilder = ignore();
 
     ignoreBuilder = ignoreBuilder.add(
       ignored?.length ? ignored : DEFAULT_IGNORED,
@@ -214,10 +214,12 @@ export async function restartDevProcess<T extends Dependencies>({
     const writeStream = createWriteStream(
       join(dirname(fileURLToPath(MAIN_FILE_URL)), 'openAPISchema.d.ts'),
     );
-    const writeStreamCompletionPromise = new Promise((resolve, reject) => {
-      writeStream.once('finish', resolve);
-      writeStream.once('error', reject);
-    });
+    const writeStreamCompletionPromise = new Promise<void>(
+      (resolve, reject) => {
+        writeStream.once('finish', resolve);
+        writeStream.once('error', reject);
+      },
+    );
 
     bridge.pipe(writeStream);
 

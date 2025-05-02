@@ -71,7 +71,7 @@
     "@whook/whook": "^19.0.0",
     "common-services": "^17.0.1",
     "knifecycle": "^19.0.0",
-    "type-fest": "^4.33.0",
+    "type-fest": "^4.40.1",
     "ya-open-api-types": "^1.2.0",
     "yhttperror": "^8.1.0"
   },

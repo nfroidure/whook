@@ -79,7 +79,6 @@
     "@swc/core": "^1.10.0",
     "@swc/helpers": "^0.5.15",
     "@swc/jest": "^0.2.37",
-    "@whook/whook": "^18.0.0",
     "axios": "^1.7.9",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",

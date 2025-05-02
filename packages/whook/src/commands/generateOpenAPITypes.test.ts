@@ -1,7 +1,7 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
 import { PassThrough } from 'node:stream';
-import { definition as initGetPingDefinition } from '../routes/getPing.js';
+import { definition as getPingDefinition } from '../routes/getPing.js';
 import { type OpenAPITypesGenerationOptions } from 'schema2dts';
 import { type OpenAPI } from 'ya-open-api-types';
 import { type LogService } from 'common-services';
@@ -26,8 +26,8 @@ describe('generateOpenAPITypes', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [initGetPingDefinition.path]: {
-        [initGetPingDefinition.method]: initGetPingDefinition.operation,
+      [getPingDefinition.path]: {
+        [getPingDefinition.method]: getPingDefinition.operation,
       },
     },
   };

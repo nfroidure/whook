@@ -73,7 +73,7 @@
     "ecstatic": "^4.1.4",
     "knifecycle": "^19.0.0",
     "swagger-ui-dist": "^5.18.2",
-    "type-fest": "^4.33.0",
+    "type-fest": "^4.40.1",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0"
   },

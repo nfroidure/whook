@@ -19,15 +19,7 @@ describe('initREPL', () => {
 
   test('should work as expected', async () => {
     const stdin = new PassThrough();
-    let stdout;
-    const textPromise = new Promise((resolve, reject) => {
-      stdout = streamtest.v2.toText((err, text) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(text);
-      });
-    });
+    const [stdout, textPromise] = streamtest.toText();
     const injectorPromise = new Promise<void>((resolve) => {
       $injector.mockImplementation(() => {
         resolve();

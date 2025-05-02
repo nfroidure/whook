@@ -49,7 +49,7 @@
     "common-services": "^17.0.1",
     "cookie": "^1.0.2",
     "knifecycle": "^19.0.0",
-    "type-fest": "^4.33.0",
+    "type-fest": "^4.40.1",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
     "yerror": "^8.0.0",
