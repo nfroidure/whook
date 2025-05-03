@@ -33,6 +33,7 @@ exports[`OAuth2CodeGranter should work with a complete valid flow 2`] = `
       },
       "yolo",
       "https://www.example.com/oauth2/code",
+      "",
     ],
   ],
   "oAuth2CodeCreateCalls": [
@@ -42,7 +43,10 @@ exports[`OAuth2CodeGranter should work with a complete valid flow 2`] = `
         "scope": "user",
       },
       "https://www.example.com/oauth2/code",
-      {},
+      {
+        "codeChallenge": "",
+        "codeChallengeMethod": "plain",
+      },
     ],
   ],
 }
