@@ -368,7 +368,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -512,7 +511,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -581,7 +579,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -737,7 +734,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -806,7 +802,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -886,7 +881,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
         },
       },
@@ -1033,7 +1027,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -1102,7 +1095,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -1182,7 +1174,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
         },
       },
@@ -1248,7 +1239,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -1400,7 +1390,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -1469,7 +1458,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -1549,7 +1537,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
         },
       },
@@ -1615,7 +1602,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,
@@ -1684,7 +1670,6 @@ describe('GraphQL server', () => {
           "header": {
             "authorization": "bearer hash",
           },
-          "options": {},
           "path": {},
           "query": {
             "access_token": undefined,

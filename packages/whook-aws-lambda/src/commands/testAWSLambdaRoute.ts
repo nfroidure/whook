@@ -127,8 +127,12 @@ async function initTestAWSLambdaRouteCommand({
       ),
       body: hasBody
         ? contentType === 'application/json'
-          ? JSON.stringify(parameters.body)
-          : parameters.body
+          ? 'body' in parameters
+            ? JSON.stringify(parameters.body)
+            : '{}'
+          : 'body' in parameters
+            ? parameters.body
+            : ''
         : '',
       requestContext: {
         path:

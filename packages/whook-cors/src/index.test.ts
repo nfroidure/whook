@@ -65,7 +65,6 @@ describe('initWrapRouteHandlerWithCORS', () => {
         header: {},
         cookie: {},
         body: {},
-        options: {},
       },
       DEFINITION,
     );
@@ -108,7 +107,6 @@ describe('initWrapRouteHandlerWithCORS', () => {
         header: {},
         cookie: {},
         body: {},
-        options: {},
       },
       {
         ...DEFINITION,
@@ -163,7 +161,6 @@ describe('initWrapRouteHandlerWithCORS', () => {
         header: {},
         cookie: {},
         body: {},
-        options: {},
       },
       {
         ...DEFINITION,
@@ -227,7 +224,6 @@ describe('initWrapRouteHandlerWithCORS', () => {
           header: {},
           cookie: {},
           body: {},
-          options: {},
         },
         DEFINITION,
       );

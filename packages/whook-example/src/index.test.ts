@@ -100,9 +100,9 @@ describe('runProcess', () => {
   test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
-  debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-  logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs)
-}).toMatchInlineSnapshot(`
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
+    }).toMatchInlineSnapshot(`
 {
   "debugCalls": [
     [

@@ -1014,7 +1014,6 @@ describe('initHTTPRouter', () => {
         "header": {
           "x-depth": undefined,
         },
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -1121,7 +1120,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -1288,7 +1286,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -1455,7 +1452,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -1624,7 +1620,6 @@ describe('initHTTPRouter', () => {
         "header": {
           "x-depth": 1,
         },
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -1755,7 +1750,6 @@ describe('initHTTPRouter', () => {
               extended: true,
             },
             header: {},
-            options: {},
             body: undefined,
           });
         });
@@ -1841,7 +1835,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -2014,7 +2007,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -2174,7 +2166,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -2336,7 +2327,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -2499,7 +2489,6 @@ describe('initHTTPRouter', () => {
               extended: true,
             },
             header: {},
-            options: {},
             body: undefined,
           });
 
@@ -2578,7 +2567,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -2877,7 +2865,6 @@ describe('initHTTPRouter', () => {
             extended: true,
           },
           header: {},
-          options: {},
           body: undefined,
         });
 
@@ -2961,7 +2948,6 @@ describe('initHTTPRouter', () => {
             extended: true,
           },
           header: {},
-          options: {},
           body: undefined,
         });
 
@@ -3126,7 +3112,6 @@ describe('initHTTPRouter', () => {
           "Authorization": "Bearer x",
           "Content-Type": "application/json;charset=UTF-8",
         },
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -3380,7 +3365,6 @@ describe('initHTTPRouter', () => {
           "Authorization": "Bearer x",
           "Content-Type": "application/json;charset=UTF-8",
         },
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -4313,7 +4297,6 @@ describe('initHTTPRouter', () => {
         "body": undefined,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {
           "userId": 1,
         },
@@ -4544,7 +4527,6 @@ describe('initHTTPRouter', () => {
         "header": {
           "x-depth": undefined,
         },
-        "options": {},
         "path": {
           "userId": 1,
         },

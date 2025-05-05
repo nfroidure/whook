@@ -100,7 +100,11 @@ npm i @whook/authorization;
 Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
-+ import { type WhookAuthorizationConfig } from '@whook/authorization';
++ import {
++  type WhookAuthorizationConfig,
++  type WhookAuthenticationExtraParameters
++  type WhookBaseAuthenticationData
++ } from '@whook/authorization';
 
 // ...
 
@@ -122,6 +126,26 @@ declare module 'application-services' {
   // ...
 
 }
+
+// ...
+
+declare module '@whook/whook' {
+
+  // ...
+
++  export interface WhookRouteHandlerExtraParameters
++    extends WhookAuthenticationExtraParameters {}
+
+  // ...
+
+}
+
++declare module '@whook/authorization' {
++  export interface WhookAuthenticationData extends WhookBaseAuthenticationData {
++    userId: string;
++  }
++}
+
 ```
 
 Then add the config and the errors descriptors or provide your own (usually in

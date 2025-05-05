@@ -14,6 +14,7 @@ export {
   type WhookAuthenticationService,
   type WhookAuthorizationConfig,
   type WhookAuthorizationDependencies,
+  type WhookAuthenticationExtraParameters,
 } from './wrappers/wrapRouteHandlerWithAuthorization.js';
 
 export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {

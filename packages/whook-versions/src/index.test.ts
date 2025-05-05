@@ -77,7 +77,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         header: {},
         cookie: {},
         body: {},
-        options: {},
       },
       {} as unknown as WhookRouteDefinition,
     );
@@ -104,7 +103,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         header: { 'x-api-version': '1.2.3' },
         cookie: {},
         body: {},
-        options: {},
       },
       {} as unknown as WhookRouteDefinition,
     );
@@ -131,7 +129,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         header: { 'x-app-version': '3.6.0' },
         cookie: {},
         body: {},
-        options: {},
       },
       {} as unknown as WhookRouteDefinition,
     );
@@ -160,7 +157,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         },
         cookie: {},
         body: {},
-        options: {},
       },
       {} as unknown as WhookRouteDefinition,
     );
@@ -189,7 +185,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         },
         cookie: {},
         body: {},
-        options: {},
       },
       {} as unknown as WhookRouteDefinition,
     );
@@ -220,7 +215,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
           },
           cookie: {},
           body: {},
-          options: {},
         },
         {} as unknown as WhookRouteDefinition,
       );
@@ -256,7 +250,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
           },
           cookie: {},
           body: {},
-          options: {},
         },
         {} as unknown as WhookRouteDefinition,
       );
@@ -292,7 +285,6 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
           },
           cookie: {},
           body: {},
-          options: {},
         },
         {} as unknown as WhookRouteDefinition,
       );

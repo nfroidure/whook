@@ -104,7 +104,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: { aParameter: 1 },
-          options: {},
         },
         NOOP_DEFINITION,
       );
@@ -134,7 +133,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         "authenticated": false,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {},
         "query": {
           "aParameter": 1,
@@ -195,7 +193,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_AUTHENTICATED_DEFINITION,
       );
@@ -235,7 +232,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         "header": {
           "authorization": "bearer yolo",
         },
-        "options": {},
         "path": {},
         "query": {},
       },
@@ -304,7 +300,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_AUTHENTICATED_DEFINITION,
       );
@@ -344,7 +339,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         "header": {
           "authorization": "Bearer yolo",
         },
-        "options": {},
         "path": {},
         "query": {},
       },
@@ -413,7 +407,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           query: {
             access_token: 'yolo',
           },
-          options: {},
         },
         NOOP_AUTHENTICATED_DEFINITION,
       );
@@ -451,7 +444,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         },
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {},
         "query": {
           "access_token": "yolo",
@@ -520,7 +512,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_AUTHENTICATED_DEFINITION,
       );
@@ -550,7 +541,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         "authenticated": false,
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {},
         "query": {},
       },
@@ -618,7 +608,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );
@@ -658,7 +647,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         "header": {
           "authorization": "Bearer yolo",
         },
-        "options": {},
         "path": {},
         "query": {},
       },
@@ -726,7 +714,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           query: {
             access_token: 'yolo',
           },
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );
@@ -764,7 +751,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         },
         "cookie": {},
         "header": {},
-        "options": {},
         "path": {},
         "query": {
           "access_token": "yolo",
@@ -831,7 +817,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           query: {
             access_token: 'yolo',
           },
-          options: {},
         },
         undefined as unknown as WhookRouteDefinition,
       );
@@ -888,7 +873,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           query: {
             access_token: 'yolo',
           },
-          options: {},
         },
         BAD_DEFINITION,
       );
@@ -955,7 +939,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );
@@ -1032,7 +1015,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );
@@ -1095,7 +1077,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );
@@ -1156,7 +1137,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );
@@ -1224,7 +1204,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           query: {
             access_token: 'yolo',
           },
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );
@@ -1293,7 +1272,6 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           cookie: {},
           path: {},
           query: {},
-          options: {},
         },
         NOOP_RESTRICTED_DEFINITION,
       );

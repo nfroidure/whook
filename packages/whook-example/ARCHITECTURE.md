@@ -14,7 +14,7 @@
          1. [server wrappers](#1121-server-wrappers)
       3. [prepareEnvironment](#113-prepareenvironment)
          1. [Autoloader](#1131-autoloader)
-         2. [API definitions](#1132-api-definitions)
+         2. [Definitions](#1132-definitions)
          3. [MAIN_FILE_URL](#1133-main_file_url)
          4. [supported `APP_ENV` values](#1134-supported-`app_env`-values)
          4. [APP_ENV](#1134-app_env)
@@ -28,8 +28,8 @@
    1. [Typings](#21-typings)
       1. [AppEnvVars](#211-appenvvars)
       2. [AppConfig](#212-appconfig)
-      3. [WhookAPIHandlerConfig](#213-whookapihandlerconfig)
-      3. [WhookMain](#213-whookmain)
+      3. [WhookRouteConfig](#213-whookrouteconfig)
+      4. [WhookMain](#214-whookmain)
    2. [Exporting](#22-exporting)
    3. [Overriding](#23-overriding)
 3. [API](#3-api)
@@ -60,6 +60,7 @@
       2. [Handler initialization](#352-handler-initialization)
       3. [Handler run](#353-handler-run)
       3. [Handler run](#353-handler-run)
+   6. [SECURITY_DEFINITIONS](#36-security_definitions)
 4. [Services](#4-services)
 4. [Serving the Open API](#4-serving-the-open-api)
    1. [authentication](#41-authentication)
@@ -104,7 +105,7 @@ The `runProcess` function is intended to run the server
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L45-L52)
+[See in context](./src/index.ts#L46-L53)
 
 
 
@@ -113,7 +114,7 @@ The `runProcess` function is intended to run the server
 The `prepareProcess` function is intended to prepare the process
  environment.
 
-[See in context](./src/index.ts#L73-L77)
+[See in context](./src/index.ts#L74-L78)
 
 
 
@@ -123,7 +124,7 @@ Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L82-L87)
+[See in context](./src/index.ts#L83-L88)
 
 
 
@@ -131,7 +132,7 @@ Add here any logic bound to the server only
 
 The `prepareEnvironment` one is intended to prepare the process environment
 
-[See in context](./src/index.ts#L93-L96)
+[See in context](./src/index.ts#L94-L97)
 
 
 
@@ -148,19 +149,22 @@ OR, like in this example, use the Whook `$autoload` service
  service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L116-L128)
+[See in context](./src/index.ts#L117-L129)
 
 
 
-##### 1.1.3.2. API definitions
+##### 1.1.3.2. Definitions
 
-This service loads the API definitions directly by
- looking at your `src/handlers` folder. You can
+This service loads the definitions directly by
+ looking at your `src` folder. You can
  release this behavior by removing this line.
  Though, it is not recommended to not use the
  Whook's black magic ;).
 
-[See in context](./src/index.ts#L131-L138)
+A service wrapper is also used here to add CORS to
+ the routes definitions.
+
+[See in context](./src/index.ts#L132-L142)
 
 
 
@@ -169,7 +173,7 @@ This service loads the API definitions directly by
 The project main file allows autoloading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L141-L145)
+[See in context](./src/index.ts#L145-L149)
 
 
 
@@ -178,7 +182,7 @@ The project main file allows autoloading features to work
 You can add more application environment here for several
  deployment targets.
 
-[See in context](./src/index.ts#L36-L40)
+[See in context](./src/index.ts#L37-L41)
 
 
 
@@ -187,7 +191,7 @@ You can add more application environment here for several
 Reading the `APP_ENV` from the process environment and defining
  it as a constant.
 
-[See in context](./src/index.ts#L148-L152)
+[See in context](./src/index.ts#L152-L156)
 
 
 
@@ -197,7 +201,7 @@ Setting the `knifecycle` `$overrides` service depending on the
  current `APP_ENV`. It allows to map services to different
  implementations.
 
-[See in context](./src/index.ts#L157-L162)
+[See in context](./src/index.ts#L161-L166)
 
 
 
@@ -230,7 +234,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L170-L198)
+[See in context](./src/index.ts#L174-L202)
 
 
 
@@ -241,7 +245,7 @@ Plugins allows you to add simple features to the Whook's core,
 
 You can also avoid Whook defaults by leaving it empty.
 
-[See in context](./src/index.ts#L219-L225)
+[See in context](./src/index.ts#L223-L229)
 
 
 
@@ -280,7 +284,7 @@ Configuration is done for each environement in the
 The `src/config/common/config.ts` one allows to add common
  configurations for all environements.
 
-[See in context](./src/config/common/config.ts#L7-L14)
+[See in context](./src/config/common/config.ts#L9-L16)
 
 
 
@@ -288,7 +292,7 @@ The `src/config/common/config.ts` one allows to add common
 
 Whook provides several types you may extend here.
 
-[See in context](./src/whook.d.ts#L26-L29)
+[See in context](./src/whook.d.ts#L35-L38)
 
 
 
@@ -296,7 +300,7 @@ Whook provides several types you may extend here.
 
 The process environment can be typed by extending this type.
 
-[See in context](./src/whook.d.ts#L32-L35)
+[See in context](./src/whook.d.ts#L41-L44)
 
 
 
@@ -305,25 +309,25 @@ The process environment can be typed by extending this type.
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/whook.d.ts#L43-L47)
+[See in context](./src/whook.d.ts#L52-L56)
 
 
 
-#### 2.1.3. WhookAPIHandlerConfig
+#### 2.1.3. WhookRouteConfig
 
 Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the routes.
 
-[See in context](./src/whook.d.ts#L59-L64)
+[See in context](./src/whook.d.ts#L71-L76)
 
 
 
-#### 2.1.3. WhookMain
+#### 2.1.4. WhookMain
 
 Here we export a main config to type AppEnv.
 
-[See in context](./src/whook.d.ts#L70-L73)
+[See in context](./src/whook.d.ts#L98-L101)
 
 
 
@@ -334,7 +338,7 @@ Each configuration file then create a configuration object
 
 See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/APP_CONFIG.ts#L56).
 
-[See in context](./src/config/common/config.ts#L19-L25)
+[See in context](./src/config/common/config.ts#L54-L60)
 
 
 
@@ -355,7 +359,7 @@ Whook is all about APIs.
 The API service defined here is where you put
  your routes altogether to build the final API.
 
-[See in context](./src/services/API.ts#L30-L35)
+[See in context](./src/services/API.ts#L29-L34)
 
 
 
@@ -534,7 +538,7 @@ Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the routes.
 
-[See in context](./src/whook.d.ts#L81-L86)
+[See in context](./src/whook.d.ts#L109-L114)
 
 
 
@@ -543,7 +547,7 @@ Here we export a custom API handler config type in order
 You can apply transformations to your API like
  here for CORS support (OPTIONS method handling).
 
-[See in context](./src/services/API.ts#L87-L91)
+[See in context](./src/services/API.ts#L68-L72)
 
 
 
@@ -553,7 +557,7 @@ The API definition is a JSON serializable object, you
  can then reshape it the way you want. Here, we set a
  fake auth mecanism to help in development environment.
 
-[See in context](./src/services/API.ts#L95-L100)
+[See in context](./src/services/API.ts#L76-L81)
 
 
 
@@ -671,6 +675,15 @@ Then run the handler and get the response.
 
 
 
+### 3.6. SECURITY_DEFINITIONS
+
+You can add some security definitions to the API via this
+ service.
+
+[See in context](./src/services/SECURITY_DEFINITIONS.ts#L13-L17)
+
+
+
 ## 4. Services
 
 Whook is shipped with a lots of services aimed to
@@ -686,7 +699,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L100-L113)
+[See in context](./src/index.ts#L101-L114)
 
 
 
@@ -782,7 +795,7 @@ Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L201-L211)
+[See in context](./src/index.ts#L205-L215)
 
 
 

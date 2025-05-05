@@ -26,6 +26,11 @@ export type WhookBaseAuthenticationData = {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface WhookAuthenticationData extends WhookBaseAuthenticationData {}
 
+export type WhookAuthenticationExtraParameters = {
+  authenticationData?: WhookAuthenticationData;
+  authenticated?: boolean;
+};
+
 export interface WhookAuthenticationService<A> {
   check: (type: string, data: A) => Promise<WhookAuthenticationData>;
 }

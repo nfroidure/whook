@@ -128,10 +128,12 @@ async function initTestGCPFunctionRouteCommand({
       rawBody: Buffer.from(
         hasBody
           ? contentType === 'application/json'
-            ? parameters.body
+            ? 'body' in parameters
               ? JSON.stringify(parameters.body)
+              : '{}'
+            : 'body' in parameters
+              ? (parameters.body as string)
               : ''
-            : (parameters.body as string) || ''
           : '',
       ),
     };

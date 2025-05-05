@@ -66,14 +66,14 @@ export const definition = {
 async function initGetOpenAPI({ API }: { API: OpenAPI }) {
   const getOpenAPI = async ({
     query: { mutedMethods = ['options'], mutedParameters = [], mutedTags = [] },
-    options: { authenticated = false },
+    options: { authenticated = false } = { authenticated: false },
   }: {
     query: {
       mutedMethods?: string[];
       mutedParameters?: string[];
       mutedTags?: string[];
     };
-    options: {
+    options?: {
       authenticated?: boolean;
     };
   }) => {

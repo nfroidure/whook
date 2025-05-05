@@ -332,7 +332,6 @@ async function handleForAWSHTTPLambda(
     path: {},
     cookie: {},
     body: undefined as unknown as WhookRequestBody,
-    options: {},
   };
 
   try {
@@ -556,7 +555,7 @@ async function handleForAWSHTTPLambda(
     triggerTime: event.requestContext.requestTimeEpoch,
     lambdaName: operation.operationId,
     parameters: obfuscator.obfuscateSensibleProps(
-      parametersValues as JsonValue,
+      parametersValues as unknown as JsonValue,
     ),
     status: response.status,
     headers: obfuscator.obfuscateSensibleHeaders(

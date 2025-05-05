@@ -4,6 +4,7 @@ import {
   type WhookBaseConfigs,
 } from '@whook/whook';
 import {
+  type WhookAuthenticationExtraParameters,
   type WhookAuthorizationConfig,
   type WhookBaseAuthenticationData,
 } from '@whook/authorization';
@@ -63,7 +64,10 @@ declare module '@whook/whook' {
       WhookSwaggerUIRouteConfig,
       WhookCORSRouteConfig {}
 
-  /* Architecture Note #2.1.3: WhookMain
+  export interface WhookRouteHandlerExtraParameters
+    extends WhookAuthenticationExtraParameters {}
+
+  /* Architecture Note #2.1.4: WhookMain
   
   Here we export a main config to type AppEnv.
   */

@@ -304,7 +304,6 @@ async function handleForAWSHTTPFunction(
     path: {},
     cookie: {},
     body: undefined as unknown as WhookRequestBody,
-    options: {},
   };
 
   try {

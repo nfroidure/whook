@@ -44,6 +44,9 @@ export type WhookRouteDefinition = {
   config?: WhookRouteConfig;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface WhookRouteHandlerExtraParameters {}
+
 export type WhookRouteHandlerParameters = (
   | object
   | {
@@ -54,8 +57,7 @@ export type WhookRouteHandlerParameters = (
   query: Record<string, unknown>;
   cookie: Record<string, unknown>;
   header: Record<string, unknown>;
-  options: Record<string, unknown>;
-} & Record<string, unknown>;
+} & WhookRouteHandlerExtraParameters;
 
 export interface WhookRouteHandler<
   P extends WhookRouteHandlerParameters = WhookRouteHandlerParameters,
@@ -126,11 +128,16 @@ export interface WhookRouteTypeDefinition {
 export type WhookRouteTypedHandler<
   T extends WhookRouteTypeDefinition,
   D extends WhookRouteDefinition,
+  O extends object = object,
 > = (
   parameters: T['parameters'] &
+    WhookRouteHandlerExtraParameters &
     (T['requestBody'] extends object | string | number | boolean
-      ? { body: T['requestBody'] }
-      : object),
+      ? {
+          body: T['requestBody'];
+          options?: O;
+        }
+      : { options?: O }),
   definition?: D,
 ) => Promise<
   {

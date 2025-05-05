@@ -343,7 +343,6 @@ async function initHTTPRouter({
             path: {},
             cookie: {},
             body: undefined as unknown as WhookRequestBody,
-            options: {},
           };
 
           try {
