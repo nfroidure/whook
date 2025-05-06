@@ -1,3 +1,12 @@
+## [19.0.2](https://github.com/nfroidure/whook/compare/v19.0.1...v19.0.2) (2025-05-06)
+
+
+### Bug Fixes
+
+* **types:** fix typings for existing projects migration ([8d79b28](https://github.com/nfroidure/whook/commit/8d79b281d696114bdebc3df48841e6038f4fc8d4))
+
+
+
 ## [19.0.1](https://github.com/nfroidure/whook/compare/v19.0.0...v19.0.1) (2025-05-02)
 
 
