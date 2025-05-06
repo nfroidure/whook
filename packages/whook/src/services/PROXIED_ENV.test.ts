@@ -1,5 +1,5 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import initEnv from './PROXYED_ENV.js';
+import initEnv from './PROXIED_ENV.js';
 import { NodeEnv } from 'application-services';
 import { readFile as _readFile } from 'node:fs/promises';
 import { type LogService } from 'common-services';
@@ -23,7 +23,7 @@ DB_HOST = 'localhost'
     );
 
     const ENV = await initEnv({
-      PROXYED_ENV_VARS: ['DB_PASSWORD'],
+      PROXIED_ENV_VARS: ['DB_PASSWORD'],
       APP_ENV: 'local',
       BASE_ENV: { ['KEY_BASE_ENV' as NodeEnv]: 'test' },
       PROCESS_ENV: {

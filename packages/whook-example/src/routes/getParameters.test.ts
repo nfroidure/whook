@@ -13,33 +13,33 @@ describe('getParameters', () => {
       query: {
         queryParam: ['a', 'b'],
       },
-      header: {
+      headers: {
         'a-header': true,
         aMultiHeader: [1, 2],
       },
     });
 
     expect({
-      response,
-    }).toMatchInlineSnapshot(`
-      {
-        "response": {
-          "body": {
-            "aHeader": true,
-            "aMultiHeader": [
-              1,
-              2,
-            ],
-            "pathParam1": 2,
-            "pathParam2": "a",
-            "queryParam": [
-              "a",
-              "b",
-            ],
-          },
-          "status": 200,
-        },
-      }
-    `);
+  response
+}).toMatchInlineSnapshot(`
+{
+  "response": {
+    "body": {
+      "aHeader": true,
+      "aMultiHeader": [
+        1,
+        1,
+      ],
+      "pathParam1": 2,
+      "pathParam2": "a",
+      "queryParam": [
+        "a",
+        "b",
+      ],
+    },
+    "status": 200,
+  },
+}
+`);
   });
 });

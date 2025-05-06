@@ -24,7 +24,7 @@ Small tweak to be able to run only parts of the API
  at will into micro-services).
 
 For example, to create a server with only `system` and
- `example` tagged endpoints, juste do this:
+ `example` tagged endpoints, just do this:
 ```sh
 FILTER_ROUTE_TAGS=system,example npm start
 ```

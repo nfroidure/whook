@@ -100,9 +100,9 @@ describe('runProcess', () => {
   test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
-      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
-    }).toMatchInlineSnapshot(`
+  debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+  logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs)
+}).toMatchInlineSnapshot(`
 {
   "debugCalls": [
     [
@@ -583,6 +583,9 @@ describe('runProcess', () => {
       "⏳ - Skipped "putEcho.test.ts" per ignore patterns.",
     ],
     [
+      "⏳ - Skipped "putEchoedStream.test.ts" per ignore patterns.",
+    ],
+    [
       "⏳ - Skipped "route.d.ts" per ignore patterns.",
     ],
     [
@@ -644,6 +647,9 @@ describe('runProcess', () => {
     ],
     [
       "✅ - Module path of "putEcho" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
+    ],
+    [
+      "✅ - Module path of "putEchoedStream" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEchoedStream.ts".",
     ],
     [
       "✅ - Module path of "putTime" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
@@ -907,16 +913,16 @@ describe('runProcess', () => {
       "🍀 - Trying to find "SIGNALS" module path in "__project__".",
     ],
     [
-      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/authorization".",
+      "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/authorization".",
     ],
     [
-      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/cors".",
+      "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/cors".",
     ],
     [
-      "🍀 - Trying to find "STRINGIFYERS" module path in "@whook/whook".",
+      "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/whook".",
     ],
     [
-      "🍀 - Trying to find "STRINGIFYERS" module path in "__project__".",
+      "🍀 - Trying to find "STRINGIFIERS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "TIMEOUT" module path in "@whook/authorization".",
@@ -1001,6 +1007,9 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "putEcho" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "putEchoedStream" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "putTime" module path in "__project__".",
@@ -1096,6 +1105,9 @@ describe('runProcess', () => {
       "💿 - Loading "putEcho" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
+      "💿 - Loading "putEchoedStream" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEchoedStream.ts".",
+    ],
+    [
       "💿 - Loading "putTime" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
     ],
     [
@@ -1151,6 +1163,9 @@ describe('runProcess', () => {
     ],
     [
       "💿 - Service "putEcho" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
+    ],
+    [
+      "💿 - Service "putEchoedStream" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEchoedStream.ts".",
     ],
     [
       "💿 - Service "putTime" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
@@ -1270,7 +1285,7 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/SIGNALS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/STRINGIFYERS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/STRINGIFIERS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/TIMEOUT.js".",
@@ -1342,7 +1357,7 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/SIGNALS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/STRINGIFYERS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/STRINGIFIERS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/TIMEOUT.js".",
@@ -1408,7 +1423,7 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/SIGNALS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFYERS.js".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/STRINGIFIERS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/TIMEOUT.js".",
@@ -1483,7 +1498,7 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/SIGNALS.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFYERS.ts".",
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/STRINGIFIERS.ts".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/TIMEOUT.ts".",
@@ -1558,7 +1573,7 @@ describe('runProcess', () => {
       "🚫 - Module path of "SIGNALS" not found.",
     ],
     [
-      "🚫 - Module path of "STRINGIFYERS" not found.",
+      "🚫 - Module path of "STRINGIFIERS" not found.",
     ],
     [
       "🚫 - Module path of "TIMEOUT" not found.",
@@ -1672,6 +1687,12 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEchoedStream.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEchoedStream.ts".",
+    ],
+    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putTime.ts".",
     ],
     [
@@ -1737,7 +1758,7 @@ describe('runProcess', () => {
       "🏭 - Initializing the CRONS_WRAPPERS service.",
     ],
     [
-      "🏭 - Initializing the ROUTES_HANDLERS service with 9 handlers wrapped by 2 wrappers.",
+      "🏭 - Initializing the ROUTES_HANDLERS service with 10 handlers wrapped by 2 wrappers.",
     ],
     [
       "🏭 - Initializing the ROUTES_WRAPPERS service.",

@@ -10,7 +10,7 @@ import {
 
 export const definition = {
   name: 'config',
-  description: 'A simple program that returns the queryed config value',
+  description: 'A simple program that returns the queried config value',
   example: `whook config --name MYSQL --query 'auth.username' --default root`,
   arguments: [
     {

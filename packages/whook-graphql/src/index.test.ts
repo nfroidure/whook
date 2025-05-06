@@ -364,8 +364,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -507,8 +507,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -575,8 +575,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -730,8 +730,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -798,8 +798,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -877,8 +877,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1023,8 +1023,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1091,8 +1091,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1170,8 +1170,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1235,8 +1235,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1386,8 +1386,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1454,8 +1454,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1533,8 +1533,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1598,8 +1598,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},
@@ -1666,8 +1666,8 @@ describe('GraphQL server', () => {
             "applicationId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
             "scope": "user,oauth",
           },
-          "cookie": {},
-          "header": {
+          "cookies": {},
+          "headers": {
             "authorization": "bearer hash",
           },
           "path": {},

@@ -281,7 +281,7 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
 | services.PARSED_HEADERS | <code>Object</code> |  | A list of headers that should be parsed as JSON |
 | services.PARSERS | <code>Object</code> |  | Request body parsers available |
-| services.STRINGIFYERS | <code>Object</code> |  | Response body stringifyers available |
+| services.STRINGIFIERS | <code>Object</code> |  | Response body stringifiers available |
 | services.BUFFER_LIMIT | <code>Object</code> |  | The buffer size limit |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | services.obfuscator | <code>Object</code> |  | A service to hide sensible values |

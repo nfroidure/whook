@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { mkdirp } from 'mkdirp';
 import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
 import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
-import initProxyedENV from './services/PROXYED_ENV.js';
+import initProxiedENV from './services/PROXIED_ENV.js';
 import initBuildAutoloader from './services/_buildAutoload.js';
 import { printStackTrace } from 'yerror';
 import { type BuildInitializer } from 'knifecycle';
@@ -52,7 +52,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $.register(initBuildAutoloader);
   $.register(initInitializerBuilder);
   $.register(initCompiler);
-  $.register(initProxyedENV);
+  $.register(initProxiedENV);
   $.register(
     constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
   );

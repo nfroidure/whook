@@ -161,7 +161,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "PARSERS",
     ],
     [
-      "STRINGIFYERS",
+      "STRINGIFIERS",
     ],
     [
       "DECODERS",
@@ -357,7 +357,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "PARSERS",
     ],
     [
-      "STRINGIFYERS",
+      "STRINGIFIERS",
     ],
     [
       "DECODERS",
@@ -637,7 +637,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       "PARSERS",
     ],
     [
-      "STRINGIFYERS",
+      "STRINGIFIERS",
     ],
     [
       "DECODERS",

@@ -102,9 +102,14 @@ export const definition = {
                 },
                 aMultiHeader: {
                   type: 'array',
-                  items: {
-                    type: 'number',
-                  },
+                  prefixItems: [
+                    {
+                      type: 'number',
+                    },
+                    {
+                      type: 'number',
+                    },
+                  ],
                 },
                 pathParam1: {
                   type: 'number',
@@ -132,7 +137,7 @@ async function initGetParameters() {
     operations[typeof definition.operation.operationId],
     typeof definition
   > = async ({
-    header: { 'a-header': aHeader, aMultiHeader },
+    headers: { 'a-header': aHeader, aMultiHeader },
     path: { pathParam1, pathParam2 },
     query: { queryParam },
   }) => {
@@ -140,7 +145,7 @@ async function initGetParameters() {
       status: 200,
       body: {
         aHeader,
-        aMultiHeader,
+        aMultiHeader: [aMultiHeader?.[0] || 0, aMultiHeader?.[0] || 0],
         pathParam1,
         pathParam2,
         queryParam,

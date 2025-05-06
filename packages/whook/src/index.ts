@@ -39,7 +39,7 @@ export {
 import initHTTPServer from './services/httpServer.js';
 import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
-import initProxyedENV from './services/PROXYED_ENV.js';
+import initProxiedENV from './services/PROXIED_ENV.js';
 import initBuildConstants from './services/BUILD_CONSTANTS.js';
 import initWhookResolvedPlugins, {
   WHOOK_DEFAULT_PLUGINS,
@@ -142,7 +142,7 @@ export type * from './libs/args.js';
 export type * from './services/PORT.js';
 export type * from './services/httpServer.js';
 export type * from './services/HOST.js';
-export type * from './services/PROXYED_ENV.js';
+export type * from './services/PROXIED_ENV.js';
 export type * from './services/BUILD_CONSTANTS.js';
 export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
 export type * from './services/DEFINITIONS.js';
@@ -181,7 +181,7 @@ export {
   initBuildAutoload,
   initDefinitions,
   initBuildConstants,
-  initProxyedENV,
+  initProxiedENV,
   initPort,
   initHost,
   initCompiler,

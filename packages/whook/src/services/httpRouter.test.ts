@@ -174,7 +174,7 @@ describe('initHTTPRouter', () => {
         ],
         head: {
           operationId: 'headUserAvatar',
-          summary: "Checks user's avatar existance.",
+          summary: "Checks user's avatar existence.",
           responses: {
             '200': {
               description: 'User avatar exists.',
@@ -493,11 +493,11 @@ describe('initHTTPRouter', () => {
         },
         Recursive: {
           type: 'object',
-          required: ['id', 'childs'],
+          required: ['id', 'children'],
           additionalProperties: false,
           properties: {
             id: { type: 'string' },
-            childs: {
+            children: {
               type: 'array',
               items: { $ref: '#/components/schemas/Recursive' },
             },
@@ -1010,8 +1010,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "x-depth": undefined,
         },
         "path": {
@@ -1033,7 +1033,7 @@ describe('initHTTPRouter', () => {
               "description": "User avatar not found",
             },
           },
-          "summary": "Checks user's avatar existance.",
+          "summary": "Checks user's avatar existence.",
         },
         "path": "/v1/users/1/avatar",
       },
@@ -1118,8 +1118,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -1257,7 +1257,7 @@ describe('initHTTPRouter', () => {
           method: 'HEAD',
           url: '/v1/users/1?extended=true',
           headers: {
-            accept: 'text/html,image/webp,image/apng,*/*;q=0.8',
+            accept: 'text/html,image/webp,image/png,*/*;q=0.8',
           },
         } as IncomingMessage;
 
@@ -1284,8 +1284,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -1450,8 +1450,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -1616,8 +1616,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "x-depth": 1,
         },
         "path": {
@@ -1672,7 +1672,7 @@ describe('initHTTPRouter', () => {
       });
 
       describe('should crash the router', () => {
-        test('when stringifier lack for errors too', async () => {
+        test('when stringifyer lack for errors too', async () => {
           const {
             httpTransaction,
             httpTransactionStart,
@@ -1693,7 +1693,7 @@ describe('initHTTPRouter', () => {
           const errorHandler = await initErrorHandler({
             ENV,
             DEBUG_NODE_ENVS,
-            STRINGIFYERS: {},
+            STRINGIFIERS: {},
             ERRORS_DESCRIPTORS: {},
           });
           const queryParserBuilder = await initQueryParserBuilder({
@@ -1703,7 +1703,7 @@ describe('initHTTPRouter', () => {
           const httpRouter = await initHTTPRouter({
             ENV,
             DEBUG_NODE_ENVS,
-            STRINGIFYERS: {},
+            STRINGIFIERS: {},
             ROUTES_HANDLERS,
             API,
             log,
@@ -1742,21 +1742,21 @@ describe('initHTTPRouter', () => {
           }
 
           expect(handler.mock.calls[0][0]).toEqual({
-            cookie: {},
+            cookies: {},
             path: {
               userId: 1,
             },
             query: {
               extended: true,
             },
-            header: {},
+            headers: {},
             body: undefined,
           });
         });
       });
 
       describe('should lately fail', () => {
-        test('when stringifier lack', async () => {
+        test('when stringifyer lack', async () => {
           const {
             httpTransaction,
             httpTransactionStart,
@@ -1771,13 +1771,13 @@ describe('initHTTPRouter', () => {
             },
             body: '1,John Doe',
           });
-          const STRINGIFYERS = {
+          const STRINGIFIERS = {
             'application/json': (content: string) => JSON.stringify(content),
           };
           const errorHandler = await initErrorHandler({
             ENV,
             DEBUG_NODE_ENVS,
-            STRINGIFYERS,
+            STRINGIFIERS,
             ERRORS_DESCRIPTORS: {},
           });
           const queryParserBuilder = await initQueryParserBuilder({
@@ -1792,7 +1792,7 @@ describe('initHTTPRouter', () => {
             log,
             DEFINITIONS,
             BASE_PATH,
-            STRINGIFYERS,
+            STRINGIFIERS,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -1833,8 +1833,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -1925,7 +1925,7 @@ describe('initHTTPRouter', () => {
           }).toMatchSnapshot();
         });
 
-        test('whith unacceptable media type', async () => {
+        test('with unacceptable media type', async () => {
           const {
             httpTransaction,
             httpTransactionStart,
@@ -2005,8 +2005,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -2164,8 +2164,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -2325,8 +2325,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -2481,14 +2481,14 @@ describe('initHTTPRouter', () => {
             status: 500,
           });
           expect(handler.mock.calls[0][0]).toEqual({
-            cookie: {},
+            cookies: {},
             path: {
               userId: 1,
             },
             query: {
               extended: true,
             },
-            header: {},
+            headers: {},
             body: undefined,
           });
 
@@ -2565,8 +2565,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -2857,14 +2857,14 @@ describe('initHTTPRouter', () => {
           },
         });
         expect(handler.mock.calls[0][0]).toEqual({
-          cookie: {},
+          cookies: {},
           path: {
             userId: 1,
           },
           query: {
             extended: true,
           },
-          header: {},
+          headers: {},
           body: undefined,
         });
 
@@ -2940,14 +2940,14 @@ describe('initHTTPRouter', () => {
           },
         });
         expect(handler.mock.calls[0][0]).toEqual({
-          cookie: {},
+          cookies: {},
           path: {
             userId: 1,
           },
           query: {
             extended: true,
           },
-          header: {},
+          headers: {},
           body: undefined,
         });
 
@@ -2957,7 +2957,7 @@ describe('initHTTPRouter', () => {
         }).toMatchSnapshot();
       });
 
-      test('should work with an unexisting route', async () => {
+      test('should work with an not existing route', async () => {
         const {
           httpTransaction,
           httpTransactionStart,
@@ -3107,8 +3107,8 @@ describe('initHTTPRouter', () => {
         "body": {
           "name": "John Doe",
         },
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "Authorization": "Bearer x",
           "Content-Type": "application/json;charset=UTF-8",
         },
@@ -3360,8 +3360,8 @@ describe('initHTTPRouter', () => {
         "body": {
           "name": "John Doe",
         },
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "Authorization": "Bearer x",
           "Content-Type": "application/json;charset=UTF-8",
         },
@@ -4295,8 +4295,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {
           "userId": 1,
         },
@@ -4523,8 +4523,8 @@ describe('initHTTPRouter', () => {
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "x-depth": undefined,
         },
         "path": {
@@ -4561,7 +4561,7 @@ describe('initHTTPRouter', () => {
       });
     });
 
-    describe('CUSTOMHEADER', () => {
+    describe('CUSTOM_METHOD', () => {
       test('should 404', async () => {
         const {
           httpTransaction,
@@ -4594,7 +4594,7 @@ describe('initHTTPRouter', () => {
           schemaValidators,
         });
         const req = {
-          method: 'CUSTOMHEADER',
+          method: 'CUSTOM_METHOD',
           url: '/v1/users/1?extended=true',
           headers: {
             'content-type': 'application/json; charset=utf-8',

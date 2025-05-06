@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`initHTTPRouter httpRouter CUSTOMHEADER should 404 1`] = `
+exports[`initHTTPRouter httpRouter CUSTOM_METHOD should 404 1`] = `
 {
   "error": "bad_handler",
   "error_debug_data": undefined,
-  "error_description": "No endpoint found at that path ("customheader", "/v1/users/1")",
+  "error_description": "No endpoint found at that path ("custom_method", "/v1/users/1")",
   "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
 }
@@ -30,7 +30,7 @@ exports[`initHTTPRouter httpRouter GET should fail without a required parameter 
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should lately fail when stringifier lack 2`] = `
+exports[`initHTTPRouter httpRouter GET should lately fail when stringifyer lack 2`] = `
 {
   "error": "router_misconfiguration",
   "error_debug_data": undefined,
@@ -80,11 +80,11 @@ exports[`initHTTPRouter httpRouter GET should lately fail when the handler retur
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should lately fail whith unacceptable media type 2`] = `
+exports[`initHTTPRouter httpRouter GET should lately fail with unacceptable media type 2`] = `
 {
   "error": "bad_request",
   "error_debug_data": undefined,
-  "error_description": "The asked response media type "text/word" is not satifyable (allowed media types "application/json,text/plain")",
+  "error_description": "The asked response media type "text/word" is not satisfiable (allowed media types "application/json,text/plain")",
   "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_UNACCEPTABLE_MEDIA_TYPE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNACCEPTABLE_MEDIA_TYPE",
 }
@@ -108,7 +108,7 @@ exports[`initHTTPRouter httpRouter GET should work with a handler erroring 1`] =
 }
 `;
 
-exports[`initHTTPRouter httpRouter GET should work with an unexisting route 1`] = `
+exports[`initHTTPRouter httpRouter GET should work with an not existing route 1`] = `
 {
   "error": "bad_handler",
   "error_debug_data": undefined,
@@ -154,7 +154,7 @@ exports[`initHTTPRouter httpRouter PUT should fail with a bad content type 1`] =
 {
   "error": "bad_request",
   "error_debug_data": undefined,
-  "error_description": "The content type provided is wierd "#$===;;;=="",
+  "error_description": "The content type provided is weird "#$===;;;=="",
   "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_CONTENT_TYPE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_CONTENT_TYPE",
 }
@@ -164,7 +164,7 @@ exports[`initHTTPRouter httpRouter PUT should fail with a bad content type heade
 {
   "error": "bad_request",
   "error_debug_data": undefined,
-  "error_description": "The content type provided is wierd "$%$;;;==="",
+  "error_description": "The content type provided is weird "$%$;;;==="",
   "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_BAD_CONTENT_TYPE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_BAD_CONTENT_TYPE",
 }
@@ -251,7 +251,7 @@ exports[`initHTTPRouter httpRouter PUT should fail with too large contents decla
 {
   "error": "bad_request",
   "error_debug_data": undefined,
-  "error_description": "The request content length ("21") exceeded the maximun allowed ("20")",
+  "error_description": "The request content length ("21") exceeded the maximum allowed ("20")",
   "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_REQUEST_CONTENT_TOO_LARGE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_CONTENT_TOO_LARGE",
 }
@@ -261,7 +261,7 @@ exports[`initHTTPRouter httpRouter PUT should fail with too large contents not d
 {
   "error": "bad_request",
   "error_debug_data": undefined,
-  "error_description": "The request content length ("21") exceeded the maximun allowed ("20")",
+  "error_description": "The request content length ("21") exceeded the maximum allowed ("20")",
   "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_REQUEST_CONTENT_TOO_LARGE+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_REQUEST_CONTENT_TOO_LARGE",
 }
@@ -271,7 +271,7 @@ exports[`initHTTPRouter httpRouter PUT should fail with unsupported charset 2`] 
 {
   "error": "bad_request",
   "error_debug_data": undefined,
-  "error_description": "The asked response charset "UTF-32;q=0.9, ISO-8859-1;q=0.8, UTF-16;q=0.7" is not satifyable (allowed charsets "utf-8")",
+  "error_description": "The asked response charset "UTF-32;q=0.9, ISO-8859-1;q=0.8, UTF-16;q=0.7" is not satisfiable (allowed char sets "utf-8")",
   "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_UNACCEPTABLE_CHARSET+whook+error+code",
   "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_UNACCEPTABLE_CHARSET",
 }

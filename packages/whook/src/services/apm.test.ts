@@ -13,7 +13,7 @@ describe('APM service', () => {
     const apm = await initAPMService({ log });
 
     apm('CALL', {
-      id: 'callid',
+      id: 'call_id',
     });
 
     expect({
@@ -28,7 +28,7 @@ describe('APM service', () => {
           [
             "info",
             "CALL",
-            "{"id":"callid"}",
+            "{"id":"call_id"}",
           ],
         ],
       }

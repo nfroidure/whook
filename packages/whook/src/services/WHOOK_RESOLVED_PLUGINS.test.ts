@@ -119,7 +119,7 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
   });
 
   describe('should fail', () => {
-    test('with unexisting plugin', async () => {
+    test('with not existing plugin', async () => {
       resolve.mockImplementationOnce(() => {
         throw new YError('E_NO_MODULE');
       });

@@ -124,7 +124,7 @@ export function setURLError(
   url.searchParams.set('error', oAuth2Error.code);
   if (oAuth2Error.description) {
     url.searchParams.set(
-      'error_decription',
+      'error_description',
       oAuth2Error.description.replace(/\$([0-9]+)/g, (_, paramIndex) => {
         return ((err as YError).params || [])[parseInt(paramIndex, 10)];
       }),

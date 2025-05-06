@@ -730,7 +730,7 @@ describe('$autoload', () => {
   });
 
   describe('should fail', () => {
-    test('with unexisting routes', async () => {
+    test('with not existing routes', async () => {
       $injector.mockResolvedValueOnce({
         ROUTES_DEFINITIONS: { info: {} },
       });

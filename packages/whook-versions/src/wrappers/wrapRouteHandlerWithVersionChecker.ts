@@ -61,7 +61,12 @@ async function handleWithVersionChecker(
   operation: WhookRouteDefinition,
 ): Promise<WhookResponse> {
   VERSIONS.forEach((version) => {
-    const value = parameters.header[version.header.toLowerCase()] as string;
+    const value =
+      typeof parameters.headers[version.header.toLowerCase()] !== 'undefined'
+        ? (
+            parameters.headers[version.header.toLowerCase()] as string
+          ).toString()
+        : undefined;
 
     if (
       'undefined' !== typeof value &&

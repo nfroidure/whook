@@ -14,7 +14,7 @@ export const DEFAULT_PARSERS = {
   'application/x-www-form-urlencoded': (content: string): JsonValue =>
     qs.parse(content) as JsonValue,
 };
-export const DEFAULT_STRINGIFYERS = {
+export const DEFAULT_STRINGIFIERS = {
   'application/json': (content: JsonValue): string => JSON.stringify(content),
   'text/plain': ensureString,
   'application/x-www-form-urlencoded': (content: JsonValue): string =>

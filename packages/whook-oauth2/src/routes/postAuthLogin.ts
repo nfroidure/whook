@@ -38,7 +38,7 @@ export const definition = {
     },
     responses: {
       200: {
-        description: 'Successfuly logged in.',
+        description: 'Successfully logged in.',
         content: {
           'application/json': {
             schema: {

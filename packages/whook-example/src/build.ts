@@ -47,7 +47,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $.register(
     constant('INITIALIZER_PATH_MAP', {
       ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-      // MY_SERVICE: '@my/service_module_name/afile.js',
+      // MY_SERVICE: '@my/service_module_name/a_file.js',
       jwtToken: 'jwt-service/dist/index.js',
       errorHandler: '@whook/cors/dist/services/errorHandler.js',
       SECURITY_DEFINITIONS: './services/SECURITY_DEFINITIONS.js',

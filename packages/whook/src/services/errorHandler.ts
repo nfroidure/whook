@@ -1,14 +1,14 @@
 import { initializer, location } from 'knifecycle';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
-  DEFAULT_STRINGIFYERS,
+  DEFAULT_STRINGIFIERS,
 } from '../libs/constants.js';
 import miniquery from 'miniquery';
 import { printStackTrace, YError } from 'yerror';
 import { type YHTTPError } from 'yhttperror';
 import { type AppEnvVars } from 'application-services';
 import { type WhookResponseSpec } from '../libs/router.js';
-import { type WhookStringifyers } from './httpRouter.js';
+import { type WhookStringifiers } from './httpRouter.js';
 import { type JSONSchema } from 'ya-json-schema-types';
 
 /* Architecture Note #2.13: Error handler
@@ -19,7 +19,7 @@ Whook provides a default error handler that allows
  modules to throw errors with some parameters allowing you
  to give some debugging context with raised errors.
 
-Depending on the `NODE_ENV` it adds extra informations to
+Depending on the `NODE_ENV` it adds extra information to
  HTTP response, beware to avoid activating it in production.
 */
 
@@ -186,7 +186,7 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
   E_REQUEST_CONTENT_TOO_LARGE: {
     code: 'bad_request',
     description:
-      'The request content length ("$0") exceeded the maximun allowed ("$1")',
+      'The request content length ("$0") exceeded the maximum allowed ("$1")',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -207,13 +207,13 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
   E_UNSUPPORTED_CHARSET: {
     code: 'bad_request',
     description:
-      'The body charset "$0" is not supported (supported charsets "$1")',
+      'The body charset "$0" is not supported (supported char sets "$1")',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
   E_BAD_CONTENT_TYPE: {
     code: 'bad_request',
-    description: 'The content type provided is wierd "$0"',
+    description: 'The content type provided is weird "$0"',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -233,14 +233,14 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
   E_UNACCEPTABLE_CHARSET: {
     code: 'bad_request',
     description:
-      'The asked response charset "$0" is not satifyable (allowed charsets "$2")',
+      'The asked response charset "$0" is not satisfiable (allowed char sets "$2")',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
   E_UNACCEPTABLE_MEDIA_TYPE: {
     code: 'bad_request',
     description:
-      'The asked response media type "$0" is not satifyable (allowed media types "$1")',
+      'The asked response media type "$0" is not satisfiable (allowed media types "$1")',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -306,7 +306,7 @@ export type WhookErrorHandlerConfig = {
 };
 export type WhookErrorHandlerDependencies = WhookErrorHandlerConfig & {
   ENV: AppEnvVars;
-  STRINGIFYERS?: WhookStringifyers;
+  STRINGIFIERS?: WhookStringifiers;
 };
 
 export interface WhookErrorHandler {
@@ -367,7 +367,7 @@ export default location(
       inject: [
         'ENV',
         '?DEBUG_NODE_ENVS',
-        '?STRINGIFYERS',
+        '?STRINGIFIERS',
         '?ERRORS_DESCRIPTORS',
         '?DEFAULT_ERROR_CODE',
       ],
@@ -387,8 +387,8 @@ export default location(
  * @param  {Array}   [services.DEBUG_NODE_ENVS]
  * The environnement that activate debugging
  *  (prints stack trace in HTTP errors responses)
- * @param  {Object} [services.STRINGIFYERS]
- * The synchronous body stringifyers
+ * @param  {Object} [services.STRINGIFIERS]
+ * The synchronous body stringifiers
  * @param  {Object} [services.ERRORS_DESCRIPTORS]
  * An hash of the various error descriptors
  * @param  {Object} [services.DEFAULT_ERROR_CODE]
@@ -399,7 +399,7 @@ export default location(
 async function initErrorHandler({
   ENV,
   DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
-  STRINGIFYERS = DEFAULT_STRINGIFYERS,
+  STRINGIFIERS = DEFAULT_STRINGIFIERS,
   ERRORS_DESCRIPTORS = DEFAULT_ERRORS_DESCRIPTORS,
   DEFAULT_ERROR_CODE = DEFAULT_DEFAULT_ERROR_CODE,
 }: WhookErrorHandlerDependencies): Promise<WhookErrorHandler> {
@@ -450,9 +450,9 @@ async function initErrorHandler({
         'content-type':
           responseSpec &&
           responseSpec.contentTypes[0] &&
-          STRINGIFYERS[responseSpec.contentTypes[0]]
+          STRINGIFIERS[responseSpec.contentTypes[0]]
             ? responseSpec.contentTypes[0]
-            : Object.keys(STRINGIFYERS)[0],
+            : Object.keys(STRINGIFIERS)[0],
       }),
       // Here we do not respect the camelCase convention to
       // have OAuth2 compatible errors 🤷

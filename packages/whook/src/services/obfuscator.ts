@@ -72,11 +72,11 @@ const DEFAULT_SENSIBLE_PROPS: WhookSensibleValueDescriptor[] = [
 ];
 
 /**
- * Obfuscate sensible informations.
+ * Obfuscate sensible information.
  * @param  {Object}   services
- * The service dependend on
+ * The service depend on
  * @param  {Object}   [services.SHIELD_CHAR]
- * The char for replacing sensible informations
+ * The char for replacing sensible information
  * @param  {Object}   [services.MAX_CLEAR_CHARS]
  * The maximum clear chars to display
  * @param  {Object}   [services.MAX_CLEAR_RATIO]

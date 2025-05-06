@@ -7,8 +7,8 @@ exports[`wrapHTTPTransactionWithMethodOverride should let normal methods pass 1`
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {},
         "query": {},
       },
@@ -67,8 +67,8 @@ exports[`wrapHTTPTransactionWithMethodOverride should override methods 1`] = `
     [
       {
         "body": undefined,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {},
         "query": {},
       },

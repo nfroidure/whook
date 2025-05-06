@@ -7,7 +7,7 @@ import {
   DEFAULT_COERCION_OPTIONS,
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
-  DEFAULT_STRINGIFYERS,
+  DEFAULT_STRINGIFIERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
   SEARCH_SEPARATOR,
@@ -59,7 +59,7 @@ export type WhookGCPFunctionRouteWrapperDependencies = {
   DECODERS?: typeof DEFAULT_DECODERS;
   ENCODERS?: typeof DEFAULT_ENCODERS;
   PARSERS?: typeof DEFAULT_PARSERS;
-  STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
+  STRINGIFIERS?: typeof DEFAULT_STRINGIFIERS;
   queryParserBuilder: WhookQueryParserBuilderService;
   BUFFER_LIMIT?: string;
   COERCION_OPTIONS: WhookCoercionOptions;
@@ -81,8 +81,8 @@ export type WhookGCPFunctionRouteWrapperDependencies = {
  * Response body encoders available
  * @param  {Object}   services.PARSERS
  * Request body parsers available
- * @param  {Object}   services.STRINGIFYERS
- * Response body stringifyers available
+ * @param  {Object}   services.STRINGIFIERS
+ * Response body stringifiers available
  * @param  {Object}   services.BUFFER_LIMIT
  * The buffer size limit
  * @param  {Object} services.queryParserBuilder
@@ -103,7 +103,7 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
   PARSERS = DEFAULT_PARSERS,
-  STRINGIFYERS = DEFAULT_STRINGIFYERS,
+  STRINGIFIERS = DEFAULT_STRINGIFIERS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   queryParserBuilder,
   COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
@@ -192,7 +192,7 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
         DECODERS,
         ENCODERS,
         PARSERS,
-        STRINGIFYERS,
+        STRINGIFIERS,
         BUFFER_LIMIT,
         obfuscator,
         errorHandler,
@@ -241,7 +241,7 @@ async function handleForAWSHTTPFunction(
     DECODERS,
     ENCODERS,
     PARSERS,
-    STRINGIFYERS,
+    STRINGIFIERS,
     BUFFER_LIMIT,
     obfuscator,
     errorHandler,
@@ -300,9 +300,9 @@ async function handleForAWSHTTPFunction(
 
   const parametersValues: WhookRouteHandlerParameters = {
     query: {},
-    header: {},
+    headers: {},
     path: {},
-    cookie: {},
+    cookies: {},
     body: undefined as unknown as WhookRequestBody,
   };
 
@@ -356,7 +356,7 @@ async function handleForAWSHTTPFunction(
             // header names are case insensitive
             const canonicalName = name.toLowerCase();
 
-            parametersValues.header[name] = validator(
+            parametersValues.headers[name] = validator(
               typeof request.headers[canonicalName] !== 'undefined'
                 ? request.headers[canonicalName].toString()
                 : undefined,
@@ -455,7 +455,7 @@ async function handleForAWSHTTPFunction(
           responseSchema.format === 'binary'
         ));
 
-    if (responseHasSchema && !STRINGIFYERS[responseContentType]) {
+    if (responseHasSchema && !STRINGIFIERS[responseContentType]) {
       throw new YHTTPError(
         500,
         'E_STRINGIFYER_LACK',
@@ -511,7 +511,7 @@ async function handleForAWSHTTPFunction(
     await sendBody(
       {
         ENCODERS,
-        STRINGIFYERS,
+        STRINGIFIERS,
       },
       response,
     ),

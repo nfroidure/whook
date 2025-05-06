@@ -1,9 +1,9 @@
 import { autoService } from 'knifecycle';
-import { DelayService, type LogService } from 'common-services';
+import { type DelayService, type LogService } from 'common-services';
 import {
   type WhookCronDefinition,
   type WhookAPISchemaDefinition,
-  WhookCronHandler,
+  type WhookCronHandler,
 } from '@whook/whook';
 
 // Here we create a schema for the cron body

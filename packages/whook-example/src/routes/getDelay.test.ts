@@ -5,7 +5,7 @@ import { type LogService, type DelayService } from 'common-services';
 /* Architecture Note #3.5: Testing
 
 Since the routes do not need to deal with
- input/ouput validity, you can just write
+ input/output validity, you can just write
  tests for the business logic.
 */
 describe('getDelay', () => {

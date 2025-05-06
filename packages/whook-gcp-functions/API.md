@@ -14,7 +14,7 @@ Wrap an handler to make it work with GCP Functions.
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
 | services.PARSERS | <code>Object</code> |  | Request body parsers available |
-| services.STRINGIFYERS | <code>Object</code> |  | Response body stringifyers available |
+| services.STRINGIFIERS | <code>Object</code> |  | Response body stringifiers available |
 | services.BUFFER_LIMIT | <code>Object</code> |  | The buffer size limit |
 | services.queryParserBuilder | <code>Object</code> |  | A query parser builder from OpenAPI parameters |
 | services.obfuscator | <code>Object</code> |  | A service to hide sensible values |

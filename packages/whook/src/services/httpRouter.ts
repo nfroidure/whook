@@ -31,7 +31,7 @@ import { getBody, sendBody } from '../libs/body.js';
 import {
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
-  DEFAULT_STRINGIFYERS,
+  DEFAULT_STRINGIFIERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
 } from '../libs/constants.js';
@@ -86,7 +86,7 @@ export type WhookParser = (
 ) => JsonValue;
 export type WhookParsers = { [name: string]: WhookParser };
 export type WhookStringifyer = (content: string) => string;
-export type WhookStringifyers = { [name: string]: WhookStringifyer };
+export type WhookStringifiers = { [name: string]: WhookStringifyer };
 export type WhookEncoder<T extends Transform> = {
   new (...args: unknown[]): T;
 };
@@ -111,7 +111,7 @@ export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
   API: WhookOpenAPI;
   DEFINITIONS: WhookDefinitions;
   PARSERS?: WhookParsers;
-  STRINGIFYERS?: WhookStringifyers;
+  STRINGIFIERS?: WhookStringifiers;
   DECODERS?: WhookEncoders<Transform>;
   ENCODERS?: WhookDecoders<Transform>;
   queryParserBuilder: WhookQueryParserBuilderService;
@@ -173,7 +173,7 @@ export default location(
         'API',
         'DEFINITIONS',
         '?PARSERS',
-        '?STRINGIFYERS',
+        '?STRINGIFIERS',
         '?DECODERS',
         '?ENCODERS',
         '?COERCION_OPTIONS',
@@ -206,8 +206,8 @@ export default location(
  * @param  {Object} [services.PARSERS]
  * The synchronous body parsers (for operations
  *  that defines a request body schema)
- * @param  {Object} [services.STRINGIFYERS]
- * The synchronous body stringifyers (for
+ * @param  {Object} [services.STRINGIFIERS]
+ * The synchronous body stringifiers (for
  *  operations that defines a response body
  *  schema)
  * @param  {Object} [services.ENCODERS]
@@ -232,7 +232,7 @@ async function initHTTPRouter({
   API,
   DEFINITIONS,
   PARSERS = DEFAULT_PARSERS,
-  STRINGIFYERS = DEFAULT_STRINGIFYERS,
+  STRINGIFIERS = DEFAULT_STRINGIFIERS,
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
   COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
@@ -247,7 +247,7 @@ async function initHTTPRouter({
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
   const defaultResponseSpec = {
-    contentTypes: Object.keys(STRINGIFYERS),
+    contentTypes: Object.keys(STRINGIFIERS),
     charsets: produceableCharsets,
   };
 
@@ -339,9 +339,9 @@ async function initHTTPRouter({
 
           const parametersValues: WhookRouteHandlerParameters = {
             query: {},
-            header: {},
+            headers: {},
             path: {},
-            cookie: {},
+            cookies: {},
             body: undefined as unknown as WhookRequestBody,
           };
 
@@ -366,7 +366,7 @@ async function initHTTPRouter({
                   // header names are case insensitive
                   const canonicalName = name.toLowerCase();
 
-                  parametersValues.header[name] = validator(
+                  parametersValues.headers[name] = validator(
                     typeof request.headers[canonicalName] !== 'undefined'
                       ? request.headers[canonicalName].toString()
                       : undefined,
@@ -474,7 +474,7 @@ async function initHTTPRouter({
                 responseSchema.format === 'binary'
               ));
 
-          if (responseHasSchema && !STRINGIFYERS[responseContentType]) {
+          if (responseHasSchema && !STRINGIFIERS[responseContentType]) {
             throw new YHTTPError(
               500,
               'E_STRINGIFYER_LACK',
@@ -520,7 +520,7 @@ async function initHTTPRouter({
             await sendBody(
               {
                 ENCODERS,
-                STRINGIFYERS,
+                STRINGIFIERS,
               },
               castedResponse,
             ),

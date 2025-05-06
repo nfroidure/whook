@@ -10,7 +10,6 @@ import {
   type OpenAPIRequestBody,
   type OpenAPIResponse,
   type OpenAPIReference,
-  type OpenAPIExample,
   type OpenAPICallback,
 } from 'ya-open-api-types';
 
@@ -62,7 +61,7 @@ export interface WhookAPISchemaDefinition<
   name: string;
   schema: ExpressiveJSONSchema;
   example?: T;
-  examples?: Record<string, OpenAPIExample>;
+  examples?: Record<string, T>;
 }
 
 export interface WhookAPIParameterDefinition<
@@ -71,7 +70,7 @@ export interface WhookAPIParameterDefinition<
   name: string;
   parameter: OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>;
   example?: T;
-  examples?: Record<string, OpenAPIExample>;
+  examples?: Record<string, T>;
 }
 
 export interface WhookAPIExampleDefinition<T extends JsonValue> {

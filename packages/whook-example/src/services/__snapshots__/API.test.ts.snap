@@ -22,9 +22,11 @@ exports[`API should always have the same amount of endpoints 1`] = `
   "options /echo",
   "options /openAPI",
   "options /ping",
+  "options /stream",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
   "put /echo",
+  "put /stream",
 ]
 `;
 
@@ -39,9 +41,11 @@ exports[`API should always have the same amount of non authenticated endpoints 1
   "options /echo",
   "options /openAPI",
   "options /ping",
+  "options /stream",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
   "put /echo",
+  "put /stream",
 ]
 `;
 
@@ -64,9 +68,11 @@ exports[`API should always have the same amount of publicly documented endpoints
   "options /echo",
   "options /openAPI",
   "options /ping",
+  "options /stream",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
   "put /echo",
+  "put /stream",
 ]
 `;
 
@@ -146,6 +152,16 @@ exports[`API should work 1`] = `
           },
           "required": true,
         },
+        "Stream": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "$ref": "#/components/schemas/Stream",
+              },
+            },
+          },
+          "required": true,
+        },
       },
       "responses": {
         "Diagnostic": {
@@ -177,6 +193,15 @@ exports[`API should work 1`] = `
           },
           "description": "Echo response",
         },
+        "Stream": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "$ref": "#/components/schemas/Stream",
+              },
+            },
+          },
+        },
       },
       "schemas": {
         "Echo": {
@@ -190,6 +215,10 @@ exports[`API should work 1`] = `
             "echo",
           ],
           "type": "object",
+        },
+        "Stream": {
+          "format": "binary",
+          "type": "string",
         },
         "TimeSchema": {
           "additionalProperties": false,
@@ -446,6 +475,36 @@ exports[`API should work 1`] = `
           ],
         },
       },
+      "/stream": {
+        "options": {
+          "operationId": "putEchoedStreamCORS",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": [
+            "CORS",
+          ],
+        },
+        "put": {
+          "operationId": "putEchoedStream",
+          "requestBody": {
+            "$ref": "#/components/requestBodies/Stream",
+          },
+          "responses": {
+            "201": {
+              "$ref": "#/components/responses/Stream",
+            },
+          },
+          "summary": "Echoes what it takes.",
+          "tags": [
+            "example",
+          ],
+        },
+      },
       "/time": {
         "get": {
           "operationId": "getTime",
@@ -521,9 +580,14 @@ exports[`API should work 1`] = `
                         "type": "boolean",
                       },
                       "aMultiHeader": {
-                        "items": {
-                          "type": "number",
-                        },
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                          },
+                          {
+                            "type": "number",
+                          },
+                        ],
                         "type": "array",
                       },
                       "pathParam1": {

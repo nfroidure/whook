@@ -159,13 +159,13 @@ describe('getOAuth2Authorize', () => {
     });
 
     expect(response).toMatchInlineSnapshot(`
-      {
-        "headers": {
-          "location": "https://auth.example.com/sign_in?redirect_uri=https%3A%2F%2Fwww.example.com&error=unsupported_response_type&error_decription=The+type+%22yolo%22+is+not+supported.&state=bancal",
-        },
-        "status": 302,
-      }
-    `);
+{
+  "headers": {
+    "location": "https://auth.example.com/sign_in?redirect_uri=https%3A%2F%2Fwww.example.com&error=unsupported_response_type&error_description=The+type+%22yolo%22+is+not+supported.&state=bancal",
+  },
+  "status": 302,
+}
+`);
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       codeGranterAuthorizerAuthorizeCalls:

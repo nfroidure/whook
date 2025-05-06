@@ -16,6 +16,8 @@ describe('generateOpenAPITypes', () => {
     generateRealEnums: false,
     exportNamespaces: false,
     brandedTypes: [],
+    brandedFormats: [],
+    typedFormats: {},
     tuplesFromFixedArraysLengthLimit: 5,
   };
   const API: OpenAPI = {

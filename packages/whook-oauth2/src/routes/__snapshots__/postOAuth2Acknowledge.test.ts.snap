@@ -52,7 +52,7 @@ exports[`postOAuth2Acknowledge should redirect errors too 2`] = `
     [
       "debug",
       "👫 - OAuth2 acknowledge error",
-      "E_UNKNOWN_ACKNOWLEDGOR_TYPE",
+      "E_UNKNOWN_ACKNOWLEDGER_TYPE",
     ],
   ],
   "tokenGranterAcknowledgerAcknowledgeCalls": [],

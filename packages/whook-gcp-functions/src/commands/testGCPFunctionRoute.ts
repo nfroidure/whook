@@ -124,7 +124,7 @@ async function initTestGCPFunctionRouteCommand({
     const gcpfRequest = {
       method: handlerDefinition.method,
       originalUrl: path + (search ? SEARCH_SEPARATOR + search : ''),
-      headers: parameters.header || {},
+      headers: parameters.headers || {},
       rawBody: Buffer.from(
         hasBody
           ? contentType === 'application/json'

@@ -6,11 +6,11 @@ import { type AppConfig } from 'application-services';
 
 /* Architecture Note #2: Configuration
 
-Configuration is done for each environement in the
+Configuration is done for each environment in the
  `src/config/${NODE_ENV}/config.ts` files.
 
 The `src/config/common/config.ts` one allows to add common
- configurations for all environements.
+ configurations for all environments.
 */
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
@@ -46,6 +46,8 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     generateRealEnums: false,
     exportNamespaces: false,
     brandedTypes: [],
+    brandedFormats: [],
+    typedFormats: { binary: { namespace: ['NodeJS', 'ReadableStream'] } },
     tuplesFromFixedArraysLengthLimit: 5,
   },
   JWT: {

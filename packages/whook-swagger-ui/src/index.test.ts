@@ -135,7 +135,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "PARSERS",
     ],
     [
-      "STRINGIFYERS",
+      "STRINGIFIERS",
     ],
     [
       "DECODERS",
@@ -335,7 +335,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       "PARSERS",
     ],
     [
-      "STRINGIFYERS",
+      "STRINGIFIERS",
     ],
     [
       "DECODERS",
@@ -560,7 +560,7 @@ window.onload = function() {
       "PARSERS",
     ],
     [
-      "STRINGIFYERS",
+      "STRINGIFIERS",
     ],
     [
       "DECODERS",
@@ -725,7 +725,7 @@ window.onload = function() {
       "PARSERS",
     ],
     [
-      "STRINGIFYERS",
+      "STRINGIFIERS",
     ],
     [
       "DECODERS",

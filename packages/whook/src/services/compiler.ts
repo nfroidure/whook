@@ -143,7 +143,7 @@ const require = createRequire(import.meta.url);
     if (!data.contents) {
       log(
         'error',
-        `💩 - Ooops, nothing returned by esbuild for the file (${outFile})!`,
+        `💩 - Oops, nothing returned by esbuild for the file (${outFile})!`,
       );
     }
 

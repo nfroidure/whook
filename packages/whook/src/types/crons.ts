@@ -36,7 +36,7 @@ export interface WhookCronHandler<
   T extends JsonValue,
   D extends WhookCronDefinition<T> = WhookCronDefinition<T>,
 > {
-  (input: { date: string; body: T }, definition: D): Promise<void>;
+  (input: { date: string; body: T }, definition?: D): Promise<void>;
 }
 export type WhookCronHandlerInitializer<
   T extends JsonValue,

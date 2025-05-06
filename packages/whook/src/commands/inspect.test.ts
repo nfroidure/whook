@@ -177,7 +177,7 @@ describe('inspectCommand', () => {
 `);
   });
 
-  test('should work with an unexisting config but a default value', async () => {
+  test('should work with not existing config but a default value', async () => {
     $injector.mockRejectedValueOnce(new YError('E_NOT_FOUND'));
 
     const inspectCommand = await initInspectCommand({
@@ -294,7 +294,7 @@ describe('inspectCommand', () => {
 `);
   });
 
-  test('should fail with unexisting config name', async () => {
+  test('should fail with not existing config name', async () => {
     const inspectCommand = await initInspectCommand({
       log,
       $injector,
@@ -308,7 +308,7 @@ describe('inspectCommand', () => {
           name: 'DOES_NOT_EXIST',
         },
       });
-      throw new YError('E_UNEXPEXTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
@@ -365,7 +365,7 @@ describe('inspectCommand', () => {
           query: 'nothing_here',
         },
       });
-      throw new YError('E_UNEXPEXTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         errorCode: (err as YError).code,

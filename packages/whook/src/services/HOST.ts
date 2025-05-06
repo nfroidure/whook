@@ -48,10 +48,7 @@ async function initHost({
   const host = await (await importer('internal-ip')).internalIpV4();
 
   if (!host) {
-    log(
-      'warning',
-      `🚫 - Could not detect any host. Fallbacking to "localhost".`,
-    );
+    log('warning', `🚫 - Could not detect any host. Fallback to "localhost".`);
     return 'localhost';
   }
 

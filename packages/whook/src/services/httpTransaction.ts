@@ -74,7 +74,7 @@ This service is intended to build those literal objects
  running queries and ensure it is well handled by the
  server before releasing it. If not, the transaction is
  resolved with an error response (for timeouts or when
- an error were catched).
+ an error were caught).
 
 The `httpTransaction` service creates a new transaction
  for every single HTTP request incoming. It helps
@@ -119,7 +119,7 @@ export default location(
  * @param  {Object}     services.delay
  * A delaying service
  * @param  {Object}     services.obfuscator
- * A service to avoid logging sensible informations
+ * A service to avoid logging sensible information
  * @param  {Function}   [services.log]
  * A logging function
  * @param  {Function}   [services.apm]
@@ -182,7 +182,7 @@ async function initHTTPTransaction({
     /* Architecture Note #2.10.1: New Transaction
     The idea is to maintain a hash of each pending
      transaction. To do so, we create a transaction
-     object that contains useful informations about
+     object that contains useful information about
      the transaction and we store it into the
      `TRANSACTIONS` hash.
 

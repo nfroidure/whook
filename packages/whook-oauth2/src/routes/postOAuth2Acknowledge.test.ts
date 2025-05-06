@@ -180,15 +180,15 @@ describe('postOAuth2Acknowledge', () => {
     expect({
       response,
     }).toMatchInlineSnapshot(`
-      {
-        "response": {
-          "headers": {
-            "location": "https://www.example.com/?error=unsupported_response_type&error_decription=Type+%22yolo%22+not+supported.",
-          },
-          "status": 302,
-        },
-      }
-    `);
+{
+  "response": {
+    "headers": {
+      "location": "https://www.example.com/?error=unsupported_response_type&error_description=Type+%22yolo%22+not+supported.",
+    },
+    "status": 302,
+  },
+}
+`);
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       checkApplicationCalls: checkApplication.mock.calls,

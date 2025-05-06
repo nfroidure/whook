@@ -8,7 +8,7 @@ import {
   type WhookDecoders,
   type WhookEncoders,
   type WhookParsers,
-  type WhookStringifyers,
+  type WhookStringifiers,
 } from '../services/httpRouter.js';
 import { type WhookOpenAPIOperation } from '../types/openapi.js';
 import { type WhookResponse } from '../types/http.js';
@@ -153,10 +153,10 @@ export async function getBody(
 export async function sendBody(
   {
     ENCODERS,
-    STRINGIFYERS,
+    STRINGIFIERS,
   }: {
     ENCODERS?: WhookEncoders<Transform>;
-    STRINGIFYERS?: WhookStringifyers;
+    STRINGIFIERS?: WhookStringifiers;
   },
   response: WhookResponse,
 ): Promise<WhookResponse> {
@@ -172,7 +172,7 @@ export async function sendBody(
     pickFirstHeaderValue('content-type', response.headers || {}) ||
     'text/plain';
 
-  if (!STRINGIFYERS?.[responseContentType]) {
+  if (!STRINGIFIERS?.[responseContentType]) {
     throw new YError(
       'E_STRINGIFYER_LACK',
       response.headers?.['content-type'],
@@ -187,7 +187,7 @@ export async function sendBody(
   }
 
   const stream = new Encoder();
-  const content = STRINGIFYERS[responseContentType](response.body as string);
+  const content = STRINGIFIERS[responseContentType](response.body as string);
 
   stream.write(content);
 

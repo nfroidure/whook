@@ -100,8 +100,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       const wrappedHandler = await wrapper(baseHandler);
       const response = await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: { aParameter: 1 },
         },
@@ -131,8 +131,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     [
       {
         "authenticated": false,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {},
         "query": {
           "aParameter": 1,
@@ -187,10 +187,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       const wrappedHandler = await wrapper(baseHandler);
       const response = await wrappedHandler(
         {
-          header: {
+          headers: {
             authorization: 'bearer yolo',
           },
-          cookie: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -228,8 +228,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           "scope": "user,admin",
           "userId": 1,
         },
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "authorization": "bearer yolo",
         },
         "path": {},
@@ -294,10 +294,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       const wrappedHandler = await wrapper(baseHandler);
       const response = await wrappedHandler(
         {
-          header: {
+          headers: {
             authorization: 'Bearer yolo',
           },
-          cookie: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -335,8 +335,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           "scope": "user,admin",
           "userId": 1,
         },
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "authorization": "Bearer yolo",
         },
         "path": {},
@@ -401,8 +401,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       const wrappedHandler = await wrapper(baseHandler);
       const response = await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: {
             access_token: 'yolo',
@@ -442,8 +442,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           "scope": "user,admin",
           "userId": 1,
         },
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {},
         "query": {
           "access_token": "yolo",
@@ -508,8 +508,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       const wrappedHandler = await wrapper(baseHandler);
       const response = await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -539,8 +539,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     [
       {
         "authenticated": false,
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {},
         "query": {},
       },
@@ -602,10 +602,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       const wrappedHandler = await wrapper(baseHandler);
       const response = await wrappedHandler(
         {
-          header: {
+          headers: {
             authorization: 'Bearer yolo',
           },
-          cookie: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -643,8 +643,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           "scope": "user,admin",
           "userId": 1,
         },
-        "cookie": {},
-        "header": {
+        "cookies": {},
+        "headers": {
           "authorization": "Bearer yolo",
         },
         "path": {},
@@ -708,8 +708,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       const wrappedHandler = await wrapper(baseHandler);
       const response = await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: {
             access_token: 'yolo',
@@ -749,8 +749,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
           "scope": "user,admin",
           "userId": 1,
         },
-        "cookie": {},
-        "header": {},
+        "cookies": {},
+        "headers": {},
         "path": {},
         "query": {
           "access_token": "yolo",
@@ -811,8 +811,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: {
             access_token: 'yolo',
@@ -867,8 +867,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: {
             access_token: 'yolo',
@@ -933,10 +933,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {
+          headers: {
             authorization: 'Bearer yolo',
           },
-          cookie: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -1009,10 +1009,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {
+          headers: {
             authorization: 'Basic yolo',
           },
-          cookie: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -1032,7 +1032,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       }).toMatchInlineSnapshot(`
 {
   "authenticationChecks": [],
-  "errorCode": "E_UNALLOWED_AUTH_MECHANISM",
+  "errorCode": "E_AUTH_MECHANISM_NOT_ALLOWED",
   "errorHeaders": {},
   "errorParams": [
     "Basic yolo",
@@ -1071,10 +1071,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {
+          headers: {
             authorization: 'Whatever yolo',
           },
-          cookie: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -1133,8 +1133,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: {},
         },
@@ -1198,8 +1198,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           path: {},
           query: {
             access_token: 'yolo',
@@ -1266,10 +1266,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
     try {
       await wrappedHandler(
         {
-          header: {
+          headers: {
             authorization: 'Bearer yolo',
           },
-          cookie: {},
+          cookies: {},
           path: {},
           query: {},
         },

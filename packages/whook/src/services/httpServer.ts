@@ -58,7 +58,7 @@ export default location(
 /* Architecture Note #2.12: HTTP Server
 
 The Whook's `httpServer` service is responsible for
- instanciating the NodeJS HTTP Server and handling its
+ instancing the NodeJS HTTP Server and handling its
  start/shutdown.
 
 It can be easily replaced by any other HTTP server
@@ -83,7 +83,7 @@ The server takes in charge graceful shutdown by
  * @param  {Object}   [services.ENV]
  * The process environment variables
  * @param  {String}   services.ENV.DESTROY_SOCKETS
- * Whether the server sockets whould be destroyed or if the
+ * Whether the server sockets would be destroyed or if the
  *  server should wait while sockets are kept alive
  * @param  {Object}   [services.HTTP_SERVER_OPTIONS]
  * See https://nodejs.org/docs/latest/api/http.html#class-httpserver

@@ -44,7 +44,7 @@ const initializerWrapper: ServiceInitializerWrapper<
     if (UNBUILDABLE_SERVICES.includes(serviceName)) {
       log(
         'warning',
-        `🤷 - Building a project with the "${serviceName}" unbuildable service (ie Knifecycle ones: ${UNBUILDABLE_SERVICES.join(
+        `🤷 - Building a project with the "${serviceName}" not buildable service (ie Knifecycle ones: ${UNBUILDABLE_SERVICES.join(
           ', ',
         )}) can give unpredictable results!`,
       );

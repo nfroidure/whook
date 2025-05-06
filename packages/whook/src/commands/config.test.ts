@@ -144,7 +144,7 @@ describe('configCommand', () => {
 `);
   });
 
-  test('should work with an unexisting config but a default value', async () => {
+  test('should work with a not existing config but a default value', async () => {
     const configCommand = await initConfigCommand({
       log,
       APP_CONFIG,
@@ -237,7 +237,7 @@ describe('configCommand', () => {
 `);
   });
 
-  test('should fail with unexisting config name', async () => {
+  test('should fail with not existing config name', async () => {
     const configCommand = await initConfigCommand({
       log,
       APP_CONFIG,
@@ -251,7 +251,7 @@ describe('configCommand', () => {
           name: 'DOES_NOT_EXIST',
         },
       });
-      throw new YError('E_UNEXPEXTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
@@ -294,7 +294,7 @@ describe('configCommand', () => {
           query: 'nothing_here',
         },
       });
-      throw new YError('E_UNEXPEXTED_SUCCESS');
+      throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect({
         errorCode: (err as YError).code,

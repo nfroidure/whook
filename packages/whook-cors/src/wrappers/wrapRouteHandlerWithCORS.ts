@@ -104,7 +104,7 @@ async function handleWithCORS(
         vary: 'Origin',
       };
     } catch (err) {
-      log('debug', '🤷 - Unable to set custom headers to the catched error!');
+      log('debug', '🤷 - Unable to set custom headers to the caught error!');
       log('debug-stack', printStackTrace(err as Error));
     }
     throw err;

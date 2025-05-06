@@ -113,7 +113,7 @@ describe('initHOST', () => {
     ],
     [
       "warning",
-      "🚫 - Could not detect any host. Fallbacking to "localhost".",
+      "🚫 - Could not detect any host. Fallback to "localhost".",
     ],
   ],
   "requireCalls": [

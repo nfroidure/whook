@@ -90,7 +90,7 @@ export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
-  E_UNKNOWN_ACKNOWLEDGOR_TYPE: {
+  E_UNKNOWN_ACKNOWLEDGER_TYPE: {
     code: 'unsupported_response_type',
     status: 400,
     description: `Type "$0" not supported.`,

@@ -199,7 +199,7 @@ describe('getOpenAPI', () => {
 `);
   });
 
-  test('should work with muted paramerter', async () => {
+  test('should work with muted parameter', async () => {
     const getOpenAPI = await initGetOpenAPI({
       API: APIWithParameters,
     });

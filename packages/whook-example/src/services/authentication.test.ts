@@ -74,7 +74,7 @@ describe('authentication', () => {
     });
 
     describe('with fake type', () => {
-      test('should work with fakedata', async () => {
+      test('should work with fake data', async () => {
         const authentication = await initAuthentication({ jwtToken });
         const result = await authentication.check('fake', {
           applicationId: '1',

@@ -74,8 +74,8 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       {
         path: {},
         query: {},
-        header: {},
-        cookie: {},
+        headers: {},
+        cookies: {},
         body: {},
       },
       {} as unknown as WhookRouteDefinition,
@@ -100,8 +100,8 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       {
         path: {},
         query: {},
-        header: { 'x-api-version': '1.2.3' },
-        cookie: {},
+        headers: { 'x-api-version': '1.2.3' },
+        cookies: {},
         body: {},
       },
       {} as unknown as WhookRouteDefinition,
@@ -126,8 +126,8 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       {
         path: {},
         query: {},
-        header: { 'x-app-version': '3.6.0' },
-        cookie: {},
+        headers: { 'x-app-version': '3.6.0' },
+        cookies: {},
         body: {},
       },
       {} as unknown as WhookRouteDefinition,
@@ -152,10 +152,10 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       {
         path: {},
         query: {},
-        header: {
+        headers: {
           'x-app-version': '4.0.0-beta.2',
         },
-        cookie: {},
+        cookies: {},
         body: {},
       },
       {} as unknown as WhookRouteDefinition,
@@ -180,10 +180,10 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       {
         path: {},
         query: {},
-        header: {
+        headers: {
           'x-sdk-version': '2.2.3',
         },
-        cookie: {},
+        cookies: {},
         body: {},
       },
       {} as unknown as WhookRouteDefinition,
@@ -210,10 +210,10 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         {
           path: {},
           query: {},
-          header: {
+          headers: {
             'x-api-version': '2.2.3',
           },
-          cookie: {},
+          cookies: {},
           body: {},
         },
         {} as unknown as WhookRouteDefinition,
@@ -245,10 +245,10 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         {
           path: {},
           query: {},
-          header: {
+          headers: {
             'x-app-version': '0.0.0',
           },
-          cookie: {},
+          cookies: {},
           body: {},
         },
         {} as unknown as WhookRouteDefinition,
@@ -280,10 +280,10 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
         {
           path: {},
           query: {},
-          header: {
+          headers: {
             'x-sdk-version': '0.2.3',
           },
-          cookie: {},
+          cookies: {},
           body: {},
         },
         {} as unknown as WhookRouteDefinition,

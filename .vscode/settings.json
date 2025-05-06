@@ -1,3 +1,16 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "cSpell.words": [
+        "anylith",
+        "automagically",
+        "graphiql",
+        "knifecycle",
+        "miniquery",
+        "streamtest",
+        "siso",
+        "whoiam",
+        "whook",
+        "yerror",
+        "yhttperror"
+    ]
 }

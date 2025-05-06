@@ -117,7 +117,7 @@ export const definition = {
 /* Architecture Note #3.2: Implementation
 
 The handler implementation is here, you can notice
- the Input/Ouput types that were automatically generated
+ the Input/Output types that were automatically generated
  to help you keep definitions and code in sync.
 
 Handlers implementations take dependencies as the first

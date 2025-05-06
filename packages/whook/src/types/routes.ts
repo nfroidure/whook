@@ -55,8 +55,8 @@ export type WhookRouteHandlerParameters = (
 ) & {
   path: Record<string, unknown>;
   query: Record<string, unknown>;
-  cookie: Record<string, unknown>;
-  header: Record<string, unknown>;
+  cookies: Record<string, unknown>;
+  headers: Record<string, unknown>;
 } & WhookRouteHandlerExtraParameters;
 
 export interface WhookRouteHandler<

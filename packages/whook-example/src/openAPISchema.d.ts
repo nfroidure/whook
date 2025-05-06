@@ -21,6 +21,9 @@ declare interface paths {
   '/echo': {
     put: operations['putEcho'];
   };
+  '/stream': {
+    put: operations['putEchoedStream'];
+  };
   '/ping': {
     get: operations['getPing'];
   };
@@ -67,7 +70,7 @@ declare interface operations {
       200: {
         body: {
           aHeader?: boolean;
-          aMultiHeader?: number[];
+          aMultiHeader?: [number, number];
           pathParam1?: number;
           pathParam2?: string;
           queryParam?: string[];
@@ -82,7 +85,7 @@ declare interface operations {
       query: {
         queryParam: components['parameters']['queryParam'];
       };
-      header: {
+      headers: {
         'a-header'?: boolean;
         aMultiHeader?: number[];
       };
@@ -110,6 +113,12 @@ declare interface operations {
     requestBody: components['requestBodies']['Echo'];
     responses: {
       200: components['responses']['Echo'];
+    };
+  };
+  putEchoedStream: {
+    requestBody: components['requestBodies']['Stream'];
+    responses: {
+      201: components['responses']['Stream'];
     };
   };
   getPing: {
@@ -147,9 +156,13 @@ declare interface components {
     Echo: {
       body: components['schemas']['Echo'];
     };
+    Stream: {
+      body: components['schemas']['Stream'];
+    };
   };
   requestBodies: {
     Echo: components['schemas']['Echo'];
+    Stream: components['schemas']['Stream'];
   };
   schemas: {
     TimeSchema: {
@@ -158,6 +171,7 @@ declare interface components {
     Echo: {
       echo: string;
     };
+    Stream: NodeJS.ReadableStream;
     ExampleSchema: {
       message?: string;
       delay?: number;

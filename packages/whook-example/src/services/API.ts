@@ -77,7 +77,7 @@ async function initAPI({
 
 The API definition is a JSON serializable object, you
  can then reshape it the way you want. Here, we set a
- fake auth mecanism to help in development environment.
+ fake auth mechanism to help in development environment.
 */
 async function augmentAPIWithFakeAuth(
   { ENV }: { ENV: APIEnv },

@@ -115,7 +115,8 @@
     "metapak-nfroidure": "19.0.1",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "schema2dts": "^8.0.0",
+    "schema2dts": "^8.1.0",
+    "streamtest": "^3.0.1",
     "tsx": "^4.7.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.17.0"

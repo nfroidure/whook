@@ -105,22 +105,22 @@ async function initTestAWSLambdaRouteCommand({
     const awsRequest: APIGatewayProxyEvent = {
       pathParameters: parameters.path || {},
       multiValueQueryStringParameters: parameters.query || {},
-      headers: Object.keys(parameters.header || {}).reduce(
+      headers: Object.keys(parameters.headers || {}).reduce(
         (headers, name) => ({
           [name]:
-            parameters.header[name] instanceof Array
-              ? parameters.header[name][0]
-              : parameters.header[name],
+            parameters.headers[name] instanceof Array
+              ? parameters.headers[name][0]
+              : parameters.headers[name],
           ...headers,
         }),
         {},
       ),
-      multiValueHeaders: Object.keys(parameters.header || {}).reduce(
+      multiValueHeaders: Object.keys(parameters.headers || {}).reduce(
         (headers, name) => ({
           [name]:
-            parameters.header[name] instanceof Array
-              ? parameters.header[name]
-              : [parameters.header[name]],
+            parameters.headers[name] instanceof Array
+              ? parameters.headers[name]
+              : [parameters.headers[name]],
           ...headers,
         }),
         {},

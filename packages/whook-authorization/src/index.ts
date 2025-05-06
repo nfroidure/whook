@@ -31,9 +31,9 @@ export const AUTHORIZATION_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
-  E_UNALLOWED_AUTH_MECHANISM: {
+  E_AUTH_MECHANISM_NOT_ALLOWED: {
     code: 'bad_request',
-    description: 'Unsupported auth mecanism',
+    description: 'Unsupported auth mechanism',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },

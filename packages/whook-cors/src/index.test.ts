@@ -62,8 +62,8 @@ describe('initWrapRouteHandlerWithCORS', () => {
       {
         path: {},
         query: {},
-        header: {},
-        cookie: {},
+        headers: {},
+        cookies: {},
         body: {},
       },
       DEFINITION,
@@ -104,8 +104,8 @@ describe('initWrapRouteHandlerWithCORS', () => {
       {
         path: {},
         query: {},
-        header: {},
-        cookie: {},
+        headers: {},
+        cookies: {},
         body: {},
       },
       {
@@ -158,8 +158,8 @@ describe('initWrapRouteHandlerWithCORS', () => {
       {
         path: {},
         query: {},
-        header: {},
-        cookie: {},
+        headers: {},
+        cookies: {},
         body: {},
       },
       {
@@ -221,8 +221,8 @@ describe('initWrapRouteHandlerWithCORS', () => {
         {
           path: {},
           query: {},
-          header: {},
-          cookie: {},
+          headers: {},
+          cookies: {},
           body: {},
         },
         DEFINITION,
@@ -449,16 +449,16 @@ describe('augmentAPIWithCORS()', () => {
     };
 
     const initDefinitions = wrapDefinitionsWithCORS(async () => DEFINITIONS);
-    const NEW_DEFININIONS = await initDefinitions({
+    const NEW_DEFINITIONS = await initDefinitions({
       log,
     } as unknown as WhookDefinitionsDependencies);
 
     expect({
-      NEW_DEFININIONS,
+      NEW_DEFINITIONS,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
 {
-  "NEW_DEFININIONS": {
+  "NEW_DEFINITIONS": {
     "components": {
       "parameters": {
         "full": {

@@ -262,7 +262,7 @@ async function initAutoload({
    * Autoload an initializer from its name
    * @param  {String}  The dependency name
    * @return {Promise<Object>}
-   * A promise resolving whith the actual autoloader definition.
+   * A promise resolving with the actual autoloader definition.
    *  An Object containing the `path`, `name` and the `initializer`
    *  in its properties.
    */

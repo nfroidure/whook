@@ -7,7 +7,7 @@ import {
   DEFAULT_COERCION_OPTIONS,
   DEFAULT_BUFFER_LIMIT,
   DEFAULT_PARSERS,
-  DEFAULT_STRINGIFYERS,
+  DEFAULT_STRINGIFIERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
   extractOperationSecurityParameters,
@@ -71,7 +71,7 @@ export type WhookAWSLambdaRouteHandlerWrapperDependencies = {
   ENCODERS?: typeof DEFAULT_ENCODERS;
   PARSED_HEADERS?: string[];
   PARSERS?: typeof DEFAULT_PARSERS;
-  STRINGIFYERS?: typeof DEFAULT_STRINGIFYERS;
+  STRINGIFIERS?: typeof DEFAULT_STRINGIFIERS;
   BUFFER_LIMIT?: string;
   COERCION_OPTIONS: WhookCoercionOptions;
   apm: WhookAPMService;
@@ -98,8 +98,8 @@ export type WhookAWSLambdaRouteHandlerWrapperDependencies = {
  * A list of headers that should be parsed as JSON
  * @param  {Object}   services.PARSERS
  * Request body parsers available
- * @param  {Object}   services.STRINGIFYERS
- * Response body stringifyers available
+ * @param  {Object}   services.STRINGIFIERS
+ * Response body stringifiers available
  * @param  {Object}   services.BUFFER_LIMIT
  * The buffer size limit
  * @param  {Object}   services.apm
@@ -123,7 +123,7 @@ async function initWrapRouteHandlerForAWSLambda({
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
   PARSERS = DEFAULT_PARSERS,
-  STRINGIFYERS = DEFAULT_STRINGIFYERS,
+  STRINGIFIERS = DEFAULT_STRINGIFIERS,
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
   PARSED_HEADERS = [],
   COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
@@ -213,7 +213,7 @@ async function initWrapRouteHandlerForAWSLambda({
         ENCODERS,
         PARSED_HEADERS,
         PARSERS,
-        STRINGIFYERS,
+        STRINGIFIERS,
         BUFFER_LIMIT,
         apm,
         obfuscator,
@@ -265,7 +265,7 @@ async function handleForAWSHTTPLambda(
     ENCODERS,
     PARSED_HEADERS,
     PARSERS,
-    STRINGIFYERS,
+    STRINGIFIERS,
     BUFFER_LIMIT,
     apm,
     errorHandler,
@@ -328,9 +328,9 @@ async function handleForAWSHTTPLambda(
 
   const parametersValues: WhookRouteHandlerParameters = {
     query: {},
-    header: {},
+    headers: {},
     path: {},
-    cookie: {},
+    cookies: {},
     body: undefined as unknown as WhookRequestBody,
   };
 
@@ -356,7 +356,7 @@ async function handleForAWSHTTPLambda(
             // header names are case insensitive
             const canonicalName = name.toLowerCase();
 
-            parametersValues.header[name] = validator(
+            parametersValues.headers[name] = validator(
               typeof request.headers[canonicalName] !== 'undefined'
                 ? request.headers[canonicalName].toString()
                 : undefined,
@@ -457,7 +457,7 @@ async function handleForAWSHTTPLambda(
           responseSchema.format === 'binary'
         ));
 
-    if (responseHasSchema && !STRINGIFYERS[responseContentType]) {
+    if (responseHasSchema && !STRINGIFIERS[responseContentType]) {
       throw new YHTTPError(
         500,
         'E_STRINGIFYER_LACK',
@@ -518,7 +518,7 @@ async function handleForAWSHTTPLambda(
     await sendBody(
       {
         ENCODERS,
-        STRINGIFYERS,
+        STRINGIFIERS,
       },
       response,
     ),

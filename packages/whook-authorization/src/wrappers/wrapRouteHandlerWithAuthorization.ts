@@ -119,7 +119,7 @@ async function handleWithAuthorization<A>(
   const authorization = (
     parameters.query.access_token && DEFAULT_MECHANISM
       ? `${DEFAULT_MECHANISM} ${parameters.query.access_token}`
-      : parameters.header.authorization
+      : parameters.headers.authorization
   ) as string;
 
   if (noAuth || (optionalAuth && !authorization)) {
@@ -166,7 +166,7 @@ async function handleWithAuthorization<A>(
           throw YHTTPError.wrap(
             err as Error,
             400,
-            'E_UNALLOWED_AUTH_MECHANISM',
+            'E_AUTH_MECHANISM_NOT_ALLOWED',
           );
         }
         throw YHTTPError.cast(err as Error, 400);

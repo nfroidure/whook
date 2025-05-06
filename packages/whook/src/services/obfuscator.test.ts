@@ -59,17 +59,17 @@ describe('Obfuscator Service', () => {
     test('should work with some sensible headers', () => {
       expect(
         obfuscator.obfuscateSensibleHeaders({
-          Cookie: 'sessid=yolo',
+          Cookie: 'session_id=yolo',
           Authorization: 'Bearer xxxxx',
           'user-agent': 'yolo browser',
         }),
       ).toMatchInlineSnapshot(`
-        {
-          "Authorization": "Bearer 🛡",
-          "Cookie": "s...o",
-          "user-agent": "yolo browser",
-        }
-      `);
+{
+  "Authorization": "Bearer 🛡",
+  "Cookie": "se...o",
+  "user-agent": "yolo browser",
+}
+`);
     });
 
     test('should work with no sensible headers', () => {
@@ -149,7 +149,7 @@ describe('Obfuscator Service', () => {
           httpMethod: 'PUT',
           headers: {
             Accept: 'application/json, text/plain, */*',
-            'Accept-Encoding': 'gzip, deflate, sdch, br',
+            'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4',
             Authorization:
               'Bearer 4233508cf986867e0dead433a3c02028573b37b8121ef37c2b2111b8cdcf1d38b9b43871a0d8cdd4c457c18d1af29f16fbda329cf4c887449edaaa25cd52f5cd39c8c68e7ca7aa65d8b9df28793be8d3f07de0ef382f5bf62ccc1f45e9790eab1f0f378dece69f4c57b46af431becb8dfcfb0881070ebdebd22c57ff086e4908',
@@ -171,7 +171,7 @@ describe('Obfuscator Service', () => {
 
           multiValueHeaders: {
             Accept: ['application/json, text/plain, */*'],
-            'Accept-Encoding': ['gzip, deflate, sdch, br'],
+            'Accept-Encoding': ['gzip, deflate, br'],
             'Accept-Language': ['fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4'],
             Authorization: [
               'Bearer 4233508cf986867e0dead433a3c02028573b37b8121ef37c2b2111b8cdcf1d38b9b43871a0d8cdd4c457c18d1af29f16fbda329cf4c887449edaaa25cd52f5cd39c8c68e7ca7aa65d8b9df28793be8d3f07de0ef382f5bf62ccc1f45e9790eab1f0f378dece69f4c57b46af431becb8dfcfb0881070ebdebd22c57ff086e4908',
@@ -243,7 +243,7 @@ describe('Obfuscator Service', () => {
           "body": "{"contents":{"name":"lol ","password":"disabled"}}",
           "headers": {
             "Accept": "application/json, text/plain, */*",
-            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4",
             "Authorization": "Bearer 423...908",
             "CloudFront-Forwarded-Proto": "https",
@@ -267,7 +267,7 @@ describe('Obfuscator Service', () => {
               "application/json, text/plain, */*",
             ],
             "Accept-Encoding": [
-              "gzip, deflate, sdch, br",
+              "gzip, deflate, br",
             ],
             "Accept-Language": [
               "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4",

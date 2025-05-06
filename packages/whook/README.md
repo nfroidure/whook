@@ -338,7 +338,7 @@ HTTP router
 | services | <code>Object</code> | The services the server depends on |
 | services.ENV | <code>Object</code> | The app ENV |
 | [services.DEBUG_NODE_ENVS] | <code>Array</code> | The environnement that activate debugging  (prints stack trace in HTTP errors responses) |
-| [services.STRINGIFYERS] | <code>Object</code> | The synchronous body stringifyers |
+| [services.STRINGIFIERS] | <code>Object</code> | The synchronous body stringifiers |
 | [services.ERRORS_DESCRIPTORS] | <code>Object</code> | An hash of the various error descriptors |
 | [services.DEFAULT_ERROR_CODE] | <code>Object</code> | A string giving the default error code |
 
@@ -390,7 +390,7 @@ Initialize an HTTP router
 | services.ROUTES_HANDLERS | <code>Object</code> |  | The handlers for the operations decribe  by the OpenAPI API definition |
 | services.API | <code>Object</code> |  | The OpenAPI definition of the API |
 | [services.PARSERS] | <code>Object</code> |  | The synchronous body parsers (for operations  that defines a request body schema) |
-| [services.STRINGIFYERS] | <code>Object</code> |  | The synchronous body stringifyers (for  operations that defines a response body  schema) |
+| [services.STRINGIFIERS] | <code>Object</code> |  | The synchronous body stringifiers (for  operations that defines a response body  schema) |
 | [services.ENCODERS] | <code>Object</code> |  | A map of encoder stream constructors |
 | [services.DECODERS] | <code>Object</code> |  | A map of decoder stream constructors |
 | [services.queryParserBuilder] | <code>Object</code> |  | A query parser builder from OpenAPI parameters |
@@ -547,7 +547,7 @@ Wrap the ENV service in order to filter ENV vars for the build
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The services ENV depends on |
-| [services.PROXYED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
+| [services.PROXIED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
 <a name="initRoutesDefinitions"></a>

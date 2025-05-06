@@ -33,7 +33,7 @@ export const definition = {
   },
   operation: {
     operationId: 'postAuthRefresh',
-    summary: 'Refreshs a user auth',
+    summary: 'Refresh a user auth',
     tags: ['auth'],
     parameters: [refersTo(authCookieHeaderParameter)],
     requestBody: {
@@ -53,7 +53,7 @@ export const definition = {
     },
     responses: {
       200: {
-        description: 'Successfuly refreshed.',
+        description: 'Successfully refreshed.',
         content: {
           'application/json': {
             schema: {
@@ -84,13 +84,15 @@ async function initPostAuthRefresh({
 }) {
   return async ({
     body,
-    cookie = '',
+    headers: { cookie = '' },
   }: {
     body: {
       scope: string;
       remember: boolean;
     };
-    cookie?: string;
+    headers: {
+      cookie: string;
+    };
   }) => {
     const parsedCookies = authCookies.parse(cookie);
 

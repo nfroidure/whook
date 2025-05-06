@@ -171,7 +171,7 @@ async function initPostOAuth2Acknowledge({
       );
 
       if (!granter || !granter.acknowledger) {
-        throw new YError('E_UNKNOWN_ACKNOWLEDGOR_TYPE', responseType);
+        throw new YError('E_UNKNOWN_ACKNOWLEDGER_TYPE', responseType);
       }
 
       const { applicationId, scope, ...additionalProperties } =

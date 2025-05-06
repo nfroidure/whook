@@ -31,7 +31,7 @@ export interface WhookConsumerHandler<
   T extends JsonValue,
   D extends WhookConsumerDefinition = WhookConsumerDefinition,
 > {
-  (input: T, definition: D): Promise<void>;
+  (input: T, definition?: D): Promise<void>;
 }
 export type WhookConsumerHandlerInitializer<
   T extends JsonValue,

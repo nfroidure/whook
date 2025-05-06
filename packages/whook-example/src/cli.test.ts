@@ -28,7 +28,7 @@ On air 🚀🌕
 
 
 # Provided by "@whook/whook": 8 commands
-- config: A simple program that returns the queryed config value
+- config: A simple program that returns the queried config value
 - cronSchedule: A command to run a cron schedules for a given time frame
 - env: A command printing env values
 - generateOpenAPISchema: Write openAPI schema to stdout

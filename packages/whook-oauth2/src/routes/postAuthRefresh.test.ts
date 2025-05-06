@@ -36,7 +36,7 @@ describe('postAuthRefresh', () => {
     });
 
     const response = await postAuthRefresh({
-      cookie: 'a_given_cookie',
+      headers: { cookie: 'a_given_cookie' },
       body: {
         remember: false,
         scope: 'user',

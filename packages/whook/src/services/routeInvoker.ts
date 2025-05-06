@@ -34,7 +34,7 @@ async function initRouteInvoker<
   log('warning', '🖥 - Running with the route invoker service.');
 
   let disposing = false;
-  const currentInvokations: Promise<void>[] = [];
+  const currentInvocations: Promise<void>[] = [];
   const routeInvoker: WhookRouteInvokerService<T> = async (
     functionName,
     parameters,
@@ -49,9 +49,9 @@ async function initRouteInvoker<
       const response = await routeHandler(
         {
           query: {},
-          header: {},
+          headers: {},
           path: {},
-          cookie: {},
+          cookies: {},
           body: {},
           options: {},
           ...parameters,
@@ -66,10 +66,10 @@ async function initRouteInvoker<
       return (await responsePromise) as unknown as void;
     } else {
       const promise = responsePromise.then(() => {
-        currentInvokations.splice(currentInvokations.indexOf(promise), 1);
+        currentInvocations.splice(currentInvocations.indexOf(promise), 1);
       });
 
-      currentInvokations.push(promise);
+      currentInvocations.push(promise);
     }
   };
 
@@ -77,13 +77,13 @@ async function initRouteInvoker<
     service: routeInvoker,
     dispose: async () => {
       disposing = true;
-      if (currentInvokations.length) {
+      if (currentInvocations.length) {
         log(
           'warning',
-          `🖥 - Waiting for pending route invocations to end ( ${currentInvokations.length} left).`,
+          `🖥 - Waiting for pending route invocations to end ( ${currentInvocations.length} left).`,
         );
 
-        await Promise.all(currentInvokations);
+        await Promise.all(currentInvocations);
       }
     },
   };

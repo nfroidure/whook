@@ -13,7 +13,7 @@ Maintain a single place for JSON schema validation
  since it may repeat for several routes. Also
  warrantying that the same schema leads to the
  same reference for the Siso router parameters
- unicity checks.
+ unity checks.
 */
 
 export const DEFAULT_SCHEMA_VALIDATORS_OPTIONS = {

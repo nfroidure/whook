@@ -144,7 +144,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   /* Architecture Note #1.1.3.3: MAIN_FILE_URL
 
-  The project main file allows autoloading features to work
+  The project main file allows auto loading features to work
    either with sources (in `src`) and files built (in `dist/`).
   */
   $.register(constant('MAIN_FILE_URL', import.meta.url));
