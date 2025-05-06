@@ -1,6 +1,9 @@
 import { service, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { type WhookRouteHandlerWrapper } from '../types/routes.js';
+import {
+  type WhookRouteHandlerWrapper,
+  type WhookRouteHandler,
+} from '../types/routes.js';
 import { type LogService } from 'common-services';
 
 export default location(
@@ -15,7 +18,7 @@ export const ROUTES_WRAPPERS_REG_EXP = /^(wrapRoute)[A-Z][a-zA-Z0-9]+/;
 
 export type WhookRoutesWrappersService = Record<
   string,
-  WhookRouteHandlerWrapper
+  WhookRouteHandlerWrapper<WhookRouteHandler>
 >;
 export type WhookRoutesWrappersConfig = {
   ROUTES_WRAPPERS_NAMES?: string[];
@@ -41,7 +44,9 @@ async function initRoutesWrappers({
   ROUTES_WRAPPERS_NAMES = [],
   log = noop,
   ...ROUTES_WRAPPERS
-}: WhookRoutesWrappersDependencies): Promise<WhookRouteHandlerWrapper[]> {
+}: WhookRoutesWrappersDependencies): Promise<
+  WhookRouteHandlerWrapper<WhookRouteHandler>[]
+> {
   log('warning', `🏭 - Initializing the ROUTES_WRAPPERS service.`);
 
   // Except with exotic configurations, those numbers should equal

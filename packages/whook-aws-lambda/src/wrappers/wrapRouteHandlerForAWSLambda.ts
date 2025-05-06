@@ -133,7 +133,9 @@ async function initWrapRouteHandlerForAWSLambda({
   errorHandler,
   schemaValidators,
   log = noop,
-}: WhookAWSLambdaRouteHandlerWrapperDependencies): Promise<WhookRouteHandlerWrapper> {
+}: WhookAWSLambdaRouteHandlerWrapperDependencies): Promise<
+  WhookRouteHandlerWrapper<WhookRouteHandler>
+> {
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
   const consumableCharsets = Object.keys(DECODERS);

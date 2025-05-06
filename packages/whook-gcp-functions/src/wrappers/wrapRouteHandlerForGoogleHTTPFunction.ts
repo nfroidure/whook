@@ -111,7 +111,9 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
   errorHandler,
   schemaValidators,
   log = noop,
-}: WhookGCPFunctionRouteWrapperDependencies): Promise<WhookRouteHandlerWrapper> {
+}: WhookGCPFunctionRouteWrapperDependencies): Promise<
+  WhookRouteHandlerWrapper<WhookRouteHandler>
+> {
   log('debug', '📥 - Initializing the GCP Function wrapper.');
 
   const path = MAIN_DEFINITION.path;

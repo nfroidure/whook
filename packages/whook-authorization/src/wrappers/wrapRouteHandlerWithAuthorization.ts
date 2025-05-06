@@ -63,7 +63,9 @@ async function initWrapRouteHandlerWithAuthorization<A>({
   DEFAULT_MECHANISM = BEARER_MECHANISM.type,
   authentication,
   log,
-}: WhookAuthorizationDependencies<A>): Promise<WhookRouteHandlerWrapper> {
+}: WhookAuthorizationDependencies<A>): Promise<
+  WhookRouteHandlerWrapper<WhookRouteHandler>
+> {
   log('debug', `🔐 - Initializing the authorization wrapper.`);
 
   const wrapper = async (
@@ -96,7 +98,7 @@ async function handleWithAuthorization<A>(
   }: WhookAuthorizationDependencies<A>,
   handler: WhookRouteHandler,
   parameters: WhookRouteHandlerParameters,
-  definition: WhookRouteDefinition,
+  definition?: WhookRouteDefinition,
 ): Promise<WhookResponse> {
   let response;
 

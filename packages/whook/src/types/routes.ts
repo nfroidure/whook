@@ -63,7 +63,7 @@ export interface WhookRouteHandler<
   P extends WhookRouteHandlerParameters = WhookRouteHandlerParameters,
   D extends WhookRouteDefinition = WhookRouteDefinition,
 > {
-  (parameters: P, definition: D): Promise<WhookResponse>;
+  (parameters: P, definition?: D): Promise<WhookResponse>;
 }
 export type WhookRouteHandlerInitializer<
   D extends Dependencies = Record<string, unknown>,
@@ -103,7 +103,8 @@ export interface WhookRouteModule {
   [name: `${string}Callback`]: WhookAPICallbackDefinition;
 }
 
-export type WhookRouteHandlerWrapper = WhookHandlerWrapper<WhookRouteHandler>;
+export type WhookRouteHandlerWrapper<T extends WhookRouteHandler> =
+  WhookHandlerWrapper<T>;
 
 export interface WhookRouteTypeDefinition {
   requestBody?: unknown;

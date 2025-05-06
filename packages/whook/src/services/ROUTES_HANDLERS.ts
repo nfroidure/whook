@@ -9,7 +9,7 @@ import { applyHandlerWrappers } from '../libs/wrappers.js';
 
 export type WhookRoutesHandlersService = Record<string, WhookRouteHandler>;
 export type WhookRoutesHandlersDependencies = {
-  ROUTES_WRAPPERS: WhookRouteHandlerWrapper[];
+  ROUTES_WRAPPERS: WhookRouteHandlerWrapper<WhookRouteHandler>[];
   log?: LogService;
 } & WhookRoutesHandlersService;
 

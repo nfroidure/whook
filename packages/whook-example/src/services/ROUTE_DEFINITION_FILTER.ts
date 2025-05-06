@@ -8,7 +8,7 @@ import {
 import { type LogService } from 'common-services';
 
 export default location(
-  name('ROUTE_DEFINITION_FILTER', autoService(initFilterAPIDefinition)),
+  name('ROUTE_DEFINITION_FILTER', autoService(initRouteDefinitionFilter)),
   import.meta.url,
 );
 
@@ -29,7 +29,7 @@ For example, to create a server with only `system` and
 FILTER_ROUTE_TAGS=system,example npm start
 ```
 */
-async function initFilterAPIDefinition({
+async function initRouteDefinitionFilter({
   ENV,
   log = noop,
 }: {

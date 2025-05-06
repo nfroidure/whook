@@ -1,8 +1,8 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import initFilterAPIDefinition from './ROUTE_DEFINITION_FILTER.js';
+import initRouteDefinitionFilter from './ROUTE_DEFINITION_FILTER.js';
 import { type LogService } from 'common-services';
 
-describe('initFilterAPIDefinition', () => {
+describe('initRouteDefinitionFilter', () => {
   describe('should work', () => {
     const log = jest.fn<LogService>();
 
@@ -11,7 +11,7 @@ describe('initFilterAPIDefinition', () => {
     });
 
     test('with empty ENV', async () => {
-      const ROUTE_DEFINITION_FILTER = await initFilterAPIDefinition({
+      const ROUTE_DEFINITION_FILTER = await initRouteDefinitionFilter({
         ENV: {},
         log,
       });
@@ -38,7 +38,7 @@ describe('initFilterAPIDefinition', () => {
     });
 
     test('with some tags in ENV', async () => {
-      const ROUTE_DEFINITION_FILTER = await initFilterAPIDefinition({
+      const ROUTE_DEFINITION_FILTER = await initRouteDefinitionFilter({
         ENV: {
           FILTER_ROUTE_TAGS: 'test,test2',
         },

@@ -1,6 +1,6 @@
 import { autoService, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import Ajv, { type ValidateFunction } from 'ajv';
+import Ajv, { type ValidateFunction } from 'ajv/dist/2020.js';
 import addAJVFormats from 'ajv-formats';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';

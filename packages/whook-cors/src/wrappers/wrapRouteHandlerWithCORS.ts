@@ -53,7 +53,7 @@ export type WhookCORSRouteConfig = {
 async function initWrapRouteHandlerWithCORS({
   CORS,
   log = noop,
-}: WhookCORSDependencies): Promise<WhookRouteHandlerWrapper> {
+}: WhookCORSDependencies): Promise<WhookRouteHandlerWrapper<WhookRouteHandler>> {
   log('debug', '📥 - Initializing the CORS wrapper.');
 
   const wrapper = async (
@@ -71,9 +71,9 @@ async function handleWithCORS(
   { CORS, log = noop }: WhookCORSDependencies,
   handler: WhookRouteHandler,
   parameters: WhookRouteHandlerParameters,
-  definition: WhookRouteDefinition,
+  definition?: WhookRouteDefinition,
 ): Promise<WhookResponse> {
-  const operationCORSConfig = definition.config?.cors;
+  const operationCORSConfig = definition?.config?.cors;
   const finalCORS = lowerCaseHeaders(
     operationCORSConfig && operationCORSConfig.type === 'replace'
       ? operationCORSConfig.value
