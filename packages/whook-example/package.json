@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/example",
-  "version": "19.0.2",
+  "version": "19.0.3",
   "description": "A basic Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -79,10 +79,10 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@types/node-cron": "^3.0.11",
-    "@whook/authorization": "^19.0.2",
-    "@whook/cors": "^19.0.2",
-    "@whook/swagger-ui": "^19.0.2",
-    "@whook/whook": "^19.0.2",
+    "@whook/authorization": "^19.0.3",
+    "@whook/cors": "^19.0.3",
+    "@whook/swagger-ui": "^19.0.3",
+    "@whook/whook": "^19.0.3",
     "application-services": "^7.0.2",
     "common-services": "^17.0.1",
     "http-auth-utils": "^6.0.1",

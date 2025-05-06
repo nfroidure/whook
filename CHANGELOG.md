@@ -1,3 +1,12 @@
+## [19.0.3](https://github.com/nfroidure/whook/compare/v19.0.2...v19.0.3) (2025-05-06)
+
+
+### Bug Fixes
+
+* **types:** fix legacy wrappers typings ([6a81534](https://github.com/nfroidure/whook/commit/6a815345a4b62b9698978fd968be2256114f1391))
+
+
+
 ## [19.0.2](https://github.com/nfroidure/whook/compare/v19.0.1...v19.0.2) (2025-05-06)
 
 
