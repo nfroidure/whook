@@ -54,6 +54,7 @@ import { type AppEnvVars } from 'application-services';
 import {
   type WhookRouteHandlerParameters,
   type WhookRouteHandler,
+  WhookRouteConfig,
 } from '../types/routes.js';
 import { type WhookRequestBody, type WhookResponse } from '../types/http.js';
 import { type WhookSchemaValidatorsService } from './schemaValidators.js';
@@ -128,6 +129,7 @@ export type WhookHTTPRouterProvider = Provider<WhookHTTPRouterService>;
 export type WhookHTTPRouterDescriptor = {
   handler: WhookRouteHandler;
   operation: WhookOpenAPIOperation;
+  config: WhookRouteConfig;
   queryParser: WhookQueryParser;
   parametersValidators: WhookParametersValidators;
   consumableMediaTypes: string[];
@@ -324,6 +326,7 @@ async function initHTTPRouter({
           const {
             handler,
             operation: _operation_,
+            config,
             queryParser,
             parametersValidators,
             consumableMediaTypes,
@@ -424,6 +427,7 @@ async function initHTTPRouter({
             {
               path,
               method,
+              config,
               operation: operation as WhookOpenAPIOperation & OpenAPIExtension,
             },
             handler,
@@ -701,6 +705,9 @@ async function _createRouters({
         {
           handler,
           operation,
+          config:
+            DEFINITIONS.configs?.[operationId]?.config ||
+            ({} as WhookRouteConfig),
           queryParser,
           parametersValidators: {
             path: {

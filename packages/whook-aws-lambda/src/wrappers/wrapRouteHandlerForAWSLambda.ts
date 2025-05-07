@@ -226,6 +226,7 @@ async function initWrapRouteHandlerForAWSLambda({
       {
         handler,
         operation,
+        config: MAIN_DEFINITION.config || {},
         parametersValidators: {
           path: {
             ...pathItemValidators.path,

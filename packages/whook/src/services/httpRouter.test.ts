@@ -1022,6 +1022,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "head",
         "operation": {
           "operationId": "headUserAvatar",
@@ -1129,6 +1130,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "head",
         "operation": {
           "operationId": "getUser",
@@ -1295,6 +1297,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "head",
         "operation": {
           "operationId": "getUser",
@@ -1461,6 +1464,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUser",
@@ -1631,6 +1635,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUserAvatar",
@@ -1844,6 +1849,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUser",
@@ -2016,6 +2022,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUser",
@@ -2175,6 +2182,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUser",
@@ -2336,6 +2344,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUser",
@@ -2576,6 +2585,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUser",
@@ -3118,6 +3128,7 @@ describe('initHTTPRouter', () => {
         "query": {},
       },
       {
+        "config": {},
         "method": "put",
         "operation": {
           "operationId": "putUser",
@@ -3371,6 +3382,7 @@ describe('initHTTPRouter', () => {
         "query": {},
       },
       {
+        "config": {},
         "method": "put",
         "operation": {
           "operationId": "putUser",
@@ -4306,6 +4318,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getUser",
@@ -4535,6 +4548,7 @@ describe('initHTTPRouter', () => {
         },
       },
       {
+        "config": {},
         "method": "delete",
         "operation": {
           "operationId": "deleteUserAvatar",

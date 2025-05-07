@@ -205,6 +205,7 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
         produceableCharsets,
         handler,
         operation,
+        config: MAIN_DEFINITION.config || {},
         queryParser,
         parametersValidators: {
           path: {
