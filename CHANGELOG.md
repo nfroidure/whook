@@ -1,3 +1,12 @@
+## [19.0.4](https://github.com/nfroidure/whook/compare/v19.0.3...v19.0.4) (2025-05-07)
+
+
+### Bug Fixes
+
+* **core:** fix the router to also bring definitions configs ([586124c](https://github.com/nfroidure/whook/commit/586124cd0dea43bfb685831389d8167aaa5a0047))
+
+
+
 ## [19.0.3](https://github.com/nfroidure/whook/compare/v19.0.2...v19.0.3) (2025-05-06)
 
 

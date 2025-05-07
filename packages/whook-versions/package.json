@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/versions",
-  "version": "19.0.3",
+  "version": "19.0.4",
   "description": "A wrapper to provide versions check support to a Whook server",
   "type": "module",
   "main": "dist/index.js",
@@ -53,7 +53,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^19.0.3",
+    "@whook/whook": "^19.0.4",
     "application-services": "^7.0.2",
     "knifecycle": "^19.0.0",
     "semver": "^7.6.3",
