@@ -310,7 +310,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -454,7 +454,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -523,7 +523,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -679,7 +679,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -748,7 +748,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -817,7 +817,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "get",
           "operation": {
             "operationId": "getGraphQL",
@@ -975,7 +975,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -1044,7 +1044,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -1113,7 +1113,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "get",
           "operation": {
             "operationId": "getGraphQL",
@@ -1190,7 +1190,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -1342,7 +1342,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -1411,7 +1411,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -1480,7 +1480,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "get",
           "operation": {
             "operationId": "getGraphQL",
@@ -1557,7 +1557,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",
@@ -1626,7 +1626,7 @@ describe('GraphQL server', () => {
     [
       {
         "definition": {
-          "config": undefined,
+          "config": {},
           "method": "post",
           "operation": {
             "operationId": "postGraphQL",

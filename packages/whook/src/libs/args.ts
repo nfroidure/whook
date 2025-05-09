@@ -16,7 +16,15 @@ export type WhookRawCommandArgs = {
 export function parseArgs(rawArgs: string[]): WhookRawCommandArgs {
   const { _, ...args } = baseParseArgs(rawArgs.slice(2));
   const finalArgs = {
-    namedArguments: args,
+    namedArguments: Object.keys(args).reduce(
+      (cleanArgs, key) => ({
+        ...cleanArgs,
+        // Avoid having the --arg shortcut for --arg=true to
+        // provide a boolean since we coerce the args later 
+        [key]: typeof args[key] === 'boolean' ? args[key].toString() : args[key],
+      }),
+      {},
+    ),
     rest: _.map((arg) => arg.toString()),
     command: rawArgs[1],
   };

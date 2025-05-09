@@ -13,7 +13,7 @@ exports[`wrapHTTPTransactionWithMethodOverride should let normal methods pass 1`
         "query": {},
       },
       {
-        "config": undefined,
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getPing",
@@ -74,7 +74,7 @@ exports[`wrapHTTPTransactionWithMethodOverride should override methods 1`] = `
         "query": {},
       },
       {
-        "config": undefined,
+        "config": {},
         "method": "get",
         "operation": {
           "operationId": "getPing",
