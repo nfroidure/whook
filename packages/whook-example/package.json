@@ -14,7 +14,15 @@
       "testsFiles": "'src/**/*.test.ts'",
       "distFiles": "'dist/**/*.js'",
       "ignore": [
-        "dist"
+        "dist",
+        "builds",
+        ".bin",
+        ".terraform",
+        "*.plan",
+        "*.tfstate.d",
+        "*.credentials.json",
+        "layer",
+        "lambdas"
       ],
       "bundleFiles": [
         "bin",
@@ -80,6 +88,7 @@
   "dependencies": {
     "@types/node-cron": "^3.0.11",
     "@whook/authorization": "^19.0.4",
+    "@whook/aws-lambda": "^19.0.4",
     "@whook/cors": "^19.0.4",
     "@whook/swagger-ui": "^19.0.4",
     "@whook/whook": "^19.0.4",
