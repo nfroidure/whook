@@ -1,3 +1,18 @@
+# [19.1.0](https://github.com/nfroidure/whook/compare/v19.0.4...v19.1.0) (2025-05-12)
+
+
+### Bug Fixes
+
+* **commands:** fix boolean command args ([610e6d5](https://github.com/nfroidure/whook/commit/610e6d5ad3981b72604179c388c0a4e24da74e3f))
+* **commands:** fix command args prompt ([9141014](https://github.com/nfroidure/whook/commit/914101443e2b9021c39f85000bd0884abd9f9c7d))
+
+
+### Features
+
+* **crons:** allow to run crons via the http router ([f66094c](https://github.com/nfroidure/whook/commit/f66094c426425222099a7d03d2a81b32c979a9a6))
+
+
+
 ## [19.0.4](https://github.com/nfroidure/whook/compare/v19.0.3...v19.0.4) (2025-05-07)
 
 
