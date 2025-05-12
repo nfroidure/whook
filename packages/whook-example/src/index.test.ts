@@ -100,9 +100,9 @@ describe('runProcess', () => {
   test('should work', async () => {
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
-  debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
-  logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs)
-}).toMatchInlineSnapshot(`
+      debugCalls: logger.debug.mock.calls.map(filterPaths).sort(sortLogs),
+      logErrorCalls: logger.error.mock.calls.map(filterPaths).sort(sortLogs),
+    }).toMatchInlineSnapshot(`
 {
   "debugCalls": [
     [
@@ -577,6 +577,9 @@ describe('runProcess', () => {
       "⏳ - Skipped "optionsWithCORS.js.map" per file patterns.",
     ],
     [
+      "⏳ - Skipped "postCronRun.test.ts" per ignore patterns.",
+    ],
+    [
       "⏳ - Skipped "printEnv.test.ts" per ignore patterns.",
     ],
     [
@@ -644,6 +647,9 @@ describe('runProcess', () => {
     ],
     [
       "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/routes/optionsWithCORS.js".",
+    ],
+    [
+      "✅ - Module path of "postCronRun" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postCronRun.ts".",
     ],
     [
       "✅ - Module path of "putEcho" found at "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
@@ -1006,6 +1012,9 @@ describe('runProcess', () => {
       "🍀 - Trying to find "optionsWithCORS" module path in "__project__".",
     ],
     [
+      "🍀 - Trying to find "postCronRun" module path in "__project__".",
+    ],
+    [
       "🍀 - Trying to find "putEcho" module path in "__project__".",
     ],
     [
@@ -1102,6 +1111,9 @@ describe('runProcess', () => {
       "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/routes/optionsWithCORS.js".",
     ],
     [
+      "💿 - Loading "postCronRun" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postCronRun.ts".",
+    ],
+    [
       "💿 - Loading "putEcho" initializer from "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
@@ -1160,6 +1172,9 @@ describe('runProcess', () => {
     ],
     [
       "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/routes/optionsWithCORS.js".",
+    ],
+    [
+      "💿 - Service "postCronRun" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postCronRun.ts".",
     ],
     [
       "💿 - Service "putEcho" found in "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
@@ -1681,6 +1696,12 @@ describe('runProcess', () => {
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/getTime.ts".",
     ],
     [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postCronRun.ts".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/postCronRun.ts".",
+    ],
+    [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/packages/whook-example/src/routes/putEcho.ts".",
     ],
     [
@@ -1758,7 +1779,7 @@ describe('runProcess', () => {
       "🏭 - Initializing the CRONS_WRAPPERS service.",
     ],
     [
-      "🏭 - Initializing the ROUTES_HANDLERS service with 10 handlers wrapped by 2 wrappers.",
+      "🏭 - Initializing the ROUTES_HANDLERS service with 11 handlers wrapped by 2 wrappers.",
     ],
     [
       "🏭 - Initializing the ROUTES_WRAPPERS service.",

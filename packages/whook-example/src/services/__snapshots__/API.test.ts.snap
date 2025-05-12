@@ -6,6 +6,7 @@ exports[`API should always have the same amount of bearer authenticated endpoint
 [
   "get /diagnostic",
   "get /openAPI",
+  "post /crons/{cronName}/run",
 ]
 `;
 
@@ -17,6 +18,7 @@ exports[`API should always have the same amount of endpoints 1`] = `
   "get /ping",
   "get /time",
   "get /{pathParam1}/{pathParam2}",
+  "options /crons/{cronName}/run",
   "options /delay",
   "options /diagnostic",
   "options /echo",
@@ -25,6 +27,7 @@ exports[`API should always have the same amount of endpoints 1`] = `
   "options /stream",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /crons/{cronName}/run",
   "put /echo",
   "put /stream",
 ]
@@ -36,6 +39,7 @@ exports[`API should always have the same amount of non authenticated endpoints 1
   "get /ping",
   "get /time",
   "get /{pathParam1}/{pathParam2}",
+  "options /crons/{cronName}/run",
   "options /delay",
   "options /diagnostic",
   "options /echo",
@@ -63,6 +67,7 @@ exports[`API should always have the same amount of publicly documented endpoints
   "get /ping",
   "get /time",
   "get /{pathParam1}/{pathParam2}",
+  "options /crons/{cronName}/run",
   "options /delay",
   "options /diagnostic",
   "options /echo",
@@ -71,6 +76,7 @@ exports[`API should always have the same amount of publicly documented endpoints
   "options /stream",
   "options /time",
   "options /{pathParam1}/{pathParam2}",
+  "post /crons/{cronName}/run",
   "put /echo",
   "put /stream",
 ]
@@ -101,6 +107,14 @@ exports[`API should work 1`] = `
       },
       "headers": {},
       "parameters": {
+        "date": {
+          "in": "query",
+          "name": "date",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Date",
+          },
+        },
         "duration": {
           "description": "Duration in milliseconds",
           "in": "query",
@@ -204,6 +218,10 @@ exports[`API should work 1`] = `
         },
       },
       "schemas": {
+        "Date": {
+          "format": "date-time",
+          "type": "string",
+        },
         "Echo": {
           "additionalProperties": false,
           "properties": {
@@ -246,6 +264,88 @@ exports[`API should work 1`] = `
     },
     "openapi": "3.1.0",
     "paths": {
+      "/crons/{cronName}/run": {
+        "options": {
+          "operationId": "postCronRunCORS",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "cronName",
+              "required": true,
+              "schema": {
+                "type": "string",
+              },
+            },
+            {
+              "in": "query",
+              "name": "date",
+              "required": false,
+              "schema": {
+                "$ref": "#/components/schemas/Date",
+              },
+            },
+            {
+              "in": "query",
+              "name": "access_token",
+              "schema": {
+                "type": "string",
+              },
+            },
+          ],
+          "responses": {
+            "200": {
+              "description": "CORS sent.",
+            },
+          },
+          "summary": "Enable OPTIONS for CORS",
+          "tags": [
+            "CORS",
+          ],
+        },
+        "post": {
+          "description": "Allow to run crons on the fly for development or testing purposes.",
+          "operationId": "postCronRun",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "cronName",
+              "required": true,
+              "schema": {
+                "type": "string",
+              },
+            },
+            {
+              "$ref": "#/components/parameters/date",
+            },
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": {
+            "204": {
+              "description": "Cron run successfully!",
+            },
+          },
+          "security": [
+            {
+              "bearerAuth": [
+                "admin",
+              ],
+            },
+          ],
+          "tags": [
+            "system",
+          ],
+        },
+      },
       "/delay": {
         "get": {
           "callbacks": {

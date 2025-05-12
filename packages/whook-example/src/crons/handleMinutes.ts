@@ -15,6 +15,7 @@ export const exampleSchema = {
   example: { message: 'This is message to log', delay: 1 },
   schema: {
     type: 'object',
+    required: ['message', 'delay'],
     properties: {
       message: { type: 'string' },
       delay: { type: 'number' },

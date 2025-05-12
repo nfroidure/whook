@@ -26,12 +26,12 @@ describe('putEchoedStream', () => {
     response.body.pipe(stream);
 
     expect({
-  response: {
-    ...response,
-    body: await result
-  },
-  logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack'))
-}).toMatchInlineSnapshot(`
+      response: {
+        ...response,
+        body: await result,
+      },
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+    }).toMatchInlineSnapshot(`
 {
   "logCalls": [
     [

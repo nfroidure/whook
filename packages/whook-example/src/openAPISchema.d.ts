@@ -18,6 +18,9 @@ declare interface paths {
     get: operations['getTime'];
     put: operations['putTime'];
   };
+  '/crons/{cronName}/run': {
+    post: operations['postCronRun'];
+  };
   '/echo': {
     put: operations['putEcho'];
   };
@@ -109,6 +112,22 @@ declare interface operations {
       };
     };
   };
+  postCronRun: {
+    requestBody: {
+      [pattern: string]: unknown;
+    };
+    responses: {
+      204: object;
+    };
+    parameters: {
+      path: {
+        cronName: string;
+      };
+      query: {
+        date: components['parameters']['date'];
+      };
+    };
+  };
   putEcho: {
     requestBody: components['requestBodies']['Echo'];
     responses: {
@@ -144,6 +163,7 @@ declare interface components {
     pathParam1: number;
     pathParam2: string;
     queryParam: string[];
+    date: components['schemas']['Date'];
   };
   responses: {
     Diagnostic: {
@@ -168,13 +188,14 @@ declare interface components {
     TimeSchema: {
       currentDate?: string;
     };
+    Date: string;
     Echo: {
       echo: string;
     };
     Stream: NodeJS.ReadableStream;
     ExampleSchema: {
-      message?: string;
-      delay?: number;
+      message: string;
+      delay: number;
     };
   };
 }

@@ -20,8 +20,8 @@ describe('getParameters', () => {
     });
 
     expect({
-  response
-}).toMatchInlineSnapshot(`
+      response,
+    }).toMatchInlineSnapshot(`
 {
   "response": {
     "body": {
