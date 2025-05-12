@@ -21,9 +21,13 @@ import { getCasterForSchema } from '../libs/validation.js';
 import { ensureResolvedObject } from 'ya-open-api-types';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 
-export default location(autoService(initCommand), import.meta.url);
+export type WhookCommandEnv = {
+  CI?: string;
+  NO_PROMPT?: string;
+};
 
 async function initCommand({
+  ENV,
   API,
   COMMAND_DEFINITION,
   COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
@@ -35,6 +39,7 @@ async function initCommand({
   args,
   log,
 }: {
+  ENV: WhookCommandEnv;
   API: WhookOpenAPI;
   COMMAND_DEFINITION: WhookCommandDefinition;
   COERCION_OPTIONS?: WhookCoercionOptions;
@@ -50,7 +55,7 @@ async function initCommand({
     await $ready;
 
     try {
-      if (COMMAND_DEFINITION.config?.promptArgs) {
+      if (COMMAND_DEFINITION.config?.promptArgs && !ENV.CI && !ENV.NO_PROMPT) {
         // Required to ensure any logs are printed
         await Promise.resolve();
 
@@ -134,3 +139,5 @@ async function initCommand({
   }
   commandRunner();
 }
+
+export default location(autoService(initCommand), import.meta.url);

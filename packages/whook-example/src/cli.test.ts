@@ -49,7 +49,7 @@ On air 🚀🌕
 
   test('with env', async () => {
     const { stdout, stderr } = await execCommand(
-      'npm run whook --silent -- env --name NODE_ENV',
+      'NO_PROMPT=1 npm run whook --silent -- env --name NODE_ENV',
     );
 
     expect({
@@ -73,7 +73,7 @@ On air 🚀🌕
 
   test('with config', async () => {
     const { stdout, stderr } = await execCommand(
-      'npm run whook --silent -- config --name HOST',
+      'NO_PROMPT=1 npm run whook --silent -- config --name HOST',
     );
 
     expect({

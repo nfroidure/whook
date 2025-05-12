@@ -35,6 +35,9 @@ describe('command', () => {
     schemaValidators.mockReturnValue(validator as unknown as ValidateFunction);
 
     await initCommand({
+      ENV: {
+        NO_PROMPT: '1',
+      },
       API,
       COMMAND_DEFINITION: initEnvCommandDefinition,
       COERCION_OPTIONS: DEFAULT_COERCION_OPTIONS,
@@ -88,6 +91,9 @@ describe('command', () => {
     schemaValidators.mockReturnValue(validator as unknown as ValidateFunction);
 
     await initCommand({
+      ENV: {
+        NO_PROMPT: '1',
+      },
       API,
       COMMAND_DEFINITION: initEnvCommandDefinition,
       COERCION_OPTIONS: DEFAULT_COERCION_OPTIONS,

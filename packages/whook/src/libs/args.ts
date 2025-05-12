@@ -20,8 +20,9 @@ export function parseArgs(rawArgs: string[]): WhookRawCommandArgs {
       (cleanArgs, key) => ({
         ...cleanArgs,
         // Avoid having the --arg shortcut for --arg=true to
-        // provide a boolean since we coerce the args later 
-        [key]: typeof args[key] === 'boolean' ? args[key].toString() : args[key],
+        // provide a boolean since we coerce the args later
+        [key]:
+          typeof args[key] === 'boolean' ? args[key].toString() : args[key],
       }),
       {},
     ),
@@ -53,16 +54,7 @@ export async function promptArgs(
           API,
           schema.$ref,
         )) as WhookCommandSchema;
-        newNamedArgs[argument.name] = await input({
-          message: `Enter the value for "${argument.name}": `,
-          default: schema.default?.toString(),
-          required: argument.required,
-        });
-        continue;
-      }
 
-      if (!('default' in schema)) {
-        newNamedArgs[argument.name] = schema.default?.toString();
         continue;
       }
 
@@ -107,7 +99,15 @@ export async function promptArgs(
         newNamedArgs[argument.name] = await input({
           message: `Enter the value for "${argument.name}": `,
           required: argument.required,
+          default: schema.default?.toString(),
         });
+
+        continue;
+      }
+
+      if ('default' in schema) {
+        newNamedArgs[argument.name] = schema.default;
+        continue;
       }
     }
   }

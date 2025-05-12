@@ -23,6 +23,7 @@ import { type OpenAPITypesConfig } from '../commands/generateOpenAPITypes.js';
 import { type WhookErrorHandlerConfig } from '../services/errorHandler.js';
 import { type WhookSchemaValidatorsConfig } from '../services/schemaValidators.js';
 import { type WhookQueryParserBuilderConfig } from '../services/queryParserBuilder.js';
+import { type WhookCommandEnv } from '../services/command.js';
 
 export type WhookBaseMain = {
   AppEnv: string;
@@ -31,7 +32,8 @@ export type WhookBaseMain = {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface WhookMain extends WhookBaseMain {}
 
-export type WhookBaseEnv = WhookHTTPServerEnv &
+export type WhookBaseEnv = WhookCommandEnv &
+  WhookHTTPServerEnv &
   WhookBaseURLEnv &
   WhookHostEnv &
   WhookPortEnv;
