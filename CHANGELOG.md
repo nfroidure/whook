@@ -1,3 +1,12 @@
+## [19.1.1](https://github.com/nfroidure/whook/compare/v19.1.0...v19.1.1) (2025-05-13)
+
+
+### Bug Fixes
+
+* **build:** fix AWS the Lambda build ([5895a69](https://github.com/nfroidure/whook/commit/5895a694e366db3f2bea897a481658fda1f60242))
+
+
+
 # [19.1.0](https://github.com/nfroidure/whook/compare/v19.0.4...v19.1.0) (2025-05-12)
 
 
