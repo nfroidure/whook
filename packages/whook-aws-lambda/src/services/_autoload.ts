@@ -18,7 +18,6 @@ import {
   noop,
   initMainHandler,
   type WhookOpenAPI,
-  type WhookBuildConstantsService,
   type WhookCronsDefinitionsService,
   type WhookDefinitions,
   type WhookCronDefinition,
@@ -61,7 +60,6 @@ export type WhookAWSLambdaDefinition = {
 );
 
 export type WhookAWSLambdaAutoloadDependencies = {
-  BUILD_CONSTANTS?: WhookBuildConstantsService;
   $injector: Injector<Service>;
   $instance: Knifecycle;
   log?: LogService;
@@ -258,8 +256,6 @@ const initializerWrapper: ServiceInitializerWrapper<
  *  Lambda compatible code.
  * @param  {Object}   services
  * The services the autoloader depends on
- * @param  {Object}   [services.BUILD_CONSTANTS]
- * The injected BUILD_CONSTANTS value to add it to the build env
  * @param  {Object}   $instance
  * A Knifecycle instance
  * @param  {Object}   $injector
@@ -270,6 +266,6 @@ const initializerWrapper: ServiceInitializerWrapper<
  * A promise of an object containing the reshaped env vars.
  */
 export default alsoInject(
-  ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
+  ['$instance', '$injector', '?log'],
   wrapInitializer(initializerWrapper as any, initBuildAutoload),
 );

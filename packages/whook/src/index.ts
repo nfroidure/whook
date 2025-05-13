@@ -40,12 +40,14 @@ import initHTTPServer from './services/httpServer.js';
 import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
 import initProxiedENV from './services/PROXIED_ENV.js';
-import initBuildConstants from './services/BUILD_CONSTANTS.js';
 import initWhookResolvedPlugins, {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
 } from './services/WHOOK_RESOLVED_PLUGINS.js';
 import initDefinitions from './services/DEFINITIONS.js';
+import initBuildConstantFilter from './services/BUILD_CONSTANT_FILTER.js';
+export { initBuildConstantFilter };
+export type * from './services/BUILD_CONSTANT_FILTER.js';
 export * from './services/DEFINITIONS.js';
 export type * from './services/DEFINITIONS.js';
 import initRoutesDefinitions from './services/ROUTES_DEFINITIONS.js';
@@ -143,7 +145,7 @@ export type * from './services/PORT.js';
 export type * from './services/httpServer.js';
 export type * from './services/HOST.js';
 export type * from './services/PROXIED_ENV.js';
-export type * from './services/BUILD_CONSTANTS.js';
+export type * from './services/BUILD_CONSTANT_FILTER.js';
 export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
 export type * from './services/DEFINITIONS.js';
 export type * from './services/_autoload.js';
@@ -180,7 +182,6 @@ export {
   initAutoload,
   initBuildAutoload,
   initDefinitions,
-  initBuildConstants,
   initProxiedENV,
   initPort,
   initHost,

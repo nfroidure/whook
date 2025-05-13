@@ -3,11 +3,11 @@
 Per convention a Whook server build file must export
  the following 2 functions to be composable:
 */
-import { Knifecycle, constant, alsoInject } from 'knifecycle';
+import { Knifecycle, constant } from 'knifecycle';
 import { prepareEnvironment } from './index.js';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-  initBuildConstants,
+  initBuildConstantFilter,
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
 } from '@whook/whook';
@@ -56,7 +56,8 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
 
   // Finally, some constants can be serialized instead of being
   //  initialized in the target build saving some time at boot
-  $.register(alsoInject([], initBuildConstants));
+  $.register(constant('BUILD_CONSTANTS_NAMES', ['API', 'DEFINITIONS']));
+  $.register(initBuildConstantFilter);
 
   return $;
 }

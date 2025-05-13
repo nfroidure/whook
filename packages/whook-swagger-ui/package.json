@@ -71,7 +71,7 @@
     "@whook/whook": "^19.1.0",
     "axios": "^1.7.9",
     "ecstatic": "^4.1.4",
-    "knifecycle": "^19.0.0",
+    "knifecycle": "^19.1.1",
     "swagger-ui-dist": "^5.18.2",
     "type-fest": "^4.40.1",
     "ya-json-schema-types": "^1.0.1",

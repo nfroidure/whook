@@ -18,7 +18,6 @@ import {
   initMainHandler,
   noop,
   type WhookOpenAPI,
-  type WhookBuildConstantsService,
   type WhookDefinitions,
   type WhookRouteDefinition,
   type WhookRoutesDefinitionsService,
@@ -35,7 +34,6 @@ export type GCPFunctionDefinition = {
 };
 
 export type WhookGoogleFunctionsAutoloadDependencies = {
-  BUILD_CONSTANTS?: WhookBuildConstantsService;
   $injector: Injector<Service>;
   $instance: Knifecycle;
   log?: LogService;
@@ -162,8 +160,6 @@ const initializerWrapper: ServiceInitializerWrapper<
  *  Functions compatible code.
  * @param  {Object}   services
  * The services ENV depends on
- * @param  {Object}   [services.BUILD_CONSTANTS]
- * Service whose contents should be considered as constants
  * @param  {Object}   $instance
  * A Knifecycle instance
  * @param  {Object}   $injector
@@ -174,6 +170,6 @@ const initializerWrapper: ServiceInitializerWrapper<
  * A promise of an object containing the reshaped env vars.
  */
 export default alsoInject(
-  ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
+  ['$instance', '$injector', '?log'],
   wrapInitializer(initializerWrapper as any, initBuildAutoload),
 );

@@ -69,7 +69,7 @@
   "dependencies": {
     "@whook/whook": "^19.1.0",
     "apollo-server-module-graphiql": "^1.4.0",
-    "knifecycle": "^19.0.0",
+    "knifecycle": "^19.1.1",
     "ya-open-api-types": "^1.2.0",
     "yerror": "^8.0.0"
   },

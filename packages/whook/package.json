@@ -125,7 +125,7 @@
     "ignore": "^7.0.4",
     "inquirer": "^12.6.0",
     "internal-ip": "^8.0.0",
-    "knifecycle": "^19.0.0",
+    "knifecycle": "^19.1.1",
     "miniquery": "^1.1.2",
     "mkdirp": "^3.0.1",
     "ms": "^2.1.3",

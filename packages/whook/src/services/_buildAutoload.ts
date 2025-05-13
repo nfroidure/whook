@@ -14,7 +14,6 @@ import {
   type Service,
   type ServiceInitializerWrapper,
 } from 'knifecycle';
-import { type WhookBuildConstantsService } from '../services/BUILD_CONSTANTS.js';
 import { printStackTrace } from 'yerror';
 import { noop, type LogService } from 'common-services';
 
@@ -23,11 +22,9 @@ const initializerWrapper: ServiceInitializerWrapper<
   Dependencies
 > = (async (
   {
-    BUILD_CONSTANTS = {},
     $instance,
     log = noop,
   }: {
-    BUILD_CONSTANTS?: WhookBuildConstantsService;
     $instance: Knifecycle;
     log: LogService;
   },
@@ -72,10 +69,6 @@ const initializerWrapper: ServiceInitializerWrapper<
         return initializer;
       }
 
-      if (BUILD_CONSTANTS[serviceName]) {
-        return constant(serviceName, BUILD_CONSTANTS[serviceName]);
-      }
-
       try {
         return await $autoload(serviceName);
       } catch (err) {
@@ -110,8 +103,6 @@ const initializerWrapper: ServiceInitializerWrapper<
  *  Lambda compatible code.
  * @param  {Object}   services
  * The services ENV depends on
- * @param  {Object}   [services.BUILD_CONSTANTS]
- * The injected BUILD_CONSTANTS value to add it to the build env
  * @param  {Object}   $instance
  * A Knifecycle instance
  * @param  {Object}   $injector
@@ -123,7 +114,7 @@ const initializerWrapper: ServiceInitializerWrapper<
  */
 export default location(
   alsoInject(
-    ['?BUILD_CONSTANTS', '$instance', '$injector', '?log'],
+    ['$instance', '$injector', '?log'],
     wrapInitializer(initializerWrapper as any, initAutoload),
   ),
   import.meta.url,

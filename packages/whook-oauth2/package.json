@@ -48,7 +48,7 @@
     "camelcase": "^8.0.0",
     "common-services": "^17.0.1",
     "cookie": "^1.0.2",
-    "knifecycle": "^19.0.0",
+    "knifecycle": "^19.1.1",
     "type-fest": "^4.40.1",
     "ya-json-schema-types": "^1.0.1",
     "ya-open-api-types": "^1.2.0",
