@@ -128,6 +128,7 @@ DEV_MODE=1
   "dependencies": {
     "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
+    "@whook/aws-lambda": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
@@ -437,6 +438,7 @@ DEV_MODE=1
   "dependencies": {
     "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
+    "@whook/aws-lambda": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
@@ -784,6 +786,7 @@ DEV_MODE=1
   "dependencies": {
     "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
+    "@whook/aws-lambda": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
@@ -1114,6 +1117,7 @@ DEV_MODE=1
   "dependencies": {
     "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
+    "@whook/aws-lambda": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",

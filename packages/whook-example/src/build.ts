@@ -5,12 +5,12 @@ Per convention a Whook server build file must export
 */
 import { Knifecycle, constant } from 'knifecycle';
 import { prepareEnvironment } from './index.js';
+import { initBuildConstantFilter } from '@whook/whook';
 import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-  initBuildConstantFilter,
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
-} from '@whook/whook';
+} from '@whook/aws-lambda';
 
 /* Architecture Note #1.2.1: The `runBuild` function
 
@@ -35,7 +35,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
   $ = await prepareEnvironment($);
 
   // Usually, here you call the installed build env
-  $ = await prepareBaseBuildEnvironment($);
+  $ = await prepareBaseBuildEnvironment<T>($);
 
   // The build often need to know were initializers
   //  can be found to create a static build and
