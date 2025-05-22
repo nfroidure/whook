@@ -23,6 +23,7 @@ import {
   type WhookDefinitions,
   type WhookCompilerOptions,
   type WhookCompilerService,
+  WhookMain,
 } from '@whook/whook';
 import initBuildAutoloader from './services/_autoload.js';
 import { type LogService } from 'common-services';
@@ -67,11 +68,8 @@ export type WhookAWSLambdaBaseConfig = {
 };
 export type WhookAWSLambdaRouteConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaCronConfig = WhookAWSLambdaBaseConfig;
-export type WhookAWSLambdaTransformerConfig = WhookAWSLambdaBaseConfig & {
-  enabled: boolean;
-};
+export type WhookAWSLambdaTransformerConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaConsumerConfig = WhookAWSLambdaBaseConfig & {
-  enabled: boolean;
   options:
     | WhookAWSLambdaEventConsumerConfig
     | WhookAWSLambdaKafkaConsumerConfig
@@ -80,22 +78,34 @@ export type WhookAWSLambdaConsumerConfig = WhookAWSLambdaBaseConfig & {
 };
 export type WhookAWSLambdaEventConsumerConfig = {
   wrapper: 'consumer';
-  eventSourceARN: string;
+  sources: {
+    eventSourceARN: string;
+    environments?: 'all' | WhookMain['AppEnv'][];
+  }[];
 };
 export type WhookAWSLambdaKafkaConsumerConfig = {
   wrapper: 'kafka';
-  topics: string[];
-  startingPosition: 'latest' | 'trim_horizon';
+  topics: {
+    names: string[];
+    startingPosition: 'latest' | 'trim_horizon';
+    environments?: 'all' | WhookMain['AppEnv'][];
+  }[];
 };
 export type WhookAWSLambdaLogSubscriberConfig = {
   wrapper: 'log';
-  logGroupName: string;
+  logGroups: {
+    name: string;
+    environments?: 'all' | WhookMain['AppEnv'][];
+  }[]
 };
 export type WhookAWSLambdaS3Config = {
   wrapper: 's3';
-  bucket: string;
-  filterPrefix: string;
-  filterSuffix: string;
+  buckets: {
+    name: string;
+    filterPrefix: string;
+    filterSuffix: string;
+    environments?: 'all' | WhookMain['AppEnv'][];
+  }[]
 };
 
 const cprAsync = promisify(cpr) as (

@@ -32,10 +32,13 @@ export const definition = {
       rule: '*/1 * * * *',
       // Bodies provided here are type checked ;)
       body: { message: 'A minute starts!', delay: 10000 },
-      enabled: true,
+      environments: ['local'],
     },
   ],
   schema: { $ref: `#/components/schemas/${exampleSchema.name}` },
+  config: {
+    environments: 'all',
+  },
 } as const satisfies WhookCronDefinition<
   components['schemas']['ExampleSchema']
 >;

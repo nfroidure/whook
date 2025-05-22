@@ -23,10 +23,11 @@ export interface WhookCronConfig extends WhookBaseCronConfig {}
 
 export type WhookCronDefinition<T extends JsonValue = JsonValue> = {
   name: string;
+  summary?: string;
   schedules: {
     rule: string;
     body: T;
-    enabled: boolean;
+    environments?: 'all' | WhookMain['AppEnv'][];
   }[];
   schema: ExpressiveJSONSchema;
   config?: WhookCronConfig;

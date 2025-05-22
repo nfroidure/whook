@@ -397,13 +397,25 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "⌚ - Scheduling the "handleMinutes" cron with "*/1 * * * *" (task name: "handleMinutes-0").",
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
+    ],
+    [
+      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
       "⌛ - Delay service initialized.",
     ],
     [
       "⏳ - Module "optionsWithCORS.js" has no definition!",
+    ],
+    [
+      "⏳ - Skipped  "handleMinutes" crons schedule "*/1 * * * *" since not enabled in environment "local".",
     ],
     [
       "⏳ - Skipped "__snapshots__" per ignore patterns.",
@@ -779,6 +791,18 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "__project__".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/authorization".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/cors".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/whook".",
+    ],
+    [
+      "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
@@ -1267,6 +1291,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/CRON_DEFINITION_FILTER.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/CRON_RUNNER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/DECODERS.js".",
     ],
     [
@@ -1339,6 +1366,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/CRON_RUNNER_OPTIONS.js".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/DECODERS.js".",
     ],
     [
@@ -1403,6 +1433,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js".",
+    ],
+    [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/CRON_RUNNER_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/DECODERS.js".",
@@ -1480,6 +1513,9 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CRON_DEFINITION_FILTER.ts".",
     ],
     [
+      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/CRON_RUNNER_OPTIONS.ts".",
+    ],
+    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/DECODERS.ts".",
     ],
     [
@@ -1553,6 +1589,9 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "CRON_DEFINITION_FILTER" not found.",
+    ],
+    [
+      "🚫 - Module path of "CRON_RUNNER_OPTIONS" not found.",
     ],
     [
       "🚫 - Module path of "DECODERS" not found.",
