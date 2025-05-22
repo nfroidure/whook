@@ -23,6 +23,7 @@ export interface WhookConsumerConfig extends WhookBaseConsumerConfig {}
 
 export type WhookConsumerDefinition = {
   name: string;
+  summary?: string;
   schema: ExpressiveJSONSchema;
   config?: WhookConsumerConfig;
 };

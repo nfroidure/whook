@@ -1,34 +1,44 @@
-import cron, { type ScheduledTask } from 'node-cron';
+import cron, { type ScheduledTask, type TaskOptions } from 'node-cron';
 import { type LogService } from 'common-services';
 import { autoProvider, location } from 'knifecycle';
 import { type WhookCronsDefinitionsService } from './CRONS_DEFINITIONS.js';
 import { type WhookCronsHandlersService } from './CRONS_HANDLERS.js';
 import { printStackTrace } from 'yerror';
+import { type WhookMain } from '../types/base.js';
 
 /* Architecture Note #2.14: Local cron runner
 
 Whook allows you to run crons locally with the help
  of this local cron runner. Best practice is to
  export them and run it with some external runner
- like cloud ones, systemd or crontab.
+ like cloud ones, systemd or crontab but for small
+ standalone projects or local development purposes
+ it may be sufficient.
 */
 
 export type WhookCronRunnerService = void;
-export type WhookCronRunnerBuilderConfig = {
-  CRON_RUNNER_OPTIONS?: object;
+export type WhookCronRunnerOptions = Required<Pick<TaskOptions, 'timezone'>>;
+export type WhookCronRunnerConfig = {
+  CRON_RUNNER_OPTIONS?: WhookCronRunnerOptions;
 };
-export type WhookCronRunnerBuilderDependencies =
-  WhookCronRunnerBuilderConfig & {
-    CRONS_HANDLERS: WhookCronsHandlersService;
-    CRONS_DEFINITIONS: WhookCronsDefinitionsService;
-    log: LogService;
-  };
+export type WhookCronRunnerDependencies = WhookCronRunnerConfig & {
+  APP_ENV: WhookMain['AppEnv'];
+  CRONS_HANDLERS: WhookCronsHandlersService;
+  CRONS_DEFINITIONS: WhookCronsDefinitionsService;
+  log: LogService;
+};
+
+export const DEFAULT_CRON_RUNNER_OPTIONS: WhookCronRunnerOptions = {
+  timezone: 'UTC',
+};
 
 async function initLocalCronRunner({
+  APP_ENV,
+  CRON_RUNNER_OPTIONS = DEFAULT_CRON_RUNNER_OPTIONS,
   CRONS_HANDLERS,
   CRONS_DEFINITIONS,
   log,
-}: WhookCronRunnerBuilderDependencies) {
+}: WhookCronRunnerDependencies) {
   const cronsNames = Object.keys(CRONS_DEFINITIONS);
   const tasks: Record<
     string,
@@ -51,10 +61,13 @@ async function initLocalCronRunner({
       const taskName = `${cronName}-${index++}`;
       const promises: Promise<void>[] = [];
 
-      if (!schedule.enabled) {
+      if (
+        schedule.environments !== 'all' ||
+        !schedule.environments.includes(APP_ENV)
+      ) {
         log(
           'debug',
-          `⏳ - Skipped  "${cronName}" crons schedule "${schedule.rule}" since not enabled.`,
+          `⏳ - Skipped  "${cronName}" crons schedule "${schedule.rule}" since not enabled in environment "${APP_ENV}".`,
         );
         continue;
       }
@@ -101,7 +114,7 @@ async function initLocalCronRunner({
         },
         {
           name: taskName,
-          scheduled: false,
+          ...CRON_RUNNER_OPTIONS,
         },
       );
 
