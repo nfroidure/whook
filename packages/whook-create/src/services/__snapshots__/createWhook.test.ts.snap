@@ -126,7 +126,6 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
-    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -136,7 +135,6 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.1.1",
-    "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.40.1",
@@ -435,7 +433,6 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
-    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -445,7 +442,6 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.1.1",
-    "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.40.1",
@@ -782,7 +778,6 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
-    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -792,7 +787,6 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.1.1",
-    "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.40.1",
@@ -1112,7 +1106,6 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
-    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/swagger-ui": "<current_version>",
@@ -1122,7 +1115,6 @@ DEV_MODE=1
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.1.1",
-    "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.40.1",

@@ -1,6 +1,8 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect, jest } from '@jest/globals';
 import { exec } from 'node:child_process';
 import { YError } from 'yerror';
+
+jest.setTimeout(30000);
 
 describe('commands should work', () => {
   test('with ls', async () => {

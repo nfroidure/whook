@@ -158,7 +158,6 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
-    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -171,7 +170,6 @@ describe('initCreateWhook', () => {
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.1.1",
-    "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.40.1",
@@ -355,7 +353,6 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
-    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -368,7 +365,6 @@ describe('initCreateWhook', () => {
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.1.1",
-    "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.40.1",
@@ -537,7 +533,6 @@ describe('initCreateWhook', () => {
     "name": "Wayne Campbell",
   },
   "dependencies": {
-    "@types/node-cron": "^3.0.11",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
     "@whook/http-router": "<current_version>",
@@ -550,7 +545,6 @@ describe('initCreateWhook', () => {
     "http-auth-utils": "^6.0.1",
     "jwt-service": "^11.0.2",
     "knifecycle": "^19.1.1",
-    "node-cron": "^3.0.3",
     "pkg-dir": "^8.0.0",
     "strict-qs": "^8.0.3",
     "type-fest": "^4.40.1",

@@ -216,7 +216,7 @@ export async function runProcess<
 ): Promise<D> {
   const args = parseArgs(argv);
 
-  const rootServicesNames =
+  const servicesNames =
     args.rest[0] === '__inject'
       ? (args.rest[1] || '')
           .split(',')
@@ -224,7 +224,7 @@ export async function runProcess<
           .filter(identity)
       : args.rest[0]
         ? ['command']
-        : ['httpServer', '?cronRunner', 'process'];
+        : ['httpServer', '?cronRunner', 'process', ...injectedNames];
 
   try {
     const $ = await innerPrepareEnvironment();
@@ -235,10 +235,7 @@ export async function runProcess<
     $.register(constant('stdout', stdout));
     $.register(constant('stderr', stderr));
 
-    const services = await innerPrepareProcess(
-      [...new Set([...rootServicesNames, ...injectedNames])],
-      $,
-    );
+    const services = await innerPrepareProcess([...new Set(servicesNames)], $);
 
     return { $instance: $, ...services } as unknown as D;
   } catch (err) {
