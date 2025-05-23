@@ -1,3 +1,17 @@
+## [19.1.2](https://github.com/nfroidure/whook/compare/v19.1.1...v19.1.2) (2025-05-23)
+
+
+### Bug Fixes
+
+* **core:** better cron/consumer handling ([973d42c](https://github.com/nfroidure/whook/commit/973d42cc6578f843ad6152f5bfce891fde0e821c)), closes [#200](https://github.com/nfroidure/whook/issues/200)
+
+
+### BREAKING CHANGES
+
+* **core:** The changes may break some existing builds.
+
+
+
 ## [19.1.1](https://github.com/nfroidure/whook/compare/v19.1.0...v19.1.1) (2025-05-13)
 
 
