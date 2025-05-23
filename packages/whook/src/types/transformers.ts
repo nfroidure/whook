@@ -1,4 +1,3 @@
-import { type WhookMain } from '../index.js';
 import {
   type Dependencies,
   type ServiceInitializer,
@@ -8,13 +7,14 @@ import { type WhookAPISchemaDefinition } from './openapi.js';
 import { type JsonValue } from 'type-fest';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type WhookHandlerWrapper } from './wrappers.js';
+import { type WhookEnvironmentsConfig } from '../libs/environments.js';
 
 export const DEFAULT_TRANSFORMER_CONFIG: WhookTransformerConfig = {
   environments: 'all',
 };
 
 export type WhookBaseTransformerConfig = {
-  environments?: 'all' | WhookMain['AppEnv'][];
+  environments?: WhookEnvironmentsConfig;
   targetHandler?: string;
 };
 

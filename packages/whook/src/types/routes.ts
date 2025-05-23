@@ -5,7 +5,6 @@ import {
   PATH_ITEM_METHODS,
 } from 'ya-open-api-types';
 import { type WhookRequestBody, type WhookResponse } from './http.js';
-import { type WhookMain } from '../index.js';
 import {
   type Dependencies,
   type ServiceInitializer,
@@ -20,6 +19,7 @@ import {
   type WhookAPICallbackDefinition,
 } from './openapi.js';
 import { type WhookHandlerWrapper } from './wrappers.js';
+import { type WhookEnvironmentsConfig } from '../libs/environments.js';
 
 export const DEFAULT_ROUTE_CONFIG: WhookRouteConfig = {
   environments: 'all',
@@ -27,7 +27,7 @@ export const DEFAULT_ROUTE_CONFIG: WhookRouteConfig = {
 };
 
 export type WhookBaseRouteConfig = {
-  environments?: 'all' | WhookMain['AppEnv'][];
+  environments?: WhookEnvironmentsConfig;
   private?: boolean;
   targetHandler?: string;
 };

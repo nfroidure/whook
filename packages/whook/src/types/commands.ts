@@ -1,4 +1,3 @@
-import { type WhookMain } from '../index.js';
 import {
   type Dependencies,
   type ServiceInitializer,
@@ -15,6 +14,7 @@ import {
   type ValueOnlyJSONSchema,
 } from 'ya-json-schema-types';
 import { type OpenAPIReference } from 'ya-open-api-types';
+import { type WhookEnvironmentsConfig } from '../libs/environments.js';
 
 export const DEFAULT_COMMAND_CONFIG: WhookCommandConfig = {
   environments: 'all',
@@ -22,7 +22,7 @@ export const DEFAULT_COMMAND_CONFIG: WhookCommandConfig = {
 };
 
 export type WhookBaseCommandConfig = {
-  environments?: 'all' | WhookMain['AppEnv'][];
+  environments?: WhookEnvironmentsConfig;
   promptArgs?: boolean;
   targetHandler?: string;
 };
