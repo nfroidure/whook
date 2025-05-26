@@ -8,7 +8,7 @@ export function checkEnvironment(
 ) {
   return (
     typeof environments === 'undefined' ||
-    'all' == environments ||
+    'all' === environments ||
     environments.includes(currentEnvironment)
   );
 }
