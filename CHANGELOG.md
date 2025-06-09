@@ -1,3 +1,31 @@
+# [20.0.0](https://github.com/nfroidure/whook/compare/v19.1.3...v20.0.0) (2025-06-09)
+
+
+### Code Refactoring
+
+* **dependencies:** update dependencies ([088b99d](https://github.com/nfroidure/whook/commit/088b99d32a630b701285f0bda0bf70e85baa54f0))
+
+
+### BREAKING CHANGES
+
+* **dependencies:** Drop support for Node 20
+
+
+
+# [20.0.0](https://github.com/nfroidure/whook/compare/v19.1.3...v20.0.0) (2025-06-09)
+
+
+### Code Refactoring
+
+* **dependencies:** update dependencies ([088b99d](https://github.com/nfroidure/whook/commit/088b99d32a630b701285f0bda0bf70e85baa54f0))
+
+
+### BREAKING CHANGES
+
+* **dependencies:** Drop support for Node 20
+
+
+
 ## [19.1.3](https://github.com/nfroidure/whook/compare/v19.1.2...v19.1.3) (2025-05-23)
 
 
