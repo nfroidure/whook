@@ -36,7 +36,9 @@ export type VersionsCheckerDependencies = VersionsConfig & {
 async function initWrapRouteHandlerWithVersionChecker({
   VERSIONS,
   log = noop,
-}: VersionsCheckerDependencies): Promise<WhookRouteHandlerWrapper<WhookRouteHandler>> {
+}: VersionsCheckerDependencies): Promise<
+  WhookRouteHandlerWrapper<WhookRouteHandler>
+> {
   log('debug', '📥 - Initializing the version checker wrapper.');
 
   const wrapper = async (

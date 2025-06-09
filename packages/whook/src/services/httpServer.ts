@@ -16,10 +16,10 @@ export type WhookHTTPServerOptions = Pick<
   | 'headersTimeout'
   | 'requestTimeout'
   | 'keepAliveTimeout'
-  | 'maxConnections'
   | 'maxHeadersCount'
   | 'maxRequestsPerSocket'
->;
+> &
+  Partial<Pick<http.Server, 'maxConnections'>>;
 export type WhookHTTPServerConfig = {
   HOST?: string;
   PORT?: number;
@@ -47,7 +47,6 @@ const DEFAULT_HTTP_SERVER_OPTIONS: WhookHTTPServerOptions = {
   maxRequestsPerSocket: 0,
   timeout: ms('2m'),
   keepAliveTimeout: ms('5m'),
-  maxConnections: 0,
 };
 
 export default location(
@@ -138,7 +137,9 @@ async function initHTTPServer({
     FINAL_HTTP_SERVER_OPTIONS.maxRequestsPerSocket;
   httpServer.timeout = FINAL_HTTP_SERVER_OPTIONS.timeout;
   httpServer.keepAliveTimeout = FINAL_HTTP_SERVER_OPTIONS.keepAliveTimeout;
-  httpServer.maxConnections = FINAL_HTTP_SERVER_OPTIONS.maxConnections;
+  if (typeof FINAL_HTTP_SERVER_OPTIONS.maxConnections === 'number') {
+    httpServer.maxConnections = FINAL_HTTP_SERVER_OPTIONS.maxConnections;
+  }
 
   if (ENV.DESTROY_SOCKETS) {
     httpServer.on('connection', (socket) => {

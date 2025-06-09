@@ -84,7 +84,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=20.11.1"
+    "node": ">=22.16.0"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -101,7 +101,7 @@ DEV_MODE=1
     "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf 'dist' && tsc --outDir dist",
-    "cover": "npm run jest -- --coverage",
+    "cover": "node --run jest -- --coverage",
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
     "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/run.js",
     "format": "npm run prettier",
@@ -112,8 +112,7 @@ DEV_MODE=1
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
     "repl": "NODE_ENV=\${NODE_ENV:-development} tsx src/run.js -- __inject repl",
     "start": "NODE_ENV=\${NODE_ENV:-development} node dist/run.js",
-    "test": "NODE_ENV=test npm run build && npm run jest",
-    "type-check": "tsc --pretty --noEmit",
+    "test": "NODE_ENV=test npm run build && node --run jest && node --run jest",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/runWatch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook"
   },
@@ -147,26 +146,26 @@ DEV_MODE=1
     "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
-    "@swc/cli": "^0.5.2",
-    "@swc/core": "^1.10.0",
-    "@swc/helpers": "^0.5.15",
-    "@swc/jest": "^0.2.37",
+    "@eslint/js": "^9.28.0",
+    "@swc/cli": "^0.7.7",
+    "@swc/core": "^1.11.31",
+    "@swc/helpers": "^0.5.17",
+    "@swc/jest": "^0.2.38",
     "axios": "^1.7.9",
     "esbuild-node-externals": "^1.15.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^28.9.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jest": "^28.13.0",
+    "eslint-plugin-prettier": "^5.4.1",
     "jest": "^29.7.0",
-    "jsarch": "^6.1.2",
-    "prettier": "^3.4.2",
+    "jsarch": "^6.2.0",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "schema2dts": "^8.1.0",
     "streamtest": "^3.0.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1"
   },
   "prettier": {
     "semi": true,
@@ -203,7 +202,7 @@ DEV_MODE=1
     "prettierPath": null
   },
   "overrides": {
-    "eslint": "^9.16.0"
+    "eslint": "^9.28.0"
   }
 }",
     ],
@@ -391,7 +390,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=20.11.1"
+    "node": ">=22.16.0"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -408,7 +407,7 @@ DEV_MODE=1
     "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf 'dist' && tsc --outDir dist",
-    "cover": "npm run jest -- --coverage",
+    "cover": "node --run jest -- --coverage",
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
     "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/run.js",
     "format": "npm run prettier",
@@ -419,8 +418,7 @@ DEV_MODE=1
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
     "repl": "NODE_ENV=\${NODE_ENV:-development} tsx src/run.js -- __inject repl",
     "start": "NODE_ENV=\${NODE_ENV:-development} node dist/run.js",
-    "test": "NODE_ENV=test npm run build && npm run jest",
-    "type-check": "tsc --pretty --noEmit",
+    "test": "NODE_ENV=test npm run build && node --run jest && node --run jest",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/runWatch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook"
   },
@@ -454,26 +452,26 @@ DEV_MODE=1
     "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
-    "@swc/cli": "^0.5.2",
-    "@swc/core": "^1.10.0",
-    "@swc/helpers": "^0.5.15",
-    "@swc/jest": "^0.2.37",
+    "@eslint/js": "^9.28.0",
+    "@swc/cli": "^0.7.7",
+    "@swc/core": "^1.11.31",
+    "@swc/helpers": "^0.5.17",
+    "@swc/jest": "^0.2.38",
     "axios": "^1.7.9",
     "esbuild-node-externals": "^1.15.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^28.9.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jest": "^28.13.0",
+    "eslint-plugin-prettier": "^5.4.1",
     "jest": "^29.7.0",
-    "jsarch": "^6.1.2",
-    "prettier": "^3.4.2",
+    "jsarch": "^6.2.0",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "schema2dts": "^8.1.0",
     "streamtest": "^3.0.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1"
   },
   "prettier": {
     "semi": true,
@@ -510,7 +508,7 @@ DEV_MODE=1
     "prettierPath": null
   },
   "overrides": {
-    "eslint": "^9.16.0"
+    "eslint": "^9.28.0"
   }
 }",
     ],
@@ -736,7 +734,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=20.11.1"
+    "node": ">=22.16.0"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -753,7 +751,7 @@ DEV_MODE=1
     "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf 'dist' && tsc --outDir dist",
-    "cover": "npm run jest -- --coverage",
+    "cover": "node --run jest -- --coverage",
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
     "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/run.js",
     "format": "npm run prettier",
@@ -764,8 +762,7 @@ DEV_MODE=1
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
     "repl": "NODE_ENV=\${NODE_ENV:-development} tsx src/run.js -- __inject repl",
     "start": "NODE_ENV=\${NODE_ENV:-development} node dist/run.js",
-    "test": "NODE_ENV=test npm run build && npm run jest",
-    "type-check": "tsc --pretty --noEmit",
+    "test": "NODE_ENV=test npm run build && node --run jest && node --run jest",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/runWatch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook"
   },
@@ -799,26 +796,26 @@ DEV_MODE=1
     "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
-    "@swc/cli": "^0.5.2",
-    "@swc/core": "^1.10.0",
-    "@swc/helpers": "^0.5.15",
-    "@swc/jest": "^0.2.37",
+    "@eslint/js": "^9.28.0",
+    "@swc/cli": "^0.7.7",
+    "@swc/core": "^1.11.31",
+    "@swc/helpers": "^0.5.17",
+    "@swc/jest": "^0.2.38",
     "axios": "^1.7.9",
     "esbuild-node-externals": "^1.15.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^28.9.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jest": "^28.13.0",
+    "eslint-plugin-prettier": "^5.4.1",
     "jest": "^29.7.0",
-    "jsarch": "^6.1.2",
-    "prettier": "^3.4.2",
+    "jsarch": "^6.2.0",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "schema2dts": "^8.1.0",
     "streamtest": "^3.0.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1"
   },
   "prettier": {
     "semi": true,
@@ -855,7 +852,7 @@ DEV_MODE=1
     "prettierPath": null
   },
   "overrides": {
-    "eslint": "^9.16.0"
+    "eslint": "^9.28.0"
   }
 }",
     ],
@@ -1064,7 +1061,7 @@ DEV_MODE=1
   "version": "0.0.0",
   "license": "SEE LICENSE",
   "engines": {
-    "node": ">=20.11.1"
+    "node": ">=22.16.0"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -1081,7 +1078,7 @@ DEV_MODE=1
     "apitypes": "npm run --silent whook -- generateOpenAPISchema --authenticated=true | npm run --silent whook -- generateOpenAPITypes > src/openAPISchema.d.ts",
     "architecture": "jsarch 'src/**/*.ts' > ARCHITECTURE.md && git add ARCHITECTURE.md",
     "build": "rimraf 'dist' && tsc --outDir dist",
-    "cover": "npm run jest -- --coverage",
+    "cover": "node --run jest -- --coverage",
     "debug": "NODE_OPTIONS=\${NODE_OPTIONS:-'--inspect'} NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 DEBUG=\${DEBUG:-whook} tsx bin/whook.js",
     "dev": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/run.js",
     "format": "npm run prettier",
@@ -1092,8 +1089,7 @@ DEV_MODE=1
     "rebuild": "swc ./src -s -d dist -C jsc.target=es2022",
     "repl": "NODE_ENV=\${NODE_ENV:-development} tsx src/run.js -- __inject repl",
     "start": "NODE_ENV=\${NODE_ENV:-development} node dist/run.js",
-    "test": "NODE_ENV=test npm run build && npm run jest",
-    "type-check": "tsc --pretty --noEmit",
+    "test": "NODE_ENV=test npm run build && node --run jest && node --run jest",
     "watch": "NODE_ENV=\${NODE_ENV:-development} DEV_MODE=1 DESTROY_SOCKETS=1 tsx src/runWatch.js",
     "whook": "NODE_ENV=\${NODE_ENV:-development} whook"
   },
@@ -1127,26 +1123,26 @@ DEV_MODE=1
     "@whook/http-transaction": "<current_version>"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
-    "@swc/cli": "^0.5.2",
-    "@swc/core": "^1.10.0",
-    "@swc/helpers": "^0.5.15",
-    "@swc/jest": "^0.2.37",
+    "@eslint/js": "^9.28.0",
+    "@swc/cli": "^0.7.7",
+    "@swc/core": "^1.11.31",
+    "@swc/helpers": "^0.5.17",
+    "@swc/jest": "^0.2.38",
     "axios": "^1.7.9",
     "esbuild-node-externals": "^1.15.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "^28.9.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jest": "^28.13.0",
+    "eslint-plugin-prettier": "^5.4.1",
     "jest": "^29.7.0",
-    "jsarch": "^6.1.2",
-    "prettier": "^3.4.2",
+    "jsarch": "^6.2.0",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "schema2dts": "^8.1.0",
     "streamtest": "^3.0.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1"
   },
   "prettier": {
     "semi": true,
@@ -1183,7 +1179,7 @@ DEV_MODE=1
     "prettierPath": null
   },
   "overrides": {
-    "eslint": "^9.16.0"
+    "eslint": "^9.28.0"
   }
 }",
     ],

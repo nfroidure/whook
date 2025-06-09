@@ -96,7 +96,7 @@ export type WhookAWSLambdaLogSubscriberOptions = {
   logGroups: {
     name: string;
     environments?: WhookEnvironmentsConfig;
-  }[]
+  }[];
 };
 export type WhookAWSLambdaS3Options = {
   wrapper: 's3';
@@ -105,7 +105,7 @@ export type WhookAWSLambdaS3Options = {
     filterPrefix: string;
     filterSuffix: string;
     environments?: WhookEnvironmentsConfig;
-  }[]
+  }[];
 };
 
 const cprAsync = promisify(cpr) as (
