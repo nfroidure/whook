@@ -1,3 +1,21 @@
+## [20.0.1](https://github.com/nfroidure/whook/compare/v20.0.0...v20.0.1) (2025-06-12)
+
+
+### Bug Fixes
+
+* **build:** avoid name collision into builds ([0e9688f](https://github.com/nfroidure/whook/commit/0e9688f11efc46fed1afd7209223349dedad9891))
+
+
+
+## [20.0.1](https://github.com/nfroidure/whook/compare/v20.0.0...v20.0.1) (2025-06-12)
+
+
+### Bug Fixes
+
+* **build:** avoid name collision into builds ([0e9688f](https://github.com/nfroidure/whook/commit/0e9688f11efc46fed1afd7209223349dedad9891))
+
+
+
 # [20.0.0](https://github.com/nfroidure/whook/compare/v19.1.3...v20.0.0) (2025-06-09)
 
 
