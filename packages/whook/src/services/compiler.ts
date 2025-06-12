@@ -111,9 +111,9 @@ async function initCompiler({
           // https://github.com/evanw/esbuild/issues/1921#issuecomment-1152991694
           compilerOptions.format === 'esm'
             ? `
-import { createRequire } from 'module';
+import { createRequire as __whook__createRequire } from 'node:module';
 
-const require = createRequire(import.meta.url);
+const require = __whook__createRequire(import.meta.url);
 `
             : ''
         }`,
