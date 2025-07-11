@@ -55,7 +55,7 @@ export async function wrapErrorHandlerForCORS(
   }: ErrorHandlerWrapperDependencies & WhookErrorHandlerDependencies,
   errorHandler: WhookErrorHandler,
 ): Promise<WhookErrorHandler> {
-  log('warning', '🕱 -Wrapping the error handler for CORS.');
+  log('warning', '🕱 - Wrapping the error handler for CORS.');
 
   const wrappedErrorHandler: WhookErrorHandler = async (
     transactionId,

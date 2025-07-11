@@ -7,11 +7,9 @@ import { type AppEnvVars } from 'application-services';
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],
   ignoredModules: [],
-  target: '20',
+  target: '22',
   format: 'esm',
 };
-
-export default location(autoService(initCompiler), import.meta.url);
 
 export type FullWhookCompilerOptions = {
   externalModules: string[];
@@ -150,3 +148,5 @@ const require = __whook__createRequire(import.meta.url);
     return data;
   };
 }
+
+export default location(autoService(initCompiler), import.meta.url);

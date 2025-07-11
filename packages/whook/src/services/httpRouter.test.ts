@@ -991,11 +991,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).not.toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).not.toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
@@ -1100,11 +1100,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).not.toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).not.toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
@@ -1267,11 +1267,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).not.toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).not.toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
@@ -1434,11 +1434,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).not.toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).not.toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -1600,11 +1600,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).not.toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).not.toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -1729,11 +1729,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).not.toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).not.toHaveBeenCalled();
 
           try {
             await httpRouter.fatalErrorPromise;
@@ -1813,11 +1813,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -1984,11 +1984,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -2145,11 +2145,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -2306,11 +2306,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -2471,11 +2471,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -2548,11 +2548,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -2711,11 +2711,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -2778,11 +2778,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -2848,11 +2848,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
@@ -2930,11 +2930,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
@@ -3009,11 +3009,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).not.toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).not.toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
@@ -3096,11 +3096,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).not.toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).not.toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3271,11 +3271,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).not.toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).not.toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3350,11 +3350,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).not.toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).not.toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3512,11 +3512,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3588,11 +3588,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
           )) as WhookResponse;
@@ -3671,11 +3671,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3749,11 +3749,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3827,11 +3827,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3901,11 +3901,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -3979,11 +3979,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -4055,11 +4055,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -4131,11 +4131,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -4207,11 +4207,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -4281,11 +4281,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -4445,11 +4445,11 @@ describe('initHTTPRouter', () => {
 
           await httpRouter.service(req, res);
 
-          expect(handler).not.toBeCalled();
-          expect(httpTransaction).toBeCalled();
-          expect(httpTransactionStart).toBeCalled();
-          expect(httpTransactionCatch).toBeCalled();
-          expect(httpTransactionEnd).toBeCalled();
+          expect(handler).not.toHaveBeenCalled();
+          expect(httpTransaction).toHaveBeenCalled();
+          expect(httpTransactionStart).toHaveBeenCalled();
+          expect(httpTransactionCatch).toHaveBeenCalled();
+          expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
             httpTransactionEnd.mock.calls[0][0],
@@ -4517,11 +4517,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).not.toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).not.toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
           httpTransactionEnd.mock.calls[0][0],
@@ -4619,11 +4619,11 @@ describe('initHTTPRouter', () => {
 
         await httpRouter.service(req, res);
 
-        expect(handler).not.toBeCalled();
-        expect(httpTransaction).toBeCalled();
-        expect(httpTransactionStart).toBeCalled();
-        expect(httpTransactionCatch).toBeCalled();
-        expect(httpTransactionEnd).toBeCalled();
+        expect(handler).not.toHaveBeenCalled();
+        expect(httpTransaction).toHaveBeenCalled();
+        expect(httpTransactionStart).toHaveBeenCalled();
+        expect(httpTransactionCatch).toHaveBeenCalled();
+        expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
           httpTransactionEnd.mock.calls[0][0],

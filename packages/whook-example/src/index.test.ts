@@ -1830,7 +1830,7 @@ describe('runProcess', () => {
       "🔒 - JWT service initialized!",
     ],
     [
-      "🕱 -Wrapping the error handler for CORS.",
+      "🕱 - Wrapping the error handler for CORS.",
     ],
     [
       "🤖 - Initializing the \`$autoload\` service.",

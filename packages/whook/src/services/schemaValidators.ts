@@ -1,6 +1,6 @@
 import { autoService, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import Ajv, { type ValidateFunction } from 'ajv/dist/2020.js';
+import { Ajv2020, type ValidateFunction } from 'ajv/dist/2020.js';
 import addAJVFormats from 'ajv-formats';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
@@ -72,7 +72,7 @@ async function initSchemaValidators({
   log('debug', `🖃 - Initializing the validators service.`);
 
   const validatorsMap: Record<string, ValidateFunction> = {};
-  const ajv = new Ajv.default({
+  const ajv = new Ajv2020({
     verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
     strict: true,
     logger: {
