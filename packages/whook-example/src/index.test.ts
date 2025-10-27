@@ -397,18 +397,6 @@ describe('runProcess', () => {
       "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
     ],
     [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
-      "Error: ENOENT: no such file or directory, access 'file:///home/whoiam/projects/whook/packages/whook-example/src/index.test.ts:78:59)",
-    ],
-    [
       "⌛ - Delay service initialized.",
     ],
     [
@@ -743,18 +731,6 @@ describe('runProcess', () => {
     ],
     [
       "🍀 - Trying to find "COERCION_OPTIONS" module path in "__project__".",
-    ],
-    [
-      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/authorization".",
-    ],
-    [
-      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/cors".",
-    ],
-    [
-      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "@whook/whook".",
-    ],
-    [
-      "🍀 - Trying to find "COMMANDS_DEFINITIONS_OPTIONS" module path in "__project__".",
     ],
     [
       "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/authorization".",
@@ -1279,9 +1255,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COERCION_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/dist/services/COMMAND_DEFINITION_FILTER.js".",
     ],
     [
@@ -1354,9 +1327,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COERCION_OPTIONS.js".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-authorization/dist/services/COMMAND_DEFINITION_FILTER.js".",
     ],
     [
@@ -1421,9 +1391,6 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COERCION_OPTIONS.js".",
-    ],
-    [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMANDS_DEFINITIONS_OPTIONS.js".",
     ],
     [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-cors/dist/services/COMMAND_DEFINITION_FILTER.js".",
@@ -1501,9 +1468,6 @@ describe('runProcess', () => {
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COERCION_OPTIONS.ts".",
     ],
     [
-      "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMANDS_DEFINITIONS_OPTIONS.ts".",
-    ],
-    [
       "🚫 - File doesn't exist at "file:///home/whoiam/projects/whook/packages/whook-example/src/services/COMMAND_DEFINITION_FILTER.ts".",
     ],
     [
@@ -1577,9 +1541,6 @@ describe('runProcess', () => {
     ],
     [
       "🚫 - Module path of "COERCION_OPTIONS" not found.",
-    ],
-    [
-      "🚫 - Module path of "COMMANDS_DEFINITIONS_OPTIONS" not found.",
     ],
     [
       "🚫 - Module path of "COMMAND_DEFINITION_FILTER" not found.",

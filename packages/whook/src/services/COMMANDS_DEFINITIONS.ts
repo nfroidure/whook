@@ -17,7 +17,7 @@ export const DEFAULT_COMMANDS_DEFINITIONS_OPTIONS: WhookCommandsDefinitionsOptio
   {
     ignoredFilePatterns: ['^__', '\\.(test|d)\\.(?:js|mjs|ts|mts)$'],
     fileNamePatterns: ['([^.]+)\\.(?:js|mjs|ts|mts)$'],
-    serviceNamePatterns: ['^([a-z][a-zA-Z0-9]*)$'],
+    serviceNamePatterns: ['^(([a-zA-Z0-9]*)Command)$'],
   };
 export const DEFAULT_COMMAND_DEFINITION_FILTER: WhookCommandDefinitionFilter =
   () => false;
@@ -135,7 +135,7 @@ async function initCommands({
 
       const nameMatches = (
         COMMANDS_DEFINITIONS_OPTIONS.serviceNamePatterns || []
-      ).some((pattern) => new RegExp(pattern).test(commandName));
+      ).some((pattern) => new RegExp(pattern).test(commandName + 'Command'));
 
       if (!nameMatches) {
         log(
