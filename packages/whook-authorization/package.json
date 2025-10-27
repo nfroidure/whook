@@ -54,9 +54,9 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/whook": "^20.0.2",
-    "common-services": "^17.0.1",
+    "common-services": "^17.1.1",
     "http-auth-utils": "^6.0.1",
-    "knifecycle": "^19.1.1",
+    "knifecycle": "^19.1.2",
     "yerror": "^8.0.0",
     "yhttperror": "^8.1.0"
   },

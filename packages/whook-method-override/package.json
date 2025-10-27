@@ -53,9 +53,9 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/whook": "^20.0.2",
-    "common-services": "^17.0.1",
-    "knifecycle": "^19.1.1",
-    "ya-open-api-types": "^1.2.0"
+    "common-services": "^17.1.1",
+    "knifecycle": "^19.1.2",
+    "ya-open-api-types": "^1.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

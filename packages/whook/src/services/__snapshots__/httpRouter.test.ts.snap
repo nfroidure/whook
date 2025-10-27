@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`initHTTPRouter httpRouter CUSTOM_METHOD should 404 1`] = `
 {

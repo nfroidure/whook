@@ -66,15 +66,15 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@types/swagger-ui": "3.52.4",
+    "@types/swagger-ui": "5.21.1",
     "@whook/whook": "^20.0.2",
-    "axios": "^1.7.9",
+    "axios": "^1.12.2",
     "ecstatic": "^4.1.4",
-    "knifecycle": "^19.1.1",
+    "knifecycle": "^19.1.2",
     "swagger-ui-dist": "^5.18.2",
-    "type-fest": "^4.40.1",
+    "type-fest": "^5.1.0",
     "ya-json-schema-types": "^1.0.1",
-    "ya-open-api-types": "^1.2.0"
+    "ya-open-api-types": "^1.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

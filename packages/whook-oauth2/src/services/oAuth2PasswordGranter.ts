@@ -18,7 +18,7 @@ export type OAuth2PasswordGranterParameters = {
   password: string;
   scope?: string;
 };
-export type OAuth2PasswordGranterService<> = OAuth2GranterService<
+export type OAuth2PasswordGranterService = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,
   OAuth2PasswordGranterParameters

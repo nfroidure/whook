@@ -53,10 +53,10 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@whook/whook": "^20.0.2",
-    "common-services": "^17.0.1",
-    "knifecycle": "^19.1.1",
+    "common-services": "^17.1.1",
+    "knifecycle": "^19.1.2",
     "ya-json-schema-types": "^1.0.1",
-    "ya-open-api-types": "^1.2.0",
+    "ya-open-api-types": "^1.2.2",
     "yhttperror": "^8.1.0"
   },
   "devDependencies": {
