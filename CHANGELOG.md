@@ -1,3 +1,21 @@
+# [20.1.0](https://github.com/nfroidure/whook/compare/v20.0.2...v20.1.0) (2025-10-28)
+
+
+### Features
+
+* **@whook/whook:** allow to inject commands in services ([72349a7](https://github.com/nfroidure/whook/commit/72349a790d2ee1e326fb7e54e400898f889f293d))
+
+
+
+# [20.1.0](https://github.com/nfroidure/whook/compare/v20.0.2...v20.1.0) (2025-10-28)
+
+
+### Features
+
+* **@whook/whook:** allow to inject commands in services ([72349a7](https://github.com/nfroidure/whook/commit/72349a790d2ee1e326fb7e54e400898f889f293d))
+
+
+
 ## [20.0.2](https://github.com/nfroidure/whook/compare/v20.0.1...v20.0.2) (2025-07-11)
 
 
