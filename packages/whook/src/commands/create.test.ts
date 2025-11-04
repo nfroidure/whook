@@ -1753,13 +1753,13 @@ export default location(
       });
 
       expect({
-        result,
-        ensureDirCalls: ensureDir.mock.calls,
-        writeFileCalls: writeFile.mock.calls,
-        pathExistsCalls: pathExists.mock.calls,
-        inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchInlineSnapshot(`
+  result,
+  ensureDirCalls: ensureDir.mock.calls,
+  writeFileCalls: writeFile.mock.calls,
+  pathExistsCalls: pathExists.mock.calls,
+  inquirerPromptCalls: inquirer.prompt.mock.calls,
+  logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack'))
+}).toMatchInlineSnapshot(`
 {
   "ensureDirCalls": [
     [
@@ -1860,7 +1860,7 @@ export default location(
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { location, autoService } from 'knifecycle';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '@whook/whook';
 
@@ -1884,10 +1884,17 @@ async function initACommandCommand({
   promptArgs,
 }: {
   promptArgs: WhookPromptArgs;
-}): Promise<WhookCommand<{ param: string; }>> {
-  return async ({ param }) => {
+}): Promise<
+  WhookCommandHandler<{
+    param: string;
+  }>
+> {
+  return async (args) => {
+    const {
+      namedArguments: { param },
+    } = args;
 
-  // Implement your command here
+    // Implement your command here
   }
 }
 
@@ -2085,13 +2092,13 @@ export default location(
       });
 
       expect({
-        result,
-        ensureDirCalls: ensureDir.mock.calls,
-        writeFileCalls: writeFile.mock.calls,
-        pathExistsCalls: pathExists.mock.calls,
-        inquirerPromptCalls: inquirer.prompt.mock.calls,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchInlineSnapshot(`
+  result,
+  ensureDirCalls: ensureDir.mock.calls,
+  writeFileCalls: writeFile.mock.calls,
+  pathExistsCalls: pathExists.mock.calls,
+  inquirerPromptCalls: inquirer.prompt.mock.calls,
+  logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack'))
+}).toMatchInlineSnapshot(`
 {
   "ensureDirCalls": [
     [
@@ -2206,7 +2213,7 @@ export default location(
       "/hom/whoiam/project/src/commands/aCommand.ts",
       "import { location, autoService } from 'knifecycle';
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
@@ -2238,10 +2245,17 @@ async function initACommandCommand({
   PROJECT_DIR: ProjectDirService;
   log: LogService;
   promptArgs: WhookPromptArgs;
-}): Promise<WhookCommand<{ param: string; }>> {
-  return async ({ param }) => {
+}): Promise<
+  WhookCommandHandler<{
+    param: string;
+  }>
+> {
+  return async (args) => {
+    const {
+      namedArguments: { param },
+    } = args;
 
-  // Implement your command here
+    // Implement your command here
   }
 }
 

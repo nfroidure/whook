@@ -73,7 +73,10 @@ async function initCommand({
             log('error', `❌ - Argument "${argument.name}" is required.`);
             throw new YError('E_MISSING_REQUIRED_ARG', argument.name);
           }
-          if (resolvedSchema.default) {
+          if (
+            'default' in resolvedSchema &&
+            typeof resolvedSchema.default !== 'undefined'
+          ) {
             args.namedArguments[argument.name] =
               resolvedSchema.default as string;
           }

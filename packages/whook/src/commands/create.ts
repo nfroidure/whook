@@ -216,7 +216,7 @@ async function initCreateCommand({
       type === 'command'
         ? `
 import {
-  type WhookCommand,
+  type WhookCommandHandler,
   type WhookCommandDefinition,
 } from '@whook/whook';`
         : ''
@@ -608,10 +608,17 @@ export const definition = {
 
 async function init${upperCamelizedName}Command(${
     parametersDeclaration || '_'
-  }: ${typesDeclaration || {}}): Promise<WhookCommand<{ param: string; }>> {
-  return async ({ param }) => {
+  }: ${typesDeclaration || {}}): Promise<
+  WhookCommandHandler<{
+    param: string;
+  }>
+> {
+  return async (args) => {
+    const {
+      namedArguments: { param },
+    } = args;
 
-  // Implement your command here
+    // Implement your command here
   }
 }
 
