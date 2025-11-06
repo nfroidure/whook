@@ -1,3 +1,21 @@
+## [20.1.1](https://github.com/nfroidure/whook/compare/v20.1.0...v20.1.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* **@whook/whook:** fix the new commands creation command ([890743a](https://github.com/nfroidure/whook/commit/890743ab03d2b7a61e00bd7cfef29af7226e912e))
+
+
+
+## [20.1.1](https://github.com/nfroidure/whook/compare/v20.1.0...v20.1.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* **@whook/whook:** fix the new commands creation command ([890743a](https://github.com/nfroidure/whook/commit/890743ab03d2b7a61e00bd7cfef29af7226e912e))
+
+
+
 # [20.1.0](https://github.com/nfroidure/whook/compare/v20.0.2...v20.1.0) (2025-10-28)
 
 

@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/swagger-ui",
-  "version": "20.1.0",
+  "version": "20.1.1",
   "description": "A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev",
   "type": "module",
   "main": "dist/index.js",
@@ -67,7 +67,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@types/swagger-ui": "5.21.1",
-    "@whook/whook": "^20.1.0",
+    "@whook/whook": "^20.1.1",
     "axios": "^1.12.2",
     "ecstatic": "^4.1.4",
     "knifecycle": "^19.1.3",
