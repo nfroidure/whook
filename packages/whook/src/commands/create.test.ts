@@ -1753,13 +1753,13 @@ export default location(
       });
 
       expect({
-  result,
-  ensureDirCalls: ensureDir.mock.calls,
-  writeFileCalls: writeFile.mock.calls,
-  pathExistsCalls: pathExists.mock.calls,
-  inquirerPromptCalls: inquirer.prompt.mock.calls,
-  logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack'))
-}).toMatchInlineSnapshot(`
+        result,
+        ensureDirCalls: ensureDir.mock.calls,
+        writeFileCalls: writeFile.mock.calls,
+        pathExistsCalls: pathExists.mock.calls,
+        inquirerPromptCalls: inquirer.prompt.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      }).toMatchInlineSnapshot(`
 {
   "ensureDirCalls": [
     [
@@ -2092,13 +2092,13 @@ export default location(
       });
 
       expect({
-  result,
-  ensureDirCalls: ensureDir.mock.calls,
-  writeFileCalls: writeFile.mock.calls,
-  pathExistsCalls: pathExists.mock.calls,
-  inquirerPromptCalls: inquirer.prompt.mock.calls,
-  logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack'))
-}).toMatchInlineSnapshot(`
+        result,
+        ensureDirCalls: ensureDir.mock.calls,
+        writeFileCalls: writeFile.mock.calls,
+        pathExistsCalls: pathExists.mock.calls,
+        inquirerPromptCalls: inquirer.prompt.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      }).toMatchInlineSnapshot(`
 {
   "ensureDirCalls": [
     [

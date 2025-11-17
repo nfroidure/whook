@@ -445,6 +445,12 @@ describe('runProcess', () => {
       "⏳ - Skipped "create.test.js.map" per file patterns.",
     ],
     [
+      "⏳ - Skipped "cronRun.d.ts" per ignore patterns.",
+    ],
+    [
+      "⏳ - Skipped "cronRun.js.map" per file patterns.",
+    ],
+    [
       "⏳ - Skipped "cronSchedule.d.ts" per ignore patterns.",
     ],
     [
@@ -1625,6 +1631,9 @@ describe('runProcess', () => {
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/create.js".",
+    ],
+    [
+      "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/cronRun.js".",
     ],
     [
       "🛂 - Dynamic import of "file:///home/whoiam/projects/whook/dist/commands/cronSchedule.js".",

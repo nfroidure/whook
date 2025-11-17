@@ -20,8 +20,15 @@ the various usages of the Whook framework to build REST APIs.
 To run the server in production:
 
 ```sh
+# For the first time create a strong JWT secret
+echo 'JWT_SECRET=$(openssl rand -base64 10)' > .env.app.production
+# And install the dependencies
 npm it
-NODE_ENV=production APP_ENV=production npm start
+
+# Then and later, just run build and run the server
+npm run build
+
+NODE_ENV=production APP_ENV=production node --run start
 ```
 
 You can understand deeply this repository and Whook's internal by simply reading
@@ -42,28 +49,28 @@ Start the server in development:
 
 ```sh
 # Simple dev mode
-npm run dev
+node --run dev
 
 # Watch mode
-npm run watch
+node --run watch
 ```
 
 Create a new route / cron / service / provider or command:
 
 ```sh
-npx whook create
+node --run create
 ```
 
 Play with the REPL:
 
 ```sh
-npm run repl
+node --run repl
 ```
 
 Generate the dependency injection graph (here, for the `putTime` handler):
 
 ```sh
-npm run --silent whook -- __inject putTime,mermaid > DEPENDENCIES.mmd;
+node --run whook -- __inject putTime,mermaid > DEPENDENCIES.mmd;
 docker run --rm -u `id -u`:`id -g` -v $(pwd):/data minlag/mermaid-cli -i DEPENDENCIES.mmd -o DEPENDENCIES.mmd.svg;
 ```
 
@@ -71,7 +78,7 @@ List available commands:
 
 ```sh
 ## In dev mode
-npm run dev -- ls
+node --run dev -- ls
 ## With built files
 npx whook ls
 ```
@@ -79,27 +86,33 @@ npx whook ls
 Generate API types:
 
 ```sh
-npm run apitypes
+node --run apitypes
 ```
 
 ## Debug
 
-Execute a handler in isolation:
+Execute a route handler in isolation:
 
 ```sh
-npx whook handler --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
+node --run dev -- route --name putEcho --parameters '{"body": { "echo": "YOLO!" }}'
+```
+
+Execute a cron handler in isolation:
+
+```sh
+node --run dev -- cronRun --name handleMinutes --date '2025-03-15T17:00:00Z'
 ```
 
 Debug `whook` internals:
 
 ```sh
-DEBUG=whook npm run dev
+DEBUG=whook node --run dev
 ```
 
 Debug `knifecycle` internals (dependency injection issues):
 
 ```sh
-DEBUG=knifecycle npm run dev
+DEBUG=knifecycle node --run dev
 ```
 
 [//]: # (::contents:end)
