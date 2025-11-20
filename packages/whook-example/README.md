@@ -89,6 +89,13 @@ Generate API types:
 node --run apitypes
 ```
 
+## Deploy with Docker
+
+```sh
+docker build --build-arg 'APP_ENV=production' -t whook-api .
+docker run --env 'JWT_SECRET=lol' --env 'HOST=0.0.0.0' -p 127.0.0.1:8000:8000/tcp whook-api
+```
+
 ## Debug
 
 Execute a route handler in isolation:
