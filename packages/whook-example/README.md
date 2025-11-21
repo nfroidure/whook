@@ -23,7 +23,7 @@ To run the server in production:
 # For the first time create a strong JWT secret
 echo 'JWT_SECRET=$(openssl rand -base64 10)' > .env.app.production
 # And install the dependencies
-npm it
+npm i
 
 # Then and later, just run build and run the server
 npm run build
@@ -39,8 +39,8 @@ that explains the notes.
 Feel free to continue creating architecture notes and to regenerate the markdown
 file by running:
 
-```
-npm run architecture
+```sh
+node --run architecture
 ```
 
 ## Dev
@@ -53,6 +53,15 @@ node --run dev
 
 # Watch mode
 node --run watch
+```
+
+Run and update tests:
+```sh
+# Run the tests
+npm t
+
+# Updating tests snapshots
+node --run jest -- -u
 ```
 
 Create a new route / cron / service / provider or command:

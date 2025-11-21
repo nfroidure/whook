@@ -1,6 +1,7 @@
 import { describe, test, expect, jest } from '@jest/globals';
 import { exec } from 'node:child_process';
 import { YError } from 'yerror';
+import { join as joinPaths } from 'node:path';
 
 jest.setTimeout(30000);
 
@@ -11,11 +12,11 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stdout: replacePaths(stdout),
+      stderr: replacePaths(stderr),
     }).toMatchInlineSnapshot(`
 {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+  "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
@@ -56,11 +57,11 @@ On air 🚀🌕
     );
 
     expect({
-      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stdout: replacePaths(stdout),
+      stderr: replacePaths(stderr),
     }).toMatchInlineSnapshot(`
 {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+  "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
@@ -80,11 +81,11 @@ On air 🚀🌕
     );
 
     expect({
-      stdout: stdout.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
-      stderr: stderr.replace(/( |"|')([^ ]+)\/whook\//g, ' /whook/'),
+      stdout: replacePaths(stdout),
+      stderr: replacePaths(stderr),
     }).toMatchInlineSnapshot(`
 {
-  "stderr": "⚡ - Loading configurations from /whook/packages/whook-example/dist/config/local/config.js".
+  "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
 🤖 - Initializing the \`$autoload\` service.
 🔴 - Running with "local" application environment.
 🔂 - Running with "test" node environment.
@@ -111,4 +112,11 @@ async function execCommand(
       resolve({ stdout, stderr });
     });
   });
+}
+
+function replacePaths(text: string) {
+  return text.replaceAll(
+    joinPaths(import.meta.dirname, '..').replace(/^file:\/\//, ''),
+    '/project',
+  );
 }
