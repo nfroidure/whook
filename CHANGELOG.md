@@ -1,3 +1,31 @@
+## [20.1.2](https://github.com/nfroidure/whook/compare/v20.1.1...v20.1.2) (2025-11-25)
+
+
+### Bug Fixes
+
+* **core:** allow to properly override injected names ([4adfd59](https://github.com/nfroidure/whook/commit/4adfd590749626602b66bae361f141a4dcfd05b3))
+
+
+### Features
+
+* **@whook/whook:** add a cron run command ([1f2cbcd](https://github.com/nfroidure/whook/commit/1f2cbcdaede8235471ba0636b951322a1bd8236c))
+
+
+
+## [20.1.2](https://github.com/nfroidure/whook/compare/v20.1.1...v20.1.2) (2025-11-25)
+
+
+### Bug Fixes
+
+* **core:** allow to properly override injected names ([4adfd59](https://github.com/nfroidure/whook/commit/4adfd590749626602b66bae361f141a4dcfd05b3))
+
+
+### Features
+
+* **@whook/whook:** add a cron run command ([1f2cbcd](https://github.com/nfroidure/whook/commit/1f2cbcdaede8235471ba0636b951322a1bd8236c))
+
+
+
 ## [20.1.1](https://github.com/nfroidure/whook/compare/v20.1.0...v20.1.1) (2025-11-06)
 
 
