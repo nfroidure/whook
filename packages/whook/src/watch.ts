@@ -31,7 +31,7 @@ export type WatchProcessDependencies = OpenAPITypesConfig & {
 };
 
 export type WatchProcessArgs<T extends Dependencies> = {
-  injectedNames: string[];
+  injectedNames?: string[];
   ignored?: string[];
   watched?: string[];
   afterRestartEnd?: (
@@ -43,16 +43,12 @@ export type WatchProcessArgs<T extends Dependencies> = {
 export const DEFAULT_IGNORED = ['node_modules', '*.d.ts', '.git'];
 export const DEFAULT_WATCHED = ['src', 'package.json', 'package-lock.json'];
 
-export async function watchDevProcess<T extends Dependencies>(
-  {
-    injectedNames = [],
-    ignored,
-    watched,
-    afterRestartEnd,
-  }: WatchProcessArgs<T> = {
-    injectedNames: [],
-  },
-): Promise<void> {
+export async function watchDevProcess<T extends Dependencies>({
+  injectedNames,
+  ignored,
+  watched,
+  afterRestartEnd,
+}: WatchProcessArgs<T> = {}): Promise<void> {
   let restartsCounter = 0;
   const ignoreFilter: (pathname: string) => boolean = await (async () => {
     let ignoreFileContent: string;
@@ -122,7 +118,7 @@ export async function watchDevProcess<T extends Dependencies>(
 }
 
 export async function restartDevProcess<T extends Dependencies>({
-  injectedNames = [],
+  injectedNames,
   afterRestartEnd,
   restartsCounter,
 }: WatchProcessArgs<T> & {
@@ -162,7 +158,7 @@ export async function restartDevProcess<T extends Dependencies>({
     ...additionalServices
   } = (await runProcess(prepareWatchEnvironment, prepareProcess, [
     ...new Set([
-      ...injectedNames,
+      ...(injectedNames || []),
       'ENV',
       'OPEN_API_TYPES_CONFIG',
       'MAIN_FILE_URL',

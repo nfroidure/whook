@@ -192,6 +192,12 @@ export {
   runBuild,
 };
 
+export const WHOOK_DEFAULT_INJECTED_NAMES = [
+  'httpServer',
+  '?cronRunner',
+  'process',
+];
+
 /* Architecture Note #1: Main file
 The Whook's main file exports :
 - its specific types,
@@ -213,7 +219,7 @@ export async function runProcess<
     injectedNames: string[],
     $: T,
   ) => Promise<D> = prepareProcess,
-  injectedNames: string[] = [],
+  injectedNames: string[] = WHOOK_DEFAULT_INJECTED_NAMES,
   argv: typeof _argv = _argv,
 ): Promise<D> {
   const args = parseArgs(argv);
@@ -226,7 +232,7 @@ export async function runProcess<
           .filter(identity)
       : args.rest[0]
         ? ['command']
-        : ['httpServer', '?cronRunner', 'process', ...injectedNames];
+        : injectedNames;
 
   try {
     const $ = await innerPrepareEnvironment();

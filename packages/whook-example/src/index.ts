@@ -21,6 +21,7 @@ import {
   type Dependencies,
 } from 'knifecycle';
 import {
+  WHOOK_DEFAULT_INJECTED_NAMES,
   WHOOK_DEFAULT_PLUGINS,
   runProcess as runBaseProcess,
   prepareProcess as prepareBaseProcess,
@@ -43,6 +44,16 @@ const APP_ENVS = ['local', 'test', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
 
+/* Architecture Note #1.1.1.1: Injected names
+
+Per default, Whook embeds the process manager,
+ the HTTP server and optionally the cronRunner.
+
+You can specify any service here that should be
+ launched when your process starts.
+*/
+export const DEFAULT_INJECTED_NAMES = [...WHOOK_DEFAULT_INJECTED_NAMES];
+
 /* Architecture Note #1.1.1: runProcess
 
 The `runProcess` function is intended to run the server
@@ -60,7 +71,7 @@ export async function runProcess<
     injectedNames: DependencyDeclaration[],
     $: T,
   ) => Promise<D> = prepareProcess,
-  injectedNames: DependencyDeclaration[] = [],
+  injectedNames: DependencyDeclaration[] = DEFAULT_INJECTED_NAMES,
   argv: typeof _argv = _argv,
 ): Promise<D> {
   return runBaseProcess(

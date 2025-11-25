@@ -12,12 +12,13 @@ import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 import { watchDevProcess as baseWatchDevProcess } from '@whook/whook/dist/watch.js';
 import { printStackTrace } from 'yerror';
+import { DEFAULT_INJECTED_NAMES } from './index.js';
 
 const doExec = promisify(exec);
 
 export async function watchDevProcess() {
   await baseWatchDevProcess({
-    injectedNames: ['PROJECT_DIR', 'log'],
+    injectedNames: ['PROJECT_DIR', 'log'].concat(DEFAULT_INJECTED_NAMES),
     afterRestartEnd: async ({ PROJECT_DIR, log }, { apiChanged }) => {
       if (apiChanged) {
         try {
