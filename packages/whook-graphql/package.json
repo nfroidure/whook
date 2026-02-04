@@ -66,7 +66,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@apollo/server": "5.0.0",
+    "@apollo/server": "5.4.0",
     "@whook/whook": "^20.1.2",
     "common-services": "^17.1.2",
     "knifecycle": "^19.1.3",
