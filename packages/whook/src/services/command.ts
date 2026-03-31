@@ -5,7 +5,7 @@ import {
   type FatalErrorService,
   type Knifecycle,
 } from 'knifecycle';
-import { printStackTrace, YError } from 'yerror';
+import { pickYErrorWithCode, printStackTrace, YError } from 'yerror';
 import { promptArgs, type WhookRawCommandArgs } from '../libs/args.js';
 import { type WhookSchemaValidatorsService } from './schemaValidators.js';
 import {
@@ -19,7 +19,11 @@ import {
 import { type WhookOpenAPI } from '../types/openapi.js';
 import { getCasterForSchema } from '../libs/validation.js';
 import { ensureResolvedObject } from 'ya-open-api-types';
-import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import {
+  type JSONSchema,
+  type ExpressiveJSONSchema,
+} from 'ya-json-schema-types';
+import { type ErrorObject } from 'ajv';
 
 export type WhookCommandEnv = {
   CI?: string;
@@ -71,7 +75,7 @@ async function initCommand({
         if (typeof args.namedArguments[argument.name] === 'undefined') {
           if (argument.required) {
             log('error', `❌ - Argument "${argument.name}" is required.`);
-            throw new YError('E_MISSING_REQUIRED_ARG', argument.name);
+            throw new YError('E_MISSING_REQUIRED_ARG', [argument.name]);
           }
           if (
             'default' in resolvedSchema &&
@@ -88,13 +92,13 @@ async function initCommand({
           resolvedSchema,
         );
 
-        const validator = schemaValidators(argument.schema);
+        const validator = schemaValidators(argument.schema as JSONSchema);
 
         // TODO: Add ajv human readable error builder
         validator(caster(args.namedArguments[argument.name]));
 
         if ((validator.errors || []).length) {
-          throw new YError('E_BAD_ARG', validator.errors);
+          throw new YError('E_BAD_ARG', [validator.errors]);
         }
       }
 
@@ -102,25 +106,30 @@ async function initCommand({
 
       await $instance.destroy();
     } catch (err) {
-      if ((err as YError).code === 'E_BAD_ARG') {
-        log('error-stack', printStackTrace(err as Error));
-        if ((err as YError).params[0][0].keyword === 'required') {
-          if ((err as YError).params[0][0].params.missingProperty) {
+      const argError = pickYErrorWithCode<[ErrorObject[]]>(
+        err as Error,
+        'E_BAD_ARG',
+      );
+
+      if (argError) {
+        log('debug-stack', printStackTrace(err as Error));
+        if (argError.debugValues[0][0].keyword === 'required') {
+          if (argError.debugValues[0][0].params.missingProperty) {
             $fatalError.throwFatalError(err as Error);
             return;
           }
         }
-        if ((err as YError).params[0][0].keyword === 'additionalProperties') {
-          if ((err as YError).params[0][0].params.additionalProperty === '_') {
-            log('error', 'No anonymous arguments allowed.');
+        if (argError.debugValues[0][0].keyword === 'additionalProperties') {
+          if (argError.debugValues[0][0].params.additionalProperty === '_') {
+            log('error', '💥 - No anonymous arguments allowed.');
             $fatalError.throwFatalError(err as Error);
             return;
           }
-          if ((err as YError).params[0][0].params.additionalProperty) {
+          if (argError.debugValues[0][0].params.additionalProperty) {
             log(
               'error',
-              `Argument "${
-                (err as YError).params[0][0].params.additionalProperty
+              `💥 - Argument "${
+                argError.debugValues[0][0].params.additionalProperty
               }" not allowed.`,
             );
             $fatalError.throwFatalError(err as Error);
@@ -129,13 +138,15 @@ async function initCommand({
         }
         log(
           'error',
-          'Error parsing arguments: ',
-          (err as YError).params[0][0].message,
-          (err as YError).params[0][0].params,
+          `💥 - Error parsing arguments: ${
+            argError.debugValues[0][0].keyword
+          }, ${argError.debugValues[0][0].params}`,
         );
         $fatalError.throwFatalError(err as Error);
         return;
       }
+
+      log('error-stack', printStackTrace(err as Error));
       $fatalError.throwFatalError(err as Error);
       return;
     }

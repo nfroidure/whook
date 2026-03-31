@@ -11,9 +11,9 @@ import {
   type ProcessEnvDependencies,
 } from 'application-services';
 
-export type WhookProxiedENVConfig = {
-  PROXIED_ENV_VARS?: string[];
-};
+export interface WhookProxiedENVConfig {
+  PROXIED_ENV_VARS?: (keyof AppEnvVars)[];
+}
 export type WhookProxiedENVDependencies = WhookProxiedENVConfig & {
   log?: LogService;
 };
@@ -58,6 +58,6 @@ async function wrapEnvForBuild(
     }),
     {
       NODE_ENV: ENV.NODE_ENV,
-    },
+    } as AppEnvVars,
   );
 }

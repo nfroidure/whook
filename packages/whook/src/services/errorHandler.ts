@@ -2,14 +2,16 @@ import { initializer, location } from 'knifecycle';
 import {
   DEFAULT_DEBUG_NODE_ENVS,
   DEFAULT_STRINGIFIERS,
+  type WhookStringifiers,
 } from '../libs/constants.js';
+// @ts-expect-error no types for this module
 import miniquery from 'miniquery';
 import { printStackTrace, YError } from 'yerror';
 import { type YHTTPError } from 'yhttperror';
 import { type AppEnvVars } from 'application-services';
-import { type WhookResponseSpec } from '../libs/router.js';
-import { type WhookStringifiers } from './httpRouter.js';
+import { type WhookResponseBodySpec } from '../libs/body.js';
 import { type JSONSchema } from 'ya-json-schema-types';
+import { JsonValue } from 'type-fest';
 
 /* Architecture Note #2.13: Error handler
 
@@ -35,17 +37,15 @@ Errors descriptors allows you to change the error
  `transmittedParams` so that your end users can have some
  more context on the error root cause.
 */
-export type WhookErrorDescriptor = {
+export interface WhookErrorDescriptor {
   code: string;
   description?: string;
   uri?: string;
   help?: string;
   status?: number;
   transmittedParams?: number[];
-};
-export type WhookErrorsDescriptors = {
-  [errorCode: string]: WhookErrorDescriptor;
-};
+}
+export type WhookErrorsDescriptors = Record<string, WhookErrorDescriptor>;
 
 export const DEFAULT_ERROR_URI =
   'https://stackoverflow.com/search?q=%5Bwhook%5D+$code';
@@ -297,27 +297,25 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
-};
+} satisfies WhookErrorsDescriptors;
 
-export type WhookErrorHandlerConfig = {
+export interface WhookErrorHandlerConfig {
   DEBUG_NODE_ENVS: string[];
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
   DEFAULT_ERROR_CODE?: string;
-};
+}
 export type WhookErrorHandlerDependencies = WhookErrorHandlerConfig & {
   ENV: AppEnvVars;
   STRINGIFIERS?: WhookStringifiers;
 };
 
-export interface WhookErrorHandler {
-  (
-    transactionId: string,
-    responseSpec: WhookResponseSpec,
-    err: Error,
-  ): Promise<WhookErrorResponse>;
-}
+export type WhookErrorHandler = (
+  transactionId: string,
+  responseSpec: WhookResponseBodySpec,
+  err: Error,
+) => Promise<WhookErrorResponse>;
 
-export type WhookErrorResponse = {
+export interface WhookErrorResponse {
   status: number;
   headers: {
     'cache-control': 'private';
@@ -329,15 +327,15 @@ export type WhookErrorResponse = {
     error_description?: string;
     error_uri?: string;
     error_help_uri?: string;
-    error_params?: unknown[];
+    error_params?: JsonValue[];
     error_debug_data: {
       guruMeditation: string;
       code?: string;
       stack?: string;
-      params?: unknown[];
+      params?: JsonValue[];
     };
   };
-};
+}
 
 export const whookErrorSchema: JSONSchema = {
   type: 'object',
@@ -426,7 +424,7 @@ async function initErrorHandler({
    */
   async function errorHandler(
     transactionId: string,
-    responseSpec: WhookResponseSpec,
+    responseSpec: WhookResponseBodySpec,
     err: Error | YError | YHTTPError,
   ) {
     const errorCode = (err as YError).code || DEFAULT_ERROR_CODE;
@@ -472,7 +470,10 @@ async function initErrorHandler({
         ),
         error_params: errorDescriptor.transmittedParams
           ? errorDescriptor.transmittedParams.map(
-              (paramIndex) => ((err as YError).params || [])[paramIndex],
+              (paramIndex) =>
+                (((err as YError).debugValues as JsonValue[]) || [])[
+                  paramIndex
+                ],
             )
           : undefined,
         error_debug_data: {
@@ -486,7 +487,8 @@ async function initErrorHandler({
     if (DEBUG_NODE_ENVS.includes(ENV.NODE_ENV)) {
       response.body.error_debug_data.code = errorCode;
       response.body.error_debug_data.stack = printStackTrace(err as Error);
-      response.body.error_debug_data.params = (err as YError).params;
+      response.body.error_debug_data.params = (err as YError)
+        .debugValues as JsonValue[];
     }
 
     return response;
@@ -497,7 +499,7 @@ function replaceTemplatedValues(err: YError, str: string): string | undefined {
   return str
     ? str
         .replace(/\$([0-9](:?\.[a-zA-Z0-9#@*]+)*)/g, (_, path) =>
-          miniquery(path, err.params ? [err.params] : []).join(', '),
+          miniquery(path, err.debugValues ? [err.debugValues] : []).join(', '),
         )
         .replace(/\$code/, (err as YError).code)
     : undefined;

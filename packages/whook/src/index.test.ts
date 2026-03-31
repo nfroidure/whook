@@ -89,6 +89,10 @@ describe('runProcess', () => {
   });
 });
 
-function sortLogs(strs1, strs2) {
-  return strs1[0] > strs2[0] ? 1 : strs1[0] === strs2[0] ? 0 : -1;
+function sortLogs(strs1: unknown[], strs2: unknown[]): number {
+  return (strs1 as string[])[0] > (strs2 as string[])[0]
+    ? 1
+    : (strs1 as string[])[0] === (strs2 as string[])[0]
+      ? 0
+      : -1;
 }

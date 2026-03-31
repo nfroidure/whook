@@ -85,7 +85,7 @@ async function initGraphQL({
       ...accSchemaDirectives,
       ...schemaDirectives,
     }),
-    {},
+    {} as Record<string, DirectiveTransformer>,
   );
 
   const apolloServer = new ApolloServer({

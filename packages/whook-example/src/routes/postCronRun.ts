@@ -101,7 +101,7 @@ async function initPostCronRun({
     );
 
     if (!CRONS_DEFINITIONS[cronName]) {
-      throw new YHTTPError(400, 'E_BAD_CRON_NAME', cronName);
+      throw new YHTTPError(400, 'E_BAD_CRON_NAME', [cronName]);
     }
 
     const validator = schemaValidators(
@@ -111,13 +111,11 @@ async function initPostCronRun({
     validator(body);
 
     if (validator.errors) {
-      throw new YHTTPError(
-        400,
-        'E_BAD_CRON_BODY',
+      throw new YHTTPError(400, 'E_BAD_CRON_BODY', [
         cronName,
         body,
         validator.errors,
-      );
+      ]);
     }
 
     await CRONS_HANDLERS[cronName]({

@@ -19,3 +19,17 @@ export function pipe(
 ): (...args: unknown[]) => unknown {
   return compose.apply(compose, fns.reverse());
 }
+
+export function hasKey<T extends object>(
+  object: T,
+  key: string,
+): key is keyof object {
+  return key in object;
+}
+
+export function hasDefinedKey<T extends object>(
+  object: T,
+  key: string,
+): key is keyof object {
+  return key in object && typeof object[key as keyof T] !== 'undefined';
+}

@@ -11,8 +11,9 @@ import {
   type Initializer,
   type Dependencies,
   type Service,
+  ServiceInitializer,
 } from 'knifecycle';
-import { noop } from '../libs/utils.js';
+import { hasDefinedKey, noop } from '../libs/utils.js';
 import initRoutesHandlers from './ROUTES_HANDLERS.js';
 import initCronsHandlers from './CRONS_HANDLERS.js';
 import initConsumersHandlers from './CRONS_HANDLERS.js';
@@ -75,6 +76,7 @@ import {
   type WhookCommandsDefinitionsService,
   DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
 } from './COMMANDS_DEFINITIONS.js';
+import { WhookCommandModule } from '../types/commands.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 
@@ -84,7 +86,7 @@ The Whook auto-loader allows you to provide the file path
  of a service per its name. It exports a `WhookInitializerMap`
  type to help you ensure yours are valid.
 */
-export type WhookInitializerMap = { [name: string]: string };
+export type WhookInitializerMap = Record<string, string>;
 
 export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
   WhookCronsWrappersConfig &
@@ -101,9 +103,7 @@ export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
     TRANSFORMERS_DEFINITIONS_OPTIONS?: WhookTransformerDefinitionsOptions;
     args: WhookRawCommandArgs;
     $injector: Injector<Service>;
-    importer: ImporterService<{
-      default: Initializer<Service, Dependencies>;
-    }>;
+    importer: ImporterService<WhookCommandModule>;
     resolve: ResolveService;
     access?: typeof _access;
     log?: LogService;
@@ -225,7 +225,7 @@ async function initAutoload({
       return COMMANDS_DEFINITIONS;
     };
   })();
-  let commandModule;
+  let commandModule: WhookCommandModule;
   const getCommandModule = (() => {
     return async () => {
       if (!commandModule) {
@@ -261,13 +261,13 @@ async function initAutoload({
         }
 
         if (!commandModule) {
-          throw new YError('E_BAD_COMMAND_NAME', commandName);
+          throw new YError('E_BAD_COMMAND_NAME', [commandName]);
         }
         if (!commandModule.default) {
-          throw new YError('E_NO_COMMAND_HANDLER', commandName);
+          throw new YError('E_NO_COMMAND_HANDLER', [commandName]);
         }
         if (!commandModule.definition) {
-          throw new YError('E_NO_COMMAND_DEFINITION', commandName);
+          throw new YError('E_NO_COMMAND_DEFINITION', [commandName]);
         }
       }
       return commandModule;
@@ -291,7 +291,7 @@ async function initAutoload({
     First of all the autoloader looks for constants in the
      previously loaded `APP_CONFIG` configurations hash.
     */
-    if (APP_CONFIG && APP_CONFIG[injectedName]) {
+    if (APP_CONFIG && hasDefinedKey(APP_CONFIG, injectedName)) {
       log(
         'debug',
         `📖 - Picking the "${injectedName}" constant in the "APP_CONFIG" service properties.`,
@@ -411,14 +411,20 @@ async function initAutoload({
       );
     }
     if (injectedName === 'commandHandler') {
-      return name('commandHandler', (await getCommandModule()).default);
+      return name(
+        'commandHandler',
+        (await getCommandModule()).default as ServiceInitializer<
+          Dependencies,
+          Service
+        >,
+      );
     }
 
     /* Architecture Note #2.9.6: Service/handler/wrapper loading
     Finally, we either load the handler/service/wrapper module
      if none of the previous strategies applied.
     */
-    let modulePath: string = '';
+    let modulePath = '';
 
     /* Architecture Note #2.9.3.1: Initializer path mapping
     In order to be able to load a service from a given path map
@@ -498,7 +504,7 @@ async function initAutoload({
       );
     } else {
       log('debug', `🚫 - Module path of "${injectedName}" not found.`);
-      throw new YError('E_UNMATCHED_DEPENDENCY', injectedName);
+      throw new YError('E_UNMATCHED_DEPENDENCY', [injectedName]);
     }
 
     log('debug', `💿 - Service "${injectedName}" found in "${modulePath}".`);

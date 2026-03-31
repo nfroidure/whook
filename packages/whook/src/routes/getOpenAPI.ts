@@ -10,6 +10,8 @@ import {
   type OpenAPIParameter,
   type OpenAPIReference,
   type OpenAPI,
+  isValidOpenAPIPath,
+  isValidOpenAPIMethod,
 } from 'ya-open-api-types';
 import { type Jsonify } from 'type-fest';
 
@@ -77,13 +79,20 @@ async function initGetOpenAPI({ API }: { API: OpenAPI }) {
       authenticated?: boolean;
     };
   }) => {
-    const tagIsPresent = {};
+    const tagIsPresent: Record<string, boolean> = {};
     const newPaths: NonNullable<(typeof API)['paths']> = {};
 
     for (const [path, pathItem] of Object.entries(API.paths || {})) {
+      if (!isValidOpenAPIPath(path)) {
+        continue;
+      }
+
       for (const [method, operation] of Object.entries(
         pathItemToOperationMap(pathItem || {}),
       )) {
+        if (!isValidOpenAPIMethod(method)) {
+          continue;
+        }
         if (mutedMethods.includes(method)) {
           continue;
         }
@@ -130,7 +139,7 @@ async function initGetOpenAPI({ API }: { API: OpenAPI }) {
                   'x-whook': undefined,
                 }),
           },
-        };
+        } as NonNullable<(typeof API)['paths']>;
       }
     }
 

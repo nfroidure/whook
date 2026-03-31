@@ -9,11 +9,9 @@ import {
 import { type WhookPluginName } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import {
-  ROUTE_ASIDE_COMPONENTS_PROPERTY_MAP,
-  type WhookRouteAsideComponentSuffix,
+  DEFAULT_ROUTE_CONFIG,
   type WhookRouteDefinition,
   type WhookRouteModule,
-  DEFAULT_ROUTE_CONFIG,
 } from '../types/routes.js';
 import {
   DEFAULT_COMMAND_CONFIG,
@@ -41,6 +39,7 @@ import {
   type WhookConsumerDefinition,
   DEFAULT_CONSUMER_CONFIG,
 } from '../types/consumers.js';
+import { combineComponents } from '../types/base.js';
 
 /* Architecture Note #2.9.2.1: Definitions loader
 The `DEFINITIONS` service provide a convenient way to
@@ -54,16 +53,16 @@ export const DEFAULT_SECURITY_DEFINITIONS: WhookSecurityDefinitions = {
   security: [],
 };
 
-export type WhookSecurityDefinitions = {
+export interface WhookSecurityDefinitions {
   securitySchemes: NonNullable<
     NonNullable<WhookOpenAPI['components']>['securitySchemes']
   >;
   security: NonNullable<WhookOpenAPI['security']>;
-};
+}
 
-export type WhookDefinitionsConfig = {
+export interface WhookDefinitionsConfig {
   WHOOK_PLUGINS?: WhookPluginName[];
-};
+}
 
 export type WhookDefinitionsDependencies = WhookDefinitionsConfig & {
   ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
@@ -75,7 +74,7 @@ export type WhookDefinitionsDependencies = WhookDefinitionsConfig & {
   log?: LogService;
 };
 
-export type WhookDefinitions = {
+export interface WhookDefinitions {
   paths: OpenAPIPaths<ExpressiveJSONSchema, OpenAPIExtension>;
   components: OpenAPIComponents<ExpressiveJSONSchema, OpenAPIExtension>;
   security: NonNullable<WhookOpenAPI['security']>;
@@ -97,7 +96,7 @@ export type WhookDefinitions = {
         type: 'transformer';
       })
   >;
-};
+}
 
 export default location(
   name('DEFINITIONS', autoService(initDefinitions)),
@@ -170,7 +169,7 @@ async function initDefinitions({
     module: TRANSFORMERS_DEFINITIONS[key].module,
   }));
 
-  const DEFINITIONS = {
+  const DEFINITIONS: WhookDefinitions = {
     paths: routesModules.reduce<
       OpenAPIPaths<ExpressiveJSONSchema, OpenAPIExtension>
     >((paths, { file, module }: { file: string; module: WhookRouteModule }) => {
@@ -201,20 +200,15 @@ async function initDefinitions({
       };
     }, {}),
     components: {
-      schemas: combineComponents(
+      ...combineComponents(
         { log },
-        'Schema',
         routesModules
           .concat(commandsModules as unknown as typeof routesModules)
           .concat(cronsModules as unknown as typeof routesModules)
           .concat(transformersModules as unknown as typeof routesModules)
-          .concat(consumersModules as unknown as typeof routesModules),
+          .concat(consumersModules as unknown as typeof routesModules)
+          .map(({ module }) => module),
       ),
-      parameters: combineComponents({ log }, 'Parameter', routesModules),
-      headers: combineComponents({ log }, 'Header', routesModules),
-      requestBodies: combineComponents({ log }, 'RequestBody', routesModules),
-      responses: combineComponents({ log }, 'Response', routesModules),
-      callbacks: combineComponents({ log }, 'Callback', routesModules),
       securitySchemes: SECURITY_DEFINITIONS.securitySchemes,
     },
     security: SECURITY_DEFINITIONS.security,
@@ -305,38 +299,4 @@ async function initDefinitions({
   }
 
   return DEFINITIONS;
-}
-
-export function combineComponents(
-  { log }: { log: LogService },
-  type: WhookRouteAsideComponentSuffix,
-  modules: {
-    file: string;
-    module: WhookRouteModule;
-  }[],
-) {
-  return modules.reduce(
-    (components, { module }) => ({
-      ...components,
-      ...Object.keys(module)
-        .filter((key) => key.endsWith(type))
-        .reduce((addedComponents, key) => {
-          const component = module[key];
-
-          if (addedComponents[component.name]) {
-            log(
-              'warning',
-              `⚠️ - Overriding an existing aside component (type: "${type}", name: "${component.name}").`,
-            );
-          }
-
-          return {
-            ...addedComponents,
-            [component.name]:
-              component[ROUTE_ASIDE_COMPONENTS_PROPERTY_MAP[type]],
-          };
-        }, {}),
-    }),
-    {},
-  );
 }

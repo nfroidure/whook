@@ -124,7 +124,7 @@ async function initHTTPServer({
       resolve(httpServer);
     });
   });
-  const fatalErrorPromise: Promise<void> = new Promise((_, reject) => {
+  const fatalErrorPromise = new Promise<void>((_, reject) => {
     httpServer.once('error', (err) =>
       reject(YError.wrap(err as Error, 'E_HTTP_SERVER_ERROR')),
     );

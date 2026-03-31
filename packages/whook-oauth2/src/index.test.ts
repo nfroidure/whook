@@ -172,7 +172,7 @@ describe('OAuth2 server', () => {
     check: jest.fn<OAuth2PasswordService['check']>(),
   };
 
-  let $instance;
+  let $instance: Knifecycle;
 
   async function prepareEnvironment() {
     const $ = await basePrepareEnvironment();
@@ -247,7 +247,7 @@ describe('OAuth2 server', () => {
   }
 
   $autoload.mockImplementation(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
+    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
   });
   process.env.ISOLATED_ENV = '1';
 

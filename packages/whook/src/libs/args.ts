@@ -1,17 +1,17 @@
 import { select, checkbox, input, password } from '@inquirer/prompts';
 import {
-  WhookCommandSchema,
+  type WhookCommandSchema,
   type WhookCommandDefinition,
 } from '../types/commands.js';
 import baseParseArgs from 'yargs-parser';
-import { WhookOpenAPI } from '../types/openapi.js';
+import { type WhookOpenAPI } from '../types/openapi.js';
 import { ensureResolvedObject } from 'ya-open-api-types';
 
-export type WhookRawCommandArgs = {
+export interface WhookRawCommandArgs {
   namedArguments: Record<string, string>;
   rest: string[];
   command: string;
-};
+}
 
 export function parseArgs(rawArgs: string[]): WhookRawCommandArgs {
   const { _, ...args } = baseParseArgs(rawArgs.slice(2));
@@ -43,7 +43,7 @@ export async function promptArgs(
   },
   args: WhookRawCommandArgs,
 ): Promise<WhookRawCommandArgs> {
-  const newNamedArgs = {};
+  const newNamedArgs: WhookRawCommandArgs['namedArguments'] = {};
 
   for (const argument of COMMAND_DEFINITION.arguments) {
     if ('undefined' === typeof args.namedArguments[argument.name]) {
@@ -54,8 +54,6 @@ export async function promptArgs(
           API,
           schema.$ref,
         )) as WhookCommandSchema;
-
-        continue;
       }
 
       if (!('type' in schema)) {
@@ -68,11 +66,15 @@ export async function promptArgs(
       }
 
       if (schema.type === 'boolean') {
-        newNamedArgs[argument.name] = await checkbox({
-          message: `Enter the value for "${argument.name}": `,
-          choices: ['true', 'false'],
-          required: argument.required,
-        });
+        newNamedArgs[argument.name] = (
+          await checkbox<string>({
+            message: `Enter the value for "${argument.name}": `,
+            choices: ['true', 'false'],
+            required: argument.required,
+          })
+        )
+          .includes('true')
+          .toString();
         continue;
       }
 
@@ -85,12 +87,12 @@ export async function promptArgs(
         }
 
         if (schema.enum) {
-          newNamedArgs[argument.name] = await select({
+          newNamedArgs[argument.name] = await select<string>({
             message: `Enter the value for "${argument.name}": `,
             default: schema.default?.toString(),
-            choices: schema.enum.map((value) => ({
-              name: value,
-              value: value.toString(),
+            choices: schema.enum.map((value: unknown) => ({
+              name: value as string,
+              value: (value as string).toString(),
             })),
           });
           continue;
@@ -106,7 +108,7 @@ export async function promptArgs(
       }
 
       if ('default' in schema) {
-        newNamedArgs[argument.name] = schema.default;
+        newNamedArgs[argument.name] = schema.default as string;
         continue;
       }
     }

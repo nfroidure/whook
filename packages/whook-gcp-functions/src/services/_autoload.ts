@@ -26,18 +26,18 @@ import { type LogService } from 'common-services';
 import { cleanupOpenAPI } from 'ya-open-api-types';
 import initWrapRouteHandlerForGoogleHTTPFunction from '../wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
 
-export type GCPFunctionDefinition = {
+export interface GCPFunctionDefinition {
   name: string;
   type: 'route';
   definition: WhookRouteDefinition;
   openAPI: WhookOpenAPI;
-};
+}
 
-export type WhookGoogleFunctionsAutoloadDependencies = {
+export interface WhookGoogleFunctionsAutoloadDependencies {
   $injector: Injector<Service>;
   $instance: Knifecycle;
   log?: LogService;
-};
+}
 
 const initializerWrapper: ServiceInitializerWrapper<
   Autoloader<Initializer<Dependencies, Service>>,
@@ -66,15 +66,18 @@ const initializerWrapper: ServiceInitializerWrapper<
 
       if (!config) {
         log('error', '💥 - Unable to find a GCP Function definition!');
-        throw new YError('E_DEFINITION_NOT_FOUND', serviceName, cleanedName);
+        throw new YError('E_DEFINITION_NOT_FOUND', [serviceName, cleanedName]);
       }
 
       if (!config || config.type !== 'route') {
         log('error', '💥 - GCP Function only supports routes!');
-        throw new YError('E_UNSUPPORTED_DEFINITION', serviceName, cleanedName);
+        throw new YError('E_UNSUPPORTED_DEFINITION', [
+          serviceName,
+          cleanedName,
+        ]);
       }
 
-      const openAPI = (await cleanupOpenAPI({
+      const openAPI = await cleanupOpenAPI({
         ...API,
         paths: {
           [config.path]: {
@@ -82,7 +85,7 @@ const initializerWrapper: ServiceInitializerWrapper<
             [config.method]: API.paths?.[config.path]?.[config.method],
           },
         },
-      })) as WhookOpenAPI;
+      } as WhookOpenAPI);
 
       return {
         name: cleanedName,

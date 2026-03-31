@@ -3,29 +3,29 @@ import { type LogService } from 'common-services';
 import { type JsonValue } from 'type-fest';
 import { type WhookHeaders } from '../index.js';
 
-export type WhookSensibleValueDescriptor = {
+export interface WhookSensibleValueDescriptor {
   name: string;
   pattern: RegExp;
   clearIndices: number[];
-};
-export type WhookObfuscatorConfig = {
+}
+export interface WhookObfuscatorConfig {
   SHIELD_CHAR?: string;
   MAX_CLEAR_CHARS?: number;
   MAX_CLEAR_RATIO?: number;
   SENSIBLE_PROPS?: WhookSensibleValueDescriptor[];
   SENSIBLE_HEADERS?: WhookSensibleValueDescriptor[];
-};
-export type WhookObfuscatorDependencies = {
+}
+export interface WhookObfuscatorDependencies extends WhookObfuscatorConfig {
   log?: LogService;
-} & WhookObfuscatorConfig;
-export type WhookObfuscatorService = {
+}
+export interface WhookObfuscatorService {
   obfuscate: (secret: string) => string;
   obfuscateSensibleProps: (
     propValue: JsonValue,
     propName?: string,
   ) => JsonValue;
   obfuscateSensibleHeaders: (headers: WhookHeaders) => WhookHeaders;
-};
+}
 
 export default location(autoService(initObfuscator), import.meta.url);
 
@@ -113,7 +113,7 @@ async function initObfuscator({
     obfuscateSensibleHeaders,
   };
 
-  function obfuscate(secret) {
+  function obfuscate(secret: string) {
     const numClearChars = Math.min(
       MAX_CLEAR_CHARS,
       Math.floor(secret.length / MAX_CLEAR_RATIO),

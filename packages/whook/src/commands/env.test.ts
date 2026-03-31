@@ -28,16 +28,16 @@ describe('envCommand', () => {
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "info",
-      "development",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "logCalls": [
+         [
+           "info",
+           "development",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with a default value', async () => {
@@ -60,16 +60,16 @@ describe('envCommand', () => {
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "info",
-      "local",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "logCalls": [
+         [
+           "info",
+           "local",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should fail with no value', async () => {
@@ -92,17 +92,17 @@ describe('envCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_NO_ENV_VALUE",
-  "errorParams": [
-    "APP_ENV",
-  ],
-  "logCalls": [],
-}
-`);
+       {
+         "errorCode": "E_NO_ENV_VALUE",
+         "errorDebugValues": [
+           "APP_ENV",
+         ],
+         "logCalls": [],
+       }
+      `);
     }
   });
 });

@@ -16,7 +16,7 @@ Whook allows you to run crons locally with the help
  it may be sufficient.
 */
 
-export type WhookCronRunnerService = void;
+export type WhookCronRunnerService = undefined;
 export type WhookCronRunnerOptions = Required<Pick<TaskOptions, 'timezone'>>;
 export type WhookCronRunnerConfig = {
   CRON_RUNNER_OPTIONS?: WhookCronRunnerOptions;

@@ -63,30 +63,30 @@ describe('$autoload', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         importerCalls: importer.mock.calls,
         injectorCalls: $injector.mock.calls,
         resolveCalls: resolve.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_NO_COMMAND_NAME",
-  "errorParams": [],
-  "importerCalls": [],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "warning",
-      "❌ - No command given in argument.",
-    ],
-  ],
-  "resolveCalls": [],
-}
-`);
+       {
+         "errorCode": "E_NO_COMMAND_NAME",
+         "errorDebugValues": [],
+         "importerCalls": [],
+         "injectorCalls": [],
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "warning",
+             "❌ - No command given in argument.",
+           ],
+         ],
+         "resolveCalls": [],
+       }
+      `);
     }
   });
 
@@ -111,36 +111,36 @@ describe('$autoload', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         importerCalls: importer.mock.calls,
         injectorCalls: $injector.mock.calls,
         resolveCalls: resolve.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_BAD_COMMAND_NAME",
-  "errorParams": [
-    "myCommand",
-  ],
-  "importerCalls": [
-    [
-      "file:///home/whoiam/project/src/commands/myCommand.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "❌ - Command "myCommand" not found in "file:///home/whoiam/project/src/commands/myCommand.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-}
-`);
+       {
+         "errorCode": "E_BAD_COMMAND_NAME",
+         "errorDebugValues": [
+           "myCommand",
+         ],
+         "importerCalls": [
+           [
+             "file:///home/whoiam/project/src/commands/myCommand.ts",
+           ],
+         ],
+         "injectorCalls": [],
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "❌ - Command "myCommand" not found in "file:///home/whoiam/project/src/commands/myCommand.ts".",
+           ],
+         ],
+         "resolveCalls": [],
+       }
+      `);
     }
   });
 
@@ -173,29 +173,29 @@ describe('$autoload', () => {
       resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoiam/project/src/commands/myCommand.ts",
-    ],
-  ],
-  "initializer": [Function],
-  "injectorCalls": [],
-  "location": undefined,
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "warning",
-      "Command called!",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": undefined,
-}
-`);
+     {
+       "importerCalls": [
+         [
+           "file:///home/whoiam/project/src/commands/myCommand.ts",
+         ],
+       ],
+       "initializer": [Function],
+       "injectorCalls": [],
+       "location": undefined,
+       "logCalls": [
+         [
+           "warning",
+           "🤖 - Initializing the \`$autoload\` service.",
+         ],
+         [
+           "warning",
+           "Command called!",
+         ],
+       ],
+       "resolveCalls": [],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with whook-cli commands', async () => {
@@ -238,36 +238,36 @@ describe('$autoload', () => {
       resolveCalls: resolve.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoiam/project/src/commands/myCommand.ts",
-    ],
-    [
-      "file://var/lib/node/node_modules/@whook/cli/dist/commands/myCommand.js",
-    ],
-  ],
-  "initializer": [Function],
-  "injectorCalls": [],
-  "location": undefined,
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "❌ - Command "myCommand" not found in "file:///home/whoiam/project/src/commands/myCommand.ts".",
-    ],
-    [
-      "warning",
-      "Command called!",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": undefined,
-}
-`);
+     {
+       "importerCalls": [
+         [
+           "file:///home/whoiam/project/src/commands/myCommand.ts",
+         ],
+         [
+           "file://var/lib/node/node_modules/@whook/cli/dist/commands/myCommand.js",
+         ],
+       ],
+       "initializer": [Function],
+       "injectorCalls": [],
+       "location": undefined,
+       "logCalls": [
+         [
+           "warning",
+           "🤖 - Initializing the \`$autoload\` service.",
+         ],
+         [
+           "debug",
+           "❌ - Command "myCommand" not found in "file:///home/whoiam/project/src/commands/myCommand.ts".",
+         ],
+         [
+           "warning",
+           "Command called!",
+         ],
+       ],
+       "resolveCalls": [],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should fail with bad commands', async () => {
@@ -295,36 +295,36 @@ describe('$autoload', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         importerCalls: importer.mock.calls,
         injectorCalls: $injector.mock.calls,
         resolveCalls: resolve.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_BAD_COMMAND_NAME",
-  "errorParams": [
-    "myCommand",
-  ],
-  "importerCalls": [
-    [
-      "file:///home/whoiam/project/src/commands/myCommand.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "❌ - Command "myCommand" not found in "file:///home/whoiam/project/src/commands/myCommand.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-}
-`);
+       {
+         "errorCode": "E_BAD_COMMAND_NAME",
+         "errorDebugValues": [
+           "myCommand",
+         ],
+         "importerCalls": [
+           [
+             "file:///home/whoiam/project/src/commands/myCommand.ts",
+           ],
+         ],
+         "injectorCalls": [],
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "❌ - Command "myCommand" not found in "file:///home/whoiam/project/src/commands/myCommand.ts".",
+           ],
+         ],
+         "resolveCalls": [],
+       }
+      `);
     }
   });
 
@@ -349,32 +349,32 @@ describe('$autoload', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorDebugValues: (err as YError).debugValues,
           importerCalls: importer.mock.calls,
           injectorCalls: $injector.mock.calls,
           resolveCalls: resolve.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_NO_COMMAND_HANDLER",
-  "errorParams": [
-    "myCommand",
-  ],
-  "importerCalls": [
-    [
-      "file:///home/whoiam/project/src/commands/myCommand.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-  ],
-  "resolveCalls": [],
-}
-`);
+         {
+           "errorCode": "E_NO_COMMAND_HANDLER",
+           "errorDebugValues": [
+             "myCommand",
+           ],
+           "importerCalls": [
+             [
+               "file:///home/whoiam/project/src/commands/myCommand.ts",
+             ],
+           ],
+           "injectorCalls": [],
+           "logCalls": [
+             [
+               "warning",
+               "🤖 - Initializing the \`$autoload\` service.",
+             ],
+           ],
+           "resolveCalls": [],
+         }
+        `);
       }
     });
 
@@ -400,32 +400,32 @@ describe('$autoload', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorDebugValues: (err as YError).debugValues,
           importerCalls: importer.mock.calls,
           injectorCalls: $injector.mock.calls,
           resolveCalls: resolve.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_NO_COMMAND_DEFINITION",
-  "errorParams": [
-    "myCommand",
-  ],
-  "importerCalls": [
-    [
-      "file:///home/whoiam/project/src/commands/myCommand.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-  ],
-  "resolveCalls": [],
-}
-`);
+         {
+           "errorCode": "E_NO_COMMAND_DEFINITION",
+           "errorDebugValues": [
+             "myCommand",
+           ],
+           "importerCalls": [
+             [
+               "file:///home/whoiam/project/src/commands/myCommand.ts",
+             ],
+           ],
+           "injectorCalls": [],
+           "logCalls": [
+             [
+               "warning",
+               "🤖 - Initializing the \`$autoload\` service.",
+             ],
+           ],
+           "resolveCalls": [],
+         }
+        `);
       }
     });
   });

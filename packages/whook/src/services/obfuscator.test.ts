@@ -6,12 +6,12 @@ import {
   jest,
   expect,
 } from '@jest/globals';
-import initObfuscator from './obfuscator.js';
+import initObfuscator, { type WhookObfuscatorService } from './obfuscator.js';
 import { type LogService } from 'common-services';
 
 describe('Obfuscator Service', () => {
   const log = jest.fn<LogService>();
-  let obfuscator;
+  let obfuscator: WhookObfuscatorService;
 
   beforeEach(() => {
     log.mockReset();
@@ -87,7 +87,7 @@ describe('Obfuscator Service', () => {
     test('should work with undefined sensible headers', () => {
       expect(
         obfuscator.obfuscateSensibleHeaders({
-          Authorization: undefined,
+          Authorization: undefined as unknown as string,
         }),
       ).toMatchInlineSnapshot(`
         {

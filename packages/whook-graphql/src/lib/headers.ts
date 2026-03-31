@@ -9,7 +9,7 @@ export function cleanupGraphQLHeaders(headers: HeaderMap): WhookHeaders {
     .reduce(
       (keptsHeaders, key) => ({
         ...keptsHeaders,
-        [key.toLowerCase()]: headers?.[key],
+        [key.toLowerCase()]: headers?.get(key),
       }),
       {},
     );

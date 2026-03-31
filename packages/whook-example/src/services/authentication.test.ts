@@ -67,7 +67,7 @@ describe('authentication', () => {
         } catch (err) {
           expect({
             errorCode: (err as YError).code,
-            errorParams: (err as YError).params,
+            errorDebugValues: (err as YError).debugValues,
           }).toMatchSnapshot();
         }
       });
@@ -98,7 +98,7 @@ describe('authentication', () => {
         } catch (err) {
           expect({
             errorCode: (err as YError).code,
-            errorParams: (err as YError).params,
+            errorDebugValues: (err as YError).debugValues,
           }).toMatchSnapshot();
         }
       });

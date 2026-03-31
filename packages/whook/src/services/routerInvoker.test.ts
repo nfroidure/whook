@@ -17,7 +17,7 @@ describe('routeInvoker', () => {
       name: 'getUser',
       pluginName: '@whook/whook',
       module: {
-        default: initGetPing as WhookRouteHandlerInitializer,
+        default: initGetPing as unknown as WhookRouteHandlerInitializer,
         definition: getPingDefinition,
       },
     },

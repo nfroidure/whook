@@ -18,26 +18,26 @@ import { type LogService } from 'common-services';
 
 export type WhookAuthenticationApplicationId = string;
 export type WhookAuthenticationScope = string;
-export type WhookBaseAuthenticationData = {
+export interface WhookBaseAuthenticationData {
   applicationId: WhookAuthenticationApplicationId;
   scope: WhookAuthenticationScope;
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface WhookAuthenticationData extends WhookBaseAuthenticationData {}
 
-export type WhookAuthenticationExtraParameters = {
+export interface WhookAuthenticationExtraParameters {
   authenticationData?: WhookAuthenticationData;
   authenticated?: boolean;
-};
+}
 
 export interface WhookAuthenticationService<A> {
   check: (type: string, data: A) => Promise<WhookAuthenticationData>;
 }
-export type WhookAuthorizationConfig = {
+export interface WhookAuthorizationConfig {
   MECHANISMS?: (typeof BEARER_MECHANISM)[];
   DEFAULT_MECHANISM?: string;
-};
+}
 export type WhookAuthorizationDependencies<A> = WhookAuthorizationConfig & {
   authentication: WhookAuthenticationService<A>;
   log: LogService;
@@ -142,7 +142,7 @@ async function handleWithAuthorization<A>(
       (definition.operation.security || []).find(
         (security) => security[`${mechanism.type.toLowerCase()}Auth`],
       ),
-    ) as Mechanism[];
+    ) as unknown as Mechanism[];
 
     try {
       if (!authorization) {
@@ -165,13 +165,14 @@ async function handleWithAuthorization<A>(
               authorization.substr(0, mechanism.type.length) === mechanism.type,
           )
         ) {
-          throw YHTTPError.wrap(
+          throw YHTTPError.bump(
             err as Error,
-            400,
             'E_AUTH_MECHANISM_NOT_ALLOWED',
+            undefined,
+            400,
           );
         }
-        throw YHTTPError.cast(err as Error, 400);
+        throw YHTTPError.cast(err as Error, undefined, undefined, 400);
       }
 
       const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
@@ -181,13 +182,11 @@ async function handleWithAuthorization<A>(
 
       // If security exists, we need at least one scope
       if (!(requiredScopes && requiredScopes.length)) {
-        throw new YHTTPError(
-          500,
-          'E_MISCONFIGURATION',
+        throw new YHTTPError(500, 'E_MISCONFIGURATION', [
           parsedAuthorization.type,
           requiredScopes,
           definition.operation.operationId,
-        );
+        ]);
       }
 
       let authenticationData: WhookAuthenticationData;
@@ -195,10 +194,10 @@ async function handleWithAuthorization<A>(
       try {
         authenticationData = await authentication.check(
           parsedAuthorization.type.toLowerCase(),
-          parsedAuthorization.data,
+          parsedAuthorization.data as A,
         );
       } catch (err) {
-        throw YHTTPError.cast(err as Error, 401);
+        throw YHTTPError.cast(err as Error, undefined, undefined, 401);
       }
 
       // Check scopes
@@ -207,12 +206,10 @@ async function handleWithAuthorization<A>(
           authenticationData.scope.split(',').includes(requiredScope),
         )
       ) {
-        throw new YHTTPError(
-          403,
-          'E_UNAUTHORIZED',
+        throw new YHTTPError(403, 'E_UNAUTHORIZED', [
           authenticationData.scope,
           requiredScopes,
-        );
+        ]);
       }
 
       response = await handler(

@@ -3,6 +3,5 @@ import { type WhookCORSRouteConfig } from './wrappers/wrapRouteHandlerWithCORS.t
 
 declare module '@whook/whook' {
   export interface WhookRouteConfig
-    extends WhookBaseRouteConfig,
-      WhookCORSRouteConfig {}
+    extends WhookBaseRouteConfig, WhookCORSRouteConfig {}
 }

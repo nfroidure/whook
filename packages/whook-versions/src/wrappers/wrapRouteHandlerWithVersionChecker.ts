@@ -1,5 +1,5 @@
 import { YHTTPError } from 'yhttperror';
-import semverSatisfies from 'semver/functions/satisfies.js';
+import { satisfies as semverSatisfies } from 'semver';
 import { autoService } from 'knifecycle';
 import { type LogService } from 'common-services';
 import {
@@ -11,13 +11,13 @@ import {
   type WhookRouteDefinition,
 } from '@whook/whook';
 
-export type VersionDescriptor = {
+export interface VersionDescriptor {
   header: string;
   rule: string;
-};
-export type VersionsConfig = {
+}
+export interface VersionsConfig {
   VERSIONS: VersionDescriptor[];
-};
+}
 export type VersionsCheckerDependencies = VersionsConfig & {
   log: LogService;
 };
@@ -74,13 +74,11 @@ async function handleWithVersionChecker(
       'undefined' !== typeof value &&
       !semverSatisfies(value, version.rule, { includePrerelease: true })
     ) {
-      throw new YHTTPError(
-        418,
-        'E_DEPRECATED_VERSION',
+      throw new YHTTPError(418, 'E_DEPRECATED_VERSION', [
         version.header,
         value,
         version.rule,
-      );
+      ]);
     }
   });
 

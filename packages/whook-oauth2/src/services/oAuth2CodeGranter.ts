@@ -95,11 +95,10 @@ async function initOAuth2CodeGranter({
     // from the clientId and the code given in parameters
     // See https://tools.ietf.org/html/rfc6749#section-4.1.3
     if (clientId && clientId !== authenticationData.applicationId) {
-      throw new YError(
-        'E_UNAUTHORIZED',
+      throw new YError('E_UNAUTHORIZED', [
         clientId,
         authenticationData.applicationId,
-      );
+      ]);
     }
 
     await checkApplication({

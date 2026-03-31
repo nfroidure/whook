@@ -24,10 +24,21 @@ import { type WhookErrorHandlerConfig } from '../services/errorHandler.js';
 import { type WhookSchemaValidatorsConfig } from '../services/schemaValidators.js';
 import { type WhookQueryParserBuilderConfig } from '../services/queryParserBuilder.js';
 import { type WhookCommandEnv } from '../services/command.js';
+import {
+  WhookAPICallbackDefinition,
+  WhookAPIHeaderDefinition,
+  WhookAPIParameterDefinition,
+  WhookAPIRequestBodyDefinition,
+  WhookAPIResponseDefinition,
+  WhookAPISchemaDefinition,
+} from './openapi.js';
+import { LogService } from 'common-services';
+import { ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { OpenAPIComponents, OpenAPIExtension } from 'ya-open-api-types';
 
-export type WhookBaseMain = {
+export interface WhookBaseMain {
   AppEnv: string;
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface WhookMain extends WhookBaseMain {}
@@ -54,3 +65,72 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookRoutesWrappersConfig &
   WhookSchemaValidatorsConfig &
   OpenAPITypesConfig;
+
+export const ASIDE_COMPONENTS_SUFFIXES = {
+  schemas: 'Schema',
+  parameters: 'Parameter',
+  headers: 'Header',
+  requestBodies: 'RequestBody',
+  responses: 'Response',
+  callbacks: 'Callback',
+} as const;
+
+export const ASIDE_COMPONENTS_PROPERTIES = {
+  schemas: 'schema',
+  parameters: 'parameter',
+  headers: 'header',
+  requestBodies: 'requestBody',
+  responses: 'response',
+  callbacks: 'callback',
+} as const;
+
+export type WhookModuleAsideSchemas = Record<
+  `${string}Schema`,
+  WhookAPISchemaDefinition<unknown>
+>;
+
+export interface WhookModuleAsideComponents {
+  [name: `${string}Parameter`]: WhookAPIParameterDefinition<unknown>;
+  [name: `${string}Header`]: WhookAPIHeaderDefinition;
+  [name: `${string}Response`]: WhookAPIResponseDefinition;
+  [name: `${string}RequestBody`]: WhookAPIRequestBodyDefinition;
+  [name: `${string}Callback`]: WhookAPICallbackDefinition;
+}
+
+export function combineComponents(
+  { log }: { log: LogService },
+  modules: (WhookModuleAsideSchemas & WhookModuleAsideComponents)[],
+) {
+  const components: Pick<
+    Required<OpenAPIComponents<ExpressiveJSONSchema, OpenAPIExtension>>,
+    keyof typeof ASIDE_COMPONENTS_PROPERTIES
+  > = {
+    schemas: {},
+    parameters: {},
+    headers: {},
+    requestBodies: {},
+    responses: {},
+    callbacks: {},
+  };
+
+  for (const module of modules) {
+    for (const key in module) {
+      for (const type in ASIDE_COMPONENTS_PROPERTIES) {
+        if (key.endsWith(ASIDE_COMPONENTS_SUFFIXES[type as 'schemas'])) {
+          const component = module[key as `${string}Schema`];
+
+          if (components[type as 'schemas'][component.name]) {
+            log(
+              'warning',
+              `⚠️ - Overriding an existing aside component (type: "${type}", name: "${component.name}").`,
+            );
+          }
+
+          components[type as 'schemas'][component.name] =
+            component[ASIDE_COMPONENTS_PROPERTIES[type as 'schemas']];
+        }
+      }
+    }
+  }
+  return components;
+}

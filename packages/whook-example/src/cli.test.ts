@@ -106,7 +106,9 @@ async function execCommand(
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       if (err) {
-        reject(YError.wrap(err as Error, 'E_COMMAND_FAILURE', stdout, stderr));
+        reject(
+          YError.wrap(err as Error, 'E_COMMAND_FAILURE', [stdout, stderr]),
+        );
         return;
       }
       resolve({ stdout, stderr });

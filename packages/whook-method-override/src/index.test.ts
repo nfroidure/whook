@@ -48,7 +48,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   };
   const time = jest.fn();
   const $autoload = jest.fn();
-  let $instance;
+  let $instance: Knifecycle;
   async function prepareEnvironment() {
     const $ = await basePrepareEnvironment();
 
@@ -87,7 +87,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   }
 
   $autoload.mockImplementation(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
+    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
   });
   process.env.ISOLATED_ENV = '1';
 

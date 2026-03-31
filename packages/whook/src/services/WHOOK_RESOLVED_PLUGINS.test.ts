@@ -33,12 +33,12 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "WHOOK_RESOLVED_PLUGINS": {},
-  "logCalls": [],
-  "resolveCalls": [],
-}
-`);
+       {
+         "WHOOK_RESOLVED_PLUGINS": {},
+         "logCalls": [],
+         "resolveCalls": [],
+       }
+      `);
     });
 
     test('with some plugins', async () => {
@@ -69,52 +69,52 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "WHOOK_RESOLVED_PLUGINS": {
-    "@whook/graphql": {
-      "mainURL": "file:///var/lib/node/node_modules/@whook/graphql/dist/index.js",
-      "types": [
-        "services",
-      ],
-    },
-    "@whook/whook": {
-      "mainURL": "file:///var/lib/node/node_modules/@whook/whook/dist/index.js",
-      "types": [
-        "routes",
-      ],
-    },
-    "__project__": {
-      "mainURL": "file:///home/whoiam/project/src/index.ts",
-      "types": [
-        "routes",
-        "wrappers",
-      ],
-    },
-  },
-  "logCalls": [
-    [
-      "debug",
-      "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/project/src" with "routes, wrappers" types.",
-    ],
-    [
-      "debug",
-      "➰ - Plugin "@whook/graphql" source path resolved to "file:///var/lib/node/node_modules/@whook/graphql/dist" with "services" types.",
-    ],
-    [
-      "debug",
-      "➰ - Plugin "@whook/whook" source path resolved to "file:///var/lib/node/node_modules/@whook/whook/dist" with "routes" types.",
-    ],
-  ],
-  "resolveCalls": [
-    [
-      "@whook/graphql",
-    ],
-    [
-      "@whook/whook",
-    ],
-  ],
-}
-`);
+       {
+         "WHOOK_RESOLVED_PLUGINS": {
+           "@whook/graphql": {
+             "mainURL": "file:///var/lib/node/node_modules/@whook/graphql/dist/index.js",
+             "types": [
+               "services",
+             ],
+           },
+           "@whook/whook": {
+             "mainURL": "file:///var/lib/node/node_modules/@whook/whook/dist/index.js",
+             "types": [
+               "routes",
+             ],
+           },
+           "__project__": {
+             "mainURL": "file:///home/whoiam/project/src/index.ts",
+             "types": [
+               "routes",
+               "wrappers",
+             ],
+           },
+         },
+         "logCalls": [
+           [
+             "debug",
+             "➰ - Plugin "__project__" source path resolved to "file:///home/whoiam/project/src" with "routes, wrappers" types.",
+           ],
+           [
+             "debug",
+             "➰ - Plugin "@whook/graphql" source path resolved to "file:///var/lib/node/node_modules/@whook/graphql/dist" with "services" types.",
+           ],
+           [
+             "debug",
+             "➰ - Plugin "@whook/whook" source path resolved to "file:///var/lib/node/node_modules/@whook/whook/dist" with "routes" types.",
+           ],
+         ],
+         "resolveCalls": [
+           [
+             "@whook/graphql",
+           ],
+           [
+             "@whook/whook",
+           ],
+         ],
+       }
+      `);
     });
   });
 
@@ -137,28 +137,28 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorDebugValues: (err as YError).debugValues,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           resolveCalls: resolve.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_BAD_WHOOK_PLUGIN",
-  "errorParams": [
-    "@whook/unreal",
-  ],
-  "logCalls": [
-    [
-      "error",
-      "❌ - Plugin "@whook/unreal" couldn't be resolved.",
-    ],
-  ],
-  "resolveCalls": [
-    [
-      "@whook/unreal",
-    ],
-  ],
-}
-`);
+         {
+           "errorCode": "E_BAD_WHOOK_PLUGIN",
+           "errorDebugValues": [
+             "@whook/unreal",
+           ],
+           "logCalls": [
+             [
+               "error",
+               "❌ - Plugin "@whook/unreal" couldn't be resolved.",
+             ],
+           ],
+           "resolveCalls": [
+             [
+               "@whook/unreal",
+             ],
+           ],
+         }
+        `);
       }
     });
   });

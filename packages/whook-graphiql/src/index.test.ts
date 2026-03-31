@@ -1,5 +1,5 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import { constant, initializer } from 'knifecycle';
+import { constant, initializer, type Knifecycle } from 'knifecycle';
 import axios from 'axios';
 import {
   prepareProcess,
@@ -37,13 +37,13 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
   };
   const time = jest.fn();
   const $autoload = jest.fn(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
+    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
   });
   const GRAPHIQL: WhookGraphIQLOptions = {
     defaultQuery: '',
     path: '/graphiql',
   };
-  let $;
+  let $: Knifecycle;
 
   beforeEach(() => {
     logger.output.mockReset();
@@ -749,6 +749,10 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
   });
 });
 
-function sortLogs(strs1, strs2) {
-  return strs1[0] > strs2[0] ? 1 : strs1[0] === strs2[0] ? 0 : -1;
+function sortLogs(strs1: unknown[], strs2: unknown[]): number {
+  return (strs1 as string[])[0] > (strs2 as string[])[0]
+    ? 1
+    : (strs1 as string[])[0] === (strs2 as string[])[0]
+      ? 0
+      : -1;
 }

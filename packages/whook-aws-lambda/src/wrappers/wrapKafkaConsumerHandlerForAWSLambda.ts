@@ -9,19 +9,19 @@ import {
 import { type TimeService, type LogService } from 'common-services';
 import { type MSKEvent } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
-import { type Jsonify } from 'type-fest';
+import { type JsonArray, type Jsonify } from 'type-fest';
 
-export type WhookAWSLambdaKafkaConsumerInput = {
-  body: Jsonify<MSKEvent['records']>;
-};
+export interface WhookAWSLambdaKafkaConsumerInput {
+  body: MSKEvent['records'];
+}
 
-export type WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies = {
+export interface WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies {
   ENV: AppEnvVars;
   MAIN_DEFINITION: WhookConsumerDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with a kafka AWS Lambda.
@@ -51,7 +51,7 @@ async function initWrapKafkaConsumerHandlerForAWSLambda({
   log('debug', '📥 - Initializing the AWS Lambda kafka wrapper.');
 
   const wrapper = async (
-    handler: WhookConsumerHandler<WhookAWSLambdaKafkaConsumerInput>,
+    handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaKafkaConsumerInput>>,
   ) => {
     const wrappedHandler = handleForAWSKafkaConsumerLambda.bind(
       null,
@@ -73,7 +73,7 @@ async function handleForAWSKafkaConsumerLambda(
     time,
     log,
   }: Required<WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies>,
-  handler: WhookConsumerHandler<WhookAWSLambdaKafkaConsumerInput>,
+  handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaKafkaConsumerInput>>,
   event: MSKEvent,
 ) {
   const startTime = time();
@@ -110,7 +110,7 @@ async function handleForAWSKafkaConsumerLambda(
       type: 'error',
       stack: printStackTrace(castedErr),
       code: castedErr.code,
-      params: castedErr.params,
+      params: castedErr.debugValues as JsonArray,
       startTime,
       endTime: time(),
       recordsLength: Object.keys(event.records).reduce(

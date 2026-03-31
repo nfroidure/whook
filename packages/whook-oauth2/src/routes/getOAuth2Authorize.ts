@@ -108,12 +108,15 @@ export const definition = {
 export function camelCaseObjectProperties<T>(
   object: Record<string, T>,
 ): Record<string, T> {
-  return Object.keys(object).reduce((camelCasedObject, key) => {
-    const newKey = key === 'redirect_uri' ? 'redirectURI' : camelCase(key);
+  return Object.keys(object).reduce(
+    (camelCasedObject, key) => {
+      const newKey = key === 'redirect_uri' ? 'redirectURI' : camelCase(key);
 
-    camelCasedObject[newKey] = object[key];
-    return camelCasedObject;
-  }, {});
+      camelCasedObject[newKey] = object[key];
+      return camelCasedObject;
+    },
+    {} as Record<string, T>,
+  );
 }
 
 export function setURLError(
@@ -125,9 +128,14 @@ export function setURLError(
   if (oAuth2Error.description) {
     url.searchParams.set(
       'error_description',
-      oAuth2Error.description.replace(/\$([0-9]+)/g, (_, paramIndex) => {
-        return ((err as YError).params || [])[parseInt(paramIndex, 10)];
-      }),
+      oAuth2Error.description.replace(
+        /\$([0-9]+)/g,
+        (_: string, paramIndex: string): string => {
+          return ((err as YError).debugValues || [])[
+            parseInt(paramIndex, 10)
+          ] as string;
+        },
+      ),
     );
   }
 }
@@ -171,7 +179,7 @@ async function initGetOAuth2Authorize({
       );
 
       if (!granter) {
-        throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', responseType);
+        throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', [responseType]);
       }
 
       const { applicationId, redirectURI, scope } = await (

@@ -1,5 +1,5 @@
 import { YError, printStackTrace } from 'yerror';
-import stream, { type Readable } from 'node:stream';
+import stream, { type Readable, type Writable } from 'node:stream';
 import { autoService } from 'knifecycle';
 import bytes from 'bytes';
 import { YHTTPError } from 'yhttperror';
@@ -43,6 +43,12 @@ import {
   type WhookSchemaValidatorsService,
   type WhookRouteHandlerParameters,
   type WhookQueryParserBuilderService,
+  castWhookHeaders,
+  type WhookStringifiers,
+  type WhookParsers,
+  type WhookEncoders,
+  type WhookDecoders,
+  type WhookResponseBodySpec,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import {
@@ -52,14 +58,27 @@ import {
   type OpenAPIResponse,
 } from 'ya-open-api-types';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import { type IncomingMessage } from 'node:http';
 
-export type WhookGCPFunctionRouteWrapperDependencies = {
+interface GCPRequest {
+  method: string;
+  originalUrl: string;
+  body: object;
+  rawBody: string;
+  headers: IncomingMessage['headers'];
+}
+interface GCPResponse extends Writable {
+  set(name: string, value: unknown): void;
+  status(value: number): void;
+}
+
+export interface WhookGCPFunctionRouteWrapperDependencies {
   MAIN_DEFINITION: WhookRouteDefinition;
   MAIN_API: WhookOpenAPI;
-  DECODERS?: typeof DEFAULT_DECODERS;
-  ENCODERS?: typeof DEFAULT_ENCODERS;
-  PARSERS?: typeof DEFAULT_PARSERS;
-  STRINGIFIERS?: typeof DEFAULT_STRINGIFIERS;
+  DECODERS?: WhookDecoders;
+  ENCODERS?: WhookEncoders;
+  PARSERS?: WhookParsers;
+  STRINGIFIERS?: WhookStringifiers;
   queryParserBuilder: WhookQueryParserBuilderService;
   BUFFER_LIMIT?: string;
   COERCION_OPTIONS: WhookCoercionOptions;
@@ -67,7 +86,7 @@ export type WhookGCPFunctionRouteWrapperDependencies = {
   errorHandler: WhookErrorHandler;
   schemaValidators: WhookSchemaValidatorsService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with GCP Functions.
@@ -120,14 +139,14 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
   const pathItem = MAIN_API.paths?.[path];
 
   if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
-    throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
+    throw new YError('E_BAD_OPERATION', ['pathItem', pathItem]);
   }
 
   const method = MAIN_DEFINITION.method;
   const operation = pathItem[method];
 
   if (typeof operation === 'undefined' || '$ref' in operation) {
-    throw new YError('E_BAD_OPERATION', 'operation', operation);
+    throw new YError('E_BAD_OPERATION', ['operation', operation]);
   }
 
   const pathItemParameters = await resolveParameters(
@@ -268,8 +287,8 @@ async function handleForAWSHTTPFunction(
     produceableCharsets: string[];
   },
   definition: WhookRouteDefinition,
-  req,
-  res,
+  req: GCPRequest,
+  res: GCPResponse,
 ) {
   const bufferLimit =
     bytes.parse(BUFFER_LIMIT) || (bytes.parse(DEFAULT_BUFFER_LIMIT) as number);
@@ -282,14 +301,19 @@ async function handleForAWSHTTPFunction(
       method: req.method,
       body: req.body,
       // body: obfuscateEventBody(obfuscator, req.body),
-      headers: obfuscator.obfuscateSensibleHeaders(req.headers || {}),
+      headers: obfuscator.obfuscateSensibleHeaders(
+        castWhookHeaders(req.headers),
+      ),
     }),
   );
 
   const request = await gcpfReqToRequest(req);
-  let response;
+  let response: WhookResponse;
   let responseLog;
-  let responseSpec;
+  let responseSpec: WhookResponseBodySpec = {
+    contentTypes: ['binary'],
+    charsets: ['utf-8'],
+  };
 
   log?.(
     'debug',
@@ -313,7 +337,7 @@ async function handleForAWSHTTPFunction(
     try {
       const path = request.url.split(SEARCH_SEPARATOR)[0];
       const parts = path.split(PATH_SEPARATOR).filter(identity);
-      const search = request.url.substr(
+      const search = request.url.substring(
         request.url.split(SEARCH_SEPARATOR)[0].length,
       );
       const queryValues = queryParser(search);
@@ -321,7 +345,7 @@ async function handleForAWSHTTPFunction(
         definition.path
           .split(PATH_SEPARATOR)
           .filter(identity)
-          .map((part, index) => {
+          .map((part: string, index: number) => {
             const matches = /^\{([\d\w]+)\}$/i.exec(part);
 
             if (matches) {
@@ -330,7 +354,7 @@ async function handleForAWSHTTPFunction(
                 value: parts[index],
               };
             }
-          }) as Array<{ name: string; value: string }>
+          }) as { name: string; value: string }[]
       )
         .filter(identity)
         .reduce(
@@ -338,7 +362,7 @@ async function handleForAWSHTTPFunction(
             ...accParameters,
             [name]: value,
           }),
-          {},
+          {} as Record<string, string>,
         );
 
       for (const location of Object.keys(parametersValidators)) {
@@ -409,7 +433,7 @@ async function handleForAWSHTTPFunction(
         parametersValues.body = body;
       }
     } catch (err) {
-      throw YHTTPError.cast(err as Error, 400);
+      throw YHTTPError.cast(err as Error, undefined, undefined, 400);
     }
 
     response = await executeHandler(definition, handler, parametersValues);
@@ -459,12 +483,10 @@ async function handleForAWSHTTPFunction(
         ));
 
     if (responseHasSchema && !STRINGIFIERS[responseContentType]) {
-      throw new YHTTPError(
-        500,
-        'E_STRINGIFYER_LACK',
+      throw new YHTTPError(500, 'E_STRINGIFYER_LACK', [
         response.headers['content-type'],
         response,
-      );
+      ]);
     }
     if (response.body) {
       checkResponseMediaType(
@@ -485,7 +507,7 @@ async function handleForAWSHTTPFunction(
       type: 'error',
       code: (err as YError)?.code || 'E_UNEXPECTED',
       statusCode: response.status,
-      params: (err as YError)?.params || [],
+      params: ((err as YError)?.debugValues as string[]) || [],
       stack: printStackTrace(err as Error),
     };
 
@@ -505,8 +527,8 @@ async function handleForAWSHTTPFunction(
     'RESPONSE',
     JSON.stringify({
       ...response,
-      body: obfuscateEventBody(obfuscator, response.body),
-      headers: obfuscator.obfuscateSensibleHeaders(response.headers),
+      body: obfuscateEventBody(obfuscator, response.body || {}),
+      headers: obfuscator.obfuscateSensibleHeaders(response.headers || {}),
     }),
   );
 
@@ -522,10 +544,10 @@ async function handleForAWSHTTPFunction(
   );
 }
 
-async function gcpfReqToRequest(req): Promise<WhookRequest> {
+async function gcpfReqToRequest(req: GCPRequest): Promise<WhookRequest> {
   const request: WhookRequest = {
     method: req.method.toLowerCase(),
-    headers: lowerCaseHeaders(req.headers || {}),
+    headers: lowerCaseHeaders(castWhookHeaders(req.headers)),
     url: req.originalUrl,
   };
 
@@ -543,7 +565,7 @@ async function gcpfReqToRequest(req): Promise<WhookRequest> {
 
 async function pipeResponseInGCPFResponse(
   response: WhookResponse,
-  res,
+  res: GCPResponse,
 ): Promise<void> {
   Object.keys(response.headers || {}).forEach((headerName) => {
     res.set(headerName, response.headers?.[headerName]);
@@ -558,7 +580,10 @@ async function pipeResponseInGCPFResponse(
   res.end();
 }
 
-function obfuscateEventBody(obfuscator, rawBody) {
+function obfuscateEventBody<T>(
+  obfuscator: WhookObfuscatorService,
+  rawBody: T | string,
+): T | string {
   if (typeof rawBody === 'string') {
     try {
       const jsonBody = JSON.parse(rawBody);

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import initAutoload from './_autoload.js';
 import {
   UNBUILDABLE_SERVICES,
@@ -9,18 +8,15 @@ import {
   location,
   type Knifecycle,
   type Autoloader,
-  type Initializer,
   type Dependencies,
   type Service,
+  type ServiceInitializer,
   type ServiceInitializerWrapper,
 } from 'knifecycle';
 import { printStackTrace } from 'yerror';
 import { noop, type LogService } from 'common-services';
 
-const initializerWrapper: ServiceInitializerWrapper<
-  Autoloader<Initializer<Dependencies, Service>>,
-  Dependencies
-> = (async (
+const initializerWrapper = async (
   {
     $instance,
     log = noop,
@@ -28,16 +24,15 @@ const initializerWrapper: ServiceInitializerWrapper<
     $instance: Knifecycle;
     log: LogService;
   },
-  $autoload: Autoloader<Initializer<Dependencies, Service>>,
+  $autoload: Autoloader<ServiceInitializer<Dependencies, Service>>,
 ): Promise<
-  (serviceName: string) => Promise<{
-    initializer: Initializer<Dependencies, Service>;
-    path: string;
-  }>
+  (serviceName: string) => Promise<ServiceInitializer<Dependencies, Service>>
 > => {
   log('warning', '🤖 - Initializing the `$autoload` build wrapper.');
 
-  return async (serviceName) => {
+  return async (
+    serviceName,
+  ): Promise<ServiceInitializer<Dependencies, Service>> => {
     if (UNBUILDABLE_SERVICES.includes(serviceName)) {
       log(
         'warning',
@@ -45,14 +40,19 @@ const initializerWrapper: ServiceInitializerWrapper<
           ', ',
         )}) can give unpredictable results!`,
       );
-      return constant(serviceName, undefined);
+      return constant<Service>(
+        serviceName,
+        undefined,
+      ) as unknown as ServiceInitializer<Dependencies, Service>;
     }
 
     try {
-      let initializer;
+      let initializer: ServiceInitializer<Dependencies, Service>;
 
       try {
-        initializer = $instance._getInitializer(serviceName);
+        initializer = $instance._getInitializer(
+          serviceName,
+        ) as ServiceInitializer<Dependencies, Service>;
       } catch (err) {
         log(
           'debug',
@@ -61,6 +61,7 @@ const initializerWrapper: ServiceInitializerWrapper<
         log('debug-stack', printStackTrace(err as Error));
       }
 
+      // @ts-expect-error Is fine but TS too stupid to figure out
       if (initializer && initializer[SPECIAL_PROPS.TYPE] === 'constant') {
         log(
           'debug',
@@ -72,8 +73,9 @@ const initializerWrapper: ServiceInitializerWrapper<
       try {
         return await $autoload(serviceName);
       } catch (err) {
-        if (initializer && initializer[SPECIAL_PROPS.LOCATION]) {
-          const reshapedUrl = initializer[SPECIAL_PROPS.LOCATION].url.replace(
+        // @ts-expect-error Is fine but TS too stupid to figure out
+        if (initializer && initializer.$location) {
+          const reshapedUrl = initializer.$location.url.replace(
             /^(?:.*)\/node_modules\/(.*)$/,
             '$1',
           );
@@ -86,7 +88,10 @@ const initializerWrapper: ServiceInitializerWrapper<
 
           // Assuming the module name is after the last `node_modules`
           // folder. May not be the best approach
-          return location(initializer, reshapedUrl);
+          return location(
+            initializer as ServiceInitializer<Dependencies, Service>,
+            reshapedUrl,
+          );
         }
         throw err;
       }
@@ -96,7 +101,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       throw err;
     }
   };
-}) as any;
+};
 
 /**
  * Wrap the _autoload service in order to build AWS
@@ -115,7 +120,10 @@ const initializerWrapper: ServiceInitializerWrapper<
 export default location(
   alsoInject(
     ['$instance', '$injector', '?log'],
-    wrapInitializer(initializerWrapper as any, initAutoload),
+    wrapInitializer<Dependencies, Service>(
+      initializerWrapper as ServiceInitializerWrapper<Service, Dependencies>,
+      initAutoload as ServiceInitializer<Dependencies, Service>,
+    ),
   ),
   import.meta.url,
 );

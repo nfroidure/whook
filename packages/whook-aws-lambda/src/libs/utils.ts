@@ -31,11 +31,11 @@ export async function loadLambda(
     const module = await import(modulePath);
 
     if (!module) {
-      throw new YError('E_MODULE_NOT_FOUND', module);
+      throw new YError('E_MODULE_NOT_FOUND', [module]);
     }
 
     if (!module.default) {
-      throw new YError('E_LAMBDA_NOT_FOUND', module, Object.keys(module));
+      throw new YError('E_LAMBDA_NOT_FOUND', [module, Object.keys(module)]);
     }
 
     return module.default;

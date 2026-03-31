@@ -23,7 +23,7 @@ DB_HOST = 'localhost'
     );
 
     const ENV = await initEnv({
-      PROXIED_ENV_VARS: ['DB_PASSWORD'],
+      PROXIED_ENV_VARS: ['DB_PASSWORD' as 'NODE_ENV'],
       APP_ENV: 'local',
       BASE_ENV: { ['KEY_BASE_ENV' as NodeEnv]: 'test' },
       PROCESS_ENV: {

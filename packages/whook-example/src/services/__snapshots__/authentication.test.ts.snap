@@ -3,7 +3,7 @@
 exports[`authentication .check() with a bad auth type should fail 1`] = `
 {
   "errorCode": "E_UNEXPECTED_AUTH_TYPE",
-  "errorParams": [
+  "errorDebugValues": [
     "yolo",
   ],
 }
@@ -12,7 +12,7 @@ exports[`authentication .check() with a bad auth type should fail 1`] = `
 exports[`authentication .check() with bearer type should fail with a bad token 1`] = `
 {
   "errorCode": "E_BAD_BEARER_TOKEN",
-  "errorParams": [
+  "errorDebugValues": [
     "bearer",
     "lol",
   ],

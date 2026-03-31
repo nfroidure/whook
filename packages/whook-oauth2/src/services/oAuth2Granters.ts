@@ -1,4 +1,4 @@
-import { initializer, location } from 'knifecycle';
+import { type Dependencies, initializer, location } from 'knifecycle';
 import {
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
@@ -129,7 +129,7 @@ export type OAuth2CodeService<CODE = string> = {
   create: (
     authenticationData: WhookAuthenticationData,
     redirectURI: string,
-    additionalParameters: { [name: string]: unknown },
+    additionalParameters: Record<string, unknown>,
   ) => Promise<CODE>;
   check: (
     authenticationData: WhookAuthenticationData,
@@ -138,7 +138,7 @@ export type OAuth2CodeService<CODE = string> = {
   ) => Promise<
     WhookAuthenticationData & {
       redirectURI: string;
-    } & { [name: string]: unknown }
+    } & Record<string, unknown>
   >;
 };
 
@@ -155,7 +155,7 @@ export type OAuth2AccessTokenService<TOKEN = string> = {
   create: (
     authenticationData: WhookAuthenticationData,
     tokenAuthenticationData: WhookAuthenticationData,
-    additionalParameters?: { [name: string]: unknown },
+    additionalParameters?: Record<string, unknown>,
   ) => Promise<{
     token: TOKEN;
     expiresAt: number;
@@ -170,19 +170,17 @@ export type OAuth2AccessTokenService<TOKEN = string> = {
 export type OAuth2RefreshTokenService<TOKEN = string> =
   OAuth2AccessTokenService<TOKEN>;
 
-export type CheckApplicationService = {
-  (context: {
-    applicationId: string;
-    type: string;
-    scope: string;
-    redirectURI?: string;
-  }): Promise<{
-    applicationId: string;
-    type: string;
-    scope: string;
-    redirectURI: string;
-  }>;
-};
+export type CheckApplicationService = (context: {
+  applicationId: string;
+  type: string;
+  scope: string;
+  redirectURI?: string;
+}) => Promise<{
+  applicationId: string;
+  type: string;
+  scope: string;
+  redirectURI: string;
+}>;
 
 export type OAuth2GranterAuthorize<
   AUTHORIZE_PARAMETERS extends Record<string, unknown> = Record<
@@ -278,7 +276,8 @@ export default location(
         'oAuth2TokenGranter',
       ],
     },
-    async (services) => Object.keys(services).map((key) => services[key]),
+    async (services: Dependencies) =>
+      Object.keys(services).map((key) => services[key]),
   ),
   import.meta.url,
 );

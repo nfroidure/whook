@@ -2,11 +2,12 @@ import {
   wrapInitializer,
   alsoInject,
   type ServiceInitializer,
-  Dependencies,
+  type Dependencies,
 } from 'knifecycle';
 import { type LogService } from 'common-services';
 import {
   pickFirstHeaderValue,
+  type WhookHeaders,
   type WhookHTTPTransaction,
   type WhookHTTPTransactionService,
 } from '@whook/whook';
@@ -59,7 +60,7 @@ export default function wrapHTTPTransactionWithMethodOverride<
               .reduce((newHeaders, headerName) => {
                 newHeaders[headerName] = request.headers[headerName];
                 return newHeaders;
-              }, {}),
+              }, {} as WhookHeaders),
           },
           transaction,
         };

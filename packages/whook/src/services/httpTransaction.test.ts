@@ -11,11 +11,16 @@ import {
   type TimeService,
   type DelayService,
 } from 'common-services';
+import { type WhookResponse } from '../types/http.js';
 
-function streamifyBody(response) {
-  return Object.assign({}, response, {
-    body: streamtest.fromChunks([Buffer.from(JSON.stringify(response.body))]),
-  });
+function streamifyBody(response: WhookResponse): WhookResponse {
+  return response
+    ? Object.assign({}, response, {
+        body: streamtest.fromChunks([
+          Buffer.from(JSON.stringify(response.body)),
+        ]),
+      })
+    : { status: 418 };
 }
 
 describe('initHTTPTransaction', () => {

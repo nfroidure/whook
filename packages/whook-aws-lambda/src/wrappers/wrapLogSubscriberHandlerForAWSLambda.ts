@@ -8,27 +8,27 @@ import {
   type WhookConsumerDefinition,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
-import { type Jsonify, type JsonValue } from 'type-fest';
+import { type JsonArray, type Jsonify, type JsonValue } from 'type-fest';
 import {
   type CloudWatchLogsEvent,
   type CloudWatchLogsDecodedData,
 } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
 
-export type WhookAWSLambdaLogSubscriberInput = {
-  body: Jsonify<CloudWatchLogsDecodedData>;
-};
+export interface WhookAWSLambdaLogSubscriberInput {
+  body: CloudWatchLogsDecodedData;
+}
 
 // Allow to subscribe to AWS logs
 // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html
 
-export type WhookAWSLambdaLogSubscriberHandlerWrapperDependencies = {
+export interface WhookAWSLambdaLogSubscriberHandlerWrapperDependencies {
   ENV: AppEnvVars;
   MAIN_DEFINITION: WhookConsumerDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with a log subscriber AWS Lambda.
@@ -37,7 +37,7 @@ export type WhookAWSLambdaLogSubscriberHandlerWrapperDependencies = {
  * @param  {Object}   services.ENV
  * The process environment
  * @param  {Object}   services.MAIN_DEFINITION
- * An OpenAPI definitition for that handler
+ * An OpenAPI definition for that handler
  * @param  {Object}   services.apm
  * An application monitoring service
  * @param  {Object}   [services.time]
@@ -58,7 +58,7 @@ async function initWrapLogSubscriberHandlerForAWSLambda({
   log('debug', '📥 - Initializing the AWS Lambda log subscriber wrapper.');
 
   const wrapper = async (
-    handler: WhookConsumerHandler<WhookAWSLambdaLogSubscriberInput>,
+    handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaLogSubscriberInput>>,
   ) => {
     const wrappedHandler = handleForAWSLogSubscriberLambda.bind(
       null,
@@ -73,7 +73,7 @@ async function initWrapLogSubscriberHandlerForAWSLambda({
 }
 
 async function handleForAWSLogSubscriberLambda<
-  S extends WhookConsumerHandler<WhookAWSLambdaLogSubscriberInput>,
+  S extends WhookConsumerHandler<Jsonify<WhookAWSLambdaLogSubscriberInput>>,
 >(
   {
     ENV,
@@ -86,7 +86,7 @@ async function handleForAWSLogSubscriberLambda<
   event: CloudWatchLogsEvent,
 ) {
   const startTime = time();
-  const parameters: WhookAWSLambdaLogSubscriberInput = {
+  const parameters: Jsonify<WhookAWSLambdaLogSubscriberInput> = {
     body: await decodePayload(event.awslogs.data),
   };
 
@@ -116,7 +116,7 @@ async function handleForAWSLogSubscriberLambda<
       type: 'error',
       stack: printStackTrace(castedErr),
       code: castedErr.code,
-      params: castedErr.params,
+      params: castedErr.debugValues as JsonArray,
       startTime,
       endTime: time(),
       recordsLength: parameters.body.logEvents.length,

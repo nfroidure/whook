@@ -27,7 +27,12 @@ describe('wrapRouteHandlerWithAuthorization', () => {
   }));
   const noopInitializerMock = jest.fn<
     ServiceInitializer<Dependencies, WhookRouteHandler>
-  >(async () => noopHandlerMock);
+  >(
+    (async () => noopHandlerMock) as unknown as ServiceInitializer<
+      Dependencies,
+      WhookRouteHandler
+    >,
+  );
   const log = jest.fn<LogService>();
   const authentication = {
     check: jest.fn<WhookAuthenticationService<unknown>['check']>(),
@@ -115,58 +120,58 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-    [
-      "debug",
-      "🔓 - Public endpoint detected, letting the call pass through!",
-    ],
-  ],
-  "noopHandlerMockCalls": [
-    [
-      {
-        "authenticated": false,
-        "cookies": {},
-        "headers": {},
-        "path": {},
-        "query": {
-          "aParameter": 1,
-        },
-      },
-      {
-        "method": "get",
-        "operation": {
-          "operationId": "noopHandler",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Successfully did nothing!",
-            },
-          },
-          "summary": "Does nothing.",
-          "tags": [
-            "system",
-          ],
-        },
-        "path": "/path",
-      },
-    ],
-  ],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-  "response": {
-    "status": 200,
-  },
-}
-`);
+       {
+         "authenticationChecks": [],
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+           [
+             "debug",
+             "🔓 - Public endpoint detected, letting the call pass through!",
+           ],
+         ],
+         "noopHandlerMockCalls": [
+           [
+             {
+               "authenticated": false,
+               "cookies": {},
+               "headers": {},
+               "path": {},
+               "query": {
+                 "aParameter": 1,
+               },
+             },
+             {
+               "method": "get",
+               "operation": {
+                 "operationId": "noopHandler",
+                 "parameters": [],
+                 "responses": {
+                   "200": {
+                     "description": "Successfully did nothing!",
+                   },
+                 },
+                 "summary": "Does nothing.",
+                 "tags": [
+                   "system",
+                 ],
+               },
+               "path": "/path",
+             },
+           ],
+         ],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+         "response": {
+           "status": 200,
+         },
+       }
+      `);
     });
   });
 
@@ -204,78 +209,78 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [
-    [
-      "bearer",
-      {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [
-    [
-      {
-        "authenticated": true,
-        "authenticationData": {
-          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-          "scope": "user,admin",
-          "userId": 1,
-        },
-        "cookies": {},
-        "headers": {
-          "authorization": "bearer yolo",
-        },
-        "path": {},
-        "query": {},
-      },
-      {
-        "method": "get",
-        "operation": {
-          "operationId": "noopHandler",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Successfully did nothing!",
-            },
-          },
-          "security": [
-            {},
-            {
-              "bearerAuth": [
-                "user",
-                "admin",
-              ],
-            },
-          ],
-          "summary": "Does nothing.",
-          "tags": [
-            "system",
-          ],
-        },
-        "path": "/path",
-      },
-    ],
-  ],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-  "response": {
-    "headers": {
-      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
-    },
-    "status": 200,
-  },
-}
-`);
+       {
+         "authenticationChecks": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [
+           [
+             {
+               "authenticated": true,
+               "authenticationData": {
+                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+                 "scope": "user,admin",
+                 "userId": 1,
+               },
+               "cookies": {},
+               "headers": {
+                 "authorization": "bearer yolo",
+               },
+               "path": {},
+               "query": {},
+             },
+             {
+               "method": "get",
+               "operation": {
+                 "operationId": "noopHandler",
+                 "parameters": [],
+                 "responses": {
+                   "200": {
+                     "description": "Successfully did nothing!",
+                   },
+                 },
+                 "security": [
+                   {},
+                   {
+                     "bearerAuth": [
+                       "user",
+                       "admin",
+                     ],
+                   },
+                 ],
+                 "summary": "Does nothing.",
+                 "tags": [
+                   "system",
+                 ],
+               },
+               "path": "/path",
+             },
+           ],
+         ],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+         "response": {
+           "headers": {
+             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
     });
 
     test('should work with Bearer tokens and good authentication check', async () => {
@@ -311,78 +316,78 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [
-    [
-      "bearer",
-      {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [
-    [
-      {
-        "authenticated": true,
-        "authenticationData": {
-          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-          "scope": "user,admin",
-          "userId": 1,
-        },
-        "cookies": {},
-        "headers": {
-          "authorization": "Bearer yolo",
-        },
-        "path": {},
-        "query": {},
-      },
-      {
-        "method": "get",
-        "operation": {
-          "operationId": "noopHandler",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Successfully did nothing!",
-            },
-          },
-          "security": [
-            {},
-            {
-              "bearerAuth": [
-                "user",
-                "admin",
-              ],
-            },
-          ],
-          "summary": "Does nothing.",
-          "tags": [
-            "system",
-          ],
-        },
-        "path": "/path",
-      },
-    ],
-  ],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-  "response": {
-    "headers": {
-      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
-    },
-    "status": 200,
-  },
-}
-`);
+       {
+         "authenticationChecks": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [
+           [
+             {
+               "authenticated": true,
+               "authenticationData": {
+                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+                 "scope": "user,admin",
+                 "userId": 1,
+               },
+               "cookies": {},
+               "headers": {
+                 "authorization": "Bearer yolo",
+               },
+               "path": {},
+               "query": {},
+             },
+             {
+               "method": "get",
+               "operation": {
+                 "operationId": "noopHandler",
+                 "parameters": [],
+                 "responses": {
+                   "200": {
+                     "description": "Successfully did nothing!",
+                   },
+                 },
+                 "security": [
+                   {},
+                   {
+                     "bearerAuth": [
+                       "user",
+                       "admin",
+                     ],
+                   },
+                 ],
+                 "summary": "Does nothing.",
+                 "tags": [
+                   "system",
+                 ],
+               },
+               "path": "/path",
+             },
+           ],
+         ],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+         "response": {
+           "headers": {
+             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
     });
 
     test('should work with access tokens and good authentication check', async () => {
@@ -418,78 +423,78 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [
-    [
-      "bearer",
-      {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [
-    [
-      {
-        "authenticated": true,
-        "authenticationData": {
-          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-          "scope": "user,admin",
-          "userId": 1,
-        },
-        "cookies": {},
-        "headers": {},
-        "path": {},
-        "query": {
-          "access_token": "yolo",
-        },
-      },
-      {
-        "method": "get",
-        "operation": {
-          "operationId": "noopHandler",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Successfully did nothing!",
-            },
-          },
-          "security": [
-            {},
-            {
-              "bearerAuth": [
-                "user",
-                "admin",
-              ],
-            },
-          ],
-          "summary": "Does nothing.",
-          "tags": [
-            "system",
-          ],
-        },
-        "path": "/path",
-      },
-    ],
-  ],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-  "response": {
-    "headers": {
-      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
-    },
-    "status": 200,
-  },
-}
-`);
+       {
+         "authenticationChecks": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [
+           [
+             {
+               "authenticated": true,
+               "authenticationData": {
+                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+                 "scope": "user,admin",
+                 "userId": 1,
+               },
+               "cookies": {},
+               "headers": {},
+               "path": {},
+               "query": {
+                 "access_token": "yolo",
+               },
+             },
+             {
+               "method": "get",
+               "operation": {
+                 "operationId": "noopHandler",
+                 "parameters": [],
+                 "responses": {
+                   "200": {
+                     "description": "Successfully did nothing!",
+                   },
+                 },
+                 "security": [
+                   {},
+                   {
+                     "bearerAuth": [
+                       "user",
+                       "admin",
+                     ],
+                   },
+                 ],
+                 "summary": "Does nothing.",
+                 "tags": [
+                   "system",
+                 ],
+               },
+               "path": "/path",
+             },
+           ],
+         ],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+         "response": {
+           "headers": {
+             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
     });
 
     test('should work with no authentication at all', async () => {
@@ -523,65 +528,65 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-    [
-      "debug",
-      "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
-    ],
-  ],
-  "noopHandlerMockCalls": [
-    [
-      {
-        "authenticated": false,
-        "cookies": {},
-        "headers": {},
-        "path": {},
-        "query": {},
-      },
-      {
-        "method": "get",
-        "operation": {
-          "operationId": "noopHandler",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Successfully did nothing!",
-            },
-          },
-          "security": [
-            {},
-            {
-              "bearerAuth": [
-                "user",
-                "admin",
-              ],
-            },
-          ],
-          "summary": "Does nothing.",
-          "tags": [
-            "system",
-          ],
-        },
-        "path": "/path",
-      },
-    ],
-  ],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-  "response": {
-    "status": 200,
-  },
-}
-`);
+       {
+         "authenticationChecks": [],
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+           [
+             "debug",
+             "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
+           ],
+         ],
+         "noopHandlerMockCalls": [
+           [
+             {
+               "authenticated": false,
+               "cookies": {},
+               "headers": {},
+               "path": {},
+               "query": {},
+             },
+             {
+               "method": "get",
+               "operation": {
+                 "operationId": "noopHandler",
+                 "parameters": [],
+                 "responses": {
+                   "200": {
+                     "description": "Successfully did nothing!",
+                   },
+                 },
+                 "security": [
+                   {},
+                   {
+                     "bearerAuth": [
+                       "user",
+                       "admin",
+                     ],
+                   },
+                 ],
+                 "summary": "Does nothing.",
+                 "tags": [
+                   "system",
+                 ],
+               },
+               "path": "/path",
+             },
+           ],
+         ],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+         "response": {
+           "status": 200,
+         },
+       }
+      `);
     });
   });
 
@@ -619,77 +624,77 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [
-    [
-      "bearer",
-      {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [
-    [
-      {
-        "authenticated": true,
-        "authenticationData": {
-          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-          "scope": "user,admin",
-          "userId": 1,
-        },
-        "cookies": {},
-        "headers": {
-          "authorization": "Bearer yolo",
-        },
-        "path": {},
-        "query": {},
-      },
-      {
-        "method": "get",
-        "operation": {
-          "operationId": "noopHandler",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Successfully did nothing!",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-                "admin",
-              ],
-            },
-          ],
-          "summary": "Does nothing.",
-          "tags": [
-            "system",
-          ],
-        },
-        "path": "/path",
-      },
-    ],
-  ],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-  "response": {
-    "headers": {
-      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
-    },
-    "status": 200,
-  },
-}
-`);
+       {
+         "authenticationChecks": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [
+           [
+             {
+               "authenticated": true,
+               "authenticationData": {
+                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+                 "scope": "user,admin",
+                 "userId": 1,
+               },
+               "cookies": {},
+               "headers": {
+                 "authorization": "Bearer yolo",
+               },
+               "path": {},
+               "query": {},
+             },
+             {
+               "method": "get",
+               "operation": {
+                 "operationId": "noopHandler",
+                 "parameters": [],
+                 "responses": {
+                   "200": {
+                     "description": "Successfully did nothing!",
+                   },
+                 },
+                 "security": [
+                   {
+                     "bearerAuth": [
+                       "user",
+                       "admin",
+                     ],
+                   },
+                 ],
+                 "summary": "Does nothing.",
+                 "tags": [
+                   "system",
+                 ],
+               },
+               "path": "/path",
+             },
+           ],
+         ],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+         "response": {
+           "headers": {
+             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
     });
 
     test('should work with access tokens and good authentication check', async () => {
@@ -725,77 +730,77 @@ describe('wrapRouteHandlerWithAuthorization', () => {
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [
-    [
-      "bearer",
-      {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [
-    [
-      {
-        "authenticated": true,
-        "authenticationData": {
-          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-          "scope": "user,admin",
-          "userId": 1,
-        },
-        "cookies": {},
-        "headers": {},
-        "path": {},
-        "query": {
-          "access_token": "yolo",
-        },
-      },
-      {
-        "method": "get",
-        "operation": {
-          "operationId": "noopHandler",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "Successfully did nothing!",
-            },
-          },
-          "security": [
-            {
-              "bearerAuth": [
-                "user",
-                "admin",
-              ],
-            },
-          ],
-          "summary": "Does nothing.",
-          "tags": [
-            "system",
-          ],
-        },
-        "path": "/path",
-      },
-    ],
-  ],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-  "response": {
-    "headers": {
-      "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
-    },
-    "status": 200,
-  },
-}
-`);
+       {
+         "authenticationChecks": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [
+           [
+             {
+               "authenticated": true,
+               "authenticationData": {
+                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+                 "scope": "user,admin",
+                 "userId": 1,
+               },
+               "cookies": {},
+               "headers": {},
+               "path": {},
+               "query": {
+                 "access_token": "yolo",
+               },
+             },
+             {
+               "method": "get",
+               "operation": {
+                 "operationId": "noopHandler",
+                 "parameters": [],
+                 "responses": {
+                   "200": {
+                     "description": "Successfully did nothing!",
+                   },
+                 },
+                 "security": [
+                   {
+                     "bearerAuth": [
+                       "user",
+                       "admin",
+                     ],
+                   },
+                 ],
+                 "summary": "Does nothing.",
+                 "tags": [
+                   "system",
+                 ],
+               },
+               "path": "/path",
+             },
+           ],
+         ],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+         "response": {
+           "headers": {
+             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
     });
   });
 
@@ -825,33 +830,33 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "errorCode": "E_OPERATION_REQUIRED",
-  "errorHeaders": {},
-  "errorParams": [],
-  "httpCode": 500,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [],
+         "errorCode": "E_OPERATION_REQUIRED",
+         "errorDebugValues": [],
+         "errorHeaders": {},
+         "httpCode": 500,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -881,37 +886,37 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "errorCode": "E_MISCONFIGURATION",
-  "errorHeaders": {},
-  "errorParams": [
-    "Bearer",
-    [],
-    "noopHandler",
-  ],
-  "httpCode": 500,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [],
+         "errorCode": "E_MISCONFIGURATION",
+         "errorDebugValues": [
+           "Bearer",
+           [],
+           "noopHandler",
+         ],
+         "errorHeaders": {},
+         "httpCode": 500,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -947,46 +952,46 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [
-    [
-      "bearer",
-      {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": {},
-  "errorParams": [
-    "",
-    [
-      "user",
-      "admin",
-    ],
-  ],
-  "httpCode": 403,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "errorCode": "E_UNAUTHORIZED",
+         "errorDebugValues": [
+           "",
+           [
+             "user",
+             "admin",
+           ],
+         ],
+         "errorHeaders": {},
+         "httpCode": 403,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -1023,35 +1028,33 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "errorCode": "E_AUTH_MECHANISM_NOT_ALLOWED",
-  "errorHeaders": {},
-  "errorParams": [
-    "Basic yolo",
-  ],
-  "httpCode": 400,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [],
+         "errorCode": "E_AUTH_MECHANISM_NOT_ALLOWED",
+         "errorDebugValues": [],
+         "errorHeaders": {},
+         "httpCode": 400,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -1085,35 +1088,33 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "errorCode": "E_UNKNOWN_AUTH_MECHANISM",
-  "errorHeaders": {},
-  "errorParams": [
-    "Whatever yolo",
-  ],
-  "httpCode": 400,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [],
+         "errorCode": "E_UNKNOWN_AUTH_MECHANISM",
+         "errorDebugValues": [],
+         "errorHeaders": {},
+         "httpCode": 400,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -1145,39 +1146,39 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": {
-    "www-authenticate": "Bearer realm="Auth"",
-  },
-  "errorParams": [],
-  "httpCode": 401,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-    [
-      "debug",
-      "🔐 - No authorization found, locking access!",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [],
+         "errorCode": "E_UNAUTHORIZED",
+         "errorDebugValues": [],
+         "errorHeaders": {
+           "www-authenticate": "Bearer realm="Auth"",
+         },
+         "httpCode": 401,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+           [
+             "debug",
+             "🔐 - No authorization found, locking access!",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -1212,39 +1213,39 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [],
-  "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": {
-    "www-authenticate": "Bearer realm="Auth"",
-  },
-  "errorParams": [],
-  "httpCode": 401,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-    [
-      "debug",
-      "🔐 - No authorization found, locking access!",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [],
+         "errorCode": "E_UNAUTHORIZED",
+         "errorDebugValues": [],
+         "errorHeaders": {
+           "www-authenticate": "Bearer realm="Auth"",
+         },
+         "httpCode": 401,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+           [
+             "debug",
+             "🔐 - No authorization found, locking access!",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -1280,42 +1281,42 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorParams: (err as YHTTPError).params,
+        errorDebugValues: (err as YHTTPError).debugValues,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
         authenticationChecks: authentication.check.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "authenticationChecks": [
-    [
-      "bearer",
-      {
-        "hash": "yolo",
-      },
-    ],
-  ],
-  "errorCode": "E_UNAUTHORIZED",
-  "errorHeaders": {
-    "www-authenticate": "Bearer realm="Auth"",
-  },
-  "errorParams": [],
-  "httpCode": 401,
-  "logCalls": [
-    [
-      "debug",
-      "🔐 - Initializing the authorization wrapper.",
-    ],
-  ],
-  "noopHandlerMockCalls": [],
-  "noopInitializerMockCalls": [
-    [
-      {},
-    ],
-  ],
-}
-`);
+       {
+         "authenticationChecks": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "errorCode": "E_UNAUTHORIZED",
+         "errorDebugValues": [],
+         "errorHeaders": {
+           "www-authenticate": "Bearer realm="Auth"",
+         },
+         "httpCode": 401,
+         "logCalls": [
+           [
+             "debug",
+             "🔐 - Initializing the authorization wrapper.",
+           ],
+         ],
+         "noopHandlerMockCalls": [],
+         "noopInitializerMockCalls": [
+           [
+             {},
+           ],
+         ],
+       }
+      `);
     }
   });
 });

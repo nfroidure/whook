@@ -9,17 +9,19 @@ import {
 import { type LogService, type TimeService } from 'common-services';
 import { type S3Event } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
-import { type Jsonify } from 'type-fest';
+import { type JsonArray, type Jsonify } from 'type-fest';
 
-export type WhookAWSLambdaS3Input = { body: Jsonify<S3Event['Records']> };
+export interface WhookAWSLambdaS3Input {
+  body: S3Event['Records'];
+}
 
-export type WhookAWSLambdaS3HandlerWrapperDependencies = {
+export interface WhookAWSLambdaS3HandlerWrapperDependencies {
   ENV: AppEnvVars;
   MAIN_DEFINITION: WhookConsumerDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with a S3 AWS Lambda.
@@ -49,7 +51,7 @@ async function initWrapS3HandlerForAWSLambda({
   log('debug', '📥 - Initializing the AWS Lambda S3 wrapper.');
 
   const wrapper = async (
-    handler: WhookConsumerHandler<WhookAWSLambdaS3Input>,
+    handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaS3Input>>,
   ) => {
     const wrappedHandler = handleForAWSS3Lambda.bind(
       null,
@@ -71,7 +73,7 @@ async function handleForAWSS3Lambda(
     time,
     log,
   }: Required<WhookAWSLambdaS3HandlerWrapperDependencies>,
-  handler: WhookConsumerHandler<WhookAWSLambdaS3Input>,
+  handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaS3Input>>,
   event: S3Event,
 ) {
   const startTime = time();
@@ -104,7 +106,7 @@ async function handleForAWSS3Lambda(
       type: 'error',
       stack: printStackTrace(castedErr),
       code: castedErr.code,
-      params: castedErr.params,
+      params: castedErr.debugValues as JsonArray,
       startTime,
       endTime: time(),
       recordsLength: event.Records.length,

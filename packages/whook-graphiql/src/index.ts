@@ -1,4 +1,5 @@
 import url from 'url';
+import { type IncomingMessage, type ServerResponse } from 'node:http';
 import * as GraphiQL from 'apollo-server-module-graphiql';
 import { wrapInitializer, alsoInject } from 'knifecycle';
 import { printStackTrace } from 'yerror';
@@ -15,15 +16,15 @@ const DEFAULT_GRAPHIQL = {
   defaultQuery: '',
 };
 
-export type WhookGraphIQLEnv = {
+export interface WhookGraphIQLEnv {
   DEV_MODE?: string;
 };
-export type WhookGraphIQLOptions = {
+export interface WhookGraphIQLOptions {
   defaultQuery: string;
   path: string;
   graphQLPath?: string;
 };
-export type WhookGraphIQLConfig = {
+export interface WhookGraphIQLConfig {
   DEV_ACCESS_TOKEN?: string;
   DEV_ACCESS_MECHANISM?: string;
   BASE_PATH?: string;
@@ -93,8 +94,11 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
         service: customHTTPRouter,
       };
 
-      async function customHTTPRouter(req, res) {
-        if (req.url.startsWith(GRAPHIQL.path)) {
+      async function customHTTPRouter(
+        req: IncomingMessage,
+        res: ServerResponse,
+      ) {
+        if (req.url?.startsWith(GRAPHIQL.path)) {
           const query = (req.url && url.parse(req.url, true).query) || {};
           return GraphiQL.resolveGraphiQLString(
             query,

@@ -1,5 +1,5 @@
 import { autoService } from 'knifecycle';
-import { noop } from '../libs/utils.js';
+import { hasDefinedKey, noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import { type AppEnvVars } from 'application-services';
 import { type LogService } from 'common-services';
@@ -47,13 +47,13 @@ async function initEnvCommand({
       namedArguments: { name, default: defaultValue },
     } = args;
 
-    if (
-      'undefined' === typeof ENV[name] &&
-      'undefined' === typeof defaultValue
-    ) {
-      throw new YError('E_NO_ENV_VALUE', name);
+    if ('undefined' === typeof defaultValue && !hasDefinedKey(ENV, name)) {
+      throw new YError('E_NO_ENV_VALUE', [name]);
     }
 
-    log('info', `${ENV[name] || defaultValue}`);
+    log(
+      'info',
+      `${(ENV as unknown as Record<string, string>)[name] || defaultValue}`,
+    );
   };
 }

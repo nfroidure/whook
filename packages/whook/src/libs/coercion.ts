@@ -13,9 +13,9 @@ We do not go further in coercion since Whook's design
  This is why we do not use AJV's coercion mechanism.
 */
 
-export type WhookCoercionOptions = {
+export interface WhookCoercionOptions {
   strictlyReentrant: boolean;
-};
+}
 
 export const BASE_10 = 10;
 
@@ -30,7 +30,7 @@ export function parseNumber(
   const value = parseFloat(str);
 
   if (options.strictlyReentrant && value.toString(BASE_10) !== str) {
-    throw new YError('E_NON_REENTRANT_NUMBER', str, value.toString(BASE_10));
+    throw new YError('E_NON_REENTRANT_NUMBER', [str, value.toString(BASE_10)]);
   }
 
   return value;
@@ -42,7 +42,7 @@ export function parseBoolean(str: string): boolean {
   } else if ('false' === str) {
     return false;
   }
-  throw new YError('E_BAD_BOOLEAN', str);
+  throw new YError('E_BAD_BOOLEAN', [str]);
 }
 export function parseArrayOfStrings(str: string): string[] {
   return str.split(',');

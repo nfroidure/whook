@@ -37,15 +37,13 @@ async function initAuthentication({
         try {
           return await jwtToken.verify((data as BearerPayload).hash);
         } catch (err) {
-          throw YError.wrap(
-            err as Error,
-            'E_BAD_BEARER_TOKEN',
+          throw YError.wrap(err as Error, 'E_BAD_BEARER_TOKEN', [
             type,
             (data as BearerPayload).hash,
-          );
+          ]);
         }
       }
-      throw new YError('E_UNEXPECTED_AUTH_TYPE', type);
+      throw new YError('E_UNEXPECTED_AUTH_TYPE', [type]);
     },
   };
 

@@ -8,16 +8,16 @@ import {
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
 import { type ScheduledEvent } from 'aws-lambda';
-import { type JsonValue, type JsonObject } from 'type-fest';
+import { type JsonValue, type JsonObject, type JsonArray } from 'type-fest';
 import { type AppEnvVars } from 'application-services';
 
-export type WhookAWSLambdaCronHandlerWrapperDependencies = {
+export interface WhookAWSLambdaCronHandlerWrapperDependencies {
   ENV: AppEnvVars;
   MAIN_DEFINITION: WhookCronDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with cron AWS Lambda.
@@ -100,7 +100,7 @@ async function handleForAWSCronLambda(
       type: 'error',
       stack: printStackTrace(castedErr),
       code: castedErr.code,
-      params: castedErr.params,
+      params: castedErr.debugValues as JsonArray,
       startTime,
       endTime: time(),
     });
