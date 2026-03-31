@@ -42,7 +42,7 @@
     "prettier": "lerna run prettier",
     "preversion": "node --run lint && NODE_ENV=test node --run build && node --run test && node --run lerna -- run --parallel metapak -- -s && node --run metapak -- -s",
     "test": "lerna run test",
-    "version": "node --run changelog && node --run changelog"
+    "version": "node --run changelog"
   },
   "author": {
     "name": "Nicolas Froidure",
