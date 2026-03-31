@@ -95,7 +95,7 @@ export const definition = {
   },
 } as const satisfies WhookRouteDefinition;
 
-export type HandlerDependencies = {
+export interface HandlerDependencies {
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
   oAuth2Granters: OAuth2GranterService<
     Record<string, unknown>,
@@ -104,8 +104,8 @@ export type HandlerDependencies = {
   >[];
   checkApplication: CheckApplicationService;
   log: LogService;
-};
-type HandlerParameters = {
+}
+interface HandlerParameters {
   authenticationData: WhookAuthenticationData;
   body: {
     responseType: string;
@@ -116,7 +116,7 @@ type HandlerParameters = {
     acknowledged: boolean;
     [name: string]: unknown;
   };
-};
+}
 
 export default location(
   autoService(initPostOAuth2Acknowledge),
@@ -161,7 +161,7 @@ async function initPostOAuth2Acknowledge({
 
     try {
       if (!acknowledged) {
-        throw new YError('E_ACCESS_DENIED', clientId);
+        throw new YError('E_ACCESS_DENIED', [clientId]);
       }
 
       const granter = oAuth2Granters.find(
@@ -171,7 +171,7 @@ async function initPostOAuth2Acknowledge({
       );
 
       if (!granter || !granter.acknowledger) {
-        throw new YError('E_UNKNOWN_ACKNOWLEDGER_TYPE', responseType);
+        throw new YError('E_UNKNOWN_ACKNOWLEDGER_TYPE', [responseType]);
       }
 
       const { applicationId, scope, ...additionalProperties } =

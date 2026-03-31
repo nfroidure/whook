@@ -1,5 +1,6 @@
 import { location, autoService } from 'knifecycle';
 import { YError } from 'yerror';
+// @ts-expect-error No types 🤷
 import miniquery from 'miniquery';
 import { type AppConfig } from 'application-services';
 import { noop, type LogService } from 'common-services';
@@ -65,23 +66,26 @@ async function initConfigCommand({
       namedArguments: { name, query, default: defaultValue, pretty },
     } = args;
 
-    if ('undefined' === typeof APP_CONFIG[name]) {
+    if (
+      APP_CONFIG &&
+      'undefined' === typeof (APP_CONFIG as Record<string, string>)[name]
+    ) {
       log('error', `No config found for "${name}"`);
       if ('undefined' === typeof defaultValue) {
-        throw new YError('E_NO_CONFIG', name);
+        throw new YError('E_NO_CONFIG', [name]);
       }
       log('info', `${JSON.stringify(defaultValue, null, pretty ? 2 : 0)}`);
       return;
     }
 
     const results = query
-      ? miniquery(query, [APP_CONFIG[name]])
-      : [APP_CONFIG[name]];
+      ? miniquery(query, [(APP_CONFIG as Record<string, string>)[name]])
+      : [(APP_CONFIG as Record<string, string>)[name]];
 
     if (!results.length) {
       log('error', `Could not find any results for "${query}".`);
       if ('undefined' === typeof defaultValue) {
-        throw new YError('E_NO_RESULT', name, query);
+        throw new YError('E_NO_RESULT', [name, query]);
       }
     }
 

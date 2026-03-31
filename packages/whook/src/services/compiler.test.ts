@@ -10,7 +10,7 @@ import { type ImporterService, type LogService } from 'common-services';
 describe('Compiler', () => {
   const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Production };
   const PROJECT_DIR = '/home/whoami/my_project';
-  const DEBUG_NODE_ENVS = [];
+  const DEBUG_NODE_ENVS = [] as string[];
   const COMPILER_OPTIONS = {};
   const log = jest.fn<LogService>();
   const importer = jest.fn<ImporterService<unknown>>();
@@ -41,13 +41,13 @@ describe('Compiler', () => {
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "contentsLength": 71521,
-  "extension": ".mjs",
-  "logCalls": [],
-  "mappingsLength": 0,
-}
-`);
+     {
+       "contentsLength": 72139,
+       "extension": ".mjs",
+       "logCalls": [],
+       "mappingsLength": 0,
+     }
+    `);
   });
 
   test('should work with code only', async () => {
@@ -71,13 +71,13 @@ describe('Compiler', () => {
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "contentsLength": 3702,
-  "extension": ".mjs",
-  "logCalls": [],
-  "mappingsLength": 0,
-}
-`);
+     {
+       "contentsLength": 3806,
+       "extension": ".mjs",
+       "logCalls": [],
+       "mappingsLength": 0,
+     }
+    `);
   });
 
   test('should work with commonjs', async () => {
@@ -105,12 +105,12 @@ describe('Compiler', () => {
       mappingsLength: result?.mappings?.length,
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "contentsLength": 5350,
-  "extension": ".cjs",
-  "logCalls": [],
-  "mappingsLength": 0,
-}
-`);
+     {
+       "contentsLength": 5454,
+       "extension": ".cjs",
+       "logCalls": [],
+       "mappingsLength": 0,
+     }
+    `);
   });
 });

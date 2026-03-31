@@ -59,6 +59,8 @@ exports[`API should always have the same amount of optionally authenticated endp
 ]
 `;
 
+exports[`API should always have the same amount of private endpoints 1`] = `[]`;
+
 exports[`API should always have the same amount of publicly documented endpoints 1`] = `
 [
   "get /delay",
@@ -757,7 +759,12 @@ exports[`API should work 1`] = `
     ],
     "tags": [
       {
+        "description": "System endpoints for diagnostic concerns",
         "name": "system",
+      },
+      {
+        "description": "Sample endpoints you may remove",
+        "name": "example",
       },
     ],
   },

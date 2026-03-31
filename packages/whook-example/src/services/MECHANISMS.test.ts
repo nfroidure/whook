@@ -2,6 +2,7 @@ import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initMechanisms, { FAKE_MECHANISM } from './MECHANISMS.js';
 import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 import { type LogService } from 'common-services';
+import { NodeEnv } from 'application-services';
 
 describe('MECHANISMS', () => {
   const log = jest.fn<LogService>();
@@ -12,7 +13,7 @@ describe('MECHANISMS', () => {
 
   test('should only include bearer', async () => {
     const MECHANISMS = await initMechanisms({
-      ENV: {},
+      ENV: { NODE_ENV: NodeEnv.Test },
       log,
     });
 
@@ -25,7 +26,7 @@ describe('MECHANISMS', () => {
 
   test('should also include fake on debugging', async () => {
     const MECHANISMS = await initMechanisms({
-      ENV: { DEV_MODE: '1' },
+      ENV: { NODE_ENV: NodeEnv.Test, DEV_MODE: '1' },
       log,
     });
 

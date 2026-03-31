@@ -53,23 +53,23 @@ describe('inspectCommand', () => {
       injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "MYSQL",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "info",
-      "{"auth":{"username":"root"},"version":"2.1.1"}",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "injectorCalls": [
+         [
+           [
+             "MYSQL",
+           ],
+         ],
+       ],
+       "logCalls": [
+         [
+           "info",
+           "{"auth":{"username":"root"},"version":"2.1.1"}",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with one value', async () => {
@@ -105,23 +105,23 @@ describe('inspectCommand', () => {
       injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "MYSQL",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "info",
-      ""root"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "injectorCalls": [
+         [
+           [
+             "MYSQL",
+           ],
+         ],
+       ],
+       "logCalls": [
+         [
+           "info",
+           ""root"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with several values', async () => {
@@ -158,23 +158,23 @@ describe('inspectCommand', () => {
       injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "MYSQL",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "info",
-      ""root"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "injectorCalls": [
+         [
+           [
+             "MYSQL",
+           ],
+         ],
+       ],
+       "logCalls": [
+         [
+           "info",
+           ""root"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with not existing config but a default value', async () => {
@@ -210,31 +210,31 @@ describe('inspectCommand', () => {
       injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "DOES_NOT_EXIST",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "error",
-      "No service found for "DOES_NOT_EXIST".",
-    ],
-    [
-      "error",
-      "Try debugging with the "DEBUG=whook" env.",
-    ],
-    [
-      "info",
-      ""v8"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "injectorCalls": [
+         [
+           [
+             "DOES_NOT_EXIST",
+           ],
+         ],
+       ],
+       "logCalls": [
+         [
+           "error",
+           "No service found for "DOES_NOT_EXIST".",
+         ],
+         [
+           "error",
+           "Try debugging with the "DEBUG=whook" env.",
+         ],
+         [
+           "info",
+           ""v8"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with no result but a default value', async () => {
@@ -271,27 +271,27 @@ describe('inspectCommand', () => {
       injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "MYSQL",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "error",
-      "Could not find any results for "nothing_here".",
-    ],
-    [
-      "info",
-      ""v8"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "injectorCalls": [
+         [
+           [
+             "MYSQL",
+           ],
+         ],
+       ],
+       "logCalls": [
+         [
+           "error",
+           "Could not find any results for "nothing_here".",
+         ],
+         [
+           "info",
+           ""v8"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should fail with not existing config name', async () => {
@@ -312,39 +312,39 @@ describe('inspectCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
       }).toMatchInlineSnapshot(`
-        {
-          "errorCode": "E_NO_SERVICE_FOUND",
-          "errorParams": [
-            "DOES_NOT_EXIST",
-          ],
-        }
+       {
+         "errorCode": "E_NO_SERVICE_FOUND",
+         "errorDebugValues": [
+           "DOES_NOT_EXIST",
+         ],
+       }
       `);
       expect({
         injectorCalls: $injector.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "DOES_NOT_EXIST",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "error",
-      "No service found for "DOES_NOT_EXIST".",
-    ],
-    [
-      "error",
-      "Try debugging with the "DEBUG=whook" env.",
-    ],
-  ],
-}
-`);
+       {
+         "injectorCalls": [
+           [
+             [
+               "DOES_NOT_EXIST",
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "error",
+             "No service found for "DOES_NOT_EXIST".",
+           ],
+           [
+             "error",
+             "Try debugging with the "DEBUG=whook" env.",
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -369,36 +369,36 @@ describe('inspectCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
       }).toMatchInlineSnapshot(`
-        {
-          "errorCode": "E_NO_RESULT",
-          "errorParams": [
-            "MYSQL",
-            "nothing_here",
-          ],
-        }
+       {
+         "errorCode": "E_NO_RESULT",
+         "errorDebugValues": [
+           "MYSQL",
+           "nothing_here",
+         ],
+       }
       `);
       expect({
         injectorCalls: $injector.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "MYSQL",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "error",
-      "Could not find any results for "nothing_here".",
-    ],
-  ],
-}
-`);
+       {
+         "injectorCalls": [
+           [
+             [
+               "MYSQL",
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "error",
+             "Could not find any results for "nothing_here".",
+           ],
+         ],
+       }
+      `);
     }
   });
 });

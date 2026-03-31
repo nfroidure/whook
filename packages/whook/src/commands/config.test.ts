@@ -48,16 +48,16 @@ describe('configCommand', () => {
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "info",
-      "{"auth":{"username":"root"},"version":"2.1.1"}",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "logCalls": [
+         [
+           "info",
+           "{"auth":{"username":"root"},"version":"2.1.1"}",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with one value', async () => {
@@ -90,16 +90,16 @@ describe('configCommand', () => {
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "info",
-      ""root"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "logCalls": [
+         [
+           "info",
+           ""root"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with several values', async () => {
@@ -132,16 +132,16 @@ describe('configCommand', () => {
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "info",
-      ""root"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "logCalls": [
+         [
+           "info",
+           ""root"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with a not existing config but a default value', async () => {
@@ -174,20 +174,20 @@ describe('configCommand', () => {
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "error",
-      "No config found for "DOES_NOT_EXIST"",
-    ],
-    [
-      "info",
-      ""v8"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "logCalls": [
+         [
+           "error",
+           "No config found for "DOES_NOT_EXIST"",
+         ],
+         [
+           "info",
+           ""v8"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should work with no result but a default value', async () => {
@@ -221,20 +221,20 @@ describe('configCommand', () => {
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "error",
-      "Could not find any results for "nothing_here".",
-    ],
-    [
-      "info",
-      ""v8"",
-    ],
-  ],
-  "result": undefined,
-}
-`);
+     {
+       "logCalls": [
+         [
+           "error",
+           "Could not find any results for "nothing_here".",
+         ],
+         [
+           "info",
+           ""v8"",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 
   test('should fail with not existing config name', async () => {
@@ -255,27 +255,27 @@ describe('configCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
       }).toMatchInlineSnapshot(`
-        {
-          "errorCode": "E_NO_CONFIG",
-          "errorParams": [
-            "DOES_NOT_EXIST",
-          ],
-        }
+       {
+         "errorCode": "E_NO_CONFIG",
+         "errorDebugValues": [
+           "DOES_NOT_EXIST",
+         ],
+       }
       `);
       expect({
         logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "error",
-      "No config found for "DOES_NOT_EXIST"",
-    ],
-  ],
-}
-`);
+       {
+         "logCalls": [
+           [
+             "error",
+             "No config found for "DOES_NOT_EXIST"",
+           ],
+         ],
+       }
+      `);
     }
   });
 
@@ -298,28 +298,28 @@ describe('configCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
       }).toMatchInlineSnapshot(`
-        {
-          "errorCode": "E_NO_RESULT",
-          "errorParams": [
-            "MYSQL",
-            "nothing_here",
-          ],
-        }
+       {
+         "errorCode": "E_NO_RESULT",
+         "errorDebugValues": [
+           "MYSQL",
+           "nothing_here",
+         ],
+       }
       `);
       expect({
         logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
       }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "error",
-      "Could not find any results for "nothing_here".",
-    ],
-  ],
-}
-`);
+       {
+         "logCalls": [
+           [
+             "error",
+             "Could not find any results for "nothing_here".",
+           ],
+         ],
+       }
+      `);
     }
   });
 });

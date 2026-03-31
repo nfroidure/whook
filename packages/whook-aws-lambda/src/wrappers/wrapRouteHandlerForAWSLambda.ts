@@ -41,6 +41,12 @@ import {
   type WhookSchemaValidatorsService,
   type WhookCoercionOptions,
   type WhookHTTPRouterDescriptor,
+  DEFAULT_RESPONSE_BODY_SPEC,
+  type WhookResponseBodySpec,
+  type WhookDecoders,
+  type WhookEncoders,
+  type WhookParsers,
+  type WhookStringifiers,
 } from '@whook/whook';
 import stream from 'node:stream';
 import qs from 'qs';
@@ -63,15 +69,15 @@ import { type JsonValue } from 'type-fest';
 const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
-export type WhookAWSLambdaRouteHandlerWrapperDependencies = {
+export interface WhookAWSLambdaRouteHandlerWrapperDependencies {
   MAIN_API: WhookOpenAPI;
   MAIN_DEFINITION: WhookRouteDefinition;
   ENV: AppEnvVars;
-  DECODERS?: typeof DEFAULT_DECODERS;
-  ENCODERS?: typeof DEFAULT_ENCODERS;
+  DECODERS?: WhookDecoders;
+  ENCODERS?: WhookEncoders;
   PARSED_HEADERS?: string[];
-  PARSERS?: typeof DEFAULT_PARSERS;
-  STRINGIFIERS?: typeof DEFAULT_STRINGIFIERS;
+  PARSERS?: WhookParsers;
+  STRINGIFIERS?: WhookStringifiers;
   BUFFER_LIMIT?: string;
   COERCION_OPTIONS: WhookCoercionOptions;
   apm: WhookAPMService;
@@ -80,7 +86,7 @@ export type WhookAWSLambdaRouteHandlerWrapperDependencies = {
   schemaValidators: WhookSchemaValidatorsService;
   time: TimeService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with a consumer AWS Lambda.
@@ -144,14 +150,14 @@ async function initWrapRouteHandlerForAWSLambda({
   const pathItem = MAIN_API.paths?.[path];
 
   if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
-    throw new YError('E_BAD_OPERATION', 'pathItem', pathItem);
+    throw new YError('E_BAD_OPERATION', ['pathItem', pathItem]);
   }
 
   const method = MAIN_DEFINITION.method;
   const operation = pathItem[method];
 
   if (typeof operation === 'undefined' || '$ref' in operation) {
-    throw new YError('E_BAD_OPERATION', 'operation', operation);
+    throw new YError('E_BAD_OPERATION', ['operation', operation]);
   }
 
   const definition = {
@@ -315,9 +321,15 @@ async function handleForAWSHTTPLambda(
   );
 
   const request = await awsRequestEventToRequest(event);
-  let response;
-  let responseLog;
-  let responseSpec;
+  let response: WhookResponse;
+  let responseLog: {
+    type: string;
+    statusCode: number;
+    code?: string;
+    params?: JsonValue[];
+    stack?: string;
+  };
+  let responseSpec: WhookResponseBodySpec = DEFAULT_RESPONSE_BODY_SPEC;
 
   log(
     'debug',
@@ -410,7 +422,7 @@ async function handleForAWSHTTPLambda(
         parametersValues.body = body;
       }
     } catch (err) {
-      throw YHTTPError.cast(err as Error, 400);
+      throw YHTTPError.cast(err as Error, undefined, undefined, 400);
     }
 
     response = await executeHandler(definition, handler, parametersValues);
@@ -461,12 +473,10 @@ async function handleForAWSHTTPLambda(
         ));
 
     if (responseHasSchema && !STRINGIFIERS[responseContentType]) {
-      throw new YHTTPError(
-        500,
-        'E_STRINGIFYER_LACK',
+      throw new YHTTPError(500, 'E_STRINGIFYER_LACK', [
         response.headers['content-type'],
         response,
-      );
+      ]);
     }
     if (response.body) {
       checkResponseMediaType(
@@ -478,7 +488,7 @@ async function handleForAWSHTTPLambda(
     }
     responseLog = {
       type: 'success',
-      status: response.status,
+      statusCode: response.status,
     };
     log('debug', JSON.stringify(responseLog));
   } catch (err) {
@@ -492,7 +502,7 @@ async function handleForAWSHTTPLambda(
       type: 'error',
       code: (err as YError)?.code || 'E_UNEXPECTED',
       statusCode: response.status,
-      params: (err as YError)?.params || [],
+      params: ((err as YError)?.debugValues as JsonValue[]) || [],
       stack: printStackTrace(err as Error),
     };
 
@@ -562,30 +572,30 @@ async function handleForAWSHTTPLambda(
     ),
     status: response.status,
     headers: obfuscator.obfuscateSensibleHeaders(
-      Object.keys(response.headers).reduce(
+      Object.keys(response.headers || {}).reduce(
         (finalHeaders, headerName) => ({
           ...finalHeaders,
           ...((PARSED_HEADERS || []).includes(headerName)
             ? {}
             : {
-                [headerName]: response.headers[headerName],
+                [headerName]: response.headers?.[headerName],
               }),
         }),
         {},
       ),
-    ),
+    ) as JsonValue,
     bodyLength: awsResponse.body ? awsResponse.body.length : 0,
     type: responseLog.type,
     stack: responseLog.stack || 'no_stack',
-    code: responseLog.code,
-    params: responseLog.params,
+    // code: responseLog.code,
+    // params: responseLog.params,
     startTime,
     endTime: time(),
     ...(PARSED_HEADERS || []).reduce(
       (result, parsedHeader) => ({
         ...result,
-        ...(response.headers[parsedHeader]
-          ? JSON.parse(response.headers[parsedHeader])
+        ...(response.headers?.[parsedHeader]
+          ? JSON.parse(response.headers[parsedHeader][0])
           : {}),
       }),
       {},
@@ -692,7 +702,10 @@ async function responseToAWSResponseEvent(
   return amazonResponse;
 }
 
-function obfuscateEventBody(obfuscator, rawBody) {
+function obfuscateEventBody<T>(
+  obfuscator: WhookObfuscatorService,
+  rawBody: string | T,
+): string | T {
   if (typeof rawBody === 'string') {
     try {
       const jsonBody = JSON.parse(rawBody);

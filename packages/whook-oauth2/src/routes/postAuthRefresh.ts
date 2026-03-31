@@ -98,7 +98,7 @@ async function initPostAuthRefresh({
 
     try {
       if (!parsedCookies.refresh_token) {
-        throw new YHTTPError(401, 'E_REFRESH_COOKIE', cookie);
+        throw new YHTTPError(401, 'E_REFRESH_COOKIE', [cookie]);
       }
 
       const response = await postOAuth2Token({

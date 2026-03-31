@@ -144,7 +144,7 @@ async function initTestGCPFunctionRouteCommand({
 
     const response = {
       status: 0,
-      headers: {},
+      headers: {} as Record<string, string>,
       data: '',
     };
     await new Promise<void>((resolve, reject) => {

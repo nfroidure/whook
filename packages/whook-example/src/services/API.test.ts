@@ -181,11 +181,14 @@ describe('API', () => {
 
     test('endpoints', async () => {
       expect(
+        definitions.map(({ method, path }) => `${method} ${path}`).sort(),
+      ).toMatchSnapshot();
+    });
+
+    test('private endpoints', async () => {
+      expect(
         definitions
-          .filter(
-            (operation) =>
-              !operation['x-whook'] || !operation['x-whook'].private,
-          )
+          .filter((operation) => operation.config?.private)
           .map(({ method, path }) => `${method} ${path}`)
           .sort(),
       ).toMatchSnapshot();
@@ -194,10 +197,7 @@ describe('API', () => {
     test('publicly documented endpoints', async () => {
       expect(
         definitions
-          .filter(
-            (operation) =>
-              !operation['x-whook'] || !operation['x-whook'].private,
-          )
+          .filter((operation) => !operation.config?.private)
           .map(({ method, path }) => `${method} ${path}`)
           .sort(),
       ).toMatchSnapshot();

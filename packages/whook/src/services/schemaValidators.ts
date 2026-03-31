@@ -4,8 +4,11 @@ import { Ajv2020, type ValidateFunction } from 'ajv/dist/2020.js';
 import addAJVFormats from 'ajv-formats';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
-import { type OpenAPI } from 'ya-open-api-types';
-import { type JSONSchema } from 'ya-json-schema-types';
+import { type OpenAPIReference, type OpenAPI } from 'ya-open-api-types';
+import {
+  type ExpressiveJSONSchema,
+  type JSONSchema,
+} from 'ya-json-schema-types';
 
 /* Architecture Note #2.11.2.1: Schema validators
 
@@ -22,24 +25,27 @@ export const DEFAULT_SCHEMA_VALIDATORS_OPTIONS = {
 } as const satisfies WhookSchemaValidatorsOptions;
 
 /** Options for schema validation */
-export type WhookSchemaValidatorsOptions = {
+export interface WhookSchemaValidatorsOptions {
   /** Compile only at first validation */
   lazy: boolean;
   /** Consider that reused schemas are always using refs */
   optimistic: boolean;
-};
+}
 
-export type WhookSchemaValidatorsConfig = {
+export interface WhookSchemaValidatorsConfig {
   DEBUG_NODE_ENVS: string[];
   SCHEMA_VALIDATORS_OPTIONS?: WhookSchemaValidatorsOptions;
-};
+}
 export type WhookSchemaValidatorsDependencies = WhookSchemaValidatorsConfig & {
   API: OpenAPI;
   ENV: AppEnvVars;
   log?: LogService;
 };
 export type WhookSchemaValidatorsService = (
-  schema: JSONSchema,
+  schema:
+    | JSONSchema
+    | ExpressiveJSONSchema
+    | OpenAPIReference<ExpressiveJSONSchema>,
 ) => ValidateFunction;
 
 export default location(autoService(initSchemaValidators), import.meta.url);
@@ -97,7 +103,12 @@ async function initSchemaValidators({
     }
   }
 
-  return (schema: JSONSchema) => {
+  return (
+    schema:
+      | JSONSchema
+      | ExpressiveJSONSchema
+      | OpenAPIReference<ExpressiveJSONSchema>,
+  ) => {
     if (schema === true) {
       if (!validatorsMap['special://true']) {
         validatorsMap['special://true'] = ajv.compile(true);

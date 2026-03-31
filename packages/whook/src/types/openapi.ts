@@ -11,52 +11,40 @@ import {
   type OpenAPIResponse,
   type OpenAPIReference,
   type OpenAPICallback,
+  isValidOpenAPIPath,
+  PATH_ITEM_METHODS,
+  OpenAPIMethod,
 } from 'ya-open-api-types';
+import { YError } from 'yerror';
 
-export interface WhookOpenAPIOperation
-  extends Pick<
-    OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
-    | 'tags'
-    | 'summary'
-    | 'description'
-    | 'externalDocs'
-    | 'parameters'
-    | 'requestBody'
-    | 'responses'
-    | 'callbacks'
-    | 'deprecated'
-    | 'security'
-    | 'servers'
-  > {
+export interface WhookOpenAPIOperation extends Omit<
+  OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
+  'operationId'
+> {
   operationId: string;
 }
 
-export interface WhookOpenAPI
-  extends OpenAPI<ExpressiveJSONSchema, OpenAPIExtension> {
-  paths?: {
-    [key: `/${string}`]: OpenAPIPathItem<
-      ExpressiveJSONSchema,
-      OpenAPIExtension
-    > & {
-      get?: WhookOpenAPIOperation;
-      put?: WhookOpenAPIOperation;
-      post?: WhookOpenAPIOperation;
-      delete?: WhookOpenAPIOperation;
-      options?: WhookOpenAPIOperation;
-      head?: WhookOpenAPIOperation;
-      patch?: WhookOpenAPIOperation;
-      trace?: WhookOpenAPIOperation;
-    };
-  };
+export interface WhookOpenAPI extends OpenAPI<
+  ExpressiveJSONSchema,
+  OpenAPIExtension
+> {
+  paths?: Record<
+    `/${string}`,
+    Omit<
+      OpenAPIPathItem<ExpressiveJSONSchema, OpenAPIExtension>,
+      OpenAPIMethod
+    > &
+      Partial<Record<OpenAPIMethod, WhookOpenAPIOperation>>
+  >;
 }
 
 export type WhookSupportedParameter = Extract<
   OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>,
-  { schema: ExpressiveJSONSchema }
+  { schema: ExpressiveJSONSchema | OpenAPIReference<ExpressiveJSONSchema> }
 >;
 
 export interface WhookAPISchemaDefinition<
-  T extends JsonValue | void | unknown = unknown,
+  T extends JsonValue | undefined | unknown = unknown,
 > {
   name: string;
   schema: ExpressiveJSONSchema;
@@ -65,7 +53,7 @@ export interface WhookAPISchemaDefinition<
 }
 
 export interface WhookAPIParameterDefinition<
-  T extends JsonValue | void | unknown = unknown,
+  T extends JsonValue | undefined | unknown = unknown,
 > {
   name: string;
   parameter: OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>;
@@ -105,4 +93,44 @@ export interface WhookAPICallbackDefinition {
   callback:
     | OpenAPICallback<ExpressiveJSONSchema, OpenAPIExtension>
     | OpenAPIReference<OpenAPICallback<ExpressiveJSONSchema, OpenAPIExtension>>;
+}
+
+export function isValidWhookOpenAPI(
+  api: WhookOpenAPI | OpenAPI<ExpressiveJSONSchema, OpenAPIExtension>,
+): api is WhookOpenAPI {
+  for (const path in api.paths) {
+    if (isValidOpenAPIPath(path)) {
+      const pathItem = api.paths[path];
+
+      if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
+        throw new YError('E_BAD_PATH_ITEM', [path, pathItem]);
+      }
+
+      for (const method of PATH_ITEM_METHODS) {
+        if (pathItem[method]) {
+          if ('$ref' in pathItem[method] || !pathItem[method].operationId) {
+            throw new YError('E_BAD_OPERATION', [path, method]);
+          }
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+export function isValidWhookOpenAPIOperation(
+  operation:
+    | WhookOpenAPIOperation
+    | OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
+): operation is WhookOpenAPIOperation {
+  if (
+    typeof operation === 'undefined' ||
+    '$ref' in operation ||
+    !operation.operationId
+  ) {
+    throw new YError('E_BAD_OPERATION');
+  }
+
+  return true;
 }

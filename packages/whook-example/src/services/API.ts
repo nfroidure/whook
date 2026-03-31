@@ -6,17 +6,19 @@ import {
   type WhookOpenAPI,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
+import { isValidOpenAPIMethod, isValidOpenAPIPath } from 'ya-open-api-types';
+import { YError } from 'yerror';
 
-export type APIEnv = {
+export interface APIEnv {
   DEV_MODE?: string;
-};
-export type APIConfig = {
+}
+export interface APIConfig {
   CONFIG: WhookConfig;
   BASE_URL?: string;
   BASE_PATH?: string;
   API_VERSION: string;
   DEFINITIONS?: WhookDefinitions;
-};
+}
 export type APIDependencies = APIConfig & {
   ENV: APIEnv;
   BASE_URL: string;
@@ -43,7 +45,7 @@ async function initAPI({
 }: APIDependencies) {
   log('debug', '🦄 - Initializing the API service!');
 
-  const API = {
+  const API: WhookOpenAPI = {
     openapi: '3.1.0',
     info: {
       version: API_VERSION,
@@ -57,13 +59,18 @@ async function initAPI({
     ],
     components: DEFINITIONS.components,
     security: DEFINITIONS.security,
-    paths: DEFINITIONS.paths,
+    paths: DEFINITIONS.paths as WhookOpenAPI['paths'],
     tags: [
       {
         name: 'system',
+        description: 'System endpoints for diagnostic concerns',
+      },
+      {
+        name: 'example',
+        description: 'Sample endpoints you may remove',
       },
     ],
-  } as unknown as WhookOpenAPI;
+  };
 
   /* Architecture Note #3.3: Plugins
 
@@ -87,30 +94,41 @@ async function augmentAPIWithFakeAuth(
     return API;
   }
 
+  const newPaths: NonNullable<WhookOpenAPI['paths']> = {};
+
+  for (const path in API.paths) {
+    if (!isValidOpenAPIPath(path)) {
+      throw new YError('E_BAD_PATH', [path]);
+    }
+
+    newPaths[path] = {
+      ...API.paths[path],
+    };
+
+    for (const method in API.paths[path]) {
+      if (!isValidOpenAPIMethod(method)) {
+        continue;
+      }
+      if (!API.paths[path][method]?.operationId) {
+        throw new YError('E_NO_OPERATION_ID', [path, method]);
+      }
+
+      newPaths[path][method] = {
+        ...API.paths[path][method],
+        ...(API.paths[path][method].security
+          ? {
+              security: [
+                ...(API.paths[path][method].security || {}),
+                { fakeAuth: ['admin'] },
+              ],
+            }
+          : {}),
+      };
+    }
+  }
+
   return {
     ...API,
-    paths: Object.keys(API.paths || {}).reduce<WhookOpenAPI['paths']>(
-      (newPathsObject, path) => ({
-        ...newPathsObject,
-        [path]: Object.keys(API.paths?.[path] || {}).reduce(
-          (newPathItem, method) => ({
-            ...newPathItem,
-            [method]: {
-              ...API.paths?.[path]?.[method],
-              ...(API.paths?.[path]?.[method].security
-                ? {
-                    security: [
-                      ...(API.paths[path]?.[method]?.security || {}),
-                      { fakeAuth: ['admin'] },
-                    ],
-                  }
-                : {}),
-            },
-          }),
-          {},
-        ),
-      }),
-      {},
-    ),
+    paths: newPaths,
   };
 }

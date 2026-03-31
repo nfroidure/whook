@@ -22,24 +22,24 @@ export const DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS: WhookTransformerDefinitio
 export const DEFAULT_TRANSFORMER_DEFINITION_FILTER: WhookTransformerDefinitionFilter =
   () => false;
 
-export interface WhookTransformerDefinitionFilter {
-  (definition: WhookTransformerDefinition): boolean;
-}
+export type WhookTransformerDefinitionFilter = (
+  definition: WhookTransformerDefinition,
+) => boolean;
 
-export type WhookTransformerDefinitionsOptions = {
+export interface WhookTransformerDefinitionsOptions {
   /** File patterns to ignore */
   ignoredFilePatterns?: string[];
   /** Pattern to match and pick the transformer name in the file name */
   fileNamePatterns: [string, ...string[]];
   /** Patterns that matches an transformer name */
   serviceNamePatterns: [string, ...string[]];
-};
+}
 
-export type WhookTransformersDefinitionsConfig = {
+export interface WhookTransformersDefinitionsConfig {
   TRANSFORMERS_DEFINITIONS_OPTIONS?: WhookTransformerDefinitionsOptions;
   TRANSFORMER_DEFINITION_FILTER?: WhookTransformerDefinitionFilter;
   WHOOK_PLUGINS?: WhookPluginName[];
-};
+}
 
 export type WhookTransformersDefinitionsDependencies =
   WhookTransformersDefinitionsConfig & {
@@ -156,10 +156,40 @@ async function initTransformersDefinitions({
         resolvedPlugin.mainURL,
       ).toString();
 
-      let module;
-
       try {
-        module = await importer(url);
+        const module = await importer(url);
+
+        if (!module.definition) {
+          log('debug', `⏳ - Skipped "${file}" since no definition!`);
+          continue;
+        }
+
+        if (
+          module.definition.config?.environments &&
+          module.definition.config.environments !== 'all' &&
+          !module.definition.config.environments.includes(APP_ENV)
+        ) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
+          );
+          continue;
+        }
+
+        if (TRANSFORMER_DEFINITION_FILTER(module.definition)) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" due to project transformers filter.`,
+          );
+          continue;
+        }
+
+        transformers[transformerName] = {
+          url,
+          name: transformerName,
+          pluginName,
+          module,
+        };
       } catch (err) {
         log(
           'error',
@@ -167,38 +197,6 @@ async function initTransformersDefinitions({
         );
         log('error-stack', printStackTrace(err as Error));
       }
-
-      if (!module.definition) {
-        log('debug', `⏳ - Skipped "${file}" since no definition!`);
-        continue;
-      }
-
-      if (
-        module.definition.config?.environments &&
-        module.definition.config.environments !== 'all' &&
-        !module.definition.config.environments.includes(APP_ENV)
-      ) {
-        log(
-          'debug',
-          `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
-        );
-        continue;
-      }
-
-      if (TRANSFORMER_DEFINITION_FILTER(module.definition)) {
-        log(
-          'debug',
-          `⏳ - Skipped "${file}" due to project transformers filter.`,
-        );
-        continue;
-      }
-
-      transformers[transformerName] = {
-        url,
-        name: transformerName,
-        pluginName,
-        module,
-      };
     }
   }
 

@@ -27,7 +27,7 @@ describe('parseBoolean', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_BAD_BOOLEAN (any): E_BAD_BOOLEAN]`,
+          `[YError: E_BAD_BOOLEAN (["any"]): E_BAD_BOOLEAN]`,
         );
       }
     });
@@ -38,7 +38,7 @@ describe('parseBoolean', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_BAD_BOOLEAN (): E_BAD_BOOLEAN]`,
+          `[YError: E_BAD_BOOLEAN ([""]): E_BAD_BOOLEAN]`,
         );
       }
     });
@@ -71,7 +71,7 @@ describe('parseNumber', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_NON_REENTRANT_NUMBER (any, NaN): E_NON_REENTRANT_NUMBER]`,
+            `[YError: E_NON_REENTRANT_NUMBER (["any","NaN"]): E_NON_REENTRANT_NUMBER]`,
           );
         }
       });
@@ -82,7 +82,7 @@ describe('parseNumber', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_NON_REENTRANT_NUMBER (, NaN): E_NON_REENTRANT_NUMBER]`,
+            `[YError: E_NON_REENTRANT_NUMBER (["","NaN"]): E_NON_REENTRANT_NUMBER]`,
           );
         }
       });
@@ -94,28 +94,28 @@ describe('parseArrayOfStrings', () => {
   describe('should work', () => {
     test('with empty string', () => {
       expect(parseArrayOfStrings('')).toMatchInlineSnapshot(`
-[
-  "",
-]
-`);
+       [
+         "",
+       ]
+      `);
     });
 
     test('with one string', () => {
       expect(parseArrayOfStrings('str')).toMatchInlineSnapshot(`
-[
-  "str",
-]
-`);
+       [
+         "str",
+       ]
+      `);
     });
 
     test('with several strings', () => {
       expect(parseArrayOfStrings('str,foo,bar')).toMatchInlineSnapshot(`
-[
-  "str",
-  "foo",
-  "bar",
-]
-`);
+       [
+         "str",
+         "foo",
+         "bar",
+       ]
+      `);
     });
   });
 });
@@ -126,41 +126,41 @@ describe('parseArrayOfNumbers', () => {
       test('with reentrant numbers', () => {
         expect(parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, '1'))
           .toMatchInlineSnapshot(`
-[
-  1,
-]
-`);
+         [
+           1,
+         ]
+        `);
         expect(parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, '1.1,-2'))
           .toMatchInlineSnapshot(`
-[
-  1.1,
-  -2,
-]
-`);
+         [
+           1.1,
+           -2,
+         ]
+        `);
         expect(
           parseArrayOfNumbers(
             DEFAULT_COERCION_OPTIONS,
             '1.7976931348623157e+308,3,0,2',
           ),
         ).toMatchInlineSnapshot(`
-[
-  1.7976931348623157e+308,
-  3,
-  0,
-  2,
-]
-`);
+         [
+           1.7976931348623157e+308,
+           3,
+           0,
+           2,
+         ]
+        `);
         expect(
           parseArrayOfNumbers(
             DEFAULT_COERCION_OPTIONS,
             '-1.7976931348623157e+308,1',
           ),
         ).toMatchInlineSnapshot(`
-[
-  -1.7976931348623157e+308,
-  1,
-]
-`);
+         [
+           -1.7976931348623157e+308,
+           1,
+         ]
+        `);
       });
     });
 
@@ -171,7 +171,7 @@ describe('parseArrayOfNumbers', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_NON_REENTRANT_NUMBER (any, NaN): E_NON_REENTRANT_NUMBER]`,
+            `[YError: E_NON_REENTRANT_NUMBER (["any","NaN"]): E_NON_REENTRANT_NUMBER]`,
           );
         }
       });
@@ -182,7 +182,7 @@ describe('parseArrayOfNumbers', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_NON_REENTRANT_NUMBER (, NaN): E_NON_REENTRANT_NUMBER]`,
+            `[YError: E_NON_REENTRANT_NUMBER (["","NaN"]): E_NON_REENTRANT_NUMBER]`,
           );
         }
       });
@@ -193,7 +193,7 @@ describe('parseArrayOfNumbers', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_NON_REENTRANT_NUMBER (, NaN): E_NON_REENTRANT_NUMBER]`,
+            `[YError: E_NON_REENTRANT_NUMBER (["","NaN"]): E_NON_REENTRANT_NUMBER]`,
           );
         }
       });
@@ -204,7 +204,7 @@ describe('parseArrayOfNumbers', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_NON_REENTRANT_NUMBER (invalid, NaN): E_NON_REENTRANT_NUMBER]`,
+            `[YError: E_NON_REENTRANT_NUMBER (["invalid","NaN"]): E_NON_REENTRANT_NUMBER]`,
           );
         }
       });
@@ -217,27 +217,27 @@ describe('parseArrayOfBooleans', () => {
     describe('should default options', () => {
       test('with reentrant numbers', () => {
         expect(parseArrayOfBooleans('false')).toMatchInlineSnapshot(`
-[
-  false,
-]
-`);
+         [
+           false,
+         ]
+        `);
         expect(parseArrayOfBooleans('false,true')).toMatchInlineSnapshot(`
-[
-  false,
-  true,
-]
-`);
+         [
+           false,
+           true,
+         ]
+        `);
         expect(parseArrayOfBooleans('false,true,false,true,false,true'))
           .toMatchInlineSnapshot(`
-[
-  false,
-  true,
-  false,
-  true,
-  false,
-  true,
-]
-`);
+         [
+           false,
+           true,
+           false,
+           true,
+           false,
+           true,
+         ]
+        `);
       });
     });
 
@@ -248,7 +248,7 @@ describe('parseArrayOfBooleans', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_BAD_BOOLEAN (any): E_BAD_BOOLEAN]`,
+            `[YError: E_BAD_BOOLEAN (["any"]): E_BAD_BOOLEAN]`,
           );
         }
       });
@@ -259,7 +259,7 @@ describe('parseArrayOfBooleans', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_BAD_BOOLEAN (): E_BAD_BOOLEAN]`,
+            `[YError: E_BAD_BOOLEAN ([""]): E_BAD_BOOLEAN]`,
           );
         }
       });
@@ -270,7 +270,7 @@ describe('parseArrayOfBooleans', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_BAD_BOOLEAN (): E_BAD_BOOLEAN]`,
+            `[YError: E_BAD_BOOLEAN ([""]): E_BAD_BOOLEAN]`,
           );
         }
       });
@@ -281,7 +281,7 @@ describe('parseArrayOfBooleans', () => {
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
-            `[YError: E_BAD_BOOLEAN (invalid): E_BAD_BOOLEAN]`,
+            `[YError: E_BAD_BOOLEAN (["invalid"]): E_BAD_BOOLEAN]`,
           );
         }
       });

@@ -77,15 +77,18 @@ describe('command', () => {
     const commandHandler = async () => {
       throw new YError('E_ERRORING');
     };
-    let resolveWaitProcess;
-    const waitProcess = new Promise((resolve) => {
+    let resolveWaitProcess: () => void;
+    const waitProcess = new Promise<void>((resolve) => {
       resolveWaitProcess = resolve;
     });
 
     const $ready = Promise.resolve();
     const $instance = {} as unknown as Knifecycle;
     const $fatalError = {
-      throwFatalError: jest.fn().mockImplementationOnce(resolveWaitProcess),
+      throwFatalError: jest
+        .fn<() => void>()
+        // @ts-expect-error Is fine but TS too stupid to figure out
+        .mockImplementationOnce(resolveWaitProcess),
     };
 
     schemaValidators.mockReturnValue(validator as unknown as ValidateFunction);
@@ -119,14 +122,14 @@ describe('command', () => {
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       fatalErrorCalls: $fatalError.throwFatalError.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "fatalErrorCalls": [
-    [
-      [YError: E_ERRORING (): E_ERRORING],
-    ],
-  ],
-  "logCalls": [],
-}
-`);
+     {
+       "fatalErrorCalls": [
+         [
+           [YError: E_ERRORING ([]): E_ERRORING],
+         ],
+       ],
+       "logCalls": [],
+     }
+    `);
   });
 });

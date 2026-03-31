@@ -75,225 +75,230 @@ describe('createCommand', () => {
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/routes",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "choices": [
-            {
-              "name": "get",
-              "value": "get",
-            },
-            {
-              "name": "put",
-              "value": "put",
-            },
-            {
-              "name": "post",
-              "value": "post",
-            },
-            {
-              "name": "delete",
-              "value": "delete",
-            },
-            {
-              "name": "options",
-              "value": "options",
-            },
-            {
-              "name": "head",
-              "value": "head",
-            },
-            {
-              "name": "patch",
-              "value": "patch",
-            },
-            {
-              "name": "trace",
-              "value": "trace",
-            },
-          ],
-          "default": "get",
-          "message": "Give the handler method",
-          "name": "method",
-          "type": "list",
-        },
-        {
-          "message": "Give the handler path",
-          "name": "path",
-          "type": "input",
-        },
-        {
-          "message": "Give the handler description",
-          "name": "description",
-          "type": "input",
-        },
-        {
-          "choices": [
-            {
-              "name": "system",
-              "value": "system",
-            },
-          ],
-          "message": "Assign one or more tags to the handler",
-          "name": "tags",
-          "type": "checkbox",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/routes/getHandler.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/routes/getHandler.ts",
-      "import { autoService, location } from 'knifecycle';
-import {
-  type WhookRouteDefinition,
-  type WhookRouteTypedHandler,
-} from '@whook/whook';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/routes",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "name": "get",
+                     "value": "get",
+                   },
+                   {
+                     "name": "put",
+                     "value": "put",
+                   },
+                   {
+                     "name": "post",
+                     "value": "post",
+                   },
+                   {
+                     "name": "delete",
+                     "value": "delete",
+                   },
+                   {
+                     "name": "options",
+                     "value": "options",
+                   },
+                   {
+                     "name": "head",
+                     "value": "head",
+                   },
+                   {
+                     "name": "patch",
+                     "value": "patch",
+                   },
+                   {
+                     "name": "trace",
+                     "value": "trace",
+                   },
+                 ],
+                 "default": "get",
+                 "message": "Give the handler method",
+                 "name": "method",
+                 "type": "list",
+               },
+               {
+                 "default": "/",
+                 "message": "Give the handler path",
+                 "name": "path",
+                 "type": "input",
+               },
+               {
+                 "message": "Give the handler description",
+                 "name": "description",
+                 "type": "input",
+               },
+               {
+                 "choices": [
+                   {
+                     "name": "system",
+                     "value": "system",
+                   },
+                 ],
+                 "message": "Assign one or more tags to the handler",
+                 "name": "tags",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/routes/getHandler.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/routes/getHandler.ts",
+             "import { autoService, location } from 'knifecycle';
+       import {
+         type WhookRouteDefinition,
+         type WhookRouteTypedHandler,
+       } from '@whook/whook';
 
 
-export const definition = {
-  path: '/lol',
-  method: 'get',
-  operation: {
-    operationId: 'getHandler',
-    summary: 'yolo',
-    tags: [],
-    parameters: [
-      {
-        name: 'param',
-        in: 'query',
-        required: false,
-        schema: { type: 'number' },
-      },
-    ],
-    responses: {
-      200: {
-        description: 'Success',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'object',
-            },
-          },
-        },
-      },
-    },
-  },
-} as const satisfies WhookRouteDefinition;
+       export const definition = {
+         path: '/lol',
+         method: 'get',
+         operation: {
+           operationId: 'getHandler',
+           summary: 'yolo',
+           tags: [],
+           parameters: [
+             {
+               name: 'param',
+               in: 'query',
+               required: false,
+               schema: { type: 'number' },
+             },
+           ],
+           responses: {
+             200: {
+               description: 'Success',
+               content: {
+                 'application/json': {
+                   schema: {
+                     type: 'object',
+                   },
+                 },
+               },
+             },
+           },
+         },
+       } as const satisfies WhookRouteDefinition;
 
-export type HandlerDependencies = {};
+       export type HandlerDependencies = {
+         log: LogService;
+       };
 
-async function initGetHandler(_: HandlerDependencies) {
-  const handler: WhookRouteTypedHandler<
-    operations[typeof definition.operation.operationId],
-    typeof definition
-  > = async ({
-    query: { param },
-  }) => {
-    return {
-      status: 200,
-      headers: {},
-      body: { param },
-    };
-  };
+       async function initGetHandler({
+         log,
+       }: HandlerDependencies) {
+         const handler: WhookRouteTypedHandler<
+           operations[typeof definition.operation.operationId],
+           typeof definition
+         > = async ({
+           query: { param },
+         }) => {
+           return {
+             status: 200,
+             headers: {},
+             body: { param },
+           };
+         };
 
-  return handler;
-}
+         return handler;
+       }
 
-export default location(
-  autoService(initGetHandler),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoService(initGetHandler),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
 
     test('should work with an existing get and dependencies but no erase allowed', async () => {
@@ -337,174 +342,175 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/routes",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "choices": [
-            {
-              "name": "get",
-              "value": "get",
-            },
-            {
-              "name": "put",
-              "value": "put",
-            },
-            {
-              "name": "post",
-              "value": "post",
-            },
-            {
-              "name": "delete",
-              "value": "delete",
-            },
-            {
-              "name": "options",
-              "value": "options",
-            },
-            {
-              "name": "head",
-              "value": "head",
-            },
-            {
-              "name": "patch",
-              "value": "patch",
-            },
-            {
-              "name": "trace",
-              "value": "trace",
-            },
-          ],
-          "default": "get",
-          "message": "Give the handler method",
-          "name": "method",
-          "type": "list",
-        },
-        {
-          "message": "Give the handler path",
-          "name": "path",
-          "type": "input",
-        },
-        {
-          "message": "Give the handler description",
-          "name": "description",
-          "type": "input",
-        },
-        {
-          "choices": [
-            {
-              "name": "system",
-              "value": "system",
-            },
-          ],
-          "message": "Assign one or more tags to the handler",
-          "name": "tags",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/routes/getHandler.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [],
-}
-`);
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/routes",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "name": "get",
+                     "value": "get",
+                   },
+                   {
+                     "name": "put",
+                     "value": "put",
+                   },
+                   {
+                     "name": "post",
+                     "value": "post",
+                   },
+                   {
+                     "name": "delete",
+                     "value": "delete",
+                   },
+                   {
+                     "name": "options",
+                     "value": "options",
+                   },
+                   {
+                     "name": "head",
+                     "value": "head",
+                   },
+                   {
+                     "name": "patch",
+                     "value": "patch",
+                   },
+                   {
+                     "name": "trace",
+                     "value": "trace",
+                   },
+                 ],
+                 "default": "get",
+                 "message": "Give the handler method",
+                 "name": "method",
+                 "type": "list",
+               },
+               {
+                 "default": "/",
+                 "message": "Give the handler path",
+                 "name": "path",
+                 "type": "input",
+               },
+               {
+                 "message": "Give the handler description",
+                 "name": "description",
+                 "type": "input",
+               },
+               {
+                 "choices": [
+                   {
+                     "name": "system",
+                     "value": "system",
+                   },
+                 ],
+                 "message": "Assign one or more tags to the handler",
+                 "name": "tags",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/routes/getHandler.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [],
+       }
+      `);
     });
 
     test('should work with an existing get and dependencies and erase allowed', async () => {
@@ -548,249 +554,250 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/routes",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "choices": [
-            {
-              "name": "get",
-              "value": "get",
-            },
-            {
-              "name": "put",
-              "value": "put",
-            },
-            {
-              "name": "post",
-              "value": "post",
-            },
-            {
-              "name": "delete",
-              "value": "delete",
-            },
-            {
-              "name": "options",
-              "value": "options",
-            },
-            {
-              "name": "head",
-              "value": "head",
-            },
-            {
-              "name": "patch",
-              "value": "patch",
-            },
-            {
-              "name": "trace",
-              "value": "trace",
-            },
-          ],
-          "default": "get",
-          "message": "Give the handler method",
-          "name": "method",
-          "type": "list",
-        },
-        {
-          "message": "Give the handler path",
-          "name": "path",
-          "type": "input",
-        },
-        {
-          "message": "Give the handler description",
-          "name": "description",
-          "type": "input",
-        },
-        {
-          "choices": [
-            {
-              "name": "system",
-              "value": "system",
-            },
-          ],
-          "message": "Assign one or more tags to the handler",
-          "name": "tags",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/routes/getHandler.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/routes/getHandler.ts",
-      "import { autoService, location } from 'knifecycle';
-import {
-  type WhookRouteDefinition,
-  type WhookRouteTypedHandler,
-} from '@whook/whook';
-import { type LogService } from 'common-services';
-import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/routes",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "name": "get",
+                     "value": "get",
+                   },
+                   {
+                     "name": "put",
+                     "value": "put",
+                   },
+                   {
+                     "name": "post",
+                     "value": "post",
+                   },
+                   {
+                     "name": "delete",
+                     "value": "delete",
+                   },
+                   {
+                     "name": "options",
+                     "value": "options",
+                   },
+                   {
+                     "name": "head",
+                     "value": "head",
+                   },
+                   {
+                     "name": "patch",
+                     "value": "patch",
+                   },
+                   {
+                     "name": "trace",
+                     "value": "trace",
+                   },
+                 ],
+                 "default": "get",
+                 "message": "Give the handler method",
+                 "name": "method",
+                 "type": "list",
+               },
+               {
+                 "default": "/",
+                 "message": "Give the handler path",
+                 "name": "path",
+                 "type": "input",
+               },
+               {
+                 "message": "Give the handler description",
+                 "name": "description",
+                 "type": "input",
+               },
+               {
+                 "choices": [
+                   {
+                     "name": "system",
+                     "value": "system",
+                   },
+                 ],
+                 "message": "Assign one or more tags to the handler",
+                 "name": "tags",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/routes/getHandler.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/routes/getHandler.ts",
+             "import { autoService, location } from 'knifecycle';
+       import {
+         type WhookRouteDefinition,
+         type WhookRouteTypedHandler,
+       } from '@whook/whook';
+       import { type LogService } from 'common-services';
+       import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
-export const definition = {
-  path: '/lol',
-  method: 'get',
-  operation: {
-    operationId: 'getHandler',
-    summary: 'yolo',
-    tags: [],
-    parameters: [
-      {
-        name: 'param',
-        in: 'query',
-        required: false,
-        schema: { type: 'number' },
-      },
-    ],
-    responses: {
-      200: {
-        description: 'Success',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'object',
-            },
-          },
-        },
-      },
-    },
-  },
-} as const satisfies WhookRouteDefinition;
+       export const definition = {
+         path: '/lol',
+         method: 'get',
+         operation: {
+           operationId: 'getHandler',
+           summary: 'yolo',
+           tags: [],
+           parameters: [
+             {
+               name: 'param',
+               in: 'query',
+               required: false,
+               schema: { type: 'number' },
+             },
+           ],
+           responses: {
+             200: {
+               description: 'Success',
+               content: {
+                 'application/json': {
+                   schema: {
+                     type: 'object',
+                   },
+                 },
+               },
+             },
+           },
+         },
+       } as const satisfies WhookRouteDefinition;
 
-export type HandlerDependencies = {
-  ENV: AppEnvVars;
-  PROJECT_DIR: ProjectDirService;
-  log: LogService;
-};
+       export type HandlerDependencies = {
+         ENV: AppEnvVars;
+         PROJECT_DIR: ProjectDirService;
+         log: LogService;
+       };
 
-async function initGetHandler({
-  ENV,
-  PROJECT_DIR,
-  log,
-}: HandlerDependencies) {
-  const handler: WhookRouteTypedHandler<
-    operations[typeof definition.operation.operationId],
-    typeof definition
-  > = async ({
-    query: { param },
-  }) => {
-    return {
-      status: 200,
-      headers: {},
-      body: { param },
-    };
-  };
+       async function initGetHandler({
+         ENV,
+         PROJECT_DIR,
+         log,
+       }: HandlerDependencies) {
+         const handler: WhookRouteTypedHandler<
+           operations[typeof definition.operation.operationId],
+           typeof definition
+         > = async ({
+           query: { param },
+         }) => {
+           return {
+             status: 200,
+             headers: {},
+             body: { param },
+           };
+         };
 
-  return handler;
-}
+         return handler;
+       }
 
-export default location(
-  autoService(initGetHandler),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoService(initGetHandler),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
   });
 
@@ -827,115 +834,119 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/services",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/services/aService.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/services/aService.ts",
-      "import { autoService, location } from 'knifecycle';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/services",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/services/aService.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/services/aService.ts",
+             "import { autoService, location } from 'knifecycle';
 
 
-export type AServiceService = {};
-export type AServiceDependencies = {};
+       export type AServiceService = {};
+       export type AServiceDependencies = {
+         log: LogService;
+       };
 
-async function initAService(_: AServiceDependencies): Promise<AServiceService> {
-  // Instantiate and return your service
-  return {};
-}
+       async function initAService({
+         log,
+       }: AServiceDependencies): Promise<AServiceService> {
+         // Instantiate and return your service
+         return {};
+       }
 
-export default location(
-  autoService(initAService),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoService(initAService),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
 
     test('should work when existing with dependencies but no erase allowed', async () => {
@@ -973,109 +984,109 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/services",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/services/aService.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [],
-}
-`);
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/services",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/services/aService.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [],
+       }
+      `);
     });
 
     test('should work when existing with dependencies and erase allowed', async () => {
@@ -1113,139 +1124,139 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/services",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/services/aService.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/services/aService.ts",
-      "import { autoService, location } from 'knifecycle';
-import { type LogService } from 'common-services';
-import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/services",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/services/aService.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/services/aService.ts",
+             "import { autoService, location } from 'knifecycle';
+       import { type LogService } from 'common-services';
+       import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
-export type AServiceService = {};
-export type AServiceDependencies = {
-  ENV: AppEnvVars;
-  PROJECT_DIR: ProjectDirService;
-  log: LogService;
-};
+       export type AServiceService = {};
+       export type AServiceDependencies = {
+         ENV: AppEnvVars;
+         PROJECT_DIR: ProjectDirService;
+         log: LogService;
+       };
 
-async function initAService({
-  ENV,
-  PROJECT_DIR,
-  log,
-}: AServiceDependencies): Promise<AServiceService> {
-  // Instantiate and return your service
-  return {};
-}
+       async function initAService({
+         ENV,
+         PROJECT_DIR,
+         log,
+       }: AServiceDependencies): Promise<AServiceService> {
+         // Instantiate and return your service
+         return {};
+       }
 
-export default location(
-  autoService(initAService),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoService(initAService),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
   });
 
@@ -1282,125 +1293,129 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/services",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/services/aProvider.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/services/aProvider.ts",
-      "import { autoProvider, location, type Provider } from 'knifecycle';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/services",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/services/aProvider.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/services/aProvider.ts",
+             "import { autoProvider, location, type Provider } from 'knifecycle';
 
 
-export type AProviderService = {};
-export type AProviderProvider = Provider<AProviderService>;
-export type AProviderDependencies = {};
+       export type AProviderService = {};
+       export type AProviderProvider = Provider<AProviderService>;
+       export type AProviderDependencies = {
+         log: LogService;
+       };
 
-async function initAProvider(_: AProviderDependencies): Promise<AProviderProvider> {
-  // Instantiate and return your service
-  return {
-    service: {},
-    dispose: async () => {
-      // Do any action before the process shutdown
-      // (closing db connections... etc)
-    },
-    // You can also set a promise for unexpected errors
-    //  that shutdown the app when it happens
-    // errorPromise: new Promise(),
-  };
-}
+       async function initAProvider({
+         log,
+       }: AProviderDependencies): Promise<AProviderProvider> {
+         // Instantiate and return your service
+         return {
+           service: {},
+           dispose: async () => {
+             // Do any action before the process shutdown
+             // (closing db connections... etc)
+           },
+           // You can also set a promise for unexpected errors
+           //  that shutdown the app when it happens
+           // errorPromise: new Promise(),
+         };
+       }
 
-export default location(
-  autoProvider(initAProvider),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoProvider(initAProvider),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
 
     test('should work when existing with dependencies but no erase allowed', async () => {
@@ -1438,109 +1453,109 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/services",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/services/aProvider.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [],
-}
-`);
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/services",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/services/aProvider.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [],
+       }
+      `);
     });
 
     test('should work when existing with dependencies and erase allowed', async () => {
@@ -1578,149 +1593,149 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/services",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/services/aProvider.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/services/aProvider.ts",
-      "import { autoProvider, location, type Provider } from 'knifecycle';
-import { type LogService } from 'common-services';
-import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/services",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/services/aProvider.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/services/aProvider.ts",
+             "import { autoProvider, location, type Provider } from 'knifecycle';
+       import { type LogService } from 'common-services';
+       import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
-export type AProviderService = {};
-export type AProviderProvider = Provider<AProviderService>;
-export type AProviderDependencies = {
-  ENV: AppEnvVars;
-  PROJECT_DIR: ProjectDirService;
-  log: LogService;
-};
+       export type AProviderService = {};
+       export type AProviderProvider = Provider<AProviderService>;
+       export type AProviderDependencies = {
+         ENV: AppEnvVars;
+         PROJECT_DIR: ProjectDirService;
+         log: LogService;
+       };
 
-async function initAProvider({
-  ENV,
-  PROJECT_DIR,
-  log,
-}: AProviderDependencies): Promise<AProviderProvider> {
-  // Instantiate and return your service
-  return {
-    service: {},
-    dispose: async () => {
-      // Do any action before the process shutdown
-      // (closing db connections... etc)
-    },
-    // You can also set a promise for unexpected errors
-    //  that shutdown the app when it happens
-    // errorPromise: new Promise(),
-  };
-}
+       async function initAProvider({
+         ENV,
+         PROJECT_DIR,
+         log,
+       }: AProviderDependencies): Promise<AProviderProvider> {
+         // Instantiate and return your service
+         return {
+           service: {},
+           dispose: async () => {
+             // Do any action before the process shutdown
+             // (closing db connections... etc)
+           },
+           // You can also set a promise for unexpected errors
+           //  that shutdown the app when it happens
+           // errorPromise: new Promise(),
+         };
+       }
 
-export default location(
-  autoProvider(initAProvider),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoProvider(initAProvider),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
   });
 
@@ -1760,153 +1775,155 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/commands",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Give the command description",
-          "name": "description",
-          "type": "input",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/commands/aCommand.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/commands/aCommand.ts",
-      "import { location, autoService } from 'knifecycle';
-import {
-  type WhookCommandHandler,
-  type WhookCommandDefinition,
-} from '@whook/whook';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/commands",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Give the command description",
+                 "name": "description",
+                 "type": "input",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/commands/aCommand.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/commands/aCommand.ts",
+             "import { location, autoService } from 'knifecycle';
+       import {
+         type WhookCommandHandler,
+         type WhookCommandDefinition,
+       } from '@whook/whook';
 
 
-export const definition = {
-  name: 'aCommand',
-  description: 'yolo',
-  example: \`whook aCommand --param "value"\`,
-  arguments: [{
-    name: 'param',
-    required: true,
-    description: 'A parameter',
-    schema: {
-      type: 'string',
-      default: 'A default value',
-    },
-  }],
-} as const satisfies WhookCommandDefinition;
+       export const definition = {
+         name: 'aCommand',
+         description: 'yolo',
+         example: \`whook aCommand --param "value"\`,
+         arguments: [{
+           name: 'param',
+           required: true,
+           description: 'A parameter',
+           schema: {
+             type: 'string',
+             default: 'A default value',
+           },
+         }],
+       } as const satisfies WhookCommandDefinition;
 
-async function initACommandCommand({
-  promptArgs,
-}: {
-  promptArgs: WhookPromptArgs;
-}): Promise<
-  WhookCommandHandler<{
-    param: string;
-  }>
-> {
-  return async (args) => {
-    const {
-      namedArguments: { param },
-    } = args;
+       async function initACommandCommand({
+         log,
+         promptArgs,
+       }: {
+         log: LogService;
+         promptArgs: WhookPromptArgs;
+       }): Promise<
+         WhookCommandHandler<{
+           param: string;
+         }>
+       > {
+         return async (args) => {
+           const {
+             namedArguments: { param },
+           } = args;
 
-    // Implement your command here
-  }
-}
+           // Implement your command here
+         }
+       }
 
-export default location(
-  autoService(initACommandCommand),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoService(initACommandCommand),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
 
     test('should work when existing with dependencies but no erase allowed', async () => {
@@ -1947,118 +1964,118 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/commands",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Give the command description",
-          "name": "description",
-          "type": "input",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/commands/aCommand.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [],
-}
-`);
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/commands",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Give the command description",
+                 "name": "description",
+                 "type": "input",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/commands/aCommand.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [],
+       }
+      `);
     });
 
     test('should work when existing with dependencies and erase allowed', async () => {
@@ -2099,175 +2116,175 @@ export default location(
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "ensureDirCalls": [
-    [
-      "/hom/whoiam/project/src/commands",
-    ],
-  ],
-  "inquirerPromptCalls": [
-    [
-      [
-        {
-          "choices": [
-            {
-              "value": "codeGenerator",
-            },
-            {
-              "value": "counter",
-            },
-            {
-              "value": "delay",
-            },
-            {
-              "value": "importer",
-            },
-            {
-              "value": "lock",
-            },
-            {
-              "value": "log",
-            },
-            {
-              "value": "random",
-            },
-            {
-              "value": "resolve",
-            },
-            {
-              "value": "time",
-            },
-            {
-              "value": "APP_CONFIG",
-            },
-            {
-              "value": "ENV",
-            },
-            {
-              "value": "process",
-            },
-            {
-              "value": "PROJECT_DIR",
-            },
-            {
-              "value": "MAIN_FILE_URL",
-            },
-            {
-              "value": "DEBUG_NODE_ENVS",
-            },
-            {
-              "value": "BASE_URL",
-            },
-            {
-              "value": "HOST",
-            },
-            {
-              "value": "PORT",
-            },
-            {
-              "value": "DEFINITIONS",
-            },
-            {
-              "value": "APM",
-            },
-          ],
-          "message": "Which services do you want to use?",
-          "name": "services",
-          "type": "checkbox",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Give the command description",
-          "name": "description",
-          "type": "input",
-        },
-      ],
-    ],
-    [
-      [
-        {
-          "message": "Erase ?",
-          "name": "erase",
-          "type": "confirm",
-        },
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⚠️ - The file already exists !",
-    ],
-  ],
-  "pathExistsCalls": [
-    [
-      "/hom/whoiam/project/src/commands/aCommand.ts",
-    ],
-  ],
-  "result": undefined,
-  "writeFileCalls": [
-    [
-      "/hom/whoiam/project/src/commands/aCommand.ts",
-      "import { location, autoService } from 'knifecycle';
-import {
-  type WhookCommandHandler,
-  type WhookCommandDefinition,
-} from '@whook/whook';
-import { type LogService } from 'common-services';
-import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       {
+         "ensureDirCalls": [
+           [
+             "/hom/whoiam/project/src/commands",
+           ],
+         ],
+         "inquirerPromptCalls": [
+           [
+             [
+               {
+                 "choices": [
+                   {
+                     "value": "codeGenerator",
+                   },
+                   {
+                     "value": "counter",
+                   },
+                   {
+                     "value": "delay",
+                   },
+                   {
+                     "value": "importer",
+                   },
+                   {
+                     "value": "lock",
+                   },
+                   {
+                     "value": "log",
+                   },
+                   {
+                     "value": "random",
+                   },
+                   {
+                     "value": "resolve",
+                   },
+                   {
+                     "value": "time",
+                   },
+                   {
+                     "value": "APP_CONFIG",
+                   },
+                   {
+                     "value": "ENV",
+                   },
+                   {
+                     "value": "process",
+                   },
+                   {
+                     "value": "PROJECT_DIR",
+                   },
+                   {
+                     "value": "MAIN_FILE_URL",
+                   },
+                   {
+                     "value": "DEBUG_NODE_ENVS",
+                   },
+                   {
+                     "value": "BASE_URL",
+                   },
+                   {
+                     "value": "HOST",
+                   },
+                   {
+                     "value": "PORT",
+                   },
+                   {
+                     "value": "DEFINITIONS",
+                   },
+                   {
+                     "value": "APM",
+                   },
+                 ],
+                 "message": "Which services do you want to use?",
+                 "name": "services",
+                 "type": "checkbox",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Give the command description",
+                 "name": "description",
+                 "type": "input",
+               },
+             ],
+           ],
+           [
+             [
+               {
+                 "message": "Erase ?",
+                 "name": "erase",
+                 "type": "confirm",
+               },
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+         ],
+         "pathExistsCalls": [
+           [
+             "/hom/whoiam/project/src/commands/aCommand.ts",
+           ],
+         ],
+         "result": undefined,
+         "writeFileCalls": [
+           [
+             "/hom/whoiam/project/src/commands/aCommand.ts",
+             "import { location, autoService } from 'knifecycle';
+       import {
+         type WhookCommandHandler,
+         type WhookCommandDefinition,
+       } from '@whook/whook';
+       import { type LogService } from 'common-services';
+       import { type AppEnvVars, type ProjectDirService } from 'application-services';
 
 
-export const definition = {
-  name: 'aCommand',
-  description: 'yolo',
-  example: \`whook aCommand --param "value"\`,
-  arguments: [{
-    name: 'param',
-    required: true,
-    description: 'A parameter',
-    schema: {
-      type: 'string',
-      default: 'A default value',
-    },
-  }],
-} as const satisfies WhookCommandDefinition;
+       export const definition = {
+         name: 'aCommand',
+         description: 'yolo',
+         example: \`whook aCommand --param "value"\`,
+         arguments: [{
+           name: 'param',
+           required: true,
+           description: 'A parameter',
+           schema: {
+             type: 'string',
+             default: 'A default value',
+           },
+         }],
+       } as const satisfies WhookCommandDefinition;
 
-async function initACommandCommand({
-  ENV,
-  PROJECT_DIR,
-  log,
-  promptArgs,
-}: {
-  ENV: AppEnvVars;
-  PROJECT_DIR: ProjectDirService;
-  log: LogService;
-  promptArgs: WhookPromptArgs;
-}): Promise<
-  WhookCommandHandler<{
-    param: string;
-  }>
-> {
-  return async (args) => {
-    const {
-      namedArguments: { param },
-    } = args;
+       async function initACommandCommand({
+         ENV,
+         PROJECT_DIR,
+         log,
+         promptArgs,
+       }: {
+         ENV: AppEnvVars;
+         PROJECT_DIR: ProjectDirService;
+         log: LogService;
+         promptArgs: WhookPromptArgs;
+       }): Promise<
+         WhookCommandHandler<{
+           param: string;
+         }>
+       > {
+         return async (args) => {
+           const {
+             namedArguments: { param },
+           } = args;
 
-    // Implement your command here
-  }
-}
+           // Implement your command here
+         }
+       }
 
-export default location(
-  autoService(initACommandCommand),
-  import.meta.url,
-);
-",
-    ],
-  ],
-}
-`);
+       export default location(
+         autoService(initACommandCommand),
+         import.meta.url,
+       );
+       ",
+           ],
+         ],
+       }
+      `);
     });
   });
 });

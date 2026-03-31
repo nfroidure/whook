@@ -1,13 +1,14 @@
 import { YError } from 'yerror';
 import { identity } from './utils.js';
 import { type IncomingMessage } from 'node:http';
+import { type WhookHeaders } from '../types/http.js';
 
 export function mergeVaryHeaders(
   baseHeader: string | string[],
   addedValue: string,
 ): string {
   if (addedValue.includes(',')) {
-    throw new YError('E_BAD_VARY_VALUE', addedValue);
+    throw new YError('E_BAD_VARY_VALUE', [addedValue]);
   }
 
   const baseHeaderValues = (
@@ -83,4 +84,18 @@ export function pickAllHeaderValues(
         : (headers[name] as string[]);
 
   return headerValues;
+}
+
+export function castWhookHeaders(
+  headers: IncomingMessage['headers'],
+): WhookHeaders {
+  const whookHeaders: WhookHeaders = {};
+
+  for (const key in headers) {
+    if (typeof headers[key] !== 'undefined') {
+      whookHeaders[key] = headers[key];
+    }
+  }
+
+  return whookHeaders;
 }

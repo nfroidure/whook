@@ -3,7 +3,7 @@
 exports[`extractParametersFromSecuritySchemes should fail with unsupported API scheme source 1`] = `
 {
   "errorCode": "E_UNSUPPORTED_API_KEY_SOURCE",
-  "errorParams": [
+  "errorDebugValues": [
     "cookie",
     "access_token",
   ],
@@ -13,7 +13,7 @@ exports[`extractParametersFromSecuritySchemes should fail with unsupported API s
 exports[`extractParametersFromSecuritySchemes should fail with unsupported security scheme 1`] = `
 {
   "errorCode": "E_UNSUPPORTED_HTTP_SCHEME",
-  "errorParams": [
+  "errorDebugValues": [
     "mutual",
   ],
 }

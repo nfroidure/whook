@@ -7,7 +7,9 @@ import {
   expect,
 } from '@jest/globals';
 import { type LogService } from 'common-services';
-import initSchemaValidators from './schemaValidators.js';
+import initSchemaValidators, {
+  WhookSchemaValidatorsService,
+} from './schemaValidators.js';
 import { NodeEnv } from 'application-services';
 import { OpenAPI } from 'ya-open-api-types';
 
@@ -59,7 +61,7 @@ const referringSchema = {
 
 describe('Validators service', () => {
   const log = jest.fn<LogService>();
-  let schemaValidators;
+  let schemaValidators: WhookSchemaValidatorsService;
 
   describe('with defaults', () => {
     beforeAll(async () => {

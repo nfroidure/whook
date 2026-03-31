@@ -147,7 +147,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorDebugValues: (err as YError).debugValues,
         }).toMatchSnapshot();
       }
     });
@@ -165,7 +165,7 @@ describe('extractParametersFromSecuritySchemes', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorDebugValues: (err as YError).debugValues,
         }).toMatchSnapshot();
       }
     });

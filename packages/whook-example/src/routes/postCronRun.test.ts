@@ -74,40 +74,40 @@ describe('postCronRun', () => {
       schemaValidators: schemaValidators.mock.calls,
       schemaValidator: schemaValidator.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "delayClearCalls": [],
-  "delayCreateCalls": [
-    [
-      1,
-    ],
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⌚ - Triggering a "handleMinutes" cron run through the router.",
-    ],
-    [
-      "info",
-      "⌚ - Ran the cron at 2010-03-06T20:20:02.02Z, with parameters ({}).",
-    ],
-  ],
-  "response": {
-    "status": 204,
-  },
-  "schemaValidator": [
-    [
-      {},
-    ],
-  ],
-  "schemaValidators": [
-    [
-      {
-        "$ref": "#/components/schemas/ExampleSchema",
-      },
-    ],
-  ],
-}
-`);
+     {
+       "delayClearCalls": [],
+       "delayCreateCalls": [
+         [
+           1,
+         ],
+       ],
+       "logCalls": [
+         [
+           "warning",
+           "⌚ - Triggering a "handleMinutes" cron run through the router.",
+         ],
+         [
+           "info",
+           "⌚ - Ran the cron at 2010-03-06T20:20:02.02Z, with parameters ({}).",
+         ],
+       ],
+       "response": {
+         "status": 204,
+       },
+       "schemaValidator": [
+         [
+           {},
+         ],
+       ],
+       "schemaValidators": [
+         [
+           {
+             "$ref": "#/components/schemas/ExampleSchema",
+           },
+         ],
+       ],
+     }
+    `);
   });
 
   test('should fail with a bad cron name', async () => {
@@ -152,22 +152,22 @@ describe('postCronRun', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_BAD_CRON_NAME",
-  "errorParams": [
-    "handleNotExistingCron",
-  ],
-  "logCalls": [
-    [
-      "warning",
-      "⌚ - Triggering a "handleNotExistingCron" cron run through the router.",
-    ],
-  ],
-}
-`);
+       {
+         "errorCode": "E_BAD_CRON_NAME",
+         "errorDebugValues": [
+           "handleNotExistingCron",
+         ],
+         "logCalls": [
+           [
+             "warning",
+             "⌚ - Triggering a "handleNotExistingCron" cron run through the router.",
+           ],
+         ],
+       }
+      `);
     }
   });
 });

@@ -60,12 +60,12 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
 export type WhookAWSLambdaBuildConfig = {
   BUILD_PARALLELISM?: number;
 };
-export type WhookAWSLambdaBaseConfig = {
+export interface WhookAWSLambdaBaseConfig {
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
   memory?: number;
   timeout?: number;
-};
+}
 export type WhookAWSLambdaRouteConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaCronConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaTransformerConfig = WhookAWSLambdaBaseConfig;
@@ -76,29 +76,29 @@ export type WhookAWSLambdaConsumerConfig = WhookAWSLambdaBaseConfig & {
     | WhookAWSLambdaLogSubscriberOptions
     | WhookAWSLambdaS3Options;
 };
-export type WhookAWSLambdaEventConsumerOptions = {
+export interface WhookAWSLambdaEventConsumerOptions {
   wrapper: 'consumer';
   sources: {
     eventSource: string;
     environments?: WhookEnvironmentsConfig;
   }[];
-};
-export type WhookAWSLambdaKafkaConsumerOptions = {
+}
+export interface WhookAWSLambdaKafkaConsumerOptions {
   wrapper: 'kafka';
   topics: {
     names: string[];
     startingPosition: 'latest' | 'trim_horizon';
     environments?: WhookEnvironmentsConfig;
   }[];
-};
-export type WhookAWSLambdaLogSubscriberOptions = {
+}
+export interface WhookAWSLambdaLogSubscriberOptions {
   wrapper: 'log';
   logGroups: {
     name: string;
     environments?: WhookEnvironmentsConfig;
   }[];
-};
-export type WhookAWSLambdaS3Options = {
+}
+export interface WhookAWSLambdaS3Options {
   wrapper: 's3';
   buckets: {
     name: string;
@@ -106,7 +106,7 @@ export type WhookAWSLambdaS3Options = {
     filterSuffix: string;
     environments?: WhookEnvironmentsConfig;
   }[];
-};
+}
 
 const cprAsync = promisify(cpr) as (
   source: string,
@@ -145,15 +145,17 @@ export async function runBuild(
       $autoload,
       DEFINITIONS,
       buildInitializer,
-    }: WhookAWSLambdaBuildConfig & {
-      APP_ENV: string;
-      PROJECT_DIR: string;
-      compiler: WhookCompilerService;
-      log: LogService;
-      $autoload: Autoloader<Initializer<Dependencies, Service>>;
-      DEFINITIONS: WhookDefinitions;
-      buildInitializer: BuildInitializer;
-    } = await $.run([
+    } = await $.run<
+      WhookAWSLambdaBuildConfig & {
+        APP_ENV: string;
+        PROJECT_DIR: string;
+        compiler: WhookCompilerService;
+        log: LogService;
+        $autoload: Autoloader<Initializer<Dependencies, Service>>;
+        DEFINITIONS: WhookDefinitions;
+        buildInitializer: BuildInitializer;
+      }
+    >([
       'APP_ENV',
       '?BUILD_PARALLELISM',
       'PROJECT_DIR',
@@ -312,7 +314,7 @@ async function buildHandler(
   } catch (err) {
     log('error', `💥 - Error building "${handlerName}"...`);
     log('error-stack', printStackTrace(err as Error));
-    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', handlerName);
+    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', [handlerName]);
   }
 }
 
@@ -348,7 +350,10 @@ async function buildFinalHandler(
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings, extension } = await compiler(
     entryPoint,
-    DEFINITIONS[handlerName]?.config?.compilerOptions,
+    DEFINITIONS.configs[handlerName]?.config &&
+      'compilerOptions' in DEFINITIONS.configs[handlerName].config
+      ? DEFINITIONS.configs[handlerName]?.config.compilerOptions
+      : undefined,
   );
 
   await Promise.all([

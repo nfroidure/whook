@@ -92,7 +92,7 @@ async function initWhookResolvedPlugins({
     } catch (err) {
       log('error', `❌ - Plugin "${pluginName}" couldn't be resolved.`);
       log('error-stack', printStackTrace(err as Error));
-      throw YError.wrap(err as Error, 'E_BAD_WHOOK_PLUGIN', pluginName);
+      throw YError.wrap(err as Error, 'E_BAD_WHOOK_PLUGIN', [pluginName]);
     }
   }
 

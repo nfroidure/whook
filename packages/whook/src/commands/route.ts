@@ -61,7 +61,7 @@ async function initRouteCommand({
     try {
       parsedParameters = JSON.parse(routeParameters || '{}');
     } catch (err) {
-      throw YError.wrap(err as Error, 'E_BAD_PARAMETERS', routeParameters);
+      throw YError.wrap(err as Error, 'E_BAD_PARAMETERS', [routeParameters]);
     }
 
     log('debug', 'route', routeName);

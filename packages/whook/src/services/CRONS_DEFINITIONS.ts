@@ -21,24 +21,24 @@ export const DEFAULT_CRONS_DEFINITIONS_OPTIONS: WhookCronDefinitionsOptions = {
 export const DEFAULT_CRON_DEFINITION_FILTER: WhookCronDefinitionFilter = () =>
   false;
 
-export interface WhookCronDefinitionFilter {
-  (definition: WhookCronDefinition): boolean;
-}
+export type WhookCronDefinitionFilter = (
+  definition: WhookCronDefinition,
+) => boolean;
 
-export type WhookCronDefinitionsOptions = {
+export interface WhookCronDefinitionsOptions {
   /** File patterns to ignore */
   ignoredFilePatterns?: string[];
   /** Pattern to match and pick the cron name in the file name */
   fileNamePatterns: [string, ...string[]];
   /** Patterns that matches an cron name */
   serviceNamePatterns: [string, ...string[]];
-};
+}
 
-export type WhookCronsDefinitionsConfig = {
+export interface WhookCronsDefinitionsConfig {
   CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
   CRON_DEFINITION_FILTER?: WhookCronDefinitionFilter;
   WHOOK_PLUGINS?: WhookPluginName[];
-};
+}
 
 export type WhookCronsDefinitionsDependencies = WhookCronsDefinitionsConfig & {
   APP_ENV: string;
@@ -149,43 +149,41 @@ async function initCronsDefinitions({
         resolvedPlugin.mainURL,
       ).toString();
 
-      let module;
-
       try {
-        module = await importer(url);
+        const module = await importer(url);
+
+        if (!module.definition) {
+          log('debug', `⏳ - Skipped "${file}" since no definition!`);
+          continue;
+        }
+
+        if (
+          module.definition.config?.environments &&
+          module.definition.config.environments !== 'all' &&
+          !module.definition.config.environments.includes(APP_ENV)
+        ) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
+          );
+          continue;
+        }
+
+        if (CRON_DEFINITION_FILTER(module.definition)) {
+          log('debug', `⏳ - Skipped "${file}" due to project crons filter.`);
+          continue;
+        }
+
+        crons[cronName] = {
+          url,
+          name: cronName,
+          pluginName,
+          module,
+        };
       } catch (err) {
         log('error', `🔴 - Got an error while loading a cron file: ${file}`);
         log('error-stack', printStackTrace(err as Error));
       }
-
-      if (!module.definition) {
-        log('debug', `⏳ - Skipped "${file}" since no definition!`);
-        continue;
-      }
-
-      if (
-        module.definition.config?.environments &&
-        module.definition.config.environments !== 'all' &&
-        !module.definition.config.environments.includes(APP_ENV)
-      ) {
-        log(
-          'debug',
-          `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
-        );
-        continue;
-      }
-
-      if (CRON_DEFINITION_FILTER(module.definition)) {
-        log('debug', `⏳ - Skipped "${file}" due to project crons filter.`);
-        continue;
-      }
-
-      crons[cronName] = {
-        url,
-        name: cronName,
-        pluginName,
-        module,
-      };
     }
   }
 

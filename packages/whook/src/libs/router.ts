@@ -1,6 +1,8 @@
 import { YHTTPError } from 'yhttperror';
 import contentType from 'content-type';
+// @ts-expect-error No types 🤷
 import preferredCharsets from 'negotiator/lib/charset.js';
+// @ts-expect-error No types 🤷
 import preferredMediaType from 'negotiator/lib/encoding.js';
 import { YError } from 'yerror';
 import { pickFirstHeaderValue, pickAllHeaderValues } from './headers.js';
@@ -15,19 +17,12 @@ import {
   type WhookRouteDefinition,
   type WhookRouteHandlerParameters,
 } from '../types/routes.js';
+import {
+  type WhookRequestBodySpec,
+  type WhookResponseBodySpec,
+} from './body.js';
 
 const { parse: parseContentType } = contentType;
-
-export type WhookBodySpec = {
-  contentType: string;
-  contentLength: number;
-  charset: 'utf-8';
-  boundary?: string;
-};
-export type WhookResponseSpec = {
-  contentTypes: string[];
-  charsets: string[];
-};
 
 export async function extractConsumableMediaTypes(
   API: WhookOpenAPI,
@@ -81,12 +76,12 @@ export function extractBodySpec(
   request: WhookRequest,
   consumableMediaTypes: string[],
   consumableCharsets: string[],
-): WhookBodySpec {
+): WhookRequestBodySpec {
   const contentLengthValues = pickAllHeaderValues(
     'content-length',
     request.headers,
   );
-  const bodySpec: WhookBodySpec = {
+  const bodySpec: WhookRequestBodySpec = {
     contentType: '',
     contentLength: contentLengthValues.length
       ? Number(contentLengthValues[0])
@@ -116,10 +111,9 @@ export function extractBodySpec(
           ) {
             bodySpec.charset = 'utf-8';
           } else {
-            throw new YError(
-              'E_UNSUPPORTED_CHARSET',
+            throw new YError('E_UNSUPPORTED_CHARSET', [
               parsedContentType.parameters.charset,
-            );
+            ]);
           }
         }
         if (
@@ -134,9 +128,9 @@ export function extractBodySpec(
     } catch (err) {
       throw YHTTPError.wrap(
         err as Error,
-        400,
         'E_BAD_CONTENT_TYPE',
-        request.headers['content-type'],
+        [request.headers['content-type']],
+        400,
       );
     }
   }
@@ -148,7 +142,7 @@ export function extractBodySpec(
 }
 
 export function checkBodyCharset(
-  bodySpec: WhookBodySpec,
+  bodySpec: WhookRequestBodySpec,
   consumableCharsets: string[],
 ): void {
   if (
@@ -156,17 +150,15 @@ export function checkBodyCharset(
     bodySpec.charset &&
     !consumableCharsets.includes(bodySpec.charset)
   ) {
-    throw new YHTTPError(
-      406,
-      'E_UNSUPPORTED_CHARSET',
+    throw new YHTTPError(406, 'E_UNSUPPORTED_CHARSET', [
       bodySpec.charset,
       consumableCharsets,
-    );
+    ]);
   }
 }
 
 export function checkBodyMediaType(
-  bodySpec: WhookBodySpec,
+  bodySpec: WhookRequestBodySpec,
   consumableMediaTypes: string[],
 ): void {
   if (
@@ -174,12 +166,10 @@ export function checkBodyMediaType(
     bodySpec.contentType &&
     !consumableMediaTypes.includes(bodySpec.contentType)
   ) {
-    throw new YHTTPError(
-      415,
-      'E_UNSUPPORTED_MEDIA_TYPE',
+    throw new YHTTPError(415, 'E_UNSUPPORTED_MEDIA_TYPE', [
       bodySpec.contentType,
       consumableMediaTypes,
-    );
+    ]);
   }
 }
 
@@ -188,9 +178,9 @@ export function extractResponseSpec(
   request: WhookRequest,
   supportedMediaTypes: string[],
   supportedCharsets: string[],
-): WhookResponseSpec {
+): WhookResponseBodySpec {
   const accept = pickFirstHeaderValue('accept', request.headers) || '*';
-  const responseSpec: WhookResponseSpec = {
+  const responseSpec: WhookResponseBodySpec = {
     charsets: request.headers['accept-charset']
       ? preferredCharsets(
           pickFirstHeaderValue('accept-charset', request.headers),
@@ -208,32 +198,28 @@ export function extractResponseSpec(
 
 export function checkResponseMediaType(
   request: WhookRequest,
-  responseSpec: WhookResponseSpec,
+  responseSpec: WhookResponseBodySpec,
   produceableMediaTypes: string[],
 ): void {
   if (0 === responseSpec.contentTypes.length) {
-    throw new YHTTPError(
-      406,
-      'E_UNACCEPTABLE_MEDIA_TYPE',
+    throw new YHTTPError(406, 'E_UNACCEPTABLE_MEDIA_TYPE', [
       request.headers.accept,
       produceableMediaTypes,
-    );
+    ]);
   }
 }
 
 export function checkResponseCharset(
   request: WhookRequest,
-  responseSpec: WhookResponseSpec,
+  responseSpec: WhookResponseBodySpec,
   produceableCharsets: string[],
 ): void {
   if (0 === responseSpec.charsets.length) {
-    throw new YHTTPError(
-      406,
-      'E_UNACCEPTABLE_CHARSET',
+    throw new YHTTPError(406, 'E_UNACCEPTABLE_CHARSET', [
       request.headers['accept-charset'],
       responseSpec.charsets,
       produceableCharsets,
-    );
+    ]);
   }
 }
 
@@ -245,43 +231,35 @@ export async function executeHandler(
   const responsePromise = handler(parameters, definition);
 
   if (!(responsePromise && responsePromise.then)) {
-    throw new YHTTPError(
-      500,
-      'E_NO_RESPONSE_PROMISE',
+    throw new YHTTPError(500, 'E_NO_RESPONSE_PROMISE', [
       definition.operation.operationId,
       definition.method,
       definition.path,
-    );
+    ]);
   }
 
   const response = await responsePromise;
 
   if (!response) {
-    throw new YHTTPError(
-      500,
-      'E_NO_RESPONSE',
+    throw new YHTTPError(500, 'E_NO_RESPONSE', [
       definition.operation.operationId,
       definition.method,
       definition.path,
-    );
+    ]);
   }
   if ('undefined' === typeof response.status) {
-    throw new YHTTPError(
-      500,
-      'E_NO_RESPONSE_STATUS',
+    throw new YHTTPError(500, 'E_NO_RESPONSE_STATUS', [
       definition.operation.operationId,
       definition.method,
       definition.path,
-    );
+    ]);
   }
   if ('number' !== typeof response.status) {
-    throw new YHTTPError(
-      500,
-      'E_NON_NUMERIC_STATUS',
+    throw new YHTTPError(500, 'E_NON_NUMERIC_STATUS', [
       definition.operation.operationId,
       definition.method,
       definition.path,
-    );
+    ]);
   }
 
   response.headers = response.headers || {};

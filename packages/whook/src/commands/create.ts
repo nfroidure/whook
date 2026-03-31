@@ -136,11 +136,10 @@ async function initCreateCommand({
         'error',
         `💥 - The route name "${finalName}" does not match "${ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns}".`,
       );
-      throw new YError(
-        'E_BAD_HANDLER_NAME',
+      throw new YError('E_BAD_HANDLER_NAME', [
         finalName,
         ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns,
-      );
+      ]);
     } else if (
       type === 'cron' &&
       !CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
@@ -151,11 +150,10 @@ async function initCreateCommand({
         'error',
         `💥 - The cron name "${finalName}" does not match "${CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns}".`,
       );
-      throw new YError(
-        'E_BAD_HANDLER_NAME',
+      throw new YError('E_BAD_HANDLER_NAME', [
         finalName,
         CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns,
-      );
+      ]);
     }
 
     const { services } = (await inquirer.prompt<{
@@ -174,11 +172,11 @@ async function initCreateCommand({
       },
     ])) as { services: string[] };
 
-    const servicesTypes = services
+    const servicesTypes = (services.length ? services : ['log'])
       .sort()
       .map((name) => ({
         name,
-        type: allTypes[name],
+        type: allTypes[name as keyof typeof allTypes],
       }))
       .concat(
         type === 'command'
@@ -204,13 +202,16 @@ async function initCreateCommand({
 }`
       : '';
     const commonServices = services.filter(
-      (service) => commonServicesTypes[service],
+      (service): service is keyof typeof commonServicesTypes =>
+        service in commonServicesTypes,
     );
     const applicationServices = services.filter(
-      (service) => applicationServicesTypes[service],
+      (service): service is keyof typeof applicationServicesTypes =>
+        service in applicationServicesTypes,
     );
     const whookServices = services.filter(
-      (service) => whookServicesTypes[service],
+      (service): service is keyof typeof whookServicesTypes =>
+        service in whookServicesTypes,
     );
     const imports = `${
       type === 'command'
@@ -243,7 +244,7 @@ import { ${whookServices
         : ''
     }
 `;
-    let fileSource = '';
+    let fileSource: string;
 
     if (type === 'route') {
       const { method, path, description, tags } = await inquirer.prompt<{
@@ -272,6 +273,7 @@ import { ${whookServices
           name: 'path',
           type: 'input',
           message: 'Give the handler path',
+          default: '/',
         },
         {
           name: 'description',
@@ -284,7 +286,7 @@ import { ${whookServices
                 name: 'tags',
                 type: 'checkbox',
                 message: 'Assign one or more tags to the handler',
-                choices: (API.tags || []).map(({ name }) => ({
+                choices: (API.tags || ['system']).map(({ name }) => ({
                   name,
                   value: name,
                 })),

@@ -15,23 +15,23 @@ import {
   type DynamoDBStreamEvent,
 } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
-import { type Jsonify } from 'type-fest';
+import { type JsonArray, type Jsonify } from 'type-fest';
 
-export type WhookAWSLambdaKinesisStreamConsumerInput = {
-  body: Jsonify<KinesisStreamEvent['Records']>;
-};
-export type WhookAWSLambdaSQSConsumerInput = {
-  body: Jsonify<SQSEvent['Records']>;
-};
-export type WhookAWSLambdaSNSConsumerInput = {
-  body: Jsonify<SNSEvent['Records']>;
-};
-export type WhookAWSLambdaSESConsumerInput = {
-  body: Jsonify<SESEvent['Records']>;
-};
-export type WhookAWSLambdaDynamoDBStreamConsumerInput = {
-  body: Jsonify<DynamoDBStreamEvent['Records']>;
-};
+export interface WhookAWSLambdaKinesisStreamConsumerInput {
+  body: KinesisStreamEvent['Records'];
+}
+export interface WhookAWSLambdaSQSConsumerInput {
+  body: SQSEvent['Records'];
+}
+export interface WhookAWSLambdaSNSConsumerInput {
+  body: SNSEvent['Records'];
+}
+export interface WhookAWSLambdaSESConsumerInput {
+  body: SESEvent['Records'];
+}
+export interface WhookAWSLambdaDynamoDBStreamConsumerInput {
+  body: DynamoDBStreamEvent['Records'];
+}
 export type WhookAWSLambdaConsumerInput =
   | WhookAWSLambdaKinesisStreamConsumerInput
   | WhookAWSLambdaSQSConsumerInput
@@ -39,13 +39,13 @@ export type WhookAWSLambdaConsumerInput =
   | WhookAWSLambdaSESConsumerInput
   | WhookAWSLambdaDynamoDBStreamConsumerInput;
 
-export type WhookAWSLambdaConsumerHandlerWrapperDependencies = {
+export interface WhookAWSLambdaConsumerHandlerWrapperDependencies {
   ENV: AppEnvVars;
   MAIN_DEFINITION: WhookConsumerDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with a consumer AWS Lambda.
@@ -75,7 +75,7 @@ async function initWrapConsumerHandlerForAWSLambda({
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
   const wrapper = async (
-    handler: WhookConsumerHandler<WhookAWSLambdaConsumerInput>,
+    handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaConsumerInput>>,
   ) => {
     const wrappedHandler = handleForAWSConsumerLambda.bind(
       null,
@@ -97,7 +97,7 @@ async function handleForAWSConsumerLambda(
     time,
     log,
   }: Required<WhookAWSLambdaConsumerHandlerWrapperDependencies>,
-  handler: WhookConsumerHandler<WhookAWSLambdaConsumerInput>,
+  handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaConsumerInput>>,
   event:
     | KinesisStreamEvent
     | SQSEvent
@@ -136,7 +136,7 @@ async function handleForAWSConsumerLambda(
       type: 'error',
       stack: printStackTrace(castedErr),
       code: castedErr.code,
-      params: castedErr.params,
+      params: castedErr.debugValues as JsonArray,
       startTime,
       endTime: time(),
       recordsLength: event.Records.length,

@@ -1,4 +1,4 @@
-import { wrapInitializer, alsoInject } from 'knifecycle';
+import { wrapInitializer, alsoInject, type Service } from 'knifecycle';
 import { type ProviderInitializer, type Dependencies } from 'knifecycle';
 import {
   type WhookHTTPRouterProvider,
@@ -6,7 +6,6 @@ import {
   getOpenAPIDefinition,
 } from '@whook/whook';
 import { noop, type ImporterService, type LogService } from 'common-services';
-import type ECStatic from 'ecstatic';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type SwaggerUIOptions } from 'swagger-ui';
 import { type Jsonify } from 'type-fest';
@@ -17,10 +16,10 @@ export type WhookSwaggerUIOptions = Omit<
 > & {
   path: string;
 };
-export type WhookSwaggerUIEnv = {
+export interface WhookSwaggerUIEnv {
   DEV_MODE?: string;
 };
-export type WhookSwaggerUIConfig = {
+export interface WhookSwaggerUIConfig {
   DEV_ACCESS_TOKEN?: string;
   BASE_PATH?: string;
   HOST?: string;
@@ -33,9 +32,9 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   HOST: string;
   PORT: number;
   log: LogService;
-  importer: ImporterService<ECStatic>;
+  importer: ImporterService<Service>;
 };
-export type WhookSwaggerUIRouteConfig = {
+export interface WhookSwaggerUIRouteConfig {
   private?: boolean;
 };
 

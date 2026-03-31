@@ -13,7 +13,7 @@ export type WhookRouteInvokerService<T extends WhookRouteHandler> = (
   functionName: string,
   parameters: Partial<Parameters<T>[0]>,
   wait: boolean,
-) => Promise<typeof wait extends true ? ReturnType<T> : void>;
+) => Promise<typeof wait extends true ? ReturnType<T> : undefined>;
 
 // One can just inject a route handler
 // but for mocking the use of cloud
@@ -35,11 +35,7 @@ async function initRouteInvoker<
 
   let disposing = false;
   const currentInvocations: Promise<void>[] = [];
-  const routeInvoker: WhookRouteInvokerService<T> = async (
-    functionName,
-    parameters,
-    wait = false,
-  ) => {
+  const routeInvoker = (async (functionName, parameters, wait = false) => {
     if (disposing) {
       throw new YError('E_DISPOSING');
     }
@@ -63,7 +59,7 @@ async function initRouteInvoker<
     })();
 
     if (wait === true) {
-      return (await responsePromise) as unknown as void;
+      return await responsePromise;
     } else {
       const promise = responsePromise.then(() => {
         currentInvocations.splice(currentInvocations.indexOf(promise), 1);
@@ -71,7 +67,8 @@ async function initRouteInvoker<
 
       currentInvocations.push(promise);
     }
-  };
+    return undefined;
+  }) as WhookRouteInvokerService<T>;
 
   return {
     service: routeInvoker,

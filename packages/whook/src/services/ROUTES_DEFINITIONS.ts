@@ -24,24 +24,24 @@ export const DEFAULT_ROUTES_DEFINITIONS_OPTIONS: WhookRoutesDefinitionsOptions =
 export const DEFAULT_ROUTE_DEFINITION_FILTER: WhookRouteDefinitionFilter = () =>
   false;
 
-export interface WhookRouteDefinitionFilter {
-  (definition: WhookRouteDefinition): boolean;
-}
+export type WhookRouteDefinitionFilter = (
+  definition: WhookRouteDefinition,
+) => boolean;
 
-export type WhookRoutesDefinitionsOptions = {
+export interface WhookRoutesDefinitionsOptions {
   /** File patterns to ignore */
   ignoredFilePatterns?: string[];
   /** Pattern to match and pick the handler name in the file name */
   fileNamePatterns: [string, ...string[]];
   /** Patterns that matches an handler name */
   serviceNamePatterns: [string, ...string[]];
-};
+}
 
-export type WhookRoutesDefinitionsConfig = {
+export interface WhookRoutesDefinitionsConfig {
   ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
   ROUTE_DEFINITION_FILTER?: WhookRouteDefinitionFilter;
   WHOOK_PLUGINS?: WhookPluginName[];
-};
+}
 
 export type WhookRoutesDefinitionsDependencies =
   WhookRoutesDefinitionsConfig & {
@@ -151,20 +151,37 @@ async function initRoutesDefinitions({
         resolvedPlugin.mainURL,
       ).toString();
 
-      let module;
-
       try {
-        module = await importer(url);
-      } catch (err) {
-        log(
-          'error',
-          `🔴 - Got an error while loading an handler file: ${file}`,
-        );
-        log('error-stack', printStackTrace(err as Error));
-      }
+        const module = await importer(url);
 
-      if (!module.definition) {
-        log('debug', `⏳ - Module "${file}" has no definition!`);
+        if (!module.definition) {
+          log('debug', `⏳ - Module "${file}" has no definition!`);
+
+          apiHandlers[handlerName] = {
+            url,
+            name: handlerName,
+            pluginName,
+            module,
+          };
+          continue;
+        }
+
+        if (
+          module.definition.config?.environments &&
+          module.definition.config.environments !== 'all' &&
+          !module.definition.config.environments.includes(APP_ENV)
+        ) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
+          );
+          continue;
+        }
+
+        if (ROUTE_DEFINITION_FILTER(module.definition)) {
+          log('debug', `⏳ - Skipped "${file}" due to routes handlers filter.`);
+          continue;
+        }
 
         apiHandlers[handlerName] = {
           url,
@@ -172,32 +189,13 @@ async function initRoutesDefinitions({
           pluginName,
           module,
         };
-        continue;
-      }
-
-      if (
-        module.definition.config?.environments &&
-        module.definition.config.environments !== 'all' &&
-        !module.definition.config.environments.includes(APP_ENV)
-      ) {
+      } catch (err) {
         log(
-          'debug',
-          `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
+          'error',
+          `🔴 - Got an error while loading an handler file: ${file}`,
         );
-        continue;
+        log('error-stack', printStackTrace(err as Error));
       }
-
-      if (ROUTE_DEFINITION_FILTER(module.definition)) {
-        log('debug', `⏳ - Skipped "${file}" due to routes handlers filter.`);
-        continue;
-      }
-
-      apiHandlers[handlerName] = {
-        url,
-        name: handlerName,
-        pluginName,
-        module,
-      };
     }
   }
 

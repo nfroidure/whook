@@ -124,7 +124,7 @@ export const tokenBodySchema = {
       refersTo(clientCredentialsTokenRequestBodySchema),
       refersTo(refreshTokenRequestBodySchema),
     ],
-  },
+  } as unknown as WhookAPISchemaDefinition['schema'],
 } as const satisfies WhookAPISchemaDefinition;
 
 export const definition = {
@@ -240,7 +240,7 @@ async function initPostOAuth2Token({
       );
 
       if (!granter || !granter.authenticator) {
-        throw new YError('E_UNKNOWN_AUTHENTICATOR_TYPE', grantType);
+        throw new YError('E_UNKNOWN_AUTHENTICATOR_TYPE', [grantType]);
       }
 
       const newAuthenticationData = await granter.authenticator.authenticate(

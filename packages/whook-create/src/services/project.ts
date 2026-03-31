@@ -59,7 +59,7 @@ export default autoService(async function initProject({
         `Cannot create the project's directory: "${projectDirectory}"`,
       );
       log('error-stack', printStackTrace(err as Error));
-      throw YError.wrap(err as Error, 'E_PROJECT_DIR', projectDirectory);
+      throw YError.wrap(err as Error, 'E_PROJECT_DIR', [projectDirectory]);
     }
 
     return {

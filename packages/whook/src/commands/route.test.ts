@@ -16,7 +16,7 @@ describe('routeCommand', () => {
   describe('should work', () => {
     test('with all parameters', async () => {
       $injector.mockResolvedValueOnce({
-        putEcho: async ({ body }) => ({
+        putEcho: async ({ body }: { body: unknown }) => ({
           status: 200,
           body,
         }),
@@ -40,46 +40,46 @@ describe('routeCommand', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "putEcho",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "route",
-      "putEcho",
-    ],
-    [
-      "debug",
-      "parameters",
-      {
-        "body": {
-          "echo": "YOLO!",
-        },
-      },
-    ],
-    [
-      "info",
-      "{
-  "status": 200,
-  "body": {
-    "echo": "YOLO!"
-  }
-}",
-    ],
-  ],
-}
-`);
+       {
+         "injectorCalls": [
+           [
+             [
+               "putEcho",
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "debug",
+             "route",
+             "putEcho",
+           ],
+           [
+             "debug",
+             "parameters",
+             {
+               "body": {
+                 "echo": "YOLO!",
+               },
+             },
+           ],
+           [
+             "info",
+             "{
+         "status": 200,
+         "body": {
+           "echo": "YOLO!"
+         }
+       }",
+           ],
+         ],
+       }
+      `);
     });
 
     test('with route only', async () => {
       $injector.mockResolvedValueOnce({
-        getPing: async ({ body }) => ({
+        getPing: async ({ body }: { body: unknown }) => ({
           status: 200,
           body,
         }),
@@ -102,41 +102,41 @@ describe('routeCommand', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         injectorCalls: $injector.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "injectorCalls": [
-    [
-      [
-        "getPing",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "route",
-      "getPing",
-    ],
-    [
-      "debug",
-      "parameters",
-      {},
-    ],
-    [
-      "info",
-      "{
-  "status": 200
-}",
-    ],
-  ],
-}
-`);
+       {
+         "injectorCalls": [
+           [
+             [
+               "getPing",
+             ],
+           ],
+         ],
+         "logCalls": [
+           [
+             "debug",
+             "route",
+             "getPing",
+           ],
+           [
+             "debug",
+             "parameters",
+             {},
+           ],
+           [
+             "info",
+             "{
+         "status": 200
+       }",
+           ],
+         ],
+       }
+      `);
     });
   });
 
   describe('should fail', () => {
     test('with non JSON parameters', async () => {
       $injector.mockResolvedValueOnce({
-        putEcho: async ({ body }) => ({
+        putEcho: async ({ body }: { body: unknown }) => ({
           status: 200,
           body,
         }),
@@ -160,19 +160,17 @@ describe('routeCommand', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params.slice(0, -1),
+          errorDebugValues: (err as YError).debugValues.slice(0, -1),
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_BAD_PARAMETERS",
-  "errorParams": [
-    "{"body: {"echo": "YOLO!"} }",
-  ],
-  "injectorCalls": [],
-  "logCalls": [],
-}
-`);
+         {
+           "errorCode": "E_BAD_PARAMETERS",
+           "errorDebugValues": [],
+           "injectorCalls": [],
+           "logCalls": [],
+         }
+        `);
       }
     });
 
@@ -201,42 +199,42 @@ describe('routeCommand', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorDebugValues: (err as YError).debugValues,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_UNEXPECTED_SUCCESS",
-  "errorParams": [],
-  "injectorCalls": [
-    [
-      [
-        "putEcho",
-      ],
-    ],
-  ],
-  "logCalls": [
-    [
-      "debug",
-      "route",
-      "putEcho",
-    ],
-    [
-      "debug",
-      "parameters",
-      {
-        "body": {
-          "echo": "YOLO!",
-        },
-      },
-    ],
-    [
-      "error",
-      "Got an error while running the route.",
-    ],
-  ],
-}
-`);
+         {
+           "errorCode": "E_UNEXPECTED_SUCCESS",
+           "errorDebugValues": [],
+           "injectorCalls": [
+             [
+               [
+                 "putEcho",
+               ],
+             ],
+           ],
+           "logCalls": [
+             [
+               "debug",
+               "route",
+               "putEcho",
+             ],
+             [
+               "debug",
+               "parameters",
+               {
+                 "body": {
+                   "echo": "YOLO!",
+                 },
+               },
+             ],
+             [
+               "error",
+               "Got an error while running the route.",
+             ],
+           ],
+         }
+        `);
       }
     });
   });

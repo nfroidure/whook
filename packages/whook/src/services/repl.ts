@@ -12,7 +12,7 @@ import { type LogService } from 'common-services';
 
 export default location(name('repl', autoProvider(initREPL)), import.meta.url);
 
-export type REPLService = void;
+export type REPLService = undefined;
 export type REPLDependencies<S> = {
   $dispose: Disposer;
   $injector: Injector<Record<string, S>>;

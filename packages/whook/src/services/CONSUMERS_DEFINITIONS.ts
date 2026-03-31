@@ -22,24 +22,24 @@ export const DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS: WhookConsumerDefinitionsOpti
 export const DEFAULT_CONSUMER_DEFINITION_FILTER: WhookConsumerDefinitionFilter =
   () => false;
 
-export interface WhookConsumerDefinitionFilter {
-  (definition: WhookConsumerDefinition): boolean;
-}
+export type WhookConsumerDefinitionFilter = (
+  definition: WhookConsumerDefinition,
+) => boolean;
 
-export type WhookConsumerDefinitionsOptions = {
+export interface WhookConsumerDefinitionsOptions {
   /** File patterns to ignore */
   ignoredFilePatterns?: string[];
   /** Pattern to match and pick the consumer name in the file name */
   fileNamePatterns: [string, ...string[]];
   /** Patterns that matches an consumer name */
   serviceNamePatterns: [string, ...string[]];
-};
+}
 
-export type WhookConsumersDefinitionsConfig = {
+export interface WhookConsumersDefinitionsConfig {
   CONSUMERS_DEFINITIONS_OPTIONS?: WhookConsumerDefinitionsOptions;
   CONSUMER_DEFINITION_FILTER?: WhookConsumerDefinitionFilter;
   WHOOK_PLUGINS?: WhookPluginName[];
-};
+}
 
 export type WhookConsumersDefinitionsDependencies =
   WhookConsumersDefinitionsConfig & {
@@ -155,10 +155,40 @@ async function initConsumersDefinitions({
         resolvedPlugin.mainURL,
       ).toString();
 
-      let module;
-
       try {
-        module = await importer(url);
+        const module = await importer(url);
+
+        if (!module.definition) {
+          log('debug', `⏳ - Skipped "${file}" since no definition!`);
+          continue;
+        }
+
+        if (
+          module.definition.config?.environments &&
+          module.definition.config.environments !== 'all' &&
+          !module.definition.config.environments.includes(APP_ENV)
+        ) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
+          );
+          continue;
+        }
+
+        if (CONSUMER_DEFINITION_FILTER(module.definition)) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" due to project consumers filter.`,
+          );
+          continue;
+        }
+
+        consumers[consumerName] = {
+          url,
+          name: consumerName,
+          pluginName,
+          module,
+        };
       } catch (err) {
         log(
           'error',
@@ -166,35 +196,6 @@ async function initConsumersDefinitions({
         );
         log('error-stack', printStackTrace(err as Error));
       }
-
-      if (!module.definition) {
-        log('debug', `⏳ - Skipped "${file}" since no definition!`);
-        continue;
-      }
-
-      if (
-        module.definition.config?.environments &&
-        module.definition.config.environments !== 'all' &&
-        !module.definition.config.environments.includes(APP_ENV)
-      ) {
-        log(
-          'debug',
-          `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
-        );
-        continue;
-      }
-
-      if (CONSUMER_DEFINITION_FILTER(module.definition)) {
-        log('debug', `⏳ - Skipped "${file}" due to project consumers filter.`);
-        continue;
-      }
-
-      consumers[consumerName] = {
-        url,
-        name: consumerName,
-        pluginName,
-        module,
-      };
     }
   }
 

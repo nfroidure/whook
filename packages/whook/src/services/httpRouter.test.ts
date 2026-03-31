@@ -14,6 +14,7 @@ import {
 } from 'ya-open-api-types';
 import { type WhookHTTPTransactionService } from './httpTransaction.js';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
+import { type Readable } from 'node:stream';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
@@ -23,14 +24,14 @@ import { type WhookSchemaValidatorsService } from './schemaValidators.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
 import { type WhookDefinitions } from './DEFINITIONS.js';
 
-async function waitResponse(response, raw = true) {
+async function waitResponse(response: WhookResponse, raw = true) {
   if (!response.body) {
     return response;
   }
 
   const [stream, resultPromise] = streamtest.toText();
 
-  response.body.pipe(stream);
+  (response.body as Readable).pipe(stream);
 
   const text = await resultPromise;
 
@@ -550,17 +551,17 @@ describe('initHTTPRouter', () => {
     expect(typeof httpRouter.service).toEqual('function');
     expect(httpRouter.fatalErrorPromise).toBeInstanceOf(Promise);
     expect(log.mock.calls).toMatchInlineSnapshot(`
-[
-  [
-    "warning",
-    "⌨️ - Initializing the basic query parser.",
-  ],
-  [
-    "debug",
-    "🚦 - HTTP Router initialized.",
-  ],
-]
-`);
+     [
+       [
+         "warning",
+         "⌨️ - Initializing the basic query parser.",
+       ],
+       [
+         "debug",
+         "🚦 - HTTP Router initialized.",
+       ],
+     ]
+    `);
   });
 
   describe('should fail', () => {
@@ -601,7 +602,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_NO_OPERATION_ID (/lol, get): E_NO_OPERATION_ID]`,
+          `[YError: E_NO_OPERATION_ID (["/lol","get"]): E_NO_OPERATION_ID]`,
         );
       }
     });
@@ -645,7 +646,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_NO_OPERATION_ID (/lol, get): E_NO_OPERATION_ID]`,
+          `[YError: E_NO_OPERATION_ID (["/lol","get"]): E_NO_OPERATION_ID]`,
         );
       }
     });
@@ -688,7 +689,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_BAD_PATH (lol): E_BAD_PATH]`,
+          `[YError: E_BAD_PATH (["lol"]): E_BAD_PATH]`,
         );
       }
     });
@@ -736,7 +737,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_UNDECLARED_PATH_PARAMETER (/v1/{lol}, {lol}): E_UNDECLARED_PATH_PARAMETER]`,
+          `[YError: E_UNDECLARED_PATH_PARAMETER (["/v1/{lol}","{lol}"]): E_UNDECLARED_PATH_PARAMETER]`,
         );
       }
     });
@@ -770,7 +771,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_NO_HANDLER (ping): E_NO_HANDLER]`,
+          `[YError: E_NO_HANDLER (["ping"]): E_NO_HANDLER]`,
         );
       }
     });
@@ -826,7 +827,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_BAD_PARAMETER_NAME ([object Object]): E_BAD_PARAMETER_NAME]`,
+          `[YError: E_BAD_PARAMETER_NAME ([{"in":"query","schema":{"type":"string"}}]): E_BAD_PARAMETER_NAME]`,
         );
       }
     });
@@ -880,7 +881,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_PARAMETER_WITHOUT_SCHEMA (lol): E_PARAMETER_WITHOUT_SCHEMA]`,
+          `[YError: E_PARAMETER_WITHOUT_SCHEMA (["lol"]): E_PARAMETER_WITHOUT_SCHEMA]`,
         );
       }
     });
@@ -936,7 +937,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_UNSUPPORTED_PARAMETER_DEFINITION (lol, in, ): E_UNSUPPORTED_PARAMETER_DEFINITION]`,
+          `[YError: E_UNSUPPORTED_PARAMETER_DEFINITION (["lol","in",null]): E_UNSUPPORTED_PARAMETER_DEFINITION]`,
         );
       }
     });
@@ -998,56 +999,56 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         );
 
         expect({
           response,
           handlerCalls: handler.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {
-          "x-depth": undefined,
-        },
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "forFriendsUserId": undefined,
-        },
-      },
-      {
-        "config": {},
-        "method": "head",
-        "operation": {
-          "operationId": "headUserAvatar",
-          "responses": {
-            "200": {
-              "description": "User avatar exists.",
-            },
-            "404": {
-              "description": "User avatar not found",
-            },
-          },
-          "summary": "Checks user's avatar existence.",
-        },
-        "path": "/v1/users/1/avatar",
-      },
-    ],
-  ],
-  "response": {
-    "headers": {
-      "content-type": "image/jpeg",
-    },
-    "status": 200,
-  },
-}
-`);
+         {
+           "handlerCalls": [
+             [
+               {
+                 "body": undefined,
+                 "cookies": {},
+                 "headers": {
+                   "x-depth": undefined,
+                 },
+                 "path": {
+                   "userId": 1,
+                 },
+                 "query": {
+                   "forFriendsUserId": undefined,
+                 },
+               },
+               {
+                 "config": {},
+                 "method": "head",
+                 "operation": {
+                   "operationId": "headUserAvatar",
+                   "responses": {
+                     "200": {
+                       "description": "User avatar exists.",
+                     },
+                     "404": {
+                       "description": "User avatar not found",
+                     },
+                   },
+                   "summary": "Checks user's avatar existence.",
+                 },
+                 "path": "/v1/users/1/avatar",
+               },
+             ],
+           ],
+           "response": {
+             "headers": {
+               "content-type": "image/jpeg",
+             },
+             "status": 200,
+           },
+         }
+        `);
       });
 
       test('should work with an existing GET route', async () => {
@@ -1107,111 +1108,111 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         );
 
         expect({
           response,
           handlerCalls: handler.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "head",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-  "response": {
-    "body": undefined,
-    "headers": {
-      "content-type": "application/json",
-    },
-    "status": 200,
-  },
-}
-`);
+         {
+           "handlerCalls": [
+             [
+               {
+                 "body": undefined,
+                 "cookies": {},
+                 "headers": {},
+                 "path": {
+                   "userId": 1,
+                 },
+                 "query": {
+                   "archived": undefined,
+                   "extended": true,
+                 },
+               },
+               {
+                 "config": {},
+                 "method": "head",
+                 "operation": {
+                   "operationId": "getUser",
+                   "parameters": [
+                     {
+                       "in": "path",
+                       "name": "userId",
+                       "required": true,
+                       "schema": {
+                         "$ref": "#/components/schemas/UserIdSchema",
+                       },
+                     },
+                     {
+                       "in": "query",
+                       "name": "extended",
+                       "required": true,
+                       "schema": {
+                         "type": "boolean",
+                       },
+                     },
+                     {
+                       "in": "query",
+                       "name": "archived",
+                       "schema": {
+                         "type": "boolean",
+                       },
+                     },
+                   ],
+                   "responses": {
+                     "200": {
+                       "content": {
+                         "application/json": {
+                           "schema": {
+                             "properties": {
+                               "id": {
+                                 "type": "number",
+                               },
+                               "name": {
+                                 "type": "string",
+                               },
+                             },
+                             "type": "object",
+                           },
+                         },
+                         "text/plain": {
+                           "schema": {
+                             "type": "string",
+                           },
+                         },
+                       },
+                       "description": "User found",
+                     },
+                     "404": {
+                       "content": {
+                         "application/json": {
+                           "schema": {
+                             "$ref": "#/components/schemas/Error",
+                           },
+                         },
+                       },
+                       "description": "User not found",
+                     },
+                     "default": {
+                       "$ref": "#/components/responses/UnexpectedError",
+                     },
+                   },
+                   "summary": "Retrieve a user.",
+                 },
+                 "path": "/v1/users/1",
+               },
+             ],
+           ],
+           "response": {
+             "body": undefined,
+             "headers": {
+               "content-type": "application/json",
+             },
+             "status": 200,
+           },
+         }
+        `);
       });
 
       test('should work with a */* accept header', async () => {
@@ -1274,111 +1275,111 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         );
 
         expect({
           response,
           handlerCalls: handler.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "head",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-  "response": {
-    "body": undefined,
-    "headers": {
-      "content-type": "application/json",
-    },
-    "status": 200,
-  },
-}
-`);
+         {
+           "handlerCalls": [
+             [
+               {
+                 "body": undefined,
+                 "cookies": {},
+                 "headers": {},
+                 "path": {
+                   "userId": 1,
+                 },
+                 "query": {
+                   "archived": undefined,
+                   "extended": true,
+                 },
+               },
+               {
+                 "config": {},
+                 "method": "head",
+                 "operation": {
+                   "operationId": "getUser",
+                   "parameters": [
+                     {
+                       "in": "path",
+                       "name": "userId",
+                       "required": true,
+                       "schema": {
+                         "$ref": "#/components/schemas/UserIdSchema",
+                       },
+                     },
+                     {
+                       "in": "query",
+                       "name": "extended",
+                       "required": true,
+                       "schema": {
+                         "type": "boolean",
+                       },
+                     },
+                     {
+                       "in": "query",
+                       "name": "archived",
+                       "schema": {
+                         "type": "boolean",
+                       },
+                     },
+                   ],
+                   "responses": {
+                     "200": {
+                       "content": {
+                         "application/json": {
+                           "schema": {
+                             "properties": {
+                               "id": {
+                                 "type": "number",
+                               },
+                               "name": {
+                                 "type": "string",
+                               },
+                             },
+                             "type": "object",
+                           },
+                         },
+                         "text/plain": {
+                           "schema": {
+                             "type": "string",
+                           },
+                         },
+                       },
+                       "description": "User found",
+                     },
+                     "404": {
+                       "content": {
+                         "application/json": {
+                           "schema": {
+                             "$ref": "#/components/schemas/Error",
+                           },
+                         },
+                       },
+                       "description": "User not found",
+                     },
+                     "default": {
+                       "$ref": "#/components/responses/UnexpectedError",
+                     },
+                   },
+                   "summary": "Retrieve a user.",
+                 },
+                 "path": "/v1/users/1",
+               },
+             ],
+           ],
+           "response": {
+             "body": undefined,
+             "headers": {
+               "content-type": "application/json",
+             },
+             "status": 200,
+           },
+         }
+        `);
       });
     });
 
@@ -1441,111 +1442,111 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           );
 
           expect({
             response,
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-  "response": {
-    "body": "{"id":1,"name":"John Doe"}",
-    "headers": {
-      "content-type": "application/json",
-    },
-    "status": 200,
-  },
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {},
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "archived": undefined,
+                     "extended": true,
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUser",
+                     "parameters": [
+                       {
+                         "in": "path",
+                         "name": "userId",
+                         "required": true,
+                         "schema": {
+                           "$ref": "#/components/schemas/UserIdSchema",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "extended",
+                         "required": true,
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "archived",
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                     ],
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                           "text/plain": {
+                             "schema": {
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User found",
+                       },
+                       "404": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "$ref": "#/components/schemas/Error",
+                             },
+                           },
+                         },
+                         "description": "User not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+             "response": {
+               "body": "{"id":1,"name":"John Doe"}",
+               "headers": {
+                 "content-type": "application/json",
+               },
+               "status": 200,
+             },
+           }
+          `);
         });
 
         test('with an existing streamed route', async () => {
@@ -1607,7 +1608,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
             true,
           );
 
@@ -1615,64 +1616,64 @@ describe('initHTTPRouter', () => {
             response,
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {
-          "x-depth": 1,
-        },
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "forFriendsUserId": [
-            2,
-            3,
-          ],
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUserAvatar",
-          "responses": {
-            "200": {
-              "content": {
-                "image/jpeg": {
-                  "schema": {
-                    "format": "binary",
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User avatar found.",
-            },
-            "404": {
-              "description": "User avatar not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve user's avatar.",
-        },
-        "path": "/v1/users/1/avatar",
-      },
-    ],
-  ],
-  "response": {
-    "body": "hello",
-    "headers": {
-      "content-type": "image/jpeg",
-    },
-    "status": 200,
-  },
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {
+                     "x-depth": 1,
+                   },
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "forFriendsUserId": [
+                       2,
+                       3,
+                     ],
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUserAvatar",
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "image/jpeg": {
+                             "schema": {
+                               "format": "binary",
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User avatar found.",
+                       },
+                       "404": {
+                         "description": "User avatar not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve user's avatar.",
+                   },
+                   "path": "/v1/users/1/avatar",
+                 },
+               ],
+             ],
+             "response": {
+               "body": "hello",
+               "headers": {
+                 "content-type": "image/jpeg",
+               },
+               "status": 200,
+             },
+           }
+          `);
         });
       });
 
@@ -1820,7 +1821,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
           expect(response.body).toMatch(/E_STRINGIFYER_LACK/);
           expect({ ...response, body: undefined }).toEqual({
@@ -1833,97 +1834,97 @@ describe('initHTTPRouter', () => {
           expect({
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {},
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "archived": undefined,
+                     "extended": true,
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUser",
+                     "parameters": [
+                       {
+                         "in": "path",
+                         "name": "userId",
+                         "required": true,
+                         "schema": {
+                           "$ref": "#/components/schemas/UserIdSchema",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "extended",
+                         "required": true,
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "archived",
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                     ],
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                           "text/plain": {
+                             "schema": {
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User found",
+                       },
+                       "404": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "$ref": "#/components/schemas/Error",
+                             },
+                           },
+                         },
+                         "description": "User not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+           }
+          `);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -1991,13 +1992,13 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_UNACCEPTABLE_MEDIA_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
             headers: {
-              'content-type': 'application/json',
+              'content-type': 'text/plain',
               'cache-control': 'private',
             },
             status: 406,
@@ -2006,97 +2007,97 @@ describe('initHTTPRouter', () => {
           expect({
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {},
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "archived": undefined,
+                     "extended": true,
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUser",
+                     "parameters": [
+                       {
+                         "in": "path",
+                         "name": "userId",
+                         "required": true,
+                         "schema": {
+                           "$ref": "#/components/schemas/UserIdSchema",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "extended",
+                         "required": true,
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "archived",
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                     ],
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                           "text/plain": {
+                             "schema": {
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User found",
+                       },
+                       "404": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "$ref": "#/components/schemas/Error",
+                             },
+                           },
+                         },
+                         "description": "User not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+           }
+          `);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -2152,7 +2153,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_NO_RESPONSE_PROMISE/);
@@ -2166,97 +2167,97 @@ describe('initHTTPRouter', () => {
           expect({
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {},
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "archived": undefined,
+                     "extended": true,
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUser",
+                     "parameters": [
+                       {
+                         "in": "path",
+                         "name": "userId",
+                         "required": true,
+                         "schema": {
+                           "$ref": "#/components/schemas/UserIdSchema",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "extended",
+                         "required": true,
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "archived",
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                     ],
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                           "text/plain": {
+                             "schema": {
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User found",
+                       },
+                       "404": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "$ref": "#/components/schemas/Error",
+                             },
+                           },
+                         },
+                         "description": "User not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+           }
+          `);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -2313,7 +2314,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_NO_RESPONSE/);
@@ -2328,97 +2329,97 @@ describe('initHTTPRouter', () => {
           expect({
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {},
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "archived": undefined,
+                     "extended": true,
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUser",
+                     "parameters": [
+                       {
+                         "in": "path",
+                         "name": "userId",
+                         "required": true,
+                         "schema": {
+                           "$ref": "#/components/schemas/UserIdSchema",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "extended",
+                         "required": true,
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "archived",
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                     ],
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                           "text/plain": {
+                             "schema": {
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User found",
+                       },
+                       "404": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "$ref": "#/components/schemas/Error",
+                             },
+                           },
+                         },
+                         "description": "User not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+           }
+          `);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -2478,7 +2479,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_NON_NUMERIC_STATUS/);
@@ -2555,7 +2556,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_NO_RESPONSE_STATUS/);
@@ -2569,97 +2570,97 @@ describe('initHTTPRouter', () => {
           expect({
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": true,
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {},
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "archived": undefined,
+                     "extended": true,
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUser",
+                     "parameters": [
+                       {
+                         "in": "path",
+                         "name": "userId",
+                         "required": true,
+                         "schema": {
+                           "$ref": "#/components/schemas/UserIdSchema",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "extended",
+                         "required": true,
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "archived",
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                     ],
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                           "text/plain": {
+                             "schema": {
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User found",
+                       },
+                       "404": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "$ref": "#/components/schemas/Error",
+                             },
+                           },
+                         },
+                         "description": "User not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+           }
+          `);
           expect({
             ...JSON.parse(response.body as string),
             error_debug_data: undefined,
@@ -2718,14 +2719,14 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUIRED_PARAMETER/);
           expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
-              'content-type': 'application/json',
+              'content-type': 'text/plain',
               'cache-control': 'private',
             },
           });
@@ -2785,14 +2786,14 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_BOOLEAN/);
           expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
-              'content-type': 'application/json',
+              'content-type': 'text/plain',
               'cache-control': 'private',
             },
           });
@@ -2855,7 +2856,7 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         )) as WhookResponse;
 
         expect(response.body).toMatch(/E_UNAUTHORIZED/);
@@ -2937,7 +2938,7 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         )) as WhookResponse;
 
         expect(response.body).toMatch(/E_UNAUTHORIZED/);
@@ -3016,14 +3017,14 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         )) as WhookResponse;
 
         expect(response.body).toMatch(/E_NOT_FOUND/);
         expect({ ...response, body: undefined }).toEqual({
           status: 404,
           headers: {
-            'content-type': 'application/json',
+            'content-type': 'text/plain',
             'cache-control': 'private',
           },
         });
@@ -3103,113 +3104,113 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           );
 
           expect({
             response,
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": {
-          "name": "John Doe",
-        },
-        "cookies": {},
-        "headers": {
-          "Authorization": "Bearer x",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        "path": {
-          "userId": 1,
-        },
-        "query": {},
-      },
-      {
-        "config": {},
-        "method": "put",
-        "operation": {
-          "operationId": "putUser",
-          "parameters": [
-            {
-              "$ref": "#/components/parameters/UserId",
-            },
-            {
-              "in": "header",
-              "name": "Authorization",
-              "required": true,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "in": "header",
-              "name": "Content-Type",
-              "required": true,
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User",
-                },
-              },
-              "application/vnd.github+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User",
-                },
-              },
-            },
-            "description": "The input user",
-            "required": true,
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-              },
-              "description": "User updated",
-            },
-            "400": {
-              "$ref": "#/components/responses/BadRequest",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Upsert a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-  "response": {
-    "body": "{"id":1,"name":"John Doe"}",
-    "headers": {
-      "content-type": "application/json",
-    },
-    "status": 201,
-  },
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": {
+                     "name": "John Doe",
+                   },
+                   "cookies": {},
+                   "headers": {
+                     "Authorization": "Bearer x",
+                     "Content-Type": "application/json;charset=UTF-8",
+                   },
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {},
+                 },
+                 {
+                   "config": {},
+                   "method": "put",
+                   "operation": {
+                     "operationId": "putUser",
+                     "parameters": [
+                       {
+                         "$ref": "#/components/parameters/UserId",
+                       },
+                       {
+                         "in": "header",
+                         "name": "Authorization",
+                         "required": true,
+                         "schema": {
+                           "type": "string",
+                         },
+                       },
+                       {
+                         "in": "header",
+                         "name": "Content-Type",
+                         "required": true,
+                         "schema": {
+                           "type": "string",
+                         },
+                       },
+                     ],
+                     "requestBody": {
+                       "content": {
+                         "application/json": {
+                           "schema": {
+                             "$ref": "#/components/schemas/User",
+                           },
+                         },
+                         "application/vnd.github+json": {
+                           "schema": {
+                             "$ref": "#/components/schemas/User",
+                           },
+                         },
+                       },
+                       "description": "The input user",
+                       "required": true,
+                     },
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                         },
+                         "description": "User updated",
+                       },
+                       "400": {
+                         "$ref": "#/components/responses/BadRequest",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Upsert a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+             "response": {
+               "body": "{"id":1,"name":"John Doe"}",
+               "headers": {
+                 "content-type": "application/json",
+               },
+               "status": 201,
+             },
+           }
+          `);
         });
 
         test('with an existing streamed route', async () => {
@@ -3278,7 +3279,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
             true,
           );
 
@@ -3357,113 +3358,113 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           );
 
           expect({
             response,
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": {
-          "name": "John Doe",
-        },
-        "cookies": {},
-        "headers": {
-          "Authorization": "Bearer x",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        "path": {
-          "userId": 1,
-        },
-        "query": {},
-      },
-      {
-        "config": {},
-        "method": "put",
-        "operation": {
-          "operationId": "putUser",
-          "parameters": [
-            {
-              "$ref": "#/components/parameters/UserId",
-            },
-            {
-              "in": "header",
-              "name": "Authorization",
-              "required": true,
-              "schema": {
-                "type": "string",
-              },
-            },
-            {
-              "in": "header",
-              "name": "Content-Type",
-              "required": true,
-              "schema": {
-                "type": "string",
-              },
-            },
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User",
-                },
-              },
-              "application/vnd.github+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User",
-                },
-              },
-            },
-            "description": "The input user",
-            "required": true,
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-              },
-              "description": "User updated",
-            },
-            "400": {
-              "$ref": "#/components/responses/BadRequest",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Upsert a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-  "response": {
-    "body": "{"id":1,"name":"John Doe"}",
-    "headers": {
-      "content-type": "application/json",
-    },
-    "status": 201,
-  },
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": {
+                     "name": "John Doe",
+                   },
+                   "cookies": {},
+                   "headers": {
+                     "Authorization": "Bearer x",
+                     "Content-Type": "application/json;charset=UTF-8",
+                   },
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {},
+                 },
+                 {
+                   "config": {},
+                   "method": "put",
+                   "operation": {
+                     "operationId": "putUser",
+                     "parameters": [
+                       {
+                         "$ref": "#/components/parameters/UserId",
+                       },
+                       {
+                         "in": "header",
+                         "name": "Authorization",
+                         "required": true,
+                         "schema": {
+                           "type": "string",
+                         },
+                       },
+                       {
+                         "in": "header",
+                         "name": "Content-Type",
+                         "required": true,
+                         "schema": {
+                           "type": "string",
+                         },
+                       },
+                     ],
+                     "requestBody": {
+                       "content": {
+                         "application/json": {
+                           "schema": {
+                             "$ref": "#/components/schemas/User",
+                           },
+                         },
+                         "application/vnd.github+json": {
+                           "schema": {
+                             "$ref": "#/components/schemas/User",
+                           },
+                         },
+                       },
+                       "description": "The input user",
+                       "required": true,
+                     },
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                         },
+                         "description": "User updated",
+                       },
+                       "400": {
+                         "$ref": "#/components/responses/BadRequest",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Upsert a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+             "response": {
+               "body": "{"id":1,"name":"John Doe"}",
+               "headers": {
+                 "content-type": "application/json",
+               },
+               "status": 201,
+             },
+           }
+          `);
         });
       });
 
@@ -3519,13 +3520,13 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_CONTENT_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
             headers: {
-              'content-type': 'application/json',
+              'content-type': 'text/plain',
               'cache-control': 'private',
             },
             status: 400,
@@ -3594,13 +3595,13 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionCatch).toHaveBeenCalled();
           expect(httpTransactionEnd).toHaveBeenCalled();
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_UNSUPPORTED_MEDIA_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
             headers: {
-              'content-type': 'application/json',
+              'content-type': 'text/plain',
               'cache-control': 'private',
             },
             status: 415,
@@ -3678,7 +3679,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_REQUEST_BODY/);
@@ -3756,14 +3757,14 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_CONTENT_TYPE/);
           expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
-              'content-type': 'application/json',
+              'content-type': 'text/plain',
               'cache-control': 'private',
             },
           });
@@ -3834,7 +3835,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_BODY_LENGTH/);
@@ -3908,7 +3909,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_BAD_BODY/);
@@ -3986,7 +3987,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUEST_FAILURE/);
@@ -4062,7 +4063,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUEST_CONTENT_TOO_LARGE/);
@@ -4138,7 +4139,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUEST_CONTENT_TOO_LARGE/);
@@ -4214,7 +4215,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_PARSER_LACK/);
@@ -4288,7 +4289,7 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_UNACCEPTABLE_CHARSET/);
@@ -4302,97 +4303,97 @@ describe('initHTTPRouter', () => {
           expect({
             handlerCalls: handler.mock.calls,
           }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {},
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "archived": undefined,
-          "extended": false,
-        },
-      },
-      {
-        "config": {},
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "userId",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/UserIdSchema",
-              },
-            },
-            {
-              "in": "query",
-              "name": "extended",
-              "required": true,
-              "schema": {
-                "type": "boolean",
-              },
-            },
-            {
-              "in": "query",
-              "name": "archived",
-              "schema": {
-                "type": "boolean",
-              },
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "properties": {
-                      "id": {
-                        "type": "number",
-                      },
-                      "name": {
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-                "text/plain": {
-                  "schema": {
-                    "type": "string",
-                  },
-                },
-              },
-              "description": "User found",
-            },
-            "404": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error",
-                  },
-                },
-              },
-              "description": "User not found",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Retrieve a user.",
-        },
-        "path": "/v1/users/1",
-      },
-    ],
-  ],
-}
-`);
+           {
+             "handlerCalls": [
+               [
+                 {
+                   "body": undefined,
+                   "cookies": {},
+                   "headers": {},
+                   "path": {
+                     "userId": 1,
+                   },
+                   "query": {
+                     "archived": undefined,
+                     "extended": false,
+                   },
+                 },
+                 {
+                   "config": {},
+                   "method": "get",
+                   "operation": {
+                     "operationId": "getUser",
+                     "parameters": [
+                       {
+                         "in": "path",
+                         "name": "userId",
+                         "required": true,
+                         "schema": {
+                           "$ref": "#/components/schemas/UserIdSchema",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "extended",
+                         "required": true,
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "archived",
+                         "schema": {
+                           "type": "boolean",
+                         },
+                       },
+                     ],
+                     "responses": {
+                       "200": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "properties": {
+                                 "id": {
+                                   "type": "number",
+                                 },
+                                 "name": {
+                                   "type": "string",
+                                 },
+                               },
+                               "type": "object",
+                             },
+                           },
+                           "text/plain": {
+                             "schema": {
+                               "type": "string",
+                             },
+                           },
+                         },
+                         "description": "User found",
+                       },
+                       "404": {
+                         "content": {
+                           "application/json": {
+                             "schema": {
+                               "$ref": "#/components/schemas/Error",
+                             },
+                           },
+                         },
+                         "description": "User not found",
+                       },
+                       "default": {
+                         "$ref": "#/components/responses/UnexpectedError",
+                       },
+                     },
+                     "summary": "Retrieve a user.",
+                   },
+                   "path": "/v1/users/1",
+                 },
+               ],
+             ],
+           }
+          `);
 
           expect({
             ...JSON.parse(response.body as string),
@@ -4437,7 +4438,7 @@ describe('initHTTPRouter', () => {
           req.method = 'PUT';
           req.url = '/v1/users/1';
           req.headers = {
-            'content-type': 'application/json',
+            'content-type': 'text/plain',
             'content-length': '0',
           };
 
@@ -4452,14 +4453,14 @@ describe('initHTTPRouter', () => {
           expect(httpTransactionEnd).toHaveBeenCalled();
 
           const response = (await waitResponse(
-            httpTransactionEnd.mock.calls[0][0],
+            httpTransactionEnd.mock.calls[0][0] as WhookResponse,
           )) as WhookResponse;
 
           expect(response.body).toMatch(/E_REQUIRED_PARAMETER/);
           expect({ ...response, body: undefined }).toEqual({
             status: 400,
             headers: {
-              'content-type': 'application/json',
+              'content-type': 'text/plain',
               'cache-control': 'private',
             },
           });
@@ -4524,54 +4525,54 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         );
 
         expect({
           response,
           handlerCalls: handler.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "handlerCalls": [
-    [
-      {
-        "body": undefined,
-        "cookies": {},
-        "headers": {
-          "x-depth": undefined,
-        },
-        "path": {
-          "userId": 1,
-        },
-        "query": {
-          "forFriendsUserId": undefined,
-        },
-      },
-      {
-        "config": {},
-        "method": "delete",
-        "operation": {
-          "operationId": "deleteUserAvatar",
-          "responses": {
-            "410": {
-              "description": "User avatar is gone.",
-            },
-            "default": {
-              "$ref": "#/components/responses/UnexpectedError",
-            },
-          },
-          "summary": "Ensure user's avatar is gone.",
-        },
-        "path": "/v1/users/1/avatar",
-      },
-    ],
-  ],
-  "response": {
-    "headers": {},
-    "status": 410,
-  },
-}
-`);
+         {
+           "handlerCalls": [
+             [
+               {
+                 "body": undefined,
+                 "cookies": {},
+                 "headers": {
+                   "x-depth": undefined,
+                 },
+                 "path": {
+                   "userId": 1,
+                 },
+                 "query": {
+                   "forFriendsUserId": undefined,
+                 },
+               },
+               {
+                 "config": {},
+                 "method": "delete",
+                 "operation": {
+                   "operationId": "deleteUserAvatar",
+                   "responses": {
+                     "410": {
+                       "description": "User avatar is gone.",
+                     },
+                     "default": {
+                       "$ref": "#/components/responses/UnexpectedError",
+                     },
+                   },
+                   "summary": "Ensure user's avatar is gone.",
+                 },
+                 "path": "/v1/users/1/avatar",
+               },
+             ],
+           ],
+           "response": {
+             "headers": {},
+             "status": 410,
+           },
+         }
+        `);
       });
     });
 
@@ -4626,13 +4627,13 @@ describe('initHTTPRouter', () => {
         expect(httpTransactionEnd).toHaveBeenCalled();
 
         const response = (await waitResponse(
-          httpTransactionEnd.mock.calls[0][0],
+          httpTransactionEnd.mock.calls[0][0] as WhookResponse,
         )) as WhookResponse;
 
         expect(response.body).toMatch(/E_NOT_FOUND/);
         expect({ ...response, body: undefined }).toEqual({
           headers: {
-            'content-type': 'application/json',
+            'content-type': 'text/plain',
             'cache-control': 'private',
           },
           status: 404,

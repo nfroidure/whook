@@ -59,7 +59,7 @@ export type WhookAWSLambdaDefinition = {
     }
 );
 
-export type WhookAWSLambdaAutoloadDependencies = {
+export interface WhookAWSLambdaAutoloadDependencies {
   $injector: Injector<Service>;
   $instance: Knifecycle;
   log?: LogService;
@@ -122,7 +122,7 @@ const initializerWrapper: ServiceInitializerWrapper<
 
       if (!config) {
         log('error', '💥 - Unable to find an AWS Lambda config!');
-        throw new YError('E_OPERATION_NOT_FOUND', serviceName, cleanedName);
+        throw new YError('E_OPERATION_NOT_FOUND', [serviceName, cleanedName]);
       }
 
       if (config.type === 'route') {
@@ -138,7 +138,7 @@ const initializerWrapper: ServiceInitializerWrapper<
               [config.method]: API.paths?.[config.path]?.[config.method],
             },
           },
-        })) as WhookOpenAPI;
+        } as WhookOpenAPI));
 
         return {
           name: cleanedName,
@@ -172,7 +172,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       }
 
       log('error', '💥 - AWS Lambda does not support this definition!');
-      throw new YError('E_UNSUPPORTED_DEFINITION', serviceName, cleanedName);
+      throw new YError('E_UNSUPPORTED_DEFINITION', [serviceName, cleanedName]);
     };
   })();
 

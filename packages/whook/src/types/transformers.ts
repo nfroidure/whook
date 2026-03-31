@@ -3,38 +3,36 @@ import {
   type ServiceInitializer,
   type ProviderInitializer,
 } from 'knifecycle';
-import { type WhookAPISchemaDefinition } from './openapi.js';
 import { type JsonValue } from 'type-fest';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type WhookHandlerWrapper } from './wrappers.js';
 import { type WhookEnvironmentsConfig } from '../libs/environments.js';
+import { type WhookModuleAsideSchemas } from '../index.js';
 
 export const DEFAULT_TRANSFORMER_CONFIG: WhookTransformerConfig = {
   environments: 'all',
 };
 
-export type WhookBaseTransformerConfig = {
+export interface WhookBaseTransformerConfig {
   environments?: WhookEnvironmentsConfig;
   targetHandler?: string;
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface WhookTransformerConfig extends WhookBaseTransformerConfig {}
 
-export type WhookTransformerDefinition = {
+export interface WhookTransformerDefinition {
   name: string;
   inputSchema: ExpressiveJSONSchema;
   outputSchema: ExpressiveJSONSchema;
   config?: WhookTransformerConfig;
-};
+}
 
-export interface WhookTransformerHandler<
+export type WhookTransformerHandler<
   T extends JsonValue,
   U extends JsonValue,
   D extends WhookTransformerDefinition = WhookTransformerDefinition,
-> {
-  (input: T, definition: D): Promise<U>;
-}
+> = (input: T, definition: D) => Promise<U>;
 export type WhookTransformerHandlerInitializer<
   T extends JsonValue,
   U extends JsonValue,
@@ -43,23 +41,18 @@ export type WhookTransformerHandlerInitializer<
   | ServiceInitializer<D, WhookTransformerHandler<T, U>>
   | ProviderInitializer<D, WhookTransformerHandler<T, U>>;
 
-export const TRANSFORMER_ASIDE_COMPONENTS_SUFFIXES = ['Schema'] as const;
-export const TRANSFORMER_ASIDE_COMPONENTS_PROPERTY_MAP = {
-  Schema: 'schema',
+export const TRANSFORMER_ASIDE_COMPONENTS_MAP = {
+  schemas: 'Schema',
 } as const;
-
-export type WhookTransformerAsideComponentSuffix =
-  (typeof TRANSFORMER_ASIDE_COMPONENTS_SUFFIXES)[number];
 
 // May allow to type transformers files later
 // https://github.com/nfroidure/whook/issues/196
 export interface WhookTransformerModule<
   T extends JsonValue = JsonValue,
   U extends JsonValue = JsonValue,
-> {
+> extends WhookModuleAsideSchemas {
   default: WhookTransformerHandlerInitializer<T, U>;
   definition: WhookTransformerDefinition;
-  [name: `${string}Schema`]: WhookAPISchemaDefinition<unknown>;
 }
 
 export type WhookTransformerHandlerWrapper<

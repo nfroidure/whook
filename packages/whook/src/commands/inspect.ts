@@ -1,5 +1,6 @@
 import { autoService, type Injector, type Service } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
+// @ts-expect-error No types 🤷
 import miniquery from 'miniquery';
 import { noop } from '../libs/utils.js';
 import { type LogService } from 'common-services';
@@ -77,7 +78,7 @@ async function initInspectCommand({
       log('error-stack', printStackTrace(err as Error));
       log('error', `Try debugging with the "DEBUG=whook" env.`);
       if ('undefined' === typeof defaultValue) {
-        throw new YError('E_NO_SERVICE_FOUND', name);
+        throw new YError('E_NO_SERVICE_FOUND', [name]);
       }
 
       log('info', `${JSON.stringify(defaultValue, null, pretty ? 2 : 0)}`);
@@ -89,7 +90,7 @@ async function initInspectCommand({
     if (!results.length) {
       log('error', `Could not find any results for "${query}".`);
       if ('undefined' === typeof defaultValue) {
-        throw new YError('E_NO_RESULT', name, query);
+        throw new YError('E_NO_RESULT', [name, query]);
       }
     }
 

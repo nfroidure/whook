@@ -13,8 +13,11 @@ import initWrapRouteHandlerWithCORS from './wrappers/wrapRouteHandlerWithCORS.js
 import {
   ensureResolvedObject,
   pathItemToOperationMap,
+  type OpenAPIPath,
   type OpenAPIExtension,
   type OpenAPIParameter,
+  isValidOpenAPIPath,
+  OpenAPIMethod,
 } from 'ya-open-api-types';
 import { type ServiceInitializer, wrapInitializer } from 'knifecycle';
 import { noop } from 'common-services';
@@ -34,7 +37,14 @@ export {
 };
 
 // Ensures a deterministic canonical operation
-const METHOD_CORS_PRIORITY = ['head', 'get', 'post', 'put', 'delete', 'patch'];
+const METHOD_CORS_PRIORITY: OpenAPIMethod[] = [
+  'head',
+  'get',
+  'post',
+  'put',
+  'delete',
+  'patch',
+];
 
 /**
  * Augment an OpenAPI to also serve OPTIONS methods with
@@ -53,13 +63,17 @@ export function wrapDefinitionsWithCORS(
     async ({ log = noop }: WhookDefinitionsDependencies, DEFINITIONS) => {
       log('warning', '➕ - Wrapping definitions for CORS.');
 
-      const paths: Record<string, string[]> = {};
+      const paths: Record<OpenAPIPath, string[]> = {};
       const newPaths: WhookDefinitions['paths'] = {};
       const newConfigs: WhookDefinitions['configs'] = {
         ...DEFINITIONS.configs,
       };
 
       for (const [path, pathItem] of Object.entries(DEFINITIONS.paths || {})) {
+        if (!isValidOpenAPIPath(path)) {
+          continue;
+        }
+
         for (const method of Object.keys(
           pathItemToOperationMap(pathItem) as Record<
             string,
@@ -72,16 +86,20 @@ export function wrapDefinitionsWithCORS(
       }
 
       for (const [path, methods] of Object.entries(paths)) {
+        if (!isValidOpenAPIPath(path)) {
+          continue;
+        }
         if (DEFINITIONS.paths[path].options) {
           continue;
         }
 
         const canonicalOperationMethod = METHOD_CORS_PRIORITY.find((method) =>
           methods.some((aMethod) => aMethod === method),
-        ) as string;
+        ) as OpenAPIMethod;
 
-        const canonicalOperation: WhookOpenAPIOperation =
-          DEFINITIONS.paths[path][canonicalOperationMethod];
+        const canonicalOperation = DEFINITIONS.paths[path][
+          canonicalOperationMethod
+        ] as WhookOpenAPIOperation;
 
         const newOperationParameters: OpenAPIParameter<
           ExpressiveJSONSchema,

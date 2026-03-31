@@ -1,4 +1,4 @@
-import { autoService, location } from 'knifecycle';
+import { autoService, location, type ServiceProperties } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
 import { printStackTrace } from 'yerror';
 import { type HTTPGraphQLRequest, HeaderMap } from '@apollo/server';
@@ -141,7 +141,7 @@ async function initPostGraphQL<T extends Record<string, unknown>>({
         };
       }
 
-      throw YHTTPError.cast(err as Error, 500, 'E_GRAPH_QL');
+      throw YHTTPError.cast(err as Error, 'E_GRAPH_QL', undefined, 500);
     }
   };
 }
@@ -149,7 +149,7 @@ async function initPostGraphQL<T extends Record<string, unknown>>({
 export default location(
   autoService(initPostGraphQL),
   import.meta.url,
-) as unknown as <T extends Record<string, unknown>>(services: {
+) as unknown as (<T extends Record<string, unknown>>(services: {
   GRAPHQL_SERVER_CONTEXT_FUNCTION?: WhookGraphQLContext;
   graphQL: WhookGraphQLService;
   log: LogService;
@@ -165,4 +165,5 @@ export default location(
     },
     definition: WhookRouteDefinition,
   ) => Promise<WhookResponse>
->;
+>) &
+  ServiceProperties;

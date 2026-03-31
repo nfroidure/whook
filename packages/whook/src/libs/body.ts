@@ -9,12 +9,34 @@ import {
   type WhookEncoders,
   type WhookParsers,
   type WhookStringifiers,
-} from '../services/httpRouter.js';
+} from '../libs/constants.js';
 import { type WhookOpenAPIOperation } from '../types/openapi.js';
 import { type WhookResponse } from '../types/http.js';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type WhookRequestBody } from '../types/http.js';
-import { type WhookBodySpec } from '../libs/router.js';
+
+export interface WhookRequestBodySpec {
+  contentType: string;
+  contentLength: number;
+  charset: 'utf-8';
+  boundary?: string;
+}
+
+export const DEFAULT_REQUEST_BODY_SPEC = {
+  contentType: 'text/plain',
+  contentLength: 0,
+  charset: 'utf-8',
+} satisfies WhookRequestBodySpec;
+
+export interface WhookResponseBodySpec {
+  contentTypes: string[];
+  charsets: string[];
+}
+
+export const DEFAULT_RESPONSE_BODY_SPEC = {
+  contentTypes: ['text/plain'],
+  charsets: ['utf-8'],
+} satisfies WhookResponseBodySpec;
 
 /* Architecture Note #2.11.3: Request body
 According to the OpenAPI specification
@@ -43,7 +65,7 @@ export async function getBody(
   },
   operation: WhookOpenAPIOperation,
   inputStream: Readable,
-  bodySpec: WhookBodySpec,
+  bodySpec: WhookRequestBodySpec,
 ): Promise<WhookRequestBody | undefined> {
   const bodyIsEmpty = !(bodySpec.contentType && bodySpec.contentLength);
 
@@ -78,32 +100,32 @@ export async function getBody(
 
   if (!PARSERS?.[bodySpec.contentType]) {
     return Promise.reject(
-      new YHTTPError(500, 'E_PARSER_LACK', bodySpec.contentType),
+      new YHTTPError(500, 'E_PARSER_LACK', [bodySpec.contentType]),
     );
   }
 
   if (bodySpec.contentLength > bufferLimit) {
-    throw new YHTTPError(
-      400,
-      'E_REQUEST_CONTENT_TOO_LARGE',
+    throw new YHTTPError(400, 'E_REQUEST_CONTENT_TOO_LARGE', [
       bodySpec.contentLength,
       bufferLimit,
-    );
+    ]);
   }
 
   const body: Buffer = await new Promise((resolve, reject) => {
-    const Decoder = DECODERS?.[bodySpec.charset];
+    const createDecoder = DECODERS?.[bodySpec.charset];
 
-    if (!Decoder) {
+    if (!createDecoder) {
       return Promise.reject(
-        new YHTTPError(500, 'E_DECODER_LACK', bodySpec.charset),
+        new YHTTPError(500, 'E_DECODER_LACK', [bodySpec.charset]),
       );
     }
 
     inputStream.on('error', (err: Error) => {
-      reject(YHTTPError.wrap(err as Error, 400, 'E_REQUEST_FAILURE'));
+      reject(
+        YHTTPError.wrap(err as Error, 'E_REQUEST_FAILURE', undefined, 400),
+      );
     });
-    inputStream.pipe(new Decoder()).pipe(
+    inputStream.pipe(createDecoder()).pipe(
       new FirstChunkStream(
         {
           chunkSize: bufferLimit + 1,
@@ -115,12 +137,10 @@ export async function getBody(
           }
 
           reject(
-            new YHTTPError(
-              400,
-              'E_REQUEST_CONTENT_TOO_LARGE',
+            new YHTTPError(400, 'E_REQUEST_CONTENT_TOO_LARGE', [
               chunk.length,
               bufferLimit,
-            ),
+            ]),
           );
           return FirstChunkStream.stop;
         },
@@ -129,12 +149,10 @@ export async function getBody(
   });
 
   if (body.length !== bodySpec.contentLength) {
-    throw new YHTTPError(
-      400,
-      'E_BAD_BODY_LENGTH',
+    throw new YHTTPError(400, 'E_BAD_BODY_LENGTH', [
       body.length,
       bodySpec.contentLength,
-    );
+    ]);
   }
 
   try {
@@ -146,7 +164,7 @@ export async function getBody(
       }
     });
   } catch (err) {
-    throw YHTTPError.wrap(err as Error, 400, 'E_BAD_BODY', body.toString());
+    throw YHTTPError.wrap(err as Error, 'E_BAD_BODY', [body.toString()], 400);
   }
 }
 
@@ -173,20 +191,19 @@ export async function sendBody(
     'text/plain';
 
   if (!STRINGIFIERS?.[responseContentType]) {
-    throw new YError(
-      'E_STRINGIFYER_LACK',
+    throw new YError('E_STRINGIFYER_LACK', [
       response.headers?.['content-type'],
       response,
-    );
+    ]);
   }
 
-  const Encoder = ENCODERS?.['utf-8'];
+  const createEncoder = ENCODERS?.['utf-8'];
 
-  if (!Encoder) {
-    throw new YError('E_ENCODER_LACK', 'utf-8');
+  if (!createEncoder) {
+    throw new YError('E_ENCODER_LACK', ['utf-8']);
   }
 
-  const stream = new Encoder();
+  const stream = createEncoder();
   const content = STRINGIFIERS[responseContentType](response.body as string);
 
   stream.write(content);

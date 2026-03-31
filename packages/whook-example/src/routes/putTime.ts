@@ -71,7 +71,7 @@ async function putTime({
     typeof definition
   > = async ({ body }) => {
     if (APP_ENV !== 'local' && APP_ENV !== 'test') {
-      throw new YError('E_NO_MOCK_IN_PROD', APP_ENV);
+      throw new YError('E_NO_MOCK_IN_PROD', [APP_ENV]);
     }
 
     CLOCK_MOCK.isFixed = !!body.isFixed;

@@ -52,7 +52,7 @@ Also, looking closely to Prepack that
 export type WhookBodyValidator = (
   operation: WhookOpenAPIOperation,
   contentType: string,
-  body: WhookRequestBody | void,
+  body: WhookRequestBody | undefined,
 ) => void;
 
 export async function prepareBodyValidator(
@@ -75,9 +75,9 @@ export async function prepareBodyValidator(
     return rejectAnyRequestBody;
   }
 
-  const bodyValidators = {};
+  const bodyValidators: Record<string, ValidateFunction<unknown>> = {};
 
-  for (const mediaType of Object.keys(requestBodyObject.content)) {
+  for (const mediaType in requestBodyObject.content) {
     const mediaTypeObject = requestBodyObject.content[mediaType];
 
     if (!('schema' in mediaTypeObject) || !mediaTypeObject.schema) {
@@ -103,12 +103,10 @@ export async function prepareBodyValidator(
     try {
       bodyValidators[mediaType] = schemaValidators(mediaTypeObject.schema);
     } catch (err) {
-      throw YError.wrap(
-        err as Error,
-        'E_BAD_BODY_SCHEMA',
+      throw YError.wrap(err as Error, 'E_BAD_BODY_SCHEMA', [
         operation.operationId,
         mediaType,
-      );
+      ]);
     }
   }
 
@@ -124,17 +122,15 @@ function validateRequestBody(
   required: boolean,
   operation: WhookOpenAPIOperation,
   contentType: string,
-  body: WhookRequestBody | void,
+  body: WhookRequestBody | undefined,
 ): void {
   if ('undefined' === typeof body) {
     if (required) {
-      throw new YHTTPError(
-        400,
-        'E_REQUIRED_REQUEST_BODY',
+      throw new YHTTPError(400, 'E_REQUIRED_REQUEST_BODY', [
         operation.operationId,
         typeof body,
         body,
-      );
+      ]);
     }
     return;
   }
@@ -145,14 +141,12 @@ function validateRequestBody(
   }
 
   if (!bodyValidators[contentType](body)) {
-    throw new YHTTPError(
-      400,
-      'E_BAD_REQUEST_BODY',
+    throw new YHTTPError(400, 'E_BAD_REQUEST_BODY', [
       operation.operationId,
       typeof body,
       (body as WhookRequestBody) instanceof Stream ? 'Stream' : body,
       bodyValidators[contentType].errors,
-    );
+    ]);
   }
 }
 
@@ -162,13 +156,11 @@ function rejectAnyRequestBody(
   body: unknown,
 ): void {
   if ('undefined' !== typeof body) {
-    throw new YHTTPError(
-      400,
-      'E_NO_REQUEST_BODY',
+    throw new YHTTPError(400, 'E_NO_REQUEST_BODY', [
       operation.operationId,
       typeof body,
       body instanceof Stream ? 'Stream' : body,
-    );
+    ]);
   }
 }
 
@@ -191,13 +183,16 @@ export async function extractOperationSecurityParameters(
   return extractParametersFromSecuritySchemes(securitySchemes);
 }
 
-export async function pickupOperationSecuritySchemes(
-  { API }: { API: WhookOpenAPI },
+export async function pickupOperationSecuritySchemes<T extends OpenAPI>(
+  { API }: { API: T },
   operation: WhookOpenAPIOperation,
-): Promise<{ [name: string]: OpenAPISecurityScheme<OpenAPIExtension> }> {
+): Promise<Record<string, OpenAPISecurityScheme<OpenAPIExtension>>> {
   const securitySchemes =
     (API.components && API.components.securitySchemes) || {};
-  const operationSecuritySchemes = {};
+  const operationSecuritySchemes: Record<
+    string,
+    OpenAPISecurityScheme<OpenAPIExtension>
+  > = {};
 
   for (const security of operation.security || API.security || []) {
     const schemeKey = Object.keys(security)[0];
@@ -207,15 +202,14 @@ export async function pickupOperationSecuritySchemes(
     }
 
     if (!securitySchemes[schemeKey]) {
-      throw new YError(
-        'E_UNDECLARED_SECURITY_SCHEME',
+      throw new YError('E_UNDECLARED_SECURITY_SCHEME', [
         schemeKey,
         operation.operationId,
-      );
+      ]);
     }
 
     operationSecuritySchemes[schemeKey] = await ensureResolvedObject(
-      { API },
+      API,
       securitySchemes[schemeKey],
     );
   }
@@ -235,10 +229,9 @@ export function extractParametersFromSecuritySchemes(
         .filter((securityScheme) => securityScheme.type === 'http')
         .map((securityScheme) => {
           if (!SUPPORTED_HTTP_SCHEMES.includes(securityScheme.scheme)) {
-            throw new YError(
-              'E_UNSUPPORTED_HTTP_SCHEME',
+            throw new YError('E_UNSUPPORTED_HTTP_SCHEME', [
               securityScheme.scheme,
-            );
+            ]);
           }
           return securityScheme.scheme;
         }),
@@ -253,11 +246,10 @@ export function extractParametersFromSecuritySchemes(
     .filter((securityScheme) => securityScheme.type === 'apiKey')
     .map((securityScheme) => {
       if (securityScheme.in === 'cookie') {
-        throw new YError(
-          'E_UNSUPPORTED_API_KEY_SOURCE',
+        throw new YError('E_UNSUPPORTED_API_KEY_SOURCE', [
           'cookie',
           securityScheme.name,
-        );
+        ]);
       }
       // This overlaps with OAuth/HTTP schemes
       if (
@@ -322,12 +314,12 @@ export function extractParametersFromSecuritySchemes(
   return securityParameters;
 }
 
-export async function resolveParameters(
+export async function resolveParameters<T extends OpenAPI>(
   {
     API,
     log = noop,
   }: {
-    API: WhookOpenAPI;
+    API: T;
     log?: LogService;
   },
   parameters: (
@@ -345,37 +337,34 @@ export async function resolveParameters(
       log('debug', JSON.stringify(resolvedParameter));
     }
     if ('string' !== typeof resolvedParameter.name) {
-      throw new YError('E_BAD_PARAMETER_NAME', resolvedParameter);
+      throw new YError('E_BAD_PARAMETER_NAME', [resolvedParameter]);
     }
 
     if ('content' in resolvedParameter) {
-      throw new YError(
-        'E_UNSUPPORTED_PARAMETER_DEFINITION',
+      throw new YError('E_UNSUPPORTED_PARAMETER_DEFINITION', [
         resolvedParameter.name,
         'content',
-      );
+      ]);
     }
 
     if ('style' in resolvedParameter && 'simple' !== resolvedParameter.style) {
-      throw new YError(
-        'E_UNSUPPORTED_PARAMETER_DEFINITION',
+      throw new YError('E_UNSUPPORTED_PARAMETER_DEFINITION', [
         resolvedParameter.name,
         'style',
         resolvedParameter.style,
-      );
+      ]);
     }
 
     if (!['query', 'header', 'path'].includes(resolvedParameter.in)) {
-      throw new YError(
-        'E_UNSUPPORTED_PARAMETER_DEFINITION',
+      throw new YError('E_UNSUPPORTED_PARAMETER_DEFINITION', [
         resolvedParameter.name,
         'in',
         resolvedParameter.in,
-      );
+      ]);
     }
 
     if (!resolvedParameter.schema) {
-      throw new YError('E_PARAMETER_WITHOUT_SCHEMA', resolvedParameter.name);
+      throw new YError('E_PARAMETER_WITHOUT_SCHEMA', [resolvedParameter.name]);
     }
 
     resolvedParameters.push(resolvedParameter);
@@ -417,7 +406,7 @@ export async function getCasterForSchema(
   )) as ExpressiveJSONSchema;
 
   if (!('type' in resolvedSchema && resolvedSchema.type)) {
-    throw new YError('E_UNSUPPORTED_SCHEMA', resolvedSchema);
+    throw new YError('E_UNSUPPORTED_SCHEMA', [resolvedSchema]);
   }
 
   if (resolvedSchema.type === 'number') {
@@ -431,7 +420,7 @@ export async function getCasterForSchema(
       !('items' in resolvedSchema && resolvedSchema.items) ||
       'prefixItems' in resolvedSchema
     ) {
-      throw new YError('E_UNSUPPORTED_SCHEMA', resolvedSchema);
+      throw new YError('E_UNSUPPORTED_SCHEMA', [resolvedSchema]);
     }
 
     const itemSchema = (await ensureResolvedObject(
@@ -440,7 +429,7 @@ export async function getCasterForSchema(
     )) as ExpressiveJSONSchema;
 
     if (!('type' in itemSchema && itemSchema.type)) {
-      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', resolvedSchema);
+      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [resolvedSchema]);
     }
     if (itemSchema.type === 'string') {
       return parseArrayOfStrings;
@@ -450,7 +439,7 @@ export async function getCasterForSchema(
       return parseArrayOfBooleans;
     }
   }
-  throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', resolvedSchema);
+  throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [resolvedSchema]);
 }
 
 export async function createParameterValidator(
@@ -474,7 +463,7 @@ export async function createParameterValidator(
   )) as ExpressiveJSONSchema;
 
   if (!('type' in schema && schema.type)) {
-    throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', parameter);
+    throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [parameter]);
   }
 
   if (schema.type === 'number') {
@@ -483,7 +472,7 @@ export async function createParameterValidator(
     caster = parseBoolean;
   } else if (schema.type === 'array') {
     if (!('items' in schema && schema.items) || 'prefixItems' in schema) {
-      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', parameter);
+      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [parameter]);
     }
 
     const itemSchema = (await ensureResolvedObject(
@@ -492,7 +481,7 @@ export async function createParameterValidator(
     )) as ExpressiveJSONSchema;
 
     if (!('type' in itemSchema && itemSchema.type)) {
-      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', parameter);
+      throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [parameter]);
     }
     if (itemSchema.type === 'string') {
       caster = parseArrayOfStrings;
@@ -506,7 +495,7 @@ export async function createParameterValidator(
   try {
     validator = schemaValidators(parameter.schema);
   } catch (err) {
-    throw YError.wrap(err as Error, 'E_BAD_PARAMETER_SCHEMA', parameter.name);
+    throw YError.wrap(err as Error, 'E_BAD_PARAMETER_SCHEMA', [parameter.name]);
   }
 
   return validateParameter.bind(null, parameter, caster, validator);
@@ -554,13 +543,11 @@ export function validateParameter(
 ): WhookParameterValue | undefined {
   if ('undefined' === typeof str) {
     if (parameter.required) {
-      throw new YHTTPError(
-        400,
-        'E_REQUIRED_PARAMETER',
+      throw new YHTTPError(400, 'E_REQUIRED_PARAMETER', [
         parameter.name,
         typeof str,
         str,
-      );
+      ]);
     }
     return undefined;
   }
@@ -568,14 +555,12 @@ export function validateParameter(
   const value = caster ? caster(str) : str;
 
   if (!validator(value)) {
-    throw new YHTTPError(
-      400,
-      'E_BAD_PARAMETER',
+    throw new YHTTPError(400, 'E_BAD_PARAMETER', [
       parameter.name,
       typeof value,
       value,
       validator.errors,
-    );
+    ]);
   }
   return value;
 }

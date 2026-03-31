@@ -31,7 +31,8 @@ declare module 'application-services' {
   The process environment can be typed by extending this type.
   */
   export interface AppEnvVars
-    extends BaseAppEnvVars,
+    extends
+      BaseAppEnvVars,
       WhookBaseEnv,
       JWTEnvVars,
       RouteDefinitionFilterEnvVars,
@@ -43,7 +44,8 @@ declare module 'application-services' {
    produce a bad configuration for your API.
   */
   export interface AppConfig
-    extends WhookBaseConfigs,
+    extends
+      WhookBaseConfigs,
       WhookAuthorizationConfig,
       WhookSwaggerUIConfig,
       WhookCORSConfig,
@@ -60,12 +62,12 @@ declare module '@whook/whook' {
    with the routes.
   */
   export interface WhookRouteConfig
-    extends WhookBaseRouteConfig,
+    extends
+      WhookBaseRouteConfig,
       WhookSwaggerUIRouteConfig,
       WhookCORSRouteConfig {}
 
-  export interface WhookRouteHandlerExtraParameters
-    extends WhookAuthenticationExtraParameters {}
+  export interface WhookRouteHandlerExtraParameters extends WhookAuthenticationExtraParameters {}
 
   /* Architecture Note #2.1.4: WhookMain
   

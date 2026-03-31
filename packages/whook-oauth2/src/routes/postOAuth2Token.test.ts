@@ -195,14 +195,14 @@ describe('postOAuth2Token', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
       }).toMatchInlineSnapshot(`
-        {
-          "errorCode": "E_UNKNOWN_AUTHENTICATOR_TYPE",
-          "errorParams": [
-            "yolo",
-          ],
-        }
+       {
+         "errorCode": "E_UNKNOWN_AUTHENTICATOR_TYPE",
+         "errorDebugValues": [
+           "yolo",
+         ],
+       }
       `);
       expect({
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,

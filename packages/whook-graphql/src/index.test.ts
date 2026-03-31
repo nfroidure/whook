@@ -24,7 +24,7 @@ import {
   BASIC as BASIC_MECHANISM,
 } from 'http-auth-utils';
 import { gql } from 'graphql-tag';
-import { defaultFieldResolver } from 'graphql';
+import { defaultFieldResolver, type GraphQLSchema } from 'graphql';
 import {
   initGetGraphQL,
   getGraphQLDefinition,
@@ -101,7 +101,7 @@ describe('GraphQL server', () => {
     check: jest.fn<WhookAuthenticationService<any>['check']>(),
   };
 
-  function upperDirectiveTransformer(schema, directiveName: string) {
+  function upperDirectiveTransformer(schema: GraphQLSchema, directiveName: string) {
     return mapSchema(schema, {
       // Executes once for each object field in the schema
       [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
@@ -131,7 +131,7 @@ describe('GraphQL server', () => {
     });
   }
 
-  let $instance;
+  let $instance: Knifecycle;
 
   async function prepareEnvironment() {
     const $ = await basePrepareEnvironment();
@@ -225,7 +225,7 @@ describe('GraphQL server', () => {
   }
 
   $autoload.mockImplementation(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', serviceName);
+    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
   });
   process.env.ISOLATED_ENV = '1';
 

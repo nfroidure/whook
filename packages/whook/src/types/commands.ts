@@ -40,7 +40,7 @@ export type WhookCommandSchema =
         | ArrayJSONSchema<'null' | 'boolean' | 'number' | 'integer' | 'string'>
       ));
 export interface WhookCommandArgumentDefinition<
-  T extends JsonValue | void | unknown = unknown,
+  T extends JsonValue | undefined | unknown = unknown,
 > {
   name: string;
   description: string;
@@ -70,26 +70,16 @@ export type WhookCommandArgs<
   command: string;
 };
 
-export interface WhookCommandHandler<
+export type WhookCommandHandler<
   T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
   D extends WhookCommandDefinition = WhookCommandDefinition,
-> {
-  (args: WhookCommandArgs<T>, definition?: D): Promise<void>;
-}
+> = (args: WhookCommandArgs<T>, definition?: D) => Promise<void>;
 export type WhookCommandInitializer<
   T extends Record<string, WhookArgsTypes>,
   D extends Dependencies = Record<string, WhookArgsTypes>,
 > =
   | ServiceInitializer<D, WhookCommandHandler<T>>
   | ProviderInitializer<D, WhookCommandHandler<T>>;
-
-export const COMMAND_ASIDE_COMPONENTS_SUFFIXES = ['Schema'] as const;
-export const COMMAND_ASIDE_COMPONENTS_PROPERTY_MAP = {
-  Schema: 'schema',
-} as const;
-
-export type WhookCommandAsideComponentSuffix =
-  (typeof COMMAND_ASIDE_COMPONENTS_SUFFIXES)[number];
 
 // May allow to type commands files later
 // https://github.com/nfroidure/whook/issues/196

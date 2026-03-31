@@ -23,8 +23,14 @@ describe('initAuthor', () => {
   });
 
   test('should work', async () => {
-    exec.mockImplementationOnce((_, cb) => cb(null, 'Wayne Campbell'));
-    exec.mockImplementationOnce((_, cb) => cb(null, 'wayne@warner.com'));
+    exec.mockImplementationOnce(
+      (_: unknown, cb: (err: Error | null, data?: string) => undefined) =>
+        cb(null, 'Wayne Campbell'),
+    );
+    exec.mockImplementationOnce(
+      (_: unknown, cb: (err: Error | null, data?: string) => undefined) =>
+        cb(null, 'wayne@warner.com'),
+    );
     lock.take.mockResolvedValueOnce(undefined);
     inquirer.prompt.mockResolvedValueOnce({
       authorName: 'Wayne Campbell',
@@ -50,8 +56,14 @@ describe('initAuthor', () => {
   });
 
   test('should handle git failures', async () => {
-    exec.mockImplementationOnce((_, cb) => cb(new Error('E_GIT_ERROR')));
-    exec.mockImplementationOnce((_, cb) => cb(new Error('E_GIT_ERROR')));
+    exec.mockImplementationOnce(
+      (_: unknown, cb: (err: Error | null, data?: string) => undefined) =>
+        cb(new Error('E_GIT_ERROR')),
+    );
+    exec.mockImplementationOnce(
+      (_: unknown, cb: (err: Error | null, data?: string) => undefined) =>
+        cb(new Error('E_GIT_ERROR')),
+    );
     lock.take.mockResolvedValueOnce(undefined);
     inquirer.prompt.mockResolvedValueOnce({
       authorName: 'Wayne Campbell',
@@ -77,8 +89,14 @@ describe('initAuthor', () => {
   });
 
   test('should release the lock on failure', async () => {
-    exec.mockImplementationOnce((_, cb) => cb(null, 'Wayne Campbell'));
-    exec.mockImplementationOnce((_, cb) => cb(null, 'wayne@warner.com'));
+    exec.mockImplementationOnce(
+      (_: unknown, cb: (err: Error | null, data?: string) => undefined) =>
+        cb(null, 'Wayne Campbell'),
+    );
+    exec.mockImplementationOnce(
+      (_: unknown, cb: (err: Error | null, data?: string) => undefined) =>
+        cb(null, 'wayne@warner.com'),
+    );
     lock.take.mockResolvedValueOnce(undefined);
     inquirer.prompt.mockRejectedValueOnce(new Error('E_PROMPT_ERROR'));
     lock.release.mockResolvedValueOnce(undefined);
@@ -93,7 +111,7 @@ describe('initAuthor', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,

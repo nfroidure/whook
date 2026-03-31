@@ -75,11 +75,11 @@ async function initAuthentication({
             scope: 'admin',
           };
         }
-        throw new YError('E_BAD_BEARER_TOKEN', type, data.hash);
+        throw new YError('E_BAD_BEARER_TOKEN', [type, data.hash]);
       }
       // Of course, the service must check the auth type
       // and fail if not supported to avoid security issues
-      throw new YError('E_UNEXPECTED_AUTH_TYPE', type);
+      throw new YError('E_UNEXPECTED_AUTH_TYPE', [type]);
     },
   };
 

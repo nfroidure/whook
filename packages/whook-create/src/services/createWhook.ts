@@ -71,7 +71,9 @@ export default autoService(async function initCreateWhook({
         metapak: undefined,
         cli: undefined,
       },
-      files: basePackageJSON.files.filter((pattern) => pattern !== 'src/**/*'),
+      files: basePackageJSON.files.filter(
+        (pattern: string) => pattern !== 'src/**/*',
+      ),
       dependencies: basePackageJSON.dependencies,
       devDependencies: {
         ...basePackageJSON.devDependencies,
@@ -151,7 +153,7 @@ JWT_SECRET=oudelali
         `# Loaded when NODE_ENV=development
 
 # Allow to kill the process with still open sockets
-DESTROY_SOCKETS=1'
+DESTROY_SOCKETS=1
 
 # Common env var to get dev outputs
 DEV_MODE=1 

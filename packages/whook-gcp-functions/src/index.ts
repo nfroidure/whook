@@ -41,10 +41,10 @@ export { initWrapRouteHandlerForGoogleHTTPFunction };
 export type WhookGCPFunctionBuildConfig = {
   BUILD_PARALLELISM?: number;
 };
-export type WhookGCPFunctionBaseConfig = {
+export interface WhookGCPFunctionBaseConfig {
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
-};
+}
 export type WhookGCPFunctionRouteConfig = WhookGCPFunctionBaseConfig;
 
 const cprAsync = promisify(cpr) as (
@@ -84,15 +84,17 @@ export async function runBuild(
       $autoload,
       DEFINITIONS,
       buildInitializer,
-    }: WhookGCPFunctionBuildConfig & {
-      APP_ENV: string;
-      PROJECT_DIR: string;
-      compiler: WhookCompilerService;
-      log: LogService;
-      $autoload: Autoloader<Initializer<Dependencies, Service>>;
-      DEFINITIONS: WhookDefinitions;
-      buildInitializer: BuildInitializer;
-    } = await $.run([
+    } = await $.run<
+      WhookGCPFunctionBuildConfig & {
+        APP_ENV: string;
+        PROJECT_DIR: string;
+        compiler: WhookCompilerService;
+        log: LogService;
+        $autoload: Autoloader<Initializer<Dependencies, Service>>;
+        DEFINITIONS: WhookDefinitions;
+        buildInitializer: BuildInitializer;
+      }
+    >([
       'APP_ENV',
       '?BUILD_PARALLELISM',
       'PROJECT_DIR',
@@ -251,7 +253,7 @@ async function buildHandler(
   } catch (err) {
     log('error', `💥 - Error building "${handlerName}"...`);
     log('error-stack', printStackTrace(err as Error));
-    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', handlerName);
+    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', [handlerName]);
   }
 }
 
@@ -284,7 +286,10 @@ async function buildFinalHandler(
   const entryPoint = `${handlerPath}/main.js`;
   const { extension, contents, mappings } = await compiler(
     entryPoint,
-    DEFINITIONS[handlerName]?.config?.compilerOptions,
+    DEFINITIONS.configs[handlerName]?.config &&
+      'compilerOptions' in DEFINITIONS.configs[handlerName].config
+      ? DEFINITIONS.configs[handlerName]?.config.compilerOptions
+      : undefined,
   );
 
   await Promise.all([

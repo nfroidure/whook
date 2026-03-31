@@ -11,30 +11,30 @@ export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   format: 'esm',
 };
 
-export type FullWhookCompilerOptions = {
+export interface FullWhookCompilerOptions {
   externalModules: string[];
   ignoredModules: string[];
   mainFields?: string[];
   target: string;
   format: 'esm' | 'cjs';
   excludeNodeModules?: boolean;
-};
+}
 export type WhookCompilerOptions = Partial<FullWhookCompilerOptions>;
-export type WhookCompilerConfig = {
+export interface WhookCompilerConfig {
   DEBUG_NODE_ENVS: string[];
   COMPILER_OPTIONS?: WhookCompilerOptions;
-};
+}
 export type WhookCompilerDependencies = WhookCompilerConfig & {
   PROJECT_DIR: string;
   ENV: AppEnvVars;
   importer: ImporterService<Service>;
   log?: LogService;
 };
-export type WhookCompilationResult = {
+export interface WhookCompilationResult {
   contents: string;
   mappings: string;
   extension: string;
-};
+}
 
 export type WhookCompilerService = (
   entryPoint: string,
@@ -67,14 +67,16 @@ async function initCompiler({
     const outFile = path.join(basePath, `index${extension}`);
     const absoluteToProjectsRelativePlugin = {
       name: 'absolute-to-projects-relative',
-      setup(build) {
+      // eslint-disable-next-line
+      setup(build: any) {
         build.onResolve(
           {
             filter: new RegExp(
               '^' + (PROJECT_DIR + '/node_modules/').replace(/\//g, '\\/'),
             ),
           },
-          (args) => {
+          // eslint-disable-next-line
+          (args: any) => {
             const newPath = args.path.replace(
               PROJECT_DIR + '/node_modules/',
               '',
@@ -131,11 +133,13 @@ const require = __whook__createRequire(import.meta.url);
     const data = {
       extension,
       contents:
-        result.outputFiles.find((file) => file.path.endsWith(outFile))?.text ||
-        '',
+        result.outputFiles.find((file: { path: string }) =>
+          file.path.endsWith(outFile),
+        )?.text || '',
       mappings:
-        result.outputFiles.find((file) => file.path.endsWith(outFile + '.map'))
-          ?.text || '',
+        result.outputFiles.find((file: { path: string }) =>
+          file.path.endsWith(outFile + '.map'),
+        )?.text || '',
     };
 
     if (!data.contents) {

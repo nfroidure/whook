@@ -77,14 +77,14 @@ describe('mergeVaryHeaders', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
       }).toMatchInlineSnapshot(`
-        {
-          "errorCode": "E_BAD_VARY_VALUE",
-          "errorParams": [
-            "User-Agent, Cookie",
-          ],
-        }
+       {
+         "errorCode": "E_BAD_VARY_VALUE",
+         "errorDebugValues": [
+           "User-Agent, Cookie",
+         ],
+       }
       `);
     }
   });

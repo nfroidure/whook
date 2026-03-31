@@ -1,10 +1,11 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initHTTPServer from './httpServer.js';
 import axios from 'axios';
-import net from 'net';
+import net from 'node:net';
 import { YError } from 'yerror';
 import { type WhookHTTPRouterService } from './httpRouter.js';
 import { type LogService } from 'common-services';
+import { type ServerResponse } from 'node:http';
 
 describe('initHTTPServer', () => {
   const PORT = 7777;
@@ -80,7 +81,7 @@ describe('initHTTPServer', () => {
 
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();
@@ -101,19 +102,21 @@ describe('initHTTPServer', () => {
     });
 
     try {
-      httpServer.service.close = ((realClose) => async (cb) => {
-        await new Promise<void>((resolve, reject) => {
-          realClose((err: Error | undefined) => {
-            if (err) {
-              reject(err);
-              return;
-            }
-            resolve();
+      httpServer.service.close = (
+        (realClose) => async (cb: (err?: Error) => undefined) => {
+          await new Promise<void>((resolve, reject) => {
+            realClose((err: Error | undefined) => {
+              if (err) {
+                reject(err);
+                return;
+              }
+              resolve();
+            });
           });
-        });
 
-        cb(new YError('E_ERROR'));
-      })(
+          cb(new YError('E_ERROR'));
+        }
+      )(
         httpServer.service.close.bind(httpServer.service),
       ) as unknown as typeof httpServer.service.close;
 
@@ -125,7 +128,7 @@ describe('initHTTPServer', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorParams: (err as YError).params,
+        errorDebugValues: (err as YError).debugValues,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();
@@ -170,7 +173,7 @@ describe('initHTTPServer', () => {
       },
       HOST,
       PORT,
-      httpRouter: ((_, res) => {
+      httpRouter: ((_: unknown, res: ServerResponse) => {
         res.writeHead(200, {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',

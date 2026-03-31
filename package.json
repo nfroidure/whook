@@ -32,13 +32,13 @@
     "build": "npm run lerna -- run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -k packages/whook/package.json && git add CHANGELOG.md",
     "cli": "env NODE_ENV=${NODE_ENV:-cli}",
+    "commitlint": "commitlint",
     "cover": "lerna run cover",
-    "cz": "env NODE_ENV=${NODE_ENV:-cli} git cz",
     "format": "lerna run format",
     "lerna": "lerna",
     "lint": "lerna run lint",
     "metapak": "metapak",
-    "precz": "node --run lint && node --run build && node --run test && node --run lerna -- run --parallel metapak -- -s && node --run metapak -- -s",
+    "precommit": "node --run lint && NODE_ENV=test node --run build && node --run test && node --run lerna -- run --parallel metapak -- -s && node --run metapak -- -s",
     "prettier": "lerna run prettier",
     "preversion": "node --run lint && NODE_ENV=test node --run build && node --run test && node --run lerna -- run --parallel metapak -- -s && node --run metapak -- -s",
     "test": "lerna run test",
@@ -59,12 +59,12 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "devDependencies": {
-    "commitizen": "^4.3.1",
-    "conventional-changelog-cli": "^5.0.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "lerna": "9.0.0",
-    "metapak": "^6.0.4",
-    "metapak-nfroidure": "20.0.5"
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "conventional-changelog": "^7.2.0",
+    "lerna": "9.0.7",
+    "metapak": "^7.0.0",
+    "metapak-nfroidure": "22.0.2"
   },
   "contributors": [
     {
@@ -79,12 +79,7 @@
     }
   ],
   "engines": {
-    "node": ">=22.16.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "node": ">=24.14.0"
   },
   "prettier": {
     "semi": true,
@@ -99,13 +94,6 @@
     "README.md",
     "CHANGELOG.md"
   ],
-  "greenkeeper": {
-    "ignore": [
-      "commitizen",
-      "cz-conventional-changelog",
-      "conventional-changelog-cli"
-    ]
-  },
   "overrides": {
     "eslint": "^9.7.0"
   },

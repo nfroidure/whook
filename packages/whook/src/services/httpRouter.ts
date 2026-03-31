@@ -25,7 +25,6 @@ import {
   executeHandler,
   extractProduceableMediaTypes,
   extractConsumableMediaTypes,
-  type WhookBodySpec,
 } from '../libs/router.js';
 import { getBody, sendBody } from '../libs/body.js';
 import {
@@ -34,10 +33,13 @@ import {
   DEFAULT_STRINGIFIERS,
   DEFAULT_DECODERS,
   DEFAULT_ENCODERS,
+  type WhookParsers,
+  type WhookStringifiers,
+  type WhookEncoders,
+  type WhookDecoders,
 } from '../libs/constants.js';
-import { type JsonValue } from 'type-fest';
 import { type Provider } from 'knifecycle';
-import { type Transform, type Readable } from 'node:stream';
+import { type Readable } from 'node:stream';
 import { type WhookHTTPTransactionService } from './httpTransaction.js';
 import {
   pathItemToOperationMap,
@@ -46,6 +48,7 @@ import {
   type OpenAPIReference,
   type OpenAPIResponse,
   PATH_ITEM_METHODS,
+  isValidOpenAPIPath,
 } from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
@@ -81,31 +84,12 @@ function identity<T>(x: T): T {
 }
 
 export type WhookHandlersService = Record<string, WhookRouteHandler>;
-export type WhookParser = (
-  content: string,
-  bodySpec?: WhookBodySpec,
-) => JsonValue;
-export type WhookParsers = { [name: string]: WhookParser };
-export type WhookStringifyer = (content: string) => string;
-export type WhookStringifiers = { [name: string]: WhookStringifyer };
-export type WhookEncoder<T extends Transform> = {
-  new (...args: unknown[]): T;
-};
-export type WhookEncoders<T extends Transform> = {
-  [name: string]: WhookEncoder<T>;
-};
-export type WhookDecoder<T extends Transform> = {
-  new (...args: unknown[]): T;
-};
-export type WhookDecoders<T extends Transform> = {
-  [name: string]: WhookDecoder<T>;
-};
-export type WhookHTTPRouterConfig = {
+export interface WhookHTTPRouterConfig {
   DEBUG_NODE_ENVS?: string[];
   BUFFER_LIMIT?: string;
   BASE_PATH?: string;
   COERCION_OPTIONS?: WhookCoercionOptions;
-};
+}
 export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
   ENV: AppEnvVars;
   ROUTES_HANDLERS: WhookHandlersService;
@@ -113,17 +97,18 @@ export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
   DEFINITIONS: WhookDefinitions;
   PARSERS?: WhookParsers;
   STRINGIFIERS?: WhookStringifiers;
-  DECODERS?: WhookEncoders<Transform>;
-  ENCODERS?: WhookDecoders<Transform>;
+  DECODERS?: WhookEncoders;
+  ENCODERS?: WhookDecoders;
   queryParserBuilder: WhookQueryParserBuilderService;
   log?: LogService;
   schemaValidators: WhookSchemaValidatorsService;
   httpTransaction: WhookHTTPTransactionService;
   errorHandler: WhookErrorHandler;
 };
-export interface WhookHTTPRouterService {
-  (req: IncomingMessage, res: ServerResponse): Promise<void>;
-}
+export type WhookHTTPRouterService = (
+  req: IncomingMessage,
+  res: ServerResponse,
+) => Promise<void>;
 export type WhookHTTPRouterProvider = Provider<WhookHTTPRouterService>;
 
 export type WhookHTTPRouterDescriptor = {
@@ -265,9 +250,11 @@ async function initHTTPRouter({
   });
 
   let handleFatalError: (reason?: unknown) => void;
-  const fatalErrorPromise: Promise<void> = new Promise((_resolve, reject) => {
-    handleFatalError = reject;
-  });
+  const fatalErrorPromise: Promise<void> = new Promise<void>(
+    (_resolve, reject) => {
+      handleFatalError = reject;
+    },
+  );
 
   log('debug', '🚦 - HTTP Router initialized.');
 
@@ -299,7 +286,7 @@ async function initHTTPRouter({
       await transaction
         .start(async () => {
           const method = request.method as (typeof PATH_ITEM_METHODS)[number];
-          const path = request.url.split(SEARCH_SEPARATOR)[0];
+          const path = request.url.split(SEARCH_SEPARATOR)[0] as `/${string}`;
           const parts = path.split(PATH_SEPARATOR).filter(identity);
           let [result, pathNodesValues] = routers[method]
             ? routers[method].find(parts)
@@ -314,13 +301,11 @@ async function initHTTPRouter({
 
           if (!result || !result.handler) {
             log('debug', '❌ - No handler found for: ', method, parts);
-            throw new YHTTPError(
-              404,
-              'E_NOT_FOUND',
+            throw new YHTTPError(404, 'E_NOT_FOUND', [
               method,
               parts,
               PATH_SEPARATOR + parts.join(PATH_SEPARATOR),
-            );
+            ]);
           }
 
           const {
@@ -420,7 +405,7 @@ async function initHTTPRouter({
               parametersValues.body = body;
             }
           } catch (err) {
-            throw YHTTPError.cast(err as Error, 400);
+            throw YHTTPError.cast(err as Error, (err as YError).code, (err as YError).debugValues, 400);
           }
 
           const response = await executeHandler(
@@ -479,12 +464,10 @@ async function initHTTPRouter({
               ));
 
           if (responseHasSchema && !STRINGIFIERS[responseContentType]) {
-            throw new YHTTPError(
-              500,
-              'E_STRINGIFYER_LACK',
+            throw new YHTTPError(500, 'E_STRINGIFYER_LACK', [
               response.headers['content-type'],
               response,
-            );
+            ]);
           }
           if (response.body) {
             checkResponseMediaType(
@@ -566,11 +549,11 @@ async function buildPathNodes(
     );
 
     if (!parameter) {
-      throw new YError('E_UNDECLARED_PATH_PARAMETER', path, node);
+      throw new YError('E_UNDECLARED_PATH_PARAMETER', [path, node]);
     }
 
     if (!('schema' in parameter) || typeof parameter.schema !== 'object') {
-      throw new YError('E_UNSUPPORTED_PATH_PARAMETER', path, node);
+      throw new YError('E_UNSUPPORTED_PATH_PARAMETER', [path, node]);
     }
 
     const schema = (await ensureResolvedObject(
@@ -583,7 +566,7 @@ async function buildPathNodes(
       typeof schema.type !== 'string' ||
       !['number', 'string', 'boolean'].includes(schema.type)
     ) {
-      throw new YError('E_UNSUPPORTED_PATH_PARAMETER', path, node);
+      throw new YError('E_UNSUPPORTED_PATH_PARAMETER', [path, node]);
     }
 
     pathNodes.push({
@@ -617,6 +600,10 @@ async function _createRouters({
   const routers: Record<string, Siso<WhookHTTPRouterDescriptor>> = {};
 
   for (const [path, pathItem] of Object.entries(API.paths || {})) {
+    if (!isValidOpenAPIPath(path)) {
+      throw new YError('E_BAD_PATH', [path]);
+    }
+
     const pathItemParameters = await resolveParameters(
       { API, log },
       pathItem.parameters || [],
@@ -635,12 +622,8 @@ async function _createRouters({
     )) {
       const operationId = operation.operationId;
 
-      if (!path.startsWith(PATH_SEPARATOR)) {
-        throw new YError('E_BAD_PATH', path);
-      }
-
       if (!operationId) {
-        throw new YError('E_NO_OPERATION_ID', path, method);
+        throw new YError('E_NO_OPERATION_ID', [path, method]);
       }
 
       const targetHandler =
@@ -651,7 +634,7 @@ async function _createRouters({
       const handler = ROUTES_HANDLERS[targetHandler];
 
       if (!handler) {
-        throw new YError('E_NO_HANDLER', targetHandler);
+        throw new YError('E_NO_HANDLER', [targetHandler]);
       }
 
       const operationParameters = await resolveParameters(

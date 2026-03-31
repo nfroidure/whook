@@ -117,7 +117,7 @@ async function initPutEcho({ log }: { log: LogService }) {
     typeof definition
   > = async ({ body }) => {
     if (body.echo.includes('Voldemort')) {
-      throw new YHTTPError(400, 'E_MUST_NOT_BE_NAMED', body.echo);
+      throw new YHTTPError(400, 'E_MUST_NOT_BE_NAMED', [body.echo]);
     }
 
     log('warning', `📢 - Echoing "${body.echo}"`);

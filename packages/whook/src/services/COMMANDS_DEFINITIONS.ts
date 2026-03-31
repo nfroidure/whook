@@ -22,24 +22,24 @@ export const DEFAULT_COMMANDS_DEFINITIONS_OPTIONS: WhookCommandsDefinitionsOptio
 export const DEFAULT_COMMAND_DEFINITION_FILTER: WhookCommandDefinitionFilter =
   () => false;
 
-export interface WhookCommandDefinitionFilter {
-  (definition: WhookCommandDefinition): boolean;
-}
+export type WhookCommandDefinitionFilter = (
+  definition: WhookCommandDefinition,
+) => boolean;
 
-export type WhookCommandsDefinitionsOptions = {
+export interface WhookCommandsDefinitionsOptions {
   /** File patterns to ignore */
   ignoredFilePatterns?: string[];
   /** Pattern to match and pick the command name in the file name */
   fileNamePatterns: [string, ...string[]];
   /** Patterns that matches an command name */
   serviceNamePatterns: [string, ...string[]];
-};
+}
 
-export type WhookCommandsDefinitionsConfig = {
+export interface WhookCommandsDefinitionsConfig {
   COMMANDS_DEFINITIONS_OPTIONS?: WhookCommandsDefinitionsOptions;
   COMMAND_DEFINITION_FILTER?: WhookCommandDefinitionFilter;
   WHOOK_PLUGINS?: WhookPluginName[];
-};
+}
 
 export type WhookCommandsDependencies = WhookCommandsDefinitionsConfig & {
   APP_ENV: string;
@@ -154,38 +154,39 @@ async function initCommands({
         resolvedPlugin.mainURL,
       ).toString();
 
-      let module;
-
       try {
-        module = await importer(url);
+        const module = await importer(url);
+
+        if (
+          module.definition.config?.environments &&
+          module.definition.config.environments !== 'all' &&
+          !module.definition.config.environments.includes(APP_ENV)
+        ) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
+          );
+          continue;
+        }
+
+        if (COMMAND_DEFINITION_FILTER(module.definition)) {
+          log(
+            'debug',
+            `⏳ - Skipped "${file}" due to project commands filter.`,
+          );
+          continue;
+        }
+
+        commands[commandName] = {
+          url,
+          name: commandName,
+          pluginName,
+          module,
+        };
       } catch (err) {
         log('error', `🔴 - Got an error while loading a command file: ${file}`);
         log('error-stack', printStackTrace(err as Error));
       }
-
-      if (
-        module.definition.config?.environments &&
-        module.definition.config.environments !== 'all' &&
-        !module.definition.config.environments.includes(APP_ENV)
-      ) {
-        log(
-          'debug',
-          `⏳ - Skipped "${file}" since disabled by the application environment (${APP_ENV})!`,
-        );
-        continue;
-      }
-
-      if (COMMAND_DEFINITION_FILTER(module.definition)) {
-        log('debug', `⏳ - Skipped "${file}" due to project commands filter.`);
-        continue;
-      }
-
-      commands[commandName] = {
-        url,
-        name: commandName,
-        pluginName,
-        module,
-      };
     }
   }
 

@@ -71,31 +71,31 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [],
-  "injectorCalls": [],
-  "location": undefined,
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "📖 - Picking the "CONFIG" constant in the "APP_CONFIG" service properties.",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": {
-    "$name": "CONFIG",
-    "$singleton": true,
-    "$type": "constant",
-    "$value": {
-      "testConfig": "test",
-    },
-  },
-}
-`);
+       {
+         "importerCalls": [],
+         "injectorCalls": [],
+         "location": undefined,
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "📖 - Picking the "CONFIG" constant in the "APP_CONFIG" service properties.",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": {
+           "$name": "CONFIG",
+           "$singleton": true,
+           "$type": "constant",
+           "$value": {
+             "testConfig": "test",
+           },
+         },
+       }
+      `);
     });
 
     test('for API', async () => {
@@ -128,43 +128,43 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoami/my-whook-project/src/services/API.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "location": {
-    "exportName": "default",
-    "url": "file:///home/whoami/my-whook-project/src/services/API.ts",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "API" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "API" found at "file:///home/whoami/my-whook-project/src/services/API.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Service "API" found in "file:///home/whoami/my-whook-project/src/services/API.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "API" initializer from "file:///home/whoami/my-whook-project/src/services/API.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": [Function],
-}
-`);
+       {
+         "importerCalls": [
+           [
+             "file:///home/whoami/my-whook-project/src/services/API.ts",
+           ],
+         ],
+         "injectorCalls": [],
+         "location": {
+           "exportName": "default",
+           "url": "file:///home/whoami/my-whook-project/src/services/API.ts",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "🍀 - Trying to find "API" module path in "__project__".",
+           ],
+           [
+             "debug",
+             "✅ - Module path of "API" found at "file:///home/whoami/my-whook-project/src/services/API.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Service "API" found in "file:///home/whoami/my-whook-project/src/services/API.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "API" initializer from "file:///home/whoami/my-whook-project/src/services/API.ts".",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": [Function],
+       }
+      `);
     });
 
     test('for routes hash', async () => {
@@ -221,36 +221,36 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "ROUTES_HANDLERS": {
-    "getPing": [Function],
-  },
-  "importerCalls": [],
-  "injectorCalls": [
-    [
-      [
-        "ROUTES_DEFINITIONS",
-      ],
-    ],
-  ],
-  "location": {
-    "exportName": "default",
-    "url": "@whook/whook/dist/services/ROUTES_HANDLERS.js",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "warning",
-      "🏭 - Initializing the ROUTES_HANDLERS service with 1 handlers wrapped by 0 wrappers.",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": [Function],
-}
-`);
+       {
+         "ROUTES_HANDLERS": {
+           "getPing": [Function],
+         },
+         "importerCalls": [],
+         "injectorCalls": [
+           [
+             [
+               "ROUTES_DEFINITIONS",
+             ],
+           ],
+         ],
+         "location": {
+           "exportName": "default",
+           "url": "@whook/whook/dist/services/ROUTES_HANDLERS.js",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "warning",
+             "🏭 - Initializing the ROUTES_HANDLERS service with 1 handlers wrapped by 0 wrappers.",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": [Function],
+       }
+      `);
     });
 
     test('for wrappers hash', async () => {
@@ -312,32 +312,32 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "ROUTES_WRAPPERS": [],
-  "importerCalls": [],
-  "injectorCalls": [],
-  "location": {
-    "exportName": "default",
-    "url": "@whook/whook/dist/services/ROUTES_WRAPPERS.js",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "warning",
-      "🏭 - Initializing the ROUTES_WRAPPERS service.",
-    ],
-    [
-      "debug",
-      "🏭 - Found inconsistencies between ROUTES_WRAPPERS and ROUTES_WRAPPERS_NAMES.",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": [Function],
-}
-`);
+       {
+         "ROUTES_WRAPPERS": [],
+         "importerCalls": [],
+         "injectorCalls": [],
+         "location": {
+           "exportName": "default",
+           "url": "@whook/whook/dist/services/ROUTES_WRAPPERS.js",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "warning",
+             "🏭 - Initializing the ROUTES_WRAPPERS service.",
+           ],
+           [
+             "debug",
+             "🏭 - Found inconsistencies between ROUTES_WRAPPERS and ROUTES_WRAPPERS_NAMES.",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": [Function],
+       }
+      `);
     });
 
     test('for routes', async () => {
@@ -373,43 +373,43 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoami/my-whook-project/src/routes/getPing.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "location": {
-    "exportName": "default",
-    "url": "file:///home/whoami/my-whook-project/src/routes/getPing.ts",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "getPing" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": [Function],
-}
-`);
+       {
+         "importerCalls": [
+           [
+             "file:///home/whoami/my-whook-project/src/routes/getPing.ts",
+           ],
+         ],
+         "injectorCalls": [],
+         "location": {
+           "exportName": "default",
+           "url": "file:///home/whoami/my-whook-project/src/routes/getPing.ts",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "🍀 - Trying to find "getPing" module path in "__project__".",
+           ],
+           [
+             "debug",
+             "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": [Function],
+       }
+      `);
     });
 
     test('for path mapped routes from plugins', async () => {
@@ -444,43 +444,43 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "@whook/plugin/dist/routes/getPing.js",
-    ],
-  ],
-  "injectorCalls": [],
-  "location": {
-    "exportName": "default",
-    "url": "@whook/plugin/dist/routes/getPing.js",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "📖 - Using "INITIALIZER_PATH_MAP" to resolve the "getPing" module path.",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "getPing" found at "@whook/plugin/dist/routes/getPing.js".",
-    ],
-    [
-      "debug",
-      "💿 - Service "getPing" found in "@whook/plugin/dist/routes/getPing.js".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "getPing" initializer from "@whook/plugin/dist/routes/getPing.js".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": [Function],
-}
-`);
+       {
+         "importerCalls": [
+           [
+             "@whook/plugin/dist/routes/getPing.js",
+           ],
+         ],
+         "injectorCalls": [],
+         "location": {
+           "exportName": "default",
+           "url": "@whook/plugin/dist/routes/getPing.js",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "📖 - Using "INITIALIZER_PATH_MAP" to resolve the "getPing" module path.",
+           ],
+           [
+             "debug",
+             "✅ - Module path of "getPing" found at "@whook/plugin/dist/routes/getPing.js".",
+           ],
+           [
+             "debug",
+             "💿 - Service "getPing" found in "@whook/plugin/dist/routes/getPing.js".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "getPing" initializer from "@whook/plugin/dist/routes/getPing.js".",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": [Function],
+       }
+      `);
     });
 
     test('for path mapped routes from project', async () => {
@@ -518,47 +518,47 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoami/my-whook-project/src/routes/getPing.js",
-    ],
-  ],
-  "injectorCalls": [],
-  "location": {
-    "exportName": "default",
-    "url": "file:///home/whoami/my-whook-project/src/routes/getPing.js",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "📖 - Using "INITIALIZER_PATH_MAP" to resolve the "getPing" module path.",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
-    ],
-    [
-      "debug",
-      "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
-    ],
-  ],
-  "resolveCalls": [
-    [
-      "./routes/getPing.js",
-    ],
-  ],
-  "result": [Function],
-}
-`);
+       {
+         "importerCalls": [
+           [
+             "file:///home/whoami/my-whook-project/src/routes/getPing.js",
+           ],
+         ],
+         "injectorCalls": [],
+         "location": {
+           "exportName": "default",
+           "url": "file:///home/whoami/my-whook-project/src/routes/getPing.js",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "📖 - Using "INITIALIZER_PATH_MAP" to resolve the "getPing" module path.",
+           ],
+           [
+             "debug",
+             "✅ - Module path of "getPing" found at "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
+           ],
+           [
+             "debug",
+             "💿 - Service "getPing" found in "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "getPing" initializer from "file:///home/whoami/my-whook-project/src/routes/getPing.js".",
+           ],
+         ],
+         "resolveCalls": [
+           [
+             "./routes/getPing.js",
+           ],
+         ],
+         "result": [Function],
+       }
+      `);
     });
 
     test('for routes in sub plugins', async () => {
@@ -609,51 +609,51 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "@whook/whook/dist/routes/getPing.js",
-    ],
-  ],
-  "injectorCalls": [],
-  "location": {
-    "exportName": "default",
-    "url": "@whook/whook/dist/routes/getPing.js",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "getPing" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "getPing" module path in "@whook/whook".",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "getPing" found at "@whook/whook/dist/routes/getPing.js".",
-    ],
-    [
-      "debug",
-      "💿 - Service "getPing" found in "@whook/whook/dist/routes/getPing.js".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "getPing" initializer from "@whook/whook/dist/routes/getPing.js".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": [Function],
-}
-`);
+       {
+         "importerCalls": [
+           [
+             "@whook/whook/dist/routes/getPing.js",
+           ],
+         ],
+         "injectorCalls": [],
+         "location": {
+           "exportName": "default",
+           "url": "@whook/whook/dist/routes/getPing.js",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "🍀 - Trying to find "getPing" module path in "__project__".",
+           ],
+           [
+             "debug",
+             "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
+           ],
+           [
+             "debug",
+             "🍀 - Trying to find "getPing" module path in "@whook/whook".",
+           ],
+           [
+             "debug",
+             "✅ - Module path of "getPing" found at "@whook/whook/dist/routes/getPing.js".",
+           ],
+           [
+             "debug",
+             "💿 - Service "getPing" found in "@whook/whook/dist/routes/getPing.js".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "getPing" initializer from "@whook/whook/dist/routes/getPing.js".",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": [Function],
+       }
+      `);
     });
 
     test('for wrappers', async () => {
@@ -664,7 +664,10 @@ describe('$autoload', () => {
         'file:///home/whoami/my-whook-project/src/routes/wrapRouteHandler.js',
       );
       importer.mockResolvedValueOnce({
-        default: service(async () => async (id) => id, 'wrapRouteHandler'),
+        default: service(
+          async () => async (id: string) => id,
+          'wrapRouteHandler',
+        ),
       });
 
       const $autoload = await initAutoload({
@@ -689,43 +692,43 @@ describe('$autoload', () => {
         importerCalls: importer.mock.calls,
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
-{
-  "importerCalls": [
-    [
-      "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts",
-    ],
-  ],
-  "injectorCalls": [],
-  "location": {
-    "exportName": "default",
-    "url": "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts",
-  },
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "wrapRouteHandler" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "✅ - Module path of "wrapRouteHandler" found at "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Service "wrapRouteHandler" found in "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
-    ],
-    [
-      "debug",
-      "💿 - Loading "wrapRouteHandler" initializer from "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
-    ],
-  ],
-  "resolveCalls": [],
-  "result": [Function],
-}
-`);
+       {
+         "importerCalls": [
+           [
+             "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts",
+           ],
+         ],
+         "injectorCalls": [],
+         "location": {
+           "exportName": "default",
+           "url": "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "🍀 - Trying to find "wrapRouteHandler" module path in "__project__".",
+           ],
+           [
+             "debug",
+             "✅ - Module path of "wrapRouteHandler" found at "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Service "wrapRouteHandler" found in "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "wrapRouteHandler" initializer from "file:///home/whoami/my-whook-project/src/wrappers/wrapRouteHandler.ts".",
+           ],
+         ],
+         "resolveCalls": [],
+         "result": [Function],
+       }
+      `);
     });
   });
 
@@ -757,40 +760,40 @@ describe('$autoload', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorParams: (err as YError).params,
+          errorDebugValues: (err as YError).debugValues,
           logCalls: log.mock.calls.filter((args) => 'debug-stack' !== args[0]),
           injectorCalls: $injector.mock.calls,
           importerCalls: importer.mock.calls,
           resolveCalls: resolve.mock.calls,
         }).toMatchInlineSnapshot(`
-{
-  "errorCode": "E_UNMATCHED_DEPENDENCY",
-  "errorParams": [
-    "getPing",
-  ],
-  "importerCalls": [],
-  "injectorCalls": [],
-  "logCalls": [
-    [
-      "warning",
-      "🤖 - Initializing the \`$autoload\` service.",
-    ],
-    [
-      "debug",
-      "🍀 - Trying to find "getPing" module path in "__project__".",
-    ],
-    [
-      "debug",
-      "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
-    ],
-    [
-      "debug",
-      "🚫 - Module path of "getPing" not found.",
-    ],
-  ],
-  "resolveCalls": [],
-}
-`);
+         {
+           "errorCode": "E_UNMATCHED_DEPENDENCY",
+           "errorDebugValues": [
+             "getPing",
+           ],
+           "importerCalls": [],
+           "injectorCalls": [],
+           "logCalls": [
+             [
+               "warning",
+               "🤖 - Initializing the \`$autoload\` service.",
+             ],
+             [
+               "debug",
+               "🍀 - Trying to find "getPing" module path in "__project__".",
+             ],
+             [
+               "debug",
+               "🚫 - File doesn't exist at "file:///home/whoami/my-whook-project/src/routes/getPing.ts".",
+             ],
+             [
+               "debug",
+               "🚫 - Module path of "getPing" not found.",
+             ],
+           ],
+           "resolveCalls": [],
+         }
+        `);
       }
     });
   });

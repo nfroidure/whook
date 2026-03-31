@@ -14,7 +14,7 @@ import {
   type FirehoseTransformationResult,
 } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
-import { type Jsonify } from 'type-fest';
+import { type JsonArray, type Jsonify } from 'type-fest';
 
 export type FirehoseDecodedTransformationEventRecord = Omit<
   FirehoseTransformationEventRecord,
@@ -29,24 +29,24 @@ export type FirehoseDecodedTransformationResultRecord = Omit<
   data: string;
 };
 
-export type WhookAWSLambdaTransformerInput = {
-  body: Jsonify<FirehoseDecodedTransformationEventRecord>[];
-};
-export type WhookAWSLambdaTransformerOutput = {
-  body: Jsonify<FirehoseDecodedTransformationResultRecord>[];
-};
+export interface WhookAWSLambdaTransformerInput {
+  body: FirehoseDecodedTransformationEventRecord[];
+}
+export interface WhookAWSLambdaTransformerOutput {
+  body: FirehoseDecodedTransformationResultRecord[];
+}
 
 // Allow to transform Kinesis streams
 // See https://aws.amazon.com/fr/blogs/compute/amazon-kinesis-firehose-data-transformation-with-aws-lambda/
 // See https://docs.aws.amazon.com/firehose/latest/dev/data-transformation.html
 
-export type WhookAWSLambdaTransformerHandlerWrapperDependencies = {
+export interface WhookAWSLambdaTransformerHandlerWrapperDependencies {
   ENV: AppEnvVars;
   MAIN_DEFINITION: WhookTransformerDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
-};
+}
 
 /**
  * Wrap an handler to make it work with a transformer AWS Lambda.
@@ -77,8 +77,8 @@ async function initWrapTransformerHandlerForAWSLambda({
 
   const wrapper = async (
     handler: WhookTransformerHandler<
-      WhookAWSLambdaTransformerInput,
-      WhookAWSLambdaTransformerOutput
+      Jsonify<WhookAWSLambdaTransformerInput>,
+      Jsonify<WhookAWSLambdaTransformerOutput>
     >,
   ) => {
     const wrappedHandler = handleForAWSTransformerLambda.bind(
@@ -102,8 +102,8 @@ async function handleForAWSTransformerLambda(
     log,
   }: Required<WhookAWSLambdaTransformerHandlerWrapperDependencies>,
   handler: WhookTransformerHandler<
-    WhookAWSLambdaTransformerInput,
-    WhookAWSLambdaTransformerOutput
+    Jsonify<WhookAWSLambdaTransformerInput>,
+    Jsonify<WhookAWSLambdaTransformerOutput>
   >,
   event: FirehoseTransformationEvent,
 ): Promise<FirehoseTransformationResult> {
@@ -142,7 +142,7 @@ async function handleForAWSTransformerLambda(
       type: 'error',
       stack: printStackTrace(castedErr),
       code: castedErr.code,
-      params: castedErr.params,
+      params: castedErr.debugValues as JsonArray,
       startTime,
       endTime: time(),
       recordsLength: event.records.length,

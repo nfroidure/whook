@@ -16,10 +16,10 @@ import { type Readable } from 'node:stream';
 import { pickFirstHeaderValue } from '../libs/headers.js';
 import { type WhookRequest, type WhookResponse } from '../types/http.js';
 
-export type WhookHTTPTransactionConfig = {
+export interface WhookHTTPTransactionConfig {
   TIMEOUT?: number;
   TRANSACTIONS?: Record<string, Record<string, JsonValue>>;
-};
+}
 export type HTTPTransactionDependencies = WhookHTTPTransactionConfig & {
   obfuscator: WhookObfuscatorService;
   delay: DelayService;
@@ -29,17 +29,17 @@ export type HTTPTransactionDependencies = WhookHTTPTransactionConfig & {
   uniqueId?: () => string;
 };
 
-export type WhookHTTPTransaction = {
+export interface WhookHTTPTransaction {
   request: WhookRequest;
   transaction: {
     id: string;
     start: (
       buildResponse: () => Promise<WhookResponse>,
     ) => Promise<WhookResponse>;
-    catch: (err: Error) => Promise<void>;
+    catch: (err: Error) => Promise<never>;
     end: (response: WhookResponse, operationId?: string) => Promise<void>;
   };
-};
+}
 
 export type WhookHTTPTransactionService = (
   req: IncomingMessage,
@@ -236,7 +236,7 @@ async function initHTTPTransaction({
     // Handle bad client transaction ids
     if (FINAL_TRANSACTIONS[id]) {
       initializationPromise = Promise.reject(
-        new YHTTPError(400, 'E_TRANSACTION_ID_NOT_UNIQUE', id),
+        new YHTTPError(400, 'E_TRANSACTION_ID_NOT_UNIQUE', [id]),
       );
       id = uniqueId();
     } else {
@@ -284,7 +284,7 @@ async function initHTTPTransaction({
     return Promise.race([
       initializationPromise.then(async () => buildResponse()),
       delayPromise.then(async () => {
-        throw new YHTTPError(504, 'E_TRANSACTION_TIMEOUT', TIMEOUT, id);
+        throw new YHTTPError(504, 'E_TRANSACTION_TIMEOUT', [TIMEOUT, id]);
       }),
     ]);
   }
@@ -301,7 +301,7 @@ async function initHTTPTransaction({
   async function catchTransaction(
     { id, req }: { id: string; req: IncomingMessage },
     err: Error | YError | YHTTPError,
-  ) {
+  ): Promise<never> {
     /* Architecture Note #2.10.3: Transaction errors
   Here we are simply logging errors.
    It is important for debugging but also for
@@ -319,7 +319,7 @@ async function initHTTPTransaction({
       status: (err as YHTTPError).httpCode || 500,
       code: (err as YError).code || 'E_UNEXPECTED',
       stack: printStackTrace(err as Error),
-      details: (err as YError).params || [],
+      details: ((err as YError).debugValues as string[]) || [],
     });
 
     FINAL_TRANSACTIONS[id].errored = true;
@@ -404,6 +404,7 @@ async function initHTTPTransaction({
 
     apm('CALL', FINAL_TRANSACTIONS[id]);
 
+    // eslint-disable-next-line
     delete FINAL_TRANSACTIONS[id];
 
     try {
