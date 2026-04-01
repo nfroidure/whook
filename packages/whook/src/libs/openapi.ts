@@ -30,25 +30,7 @@ export function refersTo<
     | WhookAPIResponseDefinition
     | WhookAPIRequestBodyDefinition
     | WhookAPICallbackDefinition,
->(
-  resource: T,
-): OpenAPIReference<
-  T extends WhookAPISchemaDefinition
-    ? ExpressiveJSONSchema
-    : T extends WhookAPIParameterDefinition<unknown>
-      ? OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>
-      : T extends WhookAPIExampleDefinition<infer U>
-        ? OpenAPIExample<OpenAPIExample<U>>
-        : T extends WhookAPIHeaderDefinition
-          ? OpenAPIHeader<ExpressiveJSONSchema, OpenAPIExtension>
-          : T extends WhookAPIResponseDefinition
-            ? OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
-            : T extends WhookAPIRequestBodyDefinition
-              ? OpenAPIRequestBody<ExpressiveJSONSchema, OpenAPIExtension>
-              : T extends WhookAPICallbackDefinition
-                ? OpenAPICallback<ExpressiveJSONSchema, OpenAPIExtension>
-                : OpenAPIReferenceable<unknown, OpenAPIExtension>
-> {
+>(resource: T) {
   return {
     $ref: `#/components/${
       'schema' in resource
@@ -65,5 +47,24 @@ export function refersTo<
                   ? 'callbacks'
                   : 'examples'
     }/${resource.name}`,
-  };
+  } as T extends WhookAPISchemaDefinition
+    ? ExpressiveJSONSchema
+    : OpenAPIReference<
+        T extends WhookAPIParameterDefinition<unknown>
+          ? OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>
+          : T extends WhookAPIExampleDefinition<infer U>
+            ? OpenAPIExample<OpenAPIExample<U>>
+            : T extends WhookAPIHeaderDefinition
+              ? OpenAPIHeader<ExpressiveJSONSchema, OpenAPIExtension>
+              : T extends WhookAPIResponseDefinition
+                ? OpenAPIResponse<ExpressiveJSONSchema, OpenAPIExtension>
+                : T extends WhookAPIRequestBodyDefinition
+                  ? OpenAPIRequestBody<ExpressiveJSONSchema, OpenAPIExtension>
+                  : T extends WhookAPICallbackDefinition
+                    ? OpenAPICallback<ExpressiveJSONSchema, OpenAPIExtension>
+                    : OpenAPIReferenceable<
+                        ExpressiveJSONSchema,
+                        OpenAPIExtension
+                      >
+      >;
 }

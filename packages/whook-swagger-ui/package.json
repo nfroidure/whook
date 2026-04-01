@@ -73,8 +73,8 @@
     "knifecycle": "^20.0.0",
     "swagger-ui-dist": "^5.32.1",
     "type-fest": "^5.5.0",
-    "ya-json-schema-types": "^2.0.0",
-    "ya-open-api-types": "^2.1.0"
+    "ya-json-schema-types": "^2.0.1",
+    "ya-open-api-types": "^2.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

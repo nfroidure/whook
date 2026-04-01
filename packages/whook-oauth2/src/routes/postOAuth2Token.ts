@@ -124,7 +124,7 @@ export const tokenBodySchema = {
       refersTo(clientCredentialsTokenRequestBodySchema),
       refersTo(refreshTokenRequestBodySchema),
     ],
-  } as unknown as WhookAPISchemaDefinition['schema'],
+  },
 } as const satisfies WhookAPISchemaDefinition;
 
 export const definition = {

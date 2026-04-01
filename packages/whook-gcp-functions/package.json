@@ -61,8 +61,8 @@
     "mkdirp": "^3.0.1",
     "qs": "^6.15.0",
     "strict-qs": "^9.0.0",
-    "ya-json-schema-types": "^2.0.0",
-    "ya-open-api-types": "^2.1.0",
+    "ya-json-schema-types": "^2.0.1",
+    "ya-open-api-types": "^2.1.1",
     "yerror": "^9.1.1",
     "yhttperror": "^9.0.1"
   },

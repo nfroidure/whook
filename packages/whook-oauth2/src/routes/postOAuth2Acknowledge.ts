@@ -14,7 +14,7 @@ import { type WhookAuthenticationData } from '@whook/authorization';
 
 /* Architecture Note #2: OAuth2 acknowledge
 This endpoint is to be used by the authentication SSR frontend
- to acknowlege that the user accepted the client request in it.
+ to acknowledge that the user accepted the client request in it.
 */
 
 export const definition = {

@@ -55,7 +55,7 @@
     "@whook/whook": "^21.0.0",
     "common-services": "^18.0.1",
     "knifecycle": "^20.0.0",
-    "ya-open-api-types": "^2.1.0"
+    "ya-open-api-types": "^2.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

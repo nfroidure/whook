@@ -71,7 +71,7 @@
     "common-services": "^18.0.1",
     "knifecycle": "^20.0.0",
     "type-fest": "^5.5.0",
-    "ya-open-api-types": "^2.1.0",
+    "ya-open-api-types": "^2.1.1",
     "yhttperror": "^9.0.1"
   },
   "devDependencies": {

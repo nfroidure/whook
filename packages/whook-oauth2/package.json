@@ -50,8 +50,8 @@
     "cookie": "^1.1.1",
     "knifecycle": "^20.0.0",
     "type-fest": "^5.5.0",
-    "ya-json-schema-types": "^2.0.0",
-    "ya-open-api-types": "^2.1.0",
+    "ya-json-schema-types": "^2.0.1",
+    "ya-open-api-types": "^2.1.1",
     "yerror": "^9.1.1",
     "yhttperror": "^9.0.1"
   },
