@@ -1,3 +1,10 @@
+## [21.0.1](https://github.com/nfroidure/whook/compare/v21.0.0...v21.0.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* **types:** fix typings for schemas ([4e6b024](https://github.com/nfroidure/whook/commit/4e6b024314ef0b7888a85fa4c32d4263c2f31e37))
+
 # [21.0.0](https://github.com/nfroidure/whook/compare/v20.1.2...v21.0.0) (2026-03-31)
 
 ## [20.1.2](https://github.com/nfroidure/whook/compare/v20.1.1...v20.1.2) (2025-11-25)
