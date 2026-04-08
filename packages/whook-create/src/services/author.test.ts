@@ -111,7 +111,7 @@ describe('initAuthor', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         inquirerPromptCalls: inquirer.prompt.mock.calls,
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,

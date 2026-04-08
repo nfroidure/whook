@@ -152,12 +152,12 @@ describe('postCronRun', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_BAD_CRON_NAME",
-         "errorDebugValues": [
+         "errorDebug": [
            "handleNotExistingCron",
          ],
          "logCalls": [

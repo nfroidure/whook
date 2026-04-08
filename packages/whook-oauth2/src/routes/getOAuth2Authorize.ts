@@ -131,7 +131,7 @@ export function setURLError(
       oAuth2Error.description.replace(
         /\$([0-9]+)/g,
         (_: string, paramIndex: string): string => {
-          return ((err as YError).debugValues || [])[
+          return ((err as YError).debug || [])[
             parseInt(paramIndex, 10)
           ] as string;
         },

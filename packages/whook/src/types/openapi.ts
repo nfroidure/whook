@@ -109,27 +109,15 @@ export function isValidWhookOpenAPI(
       for (const method of PATH_ITEM_METHODS) {
         if (pathItem[method]) {
           if ('$ref' in pathItem[method] || !pathItem[method].operationId) {
-            throw new YError('E_BAD_OPERATION', [path, method]);
+            throw new YError('E_BAD_OPERATION', [
+              path,
+              method,
+              pathItem[method],
+            ]);
           }
         }
       }
     }
-  }
-
-  return true;
-}
-
-export function isValidWhookOpenAPIOperation(
-  operation:
-    | WhookOpenAPIOperation
-    | OpenAPIOperation<ExpressiveJSONSchema, OpenAPIExtension>,
-): operation is WhookOpenAPIOperation {
-  if (
-    typeof operation === 'undefined' ||
-    '$ref' in operation ||
-    !operation.operationId
-  ) {
-    throw new YError('E_BAD_OPERATION');
   }
 
   return true;

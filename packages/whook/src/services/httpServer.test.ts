@@ -81,7 +81,7 @@ describe('initHTTPServer', () => {
 
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();
@@ -128,7 +128,7 @@ describe('initHTTPServer', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         httpRouterCalls: httpRouter.mock.calls,
       }).toMatchSnapshot();

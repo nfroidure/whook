@@ -10,7 +10,7 @@ exports[`initHTTPServer should close even with opened sockets when using DESTROY
 exports[`initHTTPServer should proxy server close errors 1`] = `
 {
   "errorCode": "E_ERROR",
-  "errorDebugValues": [],
+  "errorDebug": [],
   "httpRouterCalls": [],
   "logCalls": [],
 }
@@ -19,7 +19,7 @@ exports[`initHTTPServer should proxy server close errors 1`] = `
 exports[`initHTTPServer should proxy server fatal errors 1`] = `
 {
   "errorCode": "E_HTTP_SERVER_ERROR",
-  "errorDebugValues": [],
+  "errorDebug": [],
   "httpRouterCalls": [],
   "logCalls": [],
 }

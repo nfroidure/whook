@@ -471,9 +471,7 @@ async function initErrorHandler({
         error_params: errorDescriptor.transmittedParams
           ? errorDescriptor.transmittedParams.map(
               (paramIndex) =>
-                (((err as YError).debugValues as JsonValue[]) || [])[
-                  paramIndex
-                ],
+                (((err as YError).debug as JsonValue[]) || [])[paramIndex],
             )
           : undefined,
         error_debug_data: {
@@ -488,7 +486,7 @@ async function initErrorHandler({
       response.body.error_debug_data.code = errorCode;
       response.body.error_debug_data.stack = printStackTrace(err as Error);
       response.body.error_debug_data.params = (err as YError)
-        .debugValues as JsonValue[];
+        .debug as JsonValue[];
     }
 
     return response;
@@ -499,7 +497,7 @@ function replaceTemplatedValues(err: YError, str: string): string | undefined {
   return str
     ? str
         .replace(/\$([0-9](:?\.[a-zA-Z0-9#@*]+)*)/g, (_, path) =>
-          miniquery(path, err.debugValues ? [err.debugValues] : []).join(', '),
+          miniquery(path, err.debug ? [err.debug] : []).join(', '),
         )
         .replace(/\$code/, (err as YError).code)
     : undefined;

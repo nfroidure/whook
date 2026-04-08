@@ -63,7 +63,7 @@ export interface WhookAWSLambdaAutoloadDependencies {
   $injector: Injector<Service>;
   $instance: Knifecycle;
   log?: LogService;
-};
+}
 
 export const AWS_WRAPPERS = {
   route: {
@@ -130,7 +130,7 @@ const initializerWrapper: ServiceInitializerWrapper<
           ROUTES_DEFINITIONS ||
           (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
 
-        const openAPI = (await cleanupOpenAPI({
+        const openAPI = await cleanupOpenAPI({
           ...API,
           paths: {
             [config.path]: {
@@ -138,7 +138,7 @@ const initializerWrapper: ServiceInitializerWrapper<
               [config.method]: API.paths?.[config.path]?.[config.method],
             },
           },
-        } as WhookOpenAPI));
+        } as WhookOpenAPI);
 
         return {
           name: cleanedName,

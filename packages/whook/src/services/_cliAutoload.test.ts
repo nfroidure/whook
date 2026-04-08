@@ -63,7 +63,7 @@ describe('$autoload', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         importerCalls: importer.mock.calls,
         injectorCalls: $injector.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -71,7 +71,7 @@ describe('$autoload', () => {
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_NO_COMMAND_NAME",
-         "errorDebugValues": [],
+         "errorDebug": [],
          "importerCalls": [],
          "injectorCalls": [],
          "logCalls": [
@@ -111,7 +111,7 @@ describe('$autoload', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         importerCalls: importer.mock.calls,
         injectorCalls: $injector.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -119,7 +119,7 @@ describe('$autoload', () => {
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_BAD_COMMAND_NAME",
-         "errorDebugValues": [
+         "errorDebug": [
            "myCommand",
          ],
          "importerCalls": [
@@ -295,7 +295,7 @@ describe('$autoload', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         importerCalls: importer.mock.calls,
         injectorCalls: $injector.mock.calls,
         resolveCalls: resolve.mock.calls,
@@ -303,7 +303,7 @@ describe('$autoload', () => {
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_BAD_COMMAND_NAME",
-         "errorDebugValues": [
+         "errorDebug": [
            "myCommand",
          ],
          "importerCalls": [
@@ -349,7 +349,7 @@ describe('$autoload', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorDebugValues: (err as YError).debugValues,
+          errorDebug: (err as YError).debug,
           importerCalls: importer.mock.calls,
           injectorCalls: $injector.mock.calls,
           resolveCalls: resolve.mock.calls,
@@ -357,7 +357,7 @@ describe('$autoload', () => {
         }).toMatchInlineSnapshot(`
          {
            "errorCode": "E_NO_COMMAND_HANDLER",
-           "errorDebugValues": [
+           "errorDebug": [
              "myCommand",
            ],
            "importerCalls": [
@@ -400,7 +400,7 @@ describe('$autoload', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorDebugValues: (err as YError).debugValues,
+          errorDebug: (err as YError).debug,
           importerCalls: importer.mock.calls,
           injectorCalls: $injector.mock.calls,
           resolveCalls: resolve.mock.calls,
@@ -408,7 +408,7 @@ describe('$autoload', () => {
         }).toMatchInlineSnapshot(`
          {
            "errorCode": "E_NO_COMMAND_DEFINITION",
-           "errorDebugValues": [
+           "errorDebug": [
              "myCommand",
            ],
            "importerCalls": [

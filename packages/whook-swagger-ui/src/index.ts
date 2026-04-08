@@ -18,14 +18,14 @@ export type WhookSwaggerUIOptions = Omit<
 };
 export interface WhookSwaggerUIEnv {
   DEV_MODE?: string;
-};
+}
 export interface WhookSwaggerUIConfig {
   DEV_ACCESS_TOKEN?: string;
   BASE_PATH?: string;
   HOST?: string;
   PORT?: number;
   SWAGGER_UI_OPTIONS?: WhookSwaggerUIOptions;
-};
+}
 export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   ENV: WhookSwaggerUIEnv;
   DEV_ACCESS_TOKEN: string;
@@ -36,7 +36,7 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
 };
 export interface WhookSwaggerUIRouteConfig {
   private?: boolean;
-};
+}
 
 export const DEFAULT_SWAGGER_UI_OPTIONS = {
   deepLinking: true,

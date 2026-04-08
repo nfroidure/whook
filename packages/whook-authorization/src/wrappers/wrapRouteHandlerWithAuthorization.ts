@@ -1,6 +1,6 @@
 import { autoService } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import { YError } from 'yerror';
+import { pickYErrorWithCode } from 'yerror';
 import {
   parseAuthorizationHeader,
   buildWWWAuthenticateHeader,
@@ -15,6 +15,82 @@ import {
   type WhookRouteHandlerWrapper,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
+import {
+  DEFAULT_ERROR_URI,
+  DEFAULT_HELP_URI,
+  type WhookErrorsDescriptors,
+} from '@whook/whook';
+
+export interface WhookAuthorizationYErrorRegistry {
+  /**
+   * Thrown when the handler doesn't receive the definition of the operation
+   */
+  E_AUTHORIZATION_MISCONFIGURATION: [
+    mechanismType: string,
+    requiredScopes: string[],
+    operationId: string,
+  ];
+
+  /**
+   * Thrown when the handler doesn't receive the definition of the operation
+   */
+  E_OPERATION_REQUIRED: [];
+
+  /**
+   * Thrown when the client did not bring authorization headers
+   */
+  E_NO_AUTHORIZATION: [];
+
+  /**
+   * Thrown when the operation is not authorized for the authenticated client scope
+   */
+  E_UNAUTHORIZED_SCOPES: [scope: string, requiredScopes: string[]];
+
+  /**
+   * Thrown when the client used a mechanism that is not allowed
+   */
+  E_AUTH_MECHANISM_NOT_ALLOWED: [header: string];
+}
+
+export const AUTHORIZATION_ERRORS_DESCRIPTORS: Record<
+  keyof WhookAuthorizationYErrorRegistry,
+  WhookErrorsDescriptors[string]
+> = {
+  E_OPERATION_REQUIRED: {
+    code: 'server_misconfiguration',
+    description:
+      'The authorization wrapper needs to have the operation passed in',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_NO_AUTHORIZATION: {
+    code: 'unauthorized_client',
+    description:
+      'Access refused to this resource since no authorization provided',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_UNAUTHORIZED_SCOPES: {
+    code: 'unauthorized_client',
+    description:
+      'Access refused to this resource (user scope: "$0", required scopes: "$1")',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_AUTH_MECHANISM_NOT_ALLOWED: {
+    code: 'bad_request',
+    description: 'Unsupported auth mechanism',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_AUTHORIZATION_MISCONFIGURATION: {
+    code: 'bad_handler',
+    description:
+      'The operation "$2" is misconfigured for the authorization type "$0"',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+};
 
 export type WhookAuthenticationApplicationId = string;
 export type WhookAuthenticationScope = string;
@@ -129,7 +205,7 @@ async function handleWithAuthorization<A>(
       'debug',
       noAuth
         ? '🔓 - Public endpoint detected, letting the call pass through!'
-        : '🔓 - Optionally authenticated enpoint detected, letting the call pass through!',
+        : '🔓 - Optionally authenticated endpoint detected, letting the call pass through!',
     );
     response = await handler(
       { ...parameters, authenticated: false },
@@ -147,7 +223,7 @@ async function handleWithAuthorization<A>(
     try {
       if (!authorization) {
         log('debug', '🔐 - No authorization found, locking access!');
-        throw new YHTTPError(401, 'E_UNAUTHORIZED');
+        throw new YHTTPError(401, 'E_NO_AUTHORIZATION');
       }
       try {
         parsedAuthorization = parseAuthorizationHeader(
@@ -158,17 +234,23 @@ async function handleWithAuthorization<A>(
       } catch (err) {
         // This code should be simplified by solving this issue
         // https://github.com/nfroidure/http-auth-utils/issues/2
+        const castedErr = pickYErrorWithCode(
+          err as Error,
+          'E_UNKNOWN_AUTH_MECHANISM',
+        );
+
         if (
-          (err as YError).code === 'E_UNKNOWN_AUTH_MECHANISM' &&
+          castedErr &&
           (MECHANISMS || []).some(
             (mechanism) =>
-              authorization.substr(0, mechanism.type.length) === mechanism.type,
+              authorization.substring(0, mechanism.type.length) ===
+              mechanism.type,
           )
         ) {
           throw YHTTPError.bump(
-            err as Error,
+            castedErr,
             'E_AUTH_MECHANISM_NOT_ALLOWED',
-            undefined,
+            [castedErr.debug[0].split(' ')[0]],
             400,
           );
         }
@@ -182,7 +264,7 @@ async function handleWithAuthorization<A>(
 
       // If security exists, we need at least one scope
       if (!(requiredScopes && requiredScopes.length)) {
-        throw new YHTTPError(500, 'E_MISCONFIGURATION', [
+        throw new YHTTPError(500, 'E_AUTHORIZATION_MISCONFIGURATION', [
           parsedAuthorization.type,
           requiredScopes,
           definition.operation.operationId,
@@ -206,7 +288,7 @@ async function handleWithAuthorization<A>(
           authenticationData.scope.split(',').includes(requiredScope),
         )
       ) {
-        throw new YHTTPError(403, 'E_UNAUTHORIZED', [
+        throw new YHTTPError(403, 'E_UNAUTHORIZED_SCOPES', [
           authenticationData.scope,
           requiredScopes,
         ]);

@@ -141,7 +141,7 @@ async function initPostGraphQL<T extends Record<string, unknown>>({
         };
       }
 
-      throw YHTTPError.cast(err as Error, 'E_GRAPH_QL', undefined, 500);
+      throw YHTTPError.cast(err as Error, 'E_GRAPH_QL', [], 500);
     }
   };
 }

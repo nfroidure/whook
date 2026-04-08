@@ -72,7 +72,7 @@ exports[`initAuthor should handle git failures 1`] = `
 exports[`initAuthor should release the lock on failure 1`] = `
 {
   "errorCode": "E_PROMPT_ERROR",
-  "errorDebugValues": [],
+  "errorDebug": [],
   "execCalls": [
     [
       "git config --get user.name",

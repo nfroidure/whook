@@ -53,12 +53,12 @@ describe('putEcho', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_MUST_NOT_BE_NAMED",
-         "errorDebugValues": [
+         "errorDebug": [
            "Big up to Lord Voldemort!",
          ],
          "logCalls": [],

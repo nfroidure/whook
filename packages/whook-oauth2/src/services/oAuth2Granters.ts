@@ -6,7 +6,39 @@ import {
 } from '@whook/whook';
 import { type WhookAuthenticationData } from '@whook/authorization';
 
-export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
+export interface OAuth2YErrorRegistry {
+  E_UNKNOWN_AUTHORIZER_TYPE: [responseType: string];
+  E_UNKNOWN_ACKNOWLEDGER_TYPE: [responseType: string];
+  E_APPLICATION_ID_MISMATCH: [
+    clientApplicationId: string,
+    authenticationApplicationId: string,
+  ];
+
+  /**
+   * Thrown when the refresh token is expired/invalid
+   */
+  E_BAD_REFRESH_TOKEN: [];
+
+  /**
+   * Thrown when application has no access allowed
+   */
+  E_ACCESS_DENIED: [clientId: string];
+
+  /**
+   * Thrown when the OAuth2 server had unexpected errors
+   */
+  E_OAUTH2: [];
+
+  /**
+   * Thrown when refresh_token cookie is absent and required
+   */
+  E_REFRESH_COOKIE: [cookie: string];
+}
+
+export const OAUTH2_ERRORS_DESCRIPTORS: Record<
+  keyof OAuth2YErrorRegistry,
+  WhookErrorsDescriptors[string]
+> = {
   E_UNKNOWN_AUTHORIZER_TYPE: {
     code: 'unsupported_response_type',
     status: 400,
@@ -14,65 +46,10 @@ export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
-  E_UNKNOWN_APPLICATION_ID: {
+  E_APPLICATION_ID_MISMATCH: {
     code: 'unauthorized_client',
     status: 400,
-    description: `The client id "$0" is unknown.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_UNAUTHORIZED_APPLICATION_ID: {
-    code: 'unauthorized_client',
-    status: 401,
-    description: `The client id "$0" is not allowed.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_APPLICATION_DISABLED: {
-    code: 'unauthorized_client',
-    status: 401,
-    description: `The client id "$0" is disabled.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_BAD_REDIRECT_URI: {
-    code: 'invalid_request',
-    status: 400,
-    description: `The redirect uri "$0" is not allowed.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_UNAUTHORIZED_SCOPE: {
-    code: 'invalid_scope',
-    status: 403,
-    description: `The scope "$0" is not allowed.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_UNAUTHORIZED_GRANT_TYPE: {
-    code: 'invalid_request',
-    status: 403,
-    description: `The response type "$0" is not allowed for this application.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_UNAUTHORIZED_CLIENT: {
-    code: 'invalid_client',
-    status: 401,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_BAD_USERNAME: {
-    code: 'invalid_request',
-    status: 400,
-    description: 'User does not exists.',
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_BAD_PASSWORD: {
-    code: 'invalid_request',
-    status: 400,
-    description: 'Bad password sent for that user.',
+    description: `The clients ids "$0"/"$1" are inconsistent.`,
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -80,13 +57,6 @@ export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     code: 'invalid_request',
     status: 400,
     description: 'The refresh token is expired/invalid.',
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_BAD_AUTHORIZATION_CODE: {
-    code: 'invalid_request',
-    status: 400,
-    description: 'The authorization code is invalid or expired.',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -100,13 +70,7 @@ export const OAUTH2_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
   E_ACCESS_DENIED: {
     code: 'access_denied',
     status: 403,
-    description: 'The user denied access to your application.',
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_UNKNOWN_AUTHENTICATION_TYPE: {
-    code: 'unsupported_grant_type',
-    status: 400,
+    description: 'The user denied access to your application (id: "$0").',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },

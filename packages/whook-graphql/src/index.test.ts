@@ -101,7 +101,10 @@ describe('GraphQL server', () => {
     check: jest.fn<WhookAuthenticationService<any>['check']>(),
   };
 
-  function upperDirectiveTransformer(schema: GraphQLSchema, directiveName: string) {
+  function upperDirectiveTransformer(
+    schema: GraphQLSchema,
+    directiveName: string,
+  ) {
     return mapSchema(schema, {
       // Executes once for each object field in the schema
       [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
@@ -225,7 +228,7 @@ describe('GraphQL server', () => {
   }
 
   $autoload.mockImplementation(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
+    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName as string]);
   });
   process.env.ISOLATED_ENV = '1';
 

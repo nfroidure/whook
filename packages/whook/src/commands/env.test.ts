@@ -92,12 +92,12 @@ describe('envCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_NO_ENV_VALUE",
-         "errorDebugValues": [
+         "errorDebug": [
            "APP_ENV",
          ],
          "logCalls": [],

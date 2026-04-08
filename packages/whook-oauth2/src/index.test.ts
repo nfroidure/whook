@@ -247,7 +247,7 @@ describe('OAuth2 server', () => {
   }
 
   $autoload.mockImplementation(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
+    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName as string]);
   });
   process.env.ISOLATED_ENV = '1';
 

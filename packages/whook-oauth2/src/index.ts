@@ -18,6 +18,7 @@ import initPostOAuth2Token, {
   tokenBodySchema as postOAuth2TokenTokenBodySchema,
 } from './routes/postOAuth2Token.js';
 import initOAuth2Granters, {
+  type OAuth2YErrorRegistry,
   OAUTH2_ERRORS_DESCRIPTORS,
 } from './services/oAuth2Granters.js';
 import initOAuth2ClientCredentialsGranter from './services/oAuth2ClientCredentialsGranter.js';
@@ -55,7 +56,14 @@ import {
   type AuthHandlersConfig,
 } from './services/authCookies.js';
 
+declare module 'yerror' {
+  interface YErrorRegistry extends OAuth2YErrorRegistry {
+    E_UNEXPECTED: unknown[];
+  }
+}
+
 export type {
+  OAuth2YErrorRegistry,
   OAuth2CodeService,
   OAuth2PasswordService,
   OAuth2AccessTokenService,

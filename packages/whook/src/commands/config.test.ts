@@ -255,11 +255,11 @@ describe('configCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_NO_CONFIG",
-         "errorDebugValues": [
+         "errorDebug": [
            "DOES_NOT_EXIST",
          ],
        }
@@ -298,11 +298,11 @@ describe('configCommand', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_NO_RESULT",
-         "errorDebugValues": [
+         "errorDebug": [
            "MYSQL",
            "nothing_here",
          ],

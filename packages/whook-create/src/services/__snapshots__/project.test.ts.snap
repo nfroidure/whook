@@ -8,7 +8,7 @@ exports[`initProject should fail with access problems 1`] = `
     ],
   ],
   "errorCode": "E_PROJECT_DIR",
-  "errorDebugValues": [
+  "errorDebug": [
     "/home/whoiam/projects/yolo",
   ],
   "inquirerPromptCalls": [

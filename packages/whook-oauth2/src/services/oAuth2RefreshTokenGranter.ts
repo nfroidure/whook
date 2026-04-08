@@ -1,6 +1,6 @@
 import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
-import { YError } from 'yerror';
+import { pickYErrorWithCode, YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
   type OAuth2GranterService,
@@ -61,8 +61,10 @@ async function initOAuth2RefreshTokenGranter({
 
       return newAuthenticationData;
     } catch (err) {
-      if ((err as YError).code === 'E_BAD_TOKEN') {
-        throw YError.wrap(err as Error, 'E_BAD_REFRESH_TOKEN');
+      const castedErr = pickYErrorWithCode(err as Error, 'E_BAD_TOKEN');
+
+      if (castedErr) {
+        throw YError.wrap(castedErr, 'E_BAD_REFRESH_TOKEN');
       }
       throw err;
     }

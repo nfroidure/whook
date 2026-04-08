@@ -321,7 +321,7 @@ async function initHTTPRouter({
 
           operation = _operation_;
 
-          const search = request.url.substr(
+          const search = request.url.substring(
             request.url.split(SEARCH_SEPARATOR)[0].length,
           );
 
@@ -405,7 +405,12 @@ async function initHTTPRouter({
               parametersValues.body = body;
             }
           } catch (err) {
-            throw YHTTPError.cast(err as Error, (err as YError).code, (err as YError).debugValues, 400);
+            throw YHTTPError.cast(
+              err as Error,
+              (err as YError).code,
+              (err as YError).debug,
+              400,
+            );
           }
 
           const response = await executeHandler(

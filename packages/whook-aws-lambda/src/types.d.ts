@@ -13,18 +13,14 @@ import {
 
 declare module '@whook/whook' {
   export interface WhookRouteConfig
-    extends WhookBaseRouteConfig,
-      WhookAWSLambdaRouteConfig {}
+    extends WhookBaseRouteConfig, WhookAWSLambdaRouteConfig {}
 
   export interface WhookCronConfig
-    extends WhookBaseCronConfig,
-      WhookAWSLambdaCronConfig {}
+    extends WhookBaseCronConfig, WhookAWSLambdaCronConfig {}
 
   export interface WhookConsumerConfig
-    extends WhookBaseConsumerConfig,
-      WhookAWSLambdaConsumerConfig {}
+    extends WhookBaseConsumerConfig, WhookAWSLambdaConsumerConfig {}
 
   export interface WhookTransformerConfig
-    extends WhookBaseTransformerConfig,
-      WhookAWSLambdaTransformerConfig {}
+    extends WhookBaseTransformerConfig, WhookAWSLambdaTransformerConfig {}
 }

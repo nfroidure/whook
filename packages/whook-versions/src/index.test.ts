@@ -221,7 +221,7 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
-      expect((err as YHTTPError).debugValues).toEqual([
+      expect((err as YHTTPError).debug).toEqual([
         'X-API-Version',
         '2.2.3',
         '^1.0.0',
@@ -256,7 +256,7 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
-      expect((err as YHTTPError).debugValues).toEqual([
+      expect((err as YHTTPError).debug).toEqual([
         'X-APP-Version',
         '0.0.0',
         '>=3.6.0',
@@ -291,7 +291,7 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
       throw new YError('E_UNEXPECTED_SUCCESS');
     } catch (err) {
       expect((err as YHTTPError).code).toEqual('E_DEPRECATED_VERSION');
-      expect((err as YHTTPError).debugValues).toEqual([
+      expect((err as YHTTPError).debug).toEqual([
         'X-SDK-Version',
         '0.2.3',
         '>=2.2.0',

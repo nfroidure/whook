@@ -18,12 +18,12 @@ const DEFAULT_GRAPHIQL = {
 
 export interface WhookGraphIQLEnv {
   DEV_MODE?: string;
-};
+}
 export interface WhookGraphIQLOptions {
   defaultQuery: string;
   path: string;
   graphQLPath?: string;
-};
+}
 export interface WhookGraphIQLConfig {
   DEV_ACCESS_TOKEN?: string;
   DEV_ACCESS_MECHANISM?: string;
@@ -31,7 +31,7 @@ export interface WhookGraphIQLConfig {
   HOST?: string;
   PORT?: number;
   GRAPHIQL?: WhookGraphIQLOptions;
-};
+}
 export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
   ENV: WhookGraphIQLEnv;
   HOST: string;

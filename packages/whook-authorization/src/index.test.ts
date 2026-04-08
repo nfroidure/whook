@@ -537,7 +537,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
            ],
            [
              "debug",
-             "🔓 - Optionally authenticated enpoint detected, letting the call pass through!",
+             "🔓 - Optionally authenticated endpoint detected, letting the call pass through!",
            ],
          ],
          "noopHandlerMockCalls": [
@@ -830,7 +830,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -840,7 +840,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
        {
          "authenticationChecks": [],
          "errorCode": "E_OPERATION_REQUIRED",
-         "errorDebugValues": [],
+         "errorDebug": [],
          "errorHeaders": {},
          "httpCode": 500,
          "logCalls": [
@@ -886,7 +886,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -895,8 +895,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       }).toMatchInlineSnapshot(`
        {
          "authenticationChecks": [],
-         "errorCode": "E_MISCONFIGURATION",
-         "errorDebugValues": [
+         "errorCode": "E_AUTHORIZATION_MISCONFIGURATION",
+         "errorDebug": [
            "Bearer",
            [],
            "noopHandler",
@@ -952,7 +952,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -968,8 +968,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
              },
            ],
          ],
-         "errorCode": "E_UNAUTHORIZED",
-         "errorDebugValues": [
+         "errorCode": "E_UNAUTHORIZED_SCOPES",
+         "errorDebug": [
            "",
            [
              "user",
@@ -1028,7 +1028,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -1038,7 +1038,9 @@ describe('wrapRouteHandlerWithAuthorization', () => {
        {
          "authenticationChecks": [],
          "errorCode": "E_AUTH_MECHANISM_NOT_ALLOWED",
-         "errorDebugValues": [],
+         "errorDebug": [
+           "Basic",
+         ],
          "errorHeaders": {},
          "httpCode": 400,
          "logCalls": [
@@ -1088,7 +1090,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -1098,7 +1100,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
        {
          "authenticationChecks": [],
          "errorCode": "E_UNKNOWN_AUTH_MECHANISM",
-         "errorDebugValues": [],
+         "errorDebug": [],
          "errorHeaders": {},
          "httpCode": 400,
          "logCalls": [
@@ -1146,7 +1148,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -1155,8 +1157,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       }).toMatchInlineSnapshot(`
        {
          "authenticationChecks": [],
-         "errorCode": "E_UNAUTHORIZED",
-         "errorDebugValues": [],
+         "errorCode": "E_NO_AUTHORIZATION",
+         "errorDebug": [],
          "errorHeaders": {
            "www-authenticate": "Bearer realm="Auth"",
          },
@@ -1213,7 +1215,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -1222,8 +1224,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       }).toMatchInlineSnapshot(`
        {
          "authenticationChecks": [],
-         "errorCode": "E_UNAUTHORIZED",
-         "errorDebugValues": [],
+         "errorCode": "E_NO_AUTHORIZATION",
+         "errorDebug": [],
          "errorHeaders": {
            "www-authenticate": "Bearer realm="Auth"",
          },
@@ -1281,7 +1283,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
       expect({
         httpCode: (err as YHTTPError).httpCode,
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         errorHeaders: (err as YHTTPError).headers,
         noopInitializerMockCalls: noopInitializerMock.mock.calls,
         noopHandlerMockCalls: noopHandlerMock.mock.calls,
@@ -1298,7 +1300,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
            ],
          ],
          "errorCode": "E_UNAUTHORIZED",
-         "errorDebugValues": [],
+         "errorDebug": [],
          "errorHeaders": {
            "www-authenticate": "Bearer realm="Auth"",
          },

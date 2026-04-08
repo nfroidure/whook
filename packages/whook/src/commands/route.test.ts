@@ -160,13 +160,13 @@ describe('routeCommand', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorDebugValues: (err as YError).debugValues.slice(0, -1),
+          errorDebug: (err as YError).debug.slice(0, -1),
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchInlineSnapshot(`
          {
            "errorCode": "E_BAD_PARAMETERS",
-           "errorDebugValues": [],
+           "errorDebug": [],
            "injectorCalls": [],
            "logCalls": [],
          }
@@ -199,13 +199,13 @@ describe('routeCommand', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorDebugValues: (err as YError).debugValues,
+          errorDebug: (err as YError).debug,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           injectorCalls: $injector.mock.calls,
         }).toMatchInlineSnapshot(`
          {
            "errorCode": "E_UNEXPECTED_SUCCESS",
-           "errorDebugValues": [],
+           "errorDebug": [],
            "injectorCalls": [
              [
                [

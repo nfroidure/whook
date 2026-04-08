@@ -116,6 +116,7 @@ import {
 } from './build.js';
 import { identity } from './libs/utils.js';
 import { parseArgs } from './libs/args.js';
+import './types/errors.js';
 
 export { DEFAULT_BUILD_INITIALIZER_PATH_MAP } from './build.js';
 export * from './libs/args.js';

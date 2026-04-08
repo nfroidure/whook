@@ -236,12 +236,12 @@ describe('initWrapRouteHandlerWithCORS', () => {
     } catch (err) {
       expect({
         errorCode: (err as YHTTPError).code,
-        errorDebugValues: (err as YHTTPError).debugValues,
+        errorDebug: (err as YHTTPError).debug,
         headers: (err as YHTTPError).headers,
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_ERROR",
-         "errorDebugValues": [],
+         "errorDebug": [],
          "headers": {
            "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",

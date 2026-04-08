@@ -142,7 +142,7 @@ async function handleForAWSTransformerLambda(
       type: 'error',
       stack: printStackTrace(castedErr),
       code: castedErr.code,
-      params: castedErr.debugValues as JsonArray,
+      params: castedErr.debug as JsonArray,
       startTime,
       endTime: time(),
       recordsLength: event.records.length,

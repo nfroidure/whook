@@ -319,7 +319,7 @@ async function initHTTPTransaction({
       status: (err as YHTTPError).httpCode || 500,
       code: (err as YError).code || 'E_UNEXPECTED',
       stack: printStackTrace(err as Error),
-      details: ((err as YError).debugValues as string[]) || [],
+      details: ((err as YError).debug as string[]) || [],
     });
 
     FINAL_TRANSACTIONS[id].errored = true;

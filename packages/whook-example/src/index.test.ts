@@ -107,376 +107,283 @@ describe('runProcess', () => {
      {
        "debugCalls": [
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/routes/getPing.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/routes/optionsWithCORS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/BUFFER_LIMIT.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/COERCION_OPTIONS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/COMMAND_DEFINITION_FILTER.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CONSUMER_DEFINITION_FILTER.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRON_DEFINITION_FILTER.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRON_RUNNER_OPTIONS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DECODERS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DEFAULT_ERROR_CODE.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ENCODERS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/HTTP_SERVER_OPTIONS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/JWT_SECRET_ENV_NAME.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/PARSERS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/QUERY_PARSER_OPTIONS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SCHEMA_VALIDATORS_OPTIONS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SHIELD_CHAR.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SIGNALS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/STRINGIFIERS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/TIMEOUT.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/TRANSFORMER_DEFINITION_FILTER.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/fetcher.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/localCronRunner.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/uniqueId.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/wrappers/wrapRouteHandlerWithAuthorization.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/wrappers/wrapRouteHandlerWithCORS.ts"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/routes/optionsWithCORS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/BUFFER_LIMIT.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/COERCION_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/COMMAND_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CRON_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CRON_RUNNER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DECODERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DEFAULT_ERROR_CODE.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/ENCODERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/HTTP_SERVER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/JWT_SECRET_ENV_NAME.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/PARSERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SCHEMA_VALIDATORS_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SHIELD_CHAR.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SIGNALS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/STRINGIFIERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/TIMEOUT.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/fetcher.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/uniqueId.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/wrappers/wrapRouteHandlerWithAuthorization.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/wrappers/wrapRouteHandlerWithCORS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/COERCION_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/COMMAND_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CRON_RUNNER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DECODERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DEFAULT_ERROR_CODE.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/ENCODERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/HTTP_SERVER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/JWT_SECRET_ENV_NAME.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/PARSERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SCHEMA_VALIDATORS_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SIGNALS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/STRINGIFIERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/TIMEOUT.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/fetcher.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/uniqueId.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/COERCION_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/COMMAND_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CRON_RUNNER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DECODERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/ENCODERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/HTTP_SERVER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/PARSERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SCHEMA_VALIDATORS_OPTIONS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SIGNALS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/STRINGIFIERS.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/TIMEOUT.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/fetcher.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/uniqueId.js"})",
          ],
          [
-           "Error: ENOENT: no such file or directory, access 'file:///projects/whook/src/index.ts:246:22)
-         at Object.<anonymous> (/project/src/index.test.ts:79:59)",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithAuthorization.js"})",
          ],
          [
            "⌛ - Delay service initialized.",

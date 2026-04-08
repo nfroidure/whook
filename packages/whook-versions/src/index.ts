@@ -17,7 +17,7 @@ import {
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type VersionDescriptor } from './wrappers/wrapRouteHandlerWithVersionChecker.js';
 
-export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
+export const VERSIONS_ERRORS_DESCRIPTORS = {
   E_DEPRECATED_VERSION: {
     code: 'bad_request',
     description:
@@ -25,7 +25,20 @@ export const VERSIONS_ERRORS_DESCRIPTORS: WhookErrorsDescriptors = {
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
-};
+} as const satisfies WhookErrorsDescriptors;
+
+declare module 'yerror' {
+  interface YErrorRegistry {
+    /**
+     * Thrown when the client version is deprecated
+     */
+    E_DEPRECATED_VERSION: [
+      headerName: string,
+      requiredScopes: string,
+      operationId: string,
+    ];
+  }
+}
 
 export { initWrapRouteHandlerWithVersionChecker };
 

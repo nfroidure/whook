@@ -23,7 +23,6 @@ import {
   type JSONSchema,
   type ExpressiveJSONSchema,
 } from 'ya-json-schema-types';
-import { type ErrorObject } from 'ajv';
 
 export type WhookCommandEnv = {
   CI?: string;
@@ -97,7 +96,7 @@ async function initCommand({
         // TODO: Add ajv human readable error builder
         validator(caster(args.namedArguments[argument.name]));
 
-        if ((validator.errors || []).length) {
+        if (validator.errors?.length) {
           throw new YError('E_BAD_ARG', [validator.errors]);
         }
       }
@@ -106,30 +105,27 @@ async function initCommand({
 
       await $instance.destroy();
     } catch (err) {
-      const argError = pickYErrorWithCode<[ErrorObject[]]>(
-        err as Error,
-        'E_BAD_ARG',
-      );
+      const argError = pickYErrorWithCode(err as Error, 'E_BAD_ARG');
 
       if (argError) {
         log('debug-stack', printStackTrace(err as Error));
-        if (argError.debugValues[0][0].keyword === 'required') {
-          if (argError.debugValues[0][0].params.missingProperty) {
+        if (argError.debug[0][0].keyword === 'required') {
+          if (argError.debug[0][0].params.missingProperty) {
             $fatalError.throwFatalError(err as Error);
             return;
           }
         }
-        if (argError.debugValues[0][0].keyword === 'additionalProperties') {
-          if (argError.debugValues[0][0].params.additionalProperty === '_') {
+        if (argError.debug[0][0].keyword === 'additionalProperties') {
+          if (argError.debug[0][0].params.additionalProperty === '_') {
             log('error', '💥 - No anonymous arguments allowed.');
             $fatalError.throwFatalError(err as Error);
             return;
           }
-          if (argError.debugValues[0][0].params.additionalProperty) {
+          if (argError.debug[0][0].params.additionalProperty) {
             log(
               'error',
               `💥 - Argument "${
-                argError.debugValues[0][0].params.additionalProperty
+                argError.debug[0][0].params.additionalProperty
               }" not allowed.`,
             );
             $fatalError.throwFatalError(err as Error);
@@ -139,8 +135,8 @@ async function initCommand({
         log(
           'error',
           `💥 - Error parsing arguments: ${
-            argError.debugValues[0][0].keyword
-          }, ${argError.debugValues[0][0].params}`,
+            argError.debug[0][0].keyword
+          }, ${argError.debug[0][0].params}`,
         );
         $fatalError.throwFatalError(err as Error);
         return;

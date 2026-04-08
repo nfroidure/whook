@@ -139,14 +139,14 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
   const pathItem = MAIN_API.paths?.[path];
 
   if (typeof pathItem === 'undefined' || '$ref' in pathItem) {
-    throw new YError('E_BAD_OPERATION', ['pathItem', pathItem]);
+    throw new YError('E_BAD_PATH_ITEM', [path, pathItem]);
   }
 
   const method = MAIN_DEFINITION.method;
   const operation = pathItem[method];
 
   if (typeof operation === 'undefined' || '$ref' in operation) {
-    throw new YError('E_BAD_OPERATION', ['operation', operation]);
+    throw new YError('E_BAD_OPERATION', [path, method, operation]);
   }
 
   const pathItemParameters = await resolveParameters(
@@ -507,7 +507,7 @@ async function handleForAWSHTTPFunction(
       type: 'error',
       code: (err as YError)?.code || 'E_UNEXPECTED',
       statusCode: response.status,
-      params: ((err as YError)?.debugValues as string[]) || [],
+      params: ((err as YError)?.debug as string[]) || [],
       stack: printStackTrace(err as Error),
     };
 

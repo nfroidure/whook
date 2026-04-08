@@ -137,13 +137,13 @@ describe('WHOOK_RESOLVED_PLUGINS', () => {
       } catch (err) {
         expect({
           errorCode: (err as YError).code,
-          errorDebugValues: (err as YError).debugValues,
+          errorDebug: (err as YError).debug,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
           resolveCalls: resolve.mock.calls,
         }).toMatchInlineSnapshot(`
          {
            "errorCode": "E_BAD_WHOOK_PLUGIN",
-           "errorDebugValues": [
+           "errorDebug": [
              "@whook/unreal",
            ],
            "logCalls": [

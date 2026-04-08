@@ -195,11 +195,11 @@ describe('postOAuth2Token', () => {
     } catch (err) {
       expect({
         errorCode: (err as YError).code,
-        errorDebugValues: (err as YError).debugValues,
+        errorDebug: (err as YError).debug,
       }).toMatchInlineSnapshot(`
        {
          "errorCode": "E_UNKNOWN_AUTHENTICATOR_TYPE",
-         "errorDebugValues": [
+         "errorDebug": [
            "yolo",
          ],
        }
