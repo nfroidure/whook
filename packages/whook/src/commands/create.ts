@@ -177,12 +177,7 @@ async function initCreateCommand({
       .map((name) => ({
         name,
         type: allTypes[name as keyof typeof allTypes],
-      }))
-      .concat(
-        type === 'command'
-          ? [{ name: 'promptArgs', type: 'WhookPromptArgs' }]
-          : [],
-      );
+      }));
     const parametersDeclaration = servicesTypes.length
       ? `{${servicesTypes
           .map(

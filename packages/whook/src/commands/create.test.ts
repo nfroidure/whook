@@ -1897,10 +1897,8 @@ describe('createCommand', () => {
 
        async function initACommandCommand({
          log,
-         promptArgs,
        }: {
          log: LogService;
-         promptArgs: WhookPromptArgs;
        }): Promise<
          WhookCommandHandler<{
            param: string;
@@ -2256,12 +2254,10 @@ describe('createCommand', () => {
          ENV,
          PROJECT_DIR,
          log,
-         promptArgs,
        }: {
          ENV: AppEnvVars;
          PROJECT_DIR: ProjectDirService;
          log: LogService;
-         promptArgs: WhookPromptArgs;
        }): Promise<
          WhookCommandHandler<{
            param: string;
