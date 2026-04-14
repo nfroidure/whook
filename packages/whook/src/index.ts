@@ -99,6 +99,7 @@ export * from './services/TRANSFORMERS_HANDLERS.js';
 import initRouteInvoker from './services/routeInvoker.js';
 export { initRouteInvoker };
 export * from './services/routeInvoker.js';
+export * from './services/schemaValidators.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';

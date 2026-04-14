@@ -119,7 +119,11 @@ export function combineComponents(
         if (key.endsWith(ASIDE_COMPONENTS_SUFFIXES[type as 'schemas'])) {
           const component = module[key as `${string}Schema`];
 
-          if (components[type as 'schemas'][component.name]) {
+          if (
+            components[type as 'schemas'][component.name] &&
+            components[type as 'schemas'][component.name] !==
+              component[ASIDE_COMPONENTS_PROPERTIES[type as 'schemas']]
+          ) {
             log(
               'warning',
               `⚠️ - Overriding an existing aside component (type: "${type}", name: "${component.name}").`,

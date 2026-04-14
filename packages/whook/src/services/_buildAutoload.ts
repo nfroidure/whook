@@ -35,7 +35,7 @@ const initializerWrapper = async (
   ): Promise<ServiceInitializer<Dependencies, Service>> => {
     if (UNBUILDABLE_SERVICES.includes(serviceName)) {
       log(
-        'warning',
+        'debug',
         `🤷 - Building a project with the "${serviceName}" not buildable service (ie Knifecycle ones: ${UNBUILDABLE_SERVICES.join(
           ', ',
         )}) can give unpredictable results!`,
@@ -81,7 +81,7 @@ const initializerWrapper = async (
           );
 
           log(
-            'error',
+            'debug',
             `🤖 - Could not auto load "${serviceName}", trying to find it in the initializer embedded location (${reshapedUrl}).`,
           );
           log('debug-stack', printStackTrace(err as Error));
