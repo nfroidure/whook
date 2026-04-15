@@ -123,7 +123,7 @@ exports[`API should work 1`] = `
           "name": "duration",
           "required": true,
           "schema": {
-            "type": "number",
+            "$ref": "#/components/schemas/Number",
           },
         },
         "pathParam1": {
@@ -132,7 +132,7 @@ exports[`API should work 1`] = `
           "name": "pathParam1",
           "required": true,
           "schema": {
-            "type": "number",
+            "$ref": "#/components/schemas/Number",
           },
         },
         "pathParam2": {
@@ -141,7 +141,7 @@ exports[`API should work 1`] = `
           "name": "pathParam2",
           "required": true,
           "schema": {
-            "type": "string",
+            "$ref": "#/components/schemas/String",
           },
         },
         "queryParam": {
@@ -150,10 +150,7 @@ exports[`API should work 1`] = `
           "name": "queryParam",
           "required": true,
           "schema": {
-            "items": {
-              "type": "string",
-            },
-            "type": "array",
+            "$ref": "#/components/schemas/Strings",
           },
         },
       },
@@ -220,6 +217,13 @@ exports[`API should work 1`] = `
         },
       },
       "schemas": {
+        "AnyObject": {
+          "additionalProperties": true,
+          "type": "object",
+        },
+        "Boolean": {
+          "type": "boolean",
+        },
         "Date": {
           "format": "date-time",
           "type": "string",
@@ -236,9 +240,27 @@ exports[`API should work 1`] = `
           ],
           "type": "object",
         },
+        "Number": {
+          "type": "number",
+        },
+        "Numbers": {
+          "items": {
+            "$ref": "#/components/schemas/Number",
+          },
+          "type": "array",
+        },
         "Stream": {
           "format": "binary",
           "type": "string",
+        },
+        "String": {
+          "type": "string",
+        },
+        "Strings": {
+          "items": {
+            "$ref": "#/components/schemas/String",
+          },
+          "type": "array",
         },
         "TimeSchema": {
           "additionalProperties": false,
@@ -249,6 +271,10 @@ exports[`API should work 1`] = `
             },
           },
           "type": "object",
+        },
+        "URISchema": {
+          "format": "uri",
+          "type": "string",
         },
       },
       "securitySchemes": {
@@ -275,7 +301,7 @@ exports[`API should work 1`] = `
               "name": "cronName",
               "required": true,
               "schema": {
-                "type": "string",
+                "$ref": "#/components/schemas/String",
               },
             },
             {
@@ -313,7 +339,7 @@ exports[`API should work 1`] = `
               "name": "cronName",
               "required": true,
               "schema": {
-                "type": "string",
+                "$ref": "#/components/schemas/String",
               },
             },
             {
@@ -324,8 +350,7 @@ exports[`API should work 1`] = `
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
+                  "$ref": "#/components/schemas/AnyObject",
                 },
               },
             },
@@ -364,8 +389,7 @@ exports[`API should work 1`] = `
               "in": "query",
               "name": "callbackUrl",
               "schema": {
-                "format": "uri",
-                "type": "string",
+                "$ref": "#/components/schemas/URISchema",
               },
             },
           ],
@@ -388,15 +412,14 @@ exports[`API should work 1`] = `
               "name": "duration",
               "required": false,
               "schema": {
-                "type": "number",
+                "$ref": "#/components/schemas/Number",
               },
             },
             {
               "in": "query",
               "name": "callbackUrl",
               "schema": {
-                "format": "uri",
-                "type": "string",
+                "$ref": "#/components/schemas/URISchema",
               },
             },
           ],
@@ -658,17 +681,14 @@ exports[`API should work 1`] = `
               "in": "header",
               "name": "a-header",
               "schema": {
-                "type": "boolean",
+                "$ref": "#/components/schemas/Boolean",
               },
             },
             {
               "in": "header",
               "name": "aMultiHeader",
               "schema": {
-                "items": {
-                  "type": "number",
-                },
-                "type": "array",
+                "$ref": "#/components/schemas/Numbers",
               },
             },
           ],
@@ -679,30 +699,27 @@ exports[`API should work 1`] = `
                   "schema": {
                     "properties": {
                       "aHeader": {
-                        "type": "boolean",
+                        "$ref": "#/components/schemas/Boolean",
                       },
                       "aMultiHeader": {
                         "prefixItems": [
                           {
-                            "type": "number",
+                            "$ref": "#/components/schemas/Number",
                           },
                           {
-                            "type": "number",
+                            "$ref": "#/components/schemas/Number",
                           },
                         ],
                         "type": "array",
                       },
                       "pathParam1": {
-                        "type": "number",
+                        "$ref": "#/components/schemas/Number",
                       },
                       "pathParam2": {
-                        "type": "string",
+                        "$ref": "#/components/schemas/String",
                       },
                       "queryParam": {
-                        "items": {
-                          "type": "string",
-                        },
-                        "type": "array",
+                        "$ref": "#/components/schemas/Strings",
                       },
                     },
                     "type": "object",
@@ -732,10 +749,7 @@ exports[`API should work 1`] = `
               "name": "queryParam",
               "required": false,
               "schema": {
-                "items": {
-                  "type": "string",
-                },
-                "type": "array",
+                "$ref": "#/components/schemas/Strings",
               },
             },
           ],

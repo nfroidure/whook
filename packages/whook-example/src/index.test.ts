@@ -152,9 +152,6 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/QUERY_PARSER_OPTIONS.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SCHEMA_VALIDATORS_OPTIONS.ts"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SHIELD_CHAR.ts"})",
          ],
          [
@@ -227,9 +224,6 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SCHEMA_VALIDATORS_OPTIONS.js"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SHIELD_CHAR.js"})",
          ],
          [
@@ -296,9 +290,6 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SCHEMA_VALIDATORS_OPTIONS.js"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js"})",
          ],
          [
@@ -359,9 +350,6 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SCHEMA_VALIDATORS_OPTIONS.js"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js"})",
          ],
          [
@@ -384,6 +372,33 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
          ],
          [
            "⌛ - Delay service initialized.",
@@ -866,18 +881,6 @@ describe('runProcess', () => {
            "🍀 - Trying to find "ROUTE_DEFINITION_FILTER" module path in "__project__".",
          ],
          [
-           "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/authorization".",
-         ],
-         [
-           "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/cors".",
-         ],
-         [
-           "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "@whook/whook".",
-         ],
-         [
-           "🍀 - Trying to find "SCHEMA_VALIDATORS_OPTIONS" module path in "__project__".",
-         ],
-         [
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/authorization".",
          ],
          [
@@ -1202,6 +1205,9 @@ describe('runProcess', () => {
            "📖 - Picking the "MAX_CLEAR_RATIO" constant in the "APP_CONFIG" service properties.",
          ],
          [
+           "📖 - Picking the "SCHEMA_VALIDATORS_OPTIONS" constant in the "APP_CONFIG" service properties.",
+         ],
+         [
            "📖 - Picking the "SENSIBLE_HEADERS" constant in the "APP_CONFIG" service properties.",
          ],
          [
@@ -1277,9 +1283,6 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/QUERY_PARSER_OPTIONS.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/services/SCHEMA_VALIDATORS_OPTIONS.ts".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///project/src/services/SHIELD_CHAR.ts".",
          ],
          [
@@ -1352,9 +1355,6 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/QUERY_PARSER_OPTIONS.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/SHIELD_CHAR.js".",
          ],
          [
@@ -1421,9 +1421,6 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js".",
          ],
          [
@@ -1482,9 +1479,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/SCHEMA_VALIDATORS_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js".",
@@ -1548,9 +1542,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - Module path of "QUERY_PARSER_OPTIONS" not found.",
-         ],
-         [
-           "🚫 - Module path of "SCHEMA_VALIDATORS_OPTIONS" not found.",
          ],
          [
            "🚫 - Module path of "SHIELD_CHAR" not found.",
@@ -1733,6 +1724,33 @@ describe('runProcess', () => {
          ],
          [
            "⏳ - Time mock is enabled!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
+         ],
+         [
+           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
          ],
          [
            "⚠️ - Using fake auth mechanism!",

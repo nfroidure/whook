@@ -1,10 +1,19 @@
 import { location, service } from 'knifecycle';
 import {
   refersTo,
+  type WhookAPISchemaDefinition,
   type WhookAPIParameterDefinition,
   type WhookRouteDefinition,
   type WhookRouteTypedHandler,
 } from '@whook/whook';
+
+export const numberSchema = {
+  name: 'Number',
+  example: 123,
+  schema: {
+    type: 'number',
+  },
+} as const satisfies WhookAPISchemaDefinition<components['schemas']['Number']>;
 
 export const pathParam1Parameter = {
   name: 'pathParam1',
@@ -14,13 +23,19 @@ export const pathParam1Parameter = {
     name: 'pathParam1',
     required: true,
     description: 'A number param',
-    schema: {
-      type: 'number',
-    },
+    schema: refersTo(numberSchema),
   },
 } as const satisfies WhookAPIParameterDefinition<
   components['parameters']['pathParam1']
 >;
+
+export const stringSchema = {
+  name: 'String',
+  example: 'str',
+  schema: {
+    type: 'string',
+  },
+} as const satisfies WhookAPISchemaDefinition<components['schemas']['String']>;
 
 export const pathParam2Parameter = {
   name: 'pathParam2',
@@ -30,11 +45,18 @@ export const pathParam2Parameter = {
     name: 'pathParam2',
     required: true,
     description: 'A string item',
-    schema: {
-      type: 'string',
-    },
+    schema: refersTo(stringSchema),
   },
 } as WhookAPIParameterDefinition<components['parameters']['pathParam2']>;
+
+export const stringsSchema = {
+  name: 'Strings',
+  example: ['str'],
+  schema: {
+    type: 'array',
+    items: refersTo(stringSchema),
+  },
+} as const satisfies WhookAPISchemaDefinition<components['schemas']['Strings']>;
 
 export const queryParamParameter = {
   name: 'queryParam',
@@ -44,16 +66,28 @@ export const queryParamParameter = {
     name: 'queryParam',
     required: true,
     description: 'A list of items',
-    schema: {
-      type: 'array',
-      items: {
-        type: 'string',
-      },
-    },
+    schema: refersTo(stringsSchema),
   },
 } as const satisfies WhookAPIParameterDefinition<
   components['parameters']['queryParam']
 >;
+
+export const booleanSchema = {
+  name: 'Boolean',
+  example: true,
+  schema: {
+    type: 'boolean',
+  },
+} as const satisfies WhookAPISchemaDefinition<components['schemas']['Boolean']>;
+
+export const numbersSchema = {
+  name: 'Numbers',
+  example: [1, 2, 3],
+  schema: {
+    type: 'array',
+    items: refersTo(numberSchema),
+  },
+} as const satisfies WhookAPISchemaDefinition<components['schemas']['Numbers']>;
 
 /* Architecture Note #3.4.2: getParameters
 
@@ -74,19 +108,12 @@ export const definition = {
       {
         in: 'header',
         name: 'a-header',
-        schema: {
-          type: 'boolean',
-        },
+        schema: refersTo(booleanSchema),
       },
       {
         in: 'header',
         name: 'aMultiHeader',
-        schema: {
-          type: 'array',
-          items: {
-            type: 'number',
-          },
-        },
+        schema: refersTo(numbersSchema),
       },
     ],
     responses: {
@@ -97,32 +124,14 @@ export const definition = {
             schema: {
               type: 'object',
               properties: {
-                aHeader: {
-                  type: 'boolean',
-                },
+                aHeader: refersTo(booleanSchema),
                 aMultiHeader: {
                   type: 'array',
-                  prefixItems: [
-                    {
-                      type: 'number',
-                    },
-                    {
-                      type: 'number',
-                    },
-                  ],
+                  prefixItems: [refersTo(numberSchema), refersTo(numberSchema)],
                 },
-                pathParam1: {
-                  type: 'number',
-                },
-                pathParam2: {
-                  type: 'string',
-                },
-                queryParam: {
-                  type: 'array',
-                  items: {
-                    type: 'string',
-                  },
-                },
+                pathParam1: refersTo(numberSchema),
+                pathParam2: refersTo(stringSchema),
+                queryParam: refersTo(stringsSchema),
               },
             },
           },

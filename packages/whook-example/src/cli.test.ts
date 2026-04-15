@@ -15,40 +15,40 @@ describe('commands should work', () => {
       stdout: replacePaths(stdout),
       stderr: replacePaths(stderr),
     }).toMatchInlineSnapshot(`
-{
-  "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
-🤖 - Initializing the \`$autoload\` service.
-🔴 - Running with "local" application environment.
-🔂 - Running with "test" node environment.
-➕ - Wrapping definitions for CORS.
-✔ - Found a free port "8000"
-On air 🚀🌕
-",
-  "stdout": "
+     {
+       "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
+     🤖 - Initializing the \`$autoload\` service.
+     🔴 - Running with "local" application environment.
+     🔂 - Running with "test" node environment.
+     ➕ - Wrapping definitions for CORS.
+     ✔ - Found a free port "8000"
+     On air 🚀🌕
+     ",
+       "stdout": "
 
-# Provided by "@whook/example": 1 commands
-- printEnv: A command printing every env values
-
-
-# Provided by "@whook/whook": 9 commands
-- config: A simple program that returns the queried config value
-- cronRun: A command to run all instances of a cron
-- cronSchedule: A command to run a cron schedules for a given time frame
-- env: A command printing env values
-- generateOpenAPISchema: Write openAPI schema to stdout
-- generateOpenAPITypes: Write openAPI types to stdout
-- inspect: A simple program that returns the result of the injected service
-- ls: Print available commands
-- route: Runs the given server route for testing purpose
+     # Provided by "@whook/example": 1 commands
+     - printEnv: A command printing every env values
 
 
-# Provided by "@whook/cors": none
+     # Provided by "@whook/whook": 9 commands
+     - config: A simple program that returns the queried config value
+     - cronRun: A command to run all instances of a cron
+     - cronSchedule: A command to run a cron schedules for a given time frame
+     - env: A command printing env values
+     - generateOpenAPISchema: Write openAPI schema to stdout
+     - generateOpenAPITypes: Write openAPI types to stdout
+     - inspect: A simple program that returns the result of the injected service
+     - ls: Print available commands
+     - route: Runs the given server route for testing purpose
 
 
-# Provided by "@whook/authorization": none
-",
-}
-`);
+     # Provided by "@whook/cors": none
+
+
+     # Provided by "@whook/authorization": none
+     ",
+     }
+    `);
   });
 
   test('with env', async () => {
@@ -60,19 +60,20 @@ On air 🚀🌕
       stdout: replacePaths(stdout),
       stderr: replacePaths(stderr),
     }).toMatchInlineSnapshot(`
-{
-  "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
-🤖 - Initializing the \`$autoload\` service.
-🔴 - Running with "local" application environment.
-🔂 - Running with "test" node environment.
-➕ - Wrapping definitions for CORS.
-✔ - Found a free port "8000"
-On air 🚀🌕
-",
-  "stdout": "test
-",
-}
-`);
+     {
+       "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
+     🤖 - Initializing the \`$autoload\` service.
+     🔴 - Running with "local" application environment.
+     🔂 - Running with "test" node environment.
+     ➕ - Wrapping definitions for CORS.
+     ✔ - Found a free port "8000"
+     On air 🚀🌕
+     ⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!
+     ",
+       "stdout": "test
+     ",
+     }
+    `);
   });
 
   test('with config', async () => {
@@ -84,19 +85,20 @@ On air 🚀🌕
       stdout: replacePaths(stdout),
       stderr: replacePaths(stderr),
     }).toMatchInlineSnapshot(`
-{
-  "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
-🤖 - Initializing the \`$autoload\` service.
-🔴 - Running with "local" application environment.
-🔂 - Running with "test" node environment.
-➕ - Wrapping definitions for CORS.
-✔ - Found a free port "8000"
-On air 🚀🌕
-",
-  "stdout": ""localhost"
-",
-}
-`);
+     {
+       "stderr": "⚡ - Loading configurations from "file:///project/dist/config/local/config.js".
+     🤖 - Initializing the \`$autoload\` service.
+     🔴 - Running with "local" application environment.
+     🔂 - Running with "test" node environment.
+     ➕ - Wrapping definitions for CORS.
+     ✔ - Found a free port "8000"
+     On air 🚀🌕
+     ⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!
+     ",
+       "stdout": ""localhost"
+     ",
+     }
+    `);
   });
 });
 

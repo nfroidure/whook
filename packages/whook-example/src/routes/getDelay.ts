@@ -4,9 +4,21 @@ import {
   type WhookRouteTypedHandler,
   type WhookAPIParameterDefinition,
   type WhookAPICallbackDefinition,
+  type WhookAPISchemaDefinition,
 } from '@whook/whook';
 import { type LogService, type DelayService } from 'common-services';
 import { type WhookRouteDefinition } from '@whook/whook';
+import { numberSchema } from './getParameters.js';
+
+export const uriSchema = {
+  name: 'URISchema',
+  schema: {
+    type: 'string',
+    format: 'uri',
+  },
+} as const satisfies WhookAPISchemaDefinition<
+  components['schemas']['URISchema']
+>;
 
 /* Architecture Note #3.4: Examples
 
@@ -31,9 +43,7 @@ export const durationParameter = {
     name: 'duration',
     required: true,
     description: 'Duration in milliseconds',
-    schema: {
-      type: 'number',
-    },
+    schema: refersTo(numberSchema),
   },
 } as const satisfies WhookAPIParameterDefinition<
   components['parameters']['duration']
@@ -97,10 +107,7 @@ export const definition = {
       {
         name: 'callbackUrl',
         in: 'query',
-        schema: {
-          type: 'string',
-          format: 'uri',
-        },
+        schema: refersTo(uriSchema),
       },
     ],
     responses: {

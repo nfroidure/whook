@@ -144,7 +144,8 @@ describe('Validators service', () => {
         DEBUG_NODE_ENVS: ['test'],
         SCHEMA_VALIDATORS_OPTIONS: {
           lazy: true,
-          optimistic: false,
+          dedupe: true,
+          hashLength: 16,
         },
         API,
         log,

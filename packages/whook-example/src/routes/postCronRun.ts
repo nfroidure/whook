@@ -13,6 +13,7 @@ import { type LogService } from 'common-services';
 import { autoService } from 'knifecycle';
 import { type JsonValue } from 'type-fest';
 import { YHTTPError } from 'yhttperror';
+import { stringSchema } from './getParameters.js';
 
 export const dateSchema = {
   name: 'Date',
@@ -23,9 +24,18 @@ export const dateSchema = {
   },
 } as const satisfies WhookAPISchemaDefinition<components['schemas']['Date']>;
 
-export const dateQueryParameter: WhookAPIParameterDefinition<
-  components['schemas']['Date']
-> = {
+export const anyObjectSchema = {
+  name: 'AnyObject',
+  example: { foo: 'bar' },
+  schema: {
+    type: 'object',
+    additionalProperties: true,
+  },
+} as const satisfies WhookAPISchemaDefinition<
+  components['schemas']['AnyObject']
+>;
+
+export const dateQueryParameter = {
   name: 'date',
   example: dateSchema.example,
   parameter: {
@@ -34,7 +44,7 @@ export const dateQueryParameter: WhookAPIParameterDefinition<
     required: true,
     schema: refersTo(dateSchema),
   },
-};
+} as const satisfies WhookAPIParameterDefinition<components['schemas']['Date']>;
 
 export const definition = {
   path: '/crons/{cronName}/run',
@@ -55,9 +65,7 @@ export const definition = {
         name: 'cronName',
         in: 'path',
         required: true,
-        schema: {
-          type: 'string',
-        },
+        schema: refersTo(stringSchema),
       },
       refersTo(dateQueryParameter),
     ],
@@ -65,10 +73,7 @@ export const definition = {
       required: true,
       content: {
         'application/json': {
-          schema: {
-            type: 'object',
-            additionalProperties: true,
-          },
+          schema: refersTo(anyObjectSchema),
         },
       },
     },

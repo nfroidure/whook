@@ -1,6 +1,8 @@
 import {
   type WhookRouteTypedHandler,
   type WhookRouteDefinition,
+  type WhookAPISchemaDefinition,
+  refersTo,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
 import {
@@ -10,6 +12,18 @@ import {
 import { autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import { AppEnv } from '../index.js';
+
+export const timePayloadSchema = {
+  name: 'TimePayload',
+  schema: {
+    type: 'object',
+    required: ['time'],
+    properties: {
+      time: { type: 'number' },
+      isFixed: { type: 'boolean' },
+    },
+  },
+} as const satisfies WhookAPISchemaDefinition<components['schemas']['TimePayload']>;
 
 export const definition = {
   path: '/time',
@@ -25,14 +39,7 @@ export const definition = {
       required: true,
       content: {
         'application/json': {
-          schema: {
-            type: 'object',
-            required: ['time'],
-            properties: {
-              time: { type: 'number' },
-              isFixed: { type: 'boolean' },
-            },
-          },
+          schema: refersTo(timePayloadSchema),
         },
       },
     },

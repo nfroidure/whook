@@ -10,6 +10,11 @@ const CONFIG: AppConfig = {
     mockedTime: Date.parse('2012-01-15T00:00:00Z'),
     referenceTime: Date.now(),
   },
+  SCHEMA_VALIDATORS_OPTIONS: {
+    lazy: false,
+    dedupe: true,
+    hashLength: 16,
+  },
 };
 
 export default CONFIG;

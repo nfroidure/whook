@@ -52,7 +52,7 @@ declare interface operations {
     parameters: {
       query: {
         duration: components['parameters']['duration'];
-        callbackUrl?: string;
+        callbackUrl?: components['schemas']['URISchema'];
       };
     };
   };
@@ -72,11 +72,14 @@ declare interface operations {
     responses: {
       200: {
         body: {
-          aHeader?: boolean;
-          aMultiHeader?: [number, number];
-          pathParam1?: number;
-          pathParam2?: string;
-          queryParam?: string[];
+          aHeader?: components['schemas']['Boolean'];
+          aMultiHeader?: [
+            components['schemas']['Number'],
+            components['schemas']['Number'],
+          ];
+          pathParam1?: components['schemas']['Number'];
+          pathParam2?: components['schemas']['String'];
+          queryParam?: components['schemas']['Strings'];
         };
       };
     };
@@ -89,8 +92,8 @@ declare interface operations {
         queryParam: components['parameters']['queryParam'];
       };
       headers: {
-        'a-header'?: boolean;
-        aMultiHeader?: number[];
+        'a-header'?: components['schemas']['Boolean'];
+        aMultiHeader?: components['schemas']['Numbers'];
       };
     };
   };
@@ -102,10 +105,7 @@ declare interface operations {
     };
   };
   putTime: {
-    requestBody: {
-      time: number;
-      isFixed?: boolean;
-    };
+    requestBody: components['schemas']['TimePayload'];
     responses: {
       201: {
         body: number;
@@ -113,15 +113,13 @@ declare interface operations {
     };
   };
   postCronRun: {
-    requestBody: {
-      [pattern: string]: unknown;
-    };
+    requestBody: components['schemas']['AnyObject'];
     responses: {
       204: object;
     };
     parameters: {
       path: {
-        cronName: string;
+        cronName: components['schemas']['String'];
       };
       query: {
         date: components['parameters']['date'];
@@ -159,10 +157,10 @@ declare interface components {
     };
   };
   parameters: {
-    duration: number;
-    pathParam1: number;
-    pathParam2: string;
-    queryParam: string[];
+    duration: components['schemas']['Number'];
+    pathParam1: components['schemas']['Number'];
+    pathParam2: components['schemas']['String'];
+    queryParam: components['schemas']['Strings'];
     date: components['schemas']['Date'];
   };
   responses: {
@@ -185,14 +183,27 @@ declare interface components {
     Stream: components['schemas']['Stream'];
   };
   schemas: {
+    URISchema: string;
+    Boolean: boolean;
+    Number: number;
+    Numbers: components['schemas']['Number'][];
+    String: string;
+    Strings: components['schemas']['String'][];
     TimeSchema: {
       currentDate?: string;
+    };
+    AnyObject: {
+      [pattern: string]: unknown;
     };
     Date: string;
     Echo: {
       echo: string;
     };
     Stream: NodeJS.ReadableStream;
+    TimePayload: {
+      time: number;
+      isFixed?: boolean;
+    };
     ExampleSchema: {
       message: string;
       delay: number;

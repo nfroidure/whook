@@ -16,6 +16,11 @@ const CONFIG: AppConfig = {
     ...COMMON_CONFIG.OPEN_API_TYPES_CONFIG,
     generateUnusedSchemas: true,
   },
+  SCHEMA_VALIDATORS_OPTIONS: {
+    lazy: false,
+    dedupe: true,
+    hashLength: 16,
+  },
   // Avoid obfuscating secrets locally
   MAX_CLEAR_CHARS: Infinity,
   MAX_CLEAR_RATIO: 0,

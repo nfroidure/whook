@@ -9,6 +9,7 @@ import {
   type ExpressiveJSONSchema,
   type JSONSchema,
 } from 'ya-json-schema-types';
+import { createHash } from '../libs/hash.js';
 
 /* Architecture Note #2.11.2.1: Schema validators
 
@@ -21,15 +22,23 @@ Maintain a single place for JSON schema validation
 
 export const DEFAULT_SCHEMA_VALIDATORS_OPTIONS = {
   lazy: false,
-  optimistic: true,
+  dedupe: false,
+  hashLength: 16,
 } as const satisfies WhookSchemaValidatorsOptions;
 
 /** Options for schema validation */
 export interface WhookSchemaValidatorsOptions {
   /** Compile only at first validation */
   lazy: boolean;
-  /** Consider that reused schemas are always using refs */
-  optimistic: boolean;
+  /**
+   * Dedupe schemas based on their JSON representation
+   * to reduce the amount of compiled validations functions
+   */
+  dedupe: boolean;
+  /**
+   * Size of the shake256 hash for deduping
+   */
+  hashLength: number;
 }
 
 export interface WhookSchemaValidatorsConfig {
@@ -47,8 +56,6 @@ export type WhookSchemaValidatorsService = (
     | ExpressiveJSONSchema
     | OpenAPIReference<ExpressiveJSONSchema>,
 ) => ValidateFunction;
-
-export default location(autoService(initSchemaValidators), import.meta.url);
 
 /**
  * Initialize the schema validator service for
@@ -109,19 +116,11 @@ async function initSchemaValidators({
       | ExpressiveJSONSchema
       | OpenAPIReference<ExpressiveJSONSchema>,
   ) => {
-    if (schema === true) {
-      if (!validatorsMap['special://true']) {
-        validatorsMap['special://true'] = ajv.compile(true);
-      }
-      return validatorsMap['special://true'];
-    }
-    if (schema === false) {
-      if (!validatorsMap['special://false']) {
-        validatorsMap['special://false'] = ajv.compile(false);
-      }
-      return validatorsMap['special://false'];
-    }
-    if ('$ref' in schema && typeof schema.$ref === 'string') {
+    if (
+      typeof schema === 'object' &&
+      '$ref' in schema &&
+      typeof schema.$ref === 'string'
+    ) {
       if (!validatorsMap[schema.$ref]) {
         validatorsMap[schema.$ref] = ajv.getSchema(
           schema.$ref,
@@ -129,10 +128,20 @@ async function initSchemaValidators({
       }
       return validatorsMap[schema.$ref];
     }
-    if (SCHEMA_VALIDATORS_OPTIONS.optimistic !== true) {
-      const key =
-        'data:text/plain;base64,' +
-        Buffer.from(JSON.stringify(schema)).toString('base64');
+
+    if (!SCHEMA_VALIDATORS_OPTIONS.lazy) {
+      log(
+        'warning',
+        `⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!`,
+      );
+      log('debug', JSON.stringify(schema));
+    }
+
+    if (SCHEMA_VALIDATORS_OPTIONS.dedupe) {
+      const key = createHash(
+        Buffer.from(JSON.stringify(schema)),
+        SCHEMA_VALIDATORS_OPTIONS.hashLength,
+      );
 
       if (!validatorsMap[key]) {
         validatorsMap[key] = ajv.compile(schema) as ValidateFunction;
@@ -142,3 +151,5 @@ async function initSchemaValidators({
     return ajv.compile(schema);
   };
 }
+
+export default location(autoService(initSchemaValidators), import.meta.url);
