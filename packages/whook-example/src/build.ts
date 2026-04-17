@@ -51,6 +51,8 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
       jwtToken: 'jwt-service/dist/index.js',
       errorHandler: '@whook/cors/dist/services/errorHandler.js',
       SECURITY_DEFINITIONS: './services/SECURITY_DEFINITIONS.js',
+      // To enable schema validators build
+      // schemaValidators: '@whook/whook/dist/services/builtSchemaValidators.js',
     }),
   );
 

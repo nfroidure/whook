@@ -42,9 +42,15 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 71975,
+       "contentsLength": 72798,
        "extension": ".mjs",
-       "logCalls": [],
+       "logCalls": [
+         [
+           "debug",
+           "🈁 - Initializing the compiler:",
+           {},
+         ],
+       ],
        "mappingsLength": 0,
      }
     `);
@@ -72,9 +78,17 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 3806,
+       "contentsLength": 3924,
        "extension": ".mjs",
-       "logCalls": [],
+       "logCalls": [
+         [
+           "debug",
+           "🈁 - Initializing the compiler:",
+           {
+             "excludeNodeModules": true,
+           },
+         ],
+       ],
        "mappingsLength": 0,
      }
     `);
@@ -106,9 +120,18 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 5454,
+       "contentsLength": 5572,
        "extension": ".cjs",
-       "logCalls": [],
+       "logCalls": [
+         [
+           "debug",
+           "🈁 - Initializing the compiler:",
+           {
+             "excludeNodeModules": true,
+             "format": "cjs",
+           },
+         ],
+       ],
        "mappingsLength": 0,
      }
     `);

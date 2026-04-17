@@ -256,24 +256,24 @@ describe('extractOperationSecurityParameters', () => {
       };
       expect(await extractOperationSecurityParameters({ API }, operation))
         .toMatchInlineSnapshot(`
-[
-  {
-    "in": "header",
-    "name": "authorization",
-    "schema": {
-      "pattern": "((b|B)earer) .*",
-      "type": "string",
-    },
-  },
-  {
-    "in": "query",
-    "name": "access_token",
-    "schema": {
-      "type": "string",
-    },
-  },
-]
-`);
+       [
+         {
+           "in": "header",
+           "name": "authorization",
+           "schema": {
+             "pattern": "((b|B)earer) .*",
+             "type": "string",
+           },
+         },
+         {
+           "in": "query",
+           "name": "access_token",
+           "schema": {
+             "type": "string",
+           },
+         },
+       ]
+      `);
     });
 
     test('with the basic security scheme', async () => {
@@ -318,17 +318,17 @@ describe('extractOperationSecurityParameters', () => {
       };
       expect(await extractOperationSecurityParameters({ API }, operation))
         .toMatchInlineSnapshot(`
-[
-  {
-    "in": "header",
-    "name": "authorization",
-    "schema": {
-      "pattern": "((b|B)asic) .*",
-      "type": "string",
-    },
-  },
-]
-`);
+       [
+         {
+           "in": "header",
+           "name": "authorization",
+           "schema": {
+             "pattern": "((b|B)asic) .*",
+             "type": "string",
+           },
+         },
+       ]
+      `);
     });
 
     test('with the basic and bearer security schemes', async () => {
@@ -375,24 +375,24 @@ describe('extractOperationSecurityParameters', () => {
       expect(
         await extractOperationSecurityParameters({ API }, operation as any),
       ).toMatchInlineSnapshot(`
-[
-  {
-    "in": "header",
-    "name": "authorization",
-    "schema": {
-      "pattern": "((b|B)earer|(b|B)asic) .*",
-      "type": "string",
-    },
-  },
-  {
-    "in": "query",
-    "name": "access_token",
-    "schema": {
-      "type": "string",
-    },
-  },
-]
-`);
+       [
+         {
+           "in": "header",
+           "name": "authorization",
+           "schema": {
+             "pattern": "((b|B)asic|(b|B)earer) .*",
+             "type": "string",
+           },
+         },
+         {
+           "in": "query",
+           "name": "access_token",
+           "schema": {
+             "type": "string",
+           },
+         },
+       ]
+      `);
     });
   });
 });

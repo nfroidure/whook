@@ -520,7 +520,7 @@ async function initHTTPRouter({
           );
         });
     } catch (err) {
-      log('error', '☢️ - Unrecovable router error...');
+      log('error', '☢️ - Unrecoverable router error...');
       log('error-stack', printStackTrace(err as Error));
       handleFatalError(err);
     }
@@ -714,6 +714,7 @@ async function _createRouters({
               ...pathItemValidators.cookie,
               ...operationValidators.cookie,
             },
+            querystring: {},
           },
           consumableMediaTypes,
           produceableMediaTypes,

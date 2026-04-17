@@ -702,6 +702,8 @@ exports[`API should work 1`] = `
                         "$ref": "#/components/schemas/Boolean",
                       },
                       "aMultiHeader": {
+                        "maxItems": 2,
+                        "minItems": 2,
                         "prefixItems": [
                           {
                             "$ref": "#/components/schemas/Number",

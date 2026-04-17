@@ -88,7 +88,7 @@ describe('initHTTPTransaction', () => {
       time.mockReturnValue(new Date('2012-01-15T00:00:00.000Z').getTime());
       uniqueId.mockReturnValue('[id]');
       delay.create.mockReturnValueOnce(new Promise(() => undefined));
-      delay.clear.mockResolvedValue(undefined);
+      delay.clear.mockResolvedValue('cancel');
 
       const httpTransaction = await initHTTPTransaction({
         obfuscator,
@@ -184,8 +184,8 @@ describe('initHTTPTransaction', () => {
     test('should fail on timeout', async () => {
       time.mockReturnValue(new Date('2012-01-15T00:00:00.000Z').getTime());
       uniqueId.mockReturnValue('[id]');
-      delay.create.mockResolvedValueOnce(undefined);
-      delay.clear.mockResolvedValueOnce(undefined);
+      delay.create.mockResolvedValueOnce('timeout');
+      delay.clear.mockResolvedValueOnce('timeout');
 
       let request;
 
@@ -261,8 +261,8 @@ describe('initHTTPTransaction', () => {
     test('should fail with non-unique transaction id', async () => {
       time.mockReturnValue(new Date('2012-01-15T00:00:00.000Z').getTime());
       uniqueId.mockReturnValue('[id]');
-      delay.create.mockReturnValueOnce(new Promise(() => undefined));
-      delay.clear.mockResolvedValue(undefined);
+      delay.create.mockReturnValueOnce(new Promise(() => 'cancel'));
+      delay.clear.mockResolvedValue('cancel');
 
       try {
         const httpTransaction = await initHTTPTransaction({

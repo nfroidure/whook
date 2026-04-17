@@ -57,9 +57,9 @@ export function lowerCaseHeaders<T>(
  */
 export function pickFirstHeaderValue(
   name: string,
-  headers: IncomingMessage['headers'],
+  headers: WhookHeaders,
 ): string | undefined {
-  return pickAllHeaderValues(name, headers)[0];
+  return headers[name] instanceof Array ? headers[name][0] : headers[name];
 }
 
 /**
@@ -74,20 +74,13 @@ export function pickFirstHeaderValue(
  */
 export function pickAllHeaderValues(
   name: string,
-  headers: IncomingMessage['headers'],
+  headers: WhookHeaders = {},
 ): string[] {
-  const headerValues: string[] =
-    headers && typeof headers[name] === 'undefined'
-      ? []
-      : typeof headers[name] === 'string'
-        ? [headers[name] as string]
-        : (headers[name] as string[]);
-
-  return headerValues;
+  return headers[name] instanceof Array ? headers[name] : [headers[name]];
 }
 
 export function castWhookHeaders(
-  headers: IncomingMessage['headers'],
+  headers: IncomingMessage['headers'] = {},
 ): WhookHeaders {
   const whookHeaders: WhookHeaders = {};
 

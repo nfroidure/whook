@@ -9,11 +9,12 @@ import {
   type LogService,
   type TimeService,
   type DelayService,
+  type DelayResult,
 } from 'common-services';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type JsonValue } from 'type-fest';
 import { type Readable } from 'node:stream';
-import { pickFirstHeaderValue } from '../libs/headers.js';
+import { castWhookHeaders, pickFirstHeaderValue } from '../libs/headers.js';
 import { type WhookRequest, type WhookResponse } from '../types/http.js';
 
 export interface WhookHTTPTransactionConfig {
@@ -194,15 +195,10 @@ async function initHTTPTransaction({
     const request = {
       url: req.url as string,
       method: (req.method as string).toLowerCase(),
-      headers: Object.keys(req.headers).reduce(
-        (finalHeaders, name) => ({
-          ...finalHeaders,
-          [name]: req.headers[name],
-        }),
-        {},
-      ),
+      headers: castWhookHeaders(req.headers),
       body: req,
     };
+
     /**
     @typedef WhookHTTPTransaction
   */
@@ -211,16 +207,16 @@ async function initHTTPTransaction({
       protocol: 'http',
       ip:
         '' +
-          (pickFirstHeaderValue('x-forwarded-for', req.headers) || '').split(
-            ',',
-          )[0] ||
+          (
+            pickFirstHeaderValue('x-forwarded-for', request.headers) || ''
+          ).split(',')[0] ||
         req.socket.remoteAddress ||
         'unknown',
       startInBytes: req.socket.bytesRead,
       startOutBytes: req.socket.bytesWritten,
       startTime: time(),
-      url: req.url as string,
-      method: req.method as string,
+      url: request.url,
+      method: request.method,
       reqHeaders: obfuscator.obfuscateSensibleHeaders(request.headers),
       errored: false,
     };
@@ -231,7 +227,7 @@ async function initHTTPTransaction({
      * @name id
      */
     let id: string =
-      pickFirstHeaderValue('transaction-id', req.headers) || uniqueId();
+      pickFirstHeaderValue('transaction-id', request.headers) || uniqueId();
 
     // Handle bad client transaction ids
     if (FINAL_TRANSACTIONS[id]) {
@@ -271,7 +267,7 @@ async function initHTTPTransaction({
    * A promise to be resolved with the signed token.
    */
   async function startTransaction(
-    { id, delayPromise }: { id: string; delayPromise: Promise<void> },
+    { id, delayPromise }: { id: string; delayPromise: Promise<DelayResult> },
     initializationPromise: Promise<void>,
     buildResponse: () => Promise<WhookResponse>,
   ) {
@@ -280,13 +276,20 @@ async function initHTTPTransaction({
    basically spawns a promise that will be resolved
    to the actual response or rejected if the timeout
    is reached.
-  */
-    return Promise.race([
-      initializationPromise.then(async () => buildResponse()),
-      delayPromise.then(async () => {
-        throw new YHTTPError(504, 'E_TRANSACTION_TIMEOUT', [TIMEOUT, id]);
+   */
+
+    const responsePromise = initializationPromise.then(buildResponse);
+
+    await Promise.race([
+      responsePromise,
+      delayPromise.then(async (result) => {
+        if (result === 'timeout') {
+          throw new YHTTPError(504, 'E_TRANSACTION_TIMEOUT', [TIMEOUT, id]);
+        }
       }),
     ]);
+
+    return responsePromise;
   }
 
   /**
@@ -346,7 +349,7 @@ async function initHTTPTransaction({
       id: string;
       req: IncomingMessage;
       res: ServerResponse;
-      delayPromise: Promise<void>;
+      delayPromise: Promise<DelayResult>;
     },
     response: WhookResponse,
     operationId = 'none',
@@ -367,20 +370,22 @@ async function initHTTPTransaction({
     from the `TRANSACTIONS` hash.
   */
     try {
-      await new Promise((resolve, reject) => {
-        res.on('error', reject);
-        res.on('finish', resolve);
-        res.writeHead(
-          response.status,
-          statuses.message[response.status],
-          Object.assign({}, response.headers || {}, { 'Transaction-Id': id }),
-        );
-        if (response.body && (response.body as Readable).pipe) {
-          (response.body as Readable).pipe(res);
-        } else {
-          res.end();
-        }
-      });
+      const { promise, resolve, reject } = Promise.withResolvers();
+
+      res.on('error', reject);
+      res.on('finish', resolve);
+      res.writeHead(
+        response.status,
+        statuses.message[response.status],
+        Object.assign({}, response.headers || {}, { 'Transaction-Id': id }),
+      );
+      if (response.body && (response.body as Readable).pipe) {
+        (response.body as Readable).pipe(res);
+      } else {
+        res.end();
+      }
+
+      await promise;
     } catch (err) {
       FINAL_TRANSACTIONS[id].errored = true;
       apm('ERROR', {

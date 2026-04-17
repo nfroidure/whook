@@ -14,6 +14,7 @@ const CONFIG: AppConfig = {
     lazy: false,
     dedupe: true,
     hashLength: 16,
+    buildSchemas: false,
   },
 };
 

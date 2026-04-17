@@ -243,6 +243,7 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
             ...pathItemValidators.cookie,
             ...operationValidators.cookie,
           },
+          querystring: {},
         },
         consumableMediaTypes,
         produceableMediaTypes,

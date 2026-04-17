@@ -20,6 +20,15 @@ const CONFIG: AppConfig = {
     lazy: false,
     dedupe: true,
     hashLength: 16,
+    buildSchemas: false,
+  },
+  COMPILER_OPTIONS: {
+    externalModules: [],
+    ignoredModules: [],
+    target: '24',
+    platform: 'node',
+    format: 'esm',
+    treeShaking: true,
   },
   // Avoid obfuscating secrets locally
   MAX_CLEAR_CHARS: Infinity,

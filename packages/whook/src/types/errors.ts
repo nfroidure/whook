@@ -102,7 +102,7 @@ declare module 'yerror' {
      * @param schemeKey the security scheme key
      * @param operationId the operation ID referencing the scheme
      */
-    E_UNDECLARED_SECURITY_SCHEME: [schemeKey: string, operationId: string];
+    E_UNDECLARED_SECURITY_SCHEME: [schemeKey: string];
 
     /**
      * Thrown when an unsupported HTTP authentication scheme is used

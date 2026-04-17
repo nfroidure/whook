@@ -250,6 +250,7 @@ async function initWrapRouteHandlerForAWSLambda({
             ...pathItemValidators.cookie,
             ...operationValidators.cookie,
           },
+          querystring: {},
         },
         consumableMediaTypes,
         produceableMediaTypes,

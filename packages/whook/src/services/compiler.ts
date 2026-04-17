@@ -3,12 +3,15 @@ import { noop } from '../libs/utils.js';
 import { autoService, location, type Service } from 'knifecycle';
 import { type ImporterService, type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
+import { type Format, type Platform } from 'esbuild';
 
 export const DEFAULT_COMPILER_OPTIONS: FullWhookCompilerOptions = {
   externalModules: [],
   ignoredModules: [],
-  target: '22',
+  target: '24',
+  platform: 'node',
   format: 'esm',
+  treeShaking: false,
 };
 
 export interface FullWhookCompilerOptions {
@@ -16,7 +19,9 @@ export interface FullWhookCompilerOptions {
   ignoredModules: string[];
   mainFields?: string[];
   target: string;
-  format: 'esm' | 'cjs';
+  platform: Platform;
+  format: Format;
+  treeShaking: boolean;
   excludeNodeModules?: boolean;
 }
 export type WhookCompilerOptions = Partial<FullWhookCompilerOptions>;
@@ -49,6 +54,7 @@ async function initCompiler({
   importer,
   log = noop,
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
+  log('debug', `🈁 - Initializing the compiler:`, COMPILER_OPTIONS);
   const { build } = await importer('esbuild');
   const { nodeExternalsPlugin } = await importer('esbuild-node-externals');
 

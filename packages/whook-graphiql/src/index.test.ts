@@ -258,13 +258,13 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
            "🕶️ - Initializing the obfuscator service.",
          ],
          [
-           "🖃 - Initializing the validators service.",
-         ],
-         [
            "🚦 - HTTP Router initialized.",
          ],
        ],
        "logErrorCalls": [
+         [
+           "🖃 - Initializing the validators service.",
+         ],
          [
            "⌨️ - Initializing the basic query parser.",
          ],
@@ -579,13 +579,13 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
            "🕶️ - Initializing the obfuscator service.",
          ],
          [
-           "🖃 - Initializing the validators service.",
-         ],
-         [
            "🚦 - HTTP Router initialized.",
          ],
        ],
        "logErrorCalls": [
+         [
+           "🖃 - Initializing the validators service.",
+         ],
          [
            "⌨️ - Initializing the basic query parser.",
          ],
@@ -727,13 +727,13 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
            "🕶️ - Initializing the obfuscator service.",
          ],
          [
-           "🖃 - Initializing the validators service.",
-         ],
-         [
            "🚦 - HTTP Router initialized.",
          ],
        ],
        "logErrorCalls": [
+         [
+           "🖃 - Initializing the validators service.",
+         ],
          [
            "⌨️ - Initializing the basic query parser.",
          ],

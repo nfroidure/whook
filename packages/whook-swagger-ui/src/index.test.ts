@@ -126,155 +126,155 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "autoloaderCalls": [
-    [
-      "BUFFER_LIMIT",
-    ],
-    [
-      "PARSERS",
-    ],
-    [
-      "STRINGIFIERS",
-    ],
-    [
-      "DECODERS",
-    ],
-    [
-      "ENCODERS",
-    ],
-    [
-      "COERCION_OPTIONS",
-    ],
-    [
-      "SCHEMA_VALIDATORS_OPTIONS",
-    ],
-    [
-      "TIMEOUT",
-    ],
-    [
-      "TRANSACTIONS",
-    ],
-    [
-      "SHIELD_CHAR",
-    ],
-    [
-      "MAX_CLEAR_CHARS",
-    ],
-    [
-      "MAX_CLEAR_RATIO",
-    ],
-    [
-      "SENSIBLE_PROPS",
-    ],
-    [
-      "SENSIBLE_HEADERS",
-    ],
-    [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
-    ],
-    [
-      "QUERY_PARSER_OPTIONS",
-    ],
-    [
-      "SWAGGER_UI_OPTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
-    ],
-    [
-      "HTTP_SERVER_OPTIONS",
-    ],
-  ],
-  "debugCalls": [
-    [
-      "⌛ - Delay service initialized.",
-    ],
-    [
-      "⏳ - Cancelling pending timeouts:",
-      0,
-    ],
-    [
-      "⏳ - Cleared a delay",
-    ],
-    [
-      "⏳ - Created a delay:",
-      30000,
-    ],
-    [
-      "✅ - Closing HTTP server.",
-    ],
-    [
-      "✔️ - HTTP server closed!",
-    ],
-    [
-      "❤️ - Initializing the APM service.",
-    ],
-    [
-      "👣 - Logging service initialized.",
-    ],
-    [
-      "💱 - HTTP Transaction initialized.",
-    ],
-    [
-      "📇 - Process service initialized.",
-    ],
-    [
-      "🕶️ - Initializing the obfuscator service.",
-    ],
-    [
-      "🖃 - Initializing the validators service.",
-    ],
-    [
-      "🚦 - HTTP Router initialized.",
-    ],
-    [
-      "🛂 - Dynamic import of "ecstatic".",
-    ],
-    [
-      "🛂 - Dynamic import of "swagger-ui-dist".",
-    ],
-    [
-      "🛂 - Initializing the importer!",
-    ],
-  ],
-  "headers": {
-    "connection": undefined,
-    "content-type": "application/json",
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-    "transaction-id": "0",
-    "transfer-encoding": "chunked",
-  },
-  "logErrorCalls": [
-    [
-      "⌨️ - Initializing the basic query parser.",
-    ],
-    [
-      "💁 - Serving the API docs: http://localhost:22222/docs",
-    ],
-    [
-      "🎙️ - HTTP Server listening at "http://localhost:22222".",
-    ],
-    [
-      "On air 🚀🌕",
-    ],
-  ],
-  "status": 200,
-}
-`);
+     {
+       "autoloaderCalls": [
+         [
+           "BUFFER_LIMIT",
+         ],
+         [
+           "PARSERS",
+         ],
+         [
+           "STRINGIFIERS",
+         ],
+         [
+           "DECODERS",
+         ],
+         [
+           "ENCODERS",
+         ],
+         [
+           "COERCION_OPTIONS",
+         ],
+         [
+           "SCHEMA_VALIDATORS_OPTIONS",
+         ],
+         [
+           "TIMEOUT",
+         ],
+         [
+           "TRANSACTIONS",
+         ],
+         [
+           "SHIELD_CHAR",
+         ],
+         [
+           "MAX_CLEAR_CHARS",
+         ],
+         [
+           "MAX_CLEAR_RATIO",
+         ],
+         [
+           "SENSIBLE_PROPS",
+         ],
+         [
+           "SENSIBLE_HEADERS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "SWAGGER_UI_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+       ],
+       "debugCalls": [
+         [
+           "⌛ - Delay service initialized.",
+         ],
+         [
+           "⏳ - Cancelling pending timeouts:",
+           0,
+         ],
+         [
+           "⏳ - Cleared a delay",
+         ],
+         [
+           "⏳ - Created a delay:",
+           30000,
+         ],
+         [
+           "✅ - Closing HTTP server.",
+         ],
+         [
+           "✔️ - HTTP server closed!",
+         ],
+         [
+           "❤️ - Initializing the APM service.",
+         ],
+         [
+           "👣 - Logging service initialized.",
+         ],
+         [
+           "💱 - HTTP Transaction initialized.",
+         ],
+         [
+           "📇 - Process service initialized.",
+         ],
+         [
+           "🕶️ - Initializing the obfuscator service.",
+         ],
+         [
+           "🚦 - HTTP Router initialized.",
+         ],
+         [
+           "🛂 - Dynamic import of "ecstatic".",
+         ],
+         [
+           "🛂 - Dynamic import of "swagger-ui-dist".",
+         ],
+         [
+           "🛂 - Initializing the importer!",
+         ],
+       ],
+       "headers": {
+         "connection": undefined,
+         "content-type": "application/json",
+         "date": undefined,
+         "etag": undefined,
+         "keep-alive": undefined,
+         "last-modified": undefined,
+         "server": undefined,
+         "transaction-id": "0",
+         "transfer-encoding": "chunked",
+       },
+       "logErrorCalls": [
+         [
+           "🖃 - Initializing the validators service.",
+         ],
+         [
+           "⌨️ - Initializing the basic query parser.",
+         ],
+         [
+           "💁 - Serving the API docs: http://localhost:22222/docs",
+         ],
+         [
+           "🎙️ - HTTP Server listening at "http://localhost:22222".",
+         ],
+         [
+           "On air 🚀🌕",
+         ],
+       ],
+       "status": 200,
+     }
+    `);
   });
 
   test('should serve Swagger HTML', async () => {
@@ -326,148 +326,148 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "autoloaderCalls": [
-    [
-      "BUFFER_LIMIT",
-    ],
-    [
-      "PARSERS",
-    ],
-    [
-      "STRINGIFIERS",
-    ],
-    [
-      "DECODERS",
-    ],
-    [
-      "ENCODERS",
-    ],
-    [
-      "COERCION_OPTIONS",
-    ],
-    [
-      "SCHEMA_VALIDATORS_OPTIONS",
-    ],
-    [
-      "TIMEOUT",
-    ],
-    [
-      "TRANSACTIONS",
-    ],
-    [
-      "SHIELD_CHAR",
-    ],
-    [
-      "MAX_CLEAR_CHARS",
-    ],
-    [
-      "MAX_CLEAR_RATIO",
-    ],
-    [
-      "SENSIBLE_PROPS",
-    ],
-    [
-      "SENSIBLE_HEADERS",
-    ],
-    [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
-    ],
-    [
-      "QUERY_PARSER_OPTIONS",
-    ],
-    [
-      "SWAGGER_UI_OPTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
-    ],
-    [
-      "HTTP_SERVER_OPTIONS",
-    ],
-  ],
-  "debugCalls": [
-    [
-      "⌛ - Delay service initialized.",
-    ],
-    [
-      "⏳ - Cancelling pending timeouts:",
-      0,
-    ],
-    [
-      "✅ - Closing HTTP server.",
-    ],
-    [
-      "✔️ - HTTP server closed!",
-    ],
-    [
-      "❤️ - Initializing the APM service.",
-    ],
-    [
-      "👣 - Logging service initialized.",
-    ],
-    [
-      "💱 - HTTP Transaction initialized.",
-    ],
-    [
-      "📇 - Process service initialized.",
-    ],
-    [
-      "🕶️ - Initializing the obfuscator service.",
-    ],
-    [
-      "🖃 - Initializing the validators service.",
-    ],
-    [
-      "🚦 - HTTP Router initialized.",
-    ],
-    [
-      "🛂 - Dynamic import of "ecstatic".",
-    ],
-    [
-      "🛂 - Dynamic import of "swagger-ui-dist".",
-    ],
-    [
-      "🛂 - Initializing the importer!",
-    ],
-  ],
-  "headers": {
-    "cache-control": "max-age=3600",
-    "connection": undefined,
-    "content-length": "734",
-    "content-type": "text/html",
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-  },
-  "logErrorCalls": [
-    [
-      "⌨️ - Initializing the basic query parser.",
-    ],
-    [
-      "💁 - Serving the API docs: http://localhost:22224/docs",
-    ],
-    [
-      "🎙️ - HTTP Server listening at "http://localhost:22224".",
-    ],
-    [
-      "On air 🚀🌕",
-    ],
-  ],
-  "status": 200,
-}
-`);
+     {
+       "autoloaderCalls": [
+         [
+           "BUFFER_LIMIT",
+         ],
+         [
+           "PARSERS",
+         ],
+         [
+           "STRINGIFIERS",
+         ],
+         [
+           "DECODERS",
+         ],
+         [
+           "ENCODERS",
+         ],
+         [
+           "COERCION_OPTIONS",
+         ],
+         [
+           "SCHEMA_VALIDATORS_OPTIONS",
+         ],
+         [
+           "TIMEOUT",
+         ],
+         [
+           "TRANSACTIONS",
+         ],
+         [
+           "SHIELD_CHAR",
+         ],
+         [
+           "MAX_CLEAR_CHARS",
+         ],
+         [
+           "MAX_CLEAR_RATIO",
+         ],
+         [
+           "SENSIBLE_PROPS",
+         ],
+         [
+           "SENSIBLE_HEADERS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "SWAGGER_UI_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+       ],
+       "debugCalls": [
+         [
+           "⌛ - Delay service initialized.",
+         ],
+         [
+           "⏳ - Cancelling pending timeouts:",
+           0,
+         ],
+         [
+           "✅ - Closing HTTP server.",
+         ],
+         [
+           "✔️ - HTTP server closed!",
+         ],
+         [
+           "❤️ - Initializing the APM service.",
+         ],
+         [
+           "👣 - Logging service initialized.",
+         ],
+         [
+           "💱 - HTTP Transaction initialized.",
+         ],
+         [
+           "📇 - Process service initialized.",
+         ],
+         [
+           "🕶️ - Initializing the obfuscator service.",
+         ],
+         [
+           "🚦 - HTTP Router initialized.",
+         ],
+         [
+           "🛂 - Dynamic import of "ecstatic".",
+         ],
+         [
+           "🛂 - Dynamic import of "swagger-ui-dist".",
+         ],
+         [
+           "🛂 - Initializing the importer!",
+         ],
+       ],
+       "headers": {
+         "cache-control": "max-age=3600",
+         "connection": undefined,
+         "content-length": "734",
+         "content-type": "text/html",
+         "date": undefined,
+         "etag": undefined,
+         "keep-alive": undefined,
+         "last-modified": undefined,
+         "server": undefined,
+       },
+       "logErrorCalls": [
+         [
+           "🖃 - Initializing the validators service.",
+         ],
+         [
+           "⌨️ - Initializing the basic query parser.",
+         ],
+         [
+           "💁 - Serving the API docs: http://localhost:22224/docs",
+         ],
+         [
+           "🎙️ - HTTP Server listening at "http://localhost:22224".",
+         ],
+         [
+           "On air 🚀🌕",
+         ],
+       ],
+       "status": 200,
+     }
+    `);
   });
 
   test('should serve Swagger Initializer', async () => {
@@ -507,33 +507,33 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     await $instance.destroy();
 
     expect(data).toMatchInlineSnapshot(`
-"
-window.onload = function() {
-  //<editor-fold desc="Changeable Configuration Block">
+     "
+     window.onload = function() {
+       //<editor-fold desc="Changeable Configuration Block">
 
-  // the following lines will be replaced by docker/configurator, when it runs in a docker-container
-  window.ui = SwaggerUIBundle(
-    Object.assign(
-      {
-        urls: [{"name":"Public API","url":"http://localhost:22225/v1/openAPI"}, {"name":"Private API","url":"http://localhost:22225/v1/openAPI?access_token=oudelali"}],
-        dom_id: '#swagger-ui',
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIStandalonePreset
-        ],
-        plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl,
-          SwaggerUIBundle.plugins.Topbar
-        ],
-      },
-      {"layout":"StandaloneLayout"}
-    )
-  );
+       // the following lines will be replaced by docker/configurator, when it runs in a docker-container
+       window.ui = SwaggerUIBundle(
+         Object.assign(
+           {
+             urls: [{"name":"Public API","url":"http://localhost:22225/v1/openAPI"}, {"name":"Private API","url":"http://localhost:22225/v1/openAPI?access_token=oudelali"}],
+             dom_id: '#swagger-ui',
+             presets: [
+               SwaggerUIBundle.presets.apis,
+               SwaggerUIStandalonePreset
+             ],
+             plugins: [
+               SwaggerUIBundle.plugins.DownloadUrl,
+               SwaggerUIBundle.plugins.Topbar
+             ],
+           },
+           {"layout":"StandaloneLayout"}
+         )
+       );
 
-  //</editor-fold>
-};
-"
-`);
+       //</editor-fold>
+     };
+     "
+    `);
     expect(logger.output.mock.calls.length).toEqual(0);
     expect({
       status,
@@ -551,144 +551,144 @@ window.onload = function() {
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "autoloaderCalls": [
-    [
-      "BUFFER_LIMIT",
-    ],
-    [
-      "PARSERS",
-    ],
-    [
-      "STRINGIFIERS",
-    ],
-    [
-      "DECODERS",
-    ],
-    [
-      "ENCODERS",
-    ],
-    [
-      "COERCION_OPTIONS",
-    ],
-    [
-      "SCHEMA_VALIDATORS_OPTIONS",
-    ],
-    [
-      "TIMEOUT",
-    ],
-    [
-      "TRANSACTIONS",
-    ],
-    [
-      "SHIELD_CHAR",
-    ],
-    [
-      "MAX_CLEAR_CHARS",
-    ],
-    [
-      "MAX_CLEAR_RATIO",
-    ],
-    [
-      "SENSIBLE_PROPS",
-    ],
-    [
-      "SENSIBLE_HEADERS",
-    ],
-    [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
-    ],
-    [
-      "QUERY_PARSER_OPTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
-    ],
-    [
-      "HTTP_SERVER_OPTIONS",
-    ],
-  ],
-  "debugCalls": [
-    [
-      "⌛ - Delay service initialized.",
-    ],
-    [
-      "⏳ - Cancelling pending timeouts:",
-      0,
-    ],
-    [
-      "✅ - Closing HTTP server.",
-    ],
-    [
-      "✔️ - HTTP server closed!",
-    ],
-    [
-      "❤️ - Initializing the APM service.",
-    ],
-    [
-      "👣 - Logging service initialized.",
-    ],
-    [
-      "💱 - HTTP Transaction initialized.",
-    ],
-    [
-      "📇 - Process service initialized.",
-    ],
-    [
-      "🕶️ - Initializing the obfuscator service.",
-    ],
-    [
-      "🖃 - Initializing the validators service.",
-    ],
-    [
-      "🚦 - HTTP Router initialized.",
-    ],
-    [
-      "🛂 - Dynamic import of "ecstatic".",
-    ],
-    [
-      "🛂 - Dynamic import of "swagger-ui-dist".",
-    ],
-    [
-      "🛂 - Initializing the importer!",
-    ],
-  ],
-  "headers": {
-    "connection": undefined,
-    "content-type": "text/javascript",
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-    "transfer-encoding": "chunked",
-  },
-  "logErrorCalls": [
-    [
-      "⌨️ - Initializing the basic query parser.",
-    ],
-    [
-      "💁 - Serving the API docs: http://localhost:22225/docs",
-    ],
-    [
-      "🎙️ - HTTP Server listening at "http://localhost:22225".",
-    ],
-    [
-      "On air 🚀🌕",
-    ],
-  ],
-  "status": 200,
-}
-`);
+     {
+       "autoloaderCalls": [
+         [
+           "BUFFER_LIMIT",
+         ],
+         [
+           "PARSERS",
+         ],
+         [
+           "STRINGIFIERS",
+         ],
+         [
+           "DECODERS",
+         ],
+         [
+           "ENCODERS",
+         ],
+         [
+           "COERCION_OPTIONS",
+         ],
+         [
+           "SCHEMA_VALIDATORS_OPTIONS",
+         ],
+         [
+           "TIMEOUT",
+         ],
+         [
+           "TRANSACTIONS",
+         ],
+         [
+           "SHIELD_CHAR",
+         ],
+         [
+           "MAX_CLEAR_CHARS",
+         ],
+         [
+           "MAX_CLEAR_RATIO",
+         ],
+         [
+           "SENSIBLE_PROPS",
+         ],
+         [
+           "SENSIBLE_HEADERS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+       ],
+       "debugCalls": [
+         [
+           "⌛ - Delay service initialized.",
+         ],
+         [
+           "⏳ - Cancelling pending timeouts:",
+           0,
+         ],
+         [
+           "✅ - Closing HTTP server.",
+         ],
+         [
+           "✔️ - HTTP server closed!",
+         ],
+         [
+           "❤️ - Initializing the APM service.",
+         ],
+         [
+           "👣 - Logging service initialized.",
+         ],
+         [
+           "💱 - HTTP Transaction initialized.",
+         ],
+         [
+           "📇 - Process service initialized.",
+         ],
+         [
+           "🕶️ - Initializing the obfuscator service.",
+         ],
+         [
+           "🚦 - HTTP Router initialized.",
+         ],
+         [
+           "🛂 - Dynamic import of "ecstatic".",
+         ],
+         [
+           "🛂 - Dynamic import of "swagger-ui-dist".",
+         ],
+         [
+           "🛂 - Initializing the importer!",
+         ],
+       ],
+       "headers": {
+         "connection": undefined,
+         "content-type": "text/javascript",
+         "date": undefined,
+         "etag": undefined,
+         "keep-alive": undefined,
+         "last-modified": undefined,
+         "server": undefined,
+         "transfer-encoding": "chunked",
+       },
+       "logErrorCalls": [
+         [
+           "🖃 - Initializing the validators service.",
+         ],
+         [
+           "⌨️ - Initializing the basic query parser.",
+         ],
+         [
+           "💁 - Serving the API docs: http://localhost:22225/docs",
+         ],
+         [
+           "🎙️ - HTTP Server listening at "http://localhost:22225".",
+         ],
+         [
+           "On air 🚀🌕",
+         ],
+       ],
+       "status": 200,
+     }
+    `);
   });
 
   test('should be bypassed with no debug env', async () => {
@@ -716,127 +716,127 @@ window.onload = function() {
       logErrorCalls: logger.error.mock.calls,
       autoloaderCalls: $autoload.mock.calls,
     }).toMatchInlineSnapshot(`
-{
-  "autoloaderCalls": [
-    [
-      "BUFFER_LIMIT",
-    ],
-    [
-      "PARSERS",
-    ],
-    [
-      "STRINGIFIERS",
-    ],
-    [
-      "DECODERS",
-    ],
-    [
-      "ENCODERS",
-    ],
-    [
-      "COERCION_OPTIONS",
-    ],
-    [
-      "SCHEMA_VALIDATORS_OPTIONS",
-    ],
-    [
-      "TIMEOUT",
-    ],
-    [
-      "TRANSACTIONS",
-    ],
-    [
-      "SHIELD_CHAR",
-    ],
-    [
-      "MAX_CLEAR_CHARS",
-    ],
-    [
-      "MAX_CLEAR_RATIO",
-    ],
-    [
-      "SENSIBLE_PROPS",
-    ],
-    [
-      "SENSIBLE_HEADERS",
-    ],
-    [
-      "uniqueId",
-    ],
-    [
-      "ERRORS_DESCRIPTORS",
-    ],
-    [
-      "DEFAULT_ERROR_CODE",
-    ],
-    [
-      "QUERY_PARSER_OPTIONS",
-    ],
-    [
-      "SWAGGER_UI_OPTIONS",
-    ],
-    [
-      "PROCESS_NAME",
-    ],
-    [
-      "SIGNALS",
-    ],
-    [
-      "HTTP_SERVER_OPTIONS",
-    ],
-  ],
-  "debugCalls": [
-    [
-      "⌛ - Delay service initialized.",
-    ],
-    [
-      "⏳ - Cancelling pending timeouts:",
-      0,
-    ],
-    [
-      "✅ - Closing HTTP server.",
-    ],
-    [
-      "✔️ - HTTP server closed!",
-    ],
-    [
-      "❤️ - Initializing the APM service.",
-    ],
-    [
-      "👣 - Logging service initialized.",
-    ],
-    [
-      "💱 - HTTP Transaction initialized.",
-    ],
-    [
-      "📇 - Process service initialized.",
-    ],
-    [
-      "🕶️ - Initializing the obfuscator service.",
-    ],
-    [
-      "🖃 - Initializing the validators service.",
-    ],
-    [
-      "🚦 - HTTP Router initialized.",
-    ],
-    [
-      "🛂 - Initializing the importer!",
-    ],
-  ],
-  "logErrorCalls": [
-    [
-      "⌨️ - Initializing the basic query parser.",
-    ],
-    [
-      "🎙️ - HTTP Server listening at "http://localhost:22223".",
-    ],
-    [
-      "On air 🚀🌕",
-    ],
-  ],
-}
-`);
+     {
+       "autoloaderCalls": [
+         [
+           "BUFFER_LIMIT",
+         ],
+         [
+           "PARSERS",
+         ],
+         [
+           "STRINGIFIERS",
+         ],
+         [
+           "DECODERS",
+         ],
+         [
+           "ENCODERS",
+         ],
+         [
+           "COERCION_OPTIONS",
+         ],
+         [
+           "SCHEMA_VALIDATORS_OPTIONS",
+         ],
+         [
+           "TIMEOUT",
+         ],
+         [
+           "TRANSACTIONS",
+         ],
+         [
+           "SHIELD_CHAR",
+         ],
+         [
+           "MAX_CLEAR_CHARS",
+         ],
+         [
+           "MAX_CLEAR_RATIO",
+         ],
+         [
+           "SENSIBLE_PROPS",
+         ],
+         [
+           "SENSIBLE_HEADERS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "SWAGGER_UI_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+       ],
+       "debugCalls": [
+         [
+           "⌛ - Delay service initialized.",
+         ],
+         [
+           "⏳ - Cancelling pending timeouts:",
+           0,
+         ],
+         [
+           "✅ - Closing HTTP server.",
+         ],
+         [
+           "✔️ - HTTP server closed!",
+         ],
+         [
+           "❤️ - Initializing the APM service.",
+         ],
+         [
+           "👣 - Logging service initialized.",
+         ],
+         [
+           "💱 - HTTP Transaction initialized.",
+         ],
+         [
+           "📇 - Process service initialized.",
+         ],
+         [
+           "🕶️ - Initializing the obfuscator service.",
+         ],
+         [
+           "🚦 - HTTP Router initialized.",
+         ],
+         [
+           "🛂 - Initializing the importer!",
+         ],
+       ],
+       "logErrorCalls": [
+         [
+           "🖃 - Initializing the validators service.",
+         ],
+         [
+           "⌨️ - Initializing the basic query parser.",
+         ],
+         [
+           "🎙️ - HTTP Server listening at "http://localhost:22223".",
+         ],
+         [
+           "On air 🚀🌕",
+         ],
+       ],
+     }
+    `);
   });
 });
 

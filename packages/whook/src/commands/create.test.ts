@@ -189,6 +189,10 @@ describe('createCommand', () => {
                      "name": "trace",
                      "value": "trace",
                    },
+                   {
+                     "name": "query",
+                     "value": "query",
+                   },
                  ],
                  "default": "get",
                  "message": "Give the handler method",
@@ -456,6 +460,10 @@ describe('createCommand', () => {
                      "name": "trace",
                      "value": "trace",
                    },
+                   {
+                     "name": "query",
+                     "value": "query",
+                   },
                  ],
                  "default": "get",
                  "message": "Give the handler method",
@@ -667,6 +675,10 @@ describe('createCommand', () => {
                    {
                      "name": "trace",
                      "value": "trace",
+                   },
+                   {
+                     "name": "query",
+                     "value": "query",
                    },
                  ],
                  "default": "get",

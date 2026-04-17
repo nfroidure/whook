@@ -112,7 +112,11 @@ async function initWhookResolvedPlugins({
           `🚫 - Plugin directory doesn't exist "${sourceDirectory}".`,
         );
         log('debug-stack', printStackTrace(err as Error));
-        throw YError.wrap(err as Error, 'E_BAD_PLUGIN_DIR');
+        throw YError.wrap(err as Error, 'E_BAD_PLUGIN_DIR', [
+          sourceDirectory,
+          resolvedPlugins[pluginName],
+          MAIN_FILE_URL,
+        ]);
       }
       log(
         'debug',

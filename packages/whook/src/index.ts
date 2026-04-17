@@ -129,6 +129,7 @@ export * from './libs/headers.js';
 export * from './libs/openapi.js';
 export * from './libs/router.js';
 export * from './libs/utils.js';
+export * from './libs/hash.js';
 export * from './libs/validation.js';
 export * from './libs/wrappers.js';
 export * from './services/queryParserBuilder.js';

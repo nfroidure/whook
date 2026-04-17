@@ -10,6 +10,9 @@ import {
   type OpenAPI,
   type OpenAPISecurityScheme,
   type OpenAPIReference,
+  type OpenAPISecurityRequirement,
+  isValidOpenAPIPath,
+  pathItemToOperationMap,
 } from 'ya-open-api-types';
 import {
   parseArrayOfBooleans,
@@ -168,53 +171,139 @@ function rejectAnyRequestBody(
 // https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
 const SUPPORTED_HTTP_SCHEMES = ['basic', 'bearer', 'digest'];
 
+export function extractSecuritySchemesNames(
+  requirements: OpenAPISecurityRequirement[],
+) {
+  return [
+    ...new Set(
+      requirements.map((requirement) => Object.keys(requirement)).flat(),
+    ),
+  ].sort();
+}
+
+export async function extractAPISchemesKeysCombinations<T extends OpenAPI>({
+  API,
+}: {
+  API: T;
+}) {
+  const schemesKeysCombinations: string[][] = [];
+
+  if (API.paths) {
+    for (const path in API.paths) {
+      if (!isValidOpenAPIPath(path)) {
+        throw new YError('E_BAD_PATH', [path]);
+      }
+
+      const pathItem = API.paths[path];
+
+      for (const [method, operation] of Object.entries(
+        pathItemToOperationMap(pathItem) as Record<
+          string,
+          WhookOpenAPIOperation
+        >,
+      )) {
+        const operationId = operation.operationId;
+
+        if (!operationId) {
+          throw new YError('E_NO_OPERATION_ID', [path, method]);
+        }
+
+        const schemesKeysCombination =
+          await extractOperationSchemesKeysCombination({ API }, operation);
+
+        if (
+          schemesKeysCombinations.every(
+            (aSchemesKeysCombination) =>
+              aSchemesKeysCombination.join('-') !==
+              schemesKeysCombination.join('-'),
+          )
+        ) {
+          schemesKeysCombinations.push(schemesKeysCombination);
+        }
+      }
+    }
+  }
+  return schemesKeysCombinations;
+}
+
+export async function extractOperationSchemesKeysCombination<T extends OpenAPI>(
+  {
+    API,
+  }: {
+    API: T;
+  },
+  operation: WhookOpenAPIOperation,
+) {
+  return [
+    ...new Set([
+      ...(API.security ? extractSecuritySchemesNames(API.security) : []),
+      ...(operation.security
+        ? extractSecuritySchemesNames(operation.security)
+        : []),
+    ]),
+  ].sort();
+}
+
+export async function extractParametersFromSchemesKeysCombination<
+  T extends OpenAPI,
+>({ API }: { API: T }, schemesKeysCombination: string[]) {
+  if (!schemesKeysCombination.length) {
+    return [];
+  }
+
+  const securitySchemes =
+    (API.components && API.components.securitySchemes) || {};
+  const combinationSecuritySchemes: OpenAPISecurityScheme<OpenAPIExtension>[] =
+    [];
+
+  for (const schemeKey of schemesKeysCombination) {
+    if (!securitySchemes[schemeKey]) {
+      throw new YError('E_UNDECLARED_SECURITY_SCHEME', [schemeKey]);
+    }
+    combinationSecuritySchemes.push(
+      await ensureResolvedObject(API, securitySchemes[schemeKey]),
+    );
+  }
+
+  return extractParametersFromSecuritySchemes(combinationSecuritySchemes);
+}
+
 export async function extractOperationSecurityParameters(
   { API }: { API: WhookOpenAPI },
   operation: WhookOpenAPIOperation,
 ): Promise<WhookSupportedParameter[]> {
-  const operationSecuritySchemes = await pickupOperationSecuritySchemes(
+  const schemesKeysCombination = await extractOperationSchemesKeysCombination(
     { API },
     operation,
   );
-  const securitySchemes = Object.keys(operationSecuritySchemes).map(
-    (schemeKey) => operationSecuritySchemes[schemeKey],
-  );
 
-  return extractParametersFromSecuritySchemes(securitySchemes);
+  return extractParametersFromSchemesKeysCombination(
+    { API },
+    schemesKeysCombination,
+  );
 }
 
-export async function pickupOperationSecuritySchemes<T extends OpenAPI>(
-  { API }: { API: T },
-  operation: WhookOpenAPIOperation,
-): Promise<Record<string, OpenAPISecurityScheme<OpenAPIExtension>>> {
-  const securitySchemes =
-    (API.components && API.components.securitySchemes) || {};
-  const operationSecuritySchemes: Record<
-    string,
-    OpenAPISecurityScheme<OpenAPIExtension>
-  > = {};
+export async function extractAPISecurityParametersSchemas({
+  API,
+}: {
+  API: WhookOpenAPI;
+}) {
+  const schemesKeysCombinations = await extractAPISchemesKeysCombinations({
+    API,
+  });
 
-  for (const security of operation.security || API.security || []) {
-    const schemeKey = Object.keys(security)[0];
-
-    if (!schemeKey) {
-      continue;
-    }
-
-    if (!securitySchemes[schemeKey]) {
-      throw new YError('E_UNDECLARED_SECURITY_SCHEME', [
-        schemeKey,
-        operation.operationId,
-      ]);
-    }
-
-    operationSecuritySchemes[schemeKey] = await ensureResolvedObject(
-      API,
-      securitySchemes[schemeKey],
-    );
-  }
-
-  return operationSecuritySchemes;
+  return (
+    await Promise.all(
+      schemesKeysCombinations.map((schemesKeysCombination) =>
+        extractParametersFromSchemesKeysCombination(
+          { API },
+          schemesKeysCombination,
+        ),
+      ),
+    )
+  )
+    .flat()
+    .map((parameter) => parameter.schema);
 }
 
 export function extractParametersFromSecuritySchemes(
@@ -340,6 +429,13 @@ export async function resolveParameters<T extends OpenAPI>(
       throw new YError('E_BAD_PARAMETER_NAME', [resolvedParameter]);
     }
 
+    if (resolvedParameter.in === 'querystring') {
+      throw new YError('E_UNSUPPORTED_PARAMETER_LOCATION', [
+        resolvedParameter.name,
+        'querystring',
+      ]);
+    }
+
     if ('content' in resolvedParameter) {
       throw new YError('E_UNSUPPORTED_PARAMETER_DEFINITION', [
         resolvedParameter.name,
@@ -386,7 +482,7 @@ export type WhookParameterValidator = (
   str: string | undefined,
 ) => WhookParameterValue;
 export type WhookParametersValidators = Record<
-  'query' | 'header' | 'path' | 'cookie',
+  'query' | 'header' | 'path' | 'cookie' | 'querystring',
   Record<string, WhookParameterValidator>
 >;
 
@@ -518,6 +614,7 @@ export async function createParametersValidators(
     header: {},
     path: {},
     cookie: {},
+    querystring: {},
   };
 
   for (const parameter of parameters) {

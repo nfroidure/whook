@@ -23,7 +23,9 @@ export const timePayloadSchema = {
       isFixed: { type: 'boolean' },
     },
   },
-} as const satisfies WhookAPISchemaDefinition<components['schemas']['TimePayload']>;
+} as const satisfies WhookAPISchemaDefinition<
+  components['schemas']['TimePayload']
+>;
 
 export const definition = {
   path: '/time',

@@ -23,6 +23,7 @@ const API: OpenAPI = {
     '/test': {
       description: 'Test',
       get: {
+        operationId: 'test',
         parameters: [
           {
             $ref: '#/components/parameters/TestParameterAlias',
@@ -125,10 +126,10 @@ describe('Validators service', () => {
 
       test('with raw schemas referring to openapi ones', () => {
         expect(schemaValidators(referringSchema)).toBeDefined();
-        // Seems that for this case Ajv deduplicates schemas
-        // expect(
-        //   schemaValidators(referringSchema) === schemaValidators(referringSchema),
-        // ).toBe(true);
+        expect(
+          schemaValidators(referringSchema) ===
+            schemaValidators(referringSchema),
+        ).toBe(true);
         expect(schemaValidators(referringSchema)(['1234'])).toBe(true);
         expect(schemaValidators(referringSchema)([1234])).toBe(false);
       });
@@ -146,6 +147,7 @@ describe('Validators service', () => {
           lazy: true,
           dedupe: true,
           hashLength: 16,
+          buildSchemas: false,
         },
         API,
         log,

@@ -506,6 +506,12 @@ describe('runProcess', () => {
            "⏳ - Skipped "generateOpenAPITypes.test.js.map" per file patterns.",
          ],
          [
+           "⏳ - Skipped "generateSchemaValidators.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "generateSchemaValidators.js.map" per file patterns.",
+         ],
+         [
            "⏳ - Skipped "getDelay.test.ts" per ignore patterns.",
          ],
          [
@@ -612,6 +618,33 @@ describe('runProcess', () => {
          ],
          [
            "⏳ - Skipped "route.test.js.map" per file patterns.",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
          ],
          [
            "✅ - Module path of "API" found at "file:///project/src/services/API.ts".",
@@ -1232,9 +1265,6 @@ describe('runProcess', () => {
            "🕶️ - Initializing the obfuscator service.",
          ],
          [
-           "🖃 - Initializing the validators service.",
-         ],
-         [
            "🚦 - HTTP Router initialized.",
          ],
          [
@@ -1688,6 +1718,9 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///projects/whook/dist/commands/generateOpenAPITypes.js".",
          ],
          [
+           "🛂 - Dynamic import of "file:///projects/whook/dist/commands/generateSchemaValidators.js".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///projects/whook/dist/commands/inspect.js".",
          ],
          [
@@ -1726,33 +1759,6 @@ describe('runProcess', () => {
            "⏳ - Time mock is enabled!",
          ],
          [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
-           "⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!",
-         ],
-         [
            "⚠️ - Using fake auth mechanism!",
          ],
          [
@@ -1784,6 +1790,9 @@ describe('runProcess', () => {
          ],
          [
            "🕱 - Wrapping the error handler for CORS.",
+         ],
+         [
+           "🖃 - Initializing the validators service.",
          ],
          [
            "🤖 - Initializing the \`$autoload\` service.",

@@ -11,14 +11,18 @@ import ignore from 'ignore';
 import { type AppEnvVars } from 'application-services';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { type Dependencies, Knifecycle, constant } from 'knifecycle';
-import { type DelayService, type LogService } from 'common-services';
+import {
+  DelayResult,
+  type DelayService,
+  type LogService,
+} from 'common-services';
 import { type OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
 import { printStackTrace } from 'yerror';
 
 let $instance: Knifecycle;
 let log: LogService;
 let delay: DelayService;
-let delayPromise: Promise<void> | undefined;
+let delayPromise: Promise<DelayResult> | undefined;
 let hash: string;
 
 export type WatchProcessDependencies = OpenAPITypesConfig & {

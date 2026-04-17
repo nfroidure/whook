@@ -22,6 +22,7 @@ describe('commands should work', () => {
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
      ✔ - Found a free port "8000"
+     🖃 - Initializing the validators service.
      On air 🚀🌕
      ",
        "stdout": "
@@ -30,13 +31,14 @@ describe('commands should work', () => {
      - printEnv: A command printing every env values
 
 
-     # Provided by "@whook/whook": 9 commands
+     # Provided by "@whook/whook": 10 commands
      - config: A simple program that returns the queried config value
      - cronRun: A command to run all instances of a cron
      - cronSchedule: A command to run a cron schedules for a given time frame
      - env: A command printing env values
      - generateOpenAPISchema: Write openAPI schema to stdout
      - generateOpenAPITypes: Write openAPI types to stdout
+     - generateSchemaValidators: Build the schema validators with AJV
      - inspect: A simple program that returns the result of the injected service
      - ls: Print available commands
      - route: Runs the given server route for testing purpose
@@ -67,8 +69,8 @@ describe('commands should work', () => {
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
      ✔ - Found a free port "8000"
+     🖃 - Initializing the validators service.
      On air 🚀🌕
-     ⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!
      ",
        "stdout": "test
      ",
@@ -92,8 +94,8 @@ describe('commands should work', () => {
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
      ✔ - Found a free port "8000"
+     🖃 - Initializing the validators service.
      On air 🚀🌕
-     ⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!
      ",
        "stdout": ""localhost"
      ",

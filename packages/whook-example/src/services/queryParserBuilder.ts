@@ -1,5 +1,9 @@
+import { type LogService } from 'common-services';
+import {
+  initQueryParserBuilder as baseInitQueryParserBuilder,
+  type WhookOpenAPI,
+} from '@whook/whook';
 import { autoService, location } from 'knifecycle';
-import { qsStrict as strictQs } from 'strict-qs';
 
 /* Architecture Note #4.5: queryParserBuilder
 
@@ -15,15 +19,25 @@ You can navigate through the Whook's sources to
  environment variable to see what happens under the
  hood, in the DI system.
 */
-async function initQueryParserBuilder() {
-  const queryParser = strictQs.bind(null, {
-    allowEmptySearch: true,
-    allowUnknownParams: true,
-    allowDefault: true,
-    allowUnorderedParams: true,
-  });
+async function initQueryParserBuilder({
+  API,
+  log,
+}: {
+  API: WhookOpenAPI;
+  log: LogService;
+}) {
+  log('warning', `⌨️ - Initializing a custom query parser.`);
 
-  return async () => queryParser;
+  return await baseInitQueryParserBuilder({
+    API,
+    QUERY_PARSER_OPTIONS: {
+      allowEmptySearch: true,
+      allowUnknownParams: true,
+      allowDefault: true,
+      allowUnorderedParams: true,
+    },
+    log,
+  });
 }
 
 export default location(autoService(initQueryParserBuilder), import.meta.url);

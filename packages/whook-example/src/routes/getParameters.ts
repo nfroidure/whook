@@ -127,6 +127,8 @@ export const definition = {
                 aHeader: refersTo(booleanSchema),
                 aMultiHeader: {
                   type: 'array',
+                  minItems: 2,
+                  maxItems: 2,
                   prefixItems: [refersTo(numberSchema), refersTo(numberSchema)],
                 },
                 pathParam1: refersTo(numberSchema),

@@ -101,7 +101,7 @@ exports[`initHTTPTransaction httpTransaction should work 1`] = `
         "errored": false,
         "id": "[id]",
         "ip": "127.0.0.1",
-        "method": "GET",
+        "method": "get",
         "operationId": "theOperationId",
         "protocol": "http",
         "reqHeaders": undefined,
@@ -117,7 +117,9 @@ exports[`initHTTPTransaction httpTransaction should work 1`] = `
     ],
   ],
   "buildResponseCalls": [
-    [],
+    [
+      undefined,
+    ],
   ],
   "delayClearCalls": [
     [

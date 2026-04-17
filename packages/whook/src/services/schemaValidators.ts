@@ -1,15 +1,22 @@
+import standaloneCode from 'ajv/dist/standalone/index.js';
 import { autoService, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import { Ajv2020, type ValidateFunction } from 'ajv/dist/2020.js';
 import addAJVFormats from 'ajv-formats';
 import { type LogService } from 'common-services';
 import { type AppEnvVars } from 'application-services';
-import { type OpenAPIReference, type OpenAPI } from 'ya-open-api-types';
+import {
+  type OpenAPIReference,
+  type OpenAPI,
+  collectAPISchemas,
+} from 'ya-open-api-types';
 import {
   type ExpressiveJSONSchema,
   type JSONSchema,
 } from 'ya-json-schema-types';
 import { createHash } from '../libs/hash.js';
+import { extractAPISecurityParametersSchemas } from '../libs/validation.js';
+import { type WhookOpenAPI } from '../types/openapi.js';
 
 /* Architecture Note #2.11.2.1: Schema validators
 
@@ -24,6 +31,7 @@ export const DEFAULT_SCHEMA_VALIDATORS_OPTIONS = {
   lazy: false,
   dedupe: false,
   hashLength: 16,
+  buildSchemas: false,
 } as const satisfies WhookSchemaValidatorsOptions;
 
 /** Options for schema validation */
@@ -39,6 +47,10 @@ export interface WhookSchemaValidatorsOptions {
    * Size of the shake256 hash for deduping
    */
   hashLength: number;
+  /**
+   * Wether schemas will be built or not
+   */
+  buildSchemas: boolean;
 }
 
 export interface WhookSchemaValidatorsConfig {
@@ -82,7 +94,7 @@ async function initSchemaValidators({
   ENV,
   log = noop,
 }: WhookSchemaValidatorsDependencies): Promise<WhookSchemaValidatorsService> {
-  log('debug', `🖃 - Initializing the validators service.`);
+  log('warning', `🖃 - Initializing the validators service.`);
 
   const validatorsMap: Record<string, ValidateFunction> = {};
   const ajv = new Ajv2020({
@@ -97,15 +109,27 @@ async function initSchemaValidators({
 
   addAJVFormats.default(ajv);
 
-  if (API?.components?.schemas) {
-    for (const key of Object.keys(API.components.schemas)) {
-      ajv.addSchema(API.components.schemas[key], '#/components/schemas/' + key);
+  const schemas = collectAPISchemas(API);
+
+  for (const schema of schemas) {
+    if (
+      'components' in schema.location &&
+      schema.location.components === 'schemas'
+    ) {
+      const $ref = '#/components/schemas/' + schema.location.schemaName;
+
+      ajv.addSchema(schema.schema, $ref);
     }
-    if (!SCHEMA_VALIDATORS_OPTIONS.lazy) {
-      for (const key of Object.keys(API.components.schemas)) {
-        validatorsMap['#/components/schemas/' + key] = ajv.getSchema(
-          '#/components/schemas/' + key,
-        ) as ValidateFunction;
+  }
+  if (!SCHEMA_VALIDATORS_OPTIONS.lazy) {
+    for (const schema of schemas) {
+      if (
+        'components' in schema.location &&
+        schema.location.components === 'schemas'
+      ) {
+        const $ref = '#/components/schemas/' + schema.location.schemaName;
+
+        validatorsMap[$ref] = ajv.getSchema($ref) as ValidateFunction;
       }
     }
   }
@@ -131,8 +155,8 @@ async function initSchemaValidators({
 
     if (!SCHEMA_VALIDATORS_OPTIONS.lazy) {
       log(
-        'warning',
-        `⚠️ - A schema were compiled lazily, always refer to schemas in API components to compile it upfront (and be able to build schemas efficiently)!`,
+        'debug',
+        `⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!`,
       );
       log('debug', JSON.stringify(schema));
     }
@@ -153,3 +177,99 @@ async function initSchemaValidators({
 }
 
 export default location(autoService(initSchemaValidators), import.meta.url);
+
+export async function buildSchemaValidatorsMap({
+  DEBUG_NODE_ENVS,
+  SCHEMA_VALIDATORS_OPTIONS = DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
+  API,
+  ENV,
+  log,
+}: {
+  DEBUG_NODE_ENVS: string[];
+  SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
+  API: OpenAPI;
+  ENV: AppEnvVars;
+  log: LogService;
+}) {
+  if (SCHEMA_VALIDATORS_OPTIONS.lazy) {
+    log(
+      'warning',
+      `⚠️ - Using lazy compilation is not recommended when building schema validators.`,
+    );
+  }
+
+  const ajv = new Ajv2020({
+    verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
+    strict: true,
+    logger: {
+      log: (...args: string[]) => log('debug', ...args),
+      warn: (...args: string[]) => log('warning', ...args),
+      error: (...args: string[]) => log('error', ...args),
+    },
+    // Using common JS since bugs with ESM
+    // See: https://github.com/ajv-validator/ajv/issues/2598
+    code: { source: true, esm: false },
+  });
+
+  addAJVFormats.default(ajv);
+
+  const schemas = collectAPISchemas(API);
+  const schemaMapper: Record<string, string> = {};
+
+  schemas.push(
+    ...(
+      await extractAPISecurityParametersSchemas({
+        API: API as unknown as WhookOpenAPI,
+      })
+    ).map((schema) => ({
+      schema,
+      location: {
+        components: 'headers',
+        headerName: '',
+      } as const,
+    })),
+  );
+
+  for (const schema of schemas) {
+    if (
+      'components' in schema.location &&
+      schema.location.components === 'schemas'
+    ) {
+      const $ref = '#/components/schemas/' + schema.location.schemaName;
+
+      schemaMapper['__schema_' + schema.location.schemaName] = $ref;
+      ajv.addSchema(schema.schema, $ref);
+    }
+  }
+
+  for (const schema of schemas) {
+    if (
+      'components' in schema.location &&
+      schema.location.components === 'schemas'
+    ) {
+      continue;
+    }
+
+    const key =
+      '__hash_' +
+      createHash(
+        Buffer.from(JSON.stringify(schema.schema)),
+        SCHEMA_VALIDATORS_OPTIONS.hashLength,
+      );
+    const $ref = '#/components/hash/' + key;
+
+    if (ajv.getSchema($ref)) {
+      continue;
+    }
+
+    schemaMapper[key] = $ref;
+    ajv.addSchema(schema.schema, $ref);
+  }
+
+  return (
+    standaloneCode as unknown as (
+      ajv: Ajv2020,
+      schemaMapper: Record<string, string>,
+    ) => string
+  )(ajv, schemaMapper);
+}

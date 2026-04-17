@@ -30,7 +30,7 @@ describe('getDelay', () => {
   });
 
   test('should work', async () => {
-    delay.create.mockResolvedValueOnce(undefined);
+    delay.create.mockResolvedValueOnce('timeout');
 
     /* Architecture Note #3.5.2: Handler initialization
   
@@ -84,7 +84,7 @@ describe('getDelay', () => {
   });
 
   test('should work with a callback', async () => {
-    delay.create.mockResolvedValueOnce(undefined);
+    delay.create.mockResolvedValueOnce('timeout');
     fetcher.mockResolvedValueOnce({ status: 204 } as Response);
 
     /* Architecture Note #3.5.2: Handler initialization

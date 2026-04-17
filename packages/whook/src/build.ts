@@ -15,6 +15,13 @@ import {
 } from './services/compiler.js';
 import { type LogService } from 'common-services';
 import { parseArgs } from './libs/args.js';
+import { type OpenAPI } from 'ya-open-api-types';
+import { type AppEnvVars } from 'application-services';
+import {
+  buildSchemaValidatorsMap,
+  DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
+  type WhookSchemaValidatorsOptions,
+} from './services/schemaValidators.js';
 
 export const DEFAULT_BUILD_DIR = 'server';
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
@@ -57,8 +64,6 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
     constant('INITIALIZER_PATH_MAP', DEFAULT_BUILD_INITIALIZER_PATH_MAP),
   );
   $.register(constant('args', parseArgs([])));
-  $.register(constant('BUILD_DIR', DEFAULT_BUILD_DIR));
-  $.register(constant('COMPILER_OPTIONS', DEFAULT_COMPILER_OPTIONS));
 
   return $;
 }
@@ -71,28 +76,40 @@ export async function runBuild(
     const {
       APP_ENV,
       PROJECT_DIR,
-      BUILD_DIR,
-      COMPILER_OPTIONS,
+      BUILD_DIR = DEFAULT_BUILD_DIR,
       compiler,
       log,
       buildInitializer,
+      DEBUG_NODE_ENVS,
+      API,
+      ENV,
+      COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
+      SCHEMA_VALIDATORS_OPTIONS = DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
     }: {
       APP_ENV: string;
       PROJECT_DIR: string;
       BUILD_DIR: string;
-      COMPILER_OPTIONS: WhookCompilerOptions;
       compiler: WhookCompilerService;
       log: LogService;
       buildInitializer: BuildInitializer;
+      DEBUG_NODE_ENVS: string[];
+      API: OpenAPI;
+      ENV: AppEnvVars;
+      COMPILER_OPTIONS: WhookCompilerOptions;
+      SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
     } = await $.run([
       'APP_ENV',
       'PROJECT_DIR',
-      'BUILD_DIR',
-      'COMPILER_OPTIONS',
+      '?BUILD_DIR',
+      '?COMPILER_OPTIONS',
       'compiler',
       'log',
       'buildInitializer',
       'process',
+      'DEBUG_NODE_ENVS',
+      '?SCHEMA_VALIDATORS_OPTIONS',
+      'API',
+      'ENV',
     ]);
 
     log('info', 'Build environment initialized 🚀🌕');
@@ -100,15 +117,36 @@ export async function runBuild(
     const distPath = join(PROJECT_DIR, 'dist');
     const srcPath = join(PROJECT_DIR, 'src');
     const buildPath = join(PROJECT_DIR, 'builds', APP_ENV, BUILD_DIR);
-    const srcRelativePath = relative(buildPath, srcPath);
+    const distRelativePath = relative(buildPath, distPath);
     const initializerContent = (
       await buildInitializer(['httpServer', 'process'])
-    ).replaceAll(pathToFileURL(srcPath).toString(), srcRelativePath);
-    const indexContent = await buildIndex();
+    )
+      .replaceAll(pathToFileURL(distPath).toString(), distRelativePath)
+      .replaceAll(pathToFileURL(srcPath).toString(), distRelativePath)
+      .replaceAll(".ts';", ".js';");
+    const indexContent = await buildIndex({ SCHEMA_VALIDATORS_OPTIONS });
+    let schemaValidatorsContent = '';
+
+    if (SCHEMA_VALIDATORS_OPTIONS.buildSchemas) {
+      schemaValidatorsContent = await buildSchemaValidatorsMap({
+        DEBUG_NODE_ENVS,
+        SCHEMA_VALIDATORS_OPTIONS,
+        API,
+        ENV,
+        log,
+      });
+    }
 
     await mkdirp(distPath);
     await mkdirp(buildPath);
     await Promise.all([
+      schemaValidatorsContent
+        ? ensureFile(
+            { log },
+            join(buildPath, 'schemaValidators.cjs'),
+            schemaValidatorsContent,
+          )
+        : Promise.resolve(),
       ensureFile({ log }, join(buildPath, 'initialize.js'), initializerContent),
       ensureFile({ log }, join(buildPath, 'main.js'), indexContent),
     ]);
@@ -151,11 +189,23 @@ async function ensureFile(
   return await writeFile(path, content);
 }
 
-async function buildIndex(): Promise<string> {
+async function buildIndex({
+  SCHEMA_VALIDATORS_OPTIONS,
+}: {
+  SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
+}): Promise<string> {
   return `// Built with \`@whook\`, do not edit in place!
-import { initialize } from './initialize.js';
+import { initialize } from './initialize.js';${
+    SCHEMA_VALIDATORS_OPTIONS.buildSchemas
+      ? `
+import * as VALIDATORS_MAP from './schemaValidators.cjs';`
+      : ''
+  }
+const MAIN_FILE_URL = import.meta.url;
 
-await initialize();
+await initialize({${
+    SCHEMA_VALIDATORS_OPTIONS.buildSchemas ? ` VALIDATORS_MAP, ` : ''
+  } MAIN_FILE_URL});
 
 `;
 }
