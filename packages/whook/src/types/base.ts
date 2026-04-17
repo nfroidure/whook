@@ -25,16 +25,19 @@ import { type WhookSchemaValidatorsConfig } from '../services/schemaValidators.j
 import { type WhookQueryParserBuilderConfig } from '../services/queryParserBuilder.js';
 import { type WhookCommandEnv } from '../services/command.js';
 import {
-  WhookAPICallbackDefinition,
-  WhookAPIHeaderDefinition,
-  WhookAPIParameterDefinition,
-  WhookAPIRequestBodyDefinition,
-  WhookAPIResponseDefinition,
-  WhookAPISchemaDefinition,
+  type WhookAPICallbackDefinition,
+  type WhookAPIHeaderDefinition,
+  type WhookAPIParameterDefinition,
+  type WhookAPIRequestBodyDefinition,
+  type WhookAPIResponseDefinition,
+  type WhookAPISchemaDefinition,
 } from './openapi.js';
-import { LogService } from 'common-services';
-import { ExpressiveJSONSchema } from 'ya-json-schema-types';
-import { OpenAPIComponents, OpenAPIExtension } from 'ya-open-api-types';
+import { type LogService } from 'common-services';
+import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
+import {
+  type OpenAPIComponents,
+  type OpenAPIExtension,
+} from 'ya-open-api-types';
 
 export interface WhookBaseMain {
   AppEnv: string;
@@ -47,7 +50,9 @@ export type WhookBaseEnv = WhookCommandEnv &
   WhookHTTPServerEnv &
   WhookBaseURLEnv &
   WhookHostEnv &
-  WhookPortEnv;
+  WhookPortEnv & {
+    APP_ENV?: WhookBaseMain['AppEnv'];
+  };
 
 export type WhookBaseConfigs = ProcessServiceConfig &
   ProcessEnvConfig &
