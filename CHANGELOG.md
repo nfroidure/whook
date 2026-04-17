@@ -1,3 +1,17 @@
+# [23.0.0](https://github.com/nfroidure/whook/compare/v22.0.0...v23.0.0) (2026-04-17)
+
+
+### Bug Fixes
+
+* **builds:** fix AWS Lambdas/CGP functions builds ([643e62a](https://github.com/nfroidure/whook/commit/643e62a44aaecad317931dc161f8e7f2ab5a767a))
+* remove old commands injections ([9e639d3](https://github.com/nfroidure/whook/commit/9e639d34962fdb3a30f60e30e0e4bbd4a9a55287))
+* **types:** fix some types ([7116865](https://github.com/nfroidure/whook/commit/7116865f30fd5e3445e18583dcdb565ff1e41870))
+
+
+### Features
+
+* avoid unecessary noise ([4f93320](https://github.com/nfroidure/whook/commit/4f9332034e9621ecae324e42cbe3f2b9eaf7311b))
+
 # [22.0.0](https://github.com/nfroidure/whook/compare/v21.0.1...v22.0.0) (2026-04-08)
 
 ## [21.0.1](https://github.com/nfroidure/whook/compare/v21.0.0...v21.0.1) (2026-04-01)
