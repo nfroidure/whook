@@ -44,6 +44,9 @@ describe('commands should work', () => {
      - route: Runs the given server route for testing purpose
 
 
+     # Provided by "@whook/graphql": none
+
+
      # Provided by "@whook/cors": none
 
 
