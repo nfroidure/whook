@@ -27,8 +27,9 @@ describe('commands should work', () => {
      ",
        "stdout": "
 
-     # Provided by "@whook/example": 1 commands
+     # Provided by "@whook/example": 2 commands
      - printEnv: A command printing every env values
+     - terraformValues: A command printing functions informations for Terraform
 
 
      # Provided by "@whook/whook": 10 commands
@@ -42,6 +43,10 @@ describe('commands should work', () => {
      - inspect: A simple program that returns the result of the injected service
      - ls: Print available commands
      - route: Runs the given server route for testing purpose
+
+
+     # Provided by "@whook/gcp-functions": 1 commands
+     - testGCPFunctionRoute: A command for testing a GCP function route
 
 
      # Provided by "@whook/cors": none

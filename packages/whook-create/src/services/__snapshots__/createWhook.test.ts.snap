@@ -125,8 +125,10 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^22.0.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^9.0.1",
@@ -134,6 +136,8 @@ DEV_MODE=1
     "http-auth-utils": "^7.0.1",
     "jwt-service": "^12.0.2",
     "knifecycle": "^21.1.0",
+    "node-cron": "^4.2.1",
+    "js-yaml": "^4.1.1",
     "strict-qs": "^10.0.0",
     "type-fest": "^5.5.0",
     "ya-json-schema-types": "^2.0.2",
@@ -436,8 +440,10 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^22.0.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^9.0.1",
@@ -445,6 +451,8 @@ DEV_MODE=1
     "http-auth-utils": "^7.0.1",
     "jwt-service": "^12.0.2",
     "knifecycle": "^21.1.0",
+    "node-cron": "^4.2.1",
+    "js-yaml": "^4.1.1",
     "strict-qs": "^10.0.0",
     "type-fest": "^5.5.0",
     "ya-json-schema-types": "^2.0.2",
@@ -785,8 +793,10 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^22.0.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^9.0.1",
@@ -794,6 +804,8 @@ DEV_MODE=1
     "http-auth-utils": "^7.0.1",
     "jwt-service": "^12.0.2",
     "knifecycle": "^21.1.0",
+    "node-cron": "^4.2.1",
+    "js-yaml": "^4.1.1",
     "strict-qs": "^10.0.0",
     "type-fest": "^5.5.0",
     "ya-json-schema-types": "^2.0.2",
@@ -1117,8 +1129,10 @@ DEV_MODE=1
     "CHANGELOG.md"
   ],
   "dependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@whook/authorization": "<current_version>",
     "@whook/cors": "<current_version>",
+    "@whook/gcp-functions": "^22.0.0",
     "@whook/swagger-ui": "<current_version>",
     "@whook/whook": "<current_version>",
     "application-services": "^9.0.1",
@@ -1126,6 +1140,8 @@ DEV_MODE=1
     "http-auth-utils": "^7.0.1",
     "jwt-service": "^12.0.2",
     "knifecycle": "^21.1.0",
+    "node-cron": "^4.2.1",
+    "js-yaml": "^4.1.1",
     "strict-qs": "^10.0.0",
     "type-fest": "^5.5.0",
     "ya-json-schema-types": "^2.0.2",
