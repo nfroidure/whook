@@ -306,13 +306,17 @@ async function buildHandler(
 
     log('warning', `🏗 - Building ${handlerName}...`);
 
-    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, handlerName);
+    const distPath = join(PROJECT_DIR, 'dist');
     const srcPath = join(PROJECT_DIR, 'src');
-    const srcRelativePath = relative(lambdaPath, srcPath);
+    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, handlerName);
+    const distRelativePath = relative(lambdaPath, distPath);
 
     const initializerContent = (
       await buildInitializer([`MAIN_HANDLER_${handlerName}`, 'process'])
-    ).replaceAll(pathToFileURL(srcPath).toString(), srcRelativePath);
+    )
+      .replaceAll(pathToFileURL(distPath).toString(), distRelativePath)
+      .replaceAll(pathToFileURL(srcPath).toString(), distRelativePath)
+      .replaceAll(".ts';", ".js';");
     const indexContent = await buildHandlerIndex(
       { SCHEMA_VALIDATORS_OPTIONS },
       `MAIN_HANDLER_${handlerName}`,
