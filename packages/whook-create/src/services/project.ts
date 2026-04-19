@@ -1,7 +1,7 @@
 import { autoService } from 'knifecycle';
 import { default as fsExtra } from 'fs-extra';
 import path from 'node:path';
-import _inquirer from 'inquirer';
+import * as _inquirer from '@inquirer/prompts';
 import { printStackTrace, YError } from 'yerror';
 import { type LockService, type LogService } from 'common-services';
 
@@ -30,25 +30,15 @@ export default autoService(async function initProject({
   try {
     await lock.take('cli:input');
 
-    const { projectName } = await inquirer.prompt<{ projectName: string }>([
-      {
-        name: 'projectName',
-        message: "What's this new project name",
-        type: 'input',
-        default: DEFAULT_PROJECT_NAME,
-      },
-    ]);
+    const projectName = await inquirer.input({
+      message: "What's this new project name",
+      default: DEFAULT_PROJECT_NAME,
+    });
 
-    const { projectDirectory } = await inquirer.prompt<{
-      projectDirectory: string;
-    }>([
-      {
-        name: 'projectDirectory',
-        message: "Provide the project's directory",
-        type: 'input',
-        default: path.join(CWD, projectName),
-      },
-    ]);
+    const projectDirectory = await inquirer.input({
+      message: "Provide the project's directory",
+      default: path.join(CWD, projectName),
+    });
     await lock.release('cli:input');
 
     try {

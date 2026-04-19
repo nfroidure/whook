@@ -14,7 +14,6 @@ import {
 } from 'knifecycle';
 import { YError } from 'yerror';
 import {
-  initBuildAutoload,
   initMainHandler,
   noop,
   type WhookOpenAPI,
@@ -22,6 +21,7 @@ import {
   type WhookRouteDefinition,
   type WhookRoutesDefinitionsService,
 } from '@whook/whook';
+import { initBuildAutoload } from '@whook/dev';
 import { type LogService } from 'common-services';
 import { cleanupOpenAPI } from 'ya-open-api-types';
 import initWrapRouteHandlerForGoogleHTTPFunction from '../wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';

@@ -1,6 +1,7 @@
 import { YError } from 'yerror';
-import path from 'node:path';
+import { join } from 'node:path';
 import { type LogService } from 'common-services';
+import { type WhookMain } from '@whook/whook';
 
 export async function loadLambda(
   {
@@ -9,7 +10,7 @@ export async function loadLambda(
     log,
   }: {
     PROJECT_DIR: string;
-    APP_ENV: string;
+    APP_ENV: WhookMain['AppEnv'];
     log: LogService;
   },
   operationId: string,
@@ -17,7 +18,7 @@ export async function loadLambda(
   extension = '.mjs',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  const modulePath = path.join(
+  const modulePath = join(
     PROJECT_DIR,
     'builds',
     APP_ENV,

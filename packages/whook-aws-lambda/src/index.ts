@@ -17,17 +17,19 @@ import {
   type Service,
 } from 'knifecycle';
 import {
-  DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
-  initCompiler,
   parseArgs,
   type WhookDefinitions,
-  type WhookCompilerOptions,
-  type WhookCompilerService,
   type WhookEnvironmentsConfig,
   type WhookSchemaValidatorsOptions,
   DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
-  DEFAULT_COMPILER_OPTIONS,
 } from '@whook/whook';
+import {
+  DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+  initCompiler,
+  type WhookCompilerOptions,
+  type WhookCompilerService,
+  DEFAULT_COMPILER_OPTIONS,
+} from '@whook/dev';
 import initBuildAutoloader from './services/_autoload.js';
 import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
@@ -52,6 +54,7 @@ import initWrapS3HandlerForAWSLambda from './wrappers/wrapS3HandlerForAWSLambda.
 export { initWrapS3HandlerForAWSLambda };
 export type * from './wrappers/wrapTransformerHandlerForAWSLambda.js';
 import initWrapTransformerHandlerForAWSLambda from './wrappers/wrapTransformerHandlerForAWSLambda.js';
+import { type WhookMain } from '@whook/whook';
 export { initWrapTransformerHandlerForAWSLambda };
 
 export const DEFAULT_BUILD_PARALLELISM = 10;
@@ -152,7 +155,7 @@ export async function runBuild(
       SCHEMA_VALIDATORS_OPTIONS = DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
     } = await $.run<
       WhookAWSLambdaBuildConfig & {
-        APP_ENV: string;
+        APP_ENV: WhookMain['AppEnv'];
         PROJECT_DIR: string;
         compiler: WhookCompilerService;
         log: LogService;
@@ -221,7 +224,7 @@ async function processHandlers(
     SCHEMA_VALIDATORS_OPTIONS,
     COMPILER_OPTIONS,
   }: WhookAWSLambdaBuildConfig & {
-    APP_ENV: string;
+    APP_ENV: WhookMain['AppEnv'];
     PROJECT_DIR: string;
     DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
@@ -285,7 +288,7 @@ async function buildHandler(
     SCHEMA_VALIDATORS_OPTIONS,
     COMPILER_OPTIONS,
   }: {
-    APP_ENV: string;
+    APP_ENV: WhookMain['AppEnv'];
     PROJECT_DIR: string;
     DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;

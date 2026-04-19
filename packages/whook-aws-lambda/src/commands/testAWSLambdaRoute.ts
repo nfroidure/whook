@@ -3,14 +3,17 @@ import { location, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import { v4 as randomUUID } from 'uuid';
 import {
-  DEFAULT_COMPILER_OPTIONS,
   noop,
-  type WhookCommandHandler,
-  type WhookCommandDefinition,
-  type WhookCompilerOptions,
   type WhookRouteHandlerParameters,
   type WhookRoutesDefinitionsService,
+  type WhookCommandHandler,
+  type WhookCommandDefinition,
+  type WhookMain,
 } from '@whook/whook';
+import {
+  DEFAULT_COMPILER_OPTIONS,
+  type WhookCompilerOptions,
+} from '@whook/dev';
 import { type AppEnvVars } from 'application-services';
 import { type LogService, type TimeService } from 'common-services';
 import {
@@ -69,7 +72,7 @@ async function initTestAWSLambdaRouteCommand({
   log = noop,
 }: {
   ENV: AppEnvVars;
-  APP_ENV: string;
+  APP_ENV: WhookMain['AppEnv'];
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;

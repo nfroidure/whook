@@ -6,7 +6,7 @@ import {
   type WhookCommandDefinition,
 } from '../types/commands.js';
 
-/* Architecture Note #2.9.2.3: Open API generator
+/* Architecture Note #2.9.2.2: Open API generator
 
 Here, we reuse the Open API handler to generate the
  definition of the API right inside a CLI command.

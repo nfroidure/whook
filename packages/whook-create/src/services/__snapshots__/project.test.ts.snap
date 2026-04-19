@@ -13,24 +13,16 @@ exports[`initProject should fail with access problems 1`] = `
   ],
   "inquirerPromptCalls": [
     [
-      [
-        {
-          "default": "new-whook-project",
-          "message": "What's this new project name",
-          "name": "projectName",
-          "type": "input",
-        },
-      ],
+      {
+        "default": "new-whook-project",
+        "message": "What's this new project name",
+      },
     ],
     [
-      [
-        {
-          "default": "/home/whoiam/projects/super-project",
-          "message": "Provide the project's directory",
-          "name": "projectDirectory",
-          "type": "input",
-        },
-      ],
+      {
+        "default": "/home/whoiam/projects/super-project",
+        "message": "Provide the project's directory",
+      },
     ],
   ],
   "lockReleaseCalls": [
@@ -68,24 +60,16 @@ exports[`initProject should work 1`] = `
   ],
   "inquirerPromptCalls": [
     [
-      [
-        {
-          "default": "new-whook-project",
-          "message": "What's this new project name",
-          "name": "projectName",
-          "type": "input",
-        },
-      ],
+      {
+        "default": "new-whook-project",
+        "message": "What's this new project name",
+      },
     ],
     [
-      [
-        {
-          "default": "/home/whoiam/projects/super-project",
-          "message": "Provide the project's directory",
-          "name": "projectDirectory",
-          "type": "input",
-        },
-      ],
+      {
+        "default": "/home/whoiam/projects/super-project",
+        "message": "Provide the project's directory",
+      },
     ],
   ],
   "lockReleaseCalls": [

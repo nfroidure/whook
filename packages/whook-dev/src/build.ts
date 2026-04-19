@@ -5,23 +5,24 @@ import { pathToFileURL } from 'node:url';
 import { mkdirp } from 'mkdirp';
 import { Knifecycle, constant, initInitializerBuilder } from 'knifecycle';
 import initCompiler, { DEFAULT_COMPILER_OPTIONS } from './services/compiler.js';
-import initProxiedENV from './services/PROXIED_ENV.js';
-import initBuildAutoloader from './services/_buildAutoload.js';
+import {
+  initProxiedENV,
+  parseArgs,
+  buildSchemaValidatorsMap,
+  DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
+  type WhookSchemaValidatorsOptions,
+  type WhookMain,
+} from '@whook/whook';
+import { type LogService } from 'common-services';
+import { type OpenAPI } from 'ya-open-api-types';
+import { type AppEnvVars } from 'application-services';
 import { printStackTrace } from 'yerror';
 import { type BuildInitializer } from 'knifecycle';
+import initBuildAutoloader from './services/_buildAutoload.js';
 import {
   type WhookCompilerOptions,
   type WhookCompilerService,
 } from './services/compiler.js';
-import { type LogService } from 'common-services';
-import { parseArgs } from './libs/args.js';
-import { type OpenAPI } from 'ya-open-api-types';
-import { type AppEnvVars } from 'application-services';
-import {
-  buildSchemaValidatorsMap,
-  DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
-  type WhookSchemaValidatorsOptions,
-} from './services/schemaValidators.js';
 
 export const DEFAULT_BUILD_DIR = 'server';
 export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
@@ -86,7 +87,7 @@ export async function runBuild(
       COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
       SCHEMA_VALIDATORS_OPTIONS = DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
     }: {
-      APP_ENV: string;
+      APP_ENV: WhookMain['AppEnv'];
       PROJECT_DIR: string;
       BUILD_DIR: string;
       compiler: WhookCompilerService;

@@ -32,6 +32,9 @@
   "version": "23.0.0",
   "description": "Build and deploy to GCP Cloud Functions with Whook.",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
@@ -57,7 +60,7 @@
     "camelcase": "^9.0.0",
     "common-services": "^20.0.0",
     "cpr": "3.0.1",
-    "knifecycle": "^21.1.0",
+    "knifecycle": "^21.2.0",
     "mkdirp": "^3.0.1",
     "qs": "^6.15.0",
     "strict-qs": "^10.0.0",
@@ -71,6 +74,7 @@
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.24",
     "@swc/jest": "^0.2.39",
+    "@whook/dev": "^23.0.0",
     "eslint": "^10.2.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.15.1",

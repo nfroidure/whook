@@ -1,16 +1,14 @@
 import { stdout as _stdout } from 'node:process';
 import { type Knifecycle, autoService, location } from 'knifecycle';
-import { ROUTES_WRAPPERS_REG_EXP } from './ROUTES_WRAPPERS.js';
-import { CRONS_WRAPPERS_REG_EXP } from './CRONS_WRAPPERS.js';
 import { type LogService } from 'common-services';
 import {
+  ROUTES_WRAPPERS_REG_EXP,
+  CRONS_WRAPPERS_REG_EXP,
   DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   type WhookCronDefinitionsOptions,
-} from './CRONS_DEFINITIONS.js';
-import {
   DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
   type WhookRoutesDefinitionsOptions,
-} from './ROUTES_DEFINITIONS.js';
+} from '@whook/whook';
 
 async function initMermaid({
   ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,

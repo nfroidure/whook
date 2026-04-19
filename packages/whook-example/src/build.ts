@@ -10,7 +10,7 @@ import {
   initBuildConstantFilter,
   runBuild as runBaseBuild,
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
-} from '@whook/whook';
+} from '@whook/dev';
 
 /* Architecture Note #1.2.1: The `runBuild` function
 
