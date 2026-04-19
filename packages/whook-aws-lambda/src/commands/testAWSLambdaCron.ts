@@ -1,14 +1,11 @@
 import { loadLambda } from '../libs/utils.js';
 import { location, autoService } from 'knifecycle';
 import {
+  DEFAULT_COMPILER_OPTIONS,
   type WhookCommandHandler,
   type WhookCommandDefinition,
-  type WhookMain,
-} from '@whook/whook';
-import {
-  DEFAULT_COMPILER_OPTIONS,
   type WhookCompilerOptions,
-} from '@whook/dev';
+} from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
 
 export const definition = {
@@ -63,7 +60,7 @@ async function initTestAWSLambdaCronCommand({
   log,
   time,
 }: {
-  APP_ENV: WhookMain['AppEnv'];
+  APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;

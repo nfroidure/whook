@@ -31,12 +31,13 @@ describe('commands should work', () => {
      - printEnv: A command printing every env values
 
 
-     # Provided by "@whook/whook": 9 commands
+     # Provided by "@whook/whook": 10 commands
      - config: A simple program that returns the queried config value
      - cronRun: A command to run all instances of a cron
      - cronSchedule: A command to run a cron schedules for a given time frame
      - env: A command printing env values
      - generateOpenAPISchema: Write openAPI schema to stdout
+     - generateOpenAPITypes: Write openAPI types to stdout
      - generateSchemaValidators: Build the schema validators with AJV
      - inspect: A simple program that returns the result of the injected service
      - ls: Print available commands
@@ -47,11 +48,6 @@ describe('commands should work', () => {
 
 
      # Provided by "@whook/authorization": none
-
-
-     # Provided by "@whook/dev": 2 commands
-     - create: A command helping to create new Whook files easily
-     - generateOpenAPITypes: Write openAPI types to stdout
      ",
      }
     `);

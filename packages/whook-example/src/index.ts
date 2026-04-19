@@ -243,7 +243,6 @@ export async function prepareEnvironment<T extends Knifecycle>(
       ...WHOOK_DEFAULT_PLUGINS,
       '@whook/cors',
       '@whook/authorization',
-      '@whook/dev',
     ]),
   );
 

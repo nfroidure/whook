@@ -3,7 +3,6 @@ import {
   type WhookRouteDefinition,
   type WhookAPISchemaDefinition,
   refersTo,
-  type WhookMain,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
 import {
@@ -12,6 +11,7 @@ import {
 } from 'application-services';
 import { autoService } from 'knifecycle';
 import { YError } from 'yerror';
+import { AppEnv } from '../index.js';
 
 export const timePayloadSchema = {
   name: 'TimePayload',
@@ -69,7 +69,7 @@ async function putTime({
   timeMock,
   log,
 }: {
-  APP_ENV: WhookMain['AppEnv'];
+  APP_ENV: AppEnv;
   CLOCK_MOCK: ClockMockService;
   time: TimeService;
   timeMock: TimeMockService;

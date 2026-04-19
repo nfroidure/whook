@@ -6,7 +6,7 @@ import { default as fsExtra } from 'fs-extra';
 import debug from 'debug';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as inquirer from '@inquirer/prompts';
+import inquirer from 'inquirer';
 import { initLog, initLock, initDelay } from 'common-services';
 import initAuthor from './services/author.js';
 import initProject from './services/project.js';

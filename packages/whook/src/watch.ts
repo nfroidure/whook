@@ -1,24 +1,23 @@
+import chokidar from 'chokidar';
 import { dirname, join } from 'node:path';
 import crypto from 'node:crypto';
 import { PassThrough } from 'node:stream';
-import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createWriteStream } from 'node:fs';
+import initGenerateOpenAPITypes from './commands/generateOpenAPITypes.js';
+import initGetOpenAPI from './routes/getOpenAPI.js';
+import initWatchResolve from './services/watchResolve.js';
 import { readFile } from 'node:fs/promises';
-import { initGetOpenAPI } from '@whook/whook';
+import ignore from 'ignore';
 import { type AppEnvVars } from 'application-services';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { type Dependencies, Knifecycle, constant } from 'knifecycle';
 import {
-  type DelayResult,
+  DelayResult,
   type DelayService,
   type LogService,
 } from 'common-services';
-import chokidar from 'chokidar';
-import ignore from 'ignore';
+import { type OpenAPITypesConfig } from './commands/generateOpenAPITypes.js';
 import { printStackTrace } from 'yerror';
-import initGenerateOpenAPITypes, {
-  type OpenAPITypesConfig,
-} from './commands/generateOpenAPITypes.js';
-import initWatchResolve from './services/watchResolve.js';
 
 let $instance: Knifecycle;
 let log: LogService;
@@ -35,7 +34,7 @@ export type WatchProcessDependencies = OpenAPITypesConfig & {
   log: LogService;
 };
 
-export interface WatchProcessArgs<T extends Dependencies> {
+export type WatchProcessArgs<T extends Dependencies> = {
   injectedNames?: string[];
   ignored?: string[];
   watched?: string[];
@@ -43,7 +42,7 @@ export interface WatchProcessArgs<T extends Dependencies> {
     services: T & WatchProcessDependencies,
     context: { apiChanged: boolean; openAPIData: string },
   ) => Promise<void>;
-}
+};
 
 export const DEFAULT_IGNORED = ['node_modules', '*.d.ts', '.git'];
 export const DEFAULT_WATCHED = ['src', 'package.json', 'package-lock.json'];

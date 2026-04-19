@@ -10,7 +10,7 @@ You can add hooks to add need behaviors to the
 
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
-import { watchDevProcess as baseWatchDevProcess } from '@whook/dev';
+import { watchDevProcess as baseWatchDevProcess } from '@whook/whook/dist/watch.js';
 import { printStackTrace } from 'yerror';
 import { DEFAULT_INJECTED_NAMES } from './index.js';
 

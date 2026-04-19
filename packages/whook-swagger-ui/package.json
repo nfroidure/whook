@@ -26,9 +26,6 @@
   "version": "23.0.0",
   "description": "A wrapper for the Whook HTTP Router to provide SwaggerUI for local dev",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -73,7 +70,7 @@
     "@whook/whook": "^23.0.0",
     "axios": "^1.14.0",
     "ecstatic": "^4.1.4",
-    "knifecycle": "^21.2.0",
+    "knifecycle": "^21.1.0",
     "swagger-ui-dist": "^5.32.2",
     "type-fest": "^5.5.0",
     "ya-json-schema-types": "^2.0.2",

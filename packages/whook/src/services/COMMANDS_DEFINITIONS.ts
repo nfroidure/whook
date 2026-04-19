@@ -12,7 +12,6 @@ import {
 import { autoService, name, location } from 'knifecycle';
 import { extname, join as pathJoin } from 'node:path';
 import { printStackTrace } from 'yerror';
-import { type WhookMain } from '../types/base.js';
 
 export const DEFAULT_COMMANDS_DEFINITIONS_OPTIONS: WhookCommandsDefinitionsOptions =
   {
@@ -43,7 +42,7 @@ export interface WhookCommandsDefinitionsConfig {
 }
 
 export type WhookCommandsDependencies = WhookCommandsDefinitionsConfig & {
-  APP_ENV: WhookMain['AppEnv'];
+  APP_ENV: string;
   WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
   log?: LogService;
   importer: ImporterService<WhookCommandModule>;

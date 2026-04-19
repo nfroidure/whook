@@ -1,20 +1,17 @@
 import { autoService } from 'knifecycle';
-import {
-  generateOpenAPITypes as generateTypes,
-  toSource,
-  type OpenAPITypesGenerationOptions,
-} from 'schema2dts';
+import { generateOpenAPITypes as generateTypes, toSource } from 'schema2dts';
+import { type OpenAPITypesGenerationOptions } from 'schema2dts';
 import { type LogService } from 'common-services';
 import {
   type WhookCommandHandler,
   type WhookCommandDefinition,
-} from '@whook/whook';
+} from '../types/commands.js';
 
-export interface OpenAPITypesConfig {
+export type OpenAPITypesConfig = {
   OPEN_API_TYPES_CONFIG: OpenAPITypesGenerationOptions;
-}
+};
 
-/* Architecture Note #2: Typings generator
+/* Architecture Note #2.9.2.2: Typings generator
 
 This command allows you to generate the API types that
  helps you to write your handler in a clean and safe

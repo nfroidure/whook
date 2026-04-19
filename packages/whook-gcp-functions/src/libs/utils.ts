@@ -1,7 +1,6 @@
 import { YError } from 'yerror';
-import { join } from 'node:path';
+import path from 'node:path';
 import { type LogService } from 'common-services';
-import { type WhookMain } from '@whook/whook';
 
 export async function loadFunction(
   {
@@ -10,7 +9,7 @@ export async function loadFunction(
     log,
   }: {
     PROJECT_DIR: string;
-    APP_ENV: WhookMain['AppEnv'];
+    APP_ENV: string;
     log: LogService;
   },
   operationId: string,
@@ -18,7 +17,7 @@ export async function loadFunction(
   extension = '.mjs',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  const modulePath = join(
+  const modulePath = path.join(
     PROJECT_DIR,
     'builds',
     APP_ENV,

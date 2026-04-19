@@ -1,20 +1,24 @@
-import { location, autoService, type Knifecycle } from 'knifecycle';
+import { location, autoService } from 'knifecycle';
+import { noop } from '../libs/utils.js';
 import { YError } from 'yerror';
 import camelCase from 'camelcase';
-import * as _inquirer from '@inquirer/prompts';
+import _inquirer from 'inquirer';
 import path from 'node:path';
 import { default as fsExtra } from 'fs-extra';
 import { type LogService } from 'common-services';
 import { type OpenAPI, PATH_ITEM_METHODS } from 'ya-open-api-types';
 import {
-  noop,
   type WhookCommandHandler,
   type WhookCommandDefinition,
+} from '../types/commands.js';
+import {
   DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
   type WhookRoutesDefinitionsOptions,
+} from '../services/ROUTES_DEFINITIONS.js';
+import {
   DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   type WhookCronDefinitionsOptions,
-} from '@whook/whook';
+} from '../services/CRONS_DEFINITIONS.js';
 
 const {
   writeFile: _writeFile,
@@ -67,7 +71,7 @@ export const definition = {
   description: 'A command helping to create new Whook files easily',
   example: `whook create --type service --name "db"`,
   config: {
-    environments: ['local'],
+    environments: ['development'],
     promptArgs: true,
   },
   arguments: [
@@ -106,11 +110,7 @@ async function initCreateCommand({
   ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
   CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
   API: OpenAPI;
-  $instance: Knifecycle;
-  inquirer: Pick<
-    typeof _inquirer,
-    'checkbox' | 'confirm' | 'input' | 'rawlist'
-  >;
+  inquirer: typeof _inquirer;
   writeFile: (path: string, data: string) => Promise<void>;
   ensureDir: typeof _ensureDir;
   pathExists: typeof _pathExists;
@@ -156,15 +156,21 @@ async function initCreateCommand({
       ]);
     }
 
-    const services = await inquirer.checkbox({
-      message: 'Which services do you want to use?',
-      choices: [
-        ...Object.keys(commonServicesTypes),
-        ...Object.keys(applicationServicesTypes),
-        ...Object.keys(whookSimpleTypes),
-        ...Object.keys(whookServicesTypes),
-      ].map((value) => ({ value })),
-    });
+    const { services } = (await inquirer.prompt<{
+      services: string[];
+    }>([
+      {
+        name: 'services',
+        type: 'checkbox',
+        message: 'Which services do you want to use?',
+        choices: [
+          ...Object.keys(commonServicesTypes),
+          ...Object.keys(applicationServicesTypes),
+          ...Object.keys(whookSimpleTypes),
+          ...Object.keys(whookServicesTypes),
+        ].map((value) => ({ value })),
+      },
+    ])) as { services: string[] };
 
     const servicesTypes = (services.length ? services : ['log'])
       .sort()
@@ -236,41 +242,53 @@ import { ${whookServices
     let fileSource: string;
 
     if (type === 'route') {
-      const method = await inquirer.rawlist({
-        message: 'Give the handler method',
-        choices: PATH_ITEM_METHODS.map((method) => ({
-          name: method,
-          value: method,
-        })),
-        default: ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns
-          .map(
-            (pattern) =>
-              (new RegExp(pattern).exec(finalName) as string[])[2] as 'get',
-          )
-          .filter((maybeMethod) => PATH_ITEM_METHODS.includes(maybeMethod))[0],
-      });
-
-      const path = await inquirer.input({
-        message: 'Give the handler path',
-        default: '/',
-      });
-      const description = await inquirer.input({
-        message: 'Give the handler description',
-        default: '',
-      });
-
-      let tags: string[] = [];
-
-      if (API.tags && API.tags.length) {
-        tags = await inquirer.checkbox({
-          message: 'Assign one or more tags to the handler',
-          choices: (API.tags || ['system']).map(({ name }) => ({
-            name,
-            value: name,
+      const { method, path, description, tags } = await inquirer.prompt<{
+        method: string;
+        path: string;
+        description: string;
+        tags: string[];
+      }>([
+        {
+          name: 'method',
+          type: 'list',
+          message: 'Give the handler method',
+          choices: PATH_ITEM_METHODS.map((method) => ({
+            name: method,
+            value: method,
           })),
-        });
-      }
-
+          default: ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns
+            .map(
+              (pattern) => (new RegExp(pattern).exec(finalName) as string[])[2],
+            )
+            .filter((maybeMethod) =>
+              PATH_ITEM_METHODS.includes(maybeMethod as 'get'),
+            )[0],
+        },
+        {
+          name: 'path',
+          type: 'input',
+          message: 'Give the handler path',
+          default: '/',
+        },
+        {
+          name: 'description',
+          type: 'input',
+          message: 'Give the handler description',
+        },
+        ...(API.tags && API.tags.length
+          ? ([
+              {
+                name: 'tags',
+                type: 'checkbox',
+                message: 'Assign one or more tags to the handler',
+                choices: (API.tags || ['system']).map(({ name }) => ({
+                  name,
+                  value: name,
+                })),
+              },
+            ] as const)
+          : []),
+      ]);
       fileSource = buildRouteSource(
         name,
         path,
@@ -303,10 +321,13 @@ import { ${whookServices
         imports,
       );
     } else if (type === 'command') {
-      const description = await inquirer.input({
-        message: 'Give the command description',
-        default: '',
-      });
+      const { description } = await inquirer.prompt<{ description: string }>([
+        {
+          name: 'description',
+          message: 'Give the command description',
+          type: 'input',
+        },
+      ]);
 
       fileSource = buildCommandSource(
         name,
@@ -332,13 +353,18 @@ import { ${whookServices
     );
     await ensureDir(fileDir);
     const filePath = path.join(fileDir, `${name}.ts`);
-
     if (await pathExists(filePath)) {
       log('warning', '⚠️ - The file already exists !');
 
-      const erase = await inquirer.confirm({
-        message: 'Erase ?',
-      });
+      const { erase } = await inquirer.prompt<{
+        erase: boolean;
+      }>([
+        {
+          name: 'erase',
+          message: 'Erase ?',
+          type: 'confirm',
+        },
+      ]);
 
       if (!erase) {
         return;

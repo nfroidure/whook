@@ -1,7 +1,7 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initGenerateOpenAPITypes from './generateOpenAPITypes.js';
 import { PassThrough } from 'node:stream';
-import { getPingDefinition } from '@whook/whook';
+import { definition as getPingDefinition } from '../routes/getPing.js';
 import { type OpenAPITypesGenerationOptions } from 'schema2dts';
 import { type OpenAPI } from 'ya-open-api-types';
 import { type LogService } from 'common-services';

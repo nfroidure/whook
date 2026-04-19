@@ -26,9 +26,6 @@
   "version": "23.0.0",
   "description": "A wrapper to provide authorization support to a Whook server",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -59,7 +56,7 @@
     "@whook/whook": "^23.0.0",
     "common-services": "^20.0.0",
     "http-auth-utils": "^7.0.1",
-    "knifecycle": "^21.2.0",
+    "knifecycle": "^21.1.0",
     "yerror": "^11.0.0",
     "yhttperror": "^9.0.2"
   },

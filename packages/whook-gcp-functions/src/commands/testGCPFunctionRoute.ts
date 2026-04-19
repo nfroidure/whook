@@ -3,18 +3,15 @@ import { location, autoService } from 'knifecycle';
 import { YError } from 'yerror';
 import stream from 'node:stream';
 import {
+  DEFAULT_COMPILER_OPTIONS,
   PATH_SEPARATOR,
   SEARCH_SEPARATOR,
   type WhookRouteHandlerParameters,
   type WhookCommandHandler,
   type WhookCommandDefinition,
-  type WhookRoutesDefinitionsService,
-  type WhookMain,
-} from '@whook/whook';
-import {
-  DEFAULT_COMPILER_OPTIONS,
   type WhookCompilerOptions,
-} from '@whook/dev';
+  type WhookRoutesDefinitionsService,
+} from '@whook/whook';
 import { type LogService } from 'common-services';
 
 export const definition = {
@@ -65,7 +62,7 @@ async function initTestGCPFunctionRouteCommand({
   ROUTES_DEFINITIONS,
   log,
 }: {
-  APP_ENV: WhookMain['AppEnv'];
+  APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;

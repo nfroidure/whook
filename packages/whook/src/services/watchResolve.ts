@@ -4,18 +4,18 @@ import {
   type ResolveService,
 } from 'common-services';
 import { name, autoService, singleton, location } from 'knifecycle';
-import { type WhookURL } from '@whook/whook';
+import { type WhookURL } from './WHOOK_RESOLVED_PLUGINS.js';
 
 export default location(
   singleton(name('resolve', autoService(initWatchResolve))),
   import.meta.url,
 );
 
-export interface WatchResolveDependencies {
+export type WatchResolveDependencies = {
   MAIN_FILE_URL: WhookURL;
   RESTARTS_COUNTER: number;
   log: LogService;
-}
+};
 
 async function initWatchResolve({
   MAIN_FILE_URL,

@@ -13,8 +13,8 @@ import {
   type ServiceInitializerWrapper,
 } from 'knifecycle';
 import { YError } from 'yerror';
-import { initBuildAutoload } from '@whook/dev';
 import {
+  initBuildAutoload,
   noop,
   initMainHandler,
   type WhookOpenAPI,

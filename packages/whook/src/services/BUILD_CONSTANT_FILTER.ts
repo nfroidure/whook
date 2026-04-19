@@ -1,17 +1,13 @@
 import { noop, type LogService } from 'common-services';
-import {
-  type BuildConstantFilter,
-  location,
-  autoService,
-  name,
-} from 'knifecycle';
+import { location, autoService, name } from 'knifecycle';
+import { type BuildConstantFilter } from 'knifecycle/dist/build.js';
 
 export type WhookBuildConstantFilterService = BuildConstantFilter;
-export interface WhookBuildConstantFilterConfig {
+export type WhookBuildConstantFilterConfig = {
   BUILD_CONSTANTS_NAMES?: string[];
   BUILD_CONSTANTS_PREFIXES?: string[];
   BUILD_CONSTANTS_SUFFIXES?: string[];
-}
+};
 export type WhookBuildConstantFilterDependencies =
   WhookBuildConstantFilterConfig & {
     log?: LogService;

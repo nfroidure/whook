@@ -45,6 +45,9 @@ import initWhookResolvedPlugins, {
   WHOOK_PROJECT_PLUGIN_NAME,
 } from './services/WHOOK_RESOLVED_PLUGINS.js';
 import initDefinitions from './services/DEFINITIONS.js';
+import initBuildConstantFilter from './services/BUILD_CONSTANT_FILTER.js';
+export { initBuildConstantFilter };
+export type * from './services/BUILD_CONSTANT_FILTER.js';
 export * from './services/DEFINITIONS.js';
 export type * from './services/DEFINITIONS.js';
 import initRoutesDefinitions from './services/ROUTES_DEFINITIONS.js';
@@ -100,16 +103,23 @@ export * from './services/schemaValidators.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
 import initAutoload from './services/_autoload.js';
+import initBuildAutoload from './services/_buildAutoload.js';
 import initGetPing, {
   definition as getPingDefinition,
 } from './routes/getPing.js';
 import initGetOpenAPI, {
   definition as getOpenAPIDefinition,
 } from './routes/getOpenAPI.js';
+import {
+  DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+  prepareBuildEnvironment,
+  runBuild,
+} from './build.js';
 import { identity } from './libs/utils.js';
 import { parseArgs } from './libs/args.js';
 import './types/errors.js';
 
+export { DEFAULT_BUILD_INITIALIZER_PATH_MAP } from './build.js';
 export * from './libs/args.js';
 export * from './libs/body.js';
 export * from './libs/coercion.js';
@@ -140,6 +150,7 @@ export type * from './services/PORT.js';
 export type * from './services/httpServer.js';
 export type * from './services/HOST.js';
 export type * from './services/PROXIED_ENV.js';
+export type * from './services/BUILD_CONSTANT_FILTER.js';
 export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
 export type * from './services/DEFINITIONS.js';
 export type * from './services/_autoload.js';
@@ -158,6 +169,13 @@ export { initErrorHandler };
 export { initQueryParserBuilder };
 
 export type * from './services/BASE_URL.js';
+import initCompiler from './services/compiler.js';
+export {
+  DEFAULT_COMPILER_OPTIONS,
+  type WhookCompilerOptions,
+  type WhookCompilerService,
+  type WhookCompilerConfig,
+} from './services/compiler.js';
 export {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
@@ -167,10 +185,14 @@ export {
   initGetOpenAPI,
   getOpenAPIDefinition,
   initAutoload,
+  initBuildAutoload,
   initDefinitions,
   initProxiedENV,
   initPort,
   initHost,
+  initCompiler,
+  prepareBuildEnvironment,
+  runBuild,
 };
 
 export const WHOOK_DEFAULT_INJECTED_NAMES = [
@@ -367,6 +389,12 @@ export async function prepareEnvironment<T extends Knifecycle>(
    loaded.
    */
   $.register(constant('WHOOK_PLUGINS', WHOOK_DEFAULT_PLUGINS));
+
+  $.register(
+    constant('INITIALIZER_PATH_MAP', {
+      ...DEFAULT_BUILD_INITIALIZER_PATH_MAP,
+    }),
+  );
 
   return $;
 }

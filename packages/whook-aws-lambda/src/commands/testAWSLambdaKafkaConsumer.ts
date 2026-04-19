@@ -1,14 +1,11 @@
 import { loadLambda } from '../libs/utils.js';
 import { location, autoService } from 'knifecycle';
 import {
+  DEFAULT_COMPILER_OPTIONS,
   type WhookCommandHandler,
   type WhookCommandDefinition,
-  type WhookMain,
-} from '@whook/whook';
-import {
-  DEFAULT_COMPILER_OPTIONS,
   type WhookCompilerOptions,
-} from '@whook/dev';
+} from '@whook/whook';
 import { type LogService } from 'common-services';
 import { type MSKEvent } from 'aws-lambda';
 
@@ -84,7 +81,7 @@ async function initTestAWSLambdaKafkaConsumerCommand({
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log,
 }: {
-  APP_ENV: WhookMain['AppEnv'];
+  APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;

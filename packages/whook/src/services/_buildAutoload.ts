@@ -1,4 +1,4 @@
-import { initAutoload } from '@whook/whook';
+import initAutoload from './_autoload.js';
 import {
   UNBUILDABLE_SERVICES,
   SPECIAL_PROPS,

@@ -1,9 +1,11 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import path from 'node:path';
+import * as esbuild from 'esbuild';
+import * as esbuildNodeExternals from 'esbuild-node-externals';
 import initCompiler from './compiler.js';
 import { NodeEnv } from 'application-services';
 import { type AppEnvVars } from 'application-services';
-import { type LogService } from 'common-services';
+import { type ImporterService, type LogService } from 'common-services';
 
 describe('Compiler', () => {
   const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Production };
@@ -11,17 +13,23 @@ describe('Compiler', () => {
   const DEBUG_NODE_ENVS = [] as string[];
   const COMPILER_OPTIONS = {};
   const log = jest.fn<LogService>();
+  const importer = jest.fn<ImporterService<unknown>>();
 
   beforeEach(() => {
     log.mockReset();
+    importer.mockReset();
   });
 
   test('should work with external modules', async () => {
+    importer.mockResolvedValueOnce(esbuild);
+    importer.mockResolvedValueOnce(esbuildNodeExternals);
+
     const compiler = await initCompiler({
       PROJECT_DIR,
       ENV,
       DEBUG_NODE_ENVS,
       COMPILER_OPTIONS,
+      importer,
       log,
     });
 
@@ -34,7 +42,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 913000,
+       "contentsLength": 72798,
        "extension": ".mjs",
        "logCalls": [
          [
@@ -49,11 +57,15 @@ describe('Compiler', () => {
   });
 
   test('should work with code only', async () => {
+    importer.mockResolvedValueOnce(esbuild);
+    importer.mockResolvedValueOnce(esbuildNodeExternals);
+
     const compiler = await initCompiler({
       PROJECT_DIR,
       ENV,
       DEBUG_NODE_ENVS,
       COMPILER_OPTIONS: { ...COMPILER_OPTIONS, excludeNodeModules: true },
+      importer,
       log,
     });
 
@@ -66,7 +78,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 3830,
+       "contentsLength": 3924,
        "extension": ".mjs",
        "logCalls": [
          [
@@ -83,6 +95,9 @@ describe('Compiler', () => {
   });
 
   test('should work with commonjs', async () => {
+    importer.mockResolvedValueOnce(esbuild);
+    importer.mockResolvedValueOnce(esbuildNodeExternals);
+
     const compiler = await initCompiler({
       PROJECT_DIR,
       ENV,
@@ -92,6 +107,7 @@ describe('Compiler', () => {
         excludeNodeModules: true,
         format: 'cjs',
       },
+      importer,
       log,
     });
 
@@ -104,7 +120,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 5530,
+       "contentsLength": 5572,
        "extension": ".cjs",
        "logCalls": [
          [

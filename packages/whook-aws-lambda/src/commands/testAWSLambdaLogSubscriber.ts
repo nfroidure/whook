@@ -2,19 +2,16 @@ import { loadLambda } from '../libs/utils.js';
 import { location, autoService } from 'knifecycle';
 import { encodePayload } from '../wrappers/wrapLogSubscriberHandlerForAWSLambda.js';
 import {
+  DEFAULT_COMPILER_OPTIONS,
   type WhookCommandHandler,
   type WhookCommandDefinition,
-} from '@whook/whook';
-import {
-  DEFAULT_COMPILER_OPTIONS,
   type WhookCompilerOptions,
-} from '@whook/dev';
+} from '@whook/whook';
 import { type LogService } from 'common-services';
 import {
   type CloudWatchLogsDecodedData,
   type CloudWatchLogsEvent,
 } from 'aws-lambda';
-import { type WhookMain } from '@whook/whook';
 
 // Event example from:
 // https://docs.aws.amazon.com/lambda/latest/dg/services-cloudwatchlogs.html
@@ -73,7 +70,7 @@ async function initTestAWSLambdaLogSubscriberCommand({
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log,
 }: {
-  APP_ENV: WhookMain['AppEnv'];
+  APP_ENV: string;
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
   log: LogService;

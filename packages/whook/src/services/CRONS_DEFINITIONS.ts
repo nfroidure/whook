@@ -12,7 +12,6 @@ import {
 import { autoService, name, location } from 'knifecycle';
 import { extname, join as pathJoin } from 'node:path';
 import { printStackTrace } from 'yerror';
-import { type WhookMain } from '../types/base.js';
 
 export const DEFAULT_CRONS_DEFINITIONS_OPTIONS: WhookCronDefinitionsOptions = {
   ignoredFilePatterns: ['^__', '\\.(test|d)\\.(?:js|mjs|ts|mts)$'],
@@ -42,7 +41,7 @@ export interface WhookCronsDefinitionsConfig {
 }
 
 export type WhookCronsDefinitionsDependencies = WhookCronsDefinitionsConfig & {
-  APP_ENV: WhookMain['AppEnv'];
+  APP_ENV: string;
   WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
   log?: LogService;
   importer: ImporterService<WhookCronModule>;

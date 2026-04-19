@@ -912,7 +912,7 @@ describe('initRoutesDefinitions', () => {
         definition: {
           ...getUserModule.definition,
           config: {
-            environments: ['local'],
+            environments: ['dev'],
           },
         },
       };

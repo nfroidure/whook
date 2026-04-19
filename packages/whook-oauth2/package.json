@@ -26,9 +26,6 @@
   "version": "23.0.0",
   "description": "OAuth2 implementation for Whook servers",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
@@ -51,7 +48,7 @@
     "camelcase": "^9.0.0",
     "common-services": "^20.0.0",
     "cookie": "^1.1.1",
-    "knifecycle": "^21.2.0",
+    "knifecycle": "^21.1.0",
     "type-fest": "^5.5.0",
     "ya-json-schema-types": "^2.0.2",
     "ya-open-api-types": "^2.2.0",
