@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import _inquirer from 'inquirer';
+import * as _inquirer from '@inquirer/prompts';
 import initProject from './project.js';
 import { YError } from 'yerror';
 import { type LogService, type LockService } from 'common-services';
 
 describe('initProject', () => {
   const CWD = '/home/whoiam/projects/';
-  const inquirer = { prompt: jest.fn<any>() };
+  const inquirer = { input: jest.fn<any>() };
   const lock = {
     take: jest.fn<LockService<unknown>['take']>(),
     release: jest.fn<LockService<unknown>['release']>(),
@@ -17,7 +17,7 @@ describe('initProject', () => {
 
   beforeEach(() => {
     lock.take.mockReset();
-    inquirer.prompt.mockReset();
+    inquirer.input.mockReset();
     lock.release.mockReset();
     ensureDir.mockReset();
     log.mockReset();
@@ -25,12 +25,8 @@ describe('initProject', () => {
 
   test('should work', async () => {
     lock.take.mockResolvedValueOnce(undefined);
-    inquirer.prompt.mockResolvedValueOnce({
-      projectName: 'super-project',
-    });
-    inquirer.prompt.mockResolvedValueOnce({
-      projectDirectory: '/home/whoiam/projects/yolo',
-    });
+    inquirer.input.mockResolvedValueOnce('super-project');
+    inquirer.input.mockResolvedValueOnce('/home/whoiam/projects/yolo');
     lock.release.mockResolvedValueOnce(undefined);
     ensureDir.mockResolvedValueOnce(undefined);
 
@@ -44,7 +40,7 @@ describe('initProject', () => {
 
     expect({
       project,
-      inquirerPromptCalls: inquirer.prompt.mock.calls,
+      inquirerPromptCalls: inquirer.input.mock.calls,
       lockTakeCalls: lock.take.mock.calls,
       lockReleaseCalls: lock.release.mock.calls,
       ensureDirCalls: ensureDir.mock.calls,
@@ -55,12 +51,8 @@ describe('initProject', () => {
   test('should fail with access problems', async () => {
     lock.take.mockResolvedValueOnce(undefined);
     lock.release.mockResolvedValueOnce(undefined);
-    inquirer.prompt.mockResolvedValueOnce({
-      projectName: 'super-project',
-    });
-    inquirer.prompt.mockResolvedValueOnce({
-      projectDirectory: '/home/whoiam/projects/yolo',
-    });
+    inquirer.input.mockResolvedValueOnce('super-project');
+    inquirer.input.mockResolvedValueOnce('/home/whoiam/projects/yolo');
     ensureDir.mockRejectedValueOnce(new YError('E_ACCESS'));
 
     try {
@@ -76,7 +68,7 @@ describe('initProject', () => {
       expect({
         errorCode: (err as YError).code,
         errorDebug: (err as YError).debug,
-        inquirerPromptCalls: inquirer.prompt.mock.calls,
+        inquirerPromptCalls: inquirer.input.mock.calls,
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,
         ensureDirCalls: ensureDir.mock.calls,

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import _inquirer from 'inquirer';
+import * as _inquirer from '@inquirer/prompts';
 import initAuthor from './author.js';
 import { YError } from 'yerror';
 import { type LogService, type LockService } from 'common-services';
@@ -11,13 +11,13 @@ describe('initAuthor', () => {
     take: jest.fn<LockService<unknown>['take']>(),
     release: jest.fn<LockService<unknown>['release']>(),
   };
-  const inquirer = { prompt: jest.fn<(typeof _inquirer)['prompt']>() };
+  const inquirer = { input: jest.fn<(typeof _inquirer)['input']>() };
   const log = jest.fn<LogService>();
 
   beforeEach(() => {
     exec.mockReset();
     lock.take.mockReset();
-    inquirer.prompt.mockReset();
+    inquirer.input.mockReset();
     lock.release.mockReset();
     log.mockReset();
   });
@@ -32,10 +32,8 @@ describe('initAuthor', () => {
         cb(null, 'wayne@warner.com'),
     );
     lock.take.mockResolvedValueOnce(undefined);
-    inquirer.prompt.mockResolvedValueOnce({
-      authorName: 'Wayne Campbell',
-      authorEmail: 'wayne@warner.com',
-    });
+    inquirer.input.mockResolvedValueOnce('Wayne Campbell');
+    inquirer.input.mockResolvedValueOnce('wayne@warner.com');
     lock.release.mockResolvedValueOnce(undefined);
 
     const author = await initAuthor({
@@ -47,7 +45,7 @@ describe('initAuthor', () => {
 
     expect({
       author,
-      inquirerPromptCalls: inquirer.prompt.mock.calls,
+      inquirerPromptCalls: inquirer.input.mock.calls,
       lockTakeCalls: lock.take.mock.calls,
       lockReleaseCalls: lock.release.mock.calls,
       execCalls: exec.mock.calls,
@@ -65,10 +63,8 @@ describe('initAuthor', () => {
         cb(new Error('E_GIT_ERROR')),
     );
     lock.take.mockResolvedValueOnce(undefined);
-    inquirer.prompt.mockResolvedValueOnce({
-      authorName: 'Wayne Campbell',
-      authorEmail: 'wayne@warner.com',
-    });
+    inquirer.input.mockResolvedValueOnce('Wayne Campbell');
+    inquirer.input.mockResolvedValueOnce('wayne@warner.com');
     lock.release.mockResolvedValueOnce(undefined);
 
     const author = await initAuthor({
@@ -80,7 +76,7 @@ describe('initAuthor', () => {
 
     expect({
       author,
-      inquirerPromptCalls: inquirer.prompt.mock.calls,
+      inquirerPromptCalls: inquirer.input.mock.calls,
       lockTakeCalls: lock.take.mock.calls,
       lockReleaseCalls: lock.release.mock.calls,
       execCalls: exec.mock.calls,
@@ -98,7 +94,7 @@ describe('initAuthor', () => {
         cb(null, 'wayne@warner.com'),
     );
     lock.take.mockResolvedValueOnce(undefined);
-    inquirer.prompt.mockRejectedValueOnce(new Error('E_PROMPT_ERROR'));
+    inquirer.input.mockRejectedValueOnce(new Error('E_PROMPT_ERROR'));
     lock.release.mockResolvedValueOnce(undefined);
 
     try {
@@ -112,7 +108,7 @@ describe('initAuthor', () => {
       expect({
         errorCode: (err as YError).code,
         errorDebug: (err as YError).debug,
-        inquirerPromptCalls: inquirer.prompt.mock.calls,
+        inquirerPromptCalls: inquirer.input.mock.calls,
         lockTakeCalls: lock.take.mock.calls,
         lockReleaseCalls: lock.release.mock.calls,
         execCalls: exec.mock.calls,

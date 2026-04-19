@@ -25,6 +25,9 @@
   "version": "23.0.0",
   "description": "Kickstart a new Whook server",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -67,13 +70,13 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@inquirer/prompts": "^8.4.0",
+    "@inquirer/prompts": "^8.4.1",
     "@whook/example": "^23.0.0",
     "axios": "^1.14.0",
     "common-services": "^20.0.0",
     "debug": "^4.4.3",
     "fs-extra": "^11.3.4",
-    "knifecycle": "^21.1.0",
+    "knifecycle": "^21.2.0",
     "ora": "9.3.0",
     "yerror": "^11.0.0"
   },

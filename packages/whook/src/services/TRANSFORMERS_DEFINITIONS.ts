@@ -12,6 +12,7 @@ import {
 import { autoService, name, location } from 'knifecycle';
 import { extname, join as pathJoin } from 'node:path';
 import { printStackTrace } from 'yerror';
+import { type WhookMain } from '../types/base.js';
 
 export const DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS: WhookTransformerDefinitionsOptions =
   {
@@ -43,7 +44,7 @@ export interface WhookTransformersDefinitionsConfig {
 
 export type WhookTransformersDefinitionsDependencies =
   WhookTransformersDefinitionsConfig & {
-    APP_ENV: string;
+    APP_ENV: WhookMain['AppEnv'];
     WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
     log?: LogService;
     importer: ImporterService<WhookTransformerModule>;

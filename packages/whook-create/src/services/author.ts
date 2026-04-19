@@ -1,5 +1,5 @@
 import { autoService } from 'knifecycle';
-import _inquirer from 'inquirer';
+import * as _inquirer from '@inquirer/prompts';
 import { printStackTrace, YError } from 'yerror';
 import { exec as _exec } from 'child_process';
 import { type LockService, type LogService } from 'common-services';
@@ -33,23 +33,14 @@ export default autoService(async function initAuthor({
   try {
     await lock.take('cli:input');
 
-    const { authorName, authorEmail } = await inquirer.prompt<{
-      authorName: string;
-      authorEmail: string;
-    }>([
-      {
-        name: 'authorName',
-        type: 'input',
-        message: "What's your name?",
-        default: userName,
-      },
-      {
-        name: 'authorEmail',
-        type: 'input',
-        message: 'Your email?',
-        default: userEmail,
-      },
-    ]);
+    const authorName = await inquirer.input({
+      message: "What's your name?",
+      default: userName,
+    });
+    const authorEmail = await inquirer.input({
+      message: 'Your email?',
+      default: userEmail,
+    });
 
     await lock.release('cli:input');
 

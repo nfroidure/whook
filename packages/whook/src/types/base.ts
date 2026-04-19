@@ -14,12 +14,10 @@ import { type WhookHostEnv } from '../services/HOST.js';
 import { type WhookDefinitionsConfig } from '../services/DEFINITIONS.js';
 import { type WhookResolvedPluginsConfig } from '../services/WHOOK_RESOLVED_PLUGINS.js';
 import { type WhookRoutesWrappersConfig } from '../services/ROUTES_WRAPPERS.js';
-import { type WhookCompilerConfig } from '../services/compiler.js';
 import {
   type ProcessEnvConfig,
   type ProcessServiceConfig,
 } from 'application-services';
-import { type OpenAPITypesConfig } from '../commands/generateOpenAPITypes.js';
 import { type WhookErrorHandlerConfig } from '../services/errorHandler.js';
 import { type WhookSchemaValidatorsConfig } from '../services/schemaValidators.js';
 import { type WhookQueryParserBuilderConfig } from '../services/queryParserBuilder.js';
@@ -39,8 +37,10 @@ import {
   type OpenAPIExtension,
 } from 'ya-open-api-types';
 
+export type WhookAppEnv<T extends string = 'local' | 'test' | 'production'> = T;
+
 export interface WhookBaseMain {
-  AppEnv: string;
+  AppEnv: WhookAppEnv;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -66,10 +66,8 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookResolvedPluginsConfig &
   WhookObfuscatorConfig &
   WhookDefinitionsConfig &
-  WhookCompilerConfig &
   WhookRoutesWrappersConfig &
-  WhookSchemaValidatorsConfig &
-  OpenAPITypesConfig;
+  WhookSchemaValidatorsConfig;
 
 export const ASIDE_COMPONENTS_SUFFIXES = {
   schemas: 'Schema',

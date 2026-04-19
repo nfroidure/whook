@@ -26,6 +26,9 @@
   "version": "23.0.0",
   "description": "A wrapper to provide versions check support to a Whook server",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -55,7 +58,7 @@
   "dependencies": {
     "@whook/whook": "^23.0.0",
     "application-services": "^9.0.1",
-    "knifecycle": "^21.1.0",
+    "knifecycle": "^21.2.0",
     "semver": "^7.7.4",
     "ya-open-api-types": "^2.2.0",
     "yhttperror": "^9.0.2"

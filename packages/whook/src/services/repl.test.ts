@@ -4,9 +4,13 @@ import initREPL from './repl.js';
 import { PassThrough } from 'node:stream';
 import streamtest from 'streamtest';
 import { type LogService } from 'common-services';
-import { type Injector, type Disposer } from 'knifecycle';
+import { type Injector, type Disposer, type Knifecycle } from 'knifecycle';
 
 describe('initREPL', () => {
+  const $ready = Promise.resolve(undefined);
+  const $instance = {
+    registered: () => [],
+  } as unknown as Knifecycle;
   const $injector = jest.fn<Injector<any>>();
   const $dispose = jest.fn<Disposer>();
   const log = jest.fn<LogService>();
@@ -31,12 +35,18 @@ describe('initREPL', () => {
     });
 
     const { dispose } = await initREPL({
+      $ready,
+      $instance,
       $injector,
       $dispose,
       log,
       stdin: stdin as unknown as typeof process.stdin,
       stdout: stdout as unknown as typeof process.stdout,
     });
+
+    // Need to wait a bit
+    await Promise.resolve();
+    await Promise.resolve();
 
     stdin.write('.inject time;\n\n');
     await injectorPromise;

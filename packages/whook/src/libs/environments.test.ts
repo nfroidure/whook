@@ -11,17 +11,15 @@ describe('checkEnvironment', () => {
     });
     test('with the good environment', () => {
       expect(checkEnvironment(['test'], 'test')).toBeTruthy();
-      expect(checkEnvironment(['test', 'production'], 'test')).toBeTruthy();
+      expect(checkEnvironment(['test', 'local'], 'test')).toBeTruthy();
     });
   });
 
   describe('should return false', () => {
     test('without the good environment', () => {
       expect(checkEnvironment([], 'test')).toBeFalsy();
-      expect(checkEnvironment(['development'], 'test')).toBeFalsy();
-      expect(
-        checkEnvironment(['development', 'production'], 'test'),
-      ).toBeFalsy();
+      expect(checkEnvironment(['local'], 'test')).toBeFalsy();
+      expect(checkEnvironment(['local', 'production'], 'test')).toBeFalsy();
     });
   });
 });

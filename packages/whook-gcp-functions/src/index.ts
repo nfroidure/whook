@@ -18,15 +18,18 @@ import {
 } from 'knifecycle';
 import initBuildAutoloader from './services/_autoload.js';
 import {
+  type WhookDefinitions,
+  type WhookSchemaValidatorsOptions,
+  DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
+  type WhookMain,
+} from '@whook/whook';
+import {
   DEFAULT_BUILD_INITIALIZER_PATH_MAP as BASE_DEFAULT_BUILD_INITIALIZER_PATH_MAP,
   initCompiler,
-  type WhookDefinitions,
   type WhookCompilerOptions,
   type WhookCompilerService,
-  type WhookSchemaValidatorsOptions,
   DEFAULT_COMPILER_OPTIONS,
-  DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
-} from '@whook/whook';
+} from '@whook/dev';
 import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
 import { parseArgs } from '@whook/whook/dist/libs/args.js';
@@ -91,7 +94,7 @@ export async function runBuild(
       SCHEMA_VALIDATORS_OPTIONS = DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
     } = await $.run<
       WhookGCPFunctionBuildConfig & {
-        APP_ENV: string;
+        APP_ENV: WhookMain['AppEnv'];
         PROJECT_DIR: string;
         compiler: WhookCompilerService;
         log: LogService;
@@ -160,7 +163,7 @@ async function processHandlers(
     SCHEMA_VALIDATORS_OPTIONS,
     COMPILER_OPTIONS,
   }: WhookGCPFunctionBuildConfig & {
-    APP_ENV: string;
+    APP_ENV: WhookMain['AppEnv'];
     PROJECT_DIR: string;
     DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
@@ -224,7 +227,7 @@ async function buildHandler(
     SCHEMA_VALIDATORS_OPTIONS,
     COMPILER_OPTIONS,
   }: {
-    APP_ENV: string;
+    APP_ENV: WhookMain['AppEnv'];
     PROJECT_DIR: string;
     DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;

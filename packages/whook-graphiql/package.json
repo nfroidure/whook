@@ -26,6 +26,9 @@
   "version": "23.0.0",
   "description": "A wrapper for the Whook HTTP Router to provide GraphIQL for local dev",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -68,7 +71,7 @@
   "dependencies": {
     "@whook/whook": "^23.0.0",
     "apollo-server-module-graphiql": "^1.4.0",
-    "knifecycle": "^21.1.0",
+    "knifecycle": "^21.2.0",
     "ya-open-api-types": "^2.2.0",
     "yerror": "^11.0.0"
   },

@@ -13,6 +13,7 @@ import {
   type WhookSwaggerUIConfig,
   type WhookSwaggerUIEnv,
 } from '@whook/swagger-ui';
+import { type WhookCompilerConfig, type OpenAPITypesConfig } from '@whook/dev';
 import { type WhookCORSRouteConfig, type WhookCORSConfig } from '@whook/cors';
 import { type APIConfig } from './services/API.js';
 import { type JWTServiceConfig, type JWTEnvVars } from 'jwt-service';
@@ -51,7 +52,9 @@ declare module 'application-services' {
       WhookCORSConfig,
       APIConfig,
       JWTServiceConfig,
-      TimeMockConfig {}
+      TimeMockConfig,
+      WhookCompilerConfig,
+      OpenAPITypesConfig {}
 }
 
 declare module '@whook/whook' {

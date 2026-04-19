@@ -18,20 +18,16 @@ exports[`initAuthor should handle git failures 1`] = `
   ],
   "inquirerPromptCalls": [
     [
-      [
-        {
-          "default": undefined,
-          "message": "What's your name?",
-          "name": "authorName",
-          "type": "input",
-        },
-        {
-          "default": undefined,
-          "message": "Your email?",
-          "name": "authorEmail",
-          "type": "input",
-        },
-      ],
+      {
+        "default": undefined,
+        "message": "What's your name?",
+      },
+    ],
+    [
+      {
+        "default": undefined,
+        "message": "Your email?",
+      },
     ],
   ],
   "lockReleaseCalls": [
@@ -85,20 +81,10 @@ exports[`initAuthor should release the lock on failure 1`] = `
   ],
   "inquirerPromptCalls": [
     [
-      [
-        {
-          "default": "Wayne Campbell",
-          "message": "What's your name?",
-          "name": "authorName",
-          "type": "input",
-        },
-        {
-          "default": "wayne@warner.com",
-          "message": "Your email?",
-          "name": "authorEmail",
-          "type": "input",
-        },
-      ],
+      {
+        "default": "Wayne Campbell",
+        "message": "What's your name?",
+      },
     ],
   ],
   "lockReleaseCalls": [
@@ -138,20 +124,16 @@ exports[`initAuthor should work 1`] = `
   ],
   "inquirerPromptCalls": [
     [
-      [
-        {
-          "default": "Wayne Campbell",
-          "message": "What's your name?",
-          "name": "authorName",
-          "type": "input",
-        },
-        {
-          "default": "wayne@warner.com",
-          "message": "Your email?",
-          "name": "authorEmail",
-          "type": "input",
-        },
-      ],
+      {
+        "default": "Wayne Campbell",
+        "message": "What's your name?",
+      },
+    ],
+    [
+      {
+        "default": "wayne@warner.com",
+        "message": "Your email?",
+      },
     ],
   ],
   "lockReleaseCalls": [
