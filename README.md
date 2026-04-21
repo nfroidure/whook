@@ -145,16 +145,18 @@ add a local wrapper specifically to one or a few routes.
 
 Whook work by adding ingredients to you API:
 
-- **configuration**: Whook look ups for `config/{NODE_ENV}/config.js` files. It
+- **configuration**: Whook looks up for `config/{APP_ENV}/config.js` files. It
   creates constants you can inject in your routes and services.
 - **API**: It defines the various endpoint of your API and how to map these to
   routes thanks to the well known OpenAPI format (formerly Swagger),
-- **routes**: to define an implement API endpoints,
+- **routes**: to define and implement API endpoints,
 - **crons**: to define and implement periodic tasks,
 - **consumers**: to implement queues/streams consumers,
 - **services**: various services that deal with side effects,
 - **wrappers**: higher order functions you can apply to routes, crons or
-  consumers (CORS, authentication...).
+  consumers (CORS, authentication...),
+- **commands**: for utility scripts (run `node --run dev -- ls` to list
+  commands).
 
 You can see a lot of those concepts implemented in the
 [Whook example](./packages/whook-example) folder.
@@ -185,16 +187,10 @@ Install those
 [VSCode extensions](https://insertafter.com/en/blog/my_vscode_configuration.html)
 to get a smooth developer experience.
 
-For committing run:
-
-```sh
-npm run cz
-```
-
 ## Publishing
 
 ```sh
-NODE_ENV=cli npm run lerna  -- publish
+node --run lerna  -- publish
 ```
 
 [//]: # (::contents:end)

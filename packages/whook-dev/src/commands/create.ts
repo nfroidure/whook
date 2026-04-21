@@ -1,5 +1,13 @@
-import { location, autoService, type Knifecycle } from 'knifecycle';
-import { YError } from 'yerror';
+import {
+  location,
+  autoService,
+  type Knifecycle,
+  Autoloader,
+  Initializer,
+  Dependencies,
+  Service,
+} from 'knifecycle';
+import { printStackTrace, YError } from 'yerror';
 import camelCase from 'camelcase';
 import * as _inquirer from '@inquirer/prompts';
 import path from 'node:path';
@@ -15,6 +23,13 @@ import {
   DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   type WhookCronDefinitionsOptions,
 } from '@whook/whook';
+import { Project } from 'ts-morph';
+import {
+  findConfigServiceType,
+  findInitializerServiceType,
+  ServiceTypeDescriptor,
+} from '../lib/typesGuess.js';
+import { fileURLToPath } from 'node:url';
 
 const {
   writeFile: _writeFile,
@@ -53,7 +68,7 @@ const whookServicesTypes = {
   HOST: 'WhookHost',
   PORT: 'WhookPort',
   DEFINITIONS: 'WhookDefinitions',
-  APM: 'APMService',
+  APM: 'WhookAPMService',
 };
 const allTypes = {
   ...commonServicesTypes,
@@ -96,6 +111,8 @@ async function initCreateCommand({
   ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
   CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   API,
+  $instance,
+  $autoload,
   inquirer = _inquirer,
   writeFile = _writeFile,
   ensureDir = _ensureDir,
@@ -107,6 +124,7 @@ async function initCreateCommand({
   CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
   API: OpenAPI;
   $instance: Knifecycle;
+  $autoload: Autoloader<Initializer<Service, Dependencies>>;
   inquirer: Pick<
     typeof _inquirer,
     'checkbox' | 'confirm' | 'input' | 'rawlist'
@@ -159,19 +177,106 @@ async function initCreateCommand({
     const services = await inquirer.checkbox({
       message: 'Which services do you want to use?',
       choices: [
-        ...Object.keys(commonServicesTypes),
-        ...Object.keys(applicationServicesTypes),
-        ...Object.keys(whookSimpleTypes),
-        ...Object.keys(whookServicesTypes),
+        ...new Set([
+          ...$instance.registered(),
+          ...Object.keys(commonServicesTypes),
+          ...Object.keys(applicationServicesTypes),
+          ...Object.keys(whookSimpleTypes),
+          ...Object.keys(whookServicesTypes),
+        ]),
       ].map((value) => ({ value })),
     });
 
-    const servicesTypes = (services.length ? services : ['log'])
+    const notFoundTypes = services.filter((name) => !(name in allTypes));
+    const foundTypes = services.filter((name) => name in allTypes);
+    const guessedTypes: Record<string, ServiceTypeDescriptor> = {};
+
+    if (notFoundTypes.length) {
+      const project = new Project({
+        tsConfigFilePath: `${PROJECT_DIR}/tsconfig.json`,
+      });
+      for (const notFoundType of notFoundTypes) {
+        let result = await findConfigServiceType(
+          project,
+          PROJECT_DIR,
+          notFoundType,
+        );
+
+        log('debug', `➕ - Type lookup in config result:`, result);
+
+        if (result.type === 'failure') {
+          let initializer = $instance.getRegisteredInitializer(notFoundType);
+
+          log(
+            'debug',
+            `➕ - Register initializer lookup:`,
+            initializer as unknown as string,
+          );
+
+          if (!initializer?.$location) {
+            try {
+              initializer = await $autoload(notFoundType);
+              log(
+                'debug',
+                `➕ - Autoload initializer lookup:`,
+                initializer as unknown as string,
+              );
+            } catch (err) {
+              log('debug-stack', printStackTrace(err));
+            }
+          }
+
+          if (initializer?.$location) {
+            result = await findInitializerServiceType(
+              project,
+              initializer.$location.url.startsWith('file:')
+                ? fileURLToPath(initializer.$location.url)
+                : initializer.$location.url,
+              {
+                exportName: initializer.$location.exportName || 'default',
+                serviceName: notFoundType,
+              },
+            );
+          }
+        }
+
+        guessedTypes[notFoundType] = result;
+      }
+    }
+
+    const servicesTypes = (foundTypes.length ? foundTypes : ['log'])
       .sort()
       .map((name) => ({
         name,
         type: allTypes[name as keyof typeof allTypes],
-      }));
+      }))
+      .concat(
+        notFoundTypes.map((notFoundType) => {
+          if (guessedTypes[notFoundType].type === 'alias') {
+            return {
+              name: notFoundType,
+              type: guessedTypes[notFoundType].name,
+            };
+          }
+          if (guessedTypes[notFoundType].type === 'const') {
+            return {
+              name: notFoundType,
+              type: JSON.stringify(guessedTypes[notFoundType].value),
+            };
+          }
+          if (guessedTypes[notFoundType].type === 'literal') {
+            return {
+              name: notFoundType,
+              type: guessedTypes[notFoundType].word,
+            };
+          }
+
+          return {
+            name: notFoundType,
+            type: 'unknown',
+          };
+        }),
+      );
     const parametersDeclaration = servicesTypes.length
       ? `{${servicesTypes
           .map(
@@ -231,7 +336,14 @@ import { ${whookServices
             .map((name) => `type ${whookServicesTypes[name]}`)
             .join(', ')} } from '@whook/whook';`
         : ''
-    }
+    }${notFoundTypes
+      .map((notFoundType) =>
+        guessedTypes[notFoundType]?.type === 'alias'
+          ? `
+import { ${guessedTypes[notFoundType].name}  } from '${guessedTypes[notFoundType].path}';`
+          : '',
+      )
+      .join('')}
 `;
     let fileSource: string;
 

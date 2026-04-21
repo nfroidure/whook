@@ -5,9 +5,15 @@ import { getPingDefinition } from '@whook/whook';
 import { type OpenAPI } from 'ya-open-api-types';
 import { type LogService } from 'common-services';
 import { type Knifecycle } from 'knifecycle';
+import { YError } from 'yerror';
 
 describe('createCommand', () => {
-  const $instance = {} as unknown as Knifecycle;
+  const $autoload = jest.fn(async (serviceName: string) => {
+    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
+  });
+  const $instance = {
+    registered: () => [],
+  } as unknown as Knifecycle;
   const PROJECT_DIR = '/hom/whoiam/project';
   const API: OpenAPI = {
     openapi: '3.1.0',
@@ -56,6 +62,7 @@ describe('createCommand', () => {
       pathExists.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -326,6 +333,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -538,6 +546,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(true);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -744,7 +753,7 @@ describe('createCommand', () => {
          type WhookRouteTypedHandler,
        } from '@whook/whook';
        import { type LogService } from 'common-services';
-       import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       import { type ProjectDirService, type AppEnvVars } from 'application-services';
 
 
        export const definition = {
@@ -822,6 +831,7 @@ describe('createCommand', () => {
       pathExists.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -974,6 +984,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -1113,6 +1124,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(true);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -1246,7 +1258,7 @@ describe('createCommand', () => {
              "/hom/whoiam/project/src/services/aService.ts",
              "import { autoService, location } from 'knifecycle';
        import { type LogService } from 'common-services';
-       import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       import { type ProjectDirService, type AppEnvVars } from 'application-services';
 
 
        export type AServiceService = {};
@@ -1283,6 +1295,7 @@ describe('createCommand', () => {
       pathExists.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -1445,6 +1458,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -1584,6 +1598,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(true);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -1717,7 +1732,7 @@ describe('createCommand', () => {
              "/hom/whoiam/project/src/services/aProvider.ts",
              "import { autoProvider, location, type Provider } from 'knifecycle';
        import { type LogService } from 'common-services';
-       import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       import { type ProjectDirService, type AppEnvVars } from 'application-services';
 
 
        export type AProviderService = {};
@@ -1765,6 +1780,7 @@ describe('createCommand', () => {
       pathExists.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -1950,6 +1966,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(false);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -2097,6 +2114,7 @@ describe('createCommand', () => {
       inquirer.confirm.mockResolvedValueOnce(true);
 
       const createCommand = await initCreateCommand({
+        $autoload,
         $instance,
         PROJECT_DIR,
         API,
@@ -2241,7 +2259,7 @@ describe('createCommand', () => {
          type WhookCommandDefinition,
        } from '@whook/whook';
        import { type LogService } from 'common-services';
-       import { type AppEnvVars, type ProjectDirService } from 'application-services';
+       import { type ProjectDirService, type AppEnvVars } from 'application-services';
 
 
        export const definition = {
