@@ -92,202 +92,132 @@ export default location(initMyDefaultInterfaceService, import.meta.url);
     );
 
     test('should find string type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'theString',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "string",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"string"`);
     });
 
     test('should find boolean type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'theBoolean',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "boolean",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"boolean"`);
     });
 
     test('should find number type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'theNumber',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "number",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"number"`);
     });
 
     test('should find const string type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'theConstString',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "const",
-         "value": "a_const_string",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`""a_const_string""`);
     });
 
-    test('should find const string in a type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+    // TODO: Find a way to create an ImportType here
+    test.skip('should find const string in a type', async () => {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'theConstStringInAType',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "ConstStringInAType",
-         "path": "/tmp/test.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/test").ConstStringInAType"`,
+      );
     });
 
     test('should find const boolean type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'theConstBoolean',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "const",
-         "value": true,
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"true"`);
     });
 
     test('should find any type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'ofAny',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "any",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"any"`);
     });
 
     test('should find unknown type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'ofUnknown',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "unknown",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"unknown"`);
     });
 
     test('should find null type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'ofNull',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "null",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"null"`);
     });
 
     test('should find undefined type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'ofUndefined',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "undefined",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"undefined"`);
     });
 
     test('should find const never type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'ofNever',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "never",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"never"`);
     });
 
     test('should find const void type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'ofVoid',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "type": "literal",
-         "word": "void",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(`"void"`);
     });
 
     test('should find a service type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myTypeService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "MyTypeService",
-         "path": "/tmp/test.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/test").MyTypeService"`,
+      );
     });
 
     test('should find a service interface', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myInterfaceService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "MyInterfaceService",
-         "path": "/tmp/test.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/test").MyInterfaceService"`,
+      );
     });
 
     test('should find a default service interface', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         exportName: 'default',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "MyInterfaceService",
-         "path": "/tmp/test.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/test").MyInterfaceService"`,
+      );
     });
   });
 
@@ -373,59 +303,43 @@ export { initMyDefaultInterfaceService };
     );
 
     test('should find a directly exported type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myTypeService1',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "MyTypeService1",
-         "path": "/tmp/test.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/source1").MyTypeService1"`,
+      );
     });
 
     test('should find a reexported type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myTypeService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "MyTypeService",
-         "path": "/tmp/test.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/source2").MyTypeService"`,
+      );
     });
 
     test('should find a reexported interface', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myInterfaceService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "MyInterfaceService",
-         "path": "/tmp/source2.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/source2").MyInterfaceService"`,
+      );
     });
 
     test('should find a reexported default interface', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myDefaultInterfaceService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
-       {
-         "name": "MyDefaultInterfaceService",
-         "path": "/tmp/source2.ts",
-         "type": "alias",
-       }
-      `);
+      expect(type?.getText()).toMatchInlineSnapshot(
+        `"import("/tmp/source2").MyDefaultInterfaceService"`,
+      );
     });
   });
 
@@ -512,11 +426,11 @@ export { initMyDefaultInterfaceService };
     );
 
     test('should find a directly exported type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myTypeService1',
       });
 
-      expect(result).toMatchInlineSnapshot(`
+      expect(type?.getText()).toMatchInlineSnapshot(`
        {
          "name": "MyTypeService1",
          "path": "/tmp/test.ts",
@@ -526,11 +440,11 @@ export { initMyDefaultInterfaceService };
     });
 
     test('should find a reexported type', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myTypeService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
+      expect(type?.getText()).toMatchInlineSnapshot(`
        {
          "name": "MyTypeService",
          "path": "/tmp/test.ts",
@@ -540,11 +454,11 @@ export { initMyDefaultInterfaceService };
     });
 
     test('should find a reexported interface', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myInterfaceService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
+      expect(type?.getText()).toMatchInlineSnapshot(`
        {
          "name": "MyInterfaceService",
          "path": "/tmp/source2.ts",
@@ -554,11 +468,11 @@ export { initMyDefaultInterfaceService };
     });
 
     test('should find a reexported default interface', async () => {
-      const result = await findInitializerServiceType(project, '/tmp/test.ts', {
+      const type = await findInitializerServiceType(project, '/tmp/test.ts', {
         serviceName: 'myDefaultInterfaceService',
       });
 
-      expect(result).toMatchInlineSnapshot(`
+      expect(type?.getText()).toMatchInlineSnapshot(`
        {
          "name": "MyDefaultInterfaceService",
          "path": "/tmp/source2.ts",

@@ -76,7 +76,7 @@ import {
   type WhookCommandsDefinitionsService,
   DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
 } from './COMMANDS_DEFINITIONS.js';
-import { WhookCommandModule } from '../types/commands.js';
+import { type WhookCommandModule } from '../types/commands.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
 

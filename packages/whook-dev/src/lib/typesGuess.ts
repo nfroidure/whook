@@ -7,36 +7,8 @@ import {
 } from 'ts-morph';
 import { parseName } from 'knifecycle';
 import createDebug from 'debug';
-import { sep } from 'node:path';
 
 const debug = createDebug('whook:types');
-
-export type ServiceTypeDescriptor =
-  | {
-      type: 'literal';
-      word:
-        | 'string'
-        | 'boolean'
-        | 'number'
-        | 'unknown'
-        | 'null'
-        | 'any'
-        | 'void'
-        | 'undefined'
-        | 'never';
-    }
-  | {
-      type: 'const';
-      value: string | boolean | number;
-    }
-  | {
-      type: 'alias';
-      name: string;
-      path: string;
-    }
-  | {
-      type: 'failure';
-    };
 
 export async function findInitializerServiceType(
   project: Project,
@@ -44,7 +16,7 @@ export async function findInitializerServiceType(
   { serviceName, exportName }: { serviceName?: string; exportName?: string } = {
     exportName: 'default',
   },
-): Promise<ServiceTypeDescriptor> {
+): Promise<Type | undefined> {
   const sourceFile = project.addSourceFileAtPath(path);
   const fileExportDeclarations = sourceFile.getExportedDeclarations();
   const fileExportAssignments = sourceFile.getExportAssignments();
@@ -204,21 +176,15 @@ SourceFile: ${Node.isSourceFile(declaration)} ||
               `- type is assignable to an export: ${name}, ${declaration.getText()}`,
             );
 
-            return {
-              type: 'alias',
-              name,
-              path,
-            };
+            return serviceType;
           }
         }
       }
-      return buildDescriptorFromType(path, serviceType);
+      return serviceType;
     }
   }
 
-  return {
-    type: 'failure',
-  };
+  return;
 }
 
 function unwrapServiceType(type: Type): Type | undefined {
@@ -243,7 +209,7 @@ export async function findConfigServiceType(
   project: Project,
   projectPath: string,
   configKey: string,
-): Promise<ServiceTypeDescriptor> {
+): Promise<Type | undefined> {
   debug(`# Reading project module augmentations`);
 
   const sourceFile = project.addSourceFileAtPath(
@@ -334,146 +300,8 @@ export async function findConfigServiceType(
 
   if (configType) {
     debug(`# Type found: ${configType.getText()}`);
-    return buildDescriptorFromType(`${projectPath}/src/whook.d.ts`, configType);
+    return configType;
   }
 
-  return {
-    type: 'failure',
-  };
-}
-
-// Logique de transformation commune (réutilisable entre handlers et config)
-function buildDescriptorFromType(
-  path: string,
-  foundType: Type,
-): ServiceTypeDescriptor {
-  if (foundType.isString()) {
-    debug(`- type is string`);
-    return {
-      type: 'literal',
-      word: 'string',
-    };
-  }
-
-  if (foundType.isStringLiteral()) {
-    const value = foundType.getLiteralValue() as string;
-
-    debug(`- type is string literal: ${value}`);
-    return {
-      type: 'const',
-      value,
-    };
-  }
-
-  if (foundType.isNumber()) {
-    debug(`- type is number`);
-    return {
-      type: 'literal',
-      word: 'number',
-    };
-  }
-
-  if (foundType.isNumberLiteral()) {
-    const value = foundType.getLiteralValue() as number;
-
-    debug(`- type is number literal: ${value}`);
-    return {
-      type: 'const',
-      value,
-    };
-  }
-
-  if (foundType.isBoolean()) {
-    debug(`- type is boolean`);
-    return {
-      type: 'literal',
-      word: 'boolean',
-    };
-  }
-
-  if (foundType.isBooleanLiteral()) {
-    const value = foundType.getText() === 'true';
-
-    debug(`- type is boolean literal: ${value}`);
-    return {
-      type: 'const',
-      value,
-    };
-  }
-
-  if (
-    foundType.isNull() ||
-    foundType.isUnknown() ||
-    foundType.isVoid() ||
-    foundType.isUndefined() ||
-    foundType.isNever() ||
-    foundType.isAny()
-  ) {
-    const word = foundType.getText() as 'unknown';
-
-    debug(`- type is literal: ${word}`);
-    return {
-      type: 'literal',
-      word,
-    };
-  }
-
-  const typeName =
-    foundType.getAliasSymbol()?.getName() || foundType.getSymbol()?.getName();
-
-  if (typeName) {
-    debug(`- type has a name: ${typeName}`);
-
-    let finalPath = path;
-
-    const originFile = foundType
-      .getSymbol()
-      ?.getDeclarations()?.[0]
-      ?.getSourceFile();
-
-    if (originFile) {
-      const originFileHasServiceType = originFile
-        ?.getExportedDeclarations()
-        .has(typeName);
-
-      if (originFileHasServiceType) {
-        finalPath = originFile.getFilePath();
-      }
-
-      if (originFile.isInNodeModules()) {
-        const parts = finalPath.split(`${sep}node_modules${sep}`);
-        const nodeModulesPath = parts[parts.length - 1];
-        const pathParts = nodeModulesPath.split(sep);
-        let moduleName: string | undefined;
-
-        if (nodeModulesPath.startsWith('@')) {
-          moduleName = `${pathParts[0]}/${pathParts[1]}`;
-        } else {
-          moduleName = pathParts[0];
-        }
-
-        // const moduleSymbol = project.getAmbientModule(moduleName);
-
-        // console.log({ moduleSymbol, moduleName });
-
-        // typeChecker.getExportsOfModule(
-        //      moduleSymbol
-        // );
-
-        // const moduleSourceFile = project.addSourceFilesAtPaths(moduleName);
-
-        // if (moduleSourceFile.getExportedDeclarations().has(typeName)) {
-        finalPath = moduleName;
-        // }
-      }
-    }
-
-    return {
-      type: 'alias',
-      name: typeName,
-      path: finalPath,
-    };
-  }
-
-  return { type: 'literal', word: 'unknown' };
+  return;
 }
