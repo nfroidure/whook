@@ -76,7 +76,7 @@
     "common-services": "^20.0.0",
     "debug": "^4.4.3",
     "fs-extra": "^11.3.4",
-    "knifecycle": "^21.2.0",
+    "knifecycle": "^21.3.0",
     "ora": "9.3.0",
     "yerror": "^11.0.0"
   },

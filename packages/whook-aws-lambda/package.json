@@ -57,7 +57,7 @@
     "camelcase": "^9.0.0",
     "common-services": "^20.0.0",
     "cpr": "3.0.1",
-    "knifecycle": "^21.2.0",
+    "knifecycle": "^21.3.0",
     "mkdirp": "^3.0.1",
     "qs": "^6.15.0",
     "strict-qs": "^10.0.0",

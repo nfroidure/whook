@@ -118,7 +118,7 @@
     "debug": "^4.4.3",
     "first-chunk-stream": "^6.0.0",
     "internal-ip": "^9.0.0",
-    "knifecycle": "^21.2.0",
+    "knifecycle": "^21.3.0",
     "miniquery": "^1.1.2",
     "ms": "^2.1.3",
     "negotiator": "^1.0.0",
