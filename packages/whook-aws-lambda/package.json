@@ -62,7 +62,7 @@
     "qs": "^6.15.0",
     "strict-qs": "^10.0.0",
     "type-fest": "^5.5.0",
-    "uuid": "13.0.0",
+    "uuid": "^14.0.0",
     "ya-json-schema-types": "^2.0.2",
     "ya-open-api-types": "^2.2.0",
     "yerror": "^11.0.0",
