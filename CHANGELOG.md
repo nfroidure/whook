@@ -1,3 +1,10 @@
+## [24.0.1](https://github.com/nfroidure/whook/compare/v24.0.0...v24.0.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* improve type of app env ([b0599cf](https://github.com/nfroidure/whook/commit/b0599cf54c7b35737f0b65435f4b47da74ccf083))
+
 # [24.0.0](https://github.com/nfroidure/whook/compare/v23.0.0...v24.0.0) (2026-04-22)
 
 

@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/example",
-  "version": "24.0.0",
+  "version": "24.0.1",
   "description": "A basic Whook server",
   "type": "module",
   "publishConfig": {
@@ -80,10 +80,10 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^24.0.0",
-    "@whook/cors": "^24.0.0",
-    "@whook/swagger-ui": "^24.0.0",
-    "@whook/whook": "^24.0.0",
+    "@whook/authorization": "^24.0.1",
+    "@whook/cors": "^24.0.1",
+    "@whook/swagger-ui": "^24.0.1",
+    "@whook/whook": "^24.0.1",
     "application-services": "^9.0.1",
     "common-services": "^20.0.0",
     "http-auth-utils": "^7.0.1",
@@ -101,7 +101,7 @@
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.30",
     "@swc/jest": "^0.2.39",
-    "@whook/dev": "^24.0.0",
+    "@whook/dev": "^24.0.1",
     "axios": "^1.14.0",
     "esbuild-node-externals": "^1.20.1",
     "eslint": "^10.2.1",
