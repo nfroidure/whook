@@ -45,6 +45,10 @@ describe('initCreateWhook', () => {
       '@whook/swagger-ui': '<current_version>',
       '@whook/whook': '<current_version>',
     },
+    devDependencies: {
+      ..._packageJSON.devDependencies,
+      '@whook/dev': '<current_version>',
+    },
   };
   const author = {
     name: 'Wayne Campbell',
@@ -196,7 +200,7 @@ describe('initCreateWhook', () => {
          "@swc/cli": "^0.8.1",
          "@swc/core": "^1.15.24",
          "@swc/jest": "^0.2.39",
-         "@whook/dev": "^23.0.0",
+         "@whook/dev": "<current_version>",
          "axios": "^1.14.0",
          "esbuild-node-externals": "^1.20.1",
          "eslint": "^10.2.0",
@@ -411,7 +415,7 @@ describe('initCreateWhook', () => {
          "@swc/cli": "^0.8.1",
          "@swc/core": "^1.15.24",
          "@swc/jest": "^0.2.39",
-         "@whook/dev": "^23.0.0",
+         "@whook/dev": "<current_version>",
          "axios": "^1.14.0",
          "esbuild-node-externals": "^1.20.1",
          "eslint": "^10.2.0",
@@ -606,7 +610,7 @@ describe('initCreateWhook', () => {
          "@swc/cli": "^0.8.1",
          "@swc/core": "^1.15.24",
          "@swc/jest": "^0.2.39",
-         "@whook/dev": "^23.0.0",
+         "@whook/dev": "<current_version>",
          "axios": "^1.14.0",
          "esbuild-node-externals": "^1.20.1",
          "eslint": "^10.2.0",
