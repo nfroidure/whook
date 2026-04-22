@@ -23,4 +23,4 @@ export type * from './build.js';
 export * from './watch.js';
 export type * from './watch.js';
 export { default as initWatchResolve } from './services/watchResolve.js';
-export type * from './watch.js';
+export type * from './services/watchResolve.js';

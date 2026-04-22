@@ -37,10 +37,10 @@ import {
   type OpenAPIExtension,
 } from 'ya-open-api-types';
 
-export type WhookAppEnv<T extends string = 'local' | 'test' | 'production'> = T;
+export type WhookAppEnv<T extends string> = T;
 
 export interface WhookBaseMain {
-  AppEnv: WhookAppEnv;
+  AppEnv: WhookAppEnv<string>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

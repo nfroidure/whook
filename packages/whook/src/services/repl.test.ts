@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initREPL from './repl.js';
 import { PassThrough } from 'node:stream';
 import streamtest from 'streamtest';
-import { type LogService } from 'common-services';
+import { type LogService, type TimeService } from 'common-services';
 import { type Injector, type Disposer, type Knifecycle } from 'knifecycle';
 
 describe('initREPL', () => {
   const $ready = Promise.resolve(undefined);
   const $instance = {
-    registered: () => [],
-  } as unknown as Knifecycle;
-  const $injector = jest.fn<Injector<any>>();
+    registered: jest.fn<Knifecycle['registered']>(),
+    getRegisteredInitializer: jest.fn<Knifecycle['getRegisteredInitializer']>(),
+  };
+  const $injector = jest.fn<Injector<Record<'time', TimeService>>>();
   const $dispose = jest.fn<Disposer>();
   const log = jest.fn<LogService>();
 
@@ -36,7 +36,7 @@ describe('initREPL', () => {
 
     const { dispose } = await initREPL({
       $ready,
-      $instance,
+      $instance: $instance as unknown as Knifecycle,
       $injector,
       $dispose,
       log,
@@ -53,6 +53,10 @@ describe('initREPL', () => {
 
     stdin.write('time();\n\n');
 
+    $instance.registered.mockReturnValueOnce(['time', 'log']);
+
+    stdin.write('.registered\n\n');
+
     if (dispose) {
       await dispose();
     }
@@ -65,35 +69,39 @@ describe('initREPL', () => {
       injectorCalls: $injector.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-      {
-        "disposeCalls": [
-          [],
-        ],
-        "injectorCalls": [
-          [
-            [
-              "time;",
-            ],
-          ],
-        ],
-        "logCalls": [
-          [
-            "debug",
-            "🖵 - Initializing the REPL service!",
-          ],
-        ],
-        "text": "
-          _      ____             __     ___  _______  __ 
-          | | /| / / /  ___  ___  / /__  / _ \\/ __/ _ \\/ / 
-          | |/ |/ / _ \\/ _ \\/ _ \\/  '_/ / , _/ _// ___/ /__
-          |__/|__/_//_/\\___/\\___/_/\\_\\ /_/|_/___/_/  /____/
+     {
+       "disposeCalls": [
+         [],
+       ],
+       "injectorCalls": [
+         [
+           [
+             "time;",
+           ],
+         ],
+       ],
+       "logCalls": [
+         [
+           "debug",
+           "🖵 - Initializing the REPL service!",
+         ],
+       ],
+       "text": "
+         _      ____             __     ___  _______  __ 
+         | | /| / / /  ___  ___  / /__  / _ \\/ __/ _ \\/ / 
+         | |/ |/ / _ \\/ _ \\/ _ \\/  '_/ / , _/ _// ___/ /__
+         |__/|__/_//_/\\___/\\___/_/\\_\\ /_/|_/___/_/  /____/
 
-                 Inject services with \`.inject\`.
-                 > .inject log
-                 > log('info', '👋 - Hello REPL!'); 
-      whook> whook> whook> 1577836800000
-      whook> whook> ",
-      }
+                Inject services with \`.inject\`.
+                > .inject log
+                > log('info', '👋 - Hello REPL!'); 
+     whook> whook> whook> 1577836800000
+     whook> whook> # Registered Services:
+     - time (I),
+     - log.
+     (I: instantiated)
+     whook> whook> ",
+     }
     `);
   });
 });

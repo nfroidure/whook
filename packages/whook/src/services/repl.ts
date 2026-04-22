@@ -73,7 +73,7 @@ async function initREPL<S>({
 - ${name}${name in loop.context ? ' (I)' : ''}`,
             )
             .join(',')}.
-(I: instanciated)
+(I: instantiated)
 `,
         );
         this.displayPrompt();
