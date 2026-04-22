@@ -1,3 +1,17 @@
+# [24.0.0](https://github.com/nfroidure/whook/compare/v23.0.0...v24.0.0) (2026-04-22)
+
+
+### Bug Fixes
+
+* version creation tests ([d6ff12d](https://github.com/nfroidure/whook/commit/d6ff12d678c22b5e31e62f34235db5c41538ade1))
+
+
+### Features
+
+* **dev:** create dev module ([8c1bb8e](https://github.com/nfroidure/whook/commit/8c1bb8e7d66effc30db4f0d3474a9d386ba38836))
+* first attempt of type guessing ([d1475d4](https://github.com/nfroidure/whook/commit/d1475d4e655cfa3e244a668d19b8fe183c79b180))
+* stronger type guessing ([a9cf4dd](https://github.com/nfroidure/whook/commit/a9cf4dd932c6a7a4880bce434bd3a3d89417e420))
+
 # [23.0.0](https://github.com/nfroidure/whook/compare/v22.0.0...v23.0.0) (2026-04-17)
 
 

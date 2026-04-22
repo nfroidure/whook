@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/graphiql",
-  "version": "23.0.0",
+  "version": "24.0.0",
   "description": "A wrapper for the Whook HTTP Router to provide GraphIQL for local dev",
   "type": "module",
   "publishConfig": {
@@ -69,7 +69,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^23.0.0",
+    "@whook/whook": "^24.0.0",
     "apollo-server-module-graphiql": "^1.4.0",
     "knifecycle": "^21.3.0",
     "ya-open-api-types": "^2.2.0",
