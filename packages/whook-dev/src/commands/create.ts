@@ -40,7 +40,7 @@ import {
 } from 'ts-morph';
 import {
   findConfigServiceType,
-  findInitializerServiceType,
+  findInitializerServiceTypeNode,
 } from '../lib/typesGuess.js';
 import { fileURLToPath } from 'node:url';
 
@@ -86,6 +86,14 @@ export const definition = {
         type: 'string',
       },
     },
+    {
+      name: 'overwrite',
+      description: 'Wether the script should overwrite existing files',
+      required: false,
+      schema: {
+        type: 'boolean',
+      },
+    },
   ],
 } as const satisfies WhookCommandDefinition;
 
@@ -128,11 +136,12 @@ async function initCreateCommand({
   WhookCommandHandler<{
     type: (typeof AVAILABLE_TYPES)[number];
     name: string;
+    overwrite?: boolean;
   }>
 > {
   return async (args) => {
     const {
-      namedArguments: { type, name },
+      namedArguments: { type, name, overwrite },
     } = args;
     let finalName = camelCase(name);
 
@@ -173,11 +182,6 @@ async function initCreateCommand({
       }
     }
 
-    const services = await inquirer.checkbox({
-      message: 'Which services do you want to use?',
-      choices: $instance.registered().map((value) => ({ value })),
-    });
-
     const fileDir = join(
       PROJECT_DIR,
       'src',
@@ -196,7 +200,29 @@ async function initCreateCommand({
                   : 'commands',
     );
     const filePath = join(fileDir, `${name}.ts`);
-    const sourceFile = tsProject.createSourceFile(filePath);
+
+    await ensureDir(fileDir);
+
+    if (!overwrite && (await pathExists(filePath))) {
+      log('warning', '⚠️ - The file already exists !');
+
+      const erase = await inquirer.confirm({
+        message: 'Erase ?',
+      });
+
+      if (!erase) {
+        return;
+      }
+    }
+
+    const services = await inquirer.checkbox({
+      message: 'Which services do you want to use?',
+      choices: $instance.registered().map((value) => ({ value })),
+    });
+
+    const sourceFile = tsProject.createSourceFile(filePath, undefined, {
+      overwrite: true,
+    });
     const upperCamelizedName = name[0].toLocaleUpperCase() + name.slice(1);
     const functionName = `init${upperCamelizedName}${type === 'command' ? 'Command' : ''}`;
 
@@ -209,7 +235,9 @@ async function initCreateCommand({
     }[] = [];
 
     for (const service of services) {
-      let type = await findConfigServiceType(tsProject, PROJECT_DIR, service);
+      let type = (
+        await findConfigServiceType(tsProject, PROJECT_DIR, service)
+      )?.getType();
 
       if (type) {
         log('debug', `➕ - Type found in the config:`, type.getText());
@@ -239,16 +267,27 @@ async function initCreateCommand({
         }
 
         if (initializer?.$location) {
-          type = await findInitializerServiceType(
-            tsProject,
-            initializer.$location.url.startsWith('file:')
-              ? fileURLToPath(initializer.$location.url)
-              : initializer.$location.url,
-            {
-              exportName: initializer.$location.exportName || 'default',
-              serviceName: service,
-            },
-          );
+          try {
+            const filePath = (
+              initializer.$location.url.startsWith('file:')
+                ? fileURLToPath(initializer.$location.url)
+                : initializer.$location.url
+            )
+              .replace(/\/dist\//, '/src/')
+              .replace(/\.js$/, '.ts');
+
+            const sourceFile = tsProject.addSourceFileAtPath(filePath);
+
+            type = (
+              await findInitializerServiceTypeNode(sourceFile, {
+                exportName: initializer.$location.exportName || 'default',
+                serviceName: service,
+              })
+            )?.getType();
+          } catch (err) {
+            log('debug', `🤷 - Cannot find file ${filePath}`);
+            log('debug-stack', printStackTrace(err));
+          }
         }
       }
 
@@ -842,19 +881,6 @@ return async (input) => {
       convertTabsToSpaces: true,
     });
 
-    await ensureDir(fileDir);
-
-    if (await pathExists(filePath)) {
-      log('warning', '⚠️ - The file already exists !');
-
-      const erase = await inquirer.confirm({
-        message: 'Erase ?',
-      });
-
-      if (!erase) {
-        return;
-      }
-    }
     await writeFile(filePath, sourceFile.getText());
 
     await sourceFile.save();

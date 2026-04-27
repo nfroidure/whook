@@ -73,6 +73,9 @@ declare module 'application-services' {
       `,
     );
 
+    $autoload.mockReset();
+    $instance.registered.mockReset();
+    $instance.getRegisteredInitializer.mockReset();
     ensureDir.mockReset();
     writeFile.mockReset();
     pathExists.mockReset();
@@ -345,38 +348,7 @@ declare module 'application-services' {
              "/home/whoiam/project/src/routes",
            ],
          ],
-         "inquirerCheckboxCalls": [
-           [
-             {
-               "choices": [
-                 {
-                   "value": "PROJECT_DIR",
-                 },
-                 {
-                   "value": "log",
-                 },
-                 {
-                   "value": "ENV",
-                 },
-                 {
-                   "value": "notUsed",
-                 },
-               ],
-               "message": "Which services do you want to use?",
-             },
-           ],
-           [
-             {
-               "choices": [
-                 {
-                   "name": "system",
-                   "value": "system",
-                 },
-               ],
-               "message": "Assign one or more tags to the handler",
-             },
-           ],
-         ],
+         "inquirerCheckboxCalls": [],
          "inquirerConfirmCalls": [
            [
              {
@@ -384,82 +356,9 @@ declare module 'application-services' {
              },
            ],
          ],
-         "inquirerInputCalls": [
-           [
-             {
-               "default": "/",
-               "message": "Give the handler path",
-             },
-           ],
-           [
-             {
-               "default": "",
-               "message": "Give the handler description",
-             },
-           ],
-         ],
-         "inquirerRawlistCalls": [
-           [
-             {
-               "choices": [
-                 {
-                   "name": "get",
-                   "value": "get",
-                 },
-                 {
-                   "name": "put",
-                   "value": "put",
-                 },
-                 {
-                   "name": "post",
-                   "value": "post",
-                 },
-                 {
-                   "name": "delete",
-                   "value": "delete",
-                 },
-                 {
-                   "name": "options",
-                   "value": "options",
-                 },
-                 {
-                   "name": "head",
-                   "value": "head",
-                 },
-                 {
-                   "name": "patch",
-                   "value": "patch",
-                 },
-                 {
-                   "name": "trace",
-                   "value": "trace",
-                 },
-                 {
-                   "name": "query",
-                   "value": "query",
-                 },
-               ],
-               "default": "get",
-               "message": "Give the handler method",
-             },
-           ],
-         ],
+         "inquirerInputCalls": [],
+         "inquirerRawlistCalls": [],
          "logCalls": [
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "string",
-           ],
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "import("/home/whoiam/project/src/log").LogService<number>",
-           ],
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "Record<string, string>",
-           ],
            [
              "warning",
              "⚠️ - The file already exists !",
@@ -626,6 +525,10 @@ declare module 'application-services' {
          ],
          "logCalls": [
            [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+           [
              "debug",
              "➕ - Type found in the config:",
              "string",
@@ -639,10 +542,6 @@ declare module 'application-services' {
              "debug",
              "➕ - Type found in the config:",
              "Record<string, string>",
-           ],
-           [
-             "warning",
-             "⚠️ - The file already exists !",
            ],
          ],
          "pathExistsCalls": [
@@ -861,24 +760,7 @@ declare module 'application-services' {
              "/home/whoiam/project/src/services",
            ],
          ],
-         "inquirerCheckboxCalls": [
-           [
-             {
-               "choices": [
-                 {
-                   "value": "PROJECT_DIR",
-                 },
-                 {
-                   "value": "log",
-                 },
-                 {
-                   "value": "ENV",
-                 },
-               ],
-               "message": "Which services do you want to use?",
-             },
-           ],
-         ],
+         "inquirerCheckboxCalls": [],
          "inquirerConfirmCalls": [
            [
              {
@@ -889,21 +771,6 @@ declare module 'application-services' {
          "inquirerInputCalls": [],
          "inquirerRawlistCalls": [],
          "logCalls": [
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "string",
-           ],
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "import("/home/whoiam/project/src/log").LogService<number>",
-           ],
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "Record<string, string>",
-           ],
            [
              "warning",
              "⚠️ - The file already exists !",
@@ -997,6 +864,10 @@ declare module 'application-services' {
          "inquirerRawlistCalls": [],
          "logCalls": [
            [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+           [
              "debug",
              "➕ - Type found in the config:",
              "string",
@@ -1010,10 +881,6 @@ declare module 'application-services' {
              "debug",
              "➕ - Type found in the config:",
              "Record<string, string>",
-           ],
-           [
-             "warning",
-             "⚠️ - The file already exists !",
            ],
          ],
          "pathExistsCalls": [
@@ -1117,6 +984,10 @@ declare module 'application-services' {
          "inquirerRawlistCalls": [],
          "logCalls": [
            [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+           [
              "debug",
              "➕ - Type found in the config:",
              "string",
@@ -1130,10 +1001,6 @@ declare module 'application-services' {
              "debug",
              "➕ - Type found in the config:",
              "Record<string, string>",
-           ],
-           [
-             "warning",
-             "⚠️ - The file already exists !",
            ],
          ],
          "pathExistsCalls": [
@@ -1259,6 +1126,10 @@ declare module 'application-services' {
          "inquirerRawlistCalls": [],
          "logCalls": [
            [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+           [
              "debug",
              "➕ - Type found in the config:",
              "string",
@@ -1272,10 +1143,6 @@ declare module 'application-services' {
              "debug",
              "➕ - Type found in the config:",
              "Record<string, string>",
-           ],
-           [
-             "warning",
-             "⚠️ - The file already exists !",
            ],
          ],
          "pathExistsCalls": [
@@ -1433,6 +1300,10 @@ declare module 'application-services' {
          "inquirerRawlistCalls": [],
          "logCalls": [
            [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+           [
              "debug",
              "➕ - Type found in the config:",
              "string",
@@ -1446,10 +1317,6 @@ declare module 'application-services' {
              "debug",
              "➕ - Type found in the config:",
              "Record<string, string>",
-           ],
-           [
-             "warning",
-             "⚠️ - The file already exists !",
            ],
          ],
          "pathExistsCalls": [
@@ -1584,6 +1451,10 @@ declare module 'application-services' {
          "inquirerRawlistCalls": [],
          "logCalls": [
            [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+           [
              "debug",
              "➕ - Type found in the config:",
              "string",
@@ -1597,10 +1468,6 @@ declare module 'application-services' {
              "debug",
              "➕ - Type found in the config:",
              "Record<string, string>",
-           ],
-           [
-             "warning",
-             "⚠️ - The file already exists !",
            ],
          ],
          "pathExistsCalls": [
@@ -1831,24 +1698,7 @@ declare module 'application-services' {
              "/home/whoiam/project/src/commands",
            ],
          ],
-         "inquirerCheckboxCalls": [
-           [
-             {
-               "choices": [
-                 {
-                   "value": "PROJECT_DIR",
-                 },
-                 {
-                   "value": "log",
-                 },
-                 {
-                   "value": "ENV",
-                 },
-               ],
-               "message": "Which services do you want to use?",
-             },
-           ],
-         ],
+         "inquirerCheckboxCalls": [],
          "inquirerConfirmCalls": [
            [
              {
@@ -1856,31 +1706,9 @@ declare module 'application-services' {
              },
            ],
          ],
-         "inquirerInputCalls": [
-           [
-             {
-               "default": "",
-               "message": "Give the command description",
-             },
-           ],
-         ],
+         "inquirerInputCalls": [],
          "inquirerRawlistCalls": [],
          "logCalls": [
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "string",
-           ],
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "import("/home/whoiam/project/src/log").LogService<number>",
-           ],
-           [
-             "debug",
-             "➕ - Type found in the config:",
-             "Record<string, string>",
-           ],
            [
              "warning",
              "⚠️ - The file already exists !",
@@ -1982,6 +1810,10 @@ declare module 'application-services' {
          "inquirerRawlistCalls": [],
          "logCalls": [
            [
+             "warning",
+             "⚠️ - The file already exists !",
+           ],
+           [
              "debug",
              "➕ - Type found in the config:",
              "string",
@@ -1995,10 +1827,6 @@ declare module 'application-services' {
              "debug",
              "➕ - Type found in the config:",
              "Record<string, string>",
-           ],
-           [
-             "warning",
-             "⚠️ - The file already exists !",
            ],
          ],
          "pathExistsCalls": [

@@ -1,7 +1,10 @@
 import {
-  type Type,
   type ExportAssignment,
   type ExportedDeclarations,
+  type SourceFile,
+  type CallSignatureDeclaration,
+  type FunctionLikeDeclaration,
+  type FunctionTypeNode,
   Node,
   Project,
 } from 'ts-morph';
@@ -10,15 +13,14 @@ import createDebug from 'debug';
 
 const debug = createDebug('whook:types');
 
-export async function findInitializerServiceType(
-  project: Project,
-  path: string,
+export async function findInitializerServiceTypeNode(
+  sourceFile: SourceFile,
   { serviceName, exportName }: { serviceName?: string; exportName?: string } = {
     exportName: 'default',
   },
-): Promise<Type | undefined> {
-  const sourceFile = project.addSourceFileAtPath(path);
+): Promise<Node | undefined> {
   const fileExportDeclarations = sourceFile.getExportedDeclarations();
+  const baseExportDeclarations = sourceFile.getExportDeclarations();
   const fileExportAssignments = sourceFile.getExportAssignments();
   const candidateExportNames: string[] = [];
 
@@ -69,23 +71,7 @@ export async function findInitializerServiceType(
       continue;
     }
 
-    for (let declaration of exportedDeclarations) {
-      let serviceType: Type | undefined;
-
-      debug(`- pick export assignment: ${declaration.getText()}`);
-
-      if (Node.isExportAssignment(declaration)) {
-        debug(
-          `- unwrap export assignment expression: ${declaration.getText()}`,
-        );
-        declaration = declaration.getExpression();
-      }
-
-      while (Node.isAsExpression(declaration)) {
-        debug(`- unwrap as expression: ${declaration.getText()}`);
-        declaration = declaration.getExpression();
-      }
-
+    for (const declaration of exportedDeclarations) {
       if (
         Node.isClassDeclaration(declaration) ||
         Node.isEnumDeclaration(declaration) ||
@@ -95,7 +81,7 @@ export async function findInitializerServiceType(
         Node.isSourceFile(declaration)
       ) {
         debug(
-          `- skip unsupported declaration assignment: ${declaration.print()}
+          `- skip unusable declaration assignment: ${declaration.print()}
 ClassDeclaration: ${Node.isClassDeclaration(declaration)} ||
 EnumDeclaration: ${Node.isEnumDeclaration(declaration)} ||
 TypeAliasDeclaration: ${Node.isTypeAliasDeclaration(declaration)} ||
@@ -107,119 +93,313 @@ SourceFile: ${Node.isSourceFile(declaration)} ||
         continue;
       }
 
-      if (Node.isFunctionDeclaration(declaration)) {
-        debug(`- export is a function declaration`);
-        serviceType = unwrapServiceType(declaration.getReturnType());
-      } else if (Node.isCallExpression(declaration)) {
-        debug(`- export is a call expression`);
-        const type = declaration.getType();
-        const signatures = type.getCallSignatures();
+      let serviceTypeNode: Node | undefined;
+      let currentNode: Node | undefined = declaration;
 
-        if (!signatures.length) {
-          debug(`- no call signature`, type.getText());
-          continue;
+      debug(`- pick export assignment: ${currentNode.getText()}`);
+
+      if (Node.isExportAssignment(currentNode)) {
+        currentNode = currentNode.getExpression();
+        debug(
+          `- unwrap export assignment expression: ${currentNode.getText()}`,
+        );
+      }
+      if (Node.isVariableDeclaration(currentNode)) {
+        const typeNode = currentNode.getTypeNode();
+        const initializerNode = currentNode.getInitializer();
+
+        if (typeNode) {
+          currentNode = typeNode;
+          debug(
+            `- unwrap variable declaration type node: ${currentNode.getText()}`,
+          );
+        } else if (initializerNode) {
+          currentNode = initializerNode;
+          debug(
+            `- unwrap variable declaration type node: ${initializerNode.getText()}`,
+          );
         }
+      }
 
-        for (const signature of signatures) {
-          const returnType = signature.getReturnType();
+      while (Node.isAsExpression(currentNode)) {
+        debug(`- unwrap as expression: ${currentNode.getText()}`);
+        currentNode = currentNode.getExpression();
+      }
 
-          debug(`- call signature`, returnType.getText());
-          serviceType = unwrapServiceType(returnType);
-          if (serviceType) {
-            break;
-          }
-        }
-      } else if (Node.isVariableDeclaration(declaration)) {
-        debug(`- export is a variable`);
-        const type = declaration.getType();
-        const signatures = type.getCallSignatures();
+      if (currentNode) {
+        currentNode = unwrapKnifecycleUtilsCalls(currentNode);
+      }
 
-        if (!signatures.length) {
-          debug(`- no call signature`, declaration.getText(), type.getText());
-          continue;
-        }
+      if (Node.isTypeNode(currentNode)) {
+        debug(`- unwrap a type: ${currentNode.getText()}`);
 
-        for (const signature of signatures) {
-          const returnType = signature.getReturnType();
+        if (Node.isTypeReference(currentNode)) {
+          debug(`- node is a type reference`);
+          const typeName = currentNode.getTypeName();
 
-          debug(`- call signature`, returnType.getText());
-          serviceType = unwrapServiceType(returnType);
-          if (serviceType) {
-            break;
+          if (Node.isIdentifier(typeName)) {
+            debug(`- node has an identifier`);
+            for (const definitionNode of typeName.getDefinitionNodes()) {
+              debug(`- node definition: ${definitionNode.getText()}`);
+              if (Node.isTypeAliasDeclaration(definitionNode)) {
+                currentNode = definitionNode.getTypeNode();
+
+                debug(`- type declaration: ${currentNode?.getText()}`);
+              } else if (Node.isInterfaceDeclaration(definitionNode)) {
+                debug(`- interface declaration: ${definitionNode?.getText()}`);
+                const members = definitionNode.getMembers();
+
+                for (const member of members) {
+                  if (Node.isCallSignatureDeclaration(member)) {
+                    debug(`- call signature: ${member.getText()}`);
+                    currentNode = member;
+                  }
+                }
+              }
+              break;
+            }
           }
         }
       }
 
-      if (!serviceType) {
-        debug(
-          `- no usable type found: ${declaration.getText()} ${serviceType}`,
-        );
+      if (
+        Node.isFunctionDeclaration(currentNode) ||
+        Node.isFunctionExpression(currentNode) ||
+        Node.isFunctionLikeDeclaration(currentNode) ||
+        Node.isFunctionTypeNode(currentNode) ||
+        Node.isCallSignatureDeclaration(currentNode)
+      ) {
+        debug(`- export is a function declaration/expression`);
+        serviceTypeNode = unwrapInitializerServiceTypeNode(currentNode);
+      }
+
+      if (!serviceTypeNode) {
+        debug(`- no usable type found: ${declaration.getText()}`);
         continue;
       }
-      debug(`- found a service type`, serviceType.getText());
+      debug(`- found a service type node`, serviceTypeNode.getText());
 
-      if (!serviceType.isAny() && !serviceType.isNever()) {
-        for (const [name, declarations] of fileExportDeclarations) {
-          if (name === 'default') {
-            continue;
-          }
+      // const serviceType = serviceTypeNode.getType();
 
-          const declaration = declarations.find(
-            (value) =>
-              serviceType && serviceType.isAssignableTo(value.getType()),
-          );
+      // if (!serviceType.isAny() && !serviceType.isNever()) {
+      //   for (const [name, declarations] of fileExportDeclarations) {
+      //     if (name === 'default') {
+      //       continue;
+      //     }
 
-          if (declaration) {
-            serviceType = declaration ? declaration.getType() : serviceType;
+      //     const declaration = declarations.find(
+      //       (value) =>
+      //         serviceType && serviceType.isAssignableTo(value.getType()),
+      //     );
 
-            debug(
-              `- type is assignable to an export: ${name}, ${declaration.getText()}`,
-            );
+      //     if (declaration) {
+      //       debug(
+      //         `- type is assignable to an export: ${name}, ${declaration.getText()}`,
+      //       );
 
-            return serviceType;
-          }
+      //       return declaration;
+      //     }
+      //   }
+      // }
+
+      return serviceTypeNode;
+    }
+  }
+
+  for (const exportDeclaration of baseExportDeclarations) {
+    if (
+      !exportDeclaration.isTypeOnly() &&
+      !exportDeclaration.hasNamedExports()
+    ) {
+      debug(
+        `- looking in raw export declarations`,
+        exportDeclaration.getText(),
+      );
+      const moduleSpecifierSourceFile =
+        exportDeclaration.getModuleSpecifierSourceFile();
+
+      if (moduleSpecifierSourceFile) {
+        debug(`- new file`, moduleSpecifierSourceFile.getFilePath());
+        const serviceTypeNode = await findInitializerServiceTypeNode(
+          moduleSpecifierSourceFile,
+          { serviceName, exportName },
+        );
+
+        if (serviceTypeNode) {
+          return serviceTypeNode;
         }
       }
-      return serviceType;
     }
   }
 
   return;
 }
 
-function unwrapServiceType(type: Type): Type | undefined {
-  let currentType = type.getAwaitedType();
+function unwrapKnifecycleUtilsCalls(node: Node): Node | undefined {
+  debug('- trying to unwrap Knifecycle utils calls');
 
-  if (currentType) {
-    const serviceProperty = currentType.getProperty('service');
+  if (Node.isCallExpression(node)) {
+    const functionName = node.getExpression().getText();
+    const callArguments = node.getArguments();
 
-    if (serviceProperty) {
-      const node = serviceProperty.getValueDeclaration();
+    debug(`- attempting to unwrap call argument of "${functionName}"`);
 
-      if (node) {
-        currentType = serviceProperty.getTypeAtLocation(node);
+    if (['constant'].includes(functionName)) {
+      if (callArguments[1]) {
+        debug(`- unwrapped "${callArguments[1].getText()}"`);
+        return callArguments[1];
       }
+
+      return node;
+    }
+
+    if (
+      [
+        'location',
+        'service',
+        'autoService',
+        'provider',
+        'autoProvider',
+        'autoInject',
+        'singleton',
+        'autoName',
+      ].includes(functionName)
+    ) {
+      if (callArguments[0]) {
+        debug(`Unwrapped "${callArguments[0].getText()}"`);
+
+        if (Node.isIdentifier(callArguments[0])) {
+          debug(`- argument is an identifier`);
+          const definitionNodes = callArguments[0].getDefinitionNodes();
+
+          debug(`- returning its definition: ${definitionNodes[0].getText()}`);
+          return definitionNodes[0];
+        }
+
+        return unwrapKnifecycleUtilsCalls(callArguments[0]);
+      }
+
+      return node;
+    }
+    if (
+      [
+        'inject',
+        'unInject',
+        'useInject',
+        'mergeInject',
+        'alsoInject',
+        'extra',
+        'name',
+        'type',
+        'initializer',
+        'wrapInitializer',
+      ].includes(functionName)
+    ) {
+      if (callArguments[1]) {
+        debug(`- unwrapped "${callArguments[1].getText()}"`);
+
+        if (Node.isIdentifier(callArguments[1])) {
+          debug(`- argument is an identifier`);
+          const definitionNodes = callArguments[1].getDefinitionNodes();
+
+          debug(`- returning its definition: ${definitionNodes[0].getText()}`);
+          return definitionNodes[0];
+        }
+
+        return unwrapKnifecycleUtilsCalls(callArguments[1]);
+      }
+
+      return node;
+    }
+  }
+  return node;
+}
+
+function unwrapInitializerServiceTypeNode(
+  typeNode:
+    | FunctionLikeDeclaration
+    | CallSignatureDeclaration
+    | FunctionTypeNode,
+): Node | undefined {
+  const returnTypeNode = typeNode.getReturnTypeNode();
+
+  if (returnTypeNode) {
+    debug(`- return type node: ${returnTypeNode.getText()}`);
+
+    if (
+      !Node.isTypeReference(returnTypeNode) ||
+      returnTypeNode.getTypeName()?.getText() !== 'Promise'
+    ) {
+      return;
+    }
+
+    const serviceTypeNode = returnTypeNode.getTypeArguments()[0];
+
+    const type = serviceTypeNode.getType();
+    const serviceProperty = type.getProperty('service');
+
+    if (!serviceProperty) {
+      return serviceTypeNode;
+    }
+
+    const node = serviceProperty.getValueDeclaration();
+
+    if (!node) {
+      return;
+    }
+
+    return node;
+  }
+
+  debug(`- could not find the return type node, try guessing awaited type`);
+  const returnType = typeNode.getReturnType();
+  const currentType = returnType.getAwaitedType();
+
+  if (!currentType) {
+    debug(`- could not find the awaited return type`);
+    return;
+  }
+
+  debug(`- awaited return type: ${currentType.getText()}`);
+
+  const serviceProperty = currentType.getProperty('service');
+
+  if (serviceProperty) {
+    debug(`- found service type property`);
+    return serviceProperty.getValueDeclaration();
+  }
+
+  const typeName = currentType.getAliasSymbol() || currentType.getSymbol();
+
+  if (typeName) {
+    debug(`- found alias symbol: ${typeName.getName()}`);
+    const valueDeclaration = typeName.getValueDeclaration();
+
+    if (valueDeclaration) {
+      debug(`- found value declaration: ${valueDeclaration.getText()}`);
+
+      return valueDeclaration;
     }
   }
 
-  return currentType;
+  debug(`- could not find alias symbol`);
 }
 
 export async function findConfigServiceType(
   project: Project,
   projectPath: string,
-  configKey: string,
-): Promise<Type | undefined> {
+  propertyName: string,
+): Promise<Node | undefined> {
   debug(`# Reading project module augmentations`);
 
   const sourceFile = project.addSourceFileAtPath(
     `${projectPath}/src/whook.d.ts`,
   );
   const moduleAugmentations = sourceFile.getModules();
-  let configType: Type | undefined = undefined;
+  let typeNode: Node | undefined = undefined;
 
   for (const moduleAugmentation of moduleAugmentations) {
-    if (configType) {
+    if (typeNode) {
       break;
     }
 
@@ -235,7 +415,7 @@ export async function findConfigServiceType(
     const internalInterfaces = moduleAugmentation.getInterfaces();
 
     for (const internalInterface of internalInterfaces) {
-      if (configType) {
+      if (typeNode) {
         break;
       }
       const internalInterfaceName = internalInterface.getName();
@@ -246,62 +426,123 @@ export async function findConfigServiceType(
         continue;
       }
 
-      debug(
-        '- reading properties',
-        internalInterface.getProperties().map((p) => p.getName()),
+      typeNode = await recursivelyLookupTypeNodeForProperty(
+        internalInterface,
+        propertyName,
+      );
+    }
+  }
+
+  if (typeNode) {
+    debug(`# Type found: ${typeNode.getText()}`);
+    return typeNode;
+  }
+
+  return;
+}
+
+export async function recursivelyLookupTypeNodeForProperty(
+  currentNode: Node,
+  propretyName: string,
+): Promise<Node | undefined> {
+  if (Node.isIntersectionTypeNode(currentNode)) {
+    debug(`- node is an intersection type`);
+    for (const intersectionNode of currentNode.getTypeNodes()) {
+      debug(`- check intersection node ${intersectionNode.getText()}`);
+      const candidateType = await recursivelyLookupTypeNodeForProperty(
+        intersectionNode,
+        propretyName,
       );
 
-      const configProperty = internalInterface.getProperty(configKey);
-
-      if (configProperty) {
-        debug(`- property exists: ${configKey}`);
-        configType = configProperty.getType().getNonNullableType();
-        break;
+      if (candidateType) {
+        return candidateType;
       }
+    }
+  }
 
-      const extendsExpressions = internalInterface.getExtends();
+  if (Node.isTypeReference(currentNode)) {
+    debug(`- node is a type reference`);
+    const typeName = currentNode.getTypeName();
 
-      for (const extendsExpression of extendsExpressions) {
-        if (configType) {
-          break;
-        }
-        const expression = extendsExpression.getExpression();
+    if (Node.isIdentifier(typeName)) {
+      debug(`- node has an identifier`);
+      for (const definitionNode of typeName.getDefinitionNodes()) {
+        debug(`- node definition: ${definitionNode.getText()}`);
+        const candidateType = await recursivelyLookupTypeNodeForProperty(
+          definitionNode,
+          propretyName,
+        );
 
-        if (!Node.isIdentifier(expression)) {
-          debug(`- skipping extend: ${expression.getText()}`);
-          break;
-        }
-
-        debug(`- analyzing extend: ${expression.getText()}`);
-
-        for (const definition of expression.getDefinitionNodes()) {
-          if (configType) {
-            break;
-          }
-
-          if (Node.isInterfaceDeclaration(definition)) {
-            debug(
-              '- reading properties',
-              definition.getProperties().map((p) => p.getName()),
-            );
-
-            const configProperty = definition.getProperty(configKey);
-
-            if (configProperty) {
-              debug(`- property exists: ${configKey}`);
-              configType = configProperty.getType().getNonNullableType();
-              break;
-            }
-          }
+        if (candidateType) {
+          return candidateType;
         }
       }
     }
   }
 
-  if (configType) {
-    debug(`# Type found: ${configType.getText()}`);
-    return configType;
+  if (Node.isInterfaceDeclaration(currentNode)) {
+    debug(`- node is an interface declaration`);
+    debug(
+      '- reading properties',
+      currentNode.getProperties().map((p) => p.getName()),
+    );
+
+    const configProperty = currentNode.getProperty(propretyName);
+
+    if (configProperty) {
+      debug(`- property exists: ${propretyName}`);
+      return configProperty.getTypeNode();
+    }
+
+    const extendsExpressions = currentNode.getExtends();
+
+    for (const extendsExpression of extendsExpressions) {
+      const expression = extendsExpression.getExpression();
+
+      // TODO: Check alternatives
+      if (!Node.isIdentifier(expression)) {
+        debug(`- skipping extend: ${expression.getText()}`);
+        break;
+      }
+
+      debug(`- analyzing extend: ${expression.getText()}`);
+      for (const definitionNode of expression.getDefinitionNodes()) {
+        debug(`- node definition: ${definitionNode.getText()}`);
+        const candidateType = await recursivelyLookupTypeNodeForProperty(
+          definitionNode,
+          propretyName,
+        );
+
+        if (candidateType) {
+          return candidateType;
+        }
+      }
+    }
   }
 
-  return;
+  if (Node.isTypeAliasDeclaration(currentNode)) {
+    debug(`- node is a type alias declaration`);
+
+    const typeNode = currentNode.getTypeNode();
+
+    if (typeNode) {
+      if (Node.isTypeLiteral(typeNode)) {
+        const configProperty = typeNode.getProperty(propretyName);
+
+        if (configProperty) {
+          debug(`- property exists: ${propretyName}`);
+          return configProperty.getTypeNode();
+        }
+      }
+
+      const candidateType = await recursivelyLookupTypeNodeForProperty(
+        typeNode,
+        propretyName,
+      );
+
+      if (candidateType) {
+        return candidateType;
+      }
+    }
+  }
 }
