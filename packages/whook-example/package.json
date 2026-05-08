@@ -102,7 +102,7 @@
     "@swc/core": "^1.15.30",
     "@swc/jest": "^0.2.39",
     "@whook/dev": "^24.0.2",
-    "axios": "^1.14.0",
+    "axios": "^1.15.2",
     "esbuild-node-externals": "^1.20.1",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
