@@ -4,11 +4,13 @@ import { autoService } from 'knifecycle';
 import { type LogService } from 'common-services';
 import {
   noop,
+  pickFirstHeaderValue,
   type WhookResponse,
   type WhookRouteHandler,
   type WhookRouteHandlerWrapper,
   type WhookRouteHandlerParameters,
   type WhookRouteDefinition,
+  type WhookHeaders,
 } from '@whook/whook';
 
 export interface VersionDescriptor {
@@ -63,12 +65,10 @@ async function handleWithVersionChecker(
   definition?: WhookRouteDefinition,
 ): Promise<WhookResponse> {
   VERSIONS.forEach((version) => {
-    const value =
-      typeof parameters.headers[version.header.toLowerCase()] !== 'undefined'
-        ? (
-            parameters.headers[version.header.toLowerCase()] as string
-          ).toString()
-        : undefined;
+    const value = pickFirstHeaderValue(
+      version.header,
+      parameters.headers as WhookHeaders,
+    );
 
     if (
       'undefined' !== typeof value &&

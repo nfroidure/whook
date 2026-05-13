@@ -71,11 +71,10 @@
   "dependencies": {
     "@types/swagger-ui": "5.32.0",
     "@whook/whook": "^24.0.1",
-    "axios": "^1.14.0",
     "ecstatic": "^4.1.4",
     "knifecycle": "^21.3.0",
-    "swagger-ui-dist": "^5.32.2",
-    "type-fest": "^5.5.0",
+    "swagger-ui-dist": "^5.32.6",
+    "type-fest": "^5.6.0",
     "ya-json-schema-types": "^2.0.2",
     "ya-open-api-types": "^2.2.0"
   },
@@ -84,6 +83,7 @@
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.30",
     "@swc/jest": "^0.2.39",
+    "axios": "^1.16.0",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.15.2",

@@ -69,6 +69,7 @@
     "@swc/core": "^1.15.30",
     "@swc/jest": "^0.2.39",
     "@types/semver": "^7.7.1",
+    "axios": "^1.16.0",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.15.2",

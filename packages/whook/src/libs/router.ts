@@ -1,5 +1,5 @@
 import { YHTTPError } from 'yhttperror';
-import contentType from 'content-type';
+import { parse as parseContentType } from 'content-type';
 // @ts-expect-error No types 🤷
 import preferredCharsets from 'negotiator/lib/charset.js';
 // @ts-expect-error No types 🤷
@@ -21,8 +21,6 @@ import {
   type WhookRequestBodySpec,
   type WhookResponseBodySpec,
 } from './body.js';
-
-const { parse: parseContentType } = contentType;
 
 export async function extractConsumableMediaTypes(
   API: WhookOpenAPI,
@@ -95,43 +93,45 @@ export function extractBodySpec(
       request.headers,
     );
 
-    try {
-      if (typeof baseContentType === 'string') {
-        const parsedContentType = parseContentType(baseContentType);
+    if (typeof baseContentType === 'string') {
+      const parsedContentType = parseContentType(baseContentType);
 
-        bodySpec.contentType = parsedContentType.type;
-        if (
-          parsedContentType.parameters &&
-          parsedContentType.parameters.charset
-        ) {
-          if (
-            ['utf-8', 'utf8'].includes(
-              parsedContentType.parameters.charset.toLowerCase(),
-            )
-          ) {
-            bodySpec.charset = 'utf-8';
-          } else {
-            throw new YError('E_UNSUPPORTED_CHARSET', [
-              parsedContentType.parameters.charset,
-            ]);
-          }
-        }
-        if (
-          parsedContentType.parameters &&
-          parsedContentType.parameters.boundary
-        ) {
-          bodySpec.boundary = parsedContentType.parameters.boundary;
-        }
-      } else {
-        throw new YError('E_EMPTY_CONTENT_TYPE');
+      // See https://stackoverflow.com/questions/25201083/regex-to-match-and-validate-internet-media-type
+      if (
+        !parsedContentType.type.match(
+          /(application|audio|font|example|image|message|model|multipart|text|video|x-(?:[0-9A-Za-z!#$%&'*+.^_`|~-]+))\/([0-9A-Za-z!#$%&'*+.^_`|~-]+)/,
+        )
+      ) {
+        throw new YHTTPError(400, 'E_BAD_CONTENT_TYPE', [
+          request.headers['content-type'],
+        ]);
       }
-    } catch (err) {
-      throw YHTTPError.wrap(
-        err as Error,
-        'E_BAD_CONTENT_TYPE',
-        [request.headers['content-type']],
-        400,
-      );
+
+      bodySpec.contentType = parsedContentType.type;
+      if (
+        parsedContentType.parameters &&
+        parsedContentType.parameters.charset
+      ) {
+        if (
+          ['utf-8', 'utf8'].includes(
+            parsedContentType.parameters.charset.toLowerCase(),
+          )
+        ) {
+          bodySpec.charset = 'utf-8';
+        } else {
+          throw new YError('E_UNSUPPORTED_CHARSET', [
+            parsedContentType.parameters.charset,
+          ]);
+        }
+      }
+      if (
+        parsedContentType.parameters &&
+        parsedContentType.parameters.boundary
+      ) {
+        bodySpec.boundary = parsedContentType.parameters.boundary;
+      }
+    } else {
+      throw new YError('E_EMPTY_CONTENT_TYPE');
     }
   }
 

@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["--run", "debug"],
+      "runtimeExecutable": "node",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "serverReadyAction": {
+        "pattern": "💁 - Serving the API docs: (https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      }
+    },
+    {
+      "name": "Dev",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["--run", "dev"],
+      "runtimeExecutable": "node",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "serverReadyAction": {
+        "pattern": "💁 - Serving the API docs: (https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      }
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import {
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
   getPingDefinition,
+  type WhookRouteHandler,
 } from '@whook/whook';
 import { constant, initializer } from 'knifecycle';
 import axios from 'axios';
@@ -39,8 +40,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       },
     },
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getPing = jest.fn<any>();
+  const getPing = jest.fn<WhookRouteHandler>();
   const logger = {
     output: jest.fn(),
     error: jest.fn(),
