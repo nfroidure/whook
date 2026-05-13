@@ -1,3 +1,9 @@
+# [24.1.0](https://github.com/nfroidure/whook/compare/v24.0.2...v24.1.0) (2026-05-13)
+
+
+### Bug Fixes
+
+* **@whook/versions:** fix versions checker ([6b3fdc7](https://github.com/nfroidure/whook/commit/6b3fdc7485fe29bfbc0d905cd0058ff37b0082fa))
 
 ## [24.0.1](https://github.com/nfroidure/whook/compare/v24.0.0...v24.0.1) (2026-04-22)
 
