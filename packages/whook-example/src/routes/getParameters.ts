@@ -148,7 +148,7 @@ async function initGetParameters() {
     operations[typeof definition.operation.operationId],
     typeof definition
   > = async ({
-    headers: { 'a-header': aHeader, aMultiHeader },
+    headers: { 'a-header': aHeader, aMultiHeader } = {},
     path: { pathParam1, pathParam2 },
     query: { queryParam },
   }) => {

@@ -109,7 +109,42 @@ export type WhookRouteTypedHandler<
   D extends WhookRouteDefinition,
   O extends object = object,
 > = (
-  parameters: T['parameters'] &
+  parameters: (Partial<
+    NonNullable<T['parameters']>['path']
+  > extends NonNullable<T['parameters']>['path']
+    ? {
+        path?: NonNullable<T['parameters']>['path'];
+      }
+    : {
+        path: NonNullable<T['parameters']>['path'];
+      }) &
+    (Partial<NonNullable<T['parameters']>['query']> extends NonNullable<
+      T['parameters']
+    >['query']
+      ? {
+          query?: NonNullable<T['parameters']>['query'];
+        }
+      : {
+          query: NonNullable<T['parameters']>['query'];
+        }) &
+    (Partial<NonNullable<T['parameters']>['headers']> extends NonNullable<
+      T['parameters']
+    >['headers']
+      ? {
+          headers?: NonNullable<T['parameters']>['headers'];
+        }
+      : {
+          headers: NonNullable<T['parameters']>['headers'];
+        }) &
+    (Partial<NonNullable<T['parameters']>['cookies']> extends NonNullable<
+      T['parameters']
+    >['cookies']
+      ? {
+          cookies?: NonNullable<T['parameters']>['cookies'];
+        }
+      : {
+          cookies: NonNullable<T['parameters']>['cookies'];
+        }) &
     WhookRouteHandlerExtraParameters &
     (T['requestBody'] extends object | string | number | boolean
       ? {
