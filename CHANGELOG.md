@@ -1,3 +1,10 @@
+## [24.1.1](https://github.com/nfroidure/whook/compare/v24.1.0...v24.1.1) (2026-05-15)
+
+
+### Features
+
+* improve route typing ([0f867b1](https://github.com/nfroidure/whook/commit/0f867b1df505af0c67d43ca9a966dbd9fd456ae7))
+
 # [24.1.0](https://github.com/nfroidure/whook/compare/v24.0.2...v24.1.0) (2026-05-13)
 
 
