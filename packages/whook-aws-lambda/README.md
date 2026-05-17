@@ -179,6 +179,8 @@ npm run build -- getPing
 
 To bundle several handlers in the same lambda artifact, set the same
 `lambdaName` value in their definition `config`.
+The generated default export (`handler`) points to the first handler name in
+alphabetical order, and grouped handlers should share the same `compilerOptions`.
 
 # Debug
 

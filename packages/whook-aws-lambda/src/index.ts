@@ -135,6 +135,10 @@ function getCompilerOptions(config: unknown): WhookCompilerOptions | undefined {
   return parsedConfig?.compilerOptions as WhookCompilerOptions | undefined;
 }
 
+function isJavaScriptIdentifier(name: string): boolean {
+  return /^[$_\p{ID_Start}][$_\p{ID_Continue}]*$/u.test(name);
+}
+
 const cprAsync = promisify(cpr) as (
   source: string,
   destination: string,
@@ -340,12 +344,11 @@ async function buildLambda(
         getLambdaName(DEFINITIONS.configs[handlerName].config, handlerName) ===
           lambdaName,
     );
-    const compilerOptions = handlerNames.reduce<WhookCompilerOptions | undefined>(
-      (pickedCompilerOptions, handlerName) =>
-        pickedCompilerOptions ||
+    const handlersCompilerOptions = handlerNames
+      .map((handlerName) =>
         getCompilerOptions(DEFINITIONS.configs[handlerName].config),
-      undefined,
-    );
+      )
+      .filter((compilerOptions) => compilerOptions) as WhookCompilerOptions[];
 
     if (!handlerNames.length) {
       log('warning', `🚮 - Skipping "${lambdaName}"...`);
@@ -383,6 +386,19 @@ async function buildLambda(
       SCHEMA_VALIDATORS_OPTIONS,
       handlerNames,
     });
+    const compilerOptions = handlersCompilerOptions.length
+      ? handlersCompilerOptions[0]
+      : COMPILER_OPTIONS;
+    const compilerOptionsHash = JSON.stringify(compilerOptions);
+
+    if (
+      handlersCompilerOptions.some(
+        (someCompilerOptions) =>
+          JSON.stringify(someCompilerOptions) !== compilerOptionsHash,
+      )
+    ) {
+      throw new YError('E_INCONSISTENT_COMPILER_OPTIONS', [lambdaName]);
+    }
 
     await mkdirp(lambdaPath);
     await Promise.all([
@@ -416,6 +432,11 @@ export async function buildHandlerIndex(
   },
 ): Promise<string> {
   const sortedHandlerNames = [...handlerNames].sort();
+
+  if (!sortedHandlerNames.every(isJavaScriptIdentifier)) {
+    throw new YError('E_BAD_HANDLER_NAME');
+  }
+
   const handlersInitialization = sortedHandlerNames
     .map(
       (handlerName) => `export const ${handlerName} = async (event, context) => {

@@ -36,4 +36,13 @@ describe('buildHandlerIndex', () => {
       "return await services['MAIN_HANDLER_postPing'](event, context);",
     );
   });
+
+  test('should fail on invalid handler names', async () => {
+    await expect(
+      buildHandlerIndex({
+        SCHEMA_VALIDATORS_OPTIONS: DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
+        handlerNames: ['bad-handler-name'],
+      }),
+    ).rejects.toThrow('E_BAD_HANDLER_NAME');
+  });
 });
