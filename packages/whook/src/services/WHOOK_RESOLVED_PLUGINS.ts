@@ -91,7 +91,7 @@ async function initWhookResolvedPlugins({
       };
     } catch (err) {
       log('error', `❌ - Plugin "${pluginName}" couldn't be resolved.`);
-      log('error-stack', printStackTrace(err as Error));
+      log('error-stack', printStackTrace(err));
       throw YError.wrap(err as Error, 'E_BAD_WHOOK_PLUGIN', [pluginName]);
     }
   }
@@ -111,7 +111,7 @@ async function initWhookResolvedPlugins({
           'error',
           `🚫 - Plugin directory doesn't exist "${sourceDirectory}".`,
         );
-        log('debug-stack', printStackTrace(err as Error));
+        log('debug-stack', printStackTrace(err));
         throw YError.wrap(err as Error, 'E_BAD_PLUGIN_DIR', [
           sourceDirectory,
           resolvedPlugins[pluginName],

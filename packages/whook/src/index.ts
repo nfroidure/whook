@@ -229,7 +229,7 @@ export async function runProcess<
     return { $instance: $, ...services } as unknown as D;
   } catch (err) {
     stderr.write(
-      `'💀 - Cannot launch the process: ${printStackTrace(err as Error)}.
+      `'💀 - Cannot launch the process: ${printStackTrace(err)}.
 Run with "DEBUG=whook" for more debugging context.`,
     );
     exit(1);

@@ -7,18 +7,55 @@ import {
   type WhookAPIParameterDefinition,
   type WhookErrorsDescriptors,
   type WhookErrorDescriptor,
+  type WhookAPISchemaDefinition,
 } from '@whook/whook';
 import {
   type OAuth2Options,
   type OAuth2GranterService,
 } from '../services/oAuth2Granters.js';
 import { type LogService } from 'common-services';
+import {
+  CODE_CHALLENGE_METHODS,
+  CodeChallengeMethod,
+  PLAIN_CODE_CHALLENGE_METHOD,
+} from '../services/oAuth2CodeGranter.js';
 
 /* Architecture Note #1: OAuth2 authorize
 This endpoint simply redirect the user to the authentication
  server page by first checking the application details are
  fine.
 */
+
+export const codeChallengeSchema = {
+  name: 'CodeChallenge',
+  schema: {
+    type: 'string',
+    minLength: 43,
+    maxLength: 128,
+    pattern: '^[A-Za-z0-9\\-._~]{43,128}$',
+  },
+} as const satisfies WhookAPISchemaDefinition;
+export const codeChallengeParameter = {
+  name: 'code_challenge',
+  parameter: {
+    in: 'query',
+    name: 'code_challenge',
+    required: false,
+    schema: refersTo(codeChallengeSchema),
+  },
+} as const satisfies WhookAPIParameterDefinition;
+export const codeChallengeMethodParameter = {
+  name: 'code_challenge_method',
+  parameter: {
+    in: 'query',
+    name: 'code_challenge_method',
+    required: false,
+    schema: {
+      type: 'string',
+      enum: CODE_CHALLENGE_METHODS.concat(),
+    },
+  },
+} as const satisfies WhookAPIParameterDefinition;
 
 export const responseTypeParameter = {
   name: 'responseType',
@@ -94,6 +131,8 @@ export const definition = {
       refersTo(redirectURIParameter),
       refersTo(scopeParameter),
       refersTo(stateParameter),
+      refersTo(codeChallengeParameter),
+      refersTo(codeChallengeMethodParameter),
     ],
     responses: {
       '302': {
@@ -158,6 +197,8 @@ async function initGetOAuth2Authorize({
       redirect_uri: demandedRedirectURI = '',
       scope: demandedScope = '',
       state,
+      code_challenge: codeChallenge,
+      code_challenge_method: codeChallengeMethod,
       ...authorizeParameters
     },
   }: {
@@ -167,6 +208,8 @@ async function initGetOAuth2Authorize({
       redirect_uri?: string;
       scope?: string;
       state: string;
+      code_challenge?: string;
+      code_challenge_method?: CodeChallengeMethod;
     } & Record<string, unknown>;
   }) => {
     const url = new URL(OAUTH2.authenticateURL);
@@ -180,6 +223,16 @@ async function initGetOAuth2Authorize({
 
       if (!granter) {
         throw new YError('E_UNKNOWN_AUTHORIZER_TYPE', [responseType]);
+      }
+
+      if (responseType === 'code') {
+        if (!codeChallenge) {
+          if (OAUTH2.forcePKCE) {
+            throw new YError('E_PKCE_REQUIRED', [responseType]);
+          }
+        }
+      } else if (codeChallenge) {
+        throw new YError('E_PKCE_NOT_SUPPORTED', [responseType]);
       }
 
       const { applicationId, redirectURI, scope } = await (
@@ -197,9 +250,17 @@ async function initGetOAuth2Authorize({
       url.searchParams.set('redirect_uri', redirectURI);
       url.searchParams.set('scope', scope);
       url.searchParams.set('client_id', applicationId);
+
+      if (responseType === 'code' && codeChallenge) {
+        url.searchParams.set('code_challenge', codeChallenge);
+        url.searchParams.set(
+          'code_challenge_method',
+          codeChallengeMethod || PLAIN_CODE_CHALLENGE_METHOD,
+        );
+      }
     } catch (err) {
-      log('debug', '👫 - OAuth2 initialization error', (err as YError).code);
-      log('error-stack', printStackTrace(err as Error));
+      log('debug', '👫 - OAuth2 authorize error.');
+      log('error-stack', printStackTrace(err));
 
       url.searchParams.set('redirect_uri', demandedRedirectURI);
       setURLError(

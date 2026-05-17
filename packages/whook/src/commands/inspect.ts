@@ -75,7 +75,7 @@ async function initInspectCommand({
       service = injectionResult[name];
     } catch (err) {
       log('error', `No service found for "${name}".`);
-      log('error-stack', printStackTrace(err as Error));
+      log('error-stack', printStackTrace(err));
       log('error', `Try debugging with the "DEBUG=whook" env.`);
       if ('undefined' === typeof defaultValue) {
         throw new YError('E_NO_SERVICE_FOUND', [name]);

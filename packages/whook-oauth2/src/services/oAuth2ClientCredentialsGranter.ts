@@ -9,17 +9,18 @@ import {
 import { type WhookAuthenticationData } from '@whook/authorization';
 import { type OAuth2Options } from '../services/oAuth2Granters.js';
 
-export type OAuth2ClientCredentialsGranterDependencies = {
+export interface OAuth2ClientCredentialsGranterDependencies {
   OAUTH2: OAuth2Options;
   checkApplication: CheckApplicationService;
   log?: LogService;
 };
-export type OAuth2ClientCredentialsGranterParameters = {
+export interface OAuth2ClientCredentialsGranterParameters {
   username: string;
   password: string;
   scope?: WhookAuthenticationData['scope'];
 };
 export type OAuth2ClientCredentialsGranterService = OAuth2GranterService<
+  Record<string, unknown>,
   Record<string, unknown>,
   Record<string, unknown>,
   OAuth2ClientCredentialsGranterParameters

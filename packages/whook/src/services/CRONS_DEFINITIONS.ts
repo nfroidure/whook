@@ -183,7 +183,7 @@ async function initCronsDefinitions({
         };
       } catch (err) {
         log('error', `🔴 - Got an error while loading a cron file: ${file}`);
-        log('error-stack', printStackTrace(err as Error));
+        log('error-stack', printStackTrace(err));
       }
     }
   }

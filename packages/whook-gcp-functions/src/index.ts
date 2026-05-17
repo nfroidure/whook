@@ -144,7 +144,7 @@ export async function runBuild(
     await $.destroy();
   } catch (err) {
     stderr.write(
-      `💀 - Cannot launch the build:' ${printStackTrace(err as Error)}`,
+      `💀 - Cannot launch the build:' ${printStackTrace(err)}`,
     );
     exit(1);
   }
@@ -285,7 +285,7 @@ async function buildHandler(
     );
   } catch (err) {
     log('error', `💥 - Error building "${handlerName}"...`);
-    log('error-stack', printStackTrace(err as Error));
+    log('error-stack', printStackTrace(err));
     throw YError.wrap(err as Error, 'E_HANDLER_BUILD', [handlerName]);
   }
 }
@@ -411,7 +411,7 @@ async function ensureFile(
     }
   } catch (err) {
     log('debug', `🗀 - Write new file: "${path}".`);
-    log('debug-stack', printStackTrace(err as Error));
+    log('debug-stack', printStackTrace(err));
     return await writeFile(path, content);
   }
   log('debug', `🗀 - Write changed file: "${path}".`);

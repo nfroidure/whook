@@ -6,29 +6,33 @@ import { type Jsonify } from 'type-fest';
 
 export const AUTH_API_PREFIX = '/auth';
 
-export type AuthHandlersConfig = {
+export interface AuthHandlersConfig {
   ROOT_AUTHENTICATION_DATA: WhookAuthenticationData;
-};
+}
 
-export type AuthCookiesConfig = {
-  COOKIES: Jsonify<Omit<SerializeOptions, 'maxAge' | 'path' | 'expires'>>;
+export type AuthCookiesOptions = Jsonify<
+  Omit<SerializeOptions, 'maxAge' | 'path' | 'expires'>
+>;
+
+export interface AuthCookiesConfig {
+  COOKIES: AuthCookiesOptions;
   BASE_PATH?: string;
-};
+}
 
 export type AuthCookiesDependencies = AuthCookiesConfig;
 
-export type AuthCookiesData = {
+export interface AuthCookiesData {
   refresh_token: string;
   access_token: string;
-};
+}
 
-export type AuthCookiesService = {
+export interface AuthCookiesService {
   build: (
     data?: Partial<AuthCookiesData>,
     options?: { session: boolean },
   ) => string[];
   parse: (content: string) => Partial<AuthCookiesData>;
-};
+}
 
 export default location(autoService(initAuthCookies), import.meta.url);
 

@@ -186,7 +186,7 @@ async function initCommands({
         };
       } catch (err) {
         log('error', `🔴 - Got an error while loading a command file: ${file}`);
-        log('error-stack', printStackTrace(err as Error));
+        log('error-stack', printStackTrace(err));
       }
     }
   }

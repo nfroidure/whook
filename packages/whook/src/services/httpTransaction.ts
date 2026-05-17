@@ -321,7 +321,7 @@ async function initHTTPTransaction({
       verb: req.method as string,
       status: (err as YHTTPError).httpCode || 500,
       code: (err as YError).code || 'E_UNEXPECTED',
-      stack: printStackTrace(err as Error),
+      stack: printStackTrace(err),
       details: ((err as YError).debug as string[]) || [],
     });
 
@@ -396,7 +396,7 @@ async function initHTTPTransaction({
           (req.headers.host || 'localhost') +
           FINAL_TRANSACTIONS[id].url,
         method: req.method as string,
-        stack: printStackTrace(err as Error),
+        stack: printStackTrace(err),
         operationId,
       });
     }
@@ -416,7 +416,7 @@ async function initHTTPTransaction({
       await delay.clear(delayPromise);
     } catch (err) {
       log('debug', '❕ - Could not clear a delay.');
-      log('debug-stack', printStackTrace(err as Error));
+      log('debug-stack', printStackTrace(err));
     }
   }
 }

@@ -19,6 +19,16 @@ import { type WhookAuthenticationData } from '@whook/authorization';
 This endpoint is to be used by the authentication server page
  to acknowlege that the user accepted the client request.
 */
+export const codeVerifierSchema = {
+  name: 'CodeVerifier',
+  schema: {
+    type: 'string',
+    minLength: 43,
+    maxLength: 128,
+    pattern: '^[A-Za-z0-9._~-]+$',
+  },
+} as const satisfies WhookAPISchemaDefinition;
+
 export const authorizationCodeTokenRequestBodySchema = {
   name: 'AuthorizationCodeRequestBody',
   schema: {
@@ -42,6 +52,7 @@ export const authorizationCodeTokenRequestBodySchema = {
         pattern: '^https?://',
         format: 'uri',
       },
+      code_verifier: refersTo(codeVerifierSchema),
     },
   },
 } as const satisfies WhookAPISchemaDefinition;
@@ -276,7 +287,7 @@ async function initPostOAuth2Token({
       };
     } catch (err) {
       log('debug', '👫 - OAuth2 token issuing error', (err as YError).code);
-      log('error-stack', printStackTrace(err as Error));
+      log('error-stack', printStackTrace(err));
 
       throw YError.cast(err as Error, 'E_OAUTH2');
     }

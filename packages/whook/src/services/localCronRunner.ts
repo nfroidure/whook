@@ -102,7 +102,7 @@ async function initLocalCronRunner({
               );
             } catch (err) {
               log('error', `❌ - The "${cronName}" cron produced an error.`);
-              log('error-stack', printStackTrace(err as Error));
+              log('error-stack', printStackTrace(err));
             }
 
             await Promise.resolve().then(() => {

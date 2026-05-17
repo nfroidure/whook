@@ -1,11 +1,11 @@
 import { describe, test, expect } from '@jest/globals';
 import initAuthCookies from './authCookies.js';
-import { type AuthCookiesConfig } from './authCookies.js';
+import { type AuthCookiesOptions } from './authCookies.js';
 
 describe('authCookies', () => {
   describe('.build()', () => {
     test('should work with new auth data', async () => {
-      const COOKIES: AuthCookiesConfig['COOKIES'] = {
+      const COOKIES: AuthCookiesOptions = {
         domain: 'api.example.com',
       };
 
@@ -27,7 +27,7 @@ describe('authCookies', () => {
     });
 
     test('should allow to reset auth data', async () => {
-      const COOKIES: AuthCookiesConfig['COOKIES'] = {
+      const COOKIES: AuthCookiesOptions = {
         domain: 'api.example.com',
       };
 
@@ -51,7 +51,7 @@ describe('authCookies', () => {
 
   describe('.parse()', () => {
     test('should work with no cookies', async () => {
-      const COOKIES: AuthCookiesConfig['COOKIES'] = {
+      const COOKIES: AuthCookiesOptions = {
         domain: 'api.example.com',
       };
 
@@ -65,7 +65,7 @@ describe('authCookies', () => {
     });
 
     test('should work with cookies', async () => {
-      const COOKIES: AuthCookiesConfig['COOKIES'] = {
+      const COOKIES: AuthCookiesOptions = {
         domain: 'api.example.com',
       };
 

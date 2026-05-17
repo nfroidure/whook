@@ -28,8 +28,7 @@ exports[`getOAuth2Authorize should redirect with an error when some 2`] = `
   "logCalls": [
     [
       "debug",
-      "👫 - OAuth2 initialization error",
-      "E_UNKNOWN_AUTHORIZER_TYPE",
+      "👫 - OAuth2 authorize error.",
     ],
   ],
   "tokenGranterAcknowledgerAcknowledgeCalls": [],

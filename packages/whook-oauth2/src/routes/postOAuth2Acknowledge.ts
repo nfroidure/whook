@@ -134,30 +134,30 @@ async function initPostOAuth2Acknowledge({
   log,
 }: HandlerDependencies) {
   return async ({
-    authenticationData,
+    authenticationData: baseAuthenticationData,
     body: {
       responseType,
       clientId,
-      redirectURI,
+      redirectURI: baseRedirectURI,
       scope: demandedScope,
       state,
       acknowledged = false,
-      ...additionalParameters
+      ...additionalProperties
     },
   }: HandlerParameters) => {
-    if (!authenticationData) {
+    if (!baseAuthenticationData) {
       throw new YError('E_UNAUTHORIZED');
     }
 
     // Here we check the applicationId has the right to authenticate a user
     // with the special type 'root'
     await checkApplication({
-      applicationId: authenticationData.applicationId,
+      applicationId: baseAuthenticationData.applicationId,
       type: 'root',
       scope: '',
     });
 
-    const url = new URL(redirectURI);
+    let url: URL;
 
     try {
       if (!acknowledged) {
@@ -174,29 +174,30 @@ async function initPostOAuth2Acknowledge({
         throw new YError('E_UNKNOWN_ACKNOWLEDGER_TYPE', [responseType]);
       }
 
-      const { applicationId, scope, ...additionalProperties } =
+      const { authenticationData, acknowledgedData, redirectURI } =
         await granter.acknowledger.acknowledge(
-          authenticationData,
+          baseAuthenticationData,
           {
             clientId,
-            redirectURI,
+            redirectURI: baseRedirectURI,
             scope: demandedScope,
           },
-          additionalParameters,
+          additionalProperties,
         );
 
-      url.searchParams.set('client_id', applicationId);
-      url.searchParams.set('scope', scope);
+      url = new URL(redirectURI);
+
+      url.searchParams.set('client_id', authenticationData.applicationId);
+      url.searchParams.set('scope', authenticationData.scope);
       url.searchParams.set('state', state);
-      Object.keys(additionalProperties).forEach((key) =>
-        url.searchParams.set(
-          snakeCase(key),
-          additionalProperties[key] as unknown as string,
-        ),
+      Object.keys(acknowledgedData).forEach((key) =>
+        url.searchParams.set(snakeCase(key), acknowledgedData[key] as string),
       );
     } catch (err) {
       log('debug', '👫 - OAuth2 acknowledge error', (err as YError).code);
-      log('debug-stack', printStackTrace(err as Error));
+      log('debug-stack', printStackTrace(err));
+
+      url = new URL(baseRedirectURI);
 
       setURLError(
         url,

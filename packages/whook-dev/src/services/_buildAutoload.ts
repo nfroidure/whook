@@ -58,7 +58,7 @@ const initializerWrapper = async (
           'debug',
           `🤖 - Direct initializer access failure from the Knifecycle instance: "${serviceName}".`,
         );
-        log('debug-stack', printStackTrace(err as Error));
+        log('debug-stack', printStackTrace(err));
       }
 
       // @ts-expect-error Is fine but TS too stupid to figure out
@@ -84,7 +84,7 @@ const initializerWrapper = async (
             'debug',
             `🤖 - Could not auto load "${serviceName}", trying to find it in the initializer embedded location (${reshapedUrl}).`,
           );
-          log('debug-stack', printStackTrace(err as Error));
+          log('debug-stack', printStackTrace(err));
 
           // Assuming the module name is after the last `node_modules`
           // folder. May not be the best approach
@@ -97,7 +97,7 @@ const initializerWrapper = async (
       }
     } catch (err) {
       log('debug', `🤖 - Unable to load "${serviceName}".`);
-      log('debug-stack', printStackTrace(err as Error));
+      log('debug-stack', printStackTrace(err));
       throw err;
     }
   };

@@ -33,6 +33,16 @@ export interface OAuth2YErrorRegistry {
    * Thrown when refresh_token cookie is absent and required
    */
   E_REFRESH_COOKIE: [cookie: string];
+
+  /**
+   * Thrown when server requires PKCE
+   */
+  E_PKCE_REQUIRED: [responseType: string];
+
+  /**
+   * Thrown when server does not support PKCE
+   */
+  E_PKCE_NOT_SUPPORTED: [responseType: string];
 }
 
 export const OAUTH2_ERRORS_DESCRIPTORS: Record<
@@ -87,35 +97,35 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
+  E_PKCE_REQUIRED: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'Code challenge required for this response type ($0)',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_PKCE_NOT_SUPPORTED: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'Code challenge not supported for this response type ($0)',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
 };
 
-export type OAuth2CodeService<CODE = string> = {
-  create: (
-    authenticationData: WhookAuthenticationData,
-    redirectURI: string,
-    additionalParameters: Record<string, unknown>,
-  ) => Promise<CODE>;
-  check: (
-    authenticationData: WhookAuthenticationData,
-    code: CODE,
-    redirectURI: string,
-  ) => Promise<
-    WhookAuthenticationData & {
-      redirectURI: string;
-    } & Record<string, unknown>
-  >;
-};
-
-export type OAuth2PasswordService<USERNAME = string, PASSWORD = string> = {
+export interface OAuth2PasswordService<
+  USERNAME extends string = string,
+  PASSWORD extends string = string,
+> {
   check: (
     authenticationData: WhookAuthenticationData,
     username: USERNAME,
     password: PASSWORD,
     demandedScope: WhookAuthenticationData['scope'],
   ) => Promise<WhookAuthenticationData>;
-};
+}
 
-export type OAuth2AccessTokenService<TOKEN = string> = {
+export interface OAuth2AccessTokenService<TOKEN extends string = string> {
   create: (
     authenticationData: WhookAuthenticationData,
     tokenAuthenticationData: WhookAuthenticationData,
@@ -129,9 +139,9 @@ export type OAuth2AccessTokenService<TOKEN = string> = {
     token: TOKEN,
     scope?: WhookAuthenticationData['scope'],
   ) => Promise<WhookAuthenticationData>;
-};
+}
 
-export type OAuth2RefreshTokenService<TOKEN = string> =
+export type OAuth2RefreshTokenService<TOKEN extends string = string> =
   OAuth2AccessTokenService<TOKEN>;
 
 export type CheckApplicationService = (context: {
@@ -146,86 +156,69 @@ export type CheckApplicationService = (context: {
   redirectURI: string;
 }>;
 
-export type OAuth2GranterAuthorize<
-  AUTHORIZE_PARAMETERS extends Record<string, unknown> = Record<
-    string,
-    unknown
-  >,
-> = (
+export type OAuth2GranterAuthorize<P extends object> = (
   context: {
     clientId: WhookAuthenticationData['applicationId'];
     redirectURI: string;
     scope: WhookAuthenticationData['scope'];
   },
-  authorizeParameters?: AUTHORIZE_PARAMETERS,
+  authorizeParameters: P,
 ) => Promise<{
   applicationId: WhookAuthenticationData['applicationId'];
   redirectURI: string;
   scope: WhookAuthenticationData['scope'];
 }>;
 
-export type Oauth2GranterAuthenticate<
-  GRANT_PARAMETERS extends Record<string, unknown> = Record<string, unknown>,
-> = (
-  grantParameters: GRANT_PARAMETERS,
+export type Oauth2GranterAuthenticate<P extends object> = (
+  authenticateParameters: P,
   authenticationData: WhookAuthenticationData,
 ) => Promise<WhookAuthenticationData>;
 
-export type OAuth2GranterAcknowledge<
-  ACKNOWLEDGE_PARAMETERS extends Record<string, unknown> = Record<
-    string,
-    unknown
-  >,
-> = (
+export type OAuth2GranterAcknowledge<A extends object, P extends object = Record<string, unknown>> = (
   authenticationData: WhookAuthenticationData,
   acknowledgeParameters: {
     clientId: WhookAuthenticationData['applicationId'];
     redirectURI: string;
     scope: WhookAuthenticationData['scope'];
   },
-  additionalParameters: ACKNOWLEDGE_PARAMETERS,
-) => Promise<
-  WhookAuthenticationData & {
-    redirectURI: string;
-    [name: string]: unknown;
-  }
->;
+  additionalParameters: P,
+) => Promise<{
+  authenticationData: WhookAuthenticationData;
+  redirectURI: string;
+  acknowledgedData: A;
+}>;
 
-export type OAuth2GranterService<
-  AUTHORIZE_PARAMETERS extends Record<string, unknown> = Record<
-    string,
-    unknown
-  >,
-  ACKNOWLEDGE_PARAMETERS extends Record<string, unknown> = Record<
-    string,
-    unknown
-  >,
-  GRANT_PARAMETERS extends Record<string, unknown> = Record<string, unknown>,
-> = {
+export interface OAuth2GranterService<
+  T extends object = Record<string, unknown>,
+  U extends object = Record<string, unknown>,
+  V extends object = Record<string, unknown>,
+  W extends object = Record<string, unknown>,
+> {
   type: string;
   authorizer?: {
     responseType: string;
-    authorize: OAuth2GranterAuthorize<AUTHORIZE_PARAMETERS>;
+    authorize: OAuth2GranterAuthorize<T>;
   };
   acknowledger?: {
     acknowledgmentType: string;
-    acknowledge: OAuth2GranterAcknowledge<ACKNOWLEDGE_PARAMETERS>;
+    acknowledge: OAuth2GranterAcknowledge<U, V>;
   };
   authenticator?: {
     grantType: string;
-    authenticate: Oauth2GranterAuthenticate<GRANT_PARAMETERS>;
+    authenticate: Oauth2GranterAuthenticate<W>;
   };
-};
+}
 
-export type OAuth2Options = {
+export interface OAuth2Options {
   authenticateURL: string;
   defaultToClientScope?: boolean;
-};
+  forcePKCE?: boolean;
+}
 
-export type OAuth2Config = {
+export interface OAuth2Config {
   OAUTH2: OAuth2Options;
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
-};
+}
 
 export default location(
   initializer(

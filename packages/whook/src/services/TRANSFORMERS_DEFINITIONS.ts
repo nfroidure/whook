@@ -196,7 +196,7 @@ async function initTransformersDefinitions({
           'error',
           `🔴 - Got an error while loading a transformer file: ${file}`,
         );
-        log('error-stack', printStackTrace(err as Error));
+        log('error-stack', printStackTrace(err));
       }
     }
   }

@@ -256,7 +256,7 @@ async function initAutoload({
               'debug',
               `❌ - Command "${commandName}" not found in "${finalPath}".`,
             );
-            log('debug-stack', printStackTrace(err as Error));
+            log('debug-stack', printStackTrace(err));
           }
         }
 
@@ -541,7 +541,7 @@ export async function checkAccess(
     return url;
   } catch (err) {
     log('debug', `🚫 - File doesn't exist at "${url}".`);
-    log('debug-stack', printStackTrace(err as Error));
+    log('debug-stack', printStackTrace(err));
     return '';
   }
 }

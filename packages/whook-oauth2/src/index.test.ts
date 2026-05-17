@@ -35,9 +35,13 @@ import {
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
+  getOAuth2AuthorizeCodeChallengeSchema,
+  getOAuth2AuthorizeCodeChallengeParameter,
+  getOAuth2AuthorizeCodeChallengeMethodParameter,
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,
+  postOAuth2TokenCodeVerifierSchema,
   postOAuth2TokenDefinition,
   OAUTH2_ERRORS_DESCRIPTORS,
   initOAuth2CodeGranter,
@@ -127,6 +131,8 @@ describe('OAuth2 server', () => {
         getOAuth2AuthorizeRedirectURIParameter,
         getOAuth2AuthorizeScopeParameter,
         getOAuth2AuthorizeStateParameter,
+        getOAuth2AuthorizeCodeChallengeParameter,
+        getOAuth2AuthorizeCodeChallengeMethodParameter,
       ].reduce(
         (parametersHash, { name, parameter }) => ({
           ...parametersHash,
@@ -140,6 +146,8 @@ describe('OAuth2 server', () => {
         postOAuth2TokenClientCredentialsTokenRequestBodySchema,
         postOAuth2TokenRefreshTokenRequestBodySchema,
         postOAuth2TokenTokenBodySchema,
+        getOAuth2AuthorizeCodeChallengeSchema,
+        postOAuth2TokenCodeVerifierSchema,
       ].reduce(
         (schemasHash, { name, schema }) => ({
           ...schemasHash,
@@ -353,31 +361,31 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": {
-    "access_token": "an_access_token",
-    "expiration_date": "2010-03-07T00:00:00.000Z",
-    "expires_in": 86400,
-    "refresh_token": "a_refresh_token",
-    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-    "refresh_token_expires_in": 5364748800,
-    "token_type": "bearer",
-  },
-  "headers": {
-    "connection": undefined,
-    "content-type": "application/json",
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-    "transaction-id": "0",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-  },
-  "status": 200,
-}
-`);
+       {
+         "data": {
+           "access_token": "an_access_token",
+           "expiration_date": "2010-03-07T00:00:00.000Z",
+           "expires_in": 86400,
+           "refresh_token": "a_refresh_token",
+           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+           "refresh_token_expires_in": 5364748800,
+           "token_type": "bearer",
+         },
+         "headers": {
+           "connection": undefined,
+           "content-type": "application/json",
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "server": undefined,
+           "transaction-id": "0",
+           "transfer-encoding": "chunked",
+           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+         },
+         "status": 200,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -458,31 +466,31 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": {
-    "access_token": "an_access_token",
-    "expiration_date": "2010-03-07T00:00:00.000Z",
-    "expires_in": 86400,
-    "refresh_token": "a_refresh_token",
-    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-    "refresh_token_expires_in": 5364748800,
-    "token_type": "bearer",
-  },
-  "headers": {
-    "connection": undefined,
-    "content-type": "application/json",
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-    "transaction-id": "1",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-  },
-  "status": 200,
-}
-`);
+       {
+         "data": {
+           "access_token": "an_access_token",
+           "expiration_date": "2010-03-07T00:00:00.000Z",
+           "expires_in": 86400,
+           "refresh_token": "a_refresh_token",
+           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+           "refresh_token_expires_in": 5364748800,
+           "token_type": "bearer",
+         },
+         "headers": {
+           "connection": undefined,
+           "content-type": "application/json",
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "server": undefined,
+           "transaction-id": "1",
+           "transfer-encoding": "chunked",
+           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+         },
+         "status": 200,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -558,31 +566,31 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": {
-    "access_token": "an_access_token",
-    "expiration_date": "2010-03-07T00:00:00.000Z",
-    "expires_in": 86400,
-    "refresh_token": "a_refresh_token",
-    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-    "refresh_token_expires_in": 5364748800,
-    "token_type": "bearer",
-  },
-  "headers": {
-    "connection": undefined,
-    "content-type": "application/json",
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-    "transaction-id": "2",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-  },
-  "status": 200,
-}
-`);
+       {
+         "data": {
+           "access_token": "an_access_token",
+           "expiration_date": "2010-03-07T00:00:00.000Z",
+           "expires_in": 86400,
+           "refresh_token": "a_refresh_token",
+           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+           "refresh_token_expires_in": 5364748800,
+           "token_type": "bearer",
+         },
+         "headers": {
+           "connection": undefined,
+           "content-type": "application/json",
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "server": undefined,
+           "transaction-id": "2",
+           "transfer-encoding": "chunked",
+           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+         },
+         "status": 200,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -617,7 +625,7 @@ describe('OAuth2 server', () => {
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,oauth',
         redirectURI:
-          'https://example.com/oauth2/callback?a_param=a_param_value',
+          'https://redirect.example.com/oauth2/callback?a_param=a_param_value',
       });
 
       const { status, headers, data } = await axios({
@@ -649,22 +657,22 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": "",
-  "headers": {
-    "connection": undefined,
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fexample.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
-    "server": undefined,
-    "transaction-id": "3",
-    "transfer-encoding": "chunked",
-  },
-  "status": 302,
-}
-`);
+       {
+         "data": "",
+         "headers": {
+           "connection": undefined,
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fredirect.example.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
+           "server": undefined,
+           "transaction-id": "3",
+           "transfer-encoding": "chunked",
+         },
+         "status": 302,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -735,23 +743,23 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": "",
-  "headers": {
-    "connection": undefined,
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&user_id=2&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo%3Fa_param%3Da_value&code=a_code",
-    "server": undefined,
-    "transaction-id": "4",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-  },
-  "status": 302,
-}
-`);
+       {
+         "data": "",
+         "headers": {
+           "connection": undefined,
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&code=a_code",
+           "server": undefined,
+           "transaction-id": "4",
+           "transfer-encoding": "chunked",
+           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+         },
+         "status": 302,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -830,31 +838,31 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": {
-    "access_token": "an_access_token",
-    "expiration_date": "2010-03-07T00:00:00.000Z",
-    "expires_in": 86400,
-    "refresh_token": "a_refresh_token",
-    "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-    "refresh_token_expires_in": 5364748800,
-    "token_type": "bearer",
-  },
-  "headers": {
-    "connection": undefined,
-    "content-type": "application/json",
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "server": undefined,
-    "transaction-id": "5",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-  },
-  "status": 200,
-}
-`);
+       {
+         "data": {
+           "access_token": "an_access_token",
+           "expiration_date": "2010-03-07T00:00:00.000Z",
+           "expires_in": 86400,
+           "refresh_token": "a_refresh_token",
+           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+           "refresh_token_expires_in": 5364748800,
+           "token_type": "bearer",
+         },
+         "headers": {
+           "connection": undefined,
+           "content-type": "application/json",
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "server": undefined,
+           "transaction-id": "5",
+           "transfer-encoding": "chunked",
+           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+         },
+         "status": 200,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -919,22 +927,22 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": "",
-  "headers": {
-    "connection": undefined,
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
-    "server": undefined,
-    "transaction-id": "6",
-    "transfer-encoding": "chunked",
-  },
-  "status": 302,
-}
-`);
+       {
+         "data": "",
+         "headers": {
+           "connection": undefined,
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
+           "server": undefined,
+           "transaction-id": "6",
+           "transfer-encoding": "chunked",
+         },
+         "status": 302,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
@@ -1014,23 +1022,23 @@ describe('OAuth2 server', () => {
         },
         data,
       }).toMatchInlineSnapshot(`
-{
-  "data": "",
-  "headers": {
-    "connection": undefined,
-    "date": undefined,
-    "etag": undefined,
-    "keep-alive": undefined,
-    "last-modified": undefined,
-    "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&user_id=2&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&access_token=an_access_token&token_type=bearer&expires_in=86400",
-    "server": undefined,
-    "transaction-id": "7",
-    "transfer-encoding": "chunked",
-    "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-  },
-  "status": 302,
-}
-`);
+       {
+         "data": "",
+         "headers": {
+           "connection": undefined,
+           "date": undefined,
+           "etag": undefined,
+           "keep-alive": undefined,
+           "last-modified": undefined,
+           "location": "http://redirect.example.com/yolo?client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&access_token=an_access_token&token_type=bearer&expires_in=86400",
+           "server": undefined,
+           "transaction-id": "7",
+           "transfer-encoding": "chunked",
+           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
+         },
+         "status": 302,
+       }
+      `);
       expect({
         checkApplicationCalls: checkApplication.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,

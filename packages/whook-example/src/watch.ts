@@ -29,7 +29,7 @@ export async function watchDevProcess() {
           log('warning', '🔧 - Formatted the type file!', stdout.trim());
         } catch (err) {
           log('error', '🔧 - Could not format the type file!');
-          log('error-stack', printStackTrace(err as Error));
+          log('error-stack', printStackTrace(err));
         }
       }
     },

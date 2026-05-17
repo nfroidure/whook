@@ -521,7 +521,7 @@ async function initHTTPRouter({
         });
     } catch (err) {
       log('error', '☢️ - Unrecoverable router error...');
-      log('error-stack', printStackTrace(err as Error));
+      log('error-stack', printStackTrace(err));
       handleFatalError(err);
     }
   }
