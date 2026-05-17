@@ -718,6 +718,10 @@ export async function responseToAWSResponseEvent(
   return amazonResponse;
 }
 
+/**
+ * Normalize API Gateway, ALB, and CloudFront HTTP events into a single shape
+ * consumed by the Whook AWS route wrapper.
+ */
 export function normalizeAWSRequestEvent(
   definition: WhookRouteDefinition,
   event: WhookAWSLambdaRouteEvent,
@@ -833,48 +837,37 @@ function normalizeCloudFrontRequestEvent(
 function stringifyALBQueryParameters(
   queryStringParameters?: Record<string, string | undefined>,
 ): Record<string, string[]> {
-  return Object.keys(queryStringParameters || {}).reduce(
-    (result, key) => ({
-      ...result,
-      ...(typeof queryStringParameters?.[key] === 'undefined'
-        ? {}
-        : {
-            [key]: [queryStringParameters[key]],
-          }),
-    }),
-    {} as Record<string, string[]>,
-  );
+  const multiValueQueryStringParameters = {} as Record<string, string[]>;
+
+  for (const [key, value] of Object.entries(queryStringParameters || {})) {
+    if (typeof value !== 'undefined') {
+      multiValueQueryStringParameters[key] = [value];
+    }
+  }
+
+  return multiValueQueryStringParameters;
 }
 
 function normalizeCloudFrontHeaders(cloudFrontHeaders: CloudFrontHeaders): {
   headers: Record<string, string>;
   multiValueHeaders: Record<string, string[]>;
 } {
-  return Object.keys(cloudFrontHeaders).reduce(
-    (result, name) => ({
-      headers: {
-        ...result.headers,
-        ...(cloudFrontHeaders[name]?.[0]?.value
-          ? { [name]: cloudFrontHeaders[name][0].value }
-          : {}),
-      },
-      multiValueHeaders: {
-        ...result.multiValueHeaders,
-        ...((cloudFrontHeaders[name] || []).length
-          ? {
-              [name]: (cloudFrontHeaders[name] || []).map(({ value }) => value),
-            }
-          : {}),
-      },
-    }),
-    {
-      headers: {},
-      multiValueHeaders: {},
-    } as {
-      headers: Record<string, string>;
-      multiValueHeaders: Record<string, string[]>;
-    },
-  );
+  const headers = {} as Record<string, string>;
+  const multiValueHeaders = {} as Record<string, string[]>;
+
+  for (const [name, values] of Object.entries(cloudFrontHeaders)) {
+    if (values[0]?.value) {
+      headers[name] = values[0].value;
+    }
+    if (values.length) {
+      multiValueHeaders[name] = values.map(({ value }) => value);
+    }
+  }
+
+  return {
+    headers,
+    multiValueHeaders,
+  };
 }
 
 function parseMultiValueQueryStringParameters(querystring: string) {
@@ -889,6 +882,10 @@ function parseMultiValueQueryStringParameters(querystring: string) {
   );
 }
 
+/**
+ * Extract path parameters from a Whook route template.
+ * Returns an empty object when the request path does not match the template.
+ */
 export function extractPathParameters(
   routePath: string,
   requestPath: string,
@@ -962,24 +959,19 @@ function responseToCloudFrontResponseEvent(
     isBase64Encoded: boolean;
   },
 ): CloudFrontResultResponse {
-  const cloudFrontHeaders = Object.keys(response.headers || {}).reduce(
-    (headers, name) => {
-      const headerValue = response.headers?.[name];
-      const headerValues = Array.isArray(headerValue)
-        ? headerValue
-        : typeof headerValue !== 'undefined'
-          ? [headerValue]
-          : [];
+  const cloudFrontHeaders = {} as CloudFrontHeaders;
 
-      return {
-        ...headers,
-        [name]: headerValues.map((value) => ({
-          value: String(value),
-        })),
-      };
-    },
-    {} as CloudFrontHeaders,
-  );
+  for (const [name, headerValue] of Object.entries(response.headers || {})) {
+    const headerValues = Array.isArray(headerValue)
+      ? headerValue
+      : typeof headerValue !== 'undefined'
+        ? [headerValue]
+        : [];
+
+    cloudFrontHeaders[name] = headerValues.map((value) => ({
+      value: String(value),
+    }));
+  }
 
   return {
     status: String(response.status),
@@ -996,29 +988,29 @@ function responseToCloudFrontResponseEvent(
 function compactHeaders(
   headers: Record<string, string | null | undefined>,
 ): Record<string, string> {
-  return Object.keys(headers).reduce(
-    (result, key) => ({
-      ...result,
-      ...(headers[key] === null || typeof headers[key] === 'undefined'
-        ? {}
-        : { [key]: headers[key] }),
-    }),
-    {},
-  );
+  const compactedHeaders = {} as Record<string, string>;
+
+  for (const [key, value] of Object.entries(headers)) {
+    if (value !== null && typeof value !== 'undefined') {
+      compactedHeaders[key] = value;
+    }
+  }
+
+  return compactedHeaders;
 }
 
 function compactMultiValueHeaders(
   headers: Record<string, string[] | null | undefined>,
 ): Record<string, string[]> {
-  return Object.keys(headers).reduce(
-    (result, key) => ({
-      ...result,
-      ...(headers[key] === null || typeof headers[key] === 'undefined'
-        ? {}
-        : { [key]: headers[key] }),
-    }),
-    {},
-  );
+  const compactedHeaders = {} as Record<string, string[]>;
+
+  for (const [key, value] of Object.entries(headers)) {
+    if (value !== null && typeof value !== 'undefined') {
+      compactedHeaders[key] = value;
+    }
+  }
+
+  return compactedHeaders;
 }
 
 function obfuscateEventBody<T>(
