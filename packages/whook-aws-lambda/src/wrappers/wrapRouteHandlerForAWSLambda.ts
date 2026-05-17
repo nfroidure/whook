@@ -817,9 +817,10 @@ function normalizeCloudFrontRequestEvent(
 
   return {
     source: 'cloudfront',
-    body: request.body
-      ? request.body.data
-      : null,
+    body:
+      request.body && typeof request.body.data !== 'undefined'
+        ? request.body.data
+        : null,
     headers,
     httpMethod: request.method,
     isBase64Encoded: request.body?.encoding === 'base64',
@@ -932,13 +933,12 @@ async function responseToBody(response: WhookResponse) {
       }
     });
   });
+  const contentType = pickFirstHeaderValue('content-type', response.headers || {});
 
   if (
-    response.headers?.['content-type'] &&
-    ((response.headers['content-type'] as string).startsWith('image/') ||
-      (response.headers['content-type'] as string).startsWith(
-        'application/pdf',
-      ))
+    contentType &&
+    (contentType.startsWith('image/') ||
+      contentType.startsWith('application/pdf'))
   ) {
     return {
       content: buf.toString('base64'),
@@ -962,13 +962,7 @@ function responseToCloudFrontResponseEvent(
   const cloudFrontHeaders = {} as CloudFrontHeaders;
 
   for (const [name, headerValue] of Object.entries(response.headers || {})) {
-    const headerValues = Array.isArray(headerValue)
-      ? headerValue
-      : typeof headerValue !== 'undefined'
-        ? [headerValue]
-        : [];
-
-    cloudFrontHeaders[name] = headerValues.map((value) => ({
+    cloudFrontHeaders[name] = normalizeHeaderValues(headerValue).map((value) => ({
       value: String(value),
     }));
   }
@@ -997,6 +991,12 @@ function compactHeaders(
   }
 
   return compactedHeaders;
+}
+
+function normalizeHeaderValues(
+  headerValue: string | number | boolean | (string | number | boolean)[],
+): (string | number | boolean)[] {
+  return Array.isArray(headerValue) ? headerValue : [headerValue];
 }
 
 function compactMultiValueHeaders(
