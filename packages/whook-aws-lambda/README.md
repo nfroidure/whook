@@ -177,6 +177,9 @@ npm run build
 npm run build -- getPing
 ```
 
+To bundle several handlers in the same lambda artifact, set the same
+`lambdaName` value in their definition `config`.
+
 # Debug
 
 You can easily test your functions builds by adding `@whook/aws-lambda` to your
