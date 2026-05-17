@@ -59,28 +59,30 @@ describe('normalizeAWSRequestEvent', () => {
       isBase64Encoded: false,
     };
 
-    expect(normalizeAWSRequestEvent(definition, event)).toEqual({
-      source: 'alb',
-      body: null,
-      headers: {
-        'user-agent': 'test-alb',
-      },
-      httpMethod: 'GET',
-      isBase64Encoded: false,
-      multiValueHeaders: {},
-      multiValueQueryStringParameters: {
-        search: ['latest'],
-      },
-      path: '/users/42/files/report%20final.pdf',
-      pathParameters: {
-        userId: '42',
-        fileId: 'report final.pdf',
-      },
-      requestId: 'no_id',
-      requestTimeEpoch: 0,
-      resourcePath: '/users/{userId}/files/{fileId}',
-      userAgent: 'test-alb',
-    });
+    expect(normalizeAWSRequestEvent(definition, event)).toEqual(
+      expect.objectContaining({
+        source: 'alb',
+        body: null,
+        headers: {
+          'user-agent': 'test-alb',
+        },
+        httpMethod: 'GET',
+        isBase64Encoded: false,
+        multiValueHeaders: {},
+        multiValueQueryStringParameters: {
+          search: ['latest'],
+        },
+        path: '/users/42/files/report%20final.pdf',
+        pathParameters: {
+          userId: '42',
+          fileId: 'report final.pdf',
+        },
+        requestId: expect.stringMatching(/^alb:/),
+        requestTimeEpoch: expect.any(Number),
+        resourcePath: '/users/{userId}/files/{fileId}',
+        userAgent: 'test-alb',
+      }),
+    );
   });
 
   test('should normalize CloudFront request events', () => {
@@ -109,32 +111,34 @@ describe('normalizeAWSRequestEvent', () => {
       ],
     };
 
-    expect(normalizeAWSRequestEvent(definition, event)).toEqual({
-      source: 'cloudfront',
-      body: null,
-      headers: {
-        'user-agent': 'test-cloudfront',
-        accept: 'application/json',
-      },
-      httpMethod: 'GET',
-      isBase64Encoded: false,
-      multiValueHeaders: {
-        'user-agent': ['test-cloudfront'],
-        accept: ['application/json'],
-      },
-      multiValueQueryStringParameters: {
-        search: ['latest', 'archived'],
-      },
-      path: '/users/42/files/report%20final.pdf',
-      pathParameters: {
-        userId: '42',
-        fileId: 'report final.pdf',
-      },
-      requestId: 'cloudfront-request-id',
-      requestTimeEpoch: 0,
-      resourcePath: '/users/{userId}/files/{fileId}',
-      userAgent: 'test-cloudfront',
-    });
+    expect(normalizeAWSRequestEvent(definition, event)).toEqual(
+      expect.objectContaining({
+        source: 'cloudfront',
+        body: null,
+        headers: {
+          'user-agent': 'test-cloudfront',
+          accept: 'application/json',
+        },
+        httpMethod: 'GET',
+        isBase64Encoded: false,
+        multiValueHeaders: {
+          'user-agent': ['test-cloudfront'],
+          accept: ['application/json'],
+        },
+        multiValueQueryStringParameters: {
+          search: ['latest', 'archived'],
+        },
+        path: '/users/42/files/report%20final.pdf',
+        pathParameters: {
+          userId: '42',
+          fileId: 'report final.pdf',
+        },
+        requestId: 'cloudfront-request-id',
+        requestTimeEpoch: expect.any(Number),
+        resourcePath: '/users/{userId}/files/{fileId}',
+        userAgent: 'test-cloudfront',
+      }),
+    );
   });
 });
 

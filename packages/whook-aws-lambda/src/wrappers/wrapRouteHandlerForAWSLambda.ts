@@ -763,6 +763,7 @@ function normalizeALBRequestEvent(
   definition: WhookRouteDefinition,
   event: ALBEvent,
 ): NormalizedAWSHTTPLambdaEvent {
+  const requestTimeEpoch = Date.now();
   const headers = compactHeaders(event.headers || {});
   const multiValueHeaders = compactMultiValueHeaders(
     event.multiValueHeaders || {},
@@ -788,8 +789,10 @@ function normalizeALBRequestEvent(
         : stringifyALBQueryParameters(event.queryStringParameters),
     path: event.path,
     pathParameters: extractPathParameters(definition.path, event.path),
-    requestId: 'no_id',
-    requestTimeEpoch: 0,
+    requestId:
+      pickFirstHeaderValue('x-amzn-trace-id', normalizedHeaders) ||
+      `alb:${requestTimeEpoch}`,
+    requestTimeEpoch,
     resourcePath: definition.path,
     userAgent: pickFirstHeaderValue('user-agent', normalizedHeaders),
   };
@@ -799,6 +802,7 @@ function normalizeCloudFrontRequestEvent(
   definition: WhookRouteDefinition,
   event: CloudFrontRequestEvent,
 ): NormalizedAWSHTTPLambdaEvent {
+  const requestTimeEpoch = Date.now();
   const request = event.Records[0].cf.request;
   const config = event.Records[0].cf.config;
   const { headers, multiValueHeaders } = normalizeCloudFrontHeaders(
@@ -820,7 +824,7 @@ function normalizeCloudFrontRequestEvent(
     path: request.uri,
     pathParameters: extractPathParameters(definition.path, request.uri),
     requestId: config.requestId,
-    requestTimeEpoch: 0,
+    requestTimeEpoch,
     resourcePath: definition.path,
     userAgent: pickFirstHeaderValue('user-agent', headers),
   };
@@ -889,30 +893,28 @@ export function extractPathParameters(
   routePath: string,
   requestPath: string,
 ): Record<string, string | undefined> {
-  const pathParametersNames = [...routePath.matchAll(/\{([^}]+)\}/g)].map(
-    ([, name]) => name,
-  );
+  const routeSegments = routePath.split('/').filter(Boolean);
+  const requestSegments = requestPath.split('/').filter(Boolean);
+  const pathParameters = {} as Record<string, string | undefined>;
 
-  if (!pathParametersNames.length) {
+  if (routeSegments.length !== requestSegments.length) {
     return {};
   }
 
-  const routeRegexp = new RegExp(
-    `^${routePath
-      .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
-      .replace(/\\\{([^}]+)\\\}/g, (_, name) => `(?<${name}>[^/]+)`)}$`,
-  );
-  const matchedPath = routeRegexp.exec(requestPath);
+  for (const [index, segment] of routeSegments.entries()) {
+    if (!(segment.startsWith('{') && segment.endsWith('}'))) {
+      if (segment !== requestSegments[index]) {
+        return {};
+      }
+      continue;
+    }
 
-  return pathParametersNames.reduce(
-    (result, name) => ({
-      ...result,
-      [name]: matchedPath?.groups?.[name]
-        ? decodeURIComponent(matchedPath.groups[name])
-        : undefined,
-    }),
-    {} as Record<string, string | undefined>,
-  );
+    pathParameters[segment.slice(1, -1)] = decodeURIComponent(
+      requestSegments[index],
+    );
+  }
+
+  return pathParameters;
 }
 
 async function responseToBody(response: WhookResponse) {
