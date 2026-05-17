@@ -54,15 +54,6 @@ export const definition = {
     operationId: 'putEchoedStream',
     summary: 'Echoes what it takes.',
     tags: ['example'],
-    /* Architecture Note #3.1.3.1: Usage
-
-    To use reusable schemas, you must refer to it
-     instead of writing it inline.
-    
-    You can use it in request/response bodies,
-     inside parameters or even inside other
-     schemas as per the OpenAPI specification.
-    */
     requestBody: refersTo(streamRequestBody),
     responses: {
       201: refersTo(streamResponse),

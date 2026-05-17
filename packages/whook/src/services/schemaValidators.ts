@@ -24,7 +24,7 @@ Maintain a single place for JSON schema validation
  since it may repeat for several routes. Also
  warrantying that the same schema leads to the
  same reference for the Siso router parameters
- unity checks.
+ uniqueness checks.
 */
 
 export const DEFAULT_SCHEMA_VALIDATORS_OPTIONS = {
@@ -75,7 +75,7 @@ export type WhookSchemaValidatorsService = (
  *  place is aimed to compile schemas once and
  *  use them many times.
  * @param  {Object}   services
- * The services it depends on
+ * The service dependencies
  * @param  {Object}   [services.SCHEMA_VALIDATORS_OPTIONS={}]
  * Options for the schema validators registry
  * @param  {Object}   [services.ENV={}]

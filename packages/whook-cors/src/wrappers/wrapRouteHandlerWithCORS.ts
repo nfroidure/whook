@@ -42,7 +42,7 @@ export type WhookCORSRouteConfig = {
 /**
  * Wrap a route handler to append CORS to response.
  * @param  {Object}   services
- * The services ENV depends on
+ * The service dependencies
  * @param  {Object}   services.CORS
  * A CORS object to be added to errors responses
  * @param  {Object}   [services.log=noop]

@@ -21,11 +21,13 @@ export type WhookBuildConstantFilterDependencies =
  * Allow to proxy constants directly by serializing it in the
  *  build, saving some computing and increasing boot time of
  *  the build.
- * @param  {Object}   BUILD_CONSTANTS_NAMES
+ * @param  {Object}   services
+ * The service dependencies
+ * @param  {Array<string>}   services.BUILD_CONSTANTS_NAMES
  * The serializable constants name to gather
- * @param  {Object}   BUILD_CONSTANTS_PREFIXES
+ * @param  {Array<string>}   services.BUILD_CONSTANTS_PREFIXES
  * The serializable constants name prefixes to gather
- * @param  {Object}   BUILD_CONSTANTS_SUFFIXES
+ * @param  {Array<string>}   services.BUILD_CONSTANTS_SUFFIXES
  * The serializable constants name suffixes to gather
  * @param  {Object}   [services.log=noop]
  * An optional logging service

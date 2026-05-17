@@ -66,7 +66,7 @@ export type WhookRoutesDefinitionsService = Record<
  * Initialize the ROUTES_DEFINITIONS service gathering
  *  the project routes definitions.
  * @param  {Object}   services
- * The services ROUTES_DEFINITIONS depends on
+ * The service dependencies
  * @param  {Array<String>}   [services.WHOOK_PLUGINS]
  * The activated plugins
  * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS

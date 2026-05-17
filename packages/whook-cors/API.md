@@ -2,7 +2,7 @@
 ## Functions
 
 <dl>
-<dt><a href="#augmentAPIWithCORS">augmentAPIWithCORS(API)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#wrapDefinitionsWithCORS">wrapDefinitionsWithCORS(API)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Augment an OpenAPI to also serve OPTIONS methods with
  the CORS added.</p>
 </dd>
@@ -18,9 +18,9 @@
 </dd>
 </dl>
 
-<a name="augmentAPIWithCORS"></a>
+<a name="wrapDefinitionsWithCORS"></a>
 
-## augmentAPIWithCORS(API) ⇒ <code>Promise.&lt;Object&gt;</code>
+## wrapDefinitionsWithCORS(API) ⇒ <code>Promise.&lt;Object&gt;</code>
 Augment an OpenAPI to also serve OPTIONS methods with
  the CORS added.
 
@@ -49,7 +49,7 @@ Wrap the error handler service as a last chance to add CORS
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services depended on |
+| services | <code>Object</code> |  | The service dependencies |
 | services.CORS | <code>Object</code> |  | A CORS object to be added to errors responses |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
@@ -63,7 +63,7 @@ Wrap a route handler to append CORS to response.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services ENV depends on |
+| services | <code>Object</code> |  | The service dependencies |
 | services.CORS | <code>Object</code> |  | A CORS object to be added to errors responses |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 

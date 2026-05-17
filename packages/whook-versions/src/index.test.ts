@@ -495,7 +495,7 @@ describe('wrapRouteHandlerWithVersionChecker()', () => {
 
 describe('initWrapRouteHandlerWithVersionChecker()', () => {
   const BASE_PATH = '/v1';
-  const PORT = 6666;
+  const PORT = 3333;
   const HOST = 'localhost';
   const getPing = jest.fn<WhookRouteHandler>();
   const logger = {

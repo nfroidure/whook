@@ -255,7 +255,7 @@ const initializerWrapper: ServiceInitializerWrapper<
  * Wrap the _autoload service in order to build for AWS
  *  Lambda compatible code.
  * @param  {Object}   services
- * The services the autoloader depends on
+ * The service dependencies
  * @param  {Object}   $instance
  * A Knifecycle instance
  * @param  {Object}   $injector

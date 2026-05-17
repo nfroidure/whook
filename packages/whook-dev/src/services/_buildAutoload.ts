@@ -107,7 +107,7 @@ const initializerWrapper = async (
  * Wrap the _autoload service in order to build AWS
  *  Lambda compatible code.
  * @param  {Object}   services
- * The services ENV depends on
+ * The service dependencies
  * @param  {Object}   $instance
  * A Knifecycle instance
  * @param  {Object}   $injector

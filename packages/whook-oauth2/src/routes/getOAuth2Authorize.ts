@@ -44,16 +44,20 @@ export const codeChallengeParameter = {
     schema: refersTo(codeChallengeSchema),
   },
 } as const satisfies WhookAPIParameterDefinition;
+export const codeChallengeMethodSchema = {
+  name: 'CodeChallengeMethod',
+  schema: {
+    type: 'string',
+    enum: CODE_CHALLENGE_METHODS.concat(),
+  },
+} as const satisfies WhookAPISchemaDefinition;
 export const codeChallengeMethodParameter = {
   name: 'code_challenge_method',
   parameter: {
     in: 'query',
     name: 'code_challenge_method',
     required: false,
-    schema: {
-      type: 'string',
-      enum: CODE_CHALLENGE_METHODS.concat(),
-    },
+    schema: refersTo(codeChallengeMethodSchema),
   },
 } as const satisfies WhookAPIParameterDefinition;
 

@@ -22,7 +22,7 @@ export default location(name('PORT', autoService(initPort)), import.meta.url);
  * Initialize the PORT service from ENV or auto-detection if
  *  none specified in ENV
  * @param  {Object}   services
- * The services PORT depends on
+ * The service dependencies
  * @param  {Object}   [services.ENV={}]
  * An optional environment object
  * @param  {Object}   [services.log=noop]

@@ -20,7 +20,7 @@ export type WhookHostEnv = {
  * Initialize the HOST service from ENV or auto-detection if
  *  none specified in ENV
  * @param  {Object}   services
- * The services HOST depends on
+ * The service dependencies
  * @param  {Object}   [services.ENV={}]
  * An optional environment object
  * @param  {Object}   [services.log=noop]

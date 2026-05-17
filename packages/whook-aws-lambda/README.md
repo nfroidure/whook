@@ -207,32 +207,32 @@ There is a complete example on how to deploy your functions
 ## Functions
 
 <dl>
-<dt><a href="#initWrapHandlerForConsumerLambda">initWrapHandlerForConsumerLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#initWrapConsumerHandlerForAWSLambda">initWrapConsumerHandlerForAWSLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap an handler to make it work with a consumer AWS Lambda.</p>
 </dd>
-<dt><a href="#initWrapHandlerForCronLambda">initWrapHandlerForCronLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#initWrapCronHandlerForAWSLambda">initWrapCronHandlerForAWSLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap an handler to make it work with cron AWS Lambda.</p>
 </dd>
-<dt><a href="#initWrapHandlerForConsumerLambda">initWrapHandlerForConsumerLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Wrap an handler to make it work with a consumer AWS Lambda.</p>
-</dd>
-<dt><a href="#initWrapHandlerForKafkaLambda">initWrapHandlerForKafkaLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#initWrapKafkaConsumerHandlerForAWSLambda">initWrapKafkaConsumerHandlerForAWSLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap an handler to make it work with a kafka AWS Lambda.</p>
 </dd>
-<dt><a href="#initWrapHandlerForLogSubscriberLambda">initWrapHandlerForLogSubscriberLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#initWrapLogSubscriberHandlerForAWSLambda">initWrapLogSubscriberHandlerForAWSLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap an handler to make it work with a log subscriber AWS Lambda.</p>
 </dd>
-<dt><a href="#initWrapHandlerForS3Lambda">initWrapHandlerForS3Lambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#initWrapRouteHandlerForAWSLambda">initWrapRouteHandlerForAWSLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap an handler to make it work with a route AWS Lambda.</p>
+</dd>
+<dt><a href="#initWrapS3HandlerForAWSLambda">initWrapS3HandlerForAWSLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap an handler to make it work with a S3 AWS Lambda.</p>
 </dd>
-<dt><a href="#initWrapHandlerForConsumerLambda">initWrapHandlerForConsumerLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dt><a href="#initWrapTransformerHandlerForAWSLambda">initWrapTransformerHandlerForAWSLambda(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap an handler to make it work with a transformer AWS Lambda.</p>
 </dd>
 </dl>
 
-<a name="initWrapHandlerForConsumerLambda"></a>
+<a name="initWrapConsumerHandlerForAWSLambda"></a>
 
-## initWrapHandlerForConsumerLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+## initWrapConsumerHandlerForAWSLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
 Wrap an handler to make it work with a consumer AWS Lambda.
 
 **Kind**: global function  
@@ -240,16 +240,16 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the wrapper depends on |
+| services | <code>Object</code> |  | The service dependencies |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initWrapHandlerForCronLambda"></a>
+<a name="initWrapCronHandlerForAWSLambda"></a>
 
-## initWrapHandlerForCronLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+## initWrapCronHandlerForAWSLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
 Wrap an handler to make it work with cron AWS Lambda.
 
 **Kind**: global function  
@@ -257,25 +257,59 @@ Wrap an handler to make it work with cron AWS Lambda.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the wrapper depends on |
+| services | <code>Object</code> |  | The service dependencies |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initWrapHandlerForConsumerLambda"></a>
+<a name="initWrapKafkaConsumerHandlerForAWSLambda"></a>
 
-## initWrapHandlerForConsumerLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Wrap an handler to make it work with a consumer AWS Lambda.
+## initWrapKafkaConsumerHandlerForAWSLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to make it work with a kafka AWS Lambda.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the wrapper depends on |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services | <code>Object</code> |  | The service dependencies |
+| services.ENV | <code>Object</code> |  | The process environment |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
+| services.apm | <code>Object</code> |  | An application monitoring service |
+| [services.time] | <code>Object</code> |  | An optional time service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapLogSubscriberHandlerForAWSLambda"></a>
+
+## initWrapLogSubscriberHandlerForAWSLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to make it work with a log subscriber AWS Lambda.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| services.ENV | <code>Object</code> |  | The process environment |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
+| services.apm | <code>Object</code> |  | An application monitoring service |
+| [services.time] | <code>Object</code> |  | An optional time service |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapRouteHandlerForAWSLambda"></a>
+
+## initWrapRouteHandlerForAWSLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap an handler to make it work with a route AWS Lambda.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.ENV | <code>Object</code> |  | The process environment |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
@@ -289,43 +323,9 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initWrapHandlerForKafkaLambda"></a>
+<a name="initWrapS3HandlerForAWSLambda"></a>
 
-## initWrapHandlerForKafkaLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Wrap an handler to make it work with a kafka AWS Lambda.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the wrapper depends on |
-| services.ENV | <code>Object</code> |  | The process environment |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
-| services.apm | <code>Object</code> |  | An application monitoring service |
-| [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
-<a name="initWrapHandlerForLogSubscriberLambda"></a>
-
-## initWrapHandlerForLogSubscriberLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Wrap an handler to make it work with a log subscriber AWS Lambda.
-
-**Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the wrapper depends on |
-| services.ENV | <code>Object</code> |  | The process environment |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
-| services.apm | <code>Object</code> |  | An application monitoring service |
-| [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
-
-<a name="initWrapHandlerForS3Lambda"></a>
-
-## initWrapHandlerForS3Lambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+## initWrapS3HandlerForAWSLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
 Wrap an handler to make it work with a S3 AWS Lambda.
 
 **Kind**: global function  
@@ -333,16 +333,16 @@ Wrap an handler to make it work with a S3 AWS Lambda.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the wrapper depends on |
+| services | <code>Object</code> |  | The service dependencies |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | A consumer definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
 
-<a name="initWrapHandlerForConsumerLambda"></a>
+<a name="initWrapTransformerHandlerForAWSLambda"></a>
 
-## initWrapHandlerForConsumerLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+## initWrapTransformerHandlerForAWSLambda(services) ⇒ <code>Promise.&lt;Object&gt;</code>
 Wrap an handler to make it work with a transformer AWS Lambda.
 
 **Kind**: global function  
@@ -350,9 +350,9 @@ Wrap an handler to make it work with a transformer AWS Lambda.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the wrapper depends on |
+| services | <code>Object</code> |  | The service dependencies |
 | services.ENV | <code>Object</code> |  | The process environment |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definitition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | A transformer definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
 | [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |

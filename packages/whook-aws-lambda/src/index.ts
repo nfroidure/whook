@@ -204,9 +204,7 @@ export async function runBuild(
     );
     await $.destroy();
   } catch (err) {
-    stderr.write(
-      `💀 - Cannot launch the build: ${printStackTrace(err)}`,
-    );
+    stderr.write(`💀 - Cannot launch the build: ${printStackTrace(err)}`);
     exit(1);
   }
 }

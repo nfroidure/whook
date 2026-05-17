@@ -29,7 +29,7 @@ export default location(
  * Initialize the Whook consumer handlers to know which
  *  consumer to run for a given consumer name.
  * @param  {Object}   services
- * The services `CONSUMERS_HANDLERS` depends on
+ * The service dependencies
  * @param  {Array}    services.CONSUMERS_WRAPPERS
  * An optional list of wrappers to inject
  * @param  {Object}   [services.log=noop]

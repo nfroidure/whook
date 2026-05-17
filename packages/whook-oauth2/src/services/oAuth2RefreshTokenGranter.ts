@@ -12,11 +12,11 @@ export interface OAuth2RefreshTokenGranterDependencies {
   checkApplication: CheckApplicationService;
   oAuth2RefreshToken: OAuth2RefreshTokenService;
   log?: LogService;
-};
+}
 export interface OAuth2RefreshTokenGranterParameters {
   refreshToken: string;
   scope?: string;
-};
+}
 export type OAuth2RefreshTokenGranterService = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,

@@ -162,9 +162,7 @@ export async function runBuild(
         : Promise.resolve(),
     ]);
   } catch (err) {
-    stderr.write(
-      `💀 - Cannot launch the build: ${printStackTrace(err)}`,
-    );
+    stderr.write(`💀 - Cannot launch the build: ${printStackTrace(err)}`);
     exit(1);
   }
 }

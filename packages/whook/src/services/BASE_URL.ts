@@ -41,7 +41,7 @@ export default location(
  * Initialize the BASE_URL service according to the HOST/PORT
  *  so that applications fallbacks to that default base URL.
  * @param  {Object}   services
- * The services BASE_URL depends on
+ * The service dependencies
  * @param  {Object}   services.ENV
  * The process environment
  * @param  {Object}   services.CONFIG

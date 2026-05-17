@@ -37,6 +37,7 @@ import {
   getOAuth2AuthorizeStateParameter,
   getOAuth2AuthorizeCodeChallengeSchema,
   getOAuth2AuthorizeCodeChallengeParameter,
+  getOAuth2AuthorizeCodeChallengeMethodSchema,
   getOAuth2AuthorizeCodeChallengeMethodParameter,
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
@@ -147,6 +148,7 @@ describe('OAuth2 server', () => {
         postOAuth2TokenRefreshTokenRequestBodySchema,
         postOAuth2TokenTokenBodySchema,
         getOAuth2AuthorizeCodeChallengeSchema,
+        getOAuth2AuthorizeCodeChallengeMethodSchema,
         postOAuth2TokenCodeVerifierSchema,
       ].reduce(
         (schemasHash, { name, schema }) => ({

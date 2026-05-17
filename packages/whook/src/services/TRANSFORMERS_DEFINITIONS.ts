@@ -63,7 +63,7 @@ export type WhookTransformersDefinitionsService = Record<
 /**
  * Initialize the TRANSFORMERS_DEFINITIONS service gathering the project transformers.
  * @param  {Object}   services
- * The services TRANSFORMERS_DEFINITIONS depends on
+ * The service dependencies
  * @param  {Array<String>}   [services.WHOOK_PLUGINS]
  * The activated plugins
  * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS

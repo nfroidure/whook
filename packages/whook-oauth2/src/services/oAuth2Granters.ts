@@ -174,7 +174,10 @@ export type Oauth2GranterAuthenticate<P extends object> = (
   authenticationData: WhookAuthenticationData,
 ) => Promise<WhookAuthenticationData>;
 
-export type OAuth2GranterAcknowledge<A extends object, P extends object = Record<string, unknown>> = (
+export type OAuth2GranterAcknowledge<
+  A extends object,
+  P extends object = Record<string, unknown>,
+> = (
   authenticationData: WhookAuthenticationData,
   acknowledgeParameters: {
     clientId: WhookAuthenticationData['applicationId'];

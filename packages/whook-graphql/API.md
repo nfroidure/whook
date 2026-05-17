@@ -9,7 +9,7 @@ Initialize the GraphQL service
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| services | <code>Object</code> |  | The services the server depends on |
+| services | <code>Object</code> |  | The service dependencies |
 | services.ENV | <code>Object</code> |  | The injected ENV value |
 | [services.GRAPHQL_SERVER_OPTIONS] | <code>Object</code> \| <code>function</code> |  | The GraphQL options to pass to the server |
 | ENV | <code>String</code> |  | The process environment |

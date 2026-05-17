@@ -9,7 +9,7 @@ Wrap a route handler to check client's authorizations.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| services | <code>Object</code> | The services ENV depends on |
+| services | <code>Object</code> | The service dependencies |
 | [services.MECHANISMS] | <code>Array</code> | The list of supported auth mechanisms |
 | [services.DEFAULT_MECHANISM] | <code>string</code> | The default authentication mechanism |
 | services.authentication | <code>Object</code> | The authentication service |

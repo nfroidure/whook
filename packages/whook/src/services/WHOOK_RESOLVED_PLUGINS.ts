@@ -60,7 +60,7 @@ export default location(
 /**
  * Resolves the Whook plugins from their names
  * @param  {Object}   services
- * The services WHOOK_RESOLVED_PLUGINS depends on
+ * The service dependencies
  * @param  {Array<String>}   [services.WHOOK_PLUGINS]
  * The activated plugins
  * @param  {Object}   [services.log=noop]

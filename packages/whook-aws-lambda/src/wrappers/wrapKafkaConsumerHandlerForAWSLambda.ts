@@ -26,11 +26,11 @@ export interface WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies {
 /**
  * Wrap an handler to make it work with a kafka AWS Lambda.
  * @param  {Object}   services
- * The services the wrapper depends on
+ * The service dependencies
  * @param  {Object}   services.ENV
  * The process environment
  * @param  {Object}   services.MAIN_DEFINITION
- * An OpenAPI definitition for that handler
+ * An OpenAPI definition for that handler
  * @param  {Object}   services.apm
  * An application monitoring service
  * @param  {Object}   [services.time]

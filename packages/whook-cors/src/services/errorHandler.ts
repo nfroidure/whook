@@ -40,7 +40,7 @@ export default location(
 /**
  * Wrap the error handler service as a last chance to add CORS
  * @param  {Object}   services
- * The services depended on
+ * The service dependencies
  * @param  {Object}   services.CORS
  * A CORS object to be added to errors responses
  * @param  {Object}   [services.log=noop]

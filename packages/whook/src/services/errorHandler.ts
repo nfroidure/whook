@@ -379,7 +379,7 @@ export default location(
  * Initialize an error handler for the
  * HTTP router
  * @param  {Object}   services
- * The services the server depends on
+ * The service dependencies
  * @param  {Object}   services.ENV
  * The app ENV
  * @param  {Array}   [services.DEBUG_NODE_ENVS]

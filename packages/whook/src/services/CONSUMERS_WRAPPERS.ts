@@ -28,7 +28,7 @@ export type WhookConsumersWrappersDependencies =
 /**
  * A simple passthrough service proxying the CONSUMERS_WRAPPERS.
  * @param  {Object}   services
- * The services `CONSUMERS_WRAPPERS` depends on
+ * The service dependencies
  * @param  {Array}   [services.CONSUMERS_WRAPPERS_NAMES]
  * The global wrappers names to wrap the consumers with
  * @param  {Object}   [services.log=noop]
