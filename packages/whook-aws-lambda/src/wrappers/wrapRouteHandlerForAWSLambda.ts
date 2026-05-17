@@ -61,6 +61,11 @@ import { type Readable } from 'node:stream';
 import {
   type APIGatewayProxyEvent,
   type APIGatewayProxyResult,
+  type ALBEvent,
+  type ALBResult,
+  type CloudFrontHeaders,
+  type CloudFrontRequestEvent,
+  type CloudFrontResultResponse,
 } from 'aws-lambda';
 import { type AppEnvVars } from 'application-services';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
@@ -68,6 +73,31 @@ import { type JsonValue } from 'type-fest';
 
 const uuidPattern =
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
+
+type WhookAWSLambdaRouteEvent =
+  | APIGatewayProxyEvent
+  | ALBEvent
+  | CloudFrontRequestEvent;
+type WhookAWSLambdaRouteResult =
+  | APIGatewayProxyResult
+  | ALBResult
+  | CloudFrontResultResponse;
+
+interface NormalizedAWSHTTPLambdaEvent {
+  source: 'apigateway' | 'alb' | 'cloudfront';
+  body: string | null;
+  headers: Record<string, string>;
+  httpMethod: string;
+  isBase64Encoded: boolean;
+  multiValueHeaders: Record<string, string[]>;
+  multiValueQueryStringParameters: Record<string, string[]>;
+  path: string;
+  pathParameters: Record<string, string | undefined>;
+  requestId: string;
+  requestTimeEpoch: number;
+  resourcePath: string;
+  userAgent?: string;
+}
 
 export interface WhookAWSLambdaRouteHandlerWrapperDependencies {
   MAIN_API: WhookOpenAPI;
@@ -300,8 +330,9 @@ async function handleForAWSHTTPLambda(
     produceableCharsets: string[];
   },
   definition: WhookRouteDefinition,
-  event: APIGatewayProxyEvent,
+  event: WhookAWSLambdaRouteEvent,
 ) {
+  const normalizedEvent = normalizeAWSRequestEvent(definition, event);
   const startTime = time();
   const bufferLimit =
     bytes.parse(BUFFER_LIMIT) || (bytes.parse(DEFAULT_BUFFER_LIMIT) as number);
@@ -310,18 +341,16 @@ async function handleForAWSHTTPLambda(
     'info',
     'AWS_REQUEST_EVENT',
     JSON.stringify({
-      ...event,
-      body: obfuscateEventBody(obfuscator, event.body),
-      headers: obfuscator.obfuscateSensibleHeaders(
-        event.headers as Record<string, string>,
-      ),
+      ...normalizedEvent,
+      body: obfuscateEventBody(obfuscator, normalizedEvent.body),
+      headers: obfuscator.obfuscateSensibleHeaders(normalizedEvent.headers),
       multiValueHeaders: obfuscator.obfuscateSensibleHeaders(
-        event.multiValueHeaders as Record<string, string[]>,
+        normalizedEvent.multiValueHeaders,
       ),
     }),
   );
 
-  const request = await awsRequestEventToRequest(event);
+  const request = await awsRequestEventToRequest(normalizedEvent);
   let response: WhookResponse;
   let responseLog: {
     type: string;
@@ -357,11 +386,11 @@ async function handleForAWSHTTPLambda(
           for (const [name, validator] of Object.entries(
             parametersValidators.query,
           )) {
-            parametersValues.query[name] = validator(
-              event.multiValueQueryStringParameters &&
-                typeof event.multiValueQueryStringParameters[name] !==
+              parametersValues.query[name] = validator(
+              normalizedEvent.multiValueQueryStringParameters &&
+                typeof normalizedEvent.multiValueQueryStringParameters[name] !==
                   'undefined'
-                ? event.multiValueQueryStringParameters[name].toString()
+                ? normalizedEvent.multiValueQueryStringParameters[name].toString()
                 : undefined,
             );
           }
@@ -382,10 +411,10 @@ async function handleForAWSHTTPLambda(
           for (const [name, validator] of Object.entries(
             parametersValidators.path,
           )) {
-            parametersValues.path[name] = validator(
-              event.pathParameters &&
-                typeof event.pathParameters[name] !== 'undefined'
-                ? event.pathParameters[name].toString()
+              parametersValues.path[name] = validator(
+              normalizedEvent.pathParameters &&
+                typeof normalizedEvent.pathParameters[name] !== 'undefined'
+                ? normalizedEvent.pathParameters[name].toString()
                 : undefined,
             );
           }
@@ -494,7 +523,7 @@ async function handleForAWSHTTPLambda(
     log('debug', JSON.stringify(responseLog));
   } catch (err) {
     response = await errorHandler(
-      event.requestContext.requestId,
+      normalizedEvent.requestId,
       responseSpec,
       err as Error,
     );
@@ -536,6 +565,7 @@ async function handleForAWSHTTPLambda(
       },
       response,
     ),
+    normalizedEvent.source,
   );
 
   log(
@@ -554,19 +584,18 @@ async function handleForAWSHTTPLambda(
     pickAllHeaderValues('x-transaction-id', request.headers).filter((value) =>
       new RegExp(uuidPattern).test(value),
     )[0] ||
-    event.requestContext.requestId ||
+    normalizedEvent.requestId ||
     'no_id';
 
   apm('CALL', {
-    id: event.requestContext.requestId,
+    id: normalizedEvent.requestId,
     transactionId,
     environment: ENV.NODE_ENV,
-    method: event.requestContext.httpMethod,
-    resourcePath: event.requestContext.resourcePath,
-    path: event.requestContext.path,
-    userAgent:
-      event.requestContext.identity && event.requestContext.identity.userAgent,
-    triggerTime: event.requestContext.requestTimeEpoch,
+    method: normalizedEvent.httpMethod,
+    resourcePath: normalizedEvent.resourcePath,
+    path: normalizedEvent.path,
+    userAgent: normalizedEvent.userAgent || 'no_user_agent',
+    triggerTime: normalizedEvent.requestTimeEpoch,
     lambdaName: operation.operationId,
     parameters: obfuscator.obfuscateSensibleProps(
       parametersValues as unknown as JsonValue,
@@ -607,19 +636,19 @@ async function handleForAWSHTTPLambda(
 }
 
 async function awsRequestEventToRequest(
-  event: APIGatewayProxyEvent,
+  event: NormalizedAWSHTTPLambdaEvent,
 ): Promise<WhookRequest> {
   const queryStringParametersNames = Object.keys(
     event.multiValueQueryStringParameters || {},
   );
   const request: WhookRequest = {
-    method: event.requestContext.httpMethod.toLowerCase(),
+    method: event.httpMethod.toLowerCase(),
     headers: lowerCaseHeaders({
       ...event.headers,
       ...event.multiValueHeaders,
     }) as Record<string, string | string[]>,
     url:
-      event.requestContext.path +
+      event.path +
       (queryStringParametersNames.length
         ? SEARCH_SEPARATOR +
           qs.stringify(event.multiValueQueryStringParameters || {})
@@ -642,10 +671,17 @@ async function awsRequestEventToRequest(
   return request;
 }
 
-async function responseToAWSResponseEvent(
+export async function responseToAWSResponseEvent(
   response: WhookResponse,
-): Promise<APIGatewayProxyResult> {
-  const amazonResponse: APIGatewayProxyResult = {
+  source: NormalizedAWSHTTPLambdaEvent['source'] = 'apigateway',
+): Promise<WhookAWSLambdaRouteResult> {
+  const body = await responseToBody(response);
+
+  if (source === 'cloudfront') {
+    return responseToCloudFrontResponseEvent(response, body);
+  }
+
+  const amazonResponse: APIGatewayProxyResult | ALBResult = {
     statusCode: response.status,
     headers: Object.keys(response.headers || {}).reduce(
       (stringHeaders, name) => ({
@@ -672,35 +708,315 @@ async function responseToAWSResponseEvent(
     body: undefined as unknown as string,
   };
 
-  if (response.body) {
-    const stream = response.body as Readable;
-    const buf: Buffer = await new Promise((resolve, reject) => {
-      const chunks = [] as Buffer[];
-
-      stream.once('end', () => resolve(Buffer.concat(chunks)));
-      stream.once('error', reject);
-      stream.on('readable', () => {
-        let data;
-        while ((data = stream.read())) {
-          chunks.push(data);
-        }
-      });
-    });
-    if (
-      response.headers?.['content-type'] &&
-      ((response.headers['content-type'] as 'string').startsWith('image/') ||
-        (response.headers['content-type'] as 'string').startsWith(
-          'application/pdf',
-        ))
-    ) {
-      amazonResponse.body = buf.toString('base64');
+  if (body) {
+    amazonResponse.body = body.content;
+    if (body.isBase64Encoded) {
       amazonResponse.isBase64Encoded = true;
-    } else {
-      amazonResponse.body = buf.toString();
     }
   }
 
   return amazonResponse;
+}
+
+export function normalizeAWSRequestEvent(
+  definition: WhookRouteDefinition,
+  event: WhookAWSLambdaRouteEvent,
+): NormalizedAWSHTTPLambdaEvent {
+  if (isCloudFrontRequestEvent(event)) {
+    return normalizeCloudFrontRequestEvent(definition, event);
+  }
+
+  if (isALBEvent(event)) {
+    return normalizeALBRequestEvent(definition, event);
+  }
+
+  return {
+    source: 'apigateway',
+    body: event.body || null,
+    headers: compactHeaders(event.headers || {}),
+    httpMethod: event.requestContext.httpMethod,
+    isBase64Encoded: event.isBase64Encoded,
+    multiValueHeaders: compactMultiValueHeaders(event.multiValueHeaders || {}),
+    multiValueQueryStringParameters: compactMultiValueHeaders(
+      event.multiValueQueryStringParameters || {},
+    ),
+    path: event.requestContext.path,
+    pathParameters: compactHeaders(event.pathParameters || {}),
+    requestId: event.requestContext.requestId,
+    requestTimeEpoch: event.requestContext.requestTimeEpoch,
+    resourcePath: event.requestContext.resourcePath,
+    userAgent: event.requestContext.identity?.userAgent || undefined,
+  };
+}
+
+function isALBEvent(event: WhookAWSLambdaRouteEvent): event is ALBEvent {
+  return 'httpMethod' in event && 'elb' in event.requestContext;
+}
+
+function isCloudFrontRequestEvent(
+  event: WhookAWSLambdaRouteEvent,
+): event is CloudFrontRequestEvent {
+  return 'Records' in event;
+}
+
+function normalizeALBRequestEvent(
+  definition: WhookRouteDefinition,
+  event: ALBEvent,
+): NormalizedAWSHTTPLambdaEvent {
+  const headers = compactHeaders(event.headers || {});
+  const multiValueHeaders = compactMultiValueHeaders(
+    event.multiValueHeaders || {},
+  );
+  const multiValueQueryStringParameters = compactMultiValueHeaders(
+    event.multiValueQueryStringParameters || {},
+  );
+  const normalizedHeaders = lowerCaseHeaders({
+    ...headers,
+    ...multiValueHeaders,
+  });
+
+  return {
+    source: 'alb',
+    body: event.body || null,
+    headers,
+    httpMethod: event.httpMethod,
+    isBase64Encoded: event.isBase64Encoded,
+    multiValueHeaders,
+    multiValueQueryStringParameters:
+      Object.keys(multiValueQueryStringParameters).length
+        ? multiValueQueryStringParameters
+        : stringifyALBQueryParameters(event.queryStringParameters),
+    path: event.path,
+    pathParameters: extractPathParameters(definition.path, event.path),
+    requestId: 'no_id',
+    requestTimeEpoch: 0,
+    resourcePath: definition.path,
+    userAgent: pickFirstHeaderValue('user-agent', normalizedHeaders),
+  };
+}
+
+function normalizeCloudFrontRequestEvent(
+  definition: WhookRouteDefinition,
+  event: CloudFrontRequestEvent,
+): NormalizedAWSHTTPLambdaEvent {
+  const request = event.Records[0].cf.request;
+  const config = event.Records[0].cf.config;
+  const { headers, multiValueHeaders } = normalizeCloudFrontHeaders(
+    request.headers || {},
+  );
+  const multiValueQueryStringParameters =
+    parseMultiValueQueryStringParameters(request.querystring);
+
+  return {
+    source: 'cloudfront',
+    body: request.body
+      ? request.body.data
+      : null,
+    headers,
+    httpMethod: request.method,
+    isBase64Encoded: request.body?.encoding === 'base64',
+    multiValueHeaders,
+    multiValueQueryStringParameters,
+    path: request.uri,
+    pathParameters: extractPathParameters(definition.path, request.uri),
+    requestId: config.requestId,
+    requestTimeEpoch: 0,
+    resourcePath: definition.path,
+    userAgent: pickFirstHeaderValue('user-agent', headers),
+  };
+}
+
+function stringifyALBQueryParameters(
+  queryStringParameters?: Record<string, string | undefined>,
+): Record<string, string[]> {
+  return Object.keys(queryStringParameters || {}).reduce(
+    (result, key) => ({
+      ...result,
+      ...(typeof queryStringParameters?.[key] === 'undefined'
+        ? {}
+        : {
+            [key]: [queryStringParameters[key]],
+          }),
+    }),
+    {} as Record<string, string[]>,
+  );
+}
+
+function normalizeCloudFrontHeaders(cloudFrontHeaders: CloudFrontHeaders): {
+  headers: Record<string, string>;
+  multiValueHeaders: Record<string, string[]>;
+} {
+  return Object.keys(cloudFrontHeaders).reduce(
+    (result, name) => ({
+      headers: {
+        ...result.headers,
+        ...(cloudFrontHeaders[name]?.[0]?.value
+          ? { [name]: cloudFrontHeaders[name][0].value }
+          : {}),
+      },
+      multiValueHeaders: {
+        ...result.multiValueHeaders,
+        ...((cloudFrontHeaders[name] || []).length
+          ? {
+              [name]: (cloudFrontHeaders[name] || []).map(({ value }) => value),
+            }
+          : {}),
+      },
+    }),
+    {
+      headers: {},
+      multiValueHeaders: {},
+    } as {
+      headers: Record<string, string>;
+      multiValueHeaders: Record<string, string[]>;
+    },
+  );
+}
+
+function parseMultiValueQueryStringParameters(querystring: string) {
+  const parsedQueryString = new URLSearchParams(querystring);
+
+  return [...new Set(parsedQueryString.keys())].reduce(
+    (result, key) => ({
+      ...result,
+      [key]: parsedQueryString.getAll(key),
+    }),
+    {} as Record<string, string[]>,
+  );
+}
+
+export function extractPathParameters(
+  routePath: string,
+  requestPath: string,
+): Record<string, string | undefined> {
+  const pathParametersNames = [...routePath.matchAll(/\{([^}]+)\}/g)].map(
+    ([, name]) => name,
+  );
+
+  if (!pathParametersNames.length) {
+    return {};
+  }
+
+  const routeRegexp = new RegExp(
+    `^${routePath
+      .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+      .replace(/\\\{([^}]+)\\\}/g, (_, name) => `(?<${name}>[^/]+)`)}$`,
+  );
+  const matchedPath = routeRegexp.exec(requestPath);
+
+  return pathParametersNames.reduce(
+    (result, name) => ({
+      ...result,
+      [name]: matchedPath?.groups?.[name]
+        ? decodeURIComponent(matchedPath.groups[name])
+        : undefined,
+    }),
+    {} as Record<string, string | undefined>,
+  );
+}
+
+async function responseToBody(response: WhookResponse) {
+  if (!response.body) {
+    return undefined;
+  }
+
+  const stream = response.body as Readable;
+  const buf: Buffer = await new Promise((resolve, reject) => {
+    const chunks = [] as Buffer[];
+
+    stream.once('end', () => resolve(Buffer.concat(chunks)));
+    stream.once('error', reject);
+    stream.on('readable', () => {
+      let data;
+      while ((data = stream.read())) {
+        chunks.push(data);
+      }
+    });
+  });
+
+  if (
+    response.headers?.['content-type'] &&
+    ((response.headers['content-type'] as string).startsWith('image/') ||
+      (response.headers['content-type'] as string).startsWith(
+        'application/pdf',
+      ))
+  ) {
+    return {
+      content: buf.toString('base64'),
+      isBase64Encoded: true,
+    };
+  }
+
+  return {
+    content: buf.toString(),
+    isBase64Encoded: false,
+  };
+}
+
+function responseToCloudFrontResponseEvent(
+  response: WhookResponse,
+  body?: {
+    content: string;
+    isBase64Encoded: boolean;
+  },
+): CloudFrontResultResponse {
+  const cloudFrontHeaders = Object.keys(response.headers || {}).reduce(
+    (headers, name) => {
+      const headerValue = response.headers?.[name];
+      const headerValues = Array.isArray(headerValue)
+        ? headerValue
+        : typeof headerValue !== 'undefined'
+          ? [headerValue]
+          : [];
+
+      return {
+        ...headers,
+        [name]: headerValues.map((value) => ({
+          value: String(value),
+        })),
+      };
+    },
+    {} as CloudFrontHeaders,
+  );
+
+  return {
+    status: String(response.status),
+    headers: cloudFrontHeaders,
+    ...(body
+      ? {
+          body: body.content,
+          bodyEncoding: body.isBase64Encoded ? 'base64' : 'text',
+        }
+      : {}),
+  };
+}
+
+function compactHeaders(
+  headers: Record<string, string | null | undefined>,
+): Record<string, string> {
+  return Object.keys(headers).reduce(
+    (result, key) => ({
+      ...result,
+      ...(headers[key] === null || typeof headers[key] === 'undefined'
+        ? {}
+        : { [key]: headers[key] }),
+    }),
+    {},
+  );
+}
+
+function compactMultiValueHeaders(
+  headers: Record<string, string[] | null | undefined>,
+): Record<string, string[]> {
+  return Object.keys(headers).reduce(
+    (result, key) => ({
+      ...result,
+      ...(headers[key] === null || typeof headers[key] === 'undefined'
+        ? {}
+        : { [key]: headers[key] }),
+    }),
+    {},
+  );
 }
 
 function obfuscateEventBody<T>(
