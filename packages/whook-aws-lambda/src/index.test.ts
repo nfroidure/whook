@@ -26,11 +26,12 @@ describe('buildHandlerIndex', () => {
   test('should build several named handlers in the same lambda', async () => {
     const indexContents = await buildHandlerIndex({
       SCHEMA_VALIDATORS_OPTIONS: DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
-      handlerNames: ['getPing', 'postPing'],
+      handlerNames: ['postPing', 'getPing'],
     });
 
     expect(indexContents).toContain("export const getPing = async");
     expect(indexContents).toContain("export const postPing = async");
+    expect(indexContents).toContain('export const handler = getPing;');
     expect(indexContents).toContain(
       "return await services['MAIN_HANDLER_postPing'](event, context);",
     );

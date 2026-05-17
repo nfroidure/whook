@@ -118,7 +118,7 @@ export interface WhookAWSLambdaS3Options {
 function getLambdaName(config: unknown, defaultHandlerName: string): string {
   const parsedConfig = config as { lambdaName?: unknown };
 
-  return 'string' === typeof parsedConfig?.lambdaName
+  return typeof parsedConfig?.lambdaName === 'string'
     ? parsedConfig.lambdaName
     : defaultHandlerName;
 }
@@ -127,6 +127,12 @@ function getStaticFiles(config: unknown): string[] {
   const parsedConfig = config as { staticFiles?: unknown };
 
   return Array.isArray(parsedConfig?.staticFiles) ? parsedConfig.staticFiles : [];
+}
+
+function getCompilerOptions(config: unknown): WhookCompilerOptions | undefined {
+  const parsedConfig = config as { compilerOptions?: unknown };
+
+  return parsedConfig?.compilerOptions as WhookCompilerOptions | undefined;
 }
 
 const cprAsync = promisify(cpr) as (
@@ -334,6 +340,12 @@ async function buildLambda(
         getLambdaName(DEFINITIONS.configs[handlerName].config, handlerName) ===
           lambdaName,
     );
+    const compilerOptions = handlerNames.reduce<WhookCompilerOptions | undefined>(
+      (pickedCompilerOptions, handlerName) =>
+        pickedCompilerOptions ||
+        getCompilerOptions(DEFINITIONS.configs[handlerName].config),
+      undefined,
+    );
 
     if (!handlerNames.length) {
       log('warning', `🚮 - Skipping "${lambdaName}"...`);
@@ -383,9 +395,9 @@ async function buildLambda(
       ensureFile({ log }, join(lambdaPath, 'main.js'), indexContent),
     ]);
     await buildFinalHandler(
-      { DEFINITIONS, compiler, log, COMPILER_OPTIONS },
+      { compiler, log },
       lambdaPath,
-      handlerNames[0],
+      compilerOptions || COMPILER_OPTIONS,
     );
   } catch (err) {
     log('error', `💥 - Error building "${lambdaName}"...`);
@@ -403,7 +415,8 @@ export async function buildHandlerIndex(
     handlerNames: string[];
   },
 ): Promise<string> {
-  const handlersInitialization = handlerNames
+  const sortedHandlerNames = [...handlerNames].sort();
+  const handlersInitialization = sortedHandlerNames
     .map(
       (handlerName) => `export const ${handlerName} = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -428,7 +441,7 @@ const services = await initialize({${
 
 ${handlersInitialization}
 
-export const handler = ${handlerNames[0]};
+export const handler = ${sortedHandlerNames[0]};
 
 export default handler;
 `;
@@ -436,26 +449,19 @@ export default handler;
 
 async function buildFinalHandler(
   {
-    DEFINITIONS,
     compiler,
     log,
-    COMPILER_OPTIONS,
   }: {
-    DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
     log: LogService;
-    COMPILER_OPTIONS: WhookCompilerOptions;
   },
   lambdaPath: string,
-  handlerName: string,
+  compilerOptions: WhookCompilerOptions,
 ): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings, extension } = await compiler(
     entryPoint,
-    DEFINITIONS.configs[handlerName]?.config &&
-      'compilerOptions' in DEFINITIONS.configs[handlerName].config
-      ? DEFINITIONS.configs[handlerName]?.config.compilerOptions
-      : COMPILER_OPTIONS,
+    compilerOptions,
   );
 
   await Promise.all([
