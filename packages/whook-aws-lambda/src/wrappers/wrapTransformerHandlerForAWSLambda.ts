@@ -51,7 +51,7 @@ export interface WhookAWSLambdaTransformerHandlerWrapperDependencies {
 /**
  * Wrap an handler to make it work with a transformer AWS Lambda.
  * @param  {Object}   services
- * The services the wrapper depends on
+ * The service dependencies
  * @param  {Object}   services.ENV
  * The process environment
  * @param  {Object}   services.MAIN_DEFINITION

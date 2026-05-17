@@ -27,7 +27,7 @@ export type VersionsCheckerDependencies = VersionsConfig & {
 /**
  * Wrap a route handler to append CORS to response.
  * @param  {Object}   services
- * The services ENV depends on
+ * The service dependencies
  * @param  {Object}   services.VERSIONS
  * A VERSIONS object with the versions configuration
  * @param  {Object}   [services.log=noop]

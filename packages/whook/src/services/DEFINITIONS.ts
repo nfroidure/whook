@@ -106,7 +106,7 @@ export default location(
 /**
  * Initialize the DEFINITIONS service.
  * @param  {Object}   services
- * The services DEFINITIONS depends on
+ * The service dependencies
  * @param  {Object}   [services.ROUTES_DEFINITIONS]
  * The API routes modules
  * @param  {Object}   [services.COMMANDS_DEFINITIONS]

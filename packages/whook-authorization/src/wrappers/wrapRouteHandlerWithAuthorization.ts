@@ -122,7 +122,7 @@ export type WhookAuthorizationDependencies<A> = WhookAuthorizationConfig & {
 /**
  * Wrap a route handler to check client's authorizations.
  * @param  {Object}   services
- * The services ENV depends on
+ * The service dependencies
  * @param  {Array}   [services.MECHANISMS]
  * The list of supported auth mechanisms
  * @param  {string}   [services.DEFAULT_MECHANISM]

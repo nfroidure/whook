@@ -104,11 +104,7 @@ async function initOAuth2CodeGranter({
   >['acknowledge'] = async (
     authenticationData,
     { clientId, redirectURI, scope },
-    {
-      codeChallenge,
-      codeChallengeMethod,
-      ...additionalParameters
-    },
+    { codeChallenge, codeChallengeMethod, ...additionalParameters },
   ) => {
     const code = await oAuth2Code.create(
       { ...authenticationData, applicationId: clientId, scope },

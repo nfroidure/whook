@@ -46,7 +46,7 @@ export default location(autoProvider(initGraphQL), import.meta.url);
 /**
  * Initialize the GraphQL service
  * @param  {Object}   services
- * The services the server depends on
+ * The service dependencies
  * @param  {Object}   services.ENV
  * The injected ENV value
  * @param  {Object|Function}   [services.GRAPHQL_SERVER_OPTIONS]

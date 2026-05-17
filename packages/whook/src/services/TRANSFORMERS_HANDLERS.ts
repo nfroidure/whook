@@ -29,7 +29,7 @@ export default location(
  * Initialize the Whook transformer handlers to know which
  *  transformer to run for a given transformer name.
  * @param  {Object}   services
- * The services `TRANSFORMERS_HANDLERS` depends on
+ * The service dependencies
  * @param  {Array}    services.TRANSFORMERS_WRAPPERS
  * An optional list of wrappers to inject
  * @param  {Object}   [services.log=noop]

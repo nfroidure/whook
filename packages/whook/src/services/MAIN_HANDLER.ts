@@ -17,7 +17,7 @@ export default location(
 /**
  * An initializer to build a single Whook route handler.
  * @param  {Object}   services
- * The services `$autoload` depends on
+ * The service dependencies
  * @param  {Array}    services.WRAPPERS
  * An optional list of wrappers to inject
  * @param  {Function}    services.MAIN_WRAPPER

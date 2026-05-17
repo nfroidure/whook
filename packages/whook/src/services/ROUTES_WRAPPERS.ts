@@ -30,7 +30,7 @@ export type WhookRoutesWrappersDependencies = WhookRoutesWrappersConfig & {
 /**
  * A simple passthrough service proxying the ROUTES_WRAPPERS.
  * @param  {Object}   services
- * The services `ROUTES_WRAPPERS` depends on
+ * The service dependencies
  * @param  {Array}   [services.ROUTES_WRAPPERS_NAMES]
  * The global wrappers names to wrap the routes with
  * @param  {Object}   [services.log=noop]

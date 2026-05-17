@@ -111,7 +111,7 @@ export default location(
  * Instantiate the httpTransaction service
  * @function
  * @param  {Object}     services
- * The services to inject
+ * The service dependencies
  * @param  {Number}     [services.TIMEOUT=30000]
  * A number indicating how many ms the transaction
  *  should take to complete before being cancelled.

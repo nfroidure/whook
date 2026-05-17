@@ -61,7 +61,7 @@ export type WhookCronsDefinitionsService = Record<
 /**
  * Initialize the CRONS_DEFINITIONS service gathering the project crons.
  * @param  {Object}   services
- * The services CRONS_DEFINITIONS depends on
+ * The service dependencies
  * @param  {Array<String>}   [services.WHOOK_PLUGINS]
  * The activated plugins
  * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS

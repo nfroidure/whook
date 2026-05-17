@@ -63,7 +63,7 @@ export type WhookConsumersDefinitionsService = Record<
 /**
  * Initialize the CONSUMERS_DEFINITIONS service gathering the project consumers.
  * @param  {Object}   services
- * The services CONSUMERS_DEFINITIONS depends on
+ * The service dependencies
  * @param  {Array<String>}   [services.WHOOK_PLUGINS]
  * The activated plugins
  * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS

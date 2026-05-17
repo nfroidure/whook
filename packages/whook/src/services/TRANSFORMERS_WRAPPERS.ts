@@ -29,7 +29,7 @@ export type WhookTransformersWrappersDependencies =
 /**
  * A simple passthrough service proxying the TRANSFORMERS_WRAPPERS.
  * @param  {Object}   services
- * The services `TRANSFORMERS_WRAPPERS` depends on
+ * The service dependencies
  * @param  {Array}   [services.TRANSFORMERS_WRAPPERS_NAMES]
  * The global wrappers names to wrap the transformers with
  * @param  {Object}   [services.log=noop]

@@ -120,7 +120,7 @@ export default singleton(name('$autoload', autoService(initAutoload)));
 /**
  * Initialize the Whook default DI autoloader
  * @param  {Object}   services
- * The services `$autoload` depends on
+ * The service dependencies
  * @param  {Array}    [services.APP_CONFIG]
  * Optional APP_CONFIG object to inject
  * @param  {Object}    [services.INITIALIZER_PATH_MAP]

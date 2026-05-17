@@ -14,7 +14,7 @@ import {
 } from './schemaValidators.js';
 import { createHash } from '../libs/hash.js';
 
-/* Architecture Note #2.11.2.1: Built schema validators
+/* Architecture Note #2.11.2.2: Built schema validators
 
 Built version of the schema validator service.
 */
@@ -42,7 +42,7 @@ export type WhookSchemaValidatorsService = (
  *  place is aimed to compile schemas once and
  *  use them many times.
  * @param  {Object}   services
- * The services it depends on
+ * The service dependencies
  * @param  {Object}   [services.SCHEMA_VALIDATORS_OPTIONS={}]
  * Options for the schema validators registry
  * @param  {Object}   [services.ENV={}]

@@ -91,9 +91,9 @@ export interface WhookGCPFunctionRouteWrapperDependencies {
 /**
  * Wrap an handler to make it work with GCP Functions.
  * @param  {Object}   services
- * The services the wrapper depends on
+ * The service dependencies
  * @param  {Object}   services.MAIN_DEFINITION
- * An OpenAPI definitition for that handler
+ * An OpenAPI definition for that handler
  * @param  {Object}   services.DECODERS
  * Request body decoders available
  * @param  {Object}   services.ENCODERS

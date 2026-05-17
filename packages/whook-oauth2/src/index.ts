@@ -7,6 +7,7 @@ import initGetOAuth2Authorize, {
   stateParameter as getOAuth2AuthorizeStateParameter,
   codeChallengeSchema as getOAuth2AuthorizeCodeChallengeSchema,
   codeChallengeParameter as getOAuth2AuthorizeCodeChallengeParameter,
+  codeChallengeMethodSchema as getOAuth2AuthorizeCodeChallengeMethodSchema,
   codeChallengeMethodParameter as getOAuth2AuthorizeCodeChallengeMethodParameter,
 } from './routes/getOAuth2Authorize.js';
 import initPostOAuth2Acknowledge, {
@@ -21,6 +22,14 @@ import initPostOAuth2Token, {
   refreshTokenRequestBodySchema as postOAuth2TokenRefreshTokenRequestBodySchema,
   tokenBodySchema as postOAuth2TokenTokenBodySchema,
 } from './routes/postOAuth2Token.js';
+import initGetOAuth2WellKnown, {
+  definition as getOAuth2WellKnownDefinition,
+  endpointAuthenticationMethodsSchema as getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
+  jsonWebAlgorithmsSchema as getOAuth2WellKnownJsonWebAlgorithmsSchema,
+  jsonWebEncryptionsSchema as getOAuth2WellKnownJsonWebEncryptionsSchema,
+  httpsProtocolURISchema as getOAuth2WellKnownHTTPSProtocolURISchema,
+  oAuth2MetadataSchema as getOAuth2WellKnownOAuth2MetadataSchema,
+} from './routes/getOAuth2WellKnown.js';
 import initOAuth2Granters, {
   type OAuth2YErrorRegistry,
   OAUTH2_ERRORS_DESCRIPTORS,
@@ -95,8 +104,16 @@ export {
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
   getOAuth2AuthorizeCodeChallengeSchema,
+  getOAuth2AuthorizeCodeChallengeMethodSchema,
   getOAuth2AuthorizeCodeChallengeParameter,
   getOAuth2AuthorizeCodeChallengeMethodParameter,
+  initGetOAuth2WellKnown,
+  getOAuth2WellKnownDefinition,
+  getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
+  getOAuth2WellKnownJsonWebAlgorithmsSchema,
+  getOAuth2WellKnownJsonWebEncryptionsSchema,
+  getOAuth2WellKnownHTTPSProtocolURISchema,
+  getOAuth2WellKnownOAuth2MetadataSchema,
   base64UrlEncode,
   hashCodeVerifier,
   initPostOAuth2Acknowledge,

@@ -62,7 +62,7 @@ export type WhookCommandsDefinitionsService = Record<
 /**
  * Initialize the COMMANDS service gathering the project commands.
  * @param  {Object}   services
- * The services COMMANDS depends on
+ * The service dependencies
  * @param  {Array<String>}   [services.WHOOK_PLUGINS]
  * The activated plugins
  * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS

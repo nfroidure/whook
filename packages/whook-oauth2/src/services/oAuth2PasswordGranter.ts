@@ -12,12 +12,12 @@ export interface OAuth2PasswordGranterDependencies {
   oAuth2Password: OAuth2PasswordService;
   checkApplication: CheckApplicationService;
   log?: LogService;
-};
+}
 export interface OAuth2PasswordGranterParameters {
   username: string;
   password: string;
   scope?: string;
-};
+}
 export type OAuth2PasswordGranterService = OAuth2GranterService<
   Record<string, unknown>,
   Record<string, unknown>,

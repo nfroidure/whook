@@ -179,14 +179,14 @@ export default location(
 /**
  * Initialize an HTTP router
  * @param  {Object}   services
- * The services the server depends on
+ * The service dependencies
  * @param  {String}   [services.BUFFER_LIMIT]
  * The maximum bufferisation before parsing the
  *  request body
  * @param  {String}   [services.BASE_PATH]
  * API base path
  * @param  {Object}   services.ROUTES_HANDLERS
- * The handlers for the operations decribe
+ * The handlers for the operations describe
  *  by the OpenAPI API definition
  * @param  {Object}   services.API
  * The OpenAPI definition of the API

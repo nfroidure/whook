@@ -17,7 +17,7 @@ export default location(
  * Initialize the Whook command handlers to know which
  *  command to run for a given command name.
  * @param  {Object}   services
- * The services `COMMANDS_HANDLERS` depends on
+ * The service dependencies
  * @param  {Object}   [services.log=noop]
  * An optional logging service
  * @param  {Object}   services.COMMANDS_HANDLERS

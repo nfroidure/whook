@@ -22,7 +22,7 @@ export default location(
  * Initialize the Whook routes handlers used by the router
  *  to know which handler to run for a given route.
  * @param  {Object}   services
- * The services `ROUTES_HANDLERS` depends on
+ * The service dependencies
  * @param  {Array}    services.ROUTES_WRAPPERS
  * An optional list of wrappers to inject
  * @param  {Object}   [services.log=noop]

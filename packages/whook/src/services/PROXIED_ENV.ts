@@ -37,7 +37,7 @@ export default location(
 /**
  * Wrap the ENV service in order to filter ENV vars for the build
  * @param  {Object}   services
- * The services ENV depends on
+ * The service dependencies
  * @param  {Object}   [services.PROXIED_ENV_VARS={}]
  * A list of environment variable names to proxy
  * @param  {Object}   [services.log=noop]
