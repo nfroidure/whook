@@ -45,4 +45,13 @@ describe('buildHandlerIndex', () => {
       }),
     ).rejects.toThrow('E_BAD_HANDLER_NAME');
   });
+
+  test('should fail on empty handler names list', async () => {
+    await expect(
+      buildHandlerIndex({
+        SCHEMA_VALIDATORS_OPTIONS: DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
+        handlerNames: [],
+      }),
+    ).rejects.toThrow('E_NO_HANDLER_NAME');
+  });
 });

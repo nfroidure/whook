@@ -118,7 +118,8 @@ export interface WhookAWSLambdaS3Options {
 function getLambdaName(config: unknown, defaultHandlerName: string): string {
   const parsedConfig = config as { lambdaName?: unknown };
 
-  return typeof parsedConfig?.lambdaName === 'string'
+  return typeof parsedConfig?.lambdaName === 'string' &&
+    parsedConfig.lambdaName.trim().length
     ? parsedConfig.lambdaName
     : defaultHandlerName;
 }
@@ -126,7 +127,11 @@ function getLambdaName(config: unknown, defaultHandlerName: string): string {
 function getStaticFiles(config: unknown): string[] {
   const parsedConfig = config as { staticFiles?: unknown };
 
-  return Array.isArray(parsedConfig?.staticFiles) ? parsedConfig.staticFiles : [];
+  return Array.isArray(parsedConfig?.staticFiles)
+    ? parsedConfig.staticFiles.filter(
+        (staticFile): staticFile is string => typeof staticFile === 'string',
+      )
+    : [];
 }
 
 function getCompilerOptions(config: unknown): WhookCompilerOptions | undefined {
@@ -386,9 +391,10 @@ async function buildLambda(
       SCHEMA_VALIDATORS_OPTIONS,
       handlerNames,
     });
-    const compilerOptions = handlersCompilerOptions.length
-      ? handlersCompilerOptions[0]
-      : COMPILER_OPTIONS;
+    const compilerOptions =
+      handlersCompilerOptions.length > 0
+        ? handlersCompilerOptions[0]
+        : COMPILER_OPTIONS;
     const compilerOptionsHash = JSON.stringify(compilerOptions);
 
     if (
@@ -431,10 +437,20 @@ export async function buildHandlerIndex(
     handlerNames: string[];
   },
 ): Promise<string> {
-  const sortedHandlerNames = [...handlerNames].sort();
+  if (!handlerNames.length) {
+    throw new YError('E_NO_HANDLER_NAME');
+  }
 
-  if (!sortedHandlerNames.every(isJavaScriptIdentifier)) {
-    throw new YError('E_BAD_HANDLER_NAME');
+  const sortedHandlerNames = [...handlerNames].sort();
+  const invalidHandlerNames = sortedHandlerNames.filter(
+    (handlerName) => !isJavaScriptIdentifier(handlerName),
+  );
+
+  if (invalidHandlerNames.length) {
+    throw YError.wrap(
+      new Error(invalidHandlerNames.join(', ')),
+      'E_BAD_HANDLER_NAME',
+    );
   }
 
   const handlersInitialization = sortedHandlerNames
