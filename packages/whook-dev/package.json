@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/dev",
-  "version": "24.1.1",
+  "version": "25.0.0",
   "description": "Whook development dependencies.",
   "type": "module",
   "publishConfig": {
@@ -95,7 +95,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^8.4.3",
-    "@whook/whook": "^24.1.1",
+    "@whook/whook": "^25.0.0",
     "camelcase": "^9.0.0",
     "chokidar": "^5.0.0",
     "common-services": "^20.0.0",

@@ -1,3 +1,11 @@
+# [25.0.0](https://github.com/nfroidure/whook/compare/v24.1.1...v25.0.0) (2026-05-18)
+
+
+### Features
+
+* **@whook/oauth2:** add pkce support ([c905861](https://github.com/nfroidure/whook/commit/c905861eb9ee426854fcf5ed3201e0a953af4d00)), closes [#58](https://github.com/nfroidure/whook/issues/58)
+* **@whook/oauth2:** add well known uri ([faead52](https://github.com/nfroidure/whook/commit/faead52c172651e17f71bc9ba21072391fd6c5aa)), closes [#181](https://github.com/nfroidure/whook/issues/181)
+
 ## [24.1.1](https://github.com/nfroidure/whook/compare/v24.1.0...v24.1.1) (2026-05-15)
 
 
