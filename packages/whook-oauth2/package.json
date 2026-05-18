@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/oauth2",
-  "version": "25.0.0",
+  "version": "25.0.2",
   "description": "OAuth2 implementation for Whook servers",
   "type": "module",
   "publishConfig": {

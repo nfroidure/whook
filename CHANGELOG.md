@@ -1,3 +1,9 @@
+# [25.0.0](https://github.com/nfroidure/whook/compare/v25.0.1...v25.0.0) (2026-05-18)
+
+
+### Bug Fixes
+
+* **@whook/oauth2:** fix the metadata route name ([5957aa1](https://github.com/nfroidure/whook/commit/5957aa1ac34799d5e9c2c6bfed0fc5c41a2e1fa8))
 
 # [25.0.0](https://github.com/nfroidure/whook/compare/v24.1.1...v25.0.0) (2026-05-18)
 
