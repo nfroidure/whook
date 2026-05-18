@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/aws-lambda",
-  "version": "25.0.0",
+  "version": "25.0.1",
   "description": "Build and deploy to AWS Lambda with Whook.",
   "type": "module",
   "publishConfig": {
