@@ -71,7 +71,7 @@
     "yhttperror": "^9.0.2"
   },
   "peerDependencies": {
-    "@whook/dev": "^24.0.0"
+    "@whook/dev": "^25.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
