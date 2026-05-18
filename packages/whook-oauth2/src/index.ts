@@ -29,7 +29,7 @@ import initGetOAuth2WellKnown, {
   jsonWebEncryptionsSchema as getOAuth2WellKnownJsonWebEncryptionsSchema,
   httpsProtocolURISchema as getOAuth2WellKnownHTTPSProtocolURISchema,
   oAuth2MetadataSchema as getOAuth2WellKnownOAuth2MetadataSchema,
-} from './routes/getOAuth2WellKnown.js';
+} from './routes/getOAuth2WellKnownMetadata.js';
 import initOAuth2Granters, {
   type OAuth2YErrorRegistry,
   OAUTH2_ERRORS_DESCRIPTORS,
