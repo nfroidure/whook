@@ -311,6 +311,66 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/uniqueId.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/BUFFER_LIMIT.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/COERCION_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/COMMAND_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/CRON_RUNNER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/DECODERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/DEFAULT_ERROR_CODE.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/ENCODERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/HTTP_SERVER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/JWT_SECRET_ENV_NAME.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/PARSERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/QUERY_PARSER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/SHIELD_CHAR.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/SIGNALS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/STRINGIFIERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/TIMEOUT.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/fetcher.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-aws-lambda/dist/services/uniqueId.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js"})",
          ],
          [
@@ -677,6 +737,51 @@ describe('runProcess', () => {
            "⏳ - Skipped "route.test.js.map" per file patterns.",
          ],
          [
+           "⏳ - Skipped "terraformValues.test.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaConsumer.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaConsumer.js.map" per file patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaCron.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaCron.js.map" per file patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaKafkaConsumer.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaKafkaConsumer.js.map" per file patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaLogSubscriber.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaLogSubscriber.js.map" per file patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaRoute.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaRoute.js.map" per file patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaS3.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaS3.js.map" per file patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaTransformer.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "testAWSLambdaTransformer.js.map" per file patterns.",
+         ],
+         [
            "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
          ],
          [
@@ -773,6 +878,9 @@ describe('runProcess', () => {
            "➰ - Plugin "@whook/authorization" source path resolved to "file:///projects/whook/packages/whook-authorization/dist" with "wrappers" types.",
          ],
          [
+           "➰ - Plugin "@whook/aws-lambda" source path resolved to "file:///projects/whook/packages/whook-aws-lambda/dist" with "commands, services, wrappers" types.",
+         ],
+         [
            "➰ - Plugin "@whook/cors" source path resolved to "file:///projects/whook/packages/whook-cors/dist" with "routes, services, wrappers" types.",
          ],
          [
@@ -782,7 +890,7 @@ describe('runProcess', () => {
            "➰ - Plugin "@whook/whook" source path resolved to "file:///projects/whook/dist" with "commands, routes, services" types.",
          ],
          [
-           "➰ - Plugin "__project__" source path resolved to "file:///project/src" with "commands, crons, routes, services" types.",
+           "➰ - Plugin "__project__" source path resolved to "file:///project/src" with "commands, consumers, crons, routes, services" types.",
          ],
          [
            "🈁 - Gathering the project commands modules.",
@@ -812,6 +920,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/cors".",
          ],
          [
@@ -830,6 +941,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/cors".",
          ],
          [
@@ -843,6 +957,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/cors".",
@@ -860,6 +977,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/cors".",
          ],
          [
@@ -873,6 +993,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/cors".",
@@ -890,6 +1013,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/cors".",
          ],
          [
@@ -903,6 +1029,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "DECODERS" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "DECODERS" module path in "@whook/cors".",
@@ -920,6 +1049,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/cors".",
          ],
          [
@@ -933,6 +1065,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "ENCODERS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "ENCODERS" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "ENCODERS" module path in "@whook/cors".",
@@ -950,6 +1085,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/cors".",
          ],
          [
@@ -963,6 +1101,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/cors".",
@@ -983,6 +1124,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "PARSERS" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "PARSERS" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "PARSERS" module path in "@whook/cors".",
          ],
          [
@@ -996,6 +1140,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/cors".",
@@ -1016,6 +1163,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/cors".",
          ],
          [
@@ -1029,6 +1179,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "SIGNALS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "SIGNALS" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "SIGNALS" module path in "@whook/cors".",
@@ -1046,6 +1199,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/cors".",
          ],
          [
@@ -1061,6 +1217,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "TIMEOUT" module path in "@whook/authorization".",
          ],
          [
+           "🍀 - Trying to find "TIMEOUT" module path in "@whook/aws-lambda".",
+         ],
+         [
            "🍀 - Trying to find "TIMEOUT" module path in "@whook/cors".",
          ],
          [
@@ -1074,6 +1233,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/cors".",
@@ -1092,6 +1254,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "fetcher" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "fetcher" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "fetcher" module path in "@whook/cors".",
@@ -1161,6 +1326,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "uniqueId" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "uniqueId" module path in "@whook/aws-lambda".",
          ],
          [
            "🍀 - Trying to find "uniqueId" module path in "@whook/cors".",
@@ -1592,6 +1760,66 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/BUFFER_LIMIT.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/COERCION_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/COMMAND_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/CONSUMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/CRON_RUNNER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/DECODERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/DEFAULT_ERROR_CODE.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/ENCODERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/HTTP_SERVER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/JWT_SECRET_ENV_NAME.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/PARSERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/QUERY_PARSER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/SHIELD_CHAR.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/SIGNALS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/STRINGIFIERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/TIMEOUT.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/fetcher.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-aws-lambda/dist/services/uniqueId.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js".",
          ],
          [
@@ -1796,7 +2024,13 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///project/src/commands/printEnv.ts".",
          ],
          [
+           "🛂 - Dynamic import of "file:///project/src/commands/terraformValues.ts".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///project/src/config/local/config.ts".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///project/src/consumers/consumeMessages.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/crons/handleMinutes.ts".",
@@ -1905,6 +2139,27 @@ describe('runProcess', () => {
          ],
          [
            "🛂 - Dynamic import of "file:///projects/whook/dist/routes/getPing.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-aws-lambda/dist/commands/testAWSLambdaConsumer.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-aws-lambda/dist/commands/testAWSLambdaCron.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-aws-lambda/dist/commands/testAWSLambdaKafkaConsumer.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-aws-lambda/dist/commands/testAWSLambdaLogSubscriber.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-aws-lambda/dist/commands/testAWSLambdaRoute.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-aws-lambda/dist/commands/testAWSLambdaS3.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-aws-lambda/dist/commands/testAWSLambdaTransformer.js".",
          ],
          [
            "🛂 - Dynamic import of "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js".",
