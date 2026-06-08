@@ -47,6 +47,7 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     exportNamespaces: false,
     brandedTypes: [],
     brandedFormats: [],
+    patternTypes: [],
     typedFormats: { binary: { namespace: ['NodeJS', 'ReadableStream'] } },
     tuplesFromFixedArraysLengthLimit: 5,
   },

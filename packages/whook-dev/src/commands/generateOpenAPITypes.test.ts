@@ -17,6 +17,7 @@ describe('generateOpenAPITypes', () => {
     exportNamespaces: false,
     brandedTypes: [],
     brandedFormats: [],
+    patternTypes: [],
     typedFormats: {},
     tuplesFromFixedArraysLengthLimit: 5,
   };

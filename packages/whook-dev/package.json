@@ -105,7 +105,7 @@
     "ignore": "^7.0.5",
     "knifecycle": "^21.3.0",
     "mkdirp": "^3.0.1",
-    "schema2dts": "^9.0.2",
+    "schema2dts": "^10.0.0",
     "ts-morph": "^28.0.0",
     "ya-open-api-types": "^2.2.0",
     "yerror": "^11.0.0"
