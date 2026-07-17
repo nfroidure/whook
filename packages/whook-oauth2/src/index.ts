@@ -30,6 +30,11 @@ import initGetOAuth2WellKnown, {
   httpsProtocolURISchema as getOAuth2WellKnownHTTPSProtocolURISchema,
   oAuth2MetadataSchema as getOAuth2WellKnownOAuth2MetadataSchema,
 } from './routes/getOAuth2WellKnownMetadata.js';
+import initGetOAuth2WellKnownProtectedResource, {
+  definition as getOAuth2WellKnownProtectedResourceDefinition,
+  bearerMethodSchema as getOAuth2WellKnownProtectedResourceBearerMethodSchema,
+  oAuth2ProtectedResourceMetadataSchema as getOAuth2WellKnownProtectedResourceOAuth2MetadataSchema,
+} from './routes/getOAuth2WellKnownProtectedResourceMetadata.js';
 import initOAuth2Granters, {
   type OAuth2YErrorRegistry,
   OAUTH2_ERRORS_DESCRIPTORS,
@@ -114,6 +119,10 @@ export {
   getOAuth2WellKnownJsonWebEncryptionsSchema,
   getOAuth2WellKnownHTTPSProtocolURISchema,
   getOAuth2WellKnownOAuth2MetadataSchema,
+  initGetOAuth2WellKnownProtectedResource,
+  getOAuth2WellKnownProtectedResourceDefinition,
+  getOAuth2WellKnownProtectedResourceBearerMethodSchema,
+  getOAuth2WellKnownProtectedResourceOAuth2MetadataSchema,
   base64UrlEncode,
   hashCodeVerifier,
   initPostOAuth2Acknowledge,
