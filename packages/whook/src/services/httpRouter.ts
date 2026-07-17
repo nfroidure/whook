@@ -684,8 +684,8 @@ async function _createRouters({
       const queryParser = await queryParserBuilder(parameters);
 
       routers[method] = routers[method] || new Siso();
-      const routeConfig =
-        DEFINITIONS.configs?.[operationId]?.config || ({} as WhookRouteConfig);
+      const routeConfig = (DEFINITIONS.configs?.[operationId]?.config ||
+        {}) as WhookRouteConfig;
 
       routers[method].register(
         await buildPathNodes(

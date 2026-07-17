@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import initGetOAuth2WellKnown from './getOAuth2WellKnownMetadata.js';
+import initGetOAuth2WellKnown, {
+  definition,
+} from './getOAuth2WellKnownMetadata.js';
 import { YError } from 'yerror';
 import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
 import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
@@ -128,5 +130,11 @@ describe('getOAuth2WellKnown', () => {
        "tokenGranterAuthorizerAuthorizeCalls": [],
      }
     `);
+  });
+
+  test('should expose the metadata route globally', () => {
+    expect(definition.config).toEqual({
+      global: true,
+    });
   });
 });
