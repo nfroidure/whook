@@ -26,6 +26,7 @@ export interface WhookBaseRouteConfig {
   environments?: WhookEnvironmentsConfig;
   private?: boolean;
   targetHandler?: string;
+  global?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

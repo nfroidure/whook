@@ -684,18 +684,19 @@ async function _createRouters({
       const queryParser = await queryParserBuilder(parameters);
 
       routers[method] = routers[method] || new Siso();
+      const routeConfig =
+        DEFINITIONS.configs?.[operationId]?.config || ({} as WhookRouteConfig);
+
       routers[method].register(
         await buildPathNodes(
           { API, schemaValidators },
-          BASE_PATH + path,
+          (routeConfig.global ? '' : BASE_PATH) + path,
           pathItemParameters.concat(operationParameters),
         ),
         {
           handler,
           operation,
-          config:
-            DEFINITIONS.configs?.[operationId]?.config ||
-            ({} as WhookRouteConfig),
+          config: routeConfig,
           queryParser,
           parametersValidators: {
             path: {

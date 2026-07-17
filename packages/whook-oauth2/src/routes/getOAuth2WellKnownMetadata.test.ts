@@ -112,7 +112,7 @@ describe('getOAuth2WellKnown', () => {
            "grant_types_supported": [
              "authorization_code",
            ],
-           "issuer": "https://server.example.com/v0",
+           "issuer": "https://server.example.com",
            "response_types_supported": [
              "code",
              "token",

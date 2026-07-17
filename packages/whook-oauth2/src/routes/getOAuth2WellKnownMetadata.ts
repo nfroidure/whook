@@ -261,6 +261,9 @@ export const oAuth2MetadataSchema = {
 export const definition = {
   method: 'get',
   path: '/.well-known/oauth-authorization-server',
+  config: {
+    global: true,
+  },
   operation: {
     operationId: 'getOAuth2WellKnownMetadata',
     summary: `Provide the [OAuth 2.0 Authorization Server Metadata](https://datatracker.ietf.org/doc/html/rfc8414).`,
@@ -290,18 +293,12 @@ async function initGetOAuth2WellKnownMetadata({
   oAuth2Granters: OAuth2GranterService[];
   log: LogService;
 }) {
-  if (BASE_PATH) {
-    log(
-      'warning',
-      `⚠️ - Using a base path (${BASE_PATH}) breaks the well known URI discovery.`,
-    );
-  }
   if (!BASE_URL.startsWith('https')) {
     log('warning', `⚠️ - OAuth2 issuer must start with HTTPS (${BASE_URL}).`);
   }
 
   const body = {
-    issuer: `${BASE_URL}${BASE_PATH}`,
+    issuer: BASE_URL,
     authorization_endpoint: `${BASE_URL}${BASE_PATH}/oauth2/authorize`,
     token_endpoint: `${BASE_URL}${BASE_PATH}/oauth2/token`,
     token_endpoint_auth_methods_supported: ['client_secret_basic'],
