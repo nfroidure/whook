@@ -92,7 +92,6 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
 describe('initHTTPRouter', () => {
   const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Test };
   const DEBUG_NODE_ENVS = ['test'];
-  const BASE_PATH = '/v1';
   const API: WhookOpenAPI = {
     openapi: '3.1.0',
     info: {
@@ -102,19 +101,16 @@ describe('initHTTPRouter', () => {
     },
     servers: [
       {
-        url: `http://{host}:{port}{basePath}`,
+        url: `http://{host}`,
         variables: {
           host: {
             default: 'localhost:1337',
-          },
-          basePath: {
-            default: '/v1',
           },
         },
       },
     ],
     paths: {
-      '/ping': {
+      '/v1/ping': {
         head: {
           operationId: 'ping',
           summary: "Checks API's availability.",
@@ -142,7 +138,7 @@ describe('initHTTPRouter', () => {
           },
         },
       },
-      '/users/{userId}/avatar': {
+      '/v1/users/{userId}/avatar': {
         parameters: [
           {
             in: 'path',
@@ -288,7 +284,7 @@ describe('initHTTPRouter', () => {
           },
         },
       },
-      '/users/{userId}': {
+      '/v1/users/{userId}': {
         get: {
           operationId: 'getUser',
           summary: 'Retrieve a user.',
@@ -540,7 +536,6 @@ describe('initHTTPRouter', () => {
       ROUTES_HANDLERS,
       API,
       DEFINITIONS,
-      BASE_PATH,
       log,
       httpTransaction,
       errorHandler,
@@ -585,14 +580,13 @@ describe('initHTTPRouter', () => {
           API: {
             info: API.info,
             paths: {
-              '/lol': {
+              '/v1/lol': {
                 get: {},
               },
             },
           } as unknown as WhookOpenAPI,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -602,7 +596,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_NO_OPERATION_ID (["/lol","get"]): E_NO_OPERATION_ID]`,
+          `[YError: E_NO_OPERATION_ID (["/v1/lol","get"]): E_NO_OPERATION_ID]`,
         );
       }
     });
@@ -629,14 +623,13 @@ describe('initHTTPRouter', () => {
             servers: API.servers,
             info: API.info,
             paths: {
-              '/lol': {
+              '/v1/lol': {
                 get: {} as never,
               },
             },
           },
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -646,7 +639,7 @@ describe('initHTTPRouter', () => {
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect(err).toMatchInlineSnapshot(
-          `[YError: E_NO_OPERATION_ID (["/lol","get"]): E_NO_OPERATION_ID]`,
+          `[YError: E_NO_OPERATION_ID (["/v1/lol","get"]): E_NO_OPERATION_ID]`,
         );
       }
     });
@@ -680,7 +673,6 @@ describe('initHTTPRouter', () => {
           },
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -718,7 +710,7 @@ describe('initHTTPRouter', () => {
             servers: API.servers,
             info: API.info,
             paths: {
-              '/{lol}': {
+              '/v1/{lol}': {
                 get: {
                   operationId: 'lol',
                 } as never,
@@ -727,7 +719,6 @@ describe('initHTTPRouter', () => {
           },
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -762,7 +753,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -798,7 +788,7 @@ describe('initHTTPRouter', () => {
             servers: API.servers,
             info: API.info,
             paths: {
-              '/lol': {
+              '/v1/lol': {
                 get: {
                   operationId: 'ping',
                   parameters: [
@@ -818,7 +808,6 @@ describe('initHTTPRouter', () => {
           },
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -854,7 +843,7 @@ describe('initHTTPRouter', () => {
             servers: API.servers,
             info: API.info,
             paths: {
-              '/lol': {
+              '/v1/lol': {
                 get: {
                   operationId: 'ping',
                   parameters: [
@@ -872,7 +861,6 @@ describe('initHTTPRouter', () => {
           },
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -908,7 +896,7 @@ describe('initHTTPRouter', () => {
             servers: API.servers,
             info: API.info,
             paths: {
-              '/lol': {
+              '/v1/lol': {
                 get: {
                   operationId: 'ping',
                   parameters: [
@@ -928,7 +916,6 @@ describe('initHTTPRouter', () => {
           },
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -976,7 +963,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -1085,7 +1071,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -1249,7 +1234,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -1419,7 +1403,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -1583,7 +1566,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -1714,7 +1696,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -1797,7 +1778,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             STRINGIFIERS,
             httpTransaction,
             errorHandler,
@@ -1966,7 +1946,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -2130,7 +2109,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -2291,7 +2269,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -2456,7 +2433,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -2533,7 +2509,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -2695,7 +2670,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -2763,7 +2737,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -2833,7 +2806,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -2915,7 +2887,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -2994,7 +2965,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -3072,7 +3042,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3247,7 +3216,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3326,7 +3294,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3494,7 +3461,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3563,7 +3529,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3644,7 +3609,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3722,7 +3686,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3800,7 +3763,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3877,7 +3839,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -3952,7 +3913,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -4031,7 +3991,6 @@ describe('initHTTPRouter', () => {
             BUFFER_LIMIT: '20b',
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -4107,7 +4066,6 @@ describe('initHTTPRouter', () => {
             BUFFER_LIMIT: '20b',
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -4183,7 +4141,6 @@ describe('initHTTPRouter', () => {
             BUFFER_LIMIT: '20b',
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -4263,7 +4220,6 @@ describe('initHTTPRouter', () => {
             API,
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -4427,7 +4383,6 @@ describe('initHTTPRouter', () => {
             BUFFER_LIMIT: '20b',
             log,
             DEFINITIONS,
-            BASE_PATH,
             httpTransaction,
             errorHandler,
             queryParserBuilder,
@@ -4502,7 +4457,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,
@@ -4602,7 +4556,6 @@ describe('initHTTPRouter', () => {
           API,
           log,
           DEFINITIONS,
-          BASE_PATH,
           httpTransaction,
           errorHandler,
           queryParserBuilder,

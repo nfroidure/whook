@@ -88,11 +88,11 @@ describe('OAuth2 server', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [getOAuth2AuthorizeDefinition.path]: {
+      [`${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`]: {
         [getOAuth2AuthorizeDefinition.method]:
           getOAuth2AuthorizeDefinition.operation,
       },
-      [postOAuth2AcknowledgeDefinition.path]: {
+      [`${BASE_PATH}${postOAuth2AcknowledgeDefinition.path}`]: {
         [postOAuth2AcknowledgeDefinition.method]: {
           ...postOAuth2AcknowledgeDefinition.operation,
           security: [
@@ -102,7 +102,7 @@ describe('OAuth2 server', () => {
           ],
         },
       },
-      [postOAuth2TokenDefinition.path]: {
+      [`${BASE_PATH}${postOAuth2TokenDefinition.path}`]: {
         [postOAuth2TokenDefinition.method]: {
           ...postOAuth2TokenDefinition.operation,
           security: [

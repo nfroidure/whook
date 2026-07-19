@@ -373,7 +373,7 @@ Whook is all about APIs.
 The API service defined here is where you put
  your routes altogether to build the final API.
 
-[See in context](./src/services/API.ts#L31-L36)
+[See in context](./src/services/API.ts#L30-L35)
 
 
 
@@ -561,7 +561,7 @@ Here we export a custom API handler config type in order
 You can apply transformations to your API like
  here for CORS support (OPTIONS method handling).
 
-[See in context](./src/services/API.ts#L75-L79)
+[See in context](./src/services/API.ts#L73-L77)
 
 
 
@@ -571,7 +571,7 @@ The API definition is a JSON serializable object, you
  can then reshape it the way you want. Here, we set a
  fake auth mechanism to help in development environment.
 
-[See in context](./src/services/API.ts#L83-L88)
+[See in context](./src/services/API.ts#L81-L86)
 
 
 

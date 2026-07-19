@@ -6,6 +6,7 @@ import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js'
 import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
 import { type LogService } from 'common-services';
 import { type OAuth2GranterService } from '../index.js';
+import { type WhookRoutesDefinitionsService } from '@whook/whook';
 
 describe('getOAuth2WellKnown', () => {
   const log = jest.fn<LogService>();
@@ -81,7 +82,40 @@ describe('getOAuth2WellKnown', () => {
 
     const getOAuth2WellKnown = await initGetOAuth2WellKnown({
       BASE_URL: 'https://server.example.com',
-      BASE_PATH: '/v0',
+      ROUTES_DEFINITIONS: {
+        getOAuth2Authorize: {
+          module: {
+            definition: {
+              path: '/v0/oauth2/authorize',
+            },
+          },
+        },
+        postOAuth2Token: {
+          module: {
+            definition: {
+              path: '/v0/oauth2/token',
+            },
+          },
+        },
+      } as unknown as WhookRoutesDefinitionsService,
+      API: {
+        openapi: '3.2',
+        info: {
+          title: 'Test',
+          version: '1.0.0',
+        },
+        paths: {
+          '/test': {
+            get: {
+              security: [
+                {
+                  token: ['user', 'admin'],
+                },
+              ],
+            },
+          },
+        },
+      },
       oAuth2Granters,
       log,
     });
@@ -112,10 +146,14 @@ describe('getOAuth2WellKnown', () => {
            "grant_types_supported": [
              "authorization_code",
            ],
-           "issuer": "https://server.example.com/v0",
+           "issuer": "https://server.example.com",
            "response_types_supported": [
              "code",
              "token",
+           ],
+           "scopes_supported": [
+             "user",
+             "admin",
            ],
            "token_endpoint": "https://server.example.com/v0/oauth2/token",
            "token_endpoint_auth_methods_supported": [

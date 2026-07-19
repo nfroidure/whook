@@ -87,7 +87,6 @@ export type WhookHandlersService = Record<string, WhookRouteHandler>;
 export interface WhookHTTPRouterConfig {
   DEBUG_NODE_ENVS?: string[];
   BUFFER_LIMIT?: string;
-  BASE_PATH?: string;
   COERCION_OPTIONS?: WhookCoercionOptions;
 }
 export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
@@ -111,7 +110,7 @@ export type WhookHTTPRouterService = (
 ) => Promise<void>;
 export type WhookHTTPRouterProvider = Provider<WhookHTTPRouterService>;
 
-export type WhookHTTPRouterDescriptor = {
+export interface WhookHTTPRouterDescriptor {
   handler: WhookRouteHandler;
   operation: WhookOpenAPIOperation;
   config: WhookRouteConfig;
@@ -120,7 +119,7 @@ export type WhookHTTPRouterDescriptor = {
   consumableMediaTypes: string[];
   produceableMediaTypes: string[];
   bodyValidator: WhookBodyValidator;
-};
+}
 
 /* Architecture Note #2.11: HTTP Router
 
@@ -155,7 +154,6 @@ export default location(
         'ENV',
         '?DEBUG_NODE_ENVS',
         '?BUFFER_LIMIT',
-        '?BASE_PATH',
         'ROUTES_HANDLERS',
         'API',
         'DEFINITIONS',
@@ -183,8 +181,6 @@ export default location(
  * @param  {String}   [services.BUFFER_LIMIT]
  * The maximum bufferisation before parsing the
  *  request body
- * @param  {String}   [services.BASE_PATH]
- * API base path
  * @param  {Object}   services.ROUTES_HANDLERS
  * The handlers for the operations describe
  *  by the OpenAPI API definition
@@ -214,7 +210,6 @@ export default location(
  */
 async function initHTTPRouter({
   BUFFER_LIMIT = DEFAULT_BUFFER_LIMIT,
-  BASE_PATH = '',
   ROUTES_HANDLERS,
   API,
   DEFINITIONS,
@@ -243,7 +238,6 @@ async function initHTTPRouter({
     DEFINITIONS,
     COERCION_OPTIONS,
     ROUTES_HANDLERS,
-    BASE_PATH,
     queryParserBuilder,
     schemaValidators,
     log,
@@ -587,7 +581,6 @@ async function _createRouters({
   API,
   DEFINITIONS,
   ROUTES_HANDLERS,
-  BASE_PATH = '',
   COERCION_OPTIONS,
   queryParserBuilder,
   schemaValidators,
@@ -596,7 +589,6 @@ async function _createRouters({
   API: WhookOpenAPI;
   DEFINITIONS: WhookDefinitions;
   ROUTES_HANDLERS: WhookHandlersService;
-  BASE_PATH?: string;
   COERCION_OPTIONS: WhookCoercionOptions;
   queryParserBuilder: WhookQueryParserBuilderService;
   schemaValidators: WhookSchemaValidatorsService;
@@ -687,7 +679,7 @@ async function _createRouters({
       routers[method].register(
         await buildPathNodes(
           { API, schemaValidators },
-          BASE_PATH + path,
+          path,
           pathItemParameters.concat(operationParameters),
         ),
         {

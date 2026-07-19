@@ -475,7 +475,6 @@ Initialize an HTTP router
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The service dependencies |
 | [services.BUFFER_LIMIT] | <code>String</code> |  | The maximum bufferisation before parsing the  request body |
-| [services.BASE_PATH] | <code>String</code> |  | API base path |
 | services.ROUTES_HANDLERS | <code>Object</code> |  | The handlers for the operations describe  by the OpenAPI API definition |
 | services.API | <code>Object</code> |  | The OpenAPI definition of the API |
 | [services.PARSERS] | <code>Object</code> |  | The synchronous body parsers (for operations  that defines a request body schema) |

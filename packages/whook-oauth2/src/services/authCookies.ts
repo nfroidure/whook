@@ -3,6 +3,7 @@ import cookie, { type SerializeOptions } from 'cookie';
 import { autoService, location } from 'knifecycle';
 import { type WhookAuthenticationData } from '@whook/authorization';
 import { type Jsonify } from 'type-fest';
+import { type WhookRouteDefinitionBasePath } from '@whook/whook';
 
 export const AUTH_API_PREFIX = '/auth';
 
@@ -16,7 +17,7 @@ export type AuthCookiesOptions = Jsonify<
 
 export interface AuthCookiesConfig {
   COOKIES: AuthCookiesOptions;
-  BASE_PATH?: string;
+  BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 
 export type AuthCookiesDependencies = AuthCookiesConfig;

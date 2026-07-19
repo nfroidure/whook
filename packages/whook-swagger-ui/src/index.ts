@@ -1,9 +1,9 @@
 import { wrapInitializer, alsoInject, type Service } from 'knifecycle';
 import { type ProviderInitializer, type Dependencies } from 'knifecycle';
 import {
+  type WhookRoutesDefinitionsService,
   type WhookHTTPRouterProvider,
   type WhookHTTPRouterService,
-  getOpenAPIDefinition,
 } from '@whook/whook';
 import { noop, type ImporterService, type LogService } from 'common-services';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
@@ -14,14 +14,13 @@ export type WhookSwaggerUIOptions = Omit<
   Jsonify<SwaggerUIOptions>,
   'dom_id' | 'urls'
 > & {
-  path: string;
+  path?: string;
 };
 export interface WhookSwaggerUIEnv {
   DEV_MODE?: string;
 }
 export interface WhookSwaggerUIConfig {
   DEV_ACCESS_TOKEN?: string;
-  BASE_PATH?: string;
   HOST?: string;
   PORT?: number;
   SWAGGER_UI_OPTIONS?: WhookSwaggerUIOptions;
@@ -31,6 +30,7 @@ export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
   DEV_ACCESS_TOKEN: string;
   HOST: string;
   PORT: number;
+  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   log: LogService;
   importer: ImporterService<Service>;
 };
@@ -42,7 +42,6 @@ export const DEFAULT_SWAGGER_UI_OPTIONS = {
   deepLinking: true,
   layout: 'StandaloneLayout',
   displayOperationId: true,
-  path: getOpenAPIDefinition.path,
 } as const satisfies WhookSwaggerUIConfig['SWAGGER_UI_OPTIONS'];
 
 /**
@@ -62,10 +61,10 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
     [
       'ENV',
       '?DEV_ACCESS_TOKEN',
-      '?BASE_PATH',
       'HOST',
       'PORT',
       '?SWAGGER_UI_OPTIONS',
+      'ROUTES_DEFINITIONS',
       'importer',
       '?log',
     ],
@@ -77,10 +76,10 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
       {
         ENV,
         DEV_ACCESS_TOKEN,
-        BASE_PATH = '',
         HOST,
         PORT,
         SWAGGER_UI_OPTIONS = DEFAULT_SWAGGER_UI_OPTIONS,
+        ROUTES_DEFINITIONS,
         importer,
         log = noop,
       }: WhookSwaggerUIDependencies,
@@ -90,12 +89,22 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
         return httpRouter;
       }
 
+      const publicSwaggerPath =
+        SWAGGER_UI_OPTIONS.path ||
+        ROUTES_DEFINITIONS['getOpenAPI']?.module?.definition?.path;
+
+      if (!publicSwaggerPath) {
+        log(
+          'error',
+          `💥 - Cannot find the open API path for Swagger UI (please set SWAGGER_UI_OPTIONS.path).`,
+        );
+        return httpRouter;
+      }
+
       const localURL = `http://${HOST}:${PORT}`;
       const swaggerUIURL = `${localURL}/docs`;
       const absolutePath = (await importer('swagger-ui-dist')).absolutePath();
-      const publicSwaggerURL = `${localURL}${BASE_PATH || ''}${
-        getOpenAPIDefinition.path
-      }`;
+      const publicSwaggerURL = `${localURL}${publicSwaggerPath}`;
       const staticRouter = (await importer('ecstatic')).default({
         root: absolutePath,
         showdir: false,
