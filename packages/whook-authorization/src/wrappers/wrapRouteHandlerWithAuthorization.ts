@@ -244,7 +244,7 @@ async function handleWithAuthorization<A>(
         // https://github.com/nfroidure/http-auth-utils/issues/2
         const castedErr = pickYErrorWithCode(
           err as Error,
-          'E_UNKNOWN_AUTH_MECHANISM'
+          'E_UNKNOWN_AUTH_MECHANISM',
         );
 
         if (
