@@ -1,3 +1,10 @@
+# [25.2.0](https://github.com/nfroidure/whook/compare/v25.1.0...v25.2.0) (2026-07-19)
+
+
+### Features
+
+* **@whook/oauth2:** improve well known endpoints ([dd355fc](https://github.com/nfroidure/whook/commit/dd355fcbe84f50d3f4399acf365ea604cb03ba80))
+
 # [25.1.0](https://github.com/nfroidure/whook/compare/v25.0.2...v25.1.0) (2026-06-08)
 
 # [25.0.0](https://github.com/nfroidure/whook/compare/v25.0.1...v25.0.0) (2026-05-18)

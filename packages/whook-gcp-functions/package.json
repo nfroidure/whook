@@ -29,7 +29,7 @@
     }
   },
   "name": "@whook/gcp-functions",
-  "version": "25.1.0",
+  "version": "25.2.0",
   "description": "Build and deploy to GCP Cloud Functions with Whook.",
   "type": "module",
   "publishConfig": {
@@ -53,8 +53,8 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@types/qs": "^6.15.1",
-    "@whook/cors": "^25.1.0",
-    "@whook/whook": "^25.1.0",
+    "@whook/cors": "^25.2.0",
+    "@whook/whook": "^25.2.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "application-services": "^9.0.1",
@@ -78,7 +78,7 @@
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.33",
     "@swc/jest": "^0.2.39",
-    "@whook/dev": "^25.1.0",
+    "@whook/dev": "^25.2.0",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.15.2",

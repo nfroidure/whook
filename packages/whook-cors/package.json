@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/cors",
-  "version": "25.1.0",
+  "version": "25.2.0",
   "description": "A wrapper to provide CORS support to a Whook server",
   "type": "module",
   "publishConfig": {
@@ -55,7 +55,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^25.1.0",
+    "@whook/whook": "^25.2.0",
     "common-services": "^20.0.0",
     "knifecycle": "^21.3.0",
     "ya-json-schema-types": "^2.0.2",
