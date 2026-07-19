@@ -2123,7 +2123,7 @@ describe('runProcess', () => {
 
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT}${BASE_PATH}/diag`,
+      url: `http://${HOST}:${PORT}${BASE_PATH}/diagnostic`,
       headers: {
         authorization: `Fake e-admin`,
         'user-agent': '__avoid_axios_version__',
@@ -2151,13 +2151,11 @@ describe('runProcess', () => {
     }).toMatchInlineSnapshot(`
      {
        "data": {
-         "error": "bad_handler",
+         "error": "invalid_fake_token",
          "error_debug_data": {
            "guruMeditation": "2",
          },
-         "error_description": "No endpoint found at that path ("get", "/v4/diag")",
-         "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_NOT_FOUND+whook+error+code",
-         "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_NOT_FOUND",
+         "error_description": "The provided token ("e-admin") do not match",
        },
        "debugCalls": [
          [
@@ -2166,14 +2164,6 @@ describe('runProcess', () => {
          [
            "⏳ - Created a delay:",
            30000,
-         ],
-         [
-           "❌ - No handler found for: ",
-           "get",
-           [
-             "v4",
-             "diag",
-           ],
          ],
        ],
        "headers": {
@@ -2193,7 +2183,7 @@ describe('runProcess', () => {
          "vary": "origin",
        },
        "logErrorCalls": [],
-       "status": 404,
+       "status": 400,
      }
     `);
   });

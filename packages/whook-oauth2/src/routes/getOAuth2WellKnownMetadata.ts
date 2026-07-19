@@ -1,6 +1,7 @@
 import {
   identity,
   refersTo,
+  type WhookRoutesDefinitionsService,
   type WhookAPISchemaDefinition,
   type WhookRouteDefinition,
 } from '@whook/whook';
@@ -263,6 +264,9 @@ export const oAuth2MetadataSchema = {
 export const definition = {
   method: 'get',
   path: '/.well-known/oauth-authorization-server',
+  config: {
+    global: true,
+  },
   operation: {
     operationId: 'getOAuth2WellKnownMetadata',
     summary: `Provide the [OAuth 2.0 Authorization Server Metadata](https://datatracker.ietf.org/doc/html/rfc8414).`,
@@ -284,30 +288,24 @@ export const definition = {
 async function initGetOAuth2WellKnownMetadata({
   API,
   BASE_URL,
-  BASE_PATH = '',
+  ROUTES_DEFINITIONS,
   oAuth2Granters,
   log,
 }: {
   API: OpenAPI;
   BASE_URL: string;
-  BASE_PATH?: string;
+  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   oAuth2Granters: OAuth2GranterService[];
   log: LogService;
 }) {
-  if (BASE_PATH) {
-    log(
-      'warning',
-      `⚠️ - Using a base path (${BASE_PATH}) breaks the well known URI discovery.`,
-    );
-  }
   if (!BASE_URL.startsWith('https')) {
     log('warning', `⚠️ - OAuth2 issuer must start with HTTPS (${BASE_URL}).`);
   }
 
   const body = {
     issuer: `${BASE_URL}`,
-    authorization_endpoint: `${BASE_URL}${BASE_PATH}/oauth2/authorize`,
-    token_endpoint: `${BASE_URL}${BASE_PATH}/oauth2/token`,
+    authorization_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['getOAuth2Authorize']?.module.definition.path || '/oauth2/authorize'}`,
+    token_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['postOAuth2Token']?.module.definition.path || '/oauth2/token'}`,
     token_endpoint_auth_methods_supported: ['client_secret_basic'],
     grant_types_supported: [
       ...new Set(

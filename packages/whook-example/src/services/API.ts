@@ -15,7 +15,6 @@ export interface APIEnv {
 export interface APIConfig {
   CONFIG: WhookConfig;
   BASE_URL?: string;
-  BASE_PATH?: string;
   API_VERSION: string;
   DEFINITIONS?: WhookDefinitions;
 }
@@ -38,7 +37,6 @@ async function initAPI({
   ENV,
   CONFIG,
   BASE_URL,
-  BASE_PATH = '',
   API_VERSION,
   DEFINITIONS,
   log = noop,
@@ -54,7 +52,7 @@ async function initAPI({
     },
     servers: [
       {
-        url: `${BASE_URL}${BASE_PATH}`,
+        url: `${BASE_URL}`,
       },
     ],
     components: DEFINITIONS.components,

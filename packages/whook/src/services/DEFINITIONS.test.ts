@@ -112,29 +112,29 @@ describe('initDefinitions', () => {
         DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "DEFINITIONS": {
-    "components": {
-      "callbacks": {},
-      "headers": {},
-      "parameters": {},
-      "requestBodies": {},
-      "responses": {},
-      "schemas": {},
-      "securitySchemes": {},
-    },
-    "configs": {},
-    "paths": {},
-    "security": [],
-  },
-  "logCalls": [
-    [
-      "debug",
-      "🈁 - Generating the DEFINITIONS",
-    ],
-  ],
-}
-`);
+       {
+         "DEFINITIONS": {
+           "components": {
+             "callbacks": {},
+             "headers": {},
+             "parameters": {},
+             "requestBodies": {},
+             "responses": {},
+             "schemas": {},
+             "securitySchemes": {},
+           },
+           "configs": {},
+           "paths": {},
+           "security": [],
+         },
+         "logCalls": [
+           [
+             "debug",
+             "🈁 - Generating the DEFINITIONS",
+           ],
+         ],
+       }
+      `);
     });
 
     test('with a few routes', async () => {
@@ -165,178 +165,180 @@ describe('initDefinitions', () => {
         DEFINITIONS,
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
-{
-  "DEFINITIONS": {
-    "components": {
-      "callbacks": {},
-      "headers": {},
-      "parameters": {
-        "userId": {
-          "in": "path",
-          "name": "userId",
-          "schema": {
-            "type": "number",
-          },
-        },
-      },
-      "requestBodies": {},
-      "responses": {},
-      "schemas": {
-        "User": {
-          "properties": {
-            "name": {
-              "type": "string",
-            },
-          },
-          "type": "object",
-        },
-      },
-      "securitySchemes": {},
-    },
-    "configs": {
-      "getUser": {
-        "config": {
-          "environments": "all",
-          "private": false,
-        },
-        "method": "get",
-        "operation": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "$ref": "#/components/parameters/userId",
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/User",
-                  },
-                },
-              },
-              "description": "The user",
-            },
-          },
-          "tags": [
-            "user",
-          ],
-        },
-        "path": "/users/{userId}",
-        "type": "route",
-      },
-      "putUser": {
-        "config": {
-          "environments": "all",
-          "private": false,
-        },
-        "method": "put",
-        "operation": {
-          "operationId": "putUser",
-          "parameters": [
-            {
-              "$ref": "#/components/parameters/userId",
-            },
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User",
-                },
-              },
-            },
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/User",
-                  },
-                },
-              },
-              "description": "The user",
-            },
-          },
-          "tags": [
-            "user",
-          ],
-        },
-        "path": "/users/{userId}",
-        "type": "route",
-      },
-    },
-    "paths": {
-      "/users/{userId}": {
-        "get": {
-          "operationId": "getUser",
-          "parameters": [
-            {
-              "$ref": "#/components/parameters/userId",
-            },
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/User",
-                  },
-                },
-              },
-              "description": "The user",
-            },
-          },
-          "tags": [
-            "user",
-          ],
-        },
-        "put": {
-          "operationId": "putUser",
-          "parameters": [
-            {
-              "$ref": "#/components/parameters/userId",
-            },
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User",
-                },
-              },
-            },
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/User",
-                  },
-                },
-              },
-              "description": "The user",
-            },
-          },
-          "tags": [
-            "user",
-          ],
-        },
-      },
-    },
-    "security": [],
-  },
-  "logCalls": [
-    [
-      "debug",
-      "🈁 - Generating the DEFINITIONS",
-    ],
-  ],
-}
-`);
+       {
+         "DEFINITIONS": {
+           "components": {
+             "callbacks": {},
+             "headers": {},
+             "parameters": {
+               "userId": {
+                 "in": "path",
+                 "name": "userId",
+                 "schema": {
+                   "type": "number",
+                 },
+               },
+             },
+             "requestBodies": {},
+             "responses": {},
+             "schemas": {
+               "User": {
+                 "properties": {
+                   "name": {
+                     "type": "string",
+                   },
+                 },
+                 "type": "object",
+               },
+             },
+             "securitySchemes": {},
+           },
+           "configs": {
+             "getUser": {
+               "config": {
+                 "environments": "all",
+                 "global": false,
+                 "private": false,
+               },
+               "method": "get",
+               "operation": {
+                 "operationId": "getUser",
+                 "parameters": [
+                   {
+                     "$ref": "#/components/parameters/userId",
+                   },
+                 ],
+                 "responses": {
+                   "200": {
+                     "content": {
+                       "application/json": {
+                         "schema": {
+                           "$ref": "#/components/schemas/User",
+                         },
+                       },
+                     },
+                     "description": "The user",
+                   },
+                 },
+                 "tags": [
+                   "user",
+                 ],
+               },
+               "path": "/users/{userId}",
+               "type": "route",
+             },
+             "putUser": {
+               "config": {
+                 "environments": "all",
+                 "global": false,
+                 "private": false,
+               },
+               "method": "put",
+               "operation": {
+                 "operationId": "putUser",
+                 "parameters": [
+                   {
+                     "$ref": "#/components/parameters/userId",
+                   },
+                 ],
+                 "requestBody": {
+                   "content": {
+                     "application/json": {
+                       "schema": {
+                         "$ref": "#/components/schemas/User",
+                       },
+                     },
+                   },
+                 },
+                 "responses": {
+                   "200": {
+                     "content": {
+                       "application/json": {
+                         "schema": {
+                           "$ref": "#/components/schemas/User",
+                         },
+                       },
+                     },
+                     "description": "The user",
+                   },
+                 },
+                 "tags": [
+                   "user",
+                 ],
+               },
+               "path": "/users/{userId}",
+               "type": "route",
+             },
+           },
+           "paths": {
+             "/users/{userId}": {
+               "get": {
+                 "operationId": "getUser",
+                 "parameters": [
+                   {
+                     "$ref": "#/components/parameters/userId",
+                   },
+                 ],
+                 "responses": {
+                   "200": {
+                     "content": {
+                       "application/json": {
+                         "schema": {
+                           "$ref": "#/components/schemas/User",
+                         },
+                       },
+                     },
+                     "description": "The user",
+                   },
+                 },
+                 "tags": [
+                   "user",
+                 ],
+               },
+               "put": {
+                 "operationId": "putUser",
+                 "parameters": [
+                   {
+                     "$ref": "#/components/parameters/userId",
+                   },
+                 ],
+                 "requestBody": {
+                   "content": {
+                     "application/json": {
+                       "schema": {
+                         "$ref": "#/components/schemas/User",
+                       },
+                     },
+                   },
+                 },
+                 "responses": {
+                   "200": {
+                     "content": {
+                       "application/json": {
+                         "schema": {
+                           "$ref": "#/components/schemas/User",
+                         },
+                       },
+                     },
+                     "description": "The user",
+                   },
+                 },
+                 "tags": [
+                   "user",
+                 ],
+               },
+             },
+           },
+           "security": [],
+         },
+         "logCalls": [
+           [
+             "debug",
+             "🈁 - Generating the DEFINITIONS",
+           ],
+         ],
+       }
+      `);
     });
   });
 });

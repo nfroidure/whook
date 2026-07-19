@@ -11,7 +11,7 @@ import {
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { autoService, name, location } from 'knifecycle';
 import { extname, join as pathJoin } from 'node:path';
-import { printStackTrace } from 'yerror';
+import { printStackTrace, YError } from 'yerror';
 import { type WhookMain } from '../types/base.js';
 
 export const DEFAULT_ROUTES_DEFINITIONS_OPTIONS: WhookRoutesDefinitionsOptions =
@@ -25,6 +25,7 @@ export const DEFAULT_ROUTES_DEFINITIONS_OPTIONS: WhookRoutesDefinitionsOptions =
 export const DEFAULT_ROUTE_DEFINITION_FILTER: WhookRouteDefinitionFilter = () =>
   false;
 
+export type WhookRouteDefinitionBasePath = '' | `/${string}`;
 export type WhookRouteDefinitionFilter = (
   definition: WhookRouteDefinition,
 ) => boolean;
@@ -42,6 +43,7 @@ export interface WhookRoutesDefinitionsConfig {
   ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
   ROUTE_DEFINITION_FILTER?: WhookRouteDefinitionFilter;
   WHOOK_PLUGINS?: WhookPluginName[];
+  BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 
 export type WhookRoutesDefinitionsDependencies =
@@ -84,6 +86,7 @@ export type WhookRoutesDefinitionsService = Record<
  */
 async function initRoutesDefinitions({
   APP_ENV,
+  BASE_PATH = '',
   WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
   WHOOK_RESOLVED_PLUGINS,
   ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
@@ -93,6 +96,10 @@ async function initRoutesDefinitions({
   readDir = _readDir,
 }: WhookRoutesDefinitionsDependencies): Promise<WhookRoutesDefinitionsService> {
   log('debug', `🈁 - Gathering the routes modules.`);
+
+  if (BASE_PATH && BASE_PATH.endsWith('/')) {
+    throw new YError('E_BAD_BASE_PATH', [BASE_PATH]);
+  }
 
   const apiHandlers: WhookRoutesDefinitionsService = {};
 
@@ -188,7 +195,17 @@ async function initRoutesDefinitions({
           url,
           name: handlerName,
           pluginName,
-          module,
+          module: !module.definition.config?.global
+            ? {
+                ...module,
+                definition: {
+                  ...module.definition,
+                  path: BASE_PATH
+                    ? `${BASE_PATH}${module.definition.path}`
+                    : module.definition.path,
+                },
+              }
+            : module,
         };
       } catch (err) {
         log(

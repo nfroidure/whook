@@ -57,6 +57,9 @@ export const oAuth2ProtectedResourceMetadataSchema = {
 export const definition = {
   method: 'get',
   path: '/.well-known/oauth-protected-resource',
+  config: {
+    global: true,
+  },
   operation: {
     operationId: 'getOAuth2WellKnownProtectedResourceMetadata',
     summary: `Provide the [OAuth 2.0 Protected Resource Metadata](https://datatracker.ietf.org/doc/html/rfc9728).`,
@@ -77,21 +80,13 @@ export const definition = {
 
 async function initGetOAuth2WellKnownProtectedResourceMetadata({
   BASE_URL,
-  BASE_PATH = '',
   API,
   log,
 }: {
   BASE_URL: string;
-  BASE_PATH?: string;
   API: OpenAPI;
   log: LogService;
 }) {
-  if (BASE_PATH) {
-    log(
-      'warning',
-      `⚠️ - Using a base path (${BASE_PATH}) breaks the well known URI discovery.`,
-    );
-  }
   if (!BASE_URL.startsWith('https')) {
     log(
       'warning',

@@ -35,7 +35,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [getPingDefinition.path]: {
+      [`${BASE_PATH}${getPingDefinition.path}`]: {
         [getPingDefinition.method]: getPingDefinition.operation,
       },
     },

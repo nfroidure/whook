@@ -20,11 +20,13 @@ import {
 export const DEFAULT_ROUTE_CONFIG: WhookRouteConfig = {
   environments: 'all',
   private: false,
+  global: false,
 };
 
 export interface WhookBaseRouteConfig {
   environments?: WhookEnvironmentsConfig;
   private?: boolean;
+  global?: boolean;
   targetHandler?: string;
 }
 

@@ -36,6 +36,11 @@ import {
   type OpenAPIComponents,
   type OpenAPIExtension,
 } from 'ya-open-api-types';
+import { type WhookCommandsDefinitionsConfig } from '../services/COMMANDS_DEFINITIONS.js';
+import { type WhookConsumersDefinitionsConfig } from '../services/CONSUMERS_DEFINITIONS.js';
+import { type WhookCronsDefinitionsConfig } from '../services/CRONS_DEFINITIONS.js';
+import { type WhookTransformersDefinitionsConfig } from '../services/TRANSFORMERS_DEFINITIONS.js';
+import { type WhookRoutesDefinitionsConfig } from '../services/ROUTES_DEFINITIONS.js';
 
 export type WhookAppEnv<T extends string> = T;
 
@@ -67,7 +72,12 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookObfuscatorConfig &
   WhookDefinitionsConfig &
   WhookRoutesWrappersConfig &
-  WhookSchemaValidatorsConfig;
+  WhookSchemaValidatorsConfig &
+  WhookCommandsDefinitionsConfig &
+  WhookConsumersDefinitionsConfig &
+  WhookCronsDefinitionsConfig &
+  WhookTransformersDefinitionsConfig &
+  WhookRoutesDefinitionsConfig;
 
 export const ASIDE_COMPONENTS_SUFFIXES = {
   schemas: 'Schema',

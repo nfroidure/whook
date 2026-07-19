@@ -6,6 +6,7 @@ import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js'
 import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
 import { type LogService } from 'common-services';
 import { type OAuth2GranterService } from '../index.js';
+import { type WhookRoutesDefinitionsService } from '@whook/whook';
 
 describe('getOAuth2WellKnown', () => {
   const log = jest.fn<LogService>();
@@ -81,7 +82,22 @@ describe('getOAuth2WellKnown', () => {
 
     const getOAuth2WellKnown = await initGetOAuth2WellKnown({
       BASE_URL: 'https://server.example.com',
-      BASE_PATH: '/v0',
+      ROUTES_DEFINITIONS: {
+        getOAuth2Authorize: {
+          module: {
+            definition: {
+              path: '/v0/oauth2/authorize',
+            },
+          },
+        },
+        postOAuth2Token: {
+          module: {
+            definition: {
+              path: '/v0/oauth2/token',
+            },
+          },
+        },
+      } as unknown as WhookRoutesDefinitionsService,
       API: {
         openapi: '3.2',
         info: {

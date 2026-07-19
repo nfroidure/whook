@@ -63,7 +63,7 @@ describe('GraphQL server', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [getGraphQLDefinition.path]: {
+      [`${BASE_PATH}${getGraphQLDefinition.path}`]: {
         [getGraphQLDefinition.method]: {
           ...getGraphQLDefinition.operation,
           security: [

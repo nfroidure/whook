@@ -25,7 +25,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
       description: 'A sample OpenAPI file for testing purpose.',
     },
     paths: {
-      [getPingDefinition.path]: {
+      [`${BASE_PATH}${getPingDefinition.path}`]: {
         [getPingDefinition.method]: getPingDefinition.operation,
       },
     },
@@ -42,6 +42,16 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
   const GRAPHIQL: WhookGraphIQLOptions = {
     defaultQuery: '',
     path: '/graphiql',
+  };
+  const ROUTES_DEFINITIONS = {
+    postGraphQL: {
+      module: {
+        definition: {
+          path: `${BASE_PATH}/graphql`,
+          method: 'get',
+        },
+      },
+    },
   };
   let $: Knifecycle;
 
@@ -72,6 +82,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     $.register(constant('APP_ENV', 'local'));
     $.register(constant('API', API));
     $.register(constant('DEFINITIONS', API));
+    $.register(constant('ROUTES_DEFINITIONS', ROUTES_DEFINITIONS));
     $.register(constant('ROUTES_WRAPPERS_NAMES', []));
     $.register(
       constant('ROUTES_HANDLERS', {
