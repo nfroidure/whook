@@ -1,9 +1,14 @@
 import { autoService, location } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
-import { setURLError } from './getOAuth2Authorize.js';
+import {
+  codeChallengeMethodSchema,
+  codeChallengeSchema,
+  setURLError,
+} from './getOAuth2Authorize.js';
 import {
   type WhookRouteDefinition,
   type WhookErrorsDescriptors,
+  refersTo,
 } from '@whook/whook';
 import {
   type CheckApplicationService,
@@ -67,6 +72,8 @@ export const definition = {
                 description:
                   'Wether the user acknowledged the delegation or not.',
               },
+              codeChallenge: refersTo(codeChallengeSchema),
+              codeChallengeMethod: refersTo(codeChallengeMethodSchema),
             },
           },
         },
@@ -75,6 +82,13 @@ export const definition = {
     responses: {
       '201': {
         description: 'Redirection endpoint URI computed.',
+        headers: {
+          location: {
+            schema: {
+              type: 'string',
+            },
+          },
+        },
         content: {
           'application/json': {
             schema: {
@@ -207,7 +221,7 @@ async function initPostOAuth2Acknowledge({
     }
 
     return {
-      status: 302,
+      status: 201,
       headers: {
         location: url.href,
       },

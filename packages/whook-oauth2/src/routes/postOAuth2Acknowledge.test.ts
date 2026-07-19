@@ -130,7 +130,7 @@ describe('postOAuth2Acknowledge', () => {
          "headers": {
            "location": "https://www.example.com/?my_custom_parameter=a_custom_value&client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&code=a_valid_code",
          },
-         "status": 302,
+         "status": 201,
        },
      }
     `);
@@ -190,7 +190,7 @@ describe('postOAuth2Acknowledge', () => {
          "headers": {
            "location": "https://www.example.com/?error=unsupported_response_type&error_description=Type+%22yolo%22+not+supported.",
          },
-         "status": 302,
+         "status": 201,
        },
      }
     `);
