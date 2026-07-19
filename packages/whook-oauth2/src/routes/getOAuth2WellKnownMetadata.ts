@@ -306,7 +306,11 @@ async function initGetOAuth2WellKnownMetadata({
     issuer: `${BASE_URL}`,
     authorization_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['getOAuth2Authorize']?.module.definition.path || '/oauth2/authorize'}`,
     token_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['postOAuth2Token']?.module.definition.path || '/oauth2/token'}`,
-    token_endpoint_auth_methods_supported: ['client_secret_basic'],
+    // TODO: Put it behind options (allow none)
+    token_endpoint_auth_methods_supported: [
+      'client_secret_basic',
+      'client_secret_post',
+    ],
     grant_types_supported: [
       ...new Set(
         oAuth2Granters

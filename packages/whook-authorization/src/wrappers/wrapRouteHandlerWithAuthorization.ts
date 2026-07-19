@@ -194,11 +194,19 @@ async function handleWithAuthorization<A>(
   const optionalAuth = (definition.operation.security || []).some(
     (security) => Object.keys(security).length === 0,
   );
-  const authorization = (
-    parameters.query.access_token && DEFAULT_MECHANISM
-      ? `${DEFAULT_MECHANISM} ${parameters.query.access_token}`
-      : parameters.headers.authorization
-  ) as string;
+  const clientSecretPost =
+    'body' in parameters &&
+    typeof parameters.body === 'object' &&
+    parameters.body &&
+    'client_id' in parameters.body &&
+    'client_secret' in parameters.body
+      ? `basic ${Buffer.from(`${parameters.body.client_id}:${parameters.body.client_secret}`).toString('base64')}`
+      : undefined;
+  const authorization = ((parameters.query.access_token && DEFAULT_MECHANISM
+    ? `${DEFAULT_MECHANISM} ${parameters.query.access_token}`
+    : parameters.headers.authorization) || clientSecretPost) as
+    | string
+    | undefined;
 
   if (noAuth || (optionalAuth && !authorization)) {
     log(
@@ -236,7 +244,7 @@ async function handleWithAuthorization<A>(
         // https://github.com/nfroidure/http-auth-utils/issues/2
         const castedErr = pickYErrorWithCode(
           err as Error,
-          'E_UNKNOWN_AUTH_MECHANISM',
+          'E_UNKNOWN_AUTH_MECHANISM'
         );
 
         if (
@@ -297,6 +305,14 @@ async function handleWithAuthorization<A>(
       response = await handler(
         {
           ...parameters,
+          ...(clientSecretPost
+            ? {
+                body: {
+                  ...(parameters as { body: object }).body,
+                  client_secret: undefined,
+                },
+              }
+            : {}),
           authenticationData,
           authenticated: true,
         },

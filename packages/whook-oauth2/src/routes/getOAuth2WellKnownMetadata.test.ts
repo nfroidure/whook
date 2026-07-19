@@ -158,6 +158,7 @@ describe('getOAuth2WellKnown', () => {
            "token_endpoint": "https://server.example.com/v0/oauth2/token",
            "token_endpoint_auth_methods_supported": [
              "client_secret_basic",
+             "client_secret_post",
            ],
          },
          "status": 200,

@@ -759,7 +759,7 @@ describe('OAuth2 server', () => {
            "transfer-encoding": "chunked",
            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
          },
-         "status": 302,
+         "status": 201,
        }
       `);
       expect({
@@ -1038,7 +1038,7 @@ describe('OAuth2 server', () => {
            "transfer-encoding": "chunked",
            "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
          },
-         "status": 302,
+         "status": 201,
        }
       `);
       expect({
