@@ -1,3 +1,4 @@
+
 # [25.2.0](https://github.com/nfroidure/whook/compare/v25.1.0...v25.2.0) (2026-07-19)
 
 

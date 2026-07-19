@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/example",
-  "version": "25.2.0",
+  "version": "25.2.1",
   "description": "A basic Whook server",
   "type": "module",
   "publishConfig": {
@@ -80,7 +80,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/authorization": "^25.2.0",
+    "@whook/authorization": "^25.2.1",
     "@whook/cors": "^25.2.0",
     "@whook/swagger-ui": "^25.2.0",
     "@whook/whook": "^25.2.0",
