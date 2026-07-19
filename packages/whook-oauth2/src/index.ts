@@ -30,6 +30,11 @@ import initGetOAuth2WellKnown, {
   httpsProtocolURISchema as getOAuth2WellKnownHTTPSProtocolURISchema,
   oAuth2MetadataSchema as getOAuth2WellKnownOAuth2MetadataSchema,
 } from './routes/getOAuth2WellKnownMetadata.js';
+import initGetOAuth2WellKnownProtectedResource, {
+  definition as getOAuth2WellKnownProtectedResourceDefinition,
+  bearerMethodSchema as getOAuth2WellKnownProtectedResourceBearerMethodSchema,
+  oAuth2ProtectedResourceMetadataSchema as getOAuth2WellKnownProtectedResourceSchema,
+} from './routes/getOAuth2WellKnownProtectedResourceMetadata.js';
 import initOAuth2Granters, {
   type OAuth2YErrorRegistry,
   OAUTH2_ERRORS_DESCRIPTORS,
@@ -72,6 +77,7 @@ import initOAuth2CodeGranter, {
   type CodeChallengeMethod,
   type OAuth2CodeService,
 } from './services/oAuth2CodeGranter.js';
+import { collectScopesFromAPI } from './libs/scopes.js';
 
 declare module 'yerror' {
   interface YErrorRegistry extends OAuth2YErrorRegistry {
@@ -114,6 +120,10 @@ export {
   getOAuth2WellKnownJsonWebEncryptionsSchema,
   getOAuth2WellKnownHTTPSProtocolURISchema,
   getOAuth2WellKnownOAuth2MetadataSchema,
+  initGetOAuth2WellKnownProtectedResource,
+  getOAuth2WellKnownProtectedResourceDefinition,
+  getOAuth2WellKnownProtectedResourceBearerMethodSchema,
+  getOAuth2WellKnownProtectedResourceSchema,
   base64UrlEncode,
   hashCodeVerifier,
   initPostOAuth2Acknowledge,
@@ -142,4 +152,5 @@ export {
   initPostAuthRefresh,
   postAuthRefreshDefinition,
   initAuthCookiesService,
+  collectScopesFromAPI,
 };

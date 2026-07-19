@@ -8,6 +8,8 @@ import { autoService, location } from 'knifecycle';
 import { type OAuth2GranterService } from '../services/oAuth2Granters.js';
 import { codeChallengeMethodSchema } from './getOAuth2Authorize.js';
 import { type LogService } from 'common-services';
+import { type OpenAPI } from 'ya-open-api-types';
+import { collectScopesFromAPI } from '../libs/scopes.js';
 
 // OAuth Token Endpoint Authentication Methods
 export const endpointAuthenticationMethodsSchema = {
@@ -280,11 +282,13 @@ export const definition = {
 } as const satisfies WhookRouteDefinition;
 
 async function initGetOAuth2WellKnownMetadata({
+  API,
   BASE_URL,
   BASE_PATH = '',
   oAuth2Granters,
   log,
 }: {
+  API: OpenAPI;
   BASE_URL: string;
   BASE_PATH?: string;
   oAuth2Granters: OAuth2GranterService[];
@@ -301,7 +305,7 @@ async function initGetOAuth2WellKnownMetadata({
   }
 
   const body = {
-    issuer: `${BASE_URL}${BASE_PATH}`,
+    issuer: `${BASE_URL}`,
     authorization_endpoint: `${BASE_URL}${BASE_PATH}/oauth2/authorize`,
     token_endpoint: `${BASE_URL}${BASE_PATH}/oauth2/token`,
     token_endpoint_auth_methods_supported: ['client_secret_basic'],
@@ -319,6 +323,7 @@ async function initGetOAuth2WellKnownMetadata({
           .filter(identity),
       ),
     ],
+    scopes_supported: collectScopesFromAPI(API),
   };
 
   return async () => {
