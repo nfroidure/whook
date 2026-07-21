@@ -166,10 +166,16 @@ export function setURLError(
   url: URL,
   err: YError | Error,
   oAuth2Error: WhookErrorDescriptor,
+  transport: 'query' | 'fragment' = 'query',
 ): void {
-  url.searchParams.set('error', oAuth2Error.code);
+  const params =
+    transport === 'fragment'
+      ? new URLSearchParams(url.hash.slice(1))
+      : url.searchParams;
+
+  params.set('error', oAuth2Error.code);
   if (oAuth2Error.description) {
-    url.searchParams.set(
+    params.set(
       'error_description',
       oAuth2Error.description.replace(
         /\$([0-9]+)/g,
@@ -180,6 +186,9 @@ export function setURLError(
         },
       ),
     );
+  }
+  if (transport === 'fragment') {
+    url.hash = params.toString();
   }
 }
 

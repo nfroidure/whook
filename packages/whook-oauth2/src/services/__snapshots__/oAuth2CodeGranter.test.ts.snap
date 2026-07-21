@@ -14,6 +14,14 @@ exports[`OAuth2CodeGranter should work with a complete valid flow 2`] = `
     [
       {
         "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
+        "redirectURI": "https://www.example.com/oauth2/code",
+        "scope": "user",
+        "type": "code",
+      },
+    ],
+    [
+      {
+        "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
         "scope": "",
         "type": "code",
       },
@@ -42,7 +50,7 @@ exports[`OAuth2CodeGranter should work with a complete valid flow 2`] = `
         "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
         "scope": "user",
       },
-      "https://www.example.com/oauth2/code",
+      "https://www.example.com",
       "",
       "plain",
       {},

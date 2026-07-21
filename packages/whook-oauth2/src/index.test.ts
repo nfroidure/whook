@@ -424,6 +424,12 @@ describe('OAuth2 server', () => {
         scope: 'user,oauth',
         redirectURI: 'http://redirect.example.com/yolo',
       });
+      checkApplication.mockResolvedValueOnce({
+        type: 'code',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
+        redirectURI: 'http://redirect.example.com/yolo',
+      });
       oAuth2RefreshToken.check.mockResolvedValueOnce({
         applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
         scope: 'user,auth',
@@ -712,6 +718,12 @@ describe('OAuth2 server', () => {
         scope: 'user,oauth',
         redirectURI: 'http://redirect.example.com/yolo',
       });
+      checkApplication.mockResolvedValueOnce({
+        type: 'code',
+        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+        scope: 'user,oauth',
+        redirectURI: 'http://redirect.example.com/yolo',
+      });
 
       const { status, headers, data } = await axios({
         method: 'post',
@@ -753,7 +765,7 @@ describe('OAuth2 server', () => {
            "etag": undefined,
            "keep-alive": undefined,
            "last-modified": undefined,
-           "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&code=a_code",
+           "location": "http://redirect.example.com/yolo?client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&code=a_code",
            "server": undefined,
            "transaction-id": "4",
            "transfer-encoding": "chunked",
@@ -1032,7 +1044,7 @@ describe('OAuth2 server', () => {
            "etag": undefined,
            "keep-alive": undefined,
            "last-modified": undefined,
-           "location": "http://redirect.example.com/yolo?client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&access_token=an_access_token&token_type=bearer&expires_in=86400",
+           "location": "http://redirect.example.com/yolo#client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&access_token=an_access_token&token_type=bearer&expires_in=86400",
            "server": undefined,
            "transaction-id": "7",
            "transfer-encoding": "chunked",

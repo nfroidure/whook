@@ -101,7 +101,7 @@ describe('OAuth2CodeGranter', () => {
            "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
            "scope": "user",
          },
-         "redirectURI": "https://www.example.com/oauth2/code",
+         "redirectURI": "https://www.example.com",
        },
        "authenticatorResult": {
          "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",

@@ -201,12 +201,29 @@ async function initPostOAuth2Acknowledge({
 
       url = new URL(redirectURI);
 
-      url.searchParams.set('client_id', authenticationData.applicationId);
-      url.searchParams.set('scope', authenticationData.scope);
-      url.searchParams.set('state', state);
-      Object.keys(acknowledgedData).forEach((key) =>
-        url.searchParams.set(snakeCase(key), acknowledgedData[key] as string),
-      );
+      if (responseType === 'token') {
+        setURLFragmentParameter(
+          url,
+          'client_id',
+          authenticationData.applicationId,
+        );
+        setURLFragmentParameter(url, 'scope', authenticationData.scope);
+        setURLFragmentParameter(url, 'state', state);
+        Object.keys(acknowledgedData).forEach((key) =>
+          setURLFragmentParameter(
+            url,
+            snakeCase(key),
+            acknowledgedData[key] as string,
+          ),
+        );
+      } else {
+        url.searchParams.set('client_id', authenticationData.applicationId);
+        url.searchParams.set('scope', authenticationData.scope);
+        url.searchParams.set('state', state);
+        Object.keys(acknowledgedData).forEach((key) =>
+          url.searchParams.set(snakeCase(key), acknowledgedData[key] as string),
+        );
+      }
     } catch (err) {
       log('debug', '👫 - OAuth2 acknowledge error', (err as YError).code);
       log('debug-stack', printStackTrace(err));
@@ -217,6 +234,7 @@ async function initPostOAuth2Acknowledge({
         url,
         err as YError,
         ERRORS_DESCRIPTORS[(err as YError).code] || ERRORS_DESCRIPTORS.E_OAUTH2,
+        responseType === 'token' ? 'fragment' : 'query',
       );
     }
 
@@ -234,4 +252,11 @@ function snakeCase(s: string): string {
     .split(/(?=(?<![A-Z])[A-Z])|[^a-zA-Z]+/)
     .map((s) => s.toLowerCase())
     .join('_');
+}
+
+function setURLFragmentParameter(url: URL, name: string, value: string): void {
+  const searchParams = new URLSearchParams(url.hash.slice(1));
+
+  searchParams.set(name, value);
+  url.hash = searchParams.toString();
 }

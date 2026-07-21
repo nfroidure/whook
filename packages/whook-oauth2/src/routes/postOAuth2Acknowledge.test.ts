@@ -150,6 +150,112 @@ describe('postOAuth2Acknowledge', () => {
     }).toMatchSnapshot();
   });
 
+  test('should redirect implicit flow values in fragment', async () => {
+    [
+      codeGranter.authorizer.authorize,
+      codeGranter.authenticator.authenticate,
+      tokenGranter.authorizer.authorize,
+      codeGranter.acknowledger.acknowledge,
+    ].forEach((mock) =>
+      mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+    );
+    tokenGranter.acknowledger.acknowledge.mockResolvedValueOnce({
+      authenticationData: {
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        scope: 'user',
+        userId: '1',
+      },
+      redirectURI: 'https://www.example.com?my_custom_parameter=a_custom_value',
+      acknowledgedData: {
+        accessToken: 'an_access_token',
+        tokenType: 'bearer',
+        expiresIn: 86400,
+      },
+    });
+
+    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge({
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      checkApplication,
+      log,
+    });
+    const response = await postOAuth2Acknowledge({
+      authenticationData: {
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        scope: 'auth',
+        userId: '1',
+      },
+      body: {
+        responseType: 'token',
+        clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        redirectURI: 'https://www.example.com',
+        scope: 'user',
+        state: 'bancal',
+        acknowledged: true,
+      },
+    });
+    expect({
+      response,
+    }).toMatchInlineSnapshot(`
+     {
+       "response": {
+         "headers": {
+           "location": "https://www.example.com/?my_custom_parameter=a_custom_value#client_id=abbacaca-abba-caca-abba-cacaabbacaca&scope=user&state=bancal&access_token=an_access_token&token_type=bearer&expires_in=86400",
+         },
+         "status": 201,
+       },
+     }
+    `);
+  });
+
+  test('should redirect token errors in fragment', async () => {
+    [
+      codeGranter.authorizer.authorize,
+      codeGranter.authenticator.authenticate,
+      tokenGranter.authorizer.authorize,
+      codeGranter.acknowledger.acknowledge,
+    ].forEach((mock) =>
+      mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+    );
+    tokenGranter.acknowledger.acknowledge.mockRejectedValueOnce(
+      new YError('E_ACCESS_DENIED', ['a-client']),
+    );
+
+    const postOAuth2Acknowledge = await initPostOAuth2Acknowledge({
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      checkApplication,
+      log,
+    });
+    const response = await postOAuth2Acknowledge({
+      authenticationData: {
+        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        scope: 'auth',
+        userId: '1',
+      },
+      body: {
+        responseType: 'token',
+        clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        redirectURI: 'https://www.example.com',
+        scope: 'user',
+        state: 'bancal',
+        acknowledged: true,
+      },
+    });
+    expect({
+      response,
+    }).toMatchInlineSnapshot(`
+     {
+       "response": {
+         "headers": {
+           "location": "https://www.example.com/#error=access_denied&error_description=The+user+denied+access+to+your+application+%28id%3A+%22a-client%22%29.",
+         },
+         "status": 201,
+       },
+     }
+    `);
+  });
+
   test('should redirect errors too', async () => {
     [
       codeGranter.authorizer.authorize,

@@ -106,9 +106,16 @@ async function initOAuth2CodeGranter({
     { clientId, redirectURI, scope },
     { codeChallenge, codeChallengeMethod, ...additionalParameters },
   ) => {
+    const { redirectURI: finalRedirectURI } = await checkApplication({
+      applicationId: clientId,
+      type: CODE_GRANTER_TYPE,
+      redirectURI,
+      scope,
+    });
+
     const code = await oAuth2Code.create(
       { ...authenticationData, applicationId: clientId, scope },
-      redirectURI,
+      finalRedirectURI,
       codeChallenge,
       codeChallengeMethod,
       additionalParameters,
@@ -120,7 +127,7 @@ async function initOAuth2CodeGranter({
         applicationId: clientId,
         scope,
       },
-      redirectURI,
+      redirectURI: finalRedirectURI,
       acknowledgedData: {
         code,
       },
