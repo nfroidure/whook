@@ -97,6 +97,13 @@ describe('getOAuth2WellKnown', () => {
             },
           },
         },
+        postOAuth2Register: {
+          module: {
+            definition: {
+              path: '/v0/oauth2/register',
+            },
+          },
+        },
       } as unknown as WhookRoutesDefinitionsService,
       API: {
         openapi: '3.2',
@@ -147,6 +154,7 @@ describe('getOAuth2WellKnown', () => {
              "authorization_code",
            ],
            "issuer": "https://server.example.com",
+           "registration_endpoint": "https://server.example.com/v0/oauth2/register",
            "response_types_supported": [
              "code",
              "token",

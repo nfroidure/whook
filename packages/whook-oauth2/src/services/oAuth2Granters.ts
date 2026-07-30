@@ -212,6 +212,44 @@ export interface OAuth2GranterService<
   };
 }
 
+export interface OAuth2ClientRegistrationMetadata {
+  redirect_uris: string[];
+  token_endpoint_auth_method?:
+    | 'none'
+    | 'client_secret_post'
+    | 'client_secret_basic'
+    | 'client_secret_jwt'
+    | 'private_key_jwt';
+  grant_types?: string[];
+  response_types?: string[];
+  client_name?: string;
+  client_uri?: string;
+  logo_uri?: string;
+  scope?: string;
+  contacts?: string[];
+  tos_uri?: string;
+  policy_uri?: string;
+  jwks_uri?: string;
+  jwks?: object;
+  software_id?: string;
+  software_version?: string;
+}
+
+export interface OAuth2ClientRegistrationResult
+  extends OAuth2ClientRegistrationMetadata {
+  client_id: string;
+  client_secret?: string;
+  client_id_issued_at: number;
+  client_secret_expires_at: number;
+}
+
+export interface OAuth2ClientRegistrationService {
+  register: (
+    metadata: OAuth2ClientRegistrationMetadata,
+    authenticationData?: WhookAuthenticationData,
+  ) => Promise<OAuth2ClientRegistrationResult>;
+}
+
 export interface OAuth2Options {
   authenticateURL: string;
   defaultToClientScope?: boolean;

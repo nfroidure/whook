@@ -22,6 +22,12 @@ import initPostOAuth2Token, {
   refreshTokenRequestBodySchema as postOAuth2TokenRefreshTokenRequestBodySchema,
   tokenBodySchema as postOAuth2TokenTokenBodySchema,
 } from './routes/postOAuth2Token.js';
+import initPostOAuth2Register, {
+  definition as postOAuth2RegisterDefinition,
+  endpointAuthenticationMethodsSchema as postOAuth2RegisterEndpointAuthenticationMethodsSchema,
+  registrationRequestBodySchema as postOAuth2RegisterRequestBodySchema,
+  registrationResponseBodySchema as postOAuth2RegisterResponseBodySchema,
+} from './routes/postOAuth2Register.js';
 import initGetOAuth2WellKnown, {
   definition as getOAuth2WellKnownDefinition,
   endpointAuthenticationMethodsSchema as getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
@@ -51,6 +57,9 @@ import {
   type OAuth2GranterService,
   type OAuth2Options,
   type OAuth2Config,
+  type OAuth2ClientRegistrationMetadata,
+  type OAuth2ClientRegistrationResult,
+  type OAuth2ClientRegistrationService,
 } from './services/oAuth2Granters.js';
 import initPostAuthLogin, {
   definition as postAuthLoginDefinition,
@@ -96,6 +105,9 @@ export type {
   OAuth2GranterService,
   OAuth2Options,
   OAuth2Config,
+  OAuth2ClientRegistrationMetadata,
+  OAuth2ClientRegistrationResult,
+  OAuth2ClientRegistrationService,
   AuthCookiesConfig,
   AuthCookiesService,
   AuthCookiesData,
@@ -136,6 +148,11 @@ export {
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
+  initPostOAuth2Register,
+  postOAuth2RegisterDefinition,
+  postOAuth2RegisterEndpointAuthenticationMethodsSchema,
+  postOAuth2RegisterRequestBodySchema,
+  postOAuth2RegisterResponseBodySchema,
   OAUTH2_ERRORS_DESCRIPTORS,
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
