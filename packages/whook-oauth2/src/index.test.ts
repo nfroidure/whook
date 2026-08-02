@@ -35,6 +35,7 @@ import {
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
+  getOAuth2AuthorizeScopeSchema,
   getOAuth2AuthorizeCodeChallengeSchema,
   getOAuth2AuthorizeCodeChallengeParameter,
   getOAuth2AuthorizeCodeChallengeMethodSchema,
@@ -45,23 +46,23 @@ import {
   postOAuth2TokenCodeVerifierSchema,
   postOAuth2TokenDefinition,
   OAUTH2_ERRORS_DESCRIPTORS,
-  initOAuth2CodeGranter,
+  initOAuth2AuthorizationCodeGranter,
   initOAuth2PasswordGranter,
   initOAuth2RefreshTokenGranter,
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
-  initOAuth2TokenGranter,
+  initOAuth2ImplicitGranter,
   postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
   postOAuth2TokenPasswordTokenRequestBodySchema,
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
   postOAuth2TokenRefreshTokenRequestBodySchema,
-  type OAuth2Options,
-  type CheckApplicationService,
-  type OAuth2PasswordService,
-  type OAuth2CodeService,
-  type OAuth2RefreshTokenService,
-  type OAuth2AccessTokenService,
+  type WhookOAuth2Options,
+  type WhookOAuth2ReadClientGrantsService,
+  type WhookOAuth2PasswordService,
+  type WhookOAuth2AuthorizationCodeService,
+  type WhookOAuth2RefreshTokenService,
+  type WhookOAuth2AccessTokenService,
 } from './index.js';
 import { type Knifecycle } from 'knifecycle';
 import { type OpenAPI } from 'ya-open-api-types';
@@ -142,13 +143,14 @@ describe('OAuth2 server', () => {
         {},
       ),
       schemas: [
+        getOAuth2AuthorizeScopeSchema,
+        getOAuth2AuthorizeCodeChallengeSchema,
+        getOAuth2AuthorizeCodeChallengeMethodSchema,
         postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
         postOAuth2TokenPasswordTokenRequestBodySchema,
         postOAuth2TokenClientCredentialsTokenRequestBodySchema,
         postOAuth2TokenRefreshTokenRequestBodySchema,
         postOAuth2TokenTokenBodySchema,
-        getOAuth2AuthorizeCodeChallengeSchema,
-        getOAuth2AuthorizeCodeChallengeMethodSchema,
         postOAuth2TokenCodeVerifierSchema,
       ].reduce(
         (schemasHash, { name, schema }) => ({
@@ -159,27 +161,29 @@ describe('OAuth2 server', () => {
       ),
     },
   };
-  const OAUTH2: OAuth2Options = {
+  const OAUTH2: WhookOAuth2Options = {
     authenticateURL: 'https://auth.example.com/sign_in',
+    allowedScopes: ['user', 'oauth'],
+    rootClientId: 'the_root_client_id',
   };
   const authentication = {
     check: jest.fn<WhookAuthenticationService<any>['check']>(),
   };
-  const checkApplication = jest.fn<CheckApplicationService>();
+  const readClientGrants = jest.fn<WhookOAuth2ReadClientGrantsService>();
   const oAuth2AccessToken = {
-    create: jest.fn<OAuth2AccessTokenService['create']>(),
-    check: jest.fn<OAuth2AccessTokenService['check']>(),
+    create: jest.fn<WhookOAuth2AccessTokenService['create']>(),
+    check: jest.fn<WhookOAuth2AccessTokenService['check']>(),
   };
   const oAuth2RefreshToken = {
-    create: jest.fn<OAuth2RefreshTokenService['create']>(),
-    check: jest.fn<OAuth2RefreshTokenService['check']>(),
+    create: jest.fn<WhookOAuth2RefreshTokenService['create']>(),
+    check: jest.fn<WhookOAuth2RefreshTokenService['check']>(),
   };
-  const oAuth2Code = {
-    create: jest.fn<OAuth2CodeService['create']>(),
-    check: jest.fn<OAuth2CodeService['check']>(),
+  const oAuth2AuthorizationCode = {
+    create: jest.fn<WhookOAuth2AuthorizationCodeService['create']>(),
+    check: jest.fn<WhookOAuth2AuthorizationCodeService['check']>(),
   };
   const oAuth2Password = {
-    check: jest.fn<OAuth2PasswordService['check']>(),
+    check: jest.fn<WhookOAuth2PasswordService['check']>(),
   };
 
   let $instance: Knifecycle;
@@ -236,10 +240,10 @@ describe('OAuth2 server', () => {
       ),
     );
     $.register(constant('authentication', authentication));
-    $.register(constant('checkApplication', checkApplication));
+    $.register(constant('readClientGrants', readClientGrants));
     $.register(constant('oAuth2AccessToken', oAuth2AccessToken));
     $.register(constant('oAuth2RefreshToken', oAuth2RefreshToken));
-    $.register(constant('oAuth2Code', oAuth2Code));
+    $.register(constant('oAuth2AuthorizationCode', oAuth2AuthorizationCode));
     $.register(constant('oAuth2Password', oAuth2Password));
     [
       initGetOAuth2Authorize,
@@ -247,10 +251,10 @@ describe('OAuth2 server', () => {
       initPostOAuth2Token,
       initOAuth2Granters,
       initOAuth2ClientCredentialsGranter,
-      initOAuth2CodeGranter,
+      initOAuth2AuthorizationCodeGranter,
       initOAuth2PasswordGranter,
       initOAuth2RefreshTokenGranter,
-      initOAuth2TokenGranter,
+      initOAuth2ImplicitGranter,
     ].forEach((handlerInitializer) => $.register(handlerInitializer as any));
 
     return $;
@@ -287,10 +291,10 @@ describe('OAuth2 server', () => {
       oAuth2AccessToken.check,
       oAuth2RefreshToken.create,
       oAuth2RefreshToken.check,
-      oAuth2Code.check,
-      oAuth2Code.create,
+      oAuth2AuthorizationCode.check,
+      oAuth2AuthorizationCode.create,
       oAuth2Password.check,
-      checkApplication,
+      readClientGrants,
       authentication.check,
     ].forEach((mock) => mock.mockReset());
   });
@@ -301,27 +305,32 @@ describe('OAuth2 server', () => {
       [
         oAuth2AccessToken.check,
         oAuth2RefreshToken.check,
-        oAuth2Code.check,
-        oAuth2Code.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
         oAuth2RefreshToken.check,
       ].forEach((mock: any) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        userId: '2',
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
       });
-      checkApplication.mockResolvedValueOnce({
-        type: 'code',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code', 'password'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
       oAuth2Password.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,auth',
-        userId: '1',
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'pwd_user_id',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -344,61 +353,247 @@ describe('OAuth2 server', () => {
           grant_type: 'password',
           username: 'me@example.com',
           password: 'udelawli',
+          scope: 'user invalid_scope',
+        },
+        validateStatus: () => true,
+      });
+
+      expect({
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
+        },
+        readClientGrantsCalls: readClientGrants.mock.calls,
+        authenticationCheckCalls: authentication.check.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
+        oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "pwd_user_id",
+             },
+           ],
+         ],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+                 "oauth",
+               ],
+               "userId": "auth_user_id",
+             },
+             "me@example.com",
+             "udelawli",
+           ],
+         ],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "pwd_user_id",
+             },
+           ],
+         ],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "access_token": "an_access_token",
+             "expiration_date": "2010-03-07T00:00:00.000Z",
+             "expires_in": 86400,
+             "refresh_token": "a_refresh_token",
+             "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+             "refresh_token_expires_in": 5364748800,
+             "scope": "user",
+             "token_type": "bearer",
+           },
+           "headers": {
+             "connection": undefined,
+             "content-type": "application/json",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "0",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
+    });
+
+    test('should fail with excluded clients', async () => {
+      time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
+      [
+        oAuth2AccessToken.check,
+        oAuth2RefreshToken.check,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
+        oAuth2RefreshToken.check,
+        oAuth2Password.check,
+        oAuth2AccessToken.create,
+        oAuth2RefreshToken.create,
+      ].forEach((mock: any) =>
+        mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+      );
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+      });
+
+      const { status, headers, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
+        headers: {
+          authorization: `basic ${Buffer.from('ali:open_sesame').toString(
+            'base64',
+          )}`,
+        },
+        data: {
+          grant_type: 'password',
+          username: 'me@example.com',
+          password: 'udelawli',
           scope: 'user',
         },
         validateStatus: () => true,
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": {
-           "access_token": "an_access_token",
-           "expiration_date": "2010-03-07T00:00:00.000Z",
-           "expires_in": 86400,
-           "refresh_token": "a_refresh_token",
-           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-           "refresh_token_expires_in": 5364748800,
-           "token_type": "bearer",
-         },
-         "headers": {
-           "connection": undefined,
-           "content-type": "application/json",
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "server": undefined,
-           "transaction-id": "0",
-           "transfer-encoding": "chunked",
-           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-         },
-         "status": 200,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "error": "unauthorized_client",
+             "error_debug_data": {
+               "guruMeditation": "1",
+             },
+             "error_description": "This grant type is not supported (password).",
+             "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_OAUTH2_GRANT_TYPE_NOT_ALLOWED+whook+error+code",
+             "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_OAUTH2_GRANT_TYPE_NOT_ALLOWED",
+           },
+           "headers": {
+             "cache-control": "private",
+             "connection": undefined,
+             "content-type": "text/plain",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "1",
+             "transfer-encoding": "chunked",
+           },
+           "status": 400,
+         },
+       }
+      `);
     });
   });
 
@@ -407,27 +602,32 @@ describe('OAuth2 server', () => {
       time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
       [
         oAuth2AccessToken.check,
-        oAuth2Code.check,
-        oAuth2Code.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        userId: '2',
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
       });
-      checkApplication.mockResolvedValueOnce({
-        type: 'code',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code', 'refresh_token'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
       oAuth2RefreshToken.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,auth',
-        userId: '1',
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'a_user_id',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -455,55 +655,366 @@ describe('OAuth2 server', () => {
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": {
-           "access_token": "an_access_token",
-           "expiration_date": "2010-03-07T00:00:00.000Z",
-           "expires_in": 86400,
-           "refresh_token": "a_refresh_token",
-           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-           "refresh_token_expires_in": 5364748800,
-           "token_type": "bearer",
-         },
-         "headers": {
-           "connection": undefined,
-           "content-type": "application/json",
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "server": undefined,
-           "transaction-id": "1",
-           "transfer-encoding": "chunked",
-           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-         },
-         "status": 200,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "a_user_id",
+             },
+           ],
+         ],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [
+           [
+             "a_refresh_token",
+           ],
+         ],
+         "oAuth2RefreshTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "a_user_id",
+             },
+           ],
+         ],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "access_token": "an_access_token",
+             "expiration_date": "2010-03-07T00:00:00.000Z",
+             "expires_in": 86400,
+             "refresh_token": "a_refresh_token",
+             "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+             "refresh_token_expires_in": 5364748800,
+             "scope": "user",
+             "token_type": "bearer",
+           },
+           "headers": {
+             "connection": undefined,
+             "content-type": "application/json",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "2",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
+    });
+
+    test('should fail with excluded apps', async () => {
+      time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
+      [
+        oAuth2AccessToken.check,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
+        oAuth2Password.check,
+        oAuth2AccessToken.create,
+        oAuth2RefreshToken.create,
+      ].forEach((mock) =>
+        mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+      );
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+      });
+      oAuth2RefreshToken.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'refresh_user_id',
+      });
+
+      const { status, headers, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
+        headers: {
+          authorization: `basic ${Buffer.from('ali:open_sesame').toString(
+            'base64',
+          )}`,
+        },
+        data: {
+          grant_type: 'refresh_token',
+          refresh_token: 'a_refresh_token',
+          scope: 'user',
+        },
+        validateStatus: () => true,
+      });
+
+      expect({
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
+        },
+        readClientGrantsCalls: readClientGrants.mock.calls,
+        authenticationCheckCalls: authentication.check.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
+        oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [
+           [
+             "a_refresh_token",
+           ],
+         ],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "error": "unauthorized_client",
+             "error_debug_data": {
+               "guruMeditation": "3",
+             },
+             "error_description": "This grant type is not supported (refresh_token).",
+             "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_OAUTH2_GRANT_TYPE_NOT_ALLOWED+whook+error+code",
+             "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_OAUTH2_GRANT_TYPE_NOT_ALLOWED",
+           },
+           "headers": {
+             "cache-control": "private",
+             "connection": undefined,
+             "content-type": "text/plain",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "3",
+             "transfer-encoding": "chunked",
+           },
+           "status": 400,
+         },
+       }
+      `);
+    });
+
+    test('should fail with application id mismatch', async () => {
+      time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
+      [
+        oAuth2AccessToken.check,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
+        oAuth2Password.check,
+        oAuth2AccessToken.create,
+        oAuth2RefreshToken.create,
+      ].forEach((mock) =>
+        mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+      );
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'another_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+      });
+      oAuth2RefreshToken.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'refresh_user_id',
+      });
+
+      const { status, headers, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
+        headers: {
+          authorization: `basic ${Buffer.from('ali:open_sesame').toString(
+            'base64',
+          )}`,
+        },
+        data: {
+          grant_type: 'refresh_token',
+          refresh_token: 'a_refresh_token',
+          scope: 'user',
+        },
+        validateStatus: () => true,
+      });
+
+      expect({
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
+        },
+        readClientGrantsCalls: readClientGrants.mock.calls,
+        authenticationCheckCalls: authentication.check.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
+        oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [
+           [
+             "a_refresh_token",
+           ],
+         ],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [],
+         "response": {
+           "data": {
+             "error": "invalid_request",
+             "error_debug_data": {
+               "guruMeditation": "4",
+             },
+             "error_description": "The client used is not matching the request.",
+             "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_OAUTH2_CLIENT_MISMATCH+whook+error+code",
+             "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_OAUTH2_CLIENT_MISMATCH",
+           },
+           "headers": {
+             "cache-control": "private",
+             "connection": undefined,
+             "content-type": "text/plain",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "4",
+             "transfer-encoding": "chunked",
+           },
+           "status": 400,
+         },
+       }
+      `);
     });
   });
 
@@ -513,22 +1024,27 @@ describe('OAuth2 server', () => {
       [
         oAuth2AccessToken.check,
         oAuth2RefreshToken.check,
-        oAuth2Code.check,
-        oAuth2Code.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        userId: '2',
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
       });
-      checkApplication.mockResolvedValueOnce({
-        type: 'code',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code', 'client_credentials'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -555,55 +1071,211 @@ describe('OAuth2 server', () => {
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": {
-           "access_token": "an_access_token",
-           "expiration_date": "2010-03-07T00:00:00.000Z",
-           "expires_in": 86400,
-           "refresh_token": "a_refresh_token",
-           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-           "refresh_token_expires_in": 5364748800,
-           "token_type": "bearer",
-         },
-         "headers": {
-           "connection": undefined,
-           "content-type": "application/json",
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "server": undefined,
-           "transaction-id": "2",
-           "transfer-encoding": "chunked",
-           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-         },
-         "status": 200,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "auth_user_id",
+             },
+           ],
+         ],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "access_token": "an_access_token",
+             "expiration_date": "2010-03-07T00:00:00.000Z",
+             "expires_in": 86400,
+             "scope": "user",
+             "token_type": "bearer",
+           },
+           "headers": {
+             "connection": undefined,
+             "content-type": "application/json",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "5",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
+    });
+    test('should fail with excluded apps', async () => {
+      time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
+      [
+        oAuth2AccessToken.check,
+        oAuth2RefreshToken.check,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
+        oAuth2Password.check,
+        oAuth2AccessToken.create,
+        oAuth2RefreshToken.create,
+      ].forEach((mock) =>
+        mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+      );
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+      });
+
+      const { status, headers, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
+        headers: {
+          authorization: `basic ${Buffer.from('ali:open_sesame').toString(
+            'base64',
+          )}`,
+        },
+        data: {
+          grant_type: 'client_credentials',
+          scope: 'user',
+        },
+        validateStatus: () => true,
+      });
+
+      expect({
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
+        },
+        readClientGrantsCalls: readClientGrants.mock.calls,
+        authenticationCheckCalls: authentication.check.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
+        oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "error": "unauthorized_client",
+             "error_debug_data": {
+               "guruMeditation": "6",
+             },
+             "error_description": "This grant type is not supported (client_credentials).",
+             "error_help_uri": "https://stackoverflow.com/questions/ask?tags=whook&title=How+to+debug+E_OAUTH2_GRANT_TYPE_NOT_ALLOWED+whook+error+code",
+             "error_uri": "https://stackoverflow.com/search?q=%5Bwhook%5D+E_OAUTH2_GRANT_TYPE_NOT_ALLOWED",
+           },
+           "headers": {
+             "cache-control": "private",
+             "connection": undefined,
+             "content-type": "text/plain",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "6",
+             "transfer-encoding": "chunked",
+           },
+           "status": 400,
+         },
+       }
+      `);
     });
   });
 
@@ -616,18 +1288,24 @@ describe('OAuth2 server', () => {
         oAuth2AccessToken.create,
         oAuth2RefreshToken.check,
         oAuth2RefreshToken.create,
-        oAuth2Code.check,
-        oAuth2Code.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
-      checkApplication.mockResolvedValueOnce({
-        type: 'code',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI:
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code', 'refresh_token'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: [
           'https://redirect.example.com/oauth2/callback?a_param=a_param_value',
+        ],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
 
       const { status, headers, data } = await axios({
@@ -635,9 +1313,9 @@ describe('OAuth2 server', () => {
         url: `http://${HOST}:${PORT}${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`,
         params: {
           response_type: 'code',
-          client_id: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+          client_id: 'the_client_id',
           redirect_uri:
-            'https://example.com/oauth2/callback?a_param=a_param_value',
+            'https://redirect.example.com/oauth2/callback?a_param=a_param_value',
           scope: 'user',
           state: 'xyz',
         },
@@ -646,46 +1324,63 @@ describe('OAuth2 server', () => {
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": "",
-         "headers": {
-           "connection": undefined,
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fredirect.example.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
-           "server": undefined,
-           "transaction-id": "3",
-           "transfer-encoding": "chunked",
-         },
-         "status": 302,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": "",
+           "headers": {
+             "connection": undefined,
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "location": "https://auth.example.com/sign_in?type=code&redirect_uri=https%3A%2F%2Fredirect.example.com%2Foauth2%2Fcallback%3Fa_param%3Da_param_value&scope=user&client_id=the_client_id&state=xyz",
+             "server": undefined,
+             "transaction-id": "7",
+             "transfer-encoding": "chunked",
+           },
+           "status": 302,
+         },
+       }
+      `);
     });
 
     test('should redirect with a code', async () => {
@@ -695,22 +1390,41 @@ describe('OAuth2 server', () => {
         oAuth2AccessToken.create,
         oAuth2RefreshToken.check,
         oAuth2RefreshToken.create,
-        oAuth2Code.check,
+        oAuth2AuthorizationCode.check,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        userId: '2',
+        clientId: 'the_root_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
       });
-      oAuth2Code.create.mockResolvedValueOnce('a_code');
-      checkApplication.mockResolvedValueOnce({
-        type: 'code',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      oAuth2AuthorizationCode.create.mockResolvedValueOnce('a_code');
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['password'],
+        allowedScopes: [],
+        allowedRedirectURIS: [],
+        isPublicClient: false,
+        canAcknowledge: true,
+        authenticationData: {
+          clientId: 'the_root_client_id',
+          scopes: [],
+          userId: 'a_user_id',
+        },
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code', 'refresh_token'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: [
+          'http://redirect.example.com/yolo?a_param=a_value',
+        ],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
 
       const { status, headers, data } = await axios({
@@ -721,7 +1435,7 @@ describe('OAuth2 server', () => {
         },
         data: {
           responseType: 'code',
-          clientId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+          clientId: 'the_client_id',
           redirectURI: 'http://redirect.example.com/yolo?a_param=a_value',
           scope: 'user',
           state: 'xyz',
@@ -732,47 +1446,93 @@ describe('OAuth2 server', () => {
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": "",
-         "headers": {
-           "connection": undefined,
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&code=a_code",
-           "server": undefined,
-           "transaction-id": "4",
-           "transfer-encoding": "chunked",
-           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-         },
-         "status": 201,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "auth_user_id",
+             },
+             {
+               "demandedRedirectURI": "http://redirect.example.com/yolo?a_param=a_value",
+               "demandedScopes": [
+                 "user",
+               ],
+               "filteredScopes": [
+                 "user",
+               ],
+             },
+           ],
+         ],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_root_client_id",
+           ],
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": "",
+           "headers": {
+             "connection": undefined,
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "location": "http://redirect.example.com/yolo?a_param=a_value&client_id=the_client_id&scope=user&state=xyz&code=a_code",
+             "server": undefined,
+             "transaction-id": "8",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_root_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 201,
+         },
+       }
+      `);
     });
 
     test('should produce new tokens', async () => {
@@ -785,21 +1545,32 @@ describe('OAuth2 server', () => {
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        userId: '2',
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
       });
-      checkApplication.mockResolvedValueOnce({
-        type: 'code',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['authorization_code', 'refresh_token'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
-      oAuth2Code.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,auth',
-        userId: '1',
-        redirectURI: 'http://redirect.example.com/yolo',
+      oAuth2AuthorizationCode.check.mockResolvedValueOnce({
+        codeAuthenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+        context: {
+          demandedRedirectURI: 'http://redirect.example.com/yolo',
+          demandedScopes: ['user'],
+          filteredScopes: ['user'],
+        },
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
@@ -827,55 +1598,114 @@ describe('OAuth2 server', () => {
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": {
-           "access_token": "an_access_token",
-           "expiration_date": "2010-03-07T00:00:00.000Z",
-           "expires_in": 86400,
-           "refresh_token": "a_refresh_token",
-           "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
-           "refresh_token_expires_in": 5364748800,
-           "token_type": "bearer",
-         },
-         "headers": {
-           "connection": undefined,
-           "content-type": "application/json",
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "server": undefined,
-           "transaction-id": "5",
-           "transfer-encoding": "chunked",
-           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-         },
-         "status": 200,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "a_user_id",
+             },
+           ],
+         ],
+         "oAuth2AuthorizationCodeCheckCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+                 "oauth",
+               ],
+               "userId": "auth_user_id",
+             },
+             "a_grant_code",
+           ],
+         ],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "a_user_id",
+             },
+           ],
+         ],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "access_token": "an_access_token",
+             "expiration_date": "2010-03-07T00:00:00.000Z",
+             "expires_in": 86400,
+             "refresh_token": "a_refresh_token",
+             "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+             "refresh_token_expires_in": 5364748800,
+             "scope": "user",
+             "token_type": "bearer",
+           },
+           "headers": {
+             "connection": undefined,
+             "content-type": "application/json",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "server": undefined,
+             "transaction-id": "9",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 200,
+         },
+       }
+      `);
     });
   });
 
@@ -888,17 +1718,22 @@ describe('OAuth2 server', () => {
         oAuth2AccessToken.create,
         oAuth2RefreshToken.check,
         oAuth2RefreshToken.create,
-        oAuth2Code.check,
-        oAuth2Code.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
-      checkApplication.mockResolvedValueOnce({
-        type: 'implicit',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['implicit'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
 
       const { status, headers, data } = await axios({
@@ -906,7 +1741,7 @@ describe('OAuth2 server', () => {
         url: `http://${HOST}:${PORT}${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`,
         params: {
           response_type: 'token',
-          client_id: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+          client_id: 'the_client_id',
           redirect_uri: 'http://redirect.example.com/yolo',
           scope: 'user',
           state: 'xyz',
@@ -916,46 +1751,63 @@ describe('OAuth2 server', () => {
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": "",
-         "headers": {
-           "connection": undefined,
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&state=xyz",
-           "server": undefined,
-           "transaction-id": "6",
-           "transfer-encoding": "chunked",
-         },
-         "status": 302,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": "",
+           "headers": {
+             "connection": undefined,
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=the_client_id&state=xyz",
+             "server": undefined,
+             "transaction-id": "10",
+             "transfer-encoding": "chunked",
+           },
+           "status": 302,
+         },
+       }
+      `);
     });
 
     test('should redirect with a token', async () => {
@@ -964,32 +1816,45 @@ describe('OAuth2 server', () => {
         oAuth2AccessToken.check,
         oAuth2RefreshToken.check,
         oAuth2RefreshToken.create,
-        oAuth2Code.check,
-        oAuth2Code.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
         oAuth2Password.check,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        userId: '2',
+        clientId: 'the_root_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
       });
       oAuth2AccessToken.create.mockResolvedValueOnce({
         token: 'an_access_token',
         expiresAt: Date.parse('2010-03-07T00:00:00Z'),
       });
-      checkApplication.mockResolvedValueOnce({
-        type: 'implicit',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['password'],
+        allowedScopes: [],
+        allowedRedirectURIS: [],
+        isPublicClient: false,
+        canAcknowledge: true,
+        authenticationData: {
+          clientId: 'the_root_client_id',
+          scopes: [],
+          userId: 'a_user_id',
+        },
       });
-      checkApplication.mockResolvedValueOnce({
-        type: 'implicit',
-        applicationId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-        scope: 'user,oauth',
-        redirectURI: 'http://redirect.example.com/yolo',
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['implicit'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: [
+          'http://redirect.example.com/yolo?a_param=a_value',
+        ],
+        isPublicClient: true,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
       });
 
       const { status, headers, data } = await axios({
@@ -1000,7 +1865,7 @@ describe('OAuth2 server', () => {
         },
         data: {
           responseType: 'token',
-          clientId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
+          clientId: 'the_client_id',
           redirectURI: 'http://redirect.example.com/yolo?a_param=a_value',
           scope: 'user',
           state: 'xyz',
@@ -1011,47 +1876,84 @@ describe('OAuth2 server', () => {
       });
 
       expect({
-        status,
-        headers: {
-          ...headers,
-          // Erasing the Date header that may be added by Axios :/
-          date: undefined,
-          etag: undefined,
-          'last-modified': undefined,
-          server: undefined,
-          connection: undefined,
-          'keep-alive': undefined,
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
         },
-        data,
-      }).toMatchInlineSnapshot(`
-       {
-         "data": "",
-         "headers": {
-           "connection": undefined,
-           "date": undefined,
-           "etag": undefined,
-           "keep-alive": undefined,
-           "last-modified": undefined,
-           "location": "http://redirect.example.com/yolo?client_id=acdc41ce-acdc-41ce-acdc-41ceacdc41ce&scope=user&state=xyz&access_token=an_access_token&token_type=bearer&expires_in=86400",
-           "server": undefined,
-           "transaction-id": "7",
-           "transfer-encoding": "chunked",
-           "x-authenticated": "{"applicationId":"acdc41ce-acdc-41ce-acdc-41ceacdc41ce","scope":"user,oauth","userId":"2"}",
-         },
-         "status": 201,
-       }
-      `);
-      expect({
-        checkApplicationCalls: checkApplication.mock.calls,
+        readClientGrantsCalls: readClientGrants.mock.calls,
         authenticationCheckCalls: authentication.check.mock.calls,
         oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
         oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
         oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
         oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
-        oAuth2CodeCheckCalls: oAuth2Code.check.mock.calls,
-        oAuth2CodeCreateCalls: oAuth2Code.create.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
         oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
-      }).toMatchSnapshot();
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "auth_user_id",
+             },
+           ],
+         ],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_root_client_id",
+           ],
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": "",
+           "headers": {
+             "connection": undefined,
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "location": "http://redirect.example.com/yolo?a_param=a_value#client_id=the_client_id&scope=user&state=xyz&access_token=an_access_token&token_type=bearer&expires_in=86400",
+             "server": undefined,
+             "transaction-id": "11",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_root_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 201,
+         },
+       }
+      `);
     });
   });
 });

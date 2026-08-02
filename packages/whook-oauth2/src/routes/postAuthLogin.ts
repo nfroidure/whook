@@ -1,12 +1,17 @@
 import { autoService, location } from 'knifecycle';
-import { YHTTPError } from 'yhttperror';
-import initPostOauth2Token from './postOAuth2Token.js';
-import { AUTH_API_PREFIX } from '../services/authCookies.js';
-import { type WhookRouteDefinition } from '@whook/whook';
 import {
-  type AuthCookiesService,
-  type AuthHandlersConfig,
-} from '../services/authCookies.js';
+  type WhookOAuth2ReadClientGrantsService,
+  type WhookOAuth2Options,
+} from '../services/oAuth2Granters.js';
+import { YHTTPError } from 'yhttperror';
+import initPostOAuth2Token from './postOAuth2Token.js';
+import { AUTH_API_PREFIX } from '../services/authCookies.js';
+import { refersTo, type WhookRouteDefinition } from '@whook/whook';
+import { type WhookAuthCookiesService } from '../services/authCookies.js';
+import { scopeSchema } from '../libs/schemas.js';
+import { PASSWORD_GRANT_TYPE } from '../services/oAuth2PasswordGranter.js';
+
+export { scopeSchema };
 
 export const definition = {
   method: 'post',
@@ -29,7 +34,7 @@ export const definition = {
             properties: {
               username: { type: 'string' },
               password: { type: 'string' },
-              scope: { type: 'string' },
+              scope: refersTo(scopeSchema),
               remember: { type: 'boolean' },
             },
           },
@@ -46,7 +51,7 @@ export const definition = {
               properties: {
                 access_token: { type: 'string' },
                 expiration_date: { type: 'string' },
-                expires_in: { type: 'string' },
+                expires_in: { type: 'number' },
                 token_type: { type: 'string' },
               },
             },
@@ -58,12 +63,15 @@ export const definition = {
 } as const satisfies WhookRouteDefinition;
 
 async function initPostAuthLogin({
-  ROOT_AUTHENTICATION_DATA,
+  OAUTH2,
+  readClientGrants,
   authCookies,
   postOAuth2Token,
-}: AuthHandlersConfig & {
-  authCookies: Pick<AuthCookiesService, 'build'>;
-  postOAuth2Token: Awaited<ReturnType<typeof initPostOauth2Token>>;
+}: {
+  OAUTH2: WhookOAuth2Options;
+  readClientGrants: WhookOAuth2ReadClientGrantsService;
+  authCookies: Pick<WhookAuthCookiesService, 'build'>;
+  postOAuth2Token: Awaited<ReturnType<typeof initPostOAuth2Token>>;
 }) {
   return async ({
     body,
@@ -75,15 +83,17 @@ async function initPostAuthLogin({
       remember: boolean;
     };
   }) => {
+    const { authenticationData } = await readClientGrants(OAUTH2.rootClientId);
+
     try {
       const response = await postOAuth2Token({
         body: {
-          grant_type: 'password',
+          grant_type: PASSWORD_GRANT_TYPE,
           scope: body.scope,
           username: body.username,
           password: body.password,
         },
-        authenticationData: ROOT_AUTHENTICATION_DATA,
+        authenticationData,
       });
 
       return {

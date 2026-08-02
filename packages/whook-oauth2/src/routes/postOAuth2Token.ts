@@ -1,5 +1,4 @@
 import { autoService, location } from 'knifecycle';
-import { camelCaseObjectProperties } from './getOAuth2Authorize.js';
 import { YError, printStackTrace } from 'yerror';
 import { type LogService, type TimeService } from 'common-services';
 import {
@@ -9,122 +8,43 @@ import {
   type WhookRouteDefinition,
 } from '@whook/whook';
 import {
-  type OAuth2GranterService,
-  type OAuth2RefreshTokenService,
-  type OAuth2AccessTokenService,
+  type WhookOAuth2GranterDefinitions,
+  type WhookOAuth2GranterService,
+  type WhookOAuth2Options,
 } from '../services/oAuth2Granters.js';
 import { type WhookAuthenticationData } from '@whook/authorization';
+import {
+  filterScopes,
+  parseOAuth2Scope,
+  stringifyScopes,
+} from '../libs/scopes.js';
+import { type WhookOAuth2AccessTokenService } from '../services/oAuth2ImplicitGranter.js';
+import {
+  refreshTokenRequestBodySchema,
+  type WhookOAuth2RefreshTokenService,
+} from '../services/oAuth2RefreshTokenGranter.js';
+import {
+  authorizationCodeTokenRequestBodySchema,
+  codeVerifierSchema,
+} from '../services/oAuth2AuthorizationCodeGranter.js';
+import { passwordTokenRequestBodySchema } from '../services/oAuth2PasswordGranter.js';
+import { clientCredentialsTokenRequestBodySchema } from '../services/oAuth2ClientCredentialsGranter.js';
+import { scopeSchema } from '../libs/schemas.js';
+import { camelCaseObjectProperties } from '../libs/utils.js';
+
+export {
+  passwordTokenRequestBodySchema,
+  refreshTokenRequestBodySchema,
+  clientCredentialsTokenRequestBodySchema,
+  authorizationCodeTokenRequestBodySchema,
+  codeVerifierSchema,
+  scopeSchema,
+};
 
 /* Architecture Note #2: OAuth2 acknowledge
 This endpoint is to be used by the authentication server page
- to acknowlege that the user accepted the client request.
+ to acknowledge that the user accepted the client request.
 */
-export const codeVerifierSchema = {
-  name: 'CodeVerifier',
-  schema: {
-    type: 'string',
-    minLength: 43,
-    maxLength: 128,
-    pattern: '^[A-Za-z0-9._~-]+$',
-  },
-} as const satisfies WhookAPISchemaDefinition;
-
-export const authorizationCodeTokenRequestBodySchema = {
-  name: 'AuthorizationCodeRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Authorization code grant, see https://tools.ietf.org/html/rfc6749#section-4.1',
-    required: ['grant_type'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        enum: ['authorization_code'],
-      },
-      code: {
-        type: 'string',
-      },
-      client_id: {
-        type: 'string',
-      },
-      redirect_uri: {
-        type: 'string',
-        pattern: '^https?://',
-        format: 'uri',
-      },
-      code_verifier: refersTo(codeVerifierSchema),
-    },
-  },
-} as const satisfies WhookAPISchemaDefinition;
-
-export const passwordTokenRequestBodySchema = {
-  name: 'PasswordRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Resource owner password credentials grant, see https://tools.ietf.org/html/rfc6749#section-4.3',
-    required: ['grant_type', 'username', 'password'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        enum: ['password'],
-      },
-      username: {
-        type: 'string',
-      },
-      password: {
-        type: 'string',
-      },
-      scope: {
-        type: 'string',
-        description: 'See https://tools.ietf.org/html/rfc6749#section-3.3',
-      },
-    },
-  },
-} as const satisfies WhookAPISchemaDefinition;
-
-export const clientCredentialsTokenRequestBodySchema = {
-  name: 'ClientCredentialsRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Client credentials grant, see https://tools.ietf.org/html/rfc6749#section-4.4',
-    required: ['grant_type'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        enum: ['client_credentials'],
-      },
-      scope: {
-        type: 'string',
-        description: 'See https://tools.ietf.org/html/rfc6749#section-3.3',
-      },
-    },
-  },
-} as const satisfies WhookAPISchemaDefinition;
-
-export const refreshTokenRequestBodySchema = {
-  name: 'RefreshTokenRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Token refresh grant type, see https://tools.ietf.org/html/rfc6749#section-6 .',
-    required: ['grant_type', 'refresh_token'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        enum: ['refresh_token'],
-      },
-      refresh_token: {
-        type: 'string',
-      },
-      scope: {
-        type: 'string',
-        description: 'See https://tools.ietf.org/html/rfc6749#section-3.3',
-      },
-    },
-  },
-} as const satisfies WhookAPISchemaDefinition;
 
 export const tokenBodySchema = {
   name: 'TokenRequestBody',
@@ -179,11 +99,24 @@ export const definition = {
                   description: 'The lifetime in seconds of the access token',
                   type: 'number',
                 },
+                expiration_date: {
+                  type: 'string',
+                  format: 'date-time',
+                },
                 refresh_token: {
                   description:
                     'See https://tools.ietf.org/html/rfc6749#section-6',
                   type: 'string',
                 },
+                refresh_token_expires_in: {
+                  description: 'The lifetime in seconds of the refresh token',
+                  type: 'number',
+                },
+                refresh_token_expiration_date: {
+                  type: 'string',
+                  format: 'date-time',
+                },
+                scope: refersTo(scopeSchema),
               },
             },
           },
@@ -221,50 +154,65 @@ export const definition = {
 } as const satisfies WhookRouteDefinition;
 
 async function initPostOAuth2Token({
+  OAUTH2,
   oAuth2Granters,
   oAuth2AccessToken,
   oAuth2RefreshToken,
   time = Date.now.bind(Date),
   log = noop,
 }: {
-  oAuth2Granters: OAuth2GranterService[];
-  oAuth2AccessToken: OAuth2AccessTokenService;
-  oAuth2RefreshToken: OAuth2RefreshTokenService;
+  OAUTH2: WhookOAuth2Options;
+  oAuth2Granters: WhookOAuth2GranterService<WhookOAuth2GranterDefinitions>[];
+  oAuth2AccessToken: WhookOAuth2AccessTokenService;
+  oAuth2RefreshToken: WhookOAuth2RefreshTokenService;
   log: LogService;
   time: TimeService;
 }) {
   return async ({
-    body: { grant_type: grantType, ...grantParameters },
-    authenticationData,
+    body: { grant_type: grantType, scope: demandedScope, ...grantParameters },
+    authenticationData: optionalAuthenticationData,
   }: {
     body: {
       grant_type: string;
       [name: string]: unknown;
     };
-    authenticationData: WhookAuthenticationData;
+    authenticationData?: WhookAuthenticationData;
   }) => {
     try {
       const granter = oAuth2Granters.find(
-        (granter) =>
-          granter.authenticator &&
-          granter.authenticator.grantType === grantType,
+        (granter) => granter.grantType && granter.grantType === grantType,
       );
 
-      if (!granter || !granter.authenticator) {
-        throw new YError('E_UNKNOWN_AUTHENTICATOR_TYPE', [grantType]);
+      if (!granter || !granter.authenticate) {
+        throw new YError('E_OAUTH2_UNKNOWN_GRANT_TYPE', [grantType]);
       }
 
-      const newAuthenticationData = await granter.authenticator.authenticate(
-        camelCaseObjectProperties(grantParameters),
-        authenticationData,
+      const newAuthenticationData = await granter.authenticate(
+        {
+          ...camelCaseObjectProperties(grantParameters),
+          demandedScopes:
+            typeof demandedScope === 'string'
+              ? filterScopes(
+                  parseOAuth2Scope(demandedScope),
+                  OAUTH2.allowedScopes,
+                  !!OAUTH2.strictScopesChecks,
+                )
+              : [],
+        },
+        optionalAuthenticationData,
       );
 
       const [
         { token: accessToken, expiresAt: accessTokenExpiresAt },
         { token: refreshToken, expiresAt: refreshTokenExpiresAt },
       ] = await Promise.all([
-        oAuth2AccessToken.create(authenticationData, newAuthenticationData),
-        oAuth2RefreshToken.create(authenticationData, newAuthenticationData),
+        oAuth2AccessToken.create(newAuthenticationData),
+        granter.issuesRefreshToken
+          ? oAuth2RefreshToken.create(newAuthenticationData)
+          : Promise.resolve({
+              token: undefined,
+              expiresAt: undefined,
+            }),
       ]);
       const currentTime = time();
 
@@ -276,20 +224,25 @@ async function initPostOAuth2Token({
           token_type: 'bearer',
           expires_in: Math.ceil((accessTokenExpiresAt - currentTime) / 1000),
           expiration_date: new Date(accessTokenExpiresAt).toISOString(),
-          refresh_token: refreshToken,
-          refresh_token_expires_in: Math.ceil(
-            (refreshTokenExpiresAt - currentTime) / 1000,
-          ),
-          refresh_token_expiration_date: new Date(
-            refreshTokenExpiresAt,
-          ).toISOString(),
+          ...(refreshToken
+            ? {
+                refresh_token: refreshToken,
+                refresh_token_expires_in: Math.ceil(
+                  (refreshTokenExpiresAt - currentTime) / 1000,
+                ),
+                refresh_token_expiration_date: new Date(
+                  refreshTokenExpiresAt,
+                ).toISOString(),
+              }
+            : {}),
+          scope: stringifyScopes(newAuthenticationData.scopes),
         },
       };
     } catch (err) {
       log('debug', '👫 - OAuth2 token issuing error', (err as YError).code);
       log('error-stack', printStackTrace(err));
 
-      throw YError.cast(err as Error, 'E_OAUTH2');
+      throw YError.cast(err as Error, 'E_OAUTH2_UNEXPECTED_ERROR');
     }
   };
 }

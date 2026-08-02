@@ -1,225 +1,131 @@
 import { type Dependencies, initializer, location } from 'knifecycle';
+import { type WhookErrorsDescriptors } from '@whook/whook';
 import {
-  DEFAULT_ERROR_URI,
-  DEFAULT_HELP_URI,
-  type WhookErrorsDescriptors,
-} from '@whook/whook';
-import { type WhookAuthenticationData } from '@whook/authorization';
+  type WhookAuthenticationScope,
+  type WhookAuthenticationData,
+  type WhookBaseAuthenticationData,
+} from '@whook/authorization';
 
-export interface OAuth2YErrorRegistry {
-  E_UNKNOWN_AUTHORIZER_TYPE: [responseType: string];
-  E_UNKNOWN_ACKNOWLEDGER_TYPE: [responseType: string];
-  E_APPLICATION_ID_MISMATCH: [
-    clientApplicationId: string,
-    authenticationApplicationId: string,
-  ];
-
-  /**
-   * Thrown when the refresh token is expired/invalid
-   */
-  E_BAD_REFRESH_TOKEN: [];
-
-  /**
-   * Thrown when application has no access allowed
-   */
-  E_ACCESS_DENIED: [clientId: string];
-
-  /**
-   * Thrown when the OAuth2 server had unexpected errors
-   */
-  E_OAUTH2: [];
-
-  /**
-   * Thrown when refresh_token cookie is absent and required
-   */
-  E_REFRESH_COOKIE: [cookie: string];
-
-  /**
-   * Thrown when server requires PKCE
-   */
-  E_PKCE_REQUIRED: [responseType: string];
-
-  /**
-   * Thrown when server does not support PKCE
-   */
-  E_PKCE_NOT_SUPPORTED: [responseType: string];
+export interface WhookOAuth2Types {
+  clientId: string;
 }
 
-export const OAUTH2_ERRORS_DESCRIPTORS: Record<
-  keyof OAuth2YErrorRegistry,
-  WhookErrorsDescriptors[string]
-> = {
-  E_UNKNOWN_AUTHORIZER_TYPE: {
-    code: 'unsupported_response_type',
-    status: 400,
-    description: `The type "$0" is not supported.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_APPLICATION_ID_MISMATCH: {
-    code: 'unauthorized_client',
-    status: 400,
-    description: `The clients ids "$0"/"$1" are inconsistent.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_BAD_REFRESH_TOKEN: {
-    code: 'invalid_request',
-    status: 400,
-    description: 'The refresh token is expired/invalid.',
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_UNKNOWN_ACKNOWLEDGER_TYPE: {
-    code: 'unsupported_response_type',
-    status: 400,
-    description: `Type "$0" not supported.`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_ACCESS_DENIED: {
-    code: 'access_denied',
-    status: 403,
-    description: 'The user denied access to your application (id: "$0").',
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_OAUTH2: {
-    code: 'server_error',
-    status: 500,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_REFRESH_COOKIE: {
-    code: 'invalid_request',
-    status: 400,
-    description: `Could not find any refresh_token value in the cookie header ($0).`,
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_PKCE_REQUIRED: {
-    code: 'invalid_request',
-    status: 400,
-    description: 'Code challenge required for this response type ($0)',
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-  E_PKCE_NOT_SUPPORTED: {
-    code: 'invalid_request',
-    status: 400,
-    description: 'Code challenge not supported for this response type ($0)',
-    uri: DEFAULT_ERROR_URI,
-    help: DEFAULT_HELP_URI,
-  },
-};
+export type WhookOAuth2ClientId = WhookOAuth2Types['clientId'];
 
-export interface OAuth2PasswordService<
-  USERNAME extends string = string,
-  PASSWORD extends string = string,
-> {
-  check: (
-    authenticationData: WhookAuthenticationData,
-    username: USERNAME,
-    password: PASSWORD,
-    demandedScope: WhookAuthenticationData['scope'],
-  ) => Promise<WhookAuthenticationData>;
+declare module '@whook/authorization' {
+  export interface WhookAuthenticationData extends WhookBaseAuthenticationData {
+    clientId: WhookOAuth2ClientId;
+  }
 }
 
-export interface OAuth2AccessTokenService<TOKEN extends string = string> {
-  create: (
-    authenticationData: WhookAuthenticationData,
-    tokenAuthenticationData: WhookAuthenticationData,
-    additionalParameters?: Record<string, unknown>,
-  ) => Promise<{
-    token: TOKEN;
-    expiresAt: number;
-  }>;
-  check: (
-    authenticationData: WhookAuthenticationData,
-    token: TOKEN,
-    scope?: WhookAuthenticationData['scope'],
-  ) => Promise<WhookAuthenticationData>;
-}
-
-export type OAuth2RefreshTokenService<TOKEN extends string = string> =
-  OAuth2AccessTokenService<TOKEN>;
-
-export type CheckApplicationService = (context: {
-  applicationId: string;
-  type: string;
-  scope: string;
-  redirectURI?: string;
-}) => Promise<{
-  applicationId: string;
-  type: string;
-  scope: string;
-  redirectURI: string;
-}>;
-
-export type OAuth2GranterAuthorize<P extends object> = (
-  context: {
-    clientId: WhookAuthenticationData['applicationId'];
-    redirectURI: string;
-    scope: WhookAuthenticationData['scope'];
-  },
-  authorizeParameters: P,
+/**
+ * A service that returns acknowledgments for a given client
+ */
+export type WhookOAuth2ReadClientGrantsService = (
+  clientId: WhookOAuth2ClientId,
 ) => Promise<{
-  applicationId: WhookAuthenticationData['applicationId'];
-  redirectURI: string;
-  scope: WhookAuthenticationData['scope'];
+  /** Grant types the client can be used with */
+  allowedGrantTypes: string[];
+  /** Scopes the client can delegate */
+  allowedScopes: WhookAuthenticationScope[];
+  /** Redirect URIS the client can be used with */
+  allowedRedirectURIS: string[];
+  /** Authentication data of the client */
+  authenticationData: WhookAuthenticationData;
+  /** Whether the client is public or private */
+  isPublicClient: boolean;
+  /** Whether the client can acknowledge for a user */
+  canAcknowledge?: boolean;
 }>;
 
-export type Oauth2GranterAuthenticate<P extends object> = (
-  authenticateParameters: P,
-  authenticationData: WhookAuthenticationData,
+/**
+ * A function handling the OAuth2 authorize step
+ */
+export type WhookOAuth2GranterAuthorize<T extends object> = (
+  authorizeParameters: {
+    clientId: WhookOAuth2ClientId;
+    demandedRedirectURI: string;
+    demandedScopes: WhookAuthenticationScope[];
+  },
+  additionalParameters: T,
+) => Promise<{
+  clientId: WhookOAuth2ClientId;
+  redirectURI: string;
+  scopes: WhookAuthenticationScope[];
+}>;
+
+/**
+ * A function handling the Whook specific acknowledge
+ * step allowing to build a front end over it (for users
+ * to actually authorize clients to act on their behalf)
+ */
+export type WhookOAuth2GranterAcknowledge<
+  T extends object,
+  U extends object,
+> = (
+  /** The acknowledging user authentication data */
+  userAuthenticationData: WhookAuthenticationData,
+  acknowledgeParameters: {
+    clientId: WhookOAuth2ClientId;
+    demandedRedirectURI: string;
+    demandedScopes: WhookAuthenticationScope[];
+  },
+  acknowledgeData: T,
+) => Promise<{
+  acknowledgedAuthenticationData: WhookAuthenticationData;
+  acknowledgedRedirectURI: string;
+  acknowledgedScopes: WhookAuthenticationScope[];
+  acknowledgedData: U;
+}>;
+
+/**
+ * A function handling the authenticate step
+ */
+export type WhookOAuth2GranterAuthenticate<T extends object> = (
+  authenticateParameters: T,
+  optionalAuthenticationData?: WhookAuthenticationData | undefined,
 ) => Promise<WhookAuthenticationData>;
 
-export type OAuth2GranterAcknowledge<
-  A extends object,
-  P extends object = Record<string, unknown>,
-> = (
-  authenticationData: WhookAuthenticationData,
-  acknowledgeParameters: {
-    clientId: WhookAuthenticationData['applicationId'];
-    redirectURI: string;
-    scope: WhookAuthenticationData['scope'];
-  },
-  additionalParameters: P,
-) => Promise<{
-  authenticationData: WhookAuthenticationData;
-  redirectURI: string;
-  acknowledgedData: A;
-}>;
+export interface WhookOAuth2GranterDefinitions {
+  grantType?: string;
+  responseType?: string;
+  authorizeParameters: Record<string, string>;
+  acknowledgeParameters: Record<string, unknown>;
+  acknowledgedData: Record<string, unknown>;
+  authenticateParameters: Record<string, unknown>;
+}
 
-export interface OAuth2GranterService<
-  T extends object = Record<string, unknown>,
-  U extends object = Record<string, unknown>,
-  V extends object = Record<string, unknown>,
-  W extends object = Record<string, unknown>,
+export interface WhookOAuth2GranterService<
+  T extends WhookOAuth2GranterDefinitions,
 > {
-  type: string;
-  authorizer?: {
-    responseType: string;
-    authorize: OAuth2GranterAuthorize<T>;
-  };
-  acknowledger?: {
-    acknowledgmentType: string;
-    acknowledge: OAuth2GranterAcknowledge<U, V>;
-  };
-  authenticator?: {
-    grantType: string;
-    authenticate: Oauth2GranterAuthenticate<W>;
-  };
+  grantType: T['grantType'];
+  responseType?: T['responseType'];
+  issuesRefreshToken: boolean;
+  authorize?: WhookOAuth2GranterAuthorize<T['authorizeParameters']>;
+  acknowledge?: WhookOAuth2GranterAcknowledge<
+    T['acknowledgeParameters'],
+    T['acknowledgedData']
+  >;
+  authenticate?: WhookOAuth2GranterAuthenticate<T['authenticateParameters']>;
 }
 
-export interface OAuth2Options {
+export interface WhookOAuth2Options {
+  /** Id of the root application */
+  rootClientId: WhookOAuth2ClientId;
+  /** Where client authenticate */
   authenticateURL: string;
+  /** The available scopes of the whole application */
+  allowedScopes: WhookAuthenticationScope[];
+  /** Whether the client scope should be used as the default scope */
   defaultToClientScope?: boolean;
+  /** Whether PKCE should be forced or not */
   forcePKCE?: boolean;
+  /** Whether scopes should not only be filtered but strictly checked */
+  strictScopesChecks?: boolean;
 }
 
-export interface OAuth2Config {
-  OAUTH2: OAuth2Options;
+export interface WhookOAuth2Config {
+  OAUTH2: WhookOAuth2Options;
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
 }
 
@@ -230,10 +136,10 @@ export default location(
       type: 'service',
       inject: [
         'oAuth2ClientCredentialsGranter',
-        'oAuth2CodeGranter',
+        'oAuth2AuthorizationCodeGranter',
         'oAuth2PasswordGranter',
         'oAuth2RefreshTokenGranter',
-        'oAuth2TokenGranter',
+        'oAuth2ImplicitGranter',
       ],
     },
     async (services: Dependencies) =>

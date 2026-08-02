@@ -8,12 +8,14 @@ import {
 
 export default location(autoService(initAuthentication), import.meta.url);
 
-export type AuthenticationDependencies = {
+export interface AuthenticationDependencies {
   jwtToken: JWTService<WhookAuthenticationData>;
-};
+}
 
 type FakePayload = WhookAuthenticationData;
-type BearerPayload = { hash: string };
+interface BearerPayload {
+  hash: string;
+}
 
 /* Architecture Note #4.1: authentication
 

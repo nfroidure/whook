@@ -11,6 +11,9 @@ import {
 import { type LogService } from 'common-services';
 import { type OpenAPI } from 'ya-open-api-types';
 import { collectScopesFromAPI } from '../libs/scopes.js';
+import { scopeTokensSchema } from '../libs/schemas.js';
+
+export { scopeTokensSchema };
 
 export const bearerMethodSchema = {
   name: 'OAuth2BearerMethod',
@@ -35,12 +38,7 @@ export const oAuth2ProtectedResourceMetadataSchema = {
         items: refersTo(httpsProtocolURISchema),
       },
       jwks_uri: refersTo(httpsProtocolURISchema),
-      scopes_supported: {
-        type: 'array',
-        items: {
-          type: 'string',
-        },
-      },
+      scopes_supported: refersTo(scopeTokensSchema),
       bearer_methods_supported: {
         type: 'array',
         items: refersTo(bearerMethodSchema),

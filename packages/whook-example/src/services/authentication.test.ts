@@ -40,9 +40,9 @@ describe('authentication', () => {
 
         const theToken = (
           await jwtToken.sign({
-            applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
             userId: 'acdc41ce-acdc-41ce-acdc-41ceacdc41ce',
-            scope: 'admin',
+            clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+            scopes: ['admin'],
           })
         ).token;
         const authentication = await initAuthentication({ jwtToken });
@@ -55,7 +55,20 @@ describe('authentication', () => {
 
         expect({
           result,
-        }).toMatchSnapshot();
+        }).toMatchInlineSnapshot(`
+         {
+           "result": {
+             "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
+             "exp": 396151200,
+             "iat": 396144000,
+             "nbf": 396144000,
+             "scopes": [
+               "admin",
+             ],
+             "userId": "acdc41ce-acdc-41ce-acdc-41ceacdc41ce",
+           },
+         }
+        `);
       });
 
       test('should fail with a bad token', async () => {
@@ -68,7 +81,15 @@ describe('authentication', () => {
           expect({
             errorCode: (err as YError).code,
             errorDebug: (err as YError).debug,
-          }).toMatchSnapshot();
+          }).toMatchInlineSnapshot(`
+           {
+             "errorCode": "E_BAD_BEARER_TOKEN",
+             "errorDebug": [
+               "bearer",
+               "lol",
+             ],
+           }
+          `);
         }
       });
     });
@@ -77,14 +98,24 @@ describe('authentication', () => {
       test('should work with fake data', async () => {
         const authentication = await initAuthentication({ jwtToken });
         const result = await authentication.check('fake', {
-          applicationId: '1',
-          userId: '1',
-          scope: 'user',
+          userId: 'user_id',
+          scopes: ['user'],
+          clientId: 'client_id',
         });
 
         expect({
           result,
-        }).toMatchSnapshot();
+        }).toMatchInlineSnapshot(`
+         {
+           "result": {
+             "clientId": "client_id",
+             "scopes": [
+               "user",
+             ],
+             "userId": "user_id",
+           },
+         }
+        `);
       });
     });
 
@@ -99,7 +130,14 @@ describe('authentication', () => {
           expect({
             errorCode: (err as YError).code,
             errorDebug: (err as YError).debug,
-          }).toMatchSnapshot();
+          }).toMatchInlineSnapshot(`
+           {
+             "errorCode": "E_UNEXPECTED_AUTH_TYPE",
+             "errorDebug": [
+               "yolo",
+             ],
+           }
+          `);
         }
       });
     });

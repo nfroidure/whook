@@ -27,7 +27,7 @@ export interface WhookAuthorizationYErrorRegistry {
    */
   E_AUTHORIZATION_MISCONFIGURATION: [
     mechanismType: string,
-    requiredScopes: string[],
+    requiredScopes: WhookAuthenticationScope[],
     operationId: string,
   ];
 
@@ -44,7 +44,10 @@ export interface WhookAuthorizationYErrorRegistry {
   /**
    * Thrown when the operation is not authorized for the authenticated client scope
    */
-  E_UNAUTHORIZED_SCOPES: [scope: string, requiredScopes: string[]];
+  E_UNAUTHORIZED_SCOPES: [
+    scopes: WhookAuthenticationScope[],
+    requiredScopes: WhookAuthenticationScope[],
+  ];
 
   /**
    * Thrown when the client used a mechanism that is not allowed
@@ -73,7 +76,7 @@ export const AUTHORIZATION_ERRORS_DESCRIPTORS: Record<
   E_UNAUTHORIZED_SCOPES: {
     code: 'unauthorized_client',
     description:
-      'Access refused to this resource (user scope: "$0", required scopes: "$1")',
+      'Access refused to this resource (user scopes: "$0", required scopes: "$1")',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -92,11 +95,17 @@ export const AUTHORIZATION_ERRORS_DESCRIPTORS: Record<
   },
 };
 
-export type WhookAuthenticationApplicationId = string;
-export type WhookAuthenticationScope = string;
+export interface WhookBaseAuthenticationTypes {
+  scopeToken: string;
+}
+
+// Needed for type override of implementers
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface WhookAuthenticationTypes extends WhookBaseAuthenticationTypes {}
+
+export type WhookAuthenticationScope = WhookAuthenticationTypes['scopeToken'];
 export interface WhookBaseAuthenticationData {
-  applicationId: WhookAuthenticationApplicationId;
-  scope: WhookAuthenticationScope;
+  scopes: WhookAuthenticationScope[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -268,7 +277,7 @@ async function handleWithAuthorization<A>(
       const authName = `${parsedAuthorization.type.toLowerCase()}Auth`;
       const requiredScopes = ((definition.operation.security || []).find(
         (security) => security[authName],
-      ) || { [authName]: [] })[authName];
+      ) || { [authName]: [] })[authName] as WhookAuthenticationScope[];
 
       // If security exists, we need at least one scope
       if (!(requiredScopes && requiredScopes.length)) {
@@ -293,11 +302,11 @@ async function handleWithAuthorization<A>(
       // Check scopes
       if (
         !requiredScopes.some((requiredScope) =>
-          authenticationData.scope.split(',').includes(requiredScope),
+          authenticationData.scopes.includes(requiredScope),
         )
       ) {
         throw new YHTTPError(403, 'E_UNAUTHORIZED_SCOPES', [
-          authenticationData.scope,
+          authenticationData.scopes,
           requiredScopes,
         ]);
       }

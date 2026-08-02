@@ -48,7 +48,7 @@ export interface WhookSchemaValidatorsOptions {
    */
   hashLength: number;
   /**
-   * Wether schemas will be built or not
+   * Whether schemas will be built or not
    */
   buildSchemas: boolean;
 }

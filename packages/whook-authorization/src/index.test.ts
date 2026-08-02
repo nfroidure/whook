@@ -192,9 +192,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
   describe('with authenticated but not restricted endpoints', () => {
     test('should work with bearer tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scope: 'user,admin',
+        scopes: ['user', 'admin'],
       } as WhookAuthenticationData);
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -243,8 +242,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
              {
                "authenticated": true,
                "authenticationData": {
-                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-                 "scope": "user,admin",
+                 "scopes": [
+                   "user",
+                   "admin",
+                 ],
                  "userId": 1,
                },
                "cookies": {},
@@ -289,7 +290,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
          ],
          "response": {
            "headers": {
-             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+             "X-Authenticated": "{"userId":1,"scopes":["user","admin"]}",
            },
            "status": 200,
          },
@@ -299,9 +300,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
     test('should work with Bearer tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scope: 'user,admin',
+        scopes: ['user', 'admin'],
       } as WhookAuthenticationData);
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -350,8 +350,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
              {
                "authenticated": true,
                "authenticationData": {
-                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-                 "scope": "user,admin",
+                 "scopes": [
+                   "user",
+                   "admin",
+                 ],
                  "userId": 1,
                },
                "cookies": {},
@@ -396,7 +398,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
          ],
          "response": {
            "headers": {
-             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+             "X-Authenticated": "{"userId":1,"scopes":["user","admin"]}",
            },
            "status": 200,
          },
@@ -406,9 +408,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
     test('should work with access tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scope: 'user,admin',
+        scopes: ['user', 'admin'],
       } as WhookAuthenticationData);
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -457,8 +458,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
              {
                "authenticated": true,
                "authenticationData": {
-                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-                 "scope": "user,admin",
+                 "scopes": [
+                   "user",
+                   "admin",
+                 ],
                  "userId": 1,
                },
                "cookies": {},
@@ -503,7 +506,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
          ],
          "response": {
            "headers": {
-             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+             "X-Authenticated": "{"userId":1,"scopes":["user","admin"]}",
            },
            "status": 200,
          },
@@ -513,9 +516,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
     test('should work with no authentication at all', async () => {
       authentication.check.mockResolvedValue({
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scope: 'user,admin',
+        scopes: ['user', 'admin'],
       } as WhookAuthenticationData);
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -607,9 +609,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
   describe('with authenticated and restricted endpoints', () => {
     test('should work with bearer tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scope: 'user,admin',
+        scopes: ['user', 'admin'],
       } as WhookAuthenticationData);
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -658,8 +659,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
              {
                "authenticated": true,
                "authenticationData": {
-                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-                 "scope": "user,admin",
+                 "scopes": [
+                   "user",
+                   "admin",
+                 ],
                  "userId": 1,
                },
                "cookies": {},
@@ -709,7 +712,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
          ],
          "response": {
            "headers": {
-             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+             "X-Authenticated": "{"userId":1,"scopes":["user","admin"]}",
            },
            "status": 200,
          },
@@ -719,9 +722,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
     test('should work with access tokens and good authentication check', async () => {
       authentication.check.mockResolvedValue({
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scope: 'user,admin',
+        scopes: ['user', 'admin'],
       } as WhookAuthenticationData);
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -770,8 +772,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
              {
                "authenticated": true,
                "authenticationData": {
-                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-                 "scope": "user,admin",
+                 "scopes": [
+                   "user",
+                   "admin",
+                 ],
                  "userId": 1,
                },
                "cookies": {},
@@ -821,7 +825,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
          ],
          "response": {
            "headers": {
-             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+             "X-Authenticated": "{"userId":1,"scopes":["user","admin"]}",
            },
            "status": 200,
          },
@@ -831,9 +835,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
     test('should work with basic authentication and good authentication check', async () => {
       authentication.check.mockResolvedValue({
-        applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
         userId: 1,
-        scope: 'user,admin',
+        scopes: ['user', 'admin'],
       } as WhookAuthenticationData);
 
       const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -885,8 +888,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
              {
                "authenticated": true,
                "authenticationData": {
-                 "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-                 "scope": "user,admin",
+                 "scopes": [
+                   "user",
+                   "admin",
+                 ],
                  "userId": 1,
                },
                "cookies": {},
@@ -936,7 +941,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
          ],
          "response": {
            "headers": {
-             "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+             "X-Authenticated": "{"userId":1,"scopes":["user","admin"]}",
            },
            "status": 200,
          },
@@ -947,9 +952,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
   test('should work with posted basic authentication and good authentication check', async () => {
     authentication.check.mockResolvedValue({
-      applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       userId: 1,
-      scope: 'user,admin',
+      scopes: ['user', 'admin'],
     } as WhookAuthenticationData);
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -1003,8 +1007,10 @@ describe('wrapRouteHandlerWithAuthorization', () => {
            {
              "authenticated": true,
              "authenticationData": {
-               "applicationId": "abbacaca-abba-caca-abba-cacaabbacaca",
-               "scope": "user,admin",
+               "scopes": [
+                 "user",
+                 "admin",
+               ],
                "userId": 1,
              },
              "body": {
@@ -1056,7 +1062,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
        ],
        "response": {
          "headers": {
-           "X-Authenticated": "{"applicationId":"abbacaca-abba-caca-abba-cacaabbacaca","userId":1,"scope":"user,admin"}",
+           "X-Authenticated": "{"userId":1,"scopes":["user","admin"]}",
          },
          "status": 200,
        },
@@ -1182,9 +1188,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
   test('should fail without right scopes', async () => {
     authentication.check.mockResolvedValue({
-      applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       userId: 1,
-      scope: '',
+      scopes: [],
     } as WhookAuthenticationData);
 
     const noopHandler = service(noopInitializerMock, 'getNoop');
@@ -1230,7 +1235,7 @@ describe('wrapRouteHandlerWithAuthorization', () => {
          ],
          "errorCode": "E_UNAUTHORIZED_SCOPES",
          "errorDebug": [
-           "",
+           [],
            [
              "user",
              "admin",
@@ -1257,9 +1262,8 @@ describe('wrapRouteHandlerWithAuthorization', () => {
 
   test('should fail with not allowed mechanisms', async () => {
     authentication.check.mockResolvedValue({
-      applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       userId: 1,
-      scope: '',
+      scopes: [],
     } as WhookAuthenticationData);
 
     const noopHandler = service(noopInitializerMock, 'getNoop');

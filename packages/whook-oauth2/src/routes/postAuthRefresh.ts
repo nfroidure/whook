@@ -1,16 +1,21 @@
 import { autoService, location } from 'knifecycle';
 import { YHTTPError } from 'yhttperror';
-import initPostOauth2Token from './postOAuth2Token.js';
+import initPostOAuth2Token from './postOAuth2Token.js';
 import { AUTH_API_PREFIX } from '../services/authCookies.js';
 import {
   refersTo,
   type WhookRouteDefinition,
   type WhookAPIParameterDefinition,
 } from '@whook/whook';
+import { type WhookAuthCookiesService } from '../services/authCookies.js';
 import {
-  type AuthCookiesService,
-  type AuthHandlersConfig,
-} from '../services/authCookies.js';
+  type WhookOAuth2ReadClientGrantsService,
+  type WhookOAuth2Options,
+} from '../services/oAuth2Granters.js';
+import { scopeSchema } from '../libs/schemas.js';
+import { REFRESH_TOKEN_GRANT_TYPE } from '../services/oAuth2RefreshTokenGranter.js';
+
+export { scopeSchema };
 
 export const authCookieHeaderParameter = {
   name: 'cookie',
@@ -44,7 +49,7 @@ export const definition = {
             type: 'object',
             required: [],
             properties: {
-              scope: { type: 'string' },
+              scope: refersTo(scopeSchema),
               remember: { type: 'boolean' },
             },
           },
@@ -61,7 +66,7 @@ export const definition = {
               properties: {
                 access_token: { type: 'string' },
                 expiration_date: { type: 'string' },
-                expires_in: { type: 'string' },
+                expires_in: { type: 'number' },
                 token_type: { type: 'string' },
               },
             },
@@ -75,12 +80,15 @@ export const definition = {
 export default location(autoService(initPostAuthRefresh), import.meta.url);
 
 async function initPostAuthRefresh({
-  ROOT_AUTHENTICATION_DATA,
+  OAUTH2,
   authCookies,
+  readClientGrants,
   postOAuth2Token,
-}: AuthHandlersConfig & {
-  authCookies: AuthCookiesService;
-  postOAuth2Token: Awaited<ReturnType<typeof initPostOauth2Token>>;
+}: {
+  OAUTH2: WhookOAuth2Options;
+  authCookies: WhookAuthCookiesService;
+  readClientGrants: WhookOAuth2ReadClientGrantsService;
+  postOAuth2Token: Awaited<ReturnType<typeof initPostOAuth2Token>>;
 }) {
   return async ({
     body,
@@ -98,16 +106,20 @@ async function initPostAuthRefresh({
 
     try {
       if (!parsedCookies.refresh_token) {
-        throw new YHTTPError(401, 'E_REFRESH_COOKIE', [cookie]);
+        throw new YHTTPError(401, 'E_AUTH_REFRESH_COOKIE', [cookie]);
       }
+
+      const { authenticationData } = await readClientGrants(
+        OAUTH2.rootClientId,
+      );
 
       const response = await postOAuth2Token({
         body: {
-          grant_type: 'refresh_token',
+          grant_type: REFRESH_TOKEN_GRANT_TYPE,
           scope: body.scope,
           refresh_token: parsedCookies.refresh_token,
         },
-        authenticationData: ROOT_AUTHENTICATION_DATA,
+        authenticationData,
       });
 
       return {

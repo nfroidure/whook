@@ -3,37 +3,36 @@ import { name, autoService, location } from 'knifecycle';
 import { BEARER as BEARER_MECHANISM } from 'http-auth-utils';
 import { type AppEnvVars } from 'application-services';
 import { type LogService } from 'common-services';
+import {
+  type WhookAuthenticationData,
+  type WhookAuthenticationScope,
+} from '@whook/authorization';
+import { identity } from '@whook/whook';
 
 export const FAKE_MECHANISM = {
   type: 'Fake',
-  parseAuthorizationRest: (
-    rest: string,
-  ): {
-    scope: string;
-    applicationId: string;
-    userId: string;
-  } => {
-    let scope: string | undefined;
-    let applicationId = '';
+  parseAuthorizationRest: (rest: string): WhookAuthenticationData => {
+    let scopes: WhookAuthenticationScope[] = [];
+    let clientId = '';
     let userId = '';
 
     rest.replace(
       /^([^|]*)\|([^|]+)\|([^|]+)$/,
-      (_, _scope, _applicationId, _userId) => {
-        scope = _scope;
-        applicationId = _applicationId;
+      (_, _scope, _clientId, _userId) => {
+        scopes = _scope ? _scope.split(' ').filter(identity) : [];
+        clientId = _clientId;
         userId = _userId;
         return '';
       },
     );
 
-    if ('undefined' === typeof scope) {
+    if (scopes?.length === 0) {
       throw new YHTTPError(400, 'E_INVALID_FAKE_TOKEN', [rest]);
     }
 
     return {
-      applicationId,
-      scope,
+      clientId,
+      scopes,
       userId,
     };
   },

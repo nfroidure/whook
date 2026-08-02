@@ -14,25 +14,25 @@ type DirectiveTransformer = (
   directiveName: string,
 ) => GraphQLSchema;
 
-export type WhookGraphQLFragmentService = {
+export interface WhookGraphQLFragmentService {
   typeDefs: DocumentNode | DocumentNode[];
   resolvers?: IResolvers;
   schemaDirectives?: Record<string, DirectiveTransformer>;
-};
+}
 
-export type BaseWhookGraphQLContext = {
+export interface BaseWhookGraphQLContext {
   definition: WhookRouteDefinition;
   requestContext: Record<string, unknown>;
-};
+}
 
 export type WhookGraphQLContext = BaseWhookGraphQLContext;
 
-export type WhookGraphQLEnv = {
+export interface WhookGraphQLEnv {
   DEV_MODE?: string;
-};
-export type WhookGraphQLConfig = {
+}
+export interface WhookGraphQLConfig {
   GRAPHQL_SERVER_OPTIONS?: Partial<ApolloServerOptions<WhookGraphQLContext>>;
-};
+}
 export type WhookGraphQLService = ApolloServer<WhookGraphQLContext>;
 
 export type WhookGraphQLDependencies = WhookGraphQLConfig & {

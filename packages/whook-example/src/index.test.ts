@@ -2030,6 +2030,7 @@ describe('runProcess', () => {
          "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
          "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
          "access-control-allow-origin": "*",
+         "access-control-expose-headers": "Location",
          "connection": undefined,
          "content-type": "application/json",
          "date": undefined,
@@ -2058,9 +2059,9 @@ describe('runProcess', () => {
         authorization: `Bearer ${
           (
             await jwtToken.sign({
-              scope: 'admin',
+              scopes: ['admin'],
               userId: '1',
-              applicationId: '1',
+              clientId: '1',
             })
           ).token
         }`,
@@ -2100,6 +2101,7 @@ describe('runProcess', () => {
          "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
          "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
          "access-control-allow-origin": "*",
+         "access-control-expose-headers": "Location",
          "connection": undefined,
          "content-type": "application/json",
          "date": undefined,
@@ -2110,7 +2112,7 @@ describe('runProcess', () => {
          "transaction-id": "1",
          "transfer-encoding": "chunked",
          "vary": "origin",
-         "x-authenticated": "{"scope":"admin","userId":"1","applicationId":"1","iat":1390694400,"exp":1390867200,"nbf":1390694400}",
+         "x-authenticated": "{"scopes":["admin"],"userId":"1","clientId":"1","iat":1390694400,"exp":1390867200,"nbf":1390694400}",
        },
        "logErrorCalls": [],
        "status": 200,
@@ -2170,6 +2172,7 @@ describe('runProcess', () => {
          "access-control-allow-headers": "Accept,Accept-Encoding,Accept-Language,Referrer,Content-Type,Content-Encoding,Authorization,Keep-Alive,User-Agent",
          "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
          "access-control-allow-origin": "*",
+         "access-control-expose-headers": "Location",
          "cache-control": "private",
          "connection": undefined,
          "content-type": "text/plain",

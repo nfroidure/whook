@@ -21,7 +21,7 @@ export const VERSIONS_ERRORS_DESCRIPTORS = {
   E_DEPRECATED_VERSION: {
     code: 'bad_request',
     description:
-      'The version header "$0" value ("$1") does not match the rule "$3"',
+      'The version header ("$0") value ("$1") does not match the rule ("$2")',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -32,11 +32,7 @@ declare module 'yerror' {
     /**
      * Thrown when the client version is deprecated
      */
-    E_DEPRECATED_VERSION: [
-      headerName: string,
-      requiredScopes: string,
-      operationId: string,
-    ];
+    E_DEPRECATED_VERSION: [headerName: string, value: string, rule: string];
   }
 }
 
