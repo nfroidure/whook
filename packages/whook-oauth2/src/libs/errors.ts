@@ -138,6 +138,26 @@ export interface OAuth2YErrorRegistry {
    * Thrown when the redirect URI is not valid
    */
   E_OAUTH2_BAD_REDIRECT_URI: [requestedURI: string, allowedURIS: string[]];
+
+  /**
+   * Thrown when an authorization request object is malformed
+   */
+  E_OAUTH2_BAD_REQUEST_OBJECT: [];
+
+  /**
+   * Thrown when request URI support is used but unavailable
+   */
+  E_OAUTH2_UNSUPPORTED_REQUEST_URI: [];
+
+  /**
+   * Thrown when request object parameters mismatch query ones
+   */
+  E_OAUTH2_REQUEST_PARAMETERS_MISMATCH: [parameterName: string];
+
+  /**
+   * Thrown when authorization parameters are missing
+   */
+  E_OAUTH2_REQUEST_PARAMETER_REQUIRED: [parameterName: string];
 }
 
 export const OAUTH2_ERRORS_DESCRIPTORS: Record<
@@ -319,6 +339,36 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     code: 'invalid_request',
     status: 400,
     description: 'The client does not accept that redirect URI.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_BAD_REQUEST_OBJECT: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'The request object is malformed.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_UNSUPPORTED_REQUEST_URI: {
+    code: 'request_uri_not_supported',
+    status: 400,
+    description: 'The request URI parameter is not supported.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_REQUEST_PARAMETERS_MISMATCH: {
+    code: 'invalid_request',
+    status: 400,
+    description:
+      'The request object parameter "$0" does not match the query parameter.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_REQUEST_PARAMETER_REQUIRED: {
+    code: 'invalid_request',
+    status: 400,
+    description:
+      'The request object or query is missing the "$0" parameter.',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },

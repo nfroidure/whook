@@ -32,6 +32,7 @@ import {
   getOAuth2AuthorizeDefinition,
   getOAuth2AuthorizeResponseTypeParameter,
   getOAuth2AuthorizeClientIdParameter,
+  getOAuth2AuthorizeRequestParameter,
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
@@ -130,6 +131,7 @@ describe('OAuth2 server', () => {
       parameters: [
         getOAuth2AuthorizeResponseTypeParameter,
         getOAuth2AuthorizeClientIdParameter,
+        getOAuth2AuthorizeRequestParameter,
         getOAuth2AuthorizeRedirectURIParameter,
         getOAuth2AuthorizeScopeParameter,
         getOAuth2AuthorizeStateParameter,

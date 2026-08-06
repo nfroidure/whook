@@ -68,6 +68,14 @@ describe('getOAuth2Authorize', () => {
     ].forEach((mock) => mock.mockReset());
   });
 
+  function createRequestObject(parameters: Record<string, string>): string {
+    return [
+      Buffer.from(JSON.stringify({ alg: 'none' })).toString('base64url'),
+      Buffer.from(JSON.stringify(parameters)).toString('base64url'),
+      '',
+    ].join('.');
+  }
+
   test('should redirect', async () => {
     [
       codeGranter.acknowledge,
@@ -261,6 +269,188 @@ describe('getOAuth2Authorize', () => {
        "tokenGranterAcknowledgerAcknowledgeCalls": [],
        "tokenGranterAuthorizerAuthorizeCalls": [],
      }
+    `);
+  });
+
+  test('should parse request object parameters', async () => {
+    codeGranter.authorize.mockResolvedValueOnce({
+      clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+      redirectURI: 'http://lol',
+      scopes: ['user'],
+    });
+
+    const getOAuth2Authorize = await initGetOAuth2Authorize({
+      OAUTH2,
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      log,
+    });
+    const response = await getOAuth2Authorize({
+      query: {
+        request: createRequestObject({
+          response_type: 'code',
+          client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          redirect_uri: 'https://www.example.com',
+          scope: 'user',
+          state: 'bancal',
+          code_challenge:
+            'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          code_challenge_method: 'plain',
+          custom_parameter: 'custom_value',
+        }),
+      },
+    });
+
+    expect({
+      response,
+      codeGranterAuthorizerAuthorizeCalls: codeGranter.authorize.mock.calls,
+      tokenGranterAuthorizerAuthorizeCalls: tokenGranter.authorize.mock.calls,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+    }).toMatchInlineSnapshot(`
+      {
+        "codeGranterAuthorizerAuthorizeCalls": [
+          [
+            {
+              "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
+              "demandedRedirectURI": "https://www.example.com",
+              "demandedScopes": [
+                "user",
+              ],
+            },
+            {
+              "customParameter": "custom_value",
+            },
+          ],
+        ],
+        "logCalls": [],
+        "response": {
+          "headers": {
+            "location": "https://auth.example.com/sign_in?type=code&redirect_uri=http%3A%2F%2Flol&scope=user&client_id=abbacaca-abba-caca-abba-cacaabbacaca&code_challenge=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&code_challenge_method=plain&state=bancal",
+          },
+          "status": 302,
+        },
+        "tokenGranterAuthorizerAuthorizeCalls": [],
+      }
+    `);
+  });
+
+  test('should reject request object with mismatching query values', async () => {
+    const getOAuth2Authorize = await initGetOAuth2Authorize({
+      OAUTH2,
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      log,
+    });
+    const response = await getOAuth2Authorize({
+      query: {
+        response_type: 'token',
+        client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        redirect_uri: 'https://www.example.com',
+        scope: 'user',
+        state: 'bancal',
+        request: createRequestObject({
+          response_type: 'code',
+          client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          redirect_uri: 'https://www.example.com',
+          scope: 'user',
+          state: 'bancal',
+        }),
+      },
+    });
+
+    expect({
+      response,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+    }).toMatchInlineSnapshot(`
+      {
+        "logCalls": [
+          [
+            "debug",
+            "👫 - OAuth2 authorize error.",
+          ],
+        ],
+        "response": {
+          "headers": {
+            "location": "https://www.example.com/?error=invalid_request&error_description=The+request+object+parameter+%22response_type%22+does+not+match+the+query+parameter.&state=bancal",
+          },
+          "status": 302,
+        },
+      }
+    `);
+  });
+
+  test('should reject malformed request object', async () => {
+    const getOAuth2Authorize = await initGetOAuth2Authorize({
+      OAUTH2,
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      log,
+    });
+    const response = await getOAuth2Authorize({
+      query: {
+        redirect_uri: 'https://www.example.com',
+        state: 'bancal',
+        request: 'bad-value',
+      },
+    });
+
+    expect({
+      response,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+    }).toMatchInlineSnapshot(`
+      {
+        "logCalls": [
+          [
+            "debug",
+            "👫 - OAuth2 authorize error.",
+          ],
+        ],
+        "response": {
+          "headers": {
+            "location": "https://www.example.com/?error=invalid_request&error_description=The+request+object+is+malformed.&state=bancal",
+          },
+          "status": 302,
+        },
+      }
+    `);
+  });
+
+  test('should reject request URI parameters', async () => {
+    const getOAuth2Authorize = await initGetOAuth2Authorize({
+      OAUTH2,
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      log,
+    });
+    const response = await getOAuth2Authorize({
+      query: {
+        response_type: 'code',
+        client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        redirect_uri: 'https://www.example.com',
+        scope: 'user',
+        state: 'bancal',
+        request_uri: 'https://client.example.com/requests/123',
+      },
+    });
+
+    expect({
+      response,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+    }).toMatchInlineSnapshot(`
+      {
+        "logCalls": [
+          [
+            "debug",
+            "👫 - OAuth2 authorize error.",
+          ],
+        ],
+        "response": {
+          "headers": {
+            "location": "https://www.example.com/?error=request_uri_not_supported&error_description=The+request+URI+parameter+is+not+supported.&state=bancal",
+          },
+          "status": 302,
+        },
+      }
     `);
   });
 });

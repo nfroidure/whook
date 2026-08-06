@@ -136,6 +136,8 @@ describe('getOAuth2WellKnown', () => {
              "code",
              "token",
            ],
+           "request_parameter_supported": true,
+           "request_uri_parameter_supported": false,
            "scopes_supported": [
              "user",
              "admin",

@@ -328,6 +328,8 @@ async function initGetOAuth2WellKnownMetadata({
       ),
     ],
     scopes_supported: collectScopesFromAPI(API),
+    request_parameter_supported: true,
+    request_uri_parameter_supported: false,
   };
 
   return async () => {
