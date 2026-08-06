@@ -70,9 +70,8 @@ async function initAuthentication({
           // property containing an array of the actual
           // scopes the authentication check resolved to
           return {
-            applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
             userId: 1,
-            scope: 'admin',
+            scopes: ['admin'],
           };
         }
         throw new YError('E_BAD_BEARER_TOKEN', [type, data.hash]);

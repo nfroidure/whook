@@ -70,6 +70,7 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
       'Keep-Alive',
       'User-Agent',
     ].join(','),
+    'Access-Control-Expose-Headers': ['Location'].join(','),
   },
   SWAGGER_UI_OPTIONS: {
     ...DEFAULT_SWAGGER_UI_OPTIONS,

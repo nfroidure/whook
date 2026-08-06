@@ -1,23 +1,35 @@
 import { autoService, location } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
-  codeChallengeMethodSchema,
-  codeChallengeSchema,
-  setURLError,
-} from './getOAuth2Authorize.js';
-import {
   type WhookRouteDefinition,
   type WhookErrorsDescriptors,
   refersTo,
 } from '@whook/whook';
 import {
-  type CheckApplicationService,
-  type OAuth2GranterService,
+  type WhookOAuth2Options,
+  type WhookOAuth2ReadClientGrantsService,
+  type WhookOAuth2GranterService,
+  type WhookOAuth2GranterDefinitions,
+  type WhookOAuth2ClientId,
 } from '../services/oAuth2Granters.js';
 import { type LogService } from 'common-services';
 import { type WhookAuthenticationData } from '@whook/authorization';
+import {
+  filterScopes,
+  parseOAuth2Scope,
+  stringifyScopes,
+} from '../libs/scopes.js';
+import { scopeSchema } from '../libs/schemas.js';
+import {
+  codeChallengeMethodSchema,
+  codeChallengeSchema,
+} from '../services/oAuth2AuthorizationCodeGranter.js';
+import { addParamsToURL, buildParamsFromError } from '../libs/redirectURI.js';
+
+export { scopeSchema, codeChallengeMethodSchema, codeChallengeSchema };
 
 /* Architecture Note #2: OAuth2 acknowledge
+
 This endpoint is to be used by the authentication SSR frontend
  to acknowledge that the user accepted the client request in it.
 */
@@ -59,18 +71,14 @@ export const definition = {
                 pattern: '^https?://',
                 format: 'uri',
               },
-              scope: {
-                type: 'string',
-                description:
-                  'See https://tools.ietf.org/html/rfc6749#section-3.3',
-              },
+              scope: refersTo(scopeSchema),
               state: {
                 type: 'string',
               },
               acknowledged: {
                 type: 'boolean',
                 description:
-                  'Wether the user acknowledged the delegation or not.',
+                  'Whether the user acknowledged the delegation or not.',
               },
               codeChallenge: refersTo(codeChallengeSchema),
               codeChallengeMethod: refersTo(codeChallengeMethodSchema),
@@ -111,19 +119,16 @@ export const definition = {
 
 export interface HandlerDependencies {
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
-  oAuth2Granters: OAuth2GranterService<
-    Record<string, unknown>,
-    Record<string, unknown>,
-    Record<string, unknown>
-  >[];
-  checkApplication: CheckApplicationService;
+  OAUTH2: WhookOAuth2Options;
+  oAuth2Granters: WhookOAuth2GranterService<WhookOAuth2GranterDefinitions>[];
+  readClientGrants: WhookOAuth2ReadClientGrantsService;
   log: LogService;
 }
 interface HandlerParameters {
   authenticationData: WhookAuthenticationData;
   body: {
     responseType: string;
-    clientId: string;
+    clientId: WhookOAuth2ClientId;
     redirectURI: string;
     scope: string;
     state: string;
@@ -143,80 +148,107 @@ export default location(
 
 async function initPostOAuth2Acknowledge({
   ERRORS_DESCRIPTORS,
+  OAUTH2,
   oAuth2Granters,
-  checkApplication,
+  readClientGrants,
   log,
 }: HandlerDependencies) {
   return async ({
-    authenticationData: baseAuthenticationData,
+    authenticationData: userAuthenticationData,
     body: {
       responseType,
       clientId,
-      redirectURI: baseRedirectURI,
+      redirectURI: demandedRedirectURI,
       scope: demandedScope,
       state,
       acknowledged = false,
       ...additionalProperties
     },
   }: HandlerParameters) => {
-    if (!baseAuthenticationData) {
+    if (!userAuthenticationData) {
       throw new YError('E_UNAUTHORIZED');
     }
 
-    // Here we check the applicationId has the right to authenticate a user
-    // with the special type 'root'
-    await checkApplication({
-      applicationId: baseAuthenticationData.applicationId,
-      type: 'root',
-      scope: '',
-    });
+    const acknowledgeClientGrants = await readClientGrants(
+      userAuthenticationData.clientId,
+    );
+
+    if (!acknowledgeClientGrants.canAcknowledge) {
+      throw new YError('E_UNAUTHORIZED');
+    }
 
     let url: URL;
 
     try {
       if (!acknowledged) {
-        throw new YError('E_ACCESS_DENIED', [clientId]);
+        throw new YError('E_OAUTH2_ACCESS_DENIED', [clientId]);
       }
 
       const granter = oAuth2Granters.find(
-        (granter) =>
-          granter.acknowledger &&
-          granter.acknowledger.acknowledgmentType === responseType,
+        (granter) => granter.responseType === responseType,
       );
 
-      if (!granter || !granter.acknowledger) {
-        throw new YError('E_UNKNOWN_ACKNOWLEDGER_TYPE', [responseType]);
+      if (!granter?.acknowledge) {
+        throw new YError('E_OAUTH2_UNKNOWN_ACKNOWLEDGER_TYPE', [responseType]);
       }
 
-      const { authenticationData, acknowledgedData, redirectURI } =
-        await granter.acknowledger.acknowledge(
-          baseAuthenticationData,
-          {
-            clientId,
-            redirectURI: baseRedirectURI,
-            scope: demandedScope,
-          },
-          additionalProperties,
-        );
+      const demandedScopes = filterScopes(
+        parseOAuth2Scope(demandedScope),
+        OAUTH2.allowedScopes,
+        !!OAUTH2.strictScopesChecks,
+      );
 
-      url = new URL(redirectURI);
+      const {
+        acknowledgedAuthenticationData,
+        acknowledgedData,
+        acknowledgedRedirectURI,
+      } = await granter.acknowledge(
+        userAuthenticationData,
+        {
+          clientId,
+          demandedRedirectURI,
+          demandedScopes,
+        },
+        additionalProperties,
+      );
 
-      url.searchParams.set('client_id', authenticationData.applicationId);
-      url.searchParams.set('scope', authenticationData.scope);
-      url.searchParams.set('state', state);
-      Object.keys(acknowledgedData).forEach((key) =>
-        url.searchParams.set(snakeCase(key), acknowledgedData[key] as string),
+      url = new URL(acknowledgedRedirectURI);
+
+      const paramsHash: Record<string, string> = {
+        client_id: acknowledgedAuthenticationData.clientId,
+        scope: stringifyScopes(acknowledgedAuthenticationData.scopes),
+        state: state,
+      };
+
+      Object.keys(acknowledgedData).forEach((key) => {
+        if (typeof acknowledgedData[key] === 'number') {
+          paramsHash[snakeCase(key)] = acknowledgedData[key].toString(10);
+        } else if (typeof acknowledgedData[key] === 'string') {
+          paramsHash[snakeCase(key)] = acknowledgedData[key];
+        }
+      });
+
+      addParamsToURL(
+        url,
+        paramsHash,
+        responseType === 'token' ? 'fragment' : 'query',
       );
     } catch (err) {
       log('debug', '👫 - OAuth2 acknowledge error', (err as YError).code);
       log('debug-stack', printStackTrace(err));
 
-      url = new URL(baseRedirectURI);
+      url = new URL(demandedRedirectURI);
 
-      setURLError(
-        url,
+      const paramsHash = buildParamsFromError(
         err as YError,
-        ERRORS_DESCRIPTORS[(err as YError).code] || ERRORS_DESCRIPTORS.E_OAUTH2,
+        ERRORS_DESCRIPTORS[(err as YError).code] ||
+          ERRORS_DESCRIPTORS.E_OAUTH2_UNEXPECTED_ERROR,
+      );
+
+      addParamsToURL(
+        url,
+        paramsHash,
+        responseType === 'token' ? 'fragment' : 'query',
       );
     }
 

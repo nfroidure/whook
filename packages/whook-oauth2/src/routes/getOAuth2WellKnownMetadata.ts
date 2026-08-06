@@ -6,11 +6,17 @@ import {
   type WhookRouteDefinition,
 } from '@whook/whook';
 import { autoService, location } from 'knifecycle';
-import { type OAuth2GranterService } from '../services/oAuth2Granters.js';
-import { codeChallengeMethodSchema } from './getOAuth2Authorize.js';
+import {
+  type WhookOAuth2GranterDefinitions,
+  type WhookOAuth2GranterService,
+} from '../services/oAuth2Granters.js';
+import { codeChallengeMethodSchema } from '../services/oAuth2AuthorizationCodeGranter.js';
+import { scopeTokenSchema, scopeTokensSchema } from '../libs/schemas.js';
 import { type LogService } from 'common-services';
 import { type OpenAPI } from 'ya-open-api-types';
 import { collectScopesFromAPI } from '../libs/scopes.js';
+
+export { scopeTokenSchema, scopeTokensSchema, codeChallengeMethodSchema };
 
 // OAuth Token Endpoint Authentication Methods
 export const endpointAuthenticationMethodsSchema = {
@@ -89,7 +95,7 @@ export const oAuth2MetadataSchema = {
       token_endpoint: refersTo(httpsProtocolURISchema),
       jwks_uri: refersTo(httpsProtocolURISchema),
       registration_endpoint: refersTo(httpsProtocolURISchema),
-      scopes_supported: { type: 'array', items: { type: 'string' } },
+      scopes_supported: refersTo(scopeTokensSchema),
       response_types_supported: {
         type: 'array',
         items: {
@@ -295,7 +301,7 @@ async function initGetOAuth2WellKnownMetadata({
   API: OpenAPI;
   BASE_URL: string;
   ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
-  oAuth2Granters: OAuth2GranterService[];
+  oAuth2Granters: WhookOAuth2GranterService<WhookOAuth2GranterDefinitions>[];
   log: LogService;
 }) {
   if (!BASE_URL.startsWith('https')) {
@@ -313,16 +319,12 @@ async function initGetOAuth2WellKnownMetadata({
     ],
     grant_types_supported: [
       ...new Set(
-        oAuth2Granters
-          .map((granter) => granter.authenticator?.grantType)
-          .filter(identity),
+        oAuth2Granters.map((granter) => granter.grantType).filter(identity),
       ),
     ],
     response_types_supported: [
       ...new Set(
-        oAuth2Granters
-          .map((granter) => granter.authorizer?.responseType)
-          .filter(identity),
+        oAuth2Granters.map((granter) => granter.responseType).filter(identity),
       ),
     ],
     scopes_supported: collectScopesFromAPI(API),

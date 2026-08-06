@@ -1,47 +1,43 @@
 import ms from 'ms';
 import cookie, { type SerializeOptions } from 'cookie';
 import { autoService, location } from 'knifecycle';
-import { type WhookAuthenticationData } from '@whook/authorization';
 import { type Jsonify } from 'type-fest';
 import { type WhookRouteDefinitionBasePath } from '@whook/whook';
 
 export const AUTH_API_PREFIX = '/auth';
 
-export interface AuthHandlersConfig {
-  ROOT_AUTHENTICATION_DATA: WhookAuthenticationData;
-}
-
-export type AuthCookiesOptions = Jsonify<
+export type WhookAuthCookiesOptions = Jsonify<
   Omit<SerializeOptions, 'maxAge' | 'path' | 'expires'>
 >;
 
-export interface AuthCookiesConfig {
-  COOKIES: AuthCookiesOptions;
+export interface WhookAuthCookiesConfig {
+  COOKIES: WhookAuthCookiesOptions;
   BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 
-export type AuthCookiesDependencies = AuthCookiesConfig;
+export type AuthCookiesDependencies = WhookAuthCookiesConfig;
 
-export interface AuthCookiesData {
+export interface WhookAuthCookiesData {
   refresh_token: string;
   access_token: string;
 }
 
-export interface AuthCookiesService {
+export interface WhookAuthCookiesService {
   build: (
-    data?: Partial<AuthCookiesData>,
+    data?: Partial<WhookAuthCookiesData>,
     options?: { session: boolean },
   ) => string[];
-  parse: (content: string) => Partial<AuthCookiesData>;
+  parse: (content: string) => Partial<WhookAuthCookiesData>;
 }
-
-export default location(autoService(initAuthCookies), import.meta.url);
 
 async function initAuthCookies({
   COOKIES,
   BASE_PATH = '',
-}: AuthCookiesDependencies): Promise<AuthCookiesService> {
-  function build(data: Partial<AuthCookiesData> = {}, { session = true } = {}) {
+}: AuthCookiesDependencies): Promise<WhookAuthCookiesService> {
+  function build(
+    data: Partial<WhookAuthCookiesData> = {},
+    { session = true } = {},
+  ) {
     return [
       cookie.serialize('access_token', data.access_token || '', {
         path: BASE_PATH + AUTH_API_PREFIX,
@@ -62,7 +58,7 @@ async function initAuthCookies({
     ];
   }
 
-  function parse(cookieHeader: string): Partial<AuthCookiesData> {
+  function parse(cookieHeader: string): Partial<WhookAuthCookiesData> {
     const data = cookie.parse(cookieHeader);
 
     if (data.access_token && data.refresh_token) {
@@ -80,3 +76,5 @@ async function initAuthCookies({
     parse,
   };
 }
+
+export default location(autoService(initAuthCookies), import.meta.url);

@@ -21,7 +21,16 @@ describe('MECHANISMS', () => {
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+     {
+       "logCalls": [
+         [
+           "debug",
+           "🔧 - Initializing auth mechanisms",
+         ],
+       ],
+     }
+    `);
   });
 
   test('should also include fake on debugging', async () => {
@@ -34,6 +43,19 @@ describe('MECHANISMS', () => {
 
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+     {
+       "logCalls": [
+         [
+           "debug",
+           "🔧 - Initializing auth mechanisms",
+         ],
+         [
+           "warning",
+           "⚠️ - Using fake auth mechanism!",
+         ],
+       ],
+     }
+    `);
   });
 });

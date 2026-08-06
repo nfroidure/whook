@@ -13,16 +13,17 @@
 [//]: # (::contents:start)
 
 This module is aimed to allow you to easily bring OAuth2 to your
-[Whook](https://github.com/nfroidure/whook) server. To use the code flow, it
-requires a server side rendered frontend that brings the UI that allows users to
-authenticate and allow client applications to act on behalf of them.
+[Whook](https://github.com/nfroidure/whook) server. To use the implicit, code
+and other user facing flows, it requires a server side rendered frontend that
+brings the UI that allows users to authenticate and allow client applications to
+act on behalf of them.
 
 ![Code Flow Overview](./code_flow_overview.svg)
 
 The module provides:
 
 - 2 OAuth2 routes definitions implementing the 2 OAuth2 standard endpoints
-  (`getOAuth2authorize`, `postOAuth2Tokentoken`) to be used by OAuth2 client
+  (`getOAuth2Authorize`, `postOAuth2Token`) to be used by OAuth2 client
   applications,
 - 4 authentication endpoints to be used by the authorization server directly to
   authenticate users (`postAuthLogin`, `postAuthRefresh`, `postAuthLogout`) and
@@ -34,15 +35,13 @@ This module requires you to implement some services it relies on:
 
 - `oAuth2AccessToken` that generates and checks the `access_token` and the
   `oAuth2RefreshToken` for the `refresh_token`, both have the same interface,
-- `checkApplication` service that is supposed to check whether an application
-  can be used or not for a given grant type, a given scope and redirect URI,
+- `readClientGrants` service that returns the grants for a given client id,
 - `oAuth2PasswordService` aimed to check the `password` grant type with your own
   logic (if you use it),
 - `oAuth2ClientCredentialsService` aimed to check the `client_credential` grant
   type with your own logic (if you use it),
-- `OAuth2CodeService` aimed to check the `code` grant type with your own logic
-  (if you use it). Note that it is your responsibility to implement the PKCE
-  logic in it.
+- `oAuth2AuthorizationCodeService` aimed to check the `code` grant type with
+  your own logic (if you use it).
 
 ## Quick setup
 
@@ -74,7 +73,7 @@ Declare this module types in your `src/whook.d.ts` type definitions:
 
 ```diff
 +import {
-+  type OAuth2Config,
++  type WhookOAuth2Config,
 +} from '@whook/oauth2';
 
 // ...
@@ -86,8 +85,7 @@ declare module 'application-services' {
   export interface AppConfig
 -    extends WhookBaseConfigs {}
 +    extends WhookBaseConfigs,
-+      AuthCookiesConfig,
-+      OAuth2Config {}
++      WhookOAuth2Config {}
 
   // ...
 
@@ -100,7 +98,7 @@ Add the OAuth2 configuration to your config files:
 // ...
 + import {
 +   OAUTH2_ERRORS_DESCRIPTORS,
-+   OAuth2Config,
++   WhookOAuth2Config,
 + } from '@whook/oauth2';
 import { type AppConfig } from 'application-services';
 
@@ -133,76 +131,87 @@ Here, for example a handler that implement a verify token mechanism in order to
 validate a user subscription:
 
 ```ts
-import { autoService } from 'knifecycle';
+import { autoService, location } from 'knifecycle';
 import { noop } from '@whook/whook';
 import { type WhookAuthenticationData } from '@whook/authorization';
-import { YError } from 'yerror';
+import { YError, hasYErrorCode } from 'yerror';
 import { type LogService } from 'common-services';
 import {
-  type OAuth2GranterService,
-  type CheckApplicationService,
+  type WhookOAuth2ReadClientGrantsService,
+  type WhookOAuth2GranterDefinitions,
+  type WhookOAuth2GranterService,
+  type WhookOAuth2Options,
 } from '@whook/oauth2';
 import { type JWTService } from 'jwt-service';
 import { type PGService } from 'postgresql-service';
+import sql from 'pgsqwell';
+
+const VERIFY_USER_GRANTER_TYPE = 'verify_user';
 
 export type OAuth2VerifyTokenGranterDependencies = {
-  checkApplication: CheckApplicationService;
+  OAUTH2: WhookOAuth2Options;
+  readClientGrants: WhookOAuth2ReadClientGrantsService;
   jwtToken: JWTService<WhookAuthenticationData>;
   pg: Pick<PGService, 'query'>;
   log?: LogService;
 };
-export type OAuth2VerifyTokenGranterParameters = {
-  verifyToken: string;
-};
-export type OAuth2VerifyTokenGranterService = OAuth2GranterService<
-  unknown,
-  unknown,
-  OAuth2VerifyTokenGranterParameters,
-  WhookAuthenticationData
->;
 
-export default autoService(initOAuth2VerifyTokenGranter);
-
-const USER_VERIFY_QUERY = `
-UPDATE users
-SET roles = ARRAY['user'::role]
-WHERE id = $$userId
-`;
+export interface OAuth2VerifyTokenGranterDefinitions extends WhookOAuth2GranterDefinitions {
+  authenticateParameters: {
+    verifyToken: string;
+  };
+}
+export type OAuth2VerifyTokenGranterService =
+  WhookOAuth2GranterService<OAuth2VerifyTokenGranterDefinitions>;
 
 async function initOAuth2VerifyTokenGranter({
-  checkApplication,
+  readClientGrants,
   jwtToken,
   pg,
   log = noop,
 }: OAuth2VerifyTokenGranterDependencies): Promise<OAuth2VerifyTokenGranterService> {
-  const authenticateWithVerifyToken: OAuth2VerifyTokenGranterService['authenticator']['authenticate'] =
-    async ({ verifyToken }, authenticationData) => {
+  const authenticateWithVerifyToken: OAuth2VerifyTokenGranterService['authenticate'] =
+    async ({ verifyToken }, optionalAuthenticationData) => {
       try {
-        // The client must be authenticated
-        if (!authenticationData) {
-          throw new YError('E_UNAUTHORIZED');
+        const tokenAuthenticationData = await jwtToken.verify(verifyToken);
+
+        const grants = await readClientGrants(tokenAuthenticationData.clientId);
+
+        if (!grants.isPublicClient) {
+          if (!optionalAuthenticationData) {
+            throw new YError('E_UNAUTHORIZED');
+          }
         }
 
-        const newAuthenticationData = await jwtToken.verify(verifyToken);
+        if (
+          optionalAuthenticationData &&
+          optionalAuthenticationData.clientId !==
+            tokenAuthenticationData.clientId
+        ) {
+          throw new YError('E_OAUTH2_CLIENT_MISMATCH', [
+            optionalAuthenticationData.clientId,
+            tokenAuthenticationData.clientId,
+          ]);
+        }
 
-        await checkApplication({
-          applicationId: authenticationData.applicationId,
-          type: 'verify',
-          scope: newAuthenticationData.scope,
-        });
+        checkGrantType(grants.allowedGrantTypes, VERIFY_USER_GRANTER_TYPE);
 
-        const result = await pg.query(USER_VERIFY_QUERY, {
-          userId: newAuthenticationData.userId,
-        });
+        const result = await pg.query(sql`
+UPDATE users
+SET roles = ARRAY['user'::role]
+WHERE id = ${tokenAuthenticationData.userId}
+`);
 
         if (result.rowCount === 0) {
-          throw new YError('E_ALREADY_VERIFIED', authenticationData.userId);
+          throw new YError('E_ALREADY_VERIFIED', [
+            tokenAuthenticationData.userId,
+          ]);
         }
 
-        return newAuthenticationData;
+        return tokenAuthenticationData;
       } catch (err) {
-        if (err.code === 'E_BAD_TOKEN') {
-          throw YError.wrap(err as Error, 'E_BAD_REFRESH_TOKEN');
+        if (hasYErrorCode(err, 'E_BAD_TOKEN')) {
+          throw YError.wrap(err, 'E_BAD_VERIFY_TOKEN');
         }
         throw err;
       }
@@ -211,55 +220,70 @@ async function initOAuth2VerifyTokenGranter({
   log('debug', '👫 - OAuth2VerifyTokenGranter Service Initialized!');
 
   return {
-    type: 'verify',
-    authenticator: {
-      grantType: 'verify_token',
-      authenticate: authenticateWithVerifyToken,
-    },
+    grantType: VERIFY_USER_GRANTER_TYPE,
+    issuesRefreshToken: true,
+    authenticate: authenticateWithVerifyToken,
   };
 }
+
+export default location(
+  autoService(initOAuth2VerifyTokenGranter),
+  import.meta.url,
+);
 ```
 
 ## Additional routes/helpers
 
-For internal use, you may prefer use cookies based auth routes like `postLogin`,
-`postLogout` and `postRefresh`.
+For internal use, you may prefer use cookies based auth routes like
+`postAuthLogin`, `postAuthLogout` and `postAuthRefresh`.
 
-To do so, configure the `ROOT_AUTHENTICATION_DATA` and `COOKIES` configurations:
+To do so, configure the `COOKIES` configurations:
+
+Declare this module types in your `src/whook.d.ts` type definitions:
+
+```diff
+// src/whook.d.ts
+import {
+  type WhookOAuth2Config,
++  type WhookAuthCookiesConfig,
+} from '@whook/oauth2';
+
+// ...
+
+declare module 'application-services' {
+
+  // (...)
+
+  export interface AppConfig
+    extends WhookBaseConfigs,
++      WhookAuthCookiesConfig,
+       WhookOAuth2Config {}
+
+  // ...
+
+}
+```
 
 ```diff
 // src/production/config.ts
 +  COOKIES: {
 +    domain: 'example.org',
 +  },
-+  ROOT_AUTHENTICATION_DATA: {
-+    applicationId: 'abbacaca-abba-caca-caca-abbacacacaca',
-+    scope: 'user,admin',
-+  },
 ```
 
-Then import the `postLogin`, `postLogout` and `postRefresh` routes like so:
+Then import the `postAuthLogin`, `postAuthLogout` and `postAuthRefresh` routes
+like so:
 
 ```ts
 // src/routes/postAuthRefresh.ts
 import {
   initPostAuthRefresh,
-  postAuthRefreshDefinition,
+  postAuthRefreshDefinition as definition,
   authCookieHeaderParameter,
 } from '@whook/oauth2';
-import { type WhookRouteDefinition } from '@whook/whook';
 
-export { authCookieHeaderParameter };
-
-export const definition: WhookRouteDefinition = {
-  ...postAuthRefreshDefinition,
-  operation: {
-    ...postAuthRefreshDefinition.operation,
-    'x-whook': {
-      disabled: false,
-    },
-  },
-};
+// You may override definition depending on your needs here
+export { definition, authCookieHeaderParameter };
 
 export default initPostAuthRefresh;
 ```
@@ -303,7 +327,7 @@ export const definition: WhookRouteDefinition = {
       content: {
         'application/json': {
           schema: {
-            ...postOAuth2AcknowledgeDefinition.operation.requestBodyt.content[
+            ...postOAuth2AcknowledgeDefinition.operation.requestBody.content[
               'application/json'
             ].schema,
             required: [
@@ -336,35 +360,41 @@ own security mechanism:
 import {
   initPostOAuth2Token,
   postOAuth2TokenDefinition,
-  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-  postOAuth2TokenPasswordTokenRequestBodySchema,
-  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
-  postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
+  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
+  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
+  postOAuth2TokenCodeVerifierSchema,
+  postOAuth2TokenPasswordTokenRequestBodySchema,
+  postOAuth2TokenRefreshTokenRequestBodySchema,
 } from '@whook/oauth2';
-import { type WhookRouteDefinition } from '@whook/whook';
+import {
+  type WhookAPISchemaDefinition,
+  type WhookRouteDefinition,
+  refersTo,
+} from '@whook/whook';
 
-export default initPostOAuth2Token;
-
-export const definition: WhookRouteDefinition = {
+export const definition = {
   ...postOAuth2TokenDefinition,
   operation: {
     ...postOAuth2TokenDefinition.operation,
     security: [
       {
-        basicAuth: ['admin'],
+        basicAuth: ['oauth2'],
       },
     ],
   },
-};
+} as const satisfies WhookRouteDefinition;
 
 export {
-  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-  postOAuth2TokenPasswordTokenRequestBodySchema,
-  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
-  postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
+  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
+  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
+  postOAuth2TokenCodeVerifierSchema,
+  postOAuth2TokenPasswordTokenRequestBodySchema,
+  postOAuth2TokenRefreshTokenRequestBodySchema,
 };
+
+export default initPostOAuth2Token;
 ```
 
 Or you may want to reduce the OAuth2 grant types supported:
@@ -374,22 +404,17 @@ Or you may want to reduce the OAuth2 grant types supported:
 import {
   initGetOAuth2Authorize,
   getOAuth2AuthorizeDefinition as definition,
-  getOAuth2AuthorizeResponseTypeParameter as baseResponseTypeParameter,
   getOAuth2AuthorizeClientIdParameter as clientIdParameter,
+  getOAuth2AuthorizeCodeChallengeMethodParameter as codeChallengeMethodParameter,
+  getOAuth2AuthorizeCodeChallengeMethodSchema as codeChallengeMethodSchema,
+  getOAuth2AuthorizeCodeChallengeParameter as codeChallengeParameter,
+  getOAuth2AuthorizeCodeChallengeSchema as codeChallengeSchema,
   getOAuth2AuthorizeRedirectURIParameter as redirectURIParameter,
+  getOAuth2AuthorizeResponseTypeParameter as baseResponseTypeParameter,
   getOAuth2AuthorizeScopeParameter as scopeParameter,
+  getOAuth2AuthorizeScopeSchema as scopeSchema,
   getOAuth2AuthorizeStateParameter as stateParameter,
 } from '@whook/oauth2';
-
-export default initGetOAuth2Authorize;
-
-export {
-  definition,
-  clientIdParameter,
-  redirectURIParameter,
-  scopeParameter,
-  stateParameter,
-};
 
 export const responseTypeParameter = {
   ...baseResponseTypeParameter,
@@ -397,10 +422,25 @@ export const responseTypeParameter = {
     ...baseResponseTypeParameter.parameter,
     schema: {
       ...baseResponseTypeParameter.parameter.schema,
-      enum: ['code'], // Allow only the 'code' grant type
+      enum: ['code'], // Allow only the 'code' response type
     },
   },
 };
+
+export {
+  definition,
+  codeChallengeSchema,
+  codeChallengeParameter,
+  codeChallengeMethodSchema,
+  codeChallengeMethodParameter,
+  clientIdParameter,
+  redirectURIParameter,
+  scopeParameter,
+  stateParameter,
+  scopeSchema,
+};
+
+export default initGetOAuth2Authorize;
 ```
 
 [//]: # (::contents:end)

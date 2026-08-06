@@ -1,83 +1,150 @@
 import { autoService, location } from 'knifecycle';
-import { noop } from '@whook/whook';
+import { noop, refersTo, type WhookAPISchemaDefinition } from '@whook/whook';
 import { pickYErrorWithCode, YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
-  type OAuth2GranterService,
-  type CheckApplicationService,
-  type OAuth2RefreshTokenService,
+  type WhookOAuth2GranterService,
+  type WhookOAuth2ReadClientGrantsService,
+  type WhookOAuth2Options,
+  type WhookOAuth2GranterDefinitions,
 } from './oAuth2Granters.js';
+import {
+  type WhookAuthenticationData,
+  type WhookAuthenticationScope,
+} from '@whook/authorization';
+import { checkGrantType } from '../libs/grants.js';
+import { filterScopes } from '../libs/scopes.js';
+import { type WhookOAuth2AccessTokenService } from './oAuth2ImplicitGranter.js';
+import { scopeSchema } from '../libs/schemas.js';
+import { toUsableClientId } from '../libs/clients.js';
 
-export interface OAuth2RefreshTokenGranterDependencies {
-  checkApplication: CheckApplicationService;
-  oAuth2RefreshToken: OAuth2RefreshTokenService;
+export const REFRESH_TOKEN_GRANT_TYPE = 'refresh_token';
+
+export const refreshTokenRequestBodySchema = {
+  name: 'RefreshTokenRequestBody',
+  schema: {
+    type: 'object',
+    description:
+      'Token refresh grant type, see https://tools.ietf.org/html/rfc6749#section-6 .',
+    required: ['grant_type', 'refresh_token'],
+    properties: {
+      grant_type: {
+        type: 'string',
+        enum: [REFRESH_TOKEN_GRANT_TYPE],
+      },
+      refresh_token: {
+        type: 'string',
+      },
+      scope: refersTo(scopeSchema),
+    },
+  },
+} as const satisfies WhookAPISchemaDefinition;
+
+/**
+ * A type allowing to override the refresh token type
+ */
+export type WhookOAuth2RefreshToken = string;
+
+/**
+ * A service to create and check refresh tokens
+ */
+export type WhookOAuth2RefreshTokenService =
+  WhookOAuth2AccessTokenService<WhookOAuth2RefreshToken>;
+
+export interface WhookOAuth2RefreshTokenGranterDependencies {
+  OAUTH2: WhookOAuth2Options;
+  readClientGrants: WhookOAuth2ReadClientGrantsService;
+  oAuth2RefreshToken: Pick<WhookOAuth2RefreshTokenService, 'check'>;
   log?: LogService;
 }
-export interface OAuth2RefreshTokenGranterParameters {
-  refreshToken: string;
-  scope?: string;
-}
-export type OAuth2RefreshTokenGranterService = OAuth2GranterService<
-  Record<string, unknown>,
-  Record<string, unknown>,
-  Record<string, unknown>,
-  OAuth2RefreshTokenGranterParameters
->;
 
-export default location(
-  autoService(initOAuth2RefreshTokenGranter),
-  import.meta.url,
-);
+export interface WhookOAuth2RefreshTokenGranterDefinitions extends WhookOAuth2GranterDefinitions {
+  grantType: typeof REFRESH_TOKEN_GRANT_TYPE;
+  authenticateParameters: {
+    refreshToken: string;
+    demandedScopes: WhookAuthenticationScope[];
+  };
+}
+
+export type WhookOAuth2RefreshTokenGranterService =
+  WhookOAuth2GranterService<WhookOAuth2RefreshTokenGranterDefinitions>;
 
 // Refresh Token Grant
 // https://tools.ietf.org/html/rfc6749#page-47
 async function initOAuth2RefreshTokenGranter({
-  checkApplication,
+  OAUTH2,
+  readClientGrants,
   oAuth2RefreshToken,
   log = noop,
-}: OAuth2RefreshTokenGranterDependencies): Promise<OAuth2RefreshTokenGranterService> {
+}: WhookOAuth2RefreshTokenGranterDependencies): Promise<WhookOAuth2RefreshTokenGranterService> {
   const authenticateWithRefreshToken: NonNullable<
-    OAuth2RefreshTokenGranterService['authenticator']
-  >['authenticate'] = async (
-    { refreshToken, scope: demandedScope = '' },
-    authenticationData,
-  ) => {
+    WhookOAuth2RefreshTokenGranterService['authenticate']
+  > = async ({ refreshToken, demandedScopes }, optionalAuthenticationData) => {
+    let refreshTokenAuthenticationData: WhookAuthenticationData;
+
     try {
-      // The client must be authenticated
-      if (!authenticationData) {
-        throw new YError('E_UNAUTHORIZED');
-      }
-
-      await checkApplication({
-        applicationId: authenticationData.applicationId,
-        type: 'refresh',
-        scope: demandedScope,
-      });
-
-      const newAuthenticationData = await oAuth2RefreshToken.check(
-        authenticationData,
-        refreshToken,
-        demandedScope,
-      );
-
-      return newAuthenticationData;
+      refreshTokenAuthenticationData =
+        await oAuth2RefreshToken.check(refreshToken);
     } catch (err) {
       const castedErr = pickYErrorWithCode(err as Error, 'E_BAD_TOKEN');
 
       if (castedErr) {
-        throw YError.wrap(castedErr, 'E_BAD_REFRESH_TOKEN');
+        throw YError.wrap(castedErr, 'E_OAUTH2_BAD_REFRESH_TOKEN');
       }
       throw err;
     }
+
+    const usableClientId = toUsableClientId([
+      optionalAuthenticationData?.clientId,
+      refreshTokenAuthenticationData.clientId,
+    ]);
+    const grants = await readClientGrants(usableClientId);
+
+    if (!grants.isPublicClient) {
+      if (!optionalAuthenticationData) {
+        throw new YError('E_OAUTH2_AUTHENTICATION_REQUIRED', [
+          grants.authenticationData.clientId,
+        ]);
+      }
+    }
+
+    if (usableClientId !== grants.authenticationData.clientId) {
+      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
+        usableClientId,
+        grants.authenticationData.clientId,
+      ]);
+    }
+
+    checkGrantType(grants.allowedGrantTypes, REFRESH_TOKEN_GRANT_TYPE);
+
+    const filteredScopes = filterScopes(
+      filterScopes(
+        demandedScopes.length
+          ? demandedScopes
+          : refreshTokenAuthenticationData.scopes,
+        grants.allowedScopes,
+        !!OAUTH2.strictScopesChecks,
+      ),
+      refreshTokenAuthenticationData.scopes,
+      !!OAUTH2.strictScopesChecks,
+    );
+
+    return {
+      ...refreshTokenAuthenticationData,
+      scopes: filteredScopes,
+    };
   };
 
   log('debug', '👫 - OAuth2RefreshTokenGranter Service Initialized!');
 
   return {
-    type: 'refresh',
-    authenticator: {
-      grantType: 'refresh_token',
-      authenticate: authenticateWithRefreshToken,
-    },
+    grantType: REFRESH_TOKEN_GRANT_TYPE,
+    issuesRefreshToken: true,
+    authenticate: authenticateWithRefreshToken,
   };
 }
+
+export default location(
+  autoService(initOAuth2RefreshTokenGranter),
+  import.meta.url,
+);

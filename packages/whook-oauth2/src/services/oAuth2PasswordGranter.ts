@@ -1,29 +1,78 @@
 import { autoService, location } from 'knifecycle';
-import { noop } from '@whook/whook';
+import { noop, refersTo, type WhookAPISchemaDefinition } from '@whook/whook';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
-  type OAuth2GranterService,
-  type OAuth2PasswordService,
-  type CheckApplicationService,
+  type WhookOAuth2GranterService,
+  type WhookOAuth2ReadClientGrantsService,
+  type WhookOAuth2Options,
+  type WhookOAuth2GranterDefinitions,
 } from './oAuth2Granters.js';
+import {
+  type WhookAuthenticationData,
+  type WhookAuthenticationScope,
+} from '@whook/authorization';
+import { filterScopes } from '../libs/scopes.js';
+import { checkGrantType } from '../libs/grants.js';
+import { scopeSchema } from '../libs/schemas.js';
 
-export interface OAuth2PasswordGranterDependencies {
-  oAuth2Password: OAuth2PasswordService;
-  checkApplication: CheckApplicationService;
+export const PASSWORD_GRANT_TYPE = 'password';
+
+export const passwordTokenRequestBodySchema = {
+  name: 'PasswordRequestBody',
+  schema: {
+    type: 'object',
+    description:
+      'Resource owner password credentials grant, see https://tools.ietf.org/html/rfc6749#section-4.3',
+    required: ['grant_type', 'username', 'password'],
+    properties: {
+      grant_type: {
+        type: 'string',
+        enum: [PASSWORD_GRANT_TYPE],
+      },
+      username: {
+        type: 'string',
+      },
+      password: {
+        type: 'string',
+      },
+      scope: refersTo(scopeSchema),
+    },
+  },
+} as const satisfies WhookAPISchemaDefinition;
+
+/**
+ * A service to check a user password
+ */
+export interface WhookOAuth2PasswordService<
+  USERNAME extends string = string,
+  PASSWORD extends string = string,
+> {
+  check: (
+    authenticationData: WhookAuthenticationData,
+    username: USERNAME,
+    password: PASSWORD,
+  ) => Promise<WhookAuthenticationData>;
+}
+
+export interface WhookOAuth2PasswordGranterDependencies {
+  OAUTH2: WhookOAuth2Options;
+  oAuth2Password: WhookOAuth2PasswordService;
+  readClientGrants: WhookOAuth2ReadClientGrantsService;
   log?: LogService;
 }
-export interface OAuth2PasswordGranterParameters {
-  username: string;
-  password: string;
-  scope?: string;
+
+export interface WhookOAuth2PasswordGranterDefinitions extends WhookOAuth2GranterDefinitions {
+  grantType: typeof PASSWORD_GRANT_TYPE;
+  authenticateParameters: {
+    username: string;
+    password: string;
+    demandedScopes: WhookAuthenticationScope[];
+  };
 }
-export type OAuth2PasswordGranterService = OAuth2GranterService<
-  Record<string, unknown>,
-  Record<string, unknown>,
-  Record<string, unknown>,
-  OAuth2PasswordGranterParameters
->;
+
+export type WhookOAuth2PasswordGranterService =
+  WhookOAuth2GranterService<WhookOAuth2PasswordGranterDefinitions>;
 
 export default location(
   autoService(initOAuth2PasswordGranter),
@@ -33,44 +82,71 @@ export default location(
 // Resource Owner Password Credentials Grant
 // https://tools.ietf.org/html/rfc6749#section-4.3
 async function initOAuth2PasswordGranter({
+  OAUTH2,
   oAuth2Password,
-  checkApplication,
+  readClientGrants,
   log = noop,
-}: OAuth2PasswordGranterDependencies): Promise<OAuth2PasswordGranterService> {
+}: WhookOAuth2PasswordGranterDependencies): Promise<WhookOAuth2PasswordGranterService> {
   const authenticateWithPassword: NonNullable<
-    OAuth2PasswordGranterService['authenticator']
-  >['authenticate'] = async (
-    { username, password, scope: demandedScope = '' },
-    authenticationData,
+    WhookOAuth2PasswordGranterService['authenticate']
+  > = async (
+    { username, password, demandedScopes },
+    optionalAuthenticationData,
   ) => {
-    // The client must be authenticated
-    if (!authenticationData) {
-      throw new YError('E_UNAUTHORIZED');
-    }
-
-    await checkApplication({
-      applicationId: authenticationData.applicationId,
-      type: 'password',
-      scope: demandedScope,
-    });
-
-    const finalAuthenticationData = await oAuth2Password.check(
-      authenticationData,
-      username,
-      password,
-      demandedScope,
+    log(
+      'warning',
+      `⚠️ - Using the password flow is deprecated and not recommended.`,
     );
 
-    return finalAuthenticationData;
+    const usableClientId =
+      optionalAuthenticationData?.clientId || OAUTH2.rootClientId;
+
+    const grants = await readClientGrants(usableClientId);
+
+    if (usableClientId !== grants.authenticationData.clientId) {
+      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
+        usableClientId,
+        grants.authenticationData.clientId,
+      ]);
+    }
+
+    if (!grants.isPublicClient) {
+      if (!optionalAuthenticationData) {
+        throw new YError('E_OAUTH2_AUTHENTICATION_REQUIRED', [
+          grants.authenticationData.clientId,
+        ]);
+      }
+    }
+
+    checkGrantType(grants.allowedGrantTypes, PASSWORD_GRANT_TYPE);
+
+    const userAuthenticationData = await oAuth2Password.check(
+      optionalAuthenticationData || grants.authenticationData,
+      username,
+      password,
+    );
+
+    const filteredScopes = filterScopes(
+      demandedScopes.length ? demandedScopes : userAuthenticationData.scopes,
+      grants.allowedScopes,
+      !!OAUTH2.strictScopesChecks,
+    );
+
+    return {
+      ...userAuthenticationData,
+      scopes: filterScopes(
+        filteredScopes,
+        userAuthenticationData.scopes,
+        !!OAUTH2.strictScopesChecks,
+      ),
+    };
   };
 
   log('debug', '👫 - OAuth2PasswordGranter Service Initialized!');
 
   return {
-    type: 'password',
-    authenticator: {
-      grantType: 'password',
-      authenticate: authenticateWithPassword,
-    },
+    grantType: PASSWORD_GRANT_TYPE,
+    issuesRefreshToken: true,
+    authenticate: authenticateWithPassword,
   };
 }

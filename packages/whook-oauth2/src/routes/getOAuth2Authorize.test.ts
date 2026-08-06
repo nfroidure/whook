@@ -2,16 +2,22 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initGetOAuth2Authorize from './getOAuth2Authorize.js';
 import { DEFAULT_ERRORS_DESCRIPTORS } from '@whook/whook';
-import { OAUTH2_ERRORS_DESCRIPTORS } from '../services/oAuth2Granters.js';
+import { type WhookOAuth2GranterDefinitions } from '../services/oAuth2Granters.js';
 import { YError } from 'yerror';
-import { type OAuth2CodeGranterService } from '../services/oAuth2CodeGranter.js';
-import { type OAuth2TokenGranterService } from '../services/oAuth2TokenGranter.js';
+import { type WhookOAuth2AuthorizationCodeGranterService } from '../services/oAuth2AuthorizationCodeGranter.js';
+import { type WhookOAuth2ImplicitGranterService } from '../services/oAuth2ImplicitGranter.js';
 import { type LogService } from 'common-services';
-import { type OAuth2Options, type OAuth2GranterService } from '../index.js';
+import {
+  type WhookOAuth2Options,
+  type WhookOAuth2GranterService,
+} from '../index.js';
+import { OAUTH2_ERRORS_DESCRIPTORS } from '../libs/errors.js';
 
 describe('getOAuth2Authorize', () => {
-  const OAUTH2: OAuth2Options = {
+  const OAUTH2: WhookOAuth2Options = {
+    rootClientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
     authenticateURL: 'https://auth.example.com/sign_in',
+    allowedScopes: ['user'],
   };
   const ERRORS_DESCRIPTORS = {
     ...DEFAULT_ERRORS_DESCRIPTORS,
@@ -19,77 +25,62 @@ describe('getOAuth2Authorize', () => {
   };
   const log = jest.fn<LogService>();
   const codeGranter = {
-    type: 'code',
-    authorizer: {
-      responseType: 'code',
-      authorize:
-        jest.fn<
-          NonNullable<OAuth2CodeGranterService['authorizer']>['authorize']
-        >(),
-    },
-    acknowledger: {
-      acknowledgmentType: 'code',
-      acknowledge:
-        jest.fn<
-          NonNullable<OAuth2CodeGranterService['acknowledger']>['acknowledge']
-        >(),
-    },
-    authenticator: {
-      grantType: 'authorization_code',
-      authenticate:
-        jest.fn<
-          NonNullable<OAuth2CodeGranterService['authenticator']>['authenticate']
-        >(),
-    },
-  };
+    grantType: 'authorization_code',
+    responseType: 'code',
+    issuesRefreshToken: true,
+    authorize:
+      jest.fn<
+        NonNullable<WhookOAuth2AuthorizationCodeGranterService['authorize']>
+      >(),
+    acknowledge:
+      jest.fn<
+        NonNullable<WhookOAuth2AuthorizationCodeGranterService['acknowledge']>
+      >(),
+    authenticate:
+      jest.fn<
+        NonNullable<WhookOAuth2AuthorizationCodeGranterService['authenticate']>
+      >(),
+  } satisfies WhookOAuth2AuthorizationCodeGranterService;
   const tokenGranter = {
-    type: 'token',
-    authorizer: {
-      responseType: 'token',
-      authorize:
-        jest.fn<
-          NonNullable<
-            NonNullable<OAuth2TokenGranterService['authorizer']>['authorize']
-          >
-        >(),
-    },
-    acknowledger: {
-      acknowledgmentType: 'token',
-      acknowledge:
-        jest.fn<
-          NonNullable<OAuth2TokenGranterService['acknowledger']>['acknowledge']
-        >(),
-    },
-  };
+    grantType: 'implicit',
+    responseType: 'token',
+    issuesRefreshToken: false,
+    authorize:
+      jest.fn<
+        NonNullable<NonNullable<WhookOAuth2ImplicitGranterService['authorize']>>
+      >(),
+    acknowledge:
+      jest.fn<NonNullable<WhookOAuth2ImplicitGranterService['acknowledge']>>(),
+  } satisfies WhookOAuth2ImplicitGranterService;
   const oAuth2Granters = [
     codeGranter,
     tokenGranter,
-  ] as unknown as OAuth2GranterService[];
+  ] as unknown as WhookOAuth2GranterService<WhookOAuth2GranterDefinitions>[];
 
   beforeEach(() => {
     log.mockReset();
     [
-      codeGranter.authorizer.authorize,
-      codeGranter.acknowledger.acknowledge,
-      codeGranter.authenticator.authenticate,
-      tokenGranter.authorizer.authorize,
-      tokenGranter.acknowledger.acknowledge,
+      codeGranter.authorize,
+      codeGranter.acknowledge,
+      codeGranter.authenticate,
+      tokenGranter.authorize,
+      tokenGranter.acknowledge,
     ].forEach((mock) => mock.mockReset());
   });
 
   test('should redirect', async () => {
     [
-      codeGranter.acknowledger.acknowledge,
-      codeGranter.authenticator.authenticate,
-      tokenGranter.authorizer.authorize,
-      tokenGranter.acknowledger.acknowledge,
+      codeGranter.acknowledge,
+      codeGranter.authenticate,
+      tokenGranter.authorize,
+      tokenGranter.acknowledge,
     ].forEach((mock: any) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
-    codeGranter.authorizer.authorize.mockResolvedValueOnce({
-      applicationId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+    codeGranter.authorize.mockResolvedValueOnce({
+      clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
       redirectURI: 'http://lol',
-      scope: 'user',
+      scopes: ['user'],
     });
 
     const getOAuth2Authorize = await initGetOAuth2Authorize({
@@ -108,36 +99,53 @@ describe('getOAuth2Authorize', () => {
       },
     });
 
-    expect(response).toMatchInlineSnapshot(`
-      {
-        "headers": {
-          "location": "https://auth.example.com/sign_in?type=code&redirect_uri=http%3A%2F%2Flol&scope=user&client_id=abbacaca-abba-caca-abba-cacaabbacaca&state=bancal",
-        },
-        "status": 302,
-      }
-    `);
     expect({
+      response,
       logCalls: log.mock.calls.filter((args) => args[0].endsWith('stack')),
-      codeGranterAuthorizerAuthorizeCalls:
-        codeGranter.authorizer.authorize.mock.calls,
+      codeGranterAuthorizerAuthorizeCalls: codeGranter.authorize.mock.calls,
       codeGranterAcknowledgerAcknowledgeCalls:
-        codeGranter.acknowledger.acknowledge.mock.calls,
+        codeGranter.acknowledge.mock.calls,
       codeGranterAuthenticatorAuthenticateCalls:
-        codeGranter.authenticator.authenticate.mock.calls,
-      tokenGranterAuthorizerAuthorizeCalls:
-        tokenGranter.authorizer.authorize.mock.calls,
+        codeGranter.authenticate.mock.calls,
+      tokenGranterAuthorizerAuthorizeCalls: tokenGranter.authorize.mock.calls,
       tokenGranterAcknowledgerAcknowledgeCalls:
-        tokenGranter.acknowledger.acknowledge.mock.calls,
-    }).toMatchSnapshot();
+        tokenGranter.acknowledge.mock.calls,
+    }).toMatchInlineSnapshot(`
+     {
+       "codeGranterAcknowledgerAcknowledgeCalls": [],
+       "codeGranterAuthenticatorAuthenticateCalls": [],
+       "codeGranterAuthorizerAuthorizeCalls": [
+         [
+           {
+             "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
+             "demandedRedirectURI": "https://www.example.com",
+             "demandedScopes": [
+               "user",
+             ],
+           },
+           {},
+         ],
+       ],
+       "logCalls": [],
+       "response": {
+         "headers": {
+           "location": "https://auth.example.com/sign_in?type=code&redirect_uri=http%3A%2F%2Flol&scope=user&client_id=abbacaca-abba-caca-abba-cacaabbacaca&state=bancal",
+         },
+         "status": 302,
+       },
+       "tokenGranterAcknowledgerAcknowledgeCalls": [],
+       "tokenGranterAuthorizerAuthorizeCalls": [],
+     }
+    `);
   });
 
   test('should redirect with an error when some', async () => {
     [
-      codeGranter.authorizer.authorize,
-      codeGranter.acknowledger.acknowledge,
-      codeGranter.authenticator.authenticate,
-      tokenGranter.authorizer.authorize,
-      tokenGranter.acknowledger.acknowledge,
+      codeGranter.authorize,
+      codeGranter.acknowledge,
+      codeGranter.authenticate,
+      tokenGranter.authorize,
+      tokenGranter.acknowledge,
     ].forEach((mock: any) =>
       mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
     );
@@ -158,26 +166,101 @@ describe('getOAuth2Authorize', () => {
       },
     });
 
-    expect(response).toMatchInlineSnapshot(`
-{
-  "headers": {
-    "location": "https://auth.example.com/sign_in?redirect_uri=https%3A%2F%2Fwww.example.com&error=unsupported_response_type&error_description=The+type+%22yolo%22+is+not+supported.&state=bancal",
-  },
-  "status": 302,
-}
-`);
     expect({
+      response,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      codeGranterAuthorizerAuthorizeCalls:
-        codeGranter.authorizer.authorize.mock.calls,
+      codeGranterAuthorizerAuthorizeCalls: codeGranter.authorize.mock.calls,
       codeGranterAcknowledgerAcknowledgeCalls:
-        codeGranter.acknowledger.acknowledge.mock.calls,
+        codeGranter.acknowledge.mock.calls,
       codeGranterAuthenticatorAuthenticateCalls:
-        codeGranter.authenticator.authenticate.mock.calls,
-      tokenGranterAuthorizerAuthorizeCalls:
-        tokenGranter.authorizer.authorize.mock.calls,
+        codeGranter.authenticate.mock.calls,
+      tokenGranterAuthorizerAuthorizeCalls: tokenGranter.authorize.mock.calls,
       tokenGranterAcknowledgerAcknowledgeCalls:
-        tokenGranter.acknowledger.acknowledge.mock.calls,
-    }).toMatchSnapshot();
+        tokenGranter.acknowledge.mock.calls,
+    }).toMatchInlineSnapshot(`
+     {
+       "codeGranterAcknowledgerAcknowledgeCalls": [],
+       "codeGranterAuthenticatorAuthenticateCalls": [],
+       "codeGranterAuthorizerAuthorizeCalls": [],
+       "logCalls": [
+         [
+           "debug",
+           "👫 - OAuth2 authorize error.",
+         ],
+       ],
+       "response": {
+         "headers": {
+           "location": "https://www.example.com/?error=unsupported_response_type&error_description=The+response+type+%22yolo%22+is+not+supported.&state=bancal",
+         },
+         "status": 302,
+       },
+       "tokenGranterAcknowledgerAcknowledgeCalls": [],
+       "tokenGranterAuthorizerAuthorizeCalls": [],
+     }
+    `);
+  });
+
+  test('should redirect with an error with bad scopes', async () => {
+    [
+      codeGranter.authorize,
+      codeGranter.acknowledge,
+      codeGranter.authenticate,
+      tokenGranter.authorize,
+      tokenGranter.acknowledge,
+    ].forEach((mock: any) =>
+      mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+    );
+
+    const getOAuth2Authorize = await initGetOAuth2Authorize({
+      OAUTH2: {
+        ...OAUTH2,
+        strictScopesChecks: true,
+      },
+      ERRORS_DESCRIPTORS,
+      oAuth2Granters,
+      log,
+    });
+    const response = await getOAuth2Authorize({
+      query: {
+        response_type: 'code',
+        client_id: 'abbacaca-abba-caca-abba-cacaabbacaca',
+        redirect_uri: 'https://www.example.com',
+        scope: 'god',
+        state: 'bancal',
+      },
+    });
+
+    expect({
+      response,
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      codeGranterAuthorizerAuthorizeCalls: codeGranter.authorize.mock.calls,
+      codeGranterAcknowledgerAcknowledgeCalls:
+        codeGranter.acknowledge.mock.calls,
+      codeGranterAuthenticatorAuthenticateCalls:
+        codeGranter.authenticate.mock.calls,
+      tokenGranterAuthorizerAuthorizeCalls: tokenGranter.authorize.mock.calls,
+      tokenGranterAcknowledgerAcknowledgeCalls:
+        tokenGranter.acknowledge.mock.calls,
+    }).toMatchInlineSnapshot(`
+     {
+       "codeGranterAcknowledgerAcknowledgeCalls": [],
+       "codeGranterAuthenticatorAuthenticateCalls": [],
+       "codeGranterAuthorizerAuthorizeCalls": [],
+       "logCalls": [
+         [
+           "debug",
+           "👫 - OAuth2 authorize error.",
+         ],
+       ],
+       "response": {
+         "headers": {
+           "location": "https://www.example.com/?error=invalid_scope&error_description=This+scope+is+not+supported+%28god%29.&state=bancal",
+         },
+         "status": 302,
+       },
+       "tokenGranterAcknowledgerAcknowledgeCalls": [],
+       "tokenGranterAuthorizerAuthorizeCalls": [],
+     }
+    `);
   });
 });

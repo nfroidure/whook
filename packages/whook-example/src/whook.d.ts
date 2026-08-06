@@ -83,13 +83,12 @@ declare module '@whook/whook' {
 }
 
 declare module '@whook/authorization' {
-  /* Architecture Note #3.2.3: Typings
+  /* Architecture Note #2.1.5: Authorization
 
-  Here we export a custom API handler config type in order
-   to allow using the various plugins installed that deal
-   with the routes.
+  Here we export custom authorizations types.
   */
   export interface WhookAuthenticationData extends WhookBaseAuthenticationData {
     userId: string;
+    clientId: string;
   }
 }

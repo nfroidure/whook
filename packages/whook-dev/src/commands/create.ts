@@ -88,7 +88,7 @@ export const definition = {
     },
     {
       name: 'overwrite',
-      description: 'Wether the script should overwrite existing files',
+      description: 'Whether the script should overwrite existing files',
       required: false,
       schema: {
         type: 'boolean',
