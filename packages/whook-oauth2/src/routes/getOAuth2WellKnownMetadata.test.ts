@@ -132,12 +132,12 @@ describe('getOAuth2WellKnown', () => {
              "implicit",
            ],
            "issuer": "https://server.example.com",
+           "request_parameter_supported": true,
+           "request_uri_parameter_supported": false,
            "response_types_supported": [
              "code",
              "token",
            ],
-           "request_parameter_supported": true,
-           "request_uri_parameter_supported": false,
            "scopes_supported": [
              "user",
              "admin",

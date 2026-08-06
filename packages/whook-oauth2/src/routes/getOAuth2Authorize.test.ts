@@ -371,7 +371,7 @@ describe('getOAuth2Authorize', () => {
         ],
         "response": {
           "headers": {
-            "location": "https://www.example.com/?error=invalid_request&error_description=The+request+object+parameter+%22response_type%22+does+not+match+the+query+parameter.&state=bancal",
+            "location": "https://www.example.com/#error=invalid_request&error_description=The+request+object+parameter+%22response_type%22+does+not+match+the+query+parameter.&state=bancal",
           },
           "status": 302,
         },

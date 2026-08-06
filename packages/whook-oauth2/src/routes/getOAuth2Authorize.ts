@@ -169,13 +169,13 @@ async function initGetOAuth2Authorize({
     };
   }) => {
     let responseType = query.response_type;
-    let givenClientId = query.client_id;
+    let givenClientId: string;
     let demandedRedirectURI = query.redirect_uri || '';
-    let demandedScope = query.scope || '';
+    let demandedScope: string;
     let state = query.state;
-    let codeChallenge = query.code_challenge;
-    let codeChallengeMethod = query.code_challenge_method;
-    let authorizeParameters: Record<string, string> = {};
+    let codeChallenge: string | undefined;
+    let codeChallengeMethod: CodeChallengeMethod | undefined;
+    let authorizeParameters: Record<string, string>;
 
     // If everything goes well we proxy the request
     // to the authentication server for acknowledgment
