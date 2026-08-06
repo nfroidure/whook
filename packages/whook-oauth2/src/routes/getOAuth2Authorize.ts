@@ -83,6 +83,19 @@ export const requestParameter = {
     },
   },
 } as const satisfies WhookAPIParameterDefinition;
+export const requestURIParameter = {
+  name: 'requestURI',
+  parameter: {
+    in: 'query',
+    name: 'request_uri',
+    required: false,
+    schema: {
+      type: 'string',
+      format: 'uri',
+      pattern: '^https?://',
+    },
+  },
+} as const satisfies WhookAPIParameterDefinition;
 export const redirectURIParameter = {
   name: 'redirectURI',
   parameter: {
@@ -129,6 +142,7 @@ export const definition = {
       refersTo(responseTypeParameter),
       refersTo(clientIdParameter),
       refersTo(requestParameter),
+      refersTo(requestURIParameter),
       refersTo(redirectURIParameter),
       refersTo(scopeParameter),
       refersTo(stateParameter),
@@ -161,6 +175,7 @@ async function initGetOAuth2Authorize({
       response_type?: string;
       client_id?: string;
       request?: string;
+      request_uri?: string;
       redirect_uri?: string;
       scope?: string;
       state?: string;
