@@ -1,3 +1,4 @@
+
 ## [26.0.0](https://github.com/nfroidure/whook/compare/v25.2.1...v26.0.0) (2026-08-07)
 
 ### Features
