@@ -143,14 +143,14 @@ describe('getOAuth2WellKnown', () => {
              "code",
              "token",
            ],
-           "scopes_supported": [
-             "user",
-             "admin",
-           ],
            "revocation_endpoint": "https://server.example.com/v0/oauth2/revoke",
            "revocation_endpoint_auth_methods_supported": [
              "client_secret_basic",
              "client_secret_post",
+           ],
+           "scopes_supported": [
+             "user",
+             "admin",
            ],
            "token_endpoint": "https://server.example.com/v0/oauth2/token",
            "token_endpoint_auth_methods_supported": [

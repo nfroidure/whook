@@ -31,6 +31,7 @@ describe('postOAuth2Revoke', () => {
       },
       authenticationData: {
         clientId: 'a_client',
+        userId: 'a_user',
         scopes: ['oauth'],
       },
     });
@@ -50,6 +51,7 @@ describe('postOAuth2Revoke', () => {
              "scopes": [
                "oauth",
              ],
+             "userId": "a_user",
            },
            "refresh_token",
          ],
