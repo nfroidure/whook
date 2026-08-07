@@ -1,0 +1,179 @@
+import { describe, test, beforeEach, jest, expect } from '@jest/globals';
+import { YError } from 'yerror';
+import initPostOAuth2Revoke from './postOAuth2Revoke.js';
+import { type WhookOAuth2RevokeTokenService } from './postOAuth2Revoke.js';
+import { type LogService } from 'common-services';
+
+describe('postOAuth2Revoke', () => {
+  const oAuth2RevokeToken = {
+    revoke: jest.fn<WhookOAuth2RevokeTokenService['revoke']>(),
+  };
+  const log = jest.fn<LogService>();
+
+  beforeEach(() => {
+    oAuth2RevokeToken.revoke.mockReset();
+    log.mockReset();
+  });
+
+  test('should revoke a token', async () => {
+    oAuth2RevokeToken.revoke.mockResolvedValueOnce();
+
+    const postOAuth2Revoke = await initPostOAuth2Revoke({
+      oAuth2RevokeToken,
+      log,
+    });
+    const response = await postOAuth2Revoke({
+      body: {
+        token: 'a_token',
+        token_type_hint: 'refresh_token',
+      },
+      authenticationData: {
+        clientId: 'a_client',
+        userId: 'a_user',
+        scopes: ['oauth'],
+      },
+    });
+
+    expect({
+      response,
+      oAuth2RevokeTokenRevokeCalls: oAuth2RevokeToken.revoke.mock.calls,
+      logCalls: log.mock.calls,
+    }).toMatchInlineSnapshot(`
+     {
+       "logCalls": [],
+       "oAuth2RevokeTokenRevokeCalls": [
+         [
+           "refresh_token",
+           "a_token",
+           {
+             "clientId": "a_client",
+             "scopes": [
+               "oauth",
+             ],
+             "userId": "a_user",
+           },
+         ],
+       ],
+       "response": {
+         "status": 200,
+       },
+     }
+    `);
+  });
+
+  test('should revoke a token with no type provided', async () => {
+    oAuth2RevokeToken.revoke.mockResolvedValueOnce();
+
+    const postOAuth2Revoke = await initPostOAuth2Revoke({
+      oAuth2RevokeToken,
+      log,
+    });
+    const response = await postOAuth2Revoke({
+      body: {
+        token: 'a_token',
+      },
+      authenticationData: {
+        clientId: 'a_client',
+        userId: 'a_user',
+        scopes: ['oauth'],
+      },
+    });
+
+    expect({
+      response,
+      oAuth2RevokeTokenRevokeCalls: oAuth2RevokeToken.revoke.mock.calls,
+      logCalls: log.mock.calls,
+    }).toMatchInlineSnapshot(`
+     {
+       "logCalls": [],
+       "oAuth2RevokeTokenRevokeCalls": [
+         [
+           "access_token",
+           "a_token",
+           {
+             "clientId": "a_client",
+             "scopes": [
+               "oauth",
+             ],
+             "userId": "a_user",
+           },
+         ],
+         [
+           "refresh_token",
+           "a_token",
+           {
+             "clientId": "a_client",
+             "scopes": [
+               "oauth",
+             ],
+             "userId": "a_user",
+           },
+         ],
+       ],
+       "response": {
+         "status": 200,
+       },
+     }
+    `);
+  });
+
+  test('should ignore already invalid tokens', async () => {
+    oAuth2RevokeToken.revoke.mockRejectedValueOnce(new YError('E_BAD_TOKEN'));
+
+    const postOAuth2Revoke = await initPostOAuth2Revoke({
+      oAuth2RevokeToken,
+      log,
+    });
+    const response = await postOAuth2Revoke({
+      body: {
+        token: 'already_invalid',
+      },
+    });
+
+    expect({
+      response,
+      oAuth2RevokeTokenRevokeCalls: oAuth2RevokeToken.revoke.mock.calls,
+      logCalls: log.mock.calls,
+    }).toMatchInlineSnapshot(`
+     {
+       "logCalls": [],
+       "oAuth2RevokeTokenRevokeCalls": [
+         [
+           "access_token",
+           "already_invalid",
+           undefined,
+         ],
+         [
+           "refresh_token",
+           "already_invalid",
+           undefined,
+         ],
+       ],
+       "response": {
+         "status": 200,
+       },
+     }
+    `);
+  });
+
+  test('should bubble up unexpected errors', async () => {
+    oAuth2RevokeToken.revoke.mockRejectedValueOnce(
+      new YError('E_OAUTH2_UNEXPECTED_ERROR'),
+    );
+    const postOAuth2Revoke = await initPostOAuth2Revoke({
+      oAuth2RevokeToken,
+      log,
+    });
+
+    await expect(
+      postOAuth2Revoke({
+        body: {
+          token: 'a_token',
+        },
+      }),
+    ).rejects.toMatchObject({
+      code: 'E_OAUTH2_UNEXPECTED_ERROR',
+    });
+    expect(log.mock.calls.length).toBe(2);
+  });
+});

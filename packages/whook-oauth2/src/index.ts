@@ -38,6 +38,12 @@ import initGetOAuth2WellKnownProtectedResource, {
   bearerMethodSchema as getOAuth2WellKnownProtectedResourceBearerMethodSchema,
   oAuth2ProtectedResourceMetadataSchema as getOAuth2WellKnownProtectedResourceSchema,
 } from './routes/getOAuth2WellKnownProtectedResourceMetadata.js';
+import initPostOAuth2Revoke, {
+  definition as postOAuth2RevokeDefinition,
+  tokenTypeHintSchema as postOAuth2RevokeTokenTypeHintSchema,
+  revokeTokenRequestBodySchema as postOAuth2RevokeTokenRequestBodySchema,
+} from './routes/postOAuth2Revoke.js';
+export type * from './routes/postOAuth2Revoke.js';
 
 import initOAuth2Granters from './services/oAuth2Granters.js';
 export type * from './services/oAuth2Granters.js';
@@ -112,6 +118,10 @@ export {
   getOAuth2WellKnownProtectedResourceDefinition,
   getOAuth2WellKnownProtectedResourceBearerMethodSchema,
   getOAuth2WellKnownProtectedResourceSchema,
+  initPostOAuth2Revoke,
+  postOAuth2RevokeDefinition,
+  postOAuth2RevokeTokenTypeHintSchema,
+  postOAuth2RevokeTokenRequestBodySchema,
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,

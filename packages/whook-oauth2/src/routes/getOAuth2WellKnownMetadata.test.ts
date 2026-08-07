@@ -83,6 +83,13 @@ describe('getOAuth2WellKnown', () => {
             },
           },
         },
+        postOAuth2Revoke: {
+          module: {
+            definition: {
+              path: '/v0/oauth2/revoke',
+            },
+          },
+        },
       } as unknown as WhookRoutesDefinitionsService,
       API: {
         openapi: '3.2',
@@ -135,6 +142,11 @@ describe('getOAuth2WellKnown', () => {
            "response_types_supported": [
              "code",
              "token",
+           ],
+           "revocation_endpoint": "https://server.example.com/v0/oauth2/revoke",
+           "revocation_endpoint_auth_methods_supported": [
+             "client_secret_basic",
+             "client_secret_post",
            ],
            "scopes_supported": [
              "user",

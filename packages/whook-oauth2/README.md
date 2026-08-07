@@ -22,9 +22,9 @@ act on behalf of them.
 
 The module provides:
 
-- 2 OAuth2 routes definitions implementing the 2 OAuth2 standard endpoints
-  (`getOAuth2Authorize`, `postOAuth2Token`) to be used by OAuth2 client
-  applications,
+- 3 OAuth2 routes definitions implementing the OAuth2 standard endpoints
+  (`getOAuth2Authorize`, `postOAuth2Token`, `postOAuth2Revoke`) to be used by
+  OAuth2 client applications,
 - 4 authentication endpoints to be used by the authorization server directly to
   authenticate users (`postAuthLogin`, `postAuthRefresh`, `postAuthLogout`) and
   acknowledge the client requests (`postOAuth2Acknowledge`),
@@ -278,12 +278,21 @@ like so:
 // src/routes/postAuthRefresh.ts
 import {
   initPostAuthRefresh,
-  postAuthRefreshDefinition as definition,
+  postAuthRefreshDefinition,
   authCookieHeaderParameter,
 } from '@whook/oauth2';
+import { type WhookRouteDefinition } from '@whook/whook';
 
-// You may override definition depending on your needs here
-export { definition, authCookieHeaderParameter };
+export { authCookieHeaderParameter };
+
+export const definition = {
+  ...postAuthRefreshDefinition,
+  operation: {
+    ...postAuthRefreshDefinition.operation,
+    // Erase the default config that disables the endpoint
+    config: undefined,
+  },
+} as const satisfies WhookRouteDefinition;
 
 export default initPostAuthRefresh;
 ```
@@ -310,7 +319,7 @@ import { type WhookRouteDefinition } from '@whook/whook';
 
 export default initPostOAuth2Acknowledge;
 
-export const definition: WhookRouteDefinition = {
+export const definition = {
   ...postOAuth2AcknowledgeDefinition,
   operation: {
     ...postOAuth2AcknowledgeDefinition.operation,
@@ -349,7 +358,7 @@ export const definition: WhookRouteDefinition = {
       },
     },
   },
-};
+} as const satisfies WhookRouteDefinition;
 ```
 
 You will probably need to also protect the `postOAuth2Token` endpoint with your
