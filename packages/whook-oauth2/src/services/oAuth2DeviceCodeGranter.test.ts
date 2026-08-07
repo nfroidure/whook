@@ -241,7 +241,7 @@ describe('OAuth2DeviceCodeGranter', () => {
         logCalls: log.mock.calls,
       }).toMatchInlineSnapshot(`
        {
-         "err": [YError: E_OAUTH2_BAD_DEVICE_CODE ([]): E_BAD_TOKEN],
+         "err": [YError: E_OAUTH2_BAD_DEVICE_CODE ([]): E_OAUTH2_BAD_DEVICE_CODE],
          "logCalls": [
            [
              "debug",

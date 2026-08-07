@@ -1,5 +1,5 @@
 import { autoService, location } from 'knifecycle';
-import { noop, refersTo, type WhookAPISchemaDefinition } from '@whook/whook';
+import { noop, type WhookAPISchemaDefinition } from '@whook/whook';
 import { pickYErrorWithCode, YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
