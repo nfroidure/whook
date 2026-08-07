@@ -44,7 +44,7 @@ export type WhookOAuth2ReadClientGrantsService = (
 export type WhookOAuth2GranterAuthorize<T extends object> = (
   authorizeParameters: {
     clientId: WhookOAuth2ClientId;
-    demandedRedirectURI: string;
+    demandedRedirectURI?: string;
     demandedScopes: WhookAuthenticationScope[];
   },
   additionalParameters: T,

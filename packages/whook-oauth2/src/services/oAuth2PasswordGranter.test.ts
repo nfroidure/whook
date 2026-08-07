@@ -78,12 +78,12 @@ describe('OAuth2PasswordGranter', () => {
        },
        "logCalls": [
          [
-           "debug",
-           "👫 - OAuth2PasswordGranter Service Initialized!",
-         ],
-         [
            "warning",
            "⚠️ - Using the password flow is deprecated and not recommended.",
+         ],
+         [
+           "debug",
+           "👫 - OAuth2PasswordGranter Service Initialized!",
          ],
        ],
        "oAuth2PasswordCheckCalls": [
@@ -162,12 +162,12 @@ describe('OAuth2PasswordGranter', () => {
        },
        "logCalls": [
          [
-           "debug",
-           "👫 - OAuth2PasswordGranter Service Initialized!",
-         ],
-         [
            "warning",
            "⚠️ - Using the password flow is deprecated and not recommended.",
+         ],
+         [
+           "debug",
+           "👫 - OAuth2PasswordGranter Service Initialized!",
          ],
        ],
        "oAuth2PasswordCheckCalls": [
@@ -235,12 +235,12 @@ describe('OAuth2PasswordGranter', () => {
          "err": [YError: E_OAUTH2_AUTHENTICATION_REQUIRED (["abbacaca-abba-caca-abba-cacaabbacaca"]): E_OAUTH2_AUTHENTICATION_REQUIRED],
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2PasswordGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the password flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2PasswordGranter Service Initialized!",
            ],
          ],
          "oAuth2PasswordCheckCalls": [],
@@ -304,12 +304,12 @@ describe('OAuth2PasswordGranter', () => {
          "err": [YError: E_OAUTH2_GRANT_TYPE_NOT_ALLOWED (["password",["authorization_code"]]): E_OAUTH2_GRANT_TYPE_NOT_ALLOWED],
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2PasswordGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the password flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2PasswordGranter Service Initialized!",
            ],
          ],
          "oAuth2PasswordCheckCalls": [],
@@ -376,12 +376,12 @@ describe('OAuth2PasswordGranter', () => {
          "err": [YError: E_OAUTH2_BAD_SCOPE (["admin"]): E_OAUTH2_BAD_SCOPE],
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2PasswordGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the password flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2PasswordGranter Service Initialized!",
            ],
          ],
          "oAuth2PasswordCheckCalls": [
@@ -460,12 +460,12 @@ describe('OAuth2PasswordGranter', () => {
          "err": [YError: E_OAUTH2_BAD_SCOPE (["admin"]): E_OAUTH2_BAD_SCOPE],
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2PasswordGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the password flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2PasswordGranter Service Initialized!",
            ],
          ],
          "oAuth2PasswordCheckCalls": [

@@ -63,18 +63,22 @@ async function initOAuth2ImplicitGranter({
   time = Date.now.bind(Date),
   log = noop,
 }: WhookOAuth2ImplicitGranterDependencies): Promise<WhookOAuth2ImplicitGranterService> {
+  log(
+    'warning',
+    `⚠️ - Using the token flow is deprecated and not recommended.`,
+  );
+
   const authorizeWithToken: NonNullable<
     WhookOAuth2ImplicitGranterService['authorize']
   > = async ({ clientId, demandedRedirectURI, demandedScopes }) => {
-    log(
-      'warning',
-      `⚠️ - Using the token flow is deprecated and not recommended.`,
-    );
-
     const grants = await readClientGrants(clientId);
 
     checkGrantType(grants.allowedGrantTypes, IMPLICIT_GRANT_TYPE);
-    checkRedirectURI(grants.allowedRedirectURIS, demandedRedirectURI);
+    if (demandedRedirectURI) {
+      checkRedirectURI(grants.allowedRedirectURIS, demandedRedirectURI);
+    } else {
+      demandedRedirectURI = grants.allowedRedirectURIS[0];
+    }
 
     const filteredScopes = filterScopes(
       demandedScopes,
@@ -95,14 +99,9 @@ async function initOAuth2ImplicitGranter({
   const acknowledgeWithToken: NonNullable<
     WhookOAuth2ImplicitGranterService['acknowledge']
   > = async (
-    authenticationData,
+    userAuthenticationData,
     { clientId, demandedRedirectURI, demandedScopes },
   ) => {
-    log(
-      'warning',
-      `⚠️ - Using the token flow is deprecated and not recommended.`,
-    );
-
     const grants = await readClientGrants(clientId);
 
     if (!grants.isPublicClient) {
@@ -117,7 +116,7 @@ async function initOAuth2ImplicitGranter({
         grants.allowedScopes,
         !!OAUTH2.strictScopesChecks,
       ),
-      authenticationData.scopes,
+      userAuthenticationData.scopes,
       !!OAUTH2.strictScopesChecks,
     );
 
@@ -126,14 +125,14 @@ async function initOAuth2ImplicitGranter({
 
     const { token: accessToken, expiresAt: accessTokenExpiresAt } =
       await oAuth2AccessToken.create({
-        ...authenticationData,
+        ...userAuthenticationData,
         clientId,
         scopes: filteredScopes,
       });
 
     return {
       acknowledgedAuthenticationData: {
-        ...authenticationData,
+        ...userAuthenticationData,
         clientId,
         scopes: filteredScopes,
       },

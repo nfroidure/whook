@@ -197,7 +197,11 @@ async function initOAuth2AuthorizationCodeGranter({
       !!OAUTH2.strictScopesChecks,
     );
 
-    checkRedirectURI(grants.allowedRedirectURIS, demandedRedirectURI);
+    if (demandedRedirectURI) {
+      checkRedirectURI(grants.allowedRedirectURIS, demandedRedirectURI);
+    } else {
+      demandedRedirectURI = grants.allowedRedirectURIS[0];
+    }
 
     return {
       clientId,

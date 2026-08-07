@@ -15,3 +15,10 @@ export function camelCaseObjectProperties<T>(
     {} as Record<string, T>,
   );
 }
+
+export function snakeCase(s: string): string {
+  return s
+    .split(/(?=(?<![A-Z])[A-Z])|[^a-zA-Z]+/)
+    .map((s) => s.toLowerCase())
+    .join('_');
+}

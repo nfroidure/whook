@@ -87,17 +87,17 @@ async function initOAuth2PasswordGranter({
   readClientGrants,
   log = noop,
 }: WhookOAuth2PasswordGranterDependencies): Promise<WhookOAuth2PasswordGranterService> {
+  log(
+    'warning',
+    `⚠️ - Using the password flow is deprecated and not recommended.`,
+  );
+
   const authenticateWithPassword: NonNullable<
     WhookOAuth2PasswordGranterService['authenticate']
   > = async (
     { username, password, demandedScopes },
     optionalAuthenticationData,
   ) => {
-    log(
-      'warning',
-      `⚠️ - Using the password flow is deprecated and not recommended.`,
-    );
-
     const usableClientId =
       optionalAuthenticationData?.clientId || OAUTH2.rootClientId;
 

@@ -25,6 +25,7 @@ import {
   codeChallengeSchema,
 } from '../services/oAuth2AuthorizationCodeGranter.js';
 import { addParamsToURL, buildParamsFromError } from '../libs/redirectURI.js';
+import { snakeCase } from '../libs/utils.js';
 
 export { scopeSchema, codeChallengeMethodSchema, codeChallengeSchema };
 
@@ -259,11 +260,4 @@ async function initPostOAuth2Acknowledge({
       },
     };
   };
-}
-
-function snakeCase(s: string): string {
-  return s
-    .split(/(?=(?<![A-Z])[A-Z])|[^a-zA-Z]+/)
-    .map((s) => s.toLowerCase())
-    .join('_');
 }

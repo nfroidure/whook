@@ -218,7 +218,10 @@ async function initPostOAuth2Token({
 
       return {
         status: 200,
-        headers: {},
+        headers: {
+          'Cache-Control': 'no-store',
+          Pragma: 'no-cache',
+        },
         body: {
           access_token: accessToken,
           token_type: 'bearer',

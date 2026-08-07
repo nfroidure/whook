@@ -82,12 +82,12 @@ describe('OAuth2ImplicitGranter', () => {
          },
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2ImplicitGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the token flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2ImplicitGranter Service Initialized!",
            ],
          ],
          "oAuth2AccessTokenCheckCalls": [],
@@ -155,12 +155,12 @@ describe('OAuth2ImplicitGranter', () => {
          },
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2ImplicitGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the token flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2ImplicitGranter Service Initialized!",
            ],
          ],
          "oAuth2AccessTokenCheckCalls": [],
@@ -221,12 +221,12 @@ describe('OAuth2ImplicitGranter', () => {
            "err": [YError: E_OAUTH2_GRANT_TYPE_NOT_ALLOWED (["implicit",["authorization_code"]]): E_OAUTH2_GRANT_TYPE_NOT_ALLOWED],
            "logCalls": [
              [
-               "debug",
-               "👫 - OAuth2ImplicitGranter Service Initialized!",
-             ],
-             [
                "warning",
                "⚠️ - Using the token flow is deprecated and not recommended.",
+             ],
+             [
+               "debug",
+               "👫 - OAuth2ImplicitGranter Service Initialized!",
              ],
            ],
            "oAuth2AccessTokenCheckCalls": [],
@@ -290,12 +290,12 @@ describe('OAuth2ImplicitGranter', () => {
            "err": [YError: E_OAUTH2_BAD_SCOPE (["admin"]): E_OAUTH2_BAD_SCOPE],
            "logCalls": [
              [
-               "debug",
-               "👫 - OAuth2ImplicitGranter Service Initialized!",
-             ],
-             [
                "warning",
                "⚠️ - Using the token flow is deprecated and not recommended.",
+             ],
+             [
+               "debug",
+               "👫 - OAuth2ImplicitGranter Service Initialized!",
              ],
            ],
            "oAuth2AccessTokenCheckCalls": [],
@@ -381,12 +381,12 @@ describe('OAuth2ImplicitGranter', () => {
          },
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2ImplicitGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the token flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2ImplicitGranter Service Initialized!",
            ],
          ],
          "oAuth2AccessTokenCheckCalls": [
@@ -481,12 +481,12 @@ describe('OAuth2ImplicitGranter', () => {
          },
          "logCalls": [
            [
-             "debug",
-             "👫 - OAuth2ImplicitGranter Service Initialized!",
-           ],
-           [
              "warning",
              "⚠️ - Using the token flow is deprecated and not recommended.",
+           ],
+           [
+             "debug",
+             "👫 - OAuth2ImplicitGranter Service Initialized!",
            ],
          ],
          "oAuth2AccessTokenCheckCalls": [
@@ -565,12 +565,12 @@ describe('OAuth2ImplicitGranter', () => {
            "err": [YError: E_OAUTH2_AUTHENTICATION_REQUIRED (["abbacaca-abba-caca-abba-cacaabbacaca"]): E_OAUTH2_AUTHENTICATION_REQUIRED],
            "logCalls": [
              [
-               "debug",
-               "👫 - OAuth2ImplicitGranter Service Initialized!",
-             ],
-             [
                "warning",
                "⚠️ - Using the token flow is deprecated and not recommended.",
+             ],
+             [
+               "debug",
+               "👫 - OAuth2ImplicitGranter Service Initialized!",
              ],
            ],
            "oAuth2AccessTokenCheckCalls": [],
@@ -638,12 +638,12 @@ describe('OAuth2ImplicitGranter', () => {
            "err": [YError: E_OAUTH2_GRANT_TYPE_NOT_ALLOWED (["implicit",["authorization_code"]]): E_OAUTH2_GRANT_TYPE_NOT_ALLOWED],
            "logCalls": [
              [
-               "debug",
-               "👫 - OAuth2ImplicitGranter Service Initialized!",
-             ],
-             [
                "warning",
                "⚠️ - Using the token flow is deprecated and not recommended.",
+             ],
+             [
+               "debug",
+               "👫 - OAuth2ImplicitGranter Service Initialized!",
              ],
            ],
            "oAuth2AccessTokenCheckCalls": [],
@@ -713,12 +713,12 @@ describe('OAuth2ImplicitGranter', () => {
            "err": [YError: E_OAUTH2_BAD_SCOPE (["admin"]): E_OAUTH2_BAD_SCOPE],
            "logCalls": [
              [
-               "debug",
-               "👫 - OAuth2ImplicitGranter Service Initialized!",
-             ],
-             [
                "warning",
                "⚠️ - Using the token flow is deprecated and not recommended.",
+             ],
+             [
+               "debug",
+               "👫 - OAuth2ImplicitGranter Service Initialized!",
              ],
            ],
            "oAuth2AccessTokenCheckCalls": [],
@@ -788,12 +788,12 @@ describe('OAuth2ImplicitGranter', () => {
            "err": [YError: E_OAUTH2_BAD_SCOPE (["admin"]): E_OAUTH2_BAD_SCOPE],
            "logCalls": [
              [
-               "debug",
-               "👫 - OAuth2ImplicitGranter Service Initialized!",
-             ],
-             [
                "warning",
                "⚠️ - Using the token flow is deprecated and not recommended.",
+             ],
+             [
+               "debug",
+               "👫 - OAuth2ImplicitGranter Service Initialized!",
              ],
            ],
            "oAuth2AccessTokenCheckCalls": [],

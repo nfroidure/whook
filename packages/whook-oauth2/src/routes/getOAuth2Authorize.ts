@@ -99,7 +99,7 @@ export const stateParameter = {
   parameter: {
     in: 'query',
     name: 'state',
-    required: true,
+    required: false,
     schema: {
       type: 'string',
     },
