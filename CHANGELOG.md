@@ -1,3 +1,8 @@
+## [26.0.0](https://github.com/nfroidure/whook/compare/v25.2.1...v26.0.0) (2026-08-07)
+
+### Features
+
+* **@whook/oauth2:** allow to revoke OAuth2 tokens ([c998d56](https://github.com/nfroidure/whook/commit/c998d5614f4430bd9696771f7edb576e56e287a9)), references [#230](https://github.com/nfroidure/whook/issues/230)
 
 # [25.2.0](https://github.com/nfroidure/whook/compare/v25.1.0...v25.2.0) (2026-07-19)
 
