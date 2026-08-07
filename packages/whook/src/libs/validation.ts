@@ -470,13 +470,7 @@ export async function resolveParameters<T extends OpenAPI>(
 }
 
 export type WhookParameterValue =
-  | boolean
-  | boolean[]
-  | string
-  | string[]
-  | number
-  | number[]
-  | undefined;
+  boolean | boolean[] | string | string[] | number | number[] | undefined;
 export type WhookParameterCaster = (str: string) => WhookParameterValue;
 export type WhookParameterValidator = (
   str: string | undefined,

@@ -64,9 +64,7 @@ export type WhookSchemaValidatorsDependencies = WhookSchemaValidatorsConfig & {
 };
 export type WhookSchemaValidatorsService = (
   schema:
-    | JSONSchema
-    | ExpressiveJSONSchema
-    | OpenAPIReference<ExpressiveJSONSchema>,
+    JSONSchema | ExpressiveJSONSchema | OpenAPIReference<ExpressiveJSONSchema>,
 ) => ValidateFunction;
 
 /**

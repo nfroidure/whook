@@ -214,8 +214,7 @@ async function handleWithAuthorization<A>(
   const authorization = ((parameters.query.access_token && DEFAULT_MECHANISM
     ? `${DEFAULT_MECHANISM} ${parameters.query.access_token}`
     : parameters.headers.authorization) || clientSecretPost) as
-    | string
-    | undefined;
+    string | undefined;
 
   if (noAuth || (optionalAuth && !authorization)) {
     log(

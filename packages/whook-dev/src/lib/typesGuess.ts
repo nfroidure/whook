@@ -57,8 +57,7 @@ export async function findInitializerServiceTypeNode(
 
     const exportedDeclarations = (
       (fileExportDeclarations.get(candidateExportName) || []) as (
-        | ExportAssignment
-        | ExportedDeclarations
+        ExportAssignment | ExportedDeclarations
       )[]
     ).concat(
       candidateExportName === 'default' && fileExportAssignments.length
@@ -317,9 +316,7 @@ function unwrapKnifecycleUtilsCalls(node: Node): Node | undefined {
 
 function unwrapInitializerServiceTypeNode(
   typeNode:
-    | FunctionLikeDeclaration
-    | CallSignatureDeclaration
-    | FunctionTypeNode,
+    FunctionLikeDeclaration | CallSignatureDeclaration | FunctionTypeNode,
 ): Node | undefined {
   const returnTypeNode = typeNode.getReturnTypeNode();
 

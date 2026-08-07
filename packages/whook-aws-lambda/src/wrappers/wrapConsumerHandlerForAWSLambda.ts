@@ -99,11 +99,7 @@ async function handleForAWSConsumerLambda(
   }: Required<WhookAWSLambdaConsumerHandlerWrapperDependencies>,
   handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaConsumerInput>>,
   event:
-    | KinesisStreamEvent
-    | SQSEvent
-    | SNSEvent
-    | SESEvent
-    | DynamoDBStreamEvent,
+    KinesisStreamEvent | SQSEvent | SNSEvent | SESEvent | DynamoDBStreamEvent,
 ) {
   const startTime = time();
   const parameters = {
