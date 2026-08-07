@@ -22,13 +22,13 @@ act on behalf of them.
 
 The module provides:
 
-- 2 OAuth2 routes definitions implementing the 2 OAuth2 standard endpoints
-  (`getOAuth2Authorize`, `postOAuth2Token`) to be used by OAuth2 client
-  applications,
+- 3 OAuth2 routes definitions implementing the OAuth2 standard endpoints
+  (`getOAuth2Authorize`, `postOAuth2Token`, `postOAuth2DeviceAuthorization`)
+  to be used by OAuth2 client applications,
 - 4 authentication endpoints to be used by the authorization server directly to
   authenticate users (`postAuthLogin`, `postAuthRefresh`, `postAuthLogout`) and
   acknowledge the client requests (`postOAuth2Acknowledge`),
-- 5 OAuth2 services implementing the standard grant types. You can create your
+- 6 OAuth2 services implementing the standard grant types. You can create your
   own granter services to create additional grant types.
 
 This module requires you to implement some services it relies on:
@@ -41,7 +41,9 @@ This module requires you to implement some services it relies on:
 - `oAuth2ClientCredentialsService` aimed to check the `client_credential` grant
   type with your own logic (if you use it),
 - `oAuth2AuthorizationCodeService` aimed to check the `code` grant type with
-  your own logic (if you use it).
+  your own logic (if you use it),
+- `oAuth2DeviceCode` aimed to create and check device codes for the device
+  authorization grant type (if you use it).
 
 ## Quick setup
 

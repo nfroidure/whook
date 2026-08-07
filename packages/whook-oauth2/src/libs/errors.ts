@@ -21,6 +21,21 @@ export interface OAuth2YErrorRegistry {
   E_OAUTH2_BAD_REFRESH_TOKEN: [];
 
   /**
+   * Thrown when the device code is expired/invalid
+   */
+  E_OAUTH2_BAD_DEVICE_CODE: [];
+
+  /**
+   * Thrown when the device code has not been authorized yet
+   */
+  E_OAUTH2_AUTHORIZATION_PENDING: [];
+
+  /**
+   * Thrown when the client is polling too often
+   */
+  E_OAUTH2_SLOW_DOWN: [];
+
+  /**
    * Thrown when application has no access allowed
    */
   E_OAUTH2_ACCESS_DENIED: [clientId: WhookOAuth2ClientId];
@@ -169,6 +184,27 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     code: 'invalid_grant',
     status: 400,
     description: 'The refresh token is expired/invalid.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_BAD_DEVICE_CODE: {
+    code: 'invalid_grant',
+    status: 400,
+    description: 'The device code is expired/invalid.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_AUTHORIZATION_PENDING: {
+    code: 'authorization_pending',
+    status: 400,
+    description: 'The end-user has not completed the authorization yet.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_SLOW_DOWN: {
+    code: 'slow_down',
+    status: 400,
+    description: 'The token request was sent too often.',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },

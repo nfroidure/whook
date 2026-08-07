@@ -129,6 +129,7 @@ export const oAuth2MetadataSchema = {
             'authorization_code',
             'implicit',
             'refresh_token',
+            'urn:ietf:params:oauth:grant-type:device_code',
             'client_credentials',
             'password',
             'urn:ietf:params:oauth:grant-type:jwt-bearer',

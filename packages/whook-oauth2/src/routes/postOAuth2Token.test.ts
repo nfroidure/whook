@@ -14,6 +14,7 @@ import { type WhookOAuth2AuthorizationCodeGranterService } from '../services/oAu
 import { type WhookOAuth2ImplicitGranterService } from '../services/oAuth2ImplicitGranter.js';
 import { type WhookOAuth2PasswordGranterService } from '../services/oAuth2PasswordGranter.js';
 import { type WhookOAuth2RefreshTokenGranterService } from '../services/oAuth2RefreshTokenGranter.js';
+import { type WhookOAuth2DeviceCodeGranterService } from '../services/oAuth2DeviceCodeGranter.js';
 import { type WhookAuthenticationData } from '@whook/authorization';
 
 describe('postOAuth2Token', () => {
@@ -80,11 +81,18 @@ describe('postOAuth2Token', () => {
         NonNullable<WhookOAuth2RefreshTokenGranterService['authenticate']>
       >(),
   } satisfies WhookOAuth2RefreshTokenGranterService;
+  const deviceCodeGranter = {
+    grantType: 'urn:ietf:params:oauth:grant-type:device_code',
+    issuesRefreshToken: true,
+    authenticate:
+      jest.fn<NonNullable<WhookOAuth2DeviceCodeGranterService['authenticate']>>(),
+  } satisfies WhookOAuth2DeviceCodeGranterService;
   const oAuth2Granters = [
     codeGranter,
     tokenGranter,
     passwordGranter,
     refreshTokenGranter,
+    deviceCodeGranter,
     clientCredentialsGranter,
   ] as unknown as WhookOAuth2GranterService<WhookOAuth2GranterDefinitions>[];
 
@@ -102,6 +110,7 @@ describe('postOAuth2Token', () => {
     tokenGranter.acknowledge.mockReset();
     passwordGranter.authenticate.mockReset();
     refreshTokenGranter.authenticate.mockReset();
+    deviceCodeGranter.authenticate.mockReset();
     clientCredentialsGranter.authenticate.mockReset();
   });
 
@@ -475,6 +484,107 @@ describe('postOAuth2Token', () => {
     oAuth2AccessToken.create.mockResolvedValueOnce({
       token: 'an_access_token',
       expiresAt: Date.parse('2010-03-07T00:00:00Z'),
+    });
+
+    test('should create a token with the device_code flow', async () => {
+      time.mockReturnValue(new Date('2010-03-06T00:00:00Z').getTime());
+      oAuth2AccessToken.create.mockResolvedValueOnce({
+        token: 'an_access_token',
+        expiresAt: Date.parse('2010-03-07T00:00:00Z'),
+      });
+      oAuth2RefreshToken.create.mockResolvedValueOnce({
+        token: 'a_refresh_token',
+        expiresAt: Date.parse('2180-03-06T00:00:00Z'),
+      });
+      deviceCodeGranter.authenticate.mockResolvedValueOnce({
+        clientId: 'authenticate_app_id',
+        userId: 'authenticate_user_id',
+        scopes: ['user', 'admin'],
+      });
+
+      const postOAuth2Token = await initPostOAuth2Token({
+        OAUTH2,
+        oAuth2Granters,
+        oAuth2AccessToken,
+        oAuth2RefreshToken,
+        time,
+        log,
+      });
+      const response = await postOAuth2Token({
+        authenticationData: {
+          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          scopes: ['user'],
+        } as WhookAuthenticationData,
+        body: {
+          grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
+          device_code: 'a_device_code',
+        },
+      });
+
+      expect({
+        response,
+        deviceCodeGranterAuthenticatorAuthenticateCalls:
+          deviceCodeGranter.authenticate.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      }).toMatchInlineSnapshot(`
+       {
+         "deviceCodeGranterAuthenticatorAuthenticateCalls": [
+           [
+             {
+               "demandedScopes": [],
+               "deviceCode": "a_device_code",
+             },
+             {
+               "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
+               "scopes": [
+                 "user",
+               ],
+             },
+           ],
+         ],
+         "logCalls": [],
+         "oAuth2AccessTokenCreateCalls": [
+           [
+             {
+               "clientId": "authenticate_app_id",
+               "scopes": [
+                 "user",
+                 "admin",
+               ],
+               "userId": "authenticate_user_id",
+             },
+           ],
+         ],
+         "oAuth2RefreshTokenCreateCalls": [
+           [
+             {
+               "clientId": "authenticate_app_id",
+               "scopes": [
+                 "user",
+                 "admin",
+               ],
+               "userId": "authenticate_user_id",
+             },
+           ],
+         ],
+         "response": {
+           "body": {
+             "access_token": "an_access_token",
+             "expiration_date": "2010-03-07T00:00:00.000Z",
+             "expires_in": 86400,
+             "refresh_token": "a_refresh_token",
+             "refresh_token_expiration_date": "2180-03-06T00:00:00.000Z",
+             "refresh_token_expires_in": 5364748800,
+             "scope": "user admin",
+             "token_type": "bearer",
+           },
+           "headers": {},
+           "status": 200,
+         },
+       }
+      `);
     });
     oAuth2RefreshToken.create.mockResolvedValueOnce({
       token: 'a_refresh_token',
