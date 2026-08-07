@@ -69,9 +69,6 @@
     "yerror": "^11.0.0",
     "yhttperror": "^9.0.2"
   },
-  "peerDependencies": {
-    "@whook/dev": "^25.0.0"
-  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@swc/cli": "^0.8.1",
