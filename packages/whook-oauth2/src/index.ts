@@ -23,6 +23,12 @@ import initPostOAuth2Token, {
   refreshTokenRequestBodySchema as postOAuth2TokenRefreshTokenRequestBodySchema,
   tokenBodySchema as postOAuth2TokenTokenBodySchema,
 } from './routes/postOAuth2Token.js';
+import initPostOAuth2Revoke, {
+  definition as postOAuth2RevokeDefinition,
+  tokenTypeHintSchema as postOAuth2RevokeTokenTypeHintSchema,
+  revokeTokenRequestBodySchema as postOAuth2RevokeTokenRequestBodySchema,
+} from './routes/postOAuth2Revoke.js';
+export type * from './routes/postOAuth2Revoke.js';
 import initGetOAuth2WellKnown, {
   definition as getOAuth2WellKnownDefinition,
   endpointAuthenticationMethodsSchema as getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
@@ -116,6 +122,10 @@ export {
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,
   postOAuth2TokenDefinition,
+  initPostOAuth2Revoke,
+  postOAuth2RevokeDefinition,
+  postOAuth2RevokeTokenTypeHintSchema,
+  postOAuth2RevokeTokenRequestBodySchema,
   postOAuth2TokenCodeVerifierSchema,
   postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
   postOAuth2TokenPasswordTokenRequestBodySchema,

@@ -328,6 +328,15 @@ async function initGetOAuth2WellKnownMetadata({
       ),
     ],
     scopes_supported: collectScopesFromAPI(API),
+    ...(ROUTES_DEFINITIONS['postOAuth2Revoke']?.module.definition.path
+      ? {
+          revocation_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['postOAuth2Revoke'].module.definition.path}`,
+          revocation_endpoint_auth_methods_supported: [
+            'client_secret_basic',
+            'client_secret_post',
+          ],
+        }
+      : {}),
   };
 
   return async () => {

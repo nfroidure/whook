@@ -22,8 +22,8 @@ act on behalf of them.
 
 The module provides:
 
-- 2 OAuth2 routes definitions implementing the 2 OAuth2 standard endpoints
-  (`getOAuth2Authorize`, `postOAuth2Token`) to be used by OAuth2 client
+- 3 OAuth2 routes definitions implementing OAuth2 standard endpoints
+  (`getOAuth2Authorize`, `postOAuth2Token`, `postOAuth2Revoke`) to be used by OAuth2 client
   applications,
 - 4 authentication endpoints to be used by the authorization server directly to
   authenticate users (`postAuthLogin`, `postAuthRefresh`, `postAuthLogout`) and
