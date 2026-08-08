@@ -38,18 +38,6 @@ describe('OAuth2AuthorizationCodeGranter', () => {
           log,
         });
 
-      readClientGrants.mockResolvedValue({
-        allowedScopes: ['user', 'admin'],
-        allowedRedirectURIS: ['https://www.example.com/oauth2/code'],
-        allowedGrantTypes: ['authorization_code', 'refresh_token'],
-        authenticationData: {
-          clientId: 'the_client_app_id',
-          scopes: ['user', 'admin'],
-          userId: 'user_id',
-        },
-        isPublicClient: false,
-      });
-
       oAuth2AuthorizationCode.create.mockRejectedValueOnce(
         new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
       );
@@ -60,12 +48,18 @@ describe('OAuth2AuthorizationCodeGranter', () => {
       const authorizerResult = await oAuth2AuthorizationCodeGranter.authorize?.(
         {
           clientId: 'the_client_app_id',
-          demandedRedirectURI: 'https://www.example.com/oauth2/code',
+          clientGrants: {
+            allowedScopes: ['user', 'admin'],
+            allowedRedirectURIS: ['https://www.example.com/oauth2/code'],
+            allowedGrantTypes: ['authorization_code', 'refresh_token'],
+            authenticationData: {
+              clientId: 'the_client_app_id',
+              scopes: ['user', 'admin'],
+              userId: 'user_id',
+            },
+            isPublicClient: false,
+          },
           demandedScopes: ['user'],
-        },
-        {
-          codeChallenge: 'my_code_challenge',
-          codeChallengeMethod: 'plain',
         },
       );
 
@@ -80,8 +74,6 @@ describe('OAuth2AuthorizationCodeGranter', () => {
       }).toMatchInlineSnapshot(`
        {
          "authorizerResult": {
-           "clientId": "the_client_app_id",
-           "redirectURI": "https://www.example.com/oauth2/code",
            "scopes": [
              "user",
            ],
@@ -94,158 +86,9 @@ describe('OAuth2AuthorizationCodeGranter', () => {
          ],
          "oAuth2AuthorizationCodeCheckCalls": [],
          "oAuth2AuthorizationCodeCreateCalls": [],
-         "readClientGrantsCalls": [
-           [
-             "the_client_app_id",
-           ],
-         ],
+         "readClientGrantsCalls": [],
        }
       `);
-    });
-
-    test('should fail with a bad uri', async () => {
-      const oAuth2AuthorizationCodeGranter =
-        await initOAuth2AuthorizationCodeGranter({
-          OAUTH2,
-          readClientGrants,
-          oAuth2AuthorizationCode,
-          log,
-        });
-
-      readClientGrants.mockResolvedValue({
-        allowedScopes: ['user', 'admin'],
-        allowedRedirectURIS: ['https://www.example.com/oauth2/code'],
-        allowedGrantTypes: ['authorization_code', 'refresh_token'],
-        authenticationData: {
-          clientId: 'the_client_app_id',
-          scopes: ['user', 'admin'],
-          userId: 'user_id',
-        },
-        isPublicClient: false,
-      });
-
-      oAuth2AuthorizationCode.create.mockRejectedValueOnce(
-        new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
-      );
-      oAuth2AuthorizationCode.check.mockRejectedValueOnce(
-        new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
-      );
-
-      try {
-        await oAuth2AuthorizationCodeGranter.authorize?.(
-          {
-            clientId: 'the_client_app_id',
-            demandedRedirectURI: 'https://www.example.com/admin',
-            demandedScopes: ['user'],
-          },
-          {
-            codeChallenge: 'my_code_challenge',
-            codeChallengeMethod: 'plain',
-          },
-        );
-        throw new YError('E_UNEXPECTED_SUCCESS');
-      } catch (err) {
-        expect({
-          err,
-          oAuth2AuthorizationCodeCreateCalls:
-            oAuth2AuthorizationCode.create.mock.calls,
-          oAuth2AuthorizationCodeCheckCalls:
-            oAuth2AuthorizationCode.check.mock.calls,
-          readClientGrantsCalls: readClientGrants.mock.calls,
-          logCalls: log.mock.calls,
-        }).toMatchInlineSnapshot(`
-         {
-           "err": [YError: E_OAUTH2_BAD_REDIRECT_URI (["https://www.example.com/admin",["https://www.example.com/oauth2/code"]]): E_OAUTH2_BAD_REDIRECT_URI],
-           "logCalls": [
-             [
-               "debug",
-               "👫 - OAuth2AuthorizationCodeGranter Service Initialized!",
-             ],
-           ],
-           "oAuth2AuthorizationCodeCheckCalls": [],
-           "oAuth2AuthorizationCodeCreateCalls": [],
-           "readClientGrantsCalls": [
-             [
-               "the_client_app_id",
-             ],
-           ],
-         }
-        `);
-      }
-    });
-
-    test('should fail with a bad scope', async () => {
-      const oAuth2AuthorizationCodeGranter =
-        await initOAuth2AuthorizationCodeGranter({
-          OAUTH2: {
-            ...OAUTH2,
-            strictScopesChecks: true,
-          },
-          readClientGrants,
-          oAuth2AuthorizationCode,
-          log,
-        });
-
-      readClientGrants.mockResolvedValue({
-        allowedScopes: ['user', 'admin'],
-        allowedRedirectURIS: ['https://www.example.com/oauth2/code'],
-        allowedGrantTypes: ['authorization_code', 'refresh_token'],
-        authenticationData: {
-          clientId: 'the_client_app_id',
-          scopes: ['user', 'admin'],
-          userId: 'user_id',
-        },
-        isPublicClient: false,
-      });
-
-      oAuth2AuthorizationCode.create.mockRejectedValueOnce(
-        new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
-      );
-      oAuth2AuthorizationCode.check.mockRejectedValueOnce(
-        new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
-      );
-
-      try {
-        await oAuth2AuthorizationCodeGranter.authorize?.(
-          {
-            clientId: 'the_client_app_id',
-            demandedRedirectURI: 'https://www.example.com/admin',
-            demandedScopes: ['god'],
-          },
-          {
-            codeChallenge: 'my_code_challenge',
-            codeChallengeMethod: 'plain',
-          },
-        );
-        throw new YError('E_UNEXPECTED_SUCCESS');
-      } catch (err) {
-        expect({
-          err,
-          oAuth2AuthorizationCodeCreateCalls:
-            oAuth2AuthorizationCode.create.mock.calls,
-          oAuth2AuthorizationCodeCheckCalls:
-            oAuth2AuthorizationCode.check.mock.calls,
-          readClientGrantsCalls: readClientGrants.mock.calls,
-          logCalls: log.mock.calls,
-        }).toMatchInlineSnapshot(`
-         {
-           "err": [YError: E_OAUTH2_BAD_SCOPE (["god"]): E_OAUTH2_BAD_SCOPE],
-           "logCalls": [
-             [
-               "debug",
-               "👫 - OAuth2AuthorizationCodeGranter Service Initialized!",
-             ],
-           ],
-           "oAuth2AuthorizationCodeCheckCalls": [],
-           "oAuth2AuthorizationCodeCreateCalls": [],
-           "readClientGrantsCalls": [
-             [
-               "the_client_app_id",
-             ],
-           ],
-         }
-        `);
-      }
     });
   });
 

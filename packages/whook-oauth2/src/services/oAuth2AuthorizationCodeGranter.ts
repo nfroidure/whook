@@ -23,14 +23,15 @@ import { filterScopes } from '../libs/scopes.js';
 import { checkRedirectURI } from '../libs/redirectURI.js';
 import {
   checkCodeChallenge,
+  AUTHORIZATION_CODE_GRANT_TYPE,
+  AUTHORIZATION_CODE_RESPONSE_TYPE,
   CODE_CHALLENGE_METHODS,
   PLAIN_CODE_CHALLENGE_METHOD,
   type CodeChallengeMethod,
 } from '../libs/verifier.js';
 import { toUsableClientId } from '../libs/clients.js';
 
-export const AUTHORIZATION_CODE_GRANT_TYPE = 'authorization_code';
-export const AUTHORIZATION_CODE_RESPONSE_TYPE = 'code';
+export { AUTHORIZATION_CODE_GRANT_TYPE, AUTHORIZATION_CODE_RESPONSE_TYPE };
 
 export const codeVerifierSchema = {
   name: 'CodeVerifier',
@@ -145,10 +146,6 @@ export interface WhookOAuth2AuthorizationCodeGranterDependencies {
 export interface WhookOAuth2AuthorizationCodeGranterDefinitions extends WhookOAuth2GranterDefinitions {
   grantType: typeof AUTHORIZATION_CODE_GRANT_TYPE;
   responseType: typeof AUTHORIZATION_CODE_RESPONSE_TYPE;
-  authorizeParameters: {
-    codeChallenge: string;
-    codeChallengeMethod: CodeChallengeMethod;
-  };
   acknowledgeParameters: {
     codeChallenge: string;
     codeChallengeMethod: CodeChallengeMethod;
@@ -179,34 +176,14 @@ async function initOAuth2AuthorizationCodeGranter({
 }: WhookOAuth2AuthorizationCodeGranterDependencies): Promise<WhookOAuth2AuthorizationCodeGranterService> {
   const authorizeWithCode: NonNullable<
     WhookOAuth2AuthorizationCodeGranterService['authorize']
-  > = async ({ clientId, demandedRedirectURI, demandedScopes }) => {
-    const grants = await readClientGrants(clientId);
-
-    if (clientId !== grants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        clientId,
-        grants.authenticationData.clientId,
-      ]);
-    }
-
-    checkGrantType(grants.allowedGrantTypes, AUTHORIZATION_CODE_GRANT_TYPE);
-
-    const filteredScopes = filterScopes(
-      demandedScopes,
-      grants.allowedScopes,
-      !!OAUTH2.strictScopesChecks,
+  > = async ({ clientGrants, demandedScopes }) => {
+    checkGrantType(
+      clientGrants.allowedGrantTypes,
+      AUTHORIZATION_CODE_GRANT_TYPE,
     );
 
-    if (demandedRedirectURI) {
-      checkRedirectURI(grants.allowedRedirectURIS, demandedRedirectURI);
-    } else {
-      demandedRedirectURI = grants.allowedRedirectURIS[0];
-    }
-
     return {
-      clientId,
-      redirectURI: demandedRedirectURI,
-      scopes: filteredScopes,
+      scopes: demandedScopes,
     };
   };
 

@@ -98,7 +98,7 @@
     "@whook/whook": "^26.0.0",
     "camelcase": "^9.0.0",
     "chokidar": "^5.0.0",
-    "common-services": "^20.0.0",
+    "common-services": "^20.1.0",
     "esbuild": "^0.28.0",
     "esbuild-node-externals": "^1.22.0",
     "fs-extra": "^11.3.5",

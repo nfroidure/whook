@@ -15,6 +15,11 @@ import { scopeTokenSchema, scopeTokensSchema } from '../libs/schemas.js';
 import { type LogService } from 'common-services';
 import { type OpenAPI } from 'ya-open-api-types';
 import { collectScopesFromAPI } from '../libs/scopes.js';
+import {
+  DEFAULT_OAUTH2_PAR,
+  type WhookOAuth2AuthorizationRequestsConfig,
+} from '../services/oAuth2AuthorizationRequests.js';
+import { YError } from 'yerror';
 
 export { scopeTokenSchema, scopeTokensSchema, codeChallengeMethodSchema };
 
@@ -93,6 +98,7 @@ export const oAuth2MetadataSchema = {
       issuer: refersTo(httpsProtocolURISchema),
       authorization_endpoint: refersTo(httpsProtocolURISchema),
       token_endpoint: refersTo(httpsProtocolURISchema),
+      pushed_authorization_request_endpoint: refersTo(httpsProtocolURISchema),
       jwks_uri: refersTo(httpsProtocolURISchema),
       registration_endpoint: refersTo(httpsProtocolURISchema),
       scopes_supported: refersTo(scopeTokensSchema),
@@ -255,6 +261,9 @@ export const oAuth2MetadataSchema = {
       request_uri_parameter_supported: {
         type: 'boolean',
       },
+      require_pushed_authorization_requests: {
+        type: 'boolean',
+      },
       require_request_uri_registration: {
         type: 'boolean',
       },
@@ -295,9 +304,10 @@ async function initGetOAuth2WellKnownMetadata({
   API,
   BASE_URL,
   ROUTES_DEFINITIONS,
+  OAUTH2_PAR = DEFAULT_OAUTH2_PAR,
   oAuth2Granters,
   log,
-}: {
+}: WhookOAuth2AuthorizationRequestsConfig & {
   API: OpenAPI;
   BASE_URL: string;
   ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
@@ -306,6 +316,14 @@ async function initGetOAuth2WellKnownMetadata({
 }) {
   if (!BASE_URL.startsWith('https')) {
     log('warning', `⚠️ - OAuth2 issuer must start with HTTPS (${BASE_URL}).`);
+  }
+
+  if (
+    OAUTH2_PAR.mode !== 'disabled' &&
+    !ROUTES_DEFINITIONS['postOAuth2PushedAuthorizationRequest']
+  ) {
+    log('error', `💥 - OAuth2 PAR endpoint required to enable PAR.`);
+    throw new YError('E_OAUTH2_MISCONFIGURED');
   }
 
   const body = {
@@ -335,6 +353,13 @@ async function initGetOAuth2WellKnownMetadata({
             'client_secret_basic',
             'client_secret_post',
           ],
+        }
+      : {}),
+    ...(ROUTES_DEFINITIONS['postOAuth2PushedAuthorizationRequest']?.module
+      .definition.path && OAUTH2_PAR.mode !== 'disabled'
+      ? {
+          pushed_authorization_request_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['postOAuth2PushedAuthorizationRequest']?.module.definition.path}`,
+          require_pushed_authorization_requests: OAUTH2_PAR.mode === 'required',
         }
       : {}),
   };

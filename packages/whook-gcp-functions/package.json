@@ -59,7 +59,7 @@
     "ajv-formats": "^3.0.1",
     "application-services": "^9.0.1",
     "camelcase": "^9.0.0",
-    "common-services": "^20.0.0",
+    "common-services": "^20.1.0",
     "cpr": "3.0.1",
     "knifecycle": "^21.3.0",
     "mkdirp": "^3.0.1",

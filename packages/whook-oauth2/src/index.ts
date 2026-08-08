@@ -5,10 +5,12 @@ import initGetOAuth2Authorize, {
   redirectURIParameter as getOAuth2AuthorizeRedirectURIParameter,
   scopeParameter as getOAuth2AuthorizeScopeParameter,
   stateParameter as getOAuth2AuthorizeStateParameter,
+  requestURIParameter as getOAuth2AuthorizeRequestURIParameter,
   codeChallengeSchema as getOAuth2AuthorizeCodeChallengeSchema,
   codeChallengeParameter as getOAuth2AuthorizeCodeChallengeParameter,
   codeChallengeMethodSchema as getOAuth2AuthorizeCodeChallengeMethodSchema,
   codeChallengeMethodParameter as getOAuth2AuthorizeCodeChallengeMethodParameter,
+  requestURISchema as getOAuth2AuthorizeRequestURISchema,
   scopeSchema as getOAuth2AuthorizeScopeSchema,
 } from './routes/getOAuth2Authorize.js';
 import initPostOAuth2Acknowledge, {
@@ -23,6 +25,11 @@ import initPostOAuth2Token, {
   refreshTokenRequestBodySchema as postOAuth2TokenRefreshTokenRequestBodySchema,
   tokenBodySchema as postOAuth2TokenTokenBodySchema,
 } from './routes/postOAuth2Token.js';
+import initPostOAuth2PushedAuthorizationRequest, {
+  definition as postOAuth2PushedAuthorizationRequestDefinition,
+  pushedAuthorizationRequestBodySchema as postOAuth2PushedAuthorizationRequestBodySchema,
+  requestURISchema as postOAuth2PushedAuthorizationRequestRequestURISchema,
+} from './routes/postOAuth2PushedAuthorizationRequest.js';
 import initGetOAuth2WellKnown, {
   definition as getOAuth2WellKnownDefinition,
   endpointAuthenticationMethodsSchema as getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
@@ -72,6 +79,9 @@ import initAuthCookiesService from './services/authCookies.js';
 import { type OAuth2YErrorRegistry } from './libs/errors.js';
 export * from './services/authCookies.js';
 export type * from './services/authCookies.js';
+import initOAuth2AuthorizationRequests from './services/oAuth2AuthorizationRequests.js';
+export * from './services/oAuth2AuthorizationRequests.js';
+export type * from './services/oAuth2AuthorizationRequests.js';
 
 export * from './libs/schemas.js';
 export type * from './libs/schemas.js';
@@ -100,11 +110,13 @@ export {
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
+  getOAuth2AuthorizeRequestURIParameter,
   getOAuth2AuthorizeScopeSchema,
   getOAuth2AuthorizeCodeChallengeSchema,
   getOAuth2AuthorizeCodeChallengeMethodSchema,
   getOAuth2AuthorizeCodeChallengeParameter,
   getOAuth2AuthorizeCodeChallengeMethodParameter,
+  getOAuth2AuthorizeRequestURISchema,
   initGetOAuth2WellKnown,
   getOAuth2WellKnownDefinition,
   getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
@@ -132,6 +144,10 @@ export {
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
+  initPostOAuth2PushedAuthorizationRequest,
+  postOAuth2PushedAuthorizationRequestDefinition,
+  postOAuth2PushedAuthorizationRequestBodySchema,
+  postOAuth2PushedAuthorizationRequestRequestURISchema,
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
   initOAuth2AuthorizationCodeGranter,
@@ -146,4 +162,5 @@ export {
   initPostAuthRefresh,
   postAuthRefreshDefinition,
   initAuthCookiesService,
+  initOAuth2AuthorizationRequests,
 };

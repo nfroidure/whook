@@ -70,27 +70,11 @@ async function initOAuth2ImplicitGranter({
 
   const authorizeWithToken: NonNullable<
     WhookOAuth2ImplicitGranterService['authorize']
-  > = async ({ clientId, demandedRedirectURI, demandedScopes }) => {
-    const grants = await readClientGrants(clientId);
-
-    checkGrantType(grants.allowedGrantTypes, IMPLICIT_GRANT_TYPE);
-    if (demandedRedirectURI) {
-      checkRedirectURI(grants.allowedRedirectURIS, demandedRedirectURI);
-    } else {
-      demandedRedirectURI = grants.allowedRedirectURIS[0];
-    }
-
-    const filteredScopes = filterScopes(
-      demandedScopes,
-      grants.allowedScopes,
-      !!OAUTH2.strictScopesChecks,
-    );
+  > = async ({ clientGrants, demandedScopes }) => {
+    checkGrantType(clientGrants.allowedGrantTypes, IMPLICIT_GRANT_TYPE);
 
     return {
-      ...grants.authenticationData,
-      clientId,
-      redirectURI: demandedRedirectURI,
-      scopes: filteredScopes,
+      scopes: demandedScopes,
     };
   };
 

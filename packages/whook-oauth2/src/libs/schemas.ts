@@ -25,3 +25,13 @@ export const scopeSchema = {
     pattern: '^[!#-[\\]-~]+(?: [!#-[\\]-~]+)*$',
   },
 } as const satisfies WhookAPISchemaDefinition;
+
+export const requestURISchema = {
+  name: 'RequestURI',
+  schema: {
+    description:
+      'OAuth2 PAR request_uri, see https://datatracker.ietf.org/doc/html/rfc9126#section-2.2.',
+    type: 'string',
+    pattern: '^urn:ietf:params:oauth:request_uri:',
+  },
+} as const satisfies WhookAPISchemaDefinition;
