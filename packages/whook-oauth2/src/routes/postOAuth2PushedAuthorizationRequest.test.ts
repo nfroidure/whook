@@ -208,6 +208,65 @@ describe('postOAuth2PushedAuthorizationRequest', () => {
     `);
   });
 
+  test.each([['enabled'], ['required']] as const)(
+    'should accept PAR mode %s with empty scope requests',
+    async (mode) => {
+      const clientGrants = {
+        allowedGrantTypes: ['code'],
+        allowedScopes: ['user'],
+        allowedRedirectURIS: ['https://example.com/oauth/cb'],
+        isPublicClient: true,
+        canAcknowledge: false,
+        authenticationData: {
+          clientId: 'a_client_id',
+          scopes: [],
+          userId: '1',
+        },
+      };
+
+      readClientGrants.mockResolvedValueOnce(clientGrants);
+      codeGranter.authorize.mockResolvedValueOnce({ scopes: [] });
+      oAuth2AuthorizationRequests.create.mockResolvedValueOnce({
+        requestURI: 'urn:ietf:params:oauth:request_uri:a_request_uri',
+        expiresIn: 1000,
+      });
+
+      const postOAuth2PushedAuthorizationRequest =
+        await initPostOAuth2PushedAuthorizationRequest({
+          OAUTH2: { ...OAUTH2, allowedScopes: ['user', 'other'] },
+          OAUTH2_PAR: { ...OAUTH2_PAR, mode },
+          oAuth2Granters,
+          readClientGrants,
+          oAuth2AuthorizationRequests,
+          log,
+        });
+
+      const response = await postOAuth2PushedAuthorizationRequest({
+        body: {
+          response_type: 'code',
+          client_id: 'a_client_id',
+          redirect_uri: 'https://example.com/oauth/cb',
+        },
+      });
+
+      expect(response.status).toBe(201);
+      expect(codeGranter.authorize).toHaveBeenLastCalledWith({
+        clientId: 'a_client_id',
+        clientGrants,
+        demandedScopes: [],
+      });
+      expect(oAuth2AuthorizationRequests.create).toHaveBeenLastCalledWith(
+        'a_client_id',
+        {
+          response_type: 'code',
+          client_id: 'a_client_id',
+          redirect_uri: 'https://example.com/oauth/cb',
+          scope: '',
+        },
+      );
+    },
+  );
+
   test('should reject nested request_uri parameter', async () => {
     [
       codeGranter.authorize,

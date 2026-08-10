@@ -23,9 +23,29 @@ export interface OAuth2YErrorRegistry {
   E_OAUTH2_BAD_REFRESH_TOKEN: [];
 
   /**
+   * Thrown when the device code is expired/invalid
+   */
+  E_OAUTH2_BAD_DEVICE_CODE: [];
+
+  /**
+   * Thrown when the device code has not been authorized yet
+   */
+  E_OAUTH2_AUTHORIZATION_PENDING: [];
+
+  /**
+   * Thrown when the client is polling too often
+   */
+  E_OAUTH2_SLOW_DOWN: [];
+
+  /**
    * Thrown when application has no access allowed
    */
   E_OAUTH2_ACCESS_DENIED: [clientId: WhookOAuth2ClientId];
+
+  /**
+   * Thrown when application has no device access allowed
+   */
+  E_OAUTH2_DEVICE_ACCESS_DENIED: [clientId: WhookOAuth2ClientId];
 
   /**
    * Thrown when application requires authentication
@@ -101,6 +121,11 @@ export interface OAuth2YErrorRegistry {
   E_OAUTH2_EXPIRED_CODE: [expiredAt: number, currentTime: number];
 
   /**
+   * Thrown when the device code is expired
+   */
+  E_OAUTH2_EXPIRED_DEVICE_CODE: [expiredAt: number, currentTime: number];
+
+  /**
    * Thrown when the authorization code is evicted
    */
   E_OAUTH2_EVICTED_CODE: [evictedAt: number, currentTime: number];
@@ -153,6 +178,11 @@ export interface OAuth2YErrorRegistry {
    * Thrown when the client does not exist
    */
   E_OAUTH2_CLIENT_NOT_FOUND: [WhookOAuth2ClientId];
+
+  /**
+   * Thrown when a client is an empty string
+   */
+  E_OAUTH2_UNEXPECTED_EMPTY_CLIENT_ID: [];
 
   /**
    * Thrown when the authenticated client does
@@ -216,9 +246,37 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
+  E_OAUTH2_BAD_DEVICE_CODE: {
+    code: 'invalid_grant',
+    status: 400,
+    description: 'The device code is expired/invalid.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_AUTHORIZATION_PENDING: {
+    code: 'authorization_pending',
+    status: 400,
+    description: 'The end-user has not completed the authorization yet.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_SLOW_DOWN: {
+    code: 'slow_down',
+    status: 400,
+    description: 'The token request was sent too often.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
   E_OAUTH2_ACCESS_DENIED: {
     code: 'access_denied',
     status: 403,
+    description: 'The user denied access to your application (id: "$0").',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_DEVICE_ACCESS_DENIED: {
+    code: 'access_denied',
+    status: 400,
     description: 'The user denied access to your application (id: "$0").',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
@@ -321,6 +379,13 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
+  E_OAUTH2_EXPIRED_DEVICE_CODE: {
+    code: 'expired_token',
+    status: 400,
+    description: 'The device code is expired (expired at "$0").',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
   E_OAUTH2_EVICTED_CODE: {
     code: 'invalid_request',
     status: 400,
@@ -392,6 +457,13 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     code: 'invalid_request',
     status: 400,
     description: 'The client used is not matching the request.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_UNEXPECTED_EMPTY_CLIENT_ID: {
+    code: 'server_error',
+    status: 500,
+    description: 'Implementation error, empty client id encountered.',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },

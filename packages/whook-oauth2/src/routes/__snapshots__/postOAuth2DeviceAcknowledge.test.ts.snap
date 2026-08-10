@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`postOAuth2DeviceAcknowledge should propagate a stored challenge client mismatch when acknowledged is false 1`] = `[YError: E_UNAUTHORIZED ([]): E_UNAUTHORIZED]`;
+
+exports[`postOAuth2DeviceAcknowledge should propagate a stored challenge client mismatch when acknowledged is true 1`] = `[YError: E_UNAUTHORIZED ([]): E_UNAUTHORIZED]`;

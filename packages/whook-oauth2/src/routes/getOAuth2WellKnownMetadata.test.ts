@@ -10,6 +10,7 @@ import {
   type WhookOAuth2GranterService,
 } from '../index.js';
 import { type WhookDefinitions } from '@whook/whook';
+import { type OpenAPI } from 'ya-open-api-types';
 
 describe('getOAuth2WellKnown', () => {
   const log = jest.fn<LogService>();
@@ -55,6 +56,89 @@ describe('getOAuth2WellKnown', () => {
     ].forEach((mock) => mock.mockReset());
   });
 
+  test.each<{
+    description: string;
+    security?: OpenAPI['security'];
+    operationSecurity?: OpenAPI['security'];
+    missingOperation?: boolean;
+    allowsNone: boolean;
+  }>([
+    {
+      description: 'Basic-only token operation',
+      operationSecurity: [{ basicAuth: ['oauth'] }],
+      allowsNone: false,
+    },
+    {
+      description: 'anonymous security alternative',
+      operationSecurity: [{ basicAuth: ['oauth'] }, {}],
+      allowsNone: true,
+    },
+    {
+      description: 'explicitly public token operation',
+      operationSecurity: [],
+      allowsNone: true,
+    },
+    {
+      description: 'token operation without security',
+      allowsNone: true,
+    },
+    {
+      description: 'inherited authentication requirement',
+      security: [{ basicAuth: ['oauth'] }],
+      allowsNone: false,
+    },
+    {
+      description: 'public operation overriding inherited authentication',
+      security: [{ basicAuth: ['oauth'] }],
+      operationSecurity: [],
+      allowsNone: true,
+    },
+    {
+      description: 'required operation overriding inherited anonymous access',
+      security: [{}],
+      operationSecurity: [{ basicAuth: ['oauth'] }],
+      allowsNone: false,
+    },
+    {
+      description: 'missing token operation',
+      missingOperation: true,
+      allowsNone: false,
+    },
+  ])(
+    'should derive anonymous token authentication for $description',
+    async ({ security, operationSecurity, missingOperation, allowsNone }) => {
+      const getOAuth2WellKnown = await initGetOAuth2WellKnown({
+        BASE_URL: 'https://server.example.com',
+        OAUTH2_PAR: { mode: 'disabled' },
+        DEFINITIONS: {
+          configs: {
+            postOAuth2Token: { type: 'route', path: '/v0/oauth2/token' },
+          },
+        } as unknown as WhookDefinitions,
+        API: {
+          openapi: '3.2',
+          info: { title: 'Test', version: '1.0.0' },
+          security,
+          paths: missingOperation
+            ? {}
+            : {
+                '/v0/oauth2/token': {
+                  post: { security: operationSecurity, responses: {} },
+                },
+              },
+        },
+        oAuth2Granters,
+        log,
+      });
+
+      const { body } = await getOAuth2WellKnown();
+
+      expect(body.token_endpoint_auth_methods_supported.includes('none')).toBe(
+        allowsNone,
+      );
+    },
+  );
+
   test('should return OAuth2 metadata', async () => {
     [
       codeGranter.authorize,
@@ -89,6 +173,10 @@ describe('getOAuth2WellKnown', () => {
             type: 'route',
             path: '/v0/oauth2/par',
           },
+          postOAuth2DeviceAuthorization: {
+            type: 'route',
+            path: '/oauth2/device_authorization',
+          },
         },
       } as unknown as WhookDefinitions,
       API: {
@@ -98,6 +186,12 @@ describe('getOAuth2WellKnown', () => {
           version: '1.0.0',
         },
         paths: {
+          '/v0/oauth2/token': {
+            post: {
+              security: [],
+              responses: {},
+            },
+          },
           '/test': {
             get: {
               security: [
@@ -134,6 +228,7 @@ describe('getOAuth2WellKnown', () => {
        "response": {
          "body": {
            "authorization_endpoint": "https://server.example.com/v0/oauth2/authorize",
+           "device_authorization_endpoint": "https://server.example.com/oauth2/device_authorization",
            "grant_types_supported": [
              "authorization_code",
              "implicit",
@@ -158,6 +253,7 @@ describe('getOAuth2WellKnown', () => {
            "token_endpoint_auth_methods_supported": [
              "client_secret_basic",
              "client_secret_post",
+             "none",
            ],
          },
          "status": 200,

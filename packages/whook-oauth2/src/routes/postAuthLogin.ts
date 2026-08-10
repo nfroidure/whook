@@ -8,7 +8,7 @@ import initPostOAuth2Token from './postOAuth2Token.js';
 import { AUTH_API_PREFIX } from '../services/authCookies.js';
 import { refersTo, type WhookRouteDefinition } from '@whook/whook';
 import { type WhookAuthCookiesService } from '../services/authCookies.js';
-import { scopeSchema } from '../libs/schemas.js';
+import { scopeSchema } from './schemas.js';
 import { PASSWORD_GRANT_TYPE } from '../services/oAuth2PasswordGranter.js';
 
 export { scopeSchema };

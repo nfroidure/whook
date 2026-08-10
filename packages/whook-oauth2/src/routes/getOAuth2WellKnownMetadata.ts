@@ -10,8 +10,7 @@ import {
   type WhookOAuth2GranterDefinitions,
   type WhookOAuth2GranterService,
 } from '../services/oAuth2Granters.js';
-import { codeChallengeMethodSchema } from '../services/oAuth2AuthorizationCodeGranter.js';
-import { scopeTokenSchema, scopeTokensSchema } from '../libs/schemas.js';
+import { codeChallengeMethodSchema, scopeTokensSchema } from './schemas.js';
 import { type LogService } from 'common-services';
 import { type OpenAPI } from 'ya-open-api-types';
 import { collectScopesFromAPI } from '../libs/scopes.js';
@@ -20,8 +19,6 @@ import {
   type WhookOAuth2AuthorizationRequestsConfig,
 } from '../services/oAuth2AuthorizationRequests.js';
 import { YError } from 'yerror';
-
-export { scopeTokenSchema, scopeTokensSchema, codeChallengeMethodSchema };
 
 // OAuth Token Endpoint Authentication Methods
 export const endpointAuthenticationMethodsSchema = {
@@ -98,6 +95,7 @@ export const oAuth2MetadataSchema = {
       issuer: refersTo(httpsProtocolURISchema),
       authorization_endpoint: refersTo(httpsProtocolURISchema),
       token_endpoint: refersTo(httpsProtocolURISchema),
+      device_authorization_endpoint: refersTo(httpsProtocolURISchema),
       pushed_authorization_request_endpoint: refersTo(httpsProtocolURISchema),
       jwks_uri: refersTo(httpsProtocolURISchema),
       registration_endpoint: refersTo(httpsProtocolURISchema),
@@ -135,6 +133,7 @@ export const oAuth2MetadataSchema = {
             'authorization_code',
             'implicit',
             'refresh_token',
+            'urn:ietf:params:oauth:grant-type:device_code',
             'client_credentials',
             'password',
             'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -326,6 +325,19 @@ async function initGetOAuth2WellKnownMetadata({
     throw new YError('E_OAUTH2_MISCONFIGURED');
   }
 
+  const tokenEndpointPath =
+    DEFINITIONS.configs['postOAuth2Token']?.type === 'route'
+      ? DEFINITIONS.configs['postOAuth2Token'].path
+      : '/oauth2/token';
+  const tokenOperation = API.paths?.[tokenEndpointPath]?.post;
+  const tokenSecurity = tokenOperation?.security ?? API.security ?? [];
+  const allowsUnauthenticatedTokenRequests =
+    !!tokenOperation &&
+    (tokenSecurity.length === 0 ||
+      tokenSecurity.some(
+        (requirement) => Object.keys(requirement).length === 0,
+      ));
+
   const body = {
     issuer: `${BASE_URL}`,
     authorization_endpoint: `${BASE_URL}${
@@ -333,15 +345,11 @@ async function initGetOAuth2WellKnownMetadata({
         ? DEFINITIONS.configs['getOAuth2Authorize'].path
         : '/oauth2/authorize'
     }`,
-    token_endpoint: `${BASE_URL}${
-      DEFINITIONS.configs['postOAuth2Token']?.type === 'route'
-        ? DEFINITIONS.configs['postOAuth2Token'].path
-        : '/oauth2/token'
-    }`,
-    // TODO: Put it behind options (allow none)
+    token_endpoint: `${BASE_URL}${tokenEndpointPath}`,
     token_endpoint_auth_methods_supported: [
       'client_secret_basic',
       'client_secret_post',
+      ...(allowsUnauthenticatedTokenRequests ? ['none'] : []),
     ],
     grant_types_supported: [
       ...new Set(
@@ -371,6 +379,12 @@ async function initGetOAuth2WellKnownMetadata({
       ? {
           pushed_authorization_request_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2PushedAuthorizationRequest'].path}`,
           require_pushed_authorization_requests: OAUTH2_PAR.mode === 'required',
+        }
+      : {}),
+    ...(DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.type ===
+      'route' && DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.path
+      ? {
+          device_authorization_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.path}`,
         }
       : {}),
   };

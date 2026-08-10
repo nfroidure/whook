@@ -12,7 +12,7 @@ import {
   type WhookOAuth2ReadClientGrantsService,
   type WhookOAuth2Options,
 } from '../services/oAuth2Granters.js';
-import { scopeSchema } from '../libs/schemas.js';
+import { scopeSchema } from './schemas.js';
 import { REFRESH_TOKEN_GRANT_TYPE } from '../services/oAuth2RefreshTokenGranter.js';
 
 export { scopeSchema };

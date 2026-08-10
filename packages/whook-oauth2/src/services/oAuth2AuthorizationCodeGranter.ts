@@ -1,10 +1,5 @@
 import { autoService, location } from 'knifecycle';
-import {
-  noop,
-  refersTo,
-  type WhookAPIParameterDefinition,
-  type WhookAPISchemaDefinition,
-} from '@whook/whook';
+import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
@@ -25,86 +20,14 @@ import {
   checkCodeChallenge,
   AUTHORIZATION_CODE_GRANT_TYPE,
   AUTHORIZATION_CODE_RESPONSE_TYPE,
-  CODE_CHALLENGE_METHODS,
   PLAIN_CODE_CHALLENGE_METHOD,
   type CodeChallengeMethod,
 } from '../libs/verifier.js';
-import { toUsableClientId } from '../libs/clients.js';
-
-export { AUTHORIZATION_CODE_GRANT_TYPE, AUTHORIZATION_CODE_RESPONSE_TYPE };
-
-export const codeVerifierSchema = {
-  name: 'CodeVerifier',
-  schema: {
-    type: 'string',
-    minLength: 43,
-    maxLength: 128,
-    pattern: '^[A-Za-z0-9._~-]+$',
-  },
-} as const satisfies WhookAPISchemaDefinition;
-
-export const authorizationCodeTokenRequestBodySchema = {
-  name: 'AuthorizationCodeRequestBody',
-  schema: {
-    description:
-      'Implements the [Token Endpoint](https://www.ietf.org/archive/id/draft-ietf-oauth-v2-1-15.html#section-3.2) as defined per the OAuth2.1 RFC.',
-    type: 'object',
-    required: ['grant_type', 'code'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        const: AUTHORIZATION_CODE_GRANT_TYPE,
-      },
-      code: {
-        type: 'string',
-      },
-      client_id: {
-        type: 'string',
-      },
-      redirect_uri: {
-        type: 'string',
-        pattern: '^https?://',
-        format: 'uri',
-      },
-      code_verifier: refersTo(codeVerifierSchema),
-    },
-  },
-} as const satisfies WhookAPISchemaDefinition;
-
-export const codeChallengeSchema = {
-  name: 'CodeChallenge',
-  schema: {
-    type: 'string',
-    minLength: 43,
-    maxLength: 128,
-    pattern: '^[A-Za-z0-9\\-._~]{43,128}$',
-  },
-} as const satisfies WhookAPISchemaDefinition;
-export const codeChallengeParameter = {
-  name: 'code_challenge',
-  parameter: {
-    in: 'query',
-    name: 'code_challenge',
-    required: false,
-    schema: refersTo(codeChallengeSchema),
-  },
-} as const satisfies WhookAPIParameterDefinition;
-export const codeChallengeMethodSchema = {
-  name: 'CodeChallengeMethod',
-  schema: {
-    type: 'string',
-    enum: CODE_CHALLENGE_METHODS.concat(),
-  },
-} as const satisfies WhookAPISchemaDefinition;
-export const codeChallengeMethodParameter = {
-  name: 'code_challenge_method',
-  parameter: {
-    in: 'query',
-    name: 'code_challenge_method',
-    required: false,
-    schema: refersTo(codeChallengeMethodSchema),
-  },
-} as const satisfies WhookAPIParameterDefinition;
+import {
+  checkClientsIds,
+  checkGrants,
+  toUsableClientId,
+} from '../libs/clients.js';
 
 /**
  * Utility code for providing your own code type
@@ -268,12 +191,7 @@ async function initOAuth2AuthorizationCodeGranter({
     ]);
     const grants = await readClientGrants(usableClientId);
 
-    if (usableClientId !== grants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        usableClientId,
-        grants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, grants);
 
     if (!grants.isPublicClient) {
       if (!optionalAuthenticationData) {
@@ -304,12 +222,11 @@ async function initOAuth2AuthorizationCodeGranter({
       ]);
     }
 
-    if (usableClientId !== codeAuthenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_MISMATCH', [
-        usableClientId,
-        codeAuthenticationData.clientId,
-      ]);
+    if (!codeAuthenticationData.clientId) {
+      throw new YError('E_OAUTH2_UNEXPECTED_EMPTY_CLIENT_ID', []);
     }
+
+    checkClientsIds(usableClientId, [codeAuthenticationData.clientId]);
 
     if (codeVerifier) {
       if (!context.codeChallenge || !context.codeChallengeMethod) {
