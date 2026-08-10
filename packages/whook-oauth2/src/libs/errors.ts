@@ -9,7 +9,9 @@ import { type WhookOAuth2ClientId } from '../services/oAuth2Granters.js';
  * OAuth2 errors registry
  */
 export interface OAuth2YErrorRegistry {
-  E_OAUTH2_UNKNOWN_RESPONSE_TYPE: [responseType: string];
+  E_OAUTH2_MISCONFIGURED: [];
+
+  E_OAUTH2_UNKNOWN_RESPONSE_TYPE: [responseType: string | undefined];
 
   E_OAUTH2_UNKNOWN_ACKNOWLEDGER_TYPE: [responseType: string];
 
@@ -49,6 +51,36 @@ export interface OAuth2YErrorRegistry {
    * Thrown when server does not support PKCE
    */
   E_OAUTH2_PKCE_NOT_SUPPORTED: [responseType: string];
+
+  /**
+   * Thrown when Pushed Authorization Requests are required
+   */
+  E_OAUTH2_PAR_REQUIRED: [];
+
+  /**
+   * Thrown when Pushed Authorization Requests are used but disabled
+   */
+  E_OAUTH2_PAR_NOT_SUPPORTED: [];
+
+  /**
+   * Thrown when a request URI has unexpected additional
+   * parameters
+   */
+  E_OAUTH2_BAD_REQUEST_URI_PARAMETERS: string[];
+
+  /**
+   * Thrown when a request URI is invalid, unknown or expired
+   */
+  E_OAUTH2_BAD_REQUEST_URI: [
+    requestURI: string | undefined,
+    expiresAt: number | undefined,
+    currentTime: number | undefined,
+  ];
+
+  /**
+   * Thrown when a request URI is provided where forbidden
+   */
+  E_OAUTH2_REQUEST_URI_NOT_ALLOWED: [];
 
   /**
    * Thrown when a not supported scope is asked
@@ -118,6 +150,11 @@ export interface OAuth2YErrorRegistry {
   E_OAUTH2_AUTHORIZATION_CODE_VERIFIER_REQUIRED: [];
 
   /**
+   * Thrown when the client does not exist
+   */
+  E_OAUTH2_CLIENT_NOT_FOUND: [WhookOAuth2ClientId];
+
+  /**
    * Thrown when the authenticated client does
    * not match the token/query/code clientId
    */
@@ -148,6 +185,13 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     code: 'unsupported_response_type',
     status: 400,
     description: `The response type "$0" is not supported.`,
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_MISCONFIGURED: {
+    code: 'server_error',
+    status: 500,
+    description: `Server configuration error.`,
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -217,6 +261,41 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     code: 'invalid_request',
     status: 400,
     description: 'Code challenge is not supported for this response type ($0).',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_PAR_REQUIRED: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'Pushed authorization requests are required for this server.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_PAR_NOT_SUPPORTED: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'Pushed authorization requests are not enabled for this server.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_BAD_REQUEST_URI: {
+    code: 'invalid_request_uri',
+    status: 400,
+    description: 'The request URI is invalid, expired or unknown ($0).',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_BAD_REQUEST_URI_PARAMETERS: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'The request URI should not have additional parameters ($0).',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_REQUEST_URI_NOT_ALLOWED: {
+    code: 'invalid_request',
+    status: 400,
+    description: 'The request_uri parameter is not allowed on this endpoint.',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -298,6 +377,13 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     status: 400,
     description:
       'The authorization code grant type with public client requires a code verifier.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_CLIENT_NOT_FOUND: {
+    code: 'invalid_client',
+    status: 400,
+    description: 'The client provided does not exist ($0).',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },

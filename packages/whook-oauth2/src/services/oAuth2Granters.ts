@@ -18,12 +18,7 @@ declare module '@whook/authorization' {
   }
 }
 
-/**
- * A service that returns acknowledgments for a given client
- */
-export type WhookOAuth2ReadClientGrantsService = (
-  clientId: WhookOAuth2ClientId,
-) => Promise<{
+export interface WhookOAuth2ClientGrants {
   /** Grant types the client can be used with */
   allowedGrantTypes: string[];
   /** Scopes the client can delegate */
@@ -36,21 +31,25 @@ export type WhookOAuth2ReadClientGrantsService = (
   isPublicClient: boolean;
   /** Whether the client can acknowledge for a user */
   canAcknowledge?: boolean;
-}>;
+}
+
+/**
+ * A service that returns acknowledgments for a given client
+ */
+export type WhookOAuth2ReadClientGrantsService = (
+  clientId: WhookOAuth2ClientId,
+) => Promise<WhookOAuth2ClientGrants>;
 
 /**
  * A function handling the OAuth2 authorize step
  */
-export type WhookOAuth2GranterAuthorize<T extends object> = (
+export type WhookOAuth2GranterAuthorize = (
   authorizeParameters: {
     clientId: WhookOAuth2ClientId;
-    demandedRedirectURI?: string;
+    clientGrants: WhookOAuth2ClientGrants;
     demandedScopes: WhookAuthenticationScope[];
   },
-  additionalParameters: T,
 ) => Promise<{
-  clientId: WhookOAuth2ClientId;
-  redirectURI: string;
   scopes: WhookAuthenticationScope[];
 }>;
 
@@ -89,7 +88,6 @@ export type WhookOAuth2GranterAuthenticate<T extends object> = (
 export interface WhookOAuth2GranterDefinitions {
   grantType?: string;
   responseType?: string;
-  authorizeParameters: Record<string, string>;
   acknowledgeParameters: Record<string, unknown>;
   acknowledgedData: Record<string, unknown>;
   authenticateParameters: Record<string, unknown>;
@@ -101,7 +99,7 @@ export interface WhookOAuth2GranterService<
   grantType: T['grantType'];
   responseType?: T['responseType'];
   issuesRefreshToken: boolean;
-  authorize?: WhookOAuth2GranterAuthorize<T['authorizeParameters']>;
+  authorize?: WhookOAuth2GranterAuthorize;
   acknowledge?: WhookOAuth2GranterAcknowledge<
     T['acknowledgeParameters'],
     T['acknowledgedData']

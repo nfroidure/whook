@@ -82,6 +82,18 @@ export const definition = {
       '200': {
         description:
           'Token successfully issued, see https://tools.ietf.org/html/rfc6749#section-5 .',
+        headers: {
+          'cache-control': {
+            schema: {
+              type: 'string',
+            },
+          },
+          pragma: {
+            schema: {
+              type: 'string',
+            },
+          },
+        },
         content: {
           'application/json': {
             schema: {

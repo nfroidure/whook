@@ -1,5 +1,5 @@
 import ms from 'ms';
-import cookie, { type SerializeOptions } from 'cookie';
+import { stringifySetCookie, parseCookie, type SerializeOptions } from 'cookie';
 import { autoService, location } from 'knifecycle';
 import { type Jsonify } from 'type-fest';
 import { type WhookRouteDefinitionBasePath } from '@whook/whook';
@@ -39,7 +39,9 @@ async function initAuthCookies({
     { session = true } = {},
   ) {
     return [
-      cookie.serialize('access_token', data.access_token || '', {
+      stringifySetCookie({
+        name: 'access_token',
+        value: data.access_token || '',
         path: BASE_PATH + AUTH_API_PREFIX,
         httpOnly: true,
         sameSite: true,
@@ -47,7 +49,9 @@ async function initAuthCookies({
         ...COOKIES,
         ...(data.access_token ? {} : { maxAge: 0 }),
       }),
-      cookie.serialize('refresh_token', data.refresh_token || '', {
+      stringifySetCookie({
+        name: 'refresh_token',
+        value: data.refresh_token || '',
         path: BASE_PATH + AUTH_API_PREFIX,
         httpOnly: true,
         sameSite: true,
@@ -59,7 +63,7 @@ async function initAuthCookies({
   }
 
   function parse(cookieHeader: string): Partial<WhookAuthCookiesData> {
-    const data = cookie.parse(cookieHeader);
+    const data = parseCookie(cookieHeader);
 
     if (data.access_token && data.refresh_token) {
       return {

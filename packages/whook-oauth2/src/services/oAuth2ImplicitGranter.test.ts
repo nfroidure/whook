@@ -39,30 +39,26 @@ describe('OAuth2ImplicitGranter', () => {
         log,
       });
 
-      readClientGrants.mockResolvedValue({
-        allowedRedirectURIS: ['https://www.example.com'],
-        allowedGrantTypes: ['implicit', 'authorization_code'],
-        allowedScopes: ['user', 'admin'],
-        authenticationData: {
-          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-          userId: 'abbacaca-abba-caca-abba-cacaabbab0b0',
-          scopes: [],
-        },
-        isPublicClient: true,
-      });
       oAuth2AccessToken.create.mockRejectedValueOnce(
         new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
       );
 
       const authorizerAuthenticateResult =
-        await oAuth2AccessTokenGranter.authorize?.(
-          {
-            clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-            demandedRedirectURI: 'https://www.example.com',
-            demandedScopes: ['user', 'root'],
+        await oAuth2AccessTokenGranter.authorize?.({
+          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          clientGrants: {
+            allowedRedirectURIS: ['https://www.example.com'],
+            allowedGrantTypes: ['implicit', 'authorization_code'],
+            allowedScopes: ['user', 'admin'],
+            authenticationData: {
+              clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+              userId: 'abbacaca-abba-caca-abba-cacaabbab0b0',
+              scopes: [],
+            },
+            isPublicClient: true,
           },
-          {},
-        );
+          demandedScopes: ['user'],
+        });
 
       expect({
         authorizerAuthenticateResult,
@@ -73,12 +69,9 @@ describe('OAuth2ImplicitGranter', () => {
       }).toMatchInlineSnapshot(`
        {
          "authorizerAuthenticateResult": {
-           "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
-           "redirectURI": "https://www.example.com",
            "scopes": [
              "user",
            ],
-           "userId": "abbacaca-abba-caca-abba-cacaabbab0b0",
          },
          "logCalls": [
            [
@@ -91,84 +84,7 @@ describe('OAuth2ImplicitGranter', () => {
            ],
          ],
          "oAuth2AccessTokenCheckCalls": [],
-         "readClientGrantsCalls": [
-           [
-             "abbacaca-abba-caca-abba-cacaabbacaca",
-           ],
-         ],
-         "timeCalls": [],
-       }
-      `);
-    });
-
-    test('should work with a valid request and filter scopes', async () => {
-      const oAuth2AccessTokenGranter = await initOAuth2ImplicitGranter({
-        OAUTH2,
-        readClientGrants,
-        oAuth2AccessToken,
-        time,
-        log,
-      });
-
-      readClientGrants.mockResolvedValue({
-        allowedRedirectURIS: ['https://www.example.com'],
-        allowedGrantTypes: ['implicit', 'authorization_code'],
-        allowedScopes: ['user', 'admin'],
-        authenticationData: {
-          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-          userId: 'abbacaca-abba-caca-abba-cacaabbab0b0',
-          scopes: [],
-        },
-        isPublicClient: true,
-      });
-      oAuth2AccessToken.create.mockRejectedValueOnce(
-        new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
-      );
-      time.mockReturnValueOnce(Date.parse('2026-07-22T10:00:00Z'));
-
-      const authorizerAuthenticateResult =
-        await oAuth2AccessTokenGranter.authorize?.(
-          {
-            clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-            demandedRedirectURI: 'https://www.example.com',
-            demandedScopes: ['user', 'admin', 'oauth2', 'a_scope'],
-          },
-          {},
-        );
-
-      expect({
-        authorizerAuthenticateResult,
-        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.create.mock.calls,
-        readClientGrantsCalls: readClientGrants.mock.calls,
-        logCalls: log.mock.calls,
-        timeCalls: time.mock.calls,
-      }).toMatchInlineSnapshot(`
-       {
-         "authorizerAuthenticateResult": {
-           "clientId": "abbacaca-abba-caca-abba-cacaabbacaca",
-           "redirectURI": "https://www.example.com",
-           "scopes": [
-             "user",
-             "admin",
-           ],
-           "userId": "abbacaca-abba-caca-abba-cacaabbab0b0",
-         },
-         "logCalls": [
-           [
-             "warning",
-             "⚠️ - Using the token flow is deprecated and not recommended.",
-           ],
-           [
-             "debug",
-             "👫 - OAuth2ImplicitGranter Service Initialized!",
-           ],
-         ],
-         "oAuth2AccessTokenCheckCalls": [],
-         "readClientGrantsCalls": [
-           [
-             "abbacaca-abba-caca-abba-cacaabbacaca",
-           ],
-         ],
+         "readClientGrantsCalls": [],
          "timeCalls": [],
        }
       `);
@@ -183,31 +99,27 @@ describe('OAuth2ImplicitGranter', () => {
         log,
       });
 
-      readClientGrants.mockResolvedValue({
-        allowedRedirectURIS: ['https://www.example.com'],
-        allowedGrantTypes: ['authorization_code'],
-        allowedScopes: ['user', 'admin'],
-        authenticationData: {
-          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-          userId: 'abbacaca-abba-caca-abba-cacaabbab0b0',
-          scopes: [],
-        },
-        isPublicClient: true,
-      });
       oAuth2AccessToken.create.mockRejectedValueOnce(
         new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
       );
       time.mockReturnValueOnce(Date.parse('2026-07-22T10:00:00Z'));
 
       try {
-        await oAuth2AccessTokenGranter.authorize?.(
-          {
-            clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-            demandedRedirectURI: 'https://www.example.com',
-            demandedScopes: ['user'],
+        await oAuth2AccessTokenGranter.authorize?.({
+          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+          clientGrants: {
+            allowedRedirectURIS: ['https://www.example.com'],
+            allowedGrantTypes: ['authorization_code'],
+            allowedScopes: ['user', 'admin'],
+            authenticationData: {
+              clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
+              userId: 'abbacaca-abba-caca-abba-cacaabbab0b0',
+              scopes: [],
+            },
+            isPublicClient: true,
           },
-          {},
-        );
+          demandedScopes: ['user'],
+        });
         throw new YError('E_UNEXPECTED_SUCCESS');
       } catch (err) {
         expect({
@@ -230,80 +142,7 @@ describe('OAuth2ImplicitGranter', () => {
              ],
            ],
            "oAuth2AccessTokenCheckCalls": [],
-           "readClientGrantsCalls": [
-             [
-               "abbacaca-abba-caca-abba-cacaabbacaca",
-             ],
-           ],
-           "timeCalls": [],
-         }
-        `);
-      }
-    });
-
-    test('should fail with a client with a bad scope for the client', async () => {
-      const oAuth2AccessTokenGranter = await initOAuth2ImplicitGranter({
-        OAUTH2: {
-          ...OAUTH2,
-          strictScopesChecks: true,
-        },
-        readClientGrants,
-        oAuth2AccessToken,
-        log,
-      });
-
-      readClientGrants.mockResolvedValue({
-        allowedRedirectURIS: ['https://www.example.com'],
-        allowedGrantTypes: ['implicit'],
-        allowedScopes: ['user'],
-        authenticationData: {
-          clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-          userId: 'abbacaca-abba-caca-abba-cacaabbab0b0',
-          scopes: [],
-        },
-        isPublicClient: true,
-      });
-      oAuth2AccessToken.create.mockRejectedValueOnce(
-        new YError('E_NOT_SUPPOSED_TO_BE_HERE'),
-      );
-      time.mockReturnValueOnce(Date.parse('2026-07-22T10:00:00Z'));
-
-      try {
-        await oAuth2AccessTokenGranter.authorize?.(
-          {
-            clientId: 'abbacaca-abba-caca-abba-cacaabbacaca',
-            demandedRedirectURI: 'https://www.example.com',
-            demandedScopes: ['user', 'admin'],
-          },
-          {},
-        );
-        throw new YError('E_UNEXPECTED_SUCCESS');
-      } catch (err) {
-        expect({
-          err,
-          oAuth2AccessTokenCheckCalls: oAuth2AccessToken.create.mock.calls,
-          readClientGrantsCalls: readClientGrants.mock.calls,
-          logCalls: log.mock.calls,
-          timeCalls: time.mock.calls,
-        }).toMatchInlineSnapshot(`
-         {
-           "err": [YError: E_OAUTH2_BAD_SCOPE (["admin"]): E_OAUTH2_BAD_SCOPE],
-           "logCalls": [
-             [
-               "warning",
-               "⚠️ - Using the token flow is deprecated and not recommended.",
-             ],
-             [
-               "debug",
-               "👫 - OAuth2ImplicitGranter Service Initialized!",
-             ],
-           ],
-           "oAuth2AccessTokenCheckCalls": [],
-           "readClientGrantsCalls": [
-             [
-               "abbacaca-abba-caca-abba-cacaabbacaca",
-             ],
-           ],
+           "readClientGrantsCalls": [],
            "timeCalls": [],
          }
         `);

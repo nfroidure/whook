@@ -1,6 +1,28 @@
 import { type WhookErrorDescriptor } from '@whook/whook';
 import { YError } from 'yerror';
 
+export function getUsableRedirectURI(
+  allowedURIS: string[],
+  requestedURI?: string,
+  httpsOnly = false,
+) {
+  if (requestedURI) {
+    checkRedirectURI(allowedURIS, requestedURI, httpsOnly);
+  }
+  requestedURI ||= allowedURIS[0];
+
+  try {
+    new URL(requestedURI);
+  } catch (err) {
+    throw YError.wrap(err as Error, 'E_OAUTH2_BAD_REDIRECT_URI', [
+      requestedURI,
+      allowedURIS,
+    ]);
+  }
+
+  return requestedURI;
+}
+
 export function checkRedirectURI(
   allowedURIS: string[],
   requestedURI: string,

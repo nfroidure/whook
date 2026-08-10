@@ -1,6 +1,8 @@
 import { createHash } from 'crypto';
 import { YError } from 'yerror';
 
+export const AUTHORIZATION_CODE_RESPONSE_TYPE = 'code';
+export const AUTHORIZATION_CODE_GRANT_TYPE = 'authorization_code';
 export type CodeChallengeMethod = (typeof CODE_CHALLENGE_METHODS)[number];
 export const PLAIN_CODE_CHALLENGE_METHOD = 'plain';
 export const S256_CODE_CHALLENGE_METHOD = 'S256';
@@ -17,6 +19,22 @@ export function base64UrlEncode(buf: Buffer): string {
   s = s.replaceAll('+', '-');
   s = s.replaceAll('/', '_');
   return s;
+}
+
+export function checkCodeChallengeParameters(
+  responseType: string,
+  codeChallenge?: string,
+  forcePKCE?: boolean,
+) {
+  if (responseType === AUTHORIZATION_CODE_RESPONSE_TYPE) {
+    if (!codeChallenge) {
+      if (forcePKCE) {
+        throw new YError('E_OAUTH2_PKCE_REQUIRED', [responseType]);
+      }
+    }
+  } else if (codeChallenge) {
+    throw new YError('E_OAUTH2_PKCE_NOT_SUPPORTED', [responseType]);
+  }
 }
 
 export function computeCodeChallenge(

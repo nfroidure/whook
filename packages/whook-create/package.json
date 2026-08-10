@@ -73,7 +73,7 @@
     "@inquirer/prompts": "^8.4.3",
     "@whook/example": "^26.0.0",
     "axios": "^1.17.0",
-    "common-services": "^20.0.0",
+    "common-services": "^20.1.0",
     "debug": "^4.4.3",
     "fs-extra": "^11.3.5",
     "knifecycle": "^21.3.0",

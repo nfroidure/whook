@@ -68,6 +68,9 @@ describe('getOAuth2WellKnown', () => {
 
     const getOAuth2WellKnown = await initGetOAuth2WellKnown({
       BASE_URL: 'https://server.example.com',
+      OAUTH2_PAR: {
+        mode: 'required',
+      },
       ROUTES_DEFINITIONS: {
         getOAuth2Authorize: {
           module: {
@@ -87,6 +90,13 @@ describe('getOAuth2WellKnown', () => {
           module: {
             definition: {
               path: '/v0/oauth2/revoke',
+            },
+          },
+        },
+        postOAuth2PushedAuthorizationRequest: {
+          module: {
+            definition: {
+              path: '/v0/oauth2/par',
             },
           },
         },
@@ -139,6 +149,8 @@ describe('getOAuth2WellKnown', () => {
              "implicit",
            ],
            "issuer": "https://server.example.com",
+           "pushed_authorization_request_endpoint": "https://server.example.com/v0/oauth2/par",
+           "require_pushed_authorization_requests": true,
            "response_types_supported": [
              "code",
              "token",

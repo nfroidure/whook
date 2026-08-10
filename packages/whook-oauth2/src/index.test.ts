@@ -35,7 +35,9 @@ import {
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
+  getOAuth2AuthorizeRequestURIParameter,
   getOAuth2AuthorizeScopeSchema,
+  getOAuth2AuthorizeRequestURISchema,
   getOAuth2AuthorizeCodeChallengeSchema,
   getOAuth2AuthorizeCodeChallengeParameter,
   getOAuth2AuthorizeCodeChallengeMethodSchema,
@@ -57,6 +59,10 @@ import {
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
   postOAuth2TokenRefreshTokenRequestBodySchema,
+  postOAuth2PushedAuthorizationRequestBodySchema,
+  postOAuth2PushedAuthorizationRequestDefinition,
+  postOAuth2PushedAuthorizationRequestRequestURISchema,
+  initPostOAuth2PushedAuthorizationRequest,
   type WhookOAuth2Options,
   type WhookOAuth2ReadClientGrantsService,
   type WhookOAuth2PasswordService,
@@ -68,6 +74,10 @@ import { type Knifecycle } from 'knifecycle';
 import { type OpenAPI } from 'ya-open-api-types';
 import { type Logger } from 'common-services';
 import { type WhookAuthenticationService } from '@whook/authorization';
+import {
+  type WhookOAuth2AuthorizationRequestsOptions,
+  type WhookOAuth2AuthorizationRequestsService,
+} from './services/oAuth2AuthorizationRequests.js';
 
 describe('OAuth2 server', () => {
   const BASE_PATH = '/v1';
@@ -113,6 +123,16 @@ describe('OAuth2 server', () => {
           ],
         },
       },
+      [`${BASE_PATH}${postOAuth2PushedAuthorizationRequestDefinition.path}`]: {
+        [postOAuth2PushedAuthorizationRequestDefinition.method]: {
+          ...postOAuth2PushedAuthorizationRequestDefinition.operation,
+          security: [
+            {
+              basicAuth: ['oauth'],
+            },
+          ],
+        },
+      },
     },
     components: {
       securitySchemes: {
@@ -133,6 +153,7 @@ describe('OAuth2 server', () => {
         getOAuth2AuthorizeRedirectURIParameter,
         getOAuth2AuthorizeScopeParameter,
         getOAuth2AuthorizeStateParameter,
+        getOAuth2AuthorizeRequestURIParameter,
         getOAuth2AuthorizeCodeChallengeParameter,
         getOAuth2AuthorizeCodeChallengeMethodParameter,
       ].reduce(
@@ -144,6 +165,7 @@ describe('OAuth2 server', () => {
       ),
       schemas: [
         getOAuth2AuthorizeScopeSchema,
+        getOAuth2AuthorizeRequestURISchema,
         getOAuth2AuthorizeCodeChallengeSchema,
         getOAuth2AuthorizeCodeChallengeMethodSchema,
         postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
@@ -152,6 +174,8 @@ describe('OAuth2 server', () => {
         postOAuth2TokenRefreshTokenRequestBodySchema,
         postOAuth2TokenTokenBodySchema,
         postOAuth2TokenCodeVerifierSchema,
+        postOAuth2PushedAuthorizationRequestBodySchema,
+        postOAuth2PushedAuthorizationRequestRequestURISchema,
       ].reduce(
         (schemasHash, { name, schema }) => ({
           ...schemasHash,
@@ -168,6 +192,10 @@ describe('OAuth2 server', () => {
   };
   const authentication = {
     check: jest.fn<WhookAuthenticationService<any>['check']>(),
+  };
+  const oAuth2AuthorizationRequests = {
+    check: jest.fn<WhookOAuth2AuthorizationRequestsService['check']>(),
+    create: jest.fn<WhookOAuth2AuthorizationRequestsService['create']>(),
   };
   const readClientGrants = jest.fn<WhookOAuth2ReadClientGrantsService>();
   const oAuth2AccessToken = {
@@ -227,6 +255,11 @@ describe('OAuth2 server', () => {
     // OAuth2 Specifics
     $.register(constant('OAUTH2', OAUTH2));
     $.register(
+      constant('OAUTH2_PAR', {
+        mode: 'enabled',
+      } satisfies WhookOAuth2AuthorizationRequestsOptions),
+    );
+    $.register(
       constant('ERRORS_DESCRIPTORS', {
         ...DEFAULT_ERRORS_DESCRIPTORS,
         ...AUTHORIZATION_ERRORS_DESCRIPTORS,
@@ -235,12 +268,20 @@ describe('OAuth2 server', () => {
     );
     $.register(
       alsoInject(
-        ['getOAuth2Authorize', 'postOAuth2Acknowledge', 'postOAuth2Token'],
+        [
+          'getOAuth2Authorize',
+          'postOAuth2Acknowledge',
+          'postOAuth2Token',
+          'postOAuth2PushedAuthorizationRequest',
+        ],
         initRoutesHandlers,
       ),
     );
     $.register(constant('authentication', authentication));
     $.register(constant('readClientGrants', readClientGrants));
+    $.register(
+      constant('oAuth2AuthorizationRequests', oAuth2AuthorizationRequests),
+    );
     $.register(constant('oAuth2AccessToken', oAuth2AccessToken));
     $.register(constant('oAuth2RefreshToken', oAuth2RefreshToken));
     $.register(constant('oAuth2AuthorizationCode', oAuth2AuthorizationCode));
@@ -255,6 +296,7 @@ describe('OAuth2 server', () => {
       initOAuth2PasswordGranter,
       initOAuth2RefreshTokenGranter,
       initOAuth2ImplicitGranter,
+      initPostOAuth2PushedAuthorizationRequest,
     ].forEach((handlerInitializer) => $.register(handlerInitializer as any));
 
     return $;
@@ -296,6 +338,8 @@ describe('OAuth2 server', () => {
       oAuth2Password.check,
       readClientGrants,
       authentication.check,
+      oAuth2AuthorizationRequests.check,
+      oAuth2AuthorizationRequests.create,
     ].forEach((mock) => mock.mockReset());
   });
 
@@ -308,7 +352,9 @@ describe('OAuth2 server', () => {
         oAuth2AuthorizationCode.check,
         oAuth2AuthorizationCode.create,
         oAuth2RefreshToken.check,
-      ].forEach((mock: any) =>
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
@@ -483,7 +529,9 @@ describe('OAuth2 server', () => {
         oAuth2Password.check,
         oAuth2AccessToken.create,
         oAuth2RefreshToken.create,
-      ].forEach((mock: any) =>
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
+      ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
       authentication.check.mockResolvedValueOnce({
@@ -607,6 +655,8 @@ describe('OAuth2 server', () => {
         oAuth2AuthorizationCode.check,
         oAuth2AuthorizationCode.create,
         oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -770,6 +820,8 @@ describe('OAuth2 server', () => {
         oAuth2Password.check,
         oAuth2AccessToken.create,
         oAuth2RefreshToken.create,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -902,6 +954,8 @@ describe('OAuth2 server', () => {
         oAuth2Password.check,
         oAuth2AccessToken.create,
         oAuth2RefreshToken.create,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1031,6 +1085,8 @@ describe('OAuth2 server', () => {
         oAuth2AuthorizationCode.check,
         oAuth2AuthorizationCode.create,
         oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1171,6 +1227,8 @@ describe('OAuth2 server', () => {
         oAuth2Password.check,
         oAuth2AccessToken.create,
         oAuth2RefreshToken.create,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1297,6 +1355,8 @@ describe('OAuth2 server', () => {
         oAuth2AuthorizationCode.check,
         oAuth2AuthorizationCode.create,
         oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1398,6 +1458,8 @@ describe('OAuth2 server', () => {
         oAuth2RefreshToken.create,
         oAuth2AuthorizationCode.check,
         oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1547,6 +1609,8 @@ describe('OAuth2 server', () => {
         oAuth2AccessToken.check,
         oAuth2RefreshToken.check,
         oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1729,6 +1793,8 @@ describe('OAuth2 server', () => {
         oAuth2AuthorizationCode.check,
         oAuth2AuthorizationCode.create,
         oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1827,6 +1893,8 @@ describe('OAuth2 server', () => {
         oAuth2AuthorizationCode.check,
         oAuth2AuthorizationCode.create,
         oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
       ].forEach((mock) =>
         mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
       );
@@ -1955,6 +2023,394 @@ describe('OAuth2 server', () => {
              "location": "http://redirect.example.com/yolo?a_param=a_value#client_id=the_client_id&scope=user&state=xyz&access_token=an_access_token&token_type=bearer&expires_in=86400",
              "server": undefined,
              "transaction-id": "11",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_root_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 201,
+         },
+       }
+      `);
+    });
+  });
+
+  describe('with PAR flow', () => {
+    test('should prepare the authorization redirection', async () => {
+      time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
+      [
+        oAuth2AccessToken.check,
+        oAuth2AccessToken.create,
+        oAuth2RefreshToken.check,
+        oAuth2RefreshToken.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
+        oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+      ].forEach((mock) =>
+        mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+      );
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['implicit'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+      });
+      oAuth2AuthorizationRequests.create.mockResolvedValueOnce({
+        requestURI: 'urn:ietf:params:oauth:request_uri:a_request_uri',
+        expiresIn: 95000,
+      });
+
+      const { status, headers, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2PushedAuthorizationRequestDefinition.path}`,
+        headers: {
+          authorization: `basic ${Buffer.from('ali:open_sesame').toString(
+            'base64',
+          )}`,
+        },
+        data: {
+          response_type: 'token',
+          client_id: 'the_client_id',
+          redirect_uri: 'http://redirect.example.com/yolo',
+          scope: 'user',
+          state: 'xyz',
+        },
+        maxRedirects: 0,
+        validateStatus: () => true,
+      });
+
+      expect({
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
+        },
+        readClientGrantsCalls: readClientGrants.mock.calls,
+        authenticationCheckCalls: authentication.check.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
+        oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "basic",
+             {
+               "hash": "YWxpOm9wZW5fc2VzYW1l",
+               "password": "open_sesame",
+               "username": "ali",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": {
+             "expires_in": 95,
+             "request_uri": "urn:ietf:params:oauth:request_uri:a_request_uri",
+           },
+           "headers": {
+             "cache-control": "no-store",
+             "connection": undefined,
+             "content-type": "application/json",
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "pragma": "no-cache",
+             "server": undefined,
+             "transaction-id": "12",
+             "transfer-encoding": "chunked",
+             "x-authenticated": "{"clientId":"the_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
+           },
+           "status": 201,
+         },
+       }
+      `);
+    });
+
+    test('should build the authorization redirection', async () => {
+      time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
+      [
+        authentication.check,
+        oAuth2AccessToken.check,
+        oAuth2AccessToken.create,
+        oAuth2RefreshToken.check,
+        oAuth2RefreshToken.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
+        oAuth2Password.check,
+        oAuth2AuthorizationRequests.create,
+      ].forEach((mock) =>
+        mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+      );
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['implicit'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: ['http://redirect.example.com/yolo'],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+      });
+      oAuth2AuthorizationRequests.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        parameters: {
+          response_type: 'token',
+          client_id: 'the_client_id',
+          redirect_uri: 'http://redirect.example.com/yolo',
+          scope: 'user',
+          state: 'xyz',
+        },
+        expiresAt: Date.parse('2010-03-07T00:00:00Z'),
+      });
+
+      const { status, headers, data } = await axios({
+        method: 'get',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${getOAuth2AuthorizeDefinition.path}`,
+        params: {
+          client_id: 'the_client_id',
+          request_uri: 'urn:ietf:params:oauth:request_uri:a_request_uri',
+        },
+        maxRedirects: 0,
+        validateStatus: () => true,
+      });
+
+      expect({
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
+        },
+        readClientGrantsCalls: readClientGrants.mock.calls,
+        authenticationCheckCalls: authentication.check.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
+        oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": "",
+           "headers": {
+             "connection": undefined,
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "location": "https://auth.example.com/sign_in?type=token&redirect_uri=http%3A%2F%2Fredirect.example.com%2Fyolo&scope=user&client_id=the_client_id&state=xyz",
+             "server": undefined,
+             "transaction-id": "13",
+             "transfer-encoding": "chunked",
+           },
+           "status": 302,
+         },
+       }
+      `);
+    });
+
+    test('should redirect with a token', async () => {
+      time.mockReturnValue(Date.parse('2010-03-06T00:00:00Z'));
+      [
+        oAuth2AccessToken.check,
+        oAuth2RefreshToken.check,
+        oAuth2RefreshToken.create,
+        oAuth2AuthorizationCode.check,
+        oAuth2AuthorizationCode.create,
+        oAuth2Password.check,
+        oAuth2AuthorizationRequests.check,
+        oAuth2AuthorizationRequests.create,
+      ].forEach((mock) =>
+        mock.mockRejectedValueOnce(new YError('E_NOT_SUPPOSED_TO_BE_HERE')),
+      );
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'the_root_client_id',
+        scopes: ['user', 'oauth'],
+        userId: 'auth_user_id',
+      });
+      oAuth2AccessToken.create.mockResolvedValueOnce({
+        token: 'an_access_token',
+        expiresAt: Date.parse('2010-03-07T00:00:00Z'),
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['password'],
+        allowedScopes: [],
+        allowedRedirectURIS: [],
+        isPublicClient: false,
+        canAcknowledge: true,
+        authenticationData: {
+          clientId: 'the_root_client_id',
+          scopes: [],
+          userId: 'a_user_id',
+        },
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['implicit'],
+        allowedScopes: ['user', 'oauth'],
+        allowedRedirectURIS: [
+          'http://redirect.example.com/yolo?a_param=a_value',
+        ],
+        isPublicClient: true,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user', 'oauth'],
+          userId: 'a_user_id',
+        },
+      });
+
+      const { status, headers, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2AcknowledgeDefinition.path}`,
+        headers: {
+          authorization: 'Bearer yolo',
+        },
+        data: {
+          responseType: 'token',
+          clientId: 'the_client_id',
+          redirectURI: 'http://redirect.example.com/yolo?a_param=a_value',
+          scope: 'user',
+          state: 'xyz',
+          acknowledged: true,
+        },
+        maxRedirects: 0,
+        validateStatus: () => true,
+      });
+
+      expect({
+        response: {
+          status,
+          headers: {
+            ...headers,
+            // Erasing the Date header that may be added by Axios :/
+            date: undefined,
+            etag: undefined,
+            'last-modified': undefined,
+            server: undefined,
+            connection: undefined,
+            'keep-alive': undefined,
+          },
+          data,
+        },
+        readClientGrantsCalls: readClientGrants.mock.calls,
+        authenticationCheckCalls: authentication.check.mock.calls,
+        oAuth2AccessTokenCreateCalls: oAuth2AccessToken.create.mock.calls,
+        oAuth2AccessTokenCheckCalls: oAuth2AccessToken.check.mock.calls,
+        oAuth2RefreshTokenCreateCalls: oAuth2RefreshToken.create.mock.calls,
+        oAuth2RefreshTokenCheckCalls: oAuth2RefreshToken.check.mock.calls,
+        oAuth2AuthorizationCodeCheckCalls:
+          oAuth2AuthorizationCode.check.mock.calls,
+        oAuth2AuthorizationCodeCreateCalls:
+          oAuth2AuthorizationCode.create.mock.calls,
+        oAuth2PasswordCheckCalls: oAuth2Password.check.mock.calls,
+      }).toMatchInlineSnapshot(`
+       {
+         "authenticationCheckCalls": [
+           [
+             "bearer",
+             {
+               "hash": "yolo",
+             },
+           ],
+         ],
+         "oAuth2AccessTokenCheckCalls": [],
+         "oAuth2AccessTokenCreateCalls": [
+           [
+             {
+               "clientId": "the_client_id",
+               "scopes": [
+                 "user",
+               ],
+               "userId": "auth_user_id",
+             },
+           ],
+         ],
+         "oAuth2AuthorizationCodeCheckCalls": [],
+         "oAuth2AuthorizationCodeCreateCalls": [],
+         "oAuth2PasswordCheckCalls": [],
+         "oAuth2RefreshTokenCheckCalls": [],
+         "oAuth2RefreshTokenCreateCalls": [],
+         "readClientGrantsCalls": [
+           [
+             "the_root_client_id",
+           ],
+           [
+             "the_client_id",
+           ],
+         ],
+         "response": {
+           "data": "",
+           "headers": {
+             "connection": undefined,
+             "date": undefined,
+             "etag": undefined,
+             "keep-alive": undefined,
+             "last-modified": undefined,
+             "location": "http://redirect.example.com/yolo?a_param=a_value#client_id=the_client_id&scope=user&state=xyz&access_token=an_access_token&token_type=bearer&expires_in=86400",
+             "server": undefined,
+             "transaction-id": "14",
              "transfer-encoding": "chunked",
              "x-authenticated": "{"clientId":"the_root_client_id","scopes":["user","oauth"],"userId":"auth_user_id"}",
            },
