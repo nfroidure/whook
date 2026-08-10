@@ -45,8 +45,10 @@ import {
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,
+  initPostOAuth2DeviceAuthorization,
   postOAuth2TokenCodeVerifierSchema,
   postOAuth2TokenDefinition,
+  postOAuth2DeviceAuthorizationDefinition,
   OAUTH2_ERRORS_DESCRIPTORS,
   initOAuth2AuthorizationCodeGranter,
   initOAuth2PasswordGranter,
@@ -54,6 +56,7 @@ import {
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
   initOAuth2ImplicitGranter,
+  initOAuth2DeviceCodeGranter,
   postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
   postOAuth2TokenPasswordTokenRequestBodySchema,
   postOAuth2TokenClientCredentialsTokenRequestBodySchema,
@@ -63,12 +66,15 @@ import {
   postOAuth2PushedAuthorizationRequestDefinition,
   postOAuth2PushedAuthorizationRequestRequestURISchema,
   initPostOAuth2PushedAuthorizationRequest,
+  postOAuth2TokenDeviceCodeTokenRequestBodySchema,
+  postOAuth2DeviceAuthorizationRequestBodySchema,
   type WhookOAuth2Options,
   type WhookOAuth2ReadClientGrantsService,
   type WhookOAuth2PasswordService,
   type WhookOAuth2AuthorizationCodeService,
   type WhookOAuth2RefreshTokenService,
   type WhookOAuth2AccessTokenService,
+  type WhookOAuth2DeviceCodeService,
 } from './index.js';
 import { type Knifecycle } from 'knifecycle';
 import { type OpenAPI } from 'ya-open-api-types';
@@ -133,6 +139,16 @@ describe('OAuth2 server', () => {
           ],
         },
       },
+      [`${BASE_PATH}${postOAuth2DeviceAuthorizationDefinition.path}`]: {
+        [postOAuth2DeviceAuthorizationDefinition.method]: {
+          ...postOAuth2DeviceAuthorizationDefinition.operation,
+          security: [
+            {
+              basicAuth: ['oauth'],
+            },
+          ],
+        },
+      },
     },
     components: {
       securitySchemes: {
@@ -172,6 +188,8 @@ describe('OAuth2 server', () => {
         postOAuth2TokenPasswordTokenRequestBodySchema,
         postOAuth2TokenClientCredentialsTokenRequestBodySchema,
         postOAuth2TokenRefreshTokenRequestBodySchema,
+        postOAuth2TokenDeviceCodeTokenRequestBodySchema,
+        postOAuth2DeviceAuthorizationRequestBodySchema,
         postOAuth2TokenTokenBodySchema,
         postOAuth2TokenCodeVerifierSchema,
         postOAuth2PushedAuthorizationRequestBodySchema,
@@ -209,6 +227,10 @@ describe('OAuth2 server', () => {
   const oAuth2AuthorizationCode = {
     create: jest.fn<WhookOAuth2AuthorizationCodeService['create']>(),
     check: jest.fn<WhookOAuth2AuthorizationCodeService['check']>(),
+  };
+  const oAuth2DeviceCode = {
+    create: jest.fn<WhookOAuth2DeviceCodeService['create']>(),
+    check: jest.fn<WhookOAuth2DeviceCodeService['check']>(),
   };
   const oAuth2Password = {
     check: jest.fn<WhookOAuth2PasswordService['check']>(),
@@ -273,6 +295,7 @@ describe('OAuth2 server', () => {
           'postOAuth2Acknowledge',
           'postOAuth2Token',
           'postOAuth2PushedAuthorizationRequest',
+          'postOAuth2DeviceAuthorization',
         ],
         initRoutesHandlers,
       ),
@@ -285,11 +308,13 @@ describe('OAuth2 server', () => {
     $.register(constant('oAuth2AccessToken', oAuth2AccessToken));
     $.register(constant('oAuth2RefreshToken', oAuth2RefreshToken));
     $.register(constant('oAuth2AuthorizationCode', oAuth2AuthorizationCode));
+    $.register(constant('oAuth2DeviceCode', oAuth2DeviceCode));
     $.register(constant('oAuth2Password', oAuth2Password));
     [
       initGetOAuth2Authorize,
       initPostOAuth2Acknowledge,
       initPostOAuth2Token,
+      initPostOAuth2DeviceAuthorization,
       initOAuth2Granters,
       initOAuth2ClientCredentialsGranter,
       initOAuth2AuthorizationCodeGranter,
@@ -297,6 +322,7 @@ describe('OAuth2 server', () => {
       initOAuth2RefreshTokenGranter,
       initOAuth2ImplicitGranter,
       initPostOAuth2PushedAuthorizationRequest,
+      initOAuth2DeviceCodeGranter,
     ].forEach((handlerInitializer) => $.register(handlerInitializer as any));
 
     return $;
@@ -335,6 +361,8 @@ describe('OAuth2 server', () => {
       oAuth2RefreshToken.check,
       oAuth2AuthorizationCode.check,
       oAuth2AuthorizationCode.create,
+      oAuth2DeviceCode.create,
+      oAuth2DeviceCode.check,
       oAuth2Password.check,
       readClientGrants,
       authentication.check,
