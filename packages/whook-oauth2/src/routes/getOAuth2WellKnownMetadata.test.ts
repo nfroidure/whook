@@ -89,6 +89,10 @@ describe('getOAuth2WellKnown', () => {
             type: 'route',
             path: '/v0/oauth2/par',
           },
+          postOAuth2DeviceAuthorization: {
+            type: 'route',
+            path: '/oauth2/device_authorization',
+          },
         },
       } as unknown as WhookDefinitions,
       API: {
@@ -134,6 +138,7 @@ describe('getOAuth2WellKnown', () => {
        "response": {
          "body": {
            "authorization_endpoint": "https://server.example.com/v0/oauth2/authorize",
+           "device_authorization_endpoint": "https://server.example.com/oauth2/device_authorization",
            "grant_types_supported": [
              "authorization_code",
              "implicit",
@@ -158,6 +163,7 @@ describe('getOAuth2WellKnown', () => {
            "token_endpoint_auth_methods_supported": [
              "client_secret_basic",
              "client_secret_post",
+             "none",
            ],
          },
          "status": 200,
