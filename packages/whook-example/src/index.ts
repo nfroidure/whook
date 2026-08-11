@@ -44,6 +44,19 @@ const APP_ENVS = ['local', 'test', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
 
+/* Architecture Note #1.1.3.7: WHOOK_PLUGINS
+  
+  Plugins allows you to add simple features to the Whook's core,
+   to add some, just add the plugin module name here.
+  
+  You can also avoid Whook defaults by leaving it empty.
+  */
+const WHOOK_PLUGINS = [
+  ...WHOOK_DEFAULT_PLUGINS,
+  '@whook/cors',
+  '@whook/authorization',
+];
+
 /* Architecture Note #1.1.1.1: Injected names
 
 Per default, Whook embeds the process manager,
@@ -84,8 +97,9 @@ export async function runProcess<
 
 /* Architecture Note #1.1.2: prepareProcess
 
-The `prepareProcess` function is intended to prepare the process
- environment.
+The `prepareProcess` function is intended to prepare
+the local process environment. Put here anything you
+don't want to end up in the final build process.
 */
 export async function prepareProcess<
   D extends Dependencies,
@@ -98,6 +112,14 @@ export async function prepareProcess<
    development purpose.
   */
   $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
+
+  /* Architecture Note #1.1.3.7.2: Dev WHOOK_PLUGINS
+
+  Those plugins will only be used locally. The
+  `@whook/dev` one is intended to be installed in
+  the development dependencies.
+   */
+  $.register(constant('WHOOK_PLUGINS', [...WHOOK_PLUGINS, '@whook/dev']));
 
   return await prepareBaseProcess(injectedNames, $);
 }
@@ -231,21 +253,11 @@ export async function prepareEnvironment<T extends Knifecycle>(
     ]),
   );
 
-  /* Architecture Note #1.1.3.7: WHOOK_PLUGINS
-  
-  Plugins allows you to add simple features to the Whook's core,
-   to add some, just add the plugin module name here.
-  
-  You can also avoid Whook defaults by leaving it empty.
-  */
-  $.register(
-    constant('WHOOK_PLUGINS', [
-      ...WHOOK_DEFAULT_PLUGINS,
-      '@whook/cors',
-      '@whook/authorization',
-      '@whook/dev',
-    ]),
-  );
+  /* Architecture Note #1.1.3.7.1: Build up WHOOK_PLUGINS
+
+  Those plugins will get involved for the final build.
+   */
+  $.register(constant('WHOOK_PLUGINS', WHOOK_PLUGINS));
 
   // Add the CORS wrapped error handler
   $.register(initErrorHandlerWithCORS);

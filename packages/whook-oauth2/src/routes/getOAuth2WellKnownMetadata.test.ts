@@ -9,7 +9,7 @@ import {
   type WhookOAuth2GranterDefinitions,
   type WhookOAuth2GranterService,
 } from '../index.js';
-import { type WhookRoutesDefinitionsService } from '@whook/whook';
+import { type WhookDefinitions } from '@whook/whook';
 
 describe('getOAuth2WellKnown', () => {
   const log = jest.fn<LogService>();
@@ -71,36 +71,26 @@ describe('getOAuth2WellKnown', () => {
       OAUTH2_PAR: {
         mode: 'required',
       },
-      ROUTES_DEFINITIONS: {
-        getOAuth2Authorize: {
-          module: {
-            definition: {
-              path: '/v0/oauth2/authorize',
-            },
+      DEFINITIONS: {
+        configs: {
+          getOAuth2Authorize: {
+            type: 'route',
+            path: '/v0/oauth2/authorize',
+          },
+          postOAuth2Token: {
+            type: 'route',
+            path: '/v0/oauth2/token',
+          },
+          postOAuth2Revoke: {
+            type: 'route',
+            path: '/v0/oauth2/revoke',
+          },
+          postOAuth2PushedAuthorizationRequest: {
+            type: 'route',
+            path: '/v0/oauth2/par',
           },
         },
-        postOAuth2Token: {
-          module: {
-            definition: {
-              path: '/v0/oauth2/token',
-            },
-          },
-        },
-        postOAuth2Revoke: {
-          module: {
-            definition: {
-              path: '/v0/oauth2/revoke',
-            },
-          },
-        },
-        postOAuth2PushedAuthorizationRequest: {
-          module: {
-            definition: {
-              path: '/v0/oauth2/par',
-            },
-          },
-        },
-      } as unknown as WhookRoutesDefinitionsService,
+      } as unknown as WhookDefinitions,
       API: {
         openapi: '3.2',
         info: {

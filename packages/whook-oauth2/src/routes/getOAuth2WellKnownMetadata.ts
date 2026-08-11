@@ -1,7 +1,7 @@
 import {
   identity,
   refersTo,
-  type WhookRoutesDefinitionsService,
+  type WhookDefinitions,
   type WhookAPISchemaDefinition,
   type WhookRouteDefinition,
 } from '@whook/whook';
@@ -303,14 +303,14 @@ export const definition = {
 async function initGetOAuth2WellKnownMetadata({
   API,
   BASE_URL,
-  ROUTES_DEFINITIONS,
+  DEFINITIONS,
   OAUTH2_PAR = DEFAULT_OAUTH2_PAR,
   oAuth2Granters,
   log,
 }: WhookOAuth2AuthorizationRequestsConfig & {
   API: OpenAPI;
   BASE_URL: string;
-  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  DEFINITIONS: WhookDefinitions;
   oAuth2Granters: WhookOAuth2GranterService<WhookOAuth2GranterDefinitions>[];
   log: LogService;
 }) {
@@ -320,7 +320,7 @@ async function initGetOAuth2WellKnownMetadata({
 
   if (
     OAUTH2_PAR.mode !== 'disabled' &&
-    !ROUTES_DEFINITIONS['postOAuth2PushedAuthorizationRequest']
+    !DEFINITIONS.configs['postOAuth2PushedAuthorizationRequest']
   ) {
     log('error', `💥 - OAuth2 PAR endpoint required to enable PAR.`);
     throw new YError('E_OAUTH2_MISCONFIGURED');
@@ -328,8 +328,16 @@ async function initGetOAuth2WellKnownMetadata({
 
   const body = {
     issuer: `${BASE_URL}`,
-    authorization_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['getOAuth2Authorize']?.module.definition.path || '/oauth2/authorize'}`,
-    token_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['postOAuth2Token']?.module.definition.path || '/oauth2/token'}`,
+    authorization_endpoint: `${BASE_URL}${
+      DEFINITIONS.configs['getOAuth2Authorize']?.type === 'route'
+        ? DEFINITIONS.configs['getOAuth2Authorize'].path
+        : '/oauth2/authorize'
+    }`,
+    token_endpoint: `${BASE_URL}${
+      DEFINITIONS.configs['postOAuth2Token']?.type === 'route'
+        ? DEFINITIONS.configs['postOAuth2Token'].path
+        : '/oauth2/token'
+    }`,
     // TODO: Put it behind options (allow none)
     token_endpoint_auth_methods_supported: [
       'client_secret_basic',
@@ -346,19 +354,22 @@ async function initGetOAuth2WellKnownMetadata({
       ),
     ],
     scopes_supported: collectScopesFromAPI(API),
-    ...(ROUTES_DEFINITIONS['postOAuth2Revoke']?.module.definition.path
+    ...(DEFINITIONS.configs['postOAuth2Revoke']?.type === 'route' &&
+    DEFINITIONS.configs['postOAuth2Revoke'].path
       ? {
-          revocation_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['postOAuth2Revoke'].module.definition.path}`,
+          revocation_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2Revoke'].path}`,
           revocation_endpoint_auth_methods_supported: [
             'client_secret_basic',
             'client_secret_post',
           ],
         }
       : {}),
-    ...(ROUTES_DEFINITIONS['postOAuth2PushedAuthorizationRequest']?.module
-      .definition.path && OAUTH2_PAR.mode !== 'disabled'
+    ...(DEFINITIONS.configs['postOAuth2PushedAuthorizationRequest']?.type ===
+      'route' &&
+    DEFINITIONS.configs['postOAuth2PushedAuthorizationRequest'].path &&
+    OAUTH2_PAR.mode !== 'disabled'
       ? {
-          pushed_authorization_request_endpoint: `${BASE_URL}${ROUTES_DEFINITIONS['postOAuth2PushedAuthorizationRequest']?.module.definition.path}`,
+          pushed_authorization_request_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2PushedAuthorizationRequest'].path}`,
           require_pushed_authorization_requests: OAUTH2_PAR.mode === 'required',
         }
       : {}),
