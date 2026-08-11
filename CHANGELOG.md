@@ -1,3 +1,12 @@
+## [26.0.2](https://github.com/nfroidure/whook/compare/v26.0.1...v26.0.2) (2026-08-11)
+
+### Features
+
+* **@whook/oauth2:** support OAuth2 PAR ([cae25ac](https://github.com/nfroidure/whook/commit/cae25acbe75c35d76e592afe6db48b4f2eca2209)), references [#230](https://github.com/nfroidure/whook/issues/230)
+
+### Bug Fixes
+
+* **build:** fix the server build when using OAuth2 ([60f3152](https://github.com/nfroidure/whook/commit/60f315227abd8d18c1a56125479ccb16d6f78976))
 
 ## [26.0.0](https://github.com/nfroidure/whook/compare/v25.2.1...v26.0.0) (2026-08-07)
 
