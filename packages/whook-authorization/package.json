@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/authorization",
-  "version": "26.0.2",
+  "version": "26.0.3",
   "description": "A wrapper to provide authorization support to a Whook server",
   "type": "module",
   "publishConfig": {
