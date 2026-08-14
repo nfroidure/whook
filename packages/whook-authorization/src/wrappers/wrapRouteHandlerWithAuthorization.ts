@@ -301,7 +301,7 @@ async function handleWithAuthorization<A>(
       // Check scopes
       if (
         !requiredScopes.some((requiredScope) =>
-          authenticationData.scopes.includes(requiredScope),
+          (authenticationData.scopes || []).includes(requiredScope),
         )
       ) {
         throw new YHTTPError(403, 'E_UNAUTHORIZED_SCOPES', [
