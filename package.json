@@ -65,7 +65,7 @@
     "conventional-changelog-conventionalcommits": "^10.2.1",
     "lerna": "10.0.0",
     "metapak": "^7.1.1",
-    "metapak-nfroidure": "22.1.4"
+    "metapak-nfroidure": "22.2.0"
   },
   "contributors": [
     {
