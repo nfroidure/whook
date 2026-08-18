@@ -6,7 +6,7 @@ import { join, relative } from 'node:path';
 import _axios from 'axios';
 import _ora from 'ora';
 import { printStackTrace, YError } from 'yerror';
-import { type LogService } from 'common-services';
+import { type LogService, type RandomBytesService } from 'common-services';
 import { type ProjectService } from './project.js';
 import { type AuthorService } from './author.js';
 
@@ -20,6 +20,7 @@ export type CreateWhookService = () => Promise<void>;
 export default autoService(async function initCreateWhook({
   CWD,
   SOURCE_DIR,
+  randomBytes,
   author,
   project,
   outputFile = _outputFile,
@@ -33,6 +34,7 @@ export default autoService(async function initCreateWhook({
 }: {
   CWD: string;
   SOURCE_DIR: string;
+  randomBytes: RandomBytesService;
   author: AuthorService;
   project: ProjectService;
   outputFile: typeof _outputFile;
@@ -136,7 +138,7 @@ ${author.name}
         ),
       ),
       ...(await readdir(join(SOURCE_DIR, 'src', 'config'))).map(
-        (environment) =>
+        async (environment) =>
           environment === 'common'
             ? Promise.resolve()
             : outputFile(
@@ -144,7 +146,7 @@ ${author.name}
                 `# Loaded when APP_ENV=${environment}
 
 # For JWT signing
-JWT_SECRET=oudelali
+JWT_SECRET=${(await randomBytes(16)).toString('hex')}
 `,
               ),
       ),

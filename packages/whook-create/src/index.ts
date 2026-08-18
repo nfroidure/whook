@@ -7,7 +7,7 @@ import debug from 'debug';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as inquirer from '@inquirer/prompts';
-import { initLog, initLock, initDelay } from 'common-services';
+import { initLog, initLock, initDelay, initRandomBytes } from 'common-services';
 import initAuthor from './services/author.js';
 import initProject from './services/project.js';
 import initCreateWhook from './services/createWhook.js';
@@ -52,6 +52,7 @@ export async function runCreateWhook(): Promise<void> {
     $.register(initLog);
     $.register(initLock);
     $.register(initDelay);
+    $.register(initRandomBytes);
     $.register(initAuthor);
     $.register(initProject);
     $.register(initCreateWhook);
