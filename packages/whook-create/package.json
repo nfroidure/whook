@@ -22,7 +22,7 @@
     }
   },
   "name": "@whook/create",
-  "version": "26.0.3",
+  "version": "26.0.4",
   "description": "Kickstart a new Whook server",
   "type": "module",
   "publishConfig": {

@@ -1,3 +1,8 @@
+## [26.0.2](https://github.com/nfroidure/whook/compare/v26.0.3...v26.0.2) (2026-08-18)
+
+### Bug Fixes
+
+* **@whook/create:** avoid defaulting to a known secret ([235bfbe](https://github.com/nfroidure/whook/commit/235bfbeeef4c7558dbc1c73c13316c75d09c202c))
 
 ## [26.0.2](https://github.com/nfroidure/whook/compare/v26.0.1...v26.0.2) (2026-08-11)
 
