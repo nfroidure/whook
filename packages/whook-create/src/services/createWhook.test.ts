@@ -3,7 +3,7 @@ import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initCreateWhook from './createWhook.js';
 import { YError } from 'yerror';
 import { readFileSync } from 'node:fs';
-import { type LogService } from 'common-services';
+import { type RandomBytesService, type LogService } from 'common-services';
 import { type PathLike } from 'fs-extra';
 
 const _packageJSON = JSON.parse(
@@ -69,6 +69,7 @@ describe('initCreateWhook', () => {
     start: jest.fn<any>(),
     stopAndPersist: jest.fn<any>(),
   };
+  const randomBytes = jest.fn<RandomBytesService>();
   const log = jest.fn<LogService>();
 
   beforeEach(() => {
@@ -78,6 +79,7 @@ describe('initCreateWhook', () => {
     readdir.mockReset();
     exec.mockReset();
     copy.mockReset();
+    randomBytes.mockReset();
     log.mockReset();
     ora.mockReset();
     ora.mockReturnValue(oraInstance);
@@ -100,6 +102,7 @@ describe('initCreateWhook', () => {
   });
 
   test('should work', async () => {
+    randomBytes.mockResolvedValue(Buffer.from('a_random_sequence'));
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockImplementationOnce(
       (
@@ -157,6 +160,7 @@ describe('initCreateWhook', () => {
       copy,
       axios: axios as any,
       ora: ora as any,
+      randomBytes,
       log,
     });
 
@@ -312,11 +316,13 @@ describe('initCreateWhook', () => {
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      randomBytesCalls: randomBytes.mock.calls,
       readdirCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });
 
   test('should handle network issues', async () => {
+    randomBytes.mockResolvedValue(Buffer.from('a_random_sequence'));
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockImplementationOnce(
       (
@@ -372,6 +378,7 @@ describe('initCreateWhook', () => {
       copy,
       axios: axios as any,
       ora: ora as any,
+      randomBytes,
       log,
     });
 
@@ -527,11 +534,13 @@ describe('initCreateWhook', () => {
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      randomBytesCalls: randomBytes.mock.calls,
       readdirCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });
 
   test('should handle git initialization problems', async () => {
+    randomBytes.mockResolvedValue(Buffer.from('a_random_sequence'));
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockResolvedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
@@ -567,6 +576,7 @@ describe('initCreateWhook', () => {
       copy,
       axios: axios as any,
       ora: ora as any,
+      randomBytes,
       log,
     });
 
@@ -722,11 +732,13 @@ describe('initCreateWhook', () => {
       oraStartCalls: oraInstance.start.mock.calls,
       oraStopAndPersistCalls: oraInstance.stopAndPersist.mock.calls,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      randomBytesCalls: randomBytes.mock.calls,
       readdirCalls: readFile.mock.calls,
     }).toMatchSnapshot();
   });
 
   test('should fail with access problems', async () => {
+    randomBytes.mockResolvedValue(Buffer.from('a_random_sequence'));
     readdir.mockResolvedValueOnce(['local', 'production']);
     copy.mockRejectedValueOnce(new YError('E_ACCESS'));
     axios.mockResolvedValueOnce({
@@ -763,6 +775,7 @@ describe('initCreateWhook', () => {
         copy,
         axios: axios as any,
         ora: ora as any,
+        randomBytes,
         log,
       });
 
