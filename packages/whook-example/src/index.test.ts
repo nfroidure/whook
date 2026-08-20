@@ -473,9 +473,6 @@ describe('runProcess', () => {
            "⏳ - Skipped "__snapshots__" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "__snapshots__" per ignore patterns.",
-         ],
-         [
            "⏳ - Skipped "config.d.ts" per ignore patterns.",
          ],
          [
@@ -504,6 +501,9 @@ describe('runProcess', () => {
          ],
          [
            "⏳ - Skipped "create.test.js.map" per file patterns.",
+         ],
+         [
+           "⏳ - Skipped "createSecretKey.test.ts" per ignore patterns.",
          ],
          [
            "⏳ - Skipped "cronRun.d.ts" per ignore patterns.",
@@ -1791,6 +1791,9 @@ describe('runProcess', () => {
          ],
          [
            "🛂 - Dynamic import of "ecstatic".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///project/src/commands/createSecretKey.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/commands/printEnv.ts".",

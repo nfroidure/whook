@@ -44,15 +44,21 @@ export function parseBoolean(str: string): boolean {
   }
   throw new YError('E_BAD_BOOLEAN', [str]);
 }
-export function parseArrayOfStrings(str: string): string[] {
-  return str.split(',');
+
+export function castToArrayOfStrings(strOrStrs: string | string[]): string[] {
+  return strOrStrs instanceof Array ? strOrStrs : [strOrStrs];
 }
+export function parseArrayOfStrings(strs: string[]): string[] {
+  return strs;
+}
+
 export function parseArrayOfNumbers(
   options: WhookCoercionOptions,
-  str: string,
+  strs: string[],
 ): number[] {
-  return str.split(',').map(parseNumber.bind(null, options));
+  return strs.map(parseNumber.bind(null, options));
 }
-export function parseArrayOfBooleans(str: string): boolean[] {
-  return str.split(',').map(parseBoolean);
+
+export function parseArrayOfBooleans(strs: string[]): boolean[] {
+  return strs.map(parseBoolean);
 }

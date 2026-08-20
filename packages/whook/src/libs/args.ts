@@ -8,26 +8,51 @@ import { type WhookOpenAPI } from '../types/openapi.js';
 import { ensureResolvedObject } from 'ya-open-api-types';
 
 export interface WhookRawCommandArgs {
-  namedArguments: Record<string, string>;
+  namedArguments: Record<string, string | string[]>;
   rest: string[];
   command: string;
+  subargs?: string[];
 }
 
 export function parseArgs(rawArgs: string[]): WhookRawCommandArgs {
-  const { _, ...args } = baseParseArgs(rawArgs.slice(2));
+  const {
+    _,
+    '--': subargs,
+    ...args
+  } = baseParseArgs(rawArgs.slice(2), {
+    configuration: {
+      'parse-numbers': false,
+      'parse-positional-numbers': false,
+      'duplicate-arguments-array': true,
+      'flatten-duplicate-arrays': true,
+      'greedy-arrays': false,
+      'dot-notation': false,
+      'populate--': true,
+    },
+  });
   const finalArgs = {
     namedArguments: Object.keys(args).reduce(
       (cleanArgs, key) => ({
         ...cleanArgs,
         // Avoid having the --arg shortcut for --arg=true to
-        // provide a boolean since we coerce the args later
+        // provide a boolean and the parser to detect numbers
+        // since we coerce the args later
         [key]:
-          typeof args[key] === 'boolean' ? args[key].toString() : args[key],
+          args[key] instanceof Array
+            ? args[key].map((value) =>
+                typeof value === 'boolean' || typeof value === 'number'
+                  ? value.toString()
+                  : value,
+              )
+            : typeof args[key] === 'boolean' || typeof args[key] === 'number'
+              ? args[key].toString()
+              : args[key],
       }),
       {},
     ),
     rest: _.map((arg) => arg.toString()),
     command: rawArgs[1],
+    subargs: subargs?.map((subarg) => subarg.toString()),
   };
 
   return finalArgs;

@@ -93,7 +93,7 @@ describe('parseNumber', () => {
 describe('parseArrayOfStrings', () => {
   describe('should work', () => {
     test('with empty string', () => {
-      expect(parseArrayOfStrings('')).toMatchInlineSnapshot(`
+      expect(parseArrayOfStrings([''])).toMatchInlineSnapshot(`
        [
          "",
        ]
@@ -101,7 +101,7 @@ describe('parseArrayOfStrings', () => {
     });
 
     test('with one string', () => {
-      expect(parseArrayOfStrings('str')).toMatchInlineSnapshot(`
+      expect(parseArrayOfStrings(['str'])).toMatchInlineSnapshot(`
        [
          "str",
        ]
@@ -109,7 +109,7 @@ describe('parseArrayOfStrings', () => {
     });
 
     test('with several strings', () => {
-      expect(parseArrayOfStrings('str,foo,bar')).toMatchInlineSnapshot(`
+      expect(parseArrayOfStrings(['str', 'foo', 'bar'])).toMatchInlineSnapshot(`
        [
          "str",
          "foo",
@@ -124,13 +124,13 @@ describe('parseArrayOfNumbers', () => {
   describe('should work', () => {
     describe('should default options', () => {
       test('with reentrant numbers', () => {
-        expect(parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, '1'))
+        expect(parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, ['1']))
           .toMatchInlineSnapshot(`
          [
            1,
          ]
         `);
-        expect(parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, '1.1,-2'))
+        expect(parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, ['1.1', '-2']))
           .toMatchInlineSnapshot(`
          [
            1.1,
@@ -138,10 +138,12 @@ describe('parseArrayOfNumbers', () => {
          ]
         `);
         expect(
-          parseArrayOfNumbers(
-            DEFAULT_COERCION_OPTIONS,
-            '1.7976931348623157e+308,3,0,2',
-          ),
+          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, [
+            '1.7976931348623157e+308',
+            '3',
+            '0',
+            '2',
+          ]),
         ).toMatchInlineSnapshot(`
          [
            1.7976931348623157e+308,
@@ -151,10 +153,10 @@ describe('parseArrayOfNumbers', () => {
          ]
         `);
         expect(
-          parseArrayOfNumbers(
-            DEFAULT_COERCION_OPTIONS,
-            '-1.7976931348623157e+308,1',
-          ),
+          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, [
+            '-1.7976931348623157e+308',
+            '1',
+          ]),
         ).toMatchInlineSnapshot(`
          [
            -1.7976931348623157e+308,
@@ -167,7 +169,7 @@ describe('parseArrayOfNumbers', () => {
     describe('should fail', () => {
       test('with any string', () => {
         try {
-          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, 'any');
+          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, ['any']);
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
@@ -176,20 +178,9 @@ describe('parseArrayOfNumbers', () => {
         }
       });
 
-      test('with an empty string', () => {
-        try {
-          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, '');
-          throw new YError('E_UNEXPECTED_SUCCESS');
-        } catch (err) {
-          expect(err).toMatchInlineSnapshot(
-            `[YError: E_NON_REENTRANT_NUMBER (["","NaN"]): E_NON_REENTRANT_NUMBER]`,
-          );
-        }
-      });
-
       test('with some empty string', () => {
         try {
-          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, '1,,3');
+          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, ['1', '', '3']);
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
@@ -200,7 +191,7 @@ describe('parseArrayOfNumbers', () => {
 
       test('with some invalid string', () => {
         try {
-          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, '1,invalid,3');
+          parseArrayOfNumbers(DEFAULT_COERCION_OPTIONS, ['1', 'invalid', '3']);
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
@@ -216,19 +207,27 @@ describe('parseArrayOfBooleans', () => {
   describe('should work', () => {
     describe('should default options', () => {
       test('with reentrant numbers', () => {
-        expect(parseArrayOfBooleans('false')).toMatchInlineSnapshot(`
+        expect(parseArrayOfBooleans(['false'])).toMatchInlineSnapshot(`
          [
            false,
          ]
         `);
-        expect(parseArrayOfBooleans('false,true')).toMatchInlineSnapshot(`
+        expect(parseArrayOfBooleans(['false', 'true'])).toMatchInlineSnapshot(`
          [
            false,
            true,
          ]
         `);
-        expect(parseArrayOfBooleans('false,true,false,true,false,true'))
-          .toMatchInlineSnapshot(`
+        expect(
+          parseArrayOfBooleans([
+            'false',
+            'true',
+            'false',
+            'true',
+            'false',
+            'true',
+          ]),
+        ).toMatchInlineSnapshot(`
          [
            false,
            true,
@@ -244,7 +243,7 @@ describe('parseArrayOfBooleans', () => {
     describe('should fail', () => {
       test('with any string', () => {
         try {
-          parseArrayOfBooleans('any');
+          parseArrayOfBooleans(['any']);
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
@@ -253,20 +252,9 @@ describe('parseArrayOfBooleans', () => {
         }
       });
 
-      test('with an empty string', () => {
-        try {
-          parseArrayOfBooleans('');
-          throw new YError('E_UNEXPECTED_SUCCESS');
-        } catch (err) {
-          expect(err).toMatchInlineSnapshot(
-            `[YError: E_BAD_BOOLEAN ([""]): E_BAD_BOOLEAN]`,
-          );
-        }
-      });
-
       test('with some empty string', () => {
         try {
-          parseArrayOfBooleans('false,,true');
+          parseArrayOfBooleans(['false', '', 'true']);
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
@@ -277,7 +265,7 @@ describe('parseArrayOfBooleans', () => {
 
       test('with some invalid string', () => {
         try {
-          parseArrayOfBooleans('false,invalid,true');
+          parseArrayOfBooleans(['false', 'invalid', 'true']);
           throw new YError('E_UNEXPECTED_SUCCESS');
         } catch (err) {
           expect(err).toMatchInlineSnapshot(

@@ -13,14 +13,15 @@ describe('parseArgs', () => {
     ]);
 
     expect(args).toMatchInlineSnapshot(`
-{
-  "command": "route",
-  "namedArguments": {
-    "name": "getPing",
-    "parameters": "{}",
-  },
-  "rest": [],
-}
-`);
+     {
+       "command": "route",
+       "namedArguments": {
+         "name": "getPing",
+         "parameters": "{}",
+       },
+       "rest": [],
+       "subargs": undefined,
+     }
+    `);
   });
 });

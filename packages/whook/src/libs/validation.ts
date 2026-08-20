@@ -15,6 +15,7 @@ import {
   pathItemToOperationMap,
 } from 'ya-open-api-types';
 import {
+  castToArrayOfStrings,
   parseArrayOfBooleans,
   parseArrayOfNumbers,
   parseArrayOfStrings,
@@ -471,16 +472,18 @@ export async function resolveParameters<T extends OpenAPI>(
 
 export type WhookParameterValue =
   boolean | boolean[] | string | string[] | number | number[] | undefined;
-export type WhookParameterCaster = (str: string) => WhookParameterValue;
-export type WhookParameterValidator = (
-  str: string | undefined,
+export type WhookParameterCaster<T extends string | string[]> = (
+  str: T,
 ) => WhookParameterValue;
-export type WhookParametersValidators = Record<
+export type WhookParameterValidator<T extends string | string[]> = (
+  str: T | undefined,
+) => WhookParameterValue;
+export type WhookParametersValidators<T extends string | string[]> = Record<
   'query' | 'header' | 'path' | 'cookie' | 'querystring',
-  Record<string, WhookParameterValidator>
+  Record<string, WhookParameterValidator<T>>
 >;
 
-export async function getCasterForSchema(
+export async function getCasterForSchema<T extends string | string[]>(
   {
     API,
     COERCION_OPTIONS,
@@ -489,7 +492,7 @@ export async function getCasterForSchema(
     COERCION_OPTIONS: WhookCoercionOptions;
   },
   schema: JSONSchema,
-): Promise<WhookParameterCaster> {
+): Promise<WhookParameterCaster<T>> {
   const resolvedSchema = (await ensureResolvedObject(
     API,
     schema,
@@ -500,9 +503,9 @@ export async function getCasterForSchema(
   }
 
   if (resolvedSchema.type === 'number') {
-    return parseNumber.bind(null, COERCION_OPTIONS);
+    return parseNumber.bind(null, COERCION_OPTIONS) as WhookParameterCaster<T>;
   } else if (resolvedSchema.type === 'boolean') {
-    return parseBoolean;
+    return parseBoolean as WhookParameterCaster<T>;
   } else if (resolvedSchema.type === 'string') {
     return identity;
   } else if (resolvedSchema.type === 'array') {
@@ -521,18 +524,29 @@ export async function getCasterForSchema(
     if (!('type' in itemSchema && itemSchema.type)) {
       throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [resolvedSchema]);
     }
+
     if (itemSchema.type === 'string') {
-      return parseArrayOfStrings;
+      return ((strOrStrs: string | string[]) =>
+        parseArrayOfStrings(
+          castToArrayOfStrings(strOrStrs),
+        )) as WhookParameterCaster<T>;
     } else if (itemSchema.type === 'number') {
-      return parseArrayOfNumbers.bind(null, COERCION_OPTIONS);
+      return ((strOrStrs: string | string[]) =>
+        parseArrayOfNumbers(
+          COERCION_OPTIONS,
+          castToArrayOfStrings(strOrStrs),
+        )) as WhookParameterCaster<T>;
     } else if (itemSchema.type === 'boolean') {
-      return parseArrayOfBooleans;
+      return ((strOrStrs: string | string[]) =>
+        parseArrayOfBooleans(
+          castToArrayOfStrings(strOrStrs),
+        )) as WhookParameterCaster<T>;
     }
   }
   throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [resolvedSchema]);
 }
 
-export async function createParameterValidator(
+export async function createParameterValidator<T extends string | string[]>(
   {
     API,
     COERCION_OPTIONS,
@@ -543,9 +557,9 @@ export async function createParameterValidator(
     schemaValidators: WhookSchemaValidatorsService;
   },
   parameter: WhookSupportedParameter,
-): Promise<WhookParameterValidator> {
+): Promise<WhookParameterValidator<T>> {
   let validator: ReturnType<typeof schemaValidators>;
-  let caster: WhookParameterCaster | undefined = undefined;
+  let caster: WhookParameterCaster<T> | undefined = undefined;
 
   const schema = (await ensureResolvedObject(
     API,
@@ -557,9 +571,12 @@ export async function createParameterValidator(
   }
 
   if (schema.type === 'number') {
-    caster = parseNumber.bind(null, COERCION_OPTIONS);
+    caster = parseNumber.bind(
+      null,
+      COERCION_OPTIONS,
+    ) as WhookParameterCaster<T>;
   } else if (schema.type === 'boolean') {
-    caster = parseBoolean;
+    caster = parseBoolean as WhookParameterCaster<T>;
   } else if (schema.type === 'array') {
     if (!('items' in schema && schema.items) || 'prefixItems' in schema) {
       throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [parameter]);
@@ -574,11 +591,17 @@ export async function createParameterValidator(
       throw new YError('E_UNSUPPORTED_PARAMETER_SCHEMA', [parameter]);
     }
     if (itemSchema.type === 'string') {
-      caster = parseArrayOfStrings;
+      caster = ((str: string) =>
+        parseArrayOfStrings(str.split(','))) as WhookParameterCaster<T>;
     } else if (itemSchema.type === 'number') {
-      caster = parseArrayOfNumbers.bind(null, COERCION_OPTIONS);
+      caster = ((str: string) =>
+        parseArrayOfNumbers(
+          COERCION_OPTIONS,
+          str.split(','),
+        )) as WhookParameterCaster<T>;
     } else if (itemSchema.type === 'boolean') {
-      caster = parseArrayOfBooleans;
+      caster = ((str: string) =>
+        parseArrayOfBooleans(str.split(','))) as WhookParameterCaster<T>;
     }
   }
 
@@ -588,7 +611,7 @@ export async function createParameterValidator(
     throw YError.wrap(err as Error, 'E_BAD_PARAMETER_SCHEMA', [parameter.name]);
   }
 
-  return validateParameter.bind(null, parameter, caster, validator);
+  return (validateParameter<T>).bind(null, parameter, caster, validator);
 }
 
 export async function createParametersValidators(
@@ -603,7 +626,7 @@ export async function createParametersValidators(
   },
   parameters: WhookSupportedParameter[],
 ) {
-  const parameterValidators: WhookParametersValidators = {
+  const parameterValidators: WhookParametersValidators<string | string[]> = {
     query: {},
     header: {},
     path: {},
@@ -626,11 +649,11 @@ export async function createParametersValidators(
   return parameterValidators;
 }
 
-export function validateParameter(
+export function validateParameter<T extends string | string[]>(
   parameter: OpenAPIParameter<ExpressiveJSONSchema, OpenAPIExtension>,
-  caster: WhookParameterCaster | undefined,
+  caster: WhookParameterCaster<T> | undefined,
   validator: ValidateFunction,
-  str: string | undefined,
+  str: T | undefined,
 ): WhookParameterValue | undefined {
   if ('undefined' === typeof str) {
     if (parameter.required) {

@@ -21,11 +21,11 @@ export const DEFAULT_COMMAND_CONFIG: WhookCommandConfig = {
   promptArgs: true,
 };
 
-export type WhookBaseCommandConfig = {
+export interface WhookBaseCommandConfig {
   environments?: WhookEnvironmentsConfig;
   promptArgs?: boolean;
   targetHandler?: string;
-};
+}
 
 export type WhookCommandSchema =
   | NullJSONSchema
@@ -52,23 +52,24 @@ export interface WhookCommandArgumentDefinition<
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface WhookCommandConfig extends WhookBaseCommandConfig {}
 
-export type WhookCommandDefinition = {
+export interface WhookCommandDefinition {
   name: string;
   description: string;
   example: string;
   arguments: WhookCommandArgumentDefinition[];
   config?: WhookCommandConfig;
-};
+}
 
-export type WhookArgsTypes = string | boolean | number;
+export type WhookArgsTypes =
+  string | boolean | number | string[] | boolean[] | number[];
 
-export type WhookCommandArgs<
+export interface WhookCommandArgs<
   T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
-> = {
+> {
   namedArguments: T;
   rest: string[];
   command: string;
-};
+}
 
 export type WhookCommandHandler<
   T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,

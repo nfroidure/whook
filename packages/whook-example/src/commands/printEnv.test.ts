@@ -11,8 +11,6 @@ describe('printEnvCommand', () => {
   });
 
   test('should work', async () => {
-    // Have to use Object.assign for some reason here
-    // See : https://stackoverflow.com/questions/56349619/ts2352-declare-object-with-dynamic-properties-and-one-property-with-specific-t
     const printEnvCommand = await initPrintEnvCommand({
       log,
       ENV: { NODE_ENV: NodeEnv.Test },
@@ -28,6 +26,16 @@ describe('printEnvCommand', () => {
     expect({
       result,
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchSnapshot();
+    }).toMatchInlineSnapshot(`
+     {
+       "logCalls": [
+         [
+           "info",
+           "["NODE_ENV"]",
+         ],
+       ],
+       "result": undefined,
+     }
+    `);
   });
 });
