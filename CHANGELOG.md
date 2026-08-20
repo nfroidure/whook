@@ -1,3 +1,5 @@
+## [26.0.5](https://github.com/nfroidure/whook/compare/v26.0.4...v26.0.5) (2026-08-20)
+
 ## [26.0.2](https://github.com/nfroidure/whook/compare/v26.0.3...v26.0.2) (2026-08-18)
 
 ### Bug Fixes
