@@ -27,7 +27,8 @@ describe('commands should work', () => {
      ",
        "stdout": "
 
-     # Provided by "@whook/example": 1 commands
+     # Provided by "@whook/example": 2 commands
+     - createSecretKey: A command to create a secret key
      - printEnv: A command printing every env values
 
 

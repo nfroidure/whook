@@ -34,7 +34,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 919836,
+       "contentsLength": 920541,
        "extension": ".mjs",
        "logCalls": [
          [

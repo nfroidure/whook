@@ -115,7 +115,7 @@ export interface WhookHTTPRouterDescriptor {
   operation: WhookOpenAPIOperation;
   config: WhookRouteConfig;
   queryParser: WhookQueryParser;
-  parametersValidators: WhookParametersValidators;
+  parametersValidators: WhookParametersValidators<string | string[]>;
   consumableMediaTypes: string[];
   produceableMediaTypes: string[];
   bodyValidator: WhookBodyValidator;

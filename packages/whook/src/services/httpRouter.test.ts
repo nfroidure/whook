@@ -307,6 +307,17 @@ describe('initHTTPRouter', () => {
             },
             {
               in: 'query',
+              name: 'fields',
+              required: false,
+              schema: {
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+              },
+            },
+            {
+              in: 'query',
               name: 'archived',
               schema: {
                 type: 'boolean',
@@ -766,7 +777,7 @@ describe('initHTTPRouter', () => {
       }
     });
 
-    test('when an operation has no name', async () => {
+    test('when an operation parameter has no name', async () => {
       try {
         const errorHandler = await initErrorHandler({
           ENV,
@@ -1050,10 +1061,6 @@ describe('initHTTPRouter', () => {
           headers: {
             'content-type': 'application/json',
           },
-          body: {
-            id: 1,
-            name: 'John Doe',
-          },
         });
         const errorHandler = await initErrorHandler({
           ENV,
@@ -1113,6 +1120,7 @@ describe('initHTTPRouter', () => {
                  "query": {
                    "archived": undefined,
                    "extended": true,
+                   "fields": undefined,
                  },
                },
                {
@@ -1135,6 +1143,17 @@ describe('initHTTPRouter', () => {
                        "required": true,
                        "schema": {
                          "type": "boolean",
+                       },
+                     },
+                     {
+                       "in": "query",
+                       "name": "fields",
+                       "required": false,
+                       "schema": {
+                         "items": {
+                           "type": "string",
+                         },
+                         "type": "array",
                        },
                      },
                      {
@@ -1190,7 +1209,6 @@ describe('initHTTPRouter', () => {
              ],
            ],
            "response": {
-             "body": undefined,
              "headers": {
                "content-type": "application/json",
              },
@@ -1279,6 +1297,7 @@ describe('initHTTPRouter', () => {
                  "query": {
                    "archived": undefined,
                    "extended": true,
+                   "fields": undefined,
                  },
                },
                {
@@ -1301,6 +1320,17 @@ describe('initHTTPRouter', () => {
                        "required": true,
                        "schema": {
                          "type": "boolean",
+                       },
+                     },
+                     {
+                       "in": "query",
+                       "name": "fields",
+                       "required": false,
+                       "schema": {
+                         "items": {
+                           "type": "string",
+                         },
+                         "type": "array",
                        },
                      },
                      {
@@ -1382,10 +1412,6 @@ describe('initHTTPRouter', () => {
             headers: {
               'content-type': 'application/json',
             },
-            body: {
-              id: 1,
-              name: 'John Doe',
-            },
           });
           const errorHandler = await initErrorHandler({
             ENV,
@@ -1410,7 +1436,7 @@ describe('initHTTPRouter', () => {
           });
           const req = {
             method: 'GET',
-            url: '/v1/users/1?extended=true',
+            url: '/v1/users/1?extended=true&extended=true&fields=email&fields=phone',
             headers: {},
           } as IncomingMessage;
 
@@ -1445,6 +1471,10 @@ describe('initHTTPRouter', () => {
                    "query": {
                      "archived": undefined,
                      "extended": true,
+                     "fields": [
+                       "email",
+                       "phone",
+                     ],
                    },
                  },
                  {
@@ -1467,6 +1497,17 @@ describe('initHTTPRouter', () => {
                          "required": true,
                          "schema": {
                            "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "fields",
+                         "required": false,
+                         "schema": {
+                           "items": {
+                             "type": "string",
+                           },
+                           "type": "array",
                          },
                        },
                        {
@@ -1522,7 +1563,6 @@ describe('initHTTPRouter', () => {
                ],
              ],
              "response": {
-               "body": "{"id":1,"name":"John Doe"}",
                "headers": {
                  "content-type": "application/json",
                },
@@ -1827,6 +1867,7 @@ describe('initHTTPRouter', () => {
                    "query": {
                      "archived": undefined,
                      "extended": true,
+                     "fields": undefined,
                    },
                  },
                  {
@@ -1849,6 +1890,17 @@ describe('initHTTPRouter', () => {
                          "required": true,
                          "schema": {
                            "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "fields",
+                         "required": false,
+                         "schema": {
+                           "items": {
+                             "type": "string",
+                           },
+                           "type": "array",
                          },
                        },
                        {
@@ -1999,6 +2051,7 @@ describe('initHTTPRouter', () => {
                    "query": {
                      "archived": undefined,
                      "extended": true,
+                     "fields": undefined,
                    },
                  },
                  {
@@ -2021,6 +2074,17 @@ describe('initHTTPRouter', () => {
                          "required": true,
                          "schema": {
                            "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "fields",
+                         "required": false,
+                         "schema": {
+                           "items": {
+                             "type": "string",
+                           },
+                           "type": "array",
                          },
                        },
                        {
@@ -2158,6 +2222,7 @@ describe('initHTTPRouter', () => {
                    "query": {
                      "archived": undefined,
                      "extended": true,
+                     "fields": undefined,
                    },
                  },
                  {
@@ -2180,6 +2245,17 @@ describe('initHTTPRouter', () => {
                          "required": true,
                          "schema": {
                            "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "fields",
+                         "required": false,
+                         "schema": {
+                           "items": {
+                             "type": "string",
+                           },
+                           "type": "array",
                          },
                        },
                        {
@@ -2319,6 +2395,7 @@ describe('initHTTPRouter', () => {
                    "query": {
                      "archived": undefined,
                      "extended": true,
+                     "fields": undefined,
                    },
                  },
                  {
@@ -2341,6 +2418,17 @@ describe('initHTTPRouter', () => {
                          "required": true,
                          "schema": {
                            "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "fields",
+                         "required": false,
+                         "schema": {
+                           "items": {
+                             "type": "string",
+                           },
+                           "type": "array",
                          },
                        },
                        {
@@ -2558,6 +2646,7 @@ describe('initHTTPRouter', () => {
                    "query": {
                      "archived": undefined,
                      "extended": true,
+                     "fields": undefined,
                    },
                  },
                  {
@@ -2580,6 +2669,17 @@ describe('initHTTPRouter', () => {
                          "required": true,
                          "schema": {
                            "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "fields",
+                         "required": false,
+                         "schema": {
+                           "items": {
+                             "type": "string",
+                           },
+                           "type": "array",
                          },
                        },
                        {
@@ -4272,6 +4372,7 @@ describe('initHTTPRouter', () => {
                    "query": {
                      "archived": undefined,
                      "extended": false,
+                     "fields": undefined,
                    },
                  },
                  {
@@ -4294,6 +4395,17 @@ describe('initHTTPRouter', () => {
                          "required": true,
                          "schema": {
                            "type": "boolean",
+                         },
+                       },
+                       {
+                         "in": "query",
+                         "name": "fields",
+                         "required": false,
+                         "schema": {
+                           "items": {
+                             "type": "string",
+                           },
+                           "type": "array",
                          },
                        },
                        {

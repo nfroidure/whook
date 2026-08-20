@@ -15,6 +15,7 @@ import {
 import {
   type WhookCommandHandler,
   type WhookCommandDefinition,
+  type WhookArgsTypes,
 } from '../types/commands.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
 import { getCasterForSchema } from '../libs/validation.js';
@@ -24,10 +25,10 @@ import {
   type ExpressiveJSONSchema,
 } from 'ya-json-schema-types';
 
-export type WhookCommandEnv = {
+export interface WhookCommandEnv {
   CI?: string;
   NO_PROMPT?: string;
-};
+}
 
 async function initCommand({
   ENV,
@@ -65,6 +66,11 @@ async function initCommand({
         args = await promptArgs({ API, COMMAND_DEFINITION }, args);
       }
 
+      const castedArgs = {
+        ...args,
+        namedArguments: {} as Record<string, WhookArgsTypes>,
+      };
+
       for (const argument of COMMAND_DEFINITION.arguments) {
         const resolvedSchema = (await ensureResolvedObject(
           API,
@@ -80,8 +86,8 @@ async function initCommand({
             'default' in resolvedSchema &&
             typeof resolvedSchema.default !== 'undefined'
           ) {
-            args.namedArguments[argument.name] =
-              resolvedSchema.default as string;
+            castedArgs.namedArguments[argument.name] =
+              resolvedSchema.default as WhookArgsTypes;
           }
           continue;
         }
@@ -94,14 +100,20 @@ async function initCommand({
         const validator = schemaValidators(argument.schema as JSONSchema);
 
         // TODO: Add ajv human readable error builder
-        validator(caster(args.namedArguments[argument.name]));
+        const castedValue = caster(args.namedArguments[argument.name]);
+
+        validator(castedValue);
 
         if (validator.errors?.length) {
           throw new YError('E_BAD_ARG', [validator.errors]);
         }
+
+        if (typeof castedValue !== 'undefined') {
+          castedArgs.namedArguments[argument.name] = castedValue;
+        }
       }
 
-      await commandHandler(args);
+      await commandHandler(castedArgs);
 
       await $instance.destroy();
     } catch (err) {
