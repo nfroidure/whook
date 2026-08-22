@@ -35,7 +35,7 @@ import {
   type WhookOAuth2AuthorizationRequestsService,
 } from '../services/oAuth2AuthorizationRequests.js';
 import { type WhookAuthenticationData } from '@whook/authorization';
-import { toUsableClientId } from '../libs/clients.js';
+import { checkGrants, toUsableClientId } from '../libs/clients.js';
 import { getUsableRedirectURI } from '../libs/redirectURI.js';
 import { type WhookOAuth2AuthorizeRequestParameters } from './getOAuth2Authorize.js';
 
@@ -205,12 +205,7 @@ async function initPostOAuth2PushedAuthorizationRequest({
 
     const clientGrants = await readClientGrants(usableClientId);
 
-    if (usableClientId !== clientGrants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        usableClientId,
-        clientGrants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, clientGrants);
 
     if (!clientGrants.isPublicClient) {
       if (!optionalAuthenticationData) {

@@ -23,6 +23,21 @@ export interface OAuth2YErrorRegistry {
   E_OAUTH2_BAD_REFRESH_TOKEN: [];
 
   /**
+   * Thrown when the device code is expired/invalid
+   */
+  E_OAUTH2_BAD_DEVICE_CODE: [];
+
+  /**
+   * Thrown when the device code has not been authorized yet
+   */
+  E_OAUTH2_AUTHORIZATION_PENDING: [];
+
+  /**
+   * Thrown when the client is polling too often
+   */
+  E_OAUTH2_SLOW_DOWN: [];
+
+  /**
    * Thrown when application has no access allowed
    */
   E_OAUTH2_ACCESS_DENIED: [clientId: WhookOAuth2ClientId];
@@ -99,6 +114,11 @@ export interface OAuth2YErrorRegistry {
    * Thrown when the authorization code is expired
    */
   E_OAUTH2_EXPIRED_CODE: [expiredAt: number, currentTime: number];
+
+  /**
+   * Thrown when the device code is expired
+   */
+  E_OAUTH2_EXPIRED_DEVICE_CODE: [expiredAt: number, currentTime: number];
 
   /**
    * Thrown when the authorization code is evicted
@@ -216,6 +236,27 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
+  E_OAUTH2_BAD_DEVICE_CODE: {
+    code: 'invalid_grant',
+    status: 400,
+    description: 'The device code is expired/invalid.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_AUTHORIZATION_PENDING: {
+    code: 'authorization_pending',
+    status: 400,
+    description: 'The end-user has not completed the authorization yet.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_SLOW_DOWN: {
+    code: 'slow_down',
+    status: 400,
+    description: 'The token request was sent too often.',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
   E_OAUTH2_ACCESS_DENIED: {
     code: 'access_denied',
     status: 403,
@@ -274,7 +315,8 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
   E_OAUTH2_PAR_NOT_SUPPORTED: {
     code: 'invalid_request',
     status: 400,
-    description: 'Pushed authorization requests are not enabled for this server.',
+    description:
+      'Pushed authorization requests are not enabled for this server.',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
@@ -317,6 +359,13 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
     code: 'invalid_request',
     status: 400,
     description: 'The authorization code is expired (expired at "$0").',
+    uri: DEFAULT_ERROR_URI,
+    help: DEFAULT_HELP_URI,
+  },
+  E_OAUTH2_EXPIRED_DEVICE_CODE: {
+    code: 'expired_token',
+    status: 400,
+    description: 'The device code is expired (expired at "$0").',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },
