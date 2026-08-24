@@ -14,7 +14,7 @@ The `src/config/common/config.ts` one allows to add common
 */
 
 const _packageJSON = JSON.parse(readFileSync('package.json').toString());
-const DEBUG_NODE_ENVS = ['test', 'development', 'staging'];
+const DEBUG_NODE_ENVS = [NodeEnv.Test, NodeEnv.Development];
 
 /* Architecture Note #2.2: Exporting
 
@@ -31,7 +31,9 @@ const CONFIG: Omit<AppConfig, 'HOST'> = {
     name: _packageJSON.name,
     description: _packageJSON.description || '',
   },
-  DEBUG_NODE_ENVS: process.env.DEBUG ? Object.keys(NodeEnv) : DEBUG_NODE_ENVS,
+  DEBUG_NODE_ENVS: process.env.DEBUG
+    ? ([NodeEnv.Test, NodeEnv.Development, NodeEnv.Production] as NodeEnv[])
+    : DEBUG_NODE_ENVS,
   ERRORS_DESCRIPTORS: {
     ...DEFAULT_ERRORS_DESCRIPTORS,
     E_INVALID_FAKE_TOKEN: {

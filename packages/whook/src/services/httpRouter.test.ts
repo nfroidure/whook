@@ -91,7 +91,7 @@ function prepareTransaction(result: unknown = Promise.resolve()) {
 
 describe('initHTTPRouter', () => {
   const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Test };
-  const DEBUG_NODE_ENVS = ['test'];
+  const DEBUG_NODE_ENVS = [NodeEnv.Test];
   const API: WhookOpenAPI = {
     openapi: '3.1.0',
     info: {

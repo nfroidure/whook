@@ -12,10 +12,11 @@ import {
   DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
   type WhookSchemaValidatorsOptions,
   type WhookMain,
+  DEFAULT_DEBUG_NODE_ENVS,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { type OpenAPI } from 'ya-open-api-types';
-import { type AppEnvVars } from 'application-services';
+import { type NodeEnv, type AppEnvVars } from 'application-services';
 import { printStackTrace } from 'yerror';
 import { type BuildInitializer } from 'knifecycle';
 import initBuildAutoloader from './services/_buildAutoload.js';
@@ -81,7 +82,7 @@ export async function runBuild(
       compiler,
       log,
       buildInitializer,
-      DEBUG_NODE_ENVS,
+      DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
       API,
       ENV,
       COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
@@ -93,7 +94,7 @@ export async function runBuild(
       compiler: WhookCompilerService;
       log: LogService;
       buildInitializer: BuildInitializer;
-      DEBUG_NODE_ENVS: string[];
+      DEBUG_NODE_ENVS?: NodeEnv[];
       API: OpenAPI;
       ENV: AppEnvVars;
       COMPILER_OPTIONS: WhookCompilerOptions;
@@ -107,7 +108,7 @@ export async function runBuild(
       'log',
       'buildInitializer',
       'process',
-      'DEBUG_NODE_ENVS',
+      '?DEBUG_NODE_ENVS',
       '?SCHEMA_VALIDATORS_OPTIONS',
       'API',
       'ENV',

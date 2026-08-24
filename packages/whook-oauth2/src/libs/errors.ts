@@ -274,7 +274,8 @@ export const OAUTH2_ERRORS_DESCRIPTORS: Record<
   E_OAUTH2_PAR_NOT_SUPPORTED: {
     code: 'invalid_request',
     status: 400,
-    description: 'Pushed authorization requests are not enabled for this server.',
+    description:
+      'Pushed authorization requests are not enabled for this server.',
     uri: DEFAULT_ERROR_URI,
     help: DEFAULT_HELP_URI,
   },

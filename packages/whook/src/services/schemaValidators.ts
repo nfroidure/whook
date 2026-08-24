@@ -4,7 +4,7 @@ import { noop } from '../libs/utils.js';
 import { Ajv2020, type ValidateFunction } from 'ajv/dist/2020.js';
 import addAJVFormats from 'ajv-formats';
 import { type LogService } from 'common-services';
-import { type AppEnvVars } from 'application-services';
+import { type NodeEnv, type AppEnvVars } from 'application-services';
 import {
   type OpenAPIReference,
   type OpenAPI,
@@ -17,6 +17,7 @@ import {
 import { createHash } from '../libs/hash.js';
 import { extractAPISecurityParametersSchemas } from '../libs/validation.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
+import { DEFAULT_DEBUG_NODE_ENVS } from '../libs/constants.js';
 
 /* Architecture Note #2.11.2.1: Schema validators
 
@@ -54,7 +55,7 @@ export interface WhookSchemaValidatorsOptions {
 }
 
 export interface WhookSchemaValidatorsConfig {
-  DEBUG_NODE_ENVS: string[];
+  DEBUG_NODE_ENVS?: NodeEnv[];
   SCHEMA_VALIDATORS_OPTIONS?: WhookSchemaValidatorsOptions;
 }
 export type WhookSchemaValidatorsDependencies = WhookSchemaValidatorsConfig & {
@@ -63,9 +64,17 @@ export type WhookSchemaValidatorsDependencies = WhookSchemaValidatorsConfig & {
   log?: LogService;
 };
 export type WhookSchemaValidatorsService = (
+  /** The schema to compile to a validator */
   schema:
     JSONSchema | ExpressiveJSONSchema | OpenAPIReference<ExpressiveJSONSchema>,
+  /** A unique cache key in order to avoid compiling the schema twice */
+  cacheKey?: string,
 ) => ValidateFunction;
+
+export type WhookSchemaValidatorsMap = Record<
+  string,
+  { validate: ValidateFunction; hash?: string }
+>;
 
 /**
  * Initialize the schema validator service for
@@ -86,7 +95,7 @@ export type WhookSchemaValidatorsService = (
  * A promise of a schema validators registry
  */
 async function initSchemaValidators({
-  DEBUG_NODE_ENVS,
+  DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   SCHEMA_VALIDATORS_OPTIONS = DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
   API,
   ENV,
@@ -94,7 +103,7 @@ async function initSchemaValidators({
 }: WhookSchemaValidatorsDependencies): Promise<WhookSchemaValidatorsService> {
   log('warning', `🖃 - Initializing the validators service.`);
 
-  const validatorsMap: Record<string, ValidateFunction> = {};
+  const validatorsMap: WhookSchemaValidatorsMap = {};
   const ajv = new Ajv2020({
     verbose: DEBUG_NODE_ENVS.includes(ENV.NODE_ENV),
     strict: true,
@@ -119,6 +128,7 @@ async function initSchemaValidators({
       ajv.addSchema(schema.schema, $ref);
     }
   }
+
   if (!SCHEMA_VALIDATORS_OPTIONS.lazy) {
     for (const schema of schemas) {
       if (
@@ -127,7 +137,9 @@ async function initSchemaValidators({
       ) {
         const $ref = '#/components/schemas/' + schema.location.schemaName;
 
-        validatorsMap[$ref] = ajv.getSchema($ref) as ValidateFunction;
+        validatorsMap[$ref] = {
+          validate: ajv.getSchema($ref) as ValidateFunction,
+        };
       }
     }
   }
@@ -137,18 +149,56 @@ async function initSchemaValidators({
       | JSONSchema
       | ExpressiveJSONSchema
       | OpenAPIReference<ExpressiveJSONSchema>,
+    cacheKey?: string,
   ) => {
     if (
       typeof schema === 'object' &&
       '$ref' in schema &&
       typeof schema.$ref === 'string'
     ) {
-      if (!validatorsMap[schema.$ref]) {
-        validatorsMap[schema.$ref] = ajv.getSchema(
-          schema.$ref,
-        ) as ValidateFunction;
+      if (cacheKey) {
+        log(
+          'warning',
+          `🤷 - Using a cache key makes no sense for schema references (ref: ${
+            schema.$ref
+          }, cacheKey: ${cacheKey})`,
+        );
       }
-      return validatorsMap[schema.$ref];
+      if (!validatorsMap[schema.$ref]) {
+        validatorsMap[schema.$ref] = {
+          validate: ajv.getSchema(schema.$ref) as ValidateFunction,
+        };
+      }
+      return validatorsMap[schema.$ref].validate;
+    }
+
+    if (cacheKey) {
+      if (!validatorsMap[cacheKey]) {
+        validatorsMap[cacheKey] = {
+          validate: ajv.compile(schema) as ValidateFunction,
+        };
+        if (DEBUG_NODE_ENVS.includes(ENV.NODE_ENV)) {
+          const hash = createHash(
+            Buffer.from(JSON.stringify(schema)),
+            SCHEMA_VALIDATORS_OPTIONS.hashLength,
+          );
+
+          validatorsMap[cacheKey].hash = hash;
+        }
+      } else if (DEBUG_NODE_ENVS.includes(ENV.NODE_ENV)) {
+        const hash = createHash(
+          Buffer.from(JSON.stringify(schema)),
+          SCHEMA_VALIDATORS_OPTIONS.hashLength,
+        );
+
+        if (validatorsMap[cacheKey].hash !== hash) {
+          log(
+            'warning',
+            `⚠️ - Using the same cache key for different schemas (cacheKey: ${cacheKey})!`,
+          );
+        }
+      }
+      return validatorsMap[cacheKey].validate;
     }
 
     if (!SCHEMA_VALIDATORS_OPTIONS.lazy) {
@@ -166,9 +216,11 @@ async function initSchemaValidators({
       );
 
       if (!validatorsMap[key]) {
-        validatorsMap[key] = ajv.compile(schema) as ValidateFunction;
+        validatorsMap[key] = {
+          validate: ajv.compile(schema) as ValidateFunction,
+        };
       }
-      return validatorsMap[key];
+      return validatorsMap[key].validate;
     }
     return ajv.compile(schema);
   };
@@ -183,7 +235,7 @@ export async function buildSchemaValidatorsMap({
   ENV,
   log,
 }: {
-  DEBUG_NODE_ENVS: string[];
+  DEBUG_NODE_ENVS: NodeEnv[];
   SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
   API: OpenAPI;
   ENV: AppEnvVars;

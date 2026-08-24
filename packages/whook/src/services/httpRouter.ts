@@ -53,11 +53,11 @@ import {
 import { type LogService } from 'common-services';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type WhookErrorHandler } from '../services/errorHandler.js';
-import { type AppEnvVars } from 'application-services';
+import { type NodeEnv, type AppEnvVars } from 'application-services';
 import {
   type WhookRouteHandlerParameters,
   type WhookRouteHandler,
-  WhookRouteConfig,
+  type WhookRouteConfig,
 } from '../types/routes.js';
 import { type WhookRequestBody, type WhookResponse } from '../types/http.js';
 import { type WhookSchemaValidatorsService } from './schemaValidators.js';
@@ -85,7 +85,7 @@ function identity<T>(x: T): T {
 
 export type WhookHandlersService = Record<string, WhookRouteHandler>;
 export interface WhookHTTPRouterConfig {
-  DEBUG_NODE_ENVS?: string[];
+  DEBUG_NODE_ENVS?: NodeEnv[];
   BUFFER_LIMIT?: string;
   COERCION_OPTIONS?: WhookCoercionOptions;
 }

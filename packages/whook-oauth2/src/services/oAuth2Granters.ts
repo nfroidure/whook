@@ -43,13 +43,11 @@ export type WhookOAuth2ReadClientGrantsService = (
 /**
  * A function handling the OAuth2 authorize step
  */
-export type WhookOAuth2GranterAuthorize = (
-  authorizeParameters: {
-    clientId: WhookOAuth2ClientId;
-    clientGrants: WhookOAuth2ClientGrants;
-    demandedScopes: WhookAuthenticationScope[];
-  },
-) => Promise<{
+export type WhookOAuth2GranterAuthorize = (authorizeParameters: {
+  clientId: WhookOAuth2ClientId;
+  clientGrants: WhookOAuth2ClientGrants;
+  demandedScopes: WhookAuthenticationScope[];
+}) => Promise<{
   scopes: WhookAuthenticationScope[];
 }>;
 

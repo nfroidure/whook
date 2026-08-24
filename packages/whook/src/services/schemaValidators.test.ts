@@ -70,7 +70,7 @@ describe('Validators service', () => {
         ENV: {
           NODE_ENV: NodeEnv.Test,
         },
-        DEBUG_NODE_ENVS: ['test'],
+        DEBUG_NODE_ENVS: [NodeEnv.Test],
         API,
         log,
       });
@@ -142,7 +142,7 @@ describe('Validators service', () => {
         ENV: {
           NODE_ENV: NodeEnv.Test,
         },
-        DEBUG_NODE_ENVS: ['test'],
+        DEBUG_NODE_ENVS: [NodeEnv.Test],
         SCHEMA_VALIDATORS_OPTIONS: {
           lazy: true,
           dedupe: true,

@@ -8,7 +8,7 @@ import { type LogService } from 'common-services';
 describe('Compiler', () => {
   const ENV: AppEnvVars = { NODE_ENV: NodeEnv.Production };
   const PROJECT_DIR = '/home/whoami/my_project';
-  const DEBUG_NODE_ENVS = [] as string[];
+  const DEBUG_NODE_ENVS = [] as NodeEnv[];
   const COMPILER_OPTIONS = {};
   const log = jest.fn<LogService>();
 
@@ -34,7 +34,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 920541,
+       "contentsLength": 941998,
        "extension": ".mjs",
        "logCalls": [
          [
@@ -66,7 +66,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 3830,
+       "contentsLength": 3881,
        "extension": ".mjs",
        "logCalls": [
          [
@@ -104,7 +104,7 @@ describe('Compiler', () => {
       logCalls: log.mock.calls,
     }).toMatchInlineSnapshot(`
      {
-       "contentsLength": 5530,
+       "contentsLength": 5569,
        "extension": ".cjs",
        "logCalls": [
          [
