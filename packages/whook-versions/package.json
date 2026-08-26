@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/versions",
-  "version": "26.0.5",
+  "version": "26.1.0",
   "description": "A wrapper to provide versions check support to a Whook server",
   "type": "module",
   "publishConfig": {
@@ -57,7 +57,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@types/semver": "^7.8.0",
-    "@whook/whook": "^26.0.5",
+    "@whook/whook": "^26.1.0",
     "application-services": "^9.2.0",
     "knifecycle": "^21.4.0",
     "semver": "^7.8.5",

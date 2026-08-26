@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/mcp",
-  "version": "26.0.5",
+  "version": "26.1.0",
   "description": "Adds an MCP server that proxies the API routes",
   "type": "module",
   "publishConfig": {
@@ -71,8 +71,8 @@
   "dependencies": {
     "@modelcontextprotocol/node": "^2.0.0",
     "@modelcontextprotocol/server": "^2.0.0",
-    "@whook/whook": "^26.0.5",
-    "@whook/authorization": "^26.0.5",
+    "@whook/authorization": "^26.1.0",
+    "@whook/whook": "^26.1.0",
     "common-services": "^20.1.0",
     "knifecycle": "^21.4.0",
     "ya-json-schema-types": "^2.0.2",

@@ -1,3 +1,9 @@
+## [26.1.0](https://github.com/nfroidure/whook/compare/v26.0.5...v26.1.0) (2026-08-26)
+
+### Features
+
+* **@whook/mcp:** adds a MCP server ([b3fa198](https://github.com/nfroidure/whook/commit/b3fa198f6c1db1bb5dbf6e3b41f7343b810ba26c))
+
 ## [26.0.5](https://github.com/nfroidure/whook/compare/v26.0.4...v26.0.5) (2026-08-20)
 
 ## [26.0.2](https://github.com/nfroidure/whook/compare/v26.0.3...v26.0.2) (2026-08-18)

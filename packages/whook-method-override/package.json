@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/method-override",
-  "version": "26.0.5",
+  "version": "26.1.0",
   "description": "A wrapper for the Whook HTTP Transaction service to handle patch method compatibility.",
   "type": "module",
   "publishConfig": {
@@ -55,7 +55,7 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@whook/whook": "^26.0.5",
+    "@whook/whook": "^26.1.0",
     "common-services": "^20.1.0",
     "knifecycle": "^21.4.0",
     "ya-open-api-types": "^2.2.0"
