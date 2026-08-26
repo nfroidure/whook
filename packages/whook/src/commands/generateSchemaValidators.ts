@@ -1,4 +1,4 @@
-import { type AppEnvVars } from 'application-services';
+import { type NodeEnv, type AppEnvVars } from 'application-services';
 import { type LogService } from 'common-services';
 import { autoService, location } from 'knifecycle';
 import { stdout } from 'node:process';
@@ -12,6 +12,7 @@ import {
   type WhookSchemaValidatorsOptions,
   buildSchemaValidatorsMap,
 } from '../services/schemaValidators.js';
+import { DEFAULT_DEBUG_NODE_ENVS } from '../libs/constants.js';
 
 export const definition = {
   name: 'generateSchemaValidators',
@@ -21,14 +22,14 @@ export const definition = {
 } as const satisfies WhookCommandDefinition;
 
 async function initGenerateSchemaValidatorsCommand({
-  DEBUG_NODE_ENVS,
+  DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   SCHEMA_VALIDATORS_OPTIONS = DEFAULT_SCHEMA_VALIDATORS_OPTIONS,
   API,
   ENV,
   log,
   outstream = stdout,
 }: {
-  DEBUG_NODE_ENVS: string[];
+  DEBUG_NODE_ENVS?: NodeEnv[];
   SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
   API: OpenAPI;
   ENV: AppEnvVars;

@@ -1,5 +1,5 @@
 import { type ValidateFunction } from 'ajv';
-import { type AppEnvVars } from 'application-services';
+import { type NodeEnv, type AppEnvVars } from 'application-services';
 import { type LogService, noop } from 'common-services';
 import { autoService, location } from 'knifecycle';
 import {
@@ -18,13 +18,13 @@ import { createHash } from '../libs/hash.js';
 
 Built version of the schema validator service.
 */
-
+export type WhookBuiltSchemaValidatorsMap = Record<string, ValidateFunction>;
 export interface WhookSchemaValidatorsConfig {
-  DEBUG_NODE_ENVS: string[];
+  DEBUG_NODE_ENVS?: NodeEnv[];
   SCHEMA_VALIDATORS_OPTIONS?: WhookSchemaValidatorsOptions;
 }
 export type WhookSchemaValidatorsDependencies = WhookSchemaValidatorsConfig & {
-  VALIDATORS_MAP?: Record<string, ValidateFunction>;
+  VALIDATORS_MAP?: WhookBuiltSchemaValidatorsMap;
   API: OpenAPI;
   ENV: AppEnvVars;
   log?: LogService;

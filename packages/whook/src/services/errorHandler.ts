@@ -8,10 +8,10 @@ import {
 import miniquery from 'miniquery';
 import { printStackTrace, YError } from 'yerror';
 import { type YHTTPError } from 'yhttperror';
-import { type AppEnvVars } from 'application-services';
+import { type NodeEnv, type AppEnvVars } from 'application-services';
 import { type WhookResponseBodySpec } from '../libs/body.js';
 import { type JSONSchema } from 'ya-json-schema-types';
-import { JsonValue } from 'type-fest';
+import { type JsonValue } from 'type-fest';
 
 /* Architecture Note #2.13: Error handler
 
@@ -300,7 +300,7 @@ export const DEFAULT_ERRORS_DESCRIPTORS = {
 } satisfies WhookErrorsDescriptors;
 
 export interface WhookErrorHandlerConfig {
-  DEBUG_NODE_ENVS: string[];
+  DEBUG_NODE_ENVS?: NodeEnv[];
   ERRORS_DESCRIPTORS: WhookErrorsDescriptors;
   DEFAULT_ERROR_CODE?: string;
 }

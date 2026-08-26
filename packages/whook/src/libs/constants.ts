@@ -2,6 +2,7 @@ import { PassThrough, type Transform } from 'node:stream';
 import qs from 'qs';
 import { type JsonValue } from 'type-fest';
 import { type WhookRequestBodySpec } from './body.js';
+import { NodeEnv } from 'application-services';
 
 export type WhookParser = (
   content: string,
@@ -21,7 +22,7 @@ export type WhookDecoders<T extends Transform = Transform> = Record<
   WhookDecoder<T>
 >;
 
-export const DEFAULT_DEBUG_NODE_ENVS = ['test', 'development'];
+export const DEFAULT_DEBUG_NODE_ENVS = [NodeEnv.Test, NodeEnv.Development];
 export const DEFAULT_BUFFER_LIMIT = '500kB';
 export const DEFAULT_PARSERS = {
   'text/plain': (content: string): JsonValue => content,

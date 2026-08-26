@@ -17,7 +17,11 @@ import { type WhookCompilerConfig, type OpenAPITypesConfig } from '@whook/dev';
 import { type WhookCORSRouteConfig, type WhookCORSConfig } from '@whook/cors';
 import { type APIConfig } from './services/API.js';
 import { type JWTServiceConfig, type JWTEnvVars } from 'jwt-service';
-import { type BaseAppEnvVars, type TimeMockConfig } from 'application-services';
+import {
+  type BaseAppEnvVars,
+  type ProcessEnvConfig,
+  type TimeMockConfig,
+} from 'application-services';
 import { type RouteDefinitionFilterEnvVars } from './services/ROUTE_DEFINITION_FILTER.ts';
 import { type AppEnv } from './index.ts';
 
@@ -51,6 +55,7 @@ declare module 'application-services' {
       WhookSwaggerUIConfig,
       WhookCORSConfig,
       APIConfig,
+      ProcessEnvConfig,
       JWTServiceConfig,
       TimeMockConfig,
       WhookCompilerConfig,

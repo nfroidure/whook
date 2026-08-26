@@ -1,8 +1,8 @@
 import path from 'node:path';
-import { noop } from '@whook/whook';
+import { DEFAULT_DEBUG_NODE_ENVS, noop } from '@whook/whook';
 import { autoService, location } from 'knifecycle';
 import { type LogService } from 'common-services';
-import { type AppEnvVars } from 'application-services';
+import { type NodeEnv, type AppEnvVars } from 'application-services';
 import { type Format, type Platform, build } from 'esbuild';
 import { nodeExternalsPlugin } from 'esbuild-node-externals';
 
@@ -27,7 +27,7 @@ export interface FullWhookCompilerOptions {
 }
 export type WhookCompilerOptions = Partial<FullWhookCompilerOptions>;
 export interface WhookCompilerConfig {
-  DEBUG_NODE_ENVS: string[];
+  DEBUG_NODE_ENVS?: NodeEnv[];
   COMPILER_OPTIONS?: WhookCompilerOptions;
 }
 export type WhookCompilerDependencies = WhookCompilerConfig & {
@@ -49,7 +49,7 @@ export type WhookCompilerService = (
 async function initCompiler({
   PROJECT_DIR,
   ENV,
-  DEBUG_NODE_ENVS,
+  DEBUG_NODE_ENVS = DEFAULT_DEBUG_NODE_ENVS,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
   log = noop,
 }: WhookCompilerDependencies): Promise<WhookCompilerService> {
