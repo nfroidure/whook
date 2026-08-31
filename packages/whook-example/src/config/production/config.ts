@@ -3,7 +3,7 @@ import { type AppConfig } from 'application-services';
 
 const CONFIG: AppConfig = {
   ...COMMON_CONFIG,
-  HOST: 'api.example.com',
+  HOST: '0.0.0.0',
 };
 
 export default CONFIG;
