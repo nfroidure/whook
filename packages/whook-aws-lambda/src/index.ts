@@ -69,6 +69,7 @@ export type WhookAWSLambdaBuildConfig = {
 export interface WhookAWSLambdaBaseConfig {
   staticFiles?: string[];
   compilerOptions?: WhookCompilerOptions;
+  lambdaName?: string;
   memory?: number;
   timeout?: number;
 }
@@ -112,6 +113,35 @@ export interface WhookAWSLambdaS3Options {
     filterSuffix: string;
     environments?: WhookEnvironmentsConfig;
   }[];
+}
+
+function getLambdaName(config: unknown, defaultHandlerName: string): string {
+  const parsedConfig = config as { lambdaName?: unknown };
+
+  return typeof parsedConfig?.lambdaName === 'string' &&
+    parsedConfig.lambdaName.trim().length
+    ? parsedConfig.lambdaName
+    : defaultHandlerName;
+}
+
+function getStaticFiles(config: unknown): string[] {
+  const parsedConfig = config as { staticFiles?: unknown };
+
+  return Array.isArray(parsedConfig?.staticFiles)
+    ? parsedConfig.staticFiles.filter(
+        (staticFile): staticFile is string => typeof staticFile === 'string',
+      )
+    : [];
+}
+
+function getCompilerOptions(config: unknown): WhookCompilerOptions | undefined {
+  const parsedConfig = config as { compilerOptions?: unknown };
+
+  return parsedConfig?.compilerOptions as WhookCompilerOptions | undefined;
+}
+
+function isJavaScriptIdentifier(name: string): boolean {
+  return /^[$_\p{ID_Start}][$_\p{ID_Continue}]*$/u.test(name);
 }
 
 const cprAsync = promisify(cpr) as (
@@ -181,13 +211,28 @@ export async function runBuild(
 
     log('info', 'AWS Lambda build Environment initialized 🚀🌕');
 
-    const handlerNames = Object.keys(DEFINITIONS.configs).filter(
-      (aHandlerName) => handlerName === aHandlerName || !handlerName,
+    const lambdaNames = new Set(
+      Object.keys(DEFINITIONS.configs)
+        .filter((aHandlerName) => {
+          const config = DEFINITIONS.configs[aHandlerName].config;
+          const lambdaName = getLambdaName(config, aHandlerName);
+
+          return (
+            !handlerName ||
+            handlerName === aHandlerName ||
+            handlerName === lambdaName
+          );
+        })
+        .map((aHandlerName) => {
+          const config = DEFINITIONS.configs[aHandlerName].config;
+
+          return getLambdaName(config, aHandlerName);
+        }),
     );
 
-    log('warning', `📃 - ${handlerNames.length} handlerNames to process.`);
+    log('warning', `📃 - ${lambdaNames.size} lambda(s) to process.`);
 
-    await processHandlers(
+    await processLambdas(
       {
         APP_ENV,
         BUILD_PARALLELISM,
@@ -200,7 +245,7 @@ export async function runBuild(
         SCHEMA_VALIDATORS_OPTIONS,
         COMPILER_OPTIONS,
       },
-      handlerNames,
+      [...lambdaNames],
     );
     await $.destroy();
   } catch (err) {
@@ -209,7 +254,7 @@ export async function runBuild(
   }
 }
 
-async function processHandlers(
+async function processLambdas(
   {
     APP_ENV,
     BUILD_PARALLELISM,
@@ -232,13 +277,13 @@ async function processHandlers(
     SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
     COMPILER_OPTIONS: WhookCompilerOptions;
   },
-  handlerNames: string[],
+  lambdaNames: string[],
 ): Promise<void> {
-  const handlerNamesLeft = handlerNames.slice(BUILD_PARALLELISM);
+  const lambdaNamesLeft = lambdaNames.slice(BUILD_PARALLELISM);
 
   await Promise.all(
-    handlerNames.slice(0, BUILD_PARALLELISM).map((handlerName) =>
-      buildHandler(
+    lambdaNames.slice(0, BUILD_PARALLELISM).map((lambdaName) =>
+      buildLambda(
         {
           APP_ENV,
           PROJECT_DIR,
@@ -249,14 +294,14 @@ async function processHandlers(
           SCHEMA_VALIDATORS_OPTIONS,
           COMPILER_OPTIONS,
         },
-        handlerName,
+        lambdaName,
       ),
     ),
   );
 
-  if (handlerNamesLeft.length) {
-    log('info', `📃 - ${handlerNamesLeft.length} handlerNames left.`);
-    return processHandlers(
+  if (lambdaNamesLeft.length) {
+    log('info', `📃 - ${lambdaNamesLeft.length} lambda(s) left.`);
+    return processLambdas(
       {
         APP_ENV,
         BUILD_PARALLELISM,
@@ -269,13 +314,13 @@ async function processHandlers(
         SCHEMA_VALIDATORS_OPTIONS,
         COMPILER_OPTIONS,
       },
-      handlerNamesLeft,
+      lambdaNamesLeft,
     );
   }
-  log('info', '🤷 - No more handlerNames.');
+  log('info', '🤷 - No more lambdas.');
 }
 
-async function buildHandler(
+async function buildLambda(
   {
     APP_ENV,
     PROJECT_DIR,
@@ -295,41 +340,75 @@ async function buildHandler(
     SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
     COMPILER_OPTIONS: WhookCompilerOptions;
   },
-  handlerName: string,
+  lambdaName: string,
 ): Promise<void> {
   try {
-    const definition = DEFINITIONS.configs[handlerName];
+    const handlerNames = Object.keys(DEFINITIONS.configs).filter(
+      (handlerName) =>
+        DEFINITIONS.configs[handlerName].type !== 'command' &&
+        getLambdaName(DEFINITIONS.configs[handlerName].config, handlerName) ===
+          lambdaName,
+    );
+    const handlersCompilerOptions = handlerNames
+      .map((handlerName) =>
+        getCompilerOptions(DEFINITIONS.configs[handlerName].config),
+      )
+      .filter((compilerOptions) => compilerOptions) as WhookCompilerOptions[];
 
-    if (definition.type === 'command') {
-      log('warning', `🚮 - Skipping "${handlerName}"...`);
+    if (!handlerNames.length) {
+      log('warning', `🚮 - Skipping "${lambdaName}"...`);
       return;
     }
 
-    log('warning', `🏗 - Building ${handlerName}...`);
+    const staticFiles = [
+      ...new Set(
+        handlerNames.flatMap(
+          (handlerName) => getStaticFiles(DEFINITIONS.configs[handlerName].config),
+        ),
+      ),
+    ];
+
+    log(
+      'warning',
+      `🏗 - Building ${lambdaName} from ${handlerNames.length} handler(s)...`,
+    );
 
     const distPath = join(PROJECT_DIR, 'dist');
     const srcPath = join(PROJECT_DIR, 'src');
-    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, handlerName);
+    const lambdaPath = join(PROJECT_DIR, 'builds', APP_ENV, lambdaName);
     const distRelativePath = relative(lambdaPath, distPath);
 
     const initializerContent = (
-      await buildInitializer([`MAIN_HANDLER_${handlerName}`, 'process'])
+      await buildInitializer([
+        ...handlerNames.map((handlerName) => `MAIN_HANDLER_${handlerName}`),
+        'process',
+      ])
     )
       .replaceAll(pathToFileURL(distPath).toString(), distRelativePath)
       .replaceAll(pathToFileURL(srcPath).toString(), distRelativePath)
       .replaceAll(".ts';", ".js';");
-    const indexContent = await buildHandlerIndex(
-      { SCHEMA_VALIDATORS_OPTIONS },
-      `MAIN_HANDLER_${handlerName}`,
-    );
+    const indexContent = await buildHandlerIndex({
+      SCHEMA_VALIDATORS_OPTIONS,
+      handlerNames,
+    });
+    const compilerOptions =
+      handlersCompilerOptions.length > 0
+        ? handlersCompilerOptions[0]
+        : COMPILER_OPTIONS;
+    const compilerOptionsHash = JSON.stringify(compilerOptions);
+
+    if (
+      handlersCompilerOptions.some(
+        (someCompilerOptions) =>
+          JSON.stringify(someCompilerOptions) !== compilerOptionsHash,
+      )
+    ) {
+      throw new YError('E_INCONSISTENT_COMPILER_OPTIONS', [lambdaName]);
+    }
 
     await mkdirp(lambdaPath);
     await Promise.all([
-      copyStaticFiles(
-        { PROJECT_DIR, log },
-        lambdaPath,
-        definition.config?.staticFiles || [],
-      ),
+      copyStaticFiles({ PROJECT_DIR, log }, lambdaPath, staticFiles),
       ensureFile(
         { log },
         join(lambdaPath, 'initialize.js'),
@@ -338,25 +417,52 @@ async function buildHandler(
       ensureFile({ log }, join(lambdaPath, 'main.js'), indexContent),
     ]);
     await buildFinalHandler(
-      { DEFINITIONS, compiler, log, COMPILER_OPTIONS },
+      { compiler, log },
       lambdaPath,
-      handlerName,
+      compilerOptions || COMPILER_OPTIONS,
     );
   } catch (err) {
-    log('error', `💥 - Error building "${handlerName}"...`);
+    log('error', `💥 - Error building "${lambdaName}"...`);
     log('error-stack', printStackTrace(err));
-    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', [handlerName]);
+    throw YError.wrap(err as Error, 'E_HANDLER_BUILD', [lambdaName]);
   }
 }
 
-async function buildHandlerIndex(
+export async function buildHandlerIndex(
   {
     SCHEMA_VALIDATORS_OPTIONS,
+    handlerNames,
   }: {
     SCHEMA_VALIDATORS_OPTIONS: WhookSchemaValidatorsOptions;
+    handlerNames: string[];
   },
-  handlerName: string,
 ): Promise<string> {
+  if (!handlerNames.length) {
+    throw new YError('E_NO_HANDLER_NAME');
+  }
+
+  const sortedHandlerNames = [...handlerNames].sort();
+  const invalidHandlerNames = sortedHandlerNames.filter(
+    (handlerName) => !isJavaScriptIdentifier(handlerName),
+  );
+
+  if (invalidHandlerNames.length) {
+    throw YError.wrap(
+      new Error(invalidHandlerNames.join(', ')),
+      'E_BAD_HANDLER_NAME',
+    );
+  }
+
+  const handlersInitialization = sortedHandlerNames
+    .map(
+      (handlerName) => `export const ${handlerName} = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  return await services['MAIN_HANDLER_${handlerName}'](event, context);
+};`,
+    )
+    .join('\n\n');
+
   return `// Automatically generated by \`@whook/aws-lambda\`
 import { initialize } from './initialize.js';${
     SCHEMA_VALIDATORS_OPTIONS.buildSchemas
@@ -370,11 +476,9 @@ const services = await initialize({${
     SCHEMA_VALIDATORS_OPTIONS.buildSchemas ? ` VALIDATORS_MAP, ` : ''
   } MAIN_FILE_URL});
 
-export const handler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false;
+${handlersInitialization}
 
-  return await services['${handlerName}'](event, context);
-};
+export const handler = ${sortedHandlerNames[0]};
 
 export default handler;
 `;
@@ -382,26 +486,19 @@ export default handler;
 
 async function buildFinalHandler(
   {
-    DEFINITIONS,
     compiler,
     log,
-    COMPILER_OPTIONS,
   }: {
-    DEFINITIONS: WhookDefinitions;
     compiler: WhookCompilerService;
     log: LogService;
-    COMPILER_OPTIONS: WhookCompilerOptions;
   },
   lambdaPath: string,
-  handlerName: string,
+  compilerOptions: WhookCompilerOptions,
 ): Promise<void> {
   const entryPoint = `${lambdaPath}/main.js`;
   const { contents, mappings, extension } = await compiler(
     entryPoint,
-    DEFINITIONS.configs[handlerName]?.config &&
-      'compilerOptions' in DEFINITIONS.configs[handlerName].config
-      ? DEFINITIONS.configs[handlerName]?.config.compilerOptions
-      : COMPILER_OPTIONS,
+    compilerOptions,
   );
 
   await Promise.all([
