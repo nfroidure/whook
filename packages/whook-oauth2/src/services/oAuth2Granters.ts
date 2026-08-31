@@ -136,6 +136,7 @@ export default location(
         'oAuth2PasswordGranter',
         'oAuth2RefreshTokenGranter',
         'oAuth2ImplicitGranter',
+        'oAuth2DeviceAuthorizationGranter',
       ],
     },
     async (services: Dependencies) =>
