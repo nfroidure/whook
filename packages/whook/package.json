@@ -124,7 +124,7 @@
     "negotiator": "^1.0.0",
     "node-cron": "^4.6.0",
     "portfinder": "^1.0.38",
-    "qs": "^6.15.3",
+    "qs": "^6.16.0",
     "siso": "^9.0.1",
     "statuses": "^2.0.2",
     "strict-qs": "^10.0.0",
