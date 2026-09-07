@@ -50,7 +50,7 @@ import {
   PATH_ITEM_METHODS,
   isValidOpenAPIPath,
 } from 'ya-open-api-types';
-import { type LogService } from 'common-services';
+import { noop, type LogService } from 'common-services';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type WhookErrorHandler } from '../services/errorHandler.js';
 import { type NodeEnv, type AppEnvVars } from 'application-services';
@@ -72,16 +72,10 @@ import {
   type WhookQueryParserBuilderService,
 } from './queryParserBuilder.js';
 import { type WhookDefinitions } from './DEFINITIONS.js';
+import { identity } from '../libs/utils.js';
 
 export const SEARCH_SEPARATOR = '?';
 export const PATH_SEPARATOR = '/';
-
-function noop() {
-  return undefined;
-}
-function identity<T>(x: T): T {
-  return x;
-}
 
 export type WhookHandlersService = Record<string, WhookRouteHandler>;
 export interface WhookHTTPRouterConfig {

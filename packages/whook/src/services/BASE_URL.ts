@@ -9,22 +9,23 @@ The `BASE_URL` service is intended to provide a base URL where
  debugging production environnement.
 */
 
-export type WhookConfig = {
+export interface WhookConfig {
   name: string;
   description?: string;
   baseURL?: string;
-};
+}
 
 export type WhookBaseURL = string;
-export type WhookBaseURLEnv = {
+export interface WhookBaseURLEnv {
   DEV_MODE?: string;
-};
-export type WhookBaseURLConfig = {
+  PUBLIC_URL?: string;
+}
+export interface WhookBaseURLConfig {
   CONFIG: WhookConfig;
   PROTOCOL?: string;
   HOST?: string;
   PORT?: number;
-};
+}
 export type WhookBaseURLDependencies = WhookBaseURLConfig & {
   ENV: WhookBaseURLEnv;
   HOST: string;
@@ -66,9 +67,10 @@ async function initBaseURL({
   log = noop,
 }: WhookBaseURLDependencies): Promise<WhookBaseURL> {
   const BASE_URL =
-    CONFIG.baseURL && !ENV.DEV_MODE
+    ENV.PUBLIC_URL ||
+    (CONFIG.baseURL && !ENV.DEV_MODE
       ? CONFIG.baseURL
-      : `${PROTOCOL}://${HOST}${PORT ? `:${PORT}` : ''}`;
+      : `${PROTOCOL}://${HOST}${PORT ? `:${PORT}` : ''}`);
 
   log('debug', `🈁 - Generated the BASE_URL constant "${BASE_URL}".`);
 

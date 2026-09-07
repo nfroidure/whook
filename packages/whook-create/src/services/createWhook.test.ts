@@ -62,9 +62,9 @@ describe('initCreateWhook', () => {
   const readFile = jest.fn<(file: PathLike) => Promise<Buffer>>();
   const readdir = jest.fn<(file: PathLike) => Promise<string[]>>();
   const exec = jest.fn<any>();
-  const axios = jest.fn<any>();
+  const axios = jest.fn<() => any>();
   const ora = jest.fn<any>();
-  const copy = jest.fn<any>();
+  const copy = jest.fn<(...args: any[]) => any>();
   const oraInstance = {
     start: jest.fn<any>(),
     stopAndPersist: jest.fn<any>(),
@@ -192,7 +192,7 @@ describe('initCreateWhook', () => {
          "jwt-service": "^12.0.2",
          "knifecycle": "^21.4.0",
          "strict-qs": "^10.0.0",
-         "type-fest": "^5.8.0",
+         "type-fest": "^5.9.0",
          "ya-json-schema-types": "^2.0.2",
          "ya-open-api-types": "^2.2.0",
          "yerror": "^11.0.0",
@@ -202,16 +202,16 @@ describe('initCreateWhook', () => {
        "devDependencies": {
          "@eslint/js": "^10.0.1",
          "@swc/cli": "^0.8.1",
-         "@swc/core": "^1.16.0",
+         "@swc/core": "^1.16.1",
          "@swc/jest": "^0.2.39",
          "@whook/dev": "<current_version>",
-         "axios": "^1.19.0",
+         "axios": "^1.20.0",
          "esbuild-node-externals": "^2.0.0",
-         "eslint": "^10.8.1",
+         "eslint": "^10.9.1",
          "eslint-config-prettier": "^10.1.8",
-         "eslint-plugin-jest": "^29.16.1",
+         "eslint-plugin-jest": "^29.16.6",
          "eslint-plugin-prettier": "^5.5.6",
-         "jest": "^30.4.2",
+         "jest": "^30.5.1",
          "jsarch": "^7.1.2",
          "prettier": "^3.9.6",
          "rimraf": "^6.1.3",
@@ -219,7 +219,7 @@ describe('initCreateWhook', () => {
          "streamtest": "^4.0.0",
          "tsx": "^4.23.12",
          "typescript": "^6.0.3",
-         "typescript-eslint": "^8.67.0",
+         "typescript-eslint": "^8.69.0",
        },
        "engines": {
          "node": ">=24.14.0",
@@ -264,17 +264,6 @@ describe('initCreateWhook', () => {
        "license": "SEE LICENSE",
        "main": "dist/index.js",
        "name": "super-project",
-       "overrides": {
-         "@typescript-eslint/eslint-plugin": {
-           "typescript": "^6",
-         },
-         "@typescript-eslint/parser": {
-           "typescript": "^6",
-         },
-         "typescript-eslint": {
-           "typescript": "^6",
-         },
-       },
        "prettier": {
          "printWidth": 80,
          "proseWrap": "always",
@@ -410,7 +399,7 @@ describe('initCreateWhook', () => {
          "jwt-service": "^12.0.2",
          "knifecycle": "^21.4.0",
          "strict-qs": "^10.0.0",
-         "type-fest": "^5.8.0",
+         "type-fest": "^5.9.0",
          "ya-json-schema-types": "^2.0.2",
          "ya-open-api-types": "^2.2.0",
          "yerror": "^11.0.0",
@@ -420,16 +409,16 @@ describe('initCreateWhook', () => {
        "devDependencies": {
          "@eslint/js": "^10.0.1",
          "@swc/cli": "^0.8.1",
-         "@swc/core": "^1.16.0",
+         "@swc/core": "^1.16.1",
          "@swc/jest": "^0.2.39",
          "@whook/dev": "<current_version>",
-         "axios": "^1.19.0",
+         "axios": "^1.20.0",
          "esbuild-node-externals": "^2.0.0",
-         "eslint": "^10.8.1",
+         "eslint": "^10.9.1",
          "eslint-config-prettier": "^10.1.8",
-         "eslint-plugin-jest": "^29.16.1",
+         "eslint-plugin-jest": "^29.16.6",
          "eslint-plugin-prettier": "^5.5.6",
-         "jest": "^30.4.2",
+         "jest": "^30.5.1",
          "jsarch": "^7.1.2",
          "prettier": "^3.9.6",
          "rimraf": "^6.1.3",
@@ -437,7 +426,7 @@ describe('initCreateWhook', () => {
          "streamtest": "^4.0.0",
          "tsx": "^4.23.12",
          "typescript": "^6.0.3",
-         "typescript-eslint": "^8.67.0",
+         "typescript-eslint": "^8.69.0",
        },
        "engines": {
          "node": ">=24.14.0",
@@ -482,17 +471,6 @@ describe('initCreateWhook', () => {
        "license": "SEE LICENSE",
        "main": "dist/index.js",
        "name": "super-project",
-       "overrides": {
-         "@typescript-eslint/eslint-plugin": {
-           "typescript": "^6",
-         },
-         "@typescript-eslint/parser": {
-           "typescript": "^6",
-         },
-         "typescript-eslint": {
-           "typescript": "^6",
-         },
-       },
        "prettier": {
          "printWidth": 80,
          "proseWrap": "always",
@@ -542,7 +520,7 @@ describe('initCreateWhook', () => {
   test('should handle git initialization problems', async () => {
     randomBytes.mockResolvedValue(Buffer.from('a_random_sequence'));
     readdir.mockResolvedValueOnce(['local', 'production']);
-    copy.mockResolvedValueOnce(new YError('E_ACCESS'));
+    copy.mockResolvedValueOnce(undefined);
     axios.mockResolvedValueOnce({
       data: 'node_modules',
     });
@@ -608,7 +586,7 @@ describe('initCreateWhook', () => {
          "jwt-service": "^12.0.2",
          "knifecycle": "^21.4.0",
          "strict-qs": "^10.0.0",
-         "type-fest": "^5.8.0",
+         "type-fest": "^5.9.0",
          "ya-json-schema-types": "^2.0.2",
          "ya-open-api-types": "^2.2.0",
          "yerror": "^11.0.0",
@@ -618,16 +596,16 @@ describe('initCreateWhook', () => {
        "devDependencies": {
          "@eslint/js": "^10.0.1",
          "@swc/cli": "^0.8.1",
-         "@swc/core": "^1.16.0",
+         "@swc/core": "^1.16.1",
          "@swc/jest": "^0.2.39",
          "@whook/dev": "<current_version>",
-         "axios": "^1.19.0",
+         "axios": "^1.20.0",
          "esbuild-node-externals": "^2.0.0",
-         "eslint": "^10.8.1",
+         "eslint": "^10.9.1",
          "eslint-config-prettier": "^10.1.8",
-         "eslint-plugin-jest": "^29.16.1",
+         "eslint-plugin-jest": "^29.16.6",
          "eslint-plugin-prettier": "^5.5.6",
-         "jest": "^30.4.2",
+         "jest": "^30.5.1",
          "jsarch": "^7.1.2",
          "prettier": "^3.9.6",
          "rimraf": "^6.1.3",
@@ -635,7 +613,7 @@ describe('initCreateWhook', () => {
          "streamtest": "^4.0.0",
          "tsx": "^4.23.12",
          "typescript": "^6.0.3",
-         "typescript-eslint": "^8.67.0",
+         "typescript-eslint": "^8.69.0",
        },
        "engines": {
          "node": ">=24.14.0",
@@ -680,17 +658,6 @@ describe('initCreateWhook', () => {
        "license": "SEE LICENSE",
        "main": "dist/index.js",
        "name": "super-project",
-       "overrides": {
-         "@typescript-eslint/eslint-plugin": {
-           "typescript": "^6",
-         },
-         "@typescript-eslint/parser": {
-           "typescript": "^6",
-         },
-         "typescript-eslint": {
-           "typescript": "^6",
-         },
-       },
        "prettier": {
          "printWidth": 80,
          "proseWrap": "always",

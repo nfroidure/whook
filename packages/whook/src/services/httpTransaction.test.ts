@@ -78,7 +78,7 @@ describe('initHTTPTransaction', () => {
   });
 
   describe('httpTransaction', () => {
-    const buildResponse = jest.fn<any>();
+    const buildResponse = jest.fn<() => any>();
 
     beforeEach(() => {
       buildResponse.mockReset();

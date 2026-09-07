@@ -17,7 +17,7 @@ describe('postAuthLogin', () => {
     build: jest.fn<WhookAuthCookiesService['build']>(),
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const postOAuth2Token = jest.fn<any>();
+  const postOAuth2Token = jest.fn<() => any>();
 
   beforeEach(() => {
     readClientGrants.mockReset();
