@@ -7,12 +7,12 @@ import { type LogService, type LockService } from 'common-services';
 
 describe('initProject', () => {
   const CWD = '/home/whoiam/projects/';
-  const inquirer = { input: jest.fn<any>() };
+  const inquirer = { input: jest.fn<() => any>() };
   const lock = {
     take: jest.fn<LockService<unknown>['take']>(),
     release: jest.fn<LockService<unknown>['release']>(),
   };
-  const ensureDir = jest.fn<any>();
+  const ensureDir = jest.fn<() => any>();
   const log = jest.fn<LogService>();
 
   beforeEach(() => {

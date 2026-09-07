@@ -4,6 +4,10 @@ import {
   type WhookHTTPServerEnv,
 } from '../services/httpServer.js';
 import {
+  type WhookHTTPSServerConfig,
+  type WhookHTTPSServerEnv,
+} from '../services/httpsServer.js';
+import {
   type WhookBaseURLConfig,
   type WhookBaseURLEnv,
 } from '../services/BASE_URL.js';
@@ -41,6 +45,7 @@ import { type WhookConsumersDefinitionsConfig } from '../services/CONSUMERS_DEFI
 import { type WhookCronsDefinitionsConfig } from '../services/CRONS_DEFINITIONS.js';
 import { type WhookTransformersDefinitionsConfig } from '../services/TRANSFORMERS_DEFINITIONS.js';
 import { type WhookRoutesDefinitionsConfig } from '../services/ROUTES_DEFINITIONS.js';
+import { type WhookSSLCertificatesEnv } from '../services/SSL_CERTIFICATES.js';
 
 export type WhookAppEnv<T extends string> = T;
 
@@ -53,6 +58,8 @@ export interface WhookMain extends WhookBaseMain {}
 
 export type WhookBaseEnv = WhookCommandEnv &
   WhookHTTPServerEnv &
+  WhookHTTPSServerEnv &
+  WhookSSLCertificatesEnv &
   WhookBaseURLEnv &
   WhookHostEnv &
   WhookPortEnv & {
@@ -66,6 +73,7 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookQueryParserBuilderConfig &
   WhookErrorHandlerConfig &
   WhookHTTPServerConfig &
+  WhookHTTPSServerConfig &
   WhookHTTPTransactionConfig &
   WhookBaseURLConfig &
   WhookResolvedPluginsConfig &

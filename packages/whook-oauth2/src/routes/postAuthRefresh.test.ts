@@ -18,7 +18,7 @@ describe('postAuthRefresh', () => {
     parse: jest.fn<WhookAuthCookiesService['parse']>(),
     build: jest.fn<WhookAuthCookiesService['build']>(),
   };
-  const postOAuth2Token = jest.fn<any>();
+  const postOAuth2Token = jest.fn<() => any>();
 
   beforeEach(() => {
     readClientGrants.mockReset();

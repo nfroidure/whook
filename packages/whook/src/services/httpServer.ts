@@ -3,11 +3,11 @@ import http from 'node:http';
 import ms from 'ms';
 import { YError } from 'yerror';
 import { type Provider } from 'knifecycle';
-import { type LogService } from 'common-services';
+import { noop, type LogService } from 'common-services';
 import { type WhookHTTPRouterService } from './httpRouter.js';
 import { type Socket } from 'net';
 
-export type WhookHTTPServerEnv = {
+export interface WhookHTTPServerEnv {
   DESTROY_SOCKETS?: string;
 };
 export type WhookHTTPServerOptions = Pick<
@@ -20,7 +20,7 @@ export type WhookHTTPServerOptions = Pick<
   | 'maxRequestsPerSocket'
 > &
   Partial<Pick<http.Server, 'maxConnections'>>;
-export type WhookHTTPServerConfig = {
+export interface WhookHTTPServerConfig {
   HOST?: string;
   PORT?: number;
   HTTP_SERVER_OPTIONS?: Partial<WhookHTTPServerOptions>;
@@ -35,12 +35,8 @@ export type WhookHTTPServerDependencies = WhookHTTPServerConfig & {
 export type WhookHTTPServerService = http.Server;
 export type WhookHTTPServerProvider = Provider<WhookHTTPServerService>;
 
-function noop() {
-  return undefined;
-}
-
 const DEFAULT_ENV = {};
-const DEFAULT_HTTP_SERVER_OPTIONS: WhookHTTPServerOptions = {
+export const DEFAULT_HTTP_SERVER_OPTIONS: WhookHTTPServerOptions = {
   maxHeadersCount: 800,
   requestTimeout: ms('5m'),
   headersTimeout: ms('1m'),

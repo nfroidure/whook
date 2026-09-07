@@ -12,9 +12,11 @@ If no `HOST` configuration is specified in dependencies nor in ENV,
 export default location(name('HOST', autoService(initHost)), import.meta.url);
 
 export type WhookHost = string;
-export type WhookHostEnv = {
+export interface WhookHostEnv {
   HOST?: WhookHost;
-};
+  CONTAINERIZED?: string;
+  DEV_MODE?: string;
+}
 
 /**
  * Initialize the HOST service from ENV or auto-detection if
@@ -45,6 +47,17 @@ async function initHost({
     log('warning', `♻️ - Using ENV host "${ENV.HOST}"`);
     return ENV.HOST;
   }
+
+  if ('undefined' !== typeof ENV.CONTAINERIZED) {
+    log('warning', `♻️ - Found "CONTAINERIZED" env, setting host to "0.0.0.0"`);
+    return '0.0.0.0';
+  }
+
+  if ('undefined' !== typeof ENV.DEV_MODE) {
+    log('warning', `♻️ - Found "DEV_MODE" env, setting host to "127.0.0.1"`);
+    return '127.0.0.1';
+  }
+
   const host = await (await importer('internal-ip')).internalIpV4();
 
   if (!host) {
