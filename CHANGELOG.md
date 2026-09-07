@@ -1,3 +1,9 @@
+## [26.2.0](https://github.com/nfroidure/whook/compare/v26.1.0...v26.2.0) (2026-09-07)
+
+### Features
+
+* **@whook/whook:** allows SSL deployment and add env utils ([fd16920](https://github.com/nfroidure/whook/commit/fd16920f82fac31aba8ac2eac566a06c2143b1c9))
+
 ## [26.1.0](https://github.com/nfroidure/whook/compare/v26.0.5...v26.1.0) (2026-08-26)
 
 ### Features
