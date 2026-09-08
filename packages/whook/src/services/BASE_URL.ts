@@ -1,6 +1,7 @@
 import { autoService, location, name } from 'knifecycle';
 import { noop } from '../libs/utils.js';
 import { type LogService } from 'common-services';
+import { YError } from 'yerror';
 
 /* Architecture Note #2.1: Base URL
 The `BASE_URL` service is intended to provide a base URL where
@@ -73,6 +74,12 @@ async function initBaseURL({
       : `${PROTOCOL}://${HOST}${PORT ? `:${PORT}` : ''}`);
 
   log('debug', `🈁 - Generated the BASE_URL constant "${BASE_URL}".`);
+
+  try {
+    new URL(BASE_URL);
+  } catch (err) {
+    throw YError.wrap(err as Error, 'E_BAD_BASE_URL', [BASE_URL]);
+  }
 
   return BASE_URL;
 }

@@ -151,4 +151,22 @@ describe('initBaseURL', () => {
      }
     `);
   });
+
+  test('should fail with a bad URL', async () => {
+    await expect(
+      initBaseURL({
+        ENV: {},
+        CONFIG: {
+          name: 'project',
+          baseURL: 'example.com',
+        },
+        HOST: 'localhost',
+        PORT: 1337,
+        log,
+      }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`
+     "E_BAD_BASE_URL
+     Cause: Invalid URL"
+    `);
+  });
 });

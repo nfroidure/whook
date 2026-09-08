@@ -11,9 +11,10 @@ describe('authCookies', () => {
 
       const authCookies = await initAuthCookies({
         COOKIES,
+        BASE_URL: 'https://example.com',
       });
 
-      const result = await authCookies.build({
+      const result = authCookies.build({
         access_token: 'a_access_token',
         refresh_token: 'a_refresh_token',
       });
@@ -28,14 +29,15 @@ describe('authCookies', () => {
 
     test('should allow to reset auth data', async () => {
       const COOKIES: WhookAuthCookiesOptions = {
-        domain: 'api.example.com',
+        useBaseURLDomain: true
       };
 
       const authCookies = await initAuthCookies({
         COOKIES,
+        BASE_URL: 'https://api.example.com',
       });
 
-      const result = await authCookies.build({
+      const result = authCookies.build({
         access_token: '',
         refresh_token: '',
       });
@@ -57,9 +59,10 @@ describe('authCookies', () => {
 
       const authCookies = await initAuthCookies({
         COOKIES,
+        BASE_URL: 'https://example.com',
       });
 
-      const result = await authCookies.parse('');
+      const result = authCookies.parse('');
 
       expect(result).toMatchInlineSnapshot(`{}`);
     });
@@ -71,9 +74,10 @@ describe('authCookies', () => {
 
       const authCookies = await initAuthCookies({
         COOKIES,
+        BASE_URL: 'https://example.com',
       });
 
-      const result = await authCookies.parse(
+      const result = authCookies.parse(
         'access_token=a_access_token; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict; refresh_token=a_refresh_token; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict',
       );
 
