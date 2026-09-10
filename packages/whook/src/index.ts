@@ -46,6 +46,8 @@ import initSSLCertificates from './services/SSL_CERTIFICATES.js';
 export { initSSLCertificates };
 import initPort from './services/PORT.js';
 import initHost from './services/HOST.js';
+import initAvailablePort from './services/AVAILABLE_PORT.js';
+import initInternalIP from './services/INTERNAL_IP.js';
 import initProxiedENV from './services/PROXIED_ENV.js';
 import initWhookResolvedPlugins, {
   WHOOK_DEFAULT_PLUGINS,
@@ -144,10 +146,12 @@ export type * from './libs/validation.js';
 export type * from './libs/args.js';
 export type * from './libs/environments.js';
 export type * from './services/PORT.js';
+export type * from './services/AVAILABLE_PORT.js';
 export type * from './services/httpServer.js';
 export type * from './services/httpsServer.js';
 export type * from './services/SSL_CERTIFICATES.js';
 export type * from './services/HOST.js';
+export type * from './services/INTERNAL_IP.js';
 export type * from './services/PROXIED_ENV.js';
 export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
 export type * from './services/DEFINITIONS.js';
@@ -178,7 +182,9 @@ export {
   initAutoload,
   initDefinitions,
   initProxiedENV,
+  initAvailablePort,
   initPort,
+  initInternalIP,
   initHost,
 };
 

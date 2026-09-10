@@ -33,7 +33,9 @@ export const DEFAULT_BUILD_INITIALIZER_PATH_MAP = {
   logger: '@whook/whook/dist/services/logger.js',
   exit: '@whook/whook/dist/services/exit.js',
   PORT: '@whook/whook/dist/services/PORT.js',
+  AVAILABLE_PORT: '@whook/whook/dist/services/AVAILABLE_PORT.js',
   HOST: '@whook/whook/dist/services/HOST.js',
+  INTERNAL_IP: '@whook/whook/dist/services/INTERNAL_IP.js',
   WHOOK_RESOLVED_PLUGINS:
     '@whook/whook/dist/services/WHOOK_RESOLVED_PLUGINS.js',
   httpRouter: '@whook/whook/dist/services/httpRouter.js',

@@ -1,15 +1,18 @@
-import { autoService, name, location } from 'knifecycle';
+import { inject, name, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { type ImporterService, type LogService } from 'common-services';
+import { type LogService } from 'common-services';
 
 const DEFAULT_ENV = {};
 
-/* Architecture Note #2.2: IP detection
+/* Architecture Note #2.2: Host detection
 If no `HOST` configuration is specified in dependencies nor in ENV,
- this service detects the machine host automagically.
+ this service uses the injected host value.
 */
 
-export default location(name('HOST', autoService(initHost)), import.meta.url);
+export default location(
+  name('HOST', inject(['?ENV', '?log', 'HOST>INTERNAL_IP'], initHost)),
+  import.meta.url,
+);
 
 export type WhookHost = string;
 export interface WhookHostEnv {
@@ -27,19 +30,19 @@ export interface WhookHostEnv {
  * An optional environment object
  * @param  {Object}   [services.log=noop]
  * An optional logging service
- * @param  {Object}   services.importer
- * A service allowing to dynamically import ES modules
+ * @param  {Object}   services.HOST
+ * A service allowing to determine the default host
  * @return {Promise<String>}
  * A promise of a containing the actual host.
  */
 async function initHost({
   ENV = DEFAULT_ENV,
   log = noop,
-  importer,
+  HOST,
 }: {
   ENV?: WhookHostEnv;
   log?: LogService;
-  importer: ImporterService<{ internalIpV4: () => Promise<string> }>;
+  HOST: WhookHost;
 }): Promise<WhookHost> {
   log('debug', `🏭 - Initializing the HOST service.`);
 
@@ -58,14 +61,12 @@ async function initHost({
     return '127.0.0.1';
   }
 
-  const host = await (await importer('internal-ip')).internalIpV4();
-
-  if (!host) {
+  if (!HOST) {
     log('warning', `🚫 - Could not detect any host. Fallback to "localhost".`);
     return 'localhost';
   }
 
-  log('warning', `✔ - Using detected host "${host}".`);
+  log('warning', `✔ - Using detected host "${HOST}".`);
 
-  return host;
+  return HOST;
 }
