@@ -2,12 +2,20 @@ import { describe, test, jest, expect } from '@jest/globals';
 import { constant } from 'knifecycle';
 import { type Logger } from 'common-services';
 import {
+  initHTTPSServer,
+  initHTTPServer,
   runProcess,
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
 } from './index.js';
+import _initHTTPSServer from './services/httpsServer.js';
 
 describe('runProcess', () => {
+  test('should expose the HTTPS server initializer', () => {
+    expect(initHTTPSServer).toBe(_initHTTPSServer);
+    expect(initHTTPSServer).not.toBe(initHTTPServer);
+  });
+
   test('should work', async () => {
     const PORT = 8888;
     const HOST = 'localhost';

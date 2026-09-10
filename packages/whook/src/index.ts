@@ -39,7 +39,7 @@ export {
 import initHTTPServer from './services/httpServer.js';
 export { initHTTPServer };
 export { DEFAULT_HTTP_SERVER_OPTIONS } from './services/httpServer.js';
-import initHTTPSServer from './services/httpServer.js';
+import initHTTPSServer from './services/httpsServer.js';
 export { initHTTPSServer };
 export { DEFAULT_HTTPS_SERVER_OPTIONS } from './services/httpsServer.js';
 import initSSLCertificates from './services/SSL_CERTIFICATES.js';
