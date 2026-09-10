@@ -54,9 +54,10 @@ async function createSSLCertificates() {
 
 async function requestOverHTTP2(
   origin: string,
+  ca: Buffer,
 ): Promise<IncomingHttpHeaders & IncomingHttpStatusHeader> {
   const client = http2.connect(origin, {
-    rejectUnauthorized: false,
+    ca,
   });
 
   try {
@@ -79,14 +80,18 @@ async function requestOverHTTP2(
   }
 }
 
-async function requestOverHTTP1(host: string, port: number): Promise<number> {
+async function requestOverHTTP1(
+  host: string,
+  port: number,
+  ca: Buffer,
+): Promise<number> {
   return new Promise((resolve, reject) => {
     const request = https.request(
       {
         host,
         port,
         method: 'GET',
-        rejectUnauthorized: false,
+        ca,
       },
       (response) => {
         response.resume();
@@ -131,7 +136,10 @@ describe('initHTTPSServer', () => {
 
     try {
       const { port } = httpsServer.service.address() as AddressInfo;
-      const headers = await requestOverHTTP2(`https://${HOST}:${port}`);
+      const headers = await requestOverHTTP2(
+        `https://${HOST}:${port}`,
+        SSL_CERTIFICATES.cert,
+      );
 
       expect(headers[':status']).toBe(200);
       expect(headers['x-http2-stream']).toBe('1');
@@ -163,7 +171,7 @@ describe('initHTTPSServer', () => {
 
     try {
       const { port } = httpsServer.service.address() as AddressInfo;
-      const status = await requestOverHTTP1(HOST, port);
+      const status = await requestOverHTTP1(HOST, port, SSL_CERTIFICATES.cert);
 
       expect(status).toBe(200);
     } finally {
