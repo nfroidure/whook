@@ -195,17 +195,7 @@ async function initRoutesDefinitions({
           url,
           name: handlerName,
           pluginName,
-          module: !module.definition.config?.global
-            ? {
-                ...module,
-                definition: {
-                  ...module.definition,
-                  path: BASE_PATH
-                    ? `${BASE_PATH}${module.definition.path}`
-                    : module.definition.path,
-                },
-              }
-            : module,
+          module,
         };
       } catch (err) {
         log(

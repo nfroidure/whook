@@ -84,6 +84,20 @@ const putUserModule: WhookRouteModule = {
     WhookRouteHandler
   >,
 };
+const getWellKnownModule: WhookRouteModule = {
+  ...getUserModule,
+  definition: {
+    ...getUserModule.definition,
+    path: '/.well-known/user',
+    config: {
+      global: true,
+    },
+    operation: {
+      ...getUserModule.definition.operation,
+      operationId: 'getWellKnownUser',
+    },
+  },
+};
 const SECURITY_DEFINITIONS = {
   security: [],
   securitySchemes: {},
@@ -339,6 +353,43 @@ describe('initDefinitions', () => {
          ],
        }
       `);
+    });
+
+    test('with a BASE_PATH', async () => {
+      const DEFINITIONS = await initDefinitions({
+        BASE_PATH: '/v1',
+        COMMANDS_DEFINITIONS: {},
+        CRONS_DEFINITIONS: {},
+        CONSUMERS_DEFINITIONS: {},
+        TRANSFORMERS_DEFINITIONS: {},
+        ROUTES_DEFINITIONS: {
+          getUser: {
+            url: 'src/routes/getUser.ts',
+            name: 'getUser',
+            pluginName: '@whook/whook',
+            module: getUserModule,
+          },
+          getWellKnownUser: {
+            url: 'src/routes/getWellKnownUser.ts',
+            name: 'getWellKnownUser',
+            pluginName: '@whook/whook',
+            module: getWellKnownModule,
+          },
+        },
+        SECURITY_DEFINITIONS,
+        log,
+      });
+
+      expect(Object.keys(DEFINITIONS.paths).sort()).toEqual([
+        '/.well-known/user',
+        '/v1/users/{userId}',
+      ]);
+      expect((DEFINITIONS.configs.getUser as { path: string }).path).toEqual(
+        '/v1/users/{userId}',
+      );
+      expect(
+        (DEFINITIONS.configs.getWellKnownUser as { path: string }).path,
+      ).toEqual('/.well-known/user');
     });
   });
 });
