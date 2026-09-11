@@ -1,14 +1,12 @@
-import { autoService, name, location } from 'knifecycle';
+import { inject, name, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { type LogService, type ImporterService } from 'common-services';
+import { type LogService } from 'common-services';
 
 const DEFAULT_ENV = {};
 
-export type PortFinderModule = { getPortPromise: () => Promise<number> };
-
 /* Architecture Note #2.3: Port detection
 If no `PORT` configuration is specified in dependencies nor in ENV,
-this service detects a free port automagically.
+this service uses the injected port value.
 */
 
 export type WhookPort = number;
@@ -16,7 +14,10 @@ export type WhookPortEnv = {
   PORT?: string;
 };
 
-export default location(name('PORT', autoService(initPort)), import.meta.url);
+export default location(
+  name('PORT', inject(['?ENV', '?log', 'PORT>AVAILABLE_PORT'], initPort)),
+  import.meta.url,
+);
 
 /**
  * Initialize the PORT service from ENV or auto-detection if
@@ -27,19 +28,19 @@ export default location(name('PORT', autoService(initPort)), import.meta.url);
  * An optional environment object
  * @param  {Object}   [services.log=noop]
  * An optional logging service
- * @param  {Object}   services.importer
- * A service allowing to dynamically import ES modules
+ * @param  {Object}   services.PORT
+ * A service allowing to determine a fallback port
  * @return {Promise<Number>}
  * A promise of a number representing the actual port.
  */
 async function initPort({
   ENV = DEFAULT_ENV,
   log = noop,
-  importer,
+  PORT,
 }: {
   ENV?: WhookPortEnv;
   log?: LogService;
-  importer: ImporterService<PortFinderModule>;
+  PORT: WhookPort;
 }): Promise<number> {
   log('debug', `🏭 - Initializing the PORT service.`);
 
@@ -48,14 +49,12 @@ async function initPort({
     return parseInt(ENV.PORT, 10);
   }
 
-  const port = await (await importer('portfinder')).getPortPromise();
-
-  if (!port) {
+  if (!PORT) {
     log('warning', `🚫 - Could not detect any free port.`);
     return 8080;
   }
 
-  log('warning', `✔ - Found a free port "${port}"`);
+  log('warning', `✔ - Found a free port "${PORT}"`);
 
-  return port;
+  return PORT;
 }

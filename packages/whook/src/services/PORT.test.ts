@@ -1,7 +1,5 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initPORT from './PORT.js';
-import { initImporter } from 'common-services';
-import { type PortFinderModule } from './PORT.js';
 import { type LogService } from 'common-services';
 
 describe('initPORT', () => {
@@ -12,10 +10,9 @@ describe('initPORT', () => {
   });
 
   test('should use the env port first', async () => {
-    const importer = await initImporter<PortFinderModule>({ log });
     const port = await initPORT({
       ENV: { PORT: '1337' },
-      importer,
+      PORT: 8000,
       log,
     });
 
@@ -33,10 +30,6 @@ describe('initPORT', () => {
   "logCalls": [
     [
       "debug",
-      "🛂 - Initializing the importer!",
-    ],
-    [
-      "debug",
       "🏭 - Initializing the PORT service.",
     ],
     [
@@ -48,42 +41,50 @@ describe('initPORT', () => {
 `);
   });
 
-  test('should find a port by itself if no env port', async () => {
-    const importer = await initImporter<PortFinderModule>({ log });
+  test('should use the available port if no env port', async () => {
     const port = await initPORT({
-      importer,
+      PORT: 8000,
       log,
     });
 
-    expect(port).toBeGreaterThan(0);
+    expect(port).toBe(8000);
     expect({
-      logCalls: log.mock.calls
-        .filter((args) => 'debug-stack' !== args[0])
-        .map(([arg1, arg2, ...args]) => {
-          return [
-            arg1,
-            (arg2 || '').toString().replace(/port (\d+)/, 'port ${PORT}'),
-            ...args,
-          ];
-        }),
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
 {
   "logCalls": [
     [
       "debug",
-      "🛂 - Initializing the importer!",
+      "🏭 - Initializing the PORT service.",
     ],
+    [
+      "warning",
+      "✔ - Found a free port "8000"",
+    ],
+  ],
+}
+`);
+  });
+
+  test('should fallback to 8080', async () => {
+    const port = await initPORT({
+      PORT: 0,
+      log,
+    });
+
+    expect(port).toBe(8080);
+    expect({
+      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+    }).toMatchInlineSnapshot(`
+{
+  "logCalls": [
     [
       "debug",
       "🏭 - Initializing the PORT service.",
     ],
     [
-      "debug",
-      "🛂 - Dynamic import of "portfinder".",
-    ],
-    [
       "warning",
-      "✔ - Found a free port "8000"",
+      "🚫 - Could not detect any free port.",
     ],
   ],
 }
