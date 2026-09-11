@@ -11,6 +11,10 @@ import {
   type WhookBaseURLConfig,
   type WhookBaseURLEnv,
 } from '../services/BASE_URL.js';
+import {
+  type WhookBasePathConfig,
+  type WhookBasePathEnv,
+} from '../services/BASE_PATH.js';
 import { type WhookPortEnv } from '../services/PORT.js';
 import { type WhookObfuscatorConfig } from '../services/obfuscator.js';
 import { type WhookHTTPTransactionConfig } from '../services/httpTransaction.js';
@@ -61,6 +65,7 @@ export type WhookBaseEnv = WhookCommandEnv &
   WhookHTTPSServerEnv &
   WhookSSLCertificatesEnv &
   WhookBaseURLEnv &
+  WhookBasePathEnv &
   WhookHostEnv &
   WhookPortEnv & {
     APP_ENV?: WhookBaseMain['AppEnv'];
@@ -76,6 +81,7 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookHTTPSServerConfig &
   WhookHTTPTransactionConfig &
   WhookBaseURLConfig &
+  WhookBasePathConfig &
   WhookResolvedPluginsConfig &
   WhookObfuscatorConfig &
   WhookDefinitionsConfig &

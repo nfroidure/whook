@@ -27,7 +27,7 @@ export type WhookCronsWrappersDependencies = WhookCronsWrappersConfig & {
  * The service dependencies
  * @param  {Array}   [services.CRONS_WRAPPERS_NAMES]
  * The global wrappers names to wrap the crons with
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}    services.CRONS_WRAPPERS
  * The dependencies must all be injected wrappers

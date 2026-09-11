@@ -122,6 +122,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -164,6 +165,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -215,6 +217,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -376,6 +379,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -541,6 +545,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -710,6 +715,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -867,6 +873,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -930,6 +937,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         log,
@@ -1042,6 +1050,7 @@ describe('initRoutesDefinitions', () => {
       };
       const ROUTES_DEFINITIONS = await initRoutesDefinitions({
         APP_ENV,
+        BASE_PATH: '',
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
         ROUTE_DEFINITION_FILTER: (definition) =>

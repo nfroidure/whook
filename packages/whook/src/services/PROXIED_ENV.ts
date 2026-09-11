@@ -40,7 +40,7 @@ export default location(
  * The service dependencies
  * @param  {Object}   [services.PROXIED_ENV_VARS={}]
  * A list of environment variable names to proxy
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.

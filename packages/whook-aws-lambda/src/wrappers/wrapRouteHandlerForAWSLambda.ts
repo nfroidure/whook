@@ -116,7 +116,7 @@ export interface WhookAWSLambdaRouteHandlerWrapperDependencies {
  * A service that changes any error to Whook response
  * @param  {Object}   [services.time]
  * An optional time service
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.
