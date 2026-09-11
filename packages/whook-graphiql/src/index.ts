@@ -5,6 +5,7 @@ import {
   noop,
   type WhookHTTPRouterService,
   type WhookHTTPRouterProvider,
+  type WhookRouteDefinitionBasePath,
   type WhookRoutesDefinitionsService,
 } from '@whook/whook';
 import { type ProviderInitializer, type Dependencies } from 'knifecycle';
@@ -28,6 +29,7 @@ export interface WhookGraphIQLConfig {
   DEV_ACCESS_MECHANISM?: string;
   HOST?: string;
   PORT?: number;
+  BASE_PATH?: WhookRouteDefinitionBasePath;
   GRAPHIQL?: WhookGraphIQLOptions;
 }
 export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
@@ -57,6 +59,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
       '?DEV_ACCESS_MECHANISM',
       'HOST',
       'PORT',
+      '?BASE_PATH',
       '?GRAPHIQL',
       'ROUTES_DEFINITIONS',
       'ENV',
@@ -72,6 +75,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
         DEV_ACCESS_MECHANISM = 'Bearer',
         HOST,
         PORT,
+        BASE_PATH = '',
         GRAPHIQL = DEFAULT_GRAPHIQL,
         ENV,
         ROUTES_DEFINITIONS,
@@ -83,9 +87,15 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
         return httpRouter;
       }
 
+      const graphQLDefinition =
+        ROUTES_DEFINITIONS['postGraphQL']?.module?.definition;
       const publicGraphiqlPath =
         GRAPHIQL.graphQLPath ||
-        ROUTES_DEFINITIONS['postGraphQL']?.module?.definition?.path;
+        (graphQLDefinition
+          ? BASE_PATH && !graphQLDefinition.config?.global
+            ? `${BASE_PATH}${graphQLDefinition.path}`
+            : graphQLDefinition.path
+          : undefined);
 
       if (!publicGraphiqlPath) {
         log(
@@ -94,6 +104,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
         );
         return httpRouter;
       }
+      const graphQLPath = publicGraphiqlPath;
 
       const localURL = `http://${HOST}:${PORT}`;
       const urlGraphiql = `${localURL}${GRAPHIQL.path}`;
@@ -111,7 +122,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
       ) {
         if (req.url?.startsWith(GRAPHIQL.path)) {
           return resolveGraphiQLString({
-            endpointURL: publicGraphiqlPath,
+            endpointURL: graphQLPath,
             query: GRAPHIQL.defaultQuery,
             headers: DEV_ACCESS_TOKEN
               ? { Authorization: `${DEV_ACCESS_MECHANISM} ${DEV_ACCESS_TOKEN}` }

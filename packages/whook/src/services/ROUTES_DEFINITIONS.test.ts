@@ -1130,5 +1130,35 @@ describe('initRoutesDefinitions', () => {
 }
 `);
     });
+
+    test('with a BASE_PATH', async () => {
+      readDir.mockResolvedValueOnce(['getPing.ts']);
+      importer.mockResolvedValueOnce({
+        definition: getPingDefinition,
+        default: undefined as unknown as ServiceInitializer<
+          Dependencies,
+          WhookRouteHandler
+        >,
+      });
+
+      const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
+      const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
+        [WHOOK_PROJECT_PLUGIN_NAME]: {
+          mainURL: 'file:///home/whoiam/project/src/index.ts',
+          types: ['routes'],
+        },
+      };
+      const ROUTES_DEFINITIONS = await initRoutesDefinitions({
+        APP_ENV,
+        BASE_PATH: '/v1',
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
+        log,
+        readDir,
+        importer,
+      });
+
+      expect(ROUTES_DEFINITIONS.getPing.module.definition.path).toEqual('/ping');
+    });
   });
 });

@@ -28,7 +28,10 @@ import {
   type WhookTransformerDefinition,
   type WhookTransformerModule,
 } from '../types/transformers.js';
-import { type WhookRoutesDefinitionsService } from './ROUTES_DEFINITIONS.js';
+import {
+  type WhookRouteDefinitionBasePath,
+  type WhookRoutesDefinitionsService,
+} from './ROUTES_DEFINITIONS.js';
 import { type WhookCommandsDefinitionsService } from './COMMANDS_DEFINITIONS.js';
 import { type WhookCronsDefinitionsService } from './CRONS_DEFINITIONS.js';
 import { type WhookConsumersDefinitionsService } from './CONSUMERS_DEFINITIONS.js';
@@ -40,6 +43,7 @@ import {
   DEFAULT_CONSUMER_CONFIG,
 } from '../types/consumers.js';
 import { combineComponents } from '../types/base.js';
+import { YError } from 'yerror';
 
 /* Architecture Note #2.9.2.1: Definitions loader
 The `DEFINITIONS` service provide a convenient way to
@@ -62,6 +66,7 @@ export interface WhookSecurityDefinitions {
 
 export interface WhookDefinitionsConfig {
   WHOOK_PLUGINS?: WhookPluginName[];
+  BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 
 export type WhookDefinitionsDependencies = WhookDefinitionsConfig & {
@@ -128,10 +133,15 @@ async function initDefinitions({
   CRONS_DEFINITIONS,
   CONSUMERS_DEFINITIONS,
   TRANSFORMERS_DEFINITIONS,
+  BASE_PATH = '',
   SECURITY_DEFINITIONS = DEFAULT_SECURITY_DEFINITIONS,
   log = noop,
 }: WhookDefinitionsDependencies): Promise<WhookDefinitions> {
   log('debug', `🈁 - Generating the DEFINITIONS`);
+
+  if (BASE_PATH && BASE_PATH.endsWith('/')) {
+    throw new YError('E_BAD_BASE_PATH', [BASE_PATH]);
+  }
 
   const routesModules: {
     file: string;
@@ -180,10 +190,16 @@ async function initDefinitions({
         return paths;
       }
 
-      if (paths[definition.path]?.[definition.method]) {
+      const path = (
+        BASE_PATH && !definition.config?.global
+          ? `${BASE_PATH}${definition.path}`
+          : definition.path
+      ) as WhookRouteDefinition['path'];
+
+      if (paths[path]?.[definition.method]) {
         log(
           'warning',
-          `⚠️ - Overriding an existing definition ("${definition.method}" "${definition.path}").`,
+          `⚠️ - Overriding an existing definition ("${definition.method}" "${path}").`,
         );
       }
 
@@ -191,8 +207,8 @@ async function initDefinitions({
         ...paths,
         ...(definition
           ? {
-              [definition.path]: {
-                ...(paths[definition.path] || {}),
+              [path]: {
+                ...(paths[path] || {}),
                 [definition.method]: definition.operation,
               },
             }
@@ -232,7 +248,10 @@ async function initDefinitions({
     DEFINITIONS.configs[operationId] = {
       type: 'route',
       config: routeModule.module.definition.config || DEFAULT_ROUTE_CONFIG,
-      path: routeModule.module.definition.path,
+      path:
+        BASE_PATH && !routeModule.module.definition.config?.global
+          ? `${BASE_PATH}${routeModule.module.definition.path}`
+          : routeModule.module.definition.path,
       method: routeModule.module.definition.method,
       operation: routeModule.module.definition.operation,
     };
