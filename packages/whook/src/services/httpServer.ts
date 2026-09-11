@@ -9,7 +9,7 @@ import { type Socket } from 'net';
 
 export interface WhookHTTPServerEnv {
   DESTROY_SOCKETS?: string;
-};
+}
 export type WhookHTTPServerOptions = Pick<
   http.Server,
   | 'timeout'
@@ -24,7 +24,7 @@ export interface WhookHTTPServerConfig {
   HOST?: string;
   PORT?: number;
   HTTP_SERVER_OPTIONS?: Partial<WhookHTTPServerOptions>;
-};
+}
 export type WhookHTTPServerDependencies = WhookHTTPServerConfig & {
   ENV?: WhookHTTPServerEnv;
   HOST: string;

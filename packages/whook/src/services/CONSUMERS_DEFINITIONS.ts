@@ -74,7 +74,7 @@ export type WhookConsumersDefinitionsService = Record<
  * A function to filter the project consumers per definitions
  * @param  {Object}   services.importer
  * A service allowing to dynamically import ES modules
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of a containing the actual host.

@@ -4,6 +4,7 @@ import {
   type WhookConfig,
   type WhookDefinitions,
   type WhookOpenAPI,
+  type WhookBaseURL,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { isValidOpenAPIMethod, isValidOpenAPIPath } from 'ya-open-api-types';
@@ -14,18 +15,15 @@ export interface APIEnv {
 }
 export interface APIConfig {
   CONFIG: WhookConfig;
-  BASE_URL?: string;
   API_VERSION: string;
   DEFINITIONS?: WhookDefinitions;
 }
 export type APIDependencies = APIConfig & {
   ENV: APIEnv;
-  BASE_URL: string;
+  BASE_URL: WhookBaseURL;
   DEFINITIONS: WhookDefinitions;
   log?: LogService;
 };
-
-export default location(name('API', autoService(initAPI)), import.meta.url);
 
 /* Architecture Note #3: API
 Whook is all about APIs.
@@ -130,3 +128,5 @@ async function augmentAPIWithFakeAuth(
     paths: newPaths,
   };
 }
+
+export default location(name('API', autoService(initAPI)), import.meta.url);

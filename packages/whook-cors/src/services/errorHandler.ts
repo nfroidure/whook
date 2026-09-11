@@ -43,7 +43,7 @@ export default location(
  * The service dependencies
  * @param  {Object}   services.CORS
  * A CORS object to be added to errors responses
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.

@@ -31,7 +31,7 @@ export type WhookConsumersWrappersDependencies =
  * The service dependencies
  * @param  {Array}   [services.CONSUMERS_WRAPPERS_NAMES]
  * The global wrappers names to wrap the consumers with
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}    services.CONSUMERS_WRAPPERS
  * The dependencies must all be injected wrappers

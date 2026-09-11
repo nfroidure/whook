@@ -47,6 +47,12 @@ declare module 'yerror' {
     E_BAD_BASE_URL: [baseURL: string];
 
     /**
+     * Thrown when the provided BASE_PATH is invalid
+     * @param basePath the actual base path
+     */
+    E_BAD_BASE_PATH: [basePath: string];
+
+    /**
      * Thrown when an OpenAPI path item is invalid (undefined or has $ref)
      * @param path the OpenAPI path
      * @param pathItem the invalid path item

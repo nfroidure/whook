@@ -110,7 +110,7 @@ export interface WhookGCPFunctionRouteWrapperDependencies {
  * A service to hide sensible values
  * @param  {Object}   services.errorHandler
  * A service that changes any error to Whook response
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.

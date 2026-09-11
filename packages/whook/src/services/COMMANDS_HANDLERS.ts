@@ -18,7 +18,7 @@ export default location(
  *  command to run for a given command name.
  * @param  {Object}   services
  * The service dependencies
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}   services.COMMANDS_HANDLERS
  * The rest is a hash of commands handlers mapped by name

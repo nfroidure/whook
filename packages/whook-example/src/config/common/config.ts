@@ -24,9 +24,10 @@ Each configuration file then create a configuration object
 See the [Whook Config Service](https://github.com/nfroidure/whook/blob/7dce55291a81628a0e95a07ce1e978a276b99578/packages/whook/src/services/APP_CONFIG.ts#L56).
 */
 const CONFIG: Omit<AppConfig, 'HOST'> = {
-  BASE_ENV: {},
+  BASE_ENV: {
+    BASE_PATH: `/v${_packageJSON.version.split('.')[0]}`,
+  },
   API_VERSION: _packageJSON.version,
-  BASE_PATH: `/v${_packageJSON.version.split('.')[0]}`,
   CONFIG: {
     name: _packageJSON.name,
     description: _packageJSON.description || '',
