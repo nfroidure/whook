@@ -41,6 +41,12 @@ declare module 'yerror' {
     E_UNMATCHED_DEPENDENCY: [injectedName: string, ...parents: string[]];
 
     /**
+     * Thrown when the provided BASE_URL is invalid
+     * @param baseURL the actual base URL
+     */
+    E_BAD_BASE_URL: [baseURL: string];
+
+    /**
      * Thrown when an OpenAPI path item is invalid (undefined or has $ref)
      * @param path the OpenAPI path
      * @param pathItem the invalid path item

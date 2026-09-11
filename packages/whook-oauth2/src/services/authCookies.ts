@@ -7,15 +7,25 @@ import { type WhookRouteDefinitionBasePath } from '@whook/whook';
 export const AUTH_API_PREFIX = '/auth';
 
 export type WhookAuthCookiesOptions = Jsonify<
-  Omit<SerializeOptions, 'maxAge' | 'path' | 'expires'>
->;
+  Omit<SerializeOptions, 'maxAge' | 'path' | 'expires' | 'domain'>
+> &
+  (
+    | {
+        domain?: string;
+      }
+    | {
+        useBaseURLDomain: true;
+      }
+  );
 
 export interface WhookAuthCookiesConfig {
   COOKIES: WhookAuthCookiesOptions;
   BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 
-export type AuthCookiesDependencies = WhookAuthCookiesConfig;
+export type AuthCookiesDependencies = WhookAuthCookiesConfig & {
+  BASE_URL: string;
+};
 
 export interface WhookAuthCookiesData {
   refresh_token: string;
@@ -32,6 +42,7 @@ export interface WhookAuthCookiesService {
 
 async function initAuthCookies({
   COOKIES,
+  BASE_URL,
   BASE_PATH = '',
 }: AuthCookiesDependencies): Promise<WhookAuthCookiesService> {
   function build(
@@ -48,6 +59,11 @@ async function initAuthCookies({
         secure: true,
         ...COOKIES,
         ...(data.access_token ? {} : { maxAge: 0 }),
+        ...('useBaseURLDomain' in COOKIES && COOKIES.useBaseURLDomain
+          ? {
+              domain: new URL(BASE_URL).hostname,
+            }
+          : {}),
       }),
       stringifySetCookie({
         name: 'refresh_token',
@@ -58,6 +74,11 @@ async function initAuthCookies({
         secure: true,
         ...COOKIES,
         ...(session ? {} : { maxAge: Math.round(ms('100y') / 1000) }),
+        ...('useBaseURLDomain' in COOKIES && COOKIES.useBaseURLDomain
+          ? {
+              domain: new URL(BASE_URL).hostname,
+            }
+          : {}),
       }),
     ];
   }
