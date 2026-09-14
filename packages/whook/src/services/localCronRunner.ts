@@ -1,10 +1,10 @@
 import cron, { type ScheduledTask, type TaskOptions } from 'node-cron';
 import { type LogService } from 'common-services';
 import { autoProvider, location } from 'knifecycle';
-import { type WhookCronsDefinitionsService } from './CRONS_DEFINITIONS.js';
 import { type WhookCronsHandlersService } from './CRONS_HANDLERS.js';
 import { printStackTrace } from 'yerror';
 import { type WhookMain } from '../types/base.js';
+import { type WhookDefinitions } from './DEFINITIONS.js';
 
 /* Architecture Note #2.14: Local cron runner
 
@@ -18,13 +18,13 @@ Whook allows you to run crons locally with the help
 
 export type WhookCronRunnerService = undefined;
 export type WhookCronRunnerOptions = Required<Pick<TaskOptions, 'timezone'>>;
-export type WhookCronRunnerConfig = {
+export interface WhookCronRunnerConfig {
   CRON_RUNNER_OPTIONS?: WhookCronRunnerOptions;
-};
+}
 export type WhookCronRunnerDependencies = WhookCronRunnerConfig & {
   APP_ENV: WhookMain['AppEnv'];
   CRONS_HANDLERS: WhookCronsHandlersService;
-  CRONS_DEFINITIONS: WhookCronsDefinitionsService;
+  DEFINITIONS: WhookDefinitions;
   log: LogService;
 };
 
@@ -36,10 +36,12 @@ async function initLocalCronRunner({
   APP_ENV,
   CRON_RUNNER_OPTIONS = DEFAULT_CRON_RUNNER_OPTIONS,
   CRONS_HANDLERS,
-  CRONS_DEFINITIONS,
+  DEFINITIONS,
   log,
 }: WhookCronRunnerDependencies) {
-  const cronsNames = Object.keys(CRONS_DEFINITIONS);
+  const cronsNames = Object.keys(DEFINITIONS.configs).filter(
+    (name) => DEFINITIONS.configs[name].type === 'cron',
+  );
   const tasks: Record<
     string,
     {
@@ -54,10 +56,15 @@ async function initLocalCronRunner({
   );
 
   for (const cronName of cronsNames) {
+    const definition = DEFINITIONS.configs[cronName];
+
+    if (definition?.type !== 'cron') {
+      continue;
+    }
+
     let index = 0;
 
-    for (const schedule of CRONS_DEFINITIONS[cronName].module.definition
-      .schedules) {
+    for (const schedule of definition.schedules) {
       const taskName = `${cronName}-${index++}`;
       const promises: Promise<void>[] = [];
 
@@ -93,7 +100,7 @@ async function initLocalCronRunner({
                   date: new Date().toISOString(),
                   body: schedule.body,
                 },
-                CRONS_DEFINITIONS[cronName].module.definition,
+                definition,
               );
 
               log(

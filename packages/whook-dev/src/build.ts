@@ -13,6 +13,7 @@ import {
   type WhookSchemaValidatorsOptions,
   type WhookMain,
   DEFAULT_DEBUG_NODE_ENVS,
+  WHOOK_DEFAULT_INJECTED_NAMES,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import { type OpenAPI } from 'ya-open-api-types';
@@ -72,6 +73,7 @@ export async function prepareBuildEnvironment<T extends Knifecycle>(
 
 export async function runBuild(
   aPrepareBuildEnvironment: typeof prepareBuildEnvironment,
+  injectedNames: string[] = WHOOK_DEFAULT_INJECTED_NAMES,
 ): Promise<void> {
   try {
     const $ = await aPrepareBuildEnvironment();
@@ -121,7 +123,7 @@ export async function runBuild(
     const buildPath = join(PROJECT_DIR, 'builds', APP_ENV, BUILD_DIR);
     const distRelativePath = relative(buildPath, distPath);
     const initializerContent = (
-      await buildInitializer(['httpServer', 'process'])
+      await buildInitializer(injectedNames)
     )
       .replaceAll(pathToFileURL(distPath).toString(), distRelativePath)
       .replaceAll(pathToFileURL(srcPath).toString(), distRelativePath)

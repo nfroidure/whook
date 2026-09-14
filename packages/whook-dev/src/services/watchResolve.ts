@@ -6,11 +6,6 @@ import {
 import { name, autoService, singleton, location } from 'knifecycle';
 import { type WhookURL } from '@whook/whook';
 
-export default location(
-  singleton(name('resolve', autoService(initWatchResolve))),
-  import.meta.url,
-);
-
 export interface WatchResolveDependencies {
   MAIN_FILE_URL: WhookURL;
   RESTARTS_COUNTER: number;
@@ -31,3 +26,8 @@ async function initWatchResolve({
     );
   };
 }
+
+export default location(
+  singleton(name('resolve', autoService(initWatchResolve))),
+  import.meta.url,
+);
