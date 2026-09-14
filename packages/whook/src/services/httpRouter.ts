@@ -51,7 +51,6 @@ import {
   isValidOpenAPIPath,
 } from 'ya-open-api-types';
 import { noop, type LogService } from 'common-services';
-import { type IncomingMessage, type ServerResponse } from 'node:http';
 import { type WhookErrorHandler } from '../services/errorHandler.js';
 import { type NodeEnv, type AppEnvVars } from 'application-services';
 import {
@@ -59,7 +58,12 @@ import {
   type WhookRouteHandler,
   type WhookRouteConfig,
 } from '../types/routes.js';
-import { type WhookRequestBody, type WhookResponse } from '../types/http.js';
+import {
+  type WhookNodeRequest,
+  type WhookNodeResponse,
+  type WhookRequestBody,
+  type WhookResponse,
+} from '../types/http.js';
 import { type WhookSchemaValidatorsService } from './schemaValidators.js';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import {
@@ -99,8 +103,8 @@ export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
   errorHandler: WhookErrorHandler;
 };
 export type WhookHTTPRouterService = (
-  req: IncomingMessage,
-  res: ServerResponse,
+  req: WhookNodeRequest,
+  res: WhookNodeResponse,
 ) => Promise<void>;
 export type WhookHTTPRouterProvider = Provider<WhookHTTPRouterService>;
 
@@ -262,8 +266,8 @@ async function initHTTPRouter({
    *  completes
    */
   async function httpRouter(
-    req: IncomingMessage,
-    res: ServerResponse,
+    req: WhookNodeRequest,
+    res: WhookNodeResponse,
   ): Promise<void> {
     try {
       let operation: WhookOpenAPIOperation;
