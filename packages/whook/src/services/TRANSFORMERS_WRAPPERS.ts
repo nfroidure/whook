@@ -32,7 +32,7 @@ export type WhookTransformersWrappersDependencies =
  * The service dependencies
  * @param  {Array}   [services.TRANSFORMERS_WRAPPERS_NAMES]
  * The global wrappers names to wrap the transformers with
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}    services.TRANSFORMERS_WRAPPERS
  * The dependencies must all be injected wrappers

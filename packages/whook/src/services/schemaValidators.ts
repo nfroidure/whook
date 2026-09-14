@@ -87,7 +87,7 @@ export type WhookSchemaValidatorsMap = Record<
  * Options for the schema validators registry
  * @param  {Object}   [services.ENV={}]
  * An optional environment object
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}   services.API
  * A valid Open API file

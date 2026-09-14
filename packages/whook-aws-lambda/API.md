@@ -40,7 +40,7 @@ Wrap an handler to make it work with a consumer AWS Lambda.
 | services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrapCronHandlerForAWSLambda"></a>
 
@@ -57,7 +57,7 @@ Wrap an handler to make it work with cron AWS Lambda.
 | services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrapKafkaConsumerHandlerForAWSLambda"></a>
 
@@ -74,7 +74,7 @@ Wrap an handler to make it work with a kafka AWS Lambda.
 | services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrapLogSubscriberHandlerForAWSLambda"></a>
 
@@ -91,7 +91,7 @@ Wrap an handler to make it work with a log subscriber AWS Lambda.
 | services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrapRouteHandlerForAWSLambda"></a>
 
@@ -116,7 +116,7 @@ Wrap an handler to make it work with a route AWS Lambda.
 | services.obfuscator | <code>Object</code> |  | A service to hide sensible values |
 | services.errorHandler | <code>Object</code> |  | A service that changes any error to Whook response |
 | [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrapS3HandlerForAWSLambda"></a>
 
@@ -133,7 +133,7 @@ Wrap an handler to make it work with a S3 AWS Lambda.
 | services.MAIN_DEFINITION | <code>Object</code> |  | A consumer definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrapTransformerHandlerForAWSLambda"></a>
 
@@ -150,5 +150,5 @@ Wrap an handler to make it work with a transformer AWS Lambda.
 | services.MAIN_DEFINITION | <code>Object</code> |  | A transformer definition for that handler |
 | services.apm | <code>Object</code> |  | An application monitoring service |
 | [services.time] | <code>Object</code> |  | An optional time service |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 

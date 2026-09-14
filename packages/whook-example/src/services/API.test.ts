@@ -58,6 +58,7 @@ describe('API', () => {
     SECURITY_DEFINITIONS = await initSecurityDefinitions({ ENV, log });
     ROUTES_DEFINITIONS = await initRoutesDefinitions({
       APP_ENV,
+      BASE_PATH: '',
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
       WHOOK_RESOLVED_PLUGINS,
       importer,

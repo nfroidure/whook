@@ -51,7 +51,7 @@ Wrap the error handler service as a last chance to add CORS
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The service dependencies |
 | services.CORS | <code>Object</code> |  | A CORS object to be added to errors responses |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 <a name="initWrapRouteHandlerWithCORS"></a>
 
@@ -65,5 +65,5 @@ Wrap a route handler to append CORS to response.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The service dependencies |
 | services.CORS | <code>Object</code> |  | A CORS object to be added to errors responses |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 

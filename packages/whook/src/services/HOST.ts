@@ -25,7 +25,7 @@ export interface WhookHostEnv {
  * The service dependencies
  * @param  {Object}   [services.ENV={}]
  * An optional environment object
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}   services.importer
  * A service allowing to dynamically import ES modules

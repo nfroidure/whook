@@ -35,5 +35,5 @@ Wrap a route handler to append CORS to response.
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The service dependencies |
 | services.VERSIONS | <code>Object</code> |  | A VERSIONS object with the versions configuration |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 

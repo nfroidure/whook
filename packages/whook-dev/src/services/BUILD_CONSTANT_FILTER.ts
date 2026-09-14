@@ -29,7 +29,7 @@ export type WhookBuildConstantFilterDependencies =
  * The serializable constants name prefixes to gather
  * @param  {Array<string>}   services.BUILD_CONSTANTS_SUFFIXES
  * The serializable constants name suffixes to gather
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Function>}
  * A promise of filter function.

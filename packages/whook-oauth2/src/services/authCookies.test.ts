@@ -12,6 +12,7 @@ describe('authCookies', () => {
       const authCookies = await initAuthCookies({
         COOKIES,
         BASE_URL: 'https://example.com',
+        BASE_PATH: '',
       });
 
       const result = authCookies.build({
@@ -29,12 +30,13 @@ describe('authCookies', () => {
 
     test('should allow to reset auth data', async () => {
       const COOKIES: WhookAuthCookiesOptions = {
-        useBaseURLDomain: true
+        useBaseURLDomain: true,
       };
 
       const authCookies = await initAuthCookies({
         COOKIES,
         BASE_URL: 'https://api.example.com',
+        BASE_PATH: '/v1',
       });
 
       const result = authCookies.build({
@@ -43,10 +45,10 @@ describe('authCookies', () => {
       });
 
       expect(result).toMatchInlineSnapshot(`
-        [
-          "access_token=; Max-Age=0; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
-          "refresh_token=; Domain=api.example.com; Path=/auth; HttpOnly; Secure; SameSite=Strict",
-        ]
+       [
+         "access_token=; Max-Age=0; Domain=api.example.com; Path=/v1/auth; HttpOnly; Secure; SameSite=Strict",
+         "refresh_token=; Domain=api.example.com; Path=/v1/auth; HttpOnly; Secure; SameSite=Strict",
+       ]
       `);
     });
   });
@@ -60,6 +62,7 @@ describe('authCookies', () => {
       const authCookies = await initAuthCookies({
         COOKIES,
         BASE_URL: 'https://example.com',
+        BASE_PATH: '',
       });
 
       const result = authCookies.parse('');
@@ -75,6 +78,7 @@ describe('authCookies', () => {
       const authCookies = await initAuthCookies({
         COOKIES,
         BASE_URL: 'https://example.com',
+        BASE_PATH: '/v1',
       });
 
       const result = authCookies.parse(

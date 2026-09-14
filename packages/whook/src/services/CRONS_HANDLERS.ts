@@ -29,7 +29,7 @@ export default location(
  * The service dependencies
  * @param  {Array}    services.CRONS_WRAPPERS
  * An optional list of wrappers to inject
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}   services.CRONS_HANDLERS
  * The rest is a hash of crons handlers mapped by name

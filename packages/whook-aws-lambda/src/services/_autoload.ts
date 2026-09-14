@@ -260,7 +260,7 @@ const initializerWrapper: ServiceInitializerWrapper<
  * A Knifecycle instance
  * @param  {Object}   $injector
  * The Knifecycle injector
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.

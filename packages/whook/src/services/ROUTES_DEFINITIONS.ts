@@ -11,8 +11,9 @@ import {
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { autoService, name, location } from 'knifecycle';
 import { extname, join as pathJoin } from 'node:path';
-import { printStackTrace, YError } from 'yerror';
+import { printStackTrace } from 'yerror';
 import { type WhookMain } from '../types/base.js';
+import { type WhookBasePath } from './BASE_URL.js';
 
 export const DEFAULT_ROUTES_DEFINITIONS_OPTIONS: WhookRoutesDefinitionsOptions =
   {
@@ -25,7 +26,6 @@ export const DEFAULT_ROUTES_DEFINITIONS_OPTIONS: WhookRoutesDefinitionsOptions =
 export const DEFAULT_ROUTE_DEFINITION_FILTER: WhookRouteDefinitionFilter = () =>
   false;
 
-export type WhookRouteDefinitionBasePath = '' | `/${string}`;
 export type WhookRouteDefinitionFilter = (
   definition: WhookRouteDefinition,
 ) => boolean;
@@ -43,13 +43,13 @@ export interface WhookRoutesDefinitionsConfig {
   ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
   ROUTE_DEFINITION_FILTER?: WhookRouteDefinitionFilter;
   WHOOK_PLUGINS?: WhookPluginName[];
-  BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 
 export type WhookRoutesDefinitionsDependencies =
   WhookRoutesDefinitionsConfig & {
     APP_ENV: WhookMain['AppEnv'];
     WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
+    BASE_PATH: WhookBasePath;
     log?: LogService;
     importer: ImporterService<WhookRouteModule>;
     readDir?: (path: URL) => Promise<string[]>;
@@ -69,6 +69,10 @@ export type WhookRoutesDefinitionsService = Record<
  *  the project routes definitions.
  * @param  {Object}   services
  * The service dependencies
+ * @param  {String}   services.APP_ENV
+ * The application environment name
+ * @param  {String}   services.BASE_PATH
+ * The API base path
  * @param  {Array<String>}   [services.WHOOK_PLUGINS]
  * The activated plugins
  * @param  {Array}   services.WHOOK_RESOLVED_PLUGINS
@@ -79,14 +83,14 @@ export type WhookRoutesDefinitionsService = Record<
  * A function to filter the routes per definitions
  * @param  {Object}   services.importer
  * A service allowing to dynamically import ES modules
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of a containing the actual host.
  */
 async function initRoutesDefinitions({
   APP_ENV,
-  BASE_PATH = '',
+  BASE_PATH,
   WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
   WHOOK_RESOLVED_PLUGINS,
   ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
@@ -96,10 +100,6 @@ async function initRoutesDefinitions({
   readDir = _readDir,
 }: WhookRoutesDefinitionsDependencies): Promise<WhookRoutesDefinitionsService> {
   log('debug', `🈁 - Gathering the routes modules.`);
-
-  if (BASE_PATH && BASE_PATH.endsWith('/')) {
-    throw new YError('E_BAD_BASE_PATH', [BASE_PATH]);
-  }
 
   const apiHandlers: WhookRoutesDefinitionsService = {};
 

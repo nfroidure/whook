@@ -139,7 +139,7 @@ export default singleton(name('$autoload', autoService(initAutoload)));
  * A service allowing to dynamically resolve ES modules
  * @param  {Object}   services.access
  * A service allowing to verify access to a file
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Function>}
  * A promise of the autoload function.

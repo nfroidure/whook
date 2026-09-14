@@ -117,7 +117,7 @@ export default location(
  * The consumers modules
  * @param  {Object}   [services.TRANSFORMERS_DEFINITIONS]
  * The transformers modules
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<String>}
  * A promise of a containing the actual host.

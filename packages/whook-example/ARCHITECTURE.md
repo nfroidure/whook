@@ -22,6 +22,8 @@
          4. [$overrides](#1134-$overrides)
          6. [TRANSACTIONS](#1136-transactions)
          7. [WHOOK_PLUGINS](#1137-whook_plugins)
+            1. [Build up WHOOK_PLUGINS](#11371-build-up-whook_plugins)
+            2. [Dev WHOOK_PLUGINS](#11372-dev-whook_plugins)
    2. [The build file](#12-the-build-file)
       1. [The `runBuild` function](#121-the-`runbuild`-function)
       2. [The `prepareBuildEnvironment` function](#122-the-`preparebuildenvironment`-function)
@@ -31,6 +33,7 @@
       2. [AppConfig](#212-appconfig)
       3. [WhookRouteConfig](#213-whookrouteconfig)
       4. [WhookMain](#214-whookmain)
+      5. [Authorization](#215-authorization)
    2. [Exporting](#22-exporting)
    3. [Overriding](#23-overriding)
 3. [API](#3-api)
@@ -47,7 +50,6 @@
    2. [Implementation](#32-implementation)
       1. [Response](#321-response)
       2. [Exportation](#322-exportation)
-      3. [Typings](#323-typings)
    3. [Plugins](#33-plugins)
       1. [Custom transformations](#331-custom-transformations)
    4. [Examples](#34-examples)
@@ -107,7 +109,7 @@ The `runProcess` function is intended to run the server
  [the E2E tests](./index.test.ts) coming with this project
  for a real world example).
 
-[See in context](./src/index.ts#L57-L64)
+[See in context](./src/index.ts#L70-L77)
 
 
 
@@ -119,16 +121,17 @@ Per default, Whook embeds the process manager,
 You can specify any service here that should be
  launched when your process starts.
 
-[See in context](./src/index.ts#L47-L54)
+[See in context](./src/index.ts#L60-L67)
 
 
 
 #### 1.1.2. prepareProcess
 
-The `prepareProcess` function is intended to prepare the process
- environment.
+The `prepareProcess` function is intended to prepare
+the local process environment. Put here anything you
+don't want to end up in the final build process.
 
-[See in context](./src/index.ts#L85-L89)
+[See in context](./src/index.ts#L98-L103)
 
 
 
@@ -138,7 +141,7 @@ Add here any logic bound to the server only
  For example, here we add a Swagger UI page for
  development purpose.
 
-[See in context](./src/index.ts#L94-L99)
+[See in context](./src/index.ts#L108-L113)
 
 
 
@@ -146,7 +149,7 @@ Add here any logic bound to the server only
 
 The `prepareEnvironment` one is intended to prepare the process environment
 
-[See in context](./src/index.ts#L105-L108)
+[See in context](./src/index.ts#L127-L130)
 
 
 
@@ -163,7 +166,7 @@ OR, like in this example, use the Whook `$autoload` service
  service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L128-L140)
+[See in context](./src/index.ts#L150-L162)
 
 
 
@@ -178,7 +181,7 @@ This service loads the definitions directly by
 A service wrapper is also used here to add CORS to
  the routes definitions.
 
-[See in context](./src/index.ts#L143-L153)
+[See in context](./src/index.ts#L165-L175)
 
 
 
@@ -187,7 +190,7 @@ A service wrapper is also used here to add CORS to
 The project main file allows auto loading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L156-L160)
+[See in context](./src/index.ts#L178-L182)
 
 
 
@@ -205,7 +208,7 @@ You can add more application environment here for several
 Reading the `APP_ENV` from the process environment and defining
  it as a constant.
 
-[See in context](./src/index.ts#L163-L167)
+[See in context](./src/index.ts#L185-L189)
 
 
 
@@ -215,7 +218,7 @@ Setting the `knifecycle` `$overrides` service depending on the
  current `APP_ENV`. It allows to map services to different
  implementations.
 
-[See in context](./src/index.ts#L172-L177)
+[See in context](./src/index.ts#L194-L199)
 
 
 
@@ -248,18 +251,36 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L185-L213)
+[See in context](./src/index.ts#L207-L235)
 
 
 
 ##### 1.1.3.7. WHOOK_PLUGINS
 
 Plugins allows you to add simple features to the Whook's core,
- to add some, just add the plugin module name here.
+   to add some, just add the plugin module name here.
+  
+  You can also avoid Whook defaults by leaving it empty.
 
-You can also avoid Whook defaults by leaving it empty.
+[See in context](./src/index.ts#L47-L53)
 
-[See in context](./src/index.ts#L234-L240)
+
+
+###### 1.1.3.7.1. Build up WHOOK_PLUGINS
+
+Those plugins will get involved for the final build.
+
+[See in context](./src/index.ts#L256-L259)
+
+
+
+###### 1.1.3.7.2. Dev WHOOK_PLUGINS
+
+Those plugins will only be used locally. The
+`@whook/dev` one is intended to be installed in
+the development dependencies.
+
+[See in context](./src/index.ts#L116-L121)
 
 
 
@@ -306,7 +327,7 @@ The `src/config/common/config.ts` one allows to add common
 
 Whook provides several types you may extend here.
 
-[See in context](./src/whook.d.ts#L24-L27)
+[See in context](./src/whook.d.ts#L28-L31)
 
 
 
@@ -314,7 +335,7 @@ Whook provides several types you may extend here.
 
 The process environment can be typed by extending this type.
 
-[See in context](./src/whook.d.ts#L30-L33)
+[See in context](./src/whook.d.ts#L34-L37)
 
 
 
@@ -323,7 +344,7 @@ The process environment can be typed by extending this type.
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/whook.d.ts#L42-L46)
+[See in context](./src/whook.d.ts#L46-L50)
 
 
 
@@ -333,7 +354,7 @@ Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the routes.
 
-[See in context](./src/whook.d.ts#L61-L66)
+[See in context](./src/whook.d.ts#L66-L71)
 
 
 
@@ -341,7 +362,15 @@ Here we export a custom API handler config type in order
 
 Here we export a main config to type AppEnv.
 
-[See in context](./src/whook.d.ts#L75-L78)
+[See in context](./src/whook.d.ts#L80-L83)
+
+
+
+#### 2.1.5. Authorization
+
+Here we export custom authorizations types.
+
+[See in context](./src/whook.d.ts#L91-L94)
 
 
 
@@ -373,7 +402,7 @@ Whook is all about APIs.
 The API service defined here is where you put
  your routes altogether to build the final API.
 
-[See in context](./src/services/API.ts#L30-L35)
+[See in context](./src/services/API.ts#L28-L33)
 
 
 
@@ -546,22 +575,12 @@ You can read more about it
 
 
 
-#### 3.2.3. Typings
-
-Here we export a custom API handler config type in order
- to allow using the various plugins installed that deal
- with the routes.
-
-[See in context](./src/whook.d.ts#L86-L91)
-
-
-
 ### 3.3. Plugins
 
 You can apply transformations to your API like
  here for CORS support (OPTIONS method handling).
 
-[See in context](./src/services/API.ts#L73-L77)
+[See in context](./src/services/API.ts#L71-L75)
 
 
 
@@ -571,7 +590,7 @@ The API definition is a JSON serializable object, you
  can then reshape it the way you want. Here, we set a
  fake auth mechanism to help in development environment.
 
-[See in context](./src/services/API.ts#L81-L86)
+[See in context](./src/services/API.ts#L79-L84)
 
 
 
@@ -721,7 +740,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L112-L125)
+[See in context](./src/index.ts#L134-L147)
 
 
 
@@ -749,7 +768,7 @@ The fact that definitions are simple objects make them
 A fake authentication service you can use as a base
  authentication service.
 
-[See in context](./src/services/authentication.ts#L18-L22)
+[See in context](./src/services/authentication.ts#L20-L24)
 
 
 
@@ -784,7 +803,7 @@ A JWT token issuer service. Here, we simply reuse
 A service aimed to provide implementations for the
  various supported auth mechanisms.
 
-[See in context](./src/services/MECHANISMS.ts#L42-L46)
+[See in context](./src/services/MECHANISMS.ts#L41-L45)
 
 
 
@@ -817,7 +836,7 @@ Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L216-L226)
+[See in context](./src/index.ts#L238-L248)
 
 
 

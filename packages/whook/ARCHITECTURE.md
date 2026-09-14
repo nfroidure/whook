@@ -13,6 +13,7 @@
    3. [Process environments](#13-process-environments)
 2. [Services initializers](#2-services-initializers)
    1. [Base URL](#21-base-url)
+      1. [Base PATH](#211-base-path)
    2. [IP detection](#22-ip-detection)
    3. [the `PWD` constant](#23-the-`pwd`-constant)
    3. [Port detection](#23-port-detection)
@@ -47,6 +48,8 @@
          2. [Built schema validators](#21122-built-schema-validators)
       3. [Request body](#2113-request-body)
    12. [HTTP Server](#212-http-server)
+      1. [HTTPS Server](#2121-https-server)
+      2. [SSL Certificates](#2122-ssl-certificates)
    13. [Error handler](#213-error-handler)
       1. [Errors descriptors](#2131-errors-descriptors)
    14. [Local cron runner](#214-local-cron-runner)
@@ -61,7 +64,7 @@ The Whook's main file exports :
 - its specific `knifecycle` compatible services,
 - a few bootstrapping functions designed to be customizable.
 
-[See in context](./src/index.ts#L182-L187)
+[See in context](./src/index.ts#L191-L196)
 
 
 
@@ -71,7 +74,7 @@ Whook exposes a `runProcess` function to programmatically spawn
  its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L189-L193)
+[See in context](./src/index.ts#L198-L202)
 
 
 
@@ -84,7 +87,7 @@ Whook exposes a `prepareProcess` function to create its
  containing the bootstrapped environment and allowing
  to complete and run the process.
 
-[See in context](./src/index.ts#L239-L246)
+[See in context](./src/index.ts#L248-L255)
 
 
 
@@ -96,7 +99,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
 
-[See in context](./src/index.ts#L269-L275)
+[See in context](./src/index.ts#L278-L284)
 
 
 
@@ -107,7 +110,7 @@ Whook's embed a few default initializers proxied from
  folder. It can be wrapped or overridden, at will, later
  in a project using overrides.
 
-[See in context](./src/index.ts#L286-L291)
+[See in context](./src/index.ts#L295-L300)
 
 
 
@@ -118,7 +121,16 @@ The `BASE_URL` service is intended to provide a base URL where
  injecting it but it is useful to have a usable URL while
  debugging production environnement.
 
-[See in context](./src/services/BASE_URL.ts#L5-L10)
+[See in context](./src/services/BASE_URL.ts#L6-L11)
+
+
+
+#### 2.1.1. Base PATH
+
+The `BASE_PATH` service allows to mount the API to
+ a given sub path.
+
+[See in context](./src/services/BASE_PATH.ts#L7-L10)
 
 
 
@@ -137,7 +149,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L319-L323)
+[See in context](./src/index.ts#L330-L334)
 
 
 
@@ -155,7 +167,7 @@ this service detects a free port automagically.
 Whook uses the `common-services` `resolve` service to allow
  to easily mock/decorate all ESM resolutions.
 
-[See in context](./src/index.ts#L327-L330)
+[See in context](./src/index.ts#L338-L341)
 
 
 
@@ -164,7 +176,7 @@ Whook uses the `common-services` `resolve` service to allow
 Whook uses the `common-services` `importer` service to allow
  to easily mock/decorate all ESM dynamic imports.
 
-[See in context](./src/index.ts#L333-L336)
+[See in context](./src/index.ts#L344-L347)
 
 
 
@@ -173,7 +185,7 @@ Whook uses the `common-services` `importer` service to allow
 Whook uses a built in `exit` service to allow
  to easily mock/decorate the app exit.
 
-[See in context](./src/index.ts#L339-L342)
+[See in context](./src/index.ts#L350-L353)
 
 
 
@@ -186,7 +198,7 @@ The `WHOOK_PLUGINS` constant allows you to give the name of
  you to just install Whook's plugins to get them automatically
  loaded.
 
-[See in context](./src/index.ts#L361-L368)
+[See in context](./src/index.ts#L372-L379)
 
 
 
@@ -196,7 +208,7 @@ Whook uses a built-in `logger` service to allow
  to easily route the application logs for the 
  `common-services` provided `log` service.
 
-[See in context](./src/index.ts#L345-L349)
+[See in context](./src/index.ts#L356-L360)
 
 
 
@@ -221,7 +233,7 @@ Loading the configuration files is done according to the `APP_ENV`
    environment variable. It basically requires a configuration hash
    where the keys are JSON formattable constants.
 
-[See in context](./src/index.ts#L354-L358)
+[See in context](./src/index.ts#L365-L369)
 
 
 
@@ -464,7 +476,7 @@ It is very opinionated and clearly diverges from the
 Here, the single source of truth is your API
  definition. No documentation, no route.
 
-[See in context](./src/services/httpRouter.ts#L124-L146)
+[See in context](./src/services/httpRouter.ts#L118-L140)
 
 
 
@@ -503,7 +515,7 @@ Also, looking closely to Prepack that
  time costs:
  https://github.com/facebook/prepack/issues/522#issuecomment-300706099
 
-[See in context](./src/libs/validation.ts#L35-L53)
+[See in context](./src/libs/validation.ts#L36-L54)
 
 
 
@@ -515,7 +527,7 @@ Maintain a single place for JSON schema validation
  same reference for the Siso router parameters
  uniqueness checks.
 
-[See in context](./src/services/schemaValidators.ts#L21-L28)
+[See in context](./src/services/schemaValidators.ts#L22-L29)
 
 
 
@@ -563,7 +575,23 @@ The server takes in charge graceful shutdown by
  for development, by setting the `DESTROY_SOCKETS=1`
  environment variable.
 
-[See in context](./src/services/httpServer.ts#L57-L74)
+[See in context](./src/services/httpServer.ts#L53-L70)
+
+
+
+#### 2.12.1. HTTPS Server
+
+Alternatively you can use an HTTPS server.
+
+[See in context](./src/services/httpsServer.ts#L55-L58)
+
+
+
+#### 2.12.2. SSL Certificates
+
+A service to load certificates from the environment vars.
+
+[See in context](./src/services/SSL_CERTIFICATES.ts#L24-L27)
 
 
 

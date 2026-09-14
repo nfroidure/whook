@@ -10,13 +10,16 @@ The `BASE_URL` service is intended to provide a base URL where
  debugging production environnement.
 */
 
+export type WhookBaseURL = string;
+export type WhookBasePath = '' | `/${string}`;
+
 export interface WhookConfig {
   name: string;
   description?: string;
-  baseURL?: string;
+  baseURL?: WhookBaseURL;
+  basePath?: WhookBasePath;
 }
 
-export type WhookBaseURL = string;
 export interface WhookBaseURLEnv {
   DEV_MODE?: string;
   PUBLIC_URL?: string;
@@ -34,11 +37,6 @@ export type WhookBaseURLDependencies = WhookBaseURLConfig & {
   log?: LogService;
 };
 
-export default location(
-  name('BASE_URL', autoService(initBaseURL)),
-  import.meta.url,
-);
-
 /**
  * Initialize the BASE_URL service according to the HOST/PORT
  *  so that applications fallbacks to that default base URL.
@@ -54,7 +52,7 @@ export default location(
  * The injected HOST value
  * @param  {Object}   services.PORT
  * The injected PORT value
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<String>}
  * A promise of a containing the actual host.
@@ -83,3 +81,8 @@ async function initBaseURL({
 
   return BASE_URL;
 }
+
+export default location(
+  name('BASE_URL', autoService(initBaseURL)),
+  import.meta.url,
+);

@@ -33,7 +33,7 @@ export type WhookRoutesWrappersDependencies = WhookRoutesWrappersConfig & {
  * The service dependencies
  * @param  {Array}   [services.ROUTES_WRAPPERS_NAMES]
  * The global wrappers names to wrap the routes with
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}    services.ROUTES_WRAPPERS
  * The dependencies must all be injected wrappers

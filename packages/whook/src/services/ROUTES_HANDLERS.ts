@@ -25,7 +25,7 @@ export default location(
  * The service dependencies
  * @param  {Array}    services.ROUTES_WRAPPERS
  * An optional list of wrappers to inject
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}   services.ROUTES_HANDLERS
  * The rest is a hash of routesHandlers mapped by their operation id

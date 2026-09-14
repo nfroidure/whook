@@ -202,7 +202,7 @@ Wrap an handler to make it work with GCP Functions.
 | services.queryParserBuilder | <code>Object</code> |  | A query parser builder from OpenAPI parameters |
 | services.obfuscator | <code>Object</code> |  | A service to hide sensible values |
 | services.errorHandler | <code>Object</code> |  | A service that changes any error to Whook response |
-| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 
 # Authors

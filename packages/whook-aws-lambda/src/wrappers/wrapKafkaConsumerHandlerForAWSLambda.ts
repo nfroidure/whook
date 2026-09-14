@@ -35,7 +35,7 @@ export interface WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies {
  * An application monitoring service
  * @param  {Object}   [services.time]
  * An optional time service
- * @param  {Object}   [services.log=noop]
+ * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
  * A promise of an object containing the reshaped env vars.

@@ -2,7 +2,7 @@ import ms from 'ms';
 import { stringifySetCookie, parseCookie, type SerializeOptions } from 'cookie';
 import { autoService, location } from 'knifecycle';
 import { type Jsonify } from 'type-fest';
-import { type WhookRouteDefinitionBasePath } from '@whook/whook';
+import { type WhookBasePath, type WhookBaseURL } from '@whook/whook';
 
 export const AUTH_API_PREFIX = '/auth';
 
@@ -20,11 +20,11 @@ export type WhookAuthCookiesOptions = Jsonify<
 
 export interface WhookAuthCookiesConfig {
   COOKIES: WhookAuthCookiesOptions;
-  BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 
 export type AuthCookiesDependencies = WhookAuthCookiesConfig & {
-  BASE_URL: string;
+  BASE_URL: WhookBaseURL;
+  BASE_PATH: WhookBasePath;
 };
 
 export interface WhookAuthCookiesData {
@@ -43,7 +43,7 @@ export interface WhookAuthCookiesService {
 async function initAuthCookies({
   COOKIES,
   BASE_URL,
-  BASE_PATH = '',
+  BASE_PATH,
 }: AuthCookiesDependencies): Promise<WhookAuthCookiesService> {
   function build(
     data: Partial<WhookAuthCookiesData> = {},
