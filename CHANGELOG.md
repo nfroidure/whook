@@ -1,3 +1,13 @@
+## [26.3.0](https://github.com/nfroidure/whook/compare/v26.2.0...v26.3.0) (2026-09-14)
+
+### Features
+
+* **@whook/oauth2:** allow cookies to rely on API url domain ([d76a2ce](https://github.com/nfroidure/whook/commit/d76a2cee3ca887045dd88b3e66e2b5f9d32e93d3))
+
+### Bug Fixes
+
+* **build:** use serialazable definitions for crons ([7568c85](https://github.com/nfroidure/whook/commit/7568c85a2055726ab1a5207f8561c421e9b86a22))
+
 ## [26.2.0](https://github.com/nfroidure/whook/compare/v26.1.0...v26.2.0) (2026-09-07)
 
 ### Features
