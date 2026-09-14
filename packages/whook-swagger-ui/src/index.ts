@@ -2,6 +2,7 @@ import { wrapInitializer, alsoInject, type Service } from 'knifecycle';
 import { type ProviderInitializer, type Dependencies } from 'knifecycle';
 import {
   type WhookRoutesDefinitionsService,
+  type WhookRouteDefinitionBasePath,
   type WhookHTTPRouterProvider,
   type WhookHTTPRouterService,
 } from '@whook/whook';
@@ -23,6 +24,7 @@ export interface WhookSwaggerUIConfig {
   DEV_ACCESS_TOKEN?: string;
   HOST?: string;
   PORT?: number;
+  BASE_PATH?: WhookRouteDefinitionBasePath;
   SWAGGER_UI_OPTIONS?: WhookSwaggerUIOptions;
 }
 export type WhookSwaggerUIDependencies = WhookSwaggerUIConfig & {
@@ -63,6 +65,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
       '?DEV_ACCESS_TOKEN',
       'HOST',
       'PORT',
+      '?BASE_PATH',
       '?SWAGGER_UI_OPTIONS',
       'ROUTES_DEFINITIONS',
       'importer',
@@ -78,6 +81,7 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
         DEV_ACCESS_TOKEN,
         HOST,
         PORT,
+        BASE_PATH = '',
         SWAGGER_UI_OPTIONS = DEFAULT_SWAGGER_UI_OPTIONS,
         ROUTES_DEFINITIONS,
         importer,
@@ -89,9 +93,15 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
         return httpRouter;
       }
 
+      const openAPIDefinition =
+        ROUTES_DEFINITIONS['getOpenAPI']?.module?.definition;
       const publicSwaggerPath =
         SWAGGER_UI_OPTIONS.path ||
-        ROUTES_DEFINITIONS['getOpenAPI']?.module?.definition?.path;
+        (openAPIDefinition
+          ? BASE_PATH && !openAPIDefinition.config?.global
+            ? `${BASE_PATH}${openAPIDefinition.path}`
+            : openAPIDefinition.path
+          : undefined);
 
       if (!publicSwaggerPath) {
         log(

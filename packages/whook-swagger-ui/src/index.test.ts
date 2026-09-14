@@ -24,7 +24,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
       module: {
         definition: {
           ...getOpenAPIDefinition,
-          path: `${BASE_PATH}/openAPI`,
+          path: '/openAPI',
           method: 'get',
         },
         default: undefined as unknown as WhookRouteHandlerInitializer,
