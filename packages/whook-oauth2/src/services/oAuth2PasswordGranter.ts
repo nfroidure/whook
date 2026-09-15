@@ -15,6 +15,7 @@ import {
 import { filterScopes } from '../libs/scopes.js';
 import { checkGrantType } from '../libs/grants.js';
 import { scopeSchema } from '../libs/schemas.js';
+import { checkGrants } from '../libs/clients.js';
 
 export const PASSWORD_GRANT_TYPE = 'password';
 
@@ -103,12 +104,7 @@ async function initOAuth2PasswordGranter({
 
     const grants = await readClientGrants(usableClientId);
 
-    if (usableClientId !== grants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        usableClientId,
-        grants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, grants);
 
     if (!grants.isPublicClient) {
       if (!optionalAuthenticationData) {

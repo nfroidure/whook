@@ -16,7 +16,7 @@ import { checkGrantType } from '../libs/grants.js';
 import { filterScopes } from '../libs/scopes.js';
 import { type WhookOAuth2AccessTokenService } from './oAuth2ImplicitGranter.js';
 import { scopeSchema } from '../libs/schemas.js';
-import { toUsableClientId } from '../libs/clients.js';
+import { checkGrants, toUsableClientId } from '../libs/clients.js';
 
 export const REFRESH_TOKEN_GRANT_TYPE = 'refresh_token';
 
@@ -108,12 +108,7 @@ async function initOAuth2RefreshTokenGranter({
       }
     }
 
-    if (usableClientId !== grants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        usableClientId,
-        grants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, grants);
 
     checkGrantType(grants.allowedGrantTypes, REFRESH_TOKEN_GRANT_TYPE);
 

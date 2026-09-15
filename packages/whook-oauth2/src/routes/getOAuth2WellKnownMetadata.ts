@@ -135,6 +135,7 @@ export const oAuth2MetadataSchema = {
             'authorization_code',
             'implicit',
             'refresh_token',
+            'urn:ietf:params:oauth:grant-type:device_code',
             'client_credentials',
             'password',
             'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -371,6 +372,12 @@ async function initGetOAuth2WellKnownMetadata({
       ? {
           pushed_authorization_request_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2PushedAuthorizationRequest'].path}`,
           require_pushed_authorization_requests: OAUTH2_PAR.mode === 'required',
+        }
+      : {}),
+    ...(DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.type ===
+      'route' && DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.path
+      ? {
+          device_authorization_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.path}`,
         }
       : {}),
   };
