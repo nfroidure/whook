@@ -10,6 +10,9 @@ export const OVERRIDES: Overrides = {
   // log: 'debugLog',
   // You can enable the cron runner to test it locally
   cronRunner: 'localCronRunner',
+  // Automatically find free host/port
+  HOST: 'INTERNAL_IP',
+  PORT: 'AVAILABLE_PORT',
 };
 
 export default OVERRIDES;

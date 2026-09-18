@@ -17,6 +17,7 @@ export interface APIConfig {
   CONFIG: WhookConfig;
   API_VERSION: string;
   DEFINITIONS?: WhookDefinitions;
+  BASE_URL?: WhookBaseURL;
 }
 export type APIDependencies = APIConfig & {
   ENV: APIEnv;
@@ -50,7 +51,7 @@ async function initAPI({
     },
     servers: [
       {
-        url: `${BASE_URL}`,
+        url: BASE_URL,
       },
     ],
     components: DEFINITIONS.components,

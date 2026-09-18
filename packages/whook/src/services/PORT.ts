@@ -1,61 +1,60 @@
 import { autoService, name, location } from 'knifecycle';
 import { noop } from '../libs/utils.js';
-import { type LogService, type ImporterService } from 'common-services';
+import { type LogService } from 'common-services';
+import { YError } from 'yerror';
+import { parseInteger } from '../libs/coercion.js';
 
 const DEFAULT_ENV = {};
 
-export type PortFinderModule = { getPortPromise: () => Promise<number> };
+/* Architecture Note #2.3: Port
 
-/* Architecture Note #2.3: Port detection
-If no `PORT` configuration is specified in dependencies nor in ENV,
-this service detects a free port automagically.
+Provides a `PORT` from the ENV var and checks its value.
 */
 
 export type WhookPort = number;
-export type WhookPortEnv = {
+export interface WhookPortEnv {
   PORT?: string;
-};
-
-export default location(name('PORT', autoService(initPort)), import.meta.url);
+}
 
 /**
- * Initialize the PORT service from ENV or auto-detection if
- *  none specified in ENV
+ * Initialize the PORT service from ENV
  * @param  {Object}   services
  * The service dependencies
  * @param  {Object}   [services.ENV={}]
  * An optional environment object
  * @param  {Function}   [services.log=noop]
  * An optional logging service
- * @param  {Object}   services.importer
- * A service allowing to dynamically import ES modules
  * @return {Promise<Number>}
  * A promise of a number representing the actual port.
  */
 async function initPort({
   ENV = DEFAULT_ENV,
   log = noop,
-  importer,
 }: {
   ENV?: WhookPortEnv;
   log?: LogService;
-  importer: ImporterService<PortFinderModule>;
 }): Promise<number> {
   log('debug', `🏭 - Initializing the PORT service.`);
 
   if ('undefined' !== typeof ENV.PORT) {
     log('warning', `♻️ - Using ENV port "${ENV.PORT}"`);
-    return parseInt(ENV.PORT, 10);
+
+    let PORT: number;
+
+    try {
+      PORT = parseInteger({ strictlyReentrant: true }, ENV.PORT);
+    } catch (err) {
+      throw YError.wrap(err as Error, 'E_BAD_ENV_VALUE', ['PORT', ENV.PORT]);
+    }
+
+    if (PORT < 0 || PORT > 65535) {
+      throw new YError('E_BAD_ENV_VALUE', ['PORT', ENV.PORT]);
+    }
+
+    return PORT;
   }
 
-  const port = await (await importer('portfinder')).getPortPromise();
-
-  if (!port) {
-    log('warning', `🚫 - Could not detect any free port.`);
-    return 8080;
-  }
-
-  log('warning', `✔ - Found a free port "${port}"`);
-
-  return port;
+  throw new YError('E_NO_ENV_VALUE', ['PORT']);
 }
+
+export default location(name('PORT', autoService(initPort)), import.meta.url);

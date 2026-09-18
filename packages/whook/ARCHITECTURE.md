@@ -7,54 +7,58 @@
 
 ## Summary
 
-1. [Main file](#1-main-file)
-   1. [Process run](#11-process-run)
-   2. [Process preparation](#12-process-preparation)
-   3. [Process environments](#13-process-environments)
-2. [Services initializers](#2-services-initializers)
-   1. [Base URL](#21-base-url)
-      1. [Base PATH](#211-base-path)
-   2. [IP detection](#22-ip-detection)
-   3. [the `PWD` constant](#23-the-`pwd`-constant)
-   3. [Port detection](#23-port-detection)
-   4. [the `resolve` service](#24-the-`resolve`-service)
-   5. [the `importer` service](#25-the-`importer`-service)
-   6. [the `exit` service](#26-the-`exit`-service)
-   6. [the `WHOOK_PLUGINS` constant](#26-the-`whook_plugins`-constant)
-   7. [the `logger` service](#27-the-`logger`-service)
-      1. [Logging](#271-logging)
-   8. [The `CONFIG` service](#28-the-`config`-service)
-   9. [the `$autoload` service](#29-the-`$autoload`-service)
-      1. [the `APP_CONFIG` mapper](#291-the-`app_config`-mapper)
-      2. [the `API` auto loading](#292-the-`api`-auto-loading)
-         1. [Definitions loader](#2921-definitions-loader)
-         2. [Open API generator](#2922-open-api-generator)
-      3. [the `INITIALIZER_PATH_MAP` mapper](#293-the-`initializer_path_map`-mapper)
-         1. [Initializer path mapping](#2931-initializer-path-mapping)
-      4. [the `ROUTES_HANDLERS` mapper](#294-the-`routes_handlers`-mapper)
-      5. [the `ROUTES_WRAPPERS` auto loading](#295-the-`routes_wrappers`-auto-loading)
-      6. [Service/handler/wrapper loading](#296-service/handler/wrapper-loading)
-         1. [Plugins resolution](#2961-plugins-resolution)
-         2. [Plugins/project paths](#2962-plugins/project-paths)
-   10. [HTTP Transactions](#210-http-transactions)
-      1. [New Transaction](#2101-new-transaction)
-      2. [Transaction start](#2102-transaction-start)
-      3. [Transaction errors](#2103-transaction-errors)
-      4. [Transaction end](#2104-transaction-end)
-   11. [HTTP Router](#211-http-router)
-      1. [Coercion](#2111-coercion)
-      2. [Validation](#2112-validation)
-         1. [Schema validators](#21121-schema-validators)
-         2. [Built schema validators](#21122-built-schema-validators)
-      3. [Request body](#2113-request-body)
-   12. [HTTP Server](#212-http-server)
-      1. [HTTPS Server](#2121-https-server)
-      2. [SSL Certificates](#2122-ssl-certificates)
-   13. [Error handler](#213-error-handler)
-      1. [Errors descriptors](#2131-errors-descriptors)
-   14. [Local cron runner](#214-local-cron-runner)
-3. [the routes](#3-the-routes)
-   1. [Testing](#41-testing)
+- [Architecture Notes](#architecture-notes)
+  - [Summary](#summary)
+  - [1. Main file](#1-main-file)
+    - [1.1. Process run](#11-process-run)
+    - [1.2. Process preparation](#12-process-preparation)
+    - [1.3. Process environments](#13-process-environments)
+  - [2. Services initializers](#2-services-initializers)
+    - [2.1. Base URL](#21-base-url)
+      - [2.1.1. Base PATH](#211-base-path)
+    - [2.2. Host](#22-host)
+      - [2.2.1. Internal IP detection](#221-internal-ip-detection)
+    - [2.3. the `PWD` constant](#23-the-pwd-constant)
+    - [2.3. Port](#23-port)
+      - [2.3.1. Available port detection](#231-available-port-detection)
+    - [2.4. the `resolve` service](#24-the-resolve-service)
+    - [2.5. the `importer` service](#25-the-importer-service)
+    - [2.6. the `exit` service](#26-the-exit-service)
+    - [2.6. the `WHOOK_PLUGINS` constant](#26-the-whook_plugins-constant)
+    - [2.7. the `logger` service](#27-the-logger-service)
+      - [2.7.1. Logging](#271-logging)
+    - [2.8. The `CONFIG` service](#28-the-config-service)
+    - [2.9. the `$autoload` service](#29-the-autoload-service)
+      - [2.9.1. the `APP_CONFIG` mapper](#291-the-app_config-mapper)
+      - [2.9.2. the `API` auto loading](#292-the-api-auto-loading)
+        - [2.9.2.1. Definitions loader](#2921-definitions-loader)
+        - [2.9.2.2. Open API generator](#2922-open-api-generator)
+      - [2.9.3. the `INITIALIZER_PATH_MAP` mapper](#293-the-initializer_path_map-mapper)
+        - [2.9.3.1. Initializer path mapping](#2931-initializer-path-mapping)
+      - [2.9.4. the `ROUTES_HANDLERS` mapper](#294-the-routes_handlers-mapper)
+      - [2.9.5. the `ROUTES_WRAPPERS` auto loading](#295-the-routes_wrappers-auto-loading)
+      - [2.9.6. Service/handler/wrapper loading](#296-servicehandlerwrapper-loading)
+        - [2.9.6.1. Plugins resolution](#2961-plugins-resolution)
+        - [2.9.6.2. Plugins/project paths](#2962-pluginsproject-paths)
+    - [2.10. HTTP Transactions](#210-http-transactions)
+      - [2.10.1. New Transaction](#2101-new-transaction)
+      - [2.10.2. Transaction start](#2102-transaction-start)
+      - [2.10.3. Transaction errors](#2103-transaction-errors)
+      - [2.10.4. Transaction end](#2104-transaction-end)
+    - [2.11. HTTP Router](#211-http-router)
+      - [2.11.1. Coercion](#2111-coercion)
+      - [2.11.2. Validation](#2112-validation)
+        - [2.11.2.1. Schema validators](#21121-schema-validators)
+        - [2.11.2.2. Built schema validators](#21122-built-schema-validators)
+      - [2.11.3. Request body](#2113-request-body)
+    - [2.12. HTTP Server](#212-http-server)
+      - [2.12.1. HTTPS Server](#2121-https-server)
+      - [2.12.2. SSL Certificates](#2122-ssl-certificates)
+    - [2.13. Error handler](#213-error-handler)
+      - [2.13.1. Errors descriptors](#2131-errors-descriptors)
+    - [2.14. Local cron runner](#214-local-cron-runner)
+  - [3. the routes](#3-the-routes)
+    - [4.1. Testing](#41-testing)
 
 
 ## 1. Main file
@@ -64,7 +68,7 @@ The Whook's main file exports :
 - its specific `knifecycle` compatible services,
 - a few bootstrapping functions designed to be customizable.
 
-[See in context](./src/index.ts#L191-L196)
+[See in context](./src/index.ts#L197-L202)
 
 
 
@@ -74,7 +78,7 @@ Whook exposes a `runProcess` function to programmatically spawn
  its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L198-L202)
+[See in context](./src/index.ts#L204-L208)
 
 
 
@@ -87,7 +91,7 @@ Whook exposes a `prepareProcess` function to create its
  containing the bootstrapped environment and allowing
  to complete and run the process.
 
-[See in context](./src/index.ts#L248-L255)
+[See in context](./src/index.ts#L254-L261)
 
 
 
@@ -99,7 +103,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
 
-[See in context](./src/index.ts#L278-L284)
+[See in context](./src/index.ts#L284-L290)
 
 
 
@@ -110,7 +114,7 @@ Whook's embed a few default initializers proxied from
  folder. It can be wrapped or overridden, at will, later
  in a project using overrides.
 
-[See in context](./src/index.ts#L295-L300)
+[See in context](./src/index.ts#L301-L306)
 
 
 
@@ -134,12 +138,21 @@ The `BASE_PATH` service allows to mount the API to
 
 
 
-### 2.2. IP detection
+### 2.2. Host
 
-If no `HOST` configuration is specified in dependencies nor in ENV,
- this service detects the machine host automagically.
+If no `HOST` configuration is specified, this service tries
+ to find it in environment variable or fallback to the loopback
+ interface.
 
-[See in context](./src/services/HOST.ts#L7-L10)
+[See in context](./src/services/HOST.ts#L5-L10)
+
+
+
+#### 2.2.1. Internal IP detection
+
+This service detects the machine internal IP automagically.
+
+[See in context](./src/services/INTERNAL_IP.ts#L5-L8)
 
 
 
@@ -149,16 +162,23 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L330-L334)
+[See in context](./src/index.ts#L336-L340)
 
 
 
-### 2.3. Port detection
+### 2.3. Port
 
-If no `PORT` configuration is specified in dependencies nor in ENV,
-this service detects a free port automagically.
+Provides a `PORT` from the ENV var and checks its value.
 
 [See in context](./src/services/PORT.ts#L9-L12)
+
+
+
+#### 2.3.1. Available port detection
+
+This service detects a free port automagically.
+
+[See in context](./src/services/AVAILABLE_PORT.ts#L5-L7)
 
 
 
@@ -167,7 +187,7 @@ this service detects a free port automagically.
 Whook uses the `common-services` `resolve` service to allow
  to easily mock/decorate all ESM resolutions.
 
-[See in context](./src/index.ts#L338-L341)
+[See in context](./src/index.ts#L344-L347)
 
 
 
@@ -176,7 +196,7 @@ Whook uses the `common-services` `resolve` service to allow
 Whook uses the `common-services` `importer` service to allow
  to easily mock/decorate all ESM dynamic imports.
 
-[See in context](./src/index.ts#L344-L347)
+[See in context](./src/index.ts#L350-L353)
 
 
 
@@ -185,7 +205,7 @@ Whook uses the `common-services` `importer` service to allow
 Whook uses a built in `exit` service to allow
  to easily mock/decorate the app exit.
 
-[See in context](./src/index.ts#L350-L353)
+[See in context](./src/index.ts#L356-L359)
 
 
 
@@ -198,7 +218,7 @@ The `WHOOK_PLUGINS` constant allows you to give the name of
  you to just install Whook's plugins to get them automatically
  loaded.
 
-[See in context](./src/index.ts#L372-L379)
+[See in context](./src/index.ts#L378-L385)
 
 
 
@@ -208,7 +228,7 @@ Whook uses a built-in `logger` service to allow
  to easily route the application logs for the 
  `common-services` provided `log` service.
 
-[See in context](./src/index.ts#L356-L360)
+[See in context](./src/index.ts#L362-L366)
 
 
 
@@ -233,7 +253,7 @@ Loading the configuration files is done according to the `APP_ENV`
    environment variable. It basically requires a configuration hash
    where the keys are JSON formattable constants.
 
-[See in context](./src/index.ts#L365-L369)
+[See in context](./src/index.ts#L371-L375)
 
 
 
