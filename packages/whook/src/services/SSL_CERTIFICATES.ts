@@ -45,10 +45,10 @@ async function initSSLCertificates({
   log = noop,
 }: WhookSSLCertificatesDependencies): Promise<WhookSSLCertificatesService> {
   if (!ENV?.SSL_KEY_PATH) {
-    throw new YError('E_MISSING_ENV_VAR', ['SSL_KEY_PATH']);
+    throw new YError('E_NO_ENV_VALUE', ['SSL_KEY_PATH']);
   }
   if (!ENV.SSL_CERT_PATH) {
-    throw new YError('E_MISSING_ENV_VAR', ['SSL_CERT_PATH']);
+    throw new YError('E_NO_ENV_VALUE', ['SSL_CERT_PATH']);
   }
 
   log('debug', `🔐 - Loading SSL key from: "${ENV.SSL_KEY_PATH}"`);

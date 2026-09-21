@@ -104,10 +104,17 @@ declare module 'yerror' {
     E_NO_SERVICE_FOUND: [name: string];
 
     /**
-     * Thrown when an environment variable is not found
+     * Thrown when a required environment variable is not found
      * @param name the environment variable name
      */
     E_NO_ENV_VALUE: [name: string];
+
+    /**
+     * Thrown when an environment variable had an invalid value
+     * @param name the environment variable name
+     * @param value the environment variable value
+     */
+    E_BAD_ENV_VALUE: [name: string, value: string];
 
     /**
      * Thrown when a security scheme is referenced but not declared in OpenAPI

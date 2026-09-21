@@ -8,6 +8,8 @@ import {
   type WhookHTTPSServerEnv,
 } from '../services/httpsServer.js';
 import {
+  WhookBasePath,
+  WhookBaseURL,
   type WhookBaseURLConfig,
   type WhookBaseURLEnv,
 } from '../services/BASE_URL.js';
@@ -91,7 +93,10 @@ export type WhookBaseConfigs = ProcessServiceConfig &
   WhookConsumersDefinitionsConfig &
   WhookCronsDefinitionsConfig &
   WhookTransformersDefinitionsConfig &
-  WhookRoutesDefinitionsConfig;
+  WhookRoutesDefinitionsConfig & {
+    BASE_URL?: WhookBaseURL;
+    BASE_PATH?: WhookBasePath;
+  };
 
 export const ASIDE_COMPONENTS_SUFFIXES = {
   schemas: 'Schema',

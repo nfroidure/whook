@@ -49,6 +49,9 @@ more documentation.
 <dt><a href="#initAPM">initAPM(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Application monitoring service that simply log stringified contents.</p>
 </dd>
+<dt><a href="#initAvailablePort">initAvailablePort(services)</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
+<dd><p>Initialize the AVAILABLE_PORT service</p>
+</dd>
 <dt><a href="#initBasePath">initBasePath(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
 <dd><p>Initialize the BASE_PATH service.</p>
 </dd>
@@ -112,6 +115,9 @@ HTTP router</p>
 <dt><a href="#initHTTPTransaction">initHTTPTransaction(services)</a> ⇒ <code><a href="#WhookHTTPTransaction">Promise.&lt;WhookHTTPTransaction&gt;</a></code></dt>
 <dd><p>Instantiate the httpTransaction service</p>
 </dd>
+<dt><a href="#initInternalIP">initInternalIP(services)</a> ⇒ <code>Promise.&lt;String&gt;</code></dt>
+<dd><p>Initialize the INTERNAL_IP service</p>
+</dd>
 <dt><a href="#initMainHandler">initMainHandler(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
 <dd><p>An initializer to build a single Whook route handler.</p>
 </dd>
@@ -119,8 +125,7 @@ HTTP router</p>
 <dd><p>Obfuscate sensible information.</p>
 </dd>
 <dt><a href="#initPort">initPort(services)</a> ⇒ <code>Promise.&lt;Number&gt;</code></dt>
-<dd><p>Initialize the PORT service from ENV or auto-detection if
- none specified in ENV</p>
+<dd><p>Initialize the PORT service from ENV</p>
 </dd>
 <dt><a href="#wrapEnvForBuild">wrapEnvForBuild(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the ENV service in order to filter ENV vars for the build</p>
@@ -236,6 +241,20 @@ Application monitoring service that simply log stringified contents.
 | --- | --- | --- |
 | services | <code>Object</code> | The services to inject |
 | [services.log] | <code>function</code> | A logging function |
+
+<a name="initAvailablePort"></a>
+
+## initAvailablePort(services) ⇒ <code>Promise.&lt;Number&gt;</code>
+Initialize the AVAILABLE_PORT service
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Number&gt;</code> - A promise of a number representing the available port.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
 <a name="initBasePath"></a>
 
@@ -487,7 +506,6 @@ Initialize the HOST service from ENV or auto-detection if
 | services | <code>Object</code> |  | The service dependencies |
 | [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
-| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
 <a name="initHTTPRouter"></a>
 
@@ -611,6 +629,20 @@ transaction created in an array.
 | req | <code>HTTPRequest</code> | A raw NodeJS HTTP incoming message |
 | res | <code>HTTPResponse</code> | A raw NodeJS HTTP response |
 
+<a name="initInternalIP"></a>
+
+## initInternalIP(services) ⇒ <code>Promise.&lt;String&gt;</code>
+Initialize the INTERNAL_IP service
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;String&gt;</code> - A promise of containing the actual internal IP.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| [services.log] | <code>Object</code> | <code>noop</code> | An optional logging service |
+| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
+
 <a name="initMainHandler"></a>
 
 ## initMainHandler(services) ⇒ <code>Promise.&lt;function()&gt;</code>
@@ -658,8 +690,7 @@ log(obfuscator('my very secret information!));
 <a name="initPort"></a>
 
 ## initPort(services) ⇒ <code>Promise.&lt;Number&gt;</code>
-Initialize the PORT service from ENV or auto-detection if
- none specified in ENV
+Initialize the PORT service from ENV
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Number&gt;</code> - A promise of a number representing the actual port.  
@@ -669,7 +700,6 @@ Initialize the PORT service from ENV or auto-detection if
 | services | <code>Object</code> |  | The service dependencies |
 | [services.ENV] | <code>Object</code> | <code>{}</code> | An optional environment object |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
-| services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 
 <a name="wrapEnvForBuild"></a>
 

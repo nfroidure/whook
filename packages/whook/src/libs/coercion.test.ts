@@ -6,6 +6,7 @@ import {
   parseArrayOfNumbers,
   parseArrayOfBooleans,
   DEFAULT_COERCION_OPTIONS,
+  parseInteger,
 } from './coercion.js';
 import { describe, test, expect } from '@jest/globals';
 
@@ -76,6 +77,17 @@ describe('parseNumber', () => {
         }
       });
 
+      test('with NaN', () => {
+        try {
+          parseNumber(DEFAULT_COERCION_OPTIONS, 'NaN');
+          throw new YError('E_UNEXPECTED_SUCCESS');
+        } catch (err) {
+          expect(err).toMatchInlineSnapshot(
+            `[YError: E_BAD_NUMBER (["NaN","NaN"]): E_BAD_NUMBER]`,
+          );
+        }
+      });
+
       test('with an empty string', () => {
         try {
           parseNumber(DEFAULT_COERCION_OPTIONS, '');
@@ -83,6 +95,77 @@ describe('parseNumber', () => {
         } catch (err) {
           expect(err).toMatchInlineSnapshot(
             `[YError: E_NON_REENTRANT_NUMBER (["","NaN"]): E_NON_REENTRANT_NUMBER]`,
+          );
+        }
+      });
+    });
+  });
+});
+
+describe('parseInteger', () => {
+  describe('should work', () => {
+    describe('should default options', () => {
+      test('with reentrant numbers', () => {
+        expect(
+          parseInteger(DEFAULT_COERCION_OPTIONS, '1'),
+        ).toMatchInlineSnapshot(`1`);
+        expect(
+          parseInteger(DEFAULT_COERCION_OPTIONS, '123456'),
+        ).toMatchInlineSnapshot(`123456`);
+      });
+    });
+
+    describe('should fail', () => {
+      test('with any string', () => {
+        try {
+          parseInteger(DEFAULT_COERCION_OPTIONS, 'any');
+          throw new YError('E_UNEXPECTED_SUCCESS');
+        } catch (err) {
+          expect(err).toMatchInlineSnapshot(
+            `[YError: E_NON_REENTRANT_INTEGER (["any","NaN"]): E_NON_REENTRANT_INTEGER]`,
+          );
+        }
+      });
+
+      test('with NaN', () => {
+        try {
+          parseInteger(DEFAULT_COERCION_OPTIONS, 'NaN');
+          throw new YError('E_UNEXPECTED_SUCCESS');
+        } catch (err) {
+          expect(err).toMatchInlineSnapshot(
+            `[YError: E_BAD_INTEGER (["NaN","NaN"]): E_BAD_INTEGER]`,
+          );
+        }
+      });
+
+      test('with an empty string', () => {
+        try {
+          parseInteger(DEFAULT_COERCION_OPTIONS, '');
+          throw new YError('E_UNEXPECTED_SUCCESS');
+        } catch (err) {
+          expect(err).toMatchInlineSnapshot(
+            `[YError: E_NON_REENTRANT_INTEGER (["","NaN"]): E_NON_REENTRANT_INTEGER]`,
+          );
+        }
+      });
+
+      test('with a float', () => {
+        try {
+          parseInteger(DEFAULT_COERCION_OPTIONS, '1.1');
+          throw new YError('E_UNEXPECTED_SUCCESS');
+        } catch (err) {
+          expect(err).toMatchInlineSnapshot(
+            `[YError: E_NON_REENTRANT_INTEGER (["1.1","1"]): E_NON_REENTRANT_INTEGER]`,
+          );
+        }
+      });
+      test('with an exponential float', () => {
+        try {
+          parseInteger(DEFAULT_COERCION_OPTIONS, '-1.7976931348623157e+308');
+          throw new YError('E_UNEXPECTED_SUCCESS');
+        } catch (err) {
+          expect(err).toMatchInlineSnapshot(
+            `[YError: E_NON_REENTRANT_INTEGER (["-1.7976931348623157e+308","-1"]): E_NON_REENTRANT_INTEGER]`,
           );
         }
       });

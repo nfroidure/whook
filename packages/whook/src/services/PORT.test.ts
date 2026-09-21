@@ -1,7 +1,5 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initPORT from './PORT.js';
-import { initImporter } from 'common-services';
-import { type PortFinderModule } from './PORT.js';
 import { type LogService } from 'common-services';
 
 describe('initPORT', () => {
@@ -11,11 +9,9 @@ describe('initPORT', () => {
     log.mockReset();
   });
 
-  test('should use the env port first', async () => {
-    const importer = await initImporter<PortFinderModule>({ log });
+  test('should use the env port', async () => {
     const port = await initPORT({
       ENV: { PORT: '1337' },
-      importer,
       log,
     });
 
@@ -29,64 +25,36 @@ describe('initPORT', () => {
     expect({
       logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
     }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "debug",
-      "🛂 - Initializing the importer!",
-    ],
-    [
-      "debug",
-      "🏭 - Initializing the PORT service.",
-    ],
-    [
-      "warning",
-      "♻️ - Using ENV port "1337"",
-    ],
-  ],
-}
-`);
+     {
+       "logCalls": [
+         [
+           "debug",
+           "🏭 - Initializing the PORT service.",
+         ],
+         [
+           "warning",
+           "♻️ - Using ENV port "1337"",
+         ],
+       ],
+     }
+    `);
   });
 
-  test('should find a port by itself if no env port', async () => {
-    const importer = await initImporter<PortFinderModule>({ log });
-    const port = await initPORT({
-      importer,
-      log,
-    });
+  test('should fail with no env port', async () => {
+    await expect(() =>
+      initPORT({
+        ENV: {},
+        log,
+      }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`"E_NO_ENV_VALUE"`);
+  });
 
-    expect(port).toBeGreaterThan(0);
-    expect({
-      logCalls: log.mock.calls
-        .filter((args) => 'debug-stack' !== args[0])
-        .map(([arg1, arg2, ...args]) => {
-          return [
-            arg1,
-            (arg2 || '').toString().replace(/port (\d+)/, 'port ${PORT}'),
-            ...args,
-          ];
-        }),
-    }).toMatchInlineSnapshot(`
-{
-  "logCalls": [
-    [
-      "debug",
-      "🛂 - Initializing the importer!",
-    ],
-    [
-      "debug",
-      "🏭 - Initializing the PORT service.",
-    ],
-    [
-      "debug",
-      "🛂 - Dynamic import of "portfinder".",
-    ],
-    [
-      "warning",
-      "✔ - Found a free port "8000"",
-    ],
-  ],
-}
-`);
+  test('should fail with bad env port', async () => {
+    await expect(() =>
+      initPORT({
+        ENV: { PORT: '133700' },
+        log,
+      }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`"E_BAD_ENV_VALUE"`);
   });
 });

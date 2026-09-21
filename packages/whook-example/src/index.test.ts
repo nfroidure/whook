@@ -58,7 +58,8 @@ describe('runProcess', () => {
         JWT_SECRET: 'oudelali',
       }),
     );
-    $.register(constant('APP_ENV', 'local'));
+    $.register(constant('APP_ENV', 'test'));
+    $.register(constant('$overrides', {}));
     $.register(constant('BASE_URL', 'http://api.localhost'));
     $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(constant('exit', exit));
@@ -128,13 +129,16 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRON_DEFINITION_FILTER.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRON_RUNNER_OPTIONS.ts"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DECODERS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DEFAULT_ERROR_CODE.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DEFAULT_MECHANISM.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DEV_ACCESS_TOKEN.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ENCODERS.ts"})",
@@ -146,10 +150,22 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/JWT_SECRET_ENV_NAME.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/MAX_CLEAR_CHARS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/MAX_CLEAR_RATIO.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/PARSERS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/QUERY_PARSER_OPTIONS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SENSIBLE_HEADERS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SENSIBLE_PROPS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SHIELD_CHAR.ts"})",
@@ -167,10 +183,10 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/TRANSFORMER_DEFINITION_FILTER.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/fetcher.ts"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/cronRunner.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/localCronRunner.ts"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/fetcher.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/uniqueId.ts"})",
@@ -200,13 +216,16 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CRON_DEFINITION_FILTER.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CRON_RUNNER_OPTIONS.js"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DECODERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DEFAULT_ERROR_CODE.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DEFAULT_MECHANISM.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/ENCODERS.js"})",
@@ -218,10 +237,22 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/JWT_SECRET_ENV_NAME.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/MAX_CLEAR_CHARS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/PARSERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/QUERY_PARSER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SENSIBLE_HEADERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SENSIBLE_PROPS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SHIELD_CHAR.js"})",
@@ -237,6 +268,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/fetcher.js"})",
@@ -266,13 +300,16 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CRON_RUNNER_OPTIONS.js"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DECODERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DEFAULT_ERROR_CODE.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DEFAULT_MECHANISM.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/ENCODERS.js"})",
@@ -284,10 +321,22 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/JWT_SECRET_ENV_NAME.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_CHARS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/PARSERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SENSIBLE_HEADERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SENSIBLE_PROPS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js"})",
@@ -303,6 +352,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/fetcher.js"})",
@@ -326,13 +378,16 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CRON_RUNNER_OPTIONS.js"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DECODERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/ENCODERS.js"})",
@@ -344,10 +399,22 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_CHARS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/PARSERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SENSIBLE_PROPS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js"})",
@@ -363,6 +430,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/fetcher.js"})",
@@ -389,13 +459,16 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/CRON_DEFINITION_FILTER.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/CRON_RUNNER_OPTIONS.js"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DECODERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DEFAULT_ERROR_CODE.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DEFAULT_MECHANISM.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/ENCODERS.js"})",
@@ -407,10 +480,22 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/JWT_SECRET_ENV_NAME.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/MAX_CLEAR_CHARS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/PARSERS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/QUERY_PARSER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/SENSIBLE_HEADERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/SENSIBLE_PROPS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/SHIELD_CHAR.js"})",
@@ -426,6 +511,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/fetcher.js"})",
@@ -467,9 +555,6 @@ describe('runProcess', () => {
            "⏳ - Module "optionsWithCORS.js" has no definition!",
          ],
          [
-           "⏳ - Skipped  "handleMinutes" crons schedule "*/1 * * * *" since not enabled in environment "local".",
-         ],
-         [
            "⏳ - Skipped "__snapshots__" per ignore patterns.",
          ],
          [
@@ -489,6 +574,9 @@ describe('runProcess', () => {
          ],
          [
            "⏳ - Skipped "create.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "create.js" since disabled by the application environment (test)!",
          ],
          [
            "⏳ - Skipped "create.js.map" per file patterns.",
@@ -662,6 +750,9 @@ describe('runProcess', () => {
            "⏳ - Skipped "putEchoedStream.test.ts" per ignore patterns.",
          ],
          [
+           "⏳ - Skipped "putTime.ts" since disabled by the application environment (test)!",
+         ],
+         [
            "⏳ - Skipped "route.d.ts" per ignore patterns.",
          ],
          [
@@ -707,9 +798,6 @@ describe('runProcess', () => {
            "✅ - Module path of "API" found at "file:///project/src/services/API.ts".",
          ],
          [
-           "✅ - Module path of "CLOCK_MOCK" found at "file:///project/src/services/CLOCK_MOCK.ts".",
-         ],
-         [
            "✅ - Module path of "MECHANISMS" found at "file:///project/src/services/MECHANISMS.ts".",
          ],
          [
@@ -743,9 +831,6 @@ describe('runProcess', () => {
            "✅ - Module path of "jwtToken" found at "file:///project/src/services/jwtToken.ts".",
          ],
          [
-           "✅ - Module path of "localCronRunner" found at "@whook/whook/dist/services/localCronRunner.js".",
-         ],
-         [
            "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/routes/optionsWithCORS.js".",
          ],
          [
@@ -756,9 +841,6 @@ describe('runProcess', () => {
          ],
          [
            "✅ - Module path of "putEchoedStream" found at "file:///project/src/routes/putEchoedStream.ts".",
-         ],
-         [
-           "✅ - Module path of "putTime" found at "file:///project/src/routes/putTime.ts".",
          ],
          [
            "✅ - Module path of "wrapRouteHandlerWithAuthorization" found at "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
@@ -824,9 +906,6 @@ describe('runProcess', () => {
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "__project__".",
          ],
          [
-           "🍀 - Trying to find "CLOCK_MOCK" module path in "__project__".",
-         ],
-         [
            "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/authorization".",
          ],
          [
@@ -887,21 +966,6 @@ describe('runProcess', () => {
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "__project__".",
          ],
          [
-           "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/authorization".",
-         ],
-         [
-           "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/cors".",
-         ],
-         [
-           "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/dev".",
-         ],
-         [
-           "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "@whook/whook".",
-         ],
-         [
-           "🍀 - Trying to find "CRON_RUNNER_OPTIONS" module path in "__project__".",
-         ],
-         [
            "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
          ],
          [
@@ -930,6 +994,36 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "ENCODERS" module path in "@whook/authorization".",
@@ -977,6 +1071,36 @@ describe('runProcess', () => {
            "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "MECHANISMS" module path in "__project__".",
          ],
          [
@@ -1011,6 +1135,36 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "ROUTE_DEFINITION_FILTER" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_PROPS" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/authorization".",
@@ -1091,6 +1245,21 @@ describe('runProcess', () => {
            "🍀 - Trying to find "authentication" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "cronRunner" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "cronRunner" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "cronRunner" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "cronRunner" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "cronRunner" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "fetcher" module path in "@whook/authorization".",
          ],
          [
@@ -1133,12 +1302,6 @@ describe('runProcess', () => {
            "🍀 - Trying to find "jwtToken" module path in "__project__".",
          ],
          [
-           "🍀 - Trying to find "localCronRunner" module path in "@whook/whook".",
-         ],
-         [
-           "🍀 - Trying to find "localCronRunner" module path in "__project__".",
-         ],
-         [
            "🍀 - Trying to find "optionsWithCORS" module path in "@whook/cors".",
          ],
          [
@@ -1155,9 +1318,6 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "putEchoedStream" module path in "__project__".",
-         ],
-         [
-           "🍀 - Trying to find "putTime" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "uniqueId" module path in "@whook/authorization".",
@@ -1208,9 +1368,6 @@ describe('runProcess', () => {
            "💿 - Loading "API" initializer from "file:///project/src/services/API.ts".",
          ],
          [
-           "💿 - Loading "CLOCK_MOCK" initializer from "file:///project/src/services/CLOCK_MOCK.ts".",
-         ],
-         [
            "💿 - Loading "MECHANISMS" initializer from "file:///project/src/services/MECHANISMS.ts".",
          ],
          [
@@ -1244,9 +1401,6 @@ describe('runProcess', () => {
            "💿 - Loading "jwtToken" initializer from "file:///project/src/services/jwtToken.ts".",
          ],
          [
-           "💿 - Loading "localCronRunner" initializer from "@whook/whook/dist/services/localCronRunner.js".",
-         ],
-         [
            "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/routes/optionsWithCORS.js".",
          ],
          [
@@ -1259,9 +1413,6 @@ describe('runProcess', () => {
            "💿 - Loading "putEchoedStream" initializer from "file:///project/src/routes/putEchoedStream.ts".",
          ],
          [
-           "💿 - Loading "putTime" initializer from "file:///project/src/routes/putTime.ts".",
-         ],
-         [
            "💿 - Loading "wrapRouteHandlerWithAuthorization" initializer from "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
          ],
          [
@@ -1269,9 +1420,6 @@ describe('runProcess', () => {
          ],
          [
            "💿 - Service "API" found in "file:///project/src/services/API.ts".",
-         ],
-         [
-           "💿 - Service "CLOCK_MOCK" found in "file:///project/src/services/CLOCK_MOCK.ts".",
          ],
          [
            "💿 - Service "MECHANISMS" found in "file:///project/src/services/MECHANISMS.ts".",
@@ -1307,9 +1455,6 @@ describe('runProcess', () => {
            "💿 - Service "jwtToken" found in "file:///project/src/services/jwtToken.ts".",
          ],
          [
-           "💿 - Service "localCronRunner" found in "@whook/whook/dist/services/localCronRunner.js".",
-         ],
-         [
            "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/routes/optionsWithCORS.js".",
          ],
          [
@@ -1320,9 +1465,6 @@ describe('runProcess', () => {
          ],
          [
            "💿 - Service "putEchoedStream" found in "file:///project/src/routes/putEchoedStream.ts".",
-         ],
-         [
-           "💿 - Service "putTime" found in "file:///project/src/routes/putTime.ts".",
          ],
          [
            "💿 - Service "wrapRouteHandlerWithAuthorization" found in "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
@@ -1340,31 +1482,13 @@ describe('runProcess', () => {
            "📖 - Picking the "CORS" constant in the "APP_CONFIG" service properties.",
          ],
          [
-           "📖 - Picking the "DEFAULT_MECHANISM" constant in the "APP_CONFIG" service properties.",
-         ],
-         [
-           "📖 - Picking the "DEV_ACCESS_TOKEN" constant in the "APP_CONFIG" service properties.",
-         ],
-         [
            "📖 - Picking the "ERRORS_DESCRIPTORS" constant in the "APP_CONFIG" service properties.",
          ],
          [
            "📖 - Picking the "JWT" constant in the "APP_CONFIG" service properties.",
          ],
          [
-           "📖 - Picking the "MAX_CLEAR_CHARS" constant in the "APP_CONFIG" service properties.",
-         ],
-         [
-           "📖 - Picking the "MAX_CLEAR_RATIO" constant in the "APP_CONFIG" service properties.",
-         ],
-         [
            "📖 - Picking the "SCHEMA_VALIDATORS_OPTIONS" constant in the "APP_CONFIG" service properties.",
-         ],
-         [
-           "📖 - Picking the "SENSIBLE_HEADERS" constant in the "APP_CONFIG" service properties.",
-         ],
-         [
-           "📖 - Picking the "SENSIBLE_PROPS" constant in the "APP_CONFIG" service properties.",
          ],
          [
            "📖 - Picking the "SWAGGER_UI_OPTIONS" constant in the "APP_CONFIG" service properties.",
@@ -1409,13 +1533,16 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/CRON_DEFINITION_FILTER.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/services/CRON_RUNNER_OPTIONS.ts".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///project/src/services/DECODERS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/DEFAULT_ERROR_CODE.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/DEFAULT_MECHANISM.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/DEV_ACCESS_TOKEN.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/ENCODERS.ts".",
@@ -1427,10 +1554,22 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/JWT_SECRET_ENV_NAME.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/MAX_CLEAR_CHARS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/MAX_CLEAR_RATIO.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/PARSERS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/QUERY_PARSER_OPTIONS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/SENSIBLE_HEADERS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/SENSIBLE_PROPS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/SHIELD_CHAR.ts".",
@@ -1448,10 +1587,10 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/TRANSFORMER_DEFINITION_FILTER.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/services/fetcher.ts".",
+           "🚫 - File doesn't exist at "file:///project/src/services/cronRunner.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/services/localCronRunner.ts".",
+           "🚫 - File doesn't exist at "file:///project/src/services/fetcher.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/uniqueId.ts".",
@@ -1481,13 +1620,16 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/CRON_DEFINITION_FILTER.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/CRON_RUNNER_OPTIONS.js".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DECODERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DEFAULT_ERROR_CODE.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DEFAULT_MECHANISM.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/ENCODERS.js".",
@@ -1499,10 +1641,22 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/JWT_SECRET_ENV_NAME.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/MAX_CLEAR_CHARS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/PARSERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/QUERY_PARSER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/SENSIBLE_HEADERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/SENSIBLE_PROPS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/SHIELD_CHAR.js".",
@@ -1518,6 +1672,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/fetcher.js".",
@@ -1547,13 +1704,16 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/CRON_RUNNER_OPTIONS.js".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DECODERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DEFAULT_ERROR_CODE.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DEFAULT_MECHANISM.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/ENCODERS.js".",
@@ -1565,10 +1725,22 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/JWT_SECRET_ENV_NAME.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_CHARS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/PARSERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/SENSIBLE_HEADERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/SENSIBLE_PROPS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/SHIELD_CHAR.js".",
@@ -1584,6 +1756,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/fetcher.js".",
@@ -1607,13 +1782,16 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/CRON_RUNNER_OPTIONS.js".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DECODERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DEFAULT_ERROR_CODE.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/ENCODERS.js".",
@@ -1625,10 +1803,22 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/JWT_SECRET_ENV_NAME.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_CHARS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/PARSERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/SENSIBLE_PROPS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/SHIELD_CHAR.js".",
@@ -1644,6 +1834,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/fetcher.js".",
@@ -1670,13 +1863,16 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/CRON_DEFINITION_FILTER.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/CRON_RUNNER_OPTIONS.js".",
-         ],
-         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DECODERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DEFAULT_ERROR_CODE.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DEFAULT_MECHANISM.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/ENCODERS.js".",
@@ -1688,10 +1884,22 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/JWT_SECRET_ENV_NAME.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/MAX_CLEAR_CHARS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/PARSERS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/QUERY_PARSER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/SENSIBLE_HEADERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/SENSIBLE_PROPS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/SHIELD_CHAR.js".",
@@ -1707,6 +1915,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/fetcher.js".",
@@ -1730,13 +1941,16 @@ describe('runProcess', () => {
            "🚫 - Module path of "CRON_DEFINITION_FILTER" not found.",
          ],
          [
-           "🚫 - Module path of "CRON_RUNNER_OPTIONS" not found.",
-         ],
-         [
            "🚫 - Module path of "DECODERS" not found.",
          ],
          [
            "🚫 - Module path of "DEFAULT_ERROR_CODE" not found.",
+         ],
+         [
+           "🚫 - Module path of "DEFAULT_MECHANISM" not found.",
+         ],
+         [
+           "🚫 - Module path of "DEV_ACCESS_TOKEN" not found.",
          ],
          [
            "🚫 - Module path of "ENCODERS" not found.",
@@ -1748,10 +1962,22 @@ describe('runProcess', () => {
            "🚫 - Module path of "JWT_SECRET_ENV_NAME" not found.",
          ],
          [
+           "🚫 - Module path of "MAX_CLEAR_CHARS" not found.",
+         ],
+         [
+           "🚫 - Module path of "MAX_CLEAR_RATIO" not found.",
+         ],
+         [
            "🚫 - Module path of "PARSERS" not found.",
          ],
          [
            "🚫 - Module path of "QUERY_PARSER_OPTIONS" not found.",
+         ],
+         [
+           "🚫 - Module path of "SENSIBLE_HEADERS" not found.",
+         ],
+         [
+           "🚫 - Module path of "SENSIBLE_PROPS" not found.",
          ],
          [
            "🚫 - Module path of "SHIELD_CHAR" not found.",
@@ -1767,6 +1993,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - Module path of "TRANSFORMER_DEFINITION_FILTER" not found.",
+         ],
+         [
+           "🚫 - Module path of "cronRunner" not found.",
          ],
          [
            "🚫 - Module path of "fetcher" not found.",
@@ -1787,9 +2016,6 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "@whook/whook/dist/routes/getPing.js".",
          ],
          [
-           "🛂 - Dynamic import of "@whook/whook/dist/services/localCronRunner.js".",
-         ],
-         [
            "🛂 - Dynamic import of "ecstatic".",
          ],
          [
@@ -1799,7 +2025,7 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///project/src/commands/printEnv.ts".",
          ],
          [
-           "🛂 - Dynamic import of "file:///project/src/config/local/config.ts".",
+           "🛂 - Dynamic import of "file:///project/src/config/test/config.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/crons/handleMinutes.ts".",
@@ -1854,18 +2080,12 @@ describe('runProcess', () => {
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/routes/putEchoedStream.ts".",
-         ],
-         [
-           "🛂 - Dynamic import of "file:///project/src/routes/putTime.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/routes/putTime.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/services/API.ts".",
-         ],
-         [
-           "🛂 - Dynamic import of "file:///project/src/services/CLOCK_MOCK.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/services/MECHANISMS.ts".",
@@ -1933,19 +2153,13 @@ describe('runProcess', () => {
            "On air 🚀🌕",
          ],
          [
-           "⌚ - Initializing the local cron runner (1 crons).",
-         ],
-         [
            "⌨️ - Initializing the basic query parser.",
-         ],
-         [
-           "⏳ - Time mock is enabled!",
          ],
          [
            "⚠️ - Using fake auth mechanism!",
          ],
          [
-           "⚡ - Loading configurations from "file:///project/src/config/local/config.ts".",
+           "⚡ - Loading configurations from "file:///project/src/config/test/config.ts".",
          ],
          [
            "➕ - Wrapping definitions for CORS.",
@@ -1960,7 +2174,7 @@ describe('runProcess', () => {
            "🏭 - Initializing the CRONS_WRAPPERS service.",
          ],
          [
-           "🏭 - Initializing the ROUTES_HANDLERS service with 11 handlers wrapped by 2 wrappers.",
+           "🏭 - Initializing the ROUTES_HANDLERS service with 10 handlers wrapped by 2 wrappers.",
          ],
          [
            "🏭 - Initializing the ROUTES_WRAPPERS service.",

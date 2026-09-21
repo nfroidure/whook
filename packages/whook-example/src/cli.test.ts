@@ -21,7 +21,6 @@ describe('commands should work', () => {
      🔴 - Running with "local" application environment.
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
-     ✔ - Found a free port "8000"
      🖃 - Initializing the validators service.
      On air 🚀🌕
      ",
@@ -73,7 +72,6 @@ describe('commands should work', () => {
      🔴 - Running with "local" application environment.
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
-     ✔ - Found a free port "8000"
      🖃 - Initializing the validators service.
      On air 🚀🌕
      ",
@@ -85,7 +83,7 @@ describe('commands should work', () => {
 
   test('with config', async () => {
     const { stdout, stderr } = await execCommand(
-      'NO_PROMPT=1 npm run whook --silent -- config --name HOST',
+      'NO_PROMPT=1 npm run whook --silent -- config --name DEFAULT_MECHANISM',
     );
 
     expect({
@@ -98,11 +96,10 @@ describe('commands should work', () => {
      🔴 - Running with "local" application environment.
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
-     ✔ - Found a free port "8000"
      🖃 - Initializing the validators service.
      On air 🚀🌕
      ",
-       "stdout": ""localhost"
+       "stdout": ""Fake"
      ",
      }
     `);

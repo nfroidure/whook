@@ -33,6 +33,27 @@ export function parseNumber(
     throw new YError('E_NON_REENTRANT_NUMBER', [str, value.toString(BASE_10)]);
   }
 
+  if (Number.isNaN(value)) {
+    throw new YError('E_BAD_NUMBER', [str, value.toString(BASE_10)]);
+  }
+
+  return value;
+}
+
+export function parseInteger(
+  options: WhookCoercionOptions,
+  str: string,
+): number {
+  const value = parseInt(str, BASE_10);
+
+  if (options.strictlyReentrant && value.toString(BASE_10) !== str) {
+    throw new YError('E_NON_REENTRANT_INTEGER', [str, value.toString(BASE_10)]);
+  }
+
+  if (Number.isNaN(value)) {
+    throw new YError('E_BAD_INTEGER', [str, value.toString(BASE_10)]);
+  }
+
   return value;
 }
 
