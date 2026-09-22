@@ -73,6 +73,7 @@ import {
 } from './queryParserBuilder.js';
 import { type WhookDefinitions } from './DEFINITIONS.js';
 import { identity } from '../libs/utils.js';
+import { type WhookRouteDefinitionBasePath } from './ROUTES_DEFINITIONS.js';
 
 export const SEARCH_SEPARATOR = '?';
 export const PATH_SEPARATOR = '/';
@@ -82,6 +83,7 @@ export interface WhookHTTPRouterConfig {
   DEBUG_NODE_ENVS?: NodeEnv[];
   BUFFER_LIMIT?: string;
   COERCION_OPTIONS?: WhookCoercionOptions;
+  BASE_PATH?: WhookRouteDefinitionBasePath;
 }
 export type WhookHTTPRouterDependencies = WhookHTTPRouterConfig & {
   ENV: AppEnvVars;
@@ -156,6 +158,7 @@ export default location(
         '?DECODERS',
         '?ENCODERS',
         '?COERCION_OPTIONS',
+        '?BASE_PATH',
         '?log',
         'schemaValidators',
         'httpTransaction',
@@ -212,6 +215,7 @@ async function initHTTPRouter({
   DECODERS = DEFAULT_DECODERS,
   ENCODERS = DEFAULT_ENCODERS,
   COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
+  BASE_PATH = '',
   queryParserBuilder,
   schemaValidators,
   log = noop,
@@ -274,17 +278,33 @@ async function initHTTPRouter({
       await transaction
         .start(async () => {
           const method = request.method as (typeof PATH_ITEM_METHODS)[number];
-          const path = request.url.split(SEARCH_SEPARATOR)[0] as `/${string}`;
-          const parts = path.split(PATH_SEPARATOR).filter(identity);
-          let [result, pathNodesValues] = routers[method]
-            ? routers[method].find(parts)
-            : [];
-
-          // Second chance for HEAD calls
-          if (!result && 'head' === method) {
-            [result, pathNodesValues] = routers.get
-              ? routers.get.find(parts)
+          const findRoute = (path: `/${string}`) => {
+            const parts = path.split(PATH_SEPARATOR).filter(identity);
+            let [result, pathNodesValues] = routers[method]
+              ? routers[method].find(parts)
               : [];
+
+            // Second chance for HEAD calls
+            if (!result && 'head' === method) {
+              [result, pathNodesValues] = routers.get
+                ? routers.get.find(parts)
+                : [];
+            }
+
+            return [result, pathNodesValues, parts] as const;
+          };
+          const initialPath = request.url.split(SEARCH_SEPARATOR)[0] as `/${string}`;
+          let path = initialPath;
+          let [result, pathNodesValues, parts] = findRoute(path);
+
+          if (
+            !result &&
+            BASE_PATH &&
+            !initialPath.startsWith(`${BASE_PATH}${PATH_SEPARATOR}`) &&
+            initialPath !== BASE_PATH
+          ) {
+            path = `${BASE_PATH}${initialPath}` as `/${string}`;
+            [result, pathNodesValues, parts] = findRoute(path);
           }
 
           if (!result || !result.handler) {
@@ -309,9 +329,7 @@ async function initHTTPRouter({
 
           operation = _operation_;
 
-          const search = request.url.substring(
-            request.url.split(SEARCH_SEPARATOR)[0].length,
-          );
+          const search = request.url.substring(initialPath.length);
 
           const parametersValues: WhookRouteHandlerParameters = {
             query: {},

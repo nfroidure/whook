@@ -47,7 +47,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     postGraphQL: {
       module: {
         definition: {
-          path: `${BASE_PATH}/graphql`,
+          path: '/graphql',
           method: 'get',
         },
       },

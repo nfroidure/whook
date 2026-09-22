@@ -2407,6 +2407,20 @@ describe('runProcess', () => {
      }
     `);
   });
+
+  test('should ping with rewritten URL', async () => {
+    time.mockReturnValue(new Date('2014-01-26T00:00:00.000Z').getTime());
+
+    const { status, data } = await axios({
+      method: 'get',
+      url: `http://${HOST}:${PORT}/ping`,
+      headers: { 'user-agent': '__avoid_axios_version__' },
+      validateStatus: () => true,
+    });
+
+    expect(status).toEqual(200);
+    expect(data).toEqual({ pong: 'pong' });
+  });
 });
 
 function sortLogs(strs1: unknown[], strs2: unknown[]): number {
