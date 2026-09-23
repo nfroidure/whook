@@ -10,6 +10,7 @@ import {
 import wrapHTTPTransactionWithMethodOverride from './index.js';
 import {
   initHTTPTransaction,
+  initHTTPRouter,
   runProcess,
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
@@ -52,6 +53,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   async function prepareEnvironment() {
     const $ = await basePrepareEnvironment();
 
+    $.register(initHTTPRouter);
     $.register(wrapHTTPTransactionWithMethodOverride(initHTTPTransaction));
     $.register(
       initializer(

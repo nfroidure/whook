@@ -6,6 +6,7 @@ import {
 } from '../types/transformers.js';
 import {
   type WhookResolvedPluginsService,
+  type WhookPluginsService,
   type WhookPluginName,
   WHOOK_DEFAULT_PLUGINS,
 } from './WHOOK_RESOLVED_PLUGINS.js';
@@ -39,7 +40,7 @@ export interface WhookTransformerDefinitionsOptions {
 export interface WhookTransformersDefinitionsConfig {
   TRANSFORMERS_DEFINITIONS_OPTIONS?: WhookTransformerDefinitionsOptions;
   TRANSFORMER_DEFINITION_FILTER?: WhookTransformerDefinitionFilter;
-  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_PLUGINS?: WhookPluginsService;
 }
 
 export type WhookTransformersDefinitionsDependencies =

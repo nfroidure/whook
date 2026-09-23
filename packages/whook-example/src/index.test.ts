@@ -126,6 +126,12 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CONSUMER_DEFINITION_FILTER.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRONS_HANDLERS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRONS_WRAPPERS.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRON_DEFINITION_FILTER.ts"})",
          ],
          [
@@ -156,10 +162,19 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/MAX_CLEAR_RATIO.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/OTEL_TRACER.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/PARSERS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/QUERY_PARSER_OPTIONS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_HANDLERS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_WRAPPERS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/SENSIBLE_HEADERS.ts"})",
@@ -187,6 +202,12 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/fetcher.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/httpTransaction.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/oTelTracer.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/uniqueId.ts"})",
@@ -241,6 +262,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/OTEL_TRACER.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/PARSERS.js"})",
@@ -327,6 +351,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_RATIO.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/OTEL_TRACER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/PARSERS.js"})",
          ],
          [
@@ -403,6 +430,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/OTEL_TRACER.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/PARSERS.js"})",
@@ -486,6 +516,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/MAX_CLEAR_RATIO.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/OTEL_TRACER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/PARSERS.js"})",
          ],
          [
@@ -520,6 +553,105 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/uniqueId.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/routes/getPing.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/routes/optionsWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/BUFFER_LIMIT.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/COERCION_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/COMMAND_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/CRONS_WRAPPERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DECODERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DEFAULT_ERROR_CODE.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DEFAULT_MECHANISM.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DEV_ACCESS_TOKEN.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/ENCODERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/HTTP_SERVER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/JWT_SECRET_ENV_NAME.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/MAX_CLEAR_CHARS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/OTEL_TRACER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/PARSERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/QUERY_PARSER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/ROUTES_WRAPPERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/SENSIBLE_HEADERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/SENSIBLE_PROPS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/SHIELD_CHAR.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/SIGNALS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/STRINGIFIERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/TIMEOUT.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/fetcher.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/uniqueId.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithCORS.js"})",
          ],
          [
            "{"type":"string"}",
@@ -798,7 +930,19 @@ describe('runProcess', () => {
            "✅ - Module path of "API" found at "file:///project/src/services/API.ts".",
          ],
          [
+           "✅ - Module path of "CRONS_HANDLERS" found at "@whook/otel/dist/services/CRONS_HANDLERS.js".",
+         ],
+         [
+           "✅ - Module path of "CRONS_WRAPPERS" found at "@whook/whook/dist/services/CRONS_WRAPPERS.js".",
+         ],
+         [
            "✅ - Module path of "MECHANISMS" found at "file:///project/src/services/MECHANISMS.ts".",
+         ],
+         [
+           "✅ - Module path of "ROUTES_HANDLERS" found at "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "✅ - Module path of "ROUTES_WRAPPERS" found at "@whook/whook/dist/services/ROUTES_WRAPPERS.js".",
          ],
          [
            "✅ - Module path of "ROUTE_DEFINITION_FILTER" found at "file:///project/src/services/ROUTE_DEFINITION_FILTER.ts".",
@@ -828,7 +972,13 @@ describe('runProcess', () => {
            "✅ - Module path of "handleMinutes" found at "file:///project/src/crons/handleMinutes.ts".",
          ],
          [
+           "✅ - Module path of "httpTransaction" found at "@whook/otel/dist/services/httpTransaction.js".",
+         ],
+         [
            "✅ - Module path of "jwtToken" found at "file:///project/src/services/jwtToken.ts".",
+         ],
+         [
+           "✅ - Module path of "oTelTracer" found at "@whook/otel/dist/services/oTelTracer.js".",
          ],
          [
            "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/routes/optionsWithCORS.js".",
@@ -859,6 +1009,9 @@ describe('runProcess', () => {
          ],
          [
            "➰ - Plugin "@whook/dev" source path resolved to "file:///projects/whook/packages/whook-dev/dist" with "commands, services" types.",
+         ],
+         [
+           "➰ - Plugin "@whook/otel" source path resolved to "file:///projects/whook/packages/whook-otel/dist" with "services, wrappers" types.",
          ],
          [
            "➰ - Plugin "@whook/whook" source path resolved to "file:///projects/whook/dist" with "commands, routes, services" types.",
@@ -900,6 +1053,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/whook".",
          ],
          [
@@ -913,6 +1069,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/whook".",
@@ -930,6 +1089,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/whook".",
          ],
          [
@@ -945,10 +1107,28 @@ describe('runProcess', () => {
            "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/whook".",
          ],
          [
            "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_HANDLERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_HANDLERS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/authorization".",
@@ -958,6 +1138,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/whook".",
@@ -975,6 +1158,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "DECODERS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "DECODERS" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "DECODERS" module path in "@whook/whook".",
          ],
          [
@@ -988,6 +1174,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/whook".",
@@ -1005,6 +1194,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/whook".",
          ],
          [
@@ -1018,6 +1210,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/whook".",
@@ -1035,6 +1230,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "ENCODERS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "ENCODERS" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "ENCODERS" module path in "@whook/whook".",
          ],
          [
@@ -1048,6 +1246,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/whook".",
@@ -1065,6 +1266,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/whook".",
          ],
          [
@@ -1078,6 +1282,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/whook".",
@@ -1095,6 +1302,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/whook".",
          ],
          [
@@ -1104,6 +1314,24 @@ describe('runProcess', () => {
            "🍀 - Trying to find "MECHANISMS" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "OTEL_TRACER" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "PARSERS" module path in "@whook/authorization".",
          ],
          [
@@ -1111,6 +1339,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "PARSERS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "PARSERS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "PARSERS" module path in "@whook/whook".",
@@ -1128,10 +1359,28 @@ describe('runProcess', () => {
            "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/whook".",
          ],
          [
            "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_WRAPPERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_WRAPPERS" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_WRAPPERS" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "ROUTE_DEFINITION_FILTER" module path in "__project__".",
@@ -1144,6 +1393,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/whook".",
@@ -1161,6 +1413,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/whook".",
          ],
          [
@@ -1174,6 +1429,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/whook".",
@@ -1191,6 +1449,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "SIGNALS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "SIGNALS" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "SIGNALS" module path in "@whook/whook".",
          ],
          [
@@ -1204,6 +1465,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/whook".",
@@ -1221,6 +1485,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "TIMEOUT" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "TIMEOUT" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "TIMEOUT" module path in "@whook/whook".",
          ],
          [
@@ -1234,6 +1501,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/whook".",
@@ -1254,6 +1524,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "cronRunner" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "cronRunner" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "cronRunner" module path in "@whook/whook".",
          ],
          [
@@ -1267,6 +1540,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "fetcher" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "fetcher" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "fetcher" module path in "@whook/whook".",
@@ -1287,6 +1563,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getParameters" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "getPing" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "getPing" module path in "@whook/whook".",
          ],
          [
@@ -1299,10 +1578,25 @@ describe('runProcess', () => {
            "🍀 - Trying to find "handleMinutes" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "httpTransaction" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "httpTransaction" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "jwtToken" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "oTelTracer" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "oTelTracer" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "optionsWithCORS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "optionsWithCORS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "optionsWithCORS" module path in "@whook/whook".",
@@ -1329,6 +1623,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "uniqueId" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "uniqueId" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "uniqueId" module path in "@whook/whook".",
          ],
          [
@@ -1341,6 +1638,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/cors".",
          ],
          [
+           "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/otel".",
+         ],
+         [
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/whook".",
          ],
          [
@@ -1348,6 +1648,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/otel".",
          ],
          [
            "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/whook".",
@@ -1368,7 +1671,19 @@ describe('runProcess', () => {
            "💿 - Loading "API" initializer from "file:///project/src/services/API.ts".",
          ],
          [
+           "💿 - Loading "CRONS_HANDLERS" initializer from "@whook/otel/dist/services/CRONS_HANDLERS.js".",
+         ],
+         [
+           "💿 - Loading "CRONS_WRAPPERS" initializer from "@whook/whook/dist/services/CRONS_WRAPPERS.js".",
+         ],
+         [
            "💿 - Loading "MECHANISMS" initializer from "file:///project/src/services/MECHANISMS.ts".",
+         ],
+         [
+           "💿 - Loading "ROUTES_HANDLERS" initializer from "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Loading "ROUTES_WRAPPERS" initializer from "@whook/whook/dist/services/ROUTES_WRAPPERS.js".",
          ],
          [
            "💿 - Loading "ROUTE_DEFINITION_FILTER" initializer from "file:///project/src/services/ROUTE_DEFINITION_FILTER.ts".",
@@ -1398,7 +1713,13 @@ describe('runProcess', () => {
            "💿 - Loading "handleMinutes" initializer from "file:///project/src/crons/handleMinutes.ts".",
          ],
          [
+           "💿 - Loading "httpTransaction" initializer from "@whook/otel/dist/services/httpTransaction.js".",
+         ],
+         [
            "💿 - Loading "jwtToken" initializer from "file:///project/src/services/jwtToken.ts".",
+         ],
+         [
+           "💿 - Loading "oTelTracer" initializer from "@whook/otel/dist/services/oTelTracer.js".",
          ],
          [
            "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/routes/optionsWithCORS.js".",
@@ -1422,7 +1743,19 @@ describe('runProcess', () => {
            "💿 - Service "API" found in "file:///project/src/services/API.ts".",
          ],
          [
+           "💿 - Service "CRONS_HANDLERS" found in "@whook/otel/dist/services/CRONS_HANDLERS.js".",
+         ],
+         [
+           "💿 - Service "CRONS_WRAPPERS" found in "@whook/whook/dist/services/CRONS_WRAPPERS.js".",
+         ],
+         [
            "💿 - Service "MECHANISMS" found in "file:///project/src/services/MECHANISMS.ts".",
+         ],
+         [
+           "💿 - Service "ROUTES_HANDLERS" found in "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Service "ROUTES_WRAPPERS" found in "@whook/whook/dist/services/ROUTES_WRAPPERS.js".",
          ],
          [
            "💿 - Service "ROUTE_DEFINITION_FILTER" found in "file:///project/src/services/ROUTE_DEFINITION_FILTER.ts".",
@@ -1452,7 +1785,13 @@ describe('runProcess', () => {
            "💿 - Service "handleMinutes" found in "file:///project/src/crons/handleMinutes.ts".",
          ],
          [
+           "💿 - Service "httpTransaction" found in "@whook/otel/dist/services/httpTransaction.js".",
+         ],
+         [
            "💿 - Service "jwtToken" found in "file:///project/src/services/jwtToken.ts".",
+         ],
+         [
+           "💿 - Service "oTelTracer" found in "@whook/otel/dist/services/oTelTracer.js".",
          ],
          [
            "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/routes/optionsWithCORS.js".",
@@ -1530,6 +1869,12 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/CONSUMER_DEFINITION_FILTER.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/CRONS_HANDLERS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/CRONS_WRAPPERS.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/CRON_DEFINITION_FILTER.ts".",
          ],
          [
@@ -1560,10 +1905,19 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/MAX_CLEAR_RATIO.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/OTEL_TRACER.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/PARSERS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/QUERY_PARSER_OPTIONS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_HANDLERS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_WRAPPERS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/SENSIBLE_HEADERS.ts".",
@@ -1591,6 +1945,12 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/fetcher.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/httpTransaction.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/oTelTracer.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/uniqueId.ts".",
@@ -1645,6 +2005,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/OTEL_TRACER.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/PARSERS.js".",
@@ -1731,6 +2094,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/MAX_CLEAR_RATIO.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/OTEL_TRACER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/PARSERS.js".",
          ],
          [
@@ -1807,6 +2173,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/OTEL_TRACER.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/PARSERS.js".",
@@ -1890,6 +2259,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/MAX_CLEAR_RATIO.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/OTEL_TRACER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/PARSERS.js".",
          ],
          [
@@ -1924,6 +2296,105 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/uniqueId.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/routes/getPing.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/routes/optionsWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/BUFFER_LIMIT.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/COERCION_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/COMMAND_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/CONSUMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/CRONS_WRAPPERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DECODERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DEFAULT_ERROR_CODE.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DEFAULT_MECHANISM.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DEV_ACCESS_TOKEN.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/ENCODERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/HTTP_SERVER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/JWT_SECRET_ENV_NAME.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/MAX_CLEAR_CHARS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/OTEL_TRACER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/PARSERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/QUERY_PARSER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/ROUTES_WRAPPERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/SENSIBLE_HEADERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/SENSIBLE_PROPS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/SHIELD_CHAR.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/SIGNALS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/STRINGIFIERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/TIMEOUT.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/fetcher.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/uniqueId.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🚫 - Module path of "BUFFER_LIMIT" not found.",
@@ -1966,6 +2437,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - Module path of "MAX_CLEAR_RATIO" not found.",
+         ],
+         [
+           "🚫 - Module path of "OTEL_TRACER" not found.",
          ],
          [
            "🚫 - Module path of "PARSERS" not found.",
@@ -2013,7 +2487,25 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "@whook/cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
          ],
          [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/CRONS_HANDLERS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/httpTransaction.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/oTelTracer.js".",
+         ],
+         [
            "🛂 - Dynamic import of "@whook/whook/dist/routes/getPing.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/whook/dist/services/CRONS_WRAPPERS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/whook/dist/services/ROUTES_WRAPPERS.js".",
          ],
          [
            "🛂 - Dynamic import of "ecstatic".",
@@ -2168,19 +2660,31 @@ describe('runProcess', () => {
            "🎙️ - HTTP Server listening at "http://localhost:9999".",
          ],
          [
-           "🏭 - Initializing the CRONS_HANDLERS service with 1 handlers wrapped by 0 wrappers.",
+           "🏭 - Initializing the CRONS_HANDLERS service with 2 handlers wrapped by 0 wrappers.",
          ],
          [
            "🏭 - Initializing the CRONS_WRAPPERS service.",
          ],
          [
-           "🏭 - Initializing the ROUTES_HANDLERS service with 10 handlers wrapped by 2 wrappers.",
+           "🏭 - Initializing the ROUTES_HANDLERS service with 11 handlers wrapped by 2 wrappers.",
          ],
          [
            "🏭 - Initializing the ROUTES_WRAPPERS service.",
          ],
          [
            "💁 - Serving the API docs: http://localhost:9999/docs",
+         ],
+         [
+           "📈 - Wrapping HTTP router with OpenTelemetry spans.",
+         ],
+         [
+           "📈 - Wrapping HTTP transactions with OpenTelemetry spans.",
+         ],
+         [
+           "📈 - Wrapping cron handlers with OpenTelemetry spans.",
+         ],
+         [
+           "📈 - Wrapping route handlers with OpenTelemetry spans.",
          ],
          [
            "🔒 - JWT service initialized!",

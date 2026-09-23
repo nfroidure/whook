@@ -6,7 +6,7 @@ import { type WhookConfig } from '../services/BASE_URL.js';
 import {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
-  type WhookPluginName,
+  type WhookPluginsService,
 } from '../services/WHOOK_RESOLVED_PLUGINS.js';
 import {
   type WhookCommandHandler,
@@ -37,7 +37,7 @@ async function initLsCommand({
   EOL = os.EOL,
 }: {
   CONFIG: WhookConfig;
-  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_PLUGINS?: WhookPluginsService;
   COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService;
   log?: LogService;
   EOL?: typeof os.EOL;

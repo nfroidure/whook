@@ -17,7 +17,7 @@ export const WHOOK_PROJECT_PLUGIN_NAME: WhookPluginName = '__project__';
 export const WHOOK_DEFAULT_PLUGINS = [
   WHOOK_PROJECT_PLUGIN_NAME,
   '@whook/whook',
-];
+] as const satisfies WhookPluginsService;
 export const WHOOK_FOLDERS = [
   'routes',
   'services',
@@ -31,16 +31,16 @@ export const WHOOK_FOLDERS = [
 export type WhookPluginName = string & { _type?: 'whook_plugin' };
 export type WhookURL = string & { _type?: 'whook_url' };
 export type WhookPluginFolder = (typeof WHOOK_FOLDERS)[number];
-export type WhookPluginsService = WhookPluginName[];
-export type WhookResolvedPlugin = {
+export type WhookPluginsService = readonly WhookPluginName[];
+export interface WhookResolvedPlugin {
   mainURL: WhookURL;
   types: WhookPluginFolder[];
-};
+}
 export type WhookResolvedPluginsService = Record<
   WhookPluginName,
   WhookResolvedPlugin
 >;
-export type WhookResolvedPluginsConfig = {
+export interface WhookResolvedPluginsConfig {
   WHOOK_PLUGINS?: WhookPluginsService;
 };
 export type WhookResolvedPluginsDependencies = WhookResolvedPluginsConfig & {

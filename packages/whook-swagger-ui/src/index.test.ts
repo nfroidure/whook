@@ -6,6 +6,7 @@ import {
   prepareEnvironment,
   getPingDefinition,
   initHTTPRouter,
+  initHTTPTransaction,
   type WhookRoutesDefinitionsService,
   type WhookRouteHandlerInitializer,
 } from '@whook/whook';
@@ -98,6 +99,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     );
     $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
+    $.register(initHTTPTransaction);
   });
 
   test('should work', async () => {

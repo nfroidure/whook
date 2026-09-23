@@ -6,6 +6,7 @@ import {
   prepareEnvironment,
   getPingDefinition,
   initHTTPRouter,
+  initHTTPTransaction,
   type WhookDefinitions,
 } from '@whook/whook';
 import { YError } from 'yerror';
@@ -121,6 +122,7 @@ describe('wrapHTTPRouterWithMCPServer', () => {
     $.register(constant('MCP_OPTIONS', MCP_OPTIONS));
     $.register(initMCPHandler);
     $.register(wrapHTTPRouterWithMCPServer(initHTTPRouter));
+    $.register(initHTTPTransaction);
     $.register(constant('CONFIG', {}));
     $.register(constant('DEBUG_NODE_ENVS', [NodeEnv.Test]));
     $.register(

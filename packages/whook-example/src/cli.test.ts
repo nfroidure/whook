@@ -31,6 +31,9 @@ describe('commands should work', () => {
      - printEnv: A command printing every env values
 
 
+     # Provided by "@whook/otel": none
+
+
      # Provided by "@whook/whook": 9 commands
      - config: A simple program that returns the queried config value
      - cronRun: A command to run all instances of a cron

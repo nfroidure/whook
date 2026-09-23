@@ -56,6 +56,7 @@ node --run watch
 ```
 
 Run and update tests:
+
 ```sh
 # Run the tests
 npm t
@@ -96,6 +97,30 @@ Generate API types:
 
 ```sh
 node --run apitypes
+```
+
+See Open Telemetry data:
+
+```sh
+# Install dependencies
+npm i -D @opentelemetry/sdk-node
+npm i -D @opentelemetry/auto-instrumentations-node
+
+# Start Jaeger
+docker run -d --name jaeger \
+  -e COLLECTOR_OTLP_ENABLED=true \
+  -p 16686:16686 \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  jaegertracing/all-in-one:latest
+
+# And run the API with telemetry enabled
+OTEL_TRACES_EXPORTER="otlp" \
+  OTEL_EXPORTER_OTLP_ENDPOINT="http://localhost:4318" \
+  OTEL_NODE_RESOURCE_DETECTORS="env,host,os" \
+  OTEL_SERVICE_NAME="whook-api" \
+  NODE_OPTIONS="--require @opentelemetry/auto-instrumentations-node/register" \
+  node --run watch
 ```
 
 ## Debug

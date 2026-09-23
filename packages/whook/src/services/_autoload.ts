@@ -14,25 +14,20 @@ import {
   ServiceInitializer,
 } from 'knifecycle';
 import { hasDefinedKey, noop } from '../libs/utils.js';
-import initRoutesHandlers from './ROUTES_HANDLERS.js';
-import initCronsHandlers from './CRONS_HANDLERS.js';
-import initConsumersHandlers from './CRONS_HANDLERS.js';
-import initTransformersHandlers from './TRANSFORMERS_HANDLERS.js';
-import initCommandsHandlers from './COMMANDS_HANDLERS.js';
 import { type AppConfig } from 'application-services';
-import initRoutesWrappers, {
+import {
   ROUTES_WRAPPERS_REG_EXP,
   type WhookRoutesWrappersConfig,
 } from './ROUTES_WRAPPERS.js';
-import initCronsWrappers, {
+import {
   CRONS_WRAPPERS_REG_EXP,
   type WhookCronsWrappersConfig,
 } from './CRONS_WRAPPERS.js';
-import initConsumersWrappers, {
+import {
   CONSUMERS_WRAPPERS_REG_EXP,
   type WhookConsumersWrappersConfig,
 } from './CONSUMERS_WRAPPERS.js';
-import initTransformersWrappers, {
+import {
   TRANSFORMERS_WRAPPERS_REG_EXP,
   type WhookTransformersWrappersConfig,
 } from './TRANSFORMERS_WRAPPERS.js';
@@ -47,7 +42,7 @@ import {
 import {
   WHOOK_DEFAULT_PLUGINS,
   WHOOK_PROJECT_PLUGIN_NAME,
-  type WhookPluginName,
+  type WhookPluginsService,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type WhookRawCommandArgs } from '../libs/args.js';
@@ -94,7 +89,7 @@ export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
   WhookTransformersWrappersConfig & {
     APP_CONFIG?: AppConfig;
     INITIALIZER_PATH_MAP?: WhookInitializerMap;
-    WHOOK_PLUGINS?: WhookPluginName[];
+    WHOOK_PLUGINS?: WhookPluginsService;
     WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
     COMMANDS_DEFINITIONS_OPTIONS?: WhookCommandsDefinitionsOptions;
     ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
@@ -323,87 +318,6 @@ async function initAutoload({
     const isTransformerWrapper =
       TRANSFORMERS_WRAPPERS_REG_EXP.test(injectedName);
 
-    /* Architecture Note #2.9.4: the `ROUTES_HANDLERS` mapper
-    Here, we build the handlers map needed by the router by injecting every
-     handler required by the API.
-    */
-    if ('ROUTES_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getRoutesDefinitions());
-
-      return location(
-        alsoInject(handlerNames, initRoutesHandlers),
-        '@whook/whook/dist/services/ROUTES_HANDLERS.js',
-      ) as Initializer<Dependencies, Service>;
-    }
-
-    if ('CRONS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getCronsDefinitions());
-
-      return location(
-        alsoInject(handlerNames, initCronsHandlers),
-        '@whook/whook/dist/services/CRONS_HANDLERS.js',
-      ) as Initializer<Dependencies, Service>;
-    }
-
-    if ('CONSUMERS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getConsumersDefinitions());
-
-      return location(
-        alsoInject(handlerNames, initConsumersHandlers),
-        '@whook/whook/dist/services/CONSUMERS_HANDLERS.js',
-      ) as Initializer<Dependencies, Service>;
-    }
-
-    if ('TRANSFORMERS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getTransformersDefinitions());
-
-      return location(
-        alsoInject(handlerNames, initTransformersHandlers),
-        '@whook/whook/dist/services/TRANSFORMERS_HANDLERS.js',
-      ) as Initializer<Dependencies, Service>;
-    }
-
-    if ('COMMANDS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getCommandsDefinitions());
-
-      return location(
-        alsoInject(handlerNames, initCommandsHandlers),
-        '@whook/whook/dist/services/COMMANDS_HANDLERS.js',
-      ) as Initializer<Dependencies, Service>;
-    }
-
-    /* Architecture Note #2.9.5: the `ROUTES_WRAPPERS` auto loading
-    We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
-     service so that they can be dynamically applied.
-    */
-    if ('ROUTES_WRAPPERS' === injectedName) {
-      return location(
-        alsoInject(ROUTES_WRAPPERS_NAMES, initRoutesWrappers),
-        '@whook/whook/dist/services/ROUTES_WRAPPERS.js',
-      );
-    }
-
-    if ('CRONS_WRAPPERS' === injectedName) {
-      return location(
-        alsoInject(CRONS_WRAPPERS_NAMES, initCronsWrappers),
-        '@whook/whook/dist/services/CRONS_WRAPPERS.js',
-      );
-    }
-
-    if ('CONSUMERS_WRAPPERS' === injectedName) {
-      return location(
-        alsoInject(CONSUMERS_WRAPPERS_NAMES, initConsumersWrappers),
-        '@whook/whook/dist/services/CONSUMERS_WRAPPERS.js',
-      );
-    }
-
-    if ('TRANSFORMERS_WRAPPERS' === injectedName) {
-      return location(
-        alsoInject(TRANSFORMERS_WRAPPERS_NAMES, initTransformersWrappers),
-        '@whook/whook/dist/services/TRANSFORMERS_WRAPPERS.js',
-      );
-    }
-
     if (injectedName === 'COMMAND_DEFINITION') {
       return constant(
         'COMMAND_DEFINITION',
@@ -521,6 +435,96 @@ async function initAutoload({
       injectedName !== injectedName
         ? name(injectedName, resolvedInitializer)
         : resolvedInitializer;
+
+    /* Architecture Note #2.9.4: the `ROUTES_HANDLERS` mapper
+    Here, we build the handlers map needed by the router by injecting every
+     handler required by the API.
+    */
+    if ('ROUTES_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getRoutesDefinitions());
+
+      return location(
+        alsoInject(handlerNames, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    if ('CRONS_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getCronsDefinitions());
+
+      return location(
+        alsoInject(handlerNames, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    if ('CONSUMERS_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getConsumersDefinitions());
+
+      return location(
+        alsoInject(handlerNames, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    if ('TRANSFORMERS_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getTransformersDefinitions());
+
+      return location(
+        alsoInject(handlerNames, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    if ('COMMANDS_HANDLERS' === injectedName) {
+      const handlerNames = Object.keys(await getCommandsDefinitions());
+
+      return location(
+        alsoInject(handlerNames, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    /* Architecture Note #2.9.5: the `ROUTES_WRAPPERS` auto loading
+    We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
+     service so that they can be dynamically applied.
+    */
+    if ('ROUTES_WRAPPERS' === injectedName) {
+      return location(
+        alsoInject(ROUTES_WRAPPERS_NAMES, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    if ('CRONS_WRAPPERS' === injectedName) {
+      return location(
+        alsoInject(CRONS_WRAPPERS_NAMES, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    if ('CONSUMERS_WRAPPERS' === injectedName) {
+      return location(
+        alsoInject(CONSUMERS_WRAPPERS_NAMES, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
+
+    if ('TRANSFORMERS_WRAPPERS' === injectedName) {
+      return location(
+        alsoInject(TRANSFORMERS_WRAPPERS_NAMES, renamedInitializer),
+        modulePath,
+        'default',
+      );
+    }
 
     return location(renamedInitializer, modulePath, 'default');
   }

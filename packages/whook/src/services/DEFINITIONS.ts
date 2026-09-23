@@ -6,7 +6,7 @@ import {
   type OpenAPIExtension,
   type OpenAPIPaths,
 } from 'ya-open-api-types';
-import { type WhookPluginName } from './WHOOK_RESOLVED_PLUGINS.js';
+import { type WhookPluginsService } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import {
   DEFAULT_ROUTE_CONFIG,
@@ -61,7 +61,7 @@ export interface WhookSecurityDefinitions {
 }
 
 export interface WhookDefinitionsConfig {
-  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_PLUGINS?: WhookPluginsService;
 }
 
 export type WhookDefinitionsDependencies = WhookDefinitionsConfig & {

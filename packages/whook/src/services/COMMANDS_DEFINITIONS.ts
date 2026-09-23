@@ -6,6 +6,7 @@ import {
 } from '../types/commands.js';
 import {
   type WhookResolvedPluginsService,
+  type WhookPluginsService,
   type WhookPluginName,
   WHOOK_DEFAULT_PLUGINS,
 } from './WHOOK_RESOLVED_PLUGINS.js';
@@ -39,7 +40,7 @@ export interface WhookCommandsDefinitionsOptions {
 export interface WhookCommandsDefinitionsConfig {
   COMMANDS_DEFINITIONS_OPTIONS?: WhookCommandsDefinitionsOptions;
   COMMAND_DEFINITION_FILTER?: WhookCommandDefinitionFilter;
-  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_PLUGINS?: WhookPluginsService;
 }
 
 export type WhookCommandsDependencies = WhookCommandsDefinitionsConfig & {

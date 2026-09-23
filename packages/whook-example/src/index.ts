@@ -29,9 +29,11 @@ import {
   initAutoload,
   initDefinitions,
   initHTTPRouter,
+  type WhookPluginsService,
 } from '@whook/whook';
 import { initErrorHandlerWithCORS, wrapDefinitionsWithCORS } from '@whook/cors';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
+import { wrapHTTPRouterWithOTel } from '@whook/otel';
 import { extractAppEnv, initTimeMock } from 'application-services';
 import initSecurityDefinitions from './services/SECURITY_DEFINITIONS.js';
 
@@ -55,7 +57,7 @@ const WHOOK_PLUGINS = [
   ...WHOOK_DEFAULT_PLUGINS,
   '@whook/cors',
   '@whook/authorization',
-];
+] as const satisfies WhookPluginsService;
 
 /* Architecture Note #1.1.1.1: Injected names
 
@@ -107,19 +109,30 @@ export async function prepareProcess<
 >(injectedNames: DependencyDeclaration[], $: T): Promise<D> {
   /* Architecture Note #1.1.2.1: server wrappers
   
-  Add here any logic bound to the server only
+  Add here any logic bound to the dev server only
    For example, here we add a Swagger UI page for
-   development purpose.
+   development purpose and open telemetry wrapper.
   */
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
+  $.register(
+    wrapHTTPRouterWithOTel(wrapHTTPRouterWithSwaggerUI(initHTTPRouter)),
+  );
 
   /* Architecture Note #1.1.3.7.2: Dev WHOOK_PLUGINS
 
   Those plugins will only be used locally. The
   `@whook/dev` one is intended to be installed in
-  the development dependencies.
+  the development dependencies. The `@whook/otel`
+  one too, but may in some circumstances be shipped
+  to production for debug / statistics collection.
    */
-  $.register(constant('WHOOK_PLUGINS', [...WHOOK_PLUGINS, '@whook/dev']));
+  $.register(
+    constant('WHOOK_PLUGINS', [
+      WHOOK_PLUGINS[0],
+      '@whook/otel',
+      ...WHOOK_PLUGINS.slice(1),
+      '@whook/dev',
+    ]),
+  );
 
   return await prepareBaseProcess(injectedNames, $);
 }
@@ -132,7 +145,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   /* Architecture Note #4: Services
-  Whook is shipped with a lots of services aimed to
+  Whook is shipped with a lot of services aimed to
    ease your life.
 
   Handlers, services, commands can use services for their

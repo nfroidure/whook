@@ -6,6 +6,7 @@ import {
   prepareEnvironment,
   getPingDefinition,
   initHTTPRouter,
+  initHTTPTransaction,
 } from '@whook/whook';
 import { YError } from 'yerror';
 import wrapHTTPRouterWithGraphIQL from './index.js';
@@ -96,6 +97,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
     $.register(constant('GRAPHIQL', GRAPHIQL));
+    $.register(initHTTPTransaction);
   });
 
   test('should work', async () => {
