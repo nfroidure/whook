@@ -1,7 +1,6 @@
 import { YError } from 'yerror';
 import { identity } from './utils.js';
-import { type IncomingMessage } from 'node:http';
-import { type WhookHeaders } from '../types/http.js';
+import { type WhookHeaders, type WhookNodeRequest } from '../types/http.js';
 
 export function mergeVaryHeaders(
   baseHeader: string | string[],
@@ -80,13 +79,18 @@ export function pickAllHeaderValues(
 }
 
 export function castWhookHeaders(
-  headers: IncomingMessage['headers'] = {},
+  headers: WhookNodeRequest['headers'] = {},
 ): WhookHeaders {
   const whookHeaders: WhookHeaders = {};
 
   for (const key in headers) {
-    if (typeof headers[key] !== 'undefined') {
-      whookHeaders[key] = headers[key];
+    const value = headers[key];
+
+    if (typeof value !== 'undefined') {
+      whookHeaders[key] =
+        value instanceof Array
+          ? value.map((innerValue) => innerValue.toString())
+          : value.toString();
     }
   }
 

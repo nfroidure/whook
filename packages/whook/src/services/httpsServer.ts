@@ -1,5 +1,5 @@
 import { name, autoProvider, location } from 'knifecycle';
-import https from 'node:https';
+import http2 from 'node:http2';
 import ms from 'ms';
 import { YError } from 'yerror';
 import { type Provider } from 'knifecycle';
@@ -11,16 +11,18 @@ import { type WhookSSLCertificatesService } from './SSL_CERTIFICATES.js';
 export interface WhookHTTPSServerEnv {
   DESTROY_SOCKETS?: string;
 }
-export type WhookHTTPSServerOptions = Pick<
-  https.Server,
-  | 'timeout'
-  | 'headersTimeout'
-  | 'requestTimeout'
-  | 'keepAliveTimeout'
-  | 'maxHeadersCount'
-  | 'maxRequestsPerSocket'
-> &
-  Partial<Pick<https.Server, 'maxConnections'>>;
+export type WhookHTTPSServerOptions = Omit<
+  http2.SecureServerOptions,
+  'key' | 'cert' | 'ca'
+> & {
+  timeout?: number;
+  headersTimeout?: number;
+  requestTimeout?: number;
+  keepAliveTimeout?: number;
+  maxHeadersCount?: number;
+  maxRequestsPerSocket?: number;
+  maxConnections?: number;
+};
 export interface WhookHTTPSServerConfig {
   HOST?: string;
   PORT?: number;
@@ -34,11 +36,12 @@ export type WhookHTTPSServerDependencies = WhookHTTPSServerConfig & {
   httpRouter: WhookHTTPRouterService;
   log?: LogService;
 };
-export type WhookHTTPSServerService = https.Server;
+export type WhookHTTPSServerService = http2.Http2SecureServer;
 export type WhookHTTPSServerProvider = Provider<WhookHTTPSServerService>;
 
 const DEFAULT_ENV = {};
 export const DEFAULT_HTTPS_SERVER_OPTIONS: WhookHTTPSServerOptions = {
+  allowHTTP1: true,
   maxHeadersCount: 800,
   requestTimeout: ms('5m'),
   headersTimeout: ms('1m'),
@@ -52,9 +55,10 @@ export default location(
   import.meta.url,
 );
 
-/* Architecture Note #2.12.1: HTTPS Server
+/* Architecture Note #2.12.1: HTTPS/HTTP2 Server
 
-Alternatively you can use an HTTPS server.
+Alternatively you can use an HTTPS server with
+ HTTP/2 support (while keeping HTTP/1 fallback).
 */
 
 /**
@@ -71,7 +75,7 @@ Alternatively you can use an HTTPS server.
  * @param  {Object}   [services.SSL_CERTIFICATES]
  * An object containing the SSL certificates
  * @param  {Object}   [services.HTTPS_SERVER_OPTIONS]
- * See https://nodejs.org/docs/latest/api/http.html#class-httpserver
+ * See https://nodejs.org/docs/latest/api/http2.html#http2createsecureserveroptions-onrequesthandler
  * @param  {String}   services.HOST
  * The server host
  * @param  {Number}   services.PORT
@@ -81,7 +85,7 @@ Alternatively you can use an HTTPS server.
  * @param  {Function} [services.log=noop]
  * A logging function
  * @return {Promise<HTTPSServer>}
- * A promise of an object with a NodeJS HTTPS server
+ * A promise of an object with a NodeJS HTTPS/HTTP2 server
  *  in its `service` property.
  */
 async function initHTTPSServer({
@@ -101,10 +105,26 @@ async function initHTTPSServer({
   const sockets: Set<Socket> = ENV.DESTROY_SOCKETS
     ? new Set()
     : (undefined as unknown as Set<Socket>);
+  const {
+    timeout,
+    headersTimeout,
+    requestTimeout,
+    maxConnections,
+    maxHeadersCount,
+    maxRequestsPerSocket,
+    keepAliveTimeout,
+    ...createSecureServerOptions
+  } = FINAL_HTTPS_SERVER_OPTIONS;
   /**
     @typedef HTTPSServer
   */
-  const httpsServer = https.createServer(SSL_CERTIFICATES, httpRouter);
+  const httpsServer = http2.createSecureServer(
+    {
+      ...createSecureServerOptions,
+      ...SSL_CERTIFICATES,
+    },
+    httpRouter,
+  );
   const listenPromise = new Promise((resolve) => {
     httpsServer.listen(PORT, HOST, () => {
       log(
@@ -119,16 +139,41 @@ async function initHTTPSServer({
       reject(YError.wrap(err as Error, 'E_HTTPS_SERVER_ERROR')),
     );
   });
+  const compatibilityHTTPSServer = httpsServer as unknown as Partial<{
+    requestTimeout: number;
+    headersTimeout: number;
+    keepAliveTimeout: number;
+    maxHeadersCount: number;
+    maxRequestsPerSocket: number;
+    maxConnections: number;
+  }>;
 
-  httpsServer.maxHeadersCount = FINAL_HTTPS_SERVER_OPTIONS.maxHeadersCount;
-  httpsServer.requestTimeout = FINAL_HTTPS_SERVER_OPTIONS.requestTimeout;
-  httpsServer.headersTimeout = FINAL_HTTPS_SERVER_OPTIONS.headersTimeout;
-  httpsServer.maxRequestsPerSocket =
-    FINAL_HTTPS_SERVER_OPTIONS.maxRequestsPerSocket;
-  httpsServer.timeout = FINAL_HTTPS_SERVER_OPTIONS.timeout;
-  httpsServer.keepAliveTimeout = FINAL_HTTPS_SERVER_OPTIONS.keepAliveTimeout;
-  if (typeof FINAL_HTTPS_SERVER_OPTIONS.maxConnections === 'number') {
-    httpsServer.maxConnections = FINAL_HTTPS_SERVER_OPTIONS.maxConnections;
+  if (typeof timeout === 'number') {
+    httpsServer.setTimeout(timeout);
+  }
+  if (typeof requestTimeout === 'number' && 'requestTimeout' in httpsServer) {
+    compatibilityHTTPSServer.requestTimeout = requestTimeout;
+  }
+  if (typeof headersTimeout === 'number' && 'headersTimeout' in httpsServer) {
+    compatibilityHTTPSServer.headersTimeout = headersTimeout;
+  }
+  if (typeof maxConnections === 'number' && 'maxConnections' in httpsServer) {
+    compatibilityHTTPSServer.maxConnections = maxConnections;
+  }
+  if (typeof maxHeadersCount === 'number' && 'maxHeadersCount' in httpsServer) {
+    compatibilityHTTPSServer.maxHeadersCount = maxHeadersCount;
+  }
+  if (
+    typeof maxRequestsPerSocket === 'number' &&
+    'maxRequestsPerSocket' in httpsServer
+  ) {
+    compatibilityHTTPSServer.maxRequestsPerSocket = maxRequestsPerSocket;
+  }
+  if (
+    typeof keepAliveTimeout === 'number' &&
+    'keepAliveTimeout' in httpsServer
+  ) {
+    compatibilityHTTPSServer.keepAliveTimeout = keepAliveTimeout;
   }
 
   if (ENV.DESTROY_SOCKETS) {
@@ -147,8 +192,10 @@ async function initHTTPSServer({
       await new Promise<void>((resolve, reject) => {
         log('debug', '✅ - Closing HTTPS server.');
         // Avoid to keepalive connections on shutdown
-        httpsServer.timeout = 1;
-        httpsServer.keepAliveTimeout = 1;
+        httpsServer.setTimeout(1);
+        if ('keepAliveTimeout' in httpsServer) {
+          compatibilityHTTPSServer.keepAliveTimeout = 1;
+        }
         httpsServer.close((err) => {
           if (err) {
             reject(err);
