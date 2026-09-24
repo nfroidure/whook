@@ -138,8 +138,12 @@ export async function restartDevProcess<T extends Dependencies>({
     await $instance.destroy();
   }
 
-  const { runProcess, prepareEnvironment, prepareProcess } = await import(
+  const { prepareEnvironment } = await import(
     pathToFileURL(join(process.cwd(), 'src', 'index.ts')).toString() +
+      (restartsCounter ? '?restartsCounter=' + restartsCounter : '')
+  );
+  const { runProcess, prepareProcess } = await import(
+    pathToFileURL(join(process.cwd(), 'src', 'process.ts')).toString() +
       (restartsCounter ? '?restartsCounter=' + restartsCounter : '')
   );
 

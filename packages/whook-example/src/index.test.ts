@@ -9,11 +9,10 @@ import {
 } from '@jest/globals';
 import { constant } from 'knifecycle';
 import {
-  runProcess,
-  prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
   DEFAULT_INJECTED_NAMES,
 } from './index.js';
+import { runProcess, prepareProcess } from './process.js';
 import axios from 'axios';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'module';
