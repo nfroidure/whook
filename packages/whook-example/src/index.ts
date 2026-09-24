@@ -10,54 +10,46 @@ You can see a view of the full architecture document
 /* Architecture Note #1.1: The main file
 
 Per convention a Whook server main file must exports
- the following 3 functions to be composable.
+ the following functions and constants to be composable.
 */
 
-import { env, argv as _argv } from 'node:process';
-import {
-  Knifecycle,
-  constant,
-  type DependencyDeclaration,
-  type Dependencies,
-} from 'knifecycle';
+import { env } from 'node:process';
+import { Knifecycle, constant } from 'knifecycle';
 import {
   WHOOK_DEFAULT_INJECTED_NAMES,
   WHOOK_DEFAULT_PLUGINS,
-  runProcess as runBaseProcess,
-  prepareProcess as prepareBaseProcess,
   prepareEnvironment as prepareBaseEnvironment,
   initAutoload,
   initDefinitions,
-  initHTTPRouter,
+  type WhookPluginsService,
 } from '@whook/whook';
 import { initErrorHandlerWithCORS, wrapDefinitionsWithCORS } from '@whook/cors';
-import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { extractAppEnv, initTimeMock } from 'application-services';
 import initSecurityDefinitions from './services/SECURITY_DEFINITIONS.js';
 
-/* Architecture Note #1.1.3.4: supported `APP_ENV` values
+/* Architecture Note #1.1.1: supported `APP_ENV` values
 
 You can add more application environment here for several
  deployment targets.
 */
-const APP_ENVS = ['local', 'test', 'production'] as const;
+export const APP_ENVS = ['local', 'test', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
 
-/* Architecture Note #1.1.3.7: WHOOK_PLUGINS
+/* Architecture Note #1.1.2: WHOOK_PLUGINS
   
   Plugins allows you to add simple features to the Whook's core,
    to add some, just add the plugin module name here.
   
   You can also avoid Whook defaults by leaving it empty.
   */
-const WHOOK_PLUGINS = [
+export const WHOOK_PLUGINS = [
   ...WHOOK_DEFAULT_PLUGINS,
   '@whook/cors',
   '@whook/authorization',
-];
+] as const satisfies WhookPluginsService;
 
-/* Architecture Note #1.1.1.1: Injected names
+/* Architecture Note #1.1.3: Injected names
 
 Per default, Whook embeds the process manager,
  the HTTP server and optionally the cronRunner.
@@ -67,64 +59,7 @@ You can specify any service here that should be
 */
 export const DEFAULT_INJECTED_NAMES = [...WHOOK_DEFAULT_INJECTED_NAMES];
 
-/* Architecture Note #1.1.1: runProcess
-
-The `runProcess` function is intended to run the server
- and may be proxied as is, except in some e2e test cases
- where it can be useful to put mocks in (see
- [the E2E tests](./index.test.ts) coming with this project
- for a real world example).
-*/
-export async function runProcess<
-  D extends Dependencies,
-  T extends Knifecycle = Knifecycle,
->(
-  innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
-  innerPrepareProcess: (
-    injectedNames: DependencyDeclaration[],
-    $: T,
-  ) => Promise<D> = prepareProcess,
-  injectedNames: DependencyDeclaration[] = DEFAULT_INJECTED_NAMES,
-  argv: typeof _argv = _argv,
-): Promise<D> {
-  return runBaseProcess(
-    innerPrepareEnvironment,
-    innerPrepareProcess,
-    injectedNames,
-    argv,
-  );
-}
-
-/* Architecture Note #1.1.2: prepareProcess
-
-The `prepareProcess` function is intended to prepare
-the local process environment. Put here anything you
-don't want to end up in the final build process.
-*/
-export async function prepareProcess<
-  D extends Dependencies,
-  T extends Knifecycle = Knifecycle,
->(injectedNames: DependencyDeclaration[], $: T): Promise<D> {
-  /* Architecture Note #1.1.2.1: server wrappers
-  
-  Add here any logic bound to the server only
-   For example, here we add a Swagger UI page for
-   development purpose.
-  */
-  $.register(wrapHTTPRouterWithSwaggerUI(initHTTPRouter));
-
-  /* Architecture Note #1.1.3.7.2: Dev WHOOK_PLUGINS
-
-  Those plugins will only be used locally. The
-  `@whook/dev` one is intended to be installed in
-  the development dependencies.
-   */
-  $.register(constant('WHOOK_PLUGINS', [...WHOOK_PLUGINS, '@whook/dev']));
-
-  return await prepareBaseProcess(injectedNames, $);
-}
-
-/* Architecture Note #1.1.3: prepareEnvironment
+/* Architecture Note #1.1.4: prepareEnvironment
 
 The `prepareEnvironment` one is intended to prepare the process environment
 */
@@ -132,7 +67,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $: T = new Knifecycle() as T,
 ): Promise<T> {
   /* Architecture Note #4: Services
-  Whook is shipped with a lots of services aimed to
+  Whook is shipped with a lot of services aimed to
    ease your life.
 
   Handlers, services, commands can use services for their
@@ -147,7 +82,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $ = await prepareBaseEnvironment($);
 
-  /* Architecture Note #1.1.3.1: Autoloader
+  /* Architecture Note #1.1.4.1: Autoloader
 
   You can register any service/handler required to bootstrap
    the server env here manually, see Knifecycle for more infos
@@ -162,7 +97,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(initAutoload);
 
-  /* Architecture Note #1.1.3.2: Definitions
+  /* Architecture Note #1.1.4.2: Definitions
 
   This service loads the definitions directly by
    looking at your `src` folder. You can
@@ -175,14 +110,14 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(wrapDefinitionsWithCORS(initDefinitions));
 
-  /* Architecture Note #1.1.3.3: MAIN_FILE_URL
+  /* Architecture Note #1.1.4.3: MAIN_FILE_URL
 
   The project main file allows auto loading features to work
    either with sources (in `src`) and files built (in `dist/`).
   */
   $.register(constant('MAIN_FILE_URL', import.meta.url));
 
-  /* Architecture Note #1.1.3.4: APP_ENV
+  /* Architecture Note #1.1.4.4: APP_ENV
 
   Reading the `APP_ENV` from the process environment and defining
    it as a constant.
@@ -191,7 +126,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
 
   $.register(constant('APP_ENV', APP_ENV));
 
-  /* Architecture Note #1.1.3.4: $overrides
+  /* Architecture Note #1.1.4.4: $overrides
 
   Setting the `knifecycle` `$overrides` service depending on the
    current `APP_ENV`. It allows to map services to different
@@ -204,7 +139,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
     ),
   );
 
-  /* Architecture Note #1.1.3.6: TRANSACTIONS
+  /* Architecture Note #1.1.4.6: TRANSACTIONS
 
   The Whook HTTP Transaction service, maintains an internal
    hash that handles a list of the current running HTTP
@@ -253,7 +188,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
     ]),
   );
 
-  /* Architecture Note #1.1.3.7.1: Build up WHOOK_PLUGINS
+  /* Architecture Note #1.1.4.7.1: Build up WHOOK_PLUGINS
 
   Those plugins will get involved for the final build.
    */

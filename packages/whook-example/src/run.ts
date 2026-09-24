@@ -1,3 +1,4 @@
-import { prepareEnvironment, prepareProcess, runProcess } from './index.js';
+import { prepareEnvironment } from './index.js';
+import { prepareProcess, runProcess } from './process.js';
 
 await runProcess(prepareEnvironment, prepareProcess);

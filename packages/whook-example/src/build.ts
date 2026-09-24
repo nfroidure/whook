@@ -1,4 +1,4 @@
-/* Architecture Note #1.2: The build file
+/* Architecture Note #1.3: The build file
 
 Per convention a Whook server build file must export
  the following 2 functions to be composable:
@@ -12,7 +12,7 @@ import {
   prepareBuildEnvironment as prepareBaseBuildEnvironment,
 } from '@whook/dev';
 
-/* Architecture Note #1.2.1: The `runBuild` function
+/* Architecture Note #1.3.1: The `runBuild` function
 
 The `runBuild` function is intended to build the
  project.
@@ -24,7 +24,7 @@ export async function runBuild(
   return runBaseBuild(innerPrepareEnvironment);
 }
 
-/* Architecture Note #1.2.2: The `prepareBuildEnvironment` function
+/* Architecture Note #1.3.2: The `prepareBuildEnvironment` function
 
 The `prepareBuildEnvironment` create the build
  environment

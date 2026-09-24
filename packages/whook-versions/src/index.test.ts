@@ -21,6 +21,8 @@ import {
   type WhookRouteHandler,
   initRoutesHandlers,
   initRoutesWrappers,
+  initHTTPRouter,
+  initHTTPTransaction,
 } from '@whook/whook';
 import axios from 'axios';
 import { YError } from 'yerror';
@@ -557,6 +559,8 @@ describe('initWrapRouteHandlerWithVersionChecker()', () => {
     $.register(
       alsoInject(['wrapRouteHandlerWithVersionChecker'], initRoutesWrappers),
     );
+    $.register(initHTTPRouter);
+    $.register(initHTTPTransaction);
     $.register(constant('getPing', getPing));
     $.register(constant('logger', logger));
 

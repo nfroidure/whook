@@ -14,6 +14,8 @@ import {
   prepareEnvironment as basePrepareEnvironment,
   initRoutesWrappers,
   initRoutesHandlers,
+  initHTTPRouter,
+  initHTTPTransaction,
 } from '@whook/whook';
 import { alsoInject, constant, initializer } from 'knifecycle';
 import axios from 'axios';
@@ -168,6 +170,8 @@ describe('GraphQL server', () => {
     $.register(constant('graphQLContextFunction', graphQLContextFunction));
     $.register(initGraphQL);
     $.register(constant('authentication', authentication));
+    $.register(initHTTPRouter);
+    $.register(initHTTPTransaction);
 
     // Auth
     const ROUTES_WRAPPERS_NAMES = ['wrapRouteHandlerWithAuthorization'];

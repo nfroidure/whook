@@ -6,6 +6,7 @@ import {
 } from '../types/crons.js';
 import {
   type WhookResolvedPluginsService,
+  type WhookPluginsService,
   type WhookPluginName,
   WHOOK_DEFAULT_PLUGINS,
 } from './WHOOK_RESOLVED_PLUGINS.js';
@@ -38,7 +39,7 @@ export interface WhookCronDefinitionsOptions {
 export interface WhookCronsDefinitionsConfig {
   CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
   CRON_DEFINITION_FILTER?: WhookCronDefinitionFilter;
-  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_PLUGINS?: WhookPluginsService;
 }
 
 export type WhookCronsDefinitionsDependencies = WhookCronsDefinitionsConfig & {

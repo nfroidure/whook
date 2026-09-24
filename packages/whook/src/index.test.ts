@@ -5,6 +5,8 @@ import {
   runProcess,
   prepareProcess,
   prepareEnvironment as basePrepareEnvironment,
+  initHTTPRouter,
+  initHTTPTransaction,
 } from './index.js';
 
 describe('runProcess', () => {
@@ -66,6 +68,8 @@ describe('runProcess', () => {
         }),
       );
       $.register(constant('logger', logger as Logger));
+      $.register(initHTTPRouter);
+      $.register(initHTTPTransaction);
       $.register(constant('MAIN_FILE_URL', import.meta.url));
 
       return $;

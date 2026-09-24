@@ -6,6 +6,7 @@ import {
 } from '../types/consumers.js';
 import {
   type WhookResolvedPluginsService,
+  type WhookPluginsService,
   type WhookPluginName,
   WHOOK_DEFAULT_PLUGINS,
 } from './WHOOK_RESOLVED_PLUGINS.js';
@@ -39,7 +40,7 @@ export interface WhookConsumerDefinitionsOptions {
 export interface WhookConsumersDefinitionsConfig {
   CONSUMERS_DEFINITIONS_OPTIONS?: WhookConsumerDefinitionsOptions;
   CONSUMER_DEFINITION_FILTER?: WhookConsumerDefinitionFilter;
-  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_PLUGINS?: WhookPluginsService;
 }
 
 export type WhookConsumersDefinitionsDependencies =

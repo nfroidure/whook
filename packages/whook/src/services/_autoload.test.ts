@@ -222,10 +222,12 @@ describe('$autoload', () => {
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
        {
-         "ROUTES_HANDLERS": {
-           "getPing": [Function],
-         },
-         "importerCalls": [],
+         "ROUTES_HANDLERS": [Function],
+         "importerCalls": [
+           [
+             "file:///home/whoami/my-whook-project/src/services/ROUTES_HANDLERS.ts",
+           ],
+         ],
          "injectorCalls": [
            [
              [
@@ -235,7 +237,7 @@ describe('$autoload', () => {
          ],
          "location": {
            "exportName": "default",
-           "url": "@whook/whook/dist/services/ROUTES_HANDLERS.js",
+           "url": "file:///home/whoami/my-whook-project/src/services/ROUTES_HANDLERS.ts",
          },
          "logCalls": [
            [
@@ -243,8 +245,20 @@ describe('$autoload', () => {
              "🤖 - Initializing the \`$autoload\` service.",
            ],
            [
-             "warning",
-             "🏭 - Initializing the ROUTES_HANDLERS service with 1 handlers wrapped by 0 wrappers.",
+             "debug",
+             "🍀 - Trying to find "ROUTES_HANDLERS" module path in "__project__".",
+           ],
+           [
+             "debug",
+             "✅ - Module path of "ROUTES_HANDLERS" found at "file:///home/whoami/my-whook-project/src/services/ROUTES_HANDLERS.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Service "ROUTES_HANDLERS" found in "file:///home/whoami/my-whook-project/src/services/ROUTES_HANDLERS.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "ROUTES_HANDLERS" initializer from "file:///home/whoami/my-whook-project/src/services/ROUTES_HANDLERS.ts".",
            ],
          ],
          "resolveCalls": [],
@@ -313,12 +327,16 @@ describe('$autoload', () => {
         resolveCalls: resolve.mock.calls,
       }).toMatchInlineSnapshot(`
        {
-         "ROUTES_WRAPPERS": [],
-         "importerCalls": [],
+         "ROUTES_WRAPPERS": [Function],
+         "importerCalls": [
+           [
+             "file:///home/whoami/my-whook-project/src/services/ROUTES_WRAPPERS.ts",
+           ],
+         ],
          "injectorCalls": [],
          "location": {
            "exportName": "default",
-           "url": "@whook/whook/dist/services/ROUTES_WRAPPERS.js",
+           "url": "file:///home/whoami/my-whook-project/src/services/ROUTES_WRAPPERS.ts",
          },
          "logCalls": [
            [
@@ -326,12 +344,20 @@ describe('$autoload', () => {
              "🤖 - Initializing the \`$autoload\` service.",
            ],
            [
-             "warning",
-             "🏭 - Initializing the ROUTES_WRAPPERS service.",
+             "debug",
+             "🍀 - Trying to find "ROUTES_WRAPPERS" module path in "__project__".",
            ],
            [
              "debug",
-             "🏭 - Found inconsistencies between ROUTES_WRAPPERS and ROUTES_WRAPPERS_NAMES.",
+             "✅ - Module path of "ROUTES_WRAPPERS" found at "file:///home/whoami/my-whook-project/src/services/ROUTES_WRAPPERS.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Service "ROUTES_WRAPPERS" found in "file:///home/whoami/my-whook-project/src/services/ROUTES_WRAPPERS.ts".",
+           ],
+           [
+             "debug",
+             "💿 - Loading "ROUTES_WRAPPERS" initializer from "file:///home/whoami/my-whook-project/src/services/ROUTES_WRAPPERS.ts".",
            ],
          ],
          "resolveCalls": [],

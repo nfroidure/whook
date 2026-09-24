@@ -15,6 +15,8 @@ import {
   DEFAULT_ERRORS_DESCRIPTORS,
   initRoutesWrappers,
   initRoutesHandlers,
+  initHTTPRouter,
+  initHTTPTransaction,
 } from '@whook/whook';
 import {
   AUTHORIZATION_ERRORS_DESCRIPTORS,
@@ -244,6 +246,8 @@ describe('OAuth2 server', () => {
     $.register(constant('MECHANISMS', [BEARER_MECHANISM, BASIC_MECHANISM]));
     $.register(constant('logger', logger as Logger));
     $.register(constant('time', time));
+    $.register(initHTTPRouter);
+    $.register(initHTTPTransaction);
 
     // Auth
     const ROUTES_WRAPPERS_NAMES = ['wrapRouteHandlerWithAuthorization'];

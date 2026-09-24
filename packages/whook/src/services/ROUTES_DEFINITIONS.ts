@@ -6,6 +6,7 @@ import {
 } from '../types/routes.js';
 import {
   type WhookResolvedPluginsService,
+  type WhookPluginsService,
   type WhookPluginName,
   WHOOK_DEFAULT_PLUGINS,
 } from './WHOOK_RESOLVED_PLUGINS.js';
@@ -42,7 +43,7 @@ export interface WhookRoutesDefinitionsOptions {
 export interface WhookRoutesDefinitionsConfig {
   ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
   ROUTE_DEFINITION_FILTER?: WhookRouteDefinitionFilter;
-  WHOOK_PLUGINS?: WhookPluginName[];
+  WHOOK_PLUGINS?: WhookPluginsService;
 }
 
 export type WhookRoutesDefinitionsDependencies =
