@@ -29,6 +29,7 @@ import {
 } from '../services/oAuth2AuthorizationCodeGranter.js';
 import { passwordTokenRequestBodySchema } from '../services/oAuth2PasswordGranter.js';
 import { clientCredentialsTokenRequestBodySchema } from '../services/oAuth2ClientCredentialsGranter.js';
+import { deviceAuthorizationTokenRequestBodySchema } from '../services/oAuth2DeviceAuthorizationGranter.js';
 import { scopeSchema } from '../libs/schemas.js';
 import { camelCaseObjectProperties } from '../libs/utils.js';
 
@@ -38,6 +39,7 @@ export {
   clientCredentialsTokenRequestBodySchema,
   authorizationCodeTokenRequestBodySchema,
   codeVerifierSchema,
+  deviceAuthorizationTokenRequestBodySchema,
   scopeSchema,
 };
 
@@ -54,6 +56,7 @@ export const tokenBodySchema = {
       refersTo(authorizationCodeTokenRequestBodySchema),
       refersTo(clientCredentialsTokenRequestBodySchema),
       refersTo(refreshTokenRequestBodySchema),
+      refersTo(deviceAuthorizationTokenRequestBodySchema),
     ],
   },
 } as const satisfies WhookAPISchemaDefinition;

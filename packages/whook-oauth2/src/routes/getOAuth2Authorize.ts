@@ -43,7 +43,7 @@ import {
   type WhookOAuth2AuthorizationRequestsService,
 } from '../services/oAuth2AuthorizationRequests.js';
 import { isRequestURI } from '../libs/authorizationRequests.js';
-import { toUsableClientId } from '../libs/clients.js';
+import { checkGrants, toUsableClientId } from '../libs/clients.js';
 
 export {
   requestURISchema,
@@ -207,12 +207,7 @@ async function initGetOAuth2Authorize({
     try {
       const clientGrants = await readClientGrants(givenClientId);
 
-      if (givenClientId !== clientGrants.authenticationData.clientId) {
-        throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-          givenClientId,
-          clientGrants.authenticationData.clientId,
-        ]);
-      }
+      checkGrants(givenClientId, clientGrants);
 
       // Default to client URI to redirect errors
       // before the request URI is decoded
