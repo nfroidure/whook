@@ -42,7 +42,7 @@ export type WhookResolvedPluginsService = Record<
 >;
 export interface WhookResolvedPluginsConfig {
   WHOOK_PLUGINS?: WhookPluginsService;
-};
+}
 export type WhookResolvedPluginsDependencies = WhookResolvedPluginsConfig & {
   MAIN_FILE_URL: WhookURL;
   resolve: ResolveService;

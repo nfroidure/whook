@@ -7,7 +7,7 @@ import { type JsonValue } from 'type-fest';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type WhookHandlerWrapper } from './wrappers.js';
 import { type WhookEnvironmentsConfig } from '../libs/environments.js';
-import { type WhookModuleAsideSchemas } from '../index.js';
+import { type WhookSchemasDeclarationModule } from '../index.js';
 
 export const DEFAULT_CRON_CONFIG: WhookCronConfig = {
   environments: 'all',
@@ -52,7 +52,7 @@ export const CRON_ASIDE_COMPONENTS_MAP = {
 // https://github.com/nfroidure/whook/issues/196
 export interface WhookCronModule<
   T extends JsonValue = JsonValue,
-> extends WhookModuleAsideSchemas {
+> extends WhookSchemasDeclarationModule {
   default: WhookCronHandlerInitializer<T>;
   definition: WhookCronDefinition<T>;
 }

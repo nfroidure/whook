@@ -16,8 +16,9 @@ import {
   WHOOK_PROJECT_PLUGIN_NAME,
   initDefinitions,
   initRoutesDefinitions,
+  initCreateDirectoryFilesWalker,
   type WhookDefinitions,
-  type WhookRoutesDefinitionsService,
+  type WhookRoutesDeclarationsService,
   type WhookRouteDefinition,
   type WhookResolvedPluginsService,
   type WhookRouteModule,
@@ -26,6 +27,7 @@ import {
 import { initImporter, type LogService } from 'common-services';
 import { pathItemToOperationMap } from 'ya-open-api-types';
 import { wrapDefinitionsWithCORS } from '@whook/cors';
+import { type CreateDirectoryFilesWalkerService } from '@whook/whook/dist/services/createDirectoryFilesWalker.js';
 
 describe('API', () => {
   const { CONFIG } = FULL_CONFIG;
@@ -48,28 +50,47 @@ describe('API', () => {
     },
   };
   const log = jest.fn<LogService>();
-  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  let createDirectoryFilesWalker: CreateDirectoryFilesWalkerService;
+  let ROUTES_DECLARATIONS: WhookRoutesDeclarationsService;
   let SECURITY_DEFINITIONS: WhookSecurityDefinitions;
   let DEFINITIONS: WhookDefinitions;
 
   beforeAll(async () => {
     const importer = await initImporter<WhookRouteModule>({ log });
 
+    createDirectoryFilesWalker = await initCreateDirectoryFilesWalker({});
     SECURITY_DEFINITIONS = await initSecurityDefinitions({ ENV, log });
-    ROUTES_DEFINITIONS = await initRoutesDefinitions({
+    ROUTES_DECLARATIONS = await initRoutesDefinitions({
       APP_ENV,
       BASE_PATH: '',
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
       WHOOK_RESOLVED_PLUGINS,
       importer,
+      createDirectoryFilesWalker,
     });
     DEFINITIONS = await wrapDefinitionsWithCORS(initDefinitions)({
       WHOOK_PLUGINS: WHOOK_DEFAULT_PLUGINS,
-      ROUTES_DEFINITIONS,
-      COMMANDS_DEFINITIONS: {},
-      CRONS_DEFINITIONS: {},
-      CONSUMERS_DEFINITIONS: {},
-      TRANSFORMERS_DEFINITIONS: {},
+      ROUTES_DECLARATIONS,
+      COMMANDS_DECLARATIONS: {
+        commands: {},
+        handlers: {},
+        schemas: {},
+      },
+      CRONS_DECLARATIONS: {
+        crons: {},
+        handlers: {},
+        schemas: {},
+      },
+      CONSUMERS_DECLARATIONS: {
+        consumers: {},
+        handlers: {},
+        schemas: {},
+      },
+      TRANSFORMERS_DECLARATIONS: {
+        transformers: {},
+        handlers: {},
+        schemas: {},
+      },
       SECURITY_DEFINITIONS,
     });
   });

@@ -2,7 +2,7 @@ import {
   type WhookCommandDefinition,
   type WhookCommandHandler,
 } from '../types/commands.js';
-import { type WhookCronsDefinitionsService } from '../services/CRONS_DEFINITIONS.js';
+import { type WhookCronsDeclarationsService } from '../services/CRONS_DECLARATIONS.js';
 
 import { type LogService } from 'common-services';
 import { type Injector, type Service, autoService, location } from 'knifecycle';
@@ -39,11 +39,11 @@ export const definition = {
 } as const satisfies WhookCommandDefinition;
 
 async function initCronRunCommand({
-  CRONS_DEFINITIONS,
+  CRONS_DECLARATIONS,
   $injector,
   log,
 }: {
-  CRONS_DEFINITIONS: WhookCronsDefinitionsService;
+  CRONS_DECLARATIONS: WhookCronsDeclarationsService;
   $injector: Injector<Service>;
   log: LogService;
 }): Promise<
@@ -58,10 +58,10 @@ async function initCronRunCommand({
       namedArguments: { name, date, body },
     } = args;
 
-    const definition = CRONS_DEFINITIONS[name];
+    const definition = CRONS_DECLARATIONS.crons[name].content;
     const handler = (await $injector([name]))[name];
 
-    for (const schedule of definition.module.definition.schedules) {
+    for (const schedule of definition.schedules) {
       log(
         'info',
         `⌚ - Running crons of ${name} at ${date} for ${JSON.stringify(schedule)}`,

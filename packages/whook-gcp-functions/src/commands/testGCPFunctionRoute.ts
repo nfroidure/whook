@@ -8,7 +8,7 @@ import {
   type WhookRouteHandlerParameters,
   type WhookCommandHandler,
   type WhookCommandDefinition,
-  type WhookRoutesDefinitionsService,
+  type WhookRoutesDeclarationsService,
   type WhookMain,
 } from '@whook/whook';
 import {
@@ -62,13 +62,13 @@ async function initTestGCPFunctionRouteCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
-  ROUTES_DEFINITIONS,
+  ROUTES_DECLARATIONS,
   log,
 }: {
   APP_ENV: WhookMain['AppEnv'];
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  ROUTES_DECLARATIONS: WhookRoutesDeclarationsService;
   log: LogService;
 }): Promise<
   WhookCommandHandler<{
@@ -89,7 +89,7 @@ async function initTestGCPFunctionRouteCommand({
       type,
       extension,
     );
-    const handlerDefinition = ROUTES_DEFINITIONS[name]?.module?.definition;
+    const handlerDefinition = ROUTES_DECLARATIONS.routes[name]?.content;
 
     if (!handlerDefinition) {
       throw new YError('E_OPERATION_NOT_FOUND');

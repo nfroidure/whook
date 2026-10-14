@@ -5,7 +5,6 @@ import { YError } from 'yerror';
 import { type DelayService, type LogService } from 'common-services';
 import {
   type WhookCronHandler,
-  type WhookCronModule,
   type WhookSchemaValidatorsService,
 } from '@whook/whook';
 import { type JsonValue } from 'type-fest';
@@ -34,16 +33,18 @@ describe('postCronRun', () => {
       delay,
     });
     const postCronRun = await initPostCronRun({
-      CRONS_DEFINITIONS: {
-        handleMinutes: {
-          name: 'handleMinutes',
-          pluginName: 'n/a',
-          url: 'n/a',
-          module: {
-            default: initHandleMinutes,
-            definition,
-          } as unknown as WhookCronModule<JsonValue>,
+      CRONS_DECLARATIONS: {
+        crons: {
+          handleMinutes: {
+            name: 'handleMinutes',
+            type: 'cron',
+            pluginName: 'n/a',
+            url: 'file:///project/crons/handleMinutes.ts',
+            content: definition,
+          },
         },
+        handlers: {},
+        schemas: {},
       },
       CRONS_HANDLERS: {
         handleMinutes: handleMinutes as WhookCronHandler<JsonValue>,
@@ -117,16 +118,18 @@ describe('postCronRun', () => {
         delay,
       });
       const postCronRun = await initPostCronRun({
-        CRONS_DEFINITIONS: {
-          handleMinutes: {
-            name: 'handleMinutes',
-            pluginName: 'n/a',
-            url: 'n/a',
-            module: {
-              default: initHandleMinutes,
-              definition,
-            } as unknown as WhookCronModule<JsonValue>,
+        CRONS_DECLARATIONS: {
+          crons: {
+            handleMinutes: {
+              name: 'handleMinutes',
+              type: 'cron',
+              pluginName: 'n/a',
+              url: 'file:///project/crons/handleMinutes.ts',
+              content: definition,
+            },
           },
+          handlers: {},
+          schemas: {},
         },
         CRONS_HANDLERS: {
           handleMinutes: handleMinutes as WhookCronHandler<JsonValue>,

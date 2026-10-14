@@ -19,16 +19,16 @@ import {
   noop,
   type WhookCommandHandler,
   type WhookCommandDefinition,
-  DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  type WhookRoutesDefinitionsOptions,
-  DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  type WhookCronDefinitionsOptions,
-  type WhookConsumerDefinitionsOptions,
-  DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
-  DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
-  type WhookCommandsDefinitionsOptions,
-  type WhookTransformerDefinitionsOptions,
-  DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
+  DEFAULT_ROUTES_DECLARATIONS_OPTIONS,
+  type WhookRoutesDeclarationsOptions,
+  DEFAULT_CRONS_DECLARATIONS_OPTIONS,
+  type WhookCronDeclarationsOptions,
+  type WhookConsumerDeclarationsOptions,
+  DEFAULT_CONSUMERS_DECLARATIONS_OPTIONS,
+  DEFAULT_COMMANDS_DECLARATIONS_OPTIONS,
+  type WhookCommandsDeclarationsOptions,
+  type WhookTransformersDeclarationsOptions,
+  DEFAULT_TRANSFORMERS_DECLARATIONS_OPTIONS,
 } from '@whook/whook';
 import {
   Project,
@@ -99,11 +99,11 @@ export const definition = {
 
 async function initCreateCommand({
   PROJECT_DIR,
-  ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  CONSUMERS_DEFINITIONS_OPTIONS = DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
-  COMMANDS_DEFINITIONS_OPTIONS = DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
-  TRANSFORMERS_DEFINITIONS_OPTIONS = DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
+  ROUTES_DECLARATIONS_OPTIONS = DEFAULT_ROUTES_DECLARATIONS_OPTIONS,
+  CRONS_DECLARATIONS_OPTIONS = DEFAULT_CRONS_DECLARATIONS_OPTIONS,
+  CONSUMERS_DECLARATIONS_OPTIONS = DEFAULT_CONSUMERS_DECLARATIONS_OPTIONS,
+  COMMANDS_DECLARATIONS_OPTIONS = DEFAULT_COMMANDS_DECLARATIONS_OPTIONS,
+  TRANSFORMERS_DECLARATIONS_OPTIONS = DEFAULT_TRANSFORMERS_DECLARATIONS_OPTIONS,
   API,
   $instance,
   $autoload,
@@ -115,11 +115,11 @@ async function initCreateCommand({
   log = noop,
 }: {
   PROJECT_DIR: string;
-  ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
-  CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
-  CONSUMERS_DEFINITIONS_OPTIONS?: WhookConsumerDefinitionsOptions;
-  COMMANDS_DEFINITIONS_OPTIONS?: WhookCommandsDefinitionsOptions;
-  TRANSFORMERS_DEFINITIONS_OPTIONS?: WhookTransformerDefinitionsOptions;
+  ROUTES_DECLARATIONS_OPTIONS?: WhookRoutesDeclarationsOptions;
+  CRONS_DECLARATIONS_OPTIONS?: WhookCronDeclarationsOptions;
+  CONSUMERS_DECLARATIONS_OPTIONS?: WhookConsumerDeclarationsOptions;
+  COMMANDS_DECLARATIONS_OPTIONS?: WhookCommandsDeclarationsOptions;
+  TRANSFORMERS_DECLARATIONS_OPTIONS?: WhookTransformersDeclarationsOptions;
   API: OpenAPI;
   $instance: Knifecycle;
   $autoload: Autoloader<Initializer<Service, Dependencies>>;
@@ -154,18 +154,18 @@ async function initCreateCommand({
     while (nameIsValid === false) {
       const patterns =
         type === 'route'
-          ? ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns
+          ? ROUTES_DECLARATIONS_OPTIONS.serviceNamePatterns
           : type === 'cron'
-            ? CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns
+            ? CRONS_DECLARATIONS_OPTIONS.serviceNamePatterns
             : type === 'consumer'
-              ? CONSUMERS_DEFINITIONS_OPTIONS.serviceNamePatterns
+              ? CONSUMERS_DECLARATIONS_OPTIONS.serviceNamePatterns
               : type === 'command'
-                ? COMMANDS_DEFINITIONS_OPTIONS.serviceNamePatterns
+                ? COMMANDS_DECLARATIONS_OPTIONS.serviceNamePatterns
                 : type === 'transformer'
-                  ? TRANSFORMERS_DEFINITIONS_OPTIONS.serviceNamePatterns
+                  ? TRANSFORMERS_DECLARATIONS_OPTIONS.serviceNamePatterns
                   : [];
 
-      nameIsValid = patterns.some((pattern) =>
+      nameIsValid = patterns.some((pattern: string) =>
         new RegExp(pattern).test(finalName),
       );
 
@@ -397,7 +397,7 @@ async function initCreateCommand({
           name: method,
           value: method,
         })),
-        default: ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns
+        default: ROUTES_DECLARATIONS_OPTIONS.serviceNamePatterns
           .map(
             (pattern) =>
               (new RegExp(pattern).exec(finalName) as string[])[2] as 'get',

@@ -19,7 +19,7 @@ import {
   type WhookOpenAPI,
   type WhookDefinitions,
   type WhookRouteDefinition,
-  type WhookRoutesDefinitionsService,
+  type WhookRoutesDeclarationsService,
 } from '@whook/whook';
 import { initBuildAutoload } from '@whook/dev';
 import { type LogService } from 'common-services';
@@ -50,7 +50,7 @@ const initializerWrapper: ServiceInitializerWrapper<
 > => {
   let API: WhookOpenAPI;
   let DEFINITIONS: WhookDefinitions;
-  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  let ROUTES_DECLARATIONS: WhookRoutesDeclarationsService;
   const getDefinition = (() => {
     return async (serviceName: string): Promise<GCPFunctionDefinition> => {
       const cleanedName = serviceName.split('_').pop() as string;
@@ -58,9 +58,9 @@ const initializerWrapper: ServiceInitializerWrapper<
       API = API || (await $injector(['API'])).API;
       DEFINITIONS =
         DEFINITIONS || (await $injector(['DEFINITIONS'])).DEFINITIONS;
-      ROUTES_DEFINITIONS =
-        ROUTES_DEFINITIONS ||
-        (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
+      ROUTES_DECLARATIONS =
+        ROUTES_DECLARATIONS ||
+        (await $injector(['ROUTES_DECLARATIONS'])).ROUTES_DECLARATIONS;
 
       const config = DEFINITIONS.configs[cleanedName as string];
 
@@ -91,8 +91,7 @@ const initializerWrapper: ServiceInitializerWrapper<
         name: cleanedName,
         type: 'route',
         openAPI,
-        definition:
-          ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
+        definition: ROUTES_DECLARATIONS.routes[cleanedName]?.content || config,
       };
     };
   })();

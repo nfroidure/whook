@@ -18,12 +18,12 @@ import {
   noop,
   initMainHandler,
   type WhookOpenAPI,
-  type WhookCronsDefinitionsService,
+  type WhookCronsDeclarationsService,
   type WhookDefinitions,
   type WhookCronDefinition,
   type WhookRouteDefinition,
-  type WhookRoutesDefinitionsService,
-  type WhookConsumersDefinitionsService,
+  type WhookRoutesDeclarationsService,
+  type WhookConsumersDeclarationsService,
   type WhookConsumerDefinition,
   type WhookTransformerDefinition,
 } from '@whook/whook';
@@ -107,9 +107,9 @@ const initializerWrapper: ServiceInitializerWrapper<
 > => {
   let API: WhookOpenAPI;
   let DEFINITIONS: WhookDefinitions;
-  let CRONS_DEFINITIONS: WhookCronsDefinitionsService;
-  let CONSUMERS_DEFINITIONS: WhookConsumersDefinitionsService;
-  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  let CRONS_DECLARATIONS: WhookCronsDeclarationsService;
+  let CONSUMERS_DECLARATIONS: WhookConsumersDeclarationsService;
+  let ROUTES_DECLARATIONS: WhookRoutesDeclarationsService;
   const getDefinition = (() => {
     return async (serviceName: string): Promise<WhookAWSLambdaDefinition> => {
       const cleanedName = serviceName.split('_').pop() as string;
@@ -126,9 +126,9 @@ const initializerWrapper: ServiceInitializerWrapper<
       }
 
       if (config.type === 'route') {
-        ROUTES_DEFINITIONS =
-          ROUTES_DEFINITIONS ||
-          (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
+        ROUTES_DECLARATIONS =
+          ROUTES_DECLARATIONS ||
+          (await $injector(['ROUTES_DECLARATIONS'])).ROUTES_DECLARATIONS;
 
         const openAPI = await cleanupOpenAPI({
           ...API,
@@ -145,29 +145,28 @@ const initializerWrapper: ServiceInitializerWrapper<
           type: 'route',
           openAPI,
           definition:
-            ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
+            ROUTES_DECLARATIONS.routes[cleanedName]?.content || config,
         };
       } else if (config.type === 'cron') {
-        CRONS_DEFINITIONS =
-          CRONS_DEFINITIONS ||
-          (await $injector(['CRONS_DEFINITIONS'])).CRONS_DEFINITIONS;
+        CRONS_DECLARATIONS =
+          CRONS_DECLARATIONS ||
+          (await $injector(['CRONS_DECLARATIONS'])).CRONS_DECLARATIONS;
 
         return {
           name: cleanedName,
           type: 'cron',
-          definition:
-            CRONS_DEFINITIONS[cleanedName]?.module?.definition || config,
+          definition: CRONS_DECLARATIONS.crons[cleanedName]?.content || config,
         };
       } else if (config.type === 'consumer') {
-        CONSUMERS_DEFINITIONS =
-          CONSUMERS_DEFINITIONS ||
-          (await $injector(['CONSUMERS_DEFINITIONS'])).CONSUMERS_DEFINITIONS;
+        CONSUMERS_DECLARATIONS =
+          CONSUMERS_DECLARATIONS ||
+          (await $injector(['CONSUMERS_DECLARATIONS'])).CONSUMERS_DECLARATIONS;
 
         return {
           name: cleanedName,
           type: 'consumer',
           definition:
-            CONSUMERS_DEFINITIONS[cleanedName]?.module?.definition || config,
+            CONSUMERS_DECLARATIONS.consumers[cleanedName]?.content || config,
         };
       }
 

@@ -13,8 +13,12 @@ import {
 import { type WhookHandlerWrapper } from './wrappers.js';
 import { type WhookEnvironmentsConfig } from '../libs/environments.js';
 import {
-  type WhookModuleAsideComponents,
-  type WhookModuleAsideSchemas,
+  type WhookAPICallbackDefinition,
+  type WhookAPIHeaderDefinition,
+  type WhookAPIParameterDefinition,
+  type WhookAPIRequestBodyDefinition,
+  type WhookAPIResponseDefinition,
+  type WhookSchemasDeclarationModule,
 } from '../index.js';
 
 export const DEFAULT_ROUTE_CONFIG: WhookRouteConfig = {
@@ -75,10 +79,18 @@ export const ROUTE_ASIDE_COMPONENTS_MAP = {
   callbacks: 'Callback',
 } as const;
 
+export interface WhookAPIComponentsDeclarationModule extends WhookSchemasDeclarationModule {
+  [name: `${string}Parameter`]: WhookAPIParameterDefinition;
+  [name: `${string}Header`]: WhookAPIHeaderDefinition;
+  [name: `${string}Response`]: WhookAPIResponseDefinition;
+  [name: `${string}RequestBody`]: WhookAPIRequestBodyDefinition;
+  [name: `${string}Callback`]: WhookAPICallbackDefinition;
+}
+
 // May allow to type routes files later
 // https://github.com/nfroidure/whook/issues/196
 export interface WhookRouteModule
-  extends WhookModuleAsideSchemas, WhookModuleAsideComponents {
+  extends WhookSchemasDeclarationModule, WhookAPIComponentsDeclarationModule {
   default: WhookRouteHandlerInitializer;
   definition: WhookRouteDefinition;
 }

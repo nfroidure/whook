@@ -47,30 +47,30 @@ import {
 } from './WHOOK_RESOLVED_PLUGINS.js';
 import { type WhookRawCommandArgs } from '../libs/args.js';
 import {
-  DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  type WhookCronDefinitionsOptions,
-  type WhookCronsDefinitionsService,
-} from './CRONS_DEFINITIONS.js';
+  DEFAULT_CRONS_DECLARATIONS_OPTIONS,
+  type WhookCronDeclarationsOptions,
+  type WhookCronsDeclarationsService,
+} from './CRONS_DECLARATIONS.js';
 import {
-  DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  type WhookRoutesDefinitionsOptions,
-  type WhookRoutesDefinitionsService,
-} from './ROUTES_DEFINITIONS.js';
+  DEFAULT_ROUTES_DECLARATIONS_OPTIONS,
+  type WhookRoutesDeclarationsOptions,
+  type WhookRoutesDeclarationsService,
+} from './ROUTES_DECLARATIONS.js';
 import {
-  DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
-  type WhookConsumerDefinitionsOptions,
-  type WhookConsumersDefinitionsService,
-} from './CONSUMERS_DEFINITIONS.js';
+  DEFAULT_CONSUMERS_DECLARATIONS_OPTIONS,
+  type WhookConsumerDeclarationsOptions,
+  type WhookConsumersDeclarationsService,
+} from './CONSUMERS_DECLARATIONS.js';
 import {
-  DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
-  type WhookTransformerDefinitionsOptions,
-  type WhookTransformersDefinitionsService,
-} from './TRANSFORMERS_DEFINITIONS.js';
+  DEFAULT_TRANSFORMERS_DECLARATIONS_OPTIONS,
+  type WhookTransformersDeclarationsOptions,
+  type WhookTransformersDeclarationsService,
+} from './TRANSFORMERS_DECLARATIONS.js';
 import {
-  type WhookCommandsDefinitionsOptions,
-  type WhookCommandsDefinitionsService,
-  DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
-} from './COMMANDS_DEFINITIONS.js';
+  type WhookCommandsDeclarationsOptions,
+  type WhookCommandsDeclarationsService,
+  DEFAULT_COMMANDS_DECLARATIONS_OPTIONS,
+} from './COMMANDS_DECLARATIONS.js';
 import { type WhookCommandModule } from '../types/commands.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
@@ -91,11 +91,11 @@ export type WhookAutoloadDependencies = WhookRoutesWrappersConfig &
     INITIALIZER_PATH_MAP?: WhookInitializerMap;
     WHOOK_PLUGINS?: WhookPluginsService;
     WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
-    COMMANDS_DEFINITIONS_OPTIONS?: WhookCommandsDefinitionsOptions;
-    ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
-    CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
-    CONSUMERS_DEFINITIONS_OPTIONS?: WhookConsumerDefinitionsOptions;
-    TRANSFORMERS_DEFINITIONS_OPTIONS?: WhookTransformerDefinitionsOptions;
+    COMMANDS_DECLARATIONS_OPTIONS?: WhookCommandsDeclarationsOptions;
+    ROUTES_DECLARATIONS_OPTIONS?: WhookRoutesDeclarationsOptions;
+    CRONS_DECLARATIONS_OPTIONS?: WhookCronDeclarationsOptions;
+    CONSUMERS_DECLARATIONS_OPTIONS?: WhookConsumerDeclarationsOptions;
+    TRANSFORMERS_DECLARATIONS_OPTIONS?: WhookTransformersDeclarationsOptions;
     args: WhookRawCommandArgs;
     $injector: Injector<Service>;
     importer: ImporterService<WhookCommandModule>;
@@ -148,11 +148,11 @@ async function initAutoload({
   CRONS_WRAPPERS_NAMES = [],
   CONSUMERS_WRAPPERS_NAMES = [],
   TRANSFORMERS_WRAPPERS_NAMES = [],
-  ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  CONSUMERS_DEFINITIONS_OPTIONS = DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
-  TRANSFORMERS_DEFINITIONS_OPTIONS = DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
-  COMMANDS_DEFINITIONS_OPTIONS = DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
+  ROUTES_DECLARATIONS_OPTIONS = DEFAULT_ROUTES_DECLARATIONS_OPTIONS,
+  CRONS_DECLARATIONS_OPTIONS = DEFAULT_CRONS_DECLARATIONS_OPTIONS,
+  CONSUMERS_DECLARATIONS_OPTIONS = DEFAULT_CONSUMERS_DECLARATIONS_OPTIONS,
+  TRANSFORMERS_DECLARATIONS_OPTIONS = DEFAULT_TRANSFORMERS_DECLARATIONS_OPTIONS,
+  COMMANDS_DECLARATIONS_OPTIONS = DEFAULT_COMMANDS_DECLARATIONS_OPTIONS,
   args,
   importer,
   $injector,
@@ -169,55 +169,55 @@ async function initAutoload({
    it is dynamically loaded so doing this during the auto
    loader initialization.
   */
-  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
-  const getRoutesDefinitions = (() => {
+  let ROUTES_DECLARATIONS: WhookRoutesDeclarationsService;
+  const getRoutesDeclarations = (() => {
     return async () => {
-      if (!ROUTES_DEFINITIONS) {
-        ROUTES_DEFINITIONS = (await $injector(['ROUTES_DEFINITIONS']))
-          .ROUTES_DEFINITIONS;
+      if (!ROUTES_DECLARATIONS) {
+        ROUTES_DECLARATIONS = (await $injector(['ROUTES_DECLARATIONS']))
+          .ROUTES_DECLARATIONS;
       }
-      return ROUTES_DEFINITIONS;
+      return ROUTES_DECLARATIONS;
     };
   })();
-  let CRONS_DEFINITIONS: WhookCronsDefinitionsService;
-  const getCronsDefinitions = (() => {
+  let CRONS_DECLARATIONS: WhookCronsDeclarationsService;
+  const getCronsDeclarations = (() => {
     return async () => {
-      if (!CRONS_DEFINITIONS) {
-        CRONS_DEFINITIONS = (await $injector(['CRONS_DEFINITIONS']))
-          .CRONS_DEFINITIONS;
+      if (!CRONS_DECLARATIONS) {
+        CRONS_DECLARATIONS = (await $injector(['CRONS_DECLARATIONS']))
+          .CRONS_DECLARATIONS;
       }
-      return CRONS_DEFINITIONS;
+      return CRONS_DECLARATIONS;
     };
   })();
-  let CONSUMERS_DEFINITIONS: WhookConsumersDefinitionsService;
-  const getConsumersDefinitions = (() => {
+  let CONSUMERS_DECLARATIONS: WhookConsumersDeclarationsService;
+  const getConsumersDeclarations = (() => {
     return async () => {
-      if (!CONSUMERS_DEFINITIONS) {
-        CONSUMERS_DEFINITIONS = (await $injector(['CONSUMERS_DEFINITIONS']))
-          .CONSUMERS_DEFINITIONS;
+      if (!CONSUMERS_DECLARATIONS) {
+        CONSUMERS_DECLARATIONS = (await $injector(['CONSUMERS_DECLARATIONS']))
+          .CONSUMERS_DECLARATIONS;
       }
-      return CONSUMERS_DEFINITIONS;
+      return CONSUMERS_DECLARATIONS;
     };
   })();
-  let TRANSFORMERS_DEFINITIONS: WhookTransformersDefinitionsService;
-  const getTransformersDefinitions = (() => {
+  let TRANSFORMERS_DECLARATIONS: WhookTransformersDeclarationsService;
+  const getTransformersDeclarations = (() => {
     return async () => {
-      if (!TRANSFORMERS_DEFINITIONS) {
-        TRANSFORMERS_DEFINITIONS = (
-          await $injector(['TRANSFORMERS_DEFINITIONS'])
-        ).TRANSFORMERS_DEFINITIONS;
+      if (!TRANSFORMERS_DECLARATIONS) {
+        TRANSFORMERS_DECLARATIONS = (
+          await $injector(['TRANSFORMERS_DECLARATIONS'])
+        ).TRANSFORMERS_DECLARATIONS;
       }
-      return TRANSFORMERS_DEFINITIONS;
+      return TRANSFORMERS_DECLARATIONS;
     };
   })();
-  let COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService;
-  const getCommandsDefinitions = (() => {
+  let COMMANDS_DECLARATIONS: WhookCommandsDeclarationsService;
+  const getCommandsDeclarations = (() => {
     return async () => {
-      if (!COMMANDS_DEFINITIONS) {
-        COMMANDS_DEFINITIONS = (await $injector(['COMMANDS_DEFINITIONS']))
-          .COMMANDS_DEFINITIONS;
+      if (!COMMANDS_DECLARATIONS) {
+        COMMANDS_DECLARATIONS = (await $injector(['COMMANDS_DECLARATIONS']))
+          .COMMANDS_DECLARATIONS;
       }
-      return COMMANDS_DEFINITIONS;
+      return COMMANDS_DECLARATIONS;
     };
   })();
   let commandModule: WhookCommandModule;
@@ -294,23 +294,23 @@ async function initAutoload({
       return constant(injectedName, APP_CONFIG[injectedName]);
     }
 
-    const isRouteHandler = ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns.some(
+    const isRouteHandler = ROUTES_DECLARATIONS_OPTIONS.serviceNamePatterns.some(
       (pattern) => new RegExp(pattern).test(injectedName),
     );
     const isRouteWrapper = ROUTES_WRAPPERS_REG_EXP.test(injectedName);
-    const isCronHandler = CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns.some(
+    const isCronHandler = CRONS_DECLARATIONS_OPTIONS.serviceNamePatterns.some(
       (pattern) => new RegExp(pattern).test(injectedName),
     );
     const isConsumerHandler =
-      CONSUMERS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
+      CONSUMERS_DECLARATIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
         new RegExp(pattern).test(injectedName),
       );
     const isTransformerHandler =
-      TRANSFORMERS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
+      TRANSFORMERS_DECLARATIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
         new RegExp(pattern).test(injectedName),
       );
     const isCommandHandler =
-      COMMANDS_DEFINITIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
+      COMMANDS_DECLARATIONS_OPTIONS.serviceNamePatterns.some((pattern) =>
         new RegExp(pattern).test(injectedName),
       );
     const isCronWrapper = CRONS_WRAPPERS_REG_EXP.test(injectedName);
@@ -441,7 +441,9 @@ async function initAutoload({
      handler required by the API.
     */
     if ('ROUTES_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getRoutesDefinitions());
+      const handlerNames = Object.keys(
+        (await getRoutesDeclarations()).handlers,
+      );
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -451,7 +453,7 @@ async function initAutoload({
     }
 
     if ('CRONS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getCronsDefinitions());
+      const handlerNames = Object.keys((await getCronsDeclarations()).crons);
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -461,7 +463,9 @@ async function initAutoload({
     }
 
     if ('CONSUMERS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getConsumersDefinitions());
+      const handlerNames = Object.keys(
+        (await getConsumersDeclarations()).consumers,
+      );
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -471,7 +475,9 @@ async function initAutoload({
     }
 
     if ('TRANSFORMERS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getTransformersDefinitions());
+      const handlerNames = Object.keys(
+        (await getTransformersDeclarations()).transformers,
+      );
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -481,7 +487,9 @@ async function initAutoload({
     }
 
     if ('COMMANDS_HANDLERS' === injectedName) {
-      const handlerNames = Object.keys(await getCommandsDefinitions());
+      const handlerNames = Object.keys(
+        (await getCommandsDeclarations()).commands,
+      );
 
       return location(
         alsoInject(handlerNames, renamedInitializer),

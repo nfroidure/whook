@@ -73,7 +73,7 @@ more documentation.
  command to run for a given command name.</p>
 </dd>
 <dt><a href="#initConsumersDefinitions">initConsumersDefinitions(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Initialize the CONSUMERS_DEFINITIONS service gathering the project consumers.</p>
+<dd><p>Initialize the CONSUMERS_DECLARATIONS service gathering the project consumers.</p>
 </dd>
 <dt><a href="#initConsumersHandlers">initConsumersHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
 <dd><p>Initialize the Whook consumer handlers to know which
@@ -83,7 +83,7 @@ more documentation.
 <dd><p>A simple passthrough service proxying the CONSUMERS_WRAPPERS.</p>
 </dd>
 <dt><a href="#initCronsDefinitions">initCronsDefinitions(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Initialize the CRONS_DEFINITIONS service gathering the project crons.</p>
+<dd><p>Initialize the CRONS_DECLARATIONS service gathering the project crons.</p>
 </dd>
 <dt><a href="#initCronsHandlers">initCronsHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
 <dd><p>Initialize the Whook cron handlers used to know which
@@ -130,8 +130,8 @@ HTTP router</p>
 <dt><a href="#wrapEnvForBuild">wrapEnvForBuild(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
 <dd><p>Wrap the ENV service in order to filter ENV vars for the build</p>
 </dd>
-<dt><a href="#initRoutesDefinitions">initRoutesDefinitions(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Initialize the ROUTES_DEFINITIONS service gathering
+<dt><a href="#initRoutesDeclarations">initRoutesDeclarations(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Initialize the ROUTES_DECLARATIONS service gathering
  the project routes definitions.</p>
 </dd>
 <dt><a href="#initRoutesHandlers">initRoutesHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
@@ -150,8 +150,8 @@ HTTP router</p>
 <dt><a href="#initSSLCertificates">initSSLCertificates(services)</a> ⇒ <code>Promise.&lt;SSLCertificates&gt;</code></dt>
 <dd><p>Initialize an SSL certificate service</p>
 </dd>
-<dt><a href="#initTransformersDefinitions">initTransformersDefinitions(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
-<dd><p>Initialize the TRANSFORMERS_DEFINITIONS service gathering the project transformers.</p>
+<dt><a href="#initTransformersDeclarations">initTransformersDeclarations(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Initialize the TRANSFORMERS_DECLARATIONS service gathering the project transformers.</p>
 </dd>
 <dt><a href="#initTransformersHandlers">initTransformersHandlers(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
 <dd><p>Initialize the Whook transformer handlers to know which
@@ -322,7 +322,7 @@ Initialize the COMMANDS service gathering the project commands.
 | services | <code>Object</code> |  | The service dependencies |
 | [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
 | services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
-| [services.COMMANDS_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the project commands |
+| [services.COMMANDS_DECLARATIONS_OPTIONS] | <code>Object</code> |  | The options to load the project commands |
 | [services.COMMAND_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the project commands per definitions |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
@@ -345,7 +345,7 @@ Initialize the Whook command handlers to know which
 <a name="initConsumersDefinitions"></a>
 
 ## initConsumersDefinitions(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Initialize the CONSUMERS_DEFINITIONS service gathering the project consumers.
+Initialize the CONSUMERS_DECLARATIONS service gathering the project consumers.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a containing the actual host.  
@@ -355,7 +355,7 @@ Initialize the CONSUMERS_DEFINITIONS service gathering the project consumers.
 | services | <code>Object</code> |  | The service dependencies |
 | [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
 | services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
-| [services.CONSUMERS_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the project consumers |
+| [services.CONSUMERS_DECLARATIONS_OPTIONS] | <code>Object</code> |  | The options to load the project consumers |
 | [services.CONSUMER_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the project consumers per definitions |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
@@ -394,7 +394,7 @@ A simple passthrough service proxying the CONSUMERS_WRAPPERS.
 <a name="initCronsDefinitions"></a>
 
 ## initCronsDefinitions(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Initialize the CRONS_DEFINITIONS service gathering the project crons.
+Initialize the CRONS_DECLARATIONS service gathering the project crons.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a containing the actual host.  
@@ -404,7 +404,7 @@ Initialize the CRONS_DEFINITIONS service gathering the project crons.
 | services | <code>Object</code> |  | The service dependencies |
 | [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
 | services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
-| [services.CRONS_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the project crons |
+| [services.CRONS_DECLARATIONS_OPTIONS] | <code>Object</code> |  | The options to load the project crons |
 | [services.CRON_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the project crons per definitions |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
@@ -451,7 +451,7 @@ Initialize the DEFINITIONS service.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The service dependencies |
-| [services.ROUTES_DEFINITIONS] | <code>Object</code> |  | The API routes modules |
+| [services.ROUTES_DECLARATIONS] | <code>Object</code> |  | The API routes modules |
 | [services.COMMANDS_DEFINITIONS] | <code>Object</code> |  | The commands modules |
 | [services.CRONS_DEFINITIONS] | <code>Object</code> |  | The crons modules |
 | [services.CONSUMERS_DEFINITIONS] | <code>Object</code> |  | The consumers modules |
@@ -715,10 +715,10 @@ Wrap the ENV service in order to filter ENV vars for the build
 | [services.PROXIED_ENV_VARS] | <code>Object</code> | <code>{}</code> | A list of environment variable names to proxy |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
-<a name="initRoutesDefinitions"></a>
+<a name="initRoutesDeclarations"></a>
 
-## initRoutesDefinitions(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Initialize the ROUTES_DEFINITIONS service gathering
+## initRoutesDeclarations(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Initialize the ROUTES_DECLARATIONS service gathering
  the project routes definitions.
 
 **Kind**: global function  
@@ -731,7 +731,7 @@ Initialize the ROUTES_DEFINITIONS service gathering
 | services.BASE_PATH | <code>String</code> |  | The API base path |
 | [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
 | services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
-| [services.ROUTES_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the routes in the file system |
+| [services.ROUTES_DECLARATIONS_OPTIONS] | <code>Object</code> |  | The options to load the routes in the file system |
 | [services.ROUTE_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the routes per definitions |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
@@ -800,10 +800,10 @@ Initialize an SSL certificate service
 | [services.ENV] | <code>Object</code> |  | The process environment variables |
 | [services.log] | <code>function</code> | <code>noop</code> | A logging function |
 
-<a name="initTransformersDefinitions"></a>
+<a name="initTransformersDeclarations"></a>
 
-## initTransformersDefinitions(services) ⇒ <code>Promise.&lt;Object&gt;</code>
-Initialize the TRANSFORMERS_DEFINITIONS service gathering the project transformers.
+## initTransformersDeclarations(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Initialize the TRANSFORMERS_DECLARATIONS service gathering the project transformers.
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a containing the actual host.  
@@ -813,7 +813,7 @@ Initialize the TRANSFORMERS_DEFINITIONS service gathering the project transforme
 | services | <code>Object</code> |  | The service dependencies |
 | [services.WHOOK_PLUGINS] | <code>Array.&lt;String&gt;</code> |  | The activated plugins |
 | services.WHOOK_RESOLVED_PLUGINS | <code>Array</code> |  | The resolved plugins |
-| [services.TRANSFORMERS_DEFINITIONS_OPTIONS] | <code>Object</code> |  | The options to load the project transformers |
+| [services.TRANSFORMERS_DECLARATIONS_OPTIONS] | <code>Object</code> |  | The options to load the project transformers |
 | [services.TRANSFORMER_DEFINITION_FILTER] | <code>Object</code> |  | A function to filter the project transformers per definitions |
 | services.importer | <code>Object</code> |  | A service allowing to dynamically import ES modules |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |

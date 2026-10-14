@@ -4,22 +4,22 @@ import { type LogService } from 'common-services';
 import {
   ROUTES_WRAPPERS_REG_EXP,
   CRONS_WRAPPERS_REG_EXP,
-  DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  type WhookCronDefinitionsOptions,
-  DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  type WhookRoutesDefinitionsOptions,
+  DEFAULT_CRONS_DECLARATIONS_OPTIONS,
+  type WhookCronDeclarationsOptions,
+  DEFAULT_ROUTES_DECLARATIONS_OPTIONS,
+  type WhookRoutesDeclarationsOptions,
 } from '@whook/whook';
 
 async function initMermaid({
-  ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
+  ROUTES_DECLARATIONS_OPTIONS = DEFAULT_ROUTES_DECLARATIONS_OPTIONS,
+  CRONS_DECLARATIONS_OPTIONS = DEFAULT_CRONS_DECLARATIONS_OPTIONS,
   $ready,
   $instance,
   log,
   stdout,
 }: {
-  ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
-  CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
+  ROUTES_DECLARATIONS_OPTIONS?: WhookRoutesDeclarationsOptions;
+  CRONS_DECLARATIONS_OPTIONS?: WhookCronDeclarationsOptions;
   $ready: Promise<void>;
   $instance: Knifecycle;
   log: LogService;
@@ -45,7 +45,7 @@ async function initMermaid({
           pattern: ROUTES_WRAPPERS_REG_EXP,
           className: 'routes_wrappers',
         },
-        ...ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns.map((pattern) => ({
+        ...ROUTES_DECLARATIONS_OPTIONS.serviceNamePatterns.map((pattern) => ({
           pattern: new RegExp(pattern),
           className: 'routes_handlers',
         })),
@@ -53,7 +53,7 @@ async function initMermaid({
           pattern: CRONS_WRAPPERS_REG_EXP,
           className: 'crons_wrappers',
         },
-        ...CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns.map((pattern) => ({
+        ...CRONS_DECLARATIONS_OPTIONS.serviceNamePatterns.map((pattern) => ({
           pattern: new RegExp(pattern),
           className: 'crons_handlers',
         })),
@@ -67,7 +67,7 @@ async function initMermaid({
         },
       ],
       shapes: [
-        ...ROUTES_DEFINITIONS_OPTIONS.fileNamePatterns.map((pattern) => ({
+        ...ROUTES_DECLARATIONS_OPTIONS.fileNamePatterns.map((pattern) => ({
           pattern: new RegExp(pattern),
           template: '$0(($0))',
         })),
@@ -75,7 +75,7 @@ async function initMermaid({
           pattern: ROUTES_WRAPPERS_REG_EXP,
           template: '$0($0)',
         },
-        ...ROUTES_DEFINITIONS_OPTIONS.fileNamePatterns.map((pattern) => ({
+        ...ROUTES_DECLARATIONS_OPTIONS.fileNamePatterns.map((pattern) => ({
           pattern: new RegExp(pattern),
           template: '$0[[$0]]',
         })),
