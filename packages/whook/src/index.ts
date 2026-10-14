@@ -56,55 +56,75 @@ import initWhookResolvedPlugins, {
 import initDefinitions from './services/DEFINITIONS.js';
 export * from './services/DEFINITIONS.js';
 export type * from './services/DEFINITIONS.js';
-import initRoutesDefinitions from './services/ROUTES_DEFINITIONS.js';
-export { initRoutesDefinitions };
-export * from './services/ROUTES_DEFINITIONS.js';
-export type * from './services/ROUTES_DEFINITIONS.js';
+import initCreateDirectoryFilesWalker from './services/createDirectoryFilesWalker.js';
+export * from './services/createDirectoryFilesWalker.js';
+export type * from './services/createDirectoryFilesWalker.js';
+export { initCreateDirectoryFilesWalker };
+import initRoutesDeclarations from './services/ROUTES_DECLARATIONS.js';
+export { initRoutesDeclarations };
+export * from './services/ROUTES_DECLARATIONS.js';
+export type * from './services/ROUTES_DECLARATIONS.js';
 import initRoutesWrappers from './services/ROUTES_WRAPPERS.js';
 export { initRoutesWrappers };
 export * from './services/ROUTES_WRAPPERS.js';
-import initMainHandler from './services/MAIN_HANDLER.js';
-export { initMainHandler };
 import initRoutesHandlers from './services/ROUTES_HANDLERS.js';
 export { initRoutesHandlers };
 export * from './services/ROUTES_HANDLERS.js';
-import initCommandsDefinitions from './services/COMMANDS_DEFINITIONS.js';
-export { initCommandsDefinitions };
-export * from './services/COMMANDS_DEFINITIONS.js';
-export type * from './services/COMMANDS_DEFINITIONS.js';
-import initCronsDefinitions from './services/CRONS_DEFINITIONS.js';
-export { initCronsDefinitions };
-export * from './services/CRONS_DEFINITIONS.js';
-export type * from './services/CRONS_DEFINITIONS.js';
+import initCommandsDeclarations from './services/COMMANDS_DECLARATIONS.js';
+export { initCommandsDeclarations };
+export * from './services/COMMANDS_DECLARATIONS.js';
+export type * from './services/COMMANDS_DECLARATIONS.js';
+import initCommandsHandlers from './services/COMMANDS_HANDLERS.js';
+export { initCommandsHandlers };
+export * from './services/COMMANDS_HANDLERS.js';
+export type * from './services/COMMANDS_HANDLERS.js';
+import initCommandsWrappers from './services/COMMANDS_WRAPPERS.js';
+export { initCommandsWrappers };
+export * from './services/COMMANDS_WRAPPERS.js';
+export type * from './services/COMMANDS_WRAPPERS.js';
+import initCronsDeclarations from './services/CRONS_DECLARATIONS.js';
+export { initCronsDeclarations };
+export * from './services/CRONS_DECLARATIONS.js';
+export type * from './services/CRONS_DECLARATIONS.js';
 import initCronsWrappers from './services/CRONS_WRAPPERS.js';
 export { initCronsWrappers };
 export * from './services/CRONS_WRAPPERS.js';
+export type * from './services/CRONS_WRAPPERS.js';
 import initCronsHandlers from './services/CRONS_HANDLERS.js';
 export { initCronsHandlers };
 export * from './services/CRONS_HANDLERS.js';
-import initConsumersDefinitions from './services/CONSUMERS_DEFINITIONS.js';
-export { initConsumersDefinitions };
-export * from './services/CONSUMERS_DEFINITIONS.js';
-export type * from './services/CONSUMERS_DEFINITIONS.js';
+import initConsumersDeclarations from './services/CONSUMERS_DECLARATIONS.js';
+export { initConsumersDeclarations };
+export * from './services/CONSUMERS_DECLARATIONS.js';
+export type * from './services/CONSUMERS_DECLARATIONS.js';
 import initConsumersWrappers from './services/CONSUMERS_WRAPPERS.js';
 export { initConsumersWrappers };
 export * from './services/CONSUMERS_WRAPPERS.js';
 import initConsumersHandlers from './services/CONSUMERS_HANDLERS.js';
 export { initConsumersHandlers };
 export * from './services/CONSUMERS_HANDLERS.js';
-import initTransformersDefinitions from './services/TRANSFORMERS_DEFINITIONS.js';
-export { initTransformersDefinitions };
-export * from './services/TRANSFORMERS_DEFINITIONS.js';
-export type * from './services/TRANSFORMERS_DEFINITIONS.js';
+import initTransformersDeclarations from './services/TRANSFORMERS_DECLARATIONS.js';
+export { initTransformersDeclarations };
+export * from './services/TRANSFORMERS_DECLARATIONS.js';
+export type * from './services/TRANSFORMERS_DECLARATIONS.js';
 import initTransformersWrappers from './services/TRANSFORMERS_WRAPPERS.js';
 export { initTransformersWrappers };
 export * from './services/TRANSFORMERS_WRAPPERS.js';
 import initTransformersHandlers from './services/TRANSFORMERS_HANDLERS.js';
 export { initTransformersHandlers };
 export * from './services/TRANSFORMERS_HANDLERS.js';
+import initWrappersDeclarations from './services/WRAPPERS_DECLARATIONS.js';
+export { initWrappersDeclarations };
+export * from './services/WRAPPERS_DECLARATIONS.js';
+export type * from './services/WRAPPERS_DECLARATIONS.js';
+import initMainHandler from './services/MAIN_HANDLER.js';
+export { initMainHandler };
+export * from './services/MAIN_HANDLER.js';
+export type * from './services/MAIN_HANDLER.js';
 import initRouteInvoker from './services/routeInvoker.js';
 export { initRouteInvoker };
 export * from './services/routeInvoker.js';
+export type * from './services/routeInvoker.js';
 export * from './services/schemaValidators.js';
 import initLoggerService from './services/logger.js';
 import initExitService from './services/exit.js';
@@ -123,41 +143,43 @@ export * from './libs/args.js';
 export * from './libs/body.js';
 export * from './libs/coercion.js';
 export * from './libs/constants.js';
+export * from './libs/declarations.js';
 export * from './libs/environments.js';
+export * from './libs/hash.js';
 export * from './libs/headers.js';
 export * from './libs/openapi.js';
 export * from './libs/router.js';
 export * from './libs/utils.js';
-export * from './libs/hash.js';
 export * from './libs/validation.js';
 export * from './libs/wrappers.js';
 export * from './services/queryParserBuilder.js';
-export type * from './types/wrappers.js';
-export type * from './types/routes.js';
-export type * from './types/commands.js';
-export type * from './types/http.js';
-export type * from './types/base.js';
-export type * from './types/openapi.js';
-export type * from './types/crons.js';
-export type * from './types/transformers.js';
-export type * from './types/consumers.js';
+export type * from './libs/args.js';
+export type * from './libs/declarations.js';
+export type * from './libs/environments.js';
 export type * from './libs/openapi.js';
 export type * from './libs/validation.js';
-export type * from './libs/args.js';
-export type * from './libs/environments.js';
-export type * from './services/PORT.js';
+export type * from './services/_autoload.js';
 export type * from './services/AVAILABLE_PORT.js';
+export type * from './services/DEFINITIONS.js';
+export type * from './services/HOST.js';
 export type * from './services/httpServer.js';
 export type * from './services/httpsServer.js';
-export type * from './services/SSL_CERTIFICATES.js';
-export type * from './services/HOST.js';
 export type * from './services/INTERNAL_IP.js';
+export type * from './services/PORT.js';
 export type * from './services/PROXIED_ENV.js';
-export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
-export type * from './services/DEFINITIONS.js';
-export type * from './services/_autoload.js';
 export type * from './services/routeInvoker.js';
 export type * from './services/schemaValidators.js';
+export type * from './services/SSL_CERTIFICATES.js';
+export type * from './services/WHOOK_RESOLVED_PLUGINS.js';
+export type * from './types/base.js';
+export type * from './types/commands.js';
+export type * from './types/consumers.js';
+export type * from './types/crons.js';
+export type * from './types/http.js';
+export type * from './types/openapi.js';
+export type * from './types/routes.js';
+export type * from './types/transformers.js';
+export type * from './types/wrappers.js';
 export { SEARCH_SEPARATOR, PATH_SEPARATOR, initHTTPRouter };
 export type * from './services/httpRouter.js';
 export { initHTTPTransaction };
@@ -170,6 +192,9 @@ export type * from './services/errorHandler.js';
 export { initErrorHandler };
 export { initQueryParserBuilder };
 
+import initBaseURL from './services/BASE_URL.js';
+export { initBaseURL };
+export * from './services/BASE_URL.js';
 export type * from './services/BASE_URL.js';
 export {
   WHOOK_DEFAULT_PLUGINS,
@@ -314,6 +339,8 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initDelay,
     initProcess,
     initSchemaValidators,
+    initHTTPRouter,
+    initHTTPTransaction,
     initHTTPServer,
     initHTTPSServer,
     initSSLCertificates,
@@ -322,14 +349,19 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initObfuscatorService,
     initAPMService,
     initQueryParserBuilder,
-    initRoutesDefinitions,
-    initCommandsDefinitions,
-    initCronsDefinitions,
-    initConsumersDefinitions,
-    initTransformersDefinitions,
+    initCreateDirectoryFilesWalker,
+    initRoutesDeclarations,
+    initWrappersDeclarations,
+    initCommandsDeclarations,
+    initCronsDeclarations,
+    initConsumersDeclarations,
+    initTransformersDeclarations,
+    initBaseURL,
   ].forEach($.register.bind($));
 
   $.register(initCommand);
+
+  $.register(constant('INITIALIZER_PATH_MAP', {}));
 
   /* Architecture Note #2.3: the `PWD` constant
   The Whook server heavily rely on the process working directory

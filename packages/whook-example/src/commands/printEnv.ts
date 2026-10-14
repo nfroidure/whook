@@ -34,6 +34,9 @@ To define a command, just write its definition
 export const definition = {
   name: 'printEnv',
   description: 'A command printing every env values',
+  config: {
+    wrappers: ['wrapCommandHandlerForDebug'],
+  },
   example: `whook printEnv --keysOnly`,
   arguments: [
     {

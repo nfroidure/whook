@@ -31,15 +31,6 @@ Declare it in the `src/index.ts` file of your project:
   // ...
 
   $.register(
-    constant('ROUTES_WRAPPERS_NAMES', [
-+      'wrapRouteHandlerWithCORS',
-      'wrapRouteHandlerWithAuthorization',
-    ]),
-  );
-
-  // ...
-
-  $.register(
     constant('WHOOK_PLUGINS', [
       ...WHOOK_DEFAULT_PLUGINS,
 +      '@whook/cors',
@@ -217,7 +208,7 @@ Wrap the error handler service as a last chance to add CORS
 Wrap a route handler to append CORS to response.
 
 **Kind**: global function  
-**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of an object containing the reshaped env vars.  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of route handler wrapped with CORS.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |

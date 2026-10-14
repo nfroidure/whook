@@ -7,7 +7,7 @@ import { type JsonValue } from 'type-fest';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type WhookHandlerWrapper } from './wrappers.js';
 import { type WhookEnvironmentsConfig } from '../libs/environments.js';
-import { type WhookModuleAsideSchemas } from '../index.js';
+import { type WhookSchemasDeclarationModule } from '../index.js';
 
 export const DEFAULT_CONSUMER_CONFIG: WhookConsumerConfig = {
   environments: 'all',
@@ -16,6 +16,7 @@ export const DEFAULT_CONSUMER_CONFIG: WhookConsumerConfig = {
 export interface WhookBaseConsumerConfig {
   environments?: WhookEnvironmentsConfig;
   targetHandler?: string;
+  wrappers?: string[];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -43,7 +44,7 @@ export type WhookConsumerHandlerInitializer<
 // https://github.com/nfroidure/whook/issues/196
 export interface WhookConsumerModule<
   T extends JsonValue = JsonValue,
-> extends WhookModuleAsideSchemas {
+> extends WhookSchemasDeclarationModule {
   default: WhookConsumerHandlerInitializer<T>;
   definition: WhookConsumerDefinition;
 }

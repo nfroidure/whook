@@ -18,14 +18,12 @@ import {
   noop,
   initMainHandler,
   type WhookOpenAPI,
-  type WhookCronsDefinitionsService,
   type WhookDefinitions,
   type WhookCronDefinition,
   type WhookRouteDefinition,
-  type WhookRoutesDefinitionsService,
-  type WhookConsumersDefinitionsService,
   type WhookConsumerDefinition,
   type WhookTransformerDefinition,
+  WhookMainDefinition,
 } from '@whook/whook';
 import initWrapConsumerHandlerForAWSLambda from '../wrappers/wrapConsumerHandlerForAWSLambda.js';
 import initWrapRouteHandlerForAWSLambda from '../wrappers/wrapRouteHandlerForAWSLambda.js';
@@ -41,21 +39,29 @@ export type WhookAWSLambdaDefinition = {
   name: string;
 } & (
   | {
-      type: 'route';
-      definition: WhookRouteDefinition;
+      definition: WhookRouteDefinition & {
+        type: 'route';
+        url: `file:///${string}`;
+      };
       openAPI: WhookOpenAPI;
     }
   | {
-      type: 'cron';
-      definition: WhookCronDefinition;
+      definition: WhookCronDefinition & {
+        type: 'cron';
+        url: `file:///${string}`;
+      };
     }
   | {
-      type: 'consumer';
-      definition: WhookConsumerDefinition;
+      definition: WhookConsumerDefinition & {
+        type: 'consumer';
+        url: `file:///${string}`;
+      };
     }
   | {
-      type: 'transformer';
-      definition: WhookTransformerDefinition;
+      definition: WhookTransformerDefinition & {
+        type: 'transformer';
+        url: `file:///${string}`;
+      };
     }
 );
 
@@ -107,9 +113,6 @@ const initializerWrapper: ServiceInitializerWrapper<
 > => {
   let API: WhookOpenAPI;
   let DEFINITIONS: WhookDefinitions;
-  let CRONS_DEFINITIONS: WhookCronsDefinitionsService;
-  let CONSUMERS_DEFINITIONS: WhookConsumersDefinitionsService;
-  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   const getDefinition = (() => {
     return async (serviceName: string): Promise<WhookAWSLambdaDefinition> => {
       const cleanedName = serviceName.split('_').pop() as string;
@@ -126,10 +129,6 @@ const initializerWrapper: ServiceInitializerWrapper<
       }
 
       if (config.type === 'route') {
-        ROUTES_DEFINITIONS =
-          ROUTES_DEFINITIONS ||
-          (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
-
         const openAPI = await cleanupOpenAPI({
           ...API,
           paths: {
@@ -142,32 +141,23 @@ const initializerWrapper: ServiceInitializerWrapper<
 
         return {
           name: cleanedName,
-          type: 'route',
           openAPI,
-          definition:
-            ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
+          definition: config,
         };
       } else if (config.type === 'cron') {
-        CRONS_DEFINITIONS =
-          CRONS_DEFINITIONS ||
-          (await $injector(['CRONS_DEFINITIONS'])).CRONS_DEFINITIONS;
-
         return {
           name: cleanedName,
-          type: 'cron',
-          definition:
-            CRONS_DEFINITIONS[cleanedName]?.module?.definition || config,
+          definition: config,
         };
       } else if (config.type === 'consumer') {
-        CONSUMERS_DEFINITIONS =
-          CONSUMERS_DEFINITIONS ||
-          (await $injector(['CONSUMERS_DEFINITIONS'])).CONSUMERS_DEFINITIONS;
-
         return {
           name: cleanedName,
-          type: 'consumer',
-          definition:
-            CONSUMERS_DEFINITIONS[cleanedName]?.module?.definition || config,
+          definition: config,
+        };
+      } else if (config.type === 'transformer') {
+        return {
+          name: cleanedName,
+          definition: config,
         };
       }
 
@@ -184,21 +174,21 @@ const initializerWrapper: ServiceInitializerWrapper<
 
       return constant(
         serviceName,
-        definition.type === 'route' ? definition.openAPI : {},
+        'openAPI' in definition ? definition.openAPI : {},
       );
     }
 
     if (serviceName.startsWith('MAIN_DEFINITION_')) {
       const { definition } = await getDefinition(serviceName);
 
-      return constant(serviceName, definition);
+      return constant(serviceName, definition satisfies WhookMainDefinition);
     }
 
     if (serviceName.startsWith('MAIN_WRAPPER_')) {
-      const { type, definition } = await getDefinition(serviceName);
-      let finalType: keyof typeof AWS_WRAPPERS = type;
+      const { definition } = await getDefinition(serviceName);
+      let finalType: keyof typeof AWS_WRAPPERS = definition.type;
 
-      if (type === 'consumer') {
+      if (definition.type === 'consumer') {
         finalType = definition.config?.options.wrapper || 'consumer';
       }
 
@@ -209,7 +199,7 @@ const initializerWrapper: ServiceInitializerWrapper<
               'MAIN_WRAPPER_',
               'MAIN_DEFINITION_',
             )}`,
-            ...(type === 'route'
+            ...(definition.type === 'route'
               ? [
                   `MAIN_API>${serviceName.replace(
                     'MAIN_WRAPPER_',
@@ -225,20 +215,22 @@ const initializerWrapper: ServiceInitializerWrapper<
     }
 
     if (serviceName.startsWith('MAIN_HANDLER_')) {
-      const { type, name, definition } = await getDefinition(serviceName);
+      const { name, definition } = await getDefinition(serviceName);
       const targetHandler = definition.config?.targetHandler || name;
 
       return location(
         alsoInject(
           [
+            `MAIN_DEFINITION>MAIN_DEFINITION_${serviceName.replace(
+              'MAIN_HANDLER_',
+              '',
+            )}`,
             `MAIN_WRAPPER>MAIN_WRAPPER_${serviceName.replace(
               'MAIN_HANDLER_',
               '',
             )}`,
-            // TODO: Review it
-            // Only inject wrappers for HTTP routes and
-            // eventually inject other ones
-            `?WRAPPERS>${type.toUpperCase()}S_WRAPPERS`,
+            `MAIN_WRAPPERS>${definition.type.toUpperCase()}S_WRAPPERS`,
+            `?MAIN_WRAPPERS_ORDER>${definition.type.toUpperCase()}S_WRAPPERS_ORDER`,
             `BASE_HANDLER>${targetHandler}`,
           ],
           initMainHandler,

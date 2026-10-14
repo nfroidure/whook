@@ -9,24 +9,25 @@
 
 1. [A Whook baked API](#1-a-whook-baked-api)
    1. [The main file](#11-the-main-file)
-      1. [runProcess](#111-runprocess)
-         1. [Injected names](#1111-injected-names)
-      2. [prepareProcess](#112-prepareprocess)
-         1. [server wrappers](#1121-server-wrappers)
-      3. [prepareEnvironment](#113-prepareenvironment)
-         1. [Autoloader](#1131-autoloader)
-         2. [Definitions](#1132-definitions)
-         3. [MAIN_FILE_URL](#1133-main_file_url)
-         4. [supported `APP_ENV` values](#1134-supported-`app_env`-values)
-         4. [APP_ENV](#1134-app_env)
-         4. [$overrides](#1134-$overrides)
-         6. [TRANSACTIONS](#1136-transactions)
-         7. [WHOOK_PLUGINS](#1137-whook_plugins)
-            1. [Build up WHOOK_PLUGINS](#11371-build-up-whook_plugins)
-            2. [Dev WHOOK_PLUGINS](#11372-dev-whook_plugins)
-   2. [The build file](#12-the-build-file)
-      1. [The `runBuild` function](#121-the-`runbuild`-function)
-      2. [The `prepareBuildEnvironment` function](#122-the-`preparebuildenvironment`-function)
+      1. [supported `APP_ENV` values](#111-supported-`app_env`-values)
+      2. [WHOOK_PLUGINS](#112-whook_plugins)
+      3. [Injected names](#113-injected-names)
+      4. [prepareEnvironment](#114-prepareenvironment)
+         1. [Autoloader](#1141-autoloader)
+         2. [Definitions](#1142-definitions)
+         3. [MAIN_FILE_URL](#1143-main_file_url)
+         4. [APP_ENV](#1144-app_env)
+         4. [$overrides](#1144-$overrides)
+         6. [TRANSACTIONS](#1146-transactions)
+            1. [Build up WHOOK_PLUGINS](#11471-build-up-whook_plugins)
+   2. [The process file](#12-the-process-file)
+      1. [runProcess](#121-runprocess)
+      2. [prepareProcess](#122-prepareprocess)
+         1. [server wrappers](#1221-server-wrappers)
+         2. [Dev WHOOK_PLUGINS](#1222-dev-whook_plugins)
+   3. [The build file](#13-the-build-file)
+      1. [The `runBuild` function](#131-the-`runbuild`-function)
+      2. [The `prepareBuildEnvironment` function](#132-the-`preparebuildenvironment`-function)
 2. [Configuration](#2-configuration)
    1. [Typings](#21-typings)
       1. [AppEnvVars](#211-appenvvars)
@@ -72,7 +73,7 @@
    3. [jwtToken](#43-jwttoken)
    4. [MECHANISMS](#44-mechanisms)
    5. [queryParserBuilder](#45-queryparserbuilder)
-   6. [ROUTES_WRAPPERS](#46-routes_wrappers)
+   6. [ROUTES_WRAPPERS_ORDER](#46-routes_wrappers_order)
 5. [Commands](#5-commands)
    1. [Definition](#51-definition)
    2. [Implementation](#52-implementation)
@@ -95,25 +96,33 @@ You can see a view of the full architecture document
 ### 1.1. The main file
 
 Per convention a Whook server main file must exports
- the following 3 functions to be composable.
+ the following functions and constants to be composable.
 
 [See in context](./src/index.ts#L10-L14)
 
 
 
-#### 1.1.1. runProcess
+#### 1.1.1. supported `APP_ENV` values
 
-The `runProcess` function is intended to run the server
- and may be proxied as is, except in some e2e test cases
- where it can be useful to put mocks in (see
- [the E2E tests](./index.test.ts) coming with this project
- for a real world example).
+You can add more application environment here for several
+ deployment targets.
 
-[See in context](./src/index.ts#L70-L77)
+[See in context](./src/index.ts#L31-L35)
 
 
 
-##### 1.1.1.1. Injected names
+#### 1.1.2. WHOOK_PLUGINS
+
+Plugins allows you to add simple features to the Whook's core,
+   to add some, just add the plugin module name here.
+  
+  You can also avoid Whook defaults by leaving it empty.
+
+[See in context](./src/index.ts#L40-L46)
+
+
+
+#### 1.1.3. Injected names
 
 Per default, Whook embeds the process manager,
  the HTTP server and optionally the cronRunner.
@@ -121,39 +130,19 @@ Per default, Whook embeds the process manager,
 You can specify any service here that should be
  launched when your process starts.
 
-[See in context](./src/index.ts#L60-L67)
+[See in context](./src/index.ts#L53-L60)
 
 
 
-#### 1.1.2. prepareProcess
-
-The `prepareProcess` function is intended to prepare
-the local process environment. Put here anything you
-don't want to end up in the final build process.
-
-[See in context](./src/index.ts#L98-L103)
-
-
-
-##### 1.1.2.1. server wrappers
-
-Add here any logic bound to the server only
- For example, here we add a Swagger UI page for
- development purpose.
-
-[See in context](./src/index.ts#L108-L113)
-
-
-
-#### 1.1.3. prepareEnvironment
+#### 1.1.4. prepareEnvironment
 
 The `prepareEnvironment` one is intended to prepare the process environment
 
-[See in context](./src/index.ts#L127-L130)
+[See in context](./src/index.ts#L63-L66)
 
 
 
-##### 1.1.3.1. Autoloader
+##### 1.1.4.1. Autoloader
 
 You can register any service/handler required to bootstrap
  the server env here manually, see Knifecycle for more infos
@@ -166,11 +155,11 @@ OR, like in this example, use the Whook `$autoload` service
  service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L150-L162)
+[See in context](./src/index.ts#L86-L98)
 
 
 
-##### 1.1.3.2. Definitions
+##### 1.1.4.2. Definitions
 
 This service loads the definitions directly by
  looking at your `src` folder. You can
@@ -181,48 +170,39 @@ This service loads the definitions directly by
 A service wrapper is also used here to add CORS to
  the routes definitions.
 
-[See in context](./src/index.ts#L165-L175)
+[See in context](./src/index.ts#L101-L111)
 
 
 
-##### 1.1.3.3. MAIN_FILE_URL
+##### 1.1.4.3. MAIN_FILE_URL
 
 The project main file allows auto loading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L178-L182)
+[See in context](./src/index.ts#L114-L118)
 
 
 
-##### 1.1.3.4. supported `APP_ENV` values
-
-You can add more application environment here for several
- deployment targets.
-
-[See in context](./src/index.ts#L38-L42)
-
-
-
-##### 1.1.3.4. APP_ENV
+##### 1.1.4.4. APP_ENV
 
 Reading the `APP_ENV` from the process environment and defining
  it as a constant.
 
-[See in context](./src/index.ts#L185-L189)
+[See in context](./src/index.ts#L121-L125)
 
 
 
-##### 1.1.3.4. $overrides
+##### 1.1.4.4. $overrides
 
 Setting the `knifecycle` `$overrides` service depending on the
  current `APP_ENV`. It allows to map services to different
  implementations.
 
-[See in context](./src/index.ts#L194-L199)
+[See in context](./src/index.ts#L130-L135)
 
 
 
-##### 1.1.3.6. TRANSACTIONS
+##### 1.1.4.6. TRANSACTIONS
 
 The Whook HTTP Transaction service, maintains an internal
  hash that handles a list of the current running HTTP
@@ -251,40 +231,72 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L207-L235)
+[See in context](./src/index.ts#L143-L171)
 
 
 
-##### 1.1.3.7. WHOOK_PLUGINS
-
-Plugins allows you to add simple features to the Whook's core,
-   to add some, just add the plugin module name here.
-  
-  You can also avoid Whook defaults by leaving it empty.
-
-[See in context](./src/index.ts#L47-L53)
-
-
-
-###### 1.1.3.7.1. Build up WHOOK_PLUGINS
+###### 1.1.4.7.1. Build up WHOOK_PLUGINS
 
 Those plugins will get involved for the final build.
 
-[See in context](./src/index.ts#L256-L259)
+[See in context](./src/index.ts#L174-L177)
 
 
 
-###### 1.1.3.7.2. Dev WHOOK_PLUGINS
+### 1.2. The process file
+
+Per convention a Whook server process file must exports
+ the following 2 functions to be composable.
+
+[See in context](./src/process.ts#L23-L27)
+
+
+
+#### 1.2.1. runProcess
+
+The `runProcess` function is intended to run the server
+ and may be proxied as is, except in some e2e test cases
+ where it can be useful to put mocks in (see
+ [the E2E tests](./index.test.ts) coming with this project
+ for a real world example).
+
+[See in context](./src/process.ts#L29-L36)
+
+
+
+#### 1.2.2. prepareProcess
+
+The `prepareProcess` function is intended to prepare
+the local process environment. Put here anything you
+don't want to end up in the final build process.
+
+[See in context](./src/process.ts#L57-L62)
+
+
+
+##### 1.2.2.1. server wrappers
+
+Add here any logic bound to the dev server only
+ For example, here we add a Swagger UI page for
+ development purpose and open telemetry wrapper.
+
+[See in context](./src/process.ts#L67-L72)
+
+
+
+##### 1.2.2.2. Dev WHOOK_PLUGINS
 
 Those plugins will only be used locally. The
 `@whook/dev` one is intended to be installed in
-the development dependencies.
+the development dependencies. The `@whook/otel`
+one too, but may in some circumstances be shipped
+to production for debug / statistics collection.
 
-[See in context](./src/index.ts#L116-L121)
+[See in context](./src/process.ts#L77-L84)
 
 
 
-### 1.2. The build file
+### 1.3. The build file
 
 Per convention a Whook server build file must export
  the following 2 functions to be composable:
@@ -293,7 +305,7 @@ Per convention a Whook server build file must export
 
 
 
-#### 1.2.1. The `runBuild` function
+#### 1.3.1. The `runBuild` function
 
 The `runBuild` function is intended to build the
  project.
@@ -302,7 +314,7 @@ The `runBuild` function is intended to build the
 
 
 
-#### 1.2.2. The `prepareBuildEnvironment` function
+#### 1.3.2. The `prepareBuildEnvironment` function
 
 The `prepareBuildEnvironment` create the build
  environment
@@ -727,7 +739,7 @@ You can add some security definitions to the API via this
 
 ## 4. Services
 
-Whook is shipped with a lots of services aimed to
+Whook is shipped with a lot of services aimed to
  ease your life.
 
 Handlers, services, commands can use services for their
@@ -740,7 +752,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L134-L147)
+[See in context](./src/index.ts#L70-L83)
 
 
 
@@ -825,7 +837,7 @@ You can navigate through the Whook's sources to
 
 
 
-### 4.6. ROUTES_WRAPPERS
+### 4.6. ROUTES_WRAPPERS_ORDER
 
 Wrappers are allowing you to override every
  routes of your API with specific behaviors,
@@ -836,7 +848,7 @@ Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L238-L248)
+[See in context](./src/index.ts#L180-L190)
 
 
 
@@ -878,7 +890,7 @@ To implement a command, just write a function that takes
  injected services as a first argument and return the
  command as an asynchronous function.
 
-[See in context](./src/commands/printEnv.ts#L49-L54)
+[See in context](./src/commands/printEnv.ts#L52-L57)
 
 
 

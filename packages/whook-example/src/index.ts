@@ -26,6 +26,7 @@ import {
 import { initErrorHandlerWithCORS, wrapDefinitionsWithCORS } from '@whook/cors';
 import { extractAppEnv, initTimeMock } from 'application-services';
 import initSecurityDefinitions from './services/SECURITY_DEFINITIONS.js';
+import initAPI from './services/API.js';
 
 /* Architecture Note #1.1.1: supported `APP_ENV` values
 
@@ -170,7 +171,13 @@ export async function prepareEnvironment<T extends Knifecycle>(
   */
   $.register(constant('TRANSACTIONS', {}));
 
-  /* Architecture Note #4.6: ROUTES_WRAPPERS
+  /* Architecture Note #1.1.4.7.1: Build up WHOOK_PLUGINS
+
+  Those plugins will get involved for the final build.
+   */
+  $.register(constant('WHOOK_PLUGINS', WHOOK_PLUGINS));
+
+  /* Architecture Note #4.6: ROUTES_WRAPPERS_ORDER
 
   Wrappers are allowing you to override every
    routes of your API with specific behaviors,
@@ -182,17 +189,12 @@ export async function prepareEnvironment<T extends Knifecycle>(
    wrapper responses.
   */
   $.register(
-    constant('ROUTES_WRAPPERS_NAMES', [
-      'wrapRouteHandlerWithCORS',
+    constant('ROUTES_WRAPPERS_ORDER', [
+      'wrapRouteHandlerForDebug',
       'wrapRouteHandlerWithAuthorization',
+      'wrapRouteHandlerWithCORS',
     ]),
   );
-
-  /* Architecture Note #1.1.4.7.1: Build up WHOOK_PLUGINS
-
-  Those plugins will get involved for the final build.
-   */
-  $.register(constant('WHOOK_PLUGINS', WHOOK_PLUGINS));
 
   // Add the CORS wrapped error handler
   $.register(initErrorHandlerWithCORS);
@@ -200,7 +202,9 @@ export async function prepareEnvironment<T extends Knifecycle>(
   // Add the time mock service for testing
   $.register(initTimeMock);
 
+  // Registering autoloader required services
   $.register(initSecurityDefinitions);
+  $.register(initAPI);
 
   return $;
 }

@@ -19,16 +19,11 @@ import {
   noop,
   type WhookCommandHandler,
   type WhookCommandDefinition,
-  DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  type WhookRoutesDefinitionsOptions,
-  DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  type WhookCronDefinitionsOptions,
-  type WhookConsumerDefinitionsOptions,
-  DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
-  DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
-  type WhookCommandsDefinitionsOptions,
-  type WhookTransformerDefinitionsOptions,
-  DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
+  ROUTE_DECLARATION_REG_EXP,
+  CRON_DECLARATION_REG_EXP,
+  CONSUMER_DECLARATION_REG_EXP,
+  COMMAND_DECLARATION_REG_EXP,
+  TRANSFORMER_DECLARATION_REG_EXP,
 } from '@whook/whook';
 import {
   Project,
@@ -99,11 +94,6 @@ export const definition = {
 
 async function initCreateCommand({
   PROJECT_DIR,
-  ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  CONSUMERS_DEFINITIONS_OPTIONS = DEFAULT_CONSUMERS_DEFINITIONS_OPTIONS,
-  COMMANDS_DEFINITIONS_OPTIONS = DEFAULT_COMMANDS_DEFINITIONS_OPTIONS,
-  TRANSFORMERS_DEFINITIONS_OPTIONS = DEFAULT_TRANSFORMERS_DEFINITIONS_OPTIONS,
   API,
   $instance,
   $autoload,
@@ -115,11 +105,6 @@ async function initCreateCommand({
   log = noop,
 }: {
   PROJECT_DIR: string;
-  ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
-  CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
-  CONSUMERS_DEFINITIONS_OPTIONS?: WhookConsumerDefinitionsOptions;
-  COMMANDS_DEFINITIONS_OPTIONS?: WhookCommandsDefinitionsOptions;
-  TRANSFORMERS_DEFINITIONS_OPTIONS?: WhookTransformerDefinitionsOptions;
   API: OpenAPI;
   $instance: Knifecycle;
   $autoload: Autoloader<Initializer<Service, Dependencies>>;
@@ -152,27 +137,25 @@ async function initCreateCommand({
     let nameIsValid = type === 'service' || type === 'provider';
 
     while (nameIsValid === false) {
-      const patterns =
+      const pattern =
         type === 'route'
-          ? ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns
+          ? ROUTE_DECLARATION_REG_EXP
           : type === 'cron'
-            ? CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns
+            ? CRON_DECLARATION_REG_EXP
             : type === 'consumer'
-              ? CONSUMERS_DEFINITIONS_OPTIONS.serviceNamePatterns
+              ? CONSUMER_DECLARATION_REG_EXP
               : type === 'command'
-                ? COMMANDS_DEFINITIONS_OPTIONS.serviceNamePatterns
+                ? COMMAND_DECLARATION_REG_EXP
                 : type === 'transformer'
-                  ? TRANSFORMERS_DEFINITIONS_OPTIONS.serviceNamePatterns
-                  : [];
+                  ? TRANSFORMER_DECLARATION_REG_EXP
+                  : undefined;
 
-      nameIsValid = patterns.some((pattern) =>
-        new RegExp(pattern).test(finalName),
-      );
+      nameIsValid = pattern ? pattern.test(finalName) : false;
 
       if (!nameIsValid) {
         log(
           'error',
-          `❌ - The ${type} name "${finalName}" does not match "${patterns.join(', ')}".`,
+          `❌ - The ${type} name "${finalName}" does not match "${pattern}".`,
         );
 
         finalName = await inquirer.input({
@@ -397,12 +380,9 @@ async function initCreateCommand({
           name: method,
           value: method,
         })),
-        default: ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns
-          .map(
-            (pattern) =>
-              (new RegExp(pattern).exec(finalName) as string[])[2] as 'get',
-          )
-          .filter((maybeMethod) => PATH_ITEM_METHODS.includes(maybeMethod))[0],
+        default: (
+          ROUTE_DECLARATION_REG_EXP.exec(finalName) as string[]
+        )[2] as 'get',
       });
 
       const path = await inquirer.input({

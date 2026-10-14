@@ -28,15 +28,6 @@ Declare it in the `src/index.ts` file of your project:
   // ...
 
   $.register(
-    constant('ROUTES_WRAPPERS_NAMES', [
-+      'wrapRouteHandlerWithVersionChecker',
-      'wrapRouteHandlerWithAuthorization',
-    ]),
-  );
-
-  // ...
-
-  $.register(
     constant('WHOOK_PLUGINS', [
       '@whook/whook',
 +      '@whook/versions',
@@ -45,6 +36,7 @@ Declare it in the `src/index.ts` file of your project:
   );
 
   // ...
+
 ```
 
 Declare types in your `src/whook.d.ts` definition:

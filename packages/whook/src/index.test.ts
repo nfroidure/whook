@@ -56,7 +56,6 @@ describe('runProcess', () => {
       );
       $.register(constant('PORT', PORT));
       $.register(constant('HOST', HOST));
-      $.register(constant('ROUTES_WRAPPERS_NAMES', []));
       $.register(constant('WHOOK_PLUGINS', []));
       $.register(constant('APP_CONFIG', {}));
       $.register(constant('WHOOK_RESOLVED_PLUGINS', []));

@@ -4,6 +4,7 @@ import {
   noop,
   type WhookConsumerHandler,
   type WhookAPMService,
+  type WhookMainDefinition,
   type WhookConsumerDefinition,
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
@@ -17,7 +18,7 @@ export interface WhookAWSLambdaS3Input {
 
 export interface WhookAWSLambdaS3HandlerWrapperDependencies {
   ENV: AppEnvVars;
-  MAIN_DEFINITION: WhookConsumerDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -50,6 +51,10 @@ async function initWrapS3HandlerForAWSLambda({
 }: WhookAWSLambdaS3HandlerWrapperDependencies) {
   log('debug', '📥 - Initializing the AWS Lambda S3 wrapper.');
 
+  if (MAIN_DEFINITION.type !== 'consumer') {
+    throw new YError('E_UNEXPECTED_MAIN_DEFINITION', [MAIN_DEFINITION]);
+  }
+
   const wrapper = async (
     handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaS3Input>>,
   ) => {
@@ -72,7 +77,11 @@ async function handleForAWSS3Lambda(
     apm,
     time,
     log,
-  }: Required<WhookAWSLambdaS3HandlerWrapperDependencies>,
+  }: Required<
+    Omit<WhookAWSLambdaS3HandlerWrapperDependencies, 'MAIN_DEFINITION'>
+  > & {
+    MAIN_DEFINITION: WhookConsumerDefinition;
+  },
   handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaS3Input>>,
   event: S3Event,
 ) {

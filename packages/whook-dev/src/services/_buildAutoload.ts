@@ -50,7 +50,7 @@ const initializerWrapper = async (
       let initializer: ServiceInitializer<Dependencies, Service>;
 
       try {
-        initializer = $instance._getInitializer(
+        initializer = $instance.getRegisteredInitializer(
           serviceName,
         ) as ServiceInitializer<Dependencies, Service>;
       } catch (err) {

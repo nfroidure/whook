@@ -402,6 +402,7 @@ describe('augmentAPIWithCORS()', () => {
       configs: {
         optionsPing: {
           type: 'route',
+          url: 'file:///project/routes/optionsPing',
           path: '/ping',
           method: 'options',
           config: {},
@@ -412,6 +413,7 @@ describe('augmentAPIWithCORS()', () => {
         },
         getPing: {
           type: 'route',
+          url: 'file:///project/routes/getPing',
           path: '/ping',
           method: 'get',
           config: {},
@@ -422,6 +424,7 @@ describe('augmentAPIWithCORS()', () => {
         },
         headUser: {
           type: 'route',
+          url: 'file:///project/routes/headUser',
           path: '/users/{userid}',
           method: 'head',
           config: {},
@@ -432,6 +435,7 @@ describe('augmentAPIWithCORS()', () => {
         },
         getUser: {
           type: 'route',
+          url: 'file:///project/routes/getUser',
           path: '/users/{userid}',
           method: 'get',
           config: {},
@@ -442,6 +446,7 @@ describe('augmentAPIWithCORS()', () => {
         },
         ping: {
           type: 'route',
+          url: 'file:///project/routes/ping',
           path: '/crons/tokens',
           method: 'post',
           config: {},
@@ -451,6 +456,8 @@ describe('augmentAPIWithCORS()', () => {
           >['operation'],
         },
       },
+      handlers: {},
+      wrappers: {},
     };
 
     const initDefinitions = wrapDefinitionsWithCORS(
@@ -513,6 +520,7 @@ describe('augmentAPIWithCORS()', () => {
              "operation": {},
              "path": "/ping",
              "type": "route",
+             "url": "file:///project/routes/getPing",
            },
            "getUser": {
              "config": {},
@@ -520,6 +528,7 @@ describe('augmentAPIWithCORS()', () => {
              "operation": {},
              "path": "/users/{userid}",
              "type": "route",
+             "url": "file:///project/routes/getUser",
            },
            "headUser": {
              "config": {},
@@ -527,6 +536,7 @@ describe('augmentAPIWithCORS()', () => {
              "operation": {},
              "path": "/users/{userid}",
              "type": "route",
+             "url": "file:///project/routes/headUser",
            },
            "headUserCORS": {
              "config": {
@@ -571,6 +581,7 @@ describe('augmentAPIWithCORS()', () => {
              },
              "path": "/users/{userid}",
              "type": "route",
+             "url": "file:///internal",
            },
            "optionsPing": {
              "config": {},
@@ -578,6 +589,7 @@ describe('augmentAPIWithCORS()', () => {
              "operation": {},
              "path": "/ping",
              "type": "route",
+             "url": "file:///project/routes/optionsPing",
            },
            "ping": {
              "config": {},
@@ -585,6 +597,7 @@ describe('augmentAPIWithCORS()', () => {
              "operation": {},
              "path": "/crons/tokens",
              "type": "route",
+             "url": "file:///project/routes/ping",
            },
            "pingCORS": {
              "config": {
@@ -607,8 +620,10 @@ describe('augmentAPIWithCORS()', () => {
              },
              "path": "/crons/tokens",
              "type": "route",
+             "url": "file:///internal",
            },
          },
+         "handlers": {},
          "paths": {
            "/crons/tokens": {
              "options": {
@@ -737,6 +752,7 @@ describe('augmentAPIWithCORS()', () => {
            },
          },
          "security": [],
+         "wrappers": {},
        },
        "logCalls": [
          [

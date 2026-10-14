@@ -2,9 +2,10 @@ import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
   noop,
+  type WhookConsumerDefinition,
   type WhookAPMService,
   type WhookConsumerHandler,
-  type WhookConsumerDefinition,
+  type WhookMainDefinition,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
 import {
@@ -41,7 +42,7 @@ export type WhookAWSLambdaConsumerInput =
 
 export interface WhookAWSLambdaConsumerHandlerWrapperDependencies {
   ENV: AppEnvVars;
-  MAIN_DEFINITION: WhookConsumerDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -74,6 +75,10 @@ async function initWrapConsumerHandlerForAWSLambda({
 }: WhookAWSLambdaConsumerHandlerWrapperDependencies) {
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
+  if (MAIN_DEFINITION.type !== 'consumer') {
+    throw new YError('E_UNEXPECTED_MAIN_DEFINITION', [MAIN_DEFINITION]);
+  }
+
   const wrapper = async (
     handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaConsumerInput>>,
   ) => {
@@ -96,7 +101,11 @@ async function handleForAWSConsumerLambda(
     apm,
     time,
     log,
-  }: Required<WhookAWSLambdaConsumerHandlerWrapperDependencies>,
+  }: Required<
+    Omit<WhookAWSLambdaConsumerHandlerWrapperDependencies, 'MAIN_DEFINITION'>
+  > & {
+    MAIN_DEFINITION: WhookConsumerDefinition;
+  },
   handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaConsumerInput>>,
   event:
     KinesisStreamEvent | SQSEvent | SNSEvent | SESEvent | DynamoDBStreamEvent,

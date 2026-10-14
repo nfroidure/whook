@@ -9,6 +9,7 @@ import {
   type WhookRouteHandlerWrapper,
   type WhookRouteDefinition,
   type WhookRouteHandlerParameters,
+  type WhookHandlerWrapperDefinition,
 } from '@whook/whook';
 import { noop, type LogService } from 'common-services';
 
@@ -39,6 +40,14 @@ export type WhookCORSRouteConfig = {
       };
 };
 
+export const definition = {
+  name: 'wrapRouteHandlerWithCORS',
+  type: 'route',
+  config: {
+    targets: 'all',
+  },
+} as const satisfies WhookHandlerWrapperDefinition;
+
 /**
  * Wrap a route handler to append CORS to response.
  * @param  {Object}   services
@@ -48,7 +57,7 @@ export type WhookCORSRouteConfig = {
  * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @return {Promise<Object>}
- * A promise of an object containing the reshaped env vars.
+ * A promise of route handler wrapped with CORS.
  */
 async function initWrapRouteHandlerWithCORS({
   CORS,

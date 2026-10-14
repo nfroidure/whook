@@ -37,7 +37,7 @@ import {
   type WhookErrorHandler,
   type WhookOpenAPI,
   type WhookCoercionOptions,
-  type WhookRouteDefinition,
+  type WhookMainDefinition,
   type WhookRequestBody,
   type WhookHTTPRouterDescriptor,
   type WhookSchemaValidatorsService,
@@ -49,6 +49,7 @@ import {
   type WhookEncoders,
   type WhookDecoders,
   type WhookResponseBodySpec,
+  WhookRouteDefinition,
 } from '@whook/whook';
 import { type LogService } from 'common-services';
 import {
@@ -73,7 +74,7 @@ interface GCPResponse extends Writable {
 }
 
 export interface WhookGCPFunctionRouteWrapperDependencies {
-  MAIN_DEFINITION: WhookRouteDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   MAIN_API: WhookOpenAPI;
   DECODERS?: WhookDecoders;
   ENCODERS?: WhookEncoders;
@@ -93,6 +94,8 @@ export interface WhookGCPFunctionRouteWrapperDependencies {
  * @param  {Object}   services
  * The service dependencies
  * @param  {Object}   services.MAIN_DEFINITION
+ * A route definition for that handler
+ * @param  {Object}   services.MAIN_API
  * An OpenAPI definition for that handler
  * @param  {Object}   services.DECODERS
  * Request body decoders available
@@ -134,6 +137,10 @@ async function initWrapRouteHandlerForGoogleHTTPFunction({
   WhookRouteHandlerWrapper<WhookRouteHandler>
 > {
   log('debug', '📥 - Initializing the GCP Function wrapper.');
+
+  if (MAIN_DEFINITION.type !== 'route') {
+    throw new YError('E_UNEXPECTED_MAIN_DEFINITION', [MAIN_DEFINITION]);
+  }
 
   const path = MAIN_DEFINITION.path;
   const pathItem = MAIN_API.paths?.[path];

@@ -2,24 +2,24 @@ import { stdout as _stdout } from 'node:process';
 import { type Knifecycle, autoService, location } from 'knifecycle';
 import { type LogService } from 'common-services';
 import {
-  ROUTES_WRAPPERS_REG_EXP,
-  CRONS_WRAPPERS_REG_EXP,
-  DEFAULT_CRONS_DEFINITIONS_OPTIONS,
-  type WhookCronDefinitionsOptions,
-  DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  type WhookRoutesDefinitionsOptions,
+  ROUTE_WRAPPER_REG_EXP,
+  ROUTE_DECLARATION_REG_EXP,
+  CRON_WRAPPER_REG_EXP,
+  CRON_DECLARATION_REG_EXP,
+  TRANSFORMER_WRAPPER_REG_EXP,
+  TRANSFORMER_DECLARATION_REG_EXP,
+  CONSUMER_WRAPPER_REG_EXP,
+  CONSUMER_DECLARATION_REG_EXP,
+  COMMAND_WRAPPER_REG_EXP,
+  COMMAND_DECLARATION_REG_EXP,
 } from '@whook/whook';
 
 async function initMermaid({
-  ROUTES_DEFINITIONS_OPTIONS = DEFAULT_ROUTES_DEFINITIONS_OPTIONS,
-  CRONS_DEFINITIONS_OPTIONS = DEFAULT_CRONS_DEFINITIONS_OPTIONS,
   $ready,
   $instance,
   log,
   stdout,
 }: {
-  ROUTES_DEFINITIONS_OPTIONS?: WhookRoutesDefinitionsOptions;
-  CRONS_DEFINITIONS_OPTIONS?: WhookCronDefinitionsOptions;
   $ready: Promise<void>;
   $instance: Knifecycle;
   log: LogService;
@@ -42,21 +42,45 @@ async function initMermaid({
       },
       styles: [
         {
-          pattern: ROUTES_WRAPPERS_REG_EXP,
+          pattern: ROUTE_WRAPPER_REG_EXP,
           className: 'routes_wrappers',
         },
-        ...ROUTES_DEFINITIONS_OPTIONS.serviceNamePatterns.map((pattern) => ({
-          pattern: new RegExp(pattern),
-          className: 'routes_handlers',
-        })),
         {
-          pattern: CRONS_WRAPPERS_REG_EXP,
+          pattern: ROUTE_DECLARATION_REG_EXP,
+          className: 'routes_handlers',
+        },
+        {
+          pattern: CRON_WRAPPER_REG_EXP,
           className: 'crons_wrappers',
         },
-        ...CRONS_DEFINITIONS_OPTIONS.serviceNamePatterns.map((pattern) => ({
-          pattern: new RegExp(pattern),
+        {
+          pattern: CRON_DECLARATION_REG_EXP,
           className: 'crons_handlers',
-        })),
+        },
+        {
+          pattern: COMMAND_WRAPPER_REG_EXP,
+          className: 'commands_wrappers',
+        },
+        {
+          pattern: COMMAND_DECLARATION_REG_EXP,
+          className: 'commands_handlers',
+        },
+        {
+          pattern: CONSUMER_WRAPPER_REG_EXP,
+          className: 'consumer_wrappers',
+        },
+        {
+          pattern: CONSUMER_DECLARATION_REG_EXP,
+          className: 'consumer_handlers',
+        },
+        {
+          pattern: TRANSFORMER_WRAPPER_REG_EXP,
+          className: 'transformers_wrappers',
+        },
+        {
+          pattern: TRANSFORMER_DECLARATION_REG_EXP,
+          className: 'transformers_handlers',
+        },
         {
           pattern: CONFIG_REG_EXP,
           className: 'config',
@@ -67,20 +91,20 @@ async function initMermaid({
         },
       ],
       shapes: [
-        ...ROUTES_DEFINITIONS_OPTIONS.fileNamePatterns.map((pattern) => ({
-          pattern: new RegExp(pattern),
-          template: '$0(($0))',
-        })),
         {
-          pattern: ROUTES_WRAPPERS_REG_EXP,
+          pattern: new RegExp(ROUTE_DECLARATION_REG_EXP),
+          template: '$0(($0))',
+        },
+        {
+          pattern: ROUTE_WRAPPER_REG_EXP,
           template: '$0($0)',
         },
-        ...ROUTES_DEFINITIONS_OPTIONS.fileNamePatterns.map((pattern) => ({
-          pattern: new RegExp(pattern),
-          template: '$0[[$0]]',
-        })),
         {
-          pattern: ROUTES_WRAPPERS_REG_EXP,
+          pattern: new RegExp(CRON_DECLARATION_REG_EXP),
+          template: '$0[[$0]]',
+        },
+        {
+          pattern: CRON_WRAPPER_REG_EXP,
           template: '$0[$0]',
         },
         {

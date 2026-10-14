@@ -162,13 +162,13 @@ async function initPostOAuth2PushedAuthorizationRequest({
   OAUTH2,
   OAUTH2_PAR = DEFAULT_OAUTH2_PAR,
   oAuth2Granters,
-  oAuth2AuthorizationRequests,
+  oAuth2AuthorizationRequests = undefined,
   readClientGrants,
   log = noop,
 }: WhookOAuth2AuthorizationRequestsConfig & {
   OAUTH2: WhookOAuth2Options;
   oAuth2Granters: WhookOAuth2GranterService<WhookOAuth2GranterDefinitions>[];
-  oAuth2AuthorizationRequests: Pick<
+  oAuth2AuthorizationRequests?: Pick<
     WhookOAuth2AuthorizationRequestsService,
     'create'
   >;
@@ -177,6 +177,13 @@ async function initPostOAuth2PushedAuthorizationRequest({
 }) {
   if (OAUTH2_PAR.mode === 'disabled') {
     log('error', `💥 - OAuth2 PAR endpoint should be disabled when PAR is.`);
+    throw new YError('E_OAUTH2_MISCONFIGURED');
+  }
+  if (!oAuth2AuthorizationRequests) {
+    log(
+      'error',
+      `💥 - OAuth2 "oAuth2AuthorizationRequests" service not available.`,
+    );
     throw new YError('E_OAUTH2_MISCONFIGURED');
   }
 

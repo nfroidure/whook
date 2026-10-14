@@ -42,20 +42,13 @@ export type WhookResolvedPluginsService = Record<
 >;
 export interface WhookResolvedPluginsConfig {
   WHOOK_PLUGINS?: WhookPluginsService;
-};
+}
 export type WhookResolvedPluginsDependencies = WhookResolvedPluginsConfig & {
   MAIN_FILE_URL: WhookURL;
   resolve: ResolveService;
   readDir: (path: URL) => Promise<string[]>;
   log: LogService;
 };
-
-export default location(
-  singleton(
-    name('WHOOK_RESOLVED_PLUGINS', autoService(initWhookResolvedPlugins)),
-  ),
-  import.meta.url,
-);
 
 /**
  * Resolves the Whook plugins from their names
@@ -129,3 +122,10 @@ async function initWhookResolvedPlugins({
 
   return resolvedPlugins;
 }
+
+export default location(
+  singleton(
+    name('WHOOK_RESOLVED_PLUGINS', autoService(initWhookResolvedPlugins)),
+  ),
+  import.meta.url,
+);

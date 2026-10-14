@@ -4,6 +4,7 @@ import {
   type WhookCronDefinition,
   type WhookAPISchemaDefinition,
   type WhookCronHandler,
+  refersTo,
 } from '@whook/whook';
 
 // Here we create a schema for the cron body
@@ -35,9 +36,10 @@ export const definition = {
       environments: ['local'],
     },
   ],
-  schema: { $ref: `#/components/schemas/${exampleSchema.name}` },
+  schema: refersTo(exampleSchema),
   config: {
     environments: 'all',
+    wrappers: ['wrapCronHandlerForDebug'],
   },
 } as const satisfies WhookCronDefinition<
   components['schemas']['ExampleSchema']

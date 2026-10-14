@@ -1,5 +1,7 @@
 import camelCase from 'camelcase';
-import initWrapRouteHandlerWithVersionChecker from './wrappers/wrapRouteHandlerWithVersionChecker.js';
+import initWrapRouteHandlerWithVersionChecker, {
+  definition as wrapRouteHandlerWithVersionCheckerDefinition,
+} from './wrappers/wrapRouteHandlerWithVersionChecker.js';
 import {
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
@@ -15,7 +17,7 @@ import {
   type OpenAPIMethod,
 } from 'ya-open-api-types';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
-import { type VersionDescriptor } from './wrappers/wrapRouteHandlerWithVersionChecker.js';
+import { type WhookVersionDescriptor } from './wrappers/wrapRouteHandlerWithVersionChecker.js';
 
 export const VERSIONS_ERRORS_DESCRIPTORS = {
   E_DEPRECATED_VERSION: {
@@ -36,12 +38,15 @@ declare module 'yerror' {
   }
 }
 
-export { initWrapRouteHandlerWithVersionChecker };
+export {
+  initWrapRouteHandlerWithVersionChecker,
+  wrapRouteHandlerWithVersionCheckerDefinition,
+};
 
 export type {
-  VersionDescriptor,
-  VersionsConfig,
-  VersionsCheckerDependencies,
+  WhookVersionDescriptor,
+  WhookVersionsConfig,
+  WhookVersionsCheckerDependencies,
 } from './wrappers/wrapRouteHandlerWithVersionChecker.js';
 
 // TODO: This is here to do things fast but a proper way to
@@ -57,7 +62,7 @@ export type {
  */
 export async function augmentAPIWithVersionsHeaders(
   API: OpenAPI,
-  VERSIONS: VersionDescriptor[],
+  VERSIONS: WhookVersionDescriptor[],
 ): Promise<OpenAPI> {
   return {
     ...API,

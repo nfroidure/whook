@@ -107,12 +107,6 @@ describe('runProcess', () => {
      {
        "debugCalls": [
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/routes/getPing.ts"})",
-         ],
-         [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/routes/optionsWithCORS.ts"})",
-         ],
-         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/BUFFER_LIMIT.ts"})",
          ],
          [
@@ -131,7 +125,13 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRONS_WRAPPERS.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRONS_WRAPPERS_ORDER.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/CRON_DEFINITION_FILTER.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DECLARATIONS_OPTIONS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DECODERS.ts"})",
@@ -197,28 +197,61 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/TRANSFORMER_DEFINITION_FILTER.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/WRAPPER_DEFINITION_FILTER.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/cronRunner.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/fetcher.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/httpTransaction.ts"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getDelay.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/oTelTracer.ts"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getDiagnostic.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getOpenAPI.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getParameters.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getPing.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getTime.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/handleMinutes.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/optionsWithCORS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/postCronRun.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/putEcho.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/putEchoedStream.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/uniqueId.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/wrappers/wrapRouteHandlerWithAuthorization.ts"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/wrapCronHandlerForDebug.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/wrappers/wrapRouteHandlerWithCORS.ts"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/wrapRouteHandlerForDebug.ts"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/routes/optionsWithCORS.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/wrapRouteHandlerWithAuthorization.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/wrapRouteHandlerWithCORS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/BUFFER_LIMIT.js"})",
@@ -233,7 +266,13 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CRONS_WRAPPERS_ORDER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DECLARATIONS_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DECODERS.js"})",
@@ -293,19 +332,61 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/fetcher.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getDelay.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getDiagnostic.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getOpenAPI.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getParameters.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getPing.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getTime.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/handleMinutes.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/optionsWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/putEcho.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/putEchoedStream.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/uniqueId.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/wrappers/wrapRouteHandlerWithAuthorization.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/wrapCronHandlerForDebug.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/wrappers/wrapRouteHandlerWithCORS.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/wrapRouteHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/wrapRouteHandlerWithCORS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js"})",
@@ -320,7 +401,13 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CRONS_WRAPPERS_ORDER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DECLARATIONS_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DECODERS.js"})",
@@ -380,13 +467,61 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/fetcher.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getDelay.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getDiagnostic.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getOpenAPI.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getParameters.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getPing.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getTime.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/handleMinutes.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/optionsWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/putEcho.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/putEchoedStream.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/uniqueId.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/wrapCronHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/wrapRouteHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/wrapRouteHandlerWithCORS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js"})",
@@ -401,7 +536,13 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CRONS_WRAPPERS_ORDER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DECLARATIONS_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DECODERS.js"})",
@@ -461,16 +602,61 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/fetcher.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getDelay.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getDiagnostic.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getOpenAPI.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getParameters.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getPing.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getTime.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/handleMinutes.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/optionsWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/putEcho.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/putEchoedStream.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/uniqueId.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithAuthorization.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/wrapCronHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/wrapRouteHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/wrapRouteHandlerWithCORS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/BUFFER_LIMIT.js"})",
@@ -485,7 +671,13 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/CRONS_WRAPPERS_ORDER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DECLARATIONS_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DECODERS.js"})",
@@ -545,19 +737,61 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/fetcher.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getDelay.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getDiagnostic.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getOpenAPI.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getParameters.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getPing.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getTime.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/handleMinutes.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/optionsWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/putEcho.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/putEchoedStream.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/uniqueId.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/routes/getPing.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/wrapCronHandlerForDebug.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/routes/optionsWithCORS.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerWithCORS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/BUFFER_LIMIT.js"})",
@@ -575,7 +809,13 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/CRONS_WRAPPERS.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/CRONS_WRAPPERS_ORDER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DECLARATIONS_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DECODERS.js"})",
@@ -638,19 +878,61 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/fetcher.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getDelay.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getDiagnostic.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getOpenAPI.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getParameters.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getPing.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getTime.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/handleMinutes.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/optionsWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/putEcho.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/putEchoedStream.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/uniqueId.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithAuthorization.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/wrapCronHandlerForDebug.js"})",
          ],
          [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithCORS.js"})",
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/wrapRouteHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/wrapRouteHandlerWithCORS.js"})",
          ],
          [
            "{"type":"string"}",
@@ -683,220 +965,304 @@ describe('runProcess', () => {
            "⌛ - Delay service initialized.",
          ],
          [
-           "⏳ - Module "optionsWithCORS.js" has no definition!",
+           "⏳ - Skipped "file:///project/src/commands/createSecretKey.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "__snapshots__" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/commands/printEnv.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/__snapshots__/getTime.test.ts.snap" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.js.map" per file patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getDelay.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getDiagnostic.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getParameters.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getTime.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/postCronRun.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.js" since disabled by the application environment (test)!",
+           "⏳ - Skipped "file:///project/src/routes/putEcho.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.js.map" per file patterns.",
+           "⏳ - Skipped "file:///project/src/routes/putEchoedStream.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "createSecretKey.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronRun.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronRun.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronRun.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronSchedule.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronRun.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronSchedule.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronSchedule.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronSchedule.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateSchemaValidators.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateSchemaValidators.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateSchemaValidators.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateSchemaValidators.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getDelay.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getDiagnostic.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.js" since already loaded upstream.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getParameters.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getTime.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "optionsWithCORS.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithCORS.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "optionsWithCORS.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithCORS.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "postCronRun.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "printEnv.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "putEcho.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "putEchoedStream.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "putTime.ts" since disabled by the application environment (test)!",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "route.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "route.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "route.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "route.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "route.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.test.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapCommandHandlerForDebug.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapCommandHandlerForDebug.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapConsumerHandlerForDebug.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapConsumerHandlerForDebug.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapCronHandlerForDebug.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapCronHandlerForDebug.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapRouteHandlerForDebug.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapRouteHandlerForDebug.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapTransformerHandlerForDebug.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapTransformerHandlerForDebug.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapConsumersHandlersWithOTel.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapConsumersHandlersWithOTel.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapCronsHandlersWithOTel.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapCronsHandlersWithOTel.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPRouterWithOTel.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPRouterWithOTel.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPTransactionWithOTel.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPTransactionWithOTel.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRoutesHandlersWithOTel.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRoutesHandlersWithOTel.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped command from "file:///projects/whook/packages/whook-dev/dist/commands/create.js" since disabled by the application environment (test)!",
+         ],
+         [
+           "⏳ - Skipped route from "file:///project/src/routes/putTime.ts" since disabled by the application environment (test)!",
+         ],
+         [
+           "⏳ - Skipped route from "file:///projects/whook/dist/routes/getOpenAPI.js" since already loaded upstream.",
+         ],
+         [
+           "⏳ - Skipped route from "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js" since no definition!",
+         ],
+         [
+           "⏳ - Skipped wrapper from "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapConsumersHandlersWithOTel.js" since no definition!",
+         ],
+         [
+           "⏳ - Skipped wrapper from "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapCronsHandlersWithOTel.js" since no definition!",
+         ],
+         [
+           "⏳ - Skipped wrapper from "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPRouterWithOTel.js" since no definition!",
+         ],
+         [
+           "⏳ - Skipped wrapper from "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPTransactionWithOTel.js" since no definition!",
          ],
          [
            "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
@@ -924,9 +1290,6 @@ describe('runProcess', () => {
          ],
          [
            "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
-         ],
-         [
-           "✅ - Module path of "API" found at "file:///project/src/services/API.ts".",
          ],
          [
            "✅ - Module path of "CRONS_HANDLERS" found at "@whook/otel/dist/services/CRONS_HANDLERS.js".",
@@ -971,13 +1334,7 @@ describe('runProcess', () => {
            "✅ - Module path of "handleMinutes" found at "file:///project/src/crons/handleMinutes.ts".",
          ],
          [
-           "✅ - Module path of "httpTransaction" found at "@whook/otel/dist/services/httpTransaction.js".",
-         ],
-         [
            "✅ - Module path of "jwtToken" found at "file:///project/src/services/jwtToken.ts".",
-         ],
-         [
-           "✅ - Module path of "oTelTracer" found at "@whook/otel/dist/services/oTelTracer.js".",
          ],
          [
            "✅ - Module path of "optionsWithCORS" found at "@whook/cors/dist/routes/optionsWithCORS.js".",
@@ -990,6 +1347,12 @@ describe('runProcess', () => {
          ],
          [
            "✅ - Module path of "putEchoedStream" found at "file:///project/src/routes/putEchoedStream.ts".",
+         ],
+         [
+           "✅ - Module path of "wrapCronHandlerForDebug" found at "@whook/dev/dist/wrappers/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "✅ - Module path of "wrapRouteHandlerForDebug" found at "@whook/dev/dist/wrappers/wrapRouteHandlerForDebug.js".",
          ],
          [
            "✅ - Module path of "wrapRouteHandlerWithAuthorization" found at "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
@@ -1007,7 +1370,7 @@ describe('runProcess', () => {
            "➰ - Plugin "@whook/cors" source path resolved to "file:///projects/whook/packages/whook-cors/dist" with "routes, services, wrappers" types.",
          ],
          [
-           "➰ - Plugin "@whook/dev" source path resolved to "file:///projects/whook/packages/whook-dev/dist" with "commands, services" types.",
+           "➰ - Plugin "@whook/dev" source path resolved to "file:///projects/whook/packages/whook-dev/dist" with "commands, services, wrappers" types.",
          ],
          [
            "➰ - Plugin "@whook/otel" source path resolved to "file:///projects/whook/packages/whook-otel/dist" with "services, wrappers" types.",
@@ -1031,16 +1394,58 @@ describe('runProcess', () => {
            "🈁 - Gathering the project transformers modules.",
          ],
          [
+           "🈁 - Gathering the project wrappers modules.",
+         ],
+         [
            "🈁 - Gathering the routes modules.",
          ],
          [
            "🈁 - Generating the DEFINITIONS",
          ],
          [
-           "🈁 - Handler module at "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js" exports no definition!",
+           "🍀 - Found "getDelay" handler module path in definitions ("file:///project/src/routes/getDelay.ts").",
          ],
          [
-           "🍀 - Trying to find "API" module path in "__project__".",
+           "🍀 - Found "getDiagnostic" handler module path in definitions ("file:///project/src/routes/getDiagnostic.ts").",
+         ],
+         [
+           "🍀 - Found "getOpenAPI" handler module path in definitions ("file:///project/src/routes/getOpenAPI.ts").",
+         ],
+         [
+           "🍀 - Found "getParameters" handler module path in definitions ("file:///project/src/routes/getParameters.ts").",
+         ],
+         [
+           "🍀 - Found "getPing" handler module path in definitions ("file:///projects/whook/dist/routes/getPing.js").",
+         ],
+         [
+           "🍀 - Found "getTime" handler module path in definitions ("file:///project/src/routes/getTime.ts").",
+         ],
+         [
+           "🍀 - Found "handleMinutes" handler module path in definitions ("file:///project/src/crons/handleMinutes.ts").",
+         ],
+         [
+           "🍀 - Found "optionsWithCORS" handler module path in definitions ("file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js").",
+         ],
+         [
+           "🍀 - Found "postCronRun" handler module path in definitions ("file:///project/src/routes/postCronRun.ts").",
+         ],
+         [
+           "🍀 - Found "putEcho" handler module path in definitions ("file:///project/src/routes/putEcho.ts").",
+         ],
+         [
+           "🍀 - Found "putEchoedStream" handler module path in definitions ("file:///project/src/routes/putEchoedStream.ts").",
+         ],
+         [
+           "🍀 - Found "wrapCronHandlerForDebug" wrapper module path in definitions ("file:///projects/whook/packages/whook-dev/dist/wrappers/wrapCronHandlerForDebug.js").",
+         ],
+         [
+           "🍀 - Found "wrapRouteHandlerForDebug" wrapper module path in definitions ("file:///projects/whook/packages/whook-dev/dist/wrappers/wrapRouteHandlerForDebug.js").",
+         ],
+         [
+           "🍀 - Found "wrapRouteHandlerWithAuthorization" wrapper module path in definitions ("file:///projects/whook/packages/whook-authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js").",
+         ],
+         [
+           "🍀 - Found "wrapRouteHandlerWithCORS" wrapper module path in definitions ("file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithCORS.js").",
          ],
          [
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/authorization".",
@@ -1130,6 +1535,24 @@ describe('runProcess', () => {
            "🍀 - Trying to find "CRONS_WRAPPERS" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/authorization".",
          ],
          [
@@ -1146,6 +1569,24 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "DECODERS" module path in "@whook/authorization".",
@@ -1511,6 +1952,24 @@ describe('runProcess', () => {
            "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "authentication" module path in "__project__".",
          ],
          [
@@ -1550,16 +2009,85 @@ describe('runProcess', () => {
            "🍀 - Trying to find "fetcher" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "getDelay" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "getDelay" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "getDelay" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getDelay" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "getDelay" module path in "@whook/whook".",
+         ],
+         [
            "🍀 - Trying to find "getDelay" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "getDiagnostic" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "getDiagnostic" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "getDiagnostic" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getDiagnostic" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "getDiagnostic" module path in "@whook/whook".",
          ],
          [
            "🍀 - Trying to find "getDiagnostic" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "getOpenAPI" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "getOpenAPI" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "getOpenAPI" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getOpenAPI" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "getOpenAPI" module path in "@whook/whook".",
+         ],
+         [
            "🍀 - Trying to find "getOpenAPI" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "getParameters" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "getParameters" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "getParameters" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getParameters" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "getParameters" module path in "@whook/whook".",
+         ],
+         [
            "🍀 - Trying to find "getParameters" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "getPing" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "getPing" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "getPing" module path in "@whook/dev".",
          ],
          [
            "🍀 - Trying to find "getPing" module path in "@whook/otel".",
@@ -1571,28 +2099,52 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getPing" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "getTime" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "getTime" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "getTime" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getTime" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "getTime" module path in "@whook/whook".",
+         ],
+         [
            "🍀 - Trying to find "getTime" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "handleMinutes" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "handleMinutes" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "handleMinutes" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "handleMinutes" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "handleMinutes" module path in "@whook/whook".",
          ],
          [
            "🍀 - Trying to find "handleMinutes" module path in "__project__".",
          ],
          [
-           "🍀 - Trying to find "httpTransaction" module path in "@whook/otel".",
-         ],
-         [
-           "🍀 - Trying to find "httpTransaction" module path in "__project__".",
-         ],
-         [
            "🍀 - Trying to find "jwtToken" module path in "__project__".",
          ],
          [
-           "🍀 - Trying to find "oTelTracer" module path in "@whook/otel".",
-         ],
-         [
-           "🍀 - Trying to find "oTelTracer" module path in "__project__".",
+           "🍀 - Trying to find "optionsWithCORS" module path in "@whook/authorization".",
          ],
          [
            "🍀 - Trying to find "optionsWithCORS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "optionsWithCORS" module path in "@whook/dev".",
          ],
          [
            "🍀 - Trying to find "optionsWithCORS" module path in "@whook/otel".",
@@ -1604,10 +2156,55 @@ describe('runProcess', () => {
            "🍀 - Trying to find "optionsWithCORS" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "postCronRun" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "postCronRun" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "postCronRun" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "postCronRun" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "postCronRun" module path in "@whook/whook".",
+         ],
+         [
            "🍀 - Trying to find "postCronRun" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "putEcho" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "putEcho" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "putEcho" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "putEcho" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "putEcho" module path in "@whook/whook".",
+         ],
+         [
            "🍀 - Trying to find "putEcho" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "putEchoedStream" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "putEchoedStream" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "putEchoedStream" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "putEchoedStream" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "putEchoedStream" module path in "@whook/whook".",
          ],
          [
            "🍀 - Trying to find "putEchoedStream" module path in "__project__".",
@@ -1631,10 +2228,49 @@ describe('runProcess', () => {
            "🍀 - Trying to find "uniqueId" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/authorization".",
          ],
          [
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/dev".",
          ],
          [
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/otel".",
@@ -1646,7 +2282,13 @@ describe('runProcess', () => {
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/authorization".",
+         ],
+         [
            "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/dev".",
          ],
          [
            "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/otel".",
@@ -1661,13 +2303,43 @@ describe('runProcess', () => {
            "🏭 - Initializing the APP_CONFIG service.",
          ],
          [
+           "🏭 - Wrapping "getDelay" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "getDiagnostic" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "getOpenAPI" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "getParameters" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "getPing" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "getTime" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "handleMinutes" route handler with "wrapCronHandlerForDebug" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "optionsWithCORS" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "postCronRun" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "putEcho" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "putEchoedStream" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
            "👣 - Logging service initialized.",
          ],
          [
            "💱 - HTTP Transaction initialized.",
-         ],
-         [
-           "💿 - Loading "API" initializer from "file:///project/src/services/API.ts".",
          ],
          [
            "💿 - Loading "CRONS_HANDLERS" initializer from "@whook/otel/dist/services/CRONS_HANDLERS.js".",
@@ -1712,13 +2384,7 @@ describe('runProcess', () => {
            "💿 - Loading "handleMinutes" initializer from "file:///project/src/crons/handleMinutes.ts".",
          ],
          [
-           "💿 - Loading "httpTransaction" initializer from "@whook/otel/dist/services/httpTransaction.js".",
-         ],
-         [
            "💿 - Loading "jwtToken" initializer from "file:///project/src/services/jwtToken.ts".",
-         ],
-         [
-           "💿 - Loading "oTelTracer" initializer from "@whook/otel/dist/services/oTelTracer.js".",
          ],
          [
            "💿 - Loading "optionsWithCORS" initializer from "@whook/cors/dist/routes/optionsWithCORS.js".",
@@ -1733,13 +2399,16 @@ describe('runProcess', () => {
            "💿 - Loading "putEchoedStream" initializer from "file:///project/src/routes/putEchoedStream.ts".",
          ],
          [
+           "💿 - Loading "wrapCronHandlerForDebug" initializer from "@whook/dev/dist/wrappers/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "💿 - Loading "wrapRouteHandlerForDebug" initializer from "@whook/dev/dist/wrappers/wrapRouteHandlerForDebug.js".",
+         ],
+         [
            "💿 - Loading "wrapRouteHandlerWithAuthorization" initializer from "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
          ],
          [
            "💿 - Loading "wrapRouteHandlerWithCORS" initializer from "@whook/cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
-         ],
-         [
-           "💿 - Service "API" found in "file:///project/src/services/API.ts".",
          ],
          [
            "💿 - Service "CRONS_HANDLERS" found in "@whook/otel/dist/services/CRONS_HANDLERS.js".",
@@ -1784,13 +2453,7 @@ describe('runProcess', () => {
            "💿 - Service "handleMinutes" found in "file:///project/src/crons/handleMinutes.ts".",
          ],
          [
-           "💿 - Service "httpTransaction" found in "@whook/otel/dist/services/httpTransaction.js".",
-         ],
-         [
            "💿 - Service "jwtToken" found in "file:///project/src/services/jwtToken.ts".",
-         ],
-         [
-           "💿 - Service "oTelTracer" found in "@whook/otel/dist/services/oTelTracer.js".",
          ],
          [
            "💿 - Service "optionsWithCORS" found in "@whook/cors/dist/routes/optionsWithCORS.js".",
@@ -1803,6 +2466,12 @@ describe('runProcess', () => {
          ],
          [
            "💿 - Service "putEchoedStream" found in "file:///project/src/routes/putEchoedStream.ts".",
+         ],
+         [
+           "💿 - Service "wrapCronHandlerForDebug" found in "@whook/dev/dist/wrappers/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "💿 - Service "wrapRouteHandlerForDebug" found in "@whook/dev/dist/wrappers/wrapRouteHandlerForDebug.js".",
          ],
          [
            "💿 - Service "wrapRouteHandlerWithAuthorization" found in "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
@@ -1832,7 +2501,85 @@ describe('runProcess', () => {
            "📖 - Picking the "SWAGGER_UI_OPTIONS" constant in the "APP_CONFIG" service properties.",
          ],
          [
+           "📥 - Collecting callback "DelayCallback" from "file:///project/src/routes/getDelay.ts",
+         ],
+         [
+           "📥 - Collecting parameter "date" from "file:///project/src/routes/postCronRun.ts",
+         ],
+         [
+           "📥 - Collecting parameter "duration" from "file:///project/src/routes/getDelay.ts",
+         ],
+         [
+           "📥 - Collecting parameter "pathParam1" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting parameter "pathParam2" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting parameter "queryParam" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting requestBody "Echo" from "file:///project/src/routes/putEcho.ts",
+         ],
+         [
+           "📥 - Collecting requestBody "Stream" from "file:///project/src/routes/putEchoedStream.ts",
+         ],
+         [
+           "📥 - Collecting response "Diagnostic" from "file:///project/src/routes/getDiagnostic.ts",
+         ],
+         [
+           "📥 - Collecting response "Echo" from "file:///project/src/routes/putEcho.ts",
+         ],
+         [
+           "📥 - Collecting response "Stream" from "file:///project/src/routes/putEchoedStream.ts",
+         ],
+         [
+           "📥 - Collecting schema "AnyObject" from "file:///project/src/routes/postCronRun.ts",
+         ],
+         [
+           "📥 - Collecting schema "Boolean" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Date" from "file:///project/src/routes/postCronRun.ts",
+         ],
+         [
+           "📥 - Collecting schema "Echo" from "file:///project/src/routes/putEcho.ts",
+         ],
+         [
+           "📥 - Collecting schema "ExampleSchema" from "file:///project/src/crons/handleMinutes.ts",
+         ],
+         [
+           "📥 - Collecting schema "Number" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Numbers" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Stream" from "file:///project/src/routes/putEchoedStream.ts",
+         ],
+         [
+           "📥 - Collecting schema "String" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Strings" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "TimePayload" from "file:///project/src/routes/putTime.ts",
+         ],
+         [
+           "📥 - Collecting schema "TimeSchema" from "file:///project/src/routes/getTime.ts",
+         ],
+         [
+           "📥 - Collecting schema "URISchema" from "file:///project/src/routes/getDelay.ts",
+         ],
+         [
            "📥 - Initializing the CORS wrapper.",
+         ],
+         [
+           "📥 - Initializing the cron debug wrapper.",
+         ],
+         [
+           "📥 - Initializing the route debug wrapper.",
          ],
          [
            "🔐 - Initializing the authorization wrapper.",
@@ -1848,12 +2595,6 @@ describe('runProcess', () => {
          ],
          [
            "🚦 - HTTP Router initialized.",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///project/src/routes/getPing.ts".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///project/src/routes/optionsWithCORS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/BUFFER_LIMIT.ts".",
@@ -1874,7 +2615,13 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/CRONS_WRAPPERS.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/CRONS_WRAPPERS_ORDER.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/CRON_DEFINITION_FILTER.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/DECLARATIONS_OPTIONS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/DECODERS.ts".",
@@ -1940,28 +2687,61 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/TRANSFORMER_DEFINITION_FILTER.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/WRAPPER_DEFINITION_FILTER.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/cronRunner.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/fetcher.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/services/httpTransaction.ts".",
+           "🚫 - File doesn't exist at "file:///project/src/services/getDelay.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/services/oTelTracer.ts".",
+           "🚫 - File doesn't exist at "file:///project/src/services/getDiagnostic.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/getOpenAPI.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/getParameters.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/getPing.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/getTime.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/handleMinutes.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/optionsWithCORS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/postCronRun.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/putEcho.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/putEchoedStream.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/uniqueId.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/wrappers/wrapRouteHandlerWithAuthorization.ts".",
+           "🚫 - File doesn't exist at "file:///project/src/services/wrapCronHandlerForDebug.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///project/src/wrappers/wrapRouteHandlerWithCORS.ts".",
+           "🚫 - File doesn't exist at "file:///project/src/services/wrapRouteHandlerForDebug.ts".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/dist/routes/optionsWithCORS.js".",
+           "🚫 - File doesn't exist at "file:///project/src/services/wrapRouteHandlerWithAuthorization.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/wrapRouteHandlerWithCORS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/BUFFER_LIMIT.js".",
@@ -1976,7 +2756,13 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/CONSUMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/CRONS_WRAPPERS_ORDER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DECLARATIONS_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DECODERS.js".",
@@ -2036,19 +2822,61 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/WRAPPER_DEFINITION_FILTER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/fetcher.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getDelay.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getDiagnostic.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getOpenAPI.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getParameters.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getPing.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getTime.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/handleMinutes.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/optionsWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/putEcho.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/putEchoedStream.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/uniqueId.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/wrapCronHandlerForDebug.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/dist/wrappers/wrapRouteHandlerWithCORS.js".",
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/wrapRouteHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/BUFFER_LIMIT.js".",
@@ -2063,7 +2891,13 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/CONSUMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/CRONS_WRAPPERS_ORDER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DECLARATIONS_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DECODERS.js".",
@@ -2123,13 +2957,61 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/WRAPPER_DEFINITION_FILTER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/fetcher.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getDelay.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getDiagnostic.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getOpenAPI.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getParameters.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getPing.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getTime.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/handleMinutes.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/optionsWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/putEcho.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/putEchoedStream.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/wrapRouteHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/BUFFER_LIMIT.js".",
@@ -2144,7 +3026,13 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/CONSUMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/CRONS_WRAPPERS_ORDER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DECLARATIONS_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DECODERS.js".",
@@ -2204,16 +3092,61 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/WRAPPER_DEFINITION_FILTER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/fetcher.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getDelay.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getDiagnostic.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getOpenAPI.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getParameters.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getPing.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getTime.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/handleMinutes.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/optionsWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/putEcho.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/putEchoedStream.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/uniqueId.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/wrapRouteHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/BUFFER_LIMIT.js".",
@@ -2228,7 +3161,13 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/CONSUMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/CRONS_WRAPPERS_ORDER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DECLARATIONS_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DECODERS.js".",
@@ -2288,19 +3227,61 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/WRAPPER_DEFINITION_FILTER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/fetcher.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getDelay.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getDiagnostic.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getOpenAPI.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getParameters.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getPing.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getTime.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/handleMinutes.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/optionsWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/putEcho.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/putEchoedStream.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/uniqueId.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/routes/getPing.js".",
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/wrapCronHandlerForDebug.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/routes/optionsWithCORS.js".",
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/BUFFER_LIMIT.js".",
@@ -2318,7 +3299,13 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/CRONS_WRAPPERS.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/CRONS_WRAPPERS_ORDER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DECLARATIONS_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DECODERS.js".",
@@ -2381,19 +3368,61 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/WRAPPER_DEFINITION_FILTER.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/fetcher.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getDelay.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getDiagnostic.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getOpenAPI.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getParameters.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getPing.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getTime.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/handleMinutes.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/optionsWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/putEcho.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/putEchoedStream.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/uniqueId.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/wrapCronHandlerForDebug.js".",
          ],
          [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRouteHandlerWithCORS.js".",
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/wrapRouteHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🚫 - Module path of "BUFFER_LIMIT" not found.",
@@ -2408,7 +3437,13 @@ describe('runProcess', () => {
            "🚫 - Module path of "CONSUMER_DEFINITION_FILTER" not found.",
          ],
          [
+           "🚫 - Module path of "CRONS_WRAPPERS_ORDER" not found.",
+         ],
+         [
            "🚫 - Module path of "CRON_DEFINITION_FILTER" not found.",
+         ],
+         [
+           "🚫 - Module path of "DECLARATIONS_OPTIONS" not found.",
          ],
          [
            "🚫 - Module path of "DECODERS" not found.",
@@ -2468,6 +3503,9 @@ describe('runProcess', () => {
            "🚫 - Module path of "TRANSFORMER_DEFINITION_FILTER" not found.",
          ],
          [
+           "🚫 - Module path of "WRAPPER_DEFINITION_FILTER" not found.",
+         ],
+         [
            "🚫 - Module path of "cronRunner" not found.",
          ],
          [
@@ -2486,16 +3524,16 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "@whook/cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
          ],
          [
+           "🛂 - Dynamic import of "@whook/dev/dist/wrappers/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/dev/dist/wrappers/wrapRouteHandlerForDebug.js".",
+         ],
+         [
            "🛂 - Dynamic import of "@whook/otel/dist/services/CRONS_HANDLERS.js".",
          ],
          [
            "🛂 - Dynamic import of "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
-         ],
-         [
-           "🛂 - Dynamic import of "@whook/otel/dist/services/httpTransaction.js".",
-         ],
-         [
-           "🛂 - Dynamic import of "@whook/otel/dist/services/oTelTracer.js".",
          ],
          [
            "🛂 - Dynamic import of "@whook/whook/dist/routes/getPing.js".",
@@ -2576,9 +3614,6 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///project/src/routes/putTime.ts".",
          ],
          [
-           "🛂 - Dynamic import of "file:///project/src/services/API.ts".",
-         ],
-         [
            "🛂 - Dynamic import of "file:///project/src/services/MECHANISMS.ts".",
          ],
          [
@@ -2618,16 +3653,55 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///projects/whook/dist/commands/route.js".",
          ],
          [
+           "🛂 - Dynamic import of "file:///projects/whook/dist/routes/getOpenAPI.js".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///projects/whook/dist/routes/getPing.js".",
          ],
          [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-cors/dist/wrappers/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/commands/create.js".",
          ],
          [
            "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapCommandHandlerForDebug.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapConsumerHandlerForDebug.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapRouteHandlerForDebug.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapTransformerHandlerForDebug.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapConsumersHandlersWithOTel.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapCronsHandlersWithOTel.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPRouterWithOTel.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPTransactionWithOTel.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRoutesHandlersWithOTel.js".",
          ],
          [
            "🛂 - Dynamic import of "swagger-ui-dist".",
@@ -2659,13 +3733,13 @@ describe('runProcess', () => {
            "🎙️ - HTTP Server listening at "http://localhost:9999".",
          ],
          [
-           "🏭 - Initializing the CRONS_HANDLERS service with 2 handlers wrapped by 0 wrappers.",
+           "🏭 - Initializing the CRONS_HANDLERS service with 1 handlers and 1 wrappers.",
          ],
          [
            "🏭 - Initializing the CRONS_WRAPPERS service.",
          ],
          [
-           "🏭 - Initializing the ROUTES_HANDLERS service with 11 handlers wrapped by 2 wrappers.",
+           "🏭 - Initializing the ROUTES_HANDLERS service with 10 handlers and 3 wrappers.",
          ],
          [
            "🏭 - Initializing the ROUTES_WRAPPERS service.",
@@ -2675,9 +3749,6 @@ describe('runProcess', () => {
          ],
          [
            "📈 - Wrapping HTTP router with OpenTelemetry spans.",
-         ],
-         [
-           "📈 - Wrapping HTTP transactions with OpenTelemetry spans.",
          ],
          [
            "📈 - Wrapping cron handlers with OpenTelemetry spans.",

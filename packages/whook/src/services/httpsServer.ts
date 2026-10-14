@@ -114,7 +114,7 @@ async function initHTTPSServer({
       resolve(httpsServer);
     });
   });
-  const fatalErrorPromise = new Promise<void>((_, reject) => {
+  const fatalErrorPromise = new Promise<undefined>((_, reject) => {
     httpsServer.once('error', (err) =>
       reject(YError.wrap(err as Error, 'E_HTTPS_SERVER_ERROR')),
     );
@@ -143,8 +143,8 @@ async function initHTTPSServer({
   return Promise.race([listenPromise, fatalErrorPromise]).then(() => ({
     service: httpsServer,
     fatalErrorPromise,
-    dispose: async () => {
-      await new Promise<void>((resolve, reject) => {
+    dispose: async (): Promise<undefined> => {
+      await new Promise<undefined>((resolve, reject) => {
         log('debug', '✅ - Closing HTTPS server.');
         // Avoid to keepalive connections on shutdown
         httpsServer.timeout = 1;
@@ -155,7 +155,7 @@ async function initHTTPSServer({
             return;
           }
           log('debug', '✔️ - HTTPS server closed!');
-          resolve();
+          resolve(undefined);
         });
         if (ENV.DESTROY_SOCKETS) {
           for (const socket of sockets.values()) {

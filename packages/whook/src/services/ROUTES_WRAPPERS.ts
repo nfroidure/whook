@@ -5,25 +5,17 @@ import {
   type WhookRouteHandler,
 } from '../types/routes.js';
 import { type LogService } from 'common-services';
+import { type WhookDefinitions } from './DEFINITIONS.js';
+import { filterWrappers } from '../libs/wrappers.js';
 
-export default location(
-  service(initRoutesWrappers, 'ROUTES_WRAPPERS', [
-    '?ROUTES_WRAPPERS_NAMES',
-    '?log',
-  ]),
-  import.meta.url,
-);
-
-export const ROUTES_WRAPPERS_REG_EXP = /^(wrapRoute)[A-Z][a-zA-Z0-9]+/;
+export const ROUTE_WRAPPER_REG_EXP = /^(wrapRoute)[A-Z][a-zA-Z0-9]+/;
 
 export type WhookRoutesWrappersService = Record<
   string,
   WhookRouteHandlerWrapper<WhookRouteHandler>
 >;
-export type WhookRoutesWrappersConfig = {
-  ROUTES_WRAPPERS_NAMES?: string[];
-};
-export type WhookRoutesWrappersDependencies = WhookRoutesWrappersConfig & {
+export type WhookRoutesWrappersDependencies = {
+  DEFINITIONS: WhookDefinitions;
   log?: LogService;
 } & WhookRoutesWrappersService;
 
@@ -31,8 +23,8 @@ export type WhookRoutesWrappersDependencies = WhookRoutesWrappersConfig & {
  * A simple passthrough service proxying the ROUTES_WRAPPERS.
  * @param  {Object}   services
  * The service dependencies
- * @param  {Array}   [services.ROUTES_WRAPPERS_NAMES]
- * The global wrappers names to wrap the routes with
+ * @param  {Array}   [services.DEFINITIONS]
+ * The definitions that declares wrappers to wrap the routes with
  * @param  {Function}   [services.log=noop]
  * An optional logging service
  * @param  {Object}    services.ROUTES_WRAPPERS
@@ -41,22 +33,29 @@ export type WhookRoutesWrappersDependencies = WhookRoutesWrappersConfig & {
  * A promise of the `ROUTES_WRAPPERS` hash.
  */
 async function initRoutesWrappers({
-  ROUTES_WRAPPERS_NAMES = [],
+  DEFINITIONS,
   log = noop,
   ...ROUTES_WRAPPERS
-}: WhookRoutesWrappersDependencies): Promise<
-  WhookRouteHandlerWrapper<WhookRouteHandler>[]
-> {
+}: WhookRoutesWrappersDependencies): Promise<WhookRoutesWrappersService> {
   log('warning', `🏭 - Initializing the ROUTES_WRAPPERS service.`);
+
+  const ROUTES_WRAPPERS_NAMES = filterWrappers({ DEFINITIONS }, 'route');
 
   // Except with exotic configurations, those numbers should equal
   // leaving this small debug message may help with messed configs
   if (Object.keys(ROUTES_WRAPPERS).length !== ROUTES_WRAPPERS_NAMES.length) {
     log(
       'debug',
-      `🏭 - Found inconsistencies between ROUTES_WRAPPERS and ROUTES_WRAPPERS_NAMES.`,
+      `🏭 - Found inconsistencies between ROUTES_WRAPPERS (${Object.keys(
+        ROUTES_WRAPPERS,
+      )}) and ROUTES_WRAPPERS_NAMES (${ROUTES_WRAPPERS_NAMES}).`,
     );
   }
 
-  return ROUTES_WRAPPERS_NAMES.map((key) => ROUTES_WRAPPERS[key]);
+  return ROUTES_WRAPPERS;
 }
+
+export default location(
+  service(initRoutesWrappers, 'ROUTES_WRAPPERS', ['DEFINITIONS', '?log']),
+  import.meta.url,
+);

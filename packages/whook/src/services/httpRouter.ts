@@ -237,12 +237,8 @@ async function initHTTPRouter({
     log,
   });
 
-  let handleFatalError: (reason?: unknown) => void;
-  const fatalErrorPromise: Promise<void> = new Promise<void>(
-    (_resolve, reject) => {
-      handleFatalError = reject;
-    },
-  );
+  const { promise: fatalErrorPromise, reject: handleFatalError } =
+    Promise.withResolvers<undefined>();
 
   log('debug', '🚦 - HTTP Router initialized.');
 

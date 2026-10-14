@@ -20,6 +20,31 @@ more documentation.
 [//]: # (::contents:end)
 
 # API
+## Functions
+
+<dl>
+<dt><a href="#initBuildConstantFilter">initBuildConstantFilter(services)</a> ⇒ <code>Promise.&lt;function()&gt;</code></dt>
+<dd><p>Allow to proxy constants directly by serializing it in the
+ build, saving some computing and increasing boot time of
+ the build.</p>
+</dd>
+<dt><a href="#initWrapCommandHandlerForDebug">initWrapCommandHandlerForDebug(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap a command handler for debug</p>
+</dd>
+<dt><a href="#initWrapConsumerHandlerForDebug">initWrapConsumerHandlerForDebug(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap a consumer handler for debug</p>
+</dd>
+<dt><a href="#initWrapCronHandlerForDebug">initWrapCronHandlerForDebug(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap a cron handler for debug</p>
+</dd>
+<dt><a href="#initWrapRouteHandlerForDebug">initWrapRouteHandlerForDebug(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap a route handler for debug</p>
+</dd>
+<dt><a href="#initWrapTransformerHandlerForDebug">initWrapTransformerHandlerForDebug(services)</a> ⇒ <code>Promise.&lt;Object&gt;</code></dt>
+<dd><p>Wrap a transformer handler for debug</p>
+</dd>
+</dl>
+
 <a name="initBuildConstantFilter"></a>
 
 ## initBuildConstantFilter(services) ⇒ <code>Promise.&lt;function()&gt;</code>
@@ -36,6 +61,71 @@ Allow to proxy constants directly by serializing it in the
 | services.BUILD_CONSTANTS_NAMES | <code>Array.&lt;string&gt;</code> |  | The serializable constants name to gather |
 | services.BUILD_CONSTANTS_PREFIXES | <code>Array.&lt;string&gt;</code> |  | The serializable constants name prefixes to gather |
 | services.BUILD_CONSTANTS_SUFFIXES | <code>Array.&lt;string&gt;</code> |  | The serializable constants name suffixes to gather |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapCommandHandlerForDebug"></a>
+
+## initWrapCommandHandlerForDebug(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a command handler for debug
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a command handler wrapped for debug  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapConsumerHandlerForDebug"></a>
+
+## initWrapConsumerHandlerForDebug(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a consumer handler for debug
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a consumer handler wrapped for debug  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapCronHandlerForDebug"></a>
+
+## initWrapCronHandlerForDebug(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a cron handler for debug
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a cron handler wrapped for debug  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapRouteHandlerForDebug"></a>
+
+## initWrapRouteHandlerForDebug(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a route handler for debug
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a route handler wrapped for debug  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
+| [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
+
+<a name="initWrapTransformerHandlerForDebug"></a>
+
+## initWrapTransformerHandlerForDebug(services) ⇒ <code>Promise.&lt;Object&gt;</code>
+Wrap a transformer handler for debug
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;Object&gt;</code> - A promise of a transformer handler wrapped for debug  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| services | <code>Object</code> |  | The service dependencies |
 | [services.log] | <code>function</code> | <code>noop</code> | An optional logging service |
 
 

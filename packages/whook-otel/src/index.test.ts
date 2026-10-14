@@ -155,12 +155,15 @@ describe('@whook/otel', () => {
       configs: {
         getPing: {
           type: 'route',
+          url: 'file:///project/routes/getPing',
           path: getPingDefinition.path,
           method: getPingDefinition.method,
           config: {},
           operation: getPingDefinition.operation,
         },
       },
+      handlers: {},
+      wrappers: {},
     };
     const getPing = jest.fn<WhookRouteHandler>();
     const logger = {
@@ -209,7 +212,6 @@ describe('@whook/otel', () => {
       );
       $.register(constant('PORT', PORT));
       $.register(constant('HOST', HOST));
-      $.register(constant('ROUTES_WRAPPERS_NAMES', []));
       $.register(constant('DEBUG_NODE_ENVS', []));
       $.register(
         constant('ROUTES_HANDLERS', {
@@ -277,16 +279,16 @@ describe('@whook/otel', () => {
 
   test('should instrument route handlers executions', async () => {
     const tracerRecorder = createTracerRecorder();
-    const testRoute = jest.fn<WhookRouteHandler>();
+    const getTestRoute = jest.fn<WhookRouteHandler>();
 
-    testRoute.mockResolvedValueOnce({ status: 200 });
+    getTestRoute.mockResolvedValueOnce({ status: 200 });
 
     const wrappedRoutesHandlersInitializer =
       wrapRoutesHandlersWithOTel(initRoutesHandlers);
     const ROUTES_HANDLERS = await wrappedRoutesHandlersInitializer({
       ROUTES_WRAPPERS: [],
       oTelTracer: tracerRecorder.tracer,
-      testRoute,
+      getTestRoute,
     } as unknown as NonNullable<
       Parameters<typeof wrappedRoutesHandlersInitializer>[0]
     >);
@@ -298,33 +300,33 @@ describe('@whook/otel', () => {
       body: undefined as never,
     };
 
-    await ROUTES_HANDLERS.testRoute(routeParams);
+    await ROUTES_HANDLERS.getTestRoute(routeParams);
 
     expect(tracerRecorder.spans).toHaveLength(1);
     expect(tracerRecorder.spans[0].name).toBe('whook.http.execution');
     expect(tracerRecorder.spans[0].attributes['whook.operation.id']).toBe(
-      'testRoute',
+      'getTestRoute',
     );
     expect(tracerRecorder.spans[0].ended).toBe(true);
   });
 
   test('should instrument cron handlers executions', async () => {
     const tracerRecorder = createTracerRecorder();
-    const testCron = jest.fn<WhookCronHandler<JsonValue>>();
+    const handleCron = jest.fn<WhookCronHandler<JsonValue>>();
 
-    testCron.mockResolvedValueOnce();
+    handleCron.mockResolvedValueOnce();
 
     const wrappedCronsHandlersInitializer =
       wrapCronsHandlersWithOTel(initCronsHandlers);
     const CRONS_HANDLERS = await wrappedCronsHandlersInitializer({
       CRONS_WRAPPERS: [],
       oTelTracer: tracerRecorder.tracer,
-      testCron,
+      handleCron,
     } as unknown as NonNullable<
       Parameters<typeof wrappedCronsHandlersInitializer>[0]
     >);
 
-    await CRONS_HANDLERS.testCron(
+    await CRONS_HANDLERS.handleCron(
       {
         date: new Date('2026-01-01T00:00:00.000Z').toISOString(),
         body: {
@@ -332,7 +334,7 @@ describe('@whook/otel', () => {
         },
       },
       {
-        name: 'testCron',
+        name: 'handleCron',
         schedules: [],
         schema: {
           type: 'object',
@@ -345,16 +347,16 @@ describe('@whook/otel', () => {
     expect(tracerRecorder.spans).toHaveLength(1);
     expect(tracerRecorder.spans[0].name).toBe('whook.cron.execution');
     expect(tracerRecorder.spans[0].attributes['whook.cron.name']).toBe(
-      'testCron',
+      'handleCron',
     );
     expect(tracerRecorder.spans[0].ended).toBe(true);
   });
 
   test('should instrument consumer handlers executions', async () => {
     const tracerRecorder = createTracerRecorder();
-    const testConsumer = jest.fn<WhookConsumerHandler<JsonValue>>();
+    const consumeTest = jest.fn<WhookConsumerHandler<JsonValue>>();
 
-    testConsumer.mockResolvedValueOnce();
+    consumeTest.mockResolvedValueOnce();
 
     const wrappedConsumersHandlersInitializer = wrapConsumersHandlersWithOTel(
       initConsumersHandlers,
@@ -362,17 +364,17 @@ describe('@whook/otel', () => {
     const CONSUMERS_HANDLERS = await wrappedConsumersHandlersInitializer({
       CONSUMERS_WRAPPERS: [],
       oTelTracer: tracerRecorder.tracer,
-      testConsumer,
+      consumeTest,
     } as unknown as NonNullable<
       Parameters<typeof wrappedConsumersHandlersInitializer>[0]
     >);
 
-    await CONSUMERS_HANDLERS.testConsumer(
+    await CONSUMERS_HANDLERS.consumeTest(
       {
         ping: 'pong',
       },
       {
-        name: 'testConsumer',
+        name: 'consumeTest',
         schema: {
           type: 'object',
           properties: {},
@@ -384,7 +386,7 @@ describe('@whook/otel', () => {
     expect(tracerRecorder.spans).toHaveLength(1);
     expect(tracerRecorder.spans[0].name).toBe('whook.consumer.execution');
     expect(tracerRecorder.spans[0].attributes['whook.consumer.name']).toBe(
-      'testConsumer',
+      'consumeTest',
     );
     expect(tracerRecorder.spans[0].ended).toBe(true);
   });

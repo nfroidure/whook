@@ -5,7 +5,7 @@ import { v4 as randomUUID } from 'uuid';
 import {
   noop,
   type WhookRouteHandlerParameters,
-  type WhookRoutesDefinitionsService,
+  type WhookRoutesDeclarationsService,
   type WhookCommandHandler,
   type WhookCommandDefinition,
   type WhookMain,
@@ -67,7 +67,7 @@ async function initTestAWSLambdaRouteCommand({
   APP_ENV,
   PROJECT_DIR,
   COMPILER_OPTIONS = DEFAULT_COMPILER_OPTIONS,
-  ROUTES_DEFINITIONS,
+  ROUTES_DECLARATIONS,
   time,
   log = noop,
 }: {
@@ -75,7 +75,7 @@ async function initTestAWSLambdaRouteCommand({
   APP_ENV: WhookMain['AppEnv'];
   PROJECT_DIR: string;
   COMPILER_OPTIONS?: WhookCompilerOptions;
-  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  ROUTES_DECLARATIONS: WhookRoutesDeclarationsService;
   time: TimeService;
   log: LogService;
 }): Promise<
@@ -97,7 +97,7 @@ async function initTestAWSLambdaRouteCommand({
       type,
       extension,
     );
-    const handlerDefinition = ROUTES_DEFINITIONS[name]?.module?.definition;
+    const handlerDefinition = ROUTES_DECLARATIONS.routes[name]?.content;
 
     if (!handlerDefinition) {
       throw new YError('E_OPERATION_NOT_FOUND');

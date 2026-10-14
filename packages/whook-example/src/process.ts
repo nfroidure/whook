@@ -12,7 +12,7 @@ import {
 } from '@whook/whook';
 
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
-import { wrapHTTPRouterWithOTel } from '@whook/otel';
+import { initOTelTracer, wrapHTTPRouterWithOTel } from '@whook/otel';
 
 import {
   WHOOK_PLUGINS,
@@ -90,6 +90,9 @@ export async function prepareProcess<
       '@whook/dev',
     ]),
   );
+
+  // Registering autoloader required services
+  $.register(initOTelTracer);
 
   return await prepareBaseProcess(injectedNames, $);
 }

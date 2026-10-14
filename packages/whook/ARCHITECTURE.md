@@ -7,58 +7,57 @@
 
 ## Summary
 
-- [Architecture Notes](#architecture-notes)
-  - [Summary](#summary)
-  - [1. Main file](#1-main-file)
-    - [1.1. Process run](#11-process-run)
-    - [1.2. Process preparation](#12-process-preparation)
-    - [1.3. Process environments](#13-process-environments)
-  - [2. Services initializers](#2-services-initializers)
-    - [2.1. Base URL](#21-base-url)
-      - [2.1.1. Base PATH](#211-base-path)
-    - [2.2. Host](#22-host)
-      - [2.2.1. Internal IP detection](#221-internal-ip-detection)
-    - [2.3. the `PWD` constant](#23-the-pwd-constant)
-    - [2.3. Port](#23-port)
-      - [2.3.1. Available port detection](#231-available-port-detection)
-    - [2.4. the `resolve` service](#24-the-resolve-service)
-    - [2.5. the `importer` service](#25-the-importer-service)
-    - [2.6. the `exit` service](#26-the-exit-service)
-    - [2.6. the `WHOOK_PLUGINS` constant](#26-the-whook_plugins-constant)
-    - [2.7. the `logger` service](#27-the-logger-service)
-      - [2.7.1. Logging](#271-logging)
-    - [2.8. The `CONFIG` service](#28-the-config-service)
-    - [2.9. the `$autoload` service](#29-the-autoload-service)
-      - [2.9.1. the `APP_CONFIG` mapper](#291-the-app_config-mapper)
-      - [2.9.2. the `API` auto loading](#292-the-api-auto-loading)
-        - [2.9.2.1. Definitions loader](#2921-definitions-loader)
-        - [2.9.2.2. Open API generator](#2922-open-api-generator)
-      - [2.9.3. the `INITIALIZER_PATH_MAP` mapper](#293-the-initializer_path_map-mapper)
-        - [2.9.3.1. Initializer path mapping](#2931-initializer-path-mapping)
-      - [2.9.4. the `ROUTES_HANDLERS` mapper](#294-the-routes_handlers-mapper)
-      - [2.9.5. the `ROUTES_WRAPPERS` auto loading](#295-the-routes_wrappers-auto-loading)
-      - [2.9.6. Service/handler/wrapper loading](#296-servicehandlerwrapper-loading)
-        - [2.9.6.1. Plugins resolution](#2961-plugins-resolution)
-        - [2.9.6.2. Plugins/project paths](#2962-pluginsproject-paths)
-    - [2.10. HTTP Transactions](#210-http-transactions)
-      - [2.10.1. New Transaction](#2101-new-transaction)
-      - [2.10.2. Transaction start](#2102-transaction-start)
-      - [2.10.3. Transaction errors](#2103-transaction-errors)
-      - [2.10.4. Transaction end](#2104-transaction-end)
-    - [2.11. HTTP Router](#211-http-router)
-      - [2.11.1. Coercion](#2111-coercion)
-      - [2.11.2. Validation](#2112-validation)
-        - [2.11.2.1. Schema validators](#21121-schema-validators)
-        - [2.11.2.2. Built schema validators](#21122-built-schema-validators)
-      - [2.11.3. Request body](#2113-request-body)
-    - [2.12. HTTP Server](#212-http-server)
-      - [2.12.1. HTTPS Server](#2121-https-server)
-      - [2.12.2. SSL Certificates](#2122-ssl-certificates)
-    - [2.13. Error handler](#213-error-handler)
-      - [2.13.1. Errors descriptors](#2131-errors-descriptors)
-    - [2.14. Local cron runner](#214-local-cron-runner)
-  - [3. the routes](#3-the-routes)
-    - [4.1. Testing](#41-testing)
+1. [Main file](#1-main-file)
+   1. [Process run](#11-process-run)
+   2. [Process preparation](#12-process-preparation)
+   3. [Process environments](#13-process-environments)
+2. [Services initializers](#2-services-initializers)
+   1. [Base URL](#21-base-url)
+      1. [Base PATH](#211-base-path)
+   2. [Host](#22-host)
+      1. [Internal IP detection](#221-internal-ip-detection)
+   3. [the `PWD` constant](#23-the-`pwd`-constant)
+   3. [Port](#23-port)
+      1. [Available port detection](#231-available-port-detection)
+   4. [the `resolve` service](#24-the-`resolve`-service)
+   5. [the `importer` service](#25-the-`importer`-service)
+   6. [the `exit` service](#26-the-`exit`-service)
+   6. [the `WHOOK_PLUGINS` constant](#26-the-`whook_plugins`-constant)
+   7. [the `logger` service](#27-the-`logger`-service)
+      1. [Logging](#271-logging)
+   8. [The `CONFIG` service](#28-the-`config`-service)
+   9. [the `$autoload` service](#29-the-`$autoload`-service)
+      1. [the `APP_CONFIG` mapper](#291-the-`app_config`-mapper)
+      2. [the `DEFINITIONS` auto loading](#292-the-`definitions`-auto-loading)
+         1. [Definitions loader](#2921-definitions-loader)
+         2. [Open API generator](#2922-open-api-generator)
+      3. [the `INITIALIZER_PATH_MAP` mapper](#293-the-`initializer_path_map`-mapper)
+         1. [Initializer path mapping](#2931-initializer-path-mapping)
+      4. [the `ROUTES_HANDLERS` mapper](#294-the-`routes_handlers`-mapper)
+      5. [the `ROUTES_WRAPPERS` auto loading](#295-the-`routes_wrappers`-auto-loading)
+      6. [Service/handler/wrapper loading](#296-service/handler/wrapper-loading)
+         1. [Plugins resolution](#2961-plugins-resolution)
+         2. [Plugins/project paths](#2962-plugins/project-paths)
+         2. [Trying to load services from definitions.](#2962-trying-to-load-services-from-definitions.)
+   10. [HTTP Transactions](#210-http-transactions)
+      1. [New Transaction](#2101-new-transaction)
+      2. [Transaction start](#2102-transaction-start)
+      3. [Transaction errors](#2103-transaction-errors)
+      4. [Transaction end](#2104-transaction-end)
+   11. [HTTP Router](#211-http-router)
+      1. [Coercion](#2111-coercion)
+      2. [Validation](#2112-validation)
+         1. [Schema validators](#21121-schema-validators)
+         2. [Built schema validators](#21122-built-schema-validators)
+      3. [Request body](#2113-request-body)
+   12. [HTTP Server](#212-http-server)
+      1. [HTTPS Server](#2121-https-server)
+      2. [SSL Certificates](#2122-ssl-certificates)
+   13. [Error handler](#213-error-handler)
+      1. [Errors descriptors](#2131-errors-descriptors)
+   14. [Local cron runner](#214-local-cron-runner)
+3. [the routes](#3-the-routes)
+   1. [Testing](#41-testing)
 
 
 ## 1. Main file
@@ -68,7 +67,7 @@ The Whook's main file exports :
 - its specific `knifecycle` compatible services,
 - a few bootstrapping functions designed to be customizable.
 
-[See in context](./src/index.ts#L197-L202)
+[See in context](./src/index.ts#L222-L227)
 
 
 
@@ -78,7 +77,7 @@ Whook exposes a `runProcess` function to programmatically spawn
  its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L204-L208)
+[See in context](./src/index.ts#L229-L233)
 
 
 
@@ -91,7 +90,7 @@ Whook exposes a `prepareProcess` function to create its
  containing the bootstrapped environment and allowing
  to complete and run the process.
 
-[See in context](./src/index.ts#L254-L261)
+[See in context](./src/index.ts#L279-L286)
 
 
 
@@ -103,7 +102,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
 
-[See in context](./src/index.ts#L284-L290)
+[See in context](./src/index.ts#L309-L315)
 
 
 
@@ -114,7 +113,7 @@ Whook's embed a few default initializers proxied from
  folder. It can be wrapped or overridden, at will, later
  in a project using overrides.
 
-[See in context](./src/index.ts#L301-L306)
+[See in context](./src/index.ts#L326-L331)
 
 
 
@@ -162,7 +161,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L336-L340)
+[See in context](./src/index.ts#L366-L370)
 
 
 
@@ -187,7 +186,7 @@ This service detects a free port automagically.
 Whook uses the `common-services` `resolve` service to allow
  to easily mock/decorate all ESM resolutions.
 
-[See in context](./src/index.ts#L344-L347)
+[See in context](./src/index.ts#L374-L377)
 
 
 
@@ -196,7 +195,7 @@ Whook uses the `common-services` `resolve` service to allow
 Whook uses the `common-services` `importer` service to allow
  to easily mock/decorate all ESM dynamic imports.
 
-[See in context](./src/index.ts#L350-L353)
+[See in context](./src/index.ts#L380-L383)
 
 
 
@@ -205,7 +204,7 @@ Whook uses the `common-services` `importer` service to allow
 Whook uses a built in `exit` service to allow
  to easily mock/decorate the app exit.
 
-[See in context](./src/index.ts#L356-L359)
+[See in context](./src/index.ts#L386-L389)
 
 
 
@@ -218,7 +217,7 @@ The `WHOOK_PLUGINS` constant allows you to give the name of
  you to just install Whook's plugins to get them automatically
  loaded.
 
-[See in context](./src/index.ts#L378-L385)
+[See in context](./src/index.ts#L408-L415)
 
 
 
@@ -228,7 +227,7 @@ Whook uses a built-in `logger` service to allow
  to easily route the application logs for the 
  `common-services` provided `log` service.
 
-[See in context](./src/index.ts#L362-L366)
+[See in context](./src/index.ts#L392-L396)
 
 
 
@@ -253,7 +252,7 @@ Loading the configuration files is done according to the `APP_ENV`
    environment variable. It basically requires a configuration hash
    where the keys are JSON formattable constants.
 
-[See in context](./src/index.ts#L371-L375)
+[See in context](./src/index.ts#L401-L405)
 
 
 
@@ -264,7 +263,7 @@ Whook provides a simple way to load the constants, services
  strategies. It is done by implementing the `knifecycle`
  auto loading interface.
 
-[See in context](./src/services/_autoload.ts#L112-L117)
+[See in context](./src/services/_autoload.ts#L70-L75)
 
 
 
@@ -273,17 +272,17 @@ Whook provides a simple way to load the constants, services
 First of all the autoloader looks for constants in the
  previously loaded `APP_CONFIG` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L290-L293)
+[See in context](./src/services/_autoload.ts#L162-L165)
 
 
 
-#### 2.9.2. the `API` auto loading
+#### 2.9.2. the `DEFINITIONS` auto loading
 
-We cannot inject the `API` in the auto loader since
- it is dynamically loaded so doing this during the auto
- loader initialization.
+We cannot inject the `DEFINITIONS` in the auto loader since
+ it is dynamically loaded so doing this during the execution
+ with a meoized function.
 
-[See in context](./src/services/_autoload.ts#L172-L176)
+[See in context](./src/services/_autoload.ts#L119-L123)
 
 
 
@@ -294,7 +293,7 @@ The `DEFINITIONS` service provide a convenient way to
  or commands you created in the `src/(routes|cron|commands)`
  folder.
 
-[See in context](./src/services/DEFINITIONS.ts#L44-L49)
+[See in context](./src/services/DEFINITIONS.ts#L40-L45)
 
 
 
@@ -313,7 +312,7 @@ The Whook auto-loader allows you to provide the file path
  of a service per its name. It exports a `WhookInitializerMap`
  type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L83-L88)
+[See in context](./src/services/_autoload.ts#L48-L53)
 
 
 
@@ -322,7 +321,7 @@ The Whook auto-loader allows you to provide the file path
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L429-L432)
+[See in context](./src/services/_autoload.ts#L180-L183)
 
 
 
@@ -331,16 +330,16 @@ In order to be able to load a service from a given path map
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L326-L329)
+[See in context](./src/services/_autoload.ts#L339-L342)
 
 
 
 #### 2.9.5. the `ROUTES_WRAPPERS` auto loading
 
-We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
+We inject the `DEFINITIONS` in the `ROUTES_WRAPPERS`
  service so that they can be dynamically applied.
 
-[See in context](./src/services/_autoload.ts#L375-L378)
+[See in context](./src/services/_autoload.ts#L440-L443)
 
 
 
@@ -349,7 +348,7 @@ We inject the `ROUTES_WRAPPERS_NAMES` in the `ROUTES_WRAPPERS`
 Finally, we either load the handler/service/wrapper module
  if none of the previous strategies applied.
 
-[See in context](./src/services/_autoload.ts#L423-L426)
+[See in context](./src/services/_autoload.ts#L174-L177)
 
 
 
@@ -369,7 +368,15 @@ Whook auto loader can look for initializers in a list of
 
 Trying to load services from plugins/project paths.
 
-[See in context](./src/services/_autoload.ts#L443-L445)
+[See in context](./src/services/_autoload.ts#L194-L196)
+
+
+
+##### 2.9.6.2. Trying to load services from definitions.
+
+
+
+[See in context](./src/services/_autoload.ts#L262-L264)
 
 
 
@@ -595,7 +602,7 @@ The server takes in charge graceful shutdown by
  for development, by setting the `DESTROY_SOCKETS=1`
  environment variable.
 
-[See in context](./src/services/httpServer.ts#L53-L70)
+[See in context](./src/services/httpServer.ts#L48-L65)
 
 
 
