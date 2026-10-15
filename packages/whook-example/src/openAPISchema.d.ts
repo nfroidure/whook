@@ -8,24 +8,24 @@ declare interface paths {
   '/v26/diagnostic': {
     get: operations['getDiagnostic'];
   };
-  '/v26/openAPI': {
-    get: operations['getOpenAPI'];
-  };
-  '/v26/{pathParam1}/{pathParam2}': {
-    get: operations['getParameters'];
-  };
   '/v26/time': {
     get: operations['getTime'];
     put: operations['putTime'];
   };
-  '/v26/crons/{cronName}/run': {
-    post: operations['postCronRun'];
+  '/v26/openAPI': {
+    get: operations['getOpenAPI'];
   };
   '/v26/echo': {
     put: operations['putEcho'];
   };
+  '/v26/{pathParam1}/{pathParam2}': {
+    get: operations['getParameters'];
+  };
   '/v26/stream': {
     put: operations['putEchoedStream'];
+  };
+  '/v26/crons/{cronName}/run': {
+    post: operations['postCronRun'];
   };
   '/v26/ping': {
     get: operations['getPing'];
@@ -61,11 +61,32 @@ declare interface operations {
       200: components['responses']['Diagnostic'];
     };
   };
+  getTime: {
+    responses: {
+      200: {
+        body: components['schemas']['TimeSchema'];
+      };
+    };
+  };
+  putTime: {
+    requestBody: components['schemas']['TimePayload'];
+    responses: {
+      201: {
+        body: number;
+      };
+    };
+  };
   getOpenAPI: {
     responses: {
       200: {
         body: object;
       };
+    };
+  };
+  putEcho: {
+    requestBody: components['requestBodies']['Echo'];
+    responses: {
+      200: components['responses']['Echo'];
     };
   };
   getParameters: {
@@ -97,19 +118,10 @@ declare interface operations {
       };
     };
   };
-  getTime: {
+  putEchoedStream: {
+    requestBody: components['requestBodies']['Stream'];
     responses: {
-      200: {
-        body: components['schemas']['TimeSchema'];
-      };
-    };
-  };
-  putTime: {
-    requestBody: components['schemas']['TimePayload'];
-    responses: {
-      201: {
-        body: number;
-      };
+      201: components['responses']['Stream'];
     };
   };
   postCronRun: {
@@ -124,18 +136,6 @@ declare interface operations {
       query: {
         date: components['parameters']['date'];
       };
-    };
-  };
-  putEcho: {
-    requestBody: components['requestBodies']['Echo'];
-    responses: {
-      200: components['responses']['Echo'];
-    };
-  };
-  putEchoedStream: {
-    requestBody: components['requestBodies']['Stream'];
-    responses: {
-      201: components['responses']['Stream'];
     };
   };
   getPing: {
@@ -184,26 +184,26 @@ declare interface components {
   };
   schemas: {
     URISchema: string;
+    TimePayload: {
+      time: number;
+      isFixed?: boolean;
+    };
+    TimeSchema: {
+      currentDate?: string;
+    };
+    Echo: {
+      echo: string;
+    };
     Boolean: boolean;
     Number: number;
     Numbers: components['schemas']['Number'][];
     String: string;
     Strings: components['schemas']['String'][];
-    TimeSchema: {
-      currentDate?: string;
-    };
+    Stream: NodeJS.ReadableStream;
     AnyObject: {
       [pattern: string]: unknown;
     };
     Date: string;
-    Echo: {
-      echo: string;
-    };
-    Stream: NodeJS.ReadableStream;
-    TimePayload: {
-      time: number;
-      isFixed?: boolean;
-    };
     ExampleSchema: {
       message: string;
       delay: number;

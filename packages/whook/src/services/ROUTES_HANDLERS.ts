@@ -13,11 +13,6 @@ export type WhookRoutesHandlersDependencies = {
   log?: LogService;
 } & WhookRoutesHandlersService;
 
-export default location(
-  service(initRoutesHandlers, 'ROUTES_HANDLERS', ['ROUTES_WRAPPERS', 'log']),
-  import.meta.url,
-);
-
 /**
  * Initialize the Whook routes handlers used by the router
  *  to know which handler to run for a given route.
@@ -65,3 +60,8 @@ async function initRoutesHandlers({
 
   return WRAPPED_ROUTES_HANDLERS;
 }
+
+export default location(
+  service(initRoutesHandlers, 'ROUTES_HANDLERS', ['ROUTES_WRAPPERS', 'log']),
+  import.meta.url,
+);

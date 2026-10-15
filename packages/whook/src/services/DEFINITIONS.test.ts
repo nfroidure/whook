@@ -7,7 +7,7 @@ import {
 } from '../types/routes.js';
 import { type Dependencies, type ServiceInitializer } from 'knifecycle';
 
-const getUserModule: WhookRouteModule = {
+const getUserModule = {
   definition: {
     path: '/users/{userId}',
     method: 'get',
@@ -54,8 +54,8 @@ const getUserModule: WhookRouteModule = {
     Dependencies,
     WhookRouteHandler
   >,
-};
-const putUserModule: WhookRouteModule = {
+} as const satisfies WhookRouteModule;
+const putUserModule = {
   definition: {
     path: '/users/{userId}',
     method: 'put',
@@ -83,7 +83,7 @@ const putUserModule: WhookRouteModule = {
     Dependencies,
     WhookRouteHandler
   >,
-};
+} as const satisfies WhookRouteModule;
 const SECURITY_DEFINITIONS = {
   security: [],
   securitySchemes: {},
@@ -99,11 +99,36 @@ describe('initDefinitions', () => {
   describe('should work', () => {
     test('with no definitions at all', async () => {
       const DEFINITIONS = await initDefinitions({
-        ROUTES_DEFINITIONS: {},
-        COMMANDS_DEFINITIONS: {},
-        CRONS_DEFINITIONS: {},
-        CONSUMERS_DEFINITIONS: {},
-        TRANSFORMERS_DEFINITIONS: {},
+        ROUTES_DECLARATIONS: {
+          routes: {},
+          handlers: {},
+          schemas: {},
+          parameters: {},
+          responses: {},
+          requestBodies: {},
+          headers: {},
+          callbacks: {},
+        },
+        COMMANDS_DECLARATIONS: {
+          commands: {},
+          handlers: {},
+          schemas: {},
+        },
+        CRONS_DECLARATIONS: {
+          crons: {},
+          handlers: {},
+          schemas: {},
+        },
+        CONSUMERS_DECLARATIONS: {
+          consumers: {},
+          handlers: {},
+          schemas: {},
+        },
+        TRANSFORMERS_DECLARATIONS: {
+          transformers: {},
+          handlers: {},
+          schemas: {},
+        },
         SECURITY_DEFINITIONS,
         log,
       });
@@ -139,23 +164,66 @@ describe('initDefinitions', () => {
 
     test('with a few routes', async () => {
       const DEFINITIONS = await initDefinitions({
-        COMMANDS_DEFINITIONS: {},
-        CRONS_DEFINITIONS: {},
-        CONSUMERS_DEFINITIONS: {},
-        TRANSFORMERS_DEFINITIONS: {},
-        ROUTES_DEFINITIONS: {
-          getUser: {
-            url: 'src/routes/getUser.ts',
-            name: 'getUser',
-            pluginName: '@whook/whook',
-            module: getUserModule,
+        ROUTES_DECLARATIONS: {
+          routes: {
+            getUser: {
+              type: 'route',
+              url: 'file:///src/routes/getUser.ts',
+              name: 'getUser',
+              pluginName: '@whook/whook',
+              content: getUserModule.definition,
+            },
+            putUser: {
+              type: 'route',
+              url: 'file:///dist/routes/putUser.js',
+              name: 'putUser',
+              pluginName: '@whook/whook',
+              content: putUserModule.definition,
+            },
           },
-          putUser: {
-            url: 'dist/routes/putUser.js',
-            name: 'putUser',
-            pluginName: '@whook/whook',
-            module: putUserModule,
+          handlers: {},
+          schemas: {
+            [getUserModule.userSchema.name]: {
+              type: 'schema',
+              url: 'file:///src/routes/getUser.ts',
+              name: getUserModule.userSchema.name,
+              pluginName: '@whook/whook',
+              content: getUserModule.userSchema,
+            },
           },
+          parameters: {
+            [getUserModule.userIdParameter.name]: {
+              type: 'parameter',
+              url: 'file:///src/routes/getUser.ts',
+              name: getUserModule.userIdParameter.name,
+              pluginName: '@whook/whook',
+              content: getUserModule.userIdParameter,
+            },
+          },
+          responses: {},
+          requestBodies: {},
+          headers: {},
+          callbacks: {},
+        },
+        COMMANDS_DECLARATIONS: {
+          commands: {},
+          handlers: {},
+          schemas: {},
+        },
+        CRONS_DECLARATIONS: {
+          crons: {},
+          handlers: {},
+          schemas: {},
+        },
+        CONSUMERS_DECLARATIONS: {
+          consumers: {},
+          handlers: {},
+          schemas: {},
+        },
+        TRANSFORMERS_DECLARATIONS: {
+          transformers: {},
+          handlers: {},
+          schemas: {},
         },
         SECURITY_DEFINITIONS,
         log,

@@ -197,6 +197,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/TRANSFORMER_DEFINITION_FILTER.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/createDirectoryFilesWalker.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/cronRunner.ts"})",
          ],
          [
@@ -638,6 +641,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/createDirectoryFilesWalker.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js"})",
          ],
          [
@@ -683,220 +689,220 @@ describe('runProcess', () => {
            "⌛ - Delay service initialized.",
          ],
          [
-           "⏳ - Module "optionsWithCORS.js" has no definition!",
+           "⏳ - Skipped "file:///project/src/commands/createSecretKey.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "__snapshots__" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/commands/printEnv.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/__snapshots__/getTime.test.ts.snap" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.js.map" per file patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getDelay.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getDiagnostic.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getParameters.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "config.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///project/src/routes/getTime.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///project/src/routes/postCronRun.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.js" since disabled by the application environment (test)!",
+           "⏳ - Skipped "file:///project/src/routes/putEcho.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.js.map" per file patterns.",
+           "⏳ - Skipped "file:///project/src/routes/putEchoedStream.test.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "create.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "createSecretKey.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronRun.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/config.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronRun.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronRun.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronSchedule.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronRun.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "cronSchedule.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronSchedule.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/cronSchedule.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "env.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/env.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPISchema.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateOpenAPISchema.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateSchemaValidators.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/generateSchemaValidators.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateOpenAPITypes.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateSchemaValidators.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "generateSchemaValidators.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getDelay.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/inspect.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getDiagnostic.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.js" since already loaded upstream.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/ls.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getOpenAPI.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getParameters.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/commands/route.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getPing.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "getTime.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getOpenAPI.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "inspect.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/dist/routes/getPing.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.test.js" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "ls.test.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "optionsWithCORS.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "optionsWithCORS.js.map" per file patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "postCronRun.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/create.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "printEnv.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "putEcho.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "putEchoedStream.test.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.test.d.ts" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "putTime.ts" since disabled by the application environment (test)!",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.test.js" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "route.d.ts" per ignore patterns.",
+           "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/commands/generateOpenAPITypes.test.js.map" per ignore patterns.",
          ],
          [
-           "⏳ - Skipped "route.js.map" per file patterns.",
+           "⏳ - Skipped command from "file:///projects/whook/packages/whook-dev/dist/commands/create.js" since disabled by the application environment (test)!",
          ],
          [
-           "⏳ - Skipped "route.test.d.ts" per ignore patterns.",
+           "⏳ - Skipped route from "file:///project/src/routes/putTime.ts" since disabled by the application environment (test)!",
          ],
          [
-           "⏳ - Skipped "route.test.js" per ignore patterns.",
+           "⏳ - Skipped route from "file:///projects/whook/dist/routes/getOpenAPI.js" since already loaded upstream.",
          ],
          [
-           "⏳ - Skipped "route.test.js.map" per file patterns.",
+           "⏳ - Skipped route from "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js" since no definition!",
          ],
          [
            "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
@@ -950,6 +956,9 @@ describe('runProcess', () => {
            "✅ - Module path of "authentication" found at "file:///project/src/services/authentication.ts".",
          ],
          [
+           "✅ - Module path of "createDirectoryFilesWalker" found at "@whook/whook/dist/services/createDirectoryFilesWalker.js".",
+         ],
+         [
            "✅ - Module path of "getDelay" found at "file:///project/src/routes/getDelay.ts".",
          ],
          [
@@ -990,6 +999,9 @@ describe('runProcess', () => {
          ],
          [
            "✅ - Module path of "putEchoedStream" found at "file:///project/src/routes/putEchoedStream.ts".",
+         ],
+         [
+           "✅ - Module path of "putTime" found at "file:///project/src/routes/putTime.ts".",
          ],
          [
            "✅ - Module path of "wrapRouteHandlerWithAuthorization" found at "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
@@ -1035,9 +1047,6 @@ describe('runProcess', () => {
          ],
          [
            "🈁 - Generating the DEFINITIONS",
-         ],
-         [
-           "🈁 - Handler module at "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js" exports no definition!",
          ],
          [
            "🍀 - Trying to find "API" module path in "__project__".",
@@ -1514,6 +1523,15 @@ describe('runProcess', () => {
            "🍀 - Trying to find "authentication" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "createDirectoryFilesWalker" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "createDirectoryFilesWalker" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "createDirectoryFilesWalker" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "cronRunner" module path in "@whook/authorization".",
          ],
          [
@@ -1613,6 +1631,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "putEchoedStream" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "putTime" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "uniqueId" module path in "@whook/authorization".",
          ],
          [
@@ -1691,6 +1712,9 @@ describe('runProcess', () => {
            "💿 - Loading "authentication" initializer from "file:///project/src/services/authentication.ts".",
          ],
          [
+           "💿 - Loading "createDirectoryFilesWalker" initializer from "@whook/whook/dist/services/createDirectoryFilesWalker.js".",
+         ],
+         [
            "💿 - Loading "getDelay" initializer from "file:///project/src/routes/getDelay.ts".",
          ],
          [
@@ -1733,6 +1757,9 @@ describe('runProcess', () => {
            "💿 - Loading "putEchoedStream" initializer from "file:///project/src/routes/putEchoedStream.ts".",
          ],
          [
+           "💿 - Loading "putTime" initializer from "file:///project/src/routes/putTime.ts".",
+         ],
+         [
            "💿 - Loading "wrapRouteHandlerWithAuthorization" initializer from "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
          ],
          [
@@ -1761,6 +1788,9 @@ describe('runProcess', () => {
          ],
          [
            "💿 - Service "authentication" found in "file:///project/src/services/authentication.ts".",
+         ],
+         [
+           "💿 - Service "createDirectoryFilesWalker" found in "@whook/whook/dist/services/createDirectoryFilesWalker.js".",
          ],
          [
            "💿 - Service "getDelay" found in "file:///project/src/routes/getDelay.ts".",
@@ -1805,6 +1835,9 @@ describe('runProcess', () => {
            "💿 - Service "putEchoedStream" found in "file:///project/src/routes/putEchoedStream.ts".",
          ],
          [
+           "💿 - Service "putTime" found in "file:///project/src/routes/putTime.ts".",
+         ],
+         [
            "💿 - Service "wrapRouteHandlerWithAuthorization" found in "@whook/authorization/dist/wrappers/wrapRouteHandlerWithAuthorization.js".",
          ],
          [
@@ -1812,6 +1845,9 @@ describe('runProcess', () => {
          ],
          [
            "📇 - Process service initialized.",
+         ],
+         [
+           "📖 - Picking the "CLOCK_MOCK" constant in the "APP_CONFIG" service properties.",
          ],
          [
            "📖 - Picking the "CONFIG" constant in the "APP_CONFIG" service properties.",
@@ -1830,6 +1866,78 @@ describe('runProcess', () => {
          ],
          [
            "📖 - Picking the "SWAGGER_UI_OPTIONS" constant in the "APP_CONFIG" service properties.",
+         ],
+         [
+           "📥 - Collecting callback "DelayCallback" from "file:///project/src/routes/getDelay.ts",
+         ],
+         [
+           "📥 - Collecting parameter "date" from "file:///project/src/routes/postCronRun.ts",
+         ],
+         [
+           "📥 - Collecting parameter "duration" from "file:///project/src/routes/getDelay.ts",
+         ],
+         [
+           "📥 - Collecting parameter "pathParam1" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting parameter "pathParam2" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting parameter "queryParam" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting requestBody "Echo" from "file:///project/src/routes/putEcho.ts",
+         ],
+         [
+           "📥 - Collecting requestBody "Stream" from "file:///project/src/routes/putEchoedStream.ts",
+         ],
+         [
+           "📥 - Collecting response "Diagnostic" from "file:///project/src/routes/getDiagnostic.ts",
+         ],
+         [
+           "📥 - Collecting response "Echo" from "file:///project/src/routes/putEcho.ts",
+         ],
+         [
+           "📥 - Collecting response "Stream" from "file:///project/src/routes/putEchoedStream.ts",
+         ],
+         [
+           "📥 - Collecting schema "AnyObject" from "file:///project/src/routes/postCronRun.ts",
+         ],
+         [
+           "📥 - Collecting schema "Boolean" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Date" from "file:///project/src/routes/postCronRun.ts",
+         ],
+         [
+           "📥 - Collecting schema "Echo" from "file:///project/src/routes/putEcho.ts",
+         ],
+         [
+           "📥 - Collecting schema "ExampleSchema" from "file:///project/src/crons/handleMinutes.ts",
+         ],
+         [
+           "📥 - Collecting schema "Number" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Numbers" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Stream" from "file:///project/src/routes/putEchoedStream.ts",
+         ],
+         [
+           "📥 - Collecting schema "String" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "Strings" from "file:///project/src/routes/getParameters.ts",
+         ],
+         [
+           "📥 - Collecting schema "TimePayload" from "file:///project/src/routes/putTime.ts",
+         ],
+         [
+           "📥 - Collecting schema "TimeSchema" from "file:///project/src/routes/getTime.ts",
+         ],
+         [
+           "📥 - Collecting schema "URISchema" from "file:///project/src/routes/getDelay.ts",
          ],
          [
            "📥 - Initializing the CORS wrapper.",
@@ -1938,6 +2046,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/TRANSFORMER_DEFINITION_FILTER.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/createDirectoryFilesWalker.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/cronRunner.ts".",
@@ -2381,6 +2492,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/createDirectoryFilesWalker.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js".",
          ],
          [
@@ -2507,6 +2621,9 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "@whook/whook/dist/services/ROUTES_WRAPPERS.js".",
          ],
          [
+           "🛂 - Dynamic import of "@whook/whook/dist/services/createDirectoryFilesWalker.js".",
+         ],
+         [
            "🛂 - Dynamic import of "ecstatic".",
          ],
          [
@@ -2576,6 +2693,9 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///project/src/routes/putTime.ts".",
          ],
          [
+           "🛂 - Dynamic import of "file:///project/src/routes/putTime.ts".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///project/src/services/API.ts".",
          ],
          [
@@ -2618,6 +2738,9 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///projects/whook/dist/commands/route.js".",
          ],
          [
+           "🛂 - Dynamic import of "file:///projects/whook/dist/routes/getOpenAPI.js".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///projects/whook/dist/routes/getPing.js".",
          ],
          [
@@ -2647,6 +2770,9 @@ describe('runProcess', () => {
            "⌨️ - Initializing the basic query parser.",
          ],
          [
+           "⏳ - Time mock is enabled!",
+         ],
+         [
            "⚠️ - Using fake auth mechanism!",
          ],
          [
@@ -2665,7 +2791,7 @@ describe('runProcess', () => {
            "🏭 - Initializing the CRONS_WRAPPERS service.",
          ],
          [
-           "🏭 - Initializing the ROUTES_HANDLERS service with 11 handlers wrapped by 2 wrappers.",
+           "🏭 - Initializing the ROUTES_HANDLERS service with 12 handlers wrapped by 2 wrappers.",
          ],
          [
            "🏭 - Initializing the ROUTES_WRAPPERS service.",

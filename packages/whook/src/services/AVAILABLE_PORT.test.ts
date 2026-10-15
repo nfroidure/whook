@@ -1,7 +1,5 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import initAvailablePort, {
-  type PortFinderModule,
-} from './AVAILABLE_PORT.js';
+import initAvailablePort, { type PortFinderModule } from './AVAILABLE_PORT.js';
 import { type ImporterService, type LogService } from 'common-services';
 
 describe('initAvailablePort', () => {

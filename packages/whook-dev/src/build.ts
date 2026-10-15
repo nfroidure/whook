@@ -124,9 +124,7 @@ export async function runBuild(
     const srcPath = join(PROJECT_DIR, 'src');
     const buildPath = join(PROJECT_DIR, 'builds', APP_ENV, BUILD_DIR);
     const distRelativePath = relative(buildPath, distPath);
-    const initializerContent = (
-      await buildInitializer(injectedNames)
-    )
+    const initializerContent = (await buildInitializer(injectedNames))
       .replaceAll(pathToFileURL(distPath).toString(), distRelativePath)
       .replaceAll(pathToFileURL(srcPath).toString(), distRelativePath)
       .replaceAll(".ts';", ".js';");

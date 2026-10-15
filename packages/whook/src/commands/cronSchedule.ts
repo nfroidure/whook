@@ -6,7 +6,7 @@ import {
   type WhookCommandDefinition,
   type WhookCommandHandler,
 } from '../types/commands.js';
-import { type WhookCronsDefinitionsService } from '../services/CRONS_DEFINITIONS.js';
+import { type WhookCronsDeclarationsService } from '../services/CRONS_DECLARATIONS.js';
 
 export const definition = {
   name: 'cronSchedule',
@@ -60,12 +60,12 @@ export const definition = {
 } as const satisfies WhookCommandDefinition;
 
 async function initCronRunCommand({
-  CRONS_DEFINITIONS,
+  CRONS_DECLARATIONS,
   $injector,
   log,
   delay,
 }: {
-  CRONS_DEFINITIONS: WhookCronsDefinitionsService;
+  CRONS_DECLARATIONS: WhookCronsDeclarationsService;
   $injector: Injector<Service>;
   log: LogService;
   delay: DelayService;
@@ -81,10 +81,10 @@ async function initCronRunCommand({
       namedArguments: { name, startDate, endDate, delay: cronDelay, body },
     } = args;
 
-    const definition = CRONS_DEFINITIONS[name];
+    const definition = CRONS_DECLARATIONS.crons[name].content;
     const handler = (await $injector([name]))[name];
 
-    for (const schedule of definition.module.definition.schedules) {
+    for (const schedule of definition.schedules) {
       const instances = CronExpressionParser.parse(schedule.rule, {
         currentDate: new Date(startDate),
         endDate: new Date(endDate),

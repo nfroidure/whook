@@ -27,23 +27,23 @@ describe('commands should work', () => {
        "stdout": "
 
      # Provided by "@whook/example": 2 commands
-     - createSecretKey: A command to create a secret key
      - printEnv: A command printing every env values
+     - createSecretKey: A command to create a secret key
 
 
      # Provided by "@whook/otel": none
 
 
      # Provided by "@whook/whook": 9 commands
-     - config: A simple program that returns the queried config value
-     - cronRun: A command to run all instances of a cron
-     - cronSchedule: A command to run a cron schedules for a given time frame
      - env: A command printing env values
-     - generateOpenAPISchema: Write openAPI schema to stdout
-     - generateSchemaValidators: Build the schema validators with AJV
-     - inspect: A simple program that returns the result of the injected service
-     - ls: Print available commands
      - route: Runs the given server route for testing purpose
+     - generateOpenAPISchema: Write openAPI schema to stdout
+     - config: A simple program that returns the queried config value
+     - inspect: A simple program that returns the result of the injected service
+     - generateSchemaValidators: Build the schema validators with AJV
+     - ls: Print available commands
+     - cronSchedule: A command to run a cron schedules for a given time frame
+     - cronRun: A command to run all instances of a cron
 
 
      # Provided by "@whook/cors": none

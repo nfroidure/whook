@@ -19,6 +19,7 @@ import {
   WHOOK_PROJECT_PLUGIN_NAME,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
+import { type WhookRoutesDeclarationsService } from './ROUTES_DECLARATIONS.js';
 
 describe('$autoload', () => {
   const args = { namedArguments: {}, rest: [], command: 'whook' };
@@ -169,21 +170,44 @@ describe('$autoload', () => {
 
     test('for routes hash', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: {
-          paths: {
-            '/ping': {
-              get: {
-                operationId: 'getPing',
-                summary: "Checks API's availability.",
-                responses: {
-                  '200': {
-                    description: 'Pong',
+        ROUTES_DECLARATIONS: {
+          routes: {
+            getPing: {
+              type: 'route',
+              name: 'getPing',
+              url: 'file:///project/routes/getPing.ts',
+              pluginName: '__project__',
+              content: {
+                path: '/ping',
+                method: 'get',
+                operation: {
+                  operationId: 'getPing',
+                  summary: "Checks API's availability.",
+                  responses: {
+                    '200': {
+                      description: 'Pong',
+                    },
                   },
                 },
               },
             },
           },
-        },
+          handlers: {
+            getPing: {
+              type: 'handler',
+              name: 'getPing',
+              url: 'file:///project/routes/getPing.ts',
+              pluginName: '__project__',
+              content: undefined,
+            },
+          },
+          schemas: {},
+          parameters: {},
+          responses: {},
+          requestBodies: {},
+          headers: {},
+          callbacks: {},
+        } as WhookRoutesDeclarationsService,
       });
       resolve.mockReturnValueOnce(
         'file:///home/whoami/my-whook-project/src/routes/getPing.js',
@@ -231,7 +255,7 @@ describe('$autoload', () => {
          "injectorCalls": [
            [
              [
-               "ROUTES_DEFINITIONS",
+               "ROUTES_DECLARATIONS",
              ],
            ],
          ],
@@ -269,22 +293,14 @@ describe('$autoload', () => {
 
     test('for wrappers hash', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: {
-          openapi: '3.1.0',
-          info: {
-            version: '1.0.0',
-            title: 'Sample OpenAPI',
-            description: 'A sample OpenAPI file for testing purpose.',
-          },
-          paths: {
-            '/ping': {
-              get: {
-                operationId: 'getPing',
-                summary: "Checks API's availability.",
-                responses: {
-                  '200': {
-                    description: 'Pong',
-                  },
+        ROUTES_DECLARATIONS: {
+          routes: {
+            getPing: {
+              operationId: 'getPing',
+              summary: "Checks API's availability.",
+              responses: {
+                '200': {
+                  description: 'Pong',
                 },
               },
             },
@@ -368,7 +384,7 @@ describe('$autoload', () => {
 
     test('for routes', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: { info: {} },
+        ROUTES_DECLARATIONS: { routes: {} },
       });
       resolve.mockReturnValueOnce(
         'file:///home/whoami/my-whook-project/src/routes/getPing.js',
@@ -440,7 +456,7 @@ describe('$autoload', () => {
 
     test('for path mapped routes from plugins', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: { info: {} },
+        ROUTES_DECLARATIONS: { routes: {} },
       });
       importer.mockResolvedValueOnce({
         default: service(async () => async () => ({ status: 200 }), 'getPing'),
@@ -511,7 +527,7 @@ describe('$autoload', () => {
 
     test('for path mapped routes from project', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: { info: {} },
+        ROUTES_DECLARATIONS: { routes: {} },
       });
       resolve.mockReturnValueOnce(
         'file:///home/whoami/my-whook-project/src/routes/getPing.js',
@@ -589,7 +605,7 @@ describe('$autoload', () => {
 
     test('for routes in sub plugins', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: { info: {} },
+        ROUTES_DECLARATIONS: { routes: {} },
       });
       access.mockImplementationOnce(() => {
         throw new YError('E_NO_ACCESS');
@@ -684,7 +700,7 @@ describe('$autoload', () => {
 
     test('for wrappers', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: { info: {} },
+        ROUTES_DECLARATIONS: { routes: {} },
       });
       resolve.mockReturnValueOnce(
         'file:///home/whoami/my-whook-project/src/routes/wrapRouteHandler.js',
@@ -761,7 +777,7 @@ describe('$autoload', () => {
   describe('should fail', () => {
     test('with not existing routes', async () => {
       $injector.mockResolvedValueOnce({
-        ROUTES_DEFINITIONS: { info: {} },
+        ROUTES_DECLARATIONS: { routes: {} },
       });
       access.mockImplementationOnce(() => {
         throw new YError('E_NO_ACCESS');

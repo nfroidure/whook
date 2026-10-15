@@ -1,12 +1,9 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initLsCommand, { definition as initLsCommandDefinition } from './ls.js';
-import initEnvCommand, {
-  definition as initEnvCommandDefinition,
-} from './env.js';
+import { definition as initEnvCommandDefinition } from './env.js';
 import { type LogService } from 'common-services';
 import { WHOOK_PROJECT_PLUGIN_NAME } from '../services/WHOOK_RESOLVED_PLUGINS.js';
-import { type WhookCommandsDefinitionsService } from '../services/COMMANDS_DEFINITIONS.js';
-import { type WhookCommandModule } from '../types/commands.js';
+import { type WhookCommandsDeclarationsService } from '../services/COMMANDS_DECLARATIONS.js';
 
 describe('lsCommand', () => {
   const log = jest.fn<LogService>();
@@ -17,14 +14,18 @@ describe('lsCommand', () => {
 
   describe('should work', () => {
     test('with no plugin', async () => {
-      const COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService = {};
+      const COMMANDS_DECLARATIONS: WhookCommandsDeclarationsService = {
+        commands: {},
+        handlers: {},
+        schemas: {},
+      };
       const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
       const lsCommand = await initLsCommand({
         CONFIG: {
           name: 'My Super project!',
         },
         WHOOK_PLUGINS,
-        COMMANDS_DEFINITIONS,
+        COMMANDS_DECLARATIONS,
         log,
         EOL: '\n',
       });
@@ -57,25 +58,25 @@ describe('lsCommand', () => {
     });
 
     test('with some plugins', async () => {
-      const COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService = {
-        ls: {
-          url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
-          name: 'ls',
-          pluginName: WHOOK_PROJECT_PLUGIN_NAME,
-          module: {
-            definition: initLsCommandDefinition,
-            default: initLsCommand as unknown as WhookCommandModule['default'],
+      const COMMANDS_DECLARATIONS: WhookCommandsDeclarationsService = {
+        commands: {
+          ls: {
+            type: 'command',
+            url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
+            name: 'ls',
+            pluginName: WHOOK_PROJECT_PLUGIN_NAME,
+            content: initLsCommandDefinition,
+          },
+          env: {
+            type: 'command',
+            url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
+            name: 'env',
+            pluginName: '@whook/whook',
+            content: initEnvCommandDefinition,
           },
         },
-        env: {
-          url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
-          name: 'env',
-          pluginName: '@whook/whook',
-          module: {
-            definition: initEnvCommandDefinition,
-            default: initEnvCommand as unknown as WhookCommandModule['default'],
-          },
-        },
+        handlers: {},
+        schemas: {},
       };
       const WHOOK_PLUGINS = [
         WHOOK_PROJECT_PLUGIN_NAME,
@@ -87,7 +88,7 @@ describe('lsCommand', () => {
           name: '',
         },
         WHOOK_PLUGINS,
-        COMMANDS_DEFINITIONS,
+        COMMANDS_DECLARATIONS,
         log,
         EOL: '\n',
       });
@@ -138,25 +139,25 @@ describe('lsCommand', () => {
     });
 
     test('with some plugins and a verbose output', async () => {
-      const COMMANDS_DEFINITIONS: WhookCommandsDefinitionsService = {
-        ls: {
-          url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
-          name: 'ls',
-          pluginName: '@whook/whook',
-          module: {
-            definition: initLsCommandDefinition,
-            default: initLsCommand as unknown as WhookCommandModule['default'],
+      const COMMANDS_DECLARATIONS: WhookCommandsDeclarationsService = {
+        commands: {
+          ls: {
+            type: 'command',
+            url: 'file:///var/lib/node/node_modules/@whook/whook/dist/services/ls.js',
+            name: 'ls',
+            pluginName: '@whook/whook',
+            content: initLsCommandDefinition,
+          },
+          env: {
+            type: 'command',
+            url: 'file:///var/lib/node/dist/services/env.js',
+            name: 'env',
+            pluginName: WHOOK_PROJECT_PLUGIN_NAME,
+            content: initEnvCommandDefinition,
           },
         },
-        env: {
-          url: 'file:///var/lib/node/dist/services/env.js',
-          name: 'env',
-          pluginName: WHOOK_PROJECT_PLUGIN_NAME,
-          module: {
-            definition: initEnvCommandDefinition,
-            default: initEnvCommand as unknown as WhookCommandModule['default'],
-          },
-        },
+        handlers: {},
+        schemas: {},
       };
       const WHOOK_PLUGINS = [
         WHOOK_PROJECT_PLUGIN_NAME,
@@ -168,7 +169,7 @@ describe('lsCommand', () => {
           name: 'My Super project!',
         },
         WHOOK_PLUGINS,
-        COMMANDS_DEFINITIONS,
+        COMMANDS_DECLARATIONS,
         log,
         EOL: '\n',
       });

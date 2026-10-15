@@ -5,7 +5,7 @@ import {
   noop,
   type WhookHTTPRouterService,
   type WhookHTTPRouterProvider,
-  type WhookRoutesDefinitionsService,
+  type WhookDefinitions,
 } from '@whook/whook';
 import { type ProviderInitializer, type Dependencies } from 'knifecycle';
 import { type LogService } from 'common-services';
@@ -34,7 +34,7 @@ export type WhookGraphIQLDependencies = WhookGraphIQLConfig & {
   ENV: WhookGraphIQLEnv;
   HOST: string;
   PORT: number;
-  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  DEFINITIONS: WhookDefinitions;
   log: LogService;
 };
 
@@ -58,7 +58,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
       'HOST',
       'PORT',
       '?GRAPHIQL',
-      'ROUTES_DEFINITIONS',
+      'DEFINITIONS',
       'ENV',
       '?log',
     ],
@@ -74,7 +74,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
         PORT,
         GRAPHIQL = DEFAULT_GRAPHIQL,
         ENV,
-        ROUTES_DEFINITIONS,
+        DEFINITIONS,
         log = noop,
       }: WhookGraphIQLDependencies,
       httpRouter: WhookHTTPRouterProvider,
@@ -83,9 +83,12 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
         return httpRouter;
       }
 
+      const postGraphQLDefinitionPath =
+        DEFINITIONS.configs['postGraphQL']?.type === 'route'
+          ? DEFINITIONS.configs['postGraphQL'].path
+          : undefined;
       const publicGraphiqlPath =
-        GRAPHIQL.graphQLPath ||
-        ROUTES_DEFINITIONS['postGraphQL']?.module?.definition?.path;
+        GRAPHIQL.graphQLPath || postGraphQLDefinitionPath;
 
       if (!publicGraphiqlPath) {
         log(
@@ -111,7 +114,7 @@ export default function wrapHTTPRouterWithGraphIQL<D extends Dependencies>(
       ) {
         if (req.url?.startsWith(GRAPHIQL.path)) {
           return resolveGraphiQLString({
-            endpointURL: publicGraphiqlPath,
+            endpointURL: publicGraphiqlPath as string,
             query: GRAPHIQL.defaultQuery,
             headers: DEV_ACCESS_TOKEN
               ? { Authorization: `${DEV_ACCESS_MECHANISM} ${DEV_ACCESS_TOKEN}` }

@@ -7,7 +7,7 @@ import { type JsonValue } from 'type-fest';
 import { type ExpressiveJSONSchema } from 'ya-json-schema-types';
 import { type WhookHandlerWrapper } from './wrappers.js';
 import { type WhookEnvironmentsConfig } from '../libs/environments.js';
-import { type WhookModuleAsideSchemas } from '../index.js';
+import { type WhookSchemasDeclarationModule } from '../index.js';
 
 export const DEFAULT_TRANSFORMER_CONFIG: WhookTransformerConfig = {
   environments: 'all',
@@ -50,7 +50,7 @@ export const TRANSFORMER_ASIDE_COMPONENTS_MAP = {
 export interface WhookTransformerModule<
   T extends JsonValue = JsonValue,
   U extends JsonValue = JsonValue,
-> extends WhookModuleAsideSchemas {
+> extends WhookSchemasDeclarationModule {
   default: WhookTransformerHandlerInitializer<T, U>;
   definition: WhookTransformerDefinition;
 }

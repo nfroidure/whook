@@ -2,25 +2,28 @@ import { describe, test, beforeEach, jest, expect } from '@jest/globals';
 import initRouteInvoker from './routeInvoker.js';
 import { type LogService } from 'common-services';
 import { type Injector } from 'knifecycle';
-import { type WhookRoutesDefinitionsService } from './ROUTES_DEFINITIONS.js';
-import {
-  type WhookRouteHandlerInitializer,
-  getPingDefinition,
-  initGetPing,
-} from '../index.js';
+import { type WhookRoutesDeclarationsService } from './ROUTES_DECLARATIONS.js';
+import { getPingDefinition, initGetPing } from '../index.js';
 import { NodeEnv } from 'application-services';
 
 describe('routeInvoker', () => {
-  const ROUTES_DEFINITIONS: WhookRoutesDefinitionsService = {
-    getPing: {
-      url: 'src/routes/getPing.ts',
-      name: 'getUser',
-      pluginName: '@whook/whook',
-      module: {
-        default: initGetPing as unknown as WhookRouteHandlerInitializer,
-        definition: getPingDefinition,
+  const ROUTES_DECLARATIONS: WhookRoutesDeclarationsService = {
+    routes: {
+      getPing: {
+        url: 'file:///src/routes/getPing.ts',
+        name: 'getUser',
+        type: 'route',
+        pluginName: '@whook/whook',
+        content: getPingDefinition,
       },
     },
+    handlers: {},
+    schemas: {},
+    parameters: {},
+    responses: {},
+    requestBodies: {},
+    headers: {},
+    callbacks: {},
   };
   const log = jest.fn<LogService>();
   const $injector = jest.fn<
@@ -37,7 +40,7 @@ describe('routeInvoker', () => {
 
   test('should work with a wait', async () => {
     const { service: routeInvoker, dispose } = await initRouteInvoker({
-      ROUTES_DEFINITIONS,
+      ROUTES_DECLARATIONS,
       log,
       $injector,
     });
@@ -93,7 +96,7 @@ describe('routeInvoker', () => {
 
   test('should work with no wait', async () => {
     const { service: routeInvoker, dispose } = await initRouteInvoker({
-      ROUTES_DEFINITIONS,
+      ROUTES_DECLARATIONS,
       log,
       $injector,
     });
