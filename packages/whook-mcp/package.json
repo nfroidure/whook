@@ -70,7 +70,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@modelcontextprotocol/node": "^2.0.0",
-    "@modelcontextprotocol/server": "^2.0.0",
+    "@modelcontextprotocol/server": "^2.3.0",
     "@whook/authorization": "^26.3.0",
     "@whook/whook": "^26.3.0",
     "common-services": "^20.1.0",
