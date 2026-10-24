@@ -69,10 +69,10 @@
   },
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
-    "@types/swagger-ui": "5.32.0",
+    "@types/swagger-ui": "5.32.1",
     "@whook/whook": "^26.3.0",
-    "ecstatic": "^4.1.4",
     "knifecycle": "^21.4.0",
+    "st": "^4.0.12",
     "swagger-ui-dist": "^5.32.15",
     "type-fest": "^5.10.0",
     "ya-json-schema-types": "^2.0.2",

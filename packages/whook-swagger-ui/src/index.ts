@@ -105,13 +105,15 @@ export default function wrapHTTPRouterWithSwaggerUI<D extends Dependencies>(
       }
 
       const localURL = `http://${HOST}:${PORT}`;
-      const swaggerUIURL = `${localURL}/docs`;
+      const swaggerUIURL = `${localURL}/docs/`;
       const absolutePath = (await importer('swagger-ui-dist')).absolutePath();
       const publicSwaggerURL = `${localURL}${publicSwaggerPath}`;
-      const staticRouter = (await importer('ecstatic')).default({
-        root: absolutePath,
-        showdir: false,
-        baseDir: './docs',
+      const staticRouter = (await importer('st')).default({
+        path: absolutePath,
+        url: 'docs/',
+        index: 'index.html',
+        cors: true,
+        passthrough: false,
       });
 
       log('warning', `💁 - Serving the API docs: ${swaggerUIURL}`);

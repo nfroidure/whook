@@ -256,7 +256,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "🚦 - HTTP Router initialized.",
          ],
          [
-           "🛂 - Dynamic import of "ecstatic".",
+           "🛂 - Dynamic import of "st".",
          ],
          [
            "🛂 - Dynamic import of "swagger-ui-dist".",
@@ -284,7 +284,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "⌨️ - Initializing the basic query parser.",
          ],
          [
-           "💁 - Serving the API docs: http://localhost:22222/docs",
+           "💁 - Serving the API docs: http://localhost:22222/docs/",
          ],
          [
            "🎙️ - HTTP Server listening at "http://localhost:22222".",
@@ -322,7 +322,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     );
     const { status, headers, data } = await axios({
       method: 'get',
-      url: `http://${HOST}:${PORT + 2}/docs`,
+      url: `http://${HOST}:${PORT + 2}/docs/`,
       headers: { 'user-agent': '__avoid_axios_version__' },
       validateStatus: () => true,
     });
@@ -449,7 +449,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "🚦 - HTTP Router initialized.",
          ],
          [
-           "🛂 - Dynamic import of "ecstatic".",
+           "🛂 - Dynamic import of "st".",
          ],
          [
            "🛂 - Dynamic import of "swagger-ui-dist".",
@@ -459,15 +459,17 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
        ],
        "headers": {
-         "cache-control": "max-age=3600",
+         "access-control-allow-headers": "Origin, X-Requested-With, Content-Type, Accept, Range",
+         "access-control-allow-origin": "*",
+         "cache-control": "public, max-age=600",
          "connection": undefined,
-         "content-length": "734",
          "content-type": "text/html",
          "date": undefined,
          "etag": undefined,
          "keep-alive": undefined,
          "last-modified": undefined,
          "server": undefined,
+         "transfer-encoding": "chunked",
        },
        "logErrorCalls": [
          [
@@ -477,7 +479,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "⌨️ - Initializing the basic query parser.",
          ],
          [
-           "💁 - Serving the API docs: http://localhost:22224/docs",
+           "💁 - Serving the API docs: http://localhost:22224/docs/",
          ],
          [
            "🎙️ - HTTP Server listening at "http://localhost:22224".",
@@ -671,7 +673,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "🚦 - HTTP Router initialized.",
          ],
          [
-           "🛂 - Dynamic import of "ecstatic".",
+           "🛂 - Dynamic import of "st".",
          ],
          [
            "🛂 - Dynamic import of "swagger-ui-dist".",
@@ -698,7 +700,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "⌨️ - Initializing the basic query parser.",
          ],
          [
-           "💁 - Serving the API docs: http://localhost:22225/docs",
+           "💁 - Serving the API docs: http://localhost:22225/docs/",
          ],
          [
            "🎙️ - HTTP Server listening at "http://localhost:22225".",

@@ -3545,9 +3545,6 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "@whook/whook/dist/services/ROUTES_WRAPPERS.js".",
          ],
          [
-           "🛂 - Dynamic import of "ecstatic".",
-         ],
-         [
            "🛂 - Dynamic import of "file:///project/src/commands/createSecretKey.ts".",
          ],
          [
@@ -3704,6 +3701,9 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapRoutesHandlersWithOTel.js".",
          ],
          [
+           "🛂 - Dynamic import of "st".",
+         ],
+         [
            "🛂 - Dynamic import of "swagger-ui-dist".",
          ],
          [
@@ -3745,7 +3745,7 @@ describe('runProcess', () => {
            "🏭 - Initializing the ROUTES_WRAPPERS service.",
          ],
          [
-           "💁 - Serving the API docs: http://localhost:9999/docs",
+           "💁 - Serving the API docs: http://localhost:9999/docs/",
          ],
          [
            "📈 - Wrapping HTTP router with OpenTelemetry spans.",

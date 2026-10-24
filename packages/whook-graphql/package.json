@@ -70,7 +70,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@apollo/server": "^5.5.1",
-    "@graphql-tools/schema": "^10.1.0",
+    "@graphql-tools/schema": "^10.1.5",
     "@whook/whook": "^26.3.0",
     "common-services": "^20.1.0",
     "knifecycle": "^21.4.0",
