@@ -107,12 +107,16 @@ export const definition = {
 } as const satisfies WhookRouteDefinition;
 
 async function initPostOAuth2Revoke({
-  oAuth2RevokeToken,
+  oAuth2RevokeToken = undefined,
   log = noop,
 }: {
-  oAuth2RevokeToken: WhookOAuth2RevokeTokenService;
+  oAuth2RevokeToken?: WhookOAuth2RevokeTokenService;
   log?: LogService;
 }) {
+  if (!oAuth2RevokeToken) {
+    log('error', `💥 - OAuth2 "oAuth2RevokeToken" service not available.`);
+    throw new YError('E_OAUTH2_MISCONFIGURED');
+  }
   return async ({
     body: { token, token_type_hint: tokenTypeHint },
     authenticationData: optionalAuthenticationData,

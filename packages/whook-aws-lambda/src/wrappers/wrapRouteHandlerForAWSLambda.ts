@@ -31,7 +31,7 @@ import {
   type WhookResponse,
   type WhookRouteHandler,
   type WhookObfuscatorService,
-  type WhookRouteDefinition,
+  type WhookMainDefinition,
   type WhookAPMService,
   type WhookRouteHandlerWrapper,
   type WhookErrorHandler,
@@ -47,6 +47,7 @@ import {
   type WhookEncoders,
   type WhookParsers,
   type WhookStringifiers,
+  type WhookRouteDefinition,
 } from '@whook/whook';
 import stream from 'node:stream';
 import qs from 'qs';
@@ -71,7 +72,7 @@ const uuidPattern =
 
 export interface WhookAWSLambdaRouteHandlerWrapperDependencies {
   MAIN_API: WhookOpenAPI;
-  MAIN_DEFINITION: WhookRouteDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   ENV: AppEnvVars;
   DECODERS?: WhookDecoders;
   ENCODERS?: WhookEncoders;
@@ -93,6 +94,8 @@ export interface WhookAWSLambdaRouteHandlerWrapperDependencies {
  * @param  {Object}   services
  * The service dependencies
  * @param  {Object}   services.MAIN_DEFINITION
+ * A route definition for that handler
+ * @param  {Object}   services.MAIN_API
  * An OpenAPI definition for that handler
  * @param  {Object}   services.ENV
  * The process environment
@@ -144,6 +147,10 @@ async function initWrapRouteHandlerForAWSLambda({
 > {
   log('debug', '📥 - Initializing the AWS Lambda consumer wrapper.');
 
+  if (MAIN_DEFINITION.type !== 'route') {
+    throw new YError('E_UNEXPECTED_MAIN_DEFINITION', [MAIN_DEFINITION]);
+  }
+
   const consumableCharsets = Object.keys(DECODERS);
   const produceableCharsets = Object.keys(ENCODERS);
   const path = MAIN_DEFINITION.path;
@@ -160,12 +167,6 @@ async function initWrapRouteHandlerForAWSLambda({
     throw new YError('E_BAD_OPERATION', [path, method, operation]);
   }
 
-  const definition = {
-    path,
-    method,
-    operation,
-    config: operation['x-whook'],
-  } as unknown as WhookRouteDefinition;
   const pathItemParameters = await resolveParameters(
     { API: MAIN_API, log },
     pathItem.parameters || [],
@@ -258,7 +259,7 @@ async function initWrapRouteHandlerForAWSLambda({
         produceableCharsets,
         bodyValidator,
       },
-      definition,
+      { ...MAIN_DEFINITION, operation },
     );
 
     return wrappedHandler as unknown as WhookRouteHandler;

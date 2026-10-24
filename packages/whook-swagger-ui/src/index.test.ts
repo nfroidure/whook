@@ -7,33 +7,34 @@ import {
   getPingDefinition,
   initHTTPRouter,
   initHTTPTransaction,
-  type WhookRoutesDefinitionsService,
-  type WhookRouteHandlerInitializer,
+  type WhookDefinitions,
 } from '@whook/whook';
 import wrapHTTPRouterWithSwaggerUI from './index.js';
 import { YError } from 'yerror';
 import { type OpenAPI } from 'ya-open-api-types';
 import { type Logger } from 'common-services';
-import { getOpenAPIDefinition } from '@whook/whook';
 
 describe('wrapHTTPRouterWithSwaggerUI', () => {
   const HOST = 'localhost';
   const PORT = 22222;
   const BASE_PATH = '/v1';
-  const ROUTES_DEFINITIONS: WhookRoutesDefinitionsService = {
-    getOpenAPI: {
-      module: {
-        definition: {
-          ...getOpenAPIDefinition,
-          path: `${BASE_PATH}/openAPI`,
-          method: 'get',
+  const DEFINITIONS: WhookDefinitions = {
+    configs: {
+      getOpenAPI: {
+        type: 'route',
+        url: 'file:///project/routes/getOpenAPI',
+        path: `${BASE_PATH}/openAPI`,
+        method: 'get',
+        operation: {
+          operationId: 'openAPI',
         },
-        default: undefined as unknown as WhookRouteHandlerInitializer,
       },
-      url: '/',
-      name: '',
-      pluginName: '',
     },
+    paths: {},
+    components: {},
+    handlers: {},
+    wrappers: {},
+    security: [],
   };
   const API: OpenAPI = {
     openapi: '3.1.0',
@@ -86,8 +87,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
     $.register(constant('DEFINITIONS', API));
     $.register(constant('DEV_ACCESS_TOKEN', 'oudelali'));
     $.register(constant('HOST', HOST));
-    $.register(constant('ROUTES_WRAPPERS_NAMES', []));
-    $.register(constant('ROUTES_DEFINITIONS', ROUTES_DEFINITIONS));
+    $.register(constant('DEFINITIONS', DEFINITIONS));
     $.register(
       constant('ROUTES_HANDLERS', {
         getPing: jest.fn(async () => ({

@@ -32,6 +32,7 @@ export const definition = {
   method: 'put',
   config: {
     environments: ['local'],
+    wrappers: ['wrapRouteHandlerForDebug'],
   },
   operation: {
     operationId: 'putTime',

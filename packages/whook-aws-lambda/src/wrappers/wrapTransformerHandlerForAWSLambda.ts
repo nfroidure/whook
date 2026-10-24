@@ -4,6 +4,7 @@ import {
   noop,
   type WhookAPMService,
   type WhookTransformerHandler,
+  type WhookMainDefinition,
   type WhookTransformerDefinition,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
@@ -42,7 +43,7 @@ export interface WhookAWSLambdaTransformerOutput {
 
 export interface WhookAWSLambdaTransformerHandlerWrapperDependencies {
   ENV: AppEnvVars;
-  MAIN_DEFINITION: WhookTransformerDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -75,6 +76,10 @@ async function initWrapTransformerHandlerForAWSLambda({
 }: WhookAWSLambdaTransformerHandlerWrapperDependencies) {
   log('debug', '📥 - Initializing the AWS Lambda transformer wrapper.');
 
+  if (MAIN_DEFINITION.type !== 'transformer') {
+    throw new YError('E_UNEXPECTED_MAIN_DEFINITION', [MAIN_DEFINITION]);
+  }
+
   const wrapper = async (
     handler: WhookTransformerHandler<
       Jsonify<WhookAWSLambdaTransformerInput>,
@@ -100,7 +105,11 @@ async function handleForAWSTransformerLambda(
     apm,
     time,
     log,
-  }: Required<WhookAWSLambdaTransformerHandlerWrapperDependencies>,
+  }: Required<
+    Omit<WhookAWSLambdaTransformerHandlerWrapperDependencies, 'MAIN_DEFINITION'>
+  > & {
+    MAIN_DEFINITION: WhookTransformerDefinition;
+  },
   handler: WhookTransformerHandler<
     Jsonify<WhookAWSLambdaTransformerInput>,
     Jsonify<WhookAWSLambdaTransformerOutput>

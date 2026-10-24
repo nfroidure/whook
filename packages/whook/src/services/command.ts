@@ -13,7 +13,6 @@ import {
   type WhookCoercionOptions,
 } from '../libs/coercion.js';
 import {
-  type WhookCommandHandler,
   type WhookCommandDefinition,
   type WhookArgsTypes,
 } from '../types/commands.js';
@@ -24,6 +23,7 @@ import {
   type JSONSchema,
   type ExpressiveJSONSchema,
 } from 'ya-json-schema-types';
+import { WhookCommandsHandlersService } from './COMMANDS_HANDLERS.js';
 
 export interface WhookCommandEnv {
   CI?: string;
@@ -35,7 +35,7 @@ async function initCommand({
   API,
   COMMAND_DEFINITION,
   COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
-  commandHandler,
+  COMMANDS_HANDLERS,
   schemaValidators,
   $ready,
   $instance,
@@ -47,7 +47,7 @@ async function initCommand({
   API: WhookOpenAPI;
   COMMAND_DEFINITION: WhookCommandDefinition;
   COERCION_OPTIONS?: WhookCoercionOptions;
-  commandHandler: WhookCommandHandler;
+  COMMANDS_HANDLERS: WhookCommandsHandlersService;
   schemaValidators: WhookSchemaValidatorsService;
   $ready: Promise<void>;
   $instance: Knifecycle;
@@ -113,7 +113,15 @@ async function initCommand({
         }
       }
 
-      await commandHandler(castedArgs);
+      const commandName = COMMAND_DEFINITION.name.endsWith('Command')
+        ? COMMAND_DEFINITION.name
+        : `${COMMAND_DEFINITION.name}Command`;
+
+      if (!COMMANDS_HANDLERS[commandName]) {
+        throw new YError('E_NO_COMMAND_HANDLER', [commandName]);
+      }
+
+      await COMMANDS_HANDLERS[commandName](castedArgs);
 
       await $instance.destroy();
     } catch (err) {

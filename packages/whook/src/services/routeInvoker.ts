@@ -6,7 +6,7 @@ import {
   location,
 } from 'knifecycle';
 import { type WhookRouteHandler } from '../types/routes.js';
-import { type WhookRoutesDefinitionsService } from './ROUTES_DEFINITIONS.js';
+import { type WhookRoutesDeclarationsService } from './ROUTES_DECLARATIONS.js';
 import { YError } from 'yerror';
 
 export type WhookRouteInvokerService<T extends WhookRouteHandler> = (
@@ -23,11 +23,11 @@ async function initRouteInvoker<
   T extends WhookRouteHandler,
   S extends Record<string, T>,
 >({
-  ROUTES_DEFINITIONS,
+  ROUTES_DECLARATIONS,
   $injector,
   log,
 }: {
-  ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
+  ROUTES_DECLARATIONS: WhookRoutesDeclarationsService;
   $injector: Injector<S>;
   log: LogService;
 }): Promise<Provider<WhookRouteInvokerService<T>>> {
@@ -52,7 +52,7 @@ async function initRouteInvoker<
           options: {},
           ...parameters,
         },
-        ROUTES_DEFINITIONS[functionName].module.definition,
+        ROUTES_DECLARATIONS.routes[functionName].content,
       );
 
       return response;

@@ -16,11 +16,15 @@ import {
   initRoutesHandlers,
   initHTTPRouter,
   initHTTPTransaction,
+  type WhookDefinitions,
 } from '@whook/whook';
 import { alsoInject, constant, initializer } from 'knifecycle';
 import axios from 'axios';
 import { YError } from 'yerror';
-import { initWrapRouteHandlerWithAuthorization } from '@whook/authorization';
+import {
+  initWrapRouteHandlerWithAuthorization,
+  wrapRouteHandlerWithAuthorizationDefinition,
+} from '@whook/authorization';
 import {
   BEARER as BEARER_MECHANISM,
   BASIC as BASIC_MECHANISM,
@@ -99,6 +103,20 @@ describe('GraphQL server', () => {
       },
     },
   };
+  const DEFINITIONS: WhookDefinitions = {
+    configs: {},
+    paths: {},
+    components: {},
+    handlers: {},
+    wrappers: {
+      wrapRouteHandlerWithAuthorization: {
+        url: 'file:///module/wrappers/wrapRouteHandlerWithAuthorization.ts',
+        name: 'wrapRouteHandlerWithAuthorization',
+        definition: wrapRouteHandlerWithAuthorizationDefinition,
+      },
+    },
+    security: [],
+  };
   const authentication = {
     check: jest.fn<WhookAuthenticationService<any>['check']>(),
   };
@@ -154,7 +172,7 @@ describe('GraphQL server', () => {
     $.register(constant('PROJECT_DIR', '/home/whoami/projects'));
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
-    $.register(constant('DEFINITIONS', API));
+    $.register(constant('DEFINITIONS', DEFINITIONS));
     $.register(
       constant('ENV', {
         NODE_ENV: 'test',
@@ -172,13 +190,10 @@ describe('GraphQL server', () => {
     $.register(constant('authentication', authentication));
     $.register(initHTTPRouter);
     $.register(initHTTPTransaction);
-
-    // Auth
-    const ROUTES_WRAPPERS_NAMES = ['wrapRouteHandlerWithAuthorization'];
-
     $.register(initWrapRouteHandlerWithAuthorization);
-    $.register(alsoInject(ROUTES_WRAPPERS_NAMES, initRoutesWrappers));
-    $.register(constant('ROUTES_WRAPPERS_NAMES', ROUTES_WRAPPERS_NAMES));
+    $.register(
+      alsoInject(['wrapRouteHandlerWithAuthorization'], initRoutesWrappers),
+    );
     $.register(alsoInject(['getGraphQL', 'postGraphQL'], initRoutesHandlers));
     [initGetGraphQL, initPostGraphQL].forEach((handlerInitializer) =>
       $.register(handlerInitializer),

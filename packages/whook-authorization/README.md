@@ -181,15 +181,6 @@ And finally declare this plugin in the `src/index.ts` file of your project:
   // ...
 
   $.register(
-    constant('ROUTES_WRAPPERS_NAMES', [
-      'wrapRouteHandlerWithCORS',
-+      'wrapRouteHandlerWithAuthorization',
-    ]),
-  );
-
-  // ...
-
-  $.register(
     constant('WHOOK_PLUGINS', [
       ...WHOOK_DEFAULT_PLUGINS,
       '@whook/cors',
@@ -198,6 +189,7 @@ And finally declare this plugin in the `src/index.ts` file of your project:
   );
 
   // ...
+
 ```
 
 To see a complete usage of this wrapper, you may have a look at the

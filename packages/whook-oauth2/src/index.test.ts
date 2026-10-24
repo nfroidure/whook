@@ -17,10 +17,12 @@ import {
   initRoutesHandlers,
   initHTTPRouter,
   initHTTPTransaction,
+  WhookDefinitions,
 } from '@whook/whook';
 import {
   AUTHORIZATION_ERRORS_DESCRIPTORS,
   initWrapRouteHandlerWithAuthorization,
+  wrapRouteHandlerWithAuthorizationDefinition,
 } from '@whook/authorization';
 import { alsoInject, constant, initializer } from 'knifecycle';
 import axios from 'axios';
@@ -187,6 +189,30 @@ describe('OAuth2 server', () => {
       ),
     },
   };
+  const DEFINITIONS: WhookDefinitions = {
+    configs: {
+      getOpenAPI: {
+        type: 'route',
+        url: 'file:///project/routes/getOpenAPI',
+        path: `${BASE_PATH}/openAPI`,
+        method: 'get',
+        operation: {
+          operationId: 'openAPI',
+        },
+      },
+    },
+    paths: {},
+    components: {},
+    handlers: {},
+    wrappers: {
+      wrapRouteHandlerWithAuthorization: {
+        url: 'file:///module/wrappers/wrapRouteHandlerWithAuthorization.ts',
+        name: 'wrapRouteHandlerWithAuthorization',
+        definition: wrapRouteHandlerWithAuthorizationDefinition,
+      },
+    },
+    security: [],
+  };
   const OAUTH2: WhookOAuth2Options = {
     authenticateURL: 'https://auth.example.com/sign_in',
     allowedScopes: ['user', 'oauth'],
@@ -233,7 +259,7 @@ describe('OAuth2 server', () => {
     );
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
-    $.register(constant('DEFINITIONS', API));
+    $.register(constant('DEFINITIONS', DEFINITIONS));
     $.register(constant('APP_ENV', 'local'));
     $.register(
       constant('ENV', {
@@ -249,12 +275,10 @@ describe('OAuth2 server', () => {
     $.register(initHTTPRouter);
     $.register(initHTTPTransaction);
 
-    // Auth
-    const ROUTES_WRAPPERS_NAMES = ['wrapRouteHandlerWithAuthorization'];
-
     $.register(initWrapRouteHandlerWithAuthorization);
-    $.register(alsoInject(ROUTES_WRAPPERS_NAMES, initRoutesWrappers));
-    $.register(constant('ROUTES_WRAPPERS_NAMES', ROUTES_WRAPPERS_NAMES));
+    $.register(
+      alsoInject(['wrapRouteHandlerWithAuthorization'], initRoutesWrappers),
+    );
 
     // OAuth2 Specifics
     $.register(constant('OAUTH2', OAUTH2));

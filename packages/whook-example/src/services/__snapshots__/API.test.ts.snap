@@ -262,6 +262,20 @@ exports[`API should work 1`] = `
           },
           "type": "array",
         },
+        "TimePayload": {
+          "properties": {
+            "isFixed": {
+              "type": "boolean",
+            },
+            "time": {
+              "type": "number",
+            },
+          },
+          "required": [
+            "time",
+          ],
+          "type": "object",
+        },
         "TimeSchema": {
           "additionalProperties": false,
           "properties": {

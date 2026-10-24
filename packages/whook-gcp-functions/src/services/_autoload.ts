@@ -19,19 +19,22 @@ import {
   type WhookOpenAPI,
   type WhookDefinitions,
   type WhookRouteDefinition,
-  type WhookRoutesDefinitionsService,
+  type WhookMainDefinition,
 } from '@whook/whook';
 import { initBuildAutoload } from '@whook/dev';
 import { type LogService } from 'common-services';
 import { cleanupOpenAPI } from 'ya-open-api-types';
 import initWrapRouteHandlerForGoogleHTTPFunction from '../wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
 
-export interface GCPFunctionDefinition {
+export type GCPFunctionDefinition = {
   name: string;
-  type: 'route';
-  definition: WhookRouteDefinition;
+} & {
+  definition: WhookRouteDefinition & {
+    type: 'route';
+    url: `file:///${string}`;
+  };
   openAPI: WhookOpenAPI;
-}
+};
 
 export interface WhookGoogleFunctionsAutoloadDependencies {
   $injector: Injector<Service>;
@@ -50,7 +53,6 @@ const initializerWrapper: ServiceInitializerWrapper<
 > => {
   let API: WhookOpenAPI;
   let DEFINITIONS: WhookDefinitions;
-  let ROUTES_DEFINITIONS: WhookRoutesDefinitionsService;
   const getDefinition = (() => {
     return async (serviceName: string): Promise<GCPFunctionDefinition> => {
       const cleanedName = serviceName.split('_').pop() as string;
@@ -58,9 +60,6 @@ const initializerWrapper: ServiceInitializerWrapper<
       API = API || (await $injector(['API'])).API;
       DEFINITIONS =
         DEFINITIONS || (await $injector(['DEFINITIONS'])).DEFINITIONS;
-      ROUTES_DEFINITIONS =
-        ROUTES_DEFINITIONS ||
-        (await $injector(['ROUTES_DEFINITIONS'])).ROUTES_DEFINITIONS;
 
       const config = DEFINITIONS.configs[cleanedName as string];
 
@@ -89,10 +88,8 @@ const initializerWrapper: ServiceInitializerWrapper<
 
       return {
         name: cleanedName,
-        type: 'route',
         openAPI,
-        definition:
-          ROUTES_DEFINITIONS[cleanedName]?.module?.definition || config,
+        definition: config,
       };
     };
   })();
@@ -108,14 +105,14 @@ const initializerWrapper: ServiceInitializerWrapper<
 
       return constant(
         serviceName,
-        definition.type === 'route' ? definition.openAPI : {},
+        'openAPI' in definition ? definition.openAPI : {},
       );
     }
 
     if (serviceName.startsWith('MAIN_DEFINITION_')) {
       const { definition } = await getDefinition(serviceName);
 
-      return constant(serviceName, definition);
+      return constant(serviceName, definition satisfies WhookMainDefinition);
     }
 
     if (serviceName.startsWith('MAIN_WRAPPER_')) {
@@ -135,17 +132,22 @@ const initializerWrapper: ServiceInitializerWrapper<
     }
 
     if (serviceName.startsWith('MAIN_HANDLER_')) {
-      const { type, name, definition } = await getDefinition(serviceName);
+      const { name, definition } = await getDefinition(serviceName);
       const targetHandler = definition.config?.targetHandler || name;
 
       return location(
         alsoInject(
           [
+            `MAIN_DEFINITION>MAIN_DEFINITION_${serviceName.replace(
+              'MAIN_HANDLER_',
+              '',
+            )}`,
             `MAIN_WRAPPER>MAIN_WRAPPER_${serviceName.replace(
               'MAIN_HANDLER_',
               '',
             )}`,
-            `?WRAPPERS>${type.toUpperCase()}S_WRAPPERS`,
+            `MAIN_WRAPPERS>${definition.type.toUpperCase()}S_WRAPPERS`,
+            `?MAIN_WRAPPERS_ORDER>${definition.type.toUpperCase()}S_WRAPPERS_ORDER`,
             `BASE_HANDLER>${targetHandler}`,
           ],
           initMainHandler,

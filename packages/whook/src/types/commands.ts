@@ -15,6 +15,7 @@ import {
 } from 'ya-json-schema-types';
 import { type OpenAPIReference } from 'ya-open-api-types';
 import { type WhookEnvironmentsConfig } from '../libs/environments.js';
+import { type WhookSchemasDeclarationModule } from './base.js';
 
 export const DEFAULT_COMMAND_CONFIG: WhookCommandConfig = {
   environments: 'all',
@@ -25,6 +26,7 @@ export interface WhookBaseCommandConfig {
   environments?: WhookEnvironmentsConfig;
   promptArgs?: boolean;
   targetHandler?: string;
+  wrappers?: string[];
 }
 
 export type WhookCommandSchema =
@@ -86,10 +88,9 @@ export type WhookCommandInitializer<
 // https://github.com/nfroidure/whook/issues/196
 export interface WhookCommandModule<
   T extends Record<string, WhookArgsTypes> = Record<string, WhookArgsTypes>,
-> {
+> extends WhookSchemasDeclarationModule {
   default: WhookCommandInitializer<T>;
   definition: WhookCommandDefinition;
-  [name: `${string}Schema`]: WhookCommandArgumentDefinition<unknown>;
 }
 
 export type WhookCommandHandlerWrapper<

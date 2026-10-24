@@ -32,7 +32,7 @@ import {
 } from '@whook/dev';
 import { type LogService } from 'common-services';
 import { type CprOptions } from 'cpr';
-import { parseArgs } from '@whook/whook/dist/libs/args.js';
+import { parseArgs } from '@whook/whook';
 import initWrapRouteHandlerForGoogleHTTPFunction from './wrappers/wrapRouteHandlerForGoogleHTTPFunction.js';
 
 export const DEFAULT_BUILD_PARALLELISM = 10;

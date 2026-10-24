@@ -13,7 +13,7 @@ import { type LogService } from 'common-services';
 import { YError } from 'yerror';
 
 export type REPLService = undefined;
-export type REPLDependencies<S> = {
+export interface REPLDependencies<S> {
   $ready: Promise<undefined>;
   $instance: Knifecycle;
   $dispose: Disposer;
@@ -21,7 +21,7 @@ export type REPLDependencies<S> = {
   log: LogService;
   stdin: typeof process.stdin;
   stdout: typeof process.stdout;
-};
+}
 
 const REPL_BANNER = `
     _      ____             __     ___  _______  __ 
@@ -107,7 +107,7 @@ async function initREPL<S>({
       .catch((err: Error) => {
         throw YError.wrap(err, 'E_REPL_ERROR');
       })
-      .then(noop),
+      .then(() => undefined),
     dispose: async () => {
       const loop = await replPromise;
 

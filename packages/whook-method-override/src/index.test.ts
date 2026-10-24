@@ -76,7 +76,6 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
     );
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
-    $.register(constant('ROUTES_WRAPPERS_NAMES', []));
     $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(
       constant('ROUTES_HANDLERS', {

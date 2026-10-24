@@ -20,7 +20,9 @@ describe('command', () => {
   });
 
   test('should work with no error', async () => {
-    const commandHandler = async () => log('info', 'commandHandler ran');
+    const COMMANDS_HANDLERS = {
+      envCommand: async () => log('info', 'commandHandler ran'),
+    };
     let resolveWaitProcess;
     const waitProcess = new Promise((resolve) => {
       resolveWaitProcess = resolve;
@@ -41,7 +43,7 @@ describe('command', () => {
       API,
       COMMAND_DEFINITION: initEnvCommandDefinition,
       COERCION_OPTIONS: DEFAULT_COERCION_OPTIONS,
-      commandHandler,
+      COMMANDS_HANDLERS,
       schemaValidators,
       args: {
         command: 'whook',
@@ -74,8 +76,10 @@ describe('command', () => {
   });
 
   test('should fail with errors', async () => {
-    const commandHandler = async () => {
-      throw new YError('E_ERRORING');
+    const COMMANDS_HANDLERS = {
+      envCommand: async () => {
+        throw new YError('E_ERRORING');
+      },
     };
     let resolveWaitProcess: () => void;
     const waitProcess = new Promise<void>((resolve) => {
@@ -100,7 +104,7 @@ describe('command', () => {
       API,
       COMMAND_DEFINITION: initEnvCommandDefinition,
       COERCION_OPTIONS: DEFAULT_COERCION_OPTIONS,
-      commandHandler,
+      COMMANDS_HANDLERS,
       schemaValidators,
       args: {
         command: 'whook',

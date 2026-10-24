@@ -9,7 +9,9 @@ import initOptionsWithCORS from './routes/optionsWithCORS.js';
 import initErrorHandlerWithCORS, {
   wrapErrorHandlerForCORS,
 } from './services/errorHandler.js';
-import initWrapRouteHandlerWithCORS from './wrappers/wrapRouteHandlerWithCORS.js';
+import initWrapRouteHandlerWithCORS, {
+  definition as wrapRouteHandlerWithCORSDefinition,
+} from './wrappers/wrapRouteHandlerWithCORS.js';
 import {
   ensureResolvedObject,
   pathItemToOperationMap,
@@ -32,6 +34,7 @@ export type {
 
 export {
   initWrapRouteHandlerWithCORS,
+  wrapRouteHandlerWithCORSDefinition,
   initErrorHandlerWithCORS,
   wrapErrorHandlerForCORS,
 };
@@ -167,6 +170,7 @@ export function wrapDefinitionsWithCORS(
 
         newConfigs[operationId] = {
           type: 'route',
+          url: 'file:///internal',
           path,
           method: 'options',
           config: {

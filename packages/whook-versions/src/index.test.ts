@@ -10,6 +10,7 @@ import {
 import {
   augmentAPIWithVersionsHeaders,
   initWrapRouteHandlerWithVersionChecker,
+  wrapRouteHandlerWithVersionCheckerDefinition,
 } from './index.js';
 import {
   initGetPing,
@@ -23,6 +24,7 @@ import {
   initRoutesWrappers,
   initHTTPRouter,
   initHTTPTransaction,
+  type WhookDefinitions,
 } from '@whook/whook';
 import axios from 'axios';
 import { YError } from 'yerror';
@@ -525,6 +527,30 @@ describe('initWrapRouteHandlerWithVersionChecker()', () => {
       } satisfies OpenAPI,
       VERSIONS,
     );
+    const DEFINITIONS: WhookDefinitions = {
+      configs: {
+        getOpenAPI: {
+          type: 'route',
+          url: 'file:///project/routes/getOpenAPI',
+          path: `${BASE_PATH}/openAPI`,
+          method: 'get',
+          operation: {
+            operationId: 'openAPI',
+          },
+        },
+      },
+      paths: {},
+      components: {},
+      handlers: {},
+      wrappers: {
+        wrapRouteHandlerWithVersionChecker: {
+          url: 'file:///module/wrappers/wrapRouteHandlerWithVersionChecker.ts',
+          name: 'wrapRouteHandlerWithVersionChecker',
+          definition: wrapRouteHandlerWithVersionCheckerDefinition,
+        },
+      },
+      security: [],
+    };
 
     const $ = await basePrepareEnvironment();
 
@@ -542,7 +568,7 @@ describe('initWrapRouteHandlerWithVersionChecker()', () => {
     $.register(constant('BASE_PATH', BASE_PATH));
     $.register(constant('API', API));
     $.register(constant('VERSIONS', VERSIONS));
-    $.register(constant('DEFINITIONS', API));
+    $.register(constant('DEFINITIONS', DEFINITIONS));
     $.register(constant('APP_ENV', 'local'));
     $.register(
       constant('ENV', {
@@ -551,9 +577,6 @@ describe('initWrapRouteHandlerWithVersionChecker()', () => {
     );
     $.register(constant('PORT', PORT));
     $.register(constant('HOST', HOST));
-    $.register(
-      constant('ROUTES_WRAPPERS_NAMES', ['wrapRouteHandlerWithVersionChecker']),
-    );
     $.register(constant('DEBUG_NODE_ENVS', []));
     $.register(alsoInject(['getPing'], initRoutesHandlers));
     $.register(

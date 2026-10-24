@@ -5,21 +5,20 @@ import {
   parseAuthorizationHeader,
   buildWWWAuthenticateHeader,
   BEARER as BEARER_MECHANISM,
+  type Mechanism,
 } from 'http-auth-utils';
-import { type Mechanism } from 'http-auth-utils';
 import {
   type WhookRouteDefinition,
   type WhookRouteHandlerParameters,
   type WhookResponse,
   type WhookRouteHandler,
   type WhookRouteHandlerWrapper,
-} from '@whook/whook';
-import { type LogService } from 'common-services';
-import {
+  type WhookHandlerWrapperDefinition,
   DEFAULT_ERROR_URI,
   DEFAULT_HELP_URI,
   type WhookErrorsDescriptors,
 } from '@whook/whook';
+import { type LogService } from 'common-services';
 
 export interface WhookAuthorizationYErrorRegistry {
   /**
@@ -127,6 +126,14 @@ export type WhookAuthorizationDependencies<A> = WhookAuthorizationConfig & {
   authentication: WhookAuthenticationService<A>;
   log: LogService;
 };
+
+export const definition = {
+  name: 'wrapRouteHandlerWithAuthorization',
+  type: 'route',
+  config: {
+    targets: 'all',
+  },
+} as const satisfies WhookHandlerWrapperDefinition;
 
 /**
  * Wrap a route handler to check client's authorizations.

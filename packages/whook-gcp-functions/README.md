@@ -193,7 +193,8 @@ Wrap an handler to make it work with GCP Functions.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | services | <code>Object</code> |  | The service dependencies |
-| services.MAIN_DEFINITION | <code>Object</code> |  | An OpenAPI definition for that handler |
+| services.MAIN_DEFINITION | <code>Object</code> |  | A route definition for that handler |
+| services.MAIN_API | <code>Object</code> |  | An OpenAPI definition for that handler |
 | services.DECODERS | <code>Object</code> |  | Request body decoders available |
 | services.ENCODERS | <code>Object</code> |  | Response body encoders available |
 | services.PARSERS | <code>Object</code> |  | Request body parsers available |

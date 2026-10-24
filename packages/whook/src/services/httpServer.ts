@@ -45,11 +45,6 @@ export const DEFAULT_HTTP_SERVER_OPTIONS: WhookHTTPServerOptions = {
   keepAliveTimeout: ms('5m'),
 };
 
-export default location(
-  name('httpServer', autoProvider(initHTTPServer)),
-  import.meta.url,
-);
-
 /* Architecture Note #2.12: HTTP Server
 
 The Whook's `httpServer` service is responsible for
@@ -120,7 +115,7 @@ async function initHTTPServer({
       resolve(httpServer);
     });
   });
-  const fatalErrorPromise = new Promise<void>((_, reject) => {
+  const fatalErrorPromise = new Promise<undefined>((_, reject) => {
     httpServer.once('error', (err) =>
       reject(YError.wrap(err as Error, 'E_HTTP_SERVER_ERROR')),
     );
@@ -172,3 +167,8 @@ async function initHTTPServer({
     },
   }));
 }
+
+export default location(
+  name('httpServer', autoProvider(initHTTPServer)),
+  import.meta.url,
+);

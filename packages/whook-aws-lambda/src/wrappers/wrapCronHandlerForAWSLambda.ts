@@ -2,9 +2,10 @@ import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
   noop,
+  type WhookCronDefinition,
   type WhookAPMService,
   type WhookCronHandler,
-  type WhookCronDefinition,
+  type WhookMainDefinition,
 } from '@whook/whook';
 import { type LogService, type TimeService } from 'common-services';
 import { type ScheduledEvent } from 'aws-lambda';
@@ -13,7 +14,7 @@ import { type AppEnvVars } from 'application-services';
 
 export interface WhookAWSLambdaCronHandlerWrapperDependencies {
   ENV: AppEnvVars;
-  MAIN_DEFINITION: WhookCronDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -46,6 +47,10 @@ async function initWrapCronHandlerForAWSLambda({
 }: WhookAWSLambdaCronHandlerWrapperDependencies) {
   log('debug', '📥 - Initializing the AWS Lambda cron wrapper.');
 
+  if (MAIN_DEFINITION.type !== 'cron') {
+    throw new YError('E_UNEXPECTED_MAIN_DEFINITION', [MAIN_DEFINITION]);
+  }
+
   const wrapper = async (handler: WhookCronHandler<JsonValue>) => {
     const wrappedHandler = handleForAWSCronLambda.bind(
       null,
@@ -66,7 +71,11 @@ async function handleForAWSCronLambda(
     apm,
     time,
     log,
-  }: Required<WhookAWSLambdaCronHandlerWrapperDependencies>,
+  }: Required<
+    Omit<WhookAWSLambdaCronHandlerWrapperDependencies, 'MAIN_DEFINITION'>
+  > & {
+    MAIN_DEFINITION: WhookCronDefinition;
+  },
   handler: WhookCronHandler<JsonValue>,
   event: ScheduledEvent & { body: JsonObject },
 ) {

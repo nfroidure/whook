@@ -7,6 +7,7 @@ import {
   getPingDefinition,
   initHTTPRouter,
   initHTTPTransaction,
+  type WhookDefinitions,
 } from '@whook/whook';
 import { YError } from 'yerror';
 import wrapHTTPRouterWithGraphIQL from './index.js';
@@ -44,15 +45,27 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     defaultQuery: '',
     path: '/graphiql',
   };
-  const ROUTES_DEFINITIONS = {
-    postGraphQL: {
-      module: {
-        definition: {
-          path: `${BASE_PATH}/graphql`,
-          method: 'get',
+  const DEFINITIONS: WhookDefinitions = {
+    configs: {
+      postGraphQL: {
+        type: 'route',
+        url: 'file:///project/routes/postGraphQL',
+        path: `${BASE_PATH}/graphql`,
+        method: 'get',
+        operation: {
+          operationId: 'postGraphQL',
         },
       },
     },
+    handlers: {},
+    wrappers: {},
+    paths: {
+      [`${BASE_PATH}${getPingDefinition.path}`]: {
+        [getPingDefinition.method]: getPingDefinition.operation,
+      },
+    },
+    components: {},
+    security: [],
   };
   let $: Knifecycle;
 
@@ -82,9 +95,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
     $.register(constant('HOST', HOST));
     $.register(constant('APP_ENV', 'local'));
     $.register(constant('API', API));
-    $.register(constant('DEFINITIONS', API));
-    $.register(constant('ROUTES_DEFINITIONS', ROUTES_DEFINITIONS));
-    $.register(constant('ROUTES_WRAPPERS_NAMES', []));
+    $.register(constant('DEFINITIONS', DEFINITIONS));
     $.register(
       constant('ROUTES_HANDLERS', {
         getPing: jest.fn(async () => ({

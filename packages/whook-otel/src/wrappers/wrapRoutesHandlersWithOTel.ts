@@ -6,6 +6,7 @@ import {
   type Context,
 } from '@opentelemetry/api';
 import {
+  type WhookHandlerWrapperDefinition,
   type WhookRouteHandler,
   type WhookRoutesHandlersService,
 } from '@whook/whook';
@@ -24,6 +25,11 @@ export interface WhookOTelRouteHandlersDependencies {
   oTelTracer: WhookOTelTracerService;
   log?: LogService;
 }
+
+export const definition = {
+  name: 'wrapRoutesHandlersWithOTel',
+  type: 'route',
+} as const satisfies WhookHandlerWrapperDefinition;
 
 export default function wrapRoutesHandlersWithOTel<D extends Dependencies>(
   initRoutesHandlers: ServiceInitializer<D, WhookRoutesHandlersService>,

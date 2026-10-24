@@ -11,18 +11,27 @@ import {
   type WhookRouteHandlerParameters,
   type WhookRouteDefinition,
   type WhookHeaders,
+  type WhookHandlerWrapperDefinition,
 } from '@whook/whook';
 
-export interface VersionDescriptor {
+export interface WhookVersionDescriptor {
   header: string;
   rule: string;
 }
-export interface VersionsConfig {
-  VERSIONS: VersionDescriptor[];
+export interface WhookVersionsConfig {
+  VERSIONS: WhookVersionDescriptor[];
 }
-export type VersionsCheckerDependencies = VersionsConfig & {
+export type WhookVersionsCheckerDependencies = WhookVersionsConfig & {
   log: LogService;
 };
+
+export const definition = {
+  name: 'wrapRouteHandlerWithVersionChecker',
+  type: 'route',
+  config: {
+    targets: 'all',
+  },
+} as const satisfies WhookHandlerWrapperDefinition;
 
 /**
  * Wrap a route handler to append CORS to response.
@@ -38,7 +47,7 @@ export type VersionsCheckerDependencies = VersionsConfig & {
 async function initWrapRouteHandlerWithVersionChecker({
   VERSIONS,
   log = noop,
-}: VersionsCheckerDependencies): Promise<
+}: WhookVersionsCheckerDependencies): Promise<
   WhookRouteHandlerWrapper<WhookRouteHandler>
 > {
   log('debug', '📥 - Initializing the version checker wrapper.');
@@ -59,7 +68,7 @@ async function initWrapRouteHandlerWithVersionChecker({
 }
 
 async function handleWithVersionChecker(
-  { VERSIONS }: VersionsCheckerDependencies,
+  { VERSIONS }: WhookVersionsCheckerDependencies,
   handler: WhookRouteHandler,
   parameters: WhookRouteHandlerParameters,
   definition?: WhookRouteDefinition,

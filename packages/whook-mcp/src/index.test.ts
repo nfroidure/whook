@@ -69,12 +69,15 @@ describe('wrapHTTPRouterWithMCPServer', () => {
     configs: {
       getPing: {
         type: 'route',
+        url: 'file:///project/routes/getPing',
         path: '/ping',
         method: 'get',
         config: {},
         operation: getPingDefinition.operation,
       },
     },
+    handlers: {},
+    wrappers: {},
   };
   let $: Knifecycle;
 
@@ -106,7 +109,6 @@ describe('wrapHTTPRouterWithMCPServer', () => {
     $.register(constant('APP_ENV', 'local'));
     $.register(constant('API', API));
     $.register(constant('DEFINITIONS', DEFINITIONS));
-    $.register(constant('ROUTES_WRAPPERS_NAMES', []));
     $.register(constant('authentication', authentication));
     $.register(
       constant('ROUTES_HANDLERS', {

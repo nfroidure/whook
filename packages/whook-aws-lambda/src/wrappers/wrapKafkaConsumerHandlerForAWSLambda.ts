@@ -2,9 +2,10 @@ import { autoService } from 'knifecycle';
 import { printStackTrace, YError } from 'yerror';
 import {
   noop,
-  type WhookConsumerDefinition,
+  type WhookMainDefinition,
   type WhookAPMService,
   type WhookConsumerHandler,
+  type WhookConsumerDefinition,
 } from '@whook/whook';
 import { type TimeService, type LogService } from 'common-services';
 import { type MSKEvent } from 'aws-lambda';
@@ -17,7 +18,7 @@ export interface WhookAWSLambdaKafkaConsumerInput {
 
 export interface WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies {
   ENV: AppEnvVars;
-  MAIN_DEFINITION: WhookConsumerDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   apm: WhookAPMService;
   time?: TimeService;
   log?: LogService;
@@ -50,6 +51,10 @@ async function initWrapKafkaConsumerHandlerForAWSLambda({
 }: WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies) {
   log('debug', '📥 - Initializing the AWS Lambda kafka wrapper.');
 
+  if (MAIN_DEFINITION.type !== 'consumer') {
+    throw new YError('E_UNEXPECTED_MAIN_DEFINITION', [MAIN_DEFINITION]);
+  }
+
   const wrapper = async (
     handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaKafkaConsumerInput>>,
   ) => {
@@ -72,7 +77,14 @@ async function handleForAWSKafkaConsumerLambda(
     apm,
     time,
     log,
-  }: Required<WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies>,
+  }: Required<
+    Omit<
+      WhookAWSLambdaKafkaConsumerHandlerWrapperDependencies,
+      'MAIN_DEFINITION'
+    >
+  > & {
+    MAIN_DEFINITION: WhookConsumerDefinition;
+  },
   handler: WhookConsumerHandler<Jsonify<WhookAWSLambdaKafkaConsumerInput>>,
   event: MSKEvent,
 ) {

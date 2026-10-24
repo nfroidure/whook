@@ -1,7 +1,7 @@
 import {
   type WhookAPIParameterDefinition,
   type WhookAPISchemaDefinition,
-  type WhookCronsDefinitionsService,
+  type WhookCronsDeclarationsService,
   type WhookCronsHandlersService,
   type WhookRouteDefinition,
   type WhookRouteTypedHandler,
@@ -87,12 +87,12 @@ export const definition = {
 
 async function initPostCronRun({
   CRONS_HANDLERS,
-  CRONS_DEFINITIONS,
+  CRONS_DECLARATIONS,
   schemaValidators,
   log,
 }: {
   CRONS_HANDLERS: WhookCronsHandlersService;
-  CRONS_DEFINITIONS: WhookCronsDefinitionsService;
+  CRONS_DECLARATIONS: WhookCronsDeclarationsService;
   schemaValidators: WhookSchemaValidatorsService;
   log: LogService;
 }) {
@@ -105,12 +105,12 @@ async function initPostCronRun({
       `⌚ - Triggering a "${cronName}" cron run through the router.`,
     );
 
-    if (!CRONS_DEFINITIONS[cronName]) {
+    if (!CRONS_DECLARATIONS.crons[cronName]) {
       throw new YHTTPError(400, 'E_BAD_CRON_NAME', [cronName]);
     }
 
     const validator = schemaValidators(
-      CRONS_DEFINITIONS[cronName].module.definition.schema,
+      CRONS_DECLARATIONS.crons[cronName].content.schema,
     );
 
     validator(body);
@@ -123,7 +123,11 @@ async function initPostCronRun({
       ]);
     }
 
-    await CRONS_HANDLERS[cronName]({
+    const cronHandlerName =
+      CRONS_DECLARATIONS.crons[cronName].content.config?.targetHandler ??
+      cronName;
+
+    await CRONS_HANDLERS[cronHandlerName]({
       date,
       body: body as JsonValue,
     });

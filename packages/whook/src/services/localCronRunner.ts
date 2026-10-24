@@ -136,7 +136,7 @@ async function initLocalCronRunner({
 
   return {
     service: undefined,
-    dispose: async () => {
+    dispose: async (): Promise<undefined> => {
       let runningCrons = 0;
       for (const taskName of Object.keys(tasks)) {
         tasks[taskName].task.stop();

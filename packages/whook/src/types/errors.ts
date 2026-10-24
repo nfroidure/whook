@@ -35,12 +35,6 @@ declare module 'yerror' {
     E_NO_COMMAND_DEFINITION: [commandName: string];
 
     /**
-     * Thrown when a dependency cannot be resolved during auto-loading
-     * @param injectedName the name of the dependency that could not be found
-     */
-    E_UNMATCHED_DEPENDENCY: [injectedName: string, ...parents: string[]];
-
-    /**
      * Thrown when the provided BASE_URL is invalid
      * @param baseURL the actual base URL
      */
