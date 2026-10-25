@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Knifecycle,
   wrapInitializer,
@@ -8,9 +7,9 @@ import {
   type Injector,
   type Autoloader,
   type Initializer,
-  type Dependencies,
   type Service,
   type ServiceInitializerWrapper,
+  type ServiceInitializer,
 } from 'knifecycle';
 import { YError } from 'yerror';
 import { initBuildAutoload } from '@whook/dev';
@@ -74,43 +73,41 @@ export interface WhookAWSLambdaAutoloadDependencies {
 export const AWS_WRAPPERS = {
   route: {
     name: 'wrapRouteHandlerForAWSLambda',
-    initializer: initWrapRouteHandlerForAWSLambda as any,
+    initializer: initWrapRouteHandlerForAWSLambda,
   },
   cron: {
     name: 'wrapCronHandlerForAWSLambda',
-    initializer: initWrapCronHandlerForAWSLambda as any,
+    initializer: initWrapCronHandlerForAWSLambda,
   },
   consumer: {
     name: 'wrapConsumerHandlerForAWSLambda',
-    initializer: initWrapConsumerHandlerForAWSLambda as any,
+    initializer: initWrapConsumerHandlerForAWSLambda,
   },
   log: {
     name: 'wrapLogSubscriberHandlerForAWSLambda',
-    initializer: initWrapLogSubscriberHandlerForAWSLambda as any,
+    initializer: initWrapLogSubscriberHandlerForAWSLambda,
   },
   transformer: {
     name: 'wrapTransformerHandlerForAWSLambda',
-    initializer: initWrapTransformerHandlerForAWSLambda as any,
+    initializer: initWrapTransformerHandlerForAWSLambda,
   },
   kafka: {
     name: 'wrapKafkaConsumerHandlerForAWSLambda',
-    initializer: initWrapKafkaConsumerHandlerForAWSLambda as any,
+    initializer: initWrapKafkaConsumerHandlerForAWSLambda,
   },
   s3: {
     name: 'wrapS3HandlerForAWSLambda',
-    initializer: initWrapS3HandlerForAWSLambda as any,
+    initializer: initWrapS3HandlerForAWSLambda,
   },
 };
 
 const initializerWrapper: ServiceInitializerWrapper<
-  Autoloader<Initializer<Dependencies, Service>>,
-  Dependencies
-> = (async (
+  Autoloader<Initializer<unknown, Service>>,
+  WhookAWSLambdaAutoloadDependencies
+> = async (
   { $injector, log = noop }: WhookAWSLambdaAutoloadDependencies,
-  $autoload: Autoloader<Initializer<Dependencies, Service>>,
-): Promise<
-  (serviceName: string) => Promise<Initializer<Dependencies, Service>>
-> => {
+  $autoload: Autoloader<Initializer<unknown, Service>>,
+): Promise<Autoloader<Initializer<unknown, Service>>> => {
   let API: WhookOpenAPI;
   let DEFINITIONS: WhookDefinitions;
   const getDefinition = (() => {
@@ -189,7 +186,7 @@ const initializerWrapper: ServiceInitializerWrapper<
       let finalType: keyof typeof AWS_WRAPPERS = definition.type;
 
       if (definition.type === 'consumer') {
-        finalType = definition.config?.options.wrapper || 'consumer';
+        finalType = definition.config?.options?.wrapper || 'consumer';
       }
 
       return location(
@@ -208,10 +205,10 @@ const initializerWrapper: ServiceInitializerWrapper<
                 ]
               : []),
           ],
-          AWS_WRAPPERS[finalType].initializer as any,
-        ) as any,
+          AWS_WRAPPERS[finalType].initializer as unknown as ServiceInitializer<Service, unknown>,
+        ),
         `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[finalType].name}.js`,
-      ) as any;
+      );
     }
 
     if (serviceName.startsWith('MAIN_HANDLER_')) {
@@ -234,14 +231,14 @@ const initializerWrapper: ServiceInitializerWrapper<
             `BASE_HANDLER>${targetHandler}`,
           ],
           initMainHandler,
-        ) as any,
+        ),
         '@whook/whook/dist/services/MAIN_HANDLER.js',
       );
     }
 
     return await $autoload(serviceName);
   };
-}) as any;
+};
 
 /**
  * Wrap the _autoload service in order to build for AWS
@@ -259,5 +256,5 @@ const initializerWrapper: ServiceInitializerWrapper<
  */
 export default alsoInject(
   ['$instance', '$injector', '?log'],
-  wrapInitializer(initializerWrapper as any, initBuildAutoload),
+  wrapInitializer(initializerWrapper, initBuildAutoload),
 );

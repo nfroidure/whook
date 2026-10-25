@@ -76,7 +76,7 @@ export type WhookAWSLambdaRouteConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaCronConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaTransformerConfig = WhookAWSLambdaBaseConfig;
 export type WhookAWSLambdaConsumerConfig = WhookAWSLambdaBaseConfig & {
-  options:
+  options?:
     | WhookAWSLambdaEventConsumerOptions
     | WhookAWSLambdaKafkaConsumerOptions
     | WhookAWSLambdaLogSubscriberOptions

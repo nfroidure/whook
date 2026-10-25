@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Knifecycle,
   wrapInitializer,
@@ -8,7 +7,6 @@ import {
   type Injector,
   type Autoloader,
   type Initializer,
-  type Dependencies,
   type Service,
   type ServiceInitializerWrapper,
 } from 'knifecycle';
@@ -43,14 +41,12 @@ export interface WhookGoogleFunctionsAutoloadDependencies {
 }
 
 const initializerWrapper: ServiceInitializerWrapper<
-  Autoloader<Initializer<Dependencies, Service>>,
-  Dependencies
-> = (async (
+  Autoloader<Initializer<unknown, Service>>,
+  WhookGoogleFunctionsAutoloadDependencies
+> = async (
   { $injector, log = noop }: WhookGoogleFunctionsAutoloadDependencies,
-  $autoload: Autoloader<Initializer<Dependencies, Service>>,
-): Promise<
-  (serviceName: string) => Promise<Initializer<Dependencies, Service>>
-> => {
+  $autoload: Autoloader<Initializer<unknown, Service>>,
+): Promise<Autoloader<Initializer<unknown, Service>>> => {
   let API: WhookOpenAPI;
   let DEFINITIONS: WhookDefinitions;
   const getDefinition = (() => {
@@ -125,10 +121,10 @@ const initializerWrapper: ServiceInitializerWrapper<
             )}`,
             `MAIN_API>${serviceName.replace('MAIN_WRAPPER_', 'MAIN_API_')}`,
           ],
-          initWrapRouteHandlerForGoogleHTTPFunction as any,
-        ) as any,
+          initWrapRouteHandlerForGoogleHTTPFunction,
+        ),
         `@whook/gcp-functions/dist/wrappers/wrapRouteHandlerForGoogleHTTPFunction.js`,
-      ) as any;
+      );
     }
 
     if (serviceName.startsWith('MAIN_HANDLER_')) {
@@ -151,14 +147,14 @@ const initializerWrapper: ServiceInitializerWrapper<
             `BASE_HANDLER>${targetHandler}`,
           ],
           initMainHandler,
-        ) as any,
+        ),
         '@whook/whook/dist/services/MAIN_HANDLER.js',
       );
     }
 
     return await $autoload(serviceName);
   };
-}) as any;
+};
 
 /**
  * Wrap the _autoload service in order to build for GCP
@@ -176,5 +172,5 @@ const initializerWrapper: ServiceInitializerWrapper<
  */
 export default alsoInject(
   ['$instance', '$injector', '?log'],
-  wrapInitializer(initializerWrapper as any, initBuildAutoload),
+  wrapInitializer(initializerWrapper, initBuildAutoload),
 );
