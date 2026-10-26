@@ -248,6 +248,20 @@ async function initRoutesDeclarations({
           const property = ASIDE_DECLARATIONS_PROPERTIES[declaration.type];
 
           if (declarations[property][declaration.name]) {
+            if (
+              declarations[property][declaration.name].content !==
+              declaration.content
+            ) {
+              log(
+                'debug',
+                `⚠️ - Duplicate declaration (type: "${
+                  declaration.type
+                }", name: "${declaration.name}", current: "${
+                  declarations[property][declaration.name].url
+                }", duplicated: "${declaration.url}").`,
+              );
+              continue;
+            }
             log(
               'warning',
               `⚠️ - Preventing override of an existing declaration (type: "${

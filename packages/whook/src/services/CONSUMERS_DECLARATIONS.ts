@@ -217,6 +217,20 @@ async function initConsumersDefinitions({
           ['schema'],
         )) {
           if (declarations.schemas[declaration.name]) {
+            if (
+              declarations.schemas[declaration.name].content !==
+              declaration.content
+            ) {
+              log(
+                'debug',
+                `⚠️ - Duplicate declaration (type: "${
+                  declaration.type
+                }", name: "${declaration.name}", current: "${
+                  declarations.schemas[declaration.name].url
+                }", duplicated: "${declaration.url}").`,
+              );
+              continue;
+            }
             log(
               'warning',
               `⚠️ - Preventing override of an existing declaration (type: "${

@@ -205,7 +205,10 @@ const initializerWrapper: ServiceInitializerWrapper<
                 ]
               : []),
           ],
-          AWS_WRAPPERS[finalType].initializer as unknown as ServiceInitializer<Service, unknown>,
+          AWS_WRAPPERS[finalType].initializer as unknown as ServiceInitializer<
+            Service,
+            unknown
+          >,
         ),
         `@whook/aws-lambda/dist/wrappers/${AWS_WRAPPERS[finalType].name}.js`,
       );
