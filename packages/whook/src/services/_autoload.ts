@@ -318,7 +318,7 @@ async function initAutoload({
       );
     } else {
       log('debug', `🚫 - Module path of "${injectedName}" not found.`);
-      throw new YError('E_UNMATCHED_DEPENDENCY', [injectedName]);
+      throw new YError('E_DEPENDENCY_NOT_FOUND', [injectedName]);
     }
 
     log('debug', `💿 - Service "${injectedName}" found in "${modulePath}".`);

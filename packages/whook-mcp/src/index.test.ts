@@ -47,7 +47,7 @@ describe('wrapHTTPRouterWithMCPServer', () => {
     check: jest.fn<WhookAuthenticationService<BearerPayload>['check']>(),
   };
   const $autoload = jest.fn(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName as string]);
+    throw new YError('E_DEPENDENCY_NOT_FOUND', [serviceName as string]);
   });
   const MCP_OPTIONS: WhookMCPOptions = {
     metadata: {
@@ -243,6 +243,27 @@ describe('wrapHTTPRouterWithMCPServer', () => {
            "TRANSACTIONS",
          ],
          [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
+         ],
+         [
            "SHIELD_CHAR",
          ],
          [
@@ -256,27 +277,6 @@ describe('wrapHTTPRouterWithMCPServer', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [
@@ -472,6 +472,27 @@ describe('wrapHTTPRouterWithMCPServer', () => {
            "TRANSACTIONS",
          ],
          [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
+         ],
+         [
            "SHIELD_CHAR",
          ],
          [
@@ -485,27 +506,6 @@ describe('wrapHTTPRouterWithMCPServer', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [

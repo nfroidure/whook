@@ -56,7 +56,7 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
   };
   const time = jest.fn();
   const $autoload = jest.fn(async (serviceName: string) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
+    throw new YError('E_DEPENDENCY_NOT_FOUND', [serviceName]);
   });
   let $: Knifecycle;
 
@@ -168,6 +168,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "COERCION_OPTIONS",
          ],
          [
+           "SWAGGER_UI_OPTIONS",
+         ],
+         [
            "SCHEMA_VALIDATORS_OPTIONS",
          ],
          [
@@ -175,6 +178,27 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
          [
            "TRANSACTIONS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
          ],
          [
            "SHIELD_CHAR",
@@ -190,30 +214,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "SWAGGER_UI_OPTIONS",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [
@@ -368,6 +368,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "COERCION_OPTIONS",
          ],
          [
+           "SWAGGER_UI_OPTIONS",
+         ],
+         [
            "SCHEMA_VALIDATORS_OPTIONS",
          ],
          [
@@ -375,6 +378,27 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
          [
            "TRANSACTIONS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
          ],
          [
            "SHIELD_CHAR",
@@ -390,30 +414,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "SWAGGER_UI_OPTIONS",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [
@@ -604,6 +604,27 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "TRANSACTIONS",
          ],
          [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
+         ],
+         [
            "SHIELD_CHAR",
          ],
          [
@@ -617,27 +638,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [
@@ -760,6 +760,9 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
            "COERCION_OPTIONS",
          ],
          [
+           "SWAGGER_UI_OPTIONS",
+         ],
+         [
            "SCHEMA_VALIDATORS_OPTIONS",
          ],
          [
@@ -767,6 +770,27 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
          [
            "TRANSACTIONS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
          ],
          [
            "SHIELD_CHAR",
@@ -782,30 +806,6 @@ describe('wrapHTTPRouterWithSwaggerUI', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "SWAGGER_UI_OPTIONS",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [

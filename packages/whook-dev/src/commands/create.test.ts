@@ -10,7 +10,7 @@ import { Project } from 'ts-morph';
 
 describe('createCommand', () => {
   const $autoload = jest.fn(async (serviceName: string) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName]);
+    throw new YError('E_DEPENDENCY_NOT_FOUND', [serviceName]);
   });
   const $instance = {
     registered: jest.fn<Knifecycle['registered']>(),

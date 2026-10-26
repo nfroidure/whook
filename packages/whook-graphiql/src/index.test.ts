@@ -39,7 +39,7 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
   };
   const time = jest.fn();
   const $autoload = jest.fn(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName as string]);
+    throw new YError('E_DEPENDENCY_NOT_FOUND', [serviceName as string]);
   });
   const GRAPHIQL: WhookGraphIQLOptions = {
     defaultQuery: '',
@@ -197,6 +197,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
            "COERCION_OPTIONS",
          ],
          [
+           "DEV_ACCESS_MECHANISM",
+         ],
+         [
            "SCHEMA_VALIDATORS_OPTIONS",
          ],
          [
@@ -204,6 +207,27 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
          ],
          [
            "TRANSACTIONS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
          ],
          [
            "SHIELD_CHAR",
@@ -219,30 +243,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "DEV_ACCESS_MECHANISM",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [
@@ -393,6 +393,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
            "COERCION_OPTIONS",
          ],
          [
+           "DEV_ACCESS_MECHANISM",
+         ],
+         [
            "SCHEMA_VALIDATORS_OPTIONS",
          ],
          [
@@ -400,6 +403,27 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
          ],
          [
            "TRANSACTIONS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
          ],
          [
            "SHIELD_CHAR",
@@ -415,30 +439,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "DEV_ACCESS_MECHANISM",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "data": "<!doctype html>
@@ -642,6 +642,9 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
            "COERCION_OPTIONS",
          ],
          [
+           "DEV_ACCESS_MECHANISM",
+         ],
+         [
            "SCHEMA_VALIDATORS_OPTIONS",
          ],
          [
@@ -649,6 +652,27 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
          ],
          [
            "TRANSACTIONS",
+         ],
+         [
+           "uniqueId",
+         ],
+         [
+           "ERRORS_DESCRIPTORS",
+         ],
+         [
+           "DEFAULT_ERROR_CODE",
+         ],
+         [
+           "QUERY_PARSER_OPTIONS",
+         ],
+         [
+           "HTTP_SERVER_OPTIONS",
+         ],
+         [
+           "PROCESS_NAME",
+         ],
+         [
+           "SIGNALS",
          ],
          [
            "SHIELD_CHAR",
@@ -664,30 +688,6 @@ describe('wrapHTTPRouterWithGraphIQL', () => {
          ],
          [
            "SENSIBLE_HEADERS",
-         ],
-         [
-           "uniqueId",
-         ],
-         [
-           "ERRORS_DESCRIPTORS",
-         ],
-         [
-           "DEFAULT_ERROR_CODE",
-         ],
-         [
-           "QUERY_PARSER_OPTIONS",
-         ],
-         [
-           "DEV_ACCESS_MECHANISM",
-         ],
-         [
-           "PROCESS_NAME",
-         ],
-         [
-           "SIGNALS",
-         ],
-         [
-           "HTTP_SERVER_OPTIONS",
          ],
        ],
        "debugCalls": [

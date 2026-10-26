@@ -173,6 +173,18 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_HANDLERS.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_HANDLERS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_HANDLERS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_HANDLERS.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_HANDLERS.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_WRAPPERS.ts"})",
          ],
          [
@@ -198,6 +210,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/WRAPPER_DEFINITION_FILTER.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/access.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/cronRunner.ts"})",
@@ -237,6 +252,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/putEchoedStream.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/readDir.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/uniqueId.ts"})",
@@ -335,6 +353,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/access.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/cronRunner.js"})",
          ],
          [
@@ -372,6 +393,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/putEchoedStream.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/readDir.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/uniqueId.js"})",
@@ -470,6 +494,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/access.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/cronRunner.js"})",
          ],
          [
@@ -507,6 +534,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/putEchoedStream.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/readDir.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/uniqueId.js"})",
@@ -605,6 +635,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/access.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/cronRunner.js"})",
          ],
          [
@@ -642,6 +675,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/putEchoedStream.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/readDir.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/uniqueId.js"})",
@@ -740,6 +776,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/access.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/cronRunner.js"})",
          ],
          [
@@ -777,6 +816,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/putEchoedStream.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/readDir.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/uniqueId.js"})",
@@ -881,6 +923,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/access.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js"})",
          ],
          [
@@ -918,6 +963,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/putEchoedStream.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/readDir.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/uniqueId.js"})",
@@ -1299,6 +1347,18 @@ describe('runProcess', () => {
          ],
          [
            "✅ - Module path of "MECHANISMS" found at "file:///project/src/services/MECHANISMS.ts".",
+         ],
+         [
+           "✅ - Module path of "ROUTES_HANDLERS" found at "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "✅ - Module path of "ROUTES_HANDLERS" found at "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "✅ - Module path of "ROUTES_HANDLERS" found at "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "✅ - Module path of "ROUTES_HANDLERS" found at "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
          ],
          [
            "✅ - Module path of "ROUTES_HANDLERS" found at "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
@@ -1811,6 +1871,30 @@ describe('runProcess', () => {
            "🍀 - Trying to find "ROUTES_HANDLERS" module path in "@whook/otel".",
          ],
          [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "ROUTES_HANDLERS" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "ROUTES_HANDLERS" module path in "__project__".",
          ],
          [
@@ -1968,6 +2052,24 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "__project__".",
+         ],
+         [
+           "🍀 - Trying to find "access" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "access" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "access" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "access" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "access" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "access" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "authentication" module path in "__project__".",
@@ -2210,6 +2312,24 @@ describe('runProcess', () => {
            "🍀 - Trying to find "putEchoedStream" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "readDir" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "readDir" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "readDir" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "readDir" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "readDir" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "readDir" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "uniqueId" module path in "@whook/authorization".",
          ],
          [
@@ -2354,6 +2474,18 @@ describe('runProcess', () => {
            "💿 - Loading "ROUTES_HANDLERS" initializer from "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
          ],
          [
+           "💿 - Loading "ROUTES_HANDLERS" initializer from "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Loading "ROUTES_HANDLERS" initializer from "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Loading "ROUTES_HANDLERS" initializer from "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Loading "ROUTES_HANDLERS" initializer from "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
            "💿 - Loading "ROUTES_WRAPPERS" initializer from "@whook/whook/dist/services/ROUTES_WRAPPERS.js".",
          ],
          [
@@ -2418,6 +2550,18 @@ describe('runProcess', () => {
          ],
          [
            "💿 - Service "MECHANISMS" found in "file:///project/src/services/MECHANISMS.ts".",
+         ],
+         [
+           "💿 - Service "ROUTES_HANDLERS" found in "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Service "ROUTES_HANDLERS" found in "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Service "ROUTES_HANDLERS" found in "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "💿 - Service "ROUTES_HANDLERS" found in "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
          ],
          [
            "💿 - Service "ROUTES_HANDLERS" found in "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
@@ -2663,6 +2807,18 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_HANDLERS.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_HANDLERS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_HANDLERS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_HANDLERS.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_HANDLERS.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_WRAPPERS.ts".",
          ],
          [
@@ -2688,6 +2844,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/WRAPPER_DEFINITION_FILTER.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/access.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/cronRunner.ts".",
@@ -2727,6 +2886,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/putEchoedStream.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/readDir.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/uniqueId.ts".",
@@ -2825,6 +2987,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/WRAPPER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/access.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/cronRunner.js".",
          ],
          [
@@ -2862,6 +3027,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/putEchoedStream.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/readDir.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/uniqueId.js".",
@@ -2960,6 +3128,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/WRAPPER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/access.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/cronRunner.js".",
          ],
          [
@@ -2997,6 +3168,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/putEchoedStream.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/readDir.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/uniqueId.js".",
@@ -3095,6 +3269,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/WRAPPER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/access.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/cronRunner.js".",
          ],
          [
@@ -3132,6 +3309,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/putEchoedStream.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/readDir.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/uniqueId.js".",
@@ -3230,6 +3410,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/WRAPPER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/access.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/cronRunner.js".",
          ],
          [
@@ -3267,6 +3450,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/putEchoedStream.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/readDir.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/uniqueId.js".",
@@ -3371,6 +3557,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/WRAPPER_DEFINITION_FILTER.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/access.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/cronRunner.js".",
          ],
          [
@@ -3408,6 +3597,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/putEchoedStream.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/readDir.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/uniqueId.js".",
@@ -3506,10 +3698,16 @@ describe('runProcess', () => {
            "🚫 - Module path of "WRAPPER_DEFINITION_FILTER" not found.",
          ],
          [
+           "🚫 - Module path of "access" not found.",
+         ],
+         [
            "🚫 - Module path of "cronRunner" not found.",
          ],
          [
            "🚫 - Module path of "fetcher" not found.",
+         ],
+         [
+           "🚫 - Module path of "readDir" not found.",
          ],
          [
            "🚫 - Module path of "uniqueId" not found.",
@@ -3531,6 +3729,18 @@ describe('runProcess', () => {
          ],
          [
            "🛂 - Dynamic import of "@whook/otel/dist/services/CRONS_HANDLERS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
          ],
          [
            "🛂 - Dynamic import of "@whook/otel/dist/services/ROUTES_HANDLERS.js".",
