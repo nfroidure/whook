@@ -108,7 +108,7 @@ describe('$autoload', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
        {
-         "errorCode": "E_UNMATCHED_DEPENDENCY",
+         "errorCode": "E_DEPENDENCY_NOT_FOUND",
          "errorDebug": [
            "commandHandler",
          ],
@@ -308,7 +308,7 @@ describe('$autoload', () => {
         logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
       }).toMatchInlineSnapshot(`
        {
-         "errorCode": "E_UNMATCHED_DEPENDENCY",
+         "errorCode": "E_DEPENDENCY_NOT_FOUND",
          "errorDebug": [
            "commandHandler",
          ],
@@ -370,7 +370,7 @@ describe('$autoload', () => {
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchInlineSnapshot(`
          {
-           "errorCode": "E_UNMATCHED_DEPENDENCY",
+           "errorCode": "E_DEPENDENCY_NOT_FOUND",
            "errorDebug": [
              "commandHandler",
            ],

@@ -172,7 +172,7 @@ describe('@whook/otel', () => {
       debug: jest.fn(),
     };
     const $autoload = jest.fn(async (serviceName) => {
-      throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName as string]);
+      throw new YError('E_DEPENDENCY_NOT_FOUND', [serviceName as string]);
     });
 
     getPing.mockResolvedValueOnce({

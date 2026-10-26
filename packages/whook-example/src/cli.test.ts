@@ -23,9 +23,9 @@ describe('commands should work', () => {
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
      🖃 - Initializing the validators service.
-     🏭 - Initializing the COMMANDS_WRAPPERS service.
      💾 - Loading the TypeScript project.
      ✅ - Loaded the TypeScript project.
+     🏭 - Initializing the COMMANDS_WRAPPERS service.
      🏭 - Initializing the COMMANDS_HANDLERS service with 13 handlers and wrapCommandHandlerForDebug wrappers.
      On air 🚀🌕
      ",
@@ -70,9 +70,9 @@ describe('commands should work', () => {
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
      🖃 - Initializing the validators service.
-     🏭 - Initializing the COMMANDS_WRAPPERS service.
      💾 - Loading the TypeScript project.
      ✅ - Loaded the TypeScript project.
+     🏭 - Initializing the COMMANDS_WRAPPERS service.
      🏭 - Initializing the COMMANDS_HANDLERS service with 13 handlers and wrapCommandHandlerForDebug wrappers.
      On air 🚀🌕
      ",
@@ -98,9 +98,9 @@ describe('commands should work', () => {
      🔂 - Running with "test" node environment.
      ➕ - Wrapping definitions for CORS.
      🖃 - Initializing the validators service.
-     🏭 - Initializing the COMMANDS_WRAPPERS service.
      💾 - Loading the TypeScript project.
      ✅ - Loaded the TypeScript project.
+     🏭 - Initializing the COMMANDS_WRAPPERS service.
      🏭 - Initializing the COMMANDS_HANDLERS service with 13 handlers and wrapCommandHandlerForDebug wrappers.
      On air 🚀🌕
      ",

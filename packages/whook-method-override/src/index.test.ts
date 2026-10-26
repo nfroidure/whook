@@ -88,7 +88,7 @@ describe('wrapHTTPTransactionWithMethodOverride', () => {
   }
 
   $autoload.mockImplementation(async (serviceName) => {
-    throw new YError('E_UNMATCHED_DEPENDENCY', [serviceName as string]);
+    throw new YError('E_DEPENDENCY_NOT_FOUND', [serviceName as string]);
   });
   process.env.ISOLATED_ENV = '1';
 
