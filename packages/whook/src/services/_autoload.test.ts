@@ -22,7 +22,6 @@ import {
 import { type WhookDefinitions } from './DEFINITIONS.js';
 
 describe('$autoload', () => {
-  const args = { namedArguments: {}, rest: [], command: 'whook' };
   const WHOOK_PLUGINS = [WHOOK_PROJECT_PLUGIN_NAME];
   const WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService = {
     [WHOOK_PROJECT_PLUGIN_NAME]: {
@@ -119,7 +118,6 @@ describe('$autoload', () => {
         } as any,
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -179,7 +177,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -251,7 +248,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -371,7 +367,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -456,7 +451,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -527,7 +521,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -601,7 +594,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -692,7 +684,6 @@ describe('$autoload', () => {
             types: ['routes', 'commands', 'services', 'wrappers'],
           },
         },
-        args,
         log,
         importer,
         resolve,
@@ -775,7 +766,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,
@@ -846,7 +836,6 @@ describe('$autoload', () => {
         APP_CONFIG: {},
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args,
         log,
         importer,
         resolve,

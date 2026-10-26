@@ -17,7 +17,6 @@ import {
   type WhookOpenAPI,
   type WhookDefinitions,
   type WhookRouteDefinition,
-  type WhookMainDefinition,
 } from '@whook/whook';
 import { initBuildAutoload } from '@whook/dev';
 import { type LogService } from 'common-services';
@@ -103,12 +102,6 @@ const initializerWrapper: ServiceInitializerWrapper<
         serviceName,
         'openAPI' in definition ? definition.openAPI : {},
       );
-    }
-
-    if (serviceName.startsWith('MAIN_DEFINITION_')) {
-      const { definition } = await getDefinition(serviceName);
-
-      return constant(serviceName, definition satisfies WhookMainDefinition);
     }
 
     if (serviceName.startsWith('MAIN_WRAPPER_')) {

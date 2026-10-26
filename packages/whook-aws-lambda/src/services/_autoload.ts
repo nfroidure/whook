@@ -22,7 +22,6 @@ import {
   type WhookRouteDefinition,
   type WhookConsumerDefinition,
   type WhookTransformerDefinition,
-  WhookMainDefinition,
 } from '@whook/whook';
 import initWrapConsumerHandlerForAWSLambda from '../wrappers/wrapConsumerHandlerForAWSLambda.js';
 import initWrapRouteHandlerForAWSLambda from '../wrappers/wrapRouteHandlerForAWSLambda.js';
@@ -173,12 +172,6 @@ const initializerWrapper: ServiceInitializerWrapper<
         serviceName,
         'openAPI' in definition ? definition.openAPI : {},
       );
-    }
-
-    if (serviceName.startsWith('MAIN_DEFINITION_')) {
-      const { definition } = await getDefinition(serviceName);
-
-      return constant(serviceName, definition satisfies WhookMainDefinition);
     }
 
     if (serviceName.startsWith('MAIN_WRAPPER_')) {

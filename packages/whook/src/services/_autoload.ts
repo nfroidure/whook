@@ -28,7 +28,6 @@ import {
   type WhookPluginsService,
   type WhookResolvedPluginsService,
 } from './WHOOK_RESOLVED_PLUGINS.js';
-import { type WhookRawCommandArgs } from '../libs/args.js';
 import { type WhookDefinitions } from './DEFINITIONS.js';
 import { type WhookCommandModule } from '../types/commands.js';
 import { ROUTE_WRAPPER_REG_EXP } from './ROUTES_WRAPPERS.js';
@@ -42,8 +41,34 @@ import { CONSUMER_DECLARATION_REG_EXP } from './CONSUMERS_DECLARATIONS.js';
 import { TRANSFORMER_DECLARATION_REG_EXP } from './TRANSFORMERS_DECLARATIONS.js';
 import { CRON_DECLARATION_REG_EXP } from './CRONS_DECLARATIONS.js';
 import { COMMAND_DECLARATION_REG_EXP } from './COMMANDS_DECLARATIONS.js';
+import { type WhookMainDefinition } from './MAIN_HANDLER.js';
+import { initMainHandler } from '../index.js';
 
 const DEFAULT_INITIALIZER_PATH_MAP = {};
+const isRouteHandler = (injectedName: string) =>
+  ROUTE_DECLARATION_REG_EXP.test(injectedName);
+const isRouteWrapper = (injectedName: string) =>
+  ROUTE_WRAPPER_REG_EXP.test(injectedName);
+const isCronHandler = (injectedName: string) =>
+  CRON_DECLARATION_REG_EXP.test(injectedName);
+const isConsumerHandler = (injectedName: string) =>
+  CONSUMER_DECLARATION_REG_EXP.test(injectedName);
+const isTransformerHandler = (injectedName: string) =>
+  TRANSFORMER_DECLARATION_REG_EXP.test(injectedName);
+const isCommandHandler = (injectedName: string) =>
+  COMMAND_DECLARATION_REG_EXP.test(injectedName);
+const isCronWrapper = (injectedName: string) =>
+  CRON_WRAPPER_REG_EXP.test(injectedName);
+const isCommandWrapper = (injectedName: string) =>
+  COMMAND_WRAPPER_REG_EXP.test(injectedName);
+const isConsumerWrapper = (injectedName: string) =>
+  CONSUMER_WRAPPER_REG_EXP.test(injectedName);
+const isTransformerWrapper = (injectedName: string) =>
+  TRANSFORMER_WRAPPER_REG_EXP.test(injectedName);
+const isMainDefinition = (injectedName: string) =>
+  injectedName.startsWith('MAIN_DEFINITION_');
+const isMainHandler = (injectedName: string) =>
+  injectedName.startsWith('MAIN_HANDLER_');
 
 /* Architecture Note #2.9.3: the `INITIALIZER_PATH_MAP` mapper
 
@@ -59,7 +84,6 @@ export interface WhookAutoloadDependencies {
   WHOOK_PLUGINS?: WhookPluginsService;
   WHOOK_RESOLVED_PLUGINS: WhookResolvedPluginsService;
   DEFINITIONS?: WhookDefinitions;
-  args: WhookRawCommandArgs;
   $injector: Injector<Service>;
   importer: ImporterService<WhookCommandModule>;
   resolve: ResolveService;
@@ -105,14 +129,13 @@ async function initAutoload({
   INITIALIZER_PATH_MAP = DEFAULT_INITIALIZER_PATH_MAP,
   WHOOK_PLUGINS = WHOOK_DEFAULT_PLUGINS,
   WHOOK_RESOLVED_PLUGINS,
-  args,
-  importer,
   $injector,
+  importer,
   resolve,
   access = _access,
   log = noop,
 }: WhookAutoloadDependencies): Promise<
-  Autoloader<Initializer<unknown, Dependencies>>
+  Autoloader<Initializer<unknown, Service>>
 > {
   log('warning', '🤖 - Initializing the `$autoload` service.');
 
@@ -132,20 +155,6 @@ async function initAutoload({
     };
   })();
 
-  const getCommandName = () => {
-    const commandName = args.rest[0];
-
-    // This is not supposed to happen
-    if (!commandName) {
-      log('warning', `❌ - No command given in argument.`);
-      throw new YError('E_NO_COMMAND_NAME');
-    }
-
-    return commandName.endsWith('Command')
-      ? commandName
-      : `${commandName}Command`;
-  };
-
   return $autoload;
 
   /**
@@ -158,7 +167,7 @@ async function initAutoload({
    */
   async function $autoload(
     injectedName: string,
-  ): Promise<Initializer<Service, Dependencies>> {
+  ): Promise<Initializer<unknown, Service>> {
     /* Architecture Note #2.9.1: the `APP_CONFIG` mapper
     First of all the autoloader looks for constants in the
      previously loaded `APP_CONFIG` configurations hash.
@@ -232,47 +241,63 @@ async function initAutoload({
     }
 
     if (!modulePath) {
-      const isRouteHandler = ROUTE_DECLARATION_REG_EXP.test(injectedName);
-      const isRouteWrapper = ROUTE_WRAPPER_REG_EXP.test(injectedName);
-      const isCronHandler = CRON_DECLARATION_REG_EXP.test(injectedName);
-      const isConsumerHandler = CONSUMER_DECLARATION_REG_EXP.test(injectedName);
-      const isTransformerHandler =
-        TRANSFORMER_DECLARATION_REG_EXP.test(injectedName);
-      const isCommandHandler = COMMAND_DECLARATION_REG_EXP.test(injectedName);
-      const isCronWrapper = CRON_WRAPPER_REG_EXP.test(injectedName);
-      const isCommandWrapper = COMMAND_WRAPPER_REG_EXP.test(injectedName);
-      const isConsumerWrapper = CONSUMER_WRAPPER_REG_EXP.test(injectedName);
-      const isTransformerWrapper =
-        TRANSFORMER_WRAPPER_REG_EXP.test(injectedName);
-      const isCommandDefinition = injectedName === 'COMMAND_DEFINITION';
-
       if (
-        isRouteHandler ||
-        isRouteWrapper ||
-        isCronHandler ||
-        isConsumerHandler ||
-        isTransformerHandler ||
-        isCommandHandler ||
-        isCronWrapper ||
-        isCommandWrapper ||
-        isConsumerWrapper ||
-        isTransformerWrapper ||
-        isCommandDefinition
+        isMainDefinition(injectedName) ||
+        isMainHandler(injectedName) ||
+        isRouteHandler(injectedName) ||
+        isRouteWrapper(injectedName) ||
+        isCronHandler(injectedName) ||
+        isConsumerHandler(injectedName) ||
+        isTransformerHandler(injectedName) ||
+        isCommandHandler(injectedName) ||
+        isCronWrapper(injectedName) ||
+        isCommandWrapper(injectedName) ||
+        isConsumerWrapper(injectedName) ||
+        isTransformerWrapper(injectedName)
       ) {
         /* Architecture Note #2.9.6.2: 
       Trying to load services from definitions.
     */
         const DEFINITIONS = await getDefinitions();
 
-        if (isCommandDefinition) {
-          const commandName = getCommandName();
-          const config = DEFINITIONS.configs[commandName];
+        if (isMainDefinition(injectedName)) {
+          const serviceName = injectedName.slice('MAIN_DEFINITION_'.length);
+          const definition = DEFINITIONS.configs[serviceName];
 
-          if (config?.type === 'command') {
-            return constant('COMMAND_DEFINITION', config);
-          } else {
-            throw new YError('E_NO_COMMAND_DEFINITION', [commandName]);
+          if (!definition) {
+            throw new YError('E_NO_MAIN_DEFINITION', [
+              serviceName,
+              injectedName,
+            ]);
           }
+
+          return constant(
+            injectedName,
+            definition satisfies WhookMainDefinition,
+          );
+        }
+
+        if (isMainHandler(injectedName)) {
+          const serviceName = injectedName.slice('MAIN_HANDLER_'.length);
+          const definition = DEFINITIONS.configs[serviceName];
+
+          if (!definition) {
+            throw new YError('E_NO_MAIN_HANDLER', [serviceName, injectedName]);
+          }
+          const targetHandler = definition.config?.targetHandler || serviceName;
+
+          return location(
+            alsoInject(
+              [
+                `MAIN_DEFINITION>MAIN_DEFINITION_${serviceName}`,
+                `MAIN_WRAPPERS>${definition.type.toUpperCase()}S_WRAPPERS`,
+                `?MAIN_WRAPPERS_ORDER>${definition.type.toUpperCase()}S_WRAPPERS_ORDER`,
+                `BASE_HANDLER>${targetHandler}`,
+              ],
+              name(injectedName, initMainHandler),
+            ),
+            '@whook/whook/dist/services/MAIN_HANDLER.js',
+          );
         }
 
         if (DEFINITIONS.handlers[injectedName]) {

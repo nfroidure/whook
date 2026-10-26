@@ -70,286 +70,153 @@ describe('$autoload', () => {
     access.mockReset();
   });
 
-  test('should fail with no command name', async () => {
-    $injector.mockResolvedValue({
-      DEFINITIONS: EMPTY_DEFINITIONS,
-    });
-    importer.mockImplementationOnce(async () => ({
-      default: async () => async () => log('warning', 'Command called!'),
-      definition: {},
-    }));
-    access.mockRejectedValue(new YError('E_NO_ACCESS'));
-
-    const $autoload = await initAutoload({
-      WHOOK_PLUGINS,
-      WHOOK_RESOLVED_PLUGINS,
-      args: {
-        namedArguments: {},
-        rest: [] as string[],
-        command: 'whook',
-      },
-      importer,
-      $injector,
-      resolve,
-      access,
-      log,
-    } as WhookAutoloadDependencies);
-
-    try {
-      console.log(await $autoload('commandHandler'));
-      throw new YError('E_UNEXPECTED_SUCCESS');
-    } catch (err) {
-      expect({
-        errorCode: (err as YError).code,
-        errorDebug: (err as YError).debug,
-        importerCalls: importer.mock.calls,
-        injectorCalls: $injector.mock.calls,
-        resolveCalls: resolve.mock.calls,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchInlineSnapshot(`
-       {
-         "errorCode": "E_UNMATCHED_DEPENDENCY",
-         "errorDebug": [
-           "commandHandler",
-         ],
-         "importerCalls": [],
-         "injectorCalls": [],
-         "logCalls": [
-           [
-             "warning",
-             "🤖 - Initializing the \`$autoload\` service.",
-           ],
-           [
-             "debug",
-             "🍀 - Trying to find "commandHandler" module path in "__project__".",
-           ],
-           [
-             "debug",
-             "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/commandHandler.ts".",
-           ],
-           [
-             "debug",
-             "🚫 - Module path of "commandHandler" not found.",
-           ],
-         ],
-         "resolveCalls": [],
-       }
-      `);
-    }
-  });
-
-  test('should warn with not found commands', async () => {
-    $injector.mockResolvedValue({
-      DEFINITIONS,
-    });
-    importer.mockImplementationOnce(() => {
-      throw new YError('E_NO_MODULE');
-    });
-
-    const $autoload = await initAutoload({
-      WHOOK_PLUGINS,
-      WHOOK_RESOLVED_PLUGINS,
-      args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
-      importer,
-      $injector,
-      resolve,
-      access,
-      log,
-    } as WhookAutoloadDependencies);
-    try {
-      await $autoload('commandHandler');
-      throw new YError('E_UNEXPECTED_SUCCESS');
-    } catch (err) {
-      expect({
-        errorCode: (err as YError).code,
-        errorDebug: (err as YError).debug,
-        importerCalls: importer.mock.calls,
-        injectorCalls: $injector.mock.calls,
-        resolveCalls: resolve.mock.calls,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchInlineSnapshot(`
-       {
-         "errorCode": "E_NO_MODULE",
-         "errorDebug": [],
-         "importerCalls": [
-           [
-             "file:///home/whoiam/project/src/services/commandHandler.ts",
-           ],
-         ],
-         "injectorCalls": [],
-         "logCalls": [
-           [
-             "warning",
-             "🤖 - Initializing the \`$autoload\` service.",
-           ],
-           [
-             "debug",
-             "🍀 - Trying to find "commandHandler" module path in "__project__".",
-           ],
-           [
-             "debug",
-             "✅ - Module path of "commandHandler" found at "file:///home/whoiam/project/src/services/commandHandler.ts".",
-           ],
-           [
-             "debug",
-             "💿 - Service "commandHandler" found in "file:///home/whoiam/project/src/services/commandHandler.ts".",
-           ],
-         ],
-         "resolveCalls": [],
-       }
-      `);
-    }
-  });
-
-  test('should work good commands', async () => {
-    $injector.mockResolvedValue({
-      DEFINITIONS,
-    });
-    importer.mockImplementationOnce(async () => ({
-      default: async () => async () => log('warning', 'Command called!'),
-      definition: {},
-    }));
-
-    const $autoload = await initAutoload({
-      WHOOK_PLUGINS: [...WHOOK_PLUGINS, '@whook/cli'],
-      WHOOK_RESOLVED_PLUGINS,
-      args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
-      importer,
-      $injector,
-      resolve,
-      access,
-      log,
-    } as WhookAutoloadDependencies);
-    const initializer = await $autoload('commandHandler');
-    const command = await (initializer as any)();
-    const result = await command();
-
-    expect({
-      initializer,
-      location: initializer[SPECIAL_PROPS.LOCATION],
-      result,
-      importerCalls: importer.mock.calls,
-      injectorCalls: $injector.mock.calls,
-      resolveCalls: resolve.mock.calls,
-      logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-    }).toMatchInlineSnapshot(`
-     {
-       "importerCalls": [
-         [
-           "file:///home/whoiam/project/src/services/commandHandler.ts",
-         ],
-       ],
-       "initializer": [Function],
-       "injectorCalls": [],
-       "location": {
-         "exportName": "default",
-         "url": "file:///home/whoiam/project/src/services/commandHandler.ts",
-       },
-       "logCalls": [
-         [
-           "warning",
-           "🤖 - Initializing the \`$autoload\` service.",
-         ],
-         [
-           "debug",
-           "🍀 - Trying to find "commandHandler" module path in "__project__".",
-         ],
-         [
-           "debug",
-           "✅ - Module path of "commandHandler" found at "file:///home/whoiam/project/src/services/commandHandler.ts".",
-         ],
-         [
-           "debug",
-           "💿 - Service "commandHandler" found in "file:///home/whoiam/project/src/services/commandHandler.ts".",
-         ],
-         [
-           "debug",
-           "💿 - Loading "commandHandler" initializer from "file:///home/whoiam/project/src/services/commandHandler.ts".",
-         ],
-         [
-           "warning",
-           "Command called!",
-         ],
-       ],
-       "resolveCalls": [],
-       "result": undefined,
-     }
-    `);
-  });
-
-  test('should fail no command name', async () => {
-    $injector.mockResolvedValue({
-      DEFINITIONS: EMPTY_DEFINITIONS,
-    });
-    importer.mockRejectedValue(new Error('E_NOT_FOUND'));
-    access.mockRejectedValue(new YError('E_ACCESS'));
-
-    const $autoload = await initAutoload({
-      WHOOK_PLUGINS,
-      WHOOK_RESOLVED_PLUGINS,
-      args: { namedArguments: {}, rest: [], command: 'whook' },
-      importer,
-      $injector,
-      resolve,
-      access,
-      log,
-    } as WhookAutoloadDependencies);
-
-    try {
-      await $autoload('commandHandler');
-      throw new YError('E_UNEXPECTED_SUCCESS');
-    } catch (err) {
-      expect({
-        errorCode: (err as YError).code,
-        errorDebug: (err as YError).debug,
-        importerCalls: importer.mock.calls,
-        injectorCalls: $injector.mock.calls,
-        resolveCalls: resolve.mock.calls,
-        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-      }).toMatchInlineSnapshot(`
-       {
-         "errorCode": "E_UNMATCHED_DEPENDENCY",
-         "errorDebug": [
-           "commandHandler",
-         ],
-         "importerCalls": [],
-         "injectorCalls": [],
-         "logCalls": [
-           [
-             "warning",
-             "🤖 - Initializing the \`$autoload\` service.",
-           ],
-           [
-             "debug",
-             "🍀 - Trying to find "commandHandler" module path in "__project__".",
-           ],
-           [
-             "debug",
-             "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/commandHandler.ts".",
-           ],
-           [
-             "debug",
-             "🚫 - Module path of "commandHandler" not found.",
-           ],
-         ],
-         "resolveCalls": [],
-       }
-      `);
-    }
-  });
-
-  describe('should fail', () => {
-    test('with no command handler', async () => {
+  describe('should provide', () => {
+    test('main definition for defined commands', async () => {
       $injector.mockResolvedValue({
-        DEFINITIONS: EMPTY_DEFINITIONS,
+        DEFINITIONS,
       });
-      importer.mockRejectedValue(new Error('E_NOT_FOUND'));
       access.mockRejectedValue(new YError('E_ACCESS'));
+      importer.mockImplementationOnce(() => {
+        throw new YError('E_NO_MODULE');
+      });
 
       const $autoload = await initAutoload({
         WHOOK_PLUGINS,
         WHOOK_RESOLVED_PLUGINS,
-        args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
+        importer,
+        $injector,
+        resolve,
+        access,
+        log,
+      } as WhookAutoloadDependencies);
+      const initializer = await $autoload('MAIN_DEFINITION_myCommand');
+
+      expect({
+        initializer,
+        location: initializer[SPECIAL_PROPS.LOCATION],
+        importerCalls: importer.mock.calls,
+        injectorCalls: $injector.mock.calls,
+        resolveCalls: resolve.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      }).toMatchInlineSnapshot(`
+            {
+              "importerCalls": [],
+              "initializer": {
+                "$name": "MAIN_DEFINITION_myCommand",
+                "$singleton": true,
+                "$type": "constant",
+                "$value": {
+                  "arguments": [],
+                  "config": {
+                    "environments": "all",
+                  },
+                  "description": "",
+                  "example": "myCommand",
+                  "name": "myCommand",
+                  "type": "command",
+                  "url": "file:///project/commands/myCommand.ts",
+                },
+              },
+              "injectorCalls": [
+                [
+                  [
+                    "DEFINITIONS",
+                  ],
+                ],
+              ],
+              "location": undefined,
+              "logCalls": [
+                [
+                  "warning",
+                  "🤖 - Initializing the \`$autoload\` service.",
+                ],
+                [
+                  "debug",
+                  "🍀 - Trying to find "MAIN_DEFINITION_myCommand" module path in "__project__".",
+                ],
+                [
+                  "debug",
+                  "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/MAIN_DEFINITION_myCommand.ts".",
+                ],
+              ],
+              "resolveCalls": [],
+            }
+          `);
+    });
+
+    test('main handler for defined commands', async () => {
+      $injector.mockResolvedValue({
+        DEFINITIONS,
+      });
+      access.mockRejectedValue(new YError('E_ACCESS'));
+      importer.mockImplementationOnce(() => {
+        throw new YError('E_NO_MODULE');
+      });
+
+      const $autoload = await initAutoload({
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
+        importer,
+        $injector,
+        resolve,
+        access,
+        log,
+      } as WhookAutoloadDependencies);
+      const initializer = await $autoload('MAIN_HANDLER_myCommand');
+
+      expect({
+        initializer,
+        location: initializer[SPECIAL_PROPS.LOCATION],
+        importerCalls: importer.mock.calls,
+        injectorCalls: $injector.mock.calls,
+        resolveCalls: resolve.mock.calls,
+        logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+      }).toMatchInlineSnapshot(`
+       {
+         "importerCalls": [],
+         "initializer": [Function],
+         "injectorCalls": [
+           [
+             [
+               "DEFINITIONS",
+             ],
+           ],
+         ],
+         "location": {
+           "exportName": "default",
+           "url": "@whook/whook/dist/services/MAIN_HANDLER.js",
+         },
+         "logCalls": [
+           [
+             "warning",
+             "🤖 - Initializing the \`$autoload\` service.",
+           ],
+           [
+             "debug",
+             "🍀 - Trying to find "MAIN_HANDLER_myCommand" module path in "__project__".",
+           ],
+           [
+             "debug",
+             "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/MAIN_HANDLER_myCommand.ts".",
+           ],
+         ],
+         "resolveCalls": [],
+       }
+      `);
+    });
+  });
+
+  describe('should fail', () => {
+    test('with no command definition', async () => {
+      $injector.mockResolvedValue({
+        DEFINITIONS: EMPTY_DEFINITIONS,
+      });
+      importer.mockRejectedValueOnce(new YError('E_NO_MODULE'));
+      access.mockRejectedValue(new YError('E_NO_ACCESS'));
+
+      const $autoload = await initAutoload({
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
         importer,
         $injector,
         resolve,
@@ -357,6 +224,132 @@ describe('$autoload', () => {
         log,
       } as WhookAutoloadDependencies);
 
+      try {
+        await $autoload('MAIN_DEFINITION_testCommand');
+        throw new YError('E_UNEXPECTED_SUCCESS');
+      } catch (err) {
+        expect({
+          errorCode: (err as YError).code,
+          errorDebug: (err as YError).debug,
+          importerCalls: importer.mock.calls,
+          injectorCalls: $injector.mock.calls,
+          resolveCalls: resolve.mock.calls,
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        }).toMatchInlineSnapshot(`
+                {
+                  "errorCode": "E_NO_MAIN_DEFINITION",
+                  "errorDebug": [
+                    "testCommand",
+                    "MAIN_DEFINITION_testCommand",
+                  ],
+                  "importerCalls": [],
+                  "injectorCalls": [
+                    [
+                      [
+                        "DEFINITIONS",
+                      ],
+                    ],
+                  ],
+                  "logCalls": [
+                    [
+                      "warning",
+                      "🤖 - Initializing the \`$autoload\` service.",
+                    ],
+                    [
+                      "debug",
+                      "🍀 - Trying to find "MAIN_DEFINITION_testCommand" module path in "__project__".",
+                    ],
+                    [
+                      "debug",
+                      "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/MAIN_DEFINITION_testCommand.ts".",
+                    ],
+                  ],
+                  "resolveCalls": [],
+                }
+              `);
+      }
+    });
+
+    test('with no command handler', async () => {
+      $injector.mockResolvedValue({
+        DEFINITIONS: EMPTY_DEFINITIONS,
+      });
+      importer.mockRejectedValueOnce(new YError('E_NO_MODULE'));
+      access.mockRejectedValue(new YError('E_NO_ACCESS'));
+
+      const $autoload = await initAutoload({
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
+        importer,
+        $injector,
+        resolve,
+        access,
+        log,
+      } as WhookAutoloadDependencies);
+
+      try {
+        await $autoload('MAIN_HANDLER_testCommand');
+        throw new YError('E_UNEXPECTED_SUCCESS');
+      } catch (err) {
+        expect({
+          errorCode: (err as YError).code,
+          errorDebug: (err as YError).debug,
+          importerCalls: importer.mock.calls,
+          injectorCalls: $injector.mock.calls,
+          resolveCalls: resolve.mock.calls,
+          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
+        }).toMatchInlineSnapshot(`
+                {
+                  "errorCode": "E_NO_MAIN_HANDLER",
+                  "errorDebug": [
+                    "testCommand",
+                    "MAIN_HANDLER_testCommand",
+                  ],
+                  "importerCalls": [],
+                  "injectorCalls": [
+                    [
+                      [
+                        "DEFINITIONS",
+                      ],
+                    ],
+                  ],
+                  "logCalls": [
+                    [
+                      "warning",
+                      "🤖 - Initializing the \`$autoload\` service.",
+                    ],
+                    [
+                      "debug",
+                      "🍀 - Trying to find "MAIN_HANDLER_testCommand" module path in "__project__".",
+                    ],
+                    [
+                      "debug",
+                      "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/MAIN_HANDLER_testCommand.ts".",
+                    ],
+                  ],
+                  "resolveCalls": [],
+                }
+              `);
+      }
+    });
+
+    test('with not found commands', async () => {
+      $injector.mockResolvedValue({
+        DEFINITIONS,
+      });
+      importer.mockImplementationOnce(() => {
+        throw new YError('E_NO_MODULE');
+      });
+
+      const $autoload = await initAutoload({
+        WHOOK_PLUGINS,
+        WHOOK_RESOLVED_PLUGINS,
+        importer,
+        $injector,
+        resolve,
+        access,
+        log,
+      } as WhookAutoloadDependencies);
       try {
         await $autoload('commandHandler');
         throw new YError('E_UNEXPECTED_SUCCESS');
@@ -369,97 +362,36 @@ describe('$autoload', () => {
           resolveCalls: resolve.mock.calls,
           logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
         }).toMatchInlineSnapshot(`
-         {
-           "errorCode": "E_UNMATCHED_DEPENDENCY",
-           "errorDebug": [
-             "commandHandler",
-           ],
-           "importerCalls": [],
-           "injectorCalls": [],
-           "logCalls": [
-             [
-               "warning",
-               "🤖 - Initializing the \`$autoload\` service.",
-             ],
-             [
-               "debug",
-               "🍀 - Trying to find "commandHandler" module path in "__project__".",
-             ],
-             [
-               "debug",
-               "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/commandHandler.ts".",
-             ],
-             [
-               "debug",
-               "🚫 - Module path of "commandHandler" not found.",
-             ],
-           ],
-           "resolveCalls": [],
-         }
-        `);
-      }
-    });
-
-    test('with no command definition', async () => {
-      $injector.mockResolvedValue({
-        DEFINITIONS: EMPTY_DEFINITIONS,
-      });
-      importer.mockRejectedValue(new Error('E_NOT_FOUND'));
-      access.mockRejectedValue(new YError('E_ACCESS'));
-
-      const $autoload = await initAutoload({
-        WHOOK_PLUGINS,
-        WHOOK_RESOLVED_PLUGINS,
-        args: { namedArguments: {}, rest: ['myCommand'], command: 'whook' },
-        importer,
-        $injector,
-        resolve,
-        access,
-        log,
-      } as WhookAutoloadDependencies);
-
-      try {
-        await $autoload('COMMAND_DEFINITION');
-        throw new YError('E_UNEXPECTED_SUCCESS');
-      } catch (err) {
-        expect({
-          errorCode: (err as YError).code,
-          errorDebug: (err as YError).debug,
-          importerCalls: importer.mock.calls,
-          injectorCalls: $injector.mock.calls,
-          resolveCalls: resolve.mock.calls,
-          logCalls: log.mock.calls.filter(([type]) => !type.endsWith('stack')),
-        }).toMatchInlineSnapshot(`
-         {
-           "errorCode": "E_NO_COMMAND_DEFINITION",
-           "errorDebug": [
-             "myCommand",
-           ],
-           "importerCalls": [],
-           "injectorCalls": [
-             [
-               [
-                 "DEFINITIONS",
-               ],
-             ],
-           ],
-           "logCalls": [
-             [
-               "warning",
-               "🤖 - Initializing the \`$autoload\` service.",
-             ],
-             [
-               "debug",
-               "🍀 - Trying to find "COMMAND_DEFINITION" module path in "__project__".",
-             ],
-             [
-               "debug",
-               "🚫 - File doesn't exist at "file:///home/whoiam/project/src/services/COMMAND_DEFINITION.ts".",
-             ],
-           ],
-           "resolveCalls": [],
-         }
-        `);
+                {
+                  "errorCode": "E_NO_MODULE",
+                  "errorDebug": [],
+                  "importerCalls": [
+                    [
+                      "file:///home/whoiam/project/src/services/commandHandler.ts",
+                    ],
+                  ],
+                  "injectorCalls": [],
+                  "logCalls": [
+                    [
+                      "warning",
+                      "🤖 - Initializing the \`$autoload\` service.",
+                    ],
+                    [
+                      "debug",
+                      "🍀 - Trying to find "commandHandler" module path in "__project__".",
+                    ],
+                    [
+                      "debug",
+                      "✅ - Module path of "commandHandler" found at "file:///home/whoiam/project/src/services/commandHandler.ts".",
+                    ],
+                    [
+                      "debug",
+                      "💿 - Service "commandHandler" found in "file:///home/whoiam/project/src/services/commandHandler.ts".",
+                    ],
+                  ],
+                  "resolveCalls": [],
+                }
+              `);
       }
     });
   });

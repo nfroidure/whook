@@ -13,7 +13,7 @@ import {
   type WhookCoercionOptions,
 } from '../libs/coercion.js';
 import {
-  type WhookCommandDefinition,
+  type WhookCommandHandler,
   type WhookArgsTypes,
 } from '../types/commands.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
@@ -23,47 +23,55 @@ import {
   type JSONSchema,
   type ExpressiveJSONSchema,
 } from 'ya-json-schema-types';
-import { WhookCommandsHandlersService } from './COMMANDS_HANDLERS.js';
+import { type WhookMainDefinition } from './MAIN_HANDLER.js';
 
-export interface WhookCommandEnv {
+export interface WhookCommandRunnerEnv {
   CI?: string;
   NO_PROMPT?: string;
 }
-
-async function initCommand({
-  ENV,
-  API,
-  COMMAND_DEFINITION,
-  COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
-  COMMANDS_HANDLERS,
-  schemaValidators,
-  $ready,
-  $instance,
-  $fatalError,
-  args,
-  log,
-}: {
-  ENV: WhookCommandEnv;
+export interface WhookCommandRunnerDependencies {
+  ENV: WhookCommandRunnerEnv;
   API: WhookOpenAPI;
-  COMMAND_DEFINITION: WhookCommandDefinition;
+  MAIN_DEFINITION: WhookMainDefinition;
   COERCION_OPTIONS?: WhookCoercionOptions;
-  COMMANDS_HANDLERS: WhookCommandsHandlersService;
+  MAIN_HANDLER: WhookCommandHandler;
   schemaValidators: WhookSchemaValidatorsService;
   $ready: Promise<void>;
   $instance: Knifecycle;
   $fatalError: FatalErrorService;
   args: WhookRawCommandArgs;
   log: LogService;
-}): Promise<void> {
+}
+
+async function initCommandRunner({
+  ENV,
+  API,
+  MAIN_DEFINITION,
+  COERCION_OPTIONS = DEFAULT_COERCION_OPTIONS,
+  MAIN_HANDLER,
+  schemaValidators,
+  $ready,
+  $instance,
+  $fatalError,
+  args,
+  log,
+}: WhookCommandRunnerDependencies): Promise<void> {
   async function commandRunner() {
     await $ready;
 
+    if (MAIN_DEFINITION.type !== 'command') {
+      throw new YError('E_BAD_COMMAND_DEFINITION', [MAIN_DEFINITION]);
+    }
+
     try {
-      if (COMMAND_DEFINITION.config?.promptArgs && !ENV.CI && !ENV.NO_PROMPT) {
+      if (MAIN_DEFINITION.config?.promptArgs && !ENV.CI && !ENV.NO_PROMPT) {
         // Required to ensure any logs are printed
         await Promise.resolve();
 
-        args = await promptArgs({ API, COMMAND_DEFINITION }, args);
+        args = await promptArgs(
+          { API, COMMAND_DEFINITION: MAIN_DEFINITION },
+          args,
+        );
       }
 
       const castedArgs = {
@@ -71,7 +79,7 @@ async function initCommand({
         namedArguments: {} as Record<string, WhookArgsTypes>,
       };
 
-      for (const argument of COMMAND_DEFINITION.arguments) {
+      for (const argument of MAIN_DEFINITION.arguments) {
         const resolvedSchema = (await ensureResolvedObject(
           API,
           argument.schema,
@@ -113,15 +121,15 @@ async function initCommand({
         }
       }
 
-      const commandName = COMMAND_DEFINITION.name.endsWith('Command')
-        ? COMMAND_DEFINITION.name
-        : `${COMMAND_DEFINITION.name}Command`;
+      const commandName = MAIN_DEFINITION.name.endsWith('Command')
+        ? MAIN_DEFINITION.name
+        : `${MAIN_DEFINITION.name}Command`;
 
-      if (!COMMANDS_HANDLERS[commandName]) {
+      if (!MAIN_HANDLER) {
         throw new YError('E_NO_COMMAND_HANDLER', [commandName]);
       }
 
-      await COMMANDS_HANDLERS[commandName](castedArgs);
+      await MAIN_HANDLER(castedArgs);
 
       await $instance.destroy();
     } catch (err) {
@@ -170,4 +178,4 @@ async function initCommand({
   commandRunner();
 }
 
-export default location(autoService(initCommand), import.meta.url);
+export default location(autoService(initCommandRunner), import.meta.url);

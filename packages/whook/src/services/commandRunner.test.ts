@@ -1,5 +1,5 @@
 import { describe, test, beforeEach, jest, expect } from '@jest/globals';
-import initCommand from './command.js';
+import initCommandRunner from './commandRunner.js';
 import { definition as initEnvCommandDefinition } from '../commands/env.js';
 import { type LogService } from 'common-services';
 import { type FatalErrorService, type Knifecycle } from 'knifecycle';
@@ -7,7 +7,7 @@ import { YError } from 'yerror';
 import { DEFAULT_COERCION_OPTIONS } from '../libs/coercion.js';
 import { type WhookSchemaValidatorsService } from './schemaValidators.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
-import { ValidateFunction } from 'ajv';
+import { type ValidateFunction } from 'ajv';
 
 describe('command', () => {
   const API = {} as unknown as WhookOpenAPI;
@@ -20,9 +20,7 @@ describe('command', () => {
   });
 
   test('should work with no error', async () => {
-    const COMMANDS_HANDLERS = {
-      envCommand: async () => log('info', 'commandHandler ran'),
-    };
+    const MAIN_HANDLER = async () => log('info', 'commandHandler ran');
     let resolveWaitProcess;
     const waitProcess = new Promise((resolve) => {
       resolveWaitProcess = resolve;
@@ -36,14 +34,18 @@ describe('command', () => {
 
     schemaValidators.mockReturnValue(validator as unknown as ValidateFunction);
 
-    await initCommand({
+    await initCommandRunner({
       ENV: {
         NO_PROMPT: '1',
       },
       API,
-      COMMAND_DEFINITION: initEnvCommandDefinition,
+      MAIN_DEFINITION: {
+        ...initEnvCommandDefinition,
+        type: 'command',
+        url: 'file:///',
+      },
       COERCION_OPTIONS: DEFAULT_COERCION_OPTIONS,
-      COMMANDS_HANDLERS,
+      MAIN_HANDLER,
       schemaValidators,
       args: {
         command: 'whook',
@@ -76,10 +78,8 @@ describe('command', () => {
   });
 
   test('should fail with errors', async () => {
-    const COMMANDS_HANDLERS = {
-      envCommand: async () => {
-        throw new YError('E_ERRORING');
-      },
+    const MAIN_HANDLER = async () => {
+      throw new YError('E_ERRORING');
     };
     let resolveWaitProcess: () => void;
     const waitProcess = new Promise<void>((resolve) => {
@@ -97,14 +97,18 @@ describe('command', () => {
 
     schemaValidators.mockReturnValue(validator as unknown as ValidateFunction);
 
-    await initCommand({
+    await initCommandRunner({
       ENV: {
         NO_PROMPT: '1',
       },
       API,
-      COMMAND_DEFINITION: initEnvCommandDefinition,
+      MAIN_DEFINITION: {
+        ...initEnvCommandDefinition,
+        type: 'command',
+        url: 'file:///',
+      },
       COERCION_OPTIONS: DEFAULT_COERCION_OPTIONS,
-      COMMANDS_HANDLERS,
+      MAIN_HANDLER,
       schemaValidators,
       args: {
         command: 'whook',

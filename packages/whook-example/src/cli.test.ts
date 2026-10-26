@@ -24,9 +24,7 @@ describe('commands should work', () => {
      ➕ - Wrapping definitions for CORS.
      🖃 - Initializing the validators service.
      🏭 - Initializing the COMMANDS_WRAPPERS service.
-     💾 - Loading the TypeScript project.
-     ✅ - Loaded the TypeScript project.
-     🏭 - Initializing the COMMANDS_HANDLERS service with 13 handlers and wrapCommandHandlerForDebug wrappers.
+     🏭 - Initializing the MAIN_HANDLER service with 1 wrappers available.
      On air 🚀🌕
      ",
        "stdout": [
@@ -71,9 +69,7 @@ describe('commands should work', () => {
      ➕ - Wrapping definitions for CORS.
      🖃 - Initializing the validators service.
      🏭 - Initializing the COMMANDS_WRAPPERS service.
-     💾 - Loading the TypeScript project.
-     ✅ - Loaded the TypeScript project.
-     🏭 - Initializing the COMMANDS_HANDLERS service with 13 handlers and wrapCommandHandlerForDebug wrappers.
+     🏭 - Initializing the MAIN_HANDLER service with 1 wrappers available.
      On air 🚀🌕
      ",
        "stdout": "test
@@ -99,9 +95,7 @@ describe('commands should work', () => {
      ➕ - Wrapping definitions for CORS.
      🖃 - Initializing the validators service.
      🏭 - Initializing the COMMANDS_WRAPPERS service.
-     💾 - Loading the TypeScript project.
-     ✅ - Loaded the TypeScript project.
-     🏭 - Initializing the COMMANDS_HANDLERS service with 13 handlers and wrapCommandHandlerForDebug wrappers.
+     🏭 - Initializing the MAIN_HANDLER service with 1 wrappers available.
      On air 🚀🌕
      ",
        "stdout": ""Fake"

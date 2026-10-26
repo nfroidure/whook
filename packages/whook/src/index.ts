@@ -1,8 +1,14 @@
-import { Knifecycle, constant, type Dependencies } from 'knifecycle';
+import {
+  Knifecycle,
+  alsoInject,
+  constant,
+  type Dependencies,
+} from 'knifecycle';
 import { cwd, exit, stderr, stdin, stdout, argv as _argv } from 'node:process';
 import { printStackTrace } from 'yerror';
 import initQueryParserBuilder from './services/queryParserBuilder.js';
-import initCommand from './services/command.js';
+import initCommandRunner from './services/commandRunner.js';
+export { initCommandRunner };
 import {
   DEFAULT_LOG_ROUTING,
   DEFAULT_LOG_CONFIG,
@@ -244,16 +250,16 @@ export async function runProcess<
   argv: typeof _argv = _argv,
 ): Promise<D> {
   const args = parseArgs(argv);
+  let servicesNames = injectedNames;
 
-  const servicesNames =
-    args.rest[0] === '__inject'
-      ? (args.rest[1] || '')
-          .split(',')
-          .map((s) => s.trim())
-          .filter(identity)
-      : args.rest[0]
-        ? ['command']
-        : injectedNames;
+  if (args.rest[0] === '__inject') {
+    servicesNames = (args.rest[1] || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(identity);
+  } else if (args.rest[0]) {
+    servicesNames = ['commandRunner'];
+  }
 
   try {
     const $ = await innerPrepareEnvironment();
@@ -263,6 +269,23 @@ export async function runProcess<
     $.register(constant('stdin', stdin));
     $.register(constant('stdout', stdout));
     $.register(constant('stderr', stderr));
+
+    if (args.rest[0]) {
+      const commandName = args.rest[0]?.endsWith('Command')
+        ? args.rest[0]
+        : args.rest[0]
+          ? `${args.rest[0]}Command`
+          : undefined;
+      $.register(
+        alsoInject(
+          [
+            `MAIN_DEFINITION>MAIN_DEFINITION_${commandName}`,
+            `MAIN_HANDLER>MAIN_HANDLER_${commandName}`,
+          ],
+          initCommandRunner,
+        ),
+      );
+    }
 
     const services = await innerPrepareProcess([...new Set(servicesNames)], $);
 
@@ -358,8 +381,6 @@ export async function prepareEnvironment<T extends Knifecycle>(
     initTransformersDeclarations,
     initBaseURL,
   ].forEach($.register.bind($));
-
-  $.register(initCommand);
 
   $.register(constant('INITIALIZER_PATH_MAP', {}));
 

@@ -14,7 +14,7 @@ export interface WhookMainHandlerDependencies<T> {
   MAIN_DEFINITION: WhookMainDefinition;
   MAIN_WRAPPERS_ORDER?: string[];
   MAIN_WRAPPERS: Record<string, WhookHandlerWrapper<T>>;
-  MAIN_WRAPPER: WhookHandlerWrapper<T>;
+  MAIN_WRAPPER?: WhookHandlerWrapper<T>;
   BASE_HANDLER: T;
   log?: LogService;
 }
@@ -45,7 +45,7 @@ async function initMainHandler<T>({
   MAIN_DEFINITION,
   MAIN_WRAPPERS_ORDER,
   MAIN_WRAPPERS,
-  MAIN_WRAPPER,
+  MAIN_WRAPPER = undefined,
   BASE_HANDLER,
   log = noop,
 }: WhookMainHandlerDependencies<T>): Promise<T> {
@@ -71,16 +71,32 @@ async function initMainHandler<T>({
     handlerName,
   );
 
-  log(
-    'debug',
-    `🏭 - Wrapping "${handlerName}" route handler with ${
-      wrappersNames.length ? `"${wrappersNames.join(', ')}" wrappers and ` : ''
-    }the main wrapper.`,
-  );
+  if (wrappersNames.length == 0 && !MAIN_WRAPPER) {
+    return BASE_HANDLER;
+  }
+
+  if (MAIN_WRAPPER) {
+    log(
+      'debug',
+      `🏭 - Wrapping "${handlerName}" route handler with ${
+        wrappersNames.length
+          ? `"${wrappersNames.join(', ')}" wrappers and `
+          : ''
+      }the main wrapper.`,
+    );
+  } else {
+    log(
+      'debug',
+      `🏭 - Wrapping "${handlerName}" route handler with "${wrappersNames.join(', ')}".`,
+    );
+  }
 
   const wrappers = wrappersNames.map((key) => MAIN_WRAPPERS[key]);
 
-  return await applyHandlerWrappers([...wrappers, MAIN_WRAPPER], BASE_HANDLER);
+  return await applyHandlerWrappers(
+    MAIN_WRAPPER ? [...wrappers, MAIN_WRAPPER] : wrappers,
+    BASE_HANDLER,
+  );
 }
 
 export default location(
