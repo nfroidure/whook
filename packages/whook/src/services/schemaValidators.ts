@@ -18,6 +18,7 @@ import { createHash } from '../libs/hash.js';
 import { extractAPISecurityParametersSchemas } from '../libs/validation.js';
 import { type WhookOpenAPI } from '../types/openapi.js';
 import { DEFAULT_DEBUG_NODE_ENVS } from '../libs/constants.js';
+import { YError } from 'yerror';
 
 /* Architecture Note #2.11.2.1: Schema validators
 
@@ -125,7 +126,11 @@ async function initSchemaValidators({
     ) {
       const $ref = '#/components/schemas/' + schema.location.schemaName;
 
-      ajv.addSchema(schema.schema, $ref);
+      try {
+        ajv.addSchema(schema.schema, $ref);
+      } catch (err) {
+        throw YError.wrap(err as Error, 'E_SCHEMA_ERROR', [$ref, schema]);
+      }
     }
   }
 
@@ -288,7 +293,11 @@ export async function buildSchemaValidatorsMap({
       const $ref = '#/components/schemas/' + schema.location.schemaName;
 
       schemaMapper['__schema_' + schema.location.schemaName] = $ref;
-      ajv.addSchema(schema.schema, $ref);
+      try {
+        ajv.addSchema(schema.schema, $ref);
+      } catch (err) {
+        throw YError.wrap(err as Error, 'E_SCHEMA_ERROR', [$ref, schema]);
+      }
     }
   }
 
@@ -313,7 +322,11 @@ export async function buildSchemaValidatorsMap({
     }
 
     schemaMapper[key] = $ref;
-    ajv.addSchema(schema.schema, $ref);
+    try {
+      ajv.addSchema(schema.schema, $ref);
+    } catch (err) {
+      throw YError.wrap(err as Error, 'E_SCHEMA_ERROR', [$ref, schema]);
+    }
   }
 
   return (
