@@ -64,7 +64,12 @@ async function initTestAWSLambdaConsumerCommand({
     const {
       namedArguments: { name, type, event },
     } = args;
-    const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
+    const extension =
+      type === 'main'
+        ? '.js'
+        : COMPILER_OPTIONS.format === 'cjs'
+          ? '.cjs'
+          : '.mjs';
     const handler = await loadLambda(
       {
         APP_ENV,

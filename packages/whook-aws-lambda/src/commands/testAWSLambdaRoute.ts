@@ -90,7 +90,12 @@ async function initTestAWSLambdaRouteCommand({
     const {
       namedArguments: { name, type, contentType, parameters: rawParameters },
     } = args;
-    const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
+    const extension =
+      type === 'main'
+        ? '.js'
+        : COMPILER_OPTIONS.format === 'cjs'
+          ? '.cjs'
+          : '.mjs';
     const handler = await loadLambda(
       { APP_ENV, PROJECT_DIR, log },
       name,

@@ -82,7 +82,12 @@ async function initTestGCPFunctionRouteCommand({
     const {
       namedArguments: { name, type, contentType, parameters: rawParameters },
     } = args;
-    const extension = COMPILER_OPTIONS.format === 'cjs' ? '.cjs' : '.mjs';
+    const extension =
+      type === 'main'
+        ? '.js'
+        : COMPILER_OPTIONS.format === 'cjs'
+          ? '.cjs'
+          : '.mjs';
     const handler = await loadFunction(
       { APP_ENV, PROJECT_DIR, log },
       name,
