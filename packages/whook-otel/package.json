@@ -23,7 +23,7 @@
     }
   },
   "name": "@whook/otel",
-  "version": "26.3.0",
+  "version": "27.0.0",
   "description": "OpenTelemetry instrumentation wrappers for Whook",
   "type": "module",
   "publishConfig": {
@@ -57,7 +57,7 @@
   "homepage": "https://github.com/nfroidure/whook",
   "dependencies": {
     "@opentelemetry/api": "^1.9.1",
-    "@whook/whook": "^26.3.0",
+    "@whook/whook": "^27.0.0",
     "common-services": "^20.1.0",
     "knifecycle": "^21.4.0"
   },

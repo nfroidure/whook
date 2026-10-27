@@ -1,3 +1,20 @@
+## [27.0.0](https://github.com/nfroidure/whook/compare/v26.3.0...v27.0.0) (2026-10-27)
+
+### Features
+
+* **@whook/otel:** allow open telemetry ([8ee6955](https://github.com/nfroidure/whook/commit/8ee69556527c91da0baa8577be4f3986c5d8f25a)), closes [#203](https://github.com/nfroidure/whook/issues/203)
+* **@whook/whook:** better feedback for failing schemas ([1798ef3](https://github.com/nfroidure/whook/commit/1798ef38e5fb75f5b50f2b90a08bf813bcf55602))
+* **@whook/whook:** split env picking from auto detection ([60f0443](https://github.com/nfroidure/whook/commit/60f0443db3fdd1c40a146061f7c73513036822ea)), closes [#249](https://github.com/nfroidure/whook/issues/249)
+
+### Bug Fixes
+
+* **@whook/aws-lambda:** fix main file path build ([aac1eec](https://github.com/nfroidure/whook/commit/aac1eec2392ddf0807e846e5c802dfd749c29a83))
+* **@whook/whook:** fix HTTPS server export ([f97a72b](https://github.com/nfroidure/whook/commit/f97a72b331959aefa5813917db772bbafa6ae5c0))
+* **commands:** fix commands to avoid loading everything ([17aa5a1](https://github.com/nfroidure/whook/commit/17aa5a1dc49828ad9ffb5e588964904f423b64a3))
+* fix tests before publish ([f529fca](https://github.com/nfroidure/whook/commit/f529fca9fdf21440b90debb8c7339b4289963e5a))
+* **schemas:** avoid being too noisy ([bdafc2a](https://github.com/nfroidure/whook/commit/bdafc2a2cbf09456da30a6a6fc68be6f8b7628be))
+* **types:** fix a few types ([ac0fac0](https://github.com/nfroidure/whook/commit/ac0fac0e0ad5a74b82e7dbf6edea09e71cb674c0))
+
 ## [26.3.0](https://github.com/nfroidure/whook/compare/v26.2.0...v26.3.0) (2026-09-14)
 
 ### Features
