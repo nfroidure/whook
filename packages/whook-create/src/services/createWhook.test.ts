@@ -48,6 +48,7 @@ describe('initCreateWhook', () => {
     devDependencies: {
       ..._packageJSON.devDependencies,
       '@whook/dev': '<current_version>',
+      '@whook/otel': '<current_version>',
     },
   };
   const author = {
@@ -205,7 +206,7 @@ describe('initCreateWhook', () => {
          "@swc/core": "^1.16.1",
          "@swc/jest": "^0.2.39",
          "@whook/dev": "<current_version>",
-         "@whook/otel": "^26.3.0",
+         "@whook/otel": "<current_version>",
          "axios": "^1.20.0",
          "esbuild-node-externals": "^2.0.0",
          "eslint": "^10.9.1",
@@ -413,7 +414,7 @@ describe('initCreateWhook', () => {
          "@swc/core": "^1.16.1",
          "@swc/jest": "^0.2.39",
          "@whook/dev": "<current_version>",
-         "@whook/otel": "^26.3.0",
+         "@whook/otel": "<current_version>",
          "axios": "^1.20.0",
          "esbuild-node-externals": "^2.0.0",
          "eslint": "^10.9.1",
@@ -601,7 +602,7 @@ describe('initCreateWhook', () => {
          "@swc/core": "^1.16.1",
          "@swc/jest": "^0.2.39",
          "@whook/dev": "<current_version>",
-         "@whook/otel": "^26.3.0",
+         "@whook/otel": "<current_version>",
          "axios": "^1.20.0",
          "esbuild-node-externals": "^2.0.0",
          "eslint": "^10.9.1",
