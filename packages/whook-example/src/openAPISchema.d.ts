@@ -2,32 +2,32 @@
 // Do not try to change it in place
 /* eslint-disable @typescript-eslint/ban-types */
 declare interface paths {
-  '/v26/delay': {
+  '/v27/delay': {
     get: operations['getDelay'];
   };
-  '/v26/diagnostic': {
+  '/v27/diagnostic': {
     get: operations['getDiagnostic'];
   };
-  '/v26/time': {
+  '/v27/time': {
     get: operations['getTime'];
     put: operations['putTime'];
   };
-  '/v26/openAPI': {
+  '/v27/openAPI': {
     get: operations['getOpenAPI'];
   };
-  '/v26/echo': {
+  '/v27/echo': {
     put: operations['putEcho'];
   };
-  '/v26/{pathParam1}/{pathParam2}': {
+  '/v27/{pathParam1}/{pathParam2}': {
     get: operations['getParameters'];
   };
-  '/v26/stream': {
+  '/v27/stream': {
     put: operations['putEchoedStream'];
   };
-  '/v26/crons/{cronName}/run': {
+  '/v27/crons/{cronName}/run': {
     post: operations['postCronRun'];
   };
-  '/v26/ping': {
+  '/v27/ping': {
     get: operations['getPing'];
   };
 }

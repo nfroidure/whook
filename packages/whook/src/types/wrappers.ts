@@ -4,6 +4,7 @@ import {
   ServiceInitializer,
 } from 'knifecycle';
 import { type WhookEnvironmentsConfig } from '../libs/environments.js';
+import { type WhookSchemasDeclarationModule } from './base.js';
 
 export const DEFAULT_WRAPPER_CONFIG: WhookHandlerWrapperConfig = {
   environments: 'all',
@@ -40,7 +41,9 @@ export type WhookHandlerWrapperInitializer<
 
 // May allow to type handlers wrappers files later
 // https://github.com/nfroidure/whook/issues/196
-export interface WhookHandlerWrapperModule<T> {
+export interface WhookHandlerWrapperModule<
+  T,
+> extends WhookSchemasDeclarationModule {
   default: WhookHandlerWrapperInitializer<T>;
   definition: WhookHandlerWrapperDefinition;
 }

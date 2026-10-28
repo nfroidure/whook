@@ -17,11 +17,13 @@ import {
   DEFAULT_DECLARATIONS_OPTIONS,
   type WhookDeclarationsOptions,
   type WhookDeclarations,
+  type WhookDeclaration,
 } from '../types/declarations.js';
 import {
   collectModuleDeclarationsOfType,
   fileIsPatternIgnored,
   matchFileWithPattern,
+  shouldRegisterDeclaration,
 } from '../libs/declarations.js';
 import { checkEnvironment } from '../libs/environments.js';
 import { fileURLToPath } from 'node:url';
@@ -129,18 +131,6 @@ async function initTransformersDeclarations({
         );
         hasTransformer = false;
       } else {
-        // Avoid loading the same transformerName twice if
-        // overridden upstream by another plugin or the
-        // root project path
-
-        if (declarations.transformers[transformerName]) {
-          log(
-            'debug',
-            `⏳ - Skipped transformer from "${fileURL}" since already loaded upstream.`,
-          );
-          hasTransformer = false;
-        }
-
         const nameMatches =
           TRANSFORMER_DECLARATION_REG_EXP.test(transformerName);
 
@@ -163,13 +153,28 @@ async function initTransformersDeclarations({
           transformerName &&
           typeof module.default !== 'undefined'
         ) {
-          declarations.handlers[transformerName] = {
+          const declaration: WhookDeclaration<'handler'> = {
             url,
             name: transformerName,
             pluginName,
             type: 'handler',
             content: undefined,
           };
+
+          if (
+            shouldRegisterDeclaration(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'handlers',
+              declaration,
+              transformerName,
+            )
+          ) {
+            declarations.handlers[transformerName] = declaration;
+          }
         }
 
         if (!module.definition) {
@@ -203,13 +208,28 @@ async function initTransformersDeclarations({
         }
 
         if (hasTransformer && transformerName) {
-          declarations.transformers[transformerName] = {
+          const declaration: WhookDeclaration<'transformer'> = {
             url,
             name: transformerName,
             pluginName,
             type: 'transformer',
             content: module.definition,
           };
+
+          if (
+            shouldRegisterDeclaration(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'transformers',
+              declaration,
+              transformerName,
+            )
+          ) {
+            declarations.transformers[transformerName] = declaration;
+          }
         }
 
         for (const declaration of collectModuleDeclarationsOfType(
@@ -221,32 +241,20 @@ async function initTransformersDeclarations({
           module,
           ['schema'],
         )) {
-          if (declarations.schemas[declaration.name]) {
-            if (
-              declarations.schemas[declaration.name].content !==
-              declaration.content
-            ) {
-              log(
-                'debug',
-                `⚠️ - Duplicate declaration (type: "${
-                  declaration.type
-                }", name: "${declaration.name}", current: "${
-                  declarations.schemas[declaration.name].url
-                }", duplicated: "${declaration.url}").`,
-              );
-              continue;
-            }
-            log(
-              'warning',
-              `⚠️ - Preventing override of an existing declaration (type: "${
-                declaration.type
-              }", name: "${declaration.name}", current: "${
-                declarations.schemas[declaration.name].url
-              }", prevented: "${declaration.url}").`,
-            );
-            continue;
+          if (
+            shouldRegisterDeclaration<'schemas'>(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'schemas',
+              declaration,
+              declaration.name,
+            )
+          ) {
+            declarations.schemas[declaration.name] = declaration;
           }
-          declarations.schemas[declaration.name] = declaration;
         }
       } catch (err) {
         log(

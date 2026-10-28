@@ -93,6 +93,7 @@ describe('API', () => {
       },
       WRAPPERS_DECLARATIONS: {
         wrappers: {},
+        schemas: {},
       },
       SECURITY_DEFINITIONS,
     });

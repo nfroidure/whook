@@ -391,11 +391,35 @@ describe('initRoutesDeclarations', () => {
            ],
            [
              "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getUser".",
+           ],
+           [
+             "debug",
              "📥 - Collecting schema "User" from "file:///home/whoiam/project/src/routes/users/getUser.ts",
            ],
            [
              "debug",
              "📥 - Collecting parameter "userId" from "file:///home/whoiam/project/src/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "User".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "parameter", name: "userId".",
            ],
          ],
        }
@@ -598,11 +622,35 @@ describe('initRoutesDeclarations', () => {
            ],
            [
              "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "getUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "route", name: "getUser".",
+           ],
+           [
+             "debug",
              "📥 - Collecting schema "User" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
            ],
            [
              "debug",
              "📥 - Collecting parameter "userId" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "schema", name: "User".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "parameter", name: "userId".",
            ],
          ],
        }
@@ -817,7 +865,27 @@ describe('initRoutesDeclarations', () => {
            ],
            [
              "debug",
-             "⏳ - Skipped route from "file:///home/whoiam/project/node_modules/@whook/dist/routes/getPing.ts" since already loaded upstream.",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Skipping declaration (type: "handler", name: "getPing", kept: "file:///home/whoiam/project/src/routes/getPing.ts", skipped: "file:///home/whoiam/project/node_modules/@whook/dist/routes/getPing.ts") per pluggins ordering.",
+           ],
+           [
+             "debug",
+             "⚠️ - Skipping declaration (type: "route", name: "getPing", kept: "file:///home/whoiam/project/src/routes/getPing.ts", skipped: "file:///home/whoiam/project/node_modules/@whook/dist/routes/getPing.ts") per pluggins ordering.",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "getUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "route", name: "getUser".",
            ],
            [
              "debug",
@@ -826,6 +894,14 @@ describe('initRoutesDeclarations', () => {
            [
              "debug",
              "📥 - Collecting parameter "userId" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "schema", name: "User".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "parameter", name: "userId".",
            ],
          ],
        }
@@ -1039,7 +1115,27 @@ describe('initRoutesDeclarations', () => {
            ],
            [
              "debug",
-             "⏳ - Skipped route from "file:///home/whoiam/project/node_modules/@whook/dist/routes/getPing.ts" since already loaded upstream.",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getPing".",
+           ],
+           [
+             "debug",
+             "⚠️ - Skipping declaration (type: "handler", name: "getPing", kept: "file:///home/whoiam/project/src/routes/getPing.ts", skipped: "file:///home/whoiam/project/node_modules/@whook/dist/routes/getPing.ts") per pluggins ordering.",
+           ],
+           [
+             "debug",
+             "⚠️ - Skipping declaration (type: "route", name: "getPing", kept: "file:///home/whoiam/project/src/routes/getPing.ts", skipped: "file:///home/whoiam/project/node_modules/@whook/dist/routes/getPing.ts") per pluggins ordering.",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "getUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "route", name: "getUser".",
            ],
            [
              "debug",
@@ -1048,6 +1144,14 @@ describe('initRoutesDeclarations', () => {
            [
              "debug",
              "📥 - Collecting parameter "userId" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "schema", name: "User".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "parameter", name: "userId".",
            ],
          ],
        }
@@ -1238,11 +1342,35 @@ describe('initRoutesDeclarations', () => {
            ],
            [
              "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "getUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "route", name: "getUser".",
+           ],
+           [
+             "debug",
              "📥 - Collecting schema "User" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
            ],
            [
              "debug",
              "📥 - Collecting parameter "userId" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "schema", name: "User".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "parameter", name: "userId".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "putUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "route", name: "putUser".",
            ],
          ],
        }
@@ -1408,6 +1536,10 @@ describe('initRoutesDeclarations', () => {
            ],
            [
              "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "getUser".",
+           ],
+           [
+             "debug",
              "⏳ - Skipped route from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts" since disabled by the application environment (test)!",
            ],
            [
@@ -1417,6 +1549,22 @@ describe('initRoutesDeclarations', () => {
            [
              "debug",
              "📥 - Collecting parameter "userId" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "schema", name: "User".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "parameter", name: "userId".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "putUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "route", name: "putUser".",
            ],
          ],
        }
@@ -1486,7 +1634,24 @@ describe('initRoutesDeclarations', () => {
              },
            },
            "headers": {},
-           "parameters": {},
+           "parameters": {
+             "userId": {
+               "content": {
+                 "name": "userId",
+                 "parameter": {
+                   "in": "path",
+                   "name": "userId",
+                   "schema": {
+                     "type": "number",
+                   },
+                 },
+               },
+               "name": "userId",
+               "pluginName": "@whook",
+               "type": "parameter",
+               "url": "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+             },
+           },
            "requestBodies": {},
            "responses": {},
            "routes": {
@@ -1533,7 +1698,25 @@ describe('initRoutesDeclarations', () => {
                "url": "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/putUser.ts",
              },
            },
-           "schemas": {},
+           "schemas": {
+             "User": {
+               "content": {
+                 "name": "User",
+                 "schema": {
+                   "properties": {
+                     "name": {
+                       "type": "string",
+                     },
+                   },
+                   "type": "object",
+                 },
+               },
+               "name": "User",
+               "pluginName": "@whook",
+               "type": "schema",
+               "url": "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+             },
+           },
          },
          "importerCalls": [
            [
@@ -1550,7 +1733,35 @@ describe('initRoutesDeclarations', () => {
            ],
            [
              "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "getUser".",
+           ],
+           [
+             "debug",
              "⏳ - Skipped route from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts" due to routes handlers filter.",
+           ],
+           [
+             "debug",
+             "📥 - Collecting schema "User" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "📥 - Collecting parameter "userId" from "file:///home/whoiam/project/node_modules/@whook/dist/routes/users/getUser.ts",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "schema", name: "User".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "parameter", name: "userId".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "handler", name: "putUser".",
+           ],
+           [
+             "debug",
+             "⚠️ - Picking a new declaration in plugin "@whook" (type: "route", name: "putUser".",
            ],
          ],
        }

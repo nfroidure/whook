@@ -16,7 +16,7 @@ describe('initCommandsDeclarations', () => {
       types: ['routes', 'commands'],
     },
     [WHOOK_PLUGINS[1]]: {
-      mainURL: `file:///${WHOOK_PLUGINS[0]}/src`,
+      mainURL: `file:///${WHOOK_PLUGINS[1]}/src`,
       types: ['routes', 'commands'],
     },
   };
@@ -27,36 +27,40 @@ describe('initCommandsDeclarations', () => {
     log.mockReset();
   });
   test('should work', async () => {
-    importer.mockResolvedValue({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      default: (() => undefined) as any,
-      definition: {
-        name: 'doSomething',
-        example: 'npx whook doSomething',
-        description: 'More infos displayed',
-        config: {
-          environments: [APP_ENV],
-        },
-        arguments: [
-          {
-            name: 'verbose',
-            description: 'More infos displayed',
-            schema: { type: 'string' },
+    importer.mockImplementation(() =>
+      Promise.resolve({
+        default: (() => undefined) as unknown as WhookCommandModule['default'],
+        definition: {
+          name: 'doSomething',
+          example: 'npx whook doSomething',
+          description: 'More infos displayed',
+          config: {
+            environments: [APP_ENV],
           },
-        ],
-      },
-      bodySchema: {
-        name: 'Body',
-        schema: {
-          type: 'string',
+          arguments: [
+            {
+              name: 'verbose',
+              description: 'More infos displayed',
+              schema: { type: 'string' },
+            },
+          ],
         },
-      },
-    });
+        bodySchema: {
+          name: 'Body',
+          schema: {
+            type: 'string',
+          },
+        },
+      }),
+    );
 
     async function* createDirectoryFilesWalker(baseURL: URL) {
       yield new URL('commands/skipped_file.test.ts', baseURL);
-      yield new URL('commands/skipped_command.ts', baseURL);
-      yield new URL('commands/doSomethingCommand.ts', baseURL);
+      if (baseURL.pathname.includes(WHOOK_PLUGINS[1])) {
+        yield new URL('commands/skipped_command.ts', baseURL);
+      } else {
+        yield new URL('commands/doSomethingCommand.ts', baseURL);
+      }
     }
 
     const COMMANDS_DECLARATIONS = await initCommandsDeclarations({
@@ -122,22 +126,16 @@ describe('initCommandsDeclarations', () => {
              "name": "Body",
              "pluginName": "__project__",
              "type": "schema",
-             "url": "file:///__project__/commands/skipped_command.ts",
+             "url": "file:///__project__/commands/doSomethingCommand.ts",
            },
          },
        },
        "importerCalls": [
          [
-           "file:///__project__/commands/skipped_command.ts",
-         ],
-         [
            "file:///__project__/commands/doSomethingCommand.ts",
          ],
          [
-           "file:///__project__/commands/skipped_command.ts",
-         ],
-         [
-           "file:///__project__/commands/doSomethingCommand.ts",
+           "file:///@whook/whook/commands/skipped_command.ts",
          ],
        ],
        "logCalls": [
@@ -151,47 +149,35 @@ describe('initCommandsDeclarations', () => {
          ],
          [
            "debug",
-           "⏳ - Skipped command from "file:///__project__/commands/skipped_command.ts" per service name patterns (tested: "skipped_commandCommand").",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "doSomethingCommand".",
          ],
          [
            "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/commands/skipped_command.ts",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/commands/doSomethingCommand.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/commands/skipped_command.ts", prevented: "file:///__project__/commands/doSomethingCommand.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped "file:///__project__/commands/skipped_file.test.ts" per ignore patterns.",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped command from "file:///__project__/commands/skipped_command.ts" per service name patterns (tested: "skipped_commandCommand").",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/commands/skipped_command.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/commands/skipped_command.ts", prevented: "file:///__project__/commands/skipped_command.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped command from "file:///__project__/commands/doSomethingCommand.ts" since already loaded upstream.",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "command", name: "doSomethingCommand".",
          ],
          [
            "debug",
            "📥 - Collecting schema "Body" from "file:///__project__/commands/doSomethingCommand.ts",
          ],
          [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/commands/skipped_command.ts", prevented: "file:///__project__/commands/doSomethingCommand.ts").",
+           "debug",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Body".",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped "file:///@whook/whook/commands/skipped_file.test.ts" per ignore patterns.",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped command from "file:///@whook/whook/commands/skipped_command.ts" per service name patterns (tested: "skipped_commandCommand").",
+         ],
+         [
+           "debug",
+           "📥 - Collecting schema "Body" from "file:///@whook/whook/commands/skipped_command.ts",
+         ],
+         [
+           "debug",
+           "⚠️ - Skipping declaration (type: "schema", name: "Body", kept: "file:///__project__/commands/doSomethingCommand.ts", skipped: "file:///@whook/whook/commands/skipped_command.ts") per pluggins ordering.",
          ],
        ],
      }

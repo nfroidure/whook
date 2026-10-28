@@ -16,7 +16,7 @@ describe('initCronsDeclarations', () => {
       types: ['routes', 'crons'],
     },
     [WHOOK_PLUGINS[1]]: {
-      mainURL: `file:///${WHOOK_PLUGINS[0]}/src`,
+      mainURL: `file:///${WHOOK_PLUGINS[1]}/src`,
       types: ['routes', 'crons'],
     },
   };
@@ -27,29 +27,33 @@ describe('initCronsDeclarations', () => {
     log.mockReset();
   });
   test('should work', async () => {
-    importer.mockResolvedValue({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      default: (() => undefined) as any,
-      definition: {
-        name: 'handleNotSkipped',
-        config: {
-          environments: [APP_ENV],
+    importer.mockImplementation(() =>
+      Promise.resolve({
+        default: (() => undefined) as unknown as WhookCronModule['default'],
+        definition: {
+          name: 'handleNotSkipped',
+          config: {
+            environments: [APP_ENV],
+          },
+          schedules: [],
+          schema: { type: 'string' },
         },
-        schedules: [],
-        schema: { type: 'string' },
-      },
-      bodySchema: {
-        name: 'Body',
-        schema: {
-          type: 'string',
+        bodySchema: {
+          name: 'Body',
+          schema: {
+            type: 'string',
+          },
         },
-      },
-    });
+      }),
+    );
 
     async function* createDirectoryFilesWalker(baseURL: URL) {
       yield new URL('crons/skipped_file.test.ts', baseURL);
-      yield new URL('crons/skipped_cron.ts', baseURL);
-      yield new URL('crons/handleNotSkipped.ts', baseURL);
+      if (baseURL.pathname.includes(WHOOK_PLUGINS[1])) {
+        yield new URL('crons/skipped_cron.ts', baseURL);
+      } else {
+        yield new URL('crons/handleNotSkipped.ts', baseURL);
+      }
     }
 
     const CRONS_DECLARATIONS = await initCronsDeclarations({
@@ -108,22 +112,16 @@ describe('initCronsDeclarations', () => {
              "name": "Body",
              "pluginName": "__project__",
              "type": "schema",
-             "url": "file:///__project__/crons/skipped_cron.ts",
+             "url": "file:///__project__/crons/handleNotSkipped.ts",
            },
          },
        },
        "importerCalls": [
          [
-           "file:///__project__/crons/skipped_cron.ts",
-         ],
-         [
            "file:///__project__/crons/handleNotSkipped.ts",
          ],
          [
-           "file:///__project__/crons/skipped_cron.ts",
-         ],
-         [
-           "file:///__project__/crons/handleNotSkipped.ts",
+           "file:///@whook/whook/crons/skipped_cron.ts",
          ],
        ],
        "logCalls": [
@@ -137,47 +135,35 @@ describe('initCronsDeclarations', () => {
          ],
          [
            "debug",
-           "⏳ - Skipped cron from "file:///__project__/crons/skipped_cron.ts" per service name patterns (tested: "skipped_cron").",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "handleNotSkipped".",
          ],
          [
            "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/crons/skipped_cron.ts",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/crons/handleNotSkipped.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/crons/skipped_cron.ts", prevented: "file:///__project__/crons/handleNotSkipped.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped "file:///__project__/crons/skipped_file.test.ts" per ignore patterns.",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped cron from "file:///__project__/crons/skipped_cron.ts" per service name patterns (tested: "skipped_cron").",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/crons/skipped_cron.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/crons/skipped_cron.ts", prevented: "file:///__project__/crons/skipped_cron.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped cron from "file:///__project__/crons/handleNotSkipped.ts" since already loaded upstream.",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "cron", name: "handleNotSkipped".",
          ],
          [
            "debug",
            "📥 - Collecting schema "Body" from "file:///__project__/crons/handleNotSkipped.ts",
          ],
          [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/crons/skipped_cron.ts", prevented: "file:///__project__/crons/handleNotSkipped.ts").",
+           "debug",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Body".",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped "file:///@whook/whook/crons/skipped_file.test.ts" per ignore patterns.",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped cron from "file:///@whook/whook/crons/skipped_cron.ts" per service name patterns (tested: "skipped_cron").",
+         ],
+         [
+           "debug",
+           "📥 - Collecting schema "Body" from "file:///@whook/whook/crons/skipped_cron.ts",
+         ],
+         [
+           "debug",
+           "⚠️ - Skipping declaration (type: "schema", name: "Body", kept: "file:///__project__/crons/handleNotSkipped.ts", skipped: "file:///@whook/whook/crons/skipped_cron.ts") per pluggins ordering.",
          ],
        ],
      }
