@@ -1,3 +1,9 @@
+## [27.0.1](https://github.com/nfroidure/whook/compare/v27.0.0...v27.0.1) (2026-10-29)
+
+### Bug Fixes
+
+* **@whook/whook:** fix plugin ordering ([1f166dd](https://github.com/nfroidure/whook/commit/1f166dd61c1ea3c71f46d557878a12215abfe9a9))
+
 ## [27.0.0](https://github.com/nfroidure/whook/compare/v26.3.0...v27.0.0) (2026-10-27)
 
 ### Features
