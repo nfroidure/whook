@@ -82,6 +82,7 @@
   "dependencies": {
     "@whook/authorization": "^27.0.1",
     "@whook/cors": "^27.0.1",
+    "@whook/gcp-functions": "^27.0.1",
     "@whook/swagger-ui": "^27.0.1",
     "@whook/whook": "^27.0.1",
     "application-services": "^9.2.0",
@@ -89,6 +90,7 @@
     "http-auth-utils": "^7.0.1",
     "jwt-service": "^12.0.2",
     "knifecycle": "^21.4.0",
+    "js-yaml": "^5.5.0",
     "strict-qs": "^10.0.0",
     "type-fest": "^5.10.0",
     "ya-json-schema-types": "^2.0.2",

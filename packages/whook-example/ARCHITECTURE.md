@@ -130,7 +130,7 @@ Per default, Whook embeds the process manager,
 You can specify any service here that should be
  launched when your process starts.
 
-[See in context](./src/index.ts#L53-L60)
+[See in context](./src/index.ts#L54-L61)
 
 
 
@@ -138,7 +138,7 @@ You can specify any service here that should be
 
 The `prepareEnvironment` one is intended to prepare the process environment
 
-[See in context](./src/index.ts#L63-L66)
+[See in context](./src/index.ts#L64-L67)
 
 
 
@@ -155,7 +155,7 @@ OR, like in this example, use the Whook `$autoload` service
  service with the same signature
  (see https://github.com/nfroidure/whook/blob/master/packages/whook/src/services/_autoload.ts).
 
-[See in context](./src/index.ts#L86-L98)
+[See in context](./src/index.ts#L87-L99)
 
 
 
@@ -170,7 +170,7 @@ This service loads the definitions directly by
 A service wrapper is also used here to add CORS to
  the routes definitions.
 
-[See in context](./src/index.ts#L101-L111)
+[See in context](./src/index.ts#L102-L112)
 
 
 
@@ -179,7 +179,7 @@ A service wrapper is also used here to add CORS to
 The project main file allows auto loading features to work
  either with sources (in `src`) and files built (in `dist/`).
 
-[See in context](./src/index.ts#L114-L118)
+[See in context](./src/index.ts#L115-L119)
 
 
 
@@ -188,7 +188,7 @@ The project main file allows auto loading features to work
 Reading the `APP_ENV` from the process environment and defining
  it as a constant.
 
-[See in context](./src/index.ts#L121-L125)
+[See in context](./src/index.ts#L122-L126)
 
 
 
@@ -198,7 +198,7 @@ Setting the `knifecycle` `$overrides` service depending on the
  current `APP_ENV`. It allows to map services to different
  implementations.
 
-[See in context](./src/index.ts#L130-L135)
+[See in context](./src/index.ts#L131-L136)
 
 
 
@@ -231,7 +231,7 @@ sleep 1 && kill -s SIGTERM "$SRV_PID" &
 wait "$SRV_PID";
 ```
 
-[See in context](./src/index.ts#L143-L171)
+[See in context](./src/index.ts#L144-L172)
 
 
 
@@ -239,7 +239,7 @@ wait "$SRV_PID";
 
 Those plugins will get involved for the final build.
 
-[See in context](./src/index.ts#L174-L177)
+[See in context](./src/index.ts#L175-L178)
 
 
 
@@ -310,7 +310,7 @@ Per convention a Whook server build file must export
 The `runBuild` function is intended to build the
  project.
 
-[See in context](./src/build.ts#L15-L19)
+[See in context](./src/build.ts#L17-L21)
 
 
 
@@ -319,7 +319,7 @@ The `runBuild` function is intended to build the
 The `prepareBuildEnvironment` create the build
  environment
 
-[See in context](./src/build.ts#L27-L31)
+[See in context](./src/build.ts#L29-L33)
 
 
 
@@ -339,7 +339,7 @@ The `src/config/common/config.ts` one allows to add common
 
 Whook provides several types you may extend here.
 
-[See in context](./src/whook.d.ts#L28-L31)
+[See in context](./src/whook.d.ts#L33-L36)
 
 
 
@@ -347,7 +347,7 @@ Whook provides several types you may extend here.
 
 The process environment can be typed by extending this type.
 
-[See in context](./src/whook.d.ts#L34-L37)
+[See in context](./src/whook.d.ts#L39-L42)
 
 
 
@@ -356,7 +356,7 @@ The process environment can be typed by extending this type.
 The configuration is typed so that you are sure you cannot
  produce a bad configuration for your API.
 
-[See in context](./src/whook.d.ts#L46-L50)
+[See in context](./src/whook.d.ts#L51-L55)
 
 
 
@@ -366,7 +366,7 @@ Here we export a custom API handler config type in order
  to allow using the various plugins installed that deal
  with the routes.
 
-[See in context](./src/whook.d.ts#L66-L71)
+[See in context](./src/whook.d.ts#L74-L79)
 
 
 
@@ -374,7 +374,7 @@ Here we export a custom API handler config type in order
 
 Here we export a main config to type AppEnv.
 
-[See in context](./src/whook.d.ts#L80-L83)
+[See in context](./src/whook.d.ts#L89-L92)
 
 
 
@@ -382,7 +382,7 @@ Here we export a main config to type AppEnv.
 
 Here we export custom authorizations types.
 
-[See in context](./src/whook.d.ts#L91-L94)
+[See in context](./src/whook.d.ts#L100-L103)
 
 
 
@@ -752,7 +752,7 @@ Whook's service can come from:
 - the plugins services (found in the `@whook/{plugin}/src/services` folder)
 - the project services (in the `src/services` folder)
 
-[See in context](./src/index.ts#L70-L83)
+[See in context](./src/index.ts#L71-L84)
 
 
 
@@ -848,7 +848,7 @@ Beware that the order here matters, you will
  want CORS to be applied to the authorization
  wrapper responses.
 
-[See in context](./src/index.ts#L180-L190)
+[See in context](./src/index.ts#L181-L191)
 
 
 

@@ -182,6 +182,7 @@ describe('initCreateWhook', () => {
        "dependencies": {
          "@whook/authorization": "<current_version>",
          "@whook/cors": "<current_version>",
+         "@whook/gcp-functions": "^27.0.1",
          "@whook/http-router": "<current_version>",
          "@whook/http-server": "<current_version>",
          "@whook/http-transaction": "<current_version>",
@@ -190,6 +191,7 @@ describe('initCreateWhook', () => {
          "application-services": "^9.2.0",
          "common-services": "^20.1.0",
          "http-auth-utils": "^7.0.1",
+         "js-yaml": "^5.5.0",
          "jwt-service": "^12.0.2",
          "knifecycle": "^21.4.0",
          "strict-qs": "^10.0.0",
@@ -390,6 +392,7 @@ describe('initCreateWhook', () => {
        "dependencies": {
          "@whook/authorization": "<current_version>",
          "@whook/cors": "<current_version>",
+         "@whook/gcp-functions": "^27.0.1",
          "@whook/http-router": "<current_version>",
          "@whook/http-server": "<current_version>",
          "@whook/http-transaction": "<current_version>",
@@ -398,6 +401,7 @@ describe('initCreateWhook', () => {
          "application-services": "^9.2.0",
          "common-services": "^20.1.0",
          "http-auth-utils": "^7.0.1",
+         "js-yaml": "^5.5.0",
          "jwt-service": "^12.0.2",
          "knifecycle": "^21.4.0",
          "strict-qs": "^10.0.0",
@@ -578,6 +582,7 @@ describe('initCreateWhook', () => {
        "dependencies": {
          "@whook/authorization": "<current_version>",
          "@whook/cors": "<current_version>",
+         "@whook/gcp-functions": "^27.0.1",
          "@whook/http-router": "<current_version>",
          "@whook/http-server": "<current_version>",
          "@whook/http-transaction": "<current_version>",
@@ -586,6 +591,7 @@ describe('initCreateWhook', () => {
          "application-services": "^9.2.0",
          "common-services": "^20.1.0",
          "http-auth-utils": "^7.0.1",
+         "js-yaml": "^5.5.0",
          "jwt-service": "^12.0.2",
          "knifecycle": "^21.4.0",
          "strict-qs": "^10.0.0",

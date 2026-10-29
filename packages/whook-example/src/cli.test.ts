@@ -31,7 +31,8 @@ describe('commands should work', () => {
          "# Provided by "@whook/authorization": none",
          "# Provided by "@whook/cors": none",
          "# Provided by "@whook/dev": 2 commands",
-         "# Provided by "@whook/example": 2 commands",
+         "# Provided by "@whook/example": 3 commands",
+         "# Provided by "@whook/gcp-functions": 1 commands",
          "# Provided by "@whook/otel": none",
          "# Provided by "@whook/whook": 9 commands",
          "- config: A simple program that returns the queried config value",
@@ -47,6 +48,8 @@ describe('commands should work', () => {
          "- ls: Print available commands",
          "- printEnv: A command printing every env values",
          "- route: Runs the given server route for testing purpose",
+         "- terraformValues: A command printing functions informations for Terraform",
+         "- testGCPFunctionRoute: A command for testing a GCP function route",
        ],
      }
     `);

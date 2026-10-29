@@ -67,7 +67,7 @@ The Whook's main file exports :
 - its specific `knifecycle` compatible services,
 - a few bootstrapping functions designed to be customizable.
 
-[See in context](./src/index.ts#L222-L227)
+[See in context](./src/index.ts#L228-L233)
 
 
 
@@ -77,7 +77,7 @@ Whook exposes a `runProcess` function to programmatically spawn
  its process. It is intended to be reusable and injectable so
  that projects can override the whole `whook` default behavior.
 
-[See in context](./src/index.ts#L229-L233)
+[See in context](./src/index.ts#L235-L239)
 
 
 
@@ -90,7 +90,7 @@ Whook exposes a `prepareProcess` function to create its
  containing the bootstrapped environment and allowing
  to complete and run the process.
 
-[See in context](./src/index.ts#L279-L286)
+[See in context](./src/index.ts#L302-L309)
 
 
 
@@ -102,7 +102,7 @@ The Whook `prepareEnvironment` function aims to provide the complete
  provides a chance to override some services/constants
  before actually preparing the server in actual projects main file.
 
-[See in context](./src/index.ts#L309-L315)
+[See in context](./src/index.ts#L332-L338)
 
 
 
@@ -113,7 +113,7 @@ Whook's embed a few default initializers proxied from
  folder. It can be wrapped or overridden, at will, later
  in a project using overrides.
 
-[See in context](./src/index.ts#L326-L331)
+[See in context](./src/index.ts#L349-L354)
 
 
 
@@ -161,7 +161,7 @@ The Whook server heavily rely on the process working directory
  to dynamically load contents. We are making it available to
  the DI system as a constant.
 
-[See in context](./src/index.ts#L366-L370)
+[See in context](./src/index.ts#L387-L391)
 
 
 
@@ -186,7 +186,7 @@ This service detects a free port automagically.
 Whook uses the `common-services` `resolve` service to allow
  to easily mock/decorate all ESM resolutions.
 
-[See in context](./src/index.ts#L374-L377)
+[See in context](./src/index.ts#L395-L398)
 
 
 
@@ -195,7 +195,7 @@ Whook uses the `common-services` `resolve` service to allow
 Whook uses the `common-services` `importer` service to allow
  to easily mock/decorate all ESM dynamic imports.
 
-[See in context](./src/index.ts#L380-L383)
+[See in context](./src/index.ts#L401-L404)
 
 
 
@@ -204,7 +204,7 @@ Whook uses the `common-services` `importer` service to allow
 Whook uses a built in `exit` service to allow
  to easily mock/decorate the app exit.
 
-[See in context](./src/index.ts#L386-L389)
+[See in context](./src/index.ts#L407-L410)
 
 
 
@@ -217,7 +217,7 @@ The `WHOOK_PLUGINS` constant allows you to give the name of
  you to just install Whook's plugins to get them automatically
  loaded.
 
-[See in context](./src/index.ts#L408-L415)
+[See in context](./src/index.ts#L429-L436)
 
 
 
@@ -227,7 +227,7 @@ Whook uses a built-in `logger` service to allow
  to easily route the application logs for the 
  `common-services` provided `log` service.
 
-[See in context](./src/index.ts#L392-L396)
+[See in context](./src/index.ts#L413-L417)
 
 
 
@@ -252,7 +252,7 @@ Loading the configuration files is done according to the `APP_ENV`
    environment variable. It basically requires a configuration hash
    where the keys are JSON formattable constants.
 
-[See in context](./src/index.ts#L401-L405)
+[See in context](./src/index.ts#L422-L426)
 
 
 
@@ -263,7 +263,7 @@ Whook provides a simple way to load the constants, services
  strategies. It is done by implementing the `knifecycle`
  auto loading interface.
 
-[See in context](./src/services/_autoload.ts#L70-L75)
+[See in context](./src/services/_autoload.ts#L94-L99)
 
 
 
@@ -272,7 +272,7 @@ Whook provides a simple way to load the constants, services
 First of all the autoloader looks for constants in the
  previously loaded `APP_CONFIG` configurations hash.
 
-[See in context](./src/services/_autoload.ts#L162-L165)
+[See in context](./src/services/_autoload.ts#L171-L174)
 
 
 
@@ -282,7 +282,7 @@ We cannot inject the `DEFINITIONS` in the auto loader since
  it is dynamically loaded so doing this during the execution
  with a meoized function.
 
-[See in context](./src/services/_autoload.ts#L119-L123)
+[See in context](./src/services/_autoload.ts#L142-L146)
 
 
 
@@ -312,7 +312,7 @@ The Whook auto-loader allows you to provide the file path
  of a service per its name. It exports a `WhookInitializerMap`
  type to help you ensure yours are valid.
 
-[See in context](./src/services/_autoload.ts#L48-L53)
+[See in context](./src/services/_autoload.ts#L73-L78)
 
 
 
@@ -321,7 +321,7 @@ The Whook auto-loader allows you to provide the file path
 In order to be able to load a service from a given path map
  one can directly specify a path to use for its resolution.
 
-[See in context](./src/services/_autoload.ts#L180-L183)
+[See in context](./src/services/_autoload.ts#L189-L192)
 
 
 
@@ -330,7 +330,7 @@ In order to be able to load a service from a given path map
 Here, we build the handlers map needed by the router by injecting every
  handler required by the API.
 
-[See in context](./src/services/_autoload.ts#L339-L342)
+[See in context](./src/services/_autoload.ts#L364-L367)
 
 
 
@@ -339,7 +339,7 @@ Here, we build the handlers map needed by the router by injecting every
 We inject the `DEFINITIONS` in the `ROUTES_WRAPPERS`
  service so that they can be dynamically applied.
 
-[See in context](./src/services/_autoload.ts#L440-L443)
+[See in context](./src/services/_autoload.ts#L465-L468)
 
 
 
@@ -348,7 +348,7 @@ We inject the `DEFINITIONS` in the `ROUTES_WRAPPERS`
 Finally, we either load the handler/service/wrapper module
  if none of the previous strategies applied.
 
-[See in context](./src/services/_autoload.ts#L174-L177)
+[See in context](./src/services/_autoload.ts#L183-L186)
 
 
 
@@ -368,7 +368,7 @@ Whook auto loader can look for initializers in a list of
 
 Trying to load services from plugins/project paths.
 
-[See in context](./src/services/_autoload.ts#L194-L196)
+[See in context](./src/services/_autoload.ts#L203-L205)
 
 
 
@@ -376,7 +376,7 @@ Trying to load services from plugins/project paths.
 
 
 
-[See in context](./src/services/_autoload.ts#L262-L264)
+[See in context](./src/services/_autoload.ts#L258-L260)
 
 
 
@@ -554,7 +554,7 @@ Maintain a single place for JSON schema validation
  same reference for the Siso router parameters
  uniqueness checks.
 
-[See in context](./src/services/schemaValidators.ts#L22-L29)
+[See in context](./src/services/schemaValidators.ts#L23-L30)
 
 
 
