@@ -16,7 +16,7 @@ describe('initTransformersDeclarations', () => {
       types: ['routes', 'transformers'],
     },
     [WHOOK_PLUGINS[1]]: {
-      mainURL: `file:///${WHOOK_PLUGINS[0]}/src`,
+      mainURL: `file:///${WHOOK_PLUGINS[1]}/src`,
       types: ['routes', 'transformers'],
     },
   };
@@ -27,29 +27,34 @@ describe('initTransformersDeclarations', () => {
     log.mockReset();
   });
   test('should work', async () => {
-    importer.mockResolvedValue({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      default: (() => undefined) as any,
-      definition: {
-        name: 'transformNotSkipped',
-        config: {
-          environments: [APP_ENV],
+    importer.mockImplementation(() =>
+      Promise.resolve({
+        default: (() =>
+          undefined) as unknown as WhookTransformerModule['default'],
+        definition: {
+          name: 'transformNotSkipped',
+          config: {
+            environments: [APP_ENV],
+          },
+          inputSchema: { type: 'string' },
+          outputSchema: { type: 'string' },
         },
-        inputSchema: { type: 'string' },
-        outputSchema: { type: 'string' },
-      },
-      bodySchema: {
-        name: 'Body',
-        schema: {
-          type: 'string',
+        bodySchema: {
+          name: 'Body',
+          schema: {
+            type: 'string',
+          },
         },
-      },
-    });
+      }),
+    );
 
     async function* createDirectoryFilesWalker(baseURL: URL) {
       yield new URL('transformers/skipped_file.test.ts', baseURL);
-      yield new URL('transformers/skipped_transformer.ts', baseURL);
-      yield new URL('transformers/transformNotSkipped.ts', baseURL);
+      if (baseURL.pathname.includes(WHOOK_PLUGINS[1])) {
+        yield new URL('transformers/skipped_transformer.ts', baseURL);
+      } else {
+        yield new URL('transformers/transformNotSkipped.ts', baseURL);
+      }
     }
 
     const TRANSFORMERS_DECLARATIONS = await initTransformersDeclarations({
@@ -88,7 +93,7 @@ describe('initTransformersDeclarations', () => {
              "name": "Body",
              "pluginName": "__project__",
              "type": "schema",
-             "url": "file:///__project__/transformers/skipped_transformer.ts",
+             "url": "file:///__project__/transformers/transformNotSkipped.ts",
            },
          },
          "transformers": {
@@ -116,16 +121,10 @@ describe('initTransformersDeclarations', () => {
        },
        "importerCalls": [
          [
-           "file:///__project__/transformers/skipped_transformer.ts",
-         ],
-         [
            "file:///__project__/transformers/transformNotSkipped.ts",
          ],
          [
-           "file:///__project__/transformers/skipped_transformer.ts",
-         ],
-         [
-           "file:///__project__/transformers/transformNotSkipped.ts",
+           "file:///@whook/whook/transformers/skipped_transformer.ts",
          ],
        ],
        "logCalls": [
@@ -139,47 +138,35 @@ describe('initTransformersDeclarations', () => {
          ],
          [
            "debug",
-           "⏳ - Skipped transformer from "file:///__project__/transformers/skipped_transformer.ts" per service name patterns (tested: "skipped_transformer").",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "transformNotSkipped".",
          ],
          [
            "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/transformers/skipped_transformer.ts",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/transformers/transformNotSkipped.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/transformers/skipped_transformer.ts", prevented: "file:///__project__/transformers/transformNotSkipped.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped "file:///__project__/transformers/skipped_file.test.ts" per ignore patterns.",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped transformer from "file:///__project__/transformers/skipped_transformer.ts" per service name patterns (tested: "skipped_transformer").",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/transformers/skipped_transformer.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/transformers/skipped_transformer.ts", prevented: "file:///__project__/transformers/skipped_transformer.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped transformer from "file:///__project__/transformers/transformNotSkipped.ts" since already loaded upstream.",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "transformer", name: "transformNotSkipped".",
          ],
          [
            "debug",
            "📥 - Collecting schema "Body" from "file:///__project__/transformers/transformNotSkipped.ts",
          ],
          [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/transformers/skipped_transformer.ts", prevented: "file:///__project__/transformers/transformNotSkipped.ts").",
+           "debug",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Body".",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped "file:///@whook/whook/transformers/skipped_file.test.ts" per ignore patterns.",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped transformer from "file:///@whook/whook/transformers/skipped_transformer.ts" per service name patterns (tested: "skipped_transformer").",
+         ],
+         [
+           "debug",
+           "📥 - Collecting schema "Body" from "file:///@whook/whook/transformers/skipped_transformer.ts",
+         ],
+         [
+           "debug",
+           "⚠️ - Skipping declaration (type: "schema", name: "Body", kept: "file:///__project__/transformers/transformNotSkipped.ts", skipped: "file:///@whook/whook/transformers/skipped_transformer.ts") per pluggins ordering.",
          ],
        ],
      }

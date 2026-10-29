@@ -19,6 +19,7 @@ import {
   collectModuleDeclarationsOfType,
   fileIsPatternIgnored,
   matchFileWithPattern,
+  shouldRegisterDeclaration,
 } from '../libs/declarations.js';
 import {
   type WhookDeclarationsOptions,
@@ -147,18 +148,6 @@ async function initRoutesDeclarations({
         log('debug', `⏳ - Skipped route from "${fileURL}" per file patterns.`);
         hasRoute = false;
       } else {
-        // Avoid loading the same routeName twice if
-        // overridden upstream by another plugin or the
-        // root project path
-
-        if (declarations.routes[routeName]) {
-          log(
-            'debug',
-            `⏳ - Skipped route from "${fileURL}" since already loaded upstream.`,
-          );
-          hasRoute = false;
-        }
-
         const nameMatches = ROUTE_DECLARATION_REG_EXP.test(routeName);
 
         if (!nameMatches) {
@@ -176,13 +165,28 @@ async function initRoutesDeclarations({
         const module = await importer(url.toString());
 
         if (hasRoute && routeName && typeof module.default !== 'undefined') {
-          declarations.handlers[routeName] = {
+          const declaration: WhookDeclaration<'handler'> = {
             url,
             name: routeName,
             pluginName,
             type: 'handler',
             content: undefined,
           };
+
+          if (
+            shouldRegisterDeclaration(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'handlers',
+              declaration,
+              routeName,
+            )
+          ) {
+            declarations.handlers[routeName] = declaration;
+          }
         }
 
         if (!module.definition) {
@@ -209,11 +213,11 @@ async function initRoutesDeclarations({
             'debug',
             `⏳ - Skipped route from "${fileURL}" due to routes handlers filter.`,
           );
-          continue;
+          hasRoute = false;
         }
 
         if (hasRoute && routeName) {
-          declarations.routes[routeName] = {
+          const declaration: WhookDeclaration<'route'> = {
             url,
             name: routeName,
             pluginName,
@@ -227,6 +231,21 @@ async function initRoutesDeclarations({
                 }
               : module.definition,
           };
+
+          if (
+            shouldRegisterDeclaration(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'routes',
+              declaration,
+              routeName,
+            )
+          ) {
+            declarations.routes[routeName] = declaration;
+          }
         }
 
         for (const declaration of collectModuleDeclarationsOfType(
@@ -247,34 +266,21 @@ async function initRoutesDeclarations({
         )) {
           const property = ASIDE_DECLARATIONS_PROPERTIES[declaration.type];
 
-          if (declarations[property][declaration.name]) {
-            if (
-              declarations[property][declaration.name].content !==
-              declaration.content
-            ) {
-              log(
-                'debug',
-                `⚠️ - Duplicate declaration (type: "${
-                  declaration.type
-                }", name: "${declaration.name}", current: "${
-                  declarations[property][declaration.name].url
-                }", duplicated: "${declaration.url}").`,
-              );
-              continue;
-            }
-            log(
-              'warning',
-              `⚠️ - Preventing override of an existing declaration (type: "${
-                declaration.type
-              }", name: "${declaration.name}", current: "${
-                declarations[property][declaration.name].url
-              }", prevented: "${declaration.url}").`,
-            );
-            continue;
+          if (
+            shouldRegisterDeclaration<'schemas'>(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              property as 'schemas',
+              declaration as WhookDeclaration<'schema'>,
+              declaration.name,
+            )
+          ) {
+            declarations[property as 'schemas'][declaration.name] =
+              declaration as WhookDeclaration<'schema'>;
           }
-
-          declarations[property as 'schemas'][declaration.name] =
-            declaration as WhookDeclaration<'schema'>;
         }
       } catch (err) {
         log(

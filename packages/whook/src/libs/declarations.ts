@@ -3,7 +3,10 @@ import {
   type WhookRouteModule,
   type WhookAPIComponentsDeclarationModule,
 } from '../types/routes.js';
-import { type WhookPluginName } from '../services/WHOOK_RESOLVED_PLUGINS.js';
+import {
+  type WhookPluginsService,
+  type WhookPluginName,
+} from '../services/WHOOK_RESOLVED_PLUGINS.js';
 import {
   type WhookDeclarations,
   type WhookDeclaration,
@@ -13,6 +16,7 @@ import { type WhookCronModule } from '../types/crons.js';
 import { type WhookConsumerModule } from '../types/consumers.js';
 import { type WhookCommandModule } from '../types/commands.js';
 import { type WhookTransformerModule } from '../types/transformers.js';
+import { type WhookHandlerWrapperModule } from '../types/wrappers.js';
 
 export function fileIsPatternIgnored(
   ignoredFilePatterns: string[] | undefined,
@@ -83,7 +87,8 @@ export function collectModuleDeclarationsOfType<
     | WhookCronModule
     | WhookConsumerModule
     | WhookCommandModule
-    | WhookTransformerModule,
+    | WhookTransformerModule
+    | WhookHandlerWrapperModule<unknown>,
   declarationsTypes: T[],
 ) {
   const declarations: WhookDeclaration<T>[] = [];
@@ -111,4 +116,79 @@ export function collectModuleDeclarationsOfType<
     }
   }
   return declarations;
+}
+
+export function shouldRegisterDeclaration<T extends keyof WhookDeclarations>(
+  {
+    log,
+    WHOOK_PLUGINS,
+  }: { log: LogService; WHOOK_PLUGINS: WhookPluginsService },
+  declarations: Partial<WhookDeclarations>,
+  type: T,
+  declaration: WhookDeclarations[T][string],
+  name: string,
+) {
+  const currentDeclaration = declarations[type]?.[name];
+
+  if (currentDeclaration) {
+    const newIndex = WHOOK_PLUGINS.indexOf(declaration.pluginName);
+    const currentIndex = WHOOK_PLUGINS.indexOf(currentDeclaration.pluginName);
+
+    if (newIndex > currentIndex) {
+      log(
+        'debug',
+        `⚠️ - Skipping declaration (type: "${
+          declaration.type
+        }", name: "${declaration.name}", kept: "${
+          currentDeclaration.url
+        }", skipped: "${declaration.url}") per pluggins ordering.`,
+      );
+      return false;
+    }
+
+    if (currentDeclaration.content === declaration.content) {
+      log(
+        'debug',
+        `⚠️ - Ignoring duplicate declaration content (type: "${
+          declaration.type
+        }", name: "${declaration.name}", current: "${
+          currentDeclaration.url
+        }", duplicated: "${declaration.url}").`,
+      );
+      return false;
+    }
+
+    if (newIndex === currentIndex) {
+      log(
+        'debug',
+        `⚠️ - Duplicate declaration in plugin "${
+          WHOOK_PLUGINS[newIndex]
+        }" (type: "${
+          declaration.type
+        }", name: "${declaration.name}", current: "${
+          currentDeclaration.url
+        }", duplicated: "${declaration.url}").`,
+      );
+      return false;
+    }
+
+    log(
+      'warning',
+      `⚠️ - Preventing override of an existing declaration (type: "${
+        declaration.type
+      }", name: "${declaration.name}", current: "${
+        currentDeclaration.url
+      }", prevented: "${declaration.url}").`,
+    );
+    return false;
+  }
+
+  log(
+    'debug',
+    `⚠️ - Picking a new declaration in plugin "${
+      declaration.pluginName
+    }" (type: "${declaration.type}", name: "${declaration.name}".`,
+  );
+
+  return true;
 }

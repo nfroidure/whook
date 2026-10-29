@@ -17,10 +17,13 @@ import {
   type WhookDeclarationsOptions,
   type WhookDeclarations,
   DEFAULT_DECLARATIONS_OPTIONS,
+  type WhookDeclaration,
 } from '../types/declarations.js';
 import {
+  collectModuleDeclarationsOfType,
   fileIsPatternIgnored,
   matchFileWithPattern,
+  shouldRegisterDeclaration,
 } from '../libs/declarations.js';
 import { checkEnvironment } from '../libs/environments.js';
 import { fileURLToPath } from 'node:url';
@@ -50,7 +53,7 @@ export type WhookWrappersDeclarationsDependencies =
 
 export type WhookWrappersDeclarationsService = Pick<
   WhookDeclarations,
-  'wrappers'
+  'wrappers' | 'schemas'
 >;
 
 /**
@@ -86,6 +89,7 @@ async function initWrappersDeclarations({
 
   const declarations: WhookWrappersDeclarationsService = {
     wrappers: {},
+    schemas: {},
   };
 
   for (const pluginName of WHOOK_PLUGINS) {
@@ -125,18 +129,6 @@ async function initWrappersDeclarations({
         );
         hasWrapper = false;
       } else {
-        // Avoid loading the same wrapperName twice if
-        // overridden upstream by another plugin or the
-        // root project path
-
-        if (declarations.wrappers[wrapperName]) {
-          log(
-            'debug',
-            `⏳ - Skipped wrapper from "${fileURL}" since already loaded upstream.`,
-          );
-          hasWrapper = false;
-        }
-
         const nameMatches = WRAPPER_DECLARATION_PATTERN.test(wrapperName);
 
         if (!nameMatches) {
@@ -153,55 +145,88 @@ async function initWrappersDeclarations({
       try {
         const module = await importer(url);
 
-        if (
-          hasWrapper &&
-          wrapperName &&
-          typeof module.default !== 'undefined'
-        ) {
-          declarations.wrappers[wrapperName] = {
-            url,
-            name: wrapperName,
-            pluginName,
-            type: 'wrapper',
-            content: module.definition,
-          };
-        }
-
-        if (!module.definition) {
-          log(
-            'debug',
-            `⏳ - Skipped wrapper from "${fileURL}" since no definition!`,
-          );
-          hasWrapper = false;
-        }
-
-        if (
-          hasWrapper &&
-          !checkEnvironment(module.definition.config?.environments, APP_ENV)
-        ) {
-          log(
-            'debug',
-            `⏳ - Skipped wrapper from "${fileURL}" since disabled by the application environment (${APP_ENV})!`,
-          );
-          hasWrapper = false;
-        }
-
-        if (hasWrapper && WRAPPER_DEFINITION_FILTER(module.definition)) {
-          log(
-            'debug',
-            `⏳ - Skipped wrapper from "${fileURL}" due to project wrappers filter.`,
-          );
-          hasWrapper = false;
-        }
-
         if (hasWrapper && wrapperName) {
-          declarations.wrappers[wrapperName] = {
-            url,
-            name: wrapperName,
+          if (typeof module.default === 'undefined') {
+            log(
+              'debug',
+              `⏳ - Skipped wrapper from "${fileURL}" since no default import!`,
+            );
+            hasWrapper = false;
+          }
+          if (typeof module.definition === 'undefined') {
+            log(
+              'debug',
+              `⏳ - Skipped wrapper from "${fileURL}" since no definition!`,
+            );
+            hasWrapper = false;
+          }
+          if (
+            hasWrapper &&
+            !checkEnvironment(module.definition.config?.environments, APP_ENV)
+          ) {
+            log(
+              'debug',
+              `⏳ - Skipped wrapper from "${fileURL}" since disabled by the application environment (${APP_ENV})!`,
+            );
+            hasWrapper = false;
+          }
+          if (hasWrapper && WRAPPER_DEFINITION_FILTER(module.definition)) {
+            log(
+              'debug',
+              `⏳ - Skipped wrapper from "${fileURL}" due to project wrappers filter.`,
+            );
+            hasWrapper = false;
+          }
+
+          if (hasWrapper) {
+            const declaration: WhookDeclaration<'wrapper'> = {
+              url,
+              name: wrapperName,
+              pluginName,
+              type: 'wrapper',
+              content: module.definition,
+            };
+
+            if (
+              shouldRegisterDeclaration(
+                {
+                  WHOOK_PLUGINS,
+                  log,
+                },
+                declarations,
+                'wrappers',
+                declaration,
+                wrapperName,
+              )
+            ) {
+              declarations.wrappers[wrapperName] = declaration;
+            }
+          }
+        }
+
+        for (const declaration of collectModuleDeclarationsOfType(
+          { log },
+          {
             pluginName,
-            type: 'wrapper',
-            content: module.definition,
-          };
+            url,
+          },
+          module,
+          ['schema'],
+        )) {
+          if (
+            shouldRegisterDeclaration<'schemas'>(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'schemas',
+              declaration,
+              declaration.name,
+            )
+          ) {
+            declarations.schemas[declaration.name] = declaration;
+          }
         }
       } catch (err) {
         log('error', `🔴 - Got an error while loading a wrapper file: ${file}`);

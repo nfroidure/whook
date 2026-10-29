@@ -271,6 +271,13 @@ async function initDefinitions({
   for (const schemasName of Object.keys(CRONS_DECLARATIONS.schemas)) {
     const declaration = CRONS_DECLARATIONS.schemas[schemasName];
 
+    if (schemas[schemasName]) {
+      log(
+        'warning',
+        `⚠️ - Unexpected override of a schema (${schemasName}) at cron level.`,
+      );
+    }
+
     schemas[schemasName] = declaration.content.schema;
   }
 
@@ -295,6 +302,15 @@ async function initDefinitions({
   }
   for (const schemasName of Object.keys(CONSUMERS_DECLARATIONS.schemas)) {
     const declaration = CONSUMERS_DECLARATIONS.schemas[schemasName];
+
+    if (schemas[schemasName]) {
+      log(
+        'warning',
+        `⚠️ - Unexpected override of a schema (${
+          schemasName
+        }) at consumer level.`,
+      );
+    }
 
     schemas[schemasName] = declaration.content.schema;
   }
@@ -323,6 +339,15 @@ async function initDefinitions({
   for (const schemasName of Object.keys(TRANSFORMERS_DECLARATIONS.schemas)) {
     const declaration = TRANSFORMERS_DECLARATIONS.schemas[schemasName];
 
+    if (schemas[schemasName]) {
+      log(
+        'warning',
+        `⚠️ - Unexpected override of a schema (${
+          schemasName
+        }) at transformer level.`,
+      );
+    }
+
     schemas[schemasName] = declaration.content.schema;
   }
 
@@ -348,6 +373,15 @@ async function initDefinitions({
   for (const schemasName of Object.keys(COMMANDS_DECLARATIONS.schemas)) {
     const declaration = COMMANDS_DECLARATIONS.schemas[schemasName];
 
+    if (schemas[schemasName]) {
+      log(
+        'warning',
+        `⚠️ - Unexpected override of a schema (${
+          schemasName
+        }) at command level.`,
+      );
+    }
+
     schemas[schemasName] = declaration.content.schema;
   }
 
@@ -359,6 +393,19 @@ async function initDefinitions({
       url: declaration.url,
       definition: declaration.content,
     };
+  }
+
+  for (const schemasName of Object.keys(WRAPPERS_DECLARATIONS.schemas)) {
+    const declaration = WRAPPERS_DECLARATIONS.schemas[schemasName];
+
+    if (schemas[schemasName]) {
+      log(
+        'warning',
+        `⚠️ - Unexpected override of a schema (${schemasName}) at wrapper level.`,
+      );
+    }
+
+    schemas[schemasName] = declaration.content.schema;
   }
 
   return {

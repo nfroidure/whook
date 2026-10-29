@@ -16,7 +16,7 @@ describe('initConsumersDeclarations', () => {
       types: ['routes', 'consumers'],
     },
     [WHOOK_PLUGINS[1]]: {
-      mainURL: `file:///${WHOOK_PLUGINS[0]}/src`,
+      mainURL: `file:///${WHOOK_PLUGINS[1]}/src`,
       types: ['routes', 'consumers'],
     },
   };
@@ -27,28 +27,32 @@ describe('initConsumersDeclarations', () => {
     log.mockReset();
   });
   test('should work', async () => {
-    importer.mockResolvedValue({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      default: (() => undefined) as any,
-      definition: {
-        name: 'consumeNotSkipped',
-        config: {
-          environments: [APP_ENV],
+    importer.mockImplementation(() =>
+      Promise.resolve({
+        default: (() => undefined) as unknown as WhookConsumerModule['default'],
+        definition: {
+          name: 'consumeNotSkipped',
+          config: {
+            environments: [APP_ENV],
+          },
+          schema: { type: 'string' },
         },
-        schema: { type: 'string' },
-      },
-      bodySchema: {
-        name: 'Body',
-        schema: {
-          type: 'string',
+        bodySchema: {
+          name: 'Body',
+          schema: {
+            type: 'string',
+          },
         },
-      },
-    });
+      }),
+    );
 
     async function* createDirectoryFilesWalker(baseURL: URL) {
       yield new URL('consumers/skipped_file.test.ts', baseURL);
-      yield new URL('consumers/skipped_consumer.ts', baseURL);
-      yield new URL('consumers/consumeNotSkipped.ts', baseURL);
+      if (baseURL.pathname.includes(WHOOK_PLUGINS[1])) {
+        yield new URL('consumers/skipped_consumer.ts', baseURL);
+      } else {
+        yield new URL('consumers/consumeNotSkipped.ts', baseURL);
+      }
     }
 
     const CONSUMERS_DECLARATIONS = await initConsumersDeclarations({
@@ -106,22 +110,16 @@ describe('initConsumersDeclarations', () => {
              "name": "Body",
              "pluginName": "__project__",
              "type": "schema",
-             "url": "file:///__project__/consumers/skipped_consumer.ts",
+             "url": "file:///__project__/consumers/consumeNotSkipped.ts",
            },
          },
        },
        "importerCalls": [
          [
-           "file:///__project__/consumers/skipped_consumer.ts",
-         ],
-         [
            "file:///__project__/consumers/consumeNotSkipped.ts",
          ],
          [
-           "file:///__project__/consumers/skipped_consumer.ts",
-         ],
-         [
-           "file:///__project__/consumers/consumeNotSkipped.ts",
+           "file:///@whook/whook/consumers/skipped_consumer.ts",
          ],
        ],
        "logCalls": [
@@ -135,47 +133,35 @@ describe('initConsumersDeclarations', () => {
          ],
          [
            "debug",
-           "⏳ - Skipped consumer from "file:///__project__/consumers/skipped_consumer.ts" per service name patterns (tested: "skipped_consumer").",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "consumeNotSkipped".",
          ],
          [
            "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/consumers/skipped_consumer.ts",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/consumers/consumeNotSkipped.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/consumers/skipped_consumer.ts", prevented: "file:///__project__/consumers/consumeNotSkipped.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped "file:///__project__/consumers/skipped_file.test.ts" per ignore patterns.",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped consumer from "file:///__project__/consumers/skipped_consumer.ts" per service name patterns (tested: "skipped_consumer").",
-         ],
-         [
-           "debug",
-           "📥 - Collecting schema "Body" from "file:///__project__/consumers/skipped_consumer.ts",
-         ],
-         [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/consumers/skipped_consumer.ts", prevented: "file:///__project__/consumers/skipped_consumer.ts").",
-         ],
-         [
-           "debug",
-           "⏳ - Skipped consumer from "file:///__project__/consumers/consumeNotSkipped.ts" since already loaded upstream.",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "consumer", name: "consumeNotSkipped".",
          ],
          [
            "debug",
            "📥 - Collecting schema "Body" from "file:///__project__/consumers/consumeNotSkipped.ts",
          ],
          [
-           "warning",
-           "⚠️ - Preventing override of an existing declaration (type: "schema", name: "Body", current: "file:///__project__/consumers/skipped_consumer.ts", prevented: "file:///__project__/consumers/consumeNotSkipped.ts").",
+           "debug",
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Body".",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped "file:///@whook/whook/consumers/skipped_file.test.ts" per ignore patterns.",
+         ],
+         [
+           "debug",
+           "⏳ - Skipped consumer from "file:///@whook/whook/consumers/skipped_consumer.ts" per service name patterns (tested: "skipped_consumer").",
+         ],
+         [
+           "debug",
+           "📥 - Collecting schema "Body" from "file:///@whook/whook/consumers/skipped_consumer.ts",
+         ],
+         [
+           "debug",
+           "⚠️ - Skipping declaration (type: "schema", name: "Body", kept: "file:///__project__/consumers/consumeNotSkipped.ts", skipped: "file:///@whook/whook/consumers/skipped_consumer.ts") per pluggins ordering.",
          ],
        ],
      }

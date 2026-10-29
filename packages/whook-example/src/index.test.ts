@@ -1247,9 +1247,6 @@ describe('runProcess', () => {
            "⏳ - Skipped route from "file:///project/src/routes/putTime.ts" since disabled by the application environment (test)!",
          ],
          [
-           "⏳ - Skipped route from "file:///projects/whook/dist/routes/getOpenAPI.js" since already loaded upstream.",
-         ],
-         [
            "⏳ - Skipped route from "file:///projects/whook/packages/whook-cors/dist/routes/optionsWithCORS.js" since no definition!",
          ],
          [
@@ -1265,7 +1262,241 @@ describe('runProcess', () => {
            "⏳ - Skipped wrapper from "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapHTTPTransactionWithOTel.js" since no definition!",
          ],
          [
-           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+           "⚠️ - Picking a new declaration in plugin "@whook/authorization" (type: "wrapper", name: "wrapRouteHandlerWithAuthorization".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/cors" (type: "handler", name: "optionsWithCORS".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/cors" (type: "wrapper", name: "wrapRouteHandlerWithCORS".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "command", name: "generateOpenAPITypesCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "handler", name: "createCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "handler", name: "generateOpenAPITypesCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "wrapper", name: "wrapCommandHandlerForDebug".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "wrapper", name: "wrapConsumerHandlerForDebug".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "wrapper", name: "wrapCronHandlerForDebug".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "wrapper", name: "wrapRouteHandlerForDebug".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/dev" (type: "wrapper", name: "wrapTransformerHandlerForDebug".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/otel" (type: "wrapper", name: "wrapRoutesHandlersWithOTel".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "configCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "cronRunCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "cronScheduleCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "envCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "generateOpenAPISchemaCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "generateSchemaValidatorsCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "inspectCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "lsCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "command", name: "routeCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "configCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "cronRunCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "cronScheduleCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "envCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "generateOpenAPISchemaCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "generateSchemaValidatorsCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "getPing".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "inspectCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "lsCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "handler", name: "routeCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "@whook/whook" (type: "route", name: "getPing".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "callback", name: "DelayCallback".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "command", name: "createSecretKeyCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "command", name: "printEnvCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "cron", name: "handleMinutes".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "createSecretKeyCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getDelay".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getDiagnostic".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getOpenAPI".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getParameters".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getTime".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "handleMinutes".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "postCronRun".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "printEnvCommand".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "putEcho".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "putEchoedStream".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "putTime".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "parameter", name: "date".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "parameter", name: "duration".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "parameter", name: "pathParam1".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "parameter", name: "pathParam2".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "parameter", name: "queryParam".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "requestBody", name: "Echo".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "requestBody", name: "Stream".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "response", name: "Diagnostic".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "response", name: "Echo".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "response", name: "Stream".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getDelay".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getDiagnostic".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getOpenAPI".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getParameters".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getTime".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "postCronRun".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "putEcho".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "putEchoedStream".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "AnyObject".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Boolean".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Date".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Echo".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "ExampleSchema".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Number".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Numbers".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Stream".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "String".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "Strings".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "TimePayload".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "TimeSchema".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "schema", name: "URISchema".",
          ],
          [
            "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
@@ -1290,6 +1521,15 @@ describe('runProcess', () => {
          ],
          [
            "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Skipping declaration (type: "handler", name: "getOpenAPI", kept: "file:///project/src/routes/getOpenAPI.ts", skipped: "file:///projects/whook/dist/routes/getOpenAPI.js") per pluggins ordering.",
+         ],
+         [
+           "⚠️ - Skipping declaration (type: "route", name: "getOpenAPI", kept: "file:///project/src/routes/getOpenAPI.ts", skipped: "file:///projects/whook/dist/routes/getOpenAPI.js") per pluggins ordering.",
          ],
          [
            "✅ - Module path of "CRONS_HANDLERS" found at "@whook/otel/dist/services/CRONS_HANDLERS.js".",

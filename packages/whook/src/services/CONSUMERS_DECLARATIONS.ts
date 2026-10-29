@@ -16,12 +16,14 @@ import {
   type WhookDeclarationsOptions,
   type WhookDeclarations,
   DEFAULT_DECLARATIONS_OPTIONS,
+  type WhookDeclaration,
 } from '../types/declarations.js';
 import { type CreateDirectoryFilesWalkerService } from './createDirectoryFilesWalker.js';
 import {
   collectModuleDeclarationsOfType,
   fileIsPatternIgnored,
   matchFileWithPattern,
+  shouldRegisterDeclaration,
 } from '../libs/declarations.js';
 import { checkEnvironment } from '../libs/environments.js';
 import { fileURLToPath } from 'node:url';
@@ -128,18 +130,6 @@ async function initConsumersDefinitions({
         );
         hasConsumer = false;
       } else {
-        // Avoid loading the same consumerName twice if
-        // overridden upstream by another plugin or the
-        // root project path
-
-        if (declarations.consumers[consumerName]) {
-          log(
-            'debug',
-            `⏳ - Skipped consumer from "${fileURL}" since already loaded upstream.`,
-          );
-          hasConsumer = false;
-        }
-
         const nameMatches = CONSUMER_DECLARATION_REG_EXP.test(consumerName);
 
         if (!nameMatches) {
@@ -161,13 +151,27 @@ async function initConsumersDefinitions({
           consumerName &&
           typeof module.default !== 'undefined'
         ) {
-          declarations.handlers[consumerName] = {
+          const declaration: WhookDeclaration<'handler'> = {
             url,
             name: consumerName,
             pluginName,
             type: 'handler',
             content: undefined,
           };
+          if (
+            shouldRegisterDeclaration(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'handlers',
+              declaration,
+              consumerName,
+            )
+          ) {
+            declarations.handlers[consumerName] = declaration;
+          }
         }
 
         if (!module.definition) {
@@ -198,13 +202,28 @@ async function initConsumersDefinitions({
         }
 
         if (hasConsumer && consumerName) {
-          declarations.consumers[consumerName] = {
+          const declaration: WhookDeclaration<'consumer'> = {
             url,
             name: consumerName,
             pluginName,
             type: 'consumer',
             content: module.definition,
           };
+
+          if (
+            shouldRegisterDeclaration(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'consumers',
+              declaration,
+              consumerName,
+            )
+          ) {
+            declarations.consumers[consumerName] = declaration;
+          }
         }
 
         for (const declaration of collectModuleDeclarationsOfType(
@@ -216,32 +235,20 @@ async function initConsumersDefinitions({
           module,
           ['schema'],
         )) {
-          if (declarations.schemas[declaration.name]) {
-            if (
-              declarations.schemas[declaration.name].content !==
-              declaration.content
-            ) {
-              log(
-                'debug',
-                `⚠️ - Duplicate declaration (type: "${
-                  declaration.type
-                }", name: "${declaration.name}", current: "${
-                  declarations.schemas[declaration.name].url
-                }", duplicated: "${declaration.url}").`,
-              );
-              continue;
-            }
-            log(
-              'warning',
-              `⚠️ - Preventing override of an existing declaration (type: "${
-                declaration.type
-              }", name: "${declaration.name}", current: "${
-                declarations.schemas[declaration.name].url
-              }", prevented: "${declaration.url}").`,
-            );
-            continue;
+          if (
+            shouldRegisterDeclaration<'schemas'>(
+              {
+                WHOOK_PLUGINS,
+                log,
+              },
+              declarations,
+              'schemas',
+              declaration,
+              declaration.name,
+            )
+          ) {
+            declarations.schemas[declaration.name] = declaration;
           }
-          declarations.schemas[declaration.name] = declaration;
         }
       } catch (err) {
         log(

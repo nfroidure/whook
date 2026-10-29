@@ -131,6 +131,7 @@ describe('initDefinitions', () => {
         },
         WRAPPERS_DECLARATIONS: {
           wrappers: {},
+          schemas: {},
         },
         SECURITY_DEFINITIONS,
         log,
@@ -232,6 +233,7 @@ describe('initDefinitions', () => {
         },
         WRAPPERS_DECLARATIONS: {
           wrappers: {},
+          schemas: {},
         },
         SECURITY_DEFINITIONS,
         log,
