@@ -21,6 +21,10 @@ declare interface paths {
   '/v27/{pathParam1}/{pathParam2}': {
     get: operations['getParameters'];
   };
+  '/v27/graphql': {
+    get: operations['getGraphQL'];
+    post: operations['postGraphQL'];
+  };
   '/v27/stream': {
     put: operations['putEchoedStream'];
   };
@@ -115,6 +119,35 @@ declare interface operations {
       headers: {
         'a-header'?: components['schemas']['Boolean'];
         aMultiHeader?: components['schemas']['Numbers'];
+      };
+    };
+  };
+  getGraphQL: {
+    responses: {
+      200: {
+        body: {
+          [pattern: string]: unknown;
+        };
+      };
+    };
+    parameters: {
+      query: {
+        query: string;
+        variables?: string;
+        operationName?: string;
+      };
+    };
+  };
+  postGraphQL: {
+    requestBody?: {
+      query?: string;
+      [pattern: string]: unknown;
+    };
+    responses: {
+      200: {
+        body: {
+          [pattern: string]: unknown;
+        };
       };
     };
   };

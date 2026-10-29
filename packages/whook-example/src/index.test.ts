@@ -143,6 +143,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DEFAULT_MECHANISM.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DEV_ACCESS_MECHANISM.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/DEV_ACCESS_TOKEN.ts"})",
          ],
          [
@@ -165,9 +168,6 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/PARSERS.ts"})",
-         ],
-         [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/QUERY_PARSER_OPTIONS.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/ROUTES_HANDLERS.ts"})",
@@ -212,6 +212,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getDiagnostic.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getGraphQL.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getOpenAPI.ts"})",
          ],
          [
@@ -224,6 +227,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/getTime.ts"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/graphQLContextFunction.ts"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/handleMinutes.ts"})",
          ],
          [
@@ -231,6 +237,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/postCronRun.ts"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/postGraphQL.ts"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"/project/src/services/putEcho.ts"})",
@@ -284,6 +293,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DEFAULT_MECHANISM.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DEV_ACCESS_MECHANISM.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
@@ -306,9 +318,6 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/PARSERS.js"})",
-         ],
-         [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/SENSIBLE_HEADERS.js"})",
@@ -347,6 +356,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getDiagnostic.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getGraphQL.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getOpenAPI.js"})",
          ],
          [
@@ -359,6 +371,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/getTime.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/graphQLContextFunction.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/handleMinutes.js"})",
          ],
          [
@@ -366,6 +381,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/postGraphQL.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/dist/services/putEcho.js"})",
@@ -419,6 +437,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DEFAULT_MECHANISM.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DEV_ACCESS_MECHANISM.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
@@ -441,9 +462,6 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/PARSERS.js"})",
-         ],
-         [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/SENSIBLE_HEADERS.js"})",
@@ -482,6 +500,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getDiagnostic.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getGraphQL.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getOpenAPI.js"})",
          ],
          [
@@ -494,6 +515,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/getTime.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/graphQLContextFunction.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/handleMinutes.js"})",
          ],
          [
@@ -501,6 +525,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/postGraphQL.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-authorization/dist/services/putEcho.js"})",
@@ -554,6 +581,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_MECHANISM.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
@@ -576,9 +606,6 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/PARSERS.js"})",
-         ],
-         [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS.js"})",
@@ -617,6 +644,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getDiagnostic.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getGraphQL.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getOpenAPI.js"})",
          ],
          [
@@ -629,6 +659,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/getTime.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/graphQLContextFunction.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/handleMinutes.js"})",
          ],
          [
@@ -636,6 +669,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/postGraphQL.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-cors/dist/services/putEcho.js"})",
@@ -689,6 +725,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DEFAULT_MECHANISM.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DEV_ACCESS_MECHANISM.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
@@ -711,9 +750,6 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/PARSERS.js"})",
-         ],
-         [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/SENSIBLE_HEADERS.js"})",
@@ -752,6 +788,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getDiagnostic.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getGraphQL.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getOpenAPI.js"})",
          ],
          [
@@ -764,6 +803,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/getTime.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/graphQLContextFunction.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/handleMinutes.js"})",
          ],
          [
@@ -771,6 +813,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/postGraphQL.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/putEcho.js"})",
@@ -792,6 +837,150 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/BUFFER_LIMIT.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/COERCION_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/COMMAND_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/CONSUMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/CRONS_WRAPPERS_ORDER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/CRON_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/DECLARATIONS_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/DECODERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/DEFAULT_ERROR_CODE.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/DEFAULT_MECHANISM.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/DEV_ACCESS_MECHANISM.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/DEV_ACCESS_TOKEN.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/ENCODERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/HTTP_SERVER_OPTIONS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/JWT_SECRET_ENV_NAME.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/MAX_CLEAR_CHARS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/MAX_CLEAR_RATIO.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/OTEL_TRACER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/PARSERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/SENSIBLE_HEADERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/SENSIBLE_PROPS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/SHIELD_CHAR.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/SIGNALS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/STRINGIFIERS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/TIMEOUT.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/TRANSFORMER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/WRAPPER_DEFINITION_FILTER.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/cronRunner.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/fetcher.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/getDelay.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/getDiagnostic.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/getGraphQL.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/getOpenAPI.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/getParameters.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/getPing.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/getTime.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/graphQLContextFunction.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/handleMinutes.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/optionsWithCORS.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/postGraphQL.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/putEcho.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/putEchoedStream.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/uniqueId.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/wrapCronHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/wrapRouteHandlerForDebug.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/wrapRouteHandlerWithAuthorization.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-graphql/dist/services/wrapRouteHandlerWithCORS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/BUFFER_LIMIT.js"})",
@@ -827,6 +1016,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DEFAULT_MECHANISM.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DEV_ACCESS_MECHANISM.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/DEV_ACCESS_TOKEN.js"})",
          ],
          [
@@ -849,9 +1041,6 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/PARSERS.js"})",
-         ],
-         [
-           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/QUERY_PARSER_OPTIONS.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/ROUTES_WRAPPERS.js"})",
@@ -893,6 +1082,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getDiagnostic.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getGraphQL.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getOpenAPI.js"})",
          ],
          [
@@ -905,6 +1097,9 @@ describe('runProcess', () => {
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/getTime.js"})",
          ],
          [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/graphQLContextFunction.js"})",
+         ],
+         [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/handleMinutes.js"})",
          ],
          [
@@ -912,6 +1107,9 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/postCronRun.js"})",
+         ],
+         [
+           "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/postGraphQL.js"})",
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/putEcho.js"})",
@@ -933,6 +1131,42 @@ describe('runProcess', () => {
          ],
          [
            "[no_stack_trace]: error is serializable ({"errno":-2,"code":"ENOENT","syscall":"access","path":"file:///projects/whook/packages/whook-otel/dist/services/wrapRouteHandlerWithCORS.js"})",
+         ],
+         [
+           "{"type":"object","additionalProperties":true,"properties":{"query":{"type":"string"}}}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
+         ],
+         [
+           "{"type":"string"}",
          ],
          [
            "{"type":"string"}",
@@ -1211,6 +1445,18 @@ describe('runProcess', () => {
            "⏳ - Skipped "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapTransformerHandlerForDebug.js.map" per ignore patterns.",
          ],
          [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-graphql/dist/routes/getGraphQL.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-graphql/dist/routes/getGraphQL.js.map" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-graphql/dist/routes/postGraphQL.d.ts" per ignore patterns.",
+         ],
+         [
+           "⏳ - Skipped "file:///projects/whook/packages/whook-graphql/dist/routes/postGraphQL.js.map" per ignore patterns.",
+         ],
+         [
            "⏳ - Skipped "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapConsumersHandlersWithOTel.d.ts" per ignore patterns.",
          ],
          [
@@ -1379,6 +1625,9 @@ describe('runProcess', () => {
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getDiagnostic".",
          ],
          [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getGraphQL".",
+         ],
+         [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "getOpenAPI".",
          ],
          [
@@ -1392,6 +1641,9 @@ describe('runProcess', () => {
          ],
          [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "postCronRun".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "postGraphQL".",
          ],
          [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "handler", name: "printEnvCommand".",
@@ -1442,6 +1694,9 @@ describe('runProcess', () => {
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getDiagnostic".",
          ],
          [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getGraphQL".",
+         ],
+         [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "getOpenAPI".",
          ],
          [
@@ -1452,6 +1707,9 @@ describe('runProcess', () => {
          ],
          [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "postCronRun".",
+         ],
+         [
+           "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "postGraphQL".",
          ],
          [
            "⚠️ - Picking a new declaration in plugin "__project__" (type: "route", name: "putEcho".",
@@ -1526,10 +1784,58 @@ describe('runProcess', () => {
            "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
          ],
          [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Prefer using $ref to OpenAPI schemas components to build more efficiently!",
+         ],
+         [
+           "⚠️ - Skipping declaration (type: "handler", name: "getGraphQL", kept: "file:///project/src/routes/getGraphQL.ts", skipped: "file:///projects/whook/packages/whook-graphql/dist/routes/getGraphQL.js") per pluggins ordering.",
+         ],
+         [
            "⚠️ - Skipping declaration (type: "handler", name: "getOpenAPI", kept: "file:///project/src/routes/getOpenAPI.ts", skipped: "file:///projects/whook/dist/routes/getOpenAPI.js") per pluggins ordering.",
          ],
          [
+           "⚠️ - Skipping declaration (type: "handler", name: "postGraphQL", kept: "file:///project/src/routes/postGraphQL.ts", skipped: "file:///projects/whook/packages/whook-graphql/dist/routes/postGraphQL.js") per pluggins ordering.",
+         ],
+         [
+           "⚠️ - Skipping declaration (type: "route", name: "getGraphQL", kept: "file:///project/src/routes/getGraphQL.ts", skipped: "file:///projects/whook/packages/whook-graphql/dist/routes/getGraphQL.js") per pluggins ordering.",
+         ],
+         [
            "⚠️ - Skipping declaration (type: "route", name: "getOpenAPI", kept: "file:///project/src/routes/getOpenAPI.ts", skipped: "file:///projects/whook/dist/routes/getOpenAPI.js") per pluggins ordering.",
+         ],
+         [
+           "⚠️ - Skipping declaration (type: "route", name: "postGraphQL", kept: "file:///project/src/routes/postGraphQL.ts", skipped: "file:///projects/whook/packages/whook-graphql/dist/routes/postGraphQL.js") per pluggins ordering.",
          ],
          [
            "✅ - Module path of "CRONS_HANDLERS" found at "@whook/otel/dist/services/CRONS_HANDLERS.js".",
@@ -1559,6 +1865,9 @@ describe('runProcess', () => {
            "✅ - Module path of "getDiagnostic" found at "file:///project/src/routes/getDiagnostic.ts".",
          ],
          [
+           "✅ - Module path of "getGraphQL" found at "file:///project/src/routes/getGraphQL.ts".",
+         ],
+         [
            "✅ - Module path of "getOpenAPI" found at "file:///project/src/routes/getOpenAPI.ts".",
          ],
          [
@@ -1581,6 +1890,9 @@ describe('runProcess', () => {
          ],
          [
            "✅ - Module path of "postCronRun" found at "file:///project/src/routes/postCronRun.ts".",
+         ],
+         [
+           "✅ - Module path of "postGraphQL" found at "file:///project/src/routes/postGraphQL.ts".",
          ],
          [
            "✅ - Module path of "putEcho" found at "file:///project/src/routes/putEcho.ts".",
@@ -1611,6 +1923,9 @@ describe('runProcess', () => {
          ],
          [
            "➰ - Plugin "@whook/dev" source path resolved to "file:///projects/whook/packages/whook-dev/dist" with "commands, services, wrappers" types.",
+         ],
+         [
+           "➰ - Plugin "@whook/graphql" source path resolved to "file:///projects/whook/packages/whook-graphql/dist" with "routes, services" types.",
          ],
          [
            "➰ - Plugin "@whook/otel" source path resolved to "file:///projects/whook/packages/whook-otel/dist" with "services, wrappers" types.",
@@ -1649,6 +1964,9 @@ describe('runProcess', () => {
            "🍀 - Found "getDiagnostic" handler module path in definitions ("file:///project/src/routes/getDiagnostic.ts").",
          ],
          [
+           "🍀 - Found "getGraphQL" handler module path in definitions ("file:///project/src/routes/getGraphQL.ts").",
+         ],
+         [
            "🍀 - Found "getOpenAPI" handler module path in definitions ("file:///project/src/routes/getOpenAPI.ts").",
          ],
          [
@@ -1668,6 +1986,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Found "postCronRun" handler module path in definitions ("file:///project/src/routes/postCronRun.ts").",
+         ],
+         [
+           "🍀 - Found "postGraphQL" handler module path in definitions ("file:///project/src/routes/postGraphQL.ts").",
          ],
          [
            "🍀 - Found "putEcho" handler module path in definitions ("file:///project/src/routes/putEcho.ts").",
@@ -1697,6 +2018,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "BUFFER_LIMIT" module path in "@whook/otel".",
          ],
          [
@@ -1713,6 +2037,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "COERCION_OPTIONS" module path in "@whook/otel".",
@@ -1733,6 +2060,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "COMMAND_DEFINITION_FILTER" module path in "@whook/otel".",
          ],
          [
@@ -1749,6 +2079,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "CONSUMER_DEFINITION_FILTER" module path in "@whook/otel".",
@@ -1784,6 +2117,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "CRONS_WRAPPERS_ORDER" module path in "@whook/otel".",
          ],
          [
@@ -1800,6 +2136,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "CRON_DEFINITION_FILTER" module path in "@whook/otel".",
@@ -1820,6 +2159,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "DECLARATIONS_OPTIONS" module path in "@whook/otel".",
          ],
          [
@@ -1836,6 +2178,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "DECODERS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DECODERS" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "DECODERS" module path in "@whook/otel".",
@@ -1856,6 +2201,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "DEFAULT_ERROR_CODE" module path in "@whook/otel".",
          ],
          [
@@ -1874,6 +2222,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "@whook/otel".",
          ],
          [
@@ -1883,6 +2234,27 @@ describe('runProcess', () => {
            "🍀 - Trying to find "DEFAULT_MECHANISM" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "DEV_ACCESS_MECHANISM" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_MECHANISM" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_MECHANISM" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_MECHANISM" module path in "@whook/graphql".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_MECHANISM" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_MECHANISM" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_MECHANISM" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/authorization".",
          ],
          [
@@ -1890,6 +2262,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "DEV_ACCESS_TOKEN" module path in "@whook/otel".",
@@ -1910,6 +2285,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "ENCODERS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "ENCODERS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "ENCODERS" module path in "@whook/otel".",
          ],
          [
@@ -1926,6 +2304,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "HTTP_SERVER_OPTIONS" module path in "@whook/otel".",
@@ -1946,6 +2327,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "JWT_SECRET_ENV_NAME" module path in "@whook/otel".",
          ],
          [
@@ -1964,6 +2348,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "MAX_CLEAR_CHARS" module path in "@whook/otel".",
          ],
          [
@@ -1980,6 +2367,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "MAX_CLEAR_RATIO" module path in "@whook/otel".",
@@ -2003,6 +2393,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "OTEL_TRACER" module path in "@whook/otel".",
          ],
          [
@@ -2021,6 +2414,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "PARSERS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "PARSERS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "PARSERS" module path in "@whook/otel".",
          ],
          [
@@ -2028,24 +2424,6 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "PARSERS" module path in "__project__".",
-         ],
-         [
-           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/authorization".",
-         ],
-         [
-           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/cors".",
-         ],
-         [
-           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/dev".",
-         ],
-         [
-           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/otel".",
-         ],
-         [
-           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "@whook/whook".",
-         ],
-         [
-           "🍀 - Trying to find "QUERY_PARSER_OPTIONS" module path in "__project__".",
          ],
          [
            "🍀 - Trying to find "ROUTES_HANDLERS" module path in "@whook/otel".",
@@ -2075,6 +2453,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "SENSIBLE_HEADERS" module path in "@whook/otel".",
          ],
          [
@@ -2091,6 +2472,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "SENSIBLE_PROPS" module path in "@whook/otel".",
@@ -2111,6 +2495,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "SHIELD_CHAR" module path in "@whook/otel".",
          ],
          [
@@ -2127,6 +2514,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "SIGNALS" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "SIGNALS" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "SIGNALS" module path in "@whook/otel".",
@@ -2147,6 +2537,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "STRINGIFIERS" module path in "@whook/otel".",
          ],
          [
@@ -2163,6 +2556,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "TIMEOUT" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "TIMEOUT" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "TIMEOUT" module path in "@whook/otel".",
@@ -2183,6 +2579,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "TRANSFORMER_DEFINITION_FILTER" module path in "@whook/otel".",
          ],
          [
@@ -2199,6 +2598,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "WRAPPER_DEFINITION_FILTER" module path in "@whook/otel".",
@@ -2222,6 +2624,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "cronRunner" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "cronRunner" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "cronRunner" module path in "@whook/otel".",
          ],
          [
@@ -2238,6 +2643,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "fetcher" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "fetcher" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "fetcher" module path in "@whook/otel".",
@@ -2258,6 +2666,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getDelay" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "getDelay" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "getDelay" module path in "@whook/otel".",
          ],
          [
@@ -2276,6 +2687,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getDiagnostic" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "getDiagnostic" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "getDiagnostic" module path in "@whook/otel".",
          ],
          [
@@ -2285,6 +2699,27 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getDiagnostic" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "getGraphQL" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "getGraphQL" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "getGraphQL" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getGraphQL" module path in "@whook/graphql".",
+         ],
+         [
+           "🍀 - Trying to find "getGraphQL" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "getGraphQL" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "getGraphQL" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "getOpenAPI" module path in "@whook/authorization".",
          ],
          [
@@ -2292,6 +2727,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "getOpenAPI" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getOpenAPI" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "getOpenAPI" module path in "@whook/otel".",
@@ -2312,6 +2750,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getParameters" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "getParameters" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "getParameters" module path in "@whook/otel".",
          ],
          [
@@ -2328,6 +2769,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "getPing" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "getPing" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "getPing" module path in "@whook/otel".",
@@ -2348,6 +2792,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getTime" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "getTime" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "getTime" module path in "@whook/otel".",
          ],
          [
@@ -2357,6 +2804,27 @@ describe('runProcess', () => {
            "🍀 - Trying to find "getTime" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/graphql".",
+         ],
+         [
+           "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "graphQLContextFunction" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "graphQLContextFunction" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "handleMinutes" module path in "@whook/authorization".",
          ],
          [
@@ -2364,6 +2832,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "handleMinutes" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "handleMinutes" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "handleMinutes" module path in "@whook/otel".",
@@ -2387,6 +2858,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "optionsWithCORS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "optionsWithCORS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "optionsWithCORS" module path in "@whook/otel".",
          ],
          [
@@ -2405,6 +2879,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "postCronRun" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "postCronRun" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "postCronRun" module path in "@whook/otel".",
          ],
          [
@@ -2414,6 +2891,27 @@ describe('runProcess', () => {
            "🍀 - Trying to find "postCronRun" module path in "__project__".",
          ],
          [
+           "🍀 - Trying to find "postGraphQL" module path in "@whook/authorization".",
+         ],
+         [
+           "🍀 - Trying to find "postGraphQL" module path in "@whook/cors".",
+         ],
+         [
+           "🍀 - Trying to find "postGraphQL" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "postGraphQL" module path in "@whook/graphql".",
+         ],
+         [
+           "🍀 - Trying to find "postGraphQL" module path in "@whook/otel".",
+         ],
+         [
+           "🍀 - Trying to find "postGraphQL" module path in "@whook/whook".",
+         ],
+         [
+           "🍀 - Trying to find "postGraphQL" module path in "__project__".",
+         ],
+         [
            "🍀 - Trying to find "putEcho" module path in "@whook/authorization".",
          ],
          [
@@ -2421,6 +2919,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "putEcho" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "putEcho" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "putEcho" module path in "@whook/otel".",
@@ -2441,6 +2942,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "putEchoedStream" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "putEchoedStream" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "putEchoedStream" module path in "@whook/otel".",
          ],
          [
@@ -2457,6 +2961,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "uniqueId" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "uniqueId" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "uniqueId" module path in "@whook/otel".",
@@ -2477,6 +2984,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "wrapCronHandlerForDebug" module path in "@whook/otel".",
          ],
          [
@@ -2493,6 +3003,9 @@ describe('runProcess', () => {
          ],
          [
            "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/dev".",
+         ],
+         [
+           "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/graphql".",
          ],
          [
            "🍀 - Trying to find "wrapRouteHandlerForDebug" module path in "@whook/otel".",
@@ -2513,6 +3026,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "wrapRouteHandlerWithAuthorization" module path in "@whook/otel".",
          ],
          [
@@ -2531,6 +3047,9 @@ describe('runProcess', () => {
            "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/dev".",
          ],
          [
+           "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/graphql".",
+         ],
+         [
            "🍀 - Trying to find "wrapRouteHandlerWithCORS" module path in "@whook/otel".",
          ],
          [
@@ -2547,6 +3066,9 @@ describe('runProcess', () => {
          ],
          [
            "🏭 - Wrapping "getDiagnostic" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "getGraphQL" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
          ],
          [
            "🏭 - Wrapping "getOpenAPI" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
@@ -2568,6 +3090,9 @@ describe('runProcess', () => {
          ],
          [
            "🏭 - Wrapping "postCronRun" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
+         ],
+         [
+           "🏭 - Wrapping "postGraphQL" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
          ],
          [
            "🏭 - Wrapping "putEcho" route handler with "wrapRouteHandlerWithAuthorization, wrapRouteHandlerWithCORS" wrappers.",
@@ -2609,6 +3134,9 @@ describe('runProcess', () => {
            "💿 - Loading "getDiagnostic" initializer from "file:///project/src/routes/getDiagnostic.ts".",
          ],
          [
+           "💿 - Loading "getGraphQL" initializer from "file:///project/src/routes/getGraphQL.ts".",
+         ],
+         [
            "💿 - Loading "getOpenAPI" initializer from "file:///project/src/routes/getOpenAPI.ts".",
          ],
          [
@@ -2631,6 +3159,9 @@ describe('runProcess', () => {
          ],
          [
            "💿 - Loading "postCronRun" initializer from "file:///project/src/routes/postCronRun.ts".",
+         ],
+         [
+           "💿 - Loading "postGraphQL" initializer from "file:///project/src/routes/postGraphQL.ts".",
          ],
          [
            "💿 - Loading "putEcho" initializer from "file:///project/src/routes/putEcho.ts".",
@@ -2678,6 +3209,9 @@ describe('runProcess', () => {
            "💿 - Service "getDiagnostic" found in "file:///project/src/routes/getDiagnostic.ts".",
          ],
          [
+           "💿 - Service "getGraphQL" found in "file:///project/src/routes/getGraphQL.ts".",
+         ],
+         [
            "💿 - Service "getOpenAPI" found in "file:///project/src/routes/getOpenAPI.ts".",
          ],
          [
@@ -2700,6 +3234,9 @@ describe('runProcess', () => {
          ],
          [
            "💿 - Service "postCronRun" found in "file:///project/src/routes/postCronRun.ts".",
+         ],
+         [
+           "💿 - Service "postGraphQL" found in "file:///project/src/routes/postGraphQL.ts".",
          ],
          [
            "💿 - Service "putEcho" found in "file:///project/src/routes/putEcho.ts".",
@@ -2732,7 +3269,13 @@ describe('runProcess', () => {
            "📖 - Picking the "ERRORS_DESCRIPTORS" constant in the "APP_CONFIG" service properties.",
          ],
          [
+           "📖 - Picking the "GRAPHIQL" constant in the "APP_CONFIG" service properties.",
+         ],
+         [
            "📖 - Picking the "JWT" constant in the "APP_CONFIG" service properties.",
+         ],
+         [
+           "📖 - Picking the "QUERY_PARSER_OPTIONS" constant in the "APP_CONFIG" service properties.",
          ],
          [
            "📖 - Picking the "SCHEMA_VALIDATORS_OPTIONS" constant in the "APP_CONFIG" service properties.",
@@ -2834,6 +3377,9 @@ describe('runProcess', () => {
            "🕶️ - Initializing the obfuscator service.",
          ],
          [
+           "🕸️ - Initializing the GraphQL Service",
+         ],
+         [
            "🚦 - HTTP Router initialized.",
          ],
          [
@@ -2873,6 +3419,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/DEFAULT_MECHANISM.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/DEV_ACCESS_MECHANISM.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/DEV_ACCESS_TOKEN.ts".",
          ],
          [
@@ -2895,9 +3444,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/PARSERS.ts".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///project/src/services/QUERY_PARSER_OPTIONS.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/ROUTES_HANDLERS.ts".",
@@ -2942,6 +3488,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/getDiagnostic.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/getGraphQL.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/getOpenAPI.ts".",
          ],
          [
@@ -2954,6 +3503,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///project/src/services/getTime.ts".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///project/src/services/graphQLContextFunction.ts".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///project/src/services/handleMinutes.ts".",
          ],
          [
@@ -2961,6 +3513,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/postCronRun.ts".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///project/src/services/postGraphQL.ts".",
          ],
          [
            "🚫 - File doesn't exist at "file:///project/src/services/putEcho.ts".",
@@ -3014,6 +3569,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DEFAULT_MECHANISM.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DEV_ACCESS_MECHANISM.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
@@ -3036,9 +3594,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/PARSERS.js".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/QUERY_PARSER_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/SENSIBLE_HEADERS.js".",
@@ -3077,6 +3632,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getDiagnostic.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getGraphQL.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getOpenAPI.js".",
          ],
          [
@@ -3089,6 +3647,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/getTime.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/graphQLContextFunction.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/handleMinutes.js".",
          ],
          [
@@ -3096,6 +3657,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/dist/services/postGraphQL.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/dist/services/putEcho.js".",
@@ -3149,6 +3713,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DEFAULT_MECHANISM.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DEV_ACCESS_MECHANISM.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
@@ -3171,9 +3738,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/PARSERS.js".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/QUERY_PARSER_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/SENSIBLE_HEADERS.js".",
@@ -3212,6 +3776,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getDiagnostic.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getGraphQL.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getOpenAPI.js".",
          ],
          [
@@ -3224,6 +3791,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/getTime.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/graphQLContextFunction.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/handleMinutes.js".",
          ],
          [
@@ -3231,6 +3801,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/postGraphQL.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-authorization/dist/services/putEcho.js".",
@@ -3284,6 +3857,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DEFAULT_MECHANISM.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_MECHANISM.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
@@ -3306,9 +3882,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/PARSERS.js".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/QUERY_PARSER_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/SENSIBLE_HEADERS.js".",
@@ -3347,6 +3920,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getDiagnostic.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getGraphQL.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getOpenAPI.js".",
          ],
          [
@@ -3359,6 +3935,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/getTime.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/graphQLContextFunction.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/handleMinutes.js".",
          ],
          [
@@ -3366,6 +3945,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/postGraphQL.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-cors/dist/services/putEcho.js".",
@@ -3419,6 +4001,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DEFAULT_MECHANISM.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DEV_ACCESS_MECHANISM.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
@@ -3441,9 +4026,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/PARSERS.js".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/QUERY_PARSER_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/SENSIBLE_HEADERS.js".",
@@ -3482,6 +4064,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getDiagnostic.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getGraphQL.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getOpenAPI.js".",
          ],
          [
@@ -3494,6 +4079,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/getTime.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/graphQLContextFunction.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/handleMinutes.js".",
          ],
          [
@@ -3501,6 +4089,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/postGraphQL.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/putEcho.js".",
@@ -3522,6 +4113,150 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-dev/dist/services/wrapRouteHandlerWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/BUFFER_LIMIT.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/COERCION_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/COMMAND_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/CONSUMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/CRONS_WRAPPERS_ORDER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/CRON_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/DECLARATIONS_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/DECODERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/DEFAULT_ERROR_CODE.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/DEFAULT_MECHANISM.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/DEV_ACCESS_MECHANISM.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/DEV_ACCESS_TOKEN.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/ENCODERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/HTTP_SERVER_OPTIONS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/JWT_SECRET_ENV_NAME.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/MAX_CLEAR_CHARS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/MAX_CLEAR_RATIO.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/OTEL_TRACER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/PARSERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/SENSIBLE_HEADERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/SENSIBLE_PROPS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/SHIELD_CHAR.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/SIGNALS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/STRINGIFIERS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/TIMEOUT.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/TRANSFORMER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/WRAPPER_DEFINITION_FILTER.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/cronRunner.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/fetcher.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/getDelay.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/getDiagnostic.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/getGraphQL.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/getOpenAPI.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/getParameters.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/getPing.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/getTime.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/graphQLContextFunction.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/handleMinutes.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/optionsWithCORS.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/postGraphQL.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/putEcho.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/putEchoedStream.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/uniqueId.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/wrapCronHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/wrapRouteHandlerForDebug.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/wrapRouteHandlerWithAuthorization.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-graphql/dist/services/wrapRouteHandlerWithCORS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/BUFFER_LIMIT.js".",
@@ -3557,6 +4292,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DEFAULT_MECHANISM.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DEV_ACCESS_MECHANISM.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/DEV_ACCESS_TOKEN.js".",
          ],
          [
@@ -3579,9 +4317,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/PARSERS.js".",
-         ],
-         [
-           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/QUERY_PARSER_OPTIONS.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/ROUTES_WRAPPERS.js".",
@@ -3623,6 +4358,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getDiagnostic.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getGraphQL.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getOpenAPI.js".",
          ],
          [
@@ -3635,6 +4373,9 @@ describe('runProcess', () => {
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/getTime.js".",
          ],
          [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/graphQLContextFunction.js".",
+         ],
+         [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/handleMinutes.js".",
          ],
          [
@@ -3642,6 +4383,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/postCronRun.js".",
+         ],
+         [
+           "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/postGraphQL.js".",
          ],
          [
            "🚫 - File doesn't exist at "file:///projects/whook/packages/whook-otel/dist/services/putEcho.js".",
@@ -3695,6 +4439,9 @@ describe('runProcess', () => {
            "🚫 - Module path of "DEFAULT_MECHANISM" not found.",
          ],
          [
+           "🚫 - Module path of "DEV_ACCESS_MECHANISM" not found.",
+         ],
+         [
            "🚫 - Module path of "DEV_ACCESS_TOKEN" not found.",
          ],
          [
@@ -3717,9 +4464,6 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - Module path of "PARSERS" not found.",
-         ],
-         [
-           "🚫 - Module path of "QUERY_PARSER_OPTIONS" not found.",
          ],
          [
            "🚫 - Module path of "SENSIBLE_HEADERS" not found.",
@@ -3750,6 +4494,9 @@ describe('runProcess', () => {
          ],
          [
            "🚫 - Module path of "fetcher" not found.",
+         ],
+         [
+           "🚫 - Module path of "graphQLContextFunction" not found.",
          ],
          [
            "🚫 - Module path of "uniqueId" not found.",
@@ -3812,6 +4559,12 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///project/src/routes/getDiagnostic.ts".",
          ],
          [
+           "🛂 - Dynamic import of "file:///project/src/routes/getGraphQL.ts".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///project/src/routes/getGraphQL.ts".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///project/src/routes/getOpenAPI.ts".",
          ],
          [
@@ -3834,6 +4587,12 @@ describe('runProcess', () => {
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/routes/postCronRun.ts".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///project/src/routes/postGraphQL.ts".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///project/src/routes/postGraphQL.ts".",
          ],
          [
            "🛂 - Dynamic import of "file:///project/src/routes/putEcho.ts".",
@@ -3926,6 +4685,12 @@ describe('runProcess', () => {
            "🛂 - Dynamic import of "file:///projects/whook/packages/whook-dev/dist/wrappers/wrapTransformerHandlerForDebug.js".",
          ],
          [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-graphql/dist/routes/getGraphQL.js".",
+         ],
+         [
+           "🛂 - Dynamic import of "file:///projects/whook/packages/whook-graphql/dist/routes/postGraphQL.js".",
+         ],
+         [
            "🛂 - Dynamic import of "file:///projects/whook/packages/whook-otel/dist/wrappers/wrapConsumersHandlersWithOTel.js".",
          ],
          [
@@ -3979,7 +4744,7 @@ describe('runProcess', () => {
            "🏭 - Initializing the CRONS_WRAPPERS service.",
          ],
          [
-           "🏭 - Initializing the ROUTES_HANDLERS service with 10 handlers and 3 wrappers.",
+           "🏭 - Initializing the ROUTES_HANDLERS service with 12 handlers and 3 wrappers.",
          ],
          [
            "🏭 - Initializing the ROUTES_WRAPPERS service.",
@@ -4001,6 +4766,9 @@ describe('runProcess', () => {
          ],
          [
            "🕱 - Wrapping the error handler for CORS.",
+         ],
+         [
+           "🕸️ - Serving the GraphIQL UI. http://localhost:9999/graphiql",
          ],
          [
            "🖃 - Initializing the validators service.",

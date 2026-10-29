@@ -11,6 +11,7 @@ import {
   initHTTPRouter,
 } from '@whook/whook';
 
+import wrapHTTPRouterWithGraphIQL from '@whook/graphiql';
 import wrapHTTPRouterWithSwaggerUI from '@whook/swagger-ui';
 import { initOTelTracer, wrapHTTPRouterWithOTel } from '@whook/otel';
 
@@ -41,16 +42,16 @@ export async function runProcess<
   innerPrepareEnvironment: ($?: T) => Promise<T> = prepareEnvironment,
   innerPrepareProcess: (
     injectedNames: DependencyDeclaration[],
-    $: T,
+    $: T
   ) => Promise<D> = prepareProcess,
   injectedNames: DependencyDeclaration[] = DEFAULT_INJECTED_NAMES,
-  argv: typeof _argv = _argv,
+  argv: typeof _argv = _argv
 ): Promise<D> {
   return runBaseProcess(
     innerPrepareEnvironment,
     innerPrepareProcess,
     injectedNames,
-    argv,
+    argv
   );
 }
 
@@ -71,7 +72,9 @@ export async function prepareProcess<
    development purpose and open telemetry wrapper.
   */
   $.register(
-    wrapHTTPRouterWithOTel(wrapHTTPRouterWithSwaggerUI(initHTTPRouter)),
+    wrapHTTPRouterWithOTel(
+      wrapHTTPRouterWithGraphIQL(wrapHTTPRouterWithSwaggerUI(initHTTPRouter))
+    )
   );
 
   /* Architecture Note #1.2.2.2: Dev WHOOK_PLUGINS
@@ -88,7 +91,7 @@ export async function prepareProcess<
       '@whook/otel',
       ...WHOOK_PLUGINS.slice(1),
       '@whook/dev',
-    ]),
+    ])
   );
 
   // Registering autoloader required services

@@ -27,6 +27,12 @@ import { initErrorHandlerWithCORS, wrapDefinitionsWithCORS } from '@whook/cors';
 import { extractAppEnv, initTimeMock } from 'application-services';
 import initSecurityDefinitions from './services/SECURITY_DEFINITIONS.js';
 import initAPI from './services/API.js';
+import {
+  initGraphQL,
+  type WhookGraphQLContext,
+  type WhookGraphQLFragmentService,
+} from '@whook/graphql';
+import { gql } from 'graphql-tag';
 
 /* Architecture Note #1.1.1: supported `APP_ENV` values
 
@@ -48,6 +54,7 @@ export const WHOOK_PLUGINS = [
   ...WHOOK_DEFAULT_PLUGINS,
   '@whook/cors',
   '@whook/authorization',
+  '@whook/graphql',
 ] as const satisfies WhookPluginsService;
 
 /* Architecture Note #1.1.3: Injected names
@@ -65,7 +72,7 @@ export const DEFAULT_INJECTED_NAMES = [...WHOOK_DEFAULT_INJECTED_NAMES];
 The `prepareEnvironment` one is intended to prepare the process environment
 */
 export async function prepareEnvironment<T extends Knifecycle>(
-  $: T = new Knifecycle() as T,
+  $: T = new Knifecycle() as T
 ): Promise<T> {
   /* Architecture Note #4: Services
   Whook is shipped with a lot of services aimed to
@@ -136,8 +143,8 @@ export async function prepareEnvironment<T extends Knifecycle>(
   $.register(
     constant(
       '$overrides',
-      (await import(`./config/${APP_ENV}/overrides.js`)).default,
-    ),
+      (await import(`./config/${APP_ENV}/overrides.js`)).default
+    )
   );
 
   /* Architecture Note #1.1.4.6: TRANSACTIONS
@@ -193,7 +200,7 @@ export async function prepareEnvironment<T extends Knifecycle>(
       'wrapRouteHandlerForDebug',
       'wrapRouteHandlerWithAuthorization',
       'wrapRouteHandlerWithCORS',
-    ]),
+    ])
   );
 
   // Add the CORS wrapped error handler
@@ -205,6 +212,36 @@ export async function prepareEnvironment<T extends Knifecycle>(
   // Registering autoloader required services
   $.register(initSecurityDefinitions);
   $.register(initAPI);
+
+  // Add the Apollo Server configuration
+  $.register(
+    constant('GRAPHQL_SERVER_OPTIONS', {
+      context: ({ definition, requestContext }: WhookGraphQLContext) => ({
+        operationId: definition.operation.operationId,
+        authenticationData: requestContext.authenticationData,
+      }),
+    })
+  );
+
+  // Declare the GraphQL schema fragments
+  const helloFragment: WhookGraphQLFragmentService = {
+    typeDefs: gql`
+      type Query {
+        hello: String
+      }
+      schema {
+        query: Query
+      }
+    `,
+    resolvers: {
+      Query: {
+        hello: () => 'Hello world!',
+      },
+    },
+  };
+
+  $.register(initGraphQL);
+  $.register(constant('graphQLFragments', [helloFragment]));
 
   return $;
 }

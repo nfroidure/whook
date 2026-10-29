@@ -32,6 +32,7 @@ describe('commands should work', () => {
          "# Provided by "@whook/cors": none",
          "# Provided by "@whook/dev": 2 commands",
          "# Provided by "@whook/example": 2 commands",
+         "# Provided by "@whook/graphql": none",
          "# Provided by "@whook/otel": none",
          "# Provided by "@whook/whook": 9 commands",
          "- config: A simple program that returns the queried config value",
