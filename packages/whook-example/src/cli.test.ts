@@ -29,9 +29,10 @@ describe('commands should work', () => {
      ",
        "stdout": [
          "# Provided by "@whook/authorization": none",
+         "# Provided by "@whook/aws-lambda": 7 commands",
          "# Provided by "@whook/cors": none",
          "# Provided by "@whook/dev": 2 commands",
-         "# Provided by "@whook/example": 2 commands",
+         "# Provided by "@whook/example": 3 commands",
          "# Provided by "@whook/otel": none",
          "# Provided by "@whook/whook": 9 commands",
          "- config: A simple program that returns the queried config value",
@@ -47,6 +48,14 @@ describe('commands should work', () => {
          "- ls: Print available commands",
          "- printEnv: A command printing every env values",
          "- route: Runs the given server route for testing purpose",
+         "- terraformValues: A command printing lambdas information for Terraform",
+         "- testAWSLambdaConsumer: A command for testing AWS consumer lambda",
+         "- testAWSLambdaCron: A command for testing AWS cron lambda",
+         "- testAWSLambdaKafkaConsumer: A command for testing AWS lambda Kafka consumers",
+         "- testAWSLambdaLogSubscriber: A command for testing AWS consumer lambda",
+         "- testAWSLambdaRoute: A command for testing AWS HTTP lambda",
+         "- testAWSLambdaS3: A command for testing AWS consumer lambda",
+         "- testAWSLambdaTransformer: A command for testing AWS lambda transformers",
        ],
      }
     `);

@@ -33,7 +33,7 @@ import initAPI from './services/API.js';
 You can add more application environment here for several
  deployment targets.
 */
-export const APP_ENVS = ['local', 'test', 'production'] as const;
+export const APP_ENVS = ['local', 'test', 'staging', 'production'] as const;
 
 export type AppEnv = (typeof APP_ENVS)[number];
 
@@ -48,6 +48,7 @@ export const WHOOK_PLUGINS = [
   ...WHOOK_DEFAULT_PLUGINS,
   '@whook/cors',
   '@whook/authorization',
+  '@whook/aws-lambda',
 ] as const satisfies WhookPluginsService;
 
 /* Architecture Note #1.1.3: Injected names
@@ -193,6 +194,23 @@ export async function prepareEnvironment<T extends Knifecycle>(
       'wrapRouteHandlerForDebug',
       'wrapRouteHandlerWithAuthorization',
       'wrapRouteHandlerWithCORS',
+    ]),
+  );
+
+  /* Architecture Note #1.1.3.7: WHOOK_PLUGINS
+  
+  Plugins allows you to add simple features to the Whook's core,
+   to add some, just add the plugin module name here.
+  
+  You can also avoid Whook defaults by leaving it empty.
+  */
+  $.register(
+    constant('WHOOK_PLUGINS', [
+      ...WHOOK_DEFAULT_PLUGINS,
+      '@whook/cors',
+      '@whook/authorization',
+      '@whook/aws-lambda',
+      '@whook/dev',
     ]),
   );
 

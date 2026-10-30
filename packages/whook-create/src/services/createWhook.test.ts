@@ -38,6 +38,7 @@ describe('initCreateWhook', () => {
     dependencies: {
       ..._packageJSON.dependencies,
       '@whook/authorization': '<current_version>',
+      '@whook/aws-lambda': '<current_version>',
       '@whook/cors': '<current_version>',
       '@whook/http-router': '<current_version>',
       '@whook/http-server': '<current_version>',
@@ -181,6 +182,7 @@ describe('initCreateWhook', () => {
        },
        "dependencies": {
          "@whook/authorization": "<current_version>",
+         "@whook/aws-lambda": "<current_version>",
          "@whook/cors": "<current_version>",
          "@whook/http-router": "<current_version>",
          "@whook/http-server": "<current_version>",
@@ -389,6 +391,7 @@ describe('initCreateWhook', () => {
        },
        "dependencies": {
          "@whook/authorization": "<current_version>",
+         "@whook/aws-lambda": "<current_version>",
          "@whook/cors": "<current_version>",
          "@whook/http-router": "<current_version>",
          "@whook/http-server": "<current_version>",
@@ -577,6 +580,7 @@ describe('initCreateWhook', () => {
        },
        "dependencies": {
          "@whook/authorization": "<current_version>",
+         "@whook/aws-lambda": "<current_version>",
          "@whook/cors": "<current_version>",
          "@whook/http-router": "<current_version>",
          "@whook/http-server": "<current_version>",
