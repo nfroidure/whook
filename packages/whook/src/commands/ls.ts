@@ -82,18 +82,20 @@ async function initLsCommand({
           commands.length === 0 ? 'none' : `${commands.length} commands`
         }${verbose ? EOL : ''}`,
       );
-      commands.forEach(({ name, definition }) => {
-        log(
-          'info',
-          `- ${
-            name.endsWith('Command') ? name.replace(/Command$/, '') : name
-          }: ${definition.description}${
-            verbose && definition.example
-              ? `${EOL}$ ${definition.example}${EOL}`
-              : ''
-          }`,
-        );
-      });
+      commands
+        .sort(({ name: name1 }, { name: name2 }) => (name1 < name2 ? -1 : 1))
+        .forEach(({ name, definition }) => {
+          log(
+            'info',
+            `- ${
+              name.endsWith('Command') ? name.replace(/Command$/, '') : name
+            }: ${definition.description}${
+              verbose && definition.example
+                ? `${EOL}$ ${definition.example}${EOL}`
+                : ''
+            }`,
+          );
+        });
     });
   };
 }

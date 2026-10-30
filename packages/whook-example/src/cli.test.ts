@@ -13,7 +13,7 @@ describe('commands should work', () => {
     );
 
     expect({
-      stdout: replacePaths(stdout).split(/\r?\n/g).filter(identity).sort(),
+      stdout: replacePaths(stdout).split(/\r?\n/g).filter(identity),
       stderr: replacePaths(stderr),
     }).toMatchInlineSnapshot(`
      {
@@ -28,25 +28,25 @@ describe('commands should work', () => {
      On air 🚀🌕
      ",
        "stdout": [
-         "# Provided by "@whook/authorization": none",
-         "# Provided by "@whook/cors": none",
-         "# Provided by "@whook/dev": 2 commands",
          "# Provided by "@whook/example": 2 commands",
+         "- createSecretKey: A command to create a secret key",
+         "- printEnv: A command printing every env values",
          "# Provided by "@whook/otel": none",
          "# Provided by "@whook/whook": 9 commands",
          "- config: A simple program that returns the queried config value",
-         "- create: A command helping to create new Whook files easily",
-         "- createSecretKey: A command to create a secret key",
          "- cronRun: A command to run all instances of a cron",
          "- cronSchedule: A command to run a cron schedules for a given time frame",
          "- env: A command printing env values",
          "- generateOpenAPISchema: Write openAPI schema to stdout",
-         "- generateOpenAPITypes: Write openAPI types to stdout",
          "- generateSchemaValidators: Build the schema validators with AJV",
          "- inspect: A simple program that returns the result of the injected service",
          "- ls: Print available commands",
-         "- printEnv: A command printing every env values",
          "- route: Runs the given server route for testing purpose",
+         "# Provided by "@whook/cors": none",
+         "# Provided by "@whook/authorization": none",
+         "# Provided by "@whook/dev": 2 commands",
+         "- create: A command helping to create new Whook files easily",
+         "- generateOpenAPITypes: Write openAPI types to stdout",
        ],
      }
     `);
