@@ -24,7 +24,7 @@
     }
   },
   "name": "@whook/whook",
-  "version": "27.0.1",
+  "version": "27.0.2",
   "description": "Build strong and efficient REST web services.",
   "type": "module",
   "publishConfig": {

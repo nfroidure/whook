@@ -1,3 +1,9 @@
+## [27.0.2](https://github.com/nfroidure/whook/compare/v27.0.1...v27.0.2) (2026-11-02)
+
+### Features
+
+* **@whook/whook:** sort ls command result ([1a905af](https://github.com/nfroidure/whook/commit/1a905af7d27fecf06143cf4b03cf87f115b06cda))
+
 ## [27.0.1](https://github.com/nfroidure/whook/compare/v27.0.0...v27.0.1) (2026-10-29)
 
 ### Bug Fixes
