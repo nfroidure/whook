@@ -6,9 +6,9 @@ const CONFIG: AppConfig = {
   BASE_ENV: {
     ...COMMON_CONFIG.BASE_ENV,
     PUBLIC_URL: 'http://api.example.org',
-    HOST: '0.0.0.0',
-    PORT: '9999',
   },
+  HOST: '0.0.0.0',
+  PORT: 8000,
 };
 
 export default CONFIG;
