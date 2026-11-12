@@ -5,6 +5,7 @@ import { type WhookCronsHandlersService } from './CRONS_HANDLERS.js';
 import { printStackTrace } from 'yerror';
 import { type WhookMain } from '../types/base.js';
 import { type WhookDefinitions } from './DEFINITIONS.js';
+import { checkEnvironment } from '../libs/environments.js';
 
 /* Architecture Note #2.14: Local cron runner
 
@@ -68,10 +69,7 @@ async function initLocalCronRunner({
       const taskName = `${cronName}-${index++}`;
       const promises: Promise<void>[] = [];
 
-      if (
-        schedule.environments !== 'all' ||
-        !schedule.environments.includes(APP_ENV)
-      ) {
+      if (checkEnvironment(schedule.environments, APP_ENV)) {
         log(
           'debug',
           `⏳ - Skipped  "${cronName}" crons schedule "${schedule.rule}" since not enabled in environment "${APP_ENV}".`,
