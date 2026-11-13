@@ -36,11 +36,9 @@ describe('initWrappersDeclarations', () => {
     definition,
   };
   const schema = { name: 'Example', schema: { type: 'string' as const } };
-  const createDirectoryFilesWalker = jest.fn(
-    async function* (baseURL: URL) {
-      yield new URL('wrappers/wrapExample.ts', baseURL);
-    },
-  );
+  const createDirectoryFilesWalker = jest.fn(async function* (baseURL: URL) {
+    yield new URL('wrappers/wrapExample.ts', baseURL);
+  });
   const dependencies = {
     APP_ENV,
     WHOOK_PLUGINS,
@@ -53,11 +51,11 @@ describe('initWrappersDeclarations', () => {
   beforeEach(() => {
     log.mockReset();
     importer.mockReset().mockResolvedValue(wrapperModule);
-    createDirectoryFilesWalker.mockReset().mockImplementation(
-      async function* (baseURL: URL) {
-        yield new URL('wrappers/wrapExample.ts', baseURL);
-      },
-    );
+    createDirectoryFilesWalker.mockReset().mockImplementation(async function* (
+      baseURL: URL,
+    ) {
+      yield new URL('wrappers/wrapExample.ts', baseURL);
+    });
   });
   test('should work', async () => {
     importer.mockImplementation(() =>

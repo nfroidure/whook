@@ -367,15 +367,20 @@ async function initAutoload({
     */
     if ('ROUTES_HANDLERS' === injectedName) {
       const DEFINITIONS = await getDefinitions();
-      const handlerNames = Object.keys(DEFINITIONS.configs)
-        .filter(
-          (handlerName) => DEFINITIONS.configs[handlerName]?.type === 'route',
-        )
-        .map(
-          (handlerName) =>
-            DEFINITIONS.configs[handlerName].config?.targetHandler ||
-            handlerName,
-        );
+      const handlerNames = [
+        ...new Set(
+          Object.keys(DEFINITIONS.configs)
+            .filter(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName]?.type === 'route',
+            )
+            .map(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName].config?.targetHandler ||
+                handlerName,
+            ),
+        ),
+      ];
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -386,15 +391,20 @@ async function initAutoload({
 
     if ('CRONS_HANDLERS' === injectedName) {
       const DEFINITIONS = await getDefinitions();
-      const handlerNames = Object.keys(DEFINITIONS.configs)
-        .filter(
-          (handlerName) => DEFINITIONS.configs[handlerName]?.type === 'cron',
-        )
-        .map(
-          (handlerName) =>
-            DEFINITIONS.configs[handlerName].config?.targetHandler ||
-            handlerName,
-        );
+      const handlerNames = [
+        ...new Set(
+          Object.keys(DEFINITIONS.configs)
+            .filter(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName]?.type === 'cron',
+            )
+            .map(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName].config?.targetHandler ||
+                handlerName,
+            ),
+        ),
+      ];
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -405,16 +415,20 @@ async function initAutoload({
 
     if ('CONSUMERS_HANDLERS' === injectedName) {
       const DEFINITIONS = await getDefinitions();
-      const handlerNames = Object.keys(DEFINITIONS.configs)
-        .filter(
-          (handlerName) =>
-            DEFINITIONS.configs[handlerName]?.type === 'consumer',
-        )
-        .map(
-          (handlerName) =>
-            DEFINITIONS.configs[handlerName].config?.targetHandler ||
-            handlerName,
-        );
+      const handlerNames = [
+        ...new Set(
+          Object.keys(DEFINITIONS.configs)
+            .filter(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName]?.type === 'consumer',
+            )
+            .map(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName].config?.targetHandler ||
+                handlerName,
+            ),
+        ),
+      ];
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -425,16 +439,20 @@ async function initAutoload({
 
     if ('TRANSFORMERS_HANDLERS' === injectedName) {
       const DEFINITIONS = await getDefinitions();
-      const handlerNames = Object.keys(DEFINITIONS.configs)
-        .filter(
-          (handlerName) =>
-            DEFINITIONS.configs[handlerName]?.type === 'transformer',
-        )
-        .map(
-          (handlerName) =>
-            DEFINITIONS.configs[handlerName].config?.targetHandler ||
-            handlerName,
-        );
+      const handlerNames = [
+        ...new Set(
+          Object.keys(DEFINITIONS.configs)
+            .filter(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName]?.type === 'transformer',
+            )
+            .map(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName].config?.targetHandler ||
+                handlerName,
+            ),
+        ),
+      ];
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
@@ -445,15 +463,20 @@ async function initAutoload({
 
     if ('COMMANDS_HANDLERS' === injectedName) {
       const DEFINITIONS = await getDefinitions();
-      const handlerNames = Object.keys(DEFINITIONS.configs)
-        .filter(
-          (handlerName) => DEFINITIONS.configs[handlerName]?.type === 'command',
-        )
-        .map(
-          (handlerName) =>
-            DEFINITIONS.configs[handlerName].config?.targetHandler ||
-            handlerName,
-        );
+      const handlerNames = [
+        ...new Set(
+          Object.keys(DEFINITIONS.configs)
+            .filter(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName]?.type === 'command',
+            )
+            .map(
+              (handlerName) =>
+                DEFINITIONS.configs[handlerName].config?.targetHandler ||
+                handlerName,
+            ),
+        ),
+      ];
 
       return location(
         alsoInject(handlerNames, renamedInitializer),
