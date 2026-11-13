@@ -29,7 +29,11 @@ import {
   PLAIN_CODE_CHALLENGE_METHOD,
   type CodeChallengeMethod,
 } from '../libs/verifier.js';
-import { toUsableClientId } from '../libs/clients.js';
+import {
+  checkClientsIds,
+  checkGrants,
+  toUsableClientId,
+} from '../libs/clients.js';
 
 export { AUTHORIZATION_CODE_GRANT_TYPE, AUTHORIZATION_CODE_RESPONSE_TYPE };
 
@@ -268,12 +272,7 @@ async function initOAuth2AuthorizationCodeGranter({
     ]);
     const grants = await readClientGrants(usableClientId);
 
-    if (usableClientId !== grants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        usableClientId,
-        grants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, grants);
 
     if (!grants.isPublicClient) {
       if (!optionalAuthenticationData) {
@@ -304,12 +303,7 @@ async function initOAuth2AuthorizationCodeGranter({
       ]);
     }
 
-    if (usableClientId !== codeAuthenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_MISMATCH', [
-        usableClientId,
-        codeAuthenticationData.clientId,
-      ]);
-    }
+    checkClientsIds(usableClientId, [codeAuthenticationData.clientId]);
 
     if (codeVerifier) {
       if (!context.codeChallenge || !context.codeChallengeMethod) {

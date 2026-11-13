@@ -135,6 +135,7 @@ export const oAuth2MetadataSchema = {
             'authorization_code',
             'implicit',
             'refresh_token',
+            'urn:ietf:params:oauth:grant-type:device_code',
             'client_credentials',
             'password',
             'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -338,10 +339,10 @@ async function initGetOAuth2WellKnownMetadata({
         ? DEFINITIONS.configs['postOAuth2Token'].path
         : '/oauth2/token'
     }`,
-    // TODO: Put it behind options (allow none)
     token_endpoint_auth_methods_supported: [
       'client_secret_basic',
       'client_secret_post',
+      'none',
     ],
     grant_types_supported: [
       ...new Set(
@@ -371,6 +372,12 @@ async function initGetOAuth2WellKnownMetadata({
       ? {
           pushed_authorization_request_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2PushedAuthorizationRequest'].path}`,
           require_pushed_authorization_requests: OAUTH2_PAR.mode === 'required',
+        }
+      : {}),
+    ...(DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.type ===
+      'route' && DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.path
+      ? {
+          device_authorization_endpoint: `${BASE_URL}${DEFINITIONS.configs['postOAuth2DeviceAuthorization']?.path}`,
         }
       : {}),
   };
