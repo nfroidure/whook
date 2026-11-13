@@ -1,3 +1,10 @@
+## [27.0.3](https://github.com/nfroidure/whook/compare/v27.0.2...v27.0.3) (2026-11-13)
+
+### Bug Fixes
+
+* **@whook/whook:** avoid duplicates in handlers injections ([76b250a](https://github.com/nfroidure/whook/commit/76b250a5bcd537c0ea8b72fd529ff9d6c71f4200))
+* **@whook/whook:** fix crons execution ([7b98542](https://github.com/nfroidure/whook/commit/7b9854271a6d60d2809c6ca35cfb9c5dfe363950))
+
 ## [27.0.2](https://github.com/nfroidure/whook/compare/v27.0.1...v27.0.2) (2026-11-02)
 
 ### Features
