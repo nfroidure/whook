@@ -11,11 +11,16 @@ import {
   type DelayService,
   type DelayResult,
 } from 'common-services';
-import { type IncomingMessage, type ServerResponse } from 'node:http';
+import { type Http2ServerResponse } from 'node:http2';
 import { type JsonValue } from 'type-fest';
 import { type Readable } from 'node:stream';
 import { castWhookHeaders, pickFirstHeaderValue } from '../libs/headers.js';
-import { type WhookRequest, type WhookResponse } from '../types/http.js';
+import {
+  type WhookNodeRequest,
+  type WhookNodeResponse,
+  type WhookRequest,
+  type WhookResponse,
+} from '../types/http.js';
 
 export interface WhookHTTPTransactionConfig {
   TIMEOUT?: number;
@@ -43,12 +48,28 @@ export interface WhookHTTPTransaction {
 }
 
 export type WhookHTTPTransactionService = (
-  req: IncomingMessage,
-  res: ServerResponse,
+  req: WhookNodeRequest,
+  res: WhookNodeResponse,
 ) => Promise<WhookHTTPTransaction>;
 
 const noop = () => undefined;
 const DEFAULT_TIMEOUT = ms('30s');
+
+function isHTTP2Response(
+  response: WhookNodeResponse,
+): response is Http2ServerResponse {
+  return 'stream' in response;
+}
+
+function pickRequestHost(req: WhookNodeRequest): string {
+  const requestHeaders = castWhookHeaders(req.headers);
+
+  return (
+    pickFirstHeaderValue('host', requestHeaders) ||
+    pickFirstHeaderValue(':authority', requestHeaders) ||
+    'localhost'
+  );
+}
 
 function createIncrementor(n = 0) {
   return function increment() {
@@ -175,8 +196,8 @@ async function initHTTPTransaction({
    * transaction created in an array.
    */
   async function httpTransaction(
-    req: IncomingMessage,
-    res: ServerResponse,
+    req: WhookNodeRequest,
+    res: WhookNodeResponse,
   ): Promise<WhookHTTPTransaction> {
     let initializationPromise;
 
@@ -302,7 +323,7 @@ async function initHTTPTransaction({
    * A promise to be resolved with the signed token.
    */
   async function catchTransaction(
-    { id, req }: { id: string; req: IncomingMessage },
+    { id, req }: { id: string; req: WhookNodeRequest },
     err: Error | YError | YHTTPError,
   ): Promise<never> {
     /* Architecture Note #2.10.3: Transaction errors
@@ -316,7 +337,7 @@ async function initHTTPTransaction({
       request:
         FINAL_TRANSACTIONS[id].protocol +
         '://' +
-        (req.headers.host || 'localhost') +
+        pickRequestHost(req) +
         FINAL_TRANSACTIONS[id].url,
       verb: req.method as string,
       status: (err as YHTTPError).httpCode || 500,
@@ -347,8 +368,8 @@ async function initHTTPTransaction({
       delayPromise,
     }: {
       id: string;
-      req: IncomingMessage;
-      res: ServerResponse;
+      req: WhookNodeRequest;
+      res: WhookNodeResponse;
       delayPromise: Promise<DelayResult>;
     },
     response: WhookResponse,
@@ -374,11 +395,19 @@ async function initHTTPTransaction({
 
       res.on('error', reject);
       res.on('finish', resolve);
-      res.writeHead(
-        response.status,
-        statuses.message[response.status],
-        Object.assign({}, response.headers || {}, { 'Transaction-Id': id }),
-      );
+      const responseHeaders = Object.assign({}, response.headers || {}, {
+        'Transaction-Id': id,
+      });
+
+      if (isHTTP2Response(res)) {
+        res.writeHead(response.status, responseHeaders);
+      } else {
+        res.writeHead(
+          response.status,
+          statuses.message[response.status],
+          responseHeaders,
+        );
+      }
       if (response.body && (response.body as Readable).pipe) {
         (response.body as Readable).pipe(res);
       } else {
@@ -393,7 +422,7 @@ async function initHTTPTransaction({
         request:
           FINAL_TRANSACTIONS[id].protocol +
           '://' +
-          (req.headers.host || 'localhost') +
+          pickRequestHost(req) +
           FINAL_TRANSACTIONS[id].url,
         method: req.method as string,
         stack: printStackTrace(err),
