@@ -35,22 +35,20 @@ import {
   initGetOAuth2Authorize,
   getOAuth2AuthorizeDefinition,
   getOAuth2AuthorizeResponseTypeParameter,
+  getOAuth2AuthorizeCodeChallengeParameter,
+  getOAuth2AuthorizeCodeChallengeMethodParameter,
+  clientIdSchema,
   getOAuth2AuthorizeClientIdParameter,
   getOAuth2AuthorizeRedirectURIParameter,
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
   getOAuth2AuthorizeRequestURIParameter,
-  getOAuth2AuthorizeScopeSchema,
-  getOAuth2AuthorizeRequestURISchema,
-  getOAuth2AuthorizeCodeChallengeSchema,
-  getOAuth2AuthorizeCodeChallengeParameter,
-  getOAuth2AuthorizeCodeChallengeMethodSchema,
-  getOAuth2AuthorizeCodeChallengeMethodParameter,
   initPostOAuth2Acknowledge,
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,
-  postOAuth2TokenCodeVerifierSchema,
+  initPostOAuth2DeviceAuthorization,
   postOAuth2TokenDefinition,
+  postOAuth2DeviceAuthorizationDefinition,
   OAUTH2_ERRORS_DESCRIPTORS,
   initOAuth2AuthorizationCodeGranter,
   initOAuth2PasswordGranter,
@@ -58,21 +56,35 @@ import {
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
   initOAuth2ImplicitGranter,
-  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-  postOAuth2TokenPasswordTokenRequestBodySchema,
-  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
+  initOAuth2DeviceAuthorizationGranter,
   postOAuth2TokenTokenBodySchema,
-  postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2PushedAuthorizationRequestBodySchema,
   postOAuth2PushedAuthorizationRequestDefinition,
-  postOAuth2PushedAuthorizationRequestRequestURISchema,
   initPostOAuth2PushedAuthorizationRequest,
+  postOAuth2DeviceAuthorizationRequestBodySchema,
+  postOAuth2DeviceAuthorizationUserCodeSchema,
   type WhookOAuth2Options,
   type WhookOAuth2ReadClientGrantsService,
   type WhookOAuth2PasswordService,
   type WhookOAuth2AuthorizationCodeService,
   type WhookOAuth2RefreshTokenService,
   type WhookOAuth2AccessTokenService,
+  type WhookOAuth2DeviceAuthorizationCodeService,
+  type WhookOAuth2DeviceAuthorizationOptions,
+  authorizationCodeSchema,
+  scopeSchema,
+  requestURISchema,
+  codeChallengeSchema,
+  codeChallengeMethodSchema,
+  authorizationCodeTokenRequestBodySchema,
+  passwordTokenRequestBodySchema,
+  clientCredentialsTokenRequestBodySchema,
+  refreshTokenRequestBodySchema,
+  deviceAuthorizationTokenRequestBodySchema,
+  codeVerifierSchema,
+  deviceCodeSchema,
+  plainCodeChallengeMethodSchema,
+  s256CodeChallengeMethodSchema,
 } from './index.js';
 import { type Knifecycle } from 'knifecycle';
 import { type OpenAPI } from 'ya-open-api-types';
@@ -137,6 +149,16 @@ describe('OAuth2 server', () => {
           ],
         },
       },
+      [`${BASE_PATH}${postOAuth2DeviceAuthorizationDefinition.path}`]: {
+        [postOAuth2DeviceAuthorizationDefinition.method]: {
+          ...postOAuth2DeviceAuthorizationDefinition.operation,
+          security: [
+            {
+              basicAuth: ['oauth'],
+            },
+          ],
+        },
+      },
     },
     components: {
       securitySchemes: {
@@ -168,18 +190,26 @@ describe('OAuth2 server', () => {
         {},
       ),
       schemas: [
-        getOAuth2AuthorizeScopeSchema,
-        getOAuth2AuthorizeRequestURISchema,
-        getOAuth2AuthorizeCodeChallengeSchema,
-        getOAuth2AuthorizeCodeChallengeMethodSchema,
-        postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-        postOAuth2TokenPasswordTokenRequestBodySchema,
-        postOAuth2TokenClientCredentialsTokenRequestBodySchema,
-        postOAuth2TokenRefreshTokenRequestBodySchema,
+        clientIdSchema,
+        scopeSchema,
+        requestURISchema,
+        codeChallengeSchema,
+        plainCodeChallengeMethodSchema,
+        s256CodeChallengeMethodSchema,
+        codeChallengeMethodSchema,
+        authorizationCodeTokenRequestBodySchema,
+        passwordTokenRequestBodySchema,
+        clientCredentialsTokenRequestBodySchema,
+        refreshTokenRequestBodySchema,
+        deviceAuthorizationTokenRequestBodySchema,
+        postOAuth2DeviceAuthorizationRequestBodySchema,
+        postOAuth2DeviceAuthorizationUserCodeSchema,
+        deviceCodeSchema,
         postOAuth2TokenTokenBodySchema,
-        postOAuth2TokenCodeVerifierSchema,
+        codeVerifierSchema,
         postOAuth2PushedAuthorizationRequestBodySchema,
-        postOAuth2PushedAuthorizationRequestRequestURISchema,
+        requestURISchema,
+        authorizationCodeSchema,
       ].reduce(
         (schemasHash, { name, schema }) => ({
           ...schemasHash,
@@ -218,6 +248,13 @@ describe('OAuth2 server', () => {
     allowedScopes: ['user', 'oauth'],
     rootClientId: 'the_root_client_id',
   };
+  const OAUTH2_PAR: WhookOAuth2AuthorizationRequestsOptions = {
+    mode: 'enabled',
+  };
+  const OAUTH2_DEVICE_AUTHORIZATION: WhookOAuth2DeviceAuthorizationOptions = {
+    verificationURI: 'https://auth.example.com/device',
+    interval: 8,
+  };
   const authentication = {
     check: jest.fn<WhookAuthenticationService<any>['check']>(),
   };
@@ -237,6 +274,10 @@ describe('OAuth2 server', () => {
   const oAuth2AuthorizationCode = {
     create: jest.fn<WhookOAuth2AuthorizationCodeService['create']>(),
     check: jest.fn<WhookOAuth2AuthorizationCodeService['check']>(),
+  };
+  const oAuth2DeviceAuthorizationCode = {
+    create: jest.fn<WhookOAuth2DeviceAuthorizationCodeService['create']>(),
+    check: jest.fn<WhookOAuth2DeviceAuthorizationCodeService['check']>(),
   };
   const oAuth2Password = {
     check: jest.fn<WhookOAuth2PasswordService['check']>(),
@@ -283,10 +324,9 @@ describe('OAuth2 server', () => {
     // OAuth2 Specifics
     $.register(constant('OAUTH2', OAUTH2));
     $.register(
-      constant('OAUTH2_PAR', {
-        mode: 'enabled',
-      } satisfies WhookOAuth2AuthorizationRequestsOptions),
+      constant('OAUTH2_DEVICE_AUTHORIZATION', OAUTH2_DEVICE_AUTHORIZATION),
     );
+    $.register(constant('OAUTH2_PAR', OAUTH2_PAR));
     $.register(
       constant('ERRORS_DESCRIPTORS', {
         ...DEFAULT_ERRORS_DESCRIPTORS,
@@ -301,6 +341,7 @@ describe('OAuth2 server', () => {
           'postOAuth2Acknowledge',
           'postOAuth2Token',
           'postOAuth2PushedAuthorizationRequest',
+          'postOAuth2DeviceAuthorization',
         ],
         initRoutesHandlers,
       ),
@@ -313,18 +354,30 @@ describe('OAuth2 server', () => {
     $.register(constant('oAuth2AccessToken', oAuth2AccessToken));
     $.register(constant('oAuth2RefreshToken', oAuth2RefreshToken));
     $.register(constant('oAuth2AuthorizationCode', oAuth2AuthorizationCode));
+    $.register(
+      constant('oAuth2DeviceAuthorizationCode', oAuth2DeviceAuthorizationCode),
+    );
     $.register(constant('oAuth2Password', oAuth2Password));
     [
       initGetOAuth2Authorize,
       initPostOAuth2Acknowledge,
       initPostOAuth2Token,
-      initOAuth2Granters,
+      initPostOAuth2DeviceAuthorization,
+      alsoInject(
+        [
+          'oAuth2DeviceAuthorizationGranter',
+          'oAuth2PasswordGranter',
+          'oAuth2ImplicitGranter',
+        ],
+        initOAuth2Granters,
+      ),
       initOAuth2ClientCredentialsGranter,
       initOAuth2AuthorizationCodeGranter,
       initOAuth2PasswordGranter,
       initOAuth2RefreshTokenGranter,
       initOAuth2ImplicitGranter,
       initPostOAuth2PushedAuthorizationRequest,
+      initOAuth2DeviceAuthorizationGranter,
     ].forEach((handlerInitializer) => $.register(handlerInitializer as any));
 
     return $;
@@ -363,6 +416,8 @@ describe('OAuth2 server', () => {
       oAuth2RefreshToken.check,
       oAuth2AuthorizationCode.check,
       oAuth2AuthorizationCode.create,
+      oAuth2DeviceAuthorizationCode.create,
+      oAuth2DeviceAuthorizationCode.check,
       oAuth2Password.check,
       readClientGrants,
       authentication.check,
@@ -2446,6 +2501,94 @@ describe('OAuth2 server', () => {
          },
        }
       `);
+    });
+  });
+
+  describe('with the device authorization flow', () => {
+    test('should return HTTP 400 access_denied for a denied device poll', async () => {
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['oauth'],
+        userId: 'auth_user_id',
+      });
+      readClientGrants.mockResolvedValueOnce({
+        allowedGrantTypes: ['urn:ietf:params:oauth:grant-type:device_code'],
+        allowedScopes: ['user'],
+        allowedRedirectURIS: [],
+        isPublicClient: false,
+        authenticationData: {
+          clientId: 'the_client_id',
+          scopes: ['user'],
+          userId: 'client_user_id',
+        },
+      });
+      oAuth2DeviceAuthorizationCode.check.mockRejectedValueOnce(
+        new YError('E_OAUTH2_ACCESS_DENIED', ['the_client_id']),
+      );
+
+      const { status, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2TokenDefinition.path}`,
+        headers: {
+          authorization: `basic ${Buffer.from('ali:open_sesame').toString(
+            'base64',
+          )}`,
+        },
+        data: {
+          grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
+          device_code: 'a_device_code',
+        },
+        validateStatus: () => true,
+      });
+
+      expect(status).toBe(400);
+      expect(data).toMatchObject({ error: 'access_denied' });
+      expect(oAuth2DeviceAuthorizationCode.check).toHaveBeenCalledTimes(1);
+      expect(oAuth2AccessToken.create).not.toHaveBeenCalled();
+      expect(oAuth2RefreshToken.create).not.toHaveBeenCalled();
+      expect(OAUTH2_ERRORS_DESCRIPTORS.E_OAUTH2_ACCESS_DENIED).toMatchObject({
+        code: 'access_denied',
+        status: 403,
+      });
+    });
+
+    test.each([
+      ['application/json', { client_id: '' }],
+      ['application/x-www-form-urlencoded', 'client_id='],
+    ])('should reject an empty client ID in %s', async (contentType, body) => {
+      authentication.check.mockResolvedValueOnce({
+        clientId: 'the_client_id',
+        scopes: ['oauth'],
+        userId: 'auth_user_id',
+      });
+
+      const { status, data } = await axios({
+        method: 'post',
+        url: `http://${HOST}:${PORT}${BASE_PATH}${postOAuth2DeviceAuthorizationDefinition.path}`,
+        headers: {
+          authorization: `basic ${Buffer.from('ali:open_sesame').toString('base64')}`,
+          'content-type': contentType,
+        },
+        data: body,
+        validateStatus: () => true,
+      });
+
+      expect(status).toBe(400);
+      expect(data).toMatchObject({
+        error: 'bad_request',
+        error_description: 'The request body does not match the schema',
+        error_params: [
+          { client_id: '' },
+          expect.arrayContaining([
+            expect.objectContaining({
+              instancePath: '/client_id',
+              keyword: 'minLength',
+            }),
+          ]),
+        ],
+      });
+      expect(readClientGrants).not.toHaveBeenCalled();
+      expect(oAuth2DeviceAuthorizationCode.create).not.toHaveBeenCalled();
     });
   });
 });

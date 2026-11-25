@@ -1,5 +1,5 @@
 import { autoService, location } from 'knifecycle';
-import { noop, refersTo, type WhookAPISchemaDefinition } from '@whook/whook';
+import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
@@ -11,26 +11,11 @@ import {
 import { type WhookAuthenticationScope } from '@whook/authorization';
 import { checkGrantType } from '../libs/grants.js';
 import { filterScopes } from '../libs/scopes.js';
-import { scopeSchema } from '../libs/schemas.js';
+import { checkGrants } from '../libs/clients.js';
+import { clientCredentialsTokenRequestBodySchema } from '../routes/schemas.js';
 
-export const CLIENT_CREDENTIALS_GRANT_TYPE = 'client_credentials';
-
-export const clientCredentialsTokenRequestBodySchema = {
-  name: 'ClientCredentialsRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Client credentials grant, see https://tools.ietf.org/html/rfc6749#section-4.4',
-    required: ['grant_type'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        const: CLIENT_CREDENTIALS_GRANT_TYPE,
-      },
-      scope: refersTo(scopeSchema),
-    },
-  },
-} as const satisfies WhookAPISchemaDefinition;
+export const CLIENT_CREDENTIALS_GRANT_TYPE =
+  clientCredentialsTokenRequestBodySchema.schema.properties.grant_type.const;
 
 export interface WhookOAuth2ClientCredentialsGranterDependencies {
   OAUTH2: WhookOAuth2Options;
@@ -67,14 +52,10 @@ async function initOAuth2ClientCredentialsGranter({
       throw new YError('E_UNAUTHORIZED');
     }
 
-    const grants = await readClientGrants(authenticationData.clientId);
+    const usableClientId = authenticationData.clientId;
+    const grants = await readClientGrants(usableClientId);
 
-    if (authenticationData.clientId !== grants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        authenticationData.clientId,
-        grants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, grants);
 
     checkGrantType(grants.allowedGrantTypes, CLIENT_CREDENTIALS_GRANT_TYPE);
 

@@ -133,9 +133,7 @@ export default location(
       inject: [
         'oAuth2ClientCredentialsGranter',
         'oAuth2AuthorizationCodeGranter',
-        'oAuth2PasswordGranter',
         'oAuth2RefreshTokenGranter',
-        'oAuth2ImplicitGranter',
       ],
     },
     async (services: Dependencies) =>

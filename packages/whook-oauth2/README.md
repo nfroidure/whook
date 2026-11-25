@@ -22,13 +22,15 @@ act on behalf of them.
 
 The module provides:
 
-- 3 OAuth2 routes definitions implementing the OAuth2 standard endpoints
-  (`getOAuth2Authorize`, `postOAuth2Token`, `postOAuth2Revoke`) to be used by
-  OAuth2 client applications,
-- 4 authentication endpoints to be used by the authorization server directly to
+- 5 OAuth2 routes definitions implementing the OAuth2 standard endpoints
+  (`getOAuth2Authorize`, `postOAuth2Token`, `postOAuth2Revoke`,
+  `postOAuth2DeviceAuthorization`, `postOAuth2PushedAuthorizationRequest`) to be
+  used by OAuth2 client applications,
+- 5 authentication endpoints to be used by the authorization server directly to
   authenticate users (`postAuthLogin`, `postAuthRefresh`, `postAuthLogout`) and
-  acknowledge the client requests (`postOAuth2Acknowledge`),
-- 5 OAuth2 services implementing the standard grant types. You can create your
+  acknowledge the client requests (`postOAuth2Acknowledge`,
+  `postOAuth2DeviceAcknowledge`),
+- 6 OAuth2 services implementing the standard grant types. You can create your
   own granter services to create additional grant types.
 
 This module requires you to implement some services it relies on:
@@ -41,7 +43,40 @@ This module requires you to implement some services it relies on:
 - `oAuth2ClientCredentialsService` aimed to check the `client_credential` grant
   type with your own logic (if you use it),
 - `oAuth2AuthorizationCodeService` aimed to check the `code` grant type with
-  your own logic (if you use it).
+  your own logic (if you use it),
+- `oAuth2DeviceAuthorizationCode` aimed to create, acknowledge and check device
+  codes for the device authorization grant type (if you use it).
+
+To enable the device authorization flow:
+
+- implement `oAuth2DeviceAuthorizationCode` and allow
+  `urn:ietf:params:oauth:grant-type:device_code` in the device client's grants.
+  Its `acknowledge` method receives
+  `(acknowledged, userAuthenticationData, userCode, expectedClientId, acknowledgedScopes)`.
+  Before recording approval, denial, or scopes, it must load the stored
+  challenge for `userCode` and require its client ID to strictly equal
+  `expectedClientId`. Reject mismatches, including missing or empty stored
+  client IDs, with `E_OAUTH2_CLIENT_MISMATCH` and leave consent unchanged.
+  Existing implementations must add `expectedClientId` before the scopes
+  argument and enforce this check in the storage operation.
+- provide `OAUTH2_DEVICE_AUTHORIZATION` with the user-facing `verificationURI`
+  and, optionally, the polling `interval` in seconds.
+- override `postOAuth2DeviceAuthorization` and `postOAuth2DeviceAcknowledge` to
+  enable them in your application's environments. Configure optional client
+  authentication on both `postOAuth2DeviceAuthorization` and `postOAuth2Token`,
+  for example `security: [{ basicAuth: ['oauth2'] }, {}]`, so confidential
+  clients can authenticate and public clients can omit credentials. Protect
+  `postOAuth2DeviceAcknowledge` with your authentication frontend's security
+  mechanism, as described below for `postOAuth2Acknowledge`. Add the device
+  granter to the registry in `src/services/oAuth2Granters.ts`:
+  ```ts
+  import { alsoInject, location } from 'knifecycle';
+  import { initOAuth2Granters } from '@whook/oauth2';
+  export default location(
+    alsoInject(['oAuth2DeviceAuthorizationGranter'], initOAuth2Granters),
+    import.meta.url,
+  );
+  ```
 
 ## Quick setup
 
@@ -370,17 +405,8 @@ import {
   initPostOAuth2Token,
   postOAuth2TokenDefinition,
   postOAuth2TokenTokenBodySchema,
-  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
-  postOAuth2TokenCodeVerifierSchema,
-  postOAuth2TokenPasswordTokenRequestBodySchema,
-  postOAuth2TokenRefreshTokenRequestBodySchema,
 } from '@whook/oauth2';
-import {
-  type WhookAPISchemaDefinition,
-  type WhookRouteDefinition,
-  refersTo,
-} from '@whook/whook';
+import { type WhookRouteDefinition } from '@whook/whook';
 
 export const definition = {
   ...postOAuth2TokenDefinition,
@@ -394,14 +420,7 @@ export const definition = {
   },
 } as const satisfies WhookRouteDefinition;
 
-export {
-  postOAuth2TokenTokenBodySchema,
-  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
-  postOAuth2TokenCodeVerifierSchema,
-  postOAuth2TokenPasswordTokenRequestBodySchema,
-  postOAuth2TokenRefreshTokenRequestBodySchema,
-};
+export { postOAuth2TokenTokenBodySchema };
 
 export default initPostOAuth2Token;
 ```

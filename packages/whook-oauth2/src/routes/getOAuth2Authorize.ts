@@ -19,40 +19,41 @@ import {
   stringifyScopes,
 } from '../libs/scopes.js';
 import {
+  AUTHORIZATION_CODE_RESPONSE_TYPE,
   checkCodeChallengeParameters,
   type CodeChallengeMethod,
   PLAIN_CODE_CHALLENGE_METHOD,
 } from '../libs/verifier.js';
-import {
-  AUTHORIZATION_CODE_RESPONSE_TYPE,
-  codeChallengeMethodSchema,
-  codeChallengeMethodParameter,
-  codeChallengeSchema,
-  codeChallengeParameter,
-} from '../services/oAuth2AuthorizationCodeGranter.js';
 import { IMPLICIT_RESPONSE_TYPE } from '../services/oAuth2ImplicitGranter.js';
 import {
   addParamsToURL,
   buildParamsFromError,
   getUsableRedirectURI,
 } from '../libs/redirectURI.js';
-import { requestURISchema, scopeSchema } from '../libs/schemas.js';
+import {
+  codeChallengeMethodSchema,
+  codeChallengeSchema,
+  requestURISchema,
+  scopeSchema,
+} from './schemas.js';
 import {
   DEFAULT_OAUTH2_PAR,
   type WhookOAuth2AuthorizationRequestsConfig,
   type WhookOAuth2AuthorizationRequestsService,
 } from '../services/oAuth2AuthorizationRequests.js';
 import { isRequestURI } from '../libs/authorizationRequests.js';
-import { toUsableClientId } from '../libs/clients.js';
+import { checkGrants, toUsableClientId } from '../libs/clients.js';
+import { clientIdSchema } from './schemas.js';
 
-export {
-  requestURISchema,
-  scopeSchema,
-  codeChallengeMethodSchema,
-  codeChallengeMethodParameter,
-  codeChallengeSchema,
-  codeChallengeParameter,
-};
+export const codeChallengeMethodParameter = {
+  name: 'code_challenge_method',
+  parameter: {
+    in: 'query',
+    name: 'code_challenge_method',
+    required: false,
+    schema: refersTo(codeChallengeMethodSchema),
+  },
+} as const satisfies WhookAPIParameterDefinition;
 
 export interface WhookOAuth2AuthorizeRequestParameters {
   client_id: string;
@@ -84,17 +85,17 @@ export const responseTypeParameter = {
     },
   },
 } as const satisfies WhookAPIParameterDefinition;
+
 export const clientIdParameter = {
   name: 'clientId',
   parameter: {
     in: 'query',
     name: 'client_id',
     required: true,
-    schema: {
-      type: 'string',
-    },
+    schema: refersTo(clientIdSchema),
   },
 } as const satisfies WhookAPIParameterDefinition;
+
 export const redirectURIParameter = {
   name: 'redirectURI',
   parameter: {
@@ -108,6 +109,7 @@ export const redirectURIParameter = {
     },
   },
 } as const satisfies WhookAPIParameterDefinition;
+
 export const scopeParameter = {
   name: 'scope',
   parameter: {
@@ -117,6 +119,7 @@ export const scopeParameter = {
     schema: refersTo(scopeSchema),
   },
 } as const satisfies WhookAPIParameterDefinition;
+
 export const stateParameter = {
   name: 'state',
   parameter: {
@@ -128,6 +131,7 @@ export const stateParameter = {
     },
   },
 } as const satisfies WhookAPIParameterDefinition;
+
 export const requestURIParameter = {
   name: 'requestURI',
   parameter: {
@@ -135,6 +139,16 @@ export const requestURIParameter = {
     name: 'request_uri',
     required: false,
     schema: refersTo(requestURISchema),
+  },
+} as const satisfies WhookAPIParameterDefinition;
+
+export const codeChallengeParameter = {
+  name: 'code_challenge',
+  parameter: {
+    in: 'query',
+    name: 'code_challenge',
+    required: false,
+    schema: refersTo(codeChallengeSchema),
   },
 } as const satisfies WhookAPIParameterDefinition;
 
@@ -207,12 +221,7 @@ async function initGetOAuth2Authorize({
     try {
       const clientGrants = await readClientGrants(givenClientId);
 
-      if (givenClientId !== clientGrants.authenticationData.clientId) {
-        throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-          givenClientId,
-          clientGrants.authenticationData.clientId,
-        ]);
-      }
+      checkGrants(givenClientId, clientGrants);
 
       // Default to client URI to redirect errors
       // before the request URI is decoded
@@ -313,6 +322,12 @@ async function initGetOAuth2Authorize({
         clientGrants.allowedScopes,
         !!OAUTH2.strictScopesChecks,
       );
+
+      // When scopes are demanded but filtered to nothing
+      // let's error in order to avoid hard to debug situations
+      if (demandedScope && demandedScopes.length === 0) {
+        throw new YError('E_OAUTH2_BAD_SCOPE', [demandedScope]);
+      }
 
       const { scopes } = await granter.authorize({
         clientId: givenClientId,

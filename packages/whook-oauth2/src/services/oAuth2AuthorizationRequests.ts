@@ -14,6 +14,7 @@ import {
   type WhookOAuth2AuthorizationRequestURI,
 } from '../libs/authorizationRequests.js';
 import { type WhookOAuth2AuthorizeRequestParameters } from '../routes/getOAuth2Authorize.js';
+import { checkClientsIds } from '../libs/clients.js';
 
 export interface WhookOAuth2AuthorizationRequestData {
   clientId: WhookOAuth2ClientId;
@@ -121,12 +122,11 @@ async function initOAuth2AuthorizationRequests({
         ]);
       }
 
-      if (clientId !== request.clientId) {
-        throw new YError('E_OAUTH2_CLIENT_MISMATCH', [
-          clientId,
-          request.clientId,
-        ]);
+      if (!request.clientId) {
+        throw new YError('E_OAUTH2_UNEXPECTED_EMPTY_CLIENT_ID', []);
       }
+
+      checkClientsIds(clientId, [request.clientId]);
 
       return request;
     },

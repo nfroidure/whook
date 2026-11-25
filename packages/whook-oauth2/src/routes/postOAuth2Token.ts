@@ -19,27 +19,16 @@ import {
   stringifyScopes,
 } from '../libs/scopes.js';
 import { type WhookOAuth2AccessTokenService } from '../services/oAuth2ImplicitGranter.js';
-import {
-  refreshTokenRequestBodySchema,
-  type WhookOAuth2RefreshTokenService,
-} from '../services/oAuth2RefreshTokenGranter.js';
+import { type WhookOAuth2RefreshTokenService } from '../services/oAuth2RefreshTokenGranter.js';
 import {
   authorizationCodeTokenRequestBodySchema,
-  codeVerifierSchema,
-} from '../services/oAuth2AuthorizationCodeGranter.js';
-import { passwordTokenRequestBodySchema } from '../services/oAuth2PasswordGranter.js';
-import { clientCredentialsTokenRequestBodySchema } from '../services/oAuth2ClientCredentialsGranter.js';
-import { scopeSchema } from '../libs/schemas.js';
-import { camelCaseObjectProperties } from '../libs/utils.js';
-
-export {
+  clientCredentialsTokenRequestBodySchema,
+  deviceAuthorizationTokenRequestBodySchema,
   passwordTokenRequestBodySchema,
   refreshTokenRequestBodySchema,
-  clientCredentialsTokenRequestBodySchema,
-  authorizationCodeTokenRequestBodySchema,
-  codeVerifierSchema,
   scopeSchema,
-};
+} from './schemas.js';
+import { camelCaseObjectProperties } from '../libs/utils.js';
 
 /* Architecture Note #2: OAuth2 acknowledge
 This endpoint is to be used by the authentication server page
@@ -54,6 +43,7 @@ export const tokenBodySchema = {
       refersTo(authorizationCodeTokenRequestBodySchema),
       refersTo(clientCredentialsTokenRequestBodySchema),
       refersTo(refreshTokenRequestBodySchema),
+      refersTo(deviceAuthorizationTokenRequestBodySchema),
     ],
   },
 } as const satisfies WhookAPISchemaDefinition;

@@ -11,9 +11,7 @@ import {
 import { type LogService } from 'common-services';
 import { type OpenAPI } from 'ya-open-api-types';
 import { collectScopesFromAPI } from '../libs/scopes.js';
-import { scopeTokensSchema } from '../libs/schemas.js';
-
-export { scopeTokensSchema };
+import { scopeTokensSchema } from './schemas.js';
 
 export const bearerMethodSchema = {
   name: 'OAuth2BearerMethod',

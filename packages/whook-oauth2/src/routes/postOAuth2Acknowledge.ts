@@ -19,15 +19,13 @@ import {
   parseOAuth2Scope,
   stringifyScopes,
 } from '../libs/scopes.js';
-import { scopeSchema } from '../libs/schemas.js';
 import {
   codeChallengeMethodSchema,
   codeChallengeSchema,
-} from '../services/oAuth2AuthorizationCodeGranter.js';
+  scopeSchema,
+} from './schemas.js';
 import { addParamsToURL, buildParamsFromError } from '../libs/redirectURI.js';
 import { snakeCase } from '../libs/utils.js';
-
-export { scopeSchema, codeChallengeMethodSchema, codeChallengeSchema };
 
 /* Architecture Note #2: OAuth2 acknowledge
 

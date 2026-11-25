@@ -18,14 +18,15 @@ import {
   parseOAuth2Scope,
   stringifyScopes,
 } from '../libs/scopes.js';
+import { IMPLICIT_RESPONSE_TYPE } from '../services/oAuth2ImplicitGranter.js';
+import {
+  scopeSchema,
+  requestURISchema,
+  codeChallengeSchema,
+  codeChallengeMethodSchema,
+} from './schemas.js';
 import {
   AUTHORIZATION_CODE_RESPONSE_TYPE,
-  codeChallengeMethodSchema,
-  codeChallengeSchema,
-} from '../services/oAuth2AuthorizationCodeGranter.js';
-import { IMPLICIT_RESPONSE_TYPE } from '../services/oAuth2ImplicitGranter.js';
-import { scopeSchema, requestURISchema } from '../libs/schemas.js';
-import {
   checkCodeChallengeParameters,
   PLAIN_CODE_CHALLENGE_METHOD,
 } from '../libs/verifier.js';
@@ -35,16 +36,10 @@ import {
   type WhookOAuth2AuthorizationRequestsService,
 } from '../services/oAuth2AuthorizationRequests.js';
 import { type WhookAuthenticationData } from '@whook/authorization';
-import { toUsableClientId } from '../libs/clients.js';
+import { checkGrants, toUsableClientId } from '../libs/clients.js';
 import { getUsableRedirectURI } from '../libs/redirectURI.js';
 import { type WhookOAuth2AuthorizeRequestParameters } from './getOAuth2Authorize.js';
-
-export {
-  scopeSchema,
-  requestURISchema,
-  codeChallengeSchema,
-  codeChallengeMethodSchema,
-};
+import { clientIdSchema } from './schemas.js';
 
 export const pushedAuthorizationRequestBodySchema = {
   name: 'PushedAuthorizationRequestBody',
@@ -58,9 +53,7 @@ export const pushedAuthorizationRequestBodySchema = {
         type: 'string',
         enum: [AUTHORIZATION_CODE_RESPONSE_TYPE, IMPLICIT_RESPONSE_TYPE],
       },
-      client_id: {
-        type: 'string',
-      },
+      client_id: refersTo(clientIdSchema),
       redirect_uri: {
         type: 'string',
         pattern: '^https?://',
@@ -212,12 +205,7 @@ async function initPostOAuth2PushedAuthorizationRequest({
 
     const clientGrants = await readClientGrants(usableClientId);
 
-    if (usableClientId !== clientGrants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        usableClientId,
-        clientGrants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, clientGrants);
 
     if (!clientGrants.isPublicClient) {
       if (!optionalAuthenticationData) {
@@ -238,6 +226,12 @@ async function initPostOAuth2PushedAuthorizationRequest({
       clientGrants.allowedScopes,
       !!OAUTH2.strictScopesChecks,
     );
+
+    // When scopes are demanded but filtered to nothing
+    // let's error in order to avoid hard to debug situations
+    if (demandedScope && demandedScopes.length === 0) {
+      throw new YError('E_OAUTH2_BAD_SCOPE', [demandedScope]);
+    }
 
     if (requestURI) {
       throw new YError('E_OAUTH2_REQUEST_URI_NOT_ALLOWED');

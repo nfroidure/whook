@@ -1,5 +1,5 @@
 import { autoService, location } from 'knifecycle';
-import { noop, refersTo, type WhookAPISchemaDefinition } from '@whook/whook';
+import { noop } from '@whook/whook';
 import { YError } from 'yerror';
 import { type LogService } from 'common-services';
 import {
@@ -14,32 +14,11 @@ import {
 } from '@whook/authorization';
 import { filterScopes } from '../libs/scopes.js';
 import { checkGrantType } from '../libs/grants.js';
-import { scopeSchema } from '../libs/schemas.js';
+import { checkGrants } from '../libs/clients.js';
+import { passwordTokenRequestBodySchema } from '../routes/schemas.js';
 
-export const PASSWORD_GRANT_TYPE = 'password';
-
-export const passwordTokenRequestBodySchema = {
-  name: 'PasswordRequestBody',
-  schema: {
-    type: 'object',
-    description:
-      'Resource owner password credentials grant, see https://tools.ietf.org/html/rfc6749#section-4.3',
-    required: ['grant_type', 'username', 'password'],
-    properties: {
-      grant_type: {
-        type: 'string',
-        enum: [PASSWORD_GRANT_TYPE],
-      },
-      username: {
-        type: 'string',
-      },
-      password: {
-        type: 'string',
-      },
-      scope: refersTo(scopeSchema),
-    },
-  },
-} as const satisfies WhookAPISchemaDefinition;
+export const PASSWORD_GRANT_TYPE =
+  passwordTokenRequestBodySchema.schema.properties.grant_type.const;
 
 /**
  * A service to check a user password
@@ -103,12 +82,7 @@ async function initOAuth2PasswordGranter({
 
     const grants = await readClientGrants(usableClientId);
 
-    if (usableClientId !== grants.authenticationData.clientId) {
-      throw new YError('E_OAUTH2_CLIENT_GRANTS_MISMATCH', [
-        usableClientId,
-        grants.authenticationData.clientId,
-      ]);
-    }
+    checkGrants(usableClientId, grants);
 
     if (!grants.isPublicClient) {
       if (!optionalAuthenticationData) {

@@ -1,11 +1,19 @@
 import { createHash } from 'crypto';
 import { YError } from 'yerror';
+import {
+  authorizationCodeTokenRequestBodySchema,
+  plainCodeChallengeMethodSchema,
+  s256CodeChallengeMethodSchema,
+} from '../routes/schemas.js';
 
 export const AUTHORIZATION_CODE_RESPONSE_TYPE = 'code';
-export const AUTHORIZATION_CODE_GRANT_TYPE = 'authorization_code';
+export const AUTHORIZATION_CODE_GRANT_TYPE =
+  authorizationCodeTokenRequestBodySchema.schema.properties.grant_type.const;
 export type CodeChallengeMethod = (typeof CODE_CHALLENGE_METHODS)[number];
-export const PLAIN_CODE_CHALLENGE_METHOD = 'plain';
-export const S256_CODE_CHALLENGE_METHOD = 'S256';
+export const PLAIN_CODE_CHALLENGE_METHOD =
+  plainCodeChallengeMethodSchema.schema.const;
+export const S256_CODE_CHALLENGE_METHOD =
+  s256CodeChallengeMethodSchema.schema.const;
 
 export const CODE_CHALLENGE_METHODS = [
   PLAIN_CODE_CHALLENGE_METHOD,

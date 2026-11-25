@@ -6,30 +6,29 @@ import initGetOAuth2Authorize, {
   scopeParameter as getOAuth2AuthorizeScopeParameter,
   stateParameter as getOAuth2AuthorizeStateParameter,
   requestURIParameter as getOAuth2AuthorizeRequestURIParameter,
-  codeChallengeSchema as getOAuth2AuthorizeCodeChallengeSchema,
   codeChallengeParameter as getOAuth2AuthorizeCodeChallengeParameter,
-  codeChallengeMethodSchema as getOAuth2AuthorizeCodeChallengeMethodSchema,
   codeChallengeMethodParameter as getOAuth2AuthorizeCodeChallengeMethodParameter,
-  requestURISchema as getOAuth2AuthorizeRequestURISchema,
-  scopeSchema as getOAuth2AuthorizeScopeSchema,
 } from './routes/getOAuth2Authorize.js';
 import initPostOAuth2Acknowledge, {
   definition as postOAuth2AcknowledgeDefinition,
 } from './routes/postOAuth2Acknowledge.js';
 import initPostOAuth2Token, {
   definition as postOAuth2TokenDefinition,
-  codeVerifierSchema as postOAuth2TokenCodeVerifierSchema,
-  authorizationCodeTokenRequestBodySchema as postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-  passwordTokenRequestBodySchema as postOAuth2TokenPasswordTokenRequestBodySchema,
-  clientCredentialsTokenRequestBodySchema as postOAuth2TokenClientCredentialsTokenRequestBodySchema,
-  refreshTokenRequestBodySchema as postOAuth2TokenRefreshTokenRequestBodySchema,
   tokenBodySchema as postOAuth2TokenTokenBodySchema,
 } from './routes/postOAuth2Token.js';
 import initPostOAuth2PushedAuthorizationRequest, {
   definition as postOAuth2PushedAuthorizationRequestDefinition,
   pushedAuthorizationRequestBodySchema as postOAuth2PushedAuthorizationRequestBodySchema,
-  requestURISchema as postOAuth2PushedAuthorizationRequestRequestURISchema,
 } from './routes/postOAuth2PushedAuthorizationRequest.js';
+import initPostOAuth2DeviceAuthorization, {
+  definition as postOAuth2DeviceAuthorizationDefinition,
+  deviceAuthorizationRequestBodySchema as postOAuth2DeviceAuthorizationRequestBodySchema,
+  userCodeSchema as postOAuth2DeviceAuthorizationUserCodeSchema,
+} from './routes/postOAuth2DeviceAuthorization.js';
+import initPostOAuth2DeviceAcknowledge, {
+  definition as postOAuth2DeviceAcknowledgeDefinition,
+  deviceAcknowledgeRequestBodySchema as postOAuth2DeviceAcknowledgeRequestBodySchema,
+} from './routes/postOAuth2DeviceAcknowledge.js';
 import initGetOAuth2WellKnown, {
   definition as getOAuth2WellKnownDefinition,
   endpointAuthenticationMethodsSchema as getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
@@ -37,8 +36,6 @@ import initGetOAuth2WellKnown, {
   jsonWebEncryptionsSchema as getOAuth2WellKnownJsonWebEncryptionsSchema,
   httpsProtocolURISchema as getOAuth2WellKnownHTTPSProtocolURISchema,
   oAuth2MetadataSchema as getOAuth2WellKnownOAuth2MetadataSchema,
-  scopeTokenSchema as getOAuth2WellKnownScopeTokenSchema,
-  scopeTokensSchema as getOAuth2WellKnownScopeTokensSchema,
 } from './routes/getOAuth2WellKnownMetadata.js';
 import initGetOAuth2WellKnownProtectedResource, {
   definition as getOAuth2WellKnownProtectedResourceDefinition,
@@ -64,6 +61,8 @@ import initOAuth2ImplicitGranter from './services/oAuth2ImplicitGranter.js';
 export type * from './services/oAuth2ImplicitGranter.js';
 import initOAuth2AuthorizationCodeGranter from './services/oAuth2AuthorizationCodeGranter.js';
 export type * from './services/oAuth2AuthorizationCodeGranter.js';
+import initOAuth2DeviceAuthorizationGranter from './services/oAuth2DeviceAuthorizationGranter.js';
+export type * from './services/oAuth2DeviceAuthorizationGranter.js';
 
 import initPostAuthLogin, {
   definition as postAuthLoginDefinition,
@@ -83,8 +82,8 @@ import initOAuth2AuthorizationRequests from './services/oAuth2AuthorizationReque
 export * from './services/oAuth2AuthorizationRequests.js';
 export type * from './services/oAuth2AuthorizationRequests.js';
 
-export * from './libs/schemas.js';
-export type * from './libs/schemas.js';
+export * from './routes/schemas.js';
+export type * from './routes/schemas.js';
 export * from './libs/errors.js';
 export type * from './libs/errors.js';
 export * from './libs/scopes.js';
@@ -111,12 +110,8 @@ export {
   getOAuth2AuthorizeScopeParameter,
   getOAuth2AuthorizeStateParameter,
   getOAuth2AuthorizeRequestURIParameter,
-  getOAuth2AuthorizeScopeSchema,
-  getOAuth2AuthorizeCodeChallengeSchema,
-  getOAuth2AuthorizeCodeChallengeMethodSchema,
   getOAuth2AuthorizeCodeChallengeParameter,
   getOAuth2AuthorizeCodeChallengeMethodParameter,
-  getOAuth2AuthorizeRequestURISchema,
   initGetOAuth2WellKnown,
   getOAuth2WellKnownDefinition,
   getOAuth2WellKnownEndpointAuthenticationMethodsSchema,
@@ -124,8 +119,6 @@ export {
   getOAuth2WellKnownJsonWebEncryptionsSchema,
   getOAuth2WellKnownHTTPSProtocolURISchema,
   getOAuth2WellKnownOAuth2MetadataSchema,
-  getOAuth2WellKnownScopeTokenSchema,
-  getOAuth2WellKnownScopeTokensSchema,
   initGetOAuth2WellKnownProtectedResource,
   getOAuth2WellKnownProtectedResourceDefinition,
   getOAuth2WellKnownProtectedResourceBearerMethodSchema,
@@ -138,22 +131,24 @@ export {
   postOAuth2AcknowledgeDefinition,
   initPostOAuth2Token,
   postOAuth2TokenDefinition,
-  postOAuth2TokenCodeVerifierSchema,
-  postOAuth2TokenAuthorizationCodeTokenRequestBodySchema,
-  postOAuth2TokenPasswordTokenRequestBodySchema,
-  postOAuth2TokenClientCredentialsTokenRequestBodySchema,
-  postOAuth2TokenRefreshTokenRequestBodySchema,
   postOAuth2TokenTokenBodySchema,
   initPostOAuth2PushedAuthorizationRequest,
   postOAuth2PushedAuthorizationRequestDefinition,
   postOAuth2PushedAuthorizationRequestBodySchema,
-  postOAuth2PushedAuthorizationRequestRequestURISchema,
+  initPostOAuth2DeviceAcknowledge,
+  postOAuth2DeviceAcknowledgeDefinition,
+  postOAuth2DeviceAcknowledgeRequestBodySchema,
+  initPostOAuth2DeviceAuthorization,
+  postOAuth2DeviceAuthorizationDefinition,
+  postOAuth2DeviceAuthorizationRequestBodySchema,
+  postOAuth2DeviceAuthorizationUserCodeSchema,
   initOAuth2Granters,
   initOAuth2ClientCredentialsGranter,
   initOAuth2AuthorizationCodeGranter,
   initOAuth2PasswordGranter,
   initOAuth2RefreshTokenGranter,
   initOAuth2ImplicitGranter,
+  initOAuth2DeviceAuthorizationGranter,
   authCookieHeaderParameter,
   initPostAuthLogin,
   postAuthLoginDefinition,
